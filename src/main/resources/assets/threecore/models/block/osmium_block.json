@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "threecore:block/osmium/storage_block"
+    }
+}

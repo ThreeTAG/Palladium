@@ -1,0 +1,23 @@
+{
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:nuggets/uranium"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "threecore:uranium_ingot"
+  },
+  "group": "uranium_ingot",
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:nuggets/uranium"
+    }
+  ]
+}

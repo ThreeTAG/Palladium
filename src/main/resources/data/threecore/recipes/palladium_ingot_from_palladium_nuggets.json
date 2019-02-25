@@ -1,0 +1,23 @@
+{
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:nuggets/palladium"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "threecore:palladium_ingot"
+  },
+  "group": "palladium_ingot",
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:nuggets/palladium"
+    }
+  ]
+}

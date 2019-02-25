@@ -1,0 +1,22 @@
+{
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:ingots/adamantium"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "threecore:adamantium_block"
+  },
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/adamantium"
+    }
+  ]
+}

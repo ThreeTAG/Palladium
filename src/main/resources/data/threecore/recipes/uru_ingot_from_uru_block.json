@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:storage_blocks/uru"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/uru"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:uru_ingot",
+    "count": 9
+  },
+  "group": "uru_ingot"
+}

@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:storage_blocks/iridium"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/iridium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:iridium_ingot",
+    "count": 9
+  },
+  "group": "iridium_ingot"
+}

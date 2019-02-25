@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:storage_blocks/gold_titanium_alloy"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/gold_titanium_alloy"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:gold_titanium_alloy_ingot",
+    "count": 9
+  },
+  "group": "gold_titanium_alloy_ingot"
+}

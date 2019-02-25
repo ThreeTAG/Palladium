@@ -1,0 +1,18 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/iridium"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:ingots/iridium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:iridium_nugget",
+    "count": 9
+  }
+}

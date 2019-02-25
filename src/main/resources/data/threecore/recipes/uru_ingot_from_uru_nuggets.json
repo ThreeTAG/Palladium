@@ -1,0 +1,23 @@
+{
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:nuggets/uru"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "threecore:uru_ingot"
+  },
+  "group": "uru_ingot",
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:nuggets/uru"
+    }
+  ]
+}

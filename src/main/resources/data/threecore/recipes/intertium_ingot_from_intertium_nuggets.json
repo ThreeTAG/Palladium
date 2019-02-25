@@ -1,0 +1,23 @@
+{
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:nuggets/intertium"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "threecore:intertium_ingot"
+  },
+  "group": "intertium_ingot",
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:nuggets/intertium"
+    }
+  ]
+}

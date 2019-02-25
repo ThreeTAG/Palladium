@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:storage_blocks/bronze"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/bronze"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:bronze_ingot",
+    "count": 9
+  },
+  "group": "bronze_ingot"
+}

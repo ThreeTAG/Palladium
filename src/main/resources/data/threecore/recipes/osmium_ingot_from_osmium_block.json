@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:storage_blocks/osmium"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/osmium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:osmium_ingot",
+    "count": 9
+  },
+  "group": "osmium_ingot"
+}

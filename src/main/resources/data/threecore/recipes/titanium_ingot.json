@@ -1,0 +1,15 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/titanium"
+    }
+  ],
+  "type": "smelting",
+  "result": "threecore:titanium_ingot",
+  "ingredient": {
+    "tag": "forge:ores/titanium"
+  },
+  "experience": 0.7,
+  "cookingtime": 200
+}

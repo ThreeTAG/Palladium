@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:storage_blocks/adamantium"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/adamantium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:adamantium_ingot",
+    "count": 9
+  },
+  "group": "adamantium_ingot"
+}

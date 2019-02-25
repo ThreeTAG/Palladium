@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:storage_blocks/uranium"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/uranium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:uranium_ingot",
+    "count": 9
+  },
+  "group": "uranium_ingot"
+}

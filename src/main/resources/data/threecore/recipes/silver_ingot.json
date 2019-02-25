@@ -1,0 +1,15 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/silver"
+    }
+  ],
+  "type": "smelting",
+  "result": "threecore:silver_ingot",
+  "ingredient": {
+    "tag": "forge:ores/silver"
+  },
+  "experience": 0.7,
+  "cookingtime": 200
+}

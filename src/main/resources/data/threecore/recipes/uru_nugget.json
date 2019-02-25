@@ -1,0 +1,18 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/uru"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:ingots/uru"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:uru_nugget",
+    "count": 9
+  }
+}

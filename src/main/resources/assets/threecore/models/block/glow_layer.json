@@ -1,0 +1,43 @@
+{
+	"parent": "block/cube",
+	"ambientocclusion": false,
+	"display": {
+        "firstperson_righthand": {
+            "rotation": [ 0, 135, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.40, 0.40, 0.40 ]
+        }
+    },
+	"textures": {
+		"particle": "#base"
+	},
+	"elements": [
+		{
+			"name": "base",
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"down":  { "texture": "#base", "cullface": "down" },
+                "up":    { "texture": "#base", "cullface": "up" },
+                "north": { "texture": "#base", "cullface": "north" },
+                "south": { "texture": "#base", "cullface": "south" },
+                "west":  { "texture": "#base", "cullface": "west" },
+                "east":  { "texture": "#base", "cullface": "east" }
+			}
+		},
+		{
+			"name": "glow",
+			"shade": false,
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"down":  { "texture": "#glow", "cullface": "down" },
+                "up":    { "texture": "#glow", "cullface": "up" },
+                "north": { "texture": "#glow", "cullface": "north" },
+                "south": { "texture": "#glow", "cullface": "south" },
+                "west":  { "texture": "#glow", "cullface": "west" },
+                "east":  { "texture": "#glow", "cullface": "east" }
+			}
+		}
+	]
+}

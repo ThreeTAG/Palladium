@@ -1,0 +1,28 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/vibranium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/steel"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:dusts/vibranium"
+    },
+    {
+      "tag": "forge:dusts/steel"
+    },
+    {
+      "tag": "forge:dusts/steel"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:adamantium_dust",
+    "count": 3
+  }
+}

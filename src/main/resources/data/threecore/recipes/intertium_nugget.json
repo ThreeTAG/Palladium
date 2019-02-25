@@ -1,0 +1,18 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/intertium"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:ingots/intertium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:intertium_nugget",
+    "count": 9
+  }
+}

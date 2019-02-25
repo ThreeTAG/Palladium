@@ -1,0 +1,18 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/titanium"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:ingots/titanium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:titanium_nugget",
+    "count": 9
+  }
+}

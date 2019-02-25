@@ -1,0 +1,7 @@
+{
+    "parent": "threecore:block/glow_layer",
+    "textures": {
+        "base": "threecore:block/vibranium/storage_block_0",
+		"glow": "threecore:block/vibranium/storage_block_1"
+    }
+}

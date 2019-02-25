@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:storage_blocks/vibranium"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/vibranium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:vibranium_ingot",
+    "count": 9
+  },
+  "group": "vibranium_ingot"
+}

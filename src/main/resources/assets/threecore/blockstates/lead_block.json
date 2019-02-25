@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "threecore:block/lead_block" }
+    }
+}

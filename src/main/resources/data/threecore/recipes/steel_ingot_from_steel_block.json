@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:storage_blocks/steel"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/steel"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:steel_ingot",
+    "count": 9
+  },
+  "group": "steel_ingot"
+}

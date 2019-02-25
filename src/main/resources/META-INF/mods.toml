@@ -1,0 +1,18 @@
+modLoader="javafml"
+loaderVersion="[25,)"
+authors="Lucraft, Nictogen"
+
+[[mods]]
+modId="threecore"
+version="${file.jarVersion}"
+displayName="ThreeCore"
+description='''
+Core mod for all ThreeTAG mods.
+'''
+
+[[dependencies.threecore]]
+    modId="forge"
+    mandatory=true
+    versionRange="[25,)"
+    ordering="NONE"
+    side="BOTH"

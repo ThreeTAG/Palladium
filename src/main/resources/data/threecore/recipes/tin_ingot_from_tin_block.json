@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:storage_blocks/tin"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/tin"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:tin_ingot",
+    "count": 9
+  },
+  "group": "tin_ingot"
+}

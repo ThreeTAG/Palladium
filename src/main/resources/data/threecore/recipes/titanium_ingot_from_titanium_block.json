@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:storage_blocks/titanium"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/titanium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:titanium_ingot",
+    "count": 9
+  },
+  "group": "titanium_ingot"
+}

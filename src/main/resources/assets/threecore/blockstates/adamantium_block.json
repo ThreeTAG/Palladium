@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "threecore:block/adamantium_block" }
+    }
+}

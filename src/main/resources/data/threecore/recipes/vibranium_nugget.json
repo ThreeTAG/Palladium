@@ -1,0 +1,18 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/vibranium"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:ingots/vibranium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:vibranium_nugget",
+    "count": 9
+  }
+}

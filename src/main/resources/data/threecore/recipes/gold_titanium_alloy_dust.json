@@ -1,0 +1,28 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/gold"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/titanium"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:dusts/gold"
+    },
+    {
+      "tag": "forge:dusts/titanium"
+    },
+    {
+      "tag": "forge:dusts/titanium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:gold_titanium_alloy_dust",
+    "count": 3
+  }
+}

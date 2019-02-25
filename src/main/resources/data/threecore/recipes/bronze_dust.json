@@ -1,0 +1,31 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/copper"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/tin"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "forge:dusts/copper"
+    },
+    {
+      "tag": "forge:dusts/copper"
+    },
+    {
+      "tag": "forge:dusts/copper"
+    },
+    {
+      "tag": "forge:dusts/tin"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:bronze_dust",
+    "count": 4
+  }
+}
