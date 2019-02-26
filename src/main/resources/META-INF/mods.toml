@@ -6,6 +6,7 @@ authors="Lucraft, Nictogen"
 modId="threecore"
 version="${file.jarVersion}"
 displayName="ThreeCore"
+logoFile="threecore.png"
 description='''
 Core mod for all ThreeTAG mods.
 '''
