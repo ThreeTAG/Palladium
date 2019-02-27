@@ -18,7 +18,7 @@ archivesBaseName = 'ThreeCore'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20190225-1.13.1'
+    mappings channel: 'snapshot', version: '20180921-1.13'
     // makeObfSourceJar = false
     
     //accessTransformer = file('my_at.cfg')

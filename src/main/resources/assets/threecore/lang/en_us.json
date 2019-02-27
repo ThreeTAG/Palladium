@@ -101,5 +101,18 @@
   "item.threecore.intertium_plate": "Intertium Plate",
   "item.threecore.steel_plate": "Steel Plate",
   "item.threecore.gold_titanium_alloy_plate": "Gold-Titanium-Alloy Plate",
-  "item.threecore.adamantium_plate": "Adamantium Plate"
+  "item.threecore.adamantium_plate": "Adamantium Plate",
+
+  "commands.karma.success.player.single": "%s karma has been set to %s",
+  "commands.karma.success.player.multiple": "Karma of %s players has been set to %s",
+  "commands.karma.players_karma": "%s's karma is at %s. (%s)",
+
+  "karma.class.tyrant": "Tyrant",
+  "karma.class.villain": "Villain",
+  "karma.class.thug": "Thug",
+  "karma.class.neutral": "Neutral",
+  "karma.class.vigilante": "Vigilante",
+  "karma.class.hero": "Hero",
+  "karma.class.legend": "Legend",
+  "karma.toast.title": "Your karma has changed!"
 }
