@@ -28,7 +28,7 @@ public class ThreeCoreCommonConfig {
         public OreConfig URU;
 
         private Materials(ForgeConfigSpec.Builder builder) {
-            builder.comment("ThreeCore materials settings").push("materials");
+            builder.comment("ThreeCore base settings").push("base");
 
             COPPER = makeOreConfig(builder, "copper", 8, 8, 40, 75);
             TIN = makeOreConfig(builder, "tin", 8, 7, 20, 55);

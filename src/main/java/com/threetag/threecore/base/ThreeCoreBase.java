@@ -1,8 +1,8 @@
-package com.threetag.threecore.materials;
+package com.threetag.threecore.base;
 
 import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.ThreeCoreCommonConfig;
-import com.threetag.threecore.materials.block.BlockVibranium;
+import com.threetag.threecore.base.block.BlockVibranium;
 import com.threetag.threecore.util.recipe.RecipeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -23,9 +23,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 import static net.minecraft.world.biome.Biome.COUNT_RANGE;
 import static net.minecraft.world.biome.Biome.createCompositeFeature;
 
-public class ThreeCoreMaterials {
+public class ThreeCoreBase {
 
-    public ThreeCoreMaterials() {
+    public ThreeCoreBase() {
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
     }
 

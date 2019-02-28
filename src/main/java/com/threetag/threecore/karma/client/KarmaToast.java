@@ -1,6 +1,5 @@
 package com.threetag.threecore.karma.client;
 
-import com.threetag.threecore.karma.KarmaClass;
 import net.minecraft.client.gui.toasts.GuiToast;
 import net.minecraft.client.gui.toasts.IToast;
 import net.minecraft.client.renderer.GlStateManager;

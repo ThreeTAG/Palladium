@@ -1,10 +1,8 @@
 package com.threetag.threecore;
 
 import com.threetag.threecore.karma.ThreeCoreKarma;
-import com.threetag.threecore.materials.ThreeCoreMaterials;
+import com.threetag.threecore.base.ThreeCoreBase;
 import com.threetag.threecore.util.recipe.RecipeUtil;
-import net.minecraft.command.impl.DefaultGameModeCommand;
-import net.minecraft.command.impl.GameModeCommand;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -35,12 +33,12 @@ public class ThreeCore {
         RecipeUtil.init();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThreeCoreCommonConfig.generateConfig());
 
-        new ThreeCoreMaterials();
+        new ThreeCoreBase();
         new ThreeCoreKarma();
     }
 
     public static <MSG> int registerMessage(Class<MSG> messageType, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageConsumer) {
-        if(NETWORK_CHANNEL == null)
+        if (NETWORK_CHANNEL == null)
             NETWORK_CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(ThreeCore.MODID, ThreeCore.MODID), () -> "1.0", (s) -> true, (s) -> true);
 
         int id = networkId++;
