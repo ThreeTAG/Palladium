@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/adamantium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/adamantium"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/adamantium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/adamantium"
+  },
+  "experience": 0.0,
+  "energy": 1200
+}

@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "threecore:block/machine_top",
+        "front": "threecore:block/grinder_front_off",
+        "side": "threecore:block/machine_side"
+    }
+}

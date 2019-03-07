@@ -1,0 +1,15 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/uru"
+    }
+  ],
+  "type": "smelting",
+  "result": "threecore:uru_ingot",
+  "ingredient": {
+    "tag": "forge:dusts/uru"
+  },
+  "experience": 0.0,
+  "cookingtime": 200
+}

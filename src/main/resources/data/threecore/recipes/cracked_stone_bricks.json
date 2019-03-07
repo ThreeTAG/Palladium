@@ -1,0 +1,11 @@
+{
+  "type": "threecore:grinding",
+  "result": {
+    "item": "minecraft:cracked_stone_bricks"
+  },
+  "ingredient": {
+    "item": "minecraft:stone_bricks"
+  },
+  "experience": 0.0,
+  "energy": 200
+}

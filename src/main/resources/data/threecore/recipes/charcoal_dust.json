@@ -1,0 +1,17 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/charcoal"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/charcoal"
+  },
+  "ingredient": {
+    "item": "minecraft:charcoal"
+  },
+  "experience": 0.0,
+  "energy": 200
+}

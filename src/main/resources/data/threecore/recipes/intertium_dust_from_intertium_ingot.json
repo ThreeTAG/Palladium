@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/intertium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/intertium"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/intertium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/intertium"
+  },
+  "experience": 0.0,
+  "energy": 400
+}

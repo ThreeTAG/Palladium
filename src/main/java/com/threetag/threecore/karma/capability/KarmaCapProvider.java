@@ -25,7 +25,7 @@ public class KarmaCapProvider implements ICapabilitySerializable<NBTTagCompound>
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInt("karma", this.karma.getKarma());
+        nbt.putInt("karma", this.karma.getKarma());
         return nbt;
     }
 

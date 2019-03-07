@@ -1,13 +1,15 @@
 package com.threetag.threecore;
 
-import com.threetag.threecore.karma.ThreeCoreKarma;
 import com.threetag.threecore.base.ThreeCoreBase;
+import com.threetag.threecore.karma.ThreeCoreKarma;
+import com.threetag.threecore.util.gui.GuiHandler;
 import com.threetag.threecore.util.recipe.RecipeUtil;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -32,6 +34,7 @@ public class ThreeCore {
     public ThreeCore() {
         RecipeUtil.init();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThreeCoreCommonConfig.generateConfig());
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::getClientGuiElement);
 
         new ThreeCoreBase();
         new ThreeCoreKarma();

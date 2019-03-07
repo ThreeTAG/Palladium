@@ -20,10 +20,10 @@ public class KarmaCommand {
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
         dispatcher.register(Commands.literal("karma").requires((player) -> {
             return player.hasPermissionLevel(2);
-        }).then(Commands.literal("set").then(Commands.argument("players", EntityArgument.multiplePlayers()).then(Commands.argument("value", IntegerArgumentType.integer(CapabilityKarma.MIN, CapabilityKarma.MAX)).executes((c) -> {
+        }).then(Commands.literal("set").then(Commands.argument("players", EntityArgument.players()).then(Commands.argument("value", IntegerArgumentType.integer(CapabilityKarma.MIN, CapabilityKarma.MAX)).executes((c) -> {
             return setKarma(c.getSource(), EntityArgument.getPlayers(c, "players"), IntegerArgumentType.getInteger(c, "value"));
-        })))).then(Commands.argument("player", EntityArgument.singlePlayer()).executes((c) -> {
-            return sendKarmaInfo(c.getSource(), EntityArgument.getOnePlayer(c, "player"));
+        })))).then(Commands.argument("player", EntityArgument.player()).executes((c) -> {
+            return sendKarmaInfo(c.getSource(), EntityArgument.getPlayer(c, "player"));
         })));
     }
 

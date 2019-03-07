@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/tin"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/tin"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/tin"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/tin"
+  },
+  "experience": 0.0,
+  "energy": 200
+}

@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/vibranium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/vibranium"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/vibranium",
+    "count": 2
+  },
+  "ingredient": {
+    "tag": "forge:ores/vibranium"
+  },
+  "experience": 1.1,
+  "energy": 1200
+}

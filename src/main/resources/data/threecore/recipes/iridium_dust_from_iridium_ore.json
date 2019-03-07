@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/iridium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/iridium"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/iridium",
+    "count": 2
+  },
+  "ingredient": {
+    "tag": "forge:ores/iridium"
+  },
+  "experience": 0.9,
+  "energy": 800
+}

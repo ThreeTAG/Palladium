@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/tin"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/tin"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/tin",
+    "count": 2
+  },
+  "ingredient": {
+    "tag": "forge:ores/tin"
+  },
+  "experience": 0.7,
+  "energy": 400
+}

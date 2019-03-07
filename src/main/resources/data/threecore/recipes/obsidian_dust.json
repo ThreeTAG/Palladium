@@ -1,0 +1,18 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/obsidian"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/obsidian",
+    "count": 4
+  },
+  "ingredient": {
+    "item": "minecraft:obsidian"
+  },
+  "experience": 0.0,
+  "energy": 1000
+}

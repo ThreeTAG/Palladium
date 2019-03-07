@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/gold_titanium_alloy"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/gold_titanium_alloy"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/gold_titanium_alloy"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/gold_titanium_alloy"
+  },
+  "experience": 0.0,
+  "energy": 560
+}

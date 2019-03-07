@@ -1,0 +1,15 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/intertium"
+    }
+  ],
+  "type": "smelting",
+  "result": "threecore:intertium_ingot",
+  "ingredient": {
+    "tag": "forge:dusts/intertium"
+  },
+  "experience": 0.0,
+  "cookingtime": 200
+}

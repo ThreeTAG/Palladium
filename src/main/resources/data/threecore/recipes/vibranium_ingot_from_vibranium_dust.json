@@ -1,0 +1,15 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/vibranium"
+    }
+  ],
+  "type": "smelting",
+  "result": "threecore:vibranium_ingot",
+  "ingredient": {
+    "tag": "forge:dusts/vibranium"
+  },
+  "experience": 0.0,
+  "cookingtime": 300
+}

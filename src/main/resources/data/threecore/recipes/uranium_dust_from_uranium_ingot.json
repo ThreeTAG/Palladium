@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/uranium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/uranium"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/uranium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/uranium"
+  },
+  "experience": 0.0,
+  "energy": 200
+}

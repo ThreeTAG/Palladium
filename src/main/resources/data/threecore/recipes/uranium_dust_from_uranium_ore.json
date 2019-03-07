@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/uranium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/uranium"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/uranium",
+    "count": 2
+  },
+  "ingredient": {
+    "tag": "forge:ores/uranium"
+  },
+  "experience": 0.7,
+  "energy": 400
+}

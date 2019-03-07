@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/uru"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/uru"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/uru"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/uru"
+  },
+  "experience": 0.0,
+  "energy": 400
+}

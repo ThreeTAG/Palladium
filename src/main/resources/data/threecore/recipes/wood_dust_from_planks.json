@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/wood"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "minecraft:logs"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/wood",
+    "count": 2
+  },
+  "ingredient": {
+    "tag": "minecraft:logs"
+  },
+  "experience": 0.0,
+  "energy": 100
+}

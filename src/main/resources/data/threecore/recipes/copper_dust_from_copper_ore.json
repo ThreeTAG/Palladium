@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/copper"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/copper"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/copper",
+    "count": 2
+  },
+  "ingredient": {
+    "tag": "forge:ores/copper"
+  },
+  "experience": 0.7,
+  "energy": 400
+}

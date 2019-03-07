@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/lead"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/lead"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/lead"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/lead"
+  },
+  "experience": 0.0,
+  "energy": 160
+}

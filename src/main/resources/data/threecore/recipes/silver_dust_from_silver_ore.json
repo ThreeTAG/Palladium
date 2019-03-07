@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/silver"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/silver"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/silver",
+    "count": 2
+  },
+  "ingredient": {
+    "tag": "forge:ores/silver"
+  },
+  "experience": 0.7,
+  "energy": 400
+}

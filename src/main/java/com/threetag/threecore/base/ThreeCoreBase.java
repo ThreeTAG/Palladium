@@ -2,12 +2,20 @@ package com.threetag.threecore.base;
 
 import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.ThreeCoreCommonConfig;
+import com.threetag.threecore.base.block.BlockGrinder;
 import com.threetag.threecore.base.block.BlockVibranium;
+import com.threetag.threecore.base.item.ItemCapacitor;
+import com.threetag.threecore.base.network.MessageSyncTileEntity;
+import com.threetag.threecore.base.recipe.GrinderRecipe;
+import com.threetag.threecore.base.tileentity.TileEntityGrinder;
 import com.threetag.threecore.util.recipe.RecipeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.item.*;
+import net.minecraft.item.crafting.RecipeSerializers;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
@@ -31,6 +39,8 @@ public class ThreeCoreBase {
 
     @SubscribeEvent
     public void setup(final FMLCommonSetupEvent e) {
+        //RecipeUtil.generateThreeCoreRecipes();
+
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, COPPER_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.COPPER));
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, TIN_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TIN));
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, LEAD_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.LEAD));
@@ -42,95 +52,14 @@ public class ThreeCoreBase {
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, TITANIUM_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TITANIUM));
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, IRIDIUM_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.IRIDIUM));
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, URU_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URU));
+
+        RecipeSerializers.register(GrinderRecipe.SERIALIZER);
+
+        ThreeCore.registerMessage(MessageSyncTileEntity.class, MessageSyncTileEntity::toBytes, MessageSyncTileEntity::new, MessageSyncTileEntity::handle);
     }
 
     public void addOreFeature(Biome biome, IBlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
         biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createCompositeFeature(Feature.MINABLE, new MinableConfig(MinableConfig.IS_ROCK, ore, config.size.get()), COUNT_RANGE, new CountRangeConfig(config.count.get(), config.minHeight.get(), 0, config.maxHeight.get() - config.minHeight.get())));
-    }
-
-    public static void generateRecipes() {
-        RecipeUtil.addShapelessRecipe("copper_ingot_from_copper_block", "copper_ingot", new ItemStack(COPPER_INGOT, 9), "forge:storage_blocks/copper");
-        RecipeUtil.addShapedRecipe("copper_block", new ItemStack(COPPER_BLOCK), "###", "###", "###", '#', "forge:ingots/copper");
-        RecipeUtil.addShapelessRecipe("copper_nugget", new ItemStack(COPPER_NUGGET, 9), "forge:ingots/copper");
-        RecipeUtil.addShapedRecipe("copper_ingot_from_copper_nuggets", "copper_ingot", new ItemStack(COPPER_INGOT), "###", "###", "###", '#', "forge:nuggets/copper");
-        RecipeUtil.addSmeltingRecipe("copper_ingot", new ItemStack(COPPER_INGOT), "forge:ores/copper", 0.7F, 200);
-        RecipeUtil.addShapelessRecipe("tin_ingot_from_tin_block", "tin_ingot", new ItemStack(TIN_INGOT, 9), "forge:storage_blocks/tin");
-        RecipeUtil.addShapedRecipe("tin_block", new ItemStack(TIN_BLOCK), "###", "###", "###", '#', "forge:ingots/tin");
-        RecipeUtil.addShapelessRecipe("tin_nugget", new ItemStack(TIN_NUGGET, 9), "forge:ingots/tin");
-        RecipeUtil.addShapedRecipe("tin_ingot_from_tin_nuggets", "tin_ingot", new ItemStack(TIN_INGOT), "###", "###", "###", '#', "forge:nuggets/tin");
-        RecipeUtil.addSmeltingRecipe("tin_ingot", new ItemStack(TIN_INGOT), "forge:ores/tin", 0.7F, 200);
-        RecipeUtil.addShapelessRecipe("lead_ingot_from_lead_block", "lead_ingot", new ItemStack(LEAD_INGOT, 9), "forge:storage_blocks/lead");
-        RecipeUtil.addShapedRecipe("lead_block", new ItemStack(LEAD_BLOCK), "###", "###", "###", '#', "forge:ingots/lead");
-        RecipeUtil.addShapelessRecipe("lead_nugget", new ItemStack(LEAD_NUGGET, 9), "forge:ingots/lead");
-        RecipeUtil.addShapedRecipe("lead_ingot_from_lead_nuggets", "lead_ingot", new ItemStack(LEAD_INGOT), "###", "###", "###", '#', "forge:nuggets/lead");
-        RecipeUtil.addSmeltingRecipe("lead_ingot", new ItemStack(LEAD_INGOT), "forge:ores/lead", 0.7F, 200);
-        RecipeUtil.addShapelessRecipe("silver_ingot_from_silver_block", "silver_ingot", new ItemStack(SILVER_INGOT, 9), "forge:storage_blocks/silver");
-        RecipeUtil.addShapedRecipe("silver_block", new ItemStack(SILVER_BLOCK), "###", "###", "###", '#', "forge:ingots/silver");
-        RecipeUtil.addShapelessRecipe("silver_nugget", new ItemStack(SILVER_NUGGET, 9), "forge:ingots/silver");
-        RecipeUtil.addShapedRecipe("silver_ingot_from_silver_nuggets", "silver_ingot", new ItemStack(SILVER_INGOT), "###", "###", "###", '#', "forge:nuggets/silver");
-        RecipeUtil.addSmeltingRecipe("silver_ingot", new ItemStack(SILVER_INGOT), "forge:ores/silver", 0.7F, 200);
-        RecipeUtil.addShapelessRecipe("palladium_ingot_from_palladium_block", "palladium_ingot", new ItemStack(PALLADIUM_INGOT, 9), "forge:storage_blocks/palladium");
-        RecipeUtil.addShapedRecipe("palladium_block", new ItemStack(PALLADIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/palladium");
-        RecipeUtil.addShapelessRecipe("palladium_nugget", new ItemStack(PALLADIUM_NUGGET, 9), "forge:ingots/palladium");
-        RecipeUtil.addShapedRecipe("palladium_ingot_from_palladium_nuggets", "palladium_ingot", new ItemStack(PALLADIUM_INGOT), "###", "###", "###", '#', "forge:nuggets/palladium");
-        RecipeUtil.addSmeltingRecipe("palladium_ingot", new ItemStack(PALLADIUM_INGOT), "forge:ores/palladium", 0.7F, 200);
-        RecipeUtil.addShapelessRecipe("vibranium_ingot_from_vibranium_block", "vibranium_ingot", new ItemStack(VIBRANIUM_INGOT, 9), "forge:storage_blocks/vibranium");
-        RecipeUtil.addShapedRecipe("vibranium_block", new ItemStack(VIBRANIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/vibranium");
-        RecipeUtil.addShapelessRecipe("vibranium_nugget", new ItemStack(VIBRANIUM_NUGGET, 9), "forge:ingots/vibranium");
-        RecipeUtil.addShapedRecipe("vibranium_ingot_from_vibranium_nuggets", "vibranium_ingot", new ItemStack(VIBRANIUM_INGOT), "###", "###", "###", '#', "forge:nuggets/vibranium");
-        RecipeUtil.addSmeltingRecipe("vibranium_ingot", new ItemStack(VIBRANIUM_INGOT), "forge:ores/vibranium", 0.7F, 200);
-        RecipeUtil.addShapelessRecipe("osmium_ingot_from_osmium_block", "osmium_ingot", new ItemStack(OSMIUM_INGOT, 9), "forge:storage_blocks/osmium");
-        RecipeUtil.addShapedRecipe("osmium_block", new ItemStack(OSMIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/osmium");
-        RecipeUtil.addShapelessRecipe("osmium_nugget", new ItemStack(OSMIUM_NUGGET, 9), "forge:ingots/osmium");
-        RecipeUtil.addShapedRecipe("osmium_ingot_from_osmium_nuggets", "osmium_ingot", new ItemStack(OSMIUM_INGOT), "###", "###", "###", '#', "forge:nuggets/osmium");
-        RecipeUtil.addSmeltingRecipe("osmium_ingot", new ItemStack(OSMIUM_INGOT), "forge:ores/osmium", 0.7F, 200);
-        RecipeUtil.addShapelessRecipe("uranium_ingot_from_uranium_block", "uranium_ingot", new ItemStack(URANIUM_INGOT, 9), "forge:storage_blocks/uranium");
-        RecipeUtil.addShapedRecipe("uranium_block", new ItemStack(URANIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/uranium");
-        RecipeUtil.addShapelessRecipe("uranium_nugget", new ItemStack(URANIUM_NUGGET, 9), "forge:ingots/uranium");
-        RecipeUtil.addShapedRecipe("uranium_ingot_from_uranium_nuggets", "uranium_ingot", new ItemStack(URANIUM_INGOT), "###", "###", "###", '#', "forge:nuggets/uranium");
-        RecipeUtil.addSmeltingRecipe("uranium_ingot", new ItemStack(URANIUM_INGOT), "forge:ores/uranium", 0.7F, 200);
-        RecipeUtil.addShapelessRecipe("titanium_ingot_from_titanium_block", "titanium_ingot", new ItemStack(TITANIUM_INGOT, 9), "forge:storage_blocks/titanium");
-        RecipeUtil.addShapedRecipe("titanium_block", new ItemStack(TITANIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/titanium");
-        RecipeUtil.addShapelessRecipe("titanium_nugget", new ItemStack(TITANIUM_NUGGET, 9), "forge:ingots/titanium");
-        RecipeUtil.addShapedRecipe("titanium_ingot_from_titanium_nuggets", "titanium_ingot", new ItemStack(TITANIUM_INGOT), "###", "###", "###", '#', "forge:nuggets/titanium");
-        RecipeUtil.addSmeltingRecipe("titanium_ingot", new ItemStack(TITANIUM_INGOT), "forge:ores/titanium", 0.7F, 200);
-        RecipeUtil.addShapelessRecipe("iridium_ingot_from_iridium_block", "iridium_ingot", new ItemStack(IRIDIUM_INGOT, 9), "forge:storage_blocks/iridium");
-        RecipeUtil.addShapedRecipe("iridium_block", new ItemStack(IRIDIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/iridium");
-        RecipeUtil.addShapelessRecipe("iridium_nugget", new ItemStack(IRIDIUM_NUGGET, 9), "forge:ingots/iridium");
-        RecipeUtil.addShapedRecipe("iridium_ingot_from_iridium_nuggets", "iridium_ingot", new ItemStack(IRIDIUM_INGOT), "###", "###", "###", '#', "forge:nuggets/iridium");
-        RecipeUtil.addSmeltingRecipe("iridium_ingot", new ItemStack(IRIDIUM_INGOT), "forge:ores/iridium", 0.7F, 200);
-        RecipeUtil.addShapelessRecipe("uru_ingot_from_uru_block", "uru_ingot", new ItemStack(URU_INGOT, 9), "forge:storage_blocks/uru");
-        RecipeUtil.addShapedRecipe("uru_block", new ItemStack(URU_BLOCK), "###", "###", "###", '#', "forge:ingots/uru");
-        RecipeUtil.addShapelessRecipe("uru_nugget", new ItemStack(URU_NUGGET, 9), "forge:ingots/uru");
-        RecipeUtil.addShapedRecipe("uru_ingot_from_uru_nuggets", "uru_ingot", new ItemStack(URU_INGOT), "###", "###", "###", '#', "forge:nuggets/uru");
-        RecipeUtil.addSmeltingRecipe("uru_ingot", new ItemStack(URU_INGOT), "forge:ores/uru", 0.7F, 200);
-        RecipeUtil.addShapelessRecipe("bronze_ingot_from_bronze_block", "bronze_ingot", new ItemStack(BRONZE_INGOT, 9), "forge:storage_blocks/bronze");
-        RecipeUtil.addShapedRecipe("bronze_block", new ItemStack(BRONZE_BLOCK), "###", "###", "###", '#', "forge:ingots/bronze");
-        RecipeUtil.addShapelessRecipe("bronze_nugget", new ItemStack(BRONZE_NUGGET, 9), "forge:ingots/bronze");
-        RecipeUtil.addShapedRecipe("bronze_ingot_from_bronze_nuggets", "bronze_ingot", new ItemStack(BRONZE_INGOT), "###", "###", "###", '#', "forge:nuggets/bronze");
-        RecipeUtil.addShapelessRecipe("intertium_ingot_from_intertium_block", "intertium_ingot", new ItemStack(INTERTIUM_INGOT, 9), "forge:storage_blocks/intertium");
-        RecipeUtil.addShapedRecipe("intertium_block", new ItemStack(INTERTIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/intertium");
-        RecipeUtil.addShapelessRecipe("intertium_nugget", new ItemStack(INTERTIUM_NUGGET, 9), "forge:ingots/intertium");
-        RecipeUtil.addShapedRecipe("intertium_ingot_from_intertium_nuggets", "intertium_ingot", new ItemStack(INTERTIUM_INGOT), "###", "###", "###", '#', "forge:nuggets/intertium");
-        RecipeUtil.addShapelessRecipe("steel_ingot_from_steel_block", "steel_ingot", new ItemStack(STEEL_INGOT, 9), "forge:storage_blocks/steel");
-        RecipeUtil.addShapedRecipe("steel_block", new ItemStack(STEEL_BLOCK), "###", "###", "###", '#', "forge:ingots/steel");
-        RecipeUtil.addShapelessRecipe("steel_nugget", new ItemStack(STEEL_NUGGET, 9), "forge:ingots/steel");
-        RecipeUtil.addShapedRecipe("steel_ingot_from_steel_nuggets", "steel_ingot", new ItemStack(STEEL_INGOT), "###", "###", "###", '#', "forge:nuggets/steel");
-        RecipeUtil.addShapelessRecipe("gold_titanium_alloy_ingot_from_gold_titanium_alloy_block", "gold_titanium_alloy_ingot", new ItemStack(GOLD_TITANIUM_ALLOY_INGOT, 9), "forge:storage_blocks/gold_titanium_alloy");
-        RecipeUtil.addShapedRecipe("gold_titanium_alloy_block", new ItemStack(GOLD_TITANIUM_ALLOY_BLOCK), "###", "###", "###", '#', "forge:ingots/gold_titanium_alloy");
-        RecipeUtil.addShapelessRecipe("gold_titanium_alloy_nugget", new ItemStack(GOLD_TITANIUM_ALLOY_NUGGET, 9), "forge:ingots/gold_titanium_alloy");
-        RecipeUtil.addShapedRecipe("gold_titanium_alloy_ingot_from_gold_titanium_alloy_nuggets", "gold_titanium_alloy_ingot", new ItemStack(GOLD_TITANIUM_ALLOY_INGOT), "###", "###", "###", '#', "forge:nuggets/gold_titanium_alloy");
-        RecipeUtil.addShapelessRecipe("adamantium_ingot_from_adamantium_block", "adamantium_ingot", new ItemStack(ADAMANTIUM_INGOT, 9), "forge:storage_blocks/adamantium");
-        RecipeUtil.addShapedRecipe("adamantium_block", new ItemStack(ADAMANTIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/adamantium");
-        RecipeUtil.addShapelessRecipe("adamantium_nugget", new ItemStack(ADAMANTIUM_NUGGET, 9), "forge:ingots/adamantium");
-        RecipeUtil.addShapedRecipe("adamantium_ingot_from_adamantium_nuggets", "adamantium_ingot", new ItemStack(ADAMANTIUM_INGOT), "###", "###", "###", '#', "forge:nuggets/adamantium");
-
-        // Alloy
-        RecipeUtil.addShapelessRecipe("bronze_dust", new ItemStack(BRONZE_DUST, 4), "forge:dusts/copper", "forge:dusts/copper", "forge:dusts/copper", "forge:dusts/tin");
-        RecipeUtil.addShapelessRecipe("intertium_dust", new ItemStack(INTERTIUM_DUST, 3), "forge:dusts/osmium", "forge:dusts/iron", "forge:dusts/iron");
-        RecipeUtil.addShapelessRecipe("adamantium_dust", new ItemStack(ADAMANTIUM_DUST, 3), "forge:dusts/vibranium", "forge:dusts/steel", "forge:dusts/steel");
-        RecipeUtil.addShapelessRecipe("steel_dust", new ItemStack(STEEL_DUST, 3), "forge:dusts/iron", "forge:dusts/coal", "forge:dusts/coal", "forge:dusts/coal", "forge:dusts/coal");
-        RecipeUtil.addShapelessRecipe("gold_titanium_alloy_dust", new ItemStack(GOLD_TITANIUM_ALLOY_DUST, 3), "forge:dusts/gold", "forge:dusts/titanium", "forge:dusts/titanium");
     }
 
 //    @SubscribeEvent
@@ -147,6 +76,13 @@ public class ThreeCoreBase {
             return new ItemStack(IRIDIUM_INGOT);
         }
     };
+
+    // Machines
+    public static Block GRINDER;
+    public static TileEntityType<?> TYPE_GRINDER;
+
+    // Misc Items
+    public static Item CAPACITOR;
 
     // Storage Blocks
     // TODO Harvest levels
@@ -260,6 +196,8 @@ public class ThreeCoreBase {
     public void registerBlocks(RegistryEvent.Register<Block> e) {
         IForgeRegistry<Block> registry = e.getRegistry();
 
+        registry.register(GRINDER = new BlockGrinder(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "grinder"));
+
         registry.register(COPPER_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "copper_block"));
         registry.register(TIN_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "tin_block"));
         registry.register(LEAD_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(4.0F, 12.0F)).setRegistryName(ThreeCore.MODID, "lead_block"));
@@ -291,8 +229,16 @@ public class ThreeCoreBase {
     }
 
     @SubscribeEvent
+    public void registerTileEntityTypes(RegistryEvent.Register<TileEntityType<?>> e) {
+        e.getRegistry().register(TYPE_GRINDER = TileEntityType.Builder.create(TileEntityGrinder::new).build(null).setRegistryName(ThreeCore.MODID, "grinder"));
+    }
+
+    @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> e) {
         IForgeRegistry<Item> registry = e.getRegistry();
+
+        registry.register(makeItem(GRINDER));
+        registry.register(CAPACITOR = new ItemCapacitor(new Item.Properties().group(ITEM_GROUP).maxStackSize(1)).setRegistryName(ThreeCore.MODID, "capacitor"));
 
         registry.register(makeItem(COPPER_BLOCK));
         registry.register(makeItem(TIN_BLOCK));

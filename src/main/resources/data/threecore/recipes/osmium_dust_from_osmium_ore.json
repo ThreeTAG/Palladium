@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/osmium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/osmium"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/osmium",
+    "count": 2
+  },
+  "ingredient": {
+    "tag": "forge:ores/osmium"
+  },
+  "experience": 0.7,
+  "energy": 400
+}

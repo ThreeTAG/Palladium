@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/uru"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/uru"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/uru",
+    "count": 2
+  },
+  "ingredient": {
+    "tag": "forge:ores/uru"
+  },
+  "experience": 1.5,
+  "energy": 800
+}

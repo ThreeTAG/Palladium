@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/steel"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/steel"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/steel"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/steel"
+  },
+  "experience": 0.0,
+  "energy": 400
+}

@@ -2,14 +2,14 @@
   "conditions": [
     {
       "type": "threecore:tag_exists",
-      "tag": "forge:ores/lead"
+      "tag": "forge:dusts/lead"
     }
   ],
   "type": "smelting",
   "result": "threecore:lead_ingot",
   "ingredient": {
-    "tag": "forge:ores/lead"
+    "tag": "forge:dusts/lead"
   },
-  "experience": 0.7,
-  "cookingtime": 160
+  "experience": 0.0,
+  "cookingtime": 80
 }

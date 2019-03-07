@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/titanium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/titanium"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/titanium",
+    "count": 2
+  },
+  "ingredient": {
+    "tag": "forge:ores/titanium"
+  },
+  "experience": 0.7,
+  "energy": 800
+}

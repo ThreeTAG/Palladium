@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/bronze"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/bronze"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/bronze"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/bronze"
+  },
+  "experience": 0.0,
+  "energy": 400
+}
