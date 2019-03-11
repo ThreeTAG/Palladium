@@ -83,6 +83,9 @@ public class ThreeCoreBase {
 
     // Misc Items
     public static Item CAPACITOR;
+    public static Item ADVANCED_CAPACITOR;
+    public static Item CIRCUIT;
+    public static Item ADVANCED_CIRCUIT;
 
     // Storage Blocks
     // TODO Harvest levels
@@ -238,7 +241,10 @@ public class ThreeCoreBase {
         IForgeRegistry<Item> registry = e.getRegistry();
 
         registry.register(makeItem(GRINDER));
-        registry.register(CAPACITOR = new ItemCapacitor(new Item.Properties().group(ITEM_GROUP).maxStackSize(1)).setRegistryName(ThreeCore.MODID, "capacitor"));
+        registry.register(CAPACITOR = new ItemCapacitor(new Item.Properties().group(ITEM_GROUP).maxStackSize(1), 40000, 100).setRegistryName(ThreeCore.MODID, "capacitor"));
+        registry.register(ADVANCED_CAPACITOR = new ItemCapacitor(new Item.Properties().group(ITEM_GROUP).maxStackSize(1), 100000, 200).setRegistryName(ThreeCore.MODID, "advanced_capacitor"));
+        registry.register(CIRCUIT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "circuit"));
+        registry.register(ADVANCED_CIRCUIT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
 
         registry.register(makeItem(COPPER_BLOCK));
         registry.register(makeItem(TIN_BLOCK));

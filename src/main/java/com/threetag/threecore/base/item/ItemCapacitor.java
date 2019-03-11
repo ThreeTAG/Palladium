@@ -26,8 +26,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ItemCapacitor extends Item {
 
-    public ItemCapacitor(Properties properties) {
+    int capacity, maxTransfer;
+
+    public ItemCapacitor(Properties properties, int capacity, int maxTransfer) {
         super(properties);
+        this.capacity = capacity;
+        this.maxTransfer = maxTransfer;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -49,7 +53,7 @@ public class ItemCapacitor extends Item {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-        return new EnergyItemCapabilityProvider(stack, 40000, 100);
+        return new EnergyItemCapabilityProvider(stack, this.capacity, this.maxTransfer);
     }
 
     @Override

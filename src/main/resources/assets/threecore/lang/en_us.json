@@ -1,11 +1,14 @@
 {
   "itemGroup.threecore": "ThreeCore",
   "itemGroup.threecore_materials": "ThreeCore | Materials",
-
+  
   "block.threecore.grinder": "Grinder",
   "container.threecore.grinder": "Grinder",
   "item.threecore.capacitor": "Capacitor",
-
+  "item.threecore.advanced_capacitor": "Advanced Capacitor",
+  "item.threecore.circuit": "Circuit",
+  "item.threecore.advanced_circuit": "Advanced Circuit",
+  
   "block.threecore.copper_block": "Block of Copper",
   "block.threecore.tin_block": "Block of Tin",
   "block.threecore.lead_block": "Block of Lead",
@@ -22,7 +25,7 @@
   "block.threecore.steel_block": "Block of Steel",
   "block.threecore.gold_titanium_alloy_block": "Block of Gold-Titanium-Alloy",
   "block.threecore.adamantium_block": "Block of Adamantium",
-
+  
   "block.threecore.copper_ore": "Copper Ore",
   "block.threecore.tin_ore": "Tin Ore",
   "block.threecore.lead_ore": "Lead Ore",
@@ -34,7 +37,7 @@
   "block.threecore.titanium_ore": "Titanium Ore",
   "block.threecore.iridium_ore": "Iridium Ore",
   "block.threecore.uru_ore": "Uru Ore",
-
+  
   "item.threecore.copper_ingot": "Copper Ingot",
   "item.threecore.tin_ingot": "Tin Ingot",
   "item.threecore.lead_ingot": "Lead Ingot",
@@ -51,7 +54,7 @@
   "item.threecore.steel_ingot": "Steel Ingot",
   "item.threecore.gold_titanium_alloy_ingot": "Gold-Titanium-Alloy Ingot",
   "item.threecore.adamantium_ingot": "Adamantium Ingot",
-
+  
   "item.threecore.copper_nugget": "Copper Nugget",
   "item.threecore.tin_nugget": "Tin Nugget",
   "item.threecore.lead_nugget": "Lead Nugget",
@@ -87,7 +90,7 @@
   "item.threecore.steel_dust": "Steel Dust",
   "item.threecore.gold_titanium_alloy_dust": "Gold-Titanium-Alloy Dust",
   "item.threecore.adamantium_dust": "Adamantium Dust",
-
+  
   "item.threecore.iron_plate": "Iron Plate",
   "item.threecore.gold_plate": "Gold Plate",
   "item.threecore.copper_plate": "Copper Plate",
@@ -106,11 +109,11 @@
   "item.threecore.steel_plate": "Steel Plate",
   "item.threecore.gold_titanium_alloy_plate": "Gold-Titanium-Alloy Plate",
   "item.threecore.adamantium_plate": "Adamantium Plate",
-
+  
   "commands.karma.success.player.single": "%s karma has been set to %s",
   "commands.karma.success.player.multiple": "Karma of %s players has been set to %s",
   "commands.karma.players_karma": "%s's karma is at %s. (%s)",
-
+  
   "karma.class.tyrant": "Tyrant",
   "karma.class.villain": "Villain",
   "karma.class.thug": "Thug",
@@ -119,7 +122,7 @@
   "karma.class.hero": "Hero",
   "karma.class.legend": "Legend",
   "karma.toast.title": "Your karma has changed!",
-
+  
   "threecore.util.energy_display": "%,d %s",
   "threecore.util.energy_storage_display": "%,d / %,d %s"
 }

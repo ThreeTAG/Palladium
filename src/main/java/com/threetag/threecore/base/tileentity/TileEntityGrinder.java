@@ -95,6 +95,7 @@ public class TileEntityGrinder extends TileEntity implements ITickable, IInterac
 
         this.progress = nbt.getInt("Progres");
         this.progressMax = nbt.getInt("ProgressMax");
+        this.energyStorage = new EnergyStorage(4000, 128, 128, nbt.getInt("Energy"));
 
         if (nbt.contains("EnergySlots"))
             energySlot.deserializeNBT((NBTTagCompound) nbt.get("EnergySlots"));
@@ -120,7 +121,7 @@ public class TileEntityGrinder extends TileEntity implements ITickable, IInterac
 
         nbt.putInt("Progress", this.progress);
         nbt.putInt("ProgressMax", this.progressMax);
-
+        nbt.putInt("Energy", this.energyStorage.getEnergyStored());
         nbt.put("EnergySlots", energySlot.serializeNBT());
         nbt.put("InputSlots", inputSlot.serializeNBT());
         nbt.put("OutputSlots", outputSlots.serializeNBT());
