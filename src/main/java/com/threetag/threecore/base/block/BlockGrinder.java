@@ -2,6 +2,7 @@ package com.threetag.threecore.base.block;
 
 import com.threetag.threecore.base.tileentity.TileEntityGrinder;
 import com.threetag.threecore.util.block.BlockUtil;
+import com.threetag.threecore.util.sounds.ThreeCoreSounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -116,8 +117,8 @@ public class BlockGrinder extends Block {
             double x = (double) pos.getX() + 0.5D;
             double y = (double) pos.getY();
             double z = (double) pos.getZ() + 0.5D;
-            if (random.nextDouble() < 0.1D) {
-                world.playSound(x, y, z, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+            if (random.nextDouble() < 0.4D) {
+                world.playSound(x, y, z, ThreeCoreSounds.GRINDER, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             }
 
             EnumFacing facing = state.get(FACING);

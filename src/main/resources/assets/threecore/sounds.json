@@ -1,0 +1,6 @@
+{
+	"grinder": {
+		"sounds": ["threecore:grinder"],
+		"subtitle": "subtitles.threecore.grinder"
+	}
+}
