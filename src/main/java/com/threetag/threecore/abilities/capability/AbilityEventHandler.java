@@ -6,6 +6,7 @@ import com.threetag.threecore.abilities.AbilityHealing;
 import com.threetag.threecore.abilities.AbilityHelper;
 import com.threetag.threecore.abilities.network.MessageSendPlayerAbilityContainer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,7 +30,7 @@ public class AbilityEventHandler {
     }
 
     public static boolean canUseAbilities(Entity entity) {
-        return entity instanceof EntityPlayer;
+        return entity instanceof EntityLivingBase;
     }
 
     @SubscribeEvent
