@@ -1,5 +1,6 @@
 package com.threetag.threecore;
 
+import com.threetag.threecore.abilities.ThreeCoreAbilities;
 import com.threetag.threecore.base.ThreeCoreBase;
 import com.threetag.threecore.karma.ThreeCoreKarma;
 import com.threetag.threecore.util.gui.GuiHandler;
@@ -37,6 +38,7 @@ public class ThreeCore {
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::getClientGuiElement);
 
         new ThreeCoreBase();
+        new ThreeCoreAbilities();
         new ThreeCoreKarma();
     }
 

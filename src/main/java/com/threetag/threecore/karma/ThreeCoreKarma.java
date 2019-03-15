@@ -1,6 +1,7 @@
 package com.threetag.threecore.karma;
 
 import com.threetag.threecore.ThreeCore;
+import com.threetag.threecore.abilities.client.AbilityBarRenderer;
 import com.threetag.threecore.karma.capability.CapabilityKarma;
 import com.threetag.threecore.karma.capability.IKarma;
 import com.threetag.threecore.karma.capability.KarmaCapProvider;
@@ -24,6 +25,7 @@ import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -34,6 +36,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -46,7 +49,7 @@ public class ThreeCoreKarma {
     public ThreeCoreKarma() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new KarmaBarRenderer());
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(new KarmaBarRenderer()));
     }
 
     public void setup(FMLCommonSetupEvent e) {

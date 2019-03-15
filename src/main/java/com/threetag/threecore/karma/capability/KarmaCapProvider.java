@@ -19,7 +19,7 @@ public class KarmaCapProvider implements ICapabilitySerializable<NBTTagCompound>
         if (cap == CapabilityKarma.KARMA) {
             return LazyOptional.of(() -> (T) karma);
         }
-        return null;
+        return LazyOptional.empty();
     }
 
     @Override
