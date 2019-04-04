@@ -5,7 +5,6 @@ import com.threetag.threecore.base.network.MessageSyncTileEntity;
 import com.threetag.threecore.base.recipe.GrinderRecipe;
 import com.threetag.threecore.base.tileentity.TileEntityGrinder;
 import com.threetag.threecore.util.block.ITileEntityListener;
-import com.threetag.threecore.util.inventory.InventoryItemHandlerWrapper;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -16,7 +15,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.crafting.IRecipeContainer;
@@ -26,6 +24,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
@@ -34,12 +33,12 @@ public class ContainerGrinder extends ContainerRecipeBook implements ITileEntity
 
     public final InventoryPlayer inventoryPlayer;
     public final TileEntityGrinder tileEntityGrinder;
-    public InventoryItemHandlerWrapper invWrapper;
+    public RecipeWrapper recipeWrapper;
 
     public ContainerGrinder(InventoryPlayer inventoryPlayer, TileEntityGrinder tileEntityGrinder) {
         this.inventoryPlayer = inventoryPlayer;
         this.tileEntityGrinder = tileEntityGrinder;
-        this.tileEntityGrinder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler -> invWrapper = new InventoryItemHandlerWrapper(itemHandler)));
+        this.tileEntityGrinder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler -> recipeWrapper = new RecipeWrapper((IItemHandlerModifiable) itemHandler, 1, 1)));
 
         this.tileEntityGrinder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
             this.addSlot(new SlotItemHandler(itemHandler, 0, 8, 61));
@@ -78,7 +77,7 @@ public class ContainerGrinder extends ContainerRecipeBook implements ITileEntity
 
                 slot.onSlotChange(itemstack1, itemstack);
             } else if (index != 1 && index != 0) {
-                if(itemstack1.getCapability(CapabilityEnergy.ENERGY).isPresent()) {
+                if (itemstack1.getCapability(CapabilityEnergy.ENERGY).isPresent()) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -114,7 +113,7 @@ public class ContainerGrinder extends ContainerRecipeBook implements ITileEntity
     }
 
     private boolean canWork(ItemStack stack) {
-        for(IRecipe irecipe : this.tileEntityGrinder.getWorld().getRecipeManager().getRecipes(GrinderRecipe.RECIPE_TYPE)) {
+        for (IRecipe irecipe : this.tileEntityGrinder.getWorld().getRecipeManager().getRecipes(GrinderRecipe.RECIPE_TYPE)) {
             if (irecipe.getIngredients().get(0).test(stack)) {
                 return true;
             }
@@ -186,7 +185,7 @@ public class ContainerGrinder extends ContainerRecipeBook implements ITileEntity
 
     @Override
     public boolean matches(IRecipe recipe) {
-        return recipe.matches(this.invWrapper, this.inventoryPlayer.player.world);
+        return recipe.matches(this.recipeWrapper, this.inventoryPlayer.player.world);
     }
 
     @Override

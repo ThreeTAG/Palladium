@@ -1,7 +1,11 @@
 package com.threetag.threecore.abilities;
 
 import com.threetag.threecore.abilities.data.*;
+import com.threetag.threecore.util.render.IIcon;
+import com.threetag.threecore.util.render.ItemIcon;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -15,7 +19,7 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
     public static final AbilityData<Boolean> SHOW_IN_BAR = new AbilityDataBoolean("show_in_bar").disableSaving().setSyncType(EnumSync.SELF).enableSetting("show_in_bar", "Determines if this ability should be displayed in the ability bar");
     public static final AbilityData<Boolean> HIDDEN = new AbilityDataBoolean("hidden").setSyncType(EnumSync.SELF);
     public static final AbilityData<ITextComponent> TITLE = new AbilityDataTextComponent("title").disableSaving().setSyncType(EnumSync.SELF).enableSetting("title", "Allows you to set a custom title for this ability");
-    public static final AbilityData<AbilityDataIcon.Icon> ICON = new AbilityDataIcon("icon").disableSaving().setSyncType(EnumSync.SELF).enableSetting("icon", "Lets you customize the icon for the ability");
+    public static final AbilityData<IIcon> ICON = new AbilityDataIcon("icon").disableSaving().setSyncType(EnumSync.SELF).enableSetting("icon", "Lets you customize the icon for the ability");
 
     protected final AbilityType type;
     String id;
@@ -41,7 +45,7 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
         this.dataManager.register(SHOW_IN_BAR, getAbilityType() != EnumAbilityType.CONSTANT);
         this.dataManager.register(HIDDEN, false);
         this.dataManager.register(TITLE, new TextComponentTranslation("ability." + this.type.getRegistryName().getNamespace() + "." + this.type.getRegistryName().getPath()));
-        this.dataManager.register(ICON, new AbilityDataIcon.Icon(true));
+        this.dataManager.register(ICON, new ItemIcon(new ItemStack(Items.APPLE)));
     }
 
     public void tick(EntityLivingBase entity) {

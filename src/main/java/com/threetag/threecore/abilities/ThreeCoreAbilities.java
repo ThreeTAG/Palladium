@@ -50,7 +50,7 @@ public class ThreeCoreAbilities {
                         if (instance instanceof INBTSerializable)
                             ((INBTSerializable) instance).deserializeNBT(nbt);
                         else
-                            throw new IllegalArgumentException("Can not deserialize to an instance that isn't an instance of INBTSerializable");
+                            throw new IllegalArgumentException("Can not serialize to an instance that isn't an instance of INBTSerializable");
                     }
                 },
                 () -> new CapabilityAbilityContainer());
