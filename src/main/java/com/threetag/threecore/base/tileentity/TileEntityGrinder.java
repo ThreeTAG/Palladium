@@ -9,7 +9,6 @@ import com.threetag.threecore.base.inventory.ContainerGrinder;
 import com.threetag.threecore.base.inventory.GuiGrinder;
 import com.threetag.threecore.base.recipe.GrinderRecipe;
 import com.threetag.threecore.util.gui.IGuiTile;
-import com.threetag.threecore.util.inventory.InventoryItemHandlerWrapper;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -36,6 +35,7 @@ import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -83,7 +83,7 @@ public class TileEntityGrinder extends TileEntity implements ITickable, IInterac
         }
     };
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(energySlot, inputSlot, outputSlots);
-    private InventoryItemHandlerWrapper invWrapper = new InventoryItemHandlerWrapper(this.combinedHandler);
+    private RecipeWrapper invWrapper = new RecipeWrapper(this.combinedHandler, 1, 1);
 
     public TileEntityGrinder() {
         super(ThreeCoreBase.TYPE_GRINDER);
@@ -93,7 +93,7 @@ public class TileEntityGrinder extends TileEntity implements ITickable, IInterac
     public void read(NBTTagCompound nbt) {
         super.read(nbt);
 
-        this.progress = nbt.getInt("Progres");
+        this.progress = nbt.getInt("Progress");
         this.progressMax = nbt.getInt("ProgressMax");
         this.energyStorage = new EnergyStorage(4000, 128, 128, nbt.getInt("Energy"));
 
