@@ -3,12 +3,15 @@ package com.threetag.threecore.abilities;
 import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.capability.AbilityEventHandler;
 import com.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
-import com.threetag.threecore.abilities.capability.IAbilityContainer;
 import com.threetag.threecore.abilities.client.AbilityBarRenderer;
+import com.threetag.threecore.abilities.network.MessageAddAbility;
+import com.threetag.threecore.abilities.network.MessageRemoveAbility;
 import com.threetag.threecore.abilities.network.MessageSendPlayerAbilityContainer;
+import com.threetag.threecore.abilities.network.MessageUpdateAbility;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.INBTBase;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -26,14 +29,18 @@ public class ThreeCoreAbilities {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(new AbilityEventHandler());
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(new AbilityBarRenderer()));
-        AbilityHelper.registerAbilityContainer((p) -> p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
+
+        AbilityHelper.registerAbilityContainer(CapabilityAbilityContainer.ID, (p) -> p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
         for (EntityEquipmentSlot slots : EntityEquipmentSlot.values())
-            AbilityHelper.registerAbilityContainer((p) -> p.getItemStackFromSlot(slots).getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
+            AbilityHelper.registerAbilityContainer(new ResourceLocation(ThreeCore.MODID, "item_" + slots.getName()), (p) -> p.getItemStackFromSlot(slots).getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
     }
 
     public void setup(FMLCommonSetupEvent e) {
         // Network
         ThreeCore.registerMessage(MessageSendPlayerAbilityContainer.class, MessageSendPlayerAbilityContainer::toBytes, MessageSendPlayerAbilityContainer::new, MessageSendPlayerAbilityContainer::handle);
+        ThreeCore.registerMessage(MessageUpdateAbility.class, MessageUpdateAbility::toBytes, MessageUpdateAbility::new, MessageUpdateAbility::handle);
+        ThreeCore.registerMessage(MessageAddAbility.class, MessageAddAbility::toBytes, MessageAddAbility::new, MessageAddAbility::handle);
+        ThreeCore.registerMessage(MessageRemoveAbility.class, MessageRemoveAbility::toBytes, MessageRemoveAbility::new, MessageRemoveAbility::handle);
 
         // Capability
         CapabilityManager.INSTANCE.register(IAbilityContainer.class, new Capability.IStorage<IAbilityContainer>() {

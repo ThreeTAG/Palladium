@@ -1,7 +1,7 @@
 package com.threetag.threecore.abilities.capability;
 
+import com.threetag.threecore.abilities.IAbilityContainer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;

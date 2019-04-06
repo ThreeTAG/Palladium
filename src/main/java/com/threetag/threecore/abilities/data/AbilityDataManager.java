@@ -38,7 +38,7 @@ public class AbilityDataManager implements INBTSerializable<NBTTagCompound> {
         return entry == null ? null : (T) entry.getValue();
     }
 
-    private <T> AbilityDataEntry<T> getEntry(AbilityData<T> data) {
+    public <T> AbilityDataEntry<T> getEntry(AbilityData<T> data) {
         return (AbilityDataEntry<T>) dataEntryList.get(data);
     }
 
@@ -73,6 +73,15 @@ public class AbilityDataManager implements INBTSerializable<NBTTagCompound> {
         return this.dataEntryList.values();
     }
 
+    public AbilityData<?> getAbilityDataByName(String name) {
+        for(AbilityData<?> datas : getSettingData()) {
+            if(datas.key.equals(name)) {
+                return datas;
+            }
+        }
+        return null;
+    }
+
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
@@ -91,7 +100,7 @@ public class AbilityDataManager implements INBTSerializable<NBTTagCompound> {
         }
     }
 
-    public NBTTagCompound serializeNBTSync() {
+    public NBTTagCompound getUpdatePacket() {
         NBTTagCompound nbt = new NBTTagCompound();
         for (AbilityData data : dataEntryList.keySet()) {
             data.writeToNBT(nbt, getEntry(data).getValue());
@@ -99,7 +108,7 @@ public class AbilityDataManager implements INBTSerializable<NBTTagCompound> {
         return nbt;
     }
 
-    public void deserializeNBTSync(NBTTagCompound nbt) {
+    public void readUpdatePacket(NBTTagCompound nbt) {
         for (AbilityData data : dataEntryList.keySet()) {
             getEntry(data).setValue(data.readFromNBT(nbt, getDefaultValue(data)));
         }

@@ -35,8 +35,8 @@ public class MessageSendPlayerAbilityContainer {
             Entity entity = Minecraft.getInstance().world.getEntityByID(this.entityID);
             if (entity != null) {
                 entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent((a) -> {
-                    if (a instanceof INBTSerializable) {
-                        ((INBTSerializable) a).deserializeNBT(this.nbt);
+                    if (a instanceof CapabilityAbilityContainer) {
+                        ((CapabilityAbilityContainer) a).readUpdateTag(this.nbt);
                     }
                 });
             }

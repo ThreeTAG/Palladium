@@ -16,7 +16,7 @@ public class AbilityDataIcon extends AbilityData<IIcon> {
     public IIcon parseValue(JsonObject jsonObject, IIcon defaultValue) {
         if (!JsonUtils.hasField(jsonObject, this.jsonKey))
             return defaultValue;
-        return IconSerializer.deserialize(jsonObject);
+        return IconSerializer.deserialize(JsonUtils.getJsonObject(jsonObject, this.jsonKey));
     }
 
     @Override
@@ -28,7 +28,7 @@ public class AbilityDataIcon extends AbilityData<IIcon> {
     public IIcon readFromNBT(NBTTagCompound nbt, IIcon defaultValue) {
         if (!nbt.contains(this.key))
             return defaultValue;
-        IIcon icon = IconSerializer.deserialize(nbt);
+        IIcon icon = IconSerializer.deserialize(nbt.getCompound(this.key));
         return icon == null ? defaultValue : icon;
     }
 

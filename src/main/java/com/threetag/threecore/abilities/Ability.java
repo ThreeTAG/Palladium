@@ -77,4 +77,15 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
     public void deserializeNBT(NBTTagCompound nbt) {
         this.dataManager.deserializeNBT(nbt.getCompound("Data"));
     }
+
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.putString("AbilityType", this.type.getRegistryName().toString());
+        nbt.put("Data", this.dataManager.getUpdatePacket());
+        return nbt;
+    }
+
+    public void readUpdateTag(NBTTagCompound nbt) {
+        this.dataManager.readUpdatePacket(nbt.getCompound("Data"));
+    }
 }

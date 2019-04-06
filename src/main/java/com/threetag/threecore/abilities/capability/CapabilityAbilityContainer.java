@@ -1,8 +1,12 @@
 package com.threetag.threecore.abilities.capability;
 
+import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.Ability;
 import com.threetag.threecore.abilities.AbilityMap;
 import com.threetag.threecore.abilities.AbilityType;
+import com.threetag.threecore.abilities.IAbilityContainer;
+import com.threetag.threecore.abilities.data.EnumSync;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
@@ -13,6 +17,7 @@ public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerial
 
     @CapabilityInject(IAbilityContainer.class)
     public static Capability<IAbilityContainer> ABILITY_CONTAINER;
+    public static final ResourceLocation ID = new ResourceLocation(ThreeCore.MODID, "entity");
 
     protected AbilityMap abilityMap;
 
@@ -26,6 +31,17 @@ public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerial
     }
 
     @Override
+    public void tick(EntityLivingBase entity) {
+        getAbilityMap().forEach((s, a) -> {
+            a.tick(entity);
+            if (a.sync != EnumSync.NONE) {
+                onUpdated(entity, a, a.sync);
+                a.sync = EnumSync.NONE;
+            }
+        });
+    }
+
+    @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         this.getAbilityMap().forEach((s, a) -> nbt.put(s, a.serializeNBT()));
@@ -34,7 +50,7 @@ public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerial
 
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
-        this.abilityMap = new AbilityMap();
+        this.abilityMap.clear();
         nbt.keySet().forEach((s) -> {
             NBTTagCompound tag = nbt.getCompound(s);
             AbilityType abilityType = AbilityType.REGISTRY.getValue(new ResourceLocation(tag.getString("AbilityType")));
@@ -44,5 +60,29 @@ public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerial
                 this.abilityMap.put(s, ability);
             }
         });
+    }
+
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound nbt = new NBTTagCompound();
+        this.getAbilityMap().forEach((s, a) -> nbt.put(s, a.getUpdateTag()));
+        return nbt;
+    }
+
+    public void readUpdateTag(NBTTagCompound nbt) {
+        this.abilityMap.clear();
+        nbt.keySet().forEach((s) -> {
+            NBTTagCompound tag = nbt.getCompound(s);
+            AbilityType abilityType = AbilityType.REGISTRY.getValue(new ResourceLocation(tag.getString("AbilityType")));
+            if (abilityType != null) {
+                Ability ability = abilityType.create();
+                ability.readUpdateTag(tag);
+                this.abilityMap.put(s, ability);
+            }
+        });
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return ID;
     }
 }

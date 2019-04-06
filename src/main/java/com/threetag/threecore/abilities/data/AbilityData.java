@@ -3,6 +3,7 @@ package com.threetag.threecore.abilities.data;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 
 import java.lang.reflect.Type;
 
