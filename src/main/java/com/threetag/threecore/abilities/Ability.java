@@ -1,14 +1,17 @@
 package com.threetag.threecore.abilities;
 
+import com.threetag.threecore.abilities.client.EnumAbilityColor;
 import com.threetag.threecore.abilities.data.*;
 import com.threetag.threecore.util.render.IIcon;
-import com.threetag.threecore.util.render.ItemIcon;
+import com.threetag.threecore.util.render.TexturedIcon;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public abstract class Ability implements INBTSerializable<NBTTagCompound> {
@@ -23,6 +26,7 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
 
     protected final AbilityType type;
     String id;
+    public IAbilityContainer container;
     protected AbilityDataManager dataManager = new AbilityDataManager(this);
     protected int ticks = 0;
     public EnumSync sync = EnumSync.NONE;
@@ -37,24 +41,49 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
     public abstract EnumAbilityType getAbilityType();
 
     public void registerData() {
-        this.dataManager.register(ENABLED, false);
         if (this.getAbilityType() != EnumAbilityType.CONSTANT) {
+            if (this.getAbilityType() == EnumAbilityType.HELD || this.getAbilityType() == EnumAbilityType.TOGGLE)
+                this.dataManager.register(ENABLED, false);
             this.dataManager.register(MAX_COOLDOWN, 0);
             this.dataManager.register(COOLDOWN, 0);
         }
         this.dataManager.register(SHOW_IN_BAR, getAbilityType() != EnumAbilityType.CONSTANT);
         this.dataManager.register(HIDDEN, false);
         this.dataManager.register(TITLE, new TextComponentTranslation("ability." + this.type.getRegistryName().getNamespace() + "." + this.type.getRegistryName().getPath()));
-        this.dataManager.register(ICON, new ItemIcon(new ItemStack(Items.APPLE)));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void drawIcon(Minecraft mc, Gui gui, int x, int y) {
+        if (this.getDataManager().has(ICON))
+            this.getDataManager().get(ICON).draw(mc, x, y);
     }
 
     public void tick(EntityLivingBase entity) {
 
     }
 
+    public void onKeyPressed(EntityLivingBase entity) {
+        for (Ability entityAbilities : AbilityHelper.getAbilities(entity).stream().filter(entityAbilities -> entityAbilities.getParentAbility() == this).toArray(Ability[]::new)) {
+            entityAbilities.onKeyPressed(entity);
+        }
+    }
+
+    public void onKeyReleased(EntityLivingBase entity) {
+
+    }
+
+    public boolean needsKey() {
+        return true;
+    }
+
     // TODO Ability Conditions
     public boolean isUnlocked() {
         return true;
+    }
+
+    // TODO Parent ability
+    public Ability getParentAbility() {
+        return null;
     }
 
     public AbilityDataManager getDataManager() {
@@ -63,6 +92,15 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
 
     public final String getId() {
         return id;
+    }
+
+    public final IAbilityContainer getContainer() {
+        return container;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public EnumAbilityColor getColor() {
+        return EnumAbilityColor.LIGHT_GRAY;
     }
 
     @Override

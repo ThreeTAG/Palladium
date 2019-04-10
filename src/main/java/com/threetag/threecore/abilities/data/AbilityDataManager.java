@@ -11,7 +11,6 @@ public class AbilityDataManager implements INBTSerializable<NBTTagCompound> {
     public final Ability ability;
     protected Map<AbilityData<?>, AbilityDataEntry<?>> dataEntryList = new LinkedHashMap<>();
     protected Map<AbilityData<?>, Object> dataEntryDefaults = new LinkedHashMap<>();
-    public EnumSync sync = EnumSync.NONE;
 
     public AbilityDataManager(Ability ability) {
         this.ability = ability;
@@ -74,8 +73,8 @@ public class AbilityDataManager implements INBTSerializable<NBTTagCompound> {
     }
 
     public AbilityData<?> getAbilityDataByName(String name) {
-        for(AbilityData<?> datas : getSettingData()) {
-            if(datas.key.equals(name)) {
+        for (AbilityData<?> datas : getSettingData()) {
+            if (datas.key.equals(name)) {
                 return datas;
             }
         }

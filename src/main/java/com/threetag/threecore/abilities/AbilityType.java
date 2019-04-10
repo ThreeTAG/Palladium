@@ -17,6 +17,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static IForgeRegistry<AbilityType> REGISTRY;
 
     public static final AbilityType HEALING = new AbilityType(AbilityHealing::new, ThreeCore.MODID, "healing");
+    public static final AbilityType FLIGHT = new AbilityType(AbilityFlight::new, ThreeCore.MODID, "flight");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -26,6 +27,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     @SubscribeEvent
     public static void onRegisterAbilityTypes(RegistryEvent.Register<AbilityType> e) {
         e.getRegistry().register(HEALING);
+        e.getRegistry().register(FLIGHT);
     }
 
     // ----------------------------------------------------------------------------------------------------------------

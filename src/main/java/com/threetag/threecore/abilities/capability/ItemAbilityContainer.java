@@ -38,6 +38,7 @@ public class ItemAbilityContainer implements IAbilityContainer {
 
         AtomicBoolean dirty = new AtomicBoolean(false);
         getAbilityMap().forEach((s, a) -> {
+            a.container = this;
             a.tick(entity);
             if (a.dirty) {
                 dirty.set(true);

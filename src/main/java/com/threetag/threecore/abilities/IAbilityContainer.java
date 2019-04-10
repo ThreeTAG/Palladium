@@ -13,11 +13,15 @@ import net.minecraftforge.fml.network.NetworkDirection;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public interface IAbilityContainer {
 
     default void tick(EntityLivingBase entity) {
         getAbilityMap().forEach((s, a) -> {
+            a.container = this;
             a.tick(entity);
             if (a.sync != EnumSync.NONE) {
                 onUpdated(entity, a, a.sync);
@@ -59,8 +63,11 @@ public interface IAbilityContainer {
         if (this.getAbilityMap().containsKey(id))
             return false;
         this.getAbilityMap().put(id, ability);
-        if (entity != null && entity.world instanceof WorldServer)
+        if (entity != null && entity.world instanceof WorldServer) {
+            if (entity instanceof EntityPlayerMP)
+                ThreeCore.NETWORK_CHANNEL.sendTo(new MessageAddAbility(entity.getEntityId(), getId(), id, ability.getUpdateTag()), ((EntityPlayerMP) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             ((WorldServer) entity.world).getEntityTracker().getTrackingPlayers(entity).forEach((p) -> ThreeCore.NETWORK_CHANNEL.sendTo(new MessageAddAbility(entity.getEntityId(), getId(), id, ability.getUpdateTag()), ((EntityPlayerMP) p).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT));
+        }
         return true;
     }
 
@@ -68,9 +75,20 @@ public interface IAbilityContainer {
         if (!this.getAbilityMap().containsKey(id))
             return false;
         this.getAbilityMap().remove(id);
-        if (entity != null && entity.world instanceof WorldServer)
+        if (entity != null && entity.world instanceof WorldServer) {
+            if (entity instanceof EntityPlayerMP)
+                ThreeCore.NETWORK_CHANNEL.sendTo(new MessageRemoveAbility(entity.getEntityId(), getId(), id), ((EntityPlayerMP) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             ((WorldServer) entity.world).getEntityTracker().getTrackingPlayers(entity).forEach((p) -> ThreeCore.NETWORK_CHANNEL.sendTo(new MessageRemoveAbility(entity.getEntityId(), getId(), id), ((EntityPlayerMP) p).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT));
+        }
         return true;
+    }
+
+    default void clearAbilities(@Nullable EntityLivingBase entity) {
+        List<Ability> copy = this.getAbilities().stream().collect(Collectors.toList());
+
+       for(Ability ab : copy) {
+            removeAbility(entity, ab.getId());
+        }
     }
 
     ResourceLocation getId();

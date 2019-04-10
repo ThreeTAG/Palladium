@@ -4,10 +4,8 @@ import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.capability.AbilityEventHandler;
 import com.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
 import com.threetag.threecore.abilities.client.AbilityBarRenderer;
-import com.threetag.threecore.abilities.network.MessageAddAbility;
-import com.threetag.threecore.abilities.network.MessageRemoveAbility;
-import com.threetag.threecore.abilities.network.MessageSendPlayerAbilityContainer;
-import com.threetag.threecore.abilities.network.MessageUpdateAbility;
+import com.threetag.threecore.abilities.client.AbilityKeyHandler;
+import com.threetag.threecore.abilities.network.*;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.INBTBase;
 import net.minecraft.util.EnumFacing;
@@ -28,6 +26,7 @@ public class ThreeCoreAbilities {
     public ThreeCoreAbilities() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(new AbilityEventHandler());
+        MinecraftForge.EVENT_BUS.register(new AbilityKeyHandler());
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(new AbilityBarRenderer()));
 
         AbilityHelper.registerAbilityContainer(CapabilityAbilityContainer.ID, (p) -> p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
@@ -41,6 +40,7 @@ public class ThreeCoreAbilities {
         ThreeCore.registerMessage(MessageUpdateAbility.class, MessageUpdateAbility::toBytes, MessageUpdateAbility::new, MessageUpdateAbility::handle);
         ThreeCore.registerMessage(MessageAddAbility.class, MessageAddAbility::toBytes, MessageAddAbility::new, MessageAddAbility::handle);
         ThreeCore.registerMessage(MessageRemoveAbility.class, MessageRemoveAbility::toBytes, MessageRemoveAbility::new, MessageRemoveAbility::handle);
+        ThreeCore.registerMessage(MessageAbilityKey.class, MessageAbilityKey::toBytes, MessageAbilityKey::new, MessageAbilityKey::handle);
 
         // Capability
         CapabilityManager.INSTANCE.register(IAbilityContainer.class, new Capability.IStorage<IAbilityContainer>() {

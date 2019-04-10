@@ -10,24 +10,34 @@ import net.minecraft.util.ResourceLocation;
 
 public class TexturedIcon implements IIcon {
 
+    public static final ResourceLocation ICONS_TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/gui/icons.png");
+
     public final ResourceLocation texture;
     public final int u;
     public final int v;
     public final int width;
     public final int height;
+    public final int textureWidth;
+    public final int textureHeight;
 
-    public TexturedIcon(ResourceLocation texture, int u, int v, int width, int height) {
+    public TexturedIcon(ResourceLocation texture, int u, int v, int width, int height, int textureWidth, int textureHeight) {
         this.texture = texture;
         this.u = u;
         this.v = v;
         this.width = width;
         this.height = height;
+        this.textureWidth = textureWidth;
+        this.textureHeight = textureHeight;
+    }
+
+    public TexturedIcon(ResourceLocation texture, int u, int v, int width, int height) {
+        this(texture, u, v, width, height, 256, 256);
     }
 
     @Override
     public void draw(Minecraft mc, int x, int y) {
         mc.getTextureManager().bindTexture(this.texture);
-        Gui.drawModalRectWithCustomSizedTexture(x, y, this.u, this.v, this.width, this.height, this.width, this.height);
+        Gui.drawModalRectWithCustomSizedTexture(x, y, this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
     }
 
     @Override
@@ -57,7 +67,9 @@ public class TexturedIcon implements IIcon {
             int v = JsonUtils.getInt(json, "v");
             int width = JsonUtils.getInt(json, "width", 16);
             int height = JsonUtils.getInt(json, "height", 16);
-            return new TexturedIcon(texture, u, v, width, height);
+            int textureWidth = JsonUtils.getInt(json, "texture_width", 256);
+            int textureHeight = JsonUtils.getInt(json, "texture_height", 256);
+            return new TexturedIcon(texture, u, v, width, height, textureWidth, textureHeight);
         }
 
         @Override
@@ -67,7 +79,9 @@ public class TexturedIcon implements IIcon {
             int v = nbt.getInt("V");
             int width = nbt.getInt("Width");
             int height = nbt.getInt("Height");
-            return new TexturedIcon(texture, u, v, width, height);
+            int textureWidth = nbt.getInt("TextureWidth");
+            int textureHeight = nbt.getInt("TextureHeight");
+            return new TexturedIcon(texture, u, v, width, height, textureWidth, textureHeight);
         }
 
         @Override
@@ -78,6 +92,8 @@ public class TexturedIcon implements IIcon {
             nbt.putInt("V", icon.v);
             nbt.putInt("Width", icon.width);
             nbt.putInt("Height", icon.height);
+            nbt.putInt("TextureWidth", icon.textureWidth);
+            nbt.putInt("TextureHeight", icon.textureHeight);
             return nbt;
         }
 

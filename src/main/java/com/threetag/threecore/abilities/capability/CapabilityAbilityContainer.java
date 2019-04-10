@@ -31,17 +31,6 @@ public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerial
     }
 
     @Override
-    public void tick(EntityLivingBase entity) {
-        getAbilityMap().forEach((s, a) -> {
-            a.tick(entity);
-            if (a.sync != EnumSync.NONE) {
-                onUpdated(entity, a, a.sync);
-                a.sync = EnumSync.NONE;
-            }
-        });
-    }
-
-    @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         this.getAbilityMap().forEach((s, a) -> nbt.put(s, a.serializeNBT()));
