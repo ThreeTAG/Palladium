@@ -110,9 +110,14 @@
   "item.threecore.gold_titanium_alloy_plate": "Gold-Titanium-Alloy Plate",
   "item.threecore.adamantium_plate": "Adamantium Plate",
   
-  "commands.karma.success.player.single": "%s karma has been set to %s",
+  "commands.karma.success.player.single": "%s's karma has been set to %s",
   "commands.karma.success.player.multiple": "Karma of %s players has been set to %s",
   "commands.karma.players_karma": "%s's karma is at %s. (%s)",
+  
+  "commands.superpower.error.superpowerNotFound": "No superpower was found by the name '%1$s'",
+  "commands.superpower.error.noLivingEntity": "This entity is not a living entity",
+  "commands.superpower.success.entity.single": "%s has gained the superpower %s",
+  "commands.superpower.success.entity.multiple": "%s entities have gained the superpower %s",
   
   "karma.class.tyrant": "Tyrant",
   "karma.class.villain": "Villain",
@@ -122,6 +127,9 @@
   "karma.class.hero": "Hero",
   "karma.class.legend": "Legend",
   "karma.toast.title": "Your karma has changed!",
+  
+  "ability.threecore.healing": "Healing",
+  "ability.threecore.flight": "Flight",
   
   "threecore.util.energy_display": "%,d %s",
   "threecore.util.energy_storage_display": "%,d / %,d %s"

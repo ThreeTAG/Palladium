@@ -3,7 +3,6 @@ package com.threetag.threecore.abilities;
 import com.threetag.threecore.abilities.client.EnumAbilityColor;
 import com.threetag.threecore.abilities.data.*;
 import com.threetag.threecore.util.render.IIcon;
-import com.threetag.threecore.util.render.TexturedIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,6 +30,7 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
     protected int ticks = 0;
     public EnumSync sync = EnumSync.NONE;
     public boolean dirty = false;
+    protected NBTTagCompound additionalData;
 
     public Ability(AbilityType type) {
         this.type = type;
@@ -50,6 +50,12 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
         this.dataManager.register(SHOW_IN_BAR, getAbilityType() != EnumAbilityType.CONSTANT);
         this.dataManager.register(HIDDEN, false);
         this.dataManager.register(TITLE, new TextComponentTranslation("ability." + this.type.getRegistryName().getNamespace() + "." + this.type.getRegistryName().getPath()));
+    }
+
+    public NBTTagCompound getAdditionalData() {
+        if (this.additionalData == null)
+            this.additionalData = new NBTTagCompound();
+        return additionalData;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -108,22 +114,28 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.putString("AbilityType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.serializeNBT());
+        if (this.additionalData != null)
+            nbt.put("AdditionalData", this.additionalData);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
         this.dataManager.deserializeNBT(nbt.getCompound("Data"));
+        this.additionalData = nbt.getCompound("AdditionalData");
     }
 
     public NBTTagCompound getUpdateTag() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.putString("AbilityType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.getUpdatePacket());
+        if (this.additionalData != null)
+            nbt.put("AdditionalData", this.additionalData);
         return nbt;
     }
 
     public void readUpdateTag(NBTTagCompound nbt) {
         this.dataManager.readUpdatePacket(nbt.getCompound("Data"));
+        this.additionalData = nbt.getCompound("AdditionalData");
     }
 }

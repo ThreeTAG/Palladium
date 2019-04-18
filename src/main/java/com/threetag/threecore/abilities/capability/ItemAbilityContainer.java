@@ -23,7 +23,7 @@ public class ItemAbilityContainer implements IAbilityContainer {
         this.map = new AbilityMap();
 
         if (stack.getItem() instanceof IAbilityProvider) {
-            this.setAbilities(null, (IAbilityProvider) stack.getItem());
+            this.addAbilities(null, (IAbilityProvider) stack.getItem());
         }
     }
 

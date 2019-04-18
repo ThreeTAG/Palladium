@@ -4,8 +4,6 @@ import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.Ability;
 import com.threetag.threecore.abilities.AbilityHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -18,7 +16,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class AbilityBarRenderer {

@@ -13,8 +13,8 @@ import net.minecraftforge.fml.network.NetworkDirection;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public interface IAbilityContainer {
@@ -54,8 +54,7 @@ public interface IAbilityContainer {
 
     AbilityMap getAbilityMap();
 
-    default void setAbilities(@Nullable EntityLivingBase entity, IAbilityProvider provider) {
-        this.getAbilities().clear();
+    default void addAbilities(@Nullable EntityLivingBase entity, IAbilityProvider provider) {
         provider.getAbilities().forEach((s, a) -> addAbility(entity, s, a));
     }
 
@@ -86,8 +85,18 @@ public interface IAbilityContainer {
     default void clearAbilities(@Nullable EntityLivingBase entity) {
         List<Ability> copy = this.getAbilities().stream().collect(Collectors.toList());
 
-       for(Ability ab : copy) {
+        for (Ability ab : copy) {
             removeAbility(entity, ab.getId());
+        }
+    }
+
+    default void clearAbilities(@Nullable EntityLivingBase entity, Predicate<Ability> predicate) {
+        List<Ability> copy = this.getAbilities().stream().collect(Collectors.toList());
+
+        for (Ability ab : copy) {
+            if (predicate.test(ab)) {
+                removeAbility(entity, ab.getId());
+            }
         }
     }
 

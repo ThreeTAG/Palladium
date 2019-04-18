@@ -5,9 +5,14 @@ import com.threetag.threecore.abilities.capability.AbilityEventHandler;
 import com.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
 import com.threetag.threecore.abilities.client.AbilityBarRenderer;
 import com.threetag.threecore.abilities.client.AbilityKeyHandler;
+import com.threetag.threecore.abilities.command.SuperpowerCommand;
 import com.threetag.threecore.abilities.network.*;
+import com.threetag.threecore.abilities.superpower.SuperpowerManager;
+import com.threetag.threecore.karma.ThreeCoreKarma;
+import com.threetag.threecore.karma.command.KarmaCommand;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.INBTBase;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,8 +20,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import javax.annotation.Nullable;
@@ -27,6 +34,7 @@ public class ThreeCoreAbilities {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(new AbilityEventHandler());
         MinecraftForge.EVENT_BUS.register(new AbilityKeyHandler());
+        MinecraftForge.EVENT_BUS.register(this);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(new AbilityBarRenderer()));
 
         AbilityHelper.registerAbilityContainer(CapabilityAbilityContainer.ID, (p) -> p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
@@ -61,5 +69,11 @@ public class ThreeCoreAbilities {
                     }
                 },
                 () -> new CapabilityAbilityContainer());
+    }
+
+    @SubscribeEvent
+    public void serverStarting(FMLServerStartingEvent e) {
+        SuperpowerCommand.register(e.getCommandDispatcher());
+        e.getServer().getResourceManager().addReloadListener(new SuperpowerManager());
     }
 }
