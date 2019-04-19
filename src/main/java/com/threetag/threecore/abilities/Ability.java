@@ -42,7 +42,7 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
 
     public void registerData() {
         if (this.getAbilityType() != EnumAbilityType.CONSTANT) {
-            if (this.getAbilityType() == EnumAbilityType.HELD || this.getAbilityType() == EnumAbilityType.TOGGLE)
+            if (this.getAbilityType() == EnumAbilityType.HELD || this.getAbilityType() == EnumAbilityType.TOGGLE || this.getAbilityType() == EnumAbilityType.ACTION)
                 this.dataManager.register(ENABLED, false);
             this.dataManager.register(MAX_COOLDOWN, 0);
             this.dataManager.register(COOLDOWN, 0);

@@ -2,10 +2,13 @@ package com.threetag.threecore.util.render;
 
 import com.google.gson.JsonObject;
 import com.threetag.threecore.ThreeCore;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
@@ -15,6 +18,10 @@ public class ItemIcon implements IIcon {
 
     public ItemIcon(ItemStack stack) {
         this.stack = stack;
+    }
+
+    public ItemIcon(IItemProvider itemProvider) {
+        this.stack = new ItemStack(itemProvider);
     }
 
     @Override

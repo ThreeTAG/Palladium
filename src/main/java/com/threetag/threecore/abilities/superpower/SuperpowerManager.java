@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.AbilityGenerator;
 import com.threetag.threecore.abilities.AbilityType;
@@ -16,8 +15,6 @@ import com.threetag.threecore.util.render.IIcon;
 import com.threetag.threecore.util.render.IconSerializer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JsonUtils;
@@ -77,12 +74,7 @@ public class SuperpowerManager implements ISelectiveResourceReloadListener {
                     AbilityType type = AbilityType.REGISTRY.getValue(new ResourceLocation(JsonUtils.getString(o, "ability")));
                     if (type == null)
                         throw new JsonSyntaxException("Expected 'ability' to be an ability, was unknown string '" + JsonUtils.getString(o, "ability") + "'");
-                    try {
-                        NBTTagCompound nbt = JsonToNBT.getTagFromJson(o.toString()).copy();
-                        abilityGenerators.add(new AbilityGenerator(e.getKey(), type, nbt));
-                    } catch (CommandSyntaxException e1) {
-
-                    }
+                    abilityGenerators.add(new AbilityGenerator(e.getKey(), type, o));
                 }
             });
         }

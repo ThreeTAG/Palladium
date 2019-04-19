@@ -1,5 +1,6 @@
 package com.threetag.threecore.abilities.data;
 
+import com.google.gson.JsonObject;
 import com.threetag.threecore.abilities.Ability;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -110,6 +111,12 @@ public class AbilityDataManager implements INBTSerializable<NBTTagCompound> {
     public void readUpdatePacket(NBTTagCompound nbt) {
         for (AbilityData data : dataEntryList.keySet()) {
             getEntry(data).setValue(data.readFromNBT(nbt, getDefaultValue(data)));
+        }
+    }
+
+    public void readFromJson(JsonObject jsonObject) {
+        for (AbilityData data : dataEntryList.keySet()) {
+            getEntry(data).setValue(data.parseValue(jsonObject, getDefaultValue(data)));
         }
     }
 

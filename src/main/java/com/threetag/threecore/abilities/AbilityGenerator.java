@@ -1,22 +1,22 @@
 package com.threetag.threecore.abilities;
 
-import net.minecraft.nbt.NBTTagCompound;
+import com.google.gson.JsonObject;
 
 public class AbilityGenerator {
 
     public final String key;
     public final AbilityType abilityType;
-    public final NBTTagCompound nbtTagCompound;
+    public final JsonObject jsonObject;
 
-    public AbilityGenerator(String key, AbilityType abilityType, NBTTagCompound nbtTagCompound) {
+    public AbilityGenerator(String key, AbilityType abilityType, JsonObject jsonObject) {
         this.key = key;
         this.abilityType = abilityType;
-        this.nbtTagCompound = nbtTagCompound;
+        this.jsonObject = jsonObject;
     }
 
     public Ability create() {
         Ability ability = this.abilityType.create();
-        ability.readUpdateTag(this.nbtTagCompound);
+        ability.getDataManager().readFromJson(this.jsonObject);
         return ability;
     }
 
