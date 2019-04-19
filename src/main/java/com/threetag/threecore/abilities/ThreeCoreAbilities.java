@@ -49,6 +49,7 @@ public class ThreeCoreAbilities {
         ThreeCore.registerMessage(MessageAddAbility.class, MessageAddAbility::toBytes, MessageAddAbility::new, MessageAddAbility::handle);
         ThreeCore.registerMessage(MessageRemoveAbility.class, MessageRemoveAbility::toBytes, MessageRemoveAbility::new, MessageRemoveAbility::handle);
         ThreeCore.registerMessage(MessageAbilityKey.class, MessageAbilityKey::toBytes, MessageAbilityKey::new, MessageAbilityKey::handle);
+        ThreeCore.registerMessage(MessageSendSuperpowerToast.class, MessageSendSuperpowerToast::toBytes, MessageSendSuperpowerToast::new, MessageSendSuperpowerToast::handle);
 
         // Capability
         CapabilityManager.INSTANCE.register(IAbilityContainer.class, new Capability.IStorage<IAbilityContainer>() {

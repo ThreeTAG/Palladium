@@ -131,6 +131,8 @@
   "ability.threecore.healing": "Healing",
   "ability.threecore.flight": "Flight",
   
+  "superpower.toast.title": "New superpower!",
+  
   "threecore.util.energy_display": "%,d %s",
   "threecore.util.energy_storage_display": "%,d / %,d %s"
 }

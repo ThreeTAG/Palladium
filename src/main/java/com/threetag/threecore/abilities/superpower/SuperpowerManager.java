@@ -11,10 +11,11 @@ import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.AbilityGenerator;
 import com.threetag.threecore.abilities.AbilityType;
 import com.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
+import com.threetag.threecore.abilities.network.MessageSendSuperpowerToast;
 import com.threetag.threecore.util.render.IIcon;
 import com.threetag.threecore.util.render.IconSerializer;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.resources.IResource;
@@ -22,6 +23,7 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.resource.IResourceType;
 import net.minecraftforge.resource.ISelectiveResourceReloadListener;
 
@@ -104,6 +106,8 @@ public class SuperpowerManager implements ISelectiveResourceReloadListener {
         entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
             abilityContainer.clearAbilities(entity, ability -> ability.getAdditionalData().getBoolean("IsFromSuperpower"));
             abilityContainer.addAbilities(entity, superpower);
+            if (entity instanceof EntityPlayerMP)
+                ThreeCore.NETWORK_CHANNEL.sendTo(new MessageSendSuperpowerToast(superpower.getName(), superpower.getIcon()), ((EntityPlayerMP) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
         });
     }
 }
