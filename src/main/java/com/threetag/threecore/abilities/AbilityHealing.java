@@ -9,8 +9,8 @@ import net.minecraft.entity.EntityLivingBase;
 
 public class AbilityHealing extends AbilityConstant {
 
-    public static AbilityData<Integer> FREQUENCY = new AbilityDataInteger("frequency").disableSaving().setSyncType(EnumSync.NONE).enableSetting("frequency", "Sets the frequency of healing (in ticks)");
-    public static AbilityData<Float> AMOUNT = new AbilityDataFloat("amount").disableSaving().setSyncType(EnumSync.NONE).enableSetting("amount", "Sets the amount of hearts for each healing");
+    public static AbilityData<Integer> FREQUENCY = new AbilityDataInteger("frequency").setSyncType(EnumSync.NONE).enableSetting("frequency", "Sets the frequency of healing (in ticks)");
+    public static AbilityData<Float> AMOUNT = new AbilityDataFloat("amount").setSyncType(EnumSync.NONE).enableSetting("amount", "Sets the amount of hearts for each healing");
 
     public AbilityHealing() {
         super(AbilityType.HEALING);

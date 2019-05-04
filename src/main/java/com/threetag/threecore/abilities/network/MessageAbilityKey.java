@@ -42,7 +42,7 @@ public class MessageAbilityKey {
             if (container != null) {
                 Ability ability = container.getAbility(this.abilityId);
 
-                if (ability != null && ability.isUnlocked()) {
+                if (ability != null && ability.getConditionManager().isUnlocked()) {
                     if (this.pressed) {
                         ability.onKeyPressed(player);
                     } else

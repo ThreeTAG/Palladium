@@ -132,6 +132,9 @@
   "ability.threecore.flight": "Flight",
   "ability.threecore.teleport": "Teleport",
   
+  "ability.condition.threecore.karma": "Karma must be between %s and %s",
+  "ability.condition.threecore.karma_min": "Karma must be at least %s",
+  
   "superpower.toast.title": "New superpower!",
   
   "threecore.util.energy_display": "%,d %s",

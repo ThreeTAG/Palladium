@@ -11,9 +11,9 @@ import net.minecraft.util.math.Vec3d;
 
 public class AbilityFlight extends AbilityToggle {
 
-    public static final AbilityData<Float> SPEED = new AbilityDataFloat("speed").disableSaving().setSyncType(EnumSync.SELF).enableSetting("speed", "Sets the speed multiplier for flying when you are NOT sprinting");
-    public static final AbilityData<Float> SPRINT_SPEED = new AbilityDataFloat("sprint_speed").disableSaving().setSyncType(EnumSync.SELF).enableSetting("sprint_speed", "Sets the speed multiplier for flying when you are sprinting");
-    public static final AbilityData<Boolean> ROTATE_ARMS = new AbilityDataBoolean("rotate_arms").disableSaving().enableSetting("rotate_arms", "If enabled the players arms will face in your direction (like Superman)");
+    public static final AbilityData<Float> SPEED = new AbilityDataFloat("speed").setSyncType(EnumSync.SELF).enableSetting("speed", "Sets the speed multiplier for flying when you are NOT sprinting");
+    public static final AbilityData<Float> SPRINT_SPEED = new AbilityDataFloat("sprint_speed").setSyncType(EnumSync.SELF).enableSetting("sprint_speed", "Sets the speed multiplier for flying when you are sprinting");
+    public static final AbilityData<Boolean> ROTATE_ARMS = new AbilityDataBoolean("rotate_arms").enableSetting("rotate_arms", "If enabled the players arms will face in your direction (like Superman)");
 
     public AbilityFlight() {
         super(AbilityType.FLIGHT);

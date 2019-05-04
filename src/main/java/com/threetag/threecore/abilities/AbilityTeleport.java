@@ -15,7 +15,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class AbilityTeleport extends AbilityAction {
 
-    public static final AbilityData<Float> DISTANCE = new AbilityDataFloat("distance").disableSaving().setSyncType(EnumSync.NONE).enableSetting("distance", "The maximum amount of blocks you can teleport to");
+    public static final AbilityData<Float> DISTANCE = new AbilityDataFloat("distance").setSyncType(EnumSync.NONE).enableSetting("distance", "The maximum amount of blocks you can teleport to");
 
     public AbilityTeleport() {
         super(AbilityType.TELEPORT);
@@ -30,7 +30,6 @@ public class AbilityTeleport extends AbilityAction {
 
     @Override
     public boolean action(EntityLivingBase entity) {
-        System.out.println(this.dataManager.get(DISTANCE));
         Vec3d lookVec = entity.getLookVec().scale(this.dataManager.get(DISTANCE));
         RayTraceResult rtr = entity.world.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ),
                 new Vec3d(entity.posX + lookVec.x, entity.posY + entity.getEyeHeight() + lookVec.y, entity.posZ + lookVec.z));

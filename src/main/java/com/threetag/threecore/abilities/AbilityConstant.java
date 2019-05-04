@@ -10,7 +10,8 @@ public abstract class AbilityConstant extends Ability {
 
     @Override
     public void tick(EntityLivingBase entity) {
-        if (isUnlocked()) {
+        super.tick(entity);
+        if (this.conditionManager.isUnlocked()) {
             if (getAbilityType() == EnumAbilityType.CONSTANT) {
                 ticks++;
                 updateTick(entity);

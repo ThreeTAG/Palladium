@@ -34,12 +34,12 @@ public interface IAbilityContainer {
         if (entity.world.isRemote)
             return;
         if (sync != EnumSync.NONE && entity instanceof EntityPlayerMP) {
-            ThreeCore.NETWORK_CHANNEL.sendTo(new MessageUpdateAbility(entity.getEntityId(), this.getId(), ability.getId(), ability.dataManager.getUpdatePacket()), ((EntityPlayerMP) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+            ThreeCore.NETWORK_CHANNEL.sendTo(new MessageUpdateAbility(entity.getEntityId(), this.getId(), ability.getId(), ability.getUpdateTag()), ((EntityPlayerMP) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
         }
         if (sync == EnumSync.EVERYONE && entity.world instanceof WorldServer) {
             ((WorldServer) entity.world).getEntityTracker().getTrackingPlayers(entity).forEach((p) -> {
                 if (p instanceof EntityPlayerMP)
-                    ThreeCore.NETWORK_CHANNEL.sendTo(new MessageUpdateAbility(entity.getEntityId(), this.getId(), ability.getId(), ability.dataManager.getUpdatePacket()), ((EntityPlayerMP) p).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                    ThreeCore.NETWORK_CHANNEL.sendTo(new MessageUpdateAbility(entity.getEntityId(), this.getId(), ability.getId(), ability.getUpdateTag()), ((EntityPlayerMP) p).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             });
         }
     }

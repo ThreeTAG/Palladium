@@ -16,7 +16,7 @@ public class AbilityGenerator {
 
     public Ability create() {
         Ability ability = this.abilityType.create();
-        ability.getDataManager().readFromJson(this.jsonObject);
+        ability.readFromJson(this.jsonObject);
         return ability;
     }
 

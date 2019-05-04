@@ -15,7 +15,8 @@ public abstract class AbilityToggle extends Ability {
 
     @Override
     public void tick(EntityLivingBase entity) {
-        if (isUnlocked()) {
+        super.tick(entity);
+        if (this.conditionManager.isUnlocked()) {
             if (this.dataManager.get(ENABLED)) {
                 if (ticks == 0)
                     firstTick(entity);

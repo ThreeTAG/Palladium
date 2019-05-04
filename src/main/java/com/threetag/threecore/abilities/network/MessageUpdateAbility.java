@@ -51,7 +51,7 @@ public class MessageUpdateAbility {
                     Ability ability = container.getAbilityMap().get(this.abilityId);
 
                     if (ability != null) {
-                        ability.getDataManager().readUpdatePacket(this.data);
+                        ability.readUpdateTag(this.data);
                     }
                 }
             }

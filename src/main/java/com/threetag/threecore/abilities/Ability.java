@@ -1,6 +1,8 @@
 package com.threetag.threecore.abilities;
 
+import com.google.gson.JsonObject;
 import com.threetag.threecore.abilities.client.EnumAbilityColor;
+import com.threetag.threecore.abilities.condition.AbilityConditionManager;
 import com.threetag.threecore.abilities.data.*;
 import com.threetag.threecore.util.render.IIcon;
 import net.minecraft.client.Minecraft;
@@ -13,20 +15,23 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.INBTSerializable;
 
+import java.util.stream.Collectors;
+
 public abstract class Ability implements INBTSerializable<NBTTagCompound> {
 
     public static final AbilityData<Boolean> ENABLED = new AbilityDataBoolean("enabled").disableSaving();
-    public static final AbilityData<Integer> MAX_COOLDOWN = new AbilityDataInteger("max_cooldown").disableSaving().setSyncType(EnumSync.SELF).enableSetting("cooldown", "Maximum cooldown for using this ability");
+    public static final AbilityData<Integer> MAX_COOLDOWN = new AbilityDataInteger("max_cooldown").setSyncType(EnumSync.SELF).enableSetting("cooldown", "Maximum cooldown for using this ability");
     public static final AbilityData<Integer> COOLDOWN = new AbilityDataInteger("cooldown").setSyncType(EnumSync.SELF);
-    public static final AbilityData<Boolean> SHOW_IN_BAR = new AbilityDataBoolean("show_in_bar").disableSaving().setSyncType(EnumSync.SELF).enableSetting("show_in_bar", "Determines if this ability should be displayed in the ability bar");
+    public static final AbilityData<Boolean> SHOW_IN_BAR = new AbilityDataBoolean("show_in_bar").setSyncType(EnumSync.SELF).enableSetting("show_in_bar", "Determines if this ability should be displayed in the ability bar");
     public static final AbilityData<Boolean> HIDDEN = new AbilityDataBoolean("hidden").setSyncType(EnumSync.SELF);
-    public static final AbilityData<ITextComponent> TITLE = new AbilityDataTextComponent("title").disableSaving().setSyncType(EnumSync.SELF).enableSetting("title", "Allows you to set a custom title for this ability");
-    public static final AbilityData<IIcon> ICON = new AbilityDataIcon("icon").disableSaving().setSyncType(EnumSync.SELF).enableSetting("icon", "Lets you customize the icon for the ability");
+    public static final AbilityData<ITextComponent> TITLE = new AbilityDataTextComponent("title").setSyncType(EnumSync.SELF).enableSetting("title", "Allows you to set a custom title for this ability");
+    public static final AbilityData<IIcon> ICON = new AbilityDataIcon("icon").setSyncType(EnumSync.SELF).enableSetting("icon", "Lets you customize the icon for the ability");
 
     protected final AbilityType type;
     String id;
     public IAbilityContainer container;
     protected AbilityDataManager dataManager = new AbilityDataManager(this);
+    protected AbilityConditionManager conditionManager = new AbilityConditionManager(this);
     protected int ticks = 0;
     public EnumSync sync = EnumSync.NONE;
     public boolean dirty = false;
@@ -34,8 +39,12 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
 
     public Ability(AbilityType type) {
         this.type = type;
+        this.registerData();
+    }
 
-        registerData();
+    public void readFromJson(JsonObject jsonObject) {
+        this.dataManager.readFromJson(jsonObject);
+        this.conditionManager.readFromJson(jsonObject);
     }
 
     public abstract EnumAbilityType getAbilityType();
@@ -65,11 +74,11 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
     }
 
     public void tick(EntityLivingBase entity) {
-
+        this.conditionManager.update(entity);
     }
 
     public void onKeyPressed(EntityLivingBase entity) {
-        for (Ability entityAbilities : AbilityHelper.getAbilities(entity).stream().filter(entityAbilities -> entityAbilities.getParentAbility() == this).toArray(Ability[]::new)) {
+        for (Ability entityAbilities : AbilityHelper.getAbilities(entity).stream().filter(entityAbilities -> entityAbilities.getParentAbility() == this).collect(Collectors.toList())) {
             entityAbilities.onKeyPressed(entity);
         }
     }
@@ -82,11 +91,6 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
         return true;
     }
 
-    // TODO Ability Conditions
-    public boolean isUnlocked() {
-        return true;
-    }
-
     // TODO Parent ability
     public Ability getParentAbility() {
         return null;
@@ -94,6 +98,10 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
 
     public AbilityDataManager getDataManager() {
         return dataManager;
+    }
+
+    public AbilityConditionManager getConditionManager() {
+        return conditionManager;
     }
 
     public final String getId() {
@@ -114,6 +122,7 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.putString("AbilityType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.serializeNBT());
+        nbt.put("Conditions", this.conditionManager.serializeNBT());
         if (this.additionalData != null)
             nbt.put("AdditionalData", this.additionalData);
         return nbt;
@@ -122,6 +131,7 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
         this.dataManager.deserializeNBT(nbt.getCompound("Data"));
+        this.conditionManager.deserializeNBT(nbt.getCompound("Conditions"));
         this.additionalData = nbt.getCompound("AdditionalData");
     }
 
@@ -129,6 +139,7 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.putString("AbilityType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.getUpdatePacket());
+        nbt.put("Conditions", this.conditionManager.getUpdatePacket());
         if (this.additionalData != null)
             nbt.put("AdditionalData", this.additionalData);
         return nbt;
@@ -136,6 +147,7 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
 
     public void readUpdateTag(NBTTagCompound nbt) {
         this.dataManager.readUpdatePacket(nbt.getCompound("Data"));
+        this.conditionManager.readUpdatePacket(nbt.getCompound("Conditions"));
         this.additionalData = nbt.getCompound("AdditionalData");
     }
 }
