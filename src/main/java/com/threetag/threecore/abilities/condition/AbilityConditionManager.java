@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import com.threetag.threecore.abilities.Ability;
 import com.threetag.threecore.abilities.data.EnumSync;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.JsonUtils;
@@ -47,21 +46,24 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
     }
 
     public void update(EntityLivingBase entity) {
-
         if (!entity.world.isRemote) {
-            this.unlocked = true;
+            boolean u = true;
             int k = this.conditions.size();
             for (int i = 0; i < k; i++) {
                 AbilityCondition condition = this.conditions.get(i);
                 boolean active = this.active.get(i);
                 boolean b = condition.test(this.ability, entity);
-
                 if (b != active) {
                     this.active.set(i, b);
                     this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
                 }
 
-                this.unlocked = this.unlocked && b;
+                u = u && b;
+
+                if (u != this.unlocked) {
+                    this.unlocked = u;
+                    this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
+                }
             }
         }
     }

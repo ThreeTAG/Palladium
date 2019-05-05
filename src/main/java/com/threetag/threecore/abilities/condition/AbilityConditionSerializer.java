@@ -14,6 +14,8 @@ public class AbilityConditionSerializer {
     private static Map<ResourceLocation, IAbilityConditionSerializer> REGISTRY = Maps.newHashMap();
 
     static {
+        register(AbilityConditionAbilityUnlocked.Serializer.INSTANCE);
+        register(AbilityConditionAbilityEnabled.Serializer.INSTANCE);
         register(AbilityConditionKarma.Serializer.INSTANCE);
     }
 

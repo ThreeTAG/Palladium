@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -46,6 +47,19 @@ public class AbilityHelper {
                 list.addAll(container.getAbilities());
         });
         return list;
+    }
+
+    public static Ability getAbilityById(EntityLivingBase entity, String id, @Nullable IAbilityContainer currentContainer) {
+        String[] strings = id.split("#", 2);
+
+        if (strings.length == 1 && currentContainer == null)
+            return null;
+        else if (strings.length == 1 && currentContainer != null)
+            return currentContainer.getAbility(strings[0]);
+        else {
+            IAbilityContainer container = getAbilityContainerFromId(entity, new ResourceLocation(strings[0]));
+            return container.getAbility(strings[1]);
+        }
     }
 
 }
