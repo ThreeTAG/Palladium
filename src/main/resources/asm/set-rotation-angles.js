@@ -437,7 +437,7 @@ function injectRenderHooks(instructions) {
             //int opcode
             INVOKESTATIC,
             //String owner
-            "com/threetag/threecore/util/client/LCClientHookers",
+            "com/threetag/threecore/util/client/ClientHooks",
             //String name
             "renderBipedPre",
             //String descriptor
@@ -471,7 +471,7 @@ function injectRenderHooks(instructions) {
             //int opcode
             INVOKESTATIC,
             //String owner
-            "com/threetag/threecore/util/client/LCClientHookers",
+            "com/threetag/threecore/util/client/ClientHooks",
             //String name
             "renderBipedPost",
             //String descriptor

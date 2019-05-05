@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
 
-public class LCClientHookers {
+public class ClientHooks {
 	
 	public static void renderBipedPre(ModelBiped model, Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		if (entity == null)
