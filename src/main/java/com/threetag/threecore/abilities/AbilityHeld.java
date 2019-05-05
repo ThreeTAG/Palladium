@@ -1,24 +1,24 @@
 package com.threetag.threecore.abilities;
 
-import com.threetag.threecore.abilities.data.AbilityData;
 import net.minecraft.entity.EntityLivingBase;
 
-public abstract class AbilityToggle extends Ability {
+public abstract class AbilityHeld extends Ability {
 
-    public AbilityToggle(AbilityType type) {
+    public AbilityHeld(AbilityType type) {
         super(type);
     }
 
     @Override
     public EnumAbilityType getAbilityType() {
-        return EnumAbilityType.TOGGLE;
+        return EnumAbilityType.HELD;
     }
 
     @Override
     public void tick(EntityLivingBase entity) {
         super.tick(entity);
+
         if (this.conditionManager.isUnlocked()) {
-            if (this.dataManager.get(ENABLED)) {
+            if (this.dataManager.get(Ability.ENABLED)) {
                 if (ticks == 0)
                     firstTick(entity);
                 ticks++;
@@ -50,8 +50,14 @@ public abstract class AbilityToggle extends Ability {
 
     @Override
     public void onKeyPressed(EntityLivingBase entity) {
-        this.dataManager.set(ENABLED, !this.dataManager.get(ENABLED));
+        this.dataManager.set(ENABLED, true);
         super.onKeyPressed(entity);
+    }
+
+    @Override
+    public void onKeyReleased(EntityLivingBase entity) {
+        this.dataManager.set(ENABLED, false);
+        super.onKeyReleased(entity);
     }
 
     public void updateTick(EntityLivingBase entity) {
