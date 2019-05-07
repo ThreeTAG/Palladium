@@ -19,6 +19,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType HEALING = new AbilityType(AbilityHealing::new, ThreeCore.MODID, "healing");
     public static final AbilityType FLIGHT = new AbilityType(AbilityFlight::new, ThreeCore.MODID, "flight");
     public static final AbilityType TELEPORT = new AbilityType(AbilityTeleport::new, ThreeCore.MODID, "teleport");
+    public static final AbilityType ATTRIBUTE_MODIFIER = new AbilityType(AbilityAttributeModifier::new, ThreeCore.MODID, "attribute_modifier");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -30,6 +31,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(HEALING);
         e.getRegistry().register(FLIGHT);
         e.getRegistry().register(TELEPORT);
+        e.getRegistry().register(ATTRIBUTE_MODIFIER);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
