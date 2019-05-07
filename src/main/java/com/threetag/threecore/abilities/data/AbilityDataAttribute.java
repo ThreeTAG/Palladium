@@ -37,4 +37,14 @@ public class AbilityDataAttribute extends AbilityData<IAttribute> {
             return defaultValue;
         return AttributeRegistry.REGISTRY.get(new ResourceLocation(nbt.getString(this.key))).getAttribute();
     }
+
+    @Override
+    public String getDisplay(IAttribute value) {
+        return AttributeRegistry.REGISTRY.getKey(AttributeRegistry.getEntry(value)).toString();
+    }
+
+    @Override
+    public boolean displayAsString(IAttribute value) {
+        return true;
+    }
 }
