@@ -8,11 +8,8 @@ import com.threetag.threecore.abilities.client.AbilityKeyHandler;
 import com.threetag.threecore.abilities.command.SuperpowerCommand;
 import com.threetag.threecore.abilities.network.*;
 import com.threetag.threecore.abilities.superpower.SuperpowerManager;
-import com.threetag.threecore.karma.ThreeCoreKarma;
-import com.threetag.threecore.karma.command.KarmaCommand;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.INBTBase;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,15 +20,18 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import javax.annotation.Nullable;
+import java.io.File;
 
 public class ThreeCoreAbilities {
 
     public ThreeCoreAbilities() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
         MinecraftForge.EVENT_BUS.register(new AbilityEventHandler());
         MinecraftForge.EVENT_BUS.register(new AbilityKeyHandler());
         MinecraftForge.EVENT_BUS.register(this);
@@ -70,6 +70,11 @@ public class ThreeCoreAbilities {
                     }
                 },
                 () -> new CapabilityAbilityContainer());
+    }
+
+    public void loadComplete(FMLLoadCompleteEvent e) {
+        // abilities.html
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> AbilityType.generateHtmlFile(new File("abilities.html")));
     }
 
     @SubscribeEvent

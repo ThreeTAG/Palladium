@@ -131,6 +131,7 @@
   "ability.threecore.healing": "Healing",
   "ability.threecore.flight": "Flight",
   "ability.threecore.teleport": "Teleport",
+  "ability.threecore.attribute_modifier": "Attribute Modifier",
   
   "ability.condition.threecore.ability_unlocked": "%s ability must be unlocked",
   "ability.condition.threecore.karma": "Karma must be between %s and %s",

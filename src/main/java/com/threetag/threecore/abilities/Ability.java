@@ -5,9 +5,11 @@ import com.threetag.threecore.abilities.client.EnumAbilityColor;
 import com.threetag.threecore.abilities.condition.AbilityConditionManager;
 import com.threetag.threecore.abilities.data.*;
 import com.threetag.threecore.util.render.IIcon;
+import com.threetag.threecore.util.render.ItemIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -59,6 +61,7 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
         this.dataManager.register(SHOW_IN_BAR, getAbilityType() != EnumAbilityType.CONSTANT);
         this.dataManager.register(HIDDEN, false);
         this.dataManager.register(TITLE, new TextComponentTranslation("ability." + this.type.getRegistryName().getNamespace() + "." + this.type.getRegistryName().getPath()));
+        this.dataManager.register(ICON, new ItemIcon(Blocks.BARRIER));
     }
 
     public NBTTagCompound getAdditionalData() {
