@@ -25,8 +25,11 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
+
+import javax.xml.crypto.Data;
 
 import static net.minecraft.world.biome.Biome.COUNT_RANGE;
 import static net.minecraft.world.biome.Biome.createCompositeFeature;
@@ -61,14 +64,6 @@ public class ThreeCoreBase {
     public void addOreFeature(Biome biome, IBlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
         biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createCompositeFeature(Feature.MINABLE, new MinableConfig(MinableConfig.IS_ROCK, ore, config.size.get()), COUNT_RANGE, new CountRangeConfig(config.count.get(), config.minHeight.get(), 0, config.maxHeight.get() - config.minHeight.get())));
     }
-
-//    @SubscribeEvent
-//    public void onTooltip(ItemTooltipEvent e) {
-//        ItemTags.getCollection().getRegisteredTags().forEach(resourceLocation -> ItemTags.getCollection().get(resourceLocation).getAllElements().forEach(item -> {
-//            if (e.getItemStack().getItem() == item)
-//                e.getToolTip().add(new TextComponentString(resourceLocation.toString()));
-//        }));
-//    }
 
     public static ItemGroup ITEM_GROUP = new ItemGroup("threecore_materials") {
         @Override
