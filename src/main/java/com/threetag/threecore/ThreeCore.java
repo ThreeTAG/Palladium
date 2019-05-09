@@ -2,6 +2,7 @@ package com.threetag.threecore;
 
 import com.threetag.threecore.base.ThreeCoreBase;
 import com.threetag.threecore.karma.ThreeCoreKarma;
+import com.threetag.threecore.util.SupporterHandler;
 import com.threetag.threecore.util.gui.GuiHandler;
 import com.threetag.threecore.util.recipe.RecipeUtil;
 import net.minecraft.init.Items;
@@ -33,6 +34,7 @@ public class ThreeCore {
 
     public ThreeCore() {
         RecipeUtil.init();
+        SupporterHandler.load();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThreeCoreCommonConfig.generateConfig());
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::getClientGuiElement);
 
