@@ -13,9 +13,10 @@ import java.util.Objects;
 /**
  * Created by Nictogen on 2019-02-15.
  */
-public class AbilityDataBlock extends AbilityData<Block> {
+public class ThreeDataBlock extends ThreeData<Block>
+{
 
-    public AbilityDataBlock(String key) {
+    public ThreeDataBlock(String key) {
         super(key);
     }
 

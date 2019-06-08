@@ -3,11 +3,10 @@ package com.threetag.threecore.abilities.data;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.PacketBuffer;
 
 import java.lang.reflect.Type;
 
-public abstract class AbilityData<T> {
+public abstract class ThreeData<T> {
 
     protected final String key;
     protected String jsonKey;
@@ -18,7 +17,7 @@ public abstract class AbilityData<T> {
     };
     private final Type type = typeToken.getType();
 
-    public AbilityData(String key) {
+    public ThreeData(String key) {
         this.key = key;
     }
 
@@ -42,18 +41,18 @@ public abstract class AbilityData<T> {
         return this.jsonKey != null && !this.jsonKey.isEmpty();
     }
 
-    public AbilityData<T> enableSetting(String jsonKey, String desc) {
+    public ThreeData<T> enableSetting(String jsonKey, String desc) {
         this.jsonKey = jsonKey;
         this.description = desc;
         return this;
     }
 
-    public AbilityData<T> setSyncType(EnumSync syncType) {
+    public ThreeData<T> setSyncType(EnumSync syncType) {
         this.syncType = syncType;
         return this;
     }
 
-    public AbilityData<T> disableSaving() {
+    public ThreeData<T> disableSaving() {
         this.write = false;
         return this;
     }

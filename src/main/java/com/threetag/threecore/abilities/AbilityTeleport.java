@@ -1,7 +1,7 @@
 package com.threetag.threecore.abilities;
 
-import com.threetag.threecore.abilities.data.AbilityData;
-import com.threetag.threecore.abilities.data.AbilityDataFloat;
+import com.threetag.threecore.abilities.data.ThreeData;
+import com.threetag.threecore.abilities.data.ThreeDataFloat;
 import com.threetag.threecore.abilities.data.EnumSync;
 import com.threetag.threecore.util.helper.PlayerHelper;
 import com.threetag.threecore.util.render.ItemIcon;
@@ -15,7 +15,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class AbilityTeleport extends AbilityAction {
 
-    public static final AbilityData<Float> DISTANCE = new AbilityDataFloat("distance").setSyncType(EnumSync.NONE).enableSetting("distance", "The maximum amount of blocks you can teleport to");
+    public static final ThreeData<Float> DISTANCE = new ThreeDataFloat("distance").setSyncType(EnumSync.NONE).enableSetting("distance", "The maximum amount of blocks you can teleport to");
 
     public AbilityTeleport() {
         super(AbilityType.TELEPORT);

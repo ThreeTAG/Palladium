@@ -29,7 +29,7 @@ public class AbilityEventHandler {
 
     @SubscribeEvent
     public void onClick(PlayerInteractEvent e) {
-        if (e.getItemStack().getItem() == Items.STICK) {
+        if (!e.getEntity().world.isRemote && e.getItemStack().getItem() == Items.STICK) {
             e.getEntityPlayer().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(a -> {
                 a.clearAbilities(e.getEntityLiving());
                 a.addAbility(e.getEntityLiving(), "healing", new AbilityHealing());

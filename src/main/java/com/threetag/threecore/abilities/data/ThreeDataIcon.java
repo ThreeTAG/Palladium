@@ -6,9 +6,10 @@ import com.threetag.threecore.util.render.IconSerializer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
 
-public class AbilityDataIcon extends AbilityData<IIcon> {
+public class ThreeDataIcon extends ThreeData<IIcon>
+{
 
-    public AbilityDataIcon(String key) {
+    public ThreeDataIcon(String key) {
         super(key);
     }
 

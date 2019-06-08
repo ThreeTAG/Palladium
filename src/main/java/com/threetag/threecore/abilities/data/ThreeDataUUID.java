@@ -7,9 +7,10 @@ import net.minecraft.util.JsonUtils;
 
 import java.util.UUID;
 
-public class AbilityDataUUID extends AbilityData<UUID> {
+public class ThreeDataUUID extends ThreeData<UUID>
+{
 
-    public AbilityDataUUID(String key) {
+    public ThreeDataUUID(String key) {
         super(key);
     }
 

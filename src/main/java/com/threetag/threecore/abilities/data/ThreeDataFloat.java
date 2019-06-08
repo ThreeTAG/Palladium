@@ -4,9 +4,10 @@ import com.google.gson.JsonObject;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
 
-public class AbilityDataFloat extends AbilityData<Float> {
+public class ThreeDataFloat extends ThreeData<Float>
+{
 
-    public AbilityDataFloat(String key) {
+    public ThreeDataFloat(String key) {
         super(key);
     }
 

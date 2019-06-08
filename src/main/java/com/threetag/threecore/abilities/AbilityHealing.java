@@ -1,16 +1,16 @@
 package com.threetag.threecore.abilities;
 
-import com.threetag.threecore.abilities.data.AbilityData;
-import com.threetag.threecore.abilities.data.AbilityDataFloat;
-import com.threetag.threecore.abilities.data.AbilityDataInteger;
+import com.threetag.threecore.abilities.data.ThreeData;
+import com.threetag.threecore.abilities.data.ThreeDataFloat;
+import com.threetag.threecore.abilities.data.ThreeDataInteger;
 import com.threetag.threecore.abilities.data.EnumSync;
 import com.threetag.threecore.util.render.TexturedIcon;
 import net.minecraft.entity.EntityLivingBase;
 
 public class AbilityHealing extends AbilityConstant {
 
-    public static AbilityData<Integer> FREQUENCY = new AbilityDataInteger("frequency").setSyncType(EnumSync.NONE).enableSetting("frequency", "Sets the frequency of healing (in ticks)");
-    public static AbilityData<Float> AMOUNT = new AbilityDataFloat("amount").setSyncType(EnumSync.NONE).enableSetting("amount", "Sets the amount of hearts for each healing");
+    public static ThreeData<Integer> FREQUENCY = new ThreeDataInteger("frequency").setSyncType(EnumSync.NONE).enableSetting("frequency", "Sets the frequency of healing (in ticks)");
+    public static ThreeData<Float> AMOUNT = new ThreeDataFloat("amount").setSyncType(EnumSync.NONE).enableSetting("amount", "Sets the amount of hearts for each healing");
 
     public AbilityHealing() {
         super(AbilityType.HEALING);

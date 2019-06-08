@@ -10,9 +10,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 /**
  * Created by Nictogen on 2019-02-15.
  */
-public class AbilityDataItemStack extends AbilityData<ItemStack> {
+public class ThreeDataItemStack extends ThreeData<ItemStack>
+{
 
-    public AbilityDataItemStack(String key) {
+    public ThreeDataItemStack(String key) {
         super(key);
     }
 

@@ -4,9 +4,10 @@ import com.google.gson.JsonObject;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
 
-public class AbilityDataBoolean extends AbilityData<Boolean> {
+public class ThreeDataBoolean extends ThreeData<Boolean>
+{
 
-    public AbilityDataBoolean(String key) {
+    public ThreeDataBoolean(String key) {
         super(key);
     }
 

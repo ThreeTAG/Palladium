@@ -1,6 +1,5 @@
 package com.threetag.threecore.abilities;
 
-import com.threetag.threecore.abilities.data.AbilityData;
 import net.minecraft.entity.EntityLivingBase;
 
 public abstract class AbilityToggle extends Ability {

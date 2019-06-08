@@ -10,19 +10,19 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.JsonUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class AbilityConditionManager implements INBTSerializable<NBTTagCompound> {
 
     public final Ability ability;
     protected boolean unlocked = true;
-    protected ArrayList<AbilityCondition> conditions = Lists.newArrayList();
-    protected ArrayList<Boolean> active = Lists.newArrayList();
+    protected HashMap<Condition, Boolean> conditions = new HashMap<>();
 
     public AbilityConditionManager(Ability ability) {
         this.ability = ability;
@@ -33,28 +33,29 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
             JsonArray jsonArray = JsonUtils.getJsonArray(jsonObject, "conditions");
             for (JsonElement jsonElement : jsonArray) {
                 JsonObject jsonCondition = jsonElement.getAsJsonObject();
-                AbilityCondition condition = AbilityConditionSerializer.deserialize(jsonCondition);
+                ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(JsonUtils.getString(jsonCondition, "type")));
+                Condition condition = conditionType.create(ability);
+                condition.dataManager.readFromJson(jsonCondition);
                 this.addCondition(condition);
             }
         }
     }
 
-    public AbilityConditionManager addCondition(AbilityCondition condition) {
-        this.conditions.add(condition);
-        this.active.add(false);
+    public AbilityConditionManager addCondition(Condition condition) {
+        this.conditions.put(condition, false);
         return this;
     }
 
     public void update(EntityLivingBase entity) {
         if (!entity.world.isRemote) {
             boolean u = true;
-            int k = this.conditions.size();
-            for (int i = 0; i < k; i++) {
-                AbilityCondition condition = this.conditions.get(i);
-                boolean active = this.active.get(i);
-                boolean b = condition.test(this.ability, entity);
+            Condition[] conditionArray = this.conditions.keySet().toArray(new Condition[0]);
+            for (Condition condition : conditionArray)
+            {
+                boolean active = this.conditions.get(condition);
+                boolean b = condition.test(entity);
                 if (b != active) {
-                    this.active.set(i, b);
+                    this.conditions.put(condition, b);
                     this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
                 }
 
@@ -74,10 +75,7 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
 
     public List<Pair<ITextComponent, Boolean>> getConditionStates() {
         List<Pair<ITextComponent, Boolean>> list = Lists.newArrayList();
-        int k = this.conditions.size();
-        for (int i = 0; i < k; i++) {
-            list.add(Pair.of(this.conditions.get(i).getName(), this.active.get(i)));
-        }
+        this.conditions.forEach((abilityCondition, aBoolean) -> list.add(Pair.of(abilityCondition.dataManager.get(Condition.NAME), aBoolean)));
         return list;
     }
 
@@ -87,13 +85,11 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
         nbt.putBoolean("Unlocked", this.unlocked);
 
         NBTTagList list = new NBTTagList();
-        int k = this.conditions.size();
-        for (int i = 0; i < k; i++) {
-            AbilityCondition condition = this.conditions.get(i);
-            NBTTagCompound conditionTag = condition.getSerializer().serializeExt(condition);
-            conditionTag.putBoolean("Active", this.active.get(i));
+        conditions.forEach((abilityCondition, aBoolean) -> {
+            NBTTagCompound conditionTag = abilityCondition.serializeNBT();
+            conditionTag.putBoolean("Active", aBoolean);
             list.add(conditionTag);
-        }
+        });
         nbt.put("Conditions", list);
 
         return nbt;
@@ -102,13 +98,12 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
         this.unlocked = nbt.getBoolean("Unlocked");
-        this.conditions = Lists.newArrayList();
-        this.active = Lists.newArrayList();
+        this.conditions = new HashMap<>();
         NBTTagList list = nbt.getList("Conditions", 10);
         for (int i = 0; i < list.size(); i++) {
             NBTTagCompound conditionTag = list.getCompound(i);
-            this.conditions.add(AbilityConditionSerializer.deserialize(conditionTag));
-            this.active.add(conditionTag.getBoolean("Active"));
+            ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(conditionTag.getString("ConditionType")));
+            this.conditions.put(conditionType.create(ability), conditionTag.getBoolean("Active"));
         }
     }
 

@@ -1,7 +1,7 @@
 package com.threetag.threecore.abilities;
 
 import com.threetag.threecore.ThreeCore;
-import com.threetag.threecore.abilities.data.AbilityData;
+import com.threetag.threecore.abilities.data.ThreeData;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.api.distmarker.Dist;
@@ -104,30 +104,30 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
                 bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).getFormattedText()) + "</h1>\n");
                 bw.write("<h3>" + entry.getRegistryName().toString() + "</h3>\n");
                 bw.write("Type: " + ability.getAbilityType().toString() + "</p><br>\n");
-                List<AbilityData<?>> dataList = ability.getDataManager().getSettingData();
+                List<ThreeData<?>> dataList = ability.getDataManager().getSettingData();
 
                 // Example
                 bw.write("<p>Example:<br>\n");
                 bw.write("<code>\"example_ability\": {<br>\n");
                 bw.write("  \"ability\": \"" + entry.getRegistryName().toString() + "\",<br>\n");
                 for (int i = 0; i < dataList.size(); i++) {
-                    AbilityData abilityData = dataList.get(i);
-                    Object value = abilityData.getDisplay(ability.getDataManager().getDefaultValue(abilityData));
-                    String s = abilityData.displayAsString(ability.getDataManager().getDefaultValue(abilityData)) ? "\"" + value.toString() + "\"" : value.toString() + "";
-                    bw.write("  \"" + abilityData.getJsonKey() + "\": " + s + (i < dataList.size() - 1 ? "," : "") + "<br>\n");
+                    ThreeData threeData = dataList.get(i);
+                    Object value = threeData.getDisplay(ability.getDataManager().getDefaultValue(threeData));
+                    String s = threeData.displayAsString(ability.getDataManager().getDefaultValue(threeData)) ? "\"" + value.toString() + "\"" : value.toString() + "";
+                    bw.write("  \"" + threeData.getJsonKey() + "\": " + s + (i < dataList.size() - 1 ? "," : "") + "<br>\n");
                 }
                 bw.write("}</code>\n\n");
 
                 // Table
                 bw.write("<table>\n<tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr>\n");
-                for (AbilityData abilityData : dataList) {
-                    Object value = abilityData.getDisplay(ability.getDataManager().getDefaultValue(abilityData));
-                    String s = abilityData.displayAsString(ability.getDataManager().getDefaultValue(abilityData)) ? "\"" + value.toString() + "\"" : value.toString() + "";
+                for (ThreeData threeData : dataList) {
+                    Object value = threeData.getDisplay(ability.getDataManager().getDefaultValue(threeData));
+                    String s = threeData.displayAsString(ability.getDataManager().getDefaultValue(threeData)) ? "\"" + value.toString() + "\"" : value.toString() + "";
                     bw.write("<tr>\n" +
-                            "<td><code>" + abilityData.getJsonKey() + "</code></td>\n" +
-                            "<td><code>" + abilityData.getType().getTypeName().substring(abilityData.getType().getTypeName().lastIndexOf(".") + 1) + "</code></td>\n" +
+                            "<td><code>" + threeData.getJsonKey() + "</code></td>\n" +
+                            "<td><code>" + threeData.getType().getTypeName().substring(threeData.getType().getTypeName().lastIndexOf(".") + 1) + "</code></td>\n" +
                             "<td><code>" + s + "</code></td>\n" +
-                            "<td><p>" + (abilityData.getDescription() == null || abilityData.getDescription().isEmpty() ? "/" : abilityData.getDescription()) + "</p>\n" +
+                            "<td><p>" + (threeData.getDescription() == null || threeData.getDescription().isEmpty() ? "/" : threeData.getDescription()) + "</p>\n" +
                             "</td></tr><br>");
                 }
                 bw.write("</table>\n\n\n");

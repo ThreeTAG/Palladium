@@ -19,20 +19,21 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.stream.Collectors;
 
-public abstract class Ability implements INBTSerializable<NBTTagCompound> {
+public abstract class Ability implements INBTSerializable<NBTTagCompound>, IThreeDataHolder
+{
 
-    public static final AbilityData<Boolean> ENABLED = new AbilityDataBoolean("enabled").disableSaving();
-    public static final AbilityData<Integer> MAX_COOLDOWN = new AbilityDataInteger("max_cooldown").setSyncType(EnumSync.SELF).enableSetting("cooldown", "Maximum cooldown for using this ability");
-    public static final AbilityData<Integer> COOLDOWN = new AbilityDataInteger("cooldown").setSyncType(EnumSync.SELF);
-    public static final AbilityData<Boolean> SHOW_IN_BAR = new AbilityDataBoolean("show_in_bar").setSyncType(EnumSync.SELF).enableSetting("show_in_bar", "Determines if this ability should be displayed in the ability bar");
-    public static final AbilityData<Boolean> HIDDEN = new AbilityDataBoolean("hidden").setSyncType(EnumSync.SELF);
-    public static final AbilityData<ITextComponent> TITLE = new AbilityDataTextComponent("title").setSyncType(EnumSync.SELF).enableSetting("title", "Allows you to set a custom title for this ability");
-    public static final AbilityData<IIcon> ICON = new AbilityDataIcon("icon").setSyncType(EnumSync.SELF).enableSetting("icon", "Lets you customize the icon for the ability");
+    public static final ThreeData<Boolean> ENABLED = new ThreeDataBoolean("enabled").disableSaving();
+    public static final ThreeData<Integer> MAX_COOLDOWN = new ThreeDataInteger("max_cooldown").setSyncType(EnumSync.SELF).enableSetting("cooldown", "Maximum cooldown for using this ability");
+    public static final ThreeData<Integer> COOLDOWN = new ThreeDataInteger("cooldown").setSyncType(EnumSync.SELF);
+    public static final ThreeData<Boolean> SHOW_IN_BAR = new ThreeDataBoolean("show_in_bar").setSyncType(EnumSync.SELF).enableSetting("show_in_bar", "Determines if this ability should be displayed in the ability bar");
+    public static final ThreeData<Boolean> HIDDEN = new ThreeDataBoolean("hidden").setSyncType(EnumSync.SELF);
+    public static final ThreeData<ITextComponent> TITLE = new ThreeDataTextComponent("title").setSyncType(EnumSync.SELF).enableSetting("title", "Allows you to set a custom title for this ability");
+    public static final ThreeData<IIcon> ICON = new ThreeDataIcon("icon").setSyncType(EnumSync.SELF).enableSetting("icon", "Lets you customize the icon for the ability");
 
     protected final AbilityType type;
     String id;
     public IAbilityContainer container;
-    protected AbilityDataManager dataManager = new AbilityDataManager(this);
+    protected ThreeDataManager dataManager = new ThreeDataManager(this);
     protected AbilityConditionManager conditionManager = new AbilityConditionManager(this);
     protected int ticks = 0;
     public EnumSync sync = EnumSync.NONE;
@@ -99,7 +100,7 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
         return null;
     }
 
-    public AbilityDataManager getDataManager() {
+    public ThreeDataManager getDataManager() {
         return dataManager;
     }
 
@@ -113,6 +114,16 @@ public abstract class Ability implements INBTSerializable<NBTTagCompound> {
 
     public final IAbilityContainer getContainer() {
         return container;
+    }
+
+    @Override public void sync(EnumSync sync)
+    {
+        this.sync = this.sync.add(sync);
+    }
+
+    @Override public void setDirty()
+    {
+        this.dirty = true;
     }
 
     @OnlyIn(Dist.CLIENT)

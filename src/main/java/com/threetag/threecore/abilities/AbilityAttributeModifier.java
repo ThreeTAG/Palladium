@@ -17,10 +17,10 @@ import java.util.UUID;
 public class AbilityAttributeModifier extends AbilityConstant {
 
     public static final Map<String, IAttribute> ATTRIBUTES = Maps.newHashMap();
-    public static final AbilityData<IAttribute> ATTRIBUTE = new AbilityDataAttribute("attribute").setSyncType(EnumSync.SELF).enableSetting("attribute", "Determines which attribute should be modified. Possible attribute: " + getAttributeList());
-    public static final AbilityData<Float> AMOUNT = new AbilityDataFloat("amount").setSyncType(EnumSync.SELF).enableSetting("amount", "The amount for the giving attribute modifier");
-    public static final AbilityData<Integer> OPERATION = new AbilityDataInteger("operation").setSyncType(EnumSync.SELF).enableSetting("operation", "The operation for the giving attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)");
-    public static final AbilityData<UUID> UUID = new AbilityDataUUID("uuid").setSyncType(EnumSync.SELF).enableSetting("uuid", "Sets the unique identifier for this attribute modifier. If not specified it will generate a random one");
+    public static final ThreeData<IAttribute> ATTRIBUTE = new ThreeDataAttribute("attribute").setSyncType(EnumSync.SELF).enableSetting("attribute", "Determines which attribute should be modified. Possible attribute: " + getAttributeList());
+    public static final ThreeData<Float> AMOUNT = new ThreeDataFloat("amount").setSyncType(EnumSync.SELF).enableSetting("amount", "The amount for the giving attribute modifier");
+    public static final ThreeData<Integer> OPERATION = new ThreeDataInteger("operation").setSyncType(EnumSync.SELF).enableSetting("operation", "The operation for the giving attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)");
+    public static final ThreeData<UUID> UUID = new ThreeDataUUID("uuid").setSyncType(EnumSync.SELF).enableSetting("uuid", "Sets the unique identifier for this attribute modifier. If not specified it will generate a random one");
 
     public AbilityAttributeModifier() {
         super(AbilityType.ATTRIBUTE_MODIFIER);

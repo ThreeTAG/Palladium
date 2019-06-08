@@ -1,8 +1,8 @@
 package com.threetag.threecore.abilities;
 
-import com.threetag.threecore.abilities.data.AbilityData;
-import com.threetag.threecore.abilities.data.AbilityDataBoolean;
-import com.threetag.threecore.abilities.data.AbilityDataFloat;
+import com.threetag.threecore.abilities.data.ThreeData;
+import com.threetag.threecore.abilities.data.ThreeDataBoolean;
+import com.threetag.threecore.abilities.data.ThreeDataFloat;
 import com.threetag.threecore.abilities.data.EnumSync;
 import com.threetag.threecore.util.render.TexturedIcon;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,9 +11,9 @@ import net.minecraft.util.math.Vec3d;
 
 public class AbilityFlight extends AbilityToggle {
 
-    public static final AbilityData<Float> SPEED = new AbilityDataFloat("speed").setSyncType(EnumSync.SELF).enableSetting("speed", "Sets the speed multiplier for flying when you are NOT sprinting");
-    public static final AbilityData<Float> SPRINT_SPEED = new AbilityDataFloat("sprint_speed").setSyncType(EnumSync.SELF).enableSetting("sprint_speed", "Sets the speed multiplier for flying when you are sprinting");
-    public static final AbilityData<Boolean> ROTATE_ARMS = new AbilityDataBoolean("rotate_arms").enableSetting("rotate_arms", "If enabled the players arms will face in your direction (like Superman)");
+    public static final ThreeData<Float> SPEED = new ThreeDataFloat("speed").setSyncType(EnumSync.SELF).enableSetting("speed", "Sets the speed multiplier for flying when you are NOT sprinting");
+    public static final ThreeData<Float> SPRINT_SPEED = new ThreeDataFloat("sprint_speed").setSyncType(EnumSync.SELF).enableSetting("sprint_speed", "Sets the speed multiplier for flying when you are sprinting");
+    public static final ThreeData<Boolean> ROTATE_ARMS = new ThreeDataBoolean("rotate_arms").enableSetting("rotate_arms", "If enabled the players arms will face in your direction (like Superman)");
 
     public AbilityFlight() {
         super(AbilityType.FLIGHT);

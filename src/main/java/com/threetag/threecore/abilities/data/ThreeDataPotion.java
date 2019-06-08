@@ -8,9 +8,10 @@ import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class AbilityDataPotion extends AbilityData<Potion> {
+public class ThreeDataPotion extends ThreeData<Potion>
+{
 
-    public AbilityDataPotion(String key) {
+    public ThreeDataPotion(String key) {
         super(key);
     }
 

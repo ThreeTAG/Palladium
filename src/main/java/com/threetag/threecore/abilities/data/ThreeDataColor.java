@@ -7,9 +7,10 @@ import net.minecraft.util.JsonUtils;
 
 import java.awt.*;
 
-public class AbilityDataColor extends AbilityData<Color> {
+public class ThreeDataColor extends ThreeData<Color>
+{
 
-    public AbilityDataColor(String key) {
+    public ThreeDataColor(String key) {
         super(key);
     }
 

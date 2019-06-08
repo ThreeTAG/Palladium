@@ -5,9 +5,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.text.ITextComponent;
 
-public class AbilityDataTextComponent extends AbilityData<ITextComponent> {
+public class ThreeDataTextComponent extends ThreeData<ITextComponent>
+{
 
-    public AbilityDataTextComponent(String key) {
+    public ThreeDataTextComponent(String key) {
         super(key);
     }
 

@@ -10,9 +10,10 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.Objects;
 
-public class AbilityDataAttribute extends AbilityData<IAttribute> {
+public class ThreeDataAttribute extends ThreeData<IAttribute>
+{
 
-    public AbilityDataAttribute(String key) {
+    public ThreeDataAttribute(String key) {
         super(key);
     }
 
