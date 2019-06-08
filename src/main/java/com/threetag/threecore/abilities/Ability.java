@@ -17,151 +17,163 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import java.util.stream.Collectors;
-
 public abstract class Ability implements INBTSerializable<NBTTagCompound>, IThreeDataHolder
 {
+	public static final ThreeData<Boolean> SHOW_IN_BAR = new ThreeDataBoolean("show_in_bar").setSyncType(EnumSync.SELF)
+			.enableSetting("show_in_bar", "Determines if this ability should be displayed in the ability bar without a condition that displays it there.");
+	public static final ThreeData<Boolean> HIDDEN = new ThreeDataBoolean("hidden").setSyncType(EnumSync.SELF);
+	public static final ThreeData<ITextComponent> TITLE = new ThreeDataTextComponent("title").setSyncType(EnumSync.SELF)
+			.enableSetting("title", "Allows you to set a custom title for this ability");
+	public static final ThreeData<IIcon> ICON = new ThreeDataIcon("icon").setSyncType(EnumSync.SELF)
+			.enableSetting("icon", "Lets you customize the icon for the ability");
 
-    public static final ThreeData<Boolean> ENABLED = new ThreeDataBoolean("enabled").disableSaving();
-    public static final ThreeData<Integer> MAX_COOLDOWN = new ThreeDataInteger("max_cooldown").setSyncType(EnumSync.SELF).enableSetting("cooldown", "Maximum cooldown for using this ability");
-    public static final ThreeData<Integer> COOLDOWN = new ThreeDataInteger("cooldown").setSyncType(EnumSync.SELF);
-    public static final ThreeData<Boolean> SHOW_IN_BAR = new ThreeDataBoolean("show_in_bar").setSyncType(EnumSync.SELF).enableSetting("show_in_bar", "Determines if this ability should be displayed in the ability bar");
-    public static final ThreeData<Boolean> HIDDEN = new ThreeDataBoolean("hidden").setSyncType(EnumSync.SELF);
-    public static final ThreeData<ITextComponent> TITLE = new ThreeDataTextComponent("title").setSyncType(EnumSync.SELF).enableSetting("title", "Allows you to set a custom title for this ability");
-    public static final ThreeData<IIcon> ICON = new ThreeDataIcon("icon").setSyncType(EnumSync.SELF).enableSetting("icon", "Lets you customize the icon for the ability");
+	protected final AbilityType type;
+	String id;
+	public IAbilityContainer container;
+	protected ThreeDataManager dataManager = new ThreeDataManager(this);
+	protected AbilityConditionManager conditionManager = new AbilityConditionManager(this);
+	protected int ticks = 0;
+	public EnumSync sync = EnumSync.NONE;
+	public boolean dirty = false;
+	protected NBTTagCompound additionalData;
 
-    protected final AbilityType type;
-    String id;
-    public IAbilityContainer container;
-    protected ThreeDataManager dataManager = new ThreeDataManager(this);
-    protected AbilityConditionManager conditionManager = new AbilityConditionManager(this);
-    protected int ticks = 0;
-    public EnumSync sync = EnumSync.NONE;
-    public boolean dirty = false;
-    protected NBTTagCompound additionalData;
+	public Ability(AbilityType type)
+	{
+		this.type = type;
+		this.registerData();
+	}
 
-    public Ability(AbilityType type) {
-        this.type = type;
-        this.registerData();
-    }
+	public void readFromJson(JsonObject jsonObject)
+	{
+		this.dataManager.readFromJson(jsonObject);
+		this.conditionManager.readFromJson(jsonObject);
+	}
 
-    public void readFromJson(JsonObject jsonObject) {
-        this.dataManager.readFromJson(jsonObject);
-        this.conditionManager.readFromJson(jsonObject);
-    }
+	public void registerData()
+	{
+		this.dataManager.register(SHOW_IN_BAR, false);
+		this.dataManager.register(HIDDEN, false);
+		this.dataManager.register(TITLE,
+				new TextComponentTranslation("ability." + this.type.getRegistryName().getNamespace() + "." + this.type.getRegistryName().getPath()));
+		this.dataManager.register(ICON, new ItemIcon(Blocks.BARRIER));
+	}
 
-    public abstract EnumAbilityType getAbilityType();
+	public NBTTagCompound getAdditionalData()
+	{
+		if (this.additionalData == null)
+			this.additionalData = new NBTTagCompound();
+		return additionalData;
+	}
 
-    public void registerData() {
-        if (this.getAbilityType() != EnumAbilityType.CONSTANT) {
-            if (this.getAbilityType() == EnumAbilityType.HELD || this.getAbilityType() == EnumAbilityType.TOGGLE || this.getAbilityType() == EnumAbilityType.ACTION)
-                this.dataManager.register(ENABLED, false);
-            this.dataManager.register(MAX_COOLDOWN, 0);
-            this.dataManager.register(COOLDOWN, 0);
-        }
-        this.dataManager.register(SHOW_IN_BAR, getAbilityType() != EnumAbilityType.CONSTANT);
-        this.dataManager.register(HIDDEN, false);
-        this.dataManager.register(TITLE, new TextComponentTranslation("ability." + this.type.getRegistryName().getNamespace() + "." + this.type.getRegistryName().getPath()));
-        this.dataManager.register(ICON, new ItemIcon(Blocks.BARRIER));
-    }
+	@OnlyIn(Dist.CLIENT)
+	public void drawIcon(Minecraft mc, Gui gui, int x, int y)
+	{
+		if (this.getDataManager().has(ICON))
+			this.getDataManager().get(ICON).draw(mc, x, y);
+	}
 
-    public NBTTagCompound getAdditionalData() {
-        if (this.additionalData == null)
-            this.additionalData = new NBTTagCompound();
-        return additionalData;
-    }
+	public void tick(EntityLivingBase entity)
+	{
+		this.conditionManager.update(entity);
+		if (this.conditionManager.isEnabled())
+		{
+			if (ticks == 0)
+			{
+				this.conditionManager.firstTick();
+				firstTick(entity);
+			}
+			ticks++;
+			updateTick(entity);
+		}
+		else if (ticks != 0)
+		{
+			lastTick(entity);
+			this.conditionManager.lastTick();
+			ticks = 0;
+		}
+	}
 
-    @OnlyIn(Dist.CLIENT)
-    public void drawIcon(Minecraft mc, Gui gui, int x, int y) {
-        if (this.getDataManager().has(ICON))
-            this.getDataManager().get(ICON).draw(mc, x, y);
-    }
+	public void updateTick(EntityLivingBase entity) { }
+	public void firstTick(EntityLivingBase entity) { }
+	public void lastTick(EntityLivingBase entity) { }
 
-    public void tick(EntityLivingBase entity) {
-        this.conditionManager.update(entity);
-    }
+	// TODO Parent ability
+	public Ability getParentAbility()
+	{
+		return null;
+	}
 
-    public void onKeyPressed(EntityLivingBase entity) {
-        for (Ability entityAbilities : AbilityHelper.getAbilities(entity).stream().filter(entityAbilities -> entityAbilities.getParentAbility() == this).collect(Collectors.toList())) {
-            entityAbilities.onKeyPressed(entity);
-        }
-    }
+	public ThreeDataManager getDataManager()
+	{
+		return dataManager;
+	}
 
-    public void onKeyReleased(EntityLivingBase entity) {
+	public AbilityConditionManager getConditionManager()
+	{
+		return conditionManager;
+	}
 
-    }
+	public final String getId()
+	{
+		return id;
+	}
 
-    public boolean needsKey() {
-        return true;
-    }
+	public final IAbilityContainer getContainer()
+	{
+		return container;
+	}
 
-    // TODO Parent ability
-    public Ability getParentAbility() {
-        return null;
-    }
+	@Override public void sync(EnumSync sync)
+	{
+		this.sync = this.sync.add(sync);
+	}
 
-    public ThreeDataManager getDataManager() {
-        return dataManager;
-    }
+	@Override public void setDirty()
+	{
+		this.dirty = true;
+	}
 
-    public AbilityConditionManager getConditionManager() {
-        return conditionManager;
-    }
+	@OnlyIn(Dist.CLIENT)
+	public EnumAbilityColor getColor()
+	{
+		return EnumAbilityColor.LIGHT_GRAY;
+	}
 
-    public final String getId() {
-        return id;
-    }
+	@Override
+	public NBTTagCompound serializeNBT()
+	{
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.putString("AbilityType", this.type.getRegistryName().toString());
+		nbt.put("Data", this.dataManager.serializeNBT());
+		nbt.put("Conditions", this.conditionManager.serializeNBT());
+		if (this.additionalData != null)
+			nbt.put("AdditionalData", this.additionalData);
+		return nbt;
+	}
 
-    public final IAbilityContainer getContainer() {
-        return container;
-    }
+	@Override
+	public void deserializeNBT(NBTTagCompound nbt)
+	{
+		this.dataManager.deserializeNBT(nbt.getCompound("Data"));
+		this.conditionManager.deserializeNBT(nbt.getCompound("Conditions"));
+		this.additionalData = nbt.getCompound("AdditionalData");
+	}
 
-    @Override public void sync(EnumSync sync)
-    {
-        this.sync = this.sync.add(sync);
-    }
+	public NBTTagCompound getUpdateTag()
+	{
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.putString("AbilityType", this.type.getRegistryName().toString());
+		nbt.put("Data", this.dataManager.getUpdatePacket());
+		nbt.put("Conditions", this.conditionManager.getUpdatePacket());
+		if (this.additionalData != null)
+			nbt.put("AdditionalData", this.additionalData);
+		return nbt;
+	}
 
-    @Override public void setDirty()
-    {
-        this.dirty = true;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public EnumAbilityColor getColor() {
-        return EnumAbilityColor.LIGHT_GRAY;
-    }
-
-    @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.putString("AbilityType", this.type.getRegistryName().toString());
-        nbt.put("Data", this.dataManager.serializeNBT());
-        nbt.put("Conditions", this.conditionManager.serializeNBT());
-        if (this.additionalData != null)
-            nbt.put("AdditionalData", this.additionalData);
-        return nbt;
-    }
-
-    @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
-        this.dataManager.deserializeNBT(nbt.getCompound("Data"));
-        this.conditionManager.deserializeNBT(nbt.getCompound("Conditions"));
-        this.additionalData = nbt.getCompound("AdditionalData");
-    }
-
-    public NBTTagCompound getUpdateTag() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.putString("AbilityType", this.type.getRegistryName().toString());
-        nbt.put("Data", this.dataManager.getUpdatePacket());
-        nbt.put("Conditions", this.conditionManager.getUpdatePacket());
-        if (this.additionalData != null)
-            nbt.put("AdditionalData", this.additionalData);
-        return nbt;
-    }
-
-    public void readUpdateTag(NBTTagCompound nbt) {
-        this.dataManager.readUpdatePacket(nbt.getCompound("Data"));
-        this.conditionManager.readUpdatePacket(nbt.getCompound("Conditions"));
-        this.additionalData = nbt.getCompound("AdditionalData");
-    }
+	public void readUpdateTag(NBTTagCompound nbt)
+	{
+		this.dataManager.readUpdatePacket(nbt.getCompound("Data"));
+		this.conditionManager.readUpdatePacket(nbt.getCompound("Conditions"));
+		this.additionalData = nbt.getCompound("AdditionalData");
+	}
 }

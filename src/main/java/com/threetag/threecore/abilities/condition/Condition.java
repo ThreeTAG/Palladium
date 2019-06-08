@@ -15,6 +15,8 @@ public abstract class Condition implements INBTSerializable<NBTTagCompound>, ITh
     public ThreeDataManager dataManager = new ThreeDataManager(this);
 
     public static final ThreeData<ITextComponent> NAME = new ThreeDataTextComponent("name").setSyncType(EnumSync.SELF).enableSetting("name", "The display name of the condition.");
+    public static final ThreeData<Boolean> ENABLING = new ThreeDataBoolean("enabling").setSyncType(EnumSync.SELF).enableSetting("enabling", "If this condition enables. If false it instead decides whether the ability is unlocked.");
+	public static final ThreeData<Boolean> NEEDS_KEY = new ThreeDataBoolean("needs_key").setSyncType(EnumSync.SELF);
 
     public Condition(ConditionType type, Ability ability){
         this.type = type;
@@ -22,12 +24,16 @@ public abstract class Condition implements INBTSerializable<NBTTagCompound>, ITh
         this.registerData();
     }
 
-    public void registerData(){
+    public void registerData() {
         this.dataManager.register(NAME, new TextComponentTranslation(type.getRegistryName().toString()));
+        this.dataManager.register(ENABLING, false);
+        this.dataManager.register(NEEDS_KEY, false);
     }
 
-
     public abstract boolean test(EntityLivingBase entity);
+
+    public void firstTick(){}
+    public void lastTick(){}
 
     @Override public NBTTagCompound serializeNBT()
     {

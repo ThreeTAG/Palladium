@@ -5,6 +5,7 @@ import com.threetag.threecore.abilities.AbilityFlight;
 import com.threetag.threecore.abilities.AbilityHealing;
 import com.threetag.threecore.abilities.AbilityHelper;
 import com.threetag.threecore.abilities.IAbilityContainer;
+import com.threetag.threecore.abilities.condition.ConditionToggle;
 import com.threetag.threecore.abilities.network.MessageSendPlayerAbilityContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,7 +34,9 @@ public class AbilityEventHandler {
             e.getEntityPlayer().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(a -> {
                 a.clearAbilities(e.getEntityLiving());
                 a.addAbility(e.getEntityLiving(), "healing", new AbilityHealing());
-                a.addAbility(e.getEntityLiving(), "flight", new AbilityFlight());
+                AbilityFlight flight = new AbilityFlight();
+                flight.getConditionManager().addCondition(new ConditionToggle(flight));
+                a.addAbility(e.getEntityLiving(), "flight", flight);
             });
         }
     }

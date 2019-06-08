@@ -27,7 +27,7 @@ public class AbilityBarRenderer {
     public static final int ENTRY_SHOW_AMOUNT = 5;
 
     public static List<Ability> getCurrentDisplayedAbilities(List<Ability> abilities) {
-        abilities = abilities.stream().filter(a -> a.getConditionManager().isUnlocked() && a.getDataManager().get(Ability.SHOW_IN_BAR) && !a.getDataManager().get(Ability.HIDDEN)).collect(Collectors.toList());
+        abilities = abilities.stream().filter(a -> a.getConditionManager().isUnlocked() && (a.getConditionManager().needsKey() || a.getDataManager().get(Ability.SHOW_IN_BAR)) && !a.getDataManager().get(Ability.HIDDEN)).collect(Collectors.toList());
         List<Ability> list = new ArrayList<>();
 
         if (abilities.isEmpty())
@@ -94,12 +94,12 @@ public class AbilityBarRenderer {
                 mc.textureManager.bindTexture(TEXTURE);
                 mc.ingameGUI.drawTexturedModalRect(7, 7 + i * 22, color.getX(), color.getY(), 22, 22);
 
-                if (ability.getDataManager().has(Ability.ENABLED) && ability.getDataManager().get(Ability.ENABLED))
+                if (ability.getConditionManager().isEnabled())
                     mc.ingameGUI.drawTexturedModalRect(7, 7 + i * 22, color.getX(), color.getY() + 44, 22, 22);
 
                 ability.drawIcon(mc, mc.ingameGUI, 10, 10 + i * 22);
 
-                if (ability.needsKey()) {
+                if (ability.getConditionManager().needsKey()) {
                     GlStateManager.disableTexture2D();
                     GlStateManager.disableCull();
                     GlStateManager.color4f(0, 0, 0, 0.5F);

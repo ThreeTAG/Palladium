@@ -9,7 +9,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class AbilityFlight extends AbilityToggle {
+public class AbilityFlight extends Ability {
 
     public static final ThreeData<Float> SPEED = new ThreeDataFloat("speed").setSyncType(EnumSync.SELF).enableSetting("speed", "Sets the speed multiplier for flying when you are NOT sprinting");
     public static final ThreeData<Float> SPRINT_SPEED = new ThreeDataFloat("sprint_speed").setSyncType(EnumSync.SELF).enableSetting("sprint_speed", "Sets the speed multiplier for flying when you are sprinting");
@@ -31,7 +31,7 @@ public class AbilityFlight extends AbilityToggle {
     @Override
     public void updateTick(EntityLivingBase entity) {
         if (entity.onGround && ticks > 20)
-            this.dataManager.set(ENABLED, false);
+            this.getConditionManager().disableKeybounds();
 
         if (entity.moveForward > 0F && !entity.onGround) {
             Vec3d vec = entity.getLookVec();

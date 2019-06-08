@@ -7,7 +7,7 @@ import com.threetag.threecore.abilities.data.EnumSync;
 import com.threetag.threecore.util.render.TexturedIcon;
 import net.minecraft.entity.EntityLivingBase;
 
-public class AbilityHealing extends AbilityConstant {
+public class AbilityHealing extends Ability {
 
     public static ThreeData<Integer> FREQUENCY = new ThreeDataInteger("frequency").setSyncType(EnumSync.NONE).enableSetting("frequency", "Sets the frequency of healing (in ticks)");
     public static ThreeData<Float> AMOUNT = new ThreeDataFloat("amount").setSyncType(EnumSync.NONE).enableSetting("amount", "Sets the amount of hearts for each healing");

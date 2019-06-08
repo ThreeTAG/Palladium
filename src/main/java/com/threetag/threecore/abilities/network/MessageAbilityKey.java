@@ -3,7 +3,6 @@ package com.threetag.threecore.abilities.network;
 import com.threetag.threecore.abilities.Ability;
 import com.threetag.threecore.abilities.AbilityHelper;
 import com.threetag.threecore.abilities.IAbilityContainer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -36,17 +35,16 @@ public class MessageAbilityKey {
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            EntityPlayerMP player = ctx.get().getSender();
-            IAbilityContainer container = AbilityHelper.getAbilityContainerFromId(player, this.containerId);
+            IAbilityContainer container = AbilityHelper.getAbilityContainerFromId(ctx.get().getSender(), this.containerId);
 
             if (container != null) {
                 Ability ability = container.getAbility(this.abilityId);
 
                 if (ability != null && ability.getConditionManager().isUnlocked()) {
                     if (this.pressed) {
-                        ability.onKeyPressed(player);
+                        ability.getConditionManager().onKeyPressed();
                     } else
-                        ability.onKeyReleased(player);
+                        ability.getConditionManager().onKeyReleased();
                 }
             }
         });

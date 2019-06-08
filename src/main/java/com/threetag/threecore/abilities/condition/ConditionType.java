@@ -20,6 +20,10 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType>
 {
 	public static IForgeRegistry<ConditionType> REGISTRY;
 
+	public static final ConditionType ACTION = new ConditionType(ConditionAction::new, ThreeCore.MODID, "action");
+	public static final ConditionType HELD = new ConditionType(ConditionHeld::new, ThreeCore.MODID, "held");
+	public static final ConditionType TOGGLE = new ConditionType(ConditionToggle::new, ThreeCore.MODID, "toggle");
+	public static final ConditionType COOLDOWN = new ConditionType(ConditionCooldown::new, ThreeCore.MODID, "cooldown");
 	public static final ConditionType ABILITY_ENABLED = new ConditionType(ConditionAbilityEnabled::new, ThreeCore.MODID, "ability_enabled");
 	public static final ConditionType ABILITY_UNLOCKED = new ConditionType(ConditionAbilityUnlocked::new, ThreeCore.MODID, "ability_unlocked");
 	public static final ConditionType KARMA = new ConditionType(ConditionKarma::new, ThreeCore.MODID, "karma");
@@ -31,6 +35,10 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType>
 
 	@SubscribeEvent
 	public static void onRegisterConditionTypes(RegistryEvent.Register<ConditionType> e) {
+		e.getRegistry().register(ACTION);
+		e.getRegistry().register(HELD);
+		e.getRegistry().register(TOGGLE);
+		e.getRegistry().register(COOLDOWN);
 		e.getRegistry().register(ABILITY_ENABLED);
 		e.getRegistry().register(ABILITY_UNLOCKED);
 		e.getRegistry().register(KARMA);

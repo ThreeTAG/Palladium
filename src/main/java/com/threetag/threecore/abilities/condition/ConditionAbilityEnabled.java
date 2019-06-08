@@ -30,8 +30,7 @@ public class ConditionAbilityEnabled extends Condition
         Ability dependentAbility = AbilityHelper.getAbilityById(entity, this.dataManager.get(ABILITY_ID), ability.container);
         // Not the best way to handle the name, but it works �\_(?)_/�
         this.dataManager.set(Condition.NAME, dependentAbility == null ? new TextComponentString("") : new TextComponentTranslation("ability.condition.threecore.ability_enabled", dependentAbility.getDataManager().get(Ability.TITLE)));
-        if (dependentAbility == null || dependentAbility == ability)
-            return false;
-        return !dependentAbility.getDataManager().has(Ability.ENABLED) || dependentAbility.getDataManager().get(Ability.ENABLED);
+        return dependentAbility != null && dependentAbility != ability && dependentAbility.getConditionManager().isEnabled();
+
     }
 }

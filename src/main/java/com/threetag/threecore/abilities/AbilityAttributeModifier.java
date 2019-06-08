@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-public class AbilityAttributeModifier extends AbilityConstant {
+public class AbilityAttributeModifier extends Ability {
 
     public static final Map<String, IAttribute> ATTRIBUTES = Maps.newHashMap();
     public static final ThreeData<IAttribute> ATTRIBUTE = new ThreeDataAttribute("attribute").setSyncType(EnumSync.SELF).enableSetting("attribute", "Determines which attribute should be modified. Possible attribute: " + getAttributeList());

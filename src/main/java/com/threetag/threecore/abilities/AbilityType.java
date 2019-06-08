@@ -103,7 +103,6 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
                 // Title
                 bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).getFormattedText()) + "</h1>\n");
                 bw.write("<h3>" + entry.getRegistryName().toString() + "</h3>\n");
-                bw.write("Type: " + ability.getAbilityType().toString() + "</p><br>\n");
                 List<ThreeData<?>> dataList = ability.getDataManager().getSettingData();
 
                 // Example
