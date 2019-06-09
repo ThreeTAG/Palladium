@@ -17,6 +17,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
 {
@@ -41,7 +42,7 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
 			{
 				JsonObject jsonCondition = jsonElement.getAsJsonObject();
 				ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(JsonUtils.getString(jsonCondition, "type")));
-				Condition condition = conditionType.create(ability);
+				Condition condition = Objects.requireNonNull(conditionType).create(ability);
 				condition.dataManager.readFromJson(jsonCondition);
 				this.addCondition(condition);
 			}
@@ -60,8 +61,8 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
 		{
 			boolean u = true;
 			boolean e = true;
-			Condition[] conditionArray = this.conditions.keySet().toArray(new Condition[0]);
-			for (Condition condition : conditionArray)
+
+			for (Condition condition : this.conditions.keySet())
 			{
 				boolean active = this.conditions.get(condition);
 				boolean b = condition.test(entity);
@@ -76,18 +77,18 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
 					e = e && b;
 				else
 					u = u && b;
+			}
 
-				if (e != this.enabled)
-				{
-					this.enabled = e;
-					this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
-				}
+			if (e != this.enabled)
+			{
+				this.enabled = e;
+				this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
+			}
 
-				if (u != this.unlocked)
-				{
-					this.unlocked = u;
-					this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
-				}
+			if (u != this.unlocked)
+			{
+				this.unlocked = u;
+				this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
 			}
 		}
 	}
