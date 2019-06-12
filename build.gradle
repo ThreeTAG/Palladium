@@ -18,31 +18,36 @@ archivesBaseName = 'ThreeCore'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20190310-1.13.1'
+    mappings channel: 'snapshot', version: "${mappings_version}"
     // makeObfSourceJar = false
     
     //accessTransformer = file('my_at.cfg')
 
     runs {
-        client = {
-            // recommended logging data for a userdev environment
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
-            source sourceSets.main
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                examplemod {
+                    source sourceSets.main
+                }
+            }
         }
-        server = {
-            // recommended logging data for a userdev environment
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
-            source sourceSets.main
+
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                examplemod {
+                    source sourceSets.main
+                }
+            }
         }
     }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.13.2-25.0.193'
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 }

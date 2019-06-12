@@ -7,15 +7,15 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MessageKarmaInfo {
+public class KarmaInfoMessage {
 
     public int karma;
 
-    public MessageKarmaInfo(int karma) {
+    public KarmaInfoMessage(int karma) {
         this.karma = karma;
     }
 
-    public MessageKarmaInfo(ByteBuf buf) {
+    public KarmaInfoMessage(ByteBuf buf) {
         this.karma = buf.readInt();
     }
 

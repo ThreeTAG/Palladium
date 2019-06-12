@@ -3,9 +3,9 @@ package com.threetag.threecore.base.block;
 import net.minecraft.block.Block;
 import net.minecraft.util.BlockRenderLayer;
 
-public class BlockVibranium extends Block {
+public class VibraniumBlock extends Block {
 
-    public BlockVibranium(Block.Properties properties) {
+    public VibraniumBlock(Block.Properties properties) {
         super(properties);
     }
 

@@ -5,18 +5,20 @@ import com.google.gson.*;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.base.ThreeCoreBase;
-import com.threetag.threecore.base.recipe.GrinderRecipe;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -32,6 +34,14 @@ public class RecipeUtil {
 
     public static void init() {
         CraftingHelper.register(new ResourceLocation(ThreeCore.MODID, "tag_exists"), new RecipeConditionTagExists());
+    }
+
+    public static <T extends IRecipe<?>> IRecipeType<T> register(final ResourceLocation name) {
+        return Registry.register(Registry.RECIPE_TYPE, name, new IRecipeType<T>() {
+            public String toString() {
+                return name.toString();
+            }
+        });
     }
 
     public static void generateThreeCoreRecipes() {
@@ -203,10 +213,10 @@ public class RecipeUtil {
 
     public static ItemStack parseItemStackExt(JsonObject json, boolean readNBT) {
         if (json.has("tag")) {
-            Tag<Item> tag = ItemTags.getCollection().get(new ResourceLocation(JsonUtils.getString(json, "tag")));
+            Tag<Item> tag = ItemTags.getCollection().get(new ResourceLocation(JSONUtils.getString(json, "tag")));
 
             if (tag == null || tag.getAllElements().size() <= 0)
-                throw new JsonSyntaxException("Unknown tag '" + JsonUtils.getString(json, "tag") + "'");
+                throw new JsonSyntaxException("Unknown tag '" + JSONUtils.getString(json, "tag") + "'");
 
             Item item = Lists.newArrayList(tag.getAllElements()).get(0);
 
@@ -214,13 +224,13 @@ public class RecipeUtil {
                 // Lets hope this works? Needs test
                 try {
                     JsonElement element = json.get("nbt");
-                    NBTTagCompound nbt;
+                    CompoundNBT nbt;
                     if (element.isJsonObject())
                         nbt = JsonToNBT.getTagFromJson(GSON.toJson(element));
                     else
                         nbt = JsonToNBT.getTagFromJson(element.getAsString());
 
-                    NBTTagCompound tmp = new NBTTagCompound();
+                    CompoundNBT tmp = new CompoundNBT();
                     if (nbt.contains("ForgeCaps")) {
                         tmp.put("ForgeCaps", nbt.get("ForgeCaps"));
                         nbt.remove("ForgeCaps");
@@ -228,7 +238,7 @@ public class RecipeUtil {
 
                     tmp.put("tag", nbt);
                     tmp.putString("id", ForgeRegistries.ITEMS.getKey(item).toString());
-                    tmp.putInt("Count", JsonUtils.getInt(json, "count", 1));
+                    tmp.putInt("Count", JSONUtils.getInt(json, "count", 1));
 
                     return ItemStack.read(tmp);
                 } catch (CommandSyntaxException e) {
@@ -236,7 +246,7 @@ public class RecipeUtil {
                 }
             }
 
-            return new ItemStack(item, JsonUtils.getInt(json, "count", 1));
+            return new ItemStack(item, JSONUtils.getInt(json, "count", 1));
         } else {
             return CraftingHelper.getItemStack(json, readNBT);
         }
@@ -296,7 +306,7 @@ public class RecipeUtil {
         if (conditions.size() > 0)
             json.put("conditions", conditions.toArray(new Map[conditions.size()]));
 
-        json.put("type", GrinderRecipe.SERIALIZER.getName().toString());
+        json.put("type", ThreeCoreBase.GRINDER_RECIPE_SERIALIZER.getRegistryName().toString());
         json.put("result", serializeItem(output, false));
         if (byproduct != null) {
             Map<String, Object> byproductMap = serializeItem(byproduct, false);

@@ -7,10 +7,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.threetag.threecore.ThreeCore;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.JSONUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -38,14 +38,14 @@ public class SupporterHandler {
         try {
             JsonObject json = readJsonFromUrl(SUPPORTER_FILE);
 
-            JsonArray array = JsonUtils.getJsonArray(json, "supporters");
+            JsonArray array = JSONUtils.getJsonArray(json, "supporters");
 
             for (int i = 0; i < array.size(); i++) {
                 JsonObject obj = array.get(i).getAsJsonObject();
-                UUID uuid = UUID.fromString(JsonUtils.getString(obj, "uuid"));
-                String name = JsonUtils.getString(obj, "name");
-                NBTTagCompound nbt = JsonToNBT.getTagFromJson(obj.toString());
-                SupporterData data = new SupporterData(uuid, name, JsonUtils.getBoolean(obj, "access", false), nbt);
+                UUID uuid = UUID.fromString(JSONUtils.getString(obj, "uuid"));
+                String name = JSONUtils.getString(obj, "name");
+                CompoundNBT nbt = JsonToNBT.getTagFromJson(obj.toString());
+                SupporterData data = new SupporterData(uuid, name, JSONUtils.getBoolean(obj, "access", false), nbt);
                 REGISTRY.put(uuid, data);
             }
 
@@ -59,14 +59,14 @@ public class SupporterHandler {
     }
 
     private static void addDefaultData() {
-        REGISTRY.put(UUID.fromString("0669d99d-b34d-40fc-a4d8-c7ee963cc842"), new SupporterData(UUID.fromString("0669d99d-b34d-40fc-a4d8-c7ee963cc842"), "TheLucraft", true, new NBTTagCompound()));
-        REGISTRY.put(UUID.fromString("70e36bc3-f6d5-406b-924c-46d5c5f52101"), new SupporterData(UUID.fromString("70e36bc3-f6d5-406b-924c-46d5c5f52101"), "Neon", true, new NBTTagCompound()));
-        REGISTRY.put(UUID.fromString("3fa3dc7d-3de2-4ba1-a0ca-adc57bf0827d"), new SupporterData(UUID.fromString("3fa3dc7d-3de2-4ba1-a0ca-adc57bf0827d"), "Sheriff", true, new NBTTagCompound()));
-        REGISTRY.put(UUID.fromString("fa396f29-9e23-479b-93a5-43e0780f1453"), new SupporterData(UUID.fromString("fa396f29-9e23-479b-93a5-43e0780f1453"), "Nictogen", true, new NBTTagCompound()));
-        REGISTRY.put(UUID.fromString("7400ab2f-0980-453a-a945-0bafe6cba8cc"), new SupporterData(UUID.fromString("7400ab2f-0980-453a-a945-0bafe6cba8cc"), "Spyeedy", true, new NBTTagCompound()));
-        REGISTRY.put(UUID.fromString("13b07ab0-663e-456d-98fa-debdb8a3777b"), new SupporterData(UUID.fromString("13b07ab0-663e-456d-98fa-debdb8a3777b"), "HydroSimp", true, new NBTTagCompound()));
-        REGISTRY.put(UUID.fromString("bc8b891e-5c25-4c9f-ae61-cdfb270f1cc1"), new SupporterData(UUID.fromString("bc8b891e-5c25-4c9f-ae61-cdfb270f1cc1"), "Suffril", true, new NBTTagCompound()));
-        REGISTRY.put(UUID.fromString("ab572785-66d7-4f5f-b9d4-2a3a68fb9d1a"), new SupporterData(UUID.fromString("ab572785-66d7-4f5f-b9d4-2a3a68fb9d1a"), "Honeyluck", true, new NBTTagCompound()));
+        REGISTRY.put(UUID.fromString("0669d99d-b34d-40fc-a4d8-c7ee963cc842"), new SupporterData(UUID.fromString("0669d99d-b34d-40fc-a4d8-c7ee963cc842"), "TheLucraft", true, new CompoundNBT()));
+        REGISTRY.put(UUID.fromString("70e36bc3-f6d5-406b-924c-46d5c5f52101"), new SupporterData(UUID.fromString("70e36bc3-f6d5-406b-924c-46d5c5f52101"), "Neon", true, new CompoundNBT()));
+        REGISTRY.put(UUID.fromString("3fa3dc7d-3de2-4ba1-a0ca-adc57bf0827d"), new SupporterData(UUID.fromString("3fa3dc7d-3de2-4ba1-a0ca-adc57bf0827d"), "Sheriff", true, new CompoundNBT()));
+        REGISTRY.put(UUID.fromString("fa396f29-9e23-479b-93a5-43e0780f1453"), new SupporterData(UUID.fromString("fa396f29-9e23-479b-93a5-43e0780f1453"), "Nictogen", true, new CompoundNBT()));
+        REGISTRY.put(UUID.fromString("7400ab2f-0980-453a-a945-0bafe6cba8cc"), new SupporterData(UUID.fromString("7400ab2f-0980-453a-a945-0bafe6cba8cc"), "Spyeedy", true, new CompoundNBT()));
+        REGISTRY.put(UUID.fromString("13b07ab0-663e-456d-98fa-debdb8a3777b"), new SupporterData(UUID.fromString("13b07ab0-663e-456d-98fa-debdb8a3777b"), "HydroSimp", true, new CompoundNBT()));
+        REGISTRY.put(UUID.fromString("bc8b891e-5c25-4c9f-ae61-cdfb270f1cc1"), new SupporterData(UUID.fromString("bc8b891e-5c25-4c9f-ae61-cdfb270f1cc1"), "Suffril", true, new CompoundNBT()));
+        REGISTRY.put(UUID.fromString("ab572785-66d7-4f5f-b9d4-2a3a68fb9d1a"), new SupporterData(UUID.fromString("ab572785-66d7-4f5f-b9d4-2a3a68fb9d1a"), "Honeyluck", true, new CompoundNBT()));
     }
 
     public static void enableSupporterCheck() {
@@ -76,7 +76,7 @@ public class SupporterHandler {
         }
     }
 
-    public static SupporterData getSupporterData(EntityPlayer player) {
+    public static SupporterData getSupporterData(PlayerEntity player) {
         if (REGISTRY.containsKey(player.getGameProfile().getId())) {
             return REGISTRY.get(player.getGameProfile().getId());
         }
@@ -115,9 +115,9 @@ public class SupporterHandler {
         protected UUID owner;
         protected String name;
         protected boolean modAccess;
-        protected NBTTagCompound nbt;
+        protected CompoundNBT nbt;
 
-        public SupporterData(UUID owner, String name, boolean modAccess, NBTTagCompound nbt) {
+        public SupporterData(UUID owner, String name, boolean modAccess, CompoundNBT nbt) {
             this.owner = owner;
             this.name = name;
             this.modAccess = modAccess;
@@ -136,7 +136,7 @@ public class SupporterHandler {
             return modAccess;
         }
 
-        public NBTTagCompound getNbt() {
+        public CompoundNBT getNbt() {
             return nbt;
         }
     }

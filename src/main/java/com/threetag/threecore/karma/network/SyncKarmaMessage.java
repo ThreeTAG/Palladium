@@ -8,17 +8,17 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MessageSyncKarma {
+public class SyncKarmaMessage {
 
     public int entityId;
     public int karma;
 
-    public MessageSyncKarma(int entityId, int karma) {
+    public SyncKarmaMessage(int entityId, int karma) {
         this.entityId = entityId;
         this.karma = karma;
     }
 
-    public MessageSyncKarma(ByteBuf buf) {
+    public SyncKarmaMessage(ByteBuf buf) {
         this.entityId = buf.readInt();
         this.karma = buf.readInt();
     }

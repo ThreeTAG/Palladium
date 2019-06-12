@@ -6,22 +6,22 @@ import com.threetag.threecore.karma.capability.IKarma;
 import com.threetag.threecore.karma.capability.KarmaCapProvider;
 import com.threetag.threecore.karma.client.KarmaBarRenderer;
 import com.threetag.threecore.karma.command.KarmaCommand;
-import com.threetag.threecore.karma.network.MessageKarmaInfo;
-import com.threetag.threecore.karma.network.MessageSyncKarma;
+import com.threetag.threecore.karma.network.KarmaInfoMessage;
+import com.threetag.threecore.karma.network.SyncKarmaMessage;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.INBTBase;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.monster.SpiderEntity;
+import net.minecraft.entity.monster.ZombiePigmanEntity;
+import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.IntNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
@@ -52,20 +52,20 @@ public class ThreeCoreKarma {
     public void setup(FMLCommonSetupEvent e) {
 
         // Network
-        ThreeCore.registerMessage(MessageSyncKarma.class, MessageSyncKarma::toBytes, MessageSyncKarma::new, MessageSyncKarma::handle);
-        ThreeCore.registerMessage(MessageKarmaInfo.class, MessageKarmaInfo::toBytes, MessageKarmaInfo::new, MessageKarmaInfo::handle);
+        ThreeCore.registerMessage(SyncKarmaMessage.class, SyncKarmaMessage::toBytes, SyncKarmaMessage::new, SyncKarmaMessage::handle);
+        ThreeCore.registerMessage(KarmaInfoMessage.class, KarmaInfoMessage::toBytes, KarmaInfoMessage::new, KarmaInfoMessage::handle);
 
         // Capability
         CapabilityManager.INSTANCE.register(IKarma.class, new Capability.IStorage<IKarma>() {
                     @Nullable
                     @Override
-                    public INBTBase writeNBT(Capability<IKarma> capability, IKarma instance, EnumFacing side) {
-                        return new NBTTagInt(instance.getKarma());
+                    public INBT writeNBT(Capability<IKarma> capability, IKarma instance, Direction side) {
+                        return new IntNBT(instance.getKarma());
                     }
 
                     @Override
-                    public void readNBT(Capability<IKarma> capability, IKarma instance, EnumFacing side, INBTBase nbt) {
-                        instance.setKarma(((NBTTagInt) nbt).getInt());
+                    public void readNBT(Capability<IKarma> capability, IKarma instance, Direction side, INBT nbt) {
+                        instance.setKarma(((IntNBT) nbt).getInt());
                     }
                 },
                 () -> new CapabilityKarma());
@@ -78,7 +78,7 @@ public class ThreeCoreKarma {
 
     @SubscribeEvent
     public void onAttachCapabilities(AttachCapabilitiesEvent<Entity> e) {
-        if (e.getObject() instanceof EntityPlayer) {
+        if (e.getObject() instanceof PlayerEntity) {
             if (!e.getObject().getCapability(CapabilityKarma.KARMA).isPresent()) {
                 e.addCapability(new ResourceLocation(ThreeCore.MODID, "karma"), new KarmaCapProvider());
             }
@@ -94,16 +94,16 @@ public class ThreeCoreKarma {
 
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent e) {
-        if (e.getEntity() instanceof EntityPlayerMP) {
-            e.getEntity().getCapability(CapabilityKarma.KARMA).ifPresent((k) -> ThreeCore.NETWORK_CHANNEL.sendTo(new MessageSyncKarma(e.getEntity().getEntityId(), k.getKarma()), ((EntityPlayerMP) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT));
+        if (e.getEntity() instanceof ServerPlayerEntity) {
+            e.getEntity().getCapability(CapabilityKarma.KARMA).ifPresent((k) -> ThreeCore.NETWORK_CHANNEL.sendTo(new SyncKarmaMessage(e.getEntity().getEntityId(), k.getKarma()), ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT));
         }
     }
 
     @SubscribeEvent
     public void onDeath(LivingDeathEvent e) {
-        if (e.getSource() != null && e.getSource().getTrueSource() != null && e.getSource().getTrueSource() instanceof EntityPlayer) {
-            EntityPlayer attacker = (EntityPlayer) e.getSource().getTrueSource();
-            EntityLivingBase killed = e.getEntityLiving();
+        if (e.getSource() != null && e.getSource().getTrueSource() != null && e.getSource().getTrueSource() instanceof PlayerEntity) {
+            PlayerEntity attacker = (PlayerEntity) e.getSource().getTrueSource();
+            LivingEntity killed = e.getEntityLiving();
 
             if (isMonster(killed))
                 CapabilityKarma.addKarma(attacker, 2);
@@ -114,27 +114,27 @@ public class ThreeCoreKarma {
                     else
                         CapabilityKarma.addKarma(attacker, +2);
                 });
-            } else if (killed instanceof EntityVillager)
+            } else if (killed instanceof VillagerEntity)
                 CapabilityKarma.addKarma(attacker, -2);
-            else if (killed instanceof EntityTameable && ((EntityTameable) killed).isTamed())
+            else if (killed instanceof TameableEntity && ((TameableEntity) killed).isTamed())
                 CapabilityKarma.addKarma(attacker, -2);
-            else if (killed instanceof EntityWither)
+            else if (killed instanceof WitherEntity)
                 CapabilityKarma.addKarma(attacker, 15);
-            else if (killed instanceof EntityDragon)
+            else if (killed instanceof EnderDragonEntity)
                 CapabilityKarma.addKarma(attacker, 30);
         }
     }
 
     @SubscribeEvent
     public void onDamage(LivingHurtEvent e) {
-        if (e.getAmount() > 0 && e.getSource() != null && e.getSource().getTrueSource() != null && e.getSource().getTrueSource() instanceof EntityPlayer) {
-            EntityPlayer attacker = (EntityPlayer) e.getSource().getTrueSource();
-            EntityLivingBase attacked = e.getEntityLiving();
+        if (e.getAmount() > 0 && e.getSource() != null && e.getSource().getTrueSource() != null && e.getSource().getTrueSource() instanceof PlayerEntity) {
+            PlayerEntity attacker = (PlayerEntity) e.getSource().getTrueSource();
+            LivingEntity attacked = e.getEntityLiving();
 
             // TODO only passive pig zombies
-            if (attacked instanceof EntityPigZombie)
+            if (attacked instanceof ZombiePigmanEntity)
                 CapabilityKarma.addKarma(attacker, -1);
-            else if (attacked instanceof EntitySpider && attacked.getBrightness() >= 0.5F)
+            else if (attacked instanceof SpiderEntity && attacked.getBrightness() >= 0.5F)
                 CapabilityKarma.addKarma(attacker, -1);
         }
     }
@@ -144,9 +144,9 @@ public class ThreeCoreKarma {
         e.getTamer().getCapability(CapabilityKarma.KARMA).ifPresent((k) -> CapabilityKarma.addKarma(e.getTamer(), 1));
     }
 
-    public static boolean isMonster(EntityLivingBase entity) {
-        for (Biome.SpawnListEntry entry : entity.world.getBiome(entity.getPosition()).getSpawns(EnumCreatureType.MONSTER)) {
-            if (entry.entityType.getEntityClass() == entity.getClass()) {
+    public static boolean isMonster(LivingEntity entity) {
+        for (Biome.SpawnListEntry entry : entity.world.getBiome(entity.getPosition()).getSpawns(EntityClassification.MONSTER)) {
+            if (entry.entityType == entity.getType()) {
                 return true;
             }
         }

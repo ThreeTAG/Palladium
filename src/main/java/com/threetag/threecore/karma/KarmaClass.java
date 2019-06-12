@@ -1,7 +1,7 @@
 package com.threetag.threecore.karma;
 
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public enum KarmaClass {
 
@@ -43,7 +43,7 @@ public enum KarmaClass {
     }
 
     public ITextComponent getDisplayName() {
-        return new TextComponentTranslation("karma.class." + this.getName());
+        return new TranslationTextComponent("karma.class." + this.getName());
     }
 
     public static KarmaClass fromKarma(int karma) {

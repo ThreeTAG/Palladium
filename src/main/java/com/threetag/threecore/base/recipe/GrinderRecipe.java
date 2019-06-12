@@ -2,24 +2,29 @@ package com.threetag.threecore.base.recipe;
 
 import com.google.gson.JsonObject;
 import com.threetag.threecore.ThreeCore;
+import com.threetag.threecore.base.ThreeCoreBase;
 import com.threetag.threecore.util.recipe.RecipeUtil;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.RecipeType;
 
-public class GrinderRecipe implements IRecipe {
+public class GrinderRecipe implements IRecipe<IInventory> {
 
-    public static final RecipeType<GrinderRecipe> RECIPE_TYPE = RecipeType.get(new ResourceLocation("grinding"), GrinderRecipe.class);
-    public static final IRecipeSerializer<GrinderRecipe> SERIALIZER = new Serializer();
+    public static final IRecipeType<GrinderRecipe> RECIPE_TYPE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(ThreeCore.MODID, "grinder"), new IRecipeType<GrinderRecipe>() {
+        public String toString() {
+            return "grinder";
+        }
+    });
 
     private final ResourceLocation id;
     private final String group;
@@ -39,6 +44,11 @@ public class GrinderRecipe implements IRecipe {
         this.byproductChance = byproductChance;
         this.experience = experience;
         this.energy = energy;
+    }
+
+    @Override
+    public ItemStack getIcon() {
+        return new ItemStack(ThreeCoreBase.GRINDER);
     }
 
     @Override
@@ -95,41 +105,41 @@ public class GrinderRecipe implements IRecipe {
     }
 
     @Override
-    public RecipeType<? extends IRecipe> getType() {
-        return RECIPE_TYPE;
+    public IRecipeSerializer<GrinderRecipe> getSerializer() {
+        return ThreeCoreBase.GRINDER_RECIPE_SERIALIZER;
     }
 
     @Override
-    public IRecipeSerializer<GrinderRecipe> getSerializer() {
-        return SERIALIZER;
+    public IRecipeType<GrinderRecipe> getType() {
+        return RECIPE_TYPE;
     }
 
-    public static class Serializer implements IRecipeSerializer<GrinderRecipe> {
+    public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<GrinderRecipe> {
 
         public static final ResourceLocation NAME = new ResourceLocation(ThreeCore.MODID, "grinding");
 
         @Override
         public GrinderRecipe read(ResourceLocation recipeId, JsonObject json) {
-            String group = JsonUtils.getString(json, "group", "");
+            String group = JSONUtils.getString(json, "group", "");
             Ingredient ingredient;
-            if (JsonUtils.isJsonArray(json, "ingredient")) {
-                ingredient = Ingredient.deserialize(JsonUtils.getJsonArray(json, "ingredient"));
+            if (JSONUtils.isJsonArray(json, "ingredient")) {
+                ingredient = Ingredient.deserialize(JSONUtils.getJsonArray(json, "ingredient"));
             } else {
-                ingredient = Ingredient.deserialize(JsonUtils.getJsonObject(json, "ingredient"));
+                ingredient = Ingredient.deserialize(JSONUtils.getJsonObject(json, "ingredient"));
             }
 
-            float xp = JsonUtils.getFloat(json, "experience", 0.0F);
-            int energy = JsonUtils.getInt(json, "energy");
+            float xp = JSONUtils.getFloat(json, "experience", 0.0F);
+            int energy = JSONUtils.getInt(json, "energy");
 
             ItemStack byproduct = ItemStack.EMPTY;
             float byproductChance = 0F;
 
-            if (JsonUtils.hasField(json, "byproduct")) {
-                byproduct = RecipeUtil.parseItemStackExt(JsonUtils.getJsonObject(json, "byproduct"), true);
-                byproductChance = JsonUtils.getFloat(JsonUtils.getJsonObject(json, "byproduct"), "chance", 1F);
+            if (JSONUtils.hasField(json, "byproduct")) {
+                byproduct = RecipeUtil.parseItemStackExt(JSONUtils.getJsonObject(json, "byproduct"), true);
+                byproductChance = JSONUtils.getFloat(JSONUtils.getJsonObject(json, "byproduct"), "chance", 1F);
             }
 
-            return new GrinderRecipe(recipeId, group, ingredient, RecipeUtil.parseItemStackExt(JsonUtils.getJsonObject(json, "result"), true), byproduct, byproductChance, xp, energy);
+            return new GrinderRecipe(recipeId, group, ingredient, RecipeUtil.parseItemStackExt(JSONUtils.getJsonObject(json, "result"), true), byproduct, byproductChance, xp, energy);
         }
 
         @Override
@@ -155,10 +165,6 @@ public class GrinderRecipe implements IRecipe {
             buffer.writeVarInt(recipe.energy);
         }
 
-        @Override
-        public ResourceLocation getName() {
-            return NAME;
-        }
     }
 
 }
