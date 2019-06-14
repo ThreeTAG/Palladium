@@ -1,7 +1,6 @@
 {
-    "parent": "threecore:block/glow_layer",
+    "parent": "block/cube_all",
     "textures": {
-        "base": "threecore:block/vibranium/storage_block_0",
-		"glow": "threecore:block/vibranium/storage_block_1"
+        "all": "threecore:block/vibranium/storage_block"
     }
 }

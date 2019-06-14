@@ -3,6 +3,8 @@ package com.threetag.threecore.base.inventory;
 import com.threetag.threecore.base.ThreeCoreBase;
 import com.threetag.threecore.base.recipe.GrinderRecipe;
 import com.threetag.threecore.base.tileentity.GrinderTileEntity;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.client.renderer.tileentity.BellTileEntityRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftResultInventory;
