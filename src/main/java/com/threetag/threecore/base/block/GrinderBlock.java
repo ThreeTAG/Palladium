@@ -19,12 +19,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
+import sun.security.provider.SHA;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -33,6 +38,8 @@ public class GrinderBlock extends ContainerBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
+    protected static final VoxelShape INSIDE = makeCuboidShape(2.0D, 8.0D, 2.0D, 14.0D, 16.0D, 14.0D);
+    protected static final VoxelShape SHAPE = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), INSIDE, IBooleanFunction.ONLY_FIRST);
 
     public GrinderBlock(Block.Properties properties) {
         super(properties);
@@ -98,26 +105,39 @@ public class GrinderBlock extends ContainerBlock {
     public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
         if (state.get(LIT)) {
             double x = (double) pos.getX() + 0.5D;
-            double y = (double) pos.getY();
+            double y = (double) pos.getY() + 0.5D;
             double z = (double) pos.getZ() + 0.5D;
+
             if (random.nextDouble() < 0.4D) {
                 world.playSound(x, y, z, ThreeCoreSounds.GRINDER, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             }
 
-            Direction facing = state.get(FACING);
-            Direction.Axis axis = facing.getAxis();
-            double d2 = random.nextDouble() * 0.6D - 0.3D;
-            double d3 = axis == Direction.Axis.X ? (double) facing.getXOffset() * 0.52D : d2;
-            double d4 = random.nextDouble() * 6.0D / 16.0D;
-            double d5 = axis == Direction.Axis.Z ? (double) facing.getZOffset() * 0.52D : d2;
-            world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.COBBLESTONE.getDefaultState()), x + d3, y + d4, z + d5, 0.0D, 0.0D, 0.0D);
-            world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.SAND.getDefaultState()), x + d3, y + d4, z + d5, 0.0D, 0.0D, 0.0D);
+            double x2 = random.nextDouble() * 0.8D - 0.4D;
+            double y2 = random.nextDouble() * 0.8D;
+            double z2 = random.nextDouble() * 0.8D - 0.4D;
+            world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.COBBLESTONE.getDefaultState()), x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
+            world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.SAND.getDefaultState()), x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
         }
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_) {
+        return SHAPE;
+    }
+
+    @Override
+    public VoxelShape getRaytraceShape(BlockState p_199600_1_, IBlockReader p_199600_2_, BlockPos p_199600_3_) {
+        return INSIDE;
     }
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
+    }
+
+    @Override
+    public BlockRenderLayer getRenderLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
@@ -140,4 +160,5 @@ public class GrinderBlock extends ContainerBlock {
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new GrinderTileEntity();
     }
+
 }
