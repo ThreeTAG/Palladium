@@ -3,8 +3,6 @@ package com.threetag.threecore.base.inventory;
 import com.threetag.threecore.base.ThreeCoreBase;
 import com.threetag.threecore.base.recipe.GrinderRecipe;
 import com.threetag.threecore.base.tileentity.GrinderTileEntity;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.client.renderer.tileentity.BellTileEntityRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftResultInventory;
@@ -37,7 +35,7 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
     public final PlayerInventory inventoryPlayer;
     public final GrinderTileEntity grinderTileEntity;
     private final IIntArray intArray;
-    public RecipeWrapper invWrapper;
+    public RecipeWrapper recipeWrapper;
     protected final World world;
 
     public GrinderContainer(int id, PlayerInventory inventoryPlayer) {
@@ -48,9 +46,9 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
         super(ThreeCoreBase.GRINDER_CONTAINER, id);
         this.inventoryPlayer = inventoryPlayer;
         this.grinderTileEntity = grinderTileEntity;
-        this.grinderTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler -> invWrapper = new RecipeWrapper((IItemHandlerModifiable) itemHandler)));
+        this.grinderTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler -> recipeWrapper = new RecipeWrapper((IItemHandlerModifiable) itemHandler)));
         this.world = inventoryPlayer.player.world;
-        func_216962_a(this.invWrapper, 4);
+        func_216962_a(this.recipeWrapper, 4);
         func_216959_a(intArray, 4);
         this.intArray = intArray;
         this.func_216961_a(this.intArray);
@@ -131,32 +129,6 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
         return this.world.getRecipeManager().getRecipe(GrinderRecipe.RECIPE_TYPE, new Inventory(new ItemStack[]{stack}), this.grinderTileEntity.getWorld()).isPresent();
     }
 
-    @Override
-    public void detectAndSendChanges() {
-        super.detectAndSendChanges();
-
-//        if (!grinderTileEntity.getWorld().isRemote) {
-//            if (grinderTileEntity.progress != grinderTileEntity.clientProgress || grinderTileEntity.progressMax != grinderTileEntity.clientProgressMax || grinderTileEntity.getEnergy() != grinderTileEntity.clientEnergy) {
-//                grinderTileEntity.clientEnergy = grinderTileEntity.getEnergy();
-//                grinderTileEntity.clientProgress = grinderTileEntity.progress;
-//                grinderTileEntity.clientProgressMax = grinderTileEntity.progressMax;
-
-        // TODO container listener syncing
-//                for (IContainerListener listener : this.list) {
-//                    if (listener instanceof ServerPlayerEntity) {
-//                        ServerPlayerEntity player = (ServerPlayerEntity) listener;
-//                        CompoundNBT nbt = new CompoundNBT();
-//                        nbt.putInt("Progress", grinderTileEntity.progress);
-//                        nbt.putInt("ProgressMax", grinderTileEntity.progressMax);
-//                        nbt.putInt("Energy", grinderTileEntity.getEnergy());
-//                        nbt.putInt("EnergyMax", grinderTileEntity.getMaxEnergy());
-//                        ThreeCore.NETWORK_CHANNEL.sendTo(new MessageSyncTileEntity(nbt), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
-//                    }
-//                }
-//            }
-//        }
-    }
-
     @OnlyIn(Dist.CLIENT)
     public int getProgressScaled(int width) {
         int progress = this.intArray.get(0);
@@ -209,7 +181,7 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
 
     @Override
     public boolean matches(IRecipe recipe) {
-        return recipe.matches(this.invWrapper, this.inventoryPlayer.player.world);
+        return recipe.matches(this.recipeWrapper, this.inventoryPlayer.player.world);
     }
 
     @Override

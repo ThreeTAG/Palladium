@@ -5,8 +5,6 @@ import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.util.energy.EnergyUtil;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.AbstractFurnaceContainer;
-import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 

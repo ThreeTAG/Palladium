@@ -16,7 +16,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraftforge.common.crafting.RecipeType;
 
 public class GrinderRecipe implements IRecipe<IInventory> {
 
