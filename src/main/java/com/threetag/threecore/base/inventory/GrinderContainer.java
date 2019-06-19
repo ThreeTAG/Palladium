@@ -126,7 +126,7 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
     }
 
     private boolean canWork(ItemStack stack) {
-        return this.world.getRecipeManager().getRecipe(GrinderRecipe.RECIPE_TYPE, new Inventory(new ItemStack[]{stack}), this.grinderTileEntity.getWorld()).isPresent();
+        return this.world.getRecipeManager().getRecipe(GrinderRecipe.RECIPE_TYPE, new Inventory(new ItemStack[]{ItemStack.EMPTY, stack}), this.grinderTileEntity.getWorld()).isPresent();
     }
 
     @OnlyIn(Dist.CLIENT)
