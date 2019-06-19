@@ -1,9 +1,11 @@
 package com.threetag.threecore.base.block;
 
 import com.threetag.threecore.base.tileentity.GrinderTileEntity;
+import com.threetag.threecore.util.TCDamageSources;
 import com.threetag.threecore.util.block.BlockUtil;
 import com.threetag.threecore.util.sounds.ThreeCoreSounds;
 import net.minecraft.block.*;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -117,6 +119,22 @@ public class GrinderBlock extends ContainerBlock {
             double z2 = random.nextDouble() * 0.8D - 0.4D;
             world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.COBBLESTONE.getDefaultState()), x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
             world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.SAND.getDefaultState()), x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
+        }
+    }
+
+    @Override
+    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+        float y = (float)pos.getY() + 0.5F;
+        if (!world.isRemote && entity.getBoundingBox().minY <= (double)y) {
+            if(state.get(LIT)) {
+                entity.attackEntityFrom(TCDamageSources.GRINDER, 2F);
+            } else {
+                double xSpeed = Math.abs(entity.posX - entity.lastTickPosX);
+                double zSpeed = Math.abs(entity.posZ - entity.lastTickPosZ);
+                if (xSpeed >= 0.003000000026077032D || zSpeed >= 0.003000000026077032D) {
+                    entity.attackEntityFrom(TCDamageSources.GRINDER, 1.0F);
+                }
+            }
         }
     }
 
