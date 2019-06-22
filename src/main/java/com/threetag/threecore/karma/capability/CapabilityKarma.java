@@ -1,10 +1,10 @@
 package com.threetag.threecore.karma.capability;
 
 import com.threetag.threecore.ThreeCore;
-import com.threetag.threecore.karma.network.MessageKarmaInfo;
-import com.threetag.threecore.karma.network.MessageSyncKarma;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import com.threetag.threecore.karma.network.KarmaInfoMessage;
+import com.threetag.threecore.karma.network.SyncKarmaMessage;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -30,26 +30,26 @@ public class CapabilityKarma implements IKarma {
         this.karma = MathHelper.clamp(karma, MIN, MAX);
     }
 
-    public static void setKarma(EntityPlayer player, int karma) {
+    public static void setKarma(PlayerEntity player, int karma) {
         player.getCapability(CapabilityKarma.KARMA).ifPresent((k) -> {
             k.setKarma(karma);
-            if (player instanceof EntityPlayerMP)
-                ThreeCore.NETWORK_CHANNEL.sendTo(new MessageSyncKarma(player.getEntityId(), k.getKarma()), ((EntityPlayerMP) player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+            if (player instanceof ServerPlayerEntity)
+                ThreeCore.NETWORK_CHANNEL.sendTo(new SyncKarmaMessage(player.getEntityId(), k.getKarma()), ((ServerPlayerEntity) player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
         });
     }
 
-    public static void addKarma(EntityPlayer player, int karma) {
+    public static void addKarma(PlayerEntity player, int karma) {
         addKarma(player, karma, true);
     }
 
-    public static void addKarma(EntityPlayer player, int karma, boolean toast) {
+    public static void addKarma(PlayerEntity player, int karma, boolean toast) {
         player.getCapability(CapabilityKarma.KARMA).ifPresent((k) -> {
             k.setKarma(k.getKarma() + karma);
-            if (player instanceof EntityPlayerMP) {
-                ThreeCore.NETWORK_CHANNEL.sendTo(new MessageSyncKarma(player.getEntityId(), k.getKarma()), ((EntityPlayerMP) player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+            if (player instanceof ServerPlayerEntity) {
+                ThreeCore.NETWORK_CHANNEL.sendTo(new SyncKarmaMessage(player.getEntityId(), k.getKarma()), ((ServerPlayerEntity) player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
 
                 if (toast)
-                    ThreeCore.NETWORK_CHANNEL.sendTo(new MessageKarmaInfo(karma), ((EntityPlayerMP) player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                    ThreeCore.NETWORK_CHANNEL.sendTo(new KarmaInfoMessage(karma), ((ServerPlayerEntity) player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             }
         });
     }

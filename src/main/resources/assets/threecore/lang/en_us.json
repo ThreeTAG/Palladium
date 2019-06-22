@@ -140,6 +140,9 @@
   
   "superpower.toast.title": "New superpower!",
   
+  "death.attack.grinder": "%1$s was grinded to death by a grinder",
+  "death.attack.grinder.player": "%1$s was grinded to death by a grinder whilst trying to escape %2$s",
+  
   "threecore.util.energy_display": "%,d %s",
   "threecore.util.energy_storage_display": "%,d / %,d %s"
 }

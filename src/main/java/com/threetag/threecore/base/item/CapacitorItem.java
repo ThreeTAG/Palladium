@@ -6,8 +6,8 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
@@ -24,11 +24,11 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ItemCapacitor extends Item {
+public class CapacitorItem extends Item {
 
     int capacity, maxTransfer;
 
-    public ItemCapacitor(Properties properties, int capacity, int maxTransfer) {
+    public CapacitorItem(Properties properties, int capacity, int maxTransfer) {
         super(properties);
         this.capacity = capacity;
         this.maxTransfer = maxTransfer;
@@ -52,7 +52,7 @@ public class ItemCapacitor extends Item {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
         return new EnergyItemCapabilityProvider(stack, this.capacity, this.maxTransfer);
     }
 
@@ -93,7 +93,7 @@ public class ItemCapacitor extends Item {
 
         @Nonnull
         @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable EnumFacing side) {
+        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
             return cap == CapabilityEnergy.ENERGY ? LazyOptional.of(() -> (T) this.energyStorage) : LazyOptional.empty();
         }
     }
