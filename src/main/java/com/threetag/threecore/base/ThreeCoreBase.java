@@ -81,9 +81,13 @@ public class ThreeCoreBase {
     public static final IRecipeSerializer<GrinderRecipe> GRINDER_RECIPE_SERIALIZER = null;
 
     // Misc Items
+    @ObjectHolder("capacitor")
     public static Item CAPACITOR;
+    @ObjectHolder("advanced_capacitor")
     public static Item ADVANCED_CAPACITOR;
+    @ObjectHolder("circuit")
     public static Item CIRCUIT;
+    @ObjectHolder("advanced_circuit")
     public static Item ADVANCED_CIRCUIT;
 
     // Storage Blocks
@@ -250,10 +254,10 @@ public class ThreeCoreBase {
         IForgeRegistry<Item> registry = e.getRegistry();
 
         registry.register(makeItem(GRINDER));
-        registry.register(CAPACITOR = new CapacitorItem(new Item.Properties().group(ITEM_GROUP).maxStackSize(1), 40000, 100).setRegistryName(ThreeCore.MODID, "capacitor"));
-        registry.register(ADVANCED_CAPACITOR = new CapacitorItem(new Item.Properties().group(ITEM_GROUP).maxStackSize(1), 100000, 200).setRegistryName(ThreeCore.MODID, "advanced_capacitor"));
-        registry.register(CIRCUIT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "circuit"));
-        registry.register(ADVANCED_CIRCUIT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
+        registry.register(new CapacitorItem(new Item.Properties().group(ITEM_GROUP).maxStackSize(1), 40000, 100).setRegistryName(ThreeCore.MODID, "capacitor"));
+        registry.register(new CapacitorItem(new Item.Properties().group(ITEM_GROUP).maxStackSize(1), 100000, 200).setRegistryName(ThreeCore.MODID, "advanced_capacitor"));
+        registry.register(new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "circuit"));
+        registry.register(new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
 
         registry.register(makeItem(COPPER_BLOCK));
         registry.register(makeItem(TIN_BLOCK));
