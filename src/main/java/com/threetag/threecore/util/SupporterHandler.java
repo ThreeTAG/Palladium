@@ -6,7 +6,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.threetag.threecore.ThreeCore;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
@@ -105,7 +104,7 @@ public class SupporterHandler {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onWorldJoin(EntityJoinWorldEvent e) {
-        if (CHECK && e.getEntity() == Minecraft.getInstance().player && (getSupporterData(Minecraft.getInstance().player) == null || !getSupporterData(Minecraft.getInstance().player).modAccess)) {
+        if (CHECK && e.getEntity() == net.minecraft.client.Minecraft.getInstance().player && (getSupporterData(net.minecraft.client.Minecraft.getInstance().player) == null || !getSupporterData(net.minecraft.client.Minecraft.getInstance().player).modAccess)) {
             throw new RuntimeException("You are not allowed to play this version of the mod!");
         }
     }

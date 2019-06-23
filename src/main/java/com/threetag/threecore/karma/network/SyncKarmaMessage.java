@@ -2,7 +2,6 @@ package com.threetag.threecore.karma.network;
 
 import com.threetag.threecore.karma.capability.CapabilityKarma;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -30,7 +29,7 @@ public class SyncKarmaMessage {
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            Entity entity = Minecraft.getInstance().world.getEntityByID(this.entityId);
+            Entity entity = net.minecraft.client.Minecraft.getInstance().world.getEntityByID(this.entityId);
 
             if (entity != null) {
                 entity.getCapability(CapabilityKarma.KARMA).ifPresent((k) -> k.setKarma(this.karma));
