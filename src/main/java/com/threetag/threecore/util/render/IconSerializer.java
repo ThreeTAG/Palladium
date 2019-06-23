@@ -3,8 +3,8 @@ package com.threetag.threecore.util.render;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Map;
@@ -28,7 +28,7 @@ public class IconSerializer {
     }
 
     public static IIcon deserialize(JsonObject jsonObject) {
-        ResourceLocation s = new ResourceLocation(JsonUtils.getString(jsonObject, "type"));
+        ResourceLocation s = new ResourceLocation(JSONUtils.getString(jsonObject, "type"));
         IIconSerializer<?> serializer = REGISTRY.get(s);
         if (serializer == null) {
             throw new JsonSyntaxException("Invalid or unsupported icon type '" + s + "'");
@@ -37,7 +37,7 @@ public class IconSerializer {
         }
     }
 
-    public static IIcon deserialize(NBTTagCompound nbt) {
+    public static IIcon deserialize(CompoundNBT nbt) {
         ResourceLocation s = new ResourceLocation(nbt.getString("Type"));
         IIconSerializer<?> serializer = REGISTRY.get(s);
         if (serializer == null) {

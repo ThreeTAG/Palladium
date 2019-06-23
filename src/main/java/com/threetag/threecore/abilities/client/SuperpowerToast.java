@@ -1,9 +1,9 @@
 package com.threetag.threecore.abilities.client;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.threetag.threecore.util.render.IIcon;
-import net.minecraft.client.gui.toasts.GuiToast;
+import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.client.gui.toasts.IToast;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;
 
@@ -18,10 +18,10 @@ public class SuperpowerToast implements IToast {
     }
 
     @Override
-    public Visibility draw(GuiToast guiToast, long l) {
+    public Visibility draw(ToastGui guiToast, long l) {
         guiToast.getMinecraft().getTextureManager().bindTexture(AbilityBarRenderer.TEXTURE);
         GlStateManager.color3f(1.0F, 1.0F, 1.0F);
-        guiToast.drawTexturedModalRect(0, 0, 0, 224, 160, 32);
+        guiToast.blit(0, 0, 0, 224, 160, 32);
 
         guiToast.getMinecraft().fontRenderer.drawString(I18n.format("superpower.toast.title"), 30.0F, 7.0F, 0xff7b0000);
         guiToast.getMinecraft().fontRenderer.drawString(this.name.getFormattedText(), 30.0F, 18.0F, -16777216);

@@ -1,31 +1,31 @@
 package com.threetag.threecore.abilities.data;
 
 import com.google.gson.JsonObject;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.text.ITextComponent;
 
-public class ThreeDataTextComponent extends ThreeData<ITextComponent>
+public class TextComponentThreeData extends ThreeData<ITextComponent>
 {
 
-    public ThreeDataTextComponent(String key) {
+    public TextComponentThreeData(String key) {
         super(key);
     }
 
     @Override
     public ITextComponent parseValue(JsonObject jsonObject, ITextComponent defaultValue) {
-        if (!JsonUtils.hasField(jsonObject, this.jsonKey))
+        if (!JSONUtils.hasField(jsonObject, this.jsonKey))
             return defaultValue;
-        return ITextComponent.Serializer.fromJson(JsonUtils.getJsonObject(jsonObject, this.jsonKey).toString());
+        return ITextComponent.Serializer.fromJson(JSONUtils.getJsonObject(jsonObject, this.jsonKey).toString());
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt, ITextComponent value) {
+    public void writeToNBT(CompoundNBT nbt, ITextComponent value) {
         nbt.putString(this.key, ITextComponent.Serializer.toJson(value));
     }
 
     @Override
-    public ITextComponent readFromNBT(NBTTagCompound nbt, ITextComponent defaultValue) {
+    public ITextComponent readFromNBT(CompoundNBT nbt, ITextComponent defaultValue) {
         if (!nbt.contains(this.key))
             return defaultValue;
         return ITextComponent.Serializer.fromJson(nbt.getString(this.key));

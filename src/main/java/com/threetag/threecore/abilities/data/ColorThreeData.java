@@ -2,29 +2,29 @@ package com.threetag.threecore.abilities.data;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.JSONUtils;
 
 import java.awt.*;
 
-public class ThreeDataColor extends ThreeData<Color>
+public class ColorThreeData extends ThreeData<Color>
 {
 
-    public ThreeDataColor(String key) {
+    public ColorThreeData(String key) {
         super(key);
     }
 
     @Override
     public Color parseValue(JsonObject jsonObject, Color defaultValue) {
-        if (!JsonUtils.hasField(jsonObject, this.jsonKey))
+        if (!JSONUtils.hasField(jsonObject, this.jsonKey))
             return defaultValue;
-        JsonArray array = JsonUtils.getJsonArray(jsonObject, this.jsonKey);
+        JsonArray array = JSONUtils.getJsonArray(jsonObject, this.jsonKey);
         return new Color(array.get(0).getAsInt(), array.get(1).getAsInt(), array.get(2).getAsInt());
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt, Color value) {
-        NBTTagCompound tag = new NBTTagCompound();
+    public void writeToNBT(CompoundNBT nbt, Color value) {
+        CompoundNBT tag = new CompoundNBT();
         tag.putInt("Red", value.getRed());
         tag.putInt("Green", value.getGreen());
         tag.putInt("Blue", value.getBlue());
@@ -32,7 +32,7 @@ public class ThreeDataColor extends ThreeData<Color>
     }
 
     @Override
-    public Color readFromNBT(NBTTagCompound nbt, Color defaultValue) {
+    public Color readFromNBT(CompoundNBT nbt, Color defaultValue) {
         if (!nbt.contains(this.key))
             return defaultValue;
         return new Color(nbt.getCompound(this.key).getInt("Red"), nbt.getCompound(this.key).getInt("Green"), nbt.getCompound(this.key).getInt("Blue"));

@@ -4,8 +4,8 @@ import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.AbilityMap;
 import com.threetag.threecore.abilities.IAbilityContainer;
 import com.threetag.threecore.abilities.IAbilityProvider;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ItemAbilityContainer implements IAbilityContainer {
 
     public final ItemStack stack;
-    public EntityEquipmentSlot slot;
+    public EquipmentSlotType slot;
     protected final AbilityMap map;
 
     public ItemAbilityContainer(ItemStack stack) {
@@ -28,8 +28,8 @@ public class ItemAbilityContainer implements IAbilityContainer {
     }
 
     @Override
-    public void tick(EntityLivingBase entity) {
-        for (EntityEquipmentSlot slots : EntityEquipmentSlot.values()) {
+    public void tick(LivingEntity entity) {
+        for (EquipmentSlotType slots : EquipmentSlotType.values()) {
             if (entity.getItemStackFromSlot(slots) == this.stack) {
                 this.slot = slots;
                 break;

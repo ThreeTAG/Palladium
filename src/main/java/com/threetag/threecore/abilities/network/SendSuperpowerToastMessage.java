@@ -10,17 +10,17 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MessageSendSuperpowerToast {
+public class SendSuperpowerToastMessage {
 
     public ITextComponent name;
     public IIcon icon;
 
-    public MessageSendSuperpowerToast(ITextComponent name, IIcon icon) {
+    public SendSuperpowerToastMessage(ITextComponent name, IIcon icon) {
         this.name = name;
         this.icon = icon;
     }
 
-    public MessageSendSuperpowerToast(PacketBuffer buffer) {
+    public SendSuperpowerToastMessage(PacketBuffer buffer) {
         this.name = buffer.readTextComponent();
         this.icon = IconSerializer.deserialize(buffer.readCompoundTag());
     }

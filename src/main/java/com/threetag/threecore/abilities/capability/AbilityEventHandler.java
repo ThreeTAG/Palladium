@@ -1,17 +1,17 @@
 package com.threetag.threecore.abilities.capability;
 
 import com.threetag.threecore.ThreeCore;
-import com.threetag.threecore.abilities.AbilityFlight;
-import com.threetag.threecore.abilities.AbilityHealing;
+import com.threetag.threecore.abilities.FlightAbility;
+import com.threetag.threecore.abilities.HealingAbility;
 import com.threetag.threecore.abilities.AbilityHelper;
 import com.threetag.threecore.abilities.IAbilityContainer;
-import com.threetag.threecore.abilities.condition.ConditionToggle;
-import com.threetag.threecore.abilities.network.MessageSendPlayerAbilityContainer;
+import com.threetag.threecore.abilities.condition.ToggleCondition;
+import com.threetag.threecore.abilities.network.SendPlayerAbilityContainerMessage;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -25,17 +25,19 @@ import net.minecraftforge.fml.network.NetworkDirection;
 public class AbilityEventHandler {
 
     public static boolean canUseAbilities(Entity entity) {
-        return entity instanceof EntityLivingBase;
+        return entity instanceof LivingEntity;
     }
 
     @SubscribeEvent
-    public void onClick(PlayerInteractEvent e) {
+    public void onClick(PlayerInteractEvent.RightClickItem e) {
         if (!e.getEntity().world.isRemote && e.getItemStack().getItem() == Items.STICK) {
+            System.out.println("mal schauen");
             e.getEntityPlayer().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(a -> {
                 a.clearAbilities(e.getEntityLiving());
-                a.addAbility(e.getEntityLiving(), "healing", new AbilityHealing());
-                AbilityFlight flight = new AbilityFlight();
-                flight.getConditionManager().addCondition(new ConditionToggle(flight));
+                System.out.println("awd");
+                a.addAbility(e.getEntityLiving(), "healing", new HealingAbility());
+                FlightAbility flight = new FlightAbility();
+                flight.getConditionManager().addCondition(new ToggleCondition(flight));
                 a.addAbility(e.getEntityLiving(), "flight", flight);
             });
         }
@@ -63,10 +65,10 @@ public class AbilityEventHandler {
 
     @SubscribeEvent
     public void onJoin(EntityJoinWorldEvent e) {
-        if (e.getEntity() instanceof EntityPlayerMP) {
+        if (e.getEntity() instanceof ServerPlayerEntity) {
             e.getEntity().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent((a) -> {
                 if (a instanceof CapabilityAbilityContainer)
-                    ThreeCore.NETWORK_CHANNEL.sendTo(new MessageSendPlayerAbilityContainer(e.getEntity().getEntityId(), (NBTTagCompound) ((CapabilityAbilityContainer) a).getUpdateTag()), ((EntityPlayerMP) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                    ThreeCore.NETWORK_CHANNEL.sendTo(new SendPlayerAbilityContainerMessage(e.getEntity().getEntityId(), (CompoundNBT) ((CapabilityAbilityContainer) a).getUpdateTag()), ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             });
         }
     }
@@ -75,7 +77,7 @@ public class AbilityEventHandler {
     public void onStartTracking(PlayerEvent.StartTracking e) {
         e.getTarget().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent((a) -> {
             if (a instanceof CapabilityAbilityContainer)
-                ThreeCore.NETWORK_CHANNEL.sendTo(new MessageSendPlayerAbilityContainer(e.getTarget().getEntityId(), (NBTTagCompound) ((CapabilityAbilityContainer) a).getUpdateTag()), ((EntityPlayerMP) e.getEntityPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                ThreeCore.NETWORK_CHANNEL.sendTo(new SendPlayerAbilityContainerMessage(e.getTarget().getEntityId(), (CompoundNBT) ((CapabilityAbilityContainer) a).getUpdateTag()), ((ServerPlayerEntity) e.getEntityPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
         });
     }
 

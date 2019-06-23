@@ -3,30 +3,30 @@ package com.threetag.threecore.abilities.data;
 import com.google.gson.JsonObject;
 import com.threetag.threecore.util.render.IIcon;
 import com.threetag.threecore.util.render.IconSerializer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.JSONUtils;
 
-public class ThreeDataIcon extends ThreeData<IIcon>
+public class IconThreeData extends ThreeData<IIcon>
 {
 
-    public ThreeDataIcon(String key) {
+    public IconThreeData(String key) {
         super(key);
     }
 
     @Override
     public IIcon parseValue(JsonObject jsonObject, IIcon defaultValue) {
-        if (!JsonUtils.hasField(jsonObject, this.jsonKey))
+        if (!JSONUtils.hasField(jsonObject, this.jsonKey))
             return defaultValue;
-        return IconSerializer.deserialize(JsonUtils.getJsonObject(jsonObject, this.jsonKey));
+        return IconSerializer.deserialize(JSONUtils.getJsonObject(jsonObject, this.jsonKey));
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt, IIcon value) {
+    public void writeToNBT(CompoundNBT nbt, IIcon value) {
         nbt.put(this.key, value.getSerializer().serializeExt(value));
     }
 
     @Override
-    public IIcon readFromNBT(NBTTagCompound nbt, IIcon defaultValue) {
+    public IIcon readFromNBT(CompoundNBT nbt, IIcon defaultValue) {
         if (!nbt.contains(this.key))
             return defaultValue;
         IIcon icon = IconSerializer.deserialize(nbt.getCompound(this.key));

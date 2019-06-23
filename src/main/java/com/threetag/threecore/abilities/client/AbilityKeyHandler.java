@@ -2,7 +2,7 @@ package com.threetag.threecore.abilities.client;
 
 import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.Ability;
-import com.threetag.threecore.abilities.network.MessageAbilityKey;
+import com.threetag.threecore.abilities.network.AbilityKeyMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
@@ -53,7 +53,7 @@ public class AbilityKeyHandler {
                 if (ability != null) {
                     if (key.isPressed)
                         pressed = true;
-                    ThreeCore.NETWORK_CHANNEL.sendToServer(new MessageAbilityKey(ability.getContainer().getId(), ability.getId(), key.isPressed));
+                    ThreeCore.NETWORK_CHANNEL.sendToServer(new AbilityKeyMessage(ability.getContainer().getId(), ability.getId(), key.isPressed));
                 }
             }
         }

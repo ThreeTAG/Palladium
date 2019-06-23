@@ -10,14 +10,14 @@ import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.AbilityGenerator;
 import com.threetag.threecore.abilities.AbilityType;
 import com.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
-import com.threetag.threecore.abilities.network.MessageSendSuperpowerToast;
+import com.threetag.threecore.abilities.network.SendSuperpowerToastMessage;
 import com.threetag.threecore.util.render.IIcon;
 import com.threetag.threecore.util.render.IconSerializer;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -52,7 +52,7 @@ public class SuperpowerManager implements ISelectiveResourceReloadListener {
             String s = resourcelocation.getPath();
             ResourceLocation resourcelocation1 = new ResourceLocation(resourcelocation.getNamespace(), s.substring(resourcePrefix, s.length() - resourceSuffix));
             try (IResource iresource = resourceManager.getResource(resourcelocation)) {
-                Superpower superpower = parseSuperpower(resourcelocation1, JsonUtils.fromJson(GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
+                Superpower superpower = parseSuperpower(resourcelocation1, JSONUtils.fromJson(GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
                 if (superpower != null) {
                     this.registeredSuperpowers.put(resourcelocation1, superpower);
                 }
@@ -63,17 +63,17 @@ public class SuperpowerManager implements ISelectiveResourceReloadListener {
     }
 
     public Superpower parseSuperpower(ResourceLocation resourceLocation, JsonObject json) throws Exception {
-        ITextComponent name = ITextComponent.Serializer.fromJson(JsonUtils.getJsonObject(json, "name").toString());
-        IIcon icon = IconSerializer.deserialize(JsonUtils.getJsonObject(json, "icon"));
+        ITextComponent name = ITextComponent.Serializer.fromJson(JSONUtils.getJsonObject(json, "name").toString());
+        IIcon icon = IconSerializer.deserialize(JSONUtils.getJsonObject(json, "icon"));
         List<AbilityGenerator> abilityGenerators = Lists.newArrayList();
-        if (JsonUtils.hasField(json, "abilities")) {
-            JsonObject abilities = JsonUtils.getJsonObject(json, "abilities");
+        if (JSONUtils.hasField(json, "abilities")) {
+            JsonObject abilities = JSONUtils.getJsonObject(json, "abilities");
             abilities.entrySet().forEach((e) -> {
                 if (e.getValue() instanceof JsonObject) {
                     JsonObject o = (JsonObject) e.getValue();
-                    AbilityType type = AbilityType.REGISTRY.getValue(new ResourceLocation(JsonUtils.getString(o, "ability")));
+                    AbilityType type = AbilityType.REGISTRY.getValue(new ResourceLocation(JSONUtils.getString(o, "ability")));
                     if (type == null)
-                        throw new JsonSyntaxException("Expected 'ability' to be an ability, was unknown string '" + JsonUtils.getString(o, "ability") + "'");
+                        throw new JsonSyntaxException("Expected 'ability' to be an ability, was unknown string '" + JSONUtils.getString(o, "ability") + "'");
                     abilityGenerators.add(new AbilityGenerator(e.getKey(), type, o));
                 }
             });
@@ -94,12 +94,12 @@ public class SuperpowerManager implements ISelectiveResourceReloadListener {
         return INSTANCE;
     }
 
-    public static void setSuperpower(EntityLivingBase entity, Superpower superpower) {
+    public static void setSuperpower(LivingEntity entity, Superpower superpower) {
         entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
             abilityContainer.clearAbilities(entity, ability -> ability.getAdditionalData().getBoolean("IsFromSuperpower"));
             abilityContainer.addAbilities(entity, superpower);
-            if (entity instanceof EntityPlayerMP)
-                ThreeCore.NETWORK_CHANNEL.sendTo(new MessageSendSuperpowerToast(superpower.getName(), superpower.getIcon()), ((EntityPlayerMP) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+            if (entity instanceof ServerPlayerEntity)
+                ThreeCore.NETWORK_CHANNEL.sendTo(new SendSuperpowerToastMessage(superpower.getName(), superpower.getIcon()), ((ServerPlayerEntity) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
         });
     }
 }

@@ -1,20 +1,20 @@
 package com.threetag.threecore.abilities.condition;
 
 import com.threetag.threecore.abilities.Ability;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 
 /**
  * Created by Nictogen on 2019-06-08.
  */
-public class ConditionAction extends ConditionKeybound
+public class ActionCondition extends KeyboundCondition
 {
 
-	public ConditionAction(Ability ability)
+	public ActionCondition(Ability ability)
 	{
 		super(ConditionType.ACTION, ability);
 	}
 
-	@Override public boolean test(EntityLivingBase entity)
+	@Override public boolean test(LivingEntity entity)
 	{
 		if(super.test(entity)){
 			this.dataManager.set(ENABLED, false);

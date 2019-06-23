@@ -2,12 +2,10 @@ package com.threetag.threecore.util.render;
 
 import com.google.gson.JsonObject;
 import com.threetag.threecore.ThreeCore;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -57,12 +55,12 @@ public class ItemIcon implements IIcon {
         }
 
         @Override
-        public ItemIcon read(NBTTagCompound nbt) {
+        public ItemIcon read(CompoundNBT nbt) {
             return new ItemIcon(ItemStack.read(nbt));
         }
 
         @Override
-        public NBTTagCompound serialize(ItemIcon icon) {
+        public CompoundNBT serialize(ItemIcon icon) {
             return icon.stack.serializeNBT();
         }
 

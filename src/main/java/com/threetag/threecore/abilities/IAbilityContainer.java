@@ -2,14 +2,15 @@ package com.threetag.threecore.abilities;
 
 import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.data.EnumSync;
-import com.threetag.threecore.abilities.network.MessageAddAbility;
-import com.threetag.threecore.abilities.network.MessageRemoveAbility;
-import com.threetag.threecore.abilities.network.MessageUpdateAbility;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayerMP;
+import com.threetag.threecore.abilities.network.AddAbilityMessage;
+import com.threetag.threecore.abilities.network.RemoveAbilityMessage;
+import com.threetag.threecore.abilities.network.UpdateAbilityMessage;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 public interface IAbilityContainer {
 
-    default void tick(EntityLivingBase entity) {
+    default void tick(LivingEntity entity) {
         getAbilityMap().forEach((s, a) -> {
             a.container = this;
             a.tick(entity);
@@ -30,17 +31,14 @@ public interface IAbilityContainer {
         });
     }
 
-    default void onUpdated(EntityLivingBase entity, Ability ability, EnumSync sync) {
+    default void onUpdated(LivingEntity entity, Ability ability, EnumSync sync) {
         if (entity.world.isRemote)
             return;
-        if (sync != EnumSync.NONE && entity instanceof EntityPlayerMP) {
-            ThreeCore.NETWORK_CHANNEL.sendTo(new MessageUpdateAbility(entity.getEntityId(), this.getId(), ability.getId(), ability.getUpdateTag()), ((EntityPlayerMP) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+        if (sync != EnumSync.NONE && entity instanceof ServerPlayerEntity) {
+            ThreeCore.NETWORK_CHANNEL.sendTo(new UpdateAbilityMessage(entity.getEntityId(), this.getId(), ability.getId(), ability.getUpdateTag()), ((ServerPlayerEntity) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
         }
-        if (sync == EnumSync.EVERYONE && entity.world instanceof WorldServer) {
-            ((WorldServer) entity.world).getEntityTracker().getTrackingPlayers(entity).forEach((p) -> {
-                if (p instanceof EntityPlayerMP)
-                    ThreeCore.NETWORK_CHANNEL.sendTo(new MessageUpdateAbility(entity.getEntityId(), this.getId(), ability.getId(), ability.getUpdateTag()), ((EntityPlayerMP) p).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
-            });
+        if (sync == EnumSync.EVERYONE && entity.world instanceof ServerWorld) {
+            ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new UpdateAbilityMessage(entity.getEntityId(), this.getId(), ability.getId(), ability.getUpdateTag()));
         }
     }
 
@@ -54,35 +52,31 @@ public interface IAbilityContainer {
 
     AbilityMap getAbilityMap();
 
-    default void addAbilities(@Nullable EntityLivingBase entity, IAbilityProvider provider) {
+    default void addAbilities(@Nullable LivingEntity entity, IAbilityProvider provider) {
         provider.getAbilities().forEach((s, a) -> addAbility(entity, s, a));
     }
 
-    default boolean addAbility(@Nullable EntityLivingBase entity, String id, Ability ability) {
+    default boolean addAbility(@Nullable LivingEntity entity, String id, Ability ability) {
         if (this.getAbilityMap().containsKey(id))
             return false;
         this.getAbilityMap().put(id, ability);
-        if (entity != null && entity.world instanceof WorldServer) {
-            if (entity instanceof EntityPlayerMP)
-                ThreeCore.NETWORK_CHANNEL.sendTo(new MessageAddAbility(entity.getEntityId(), getId(), id, ability.getUpdateTag()), ((EntityPlayerMP) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
-            ((WorldServer) entity.world).getEntityTracker().getTrackingPlayers(entity).forEach((p) -> ThreeCore.NETWORK_CHANNEL.sendTo(new MessageAddAbility(entity.getEntityId(), getId(), id, ability.getUpdateTag()), ((EntityPlayerMP) p).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT));
+        if (entity != null && entity.world instanceof ServerWorld) {
+            ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new AddAbilityMessage(entity.getEntityId(), getId(), id, ability.getUpdateTag()));
         }
         return true;
     }
 
-    default boolean removeAbility(@Nullable EntityLivingBase entity, String id) {
+    default boolean removeAbility(@Nullable LivingEntity entity, String id) {
         if (!this.getAbilityMap().containsKey(id))
             return false;
         this.getAbilityMap().remove(id);
-        if (entity != null && entity.world instanceof WorldServer) {
-            if (entity instanceof EntityPlayerMP)
-                ThreeCore.NETWORK_CHANNEL.sendTo(new MessageRemoveAbility(entity.getEntityId(), getId(), id), ((EntityPlayerMP) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
-            ((WorldServer) entity.world).getEntityTracker().getTrackingPlayers(entity).forEach((p) -> ThreeCore.NETWORK_CHANNEL.sendTo(new MessageRemoveAbility(entity.getEntityId(), getId(), id), ((EntityPlayerMP) p).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT));
+        if (entity != null && entity.world instanceof ServerWorld) {
+            ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new RemoveAbilityMessage(entity.getEntityId(), getId(), id));
         }
         return true;
     }
 
-    default void clearAbilities(@Nullable EntityLivingBase entity) {
+    default void clearAbilities(@Nullable LivingEntity entity) {
         List<Ability> copy = this.getAbilities().stream().collect(Collectors.toList());
 
         for (Ability ab : copy) {
@@ -90,7 +84,7 @@ public interface IAbilityContainer {
         }
     }
 
-    default void clearAbilities(@Nullable EntityLivingBase entity, Predicate<Ability> predicate) {
+    default void clearAbilities(@Nullable LivingEntity entity, Predicate<Ability> predicate) {
         List<Ability> copy = this.getAbilities().stream().collect(Collectors.toList());
 
         for (Ability ab : copy) {

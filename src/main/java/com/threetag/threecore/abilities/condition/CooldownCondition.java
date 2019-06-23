@@ -3,18 +3,18 @@ package com.threetag.threecore.abilities.condition;
 import com.threetag.threecore.abilities.Ability;
 import com.threetag.threecore.abilities.data.EnumSync;
 import com.threetag.threecore.abilities.data.ThreeData;
-import com.threetag.threecore.abilities.data.ThreeDataInteger;
-import net.minecraft.entity.EntityLivingBase;
+import com.threetag.threecore.abilities.data.IntegerThreeData;
+import net.minecraft.entity.LivingEntity;
 
 /**
  * Created by Nictogen on 2019-06-08.
  */
-public class ConditionCooldown extends Condition
+public class CooldownCondition extends Condition
 {
-	public static final ThreeData<Integer> MAX_COOLDOWN = new ThreeDataInteger("max_cooldown").setSyncType(EnumSync.SELF).enableSetting("cooldown", "Maximum cooldown for using this ability");
-	public static final ThreeData<Integer> COOLDOWN = new ThreeDataInteger("cooldown").setSyncType(EnumSync.SELF);
+	public static final ThreeData<Integer> MAX_COOLDOWN = new IntegerThreeData("max_cooldown").setSyncType(EnumSync.SELF).enableSetting("cooldown", "Maximum cooldown for using this ability");
+	public static final ThreeData<Integer> COOLDOWN = new IntegerThreeData("cooldown").setSyncType(EnumSync.SELF);
 
-	public ConditionCooldown(Ability ability)
+	public CooldownCondition(Ability ability)
 	{
 		super(ConditionType.COOLDOWN, ability);
 	}
@@ -27,7 +27,7 @@ public class ConditionCooldown extends Condition
 		this.dataManager.set(ENABLING, true);
 	}
 
-	@Override public boolean test(EntityLivingBase entity)
+	@Override public boolean test(LivingEntity entity)
 	{
 		if(this.dataManager.get(COOLDOWN) > 0){
 			this.dataManager.set(COOLDOWN, this.dataManager.get(COOLDOWN) - 1);

@@ -1,33 +1,33 @@
 package com.threetag.threecore.abilities.data;
 
 import com.google.gson.JsonObject;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.util.JSONUtils;
 
 import java.util.UUID;
 
-public class ThreeDataUUID extends ThreeData<UUID>
+public class UUIDThreeData extends ThreeData<UUID>
 {
 
-    public ThreeDataUUID(String key) {
+    public UUIDThreeData(String key) {
         super(key);
     }
 
     @Override
     public UUID parseValue(JsonObject jsonObject, UUID defaultValue) {
-        if (!JsonUtils.hasField(jsonObject, this.jsonKey))
+        if (!JSONUtils.hasField(jsonObject, this.jsonKey))
             return defaultValue;
-        return UUID.fromString(JsonUtils.getString(jsonObject, this.jsonKey));
+        return UUID.fromString(JSONUtils.getString(jsonObject, this.jsonKey));
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt, UUID value) {
+    public void writeToNBT(CompoundNBT nbt, UUID value) {
         nbt.put(this.key, NBTUtil.writeUniqueId(value));
     }
 
     @Override
-    public UUID readFromNBT(NBTTagCompound nbt, UUID defaultValue) {
+    public UUID readFromNBT(CompoundNBT nbt, UUID defaultValue) {
         if (!nbt.contains(this.key))
             return defaultValue;
         return NBTUtil.readUniqueId(nbt.getCompound(this.key));

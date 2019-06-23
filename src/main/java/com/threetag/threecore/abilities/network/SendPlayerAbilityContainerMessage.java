@@ -3,24 +3,23 @@ package com.threetag.threecore.abilities.network;
 import com.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MessageSendPlayerAbilityContainer {
+public class SendPlayerAbilityContainerMessage {
 
     private int entityID;
-    public NBTTagCompound nbt;
+    public CompoundNBT nbt;
 
-    public MessageSendPlayerAbilityContainer(int entityID, NBTTagCompound nbt) {
+    public SendPlayerAbilityContainerMessage(int entityID, CompoundNBT nbt) {
         this.entityID = entityID;
         this.nbt = nbt;
     }
 
-    public MessageSendPlayerAbilityContainer(PacketBuffer buffer) {
+    public SendPlayerAbilityContainerMessage(PacketBuffer buffer) {
         this.entityID = buffer.readInt();
         this.nbt = buffer.readCompoundTag();
     }

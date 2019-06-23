@@ -1,12 +1,12 @@
 package com.threetag.threecore.abilities.data;
 
 import com.google.gson.JsonObject;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.*;
 
-public class ThreeDataManager implements INBTSerializable<NBTTagCompound> {
+public class ThreeDataManager implements INBTSerializable<CompoundNBT> {
 
     public final IThreeDataHolder dataHolder;
     protected Map<ThreeData<?>, ThreeDataEntry<?>> dataEntryList = new LinkedHashMap<>();
@@ -82,8 +82,8 @@ public class ThreeDataManager implements INBTSerializable<NBTTagCompound> {
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
+    public CompoundNBT serializeNBT() {
+        CompoundNBT nbt = new CompoundNBT();
         for (ThreeData data : dataEntryList.keySet()) {
             if (data.canBeSaved())
                 data.writeToNBT(nbt, getEntry(data).getValue());
@@ -92,22 +92,22 @@ public class ThreeDataManager implements INBTSerializable<NBTTagCompound> {
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
+    public void deserializeNBT(CompoundNBT nbt) {
         for (ThreeData data : dataEntryList.keySet()) {
             if (data.canBeSaved())
                 getEntry(data).setValue(data.readFromNBT(nbt, getDefaultValue(data)));
         }
     }
 
-    public NBTTagCompound getUpdatePacket() {
-        NBTTagCompound nbt = new NBTTagCompound();
+    public CompoundNBT getUpdatePacket() {
+        CompoundNBT nbt = new CompoundNBT();
         for (ThreeData data : dataEntryList.keySet()) {
             data.writeToNBT(nbt, getEntry(data).getValue());
         }
         return nbt;
     }
 
-    public void readUpdatePacket(NBTTagCompound nbt) {
+    public void readUpdatePacket(CompoundNBT nbt) {
         for (ThreeData data : dataEntryList.keySet()) {
             getEntry(data).setValue(data.readFromNBT(nbt, getDefaultValue(data)));
         }

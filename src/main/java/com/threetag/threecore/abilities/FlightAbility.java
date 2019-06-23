@@ -1,21 +1,21 @@
 package com.threetag.threecore.abilities;
 
-import com.threetag.threecore.abilities.data.ThreeData;
-import com.threetag.threecore.abilities.data.ThreeDataBoolean;
-import com.threetag.threecore.abilities.data.ThreeDataFloat;
+import com.threetag.threecore.abilities.data.BooleanThreeData;
 import com.threetag.threecore.abilities.data.EnumSync;
+import com.threetag.threecore.abilities.data.FloatThreeData;
+import com.threetag.threecore.abilities.data.ThreeData;
 import com.threetag.threecore.util.render.TexturedIcon;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class AbilityFlight extends Ability {
+public class FlightAbility extends Ability {
 
-    public static final ThreeData<Float> SPEED = new ThreeDataFloat("speed").setSyncType(EnumSync.SELF).enableSetting("speed", "Sets the speed multiplier for flying when you are NOT sprinting");
-    public static final ThreeData<Float> SPRINT_SPEED = new ThreeDataFloat("sprint_speed").setSyncType(EnumSync.SELF).enableSetting("sprint_speed", "Sets the speed multiplier for flying when you are sprinting");
-    public static final ThreeData<Boolean> ROTATE_ARMS = new ThreeDataBoolean("rotate_arms").enableSetting("rotate_arms", "If enabled the players arms will face in your direction (like Superman)");
+    public static final ThreeData<Float> SPEED = new FloatThreeData("speed").setSyncType(EnumSync.SELF).enableSetting("speed", "Sets the speed multiplier for flying when you are NOT sprinting");
+    public static final ThreeData<Float> SPRINT_SPEED = new FloatThreeData("sprint_speed").setSyncType(EnumSync.SELF).enableSetting("sprint_speed", "Sets the speed multiplier for flying when you are sprinting");
+    public static final ThreeData<Boolean> ROTATE_ARMS = new BooleanThreeData("rotate_arms").enableSetting("rotate_arms", "If enabled the players arms will face in your direction (like Superman)");
 
-    public AbilityFlight() {
+    public FlightAbility() {
         super(AbilityType.FLIGHT);
     }
 
@@ -29,7 +29,7 @@ public class AbilityFlight extends Ability {
     }
 
     @Override
-    public void updateTick(EntityLivingBase entity) {
+    public void updateTick(LivingEntity entity) {
         if (entity.onGround && ticks > 20)
             this.getConditionManager().disableKeybounds();
 
@@ -37,9 +37,7 @@ public class AbilityFlight extends Ability {
             Vec3d vec = entity.getLookVec();
             double speed = entity.isSprinting() ? this.dataManager.get(SPRINT_SPEED) : this.dataManager.get(SPEED);
             // TODO multiply fly speed by size
-            entity.motionX = vec.x * speed;
-            entity.motionY = vec.y * speed;
-            entity.motionZ = vec.z * speed;
+            entity.setMotion(vec.x * speed, vec.y * speed, vec.z * speed);
 
             if (!entity.world.isRemote) {
                 entity.fallDistance = 0.0F;
@@ -49,7 +47,7 @@ public class AbilityFlight extends Ability {
             if (ticks < 20) {
                 int lowestY = entity.getPosition().getY();
 
-                while (lowestY > 0 && !entity.world.isBlockFullCube(new BlockPos(entity.posX, lowestY, entity.posZ))) {
+                while (lowestY > 0 && !entity.world.isBlockPresent(new BlockPos(entity.posX, lowestY, entity.posZ))) {
                     lowestY--;
                 }
 
@@ -60,7 +58,8 @@ public class AbilityFlight extends Ability {
 
             motionY += Math.sin(entity.ticksExisted / 10F) / 100F;
             entity.fallDistance = 0F;
-            entity.motionY = motionY;
+            Vec3d motion = new Vec3d(entity.getMotion().x, motionY, entity.getMotion().z);
+            entity.setMotion(motion);
         }
 
     }

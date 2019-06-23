@@ -30,10 +30,10 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
 
     public static IForgeRegistry<AbilityType> REGISTRY;
 
-    public static final AbilityType HEALING = new AbilityType(AbilityHealing::new, ThreeCore.MODID, "healing");
-    public static final AbilityType FLIGHT = new AbilityType(AbilityFlight::new, ThreeCore.MODID, "flight");
-    public static final AbilityType TELEPORT = new AbilityType(AbilityTeleport::new, ThreeCore.MODID, "teleport");
-    public static final AbilityType ATTRIBUTE_MODIFIER = new AbilityType(AbilityAttributeModifier::new, ThreeCore.MODID, "attribute_modifier");
+    public static final AbilityType HEALING = new AbilityType(HealingAbility::new, ThreeCore.MODID, "healing");
+    public static final AbilityType FLIGHT = new AbilityType(FlightAbility::new, ThreeCore.MODID, "flight");
+    public static final AbilityType TELEPORT = new AbilityType(TeleportAbility::new, ThreeCore.MODID, "teleport");
+    public static final AbilityType ATTRIBUTE_MODIFIER = new AbilityType(AttributeModifierAbility::new, ThreeCore.MODID, "attribute_modifier");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {

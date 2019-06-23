@@ -6,10 +6,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.threetag.threecore.abilities.Ability;
 import com.threetag.threecore.abilities.data.EnumSync;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
+public class AbilityConditionManager implements INBTSerializable<CompoundNBT>
 {
 
 	public final Ability ability;
@@ -35,13 +35,13 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
 
 	public void readFromJson(JsonObject jsonObject)
 	{
-		if (JsonUtils.hasField(jsonObject, "conditions"))
+		if (JSONUtils.hasField(jsonObject, "conditions"))
 		{
-			JsonArray jsonArray = JsonUtils.getJsonArray(jsonObject, "conditions");
+			JsonArray jsonArray = JSONUtils.getJsonArray(jsonObject, "conditions");
 			for (JsonElement jsonElement : jsonArray)
 			{
 				JsonObject jsonCondition = jsonElement.getAsJsonObject();
-				ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(JsonUtils.getString(jsonCondition, "type")));
+				ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(JSONUtils.getString(jsonCondition, "type")));
 				Condition condition = Objects.requireNonNull(conditionType).create(ability);
 				condition.dataManager.readFromJson(jsonCondition);
 				this.addCondition(condition);
@@ -55,7 +55,7 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
 		return this;
 	}
 
-	public void update(EntityLivingBase entity)
+	public void update(LivingEntity entity)
 	{
 		if (!entity.world.isRemote)
 		{
@@ -107,23 +107,23 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
 	{
 		if (isUnlocked())
 			for (Condition condition : this.conditions.keySet())
-				if (condition instanceof ConditionKeybound)
-					((ConditionKeybound) condition).onKeyPressed();
+				if (condition instanceof KeyboundCondition)
+					((KeyboundCondition) condition).onKeyPressed();
 	}
 
 	public void onKeyReleased()
 	{
 		if (isUnlocked())
 			for (Condition condition : this.conditions.keySet())
-				if (condition instanceof ConditionKeybound)
-					((ConditionKeybound) condition).onKeyReleased();
+				if (condition instanceof KeyboundCondition)
+					((KeyboundCondition) condition).onKeyReleased();
 	}
 
 	public void disableKeybounds()
 	{
 				for (Condition condition : this.conditions.keySet())
-						if(condition instanceof ConditionKeybound)
-							condition.dataManager.set(ConditionKeybound.ENABLED, false);
+						if(condition instanceof KeyboundCondition)
+							condition.dataManager.set(KeyboundCondition.ENABLED, false);
 	}
 
 	public boolean isUnlocked()
@@ -152,15 +152,15 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
 	}
 
 	@Override
-	public NBTTagCompound serializeNBT()
+	public CompoundNBT serializeNBT()
 	{
-		NBTTagCompound nbt = new NBTTagCompound();
+		CompoundNBT nbt = new CompoundNBT();
 		nbt.putBoolean("Unlocked", this.unlocked);
 		nbt.putBoolean("Enabled", this.enabled);
 
-		NBTTagList list = new NBTTagList();
+		ListNBT list = new ListNBT();
 		conditions.forEach((abilityCondition, aBoolean) -> {
-			NBTTagCompound conditionTag = abilityCondition.serializeNBT();
+			CompoundNBT conditionTag = abilityCondition.serializeNBT();
 			conditionTag.putBoolean("Active", aBoolean);
 			list.add(conditionTag);
 		});
@@ -170,26 +170,26 @@ public class AbilityConditionManager implements INBTSerializable<NBTTagCompound>
 	}
 
 	@Override
-	public void deserializeNBT(NBTTagCompound nbt)
+	public void deserializeNBT(CompoundNBT nbt)
 	{
 		this.unlocked = nbt.getBoolean("Unlocked");
 		this.enabled = nbt.getBoolean("Enabled");
 		this.conditions = new HashMap<>();
-		NBTTagList list = nbt.getList("Conditions", 10);
+		ListNBT list = nbt.getList("Conditions", 10);
 		for (int i = 0; i < list.size(); i++)
 		{
-			NBTTagCompound conditionTag = list.getCompound(i);
+			CompoundNBT conditionTag = list.getCompound(i);
 			ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(conditionTag.getString("ConditionType")));
 			this.conditions.put(conditionType.create(ability), conditionTag.getBoolean("Active"));
 		}
 	}
 
-	public NBTTagCompound getUpdatePacket()
+	public CompoundNBT getUpdatePacket()
 	{
 		return this.serializeNBT();
 	}
 
-	public void readUpdatePacket(NBTTagCompound nbt)
+	public void readUpdatePacket(CompoundNBT nbt)
 	{
 		this.deserializeNBT(nbt);
 	}

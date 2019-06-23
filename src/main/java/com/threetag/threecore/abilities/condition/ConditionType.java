@@ -20,13 +20,13 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType>
 {
 	public static IForgeRegistry<ConditionType> REGISTRY;
 
-	public static final ConditionType ACTION = new ConditionType(ConditionAction::new, ThreeCore.MODID, "action");
-	public static final ConditionType HELD = new ConditionType(ConditionHeld::new, ThreeCore.MODID, "held");
-	public static final ConditionType TOGGLE = new ConditionType(ConditionToggle::new, ThreeCore.MODID, "toggle");
-	public static final ConditionType COOLDOWN = new ConditionType(ConditionCooldown::new, ThreeCore.MODID, "cooldown");
-	public static final ConditionType ABILITY_ENABLED = new ConditionType(ConditionAbilityEnabled::new, ThreeCore.MODID, "ability_enabled");
-	public static final ConditionType ABILITY_UNLOCKED = new ConditionType(ConditionAbilityUnlocked::new, ThreeCore.MODID, "ability_unlocked");
-	public static final ConditionType KARMA = new ConditionType(ConditionKarma::new, ThreeCore.MODID, "karma");
+	public static final ConditionType ACTION = new ConditionType(ActionCondition::new, ThreeCore.MODID, "action");
+	public static final ConditionType HELD = new ConditionType(HeldCondition::new, ThreeCore.MODID, "held");
+	public static final ConditionType TOGGLE = new ConditionType(ToggleCondition::new, ThreeCore.MODID, "toggle");
+	public static final ConditionType COOLDOWN = new ConditionType(CooldownCondition::new, ThreeCore.MODID, "cooldown");
+	public static final ConditionType ABILITY_ENABLED = new ConditionType(AbilityEnabledCondition::new, ThreeCore.MODID, "ability_enabled");
+	public static final ConditionType ABILITY_UNLOCKED = new ConditionType(AbilityUnlockedCondition::new, ThreeCore.MODID, "ability_unlocked");
+	public static final ConditionType KARMA = new ConditionType(KarmaCondition::new, ThreeCore.MODID, "karma");
 
 	@SubscribeEvent
 	public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {

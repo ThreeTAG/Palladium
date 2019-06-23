@@ -31,7 +31,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
-import sun.security.provider.SHA;
 
 import javax.annotation.Nullable;
 import java.util.Random;

@@ -1,11 +1,11 @@
 package com.threetag.threecore.abilities.client;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.Ability;
 import com.threetag.threecore.abilities.AbilityHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -87,20 +87,20 @@ public class AbilityBarRenderer {
                 Ability ability = abilities.get(i);
                 EnumAbilityColor color = ability.getColor();
                 //color = EnumAbilityColor.values()[new Random(ability.getId().hashCode() + 21321357).nextInt(EnumAbilityColor.values().length)];
-                String name = showName ? ability.getDataManager().get(Ability.TITLE).getFormattedText() : AbilityKeyHandler.KEYS.get(i).func_197978_k();
+                String name = showName ? ability.getDataManager().get(Ability.TITLE).getFormattedText() : AbilityKeyHandler.KEYS.get(i).getLocalizedName();
                 int nameLength = mc.fontRenderer.getStringWidth(name);
 
                 GlStateManager.color4f(1, 1, 1, 1);
                 mc.textureManager.bindTexture(TEXTURE);
-                mc.ingameGUI.drawTexturedModalRect(7, 7 + i * 22, color.getX(), color.getY(), 22, 22);
+                mc.ingameGUI.blit(7, 7 + i * 22, color.getX(), color.getY(), 22, 22);
 
                 if (ability.getConditionManager().isEnabled())
-                    mc.ingameGUI.drawTexturedModalRect(7, 7 + i * 22, color.getX(), color.getY() + 44, 22, 22);
+                    mc.ingameGUI.blit(7, 7 + i * 22, color.getX(), color.getY() + 44, 22, 22);
 
                 ability.drawIcon(mc, mc.ingameGUI, 10, 10 + i * 22);
 
                 if (ability.getConditionManager().needsKey()) {
-                    GlStateManager.disableTexture2D();
+                    GlStateManager.disableTexture();
                     GlStateManager.disableCull();
                     GlStateManager.color4f(0, 0, 0, 0.5F);
                     bb.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION);
@@ -109,7 +109,7 @@ public class AbilityBarRenderer {
                     bb.pos(7 + 22 + nameLength + 8, 10 + i * 22 + 15, 0).endVertex();
                     bb.pos(7 + 22, 10 + i * 22 + 15, 0).endVertex();
                     tes.draw();
-                    GlStateManager.enableTexture2D();
+                    GlStateManager.enableTexture();
                     mc.ingameGUI.drawString(mc.fontRenderer, name, 34, 10 + i * 22 + 4, 0xffffff);
                 }
             }

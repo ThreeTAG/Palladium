@@ -5,15 +5,13 @@ import com.threetag.threecore.abilities.Ability;
 import com.threetag.threecore.abilities.AbilityMap;
 import com.threetag.threecore.abilities.AbilityType;
 import com.threetag.threecore.abilities.IAbilityContainer;
-import com.threetag.threecore.abilities.data.EnumSync;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerializable<NBTTagCompound> {
+public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerializable<CompoundNBT> {
 
     @CapabilityInject(IAbilityContainer.class)
     public static Capability<IAbilityContainer> ABILITY_CONTAINER;
@@ -31,17 +29,17 @@ public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerial
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
+    public CompoundNBT serializeNBT() {
+        CompoundNBT nbt = new CompoundNBT();
         this.getAbilityMap().forEach((s, a) -> nbt.put(s, a.serializeNBT()));
         return nbt;
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
+    public void deserializeNBT(CompoundNBT nbt) {
         this.abilityMap.clear();
         nbt.keySet().forEach((s) -> {
-            NBTTagCompound tag = nbt.getCompound(s);
+            CompoundNBT tag = nbt.getCompound(s);
             AbilityType abilityType = AbilityType.REGISTRY.getValue(new ResourceLocation(tag.getString("AbilityType")));
             if (abilityType != null) {
                 Ability ability = abilityType.create();
@@ -51,16 +49,16 @@ public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerial
         });
     }
 
-    public NBTTagCompound getUpdateTag() {
-        NBTTagCompound nbt = new NBTTagCompound();
+    public CompoundNBT getUpdateTag() {
+        CompoundNBT nbt = new CompoundNBT();
         this.getAbilityMap().forEach((s, a) -> nbt.put(s, a.getUpdateTag()));
         return nbt;
     }
 
-    public void readUpdateTag(NBTTagCompound nbt) {
+    public void readUpdateTag(CompoundNBT nbt) {
         this.abilityMap.clear();
         nbt.keySet().forEach((s) -> {
-            NBTTagCompound tag = nbt.getCompound(s);
+            CompoundNBT tag = nbt.getCompound(s);
             AbilityType abilityType = AbilityType.REGISTRY.getValue(new ResourceLocation(tag.getString("AbilityType")));
             if (abilityType != null) {
                 Ability ability = abilityType.create();

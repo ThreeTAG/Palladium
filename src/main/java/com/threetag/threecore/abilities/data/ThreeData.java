@@ -2,7 +2,7 @@ package com.threetag.threecore.abilities.data;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonObject;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 import java.lang.reflect.Type;
 
@@ -63,9 +63,9 @@ public abstract class ThreeData<T> {
 
     public abstract T parseValue(JsonObject jsonObject, T defaultValue);
 
-    public abstract void writeToNBT(NBTTagCompound nbt, T value);
+    public abstract void writeToNBT(CompoundNBT nbt, T value);
 
-    public abstract T readFromNBT(NBTTagCompound nbt, T defaultValue);
+    public abstract T readFromNBT(CompoundNBT nbt, T defaultValue);
 
     public String getDisplay(T value) {
         return value.toString();

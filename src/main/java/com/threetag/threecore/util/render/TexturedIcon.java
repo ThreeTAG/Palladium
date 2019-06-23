@@ -3,9 +3,10 @@ package com.threetag.threecore.util.render;
 import com.google.gson.JsonObject;
 import com.threetag.threecore.ThreeCore;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
 public class TexturedIcon implements IIcon {
@@ -37,7 +38,7 @@ public class TexturedIcon implements IIcon {
     @Override
     public void draw(Minecraft mc, int x, int y) {
         mc.getTextureManager().bindTexture(this.texture);
-        Gui.drawModalRectWithCustomSizedTexture(x, y, this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
+        AbstractGui.blit(x, y, this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
     }
 
     @Override
@@ -62,18 +63,18 @@ public class TexturedIcon implements IIcon {
 
         @Override
         public TexturedIcon read(JsonObject json) {
-            ResourceLocation texture = new ResourceLocation(JsonUtils.getString(json, "texture"));
-            int u = JsonUtils.getInt(json, "u");
-            int v = JsonUtils.getInt(json, "v");
-            int width = JsonUtils.getInt(json, "width", 16);
-            int height = JsonUtils.getInt(json, "height", 16);
-            int textureWidth = JsonUtils.getInt(json, "texture_width", 256);
-            int textureHeight = JsonUtils.getInt(json, "texture_height", 256);
+            ResourceLocation texture = new ResourceLocation(JSONUtils.getString(json, "texture"));
+            int u = JSONUtils.getInt(json, "u");
+            int v = JSONUtils.getInt(json, "v");
+            int width = JSONUtils.getInt(json, "width", 16);
+            int height = JSONUtils.getInt(json, "height", 16);
+            int textureWidth = JSONUtils.getInt(json, "texture_width", 256);
+            int textureHeight = JSONUtils.getInt(json, "texture_height", 256);
             return new TexturedIcon(texture, u, v, width, height, textureWidth, textureHeight);
         }
 
         @Override
-        public TexturedIcon read(NBTTagCompound nbt) {
+        public TexturedIcon read(CompoundNBT nbt) {
             ResourceLocation texture = new ResourceLocation(nbt.getString("Texture"));
             int u = nbt.getInt("U");
             int v = nbt.getInt("V");
@@ -85,8 +86,8 @@ public class TexturedIcon implements IIcon {
         }
 
         @Override
-        public NBTTagCompound serialize(TexturedIcon icon) {
-            NBTTagCompound nbt = new NBTTagCompound();
+        public CompoundNBT serialize(TexturedIcon icon) {
+            CompoundNBT nbt = new CompoundNBT();
             nbt.putString("Texture", icon.texture.toString());
             nbt.putInt("U", icon.u);
             nbt.putInt("V", icon.v);

@@ -7,16 +7,16 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.threetag.threecore.abilities.superpower.Superpower;
 import com.threetag.threecore.abilities.superpower.SuperpowerManager;
-import com.threetag.threecore.karma.command.KarmaCommand;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.command.arguments.ResourceLocationArgument;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -29,7 +29,7 @@ public class SuperpowerCommand {
     };
 
     public static final DynamicCommandExceptionType SUPERPOWER_NOT_FOUND = new DynamicCommandExceptionType((object) -> {
-        return new TextComponentTranslation("commands.superpower.error.superpowerNotFound", new Object[]{object});
+        return new TranslationTextComponent("commands.superpower.error.superpowerNotFound", new Object[]{object});
     });
 
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
@@ -56,18 +56,18 @@ public class SuperpowerCommand {
 
         while (iterator.hasNext()) {
             Entity entity = iterator.next();
-            if(entity instanceof EntityLivingBase) {
-                SuperpowerManager.setSuperpower((EntityLivingBase) entity, superpower);
+            if(entity instanceof LivingEntity) {
+                SuperpowerManager.setSuperpower((LivingEntity) entity, superpower);
                 i++;
             } else {
-                commandSource.sendErrorMessage(new TextComponentTranslation("commands.superpower.error.noLivingEntity"));
+                commandSource.sendErrorMessage(new TranslationTextComponent("commands.superpower.error.noLivingEntity"));
             }
         }
 
         if (i == 1) {
-            commandSource.sendFeedback(new TextComponentTranslation("commands.superpower.success.entity.single", new Object[]{(entities.iterator().next()).getDisplayName(), superpower.getName()}), true);
+            commandSource.sendFeedback(new TranslationTextComponent("commands.superpower.success.entity.single", new Object[]{(entities.iterator().next()).getDisplayName(), superpower.getName()}), true);
         } else {
-            commandSource.sendFeedback(new TextComponentTranslation("commands.superpower.success.entity.multiple", new Object[]{i, superpower.getName()}), true);
+            commandSource.sendFeedback(new TranslationTextComponent("commands.superpower.success.entity.multiple", new Object[]{i, superpower.getName()}), true);
         }
 
         return i;

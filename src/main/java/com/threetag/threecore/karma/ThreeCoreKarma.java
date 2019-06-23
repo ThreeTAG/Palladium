@@ -53,7 +53,6 @@ public class ThreeCoreKarma {
     }
 
     public void setup(FMLCommonSetupEvent e) {
-
         // Network
         ThreeCore.registerMessage(SyncKarmaMessage.class, SyncKarmaMessage::toBytes, SyncKarmaMessage::new, SyncKarmaMessage::handle);
         ThreeCore.registerMessage(KarmaInfoMessage.class, KarmaInfoMessage::toBytes, KarmaInfoMessage::new, KarmaInfoMessage::handle);
@@ -71,7 +70,7 @@ public class ThreeCoreKarma {
                         instance.setKarma(((IntNBT) nbt).getInt());
                     }
                 },
-                () -> new CapabilityKarma());
+                CapabilityKarma::new);
     }
 
     @SubscribeEvent

@@ -5,29 +5,29 @@ import com.threetag.threecore.abilities.AbilityHelper;
 import com.threetag.threecore.abilities.IAbilityContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MessageUpdateAbility {
+public class UpdateAbilityMessage {
 
     public int entityID;
     public ResourceLocation containerId;
     public String abilityId;
-    public NBTTagCompound data;
+    public CompoundNBT data;
 
-    public MessageUpdateAbility(int entityID, ResourceLocation containerId, String abilityId, NBTTagCompound data) {
+    public UpdateAbilityMessage(int entityID, ResourceLocation containerId, String abilityId, CompoundNBT data) {
         this.entityID = entityID;
         this.containerId = containerId;
         this.abilityId = abilityId;
         this.data = data;
     }
 
-    public MessageUpdateAbility(PacketBuffer buffer) {
+    public UpdateAbilityMessage(PacketBuffer buffer) {
         this.entityID = buffer.readInt();
         this.containerId = new ResourceLocation(buffer.readString(64));
         this.abilityId = buffer.readString(32);
@@ -44,8 +44,8 @@ public class MessageUpdateAbility {
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             Entity entity = Minecraft.getInstance().world.getEntityByID(this.entityID);
-            if (entity != null && entity instanceof EntityLivingBase) {
-                IAbilityContainer container = AbilityHelper.getAbilityContainerFromId((EntityLivingBase) entity, this.containerId);
+            if (entity != null && entity instanceof LivingEntity) {
+                IAbilityContainer container = AbilityHelper.getAbilityContainerFromId((LivingEntity) entity, this.containerId);
 
                 if (container != null) {
                     Ability ability = container.getAbilityMap().get(this.abilityId);

@@ -4,39 +4,38 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.threetag.threecore.util.attributes.AttributeRegistry;
 import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Objects;
 
-public class ThreeDataAttribute extends ThreeData<IAttribute>
-{
+public class AttributeThreeData extends ThreeData<IAttribute> {
 
-    public ThreeDataAttribute(String key) {
+    public AttributeThreeData(String key) {
         super(key);
     }
 
     @Override
     public IAttribute parseValue(JsonObject jsonObject, IAttribute defaultValue) {
-        if (!JsonUtils.hasField(jsonObject, this.jsonKey))
+        if (!JSONUtils.hasField(jsonObject, this.jsonKey))
             return defaultValue;
-        AttributeRegistry.AttributeEntry attributeEntry = AttributeRegistry.REGISTRY.get(new ResourceLocation(JsonUtils.getString(jsonObject, this.jsonKey)));
+        AttributeRegistry.AttributeEntry attributeEntry = AttributeRegistry.REGISTRY.getValue(new ResourceLocation(JSONUtils.getString(jsonObject, this.jsonKey))).orElse(null);
         if (attributeEntry == null)
-            throw new JsonSyntaxException("Attribute " + JsonUtils.getString(jsonObject, this.jsonKey) + " does not exist!");
+            throw new JsonSyntaxException("Attribute " + JSONUtils.getString(jsonObject, this.jsonKey) + " does not exist!");
         return attributeEntry.getAttribute();
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt, IAttribute value) {
+    public void writeToNBT(CompoundNBT nbt, IAttribute value) {
         nbt.putString(this.key, Objects.requireNonNull(AttributeRegistry.REGISTRY.getKey(AttributeRegistry.getEntry(value))).toString());
     }
 
     @Override
-    public IAttribute readFromNBT(NBTTagCompound nbt, IAttribute defaultValue) {
+    public IAttribute readFromNBT(CompoundNBT nbt, IAttribute defaultValue) {
         if (!nbt.contains(this.key))
             return defaultValue;
-        return AttributeRegistry.REGISTRY.get(new ResourceLocation(nbt.getString(this.key))).getAttribute();
+        return AttributeRegistry.REGISTRY.getOrDefault(new ResourceLocation(nbt.getString(this.key))).getAttribute();
     }
 
     @Override
