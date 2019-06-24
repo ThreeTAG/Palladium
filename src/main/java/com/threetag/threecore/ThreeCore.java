@@ -52,11 +52,4 @@ public class ThreeCore {
         return id;
     }
 
-    public static ItemGroup ITEM_GROUP = new ItemGroup(MODID) {
-        @Override
-        public ItemStack createIcon() {
-            return new ItemStack(Items.ENCHANTED_GOLDEN_APPLE);
-        }
-    };
-
 }
