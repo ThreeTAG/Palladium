@@ -32,7 +32,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
@@ -120,6 +122,11 @@ public class GrinderTileEntity extends TileEntity implements IRecipeHolder, IRec
     };
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(energySlot, inputSlot, outputSlots);
     private RecipeWrapper recipeWrapper = new RecipeWrapper(this.combinedHandler);
+    private LazyOptional<IItemHandlerModifiable> combinedInvHandler = LazyOptional.of(() -> combinedHandler);
+    private LazyOptional<IItemHandlerModifiable> inputSlotHandler = LazyOptional.of(() -> inputSlot);
+    private LazyOptional<IItemHandlerModifiable> outputSlotHandler = LazyOptional.of(() -> outputSlots);
+    private LazyOptional<IItemHandlerModifiable> energySlotHandler = LazyOptional.of(() -> energySlot);
+    private LazyOptional<EnergyStorage> energyHandler = LazyOptional.of(() -> energyStorage);
 
     public GrinderTileEntity() {
         super(ThreeCoreBase.GRINDER_TILE_ENTITY);
@@ -423,15 +430,15 @@ public class GrinderTileEntity extends TileEntity implements IRecipeHolder, IRec
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (side == null)
-                return LazyOptional.of(() -> (T) combinedHandler);
+                return combinedInvHandler.cast();
             else if (side == Direction.UP)
-                return LazyOptional.of(() -> (T) inputSlot);
+                return inputSlotHandler.cast();
             else if (side == Direction.DOWN)
-                return LazyOptional.of(() -> (T) outputSlots);
+                return outputSlotHandler.cast();
             else
-                return LazyOptional.of(() -> (T) energySlot);
+                return energySlotHandler.cast();
         } else if (cap == CapabilityEnergy.ENERGY)
-            return LazyOptional.of(() -> (T) energyStorage);
+            return energyHandler.cast();
         return super.getCapability(cap, side);
     }
 }
