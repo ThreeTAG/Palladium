@@ -119,6 +119,10 @@ public class GrinderBlock extends ContainerBlock {
             double z2 = random.nextDouble() * 0.8D - 0.4D;
             world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.COBBLESTONE.getDefaultState()), x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
             world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.GRAVEL.getDefaultState()), x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
+
+            if(random.nextInt(40) == 0) {
+                world.addParticle(ParticleTypes.FLAME, x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
+            }
         }
     }
 
