@@ -16,6 +16,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
@@ -62,13 +63,6 @@ public class ThreeCoreBase {
     public void addOreFeature(Biome biome, BlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
         biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, ore, config.size.get()), Placement.COUNT_RANGE, new CountRangeConfig(config.count.get(), config.minHeight.get(), 0, config.maxHeight.get() - config.minHeight.get())));
     }
-
-    public static ItemGroup ITEM_GROUP = new ItemGroup("threecore_materials") {
-        @Override
-        public ItemStack createIcon() {
-            return new ItemStack(IRIDIUM_INGOT);
-        }
-    };
 
     // Machines
     @ObjectHolder("grinder")
@@ -253,11 +247,11 @@ public class ThreeCoreBase {
     public void registerItems(RegistryEvent.Register<Item> e) {
         IForgeRegistry<Item> registry = e.getRegistry();
 
-        registry.register(makeItem(GRINDER));
-        registry.register(new CapacitorItem(new Item.Properties().group(ITEM_GROUP).maxStackSize(1), 40000, 100).setRegistryName(ThreeCore.MODID, "capacitor"));
-        registry.register(new CapacitorItem(new Item.Properties().group(ITEM_GROUP).maxStackSize(1), 100000, 200).setRegistryName(ThreeCore.MODID, "advanced_capacitor"));
-        registry.register(new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "circuit"));
-        registry.register(new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
+        registry.register(makeItem(GRINDER, ItemGroup.DECORATIONS));
+        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroup.MISC).maxStackSize(1), 40000, 100).setRegistryName(ThreeCore.MODID, "capacitor"));
+        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroup.MISC).maxStackSize(1), 100000, 200).setRegistryName(ThreeCore.MODID, "advanced_capacitor"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(ThreeCore.MODID, "circuit"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
 
         registry.register(makeItem(COPPER_BLOCK));
         registry.register(makeItem(TIN_BLOCK));
@@ -288,85 +282,89 @@ public class ThreeCoreBase {
         registry.register(makeItem(IRIDIUM_ORE, Rarity.UNCOMMON));
         registry.register(makeItem(URU_ORE, Rarity.EPIC));
 
-        registry.register(COPPER_INGOT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "copper_ingot"));
-        registry.register(TIN_INGOT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "tin_ingot"));
-        registry.register(LEAD_INGOT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "lead_ingot"));
-        registry.register(SILVER_INGOT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "silver_ingot"));
-        registry.register(PALLADIUM_INGOT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "palladium_ingot"));
-        registry.register(VIBRANIUM_INGOT = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_ingot"));
-        registry.register(OSMIUM_INGOT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "osmium_ingot"));
-        registry.register(URANIUM_INGOT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "uranium_ingot"));
-        registry.register(TITANIUM_INGOT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "titanium_ingot"));
-        registry.register(IRIDIUM_INGOT = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_ingot"));
-        registry.register(URU_INGOT = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_ingot"));
-        registry.register(BRONZE_INGOT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "bronze_ingot"));
-        registry.register(INTERTIUM_INGOT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "intertium_ingot"));
-        registry.register(STEEL_INGOT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "steel_ingot"));
-        registry.register(GOLD_TITANIUM_ALLOY_INGOT = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_ingot"));
-        registry.register(ADAMANTIUM_INGOT = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_ingot"));
+        registry.register(COPPER_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_ingot"));
+        registry.register(TIN_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "tin_ingot"));
+        registry.register(LEAD_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "lead_ingot"));
+        registry.register(SILVER_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "silver_ingot"));
+        registry.register(PALLADIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "palladium_ingot"));
+        registry.register(VIBRANIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_ingot"));
+        registry.register(OSMIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "osmium_ingot"));
+        registry.register(URANIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "uranium_ingot"));
+        registry.register(TITANIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "titanium_ingot"));
+        registry.register(IRIDIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_ingot"));
+        registry.register(URU_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_ingot"));
+        registry.register(BRONZE_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "bronze_ingot"));
+        registry.register(INTERTIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "intertium_ingot"));
+        registry.register(STEEL_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_ingot"));
+        registry.register(GOLD_TITANIUM_ALLOY_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_ingot"));
+        registry.register(ADAMANTIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_ingot"));
 
-        registry.register(COPPER_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "copper_nugget"));
-        registry.register(TIN_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "tin_nugget"));
-        registry.register(LEAD_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "lead_nugget"));
-        registry.register(SILVER_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "silver_nugget"));
-        registry.register(PALLADIUM_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "palladium_nugget"));
-        registry.register(VIBRANIUM_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_nugget"));
-        registry.register(OSMIUM_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "osmium_nugget"));
-        registry.register(URANIUM_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "uranium_nugget"));
-        registry.register(TITANIUM_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "titanium_nugget"));
-        registry.register(IRIDIUM_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_nugget"));
-        registry.register(URU_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_nugget"));
-        registry.register(BRONZE_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "bronze_nugget"));
-        registry.register(INTERTIUM_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "intertium_nugget"));
-        registry.register(STEEL_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "steel_nugget"));
-        registry.register(GOLD_TITANIUM_ALLOY_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_nugget"));
-        registry.register(ADAMANTIUM_NUGGET = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_nugget"));
+        registry.register(COPPER_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_nugget"));
+        registry.register(TIN_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "tin_nugget"));
+        registry.register(LEAD_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "lead_nugget"));
+        registry.register(SILVER_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "silver_nugget"));
+        registry.register(PALLADIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "palladium_nugget"));
+        registry.register(VIBRANIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_nugget"));
+        registry.register(OSMIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "osmium_nugget"));
+        registry.register(URANIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "uranium_nugget"));
+        registry.register(TITANIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "titanium_nugget"));
+        registry.register(IRIDIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_nugget"));
+        registry.register(URU_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_nugget"));
+        registry.register(BRONZE_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "bronze_nugget"));
+        registry.register(INTERTIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "intertium_nugget"));
+        registry.register(STEEL_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_nugget"));
+        registry.register(GOLD_TITANIUM_ALLOY_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_nugget"));
+        registry.register(ADAMANTIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_nugget"));
 
-        registry.register(IRON_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "iron_dust"));
-        registry.register(GOLD_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "gold_dust"));
-        registry.register(COPPER_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "copper_dust"));
-        registry.register(TIN_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "tin_dust"));
-        registry.register(LEAD_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "lead_dust"));
-        registry.register(SILVER_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "silver_dust"));
-        registry.register(PALLADIUM_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "palladium_dust"));
-        registry.register(VIBRANIUM_DUST = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_dust"));
-        registry.register(OSMIUM_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "osmium_dust"));
-        registry.register(URANIUM_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "uranium_dust"));
-        registry.register(TITANIUM_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "titanium_dust"));
-        registry.register(IRIDIUM_DUST = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_dust"));
-        registry.register(URU_DUST = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_dust"));
-        registry.register(BRONZE_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "bronze_dust"));
-        registry.register(INTERTIUM_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "intertium_dust"));
-        registry.register(STEEL_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "steel_dust"));
-        registry.register(GOLD_TITANIUM_ALLOY_DUST = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_dust"));
-        registry.register(ADAMANTIUM_DUST = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_dust"));
+        registry.register(IRON_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "iron_dust"));
+        registry.register(GOLD_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_dust"));
+        registry.register(COPPER_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_dust"));
+        registry.register(TIN_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "tin_dust"));
+        registry.register(LEAD_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "lead_dust"));
+        registry.register(SILVER_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "silver_dust"));
+        registry.register(PALLADIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "palladium_dust"));
+        registry.register(VIBRANIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_dust"));
+        registry.register(OSMIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "osmium_dust"));
+        registry.register(URANIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "uranium_dust"));
+        registry.register(TITANIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "titanium_dust"));
+        registry.register(IRIDIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_dust"));
+        registry.register(URU_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_dust"));
+        registry.register(BRONZE_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "bronze_dust"));
+        registry.register(INTERTIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "intertium_dust"));
+        registry.register(STEEL_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_dust"));
+        registry.register(GOLD_TITANIUM_ALLOY_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_dust"));
+        registry.register(ADAMANTIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_dust"));
 
-        registry.register(IRON_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "iron_plate"));
-        registry.register(GOLD_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "gold_plate"));
-        registry.register(COPPER_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "copper_plate"));
-        registry.register(TIN_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "tin_plate"));
-        registry.register(LEAD_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "lead_plate"));
-        registry.register(SILVER_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "silver_plate"));
-        registry.register(PALLADIUM_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "palladium_plate"));
-        registry.register(VIBRANIUM_PLATE = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_plate"));
-        registry.register(OSMIUM_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "osmium_plate"));
-        registry.register(URANIUM_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "uranium_plate"));
-        registry.register(TITANIUM_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "titanium_plate"));
-        registry.register(IRIDIUM_PLATE = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_plate"));
-        registry.register(URU_PLATE = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_plate"));
-        registry.register(BRONZE_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "bronze_plate"));
-        registry.register(INTERTIUM_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "intertium_plate"));
-        registry.register(STEEL_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "steel_plate"));
-        registry.register(GOLD_TITANIUM_ALLOY_PLATE = new Item(new Item.Properties().group(ITEM_GROUP)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_plate"));
-        registry.register(ADAMANTIUM_PLATE = new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_plate"));
+        registry.register(IRON_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "iron_plate"));
+        registry.register(GOLD_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_plate"));
+        registry.register(COPPER_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_plate"));
+        registry.register(TIN_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "tin_plate"));
+        registry.register(LEAD_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "lead_plate"));
+        registry.register(SILVER_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "silver_plate"));
+        registry.register(PALLADIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "palladium_plate"));
+        registry.register(VIBRANIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_plate"));
+        registry.register(OSMIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "osmium_plate"));
+        registry.register(URANIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "uranium_plate"));
+        registry.register(TITANIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "titanium_plate"));
+        registry.register(IRIDIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_plate"));
+        registry.register(URU_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_plate"));
+        registry.register(BRONZE_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "bronze_plate"));
+        registry.register(INTERTIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "intertium_plate"));
+        registry.register(STEEL_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_plate"));
+        registry.register(GOLD_TITANIUM_ALLOY_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_plate"));
+        registry.register(ADAMANTIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_plate"));
     }
 
     public static Item makeItem(Block block) {
-        return new BlockItem(block, new Item.Properties().group(ITEM_GROUP)).setRegistryName(block.getRegistryName());
+        return new BlockItem(block, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS)).setRegistryName(block.getRegistryName());
     }
 
     public static Item makeItem(Block block, Rarity rarity) {
-        return new BlockItem(block, new Item.Properties().group(ITEM_GROUP).rarity(rarity)).setRegistryName(block.getRegistryName());
+        return new BlockItem(block, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS).rarity(rarity)).setRegistryName(block.getRegistryName());
+    }
+
+    public static Item makeItem(Block block, ItemGroup itemGroup) {
+        return new BlockItem(block, new Item.Properties().group(itemGroup)).setRegistryName(block.getRegistryName());
     }
 
 }
