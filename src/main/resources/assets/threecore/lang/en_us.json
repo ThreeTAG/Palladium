@@ -126,6 +126,9 @@
   "death.attack.grinder": "%1$s was grinded to death by a grinder",
   "death.attack.grinder.player": "%1$s was grinded to death by a grinder whilst trying to escape %2$s",
   
+  "gui.jei.category.threecore.grinding": "Grinding",
+  "gui.jei.category.threecore.grinding.experience": "%s XP",
+  
   "threecore.util.energy_display": "%,d %s",
   "threecore.util.energy_storage_display": "%,d / %,d %s"
 }
