@@ -1,0 +1,31 @@
+{
+  "pattern": [
+    "SSS",
+    "GCG",
+    "PPP"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stonecutter"
+    },
+    "G": {
+      "item": "minecraft:grindstone"
+    },
+    "C": {
+      "item": "threecore:circuit"
+    },
+    "P": {
+      "tag": "forge:plates/iron"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "threecore:grinder"
+  },
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:plates/iron"
+    }
+  ]
+}

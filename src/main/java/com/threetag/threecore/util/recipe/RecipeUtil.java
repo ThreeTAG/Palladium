@@ -45,6 +45,11 @@ public class RecipeUtil {
     }
 
     public static void generateThreeCoreRecipes() {
+
+        // Basic stuff
+        RecipeUtil.addShapedRecipe("grinder", new ItemStack(ThreeCoreBase.GRINDER), "SSS", "GCG", "PPP", 'S', Blocks.STONECUTTER, 'G', Blocks.GRINDSTONE, 'C', ThreeCoreBase.CIRCUIT, 'P', "forge:plates/iron");
+
+        // Metals
         RecipeUtil.addShapelessRecipe("copper_ingot_from_copper_block", "copper_ingot", new ItemStack(ThreeCoreBase.COPPER_INGOT, 9), "forge:storage_blocks/copper");
         RecipeUtil.addShapedRecipe("copper_block", new ItemStack(ThreeCoreBase.COPPER_BLOCK), "###", "###", "###", '#', "forge:ingots/copper");
         RecipeUtil.addShapelessRecipe("copper_nugget", new ItemStack(ThreeCoreBase.COPPER_NUGGET, 9), "forge:ingots/copper");

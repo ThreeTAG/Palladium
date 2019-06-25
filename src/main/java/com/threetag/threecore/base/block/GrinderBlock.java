@@ -31,7 +31,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
-import sun.security.provider.SHA;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -120,7 +119,7 @@ public class GrinderBlock extends ContainerBlock {
             world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.COBBLESTONE.getDefaultState()), x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
             world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.GRAVEL.getDefaultState()), x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
 
-            if(random.nextInt(40) == 0) {
+            if (random.nextInt(40) == 0) {
                 world.addParticle(ParticleTypes.FLAME, x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
             }
         }
@@ -128,9 +127,9 @@ public class GrinderBlock extends ContainerBlock {
 
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        float y = (float)pos.getY() + 0.5F;
-        if (!world.isRemote && entity.getBoundingBox().minY <= (double)y) {
-            if(state.get(LIT)) {
+        float y = (float) pos.getY() + 0.5F;
+        if (!world.isRemote && entity.getBoundingBox().minY <= (double) y) {
+            if (state.get(LIT)) {
                 entity.attackEntityFrom(TCDamageSources.GRINDER, 2F);
             } else {
                 double xSpeed = Math.abs(entity.posX - entity.lastTickPosX);
