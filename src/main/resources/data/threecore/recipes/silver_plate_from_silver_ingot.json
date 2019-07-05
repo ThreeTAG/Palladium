@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:plates/silver"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/silver"
+    }
+  ],
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/silver"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/silver"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 500
+}

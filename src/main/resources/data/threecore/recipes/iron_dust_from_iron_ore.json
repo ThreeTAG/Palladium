@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/iron"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/iron"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/iron",
+    "count": 2
+  },
+  "ingredient": {
+    "tag": "forge:ores/iron"
+  },
+  "experience": 0.7,
+  "energy": 400
+}

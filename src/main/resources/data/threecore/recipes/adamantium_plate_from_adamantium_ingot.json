@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:plates/adamantium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/adamantium"
+    }
+  ],
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/adamantium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/adamantium"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 3000
+}

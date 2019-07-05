@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/adamantium"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "threecore:hammer"
+    },
+    {
+      "tag": "forge:ingots/adamantium"
+    },
+    {
+      "tag": "forge:ingots/adamantium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:adamantium_plate"
+  }
+}

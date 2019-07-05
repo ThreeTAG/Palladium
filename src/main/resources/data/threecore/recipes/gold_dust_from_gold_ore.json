@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/gold"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ores/gold"
+    }
+  ],
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/gold",
+    "count": 2
+  },
+  "ingredient": {
+    "tag": "forge:ores/gold"
+  },
+  "experience": 0.7,
+  "energy": 400
+}

@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/intertium"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "threecore:hammer"
+    },
+    {
+      "tag": "forge:ingots/intertium"
+    },
+    {
+      "tag": "forge:ingots/intertium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:intertium_plate"
+  }
+}

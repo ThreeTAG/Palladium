@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:plates/osmium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/osmium"
+    }
+  ],
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/osmium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/osmium"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 500
+}

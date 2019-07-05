@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/lead"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "threecore:hammer"
+    },
+    {
+      "tag": "forge:ingots/lead"
+    },
+    {
+      "tag": "forge:ingots/lead"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:lead_plate"
+  }
+}

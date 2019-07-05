@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:plates/vibranium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/vibranium"
+    }
+  ],
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/vibranium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/vibranium"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 1500
+}

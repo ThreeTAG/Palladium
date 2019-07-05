@@ -55,7 +55,6 @@ public class GrinderTileEntity extends TileEntity implements IRecipeHolder, IRec
     private final Map<ResourceLocation, Integer> field_214022_n = Maps.newHashMap();
 
     protected final IIntArray intArray = new IIntArray() {
-        // TODO energy fields
         @Override
         public int get(int i) {
             switch (i) {

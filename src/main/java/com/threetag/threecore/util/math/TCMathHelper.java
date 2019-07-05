@@ -12,4 +12,8 @@ public class TCMathHelper {
         return (double) tmp / factor;
     }
 
+    public static float interpolate(float f1, float f2, float partial) {
+        return f1 + (f2 - f1) * partial;
+    }
+
 }

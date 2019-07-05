@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/iridium"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "threecore:hammer"
+    },
+    {
+      "tag": "forge:ingots/iridium"
+    },
+    {
+      "tag": "forge:ingots/iridium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:iridium_plate"
+  }
+}

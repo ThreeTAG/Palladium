@@ -1,0 +1,37 @@
+{
+  "pattern": [
+    "PBP",
+    "OCW",
+    "III"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "B": {
+      "item": "minecraft:iron_bars"
+    },
+    "C": {
+      "item": "threecore:circuit"
+    },
+    "I": {
+      "tag": "forge:plates/iron"
+    },
+    "W": {
+      "item": "minecraft:water_bucket"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "threecore:hydraulic_press"
+  },
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:plates/iron"
+    }
+  ]
+}

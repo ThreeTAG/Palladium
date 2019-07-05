@@ -142,12 +142,12 @@ public class GrinderBlock extends ContainerBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_) {
+    public VoxelShape getShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext selectionContext) {
         return SHAPE;
     }
 
     @Override
-    public VoxelShape getRaytraceShape(BlockState p_199600_1_, IBlockReader p_199600_2_, BlockPos p_199600_3_) {
+    public VoxelShape getRaytraceShape(BlockState state, IBlockReader blockReader, BlockPos pos) {
         return INSIDE;
     }
 

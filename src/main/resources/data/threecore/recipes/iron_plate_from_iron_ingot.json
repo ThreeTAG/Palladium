@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:plates/iron"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/iron"
+    }
+  ],
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/iron"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/iron"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 500
+}

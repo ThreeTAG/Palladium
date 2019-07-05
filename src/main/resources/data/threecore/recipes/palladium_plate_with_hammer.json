@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/palladium"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "threecore:hammer"
+    },
+    {
+      "tag": "forge:ingots/palladium"
+    },
+    {
+      "tag": "forge:ingots/palladium"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "threecore:palladium_plate"
+  }
+}

@@ -1,7 +1,7 @@
 package com.threetag.threecore.compat.jei;
 
-import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.base.recipe.GrinderRecipe;
+import com.threetag.threecore.base.recipe.PressingRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.inventory.IInventory;
@@ -22,6 +22,14 @@ public class ThreeCoreRecipeFactory {
         ClientWorld world = Minecraft.getInstance().world;
         RecipeManager recipeManager = world.getRecipeManager();
         list.addAll(getRecipes(recipeManager, GrinderRecipe.RECIPE_TYPE));
+        return list;
+    }
+
+    public static List<PressingRecipe> getPressingRecipes() {
+        List<PressingRecipe> list = new ArrayList<>();
+        ClientWorld world = Minecraft.getInstance().world;
+        RecipeManager recipeManager = world.getRecipeManager();
+        list.addAll(getRecipes(recipeManager, PressingRecipe.RECIPE_TYPE));
         return list;
     }
 
