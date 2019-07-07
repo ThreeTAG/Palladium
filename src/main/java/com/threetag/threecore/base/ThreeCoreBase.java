@@ -16,6 +16,7 @@ import com.threetag.threecore.base.recipe.GrinderRecipe;
 import com.threetag.threecore.base.recipe.PressingRecipe;
 import com.threetag.threecore.base.tileentity.GrinderTileEntity;
 import com.threetag.threecore.base.tileentity.HydraulicPressTileEntity;
+import com.threetag.threecore.util.item.ItemGroupRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -279,14 +280,14 @@ public class ThreeCoreBase {
     public void registerItems(RegistryEvent.Register<Item> e) {
         IForgeRegistry<Item> registry = e.getRegistry();
 
-        registry.register(makeItem(GRINDER, ItemGroup.DECORATIONS));
-        registry.register(makeItem(HYDRAULIC_PRESS, ItemGroup.DECORATIONS));
+        registry.register(makeItem(GRINDER, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
+        registry.register(makeItem(HYDRAULIC_PRESS, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(new HammerItem(4.5F, -2.75F, ItemTier.IRON, new Item.Properties().group(ItemGroup.TOOLS).maxStackSize(1).maxDamage(16)).setRegistryName(ThreeCore.MODID, "hammer"));
-        registry.register(new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(ThreeCore.MODID, "plate_cast"));
-        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroup.MISC).maxStackSize(1), 40000, 100).setRegistryName(ThreeCore.MODID, "capacitor"));
-        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroup.MISC).maxStackSize(1), 100000, 200).setRegistryName(ThreeCore.MODID, "advanced_capacitor"));
-        registry.register(new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(ThreeCore.MODID, "circuit"));
-        registry.register(new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "plate_cast"));
+        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)).maxStackSize(1), 40000, 100).setRegistryName(ThreeCore.MODID, "capacitor"));
+        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)).maxStackSize(1), 100000, 200).setRegistryName(ThreeCore.MODID, "advanced_capacitor"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "circuit"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
 
         registry.register(makeItem(COPPER_BLOCK));
         registry.register(makeItem(TIN_BLOCK));

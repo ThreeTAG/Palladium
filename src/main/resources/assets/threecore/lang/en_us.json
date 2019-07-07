@@ -1,6 +1,5 @@
 {
-  "itemGroup.threecore": "ThreeCore",
-  "itemGroup.threecore_materials": "ThreeCore | Materials",
+  "itemGroup.technology": "Technology",
   
   "block.threecore.grinder": "Grinder",
   "block.threecore.hydraulic_press": "Hydraulic Press",
