@@ -1,0 +1,15 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:dusts/gold"
+    }
+  ],
+  "type": "smelting",
+  "result": "minecraft:gold_ingot",
+  "ingredient": {
+    "tag": "forge:dusts/gold"
+  },
+  "experience": 0.0,
+  "cookingtime": 100
+}

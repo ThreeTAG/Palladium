@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:plates/gold_titanium_alloy"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/gold_titanium_alloy"
+    }
+  ],
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/gold_titanium_alloy"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/gold_titanium_alloy"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 1400
+}

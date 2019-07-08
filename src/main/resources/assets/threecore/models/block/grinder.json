@@ -2,10 +2,10 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"side": "threecore:block/grinder_side",
-		"particle": "threecore:block/grinder_side",
+		"side": "threecore:block/machine_side",
+		"particle": "threecore:block/machine_side",
 		"blade": "threecore:block/grinder_blade",
-		"top": "threecore:block/grinder_top",
+		"top": "threecore:block/machine_top",
 		"front": "threecore:block/grinder_front"
 	},
 	"elements": [

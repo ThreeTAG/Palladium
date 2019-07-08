@@ -1,0 +1,7 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "threecore:block/hydraulic_press",
+	"textures": {
+		"front": "threecore:block/hydraulic_press_front_on"
+	}
+}

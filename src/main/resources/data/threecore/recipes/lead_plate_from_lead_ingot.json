@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:plates/lead"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/lead"
+    }
+  ],
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/lead"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/lead"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 400
+}

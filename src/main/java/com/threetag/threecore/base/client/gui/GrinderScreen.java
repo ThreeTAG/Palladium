@@ -1,7 +1,8 @@
-package com.threetag.threecore.base.inventory;
+package com.threetag.threecore.base.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.threetag.threecore.ThreeCore;
+import com.threetag.threecore.base.inventory.GrinderContainer;
 import com.threetag.threecore.util.energy.EnergyUtil;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -10,8 +11,7 @@ import net.minecraft.util.text.ITextComponent;
 
 public class GrinderScreen extends ContainerScreen<GrinderContainer> {
 
-    private static final ResourceLocation GRINDER_GUI_TEXTURES = new ResourceLocation(ThreeCore.MODID, "textures/gui/grinder.png");
-    private static final ResourceLocation RECIPE_BUTTON_TEXTURE = new ResourceLocation("textures/gui/recipe_button.png");
+    private static final ResourceLocation GRINDER_GUI_TEXTURES = new ResourceLocation(ThreeCore.MODID, "textures/gui/container/grinder.png");
 
     public final PlayerInventory inventoryPlayer;
     public final GrinderContainer grinderContainer;

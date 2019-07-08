@@ -7,6 +7,7 @@ import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.base.ThreeCoreBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -45,6 +46,27 @@ public class RecipeUtil {
     }
 
     public static void generateThreeCoreRecipes() {
+
+        // Basic stuff
+        RecipeUtil.addShapedRecipe("grinder", new ItemStack(ThreeCoreBase.GRINDER), "SSS", "GCG", "PPP", 'S', Blocks.STONECUTTER, 'G', Blocks.GRINDSTONE, 'C', ThreeCoreBase.CIRCUIT, 'P', "forge:plates/iron");
+        RecipeUtil.addShapedRecipe("hydraulic_press", new ItemStack(ThreeCoreBase.HYDRAULIC_PRESS), "PBP", "OCW", "III", 'P', Blocks.PISTON, 'B', Blocks.IRON_BARS, 'C', ThreeCoreBase.CIRCUIT, 'I', "forge:plates/iron", 'W', Items.WATER_BUCKET, 'O', Blocks.OBSIDIAN);
+        RecipeUtil.addShapedRecipe("hammer_1", new ResourceLocation(ThreeCore.MODID, "hammer").toString(), new ItemStack(ThreeCoreBase.HAMMER), "III", "ISI", " S ", 'I', "forge:ingots/iron", 'S', Items.STICK);
+        RecipeUtil.addShapedRecipe("hammer_2", new ResourceLocation(ThreeCore.MODID, "hammer").toString(), new ItemStack(ThreeCoreBase.HAMMER), " II", "SSI", " II", 'I', "forge:ingots/iron", 'S', Items.STICK);
+        RecipeUtil.addShapelessRecipe("plate_cast", new ResourceLocation(ThreeCore.MODID, "cast").toString(), new ItemStack(ThreeCoreBase.PLATE_CAST), ThreeCoreBase.HAMMER, "forge:plates/steel", "forge:plates");
+
+        // Metals
+        RecipeUtil.addGrinderRecipe("iron_dust_from_iron_ore", "forge:dusts/iron#2", "forge:ores/iron", 0.7F, 400);
+        RecipeUtil.addGrinderRecipe("iron_dust_from_iron_ingot", "forge:dusts/iron", "forge:ingots/iron", 0F, 200);
+        RecipeUtil.addSmeltingRecipe("iron_ingot_from_iron_dust", new ItemStack(Items.IRON_INGOT), "forge:dusts/iron", 0F, 100);
+        RecipeUtil.addPressingRecipe("iron_plate_from_iron_ingot", null,"forge:plates/iron", "forge:ingots/iron", ThreeCoreBase.PLATE_CAST, 0F, 500);
+        RecipeUtil.addShapelessRecipe("iron_plate_with_hammer", new ItemStack(ThreeCoreBase.IRON_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/iron", "forge:ingots/iron");
+
+        RecipeUtil.addGrinderRecipe("gold_dust_from_gold_ore", "forge:dusts/gold#2", "forge:ores/gold", 0.7F, 400);
+        RecipeUtil.addGrinderRecipe("gold_dust_from_gold_ingot", "forge:dusts/gold", "forge:ingots/gold", 0F, 200);
+        RecipeUtil.addSmeltingRecipe("gold_ingot_from_gold_dust", new ItemStack(Items.GOLD_INGOT), "forge:dusts/gold", 0F, 100);
+        RecipeUtil.addPressingRecipe("gold_plate_from_gold_ingot", null,"forge:plates/gold", "forge:ingots/gold", ThreeCoreBase.PLATE_CAST, 0F, 500);
+        RecipeUtil.addShapelessRecipe("gold_plate_with_hammer", new ItemStack(ThreeCoreBase.GOLD_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/gold", "forge:ingots/gold");
+
         RecipeUtil.addShapelessRecipe("copper_ingot_from_copper_block", "copper_ingot", new ItemStack(ThreeCoreBase.COPPER_INGOT, 9), "forge:storage_blocks/copper");
         RecipeUtil.addShapedRecipe("copper_block", new ItemStack(ThreeCoreBase.COPPER_BLOCK), "###", "###", "###", '#', "forge:ingots/copper");
         RecipeUtil.addShapelessRecipe("copper_nugget", new ItemStack(ThreeCoreBase.COPPER_NUGGET, 9), "forge:ingots/copper");
@@ -53,6 +75,8 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("copper_dust_from_copper_ore", "forge:dusts/copper#2", "forge:ores/copper", 0.7F, 400);
         RecipeUtil.addGrinderRecipe("copper_dust_from_copper_ingot", "forge:dusts/copper", "forge:ingots/copper", 0F, 200);
         RecipeUtil.addSmeltingRecipe("copper_ingot_from_copper_dust", new ItemStack(ThreeCoreBase.COPPER_INGOT), "forge:dusts/copper", 0F, 100);
+        RecipeUtil.addPressingRecipe("copper_plate_from_copper_ingot", null,"forge:plates/copper", "forge:ingots/copper", ThreeCoreBase.PLATE_CAST, 0F, 500);
+        RecipeUtil.addShapelessRecipe("copper_plate_with_hammer", new ItemStack(ThreeCoreBase.COPPER_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/copper", "forge:ingots/copper");
 
         RecipeUtil.addShapelessRecipe("tin_ingot_from_tin_block", "tin_ingot", new ItemStack(ThreeCoreBase.TIN_INGOT, 9), "forge:storage_blocks/tin");
         RecipeUtil.addShapedRecipe("tin_block", new ItemStack(ThreeCoreBase.TIN_BLOCK), "###", "###", "###", '#', "forge:ingots/tin");
@@ -62,6 +86,8 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("tin_dust_from_tin_ore", "forge:dusts/tin#2", "forge:ores/tin", 0.7F, 400);
         RecipeUtil.addGrinderRecipe("tin_dust_from_tin_ingot", "forge:dusts/tin", "forge:ingots/tin", 0F, 200);
         RecipeUtil.addSmeltingRecipe("tin_ingot_from_tin_dust", new ItemStack(ThreeCoreBase.TIN_INGOT), "forge:dusts/tin", 0F, 100);
+        RecipeUtil.addPressingRecipe("tin_plate_from_tin_ingot", null, "forge:plates/tin", "forge:ingots/tin", ThreeCoreBase.PLATE_CAST, 0F, 500);
+        RecipeUtil.addShapelessRecipe("tin_plate_with_hammer", new ItemStack(ThreeCoreBase.TIN_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/tin", "forge:ingots/tin");
 
         RecipeUtil.addShapelessRecipe("lead_ingot_from_lead_block", "lead_ingot", new ItemStack(ThreeCoreBase.LEAD_INGOT, 9), "forge:storage_blocks/lead");
         RecipeUtil.addShapedRecipe("lead_block", new ItemStack(ThreeCoreBase.LEAD_BLOCK), "###", "###", "###", '#', "forge:ingots/lead");
@@ -71,6 +97,8 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("lead_dust_from_lead_ore", "forge:dusts/lead#2", "forge:ores/lead", 0.7F, 320);
         RecipeUtil.addGrinderRecipe("lead_dust_from_lead_ingot", "forge:dusts/lead", "forge:ingots/lead", 0F, 160);
         RecipeUtil.addSmeltingRecipe("lead_ingot_from_lead_dust", new ItemStack(ThreeCoreBase.LEAD_INGOT), "forge:dusts/lead", 0F, 80);
+        RecipeUtil.addPressingRecipe("lead_plate_from_lead_ingot", null, "forge:plates/lead", "forge:ingots/lead", ThreeCoreBase.PLATE_CAST, 0F, 400);
+        RecipeUtil.addShapelessRecipe("lead_plate_with_hammer", new ItemStack(ThreeCoreBase.LEAD_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/lead", "forge:ingots/lead");
 
         RecipeUtil.addShapelessRecipe("silver_ingot_from_silver_block", "silver_ingot", new ItemStack(ThreeCoreBase.SILVER_INGOT, 9), "forge:storage_blocks/silver");
         RecipeUtil.addShapedRecipe("silver_block", new ItemStack(ThreeCoreBase.SILVER_BLOCK), "###", "###", "###", '#', "forge:ingots/silver");
@@ -80,6 +108,8 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("silver_dust_from_silver_ore", "forge:dusts/silver#2", "forge:ores/silver", 0.7F, 400);
         RecipeUtil.addGrinderRecipe("silver_dust_from_silver_ingot", "forge:dusts/silver", "forge:ingots/silver", 0F, 200);
         RecipeUtil.addSmeltingRecipe("silver_ingot_from_silver_dust", new ItemStack(ThreeCoreBase.SILVER_INGOT), "forge:dusts/silver", 0F, 100);
+        RecipeUtil.addPressingRecipe("silver_plate_from_silver_ingot", null, "forge:plates/silver", "forge:ingots/silver", ThreeCoreBase.PLATE_CAST, 0F, 500);
+        RecipeUtil.addShapelessRecipe("silver_plate_with_hammer", new ItemStack(ThreeCoreBase.SILVER_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/silver", "forge:ingots/silver");
 
         RecipeUtil.addShapelessRecipe("palladium_ingot_from_palladium_block", "palladium_ingot", new ItemStack(ThreeCoreBase.PALLADIUM_INGOT, 9), "forge:storage_blocks/palladium");
         RecipeUtil.addShapedRecipe("palladium_block", new ItemStack(ThreeCoreBase.PALLADIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/palladium");
@@ -89,6 +119,8 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("palladium_dust_from_palladium_ore", "forge:dusts/palladium#2", "forge:ores/palladium", 0.7F, 400);
         RecipeUtil.addGrinderRecipe("palladium_dust_from_palladium_ingot", "forge:dusts/palladium", "forge:ingots/palladium", 0F, 200);
         RecipeUtil.addSmeltingRecipe("palladium_ingot_from_palladium_dust", new ItemStack(ThreeCoreBase.PALLADIUM_INGOT), "forge:dusts/palladium", 0F, 100);
+        RecipeUtil.addPressingRecipe("palladium_plate_from_palladium_ingot", null, "forge:plates/palladium", "forge:ingots/palladium", ThreeCoreBase.PLATE_CAST, 0F, 500);
+        RecipeUtil.addShapelessRecipe("palladium_plate_with_hammer", new ItemStack(ThreeCoreBase.PALLADIUM_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/palladium", "forge:ingots/palladium");
 
         RecipeUtil.addShapelessRecipe("vibranium_ingot_from_vibranium_block", "vibranium_ingot", new ItemStack(ThreeCoreBase.VIBRANIUM_INGOT, 9), "forge:storage_blocks/vibranium");
         RecipeUtil.addShapedRecipe("vibranium_block", new ItemStack(ThreeCoreBase.VIBRANIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/vibranium");
@@ -98,6 +130,8 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("vibranium_dust_from_vibranium_ore", "forge:dusts/vibranium#2", "forge:ores/vibranium", 1.1F, 1200);
         RecipeUtil.addGrinderRecipe("vibranium_dust_from_vibranium_ingot", "forge:dusts/vibranium", "forge:ingots/vibranium", 0F, 600);
         RecipeUtil.addSmeltingRecipe("vibranium_ingot_from_vibranium_dust", new ItemStack(ThreeCoreBase.VIBRANIUM_INGOT), "forge:dusts/vibranium", 0F, 300);
+        RecipeUtil.addPressingRecipe("vibranium_plate_from_vibranium_ingot", null, "forge:plates/vibranium", "forge:ingots/vibranium", ThreeCoreBase.PLATE_CAST, 0F, 1500);
+        RecipeUtil.addShapelessRecipe("vibranium_plate_with_hammer", new ItemStack(ThreeCoreBase.VIBRANIUM_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/vibranium", "forge:ingots/vibranium");
 
         RecipeUtil.addShapelessRecipe("osmium_ingot_from_osmium_block", "osmium_ingot", new ItemStack(ThreeCoreBase.OSMIUM_INGOT, 9), "forge:storage_blocks/osmium");
         RecipeUtil.addShapedRecipe("osmium_block", new ItemStack(ThreeCoreBase.OSMIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/osmium");
@@ -107,6 +141,8 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("osmium_dust_from_osmium_ore", "forge:dusts/osmium#2", "forge:ores/osmium", 0.7F, 400);
         RecipeUtil.addGrinderRecipe("osmium_dust_from_osmium_ingot", "forge:dusts/osmium", "forge:ingots/osmium", 0F, 200);
         RecipeUtil.addSmeltingRecipe("osmium_ingot_from_osmium_dust", new ItemStack(ThreeCoreBase.OSMIUM_INGOT), "forge:dusts/osmium", 0F, 100);
+        RecipeUtil.addPressingRecipe("osmium_plate_from_osmium_ingot", null, "forge:plates/osmium", "forge:ingots/osmium", ThreeCoreBase.PLATE_CAST, 0F, 500);
+        RecipeUtil.addShapelessRecipe("osmium_plate_with_hammer", new ItemStack(ThreeCoreBase.OSMIUM_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/osmium", "forge:ingots/osmium");
 
         RecipeUtil.addShapelessRecipe("uranium_ingot_from_uranium_block", "uranium_ingot", new ItemStack(ThreeCoreBase.URANIUM_INGOT, 9), "forge:storage_blocks/uranium");
         RecipeUtil.addShapedRecipe("uranium_block", new ItemStack(ThreeCoreBase.URANIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/uranium");
@@ -116,6 +152,8 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("uranium_dust_from_uranium_ore", "forge:dusts/uranium#2", "forge:ores/uranium", 0.7F, 400);
         RecipeUtil.addGrinderRecipe("uranium_dust_from_uranium_ingot", "forge:dusts/uranium", "forge:ingots/uranium", 0F, 200);
         RecipeUtil.addSmeltingRecipe("uranium_ingot_from_uranium_dust", new ItemStack(ThreeCoreBase.URANIUM_INGOT), "forge:dusts/uranium", 0F, 100);
+        RecipeUtil.addPressingRecipe("uranium_plate_from_uranium_ingot", null, "forge:plates/uranium", "forge:ingots/uranium", ThreeCoreBase.PLATE_CAST, 0F, 500);
+        RecipeUtil.addShapelessRecipe("uranium_plate_with_hammer", new ItemStack(ThreeCoreBase.URANIUM_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/uranium", "forge:ingots/uranium");
 
         RecipeUtil.addShapelessRecipe("titanium_ingot_from_titanium_block", "titanium_ingot", new ItemStack(ThreeCoreBase.TITANIUM_INGOT, 9), "forge:storage_blocks/titanium");
         RecipeUtil.addShapedRecipe("titanium_block", new ItemStack(ThreeCoreBase.TITANIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/titanium");
@@ -125,6 +163,8 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("titanium_dust_from_titanium_ore", "forge:dusts/titanium#2", "forge:ores/titanium", 0.7F, 800);
         RecipeUtil.addGrinderRecipe("titanium_dust_from_titanium_ingot", "forge:dusts/titanium", "forge:ingots/titanium", 0F, 400);
         RecipeUtil.addSmeltingRecipe("titanium_ingot_from_titanium_dust", new ItemStack(ThreeCoreBase.TITANIUM_INGOT), "forge:dusts/titanium", 0F, 200);
+        RecipeUtil.addPressingRecipe("titanium_plate_from_titanium_ingot", null, "forge:plates/titanium", "forge:ingots/titanium", ThreeCoreBase.PLATE_CAST, 0F, 1000);
+        RecipeUtil.addShapelessRecipe("titanium_plate_with_hammer", new ItemStack(ThreeCoreBase.TITANIUM_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/titanium", "forge:ingots/titanium");
 
         RecipeUtil.addShapelessRecipe("iridium_ingot_from_iridium_block", "iridium_ingot", new ItemStack(ThreeCoreBase.IRIDIUM_INGOT, 9), "forge:storage_blocks/iridium");
         RecipeUtil.addShapedRecipe("iridium_block", new ItemStack(ThreeCoreBase.IRIDIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/iridium");
@@ -134,6 +174,8 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("iridium_dust_from_iridium_ore", "forge:dusts/iridium#2", "forge:ores/iridium", 0.9F, 800);
         RecipeUtil.addGrinderRecipe("iridium_dust_from_iridium_ingot", "forge:dusts/iridium", "forge:ingots/iridium", 0F, 400);
         RecipeUtil.addSmeltingRecipe("iridium_ingot_from_iridium_dust", new ItemStack(ThreeCoreBase.IRIDIUM_INGOT), "forge:dusts/iridium", 0F, 200);
+        RecipeUtil.addPressingRecipe("iridium_plate_from_iridium_ingot", null, "forge:plates/iridium", "forge:ingots/iridium", ThreeCoreBase.PLATE_CAST, 0F, 1000);
+        RecipeUtil.addShapelessRecipe("iridium_plate_with_hammer", new ItemStack(ThreeCoreBase.IRIDIUM_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/iridium", "forge:ingots/iridium");
 
         RecipeUtil.addShapelessRecipe("uru_ingot_from_uru_block", "uru_ingot", new ItemStack(ThreeCoreBase.URU_INGOT, 9), "forge:storage_blocks/uru");
         RecipeUtil.addShapedRecipe("uru_block", new ItemStack(ThreeCoreBase.URU_BLOCK), "###", "###", "###", '#', "forge:ingots/uru");
@@ -143,6 +185,8 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("uru_dust_from_uru_ore", "forge:dusts/uru#2", "forge:ores/uru", 1.5F, 800);
         RecipeUtil.addGrinderRecipe("uru_dust_from_uru_ingot", "forge:dusts/uru", "forge:ingots/uru", 0F, 400);
         RecipeUtil.addSmeltingRecipe("uru_ingot_from_uru_dust", new ItemStack(ThreeCoreBase.URU_INGOT), "forge:dusts/uru", 0F, 200);
+        RecipeUtil.addPressingRecipe("uru_plate_from_uru_ingot", null, "forge:plates/uru", "forge:ingots/uru", ThreeCoreBase.PLATE_CAST, 0F, 1000);
+        RecipeUtil.addShapelessRecipe("uru_plate_with_hammer", new ItemStack(ThreeCoreBase.URU_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/uru", "forge:ingots/uru");
 
         RecipeUtil.addShapelessRecipe("bronze_ingot_from_bronze_block", "bronze_ingot", new ItemStack(ThreeCoreBase.BRONZE_INGOT, 9), "forge:storage_blocks/bronze");
         RecipeUtil.addShapedRecipe("bronze_block", new ItemStack(ThreeCoreBase.BRONZE_BLOCK), "###", "###", "###", '#', "forge:ingots/bronze");
@@ -150,6 +194,8 @@ public class RecipeUtil {
         RecipeUtil.addShapedRecipe("bronze_ingot_from_bronze_nuggets", "bronze_ingot", new ItemStack(ThreeCoreBase.BRONZE_INGOT), "###", "###", "###", '#', "forge:nuggets/bronze");
         RecipeUtil.addGrinderRecipe("bronze_dust_from_bronze_ingot", "forge:dusts/bronze", "forge:ingots/bronze", 0F, 400);
         RecipeUtil.addSmeltingRecipe("bronze_ingot_from_bronze_dust", new ItemStack(ThreeCoreBase.BRONZE_INGOT), "forge:dusts/bronze", 0F, 200);
+        RecipeUtil.addPressingRecipe("bronze_plate_from_bronze_ingot", null, "forge:plates/bronze", "forge:ingots/bronze", ThreeCoreBase.PLATE_CAST, 0F, 1000);
+        RecipeUtil.addShapelessRecipe("bronze_plate_with_hammer", new ItemStack(ThreeCoreBase.BRONZE_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/bronze", "forge:ingots/bronze");
 
         RecipeUtil.addShapelessRecipe("intertium_ingot_from_intertium_block", "intertium_ingot", new ItemStack(ThreeCoreBase.INTERTIUM_INGOT, 9), "forge:storage_blocks/intertium");
         RecipeUtil.addShapedRecipe("intertium_block", new ItemStack(ThreeCoreBase.INTERTIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/intertium");
@@ -157,6 +203,8 @@ public class RecipeUtil {
         RecipeUtil.addShapedRecipe("intertium_ingot_from_intertium_nuggets", "intertium_ingot", new ItemStack(ThreeCoreBase.INTERTIUM_INGOT), "###", "###", "###", '#', "forge:nuggets/intertium");
         RecipeUtil.addGrinderRecipe("intertium_dust_from_intertium_ingot", "forge:dusts/intertium", "forge:ingots/intertium", 0F, 400);
         RecipeUtil.addSmeltingRecipe("intertium_ingot_from_intertium_dust", new ItemStack(ThreeCoreBase.INTERTIUM_INGOT), "forge:dusts/intertium", 0F, 200);
+        RecipeUtil.addPressingRecipe("intertium_plate_from_intertium_ingot", null, "forge:plates/intertium", "forge:ingots/intertium", ThreeCoreBase.PLATE_CAST, 0F, 1000);
+        RecipeUtil.addShapelessRecipe("intertium_plate_with_hammer", new ItemStack(ThreeCoreBase.INTERTIUM_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/intertium", "forge:ingots/intertium");
 
         RecipeUtil.addShapelessRecipe("steel_ingot_from_steel_block", "steel_ingot", new ItemStack(ThreeCoreBase.STEEL_INGOT, 9), "forge:storage_blocks/steel");
         RecipeUtil.addShapedRecipe("steel_block", new ItemStack(ThreeCoreBase.STEEL_BLOCK), "###", "###", "###", '#', "forge:ingots/steel");
@@ -164,6 +212,8 @@ public class RecipeUtil {
         RecipeUtil.addShapedRecipe("steel_ingot_from_steel_nuggets", "steel_ingot", new ItemStack(ThreeCoreBase.STEEL_INGOT), "###", "###", "###", '#', "forge:nuggets/steel");
         RecipeUtil.addGrinderRecipe("steel_dust_from_steel_ingot", "forge:dusts/steel", "forge:ingots/steel", 0F, 400);
         RecipeUtil.addSmeltingRecipe("steel_ingot_from_steel_dust", new ItemStack(ThreeCoreBase.STEEL_INGOT), "forge:dusts/steel", 0F, 200);
+        RecipeUtil.addPressingRecipe("steel_plate_from_steel_ingot", null, "forge:plates/steel", "forge:ingots/steel", ThreeCoreBase.PLATE_CAST, 0F, 1000);
+        RecipeUtil.addShapelessRecipe("steel_plate_with_hammer", new ItemStack(ThreeCoreBase.STEEL_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/steel", "forge:ingots/steel");
 
         RecipeUtil.addShapelessRecipe("gold_titanium_alloy_ingot_from_gold_titanium_alloy_block", "gold_titanium_alloy_ingot", new ItemStack(ThreeCoreBase.GOLD_TITANIUM_ALLOY_INGOT, 9), "forge:storage_blocks/gold_titanium_alloy");
         RecipeUtil.addShapedRecipe("gold_titanium_alloy_block", new ItemStack(ThreeCoreBase.GOLD_TITANIUM_ALLOY_BLOCK), "###", "###", "###", '#', "forge:ingots/gold_titanium_alloy");
@@ -171,6 +221,8 @@ public class RecipeUtil {
         RecipeUtil.addShapedRecipe("gold_titanium_alloy_ingot_from_gold_titanium_alloy_nuggets", "gold_titanium_alloy_ingot", new ItemStack(ThreeCoreBase.GOLD_TITANIUM_ALLOY_INGOT), "###", "###", "###", '#', "forge:nuggets/gold_titanium_alloy");
         RecipeUtil.addGrinderRecipe("gold_titanium_alloy_dust_from_gold_titanium_alloy_ingot", "forge:dusts/gold_titanium_alloy", "forge:ingots/gold_titanium_alloy", 0F, 560);
         RecipeUtil.addSmeltingRecipe("gold_titanium_alloy_ingot_from_gold_titanium_alloy_dust", new ItemStack(ThreeCoreBase.GOLD_TITANIUM_ALLOY_INGOT), "forge:dusts/gold_titanium_alloy", 0F, 280);
+        RecipeUtil.addPressingRecipe("gold_titanium_alloy_plate_from_gold_titanium_alloy_ingot", null, "forge:plates/gold_titanium_alloy", "forge:ingots/gold_titanium_alloy", ThreeCoreBase.PLATE_CAST, 0F, 1400);
+        RecipeUtil.addShapelessRecipe("gold_titanium_alloy_plate_with_hammer", new ItemStack(ThreeCoreBase.GOLD_TITANIUM_ALLOY_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/gold_titanium_alloy", "forge:ingots/gold_titanium_alloy");
 
         RecipeUtil.addShapelessRecipe("adamantium_ingot_from_adamantium_block", "adamantium_ingot", new ItemStack(ThreeCoreBase.ADAMANTIUM_INGOT, 9), "forge:storage_blocks/adamantium");
         RecipeUtil.addShapedRecipe("adamantium_block", new ItemStack(ThreeCoreBase.ADAMANTIUM_BLOCK), "###", "###", "###", '#', "forge:ingots/adamantium");
@@ -178,6 +230,8 @@ public class RecipeUtil {
         RecipeUtil.addShapedRecipe("adamantium_ingot_from_adamantium_nuggets", "adamantium_ingot", new ItemStack(ThreeCoreBase.ADAMANTIUM_INGOT), "###", "###", "###", '#', "forge:nuggets/adamantium");
         RecipeUtil.addGrinderRecipe("adamantium_dust_from_adamantium_ingot", "forge:dusts/adamantium", "forge:ingots/adamantium", 0F, 1200);
         RecipeUtil.addSmeltingRecipe("adamantium_ingot_from_adamantium_dust", new ItemStack(ThreeCoreBase.ADAMANTIUM_INGOT), "forge:dusts/adamantium", 0F, 600);
+        RecipeUtil.addPressingRecipe("adamantium_plate_from_adamantium_ingot", null, "forge:plates/adamantium", "forge:ingots/adamantium", ThreeCoreBase.PLATE_CAST, 0F, 3000);
+        RecipeUtil.addShapelessRecipe("adamantium_plate_with_hammer", new ItemStack(ThreeCoreBase.ADAMANTIUM_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/adamantium", "forge:ingots/adamantium");
 
         // Misc
         RecipeUtil.addGrinderRecipe("coal_dust", "forge:dusts/coal", Items.COAL, 0F, 200);
@@ -314,6 +368,49 @@ public class RecipeUtil {
             json.put("byproduct", byproductMap);
         }
         json.put("ingredient", serializeItem(input));
+        json.put("experience", xp);
+        json.put("energy", energy);
+
+        if (group != null) {
+            json.put("group", group);
+        }
+
+        File f = new File(RECIPE_DIR, name + ".json");
+
+        try (FileWriter w = new FileWriter(f)) {
+            GSON.toJson(json, w);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addPressingRecipe(String name, Object output, Object input, float xp, int energy) {
+        addPressingRecipe(name, null, output, input, null, xp, energy);
+    }
+
+    public static void addPressingRecipe(String name, String group, Object output, Object input, float xp, int energy) {
+        addPressingRecipe(name, group, output, input, null, xp, energy);
+    }
+
+    public static void addPressingRecipe(String name, Object output, Object input, Object cast, float xp, int energy) {
+        addPressingRecipe(name, null, output, input, cast, xp, energy);
+    }
+
+    public static void addPressingRecipe(String name, String group, Object output, Object input, Object cast, float xp, int energy) {
+        setupDir();
+        Map<String, Object> json = new LinkedHashMap<>();
+
+        List<Object> test = Arrays.asList(output, input);
+        List<Map<String, Object>> conditions = generateConditions(test);
+        if (conditions.size() > 0)
+            json.put("conditions", conditions.toArray(new Map[conditions.size()]));
+
+        json.put("type", ThreeCoreBase.PRESSING_RECIPE_SERIALIZER.getRegistryName().toString());
+        json.put("result", serializeItem(output, false));
+
+        json.put("ingredient", serializeItem(input));
+        if (cast != null)
+            json.put("cast", serializeItem(cast));
         json.put("experience", xp);
         json.put("energy", energy);
 

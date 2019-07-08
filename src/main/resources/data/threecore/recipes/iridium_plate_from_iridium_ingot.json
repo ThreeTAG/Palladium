@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:plates/iridium"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/iridium"
+    }
+  ],
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/iridium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/iridium"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 1000
+}

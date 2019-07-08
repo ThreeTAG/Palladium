@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:plates/copper"
+    },
+    {
+      "type": "threecore:tag_exists",
+      "tag": "forge:ingots/copper"
+    }
+  ],
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/copper"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/copper"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 500
+}

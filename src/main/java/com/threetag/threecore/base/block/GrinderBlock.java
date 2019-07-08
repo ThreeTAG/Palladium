@@ -118,14 +118,18 @@ public class GrinderBlock extends ContainerBlock {
             double z2 = random.nextDouble() * 0.8D - 0.4D;
             world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.COBBLESTONE.getDefaultState()), x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
             world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.GRAVEL.getDefaultState()), x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
+
+            if (random.nextInt(40) == 0) {
+                world.addParticle(ParticleTypes.FLAME, x + x2, y + y2, z + z2, 0.0D, 0.0D, 0.0D);
+            }
         }
     }
 
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        float y = (float)pos.getY() + 0.5F;
-        if (!world.isRemote && entity.getBoundingBox().minY <= (double)y) {
-            if(state.get(LIT)) {
+        float y = (float) pos.getY() + 0.5F;
+        if (!world.isRemote && entity.getBoundingBox().minY <= (double) y) {
+            if (state.get(LIT)) {
                 entity.attackEntityFrom(TCDamageSources.GRINDER, 2F);
             } else {
                 double xSpeed = Math.abs(entity.posX - entity.lastTickPosX);
@@ -138,12 +142,12 @@ public class GrinderBlock extends ContainerBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_) {
+    public VoxelShape getShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext selectionContext) {
         return SHAPE;
     }
 
     @Override
-    public VoxelShape getRaytraceShape(BlockState p_199600_1_, IBlockReader p_199600_2_, BlockPos p_199600_3_) {
+    public VoxelShape getRaytraceShape(BlockState state, IBlockReader blockReader, BlockPos pos) {
         return INSIDE;
     }
 

@@ -3,12 +3,20 @@ package com.threetag.threecore.base;
 import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.ThreeCoreCommonConfig;
 import com.threetag.threecore.base.block.GrinderBlock;
+import com.threetag.threecore.base.block.HydraulicPressBlock;
 import com.threetag.threecore.base.block.VibraniumBlock;
+import com.threetag.threecore.base.client.gui.GrinderScreen;
+import com.threetag.threecore.base.client.gui.HydraulicPressScreen;
+import com.threetag.threecore.base.client.renderer.tileentity.HydraulicPressTileEntityRenderer;
 import com.threetag.threecore.base.inventory.GrinderContainer;
-import com.threetag.threecore.base.inventory.GrinderScreen;
+import com.threetag.threecore.base.inventory.HydraulicPressContainer;
 import com.threetag.threecore.base.item.CapacitorItem;
+import com.threetag.threecore.base.item.HammerItem;
 import com.threetag.threecore.base.recipe.GrinderRecipe;
+import com.threetag.threecore.base.recipe.PressingRecipe;
 import com.threetag.threecore.base.tileentity.GrinderTileEntity;
+import com.threetag.threecore.base.tileentity.HydraulicPressTileEntity;
+import com.threetag.threecore.util.item.ItemGroupRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -24,8 +32,11 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.placement.CountRangeConfig;
 import net.minecraft.world.gen.placement.Placement;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -56,8 +67,14 @@ public class ThreeCoreBase {
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, IRIDIUM_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.IRIDIUM));
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, URU_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URU));
 
-        // Screens
-        ScreenManager.registerFactory(GRINDER_CONTAINER, GrinderScreen::new);
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            // Screens
+            ScreenManager.registerFactory(GRINDER_CONTAINER, GrinderScreen::new);
+            ScreenManager.registerFactory(HYDRAULIC_PRESS_CONTAINER, HydraulicPressScreen::new);
+
+            // TESR
+            ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, new HydraulicPressTileEntityRenderer());
+        });
     }
 
     public void addOreFeature(Biome biome, BlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
@@ -74,7 +91,20 @@ public class ThreeCoreBase {
     @ObjectHolder("grinding")
     public static final IRecipeSerializer<GrinderRecipe> GRINDER_RECIPE_SERIALIZER = null;
 
+    @ObjectHolder("hydraulic_press")
+    public static final Block HYDRAULIC_PRESS = null;
+    @ObjectHolder("hydraulic_press")
+    public static final TileEntityType<HydraulicPressTileEntity> HYDRAULIC_PRESS_TILE_ENTITY = null;
+    @ObjectHolder("hydraulic_press")
+    public static final ContainerType<HydraulicPressContainer> HYDRAULIC_PRESS_CONTAINER = null;
+    @ObjectHolder("pressing")
+    public static final IRecipeSerializer<PressingRecipe> PRESSING_RECIPE_SERIALIZER = null;
+
     // Misc Items
+    @ObjectHolder("hammer")
+    public static Item HAMMER;
+    @ObjectHolder("plate_cast")
+    public static Item PLATE_CAST;
     @ObjectHolder("capacitor")
     public static Item CAPACITOR;
     @ObjectHolder("advanced_capacitor")
@@ -197,6 +227,7 @@ public class ThreeCoreBase {
         IForgeRegistry<Block> registry = e.getRegistry();
 
         registry.register(new GrinderBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "grinder"));
+        registry.register(new HydraulicPressBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "hydraulic_press"));
 
         registry.register(COPPER_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "copper_block"));
         registry.register(TIN_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "tin_block"));
@@ -220,7 +251,7 @@ public class ThreeCoreBase {
         registry.register(LEAD_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "lead_ore"));
         registry.register(SILVER_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "silver_ore"));
         registry.register(PALLADIUM_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "palladium_ore"));
-        registry.register(VIBRANIUM_ORE = new VibraniumBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "vibranium_ore"));
+        registry.register(VIBRANIUM_ORE = new VibraniumBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F).lightValue(4)).setRegistryName(ThreeCore.MODID, "vibranium_ore"));
         registry.register(OSMIUM_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "osmium_ore"));
         registry.register(URANIUM_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "uranium_ore"));
         registry.register(TITANIUM_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "titanium_ore"));
@@ -231,27 +262,33 @@ public class ThreeCoreBase {
     @SubscribeEvent
     public void registerTileEntityTypes(RegistryEvent.Register<TileEntityType<?>> e) {
         e.getRegistry().register(TileEntityType.Builder.create(GrinderTileEntity::new, GRINDER).build(null).setRegistryName(ThreeCore.MODID, "grinder"));
+        e.getRegistry().register(TileEntityType.Builder.create(HydraulicPressTileEntity::new, HYDRAULIC_PRESS).build(null).setRegistryName(ThreeCore.MODID, "hydraulic_press"));
     }
 
     @SubscribeEvent
     public void registerContainerTypes(RegistryEvent.Register<ContainerType<?>> e) {
         e.getRegistry().register(new ContainerType<>(GrinderContainer::new).setRegistryName(ThreeCore.MODID, "grinder"));
+        e.getRegistry().register(new ContainerType<>(HydraulicPressContainer::new).setRegistryName(ThreeCore.MODID, "hydraulic_press"));
     }
 
     @SubscribeEvent
     public void registerRecipeSerializers(RegistryEvent.Register<IRecipeSerializer<?>> e) {
         e.getRegistry().register(new GrinderRecipe.Serializer().setRegistryName(ThreeCore.MODID, "grinding"));
+        e.getRegistry().register(new PressingRecipe.Serializer().setRegistryName(ThreeCore.MODID, "pressing"));
     }
 
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> e) {
         IForgeRegistry<Item> registry = e.getRegistry();
 
-        registry.register(makeItem(GRINDER, ItemGroup.DECORATIONS));
-        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroup.MISC).maxStackSize(1), 40000, 100).setRegistryName(ThreeCore.MODID, "capacitor"));
-        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroup.MISC).maxStackSize(1), 100000, 200).setRegistryName(ThreeCore.MODID, "advanced_capacitor"));
-        registry.register(new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(ThreeCore.MODID, "circuit"));
-        registry.register(new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
+        registry.register(makeItem(GRINDER, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
+        registry.register(makeItem(HYDRAULIC_PRESS, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
+        registry.register(new HammerItem(4.5F, -2.75F, ItemTier.IRON, new Item.Properties().group(ItemGroup.TOOLS).maxStackSize(1).maxDamage(16)).setRegistryName(ThreeCore.MODID, "hammer"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "plate_cast"));
+        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)).maxStackSize(1), 40000, 100).setRegistryName(ThreeCore.MODID, "capacitor"));
+        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)).maxStackSize(1), 100000, 200).setRegistryName(ThreeCore.MODID, "advanced_capacitor"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "circuit"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
 
         registry.register(makeItem(COPPER_BLOCK));
         registry.register(makeItem(TIN_BLOCK));
