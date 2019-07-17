@@ -51,7 +51,7 @@ public class HydraulicPressContainer extends RecipeBookContainer implements IRec
         this.hydraulicPressTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(i -> assertInventorySize(new RecipeWrapper((IItemHandlerModifiable) i), 4));
         assertIntArraySize(intArray, 4);
         this.intArray = intArray;
-        this.func_216961_a(this.intArray);
+        this.trackIntArray(this.intArray);
 
         this.hydraulicPressTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
             this.addSlot(new SlotItemHandler(itemHandler, 0, 8, 61));
