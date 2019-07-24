@@ -5,9 +5,7 @@ import com.threetag.threecore.ThreeCoreCommonConfig;
 import com.threetag.threecore.base.block.GrinderBlock;
 import com.threetag.threecore.base.block.HydraulicPressBlock;
 import com.threetag.threecore.base.block.VibraniumBlock;
-import com.threetag.threecore.base.client.gui.GrinderScreen;
-import com.threetag.threecore.base.client.gui.HydraulicPressScreen;
-import com.threetag.threecore.base.client.renderer.tileentity.HydraulicPressTileEntityRenderer;
+import com.threetag.threecore.base.client.ThreeCoreBaseClient;
 import com.threetag.threecore.base.inventory.GrinderContainer;
 import com.threetag.threecore.base.inventory.HydraulicPressContainer;
 import com.threetag.threecore.base.item.CapacitorItem;
@@ -20,7 +18,6 @@ import com.threetag.threecore.util.item.ItemGroupRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -35,7 +32,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -47,6 +43,10 @@ public class ThreeCoreBase {
 
     public ThreeCoreBase() {
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
+
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            FMLJavaModLoadingContext.get().getModEventBus().register(new ThreeCoreBaseClient());
+        });
     }
 
     @SubscribeEvent
@@ -65,15 +65,6 @@ public class ThreeCoreBase {
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, TITANIUM_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TITANIUM));
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, IRIDIUM_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.IRIDIUM));
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, URU_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URU));
-
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            // Screens
-            ScreenManager.registerFactory(GRINDER_CONTAINER, GrinderScreen::new);
-            ScreenManager.registerFactory(HYDRAULIC_PRESS_CONTAINER, HydraulicPressScreen::new);
-
-            // TESR
-            ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, new HydraulicPressTileEntityRenderer());
-        });
     }
 
     public void addOreFeature(Biome biome, BlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
