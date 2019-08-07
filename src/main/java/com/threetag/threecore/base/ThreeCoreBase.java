@@ -7,7 +7,6 @@ import com.threetag.threecore.base.block.HydraulicPressBlock;
 import com.threetag.threecore.base.block.VibraniumBlock;
 import com.threetag.threecore.base.client.gui.GrinderScreen;
 import com.threetag.threecore.base.client.gui.HydraulicPressScreen;
-import com.threetag.threecore.base.client.renderer.tileentity.HydraulicPressTileEntityRenderer;
 import com.threetag.threecore.base.inventory.GrinderContainer;
 import com.threetag.threecore.base.inventory.HydraulicPressContainer;
 import com.threetag.threecore.base.item.CapacitorItem;
@@ -21,6 +20,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -67,14 +67,16 @@ public class ThreeCoreBase {
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, URU_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URU));
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-
             // Screens
             ScreenManager.registerFactory(GRINDER_CONTAINER, GrinderScreen::new);
             ScreenManager.registerFactory(HYDRAULIC_PRESS_CONTAINER, HydraulicPressScreen::new);
 
             // TESR
-            ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, new HydraulicPressTileEntityRenderer());
-            
+            try {
+                ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, (TileEntityRenderer<HydraulicPressTileEntity>)Class.forName("com.threetag.threecore.base.client.renderer.tileentity.HydraulicPressTileEntityRenderer").newInstance());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
     }
 

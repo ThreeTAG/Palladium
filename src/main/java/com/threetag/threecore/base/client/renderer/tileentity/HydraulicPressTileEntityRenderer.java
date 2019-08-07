@@ -7,7 +7,6 @@ import com.threetag.threecore.base.block.HydraulicPressBlock;
 import com.threetag.threecore.base.client.renderer.model.HydraulicPressPistonModel;
 import com.threetag.threecore.base.tileentity.HydraulicPressTileEntity;
 import com.threetag.threecore.util.client.RenderUtil;
-import com.threetag.threecore.util.math.TCMathHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.client.Minecraft;
@@ -15,7 +14,10 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class HydraulicPressTileEntityRenderer extends TileEntityRenderer<HydraulicPressTileEntity> {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/block/hydraulic_press_pistons.png");
