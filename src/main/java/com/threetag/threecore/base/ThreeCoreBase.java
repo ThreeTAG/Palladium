@@ -5,7 +5,6 @@ import com.threetag.threecore.ThreeCoreCommonConfig;
 import com.threetag.threecore.base.block.GrinderBlock;
 import com.threetag.threecore.base.block.HydraulicPressBlock;
 import com.threetag.threecore.base.block.VibraniumBlock;
-import com.threetag.threecore.base.client.ThreeCoreBaseClient;
 import com.threetag.threecore.base.client.gui.GrinderScreen;
 import com.threetag.threecore.base.client.gui.HydraulicPressScreen;
 import com.threetag.threecore.base.client.renderer.tileentity.HydraulicPressTileEntityRenderer;
@@ -49,9 +48,6 @@ public class ThreeCoreBase {
 
     public ThreeCoreBase() {
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            FMLJavaModLoadingContext.get().getModEventBus().register(new ThreeCoreBaseClient());
-        });
     }
 
     @SubscribeEvent
@@ -70,6 +66,15 @@ public class ThreeCoreBase {
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, TITANIUM_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TITANIUM));
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, IRIDIUM_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.IRIDIUM));
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, URU_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URU));
+
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            // Screens
+            ScreenManager.registerFactory(GRINDER_CONTAINER, GrinderScreen::new);
+            ScreenManager.registerFactory(HYDRAULIC_PRESS_CONTAINER, HydraulicPressScreen::new);
+
+            // TESR
+            ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, new HydraulicPressTileEntityRenderer());
+        });
     }
 
     public void addOreFeature(Biome biome, BlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
