@@ -67,12 +67,14 @@ public class ThreeCoreBase {
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, URU_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URU));
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+
             // Screens
             ScreenManager.registerFactory(GRINDER_CONTAINER, GrinderScreen::new);
             ScreenManager.registerFactory(HYDRAULIC_PRESS_CONTAINER, HydraulicPressScreen::new);
 
             // TESR
             ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, new HydraulicPressTileEntityRenderer());
+            
         });
     }
 
