@@ -8,7 +8,7 @@ import com.threetag.threecore.abilities.network.UpdateAbilityMessage;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.ServerWorld;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.PacketDistributor;
 
