@@ -44,7 +44,7 @@ public class KarmaCondition extends Condition
         int max = this.dataManager.get(MAX);
         if (max < min)
             throw new JsonSyntaxException("Max karma value must be lower than min karma value!");
-        this.dataManager.set(NAME, min == max ? new TranslationTextComponent("ability.condition.threecore.karma_at", min) : max != Integer.MAX_VALUE ? new TranslationTextComponent("Karma must be between %s and %s", min, max) :
+        this.dataManager.set(TITLE, min == max ? new TranslationTextComponent("ability.condition.threecore.karma_at", min) : max != Integer.MAX_VALUE ? new TranslationTextComponent("Karma must be between %s and %s", min, max) :
                 new TranslationTextComponent("ability.condition.threecore.karma_min", min));
     }
 }

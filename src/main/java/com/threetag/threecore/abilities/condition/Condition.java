@@ -14,7 +14,7 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IThree
     protected final ConditionType type;
     public ThreeDataManager dataManager = new ThreeDataManager(this);
 
-    public static final ThreeData<ITextComponent> NAME = new TextComponentThreeData("name").setSyncType(EnumSync.SELF).enableSetting("name", "The display name of the condition.");
+    public static final ThreeData<ITextComponent> TITLE = new TextComponentThreeData("title").setSyncType(EnumSync.SELF).enableSetting("title", "The display name of the condition.");
     public static final ThreeData<Boolean> ENABLING = new BooleanThreeData("enabling").setSyncType(EnumSync.SELF).enableSetting("enabling", "If this condition enables. If false it instead decides whether the ability is unlocked.");
 	public static final ThreeData<Boolean> NEEDS_KEY = new BooleanThreeData("needs_key").setSyncType(EnumSync.SELF);
 
@@ -25,7 +25,7 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IThree
     }
 
     public void registerData() {
-        this.dataManager.register(NAME, new TranslationTextComponent(type.getRegistryName().toString()));
+        this.dataManager.register(TITLE, new TranslationTextComponent(type.getRegistryName().toString()));
         this.dataManager.register(ENABLING, false);
         this.dataManager.register(NEEDS_KEY, false);
     }

@@ -96,7 +96,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType>
 					bw.write("<h1>" + s + "</h1>\n");
 					bw.write("<ul>\n");
 					for (Condition condition : l) {
-						bw.write("<li><a href=\"#" + condition.type.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(condition.dataManager.get(Condition.NAME).getFormattedText()) + "</a></li>\n");
+						bw.write("<li><a href=\"#" + condition.type.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(condition.dataManager.get(Condition.TITLE).getFormattedText()) + "</a></li>\n");
 					}
 					bw.write("</ul>\n");
 				} catch (IOException e) {
@@ -112,7 +112,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType>
 				bw.write("<hr>\n");
 
 				// Title
-				bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(condition.dataManager.get(Condition.NAME).getFormattedText()) + "</h1>\n");
+				bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(condition.dataManager.get(Condition.TITLE).getFormattedText()) + "</h1>\n");
 				bw.write("<h3>" + entry.getRegistryName().toString() + "</h3>\n");
 				List<ThreeData<?>> dataList = condition.dataManager.getSettingData();
 

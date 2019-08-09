@@ -29,7 +29,7 @@ public class AbilityEnabledCondition extends Condition
     {
         Ability dependentAbility = AbilityHelper.getAbilityById(entity, this.dataManager.get(ABILITY_ID), ability.container);
         // Not the best way to handle the name, but it works �\_(?)_/�
-        this.dataManager.set(Condition.NAME, dependentAbility == null ? new StringTextComponent("") : new TranslationTextComponent("ability.condition.threecore.ability_enabled", dependentAbility.getDataManager().get(Ability.TITLE)));
+        this.dataManager.set(Condition.TITLE, dependentAbility == null ? new StringTextComponent("") : new TranslationTextComponent("ability.condition.threecore.ability_enabled", dependentAbility.getDataManager().get(Ability.TITLE)));
         return dependentAbility != null && dependentAbility != ability && dependentAbility.getConditionManager().isEnabled();
 
     }

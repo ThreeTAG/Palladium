@@ -147,7 +147,7 @@ public class AbilityConditionManager implements INBTSerializable<CompoundNBT>
 	public List<Pair<ITextComponent, Boolean>> getConditionStates()
 	{
 		List<Pair<ITextComponent, Boolean>> list = Lists.newArrayList();
-		this.conditions.forEach((abilityCondition, aBoolean) -> list.add(Pair.of(abilityCondition.dataManager.get(Condition.NAME), aBoolean)));
+		this.conditions.forEach((abilityCondition, aBoolean) -> list.add(Pair.of(abilityCondition.dataManager.get(Condition.TITLE), aBoolean)));
 		return list;
 	}
 
