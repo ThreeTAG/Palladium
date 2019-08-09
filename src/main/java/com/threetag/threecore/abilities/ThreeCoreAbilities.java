@@ -6,6 +6,7 @@ import com.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
 import com.threetag.threecore.abilities.client.AbilityBarRenderer;
 import com.threetag.threecore.abilities.client.AbilityKeyHandler;
 import com.threetag.threecore.abilities.command.SuperpowerCommand;
+import com.threetag.threecore.abilities.condition.ConditionType;
 import com.threetag.threecore.abilities.network.*;
 import com.threetag.threecore.abilities.superpower.SuperpowerManager;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -74,7 +75,10 @@ public class ThreeCoreAbilities {
 
     public void loadComplete(FMLLoadCompleteEvent e) {
         // abilities.html
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> AbilityType.generateHtmlFile(new File("abilities.html")));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            AbilityType.generateHtmlFile(new File("abilities.html"));
+            ConditionType.generateHtmlFile(new File("conditions.html"));
+        });
     }
 
     @SubscribeEvent

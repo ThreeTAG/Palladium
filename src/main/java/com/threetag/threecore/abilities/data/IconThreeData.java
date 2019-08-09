@@ -36,7 +36,6 @@ public class IconThreeData extends ThreeData<IIcon>
     @Override
     public String getDisplay(IIcon value) {
         // TODO Icon serialized
-        return super.getDisplay(value);
+        return "\"icon\"";
     }
-
 }

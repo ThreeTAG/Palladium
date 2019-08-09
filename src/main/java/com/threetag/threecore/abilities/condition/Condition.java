@@ -30,6 +30,10 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IThree
         this.dataManager.register(NEEDS_KEY, false);
     }
 
+    public ThreeDataManager getDataManager() {
+        return dataManager;
+    }
+
     public abstract boolean test(LivingEntity entity);
 
     public void firstTick(){}

@@ -107,15 +107,22 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
 
                 // Example
                 bw.write("<p>Example:<br>\n");
-                bw.write("<code>\"example_ability\": {<br>\n");
-                bw.write("  \"ability\": \"" + entry.getRegistryName().toString() + "\",<br>\n");
+
+                StringBuilder jsonText = new StringBuilder("{\"example_ability\":{\"ability\":\"").append(entry.getRegistryName().toString()).append("\",");
                 for (int i = 0; i < dataList.size(); i++) {
                     ThreeData threeData = dataList.get(i);
                     Object value = threeData.getDisplay(ability.getDataManager().getDefaultValue(threeData));
-                    String s = threeData.displayAsString(ability.getDataManager().getDefaultValue(threeData)) ? "\"" + value.toString() + "\"" : value.toString() + "";
-                    bw.write("  \"" + threeData.getJsonKey() + "\": " + s + (i < dataList.size() - 1 ? "," : "") + "<br>\n");
+                    String s = threeData.displayAsString(ability.getDataManager().getDefaultValue(threeData)) ? "\"" + value.toString() + "\"" : value.toString();
+                    jsonText.append("  \"").append(threeData.getJsonKey()).append("\": ").append(s).append(i < dataList.size() - 1 ? "," : "");
                 }
-                bw.write("}</code>\n\n");
+                jsonText.append("}}");
+
+                bw.write("<code><pre id=\"" + entry.getRegistryName().toString() + "_example\"></pre></code>");
+
+                bw.write("<script> var json = JSON.parse('" + jsonText.toString() + "');");
+                bw.write("document.getElementById('" + entry.getRegistryName().toString() + "_example').innerHTML = JSON.stringify(json, undefined, 2);</script>");
+
+                bw.write("\n");
 
                 // Table
                 bw.write("<table>\n<tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr>\n");
@@ -140,7 +147,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         }
     }
 
-    private static ModInfo getModContainerFromId(String modid) {
+    public static ModInfo getModContainerFromId(String modid) {
         for (ModInfo modInfo : ModList.get().getMods()) {
             if (modInfo.getModId().equals(modid)) {
                 return modInfo;
