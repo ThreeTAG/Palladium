@@ -9,6 +9,7 @@ import net.minecraft.inventory.CraftResultInventory;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.IRecipeHelperPopulator;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.container.AbstractFurnaceContainer;
 import net.minecraft.inventory.container.RecipeBookContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -51,7 +52,7 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
         assertInventorySize(this.recipeWrapper, 4);
         assertIntArraySize(intArray, 4);
         this.intArray = intArray;
-        this.func_216961_a(this.intArray);
+        this.trackIntArray(this.intArray);
 
         this.grinderTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
             this.addSlot(new SlotItemHandler(itemHandler, 0, 8, 61));
