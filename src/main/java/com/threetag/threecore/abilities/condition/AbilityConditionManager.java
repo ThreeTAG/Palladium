@@ -12,186 +12,175 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public class AbilityConditionManager implements INBTSerializable<CompoundNBT>
-{
+public class AbilityConditionManager implements INBTSerializable<CompoundNBT> {
 
-	public final Ability ability;
-	protected boolean unlocked = true;
-	protected boolean enabled = false;
+    public final Ability ability;
+    protected boolean unlocked = true;
+    protected boolean enabled = false;
 
-	protected HashMap<Condition, Boolean> conditions = new HashMap<>();
+    protected HashMap<Condition, Boolean> conditions = new HashMap<>();
 
-	public AbilityConditionManager(Ability ability)
-	{
-		this.ability = ability;
-	}
+    public AbilityConditionManager(Ability ability) {
+        this.ability = ability;
+    }
 
-	public void readFromJson(JsonObject jsonObject)
-	{
-		if (JSONUtils.hasField(jsonObject, "conditions"))
-		{
-			JsonArray jsonArray = JSONUtils.getJsonArray(jsonObject, "conditions");
-			for (JsonElement jsonElement : jsonArray)
-			{
-				JsonObject jsonCondition = jsonElement.getAsJsonObject();
-				ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(JSONUtils.getString(jsonCondition, "type")));
-				Condition condition = Objects.requireNonNull(conditionType).create(ability);
-				condition.dataManager.readFromJson(jsonCondition);
-				this.addCondition(condition);
-			}
-		}
-	}
+    public void readFromJson(JsonObject jsonObject) {
+        if (JSONUtils.hasField(jsonObject, "conditions")) {
+            JsonArray jsonArray = JSONUtils.getJsonArray(jsonObject, "conditions");
+            for (JsonElement jsonElement : jsonArray) {
+                JsonObject jsonCondition = jsonElement.getAsJsonObject();
+                ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(JSONUtils.getString(jsonCondition, "type")));
+                Condition condition = Objects.requireNonNull(conditionType).create(ability);
+                condition.dataManager.readFromJson(jsonCondition);
+                this.addCondition(condition);
+            }
+        }
+    }
 
-	public AbilityConditionManager addCondition(Condition condition)
-	{
-		this.conditions.put(condition, false);
-		return this;
-	}
+    public Set<Condition> getConditions() {
+        return conditions.keySet();
+    }
 
-	public void update(LivingEntity entity)
-	{
-		if (!entity.world.isRemote)
-		{
-			boolean u = true;
-			boolean e = true;
+    public AbilityConditionManager addCondition(Condition condition) {
+        this.conditions.put(condition, false);
+        return this;
+    }
 
-			for (Condition condition : this.conditions.keySet())
-			{
-				boolean active = this.conditions.get(condition);
-				boolean b = condition.test(entity);
+    public void update(LivingEntity entity) {
+        if (!entity.world.isRemote) {
+            boolean u = true;
+            boolean e = true;
 
-				if (b != active)
-				{
-					this.conditions.put(condition, b);
-					this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
-				}
+            for (Condition condition : this.conditions.keySet()) {
+                boolean active = this.conditions.get(condition);
+                boolean b = condition.test(entity);
 
-				if (condition.dataManager.get(Condition.ENABLING))
-					e = e && b;
-				else
-					u = u && b;
-			}
+                if (b != active) {
+                    this.conditions.put(condition, b);
+                    this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
+                }
 
-			if (e != this.enabled)
-			{
-				this.enabled = e;
-				this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
-			}
+                if (condition.dataManager.get(Condition.ENABLING))
+                    e = e && b;
+                else
+                    u = u && b;
+            }
 
-			if (u != this.unlocked)
-			{
-				this.unlocked = u;
-				this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
-			}
-		}
-	}
+            if (e != this.enabled) {
+                this.enabled = e;
+                this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
+            }
 
-	public void firstTick()
-	{
-		conditions.forEach((condition, aBoolean) -> condition.firstTick());
-	}
+            if (u != this.unlocked) {
+                this.unlocked = u;
+                this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
+            }
+        }
+    }
 
-	public void lastTick()
-	{
-		conditions.forEach((condition, aBoolean) -> condition.lastTick());
-	}
+    public void firstTick() {
+        conditions.forEach((condition, aBoolean) -> condition.firstTick());
+    }
 
-	public void onKeyPressed()
-	{
-		if (isUnlocked())
-			for (Condition condition : this.conditions.keySet())
-				if (condition instanceof KeyboundCondition)
-					((KeyboundCondition) condition).onKeyPressed();
-	}
+    public void lastTick() {
+        conditions.forEach((condition, aBoolean) -> condition.lastTick());
+    }
 
-	public void onKeyReleased()
-	{
-		if (isUnlocked())
-			for (Condition condition : this.conditions.keySet())
-				if (condition instanceof KeyboundCondition)
-					((KeyboundCondition) condition).onKeyReleased();
-	}
+    public void onKeyPressed() {
+        if (isUnlocked())
+            for (Condition condition : this.conditions.keySet())
+                if (condition instanceof KeyboundCondition)
+                    ((KeyboundCondition) condition).onKeyPressed();
+    }
 
-	public void disableKeybounds()
-	{
-				for (Condition condition : this.conditions.keySet())
-						if(condition instanceof KeyboundCondition)
-							condition.dataManager.set(KeyboundCondition.ENABLED, false);
-	}
+    public void onKeyReleased() {
+        if (isUnlocked())
+            for (Condition condition : this.conditions.keySet())
+                if (condition instanceof KeyboundCondition)
+                    ((KeyboundCondition) condition).onKeyReleased();
+    }
 
-	public boolean isUnlocked()
-	{
-		return this.unlocked;
-	}
+    public void disableKeybounds() {
+        for (Condition condition : this.conditions.keySet())
+            if (condition instanceof KeyboundCondition)
+                condition.dataManager.set(KeyboundCondition.ENABLED, false);
+    }
 
-	public boolean isEnabled()
-	{
-		return isUnlocked() && this.enabled;
-	}
+    public boolean isUnlocked() {
+        return this.unlocked;
+    }
 
-	public boolean needsKey()
-	{
-		for (Condition condition : this.conditions.keySet())
-			if (condition.dataManager.get(Condition.NEEDS_KEY))
-				return true;
-		return false;
-	}
+    public boolean isEnabled() {
+        return isUnlocked() && this.enabled;
+    }
 
-	public List<Pair<ITextComponent, Boolean>> getConditionStates()
-	{
-		List<Pair<ITextComponent, Boolean>> list = Lists.newArrayList();
-		this.conditions.forEach((abilityCondition, aBoolean) -> list.add(Pair.of(abilityCondition.dataManager.get(Condition.TITLE), aBoolean)));
-		return list;
-	}
+    public boolean needsKey() {
+        for (Condition condition : this.conditions.keySet())
+            if (condition.dataManager.get(Condition.NEEDS_KEY))
+                return true;
+        return false;
+    }
 
-	@Override
-	public CompoundNBT serializeNBT()
-	{
-		CompoundNBT nbt = new CompoundNBT();
-		nbt.putBoolean("Unlocked", this.unlocked);
-		nbt.putBoolean("Enabled", this.enabled);
+    public boolean isActive(Condition condition) {
+        return this.conditions.get(condition);
+    }
 
-		ListNBT list = new ListNBT();
-		conditions.forEach((abilityCondition, aBoolean) -> {
-			CompoundNBT conditionTag = abilityCondition.serializeNBT();
-			conditionTag.putBoolean("Active", aBoolean);
-			list.add(conditionTag);
-		});
-		nbt.put("Conditions", list);
+    public List<Condition> getFilteredConditions(boolean enabling) {
+        return this.conditions.keySet().stream().filter(c -> c.getDataManager().get(Condition.ENABLING) == enabling).collect(Collectors.toList());
+    }
 
-		return nbt;
-	}
+    public List<Condition> getFilteredConditions(boolean enabling, boolean active) {
+        return this.conditions.keySet().stream().filter(c -> c.getDataManager().get(Condition.ENABLING) == enabling && this.conditions.get(c) == active).collect(Collectors.toList());
+    }
 
-	@Override
-	public void deserializeNBT(CompoundNBT nbt)
-	{
-		this.unlocked = nbt.getBoolean("Unlocked");
-		this.enabled = nbt.getBoolean("Enabled");
-		this.conditions = new HashMap<>();
-		ListNBT list = nbt.getList("Conditions", 10);
-		for (int i = 0; i < list.size(); i++)
-		{
-			CompoundNBT conditionTag = list.getCompound(i);
-			ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(conditionTag.getString("ConditionType")));
-			this.conditions.put(conditionType.create(ability), conditionTag.getBoolean("Active"));
-		}
-	}
+    @Override
+    public CompoundNBT serializeNBT() {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putBoolean("Unlocked", this.unlocked);
+        nbt.putBoolean("Enabled", this.enabled);
 
-	public CompoundNBT getUpdatePacket()
-	{
-		return this.serializeNBT();
-	}
+        ListNBT list = new ListNBT();
+        conditions.forEach((abilityCondition, aBoolean) -> {
+            CompoundNBT conditionTag = abilityCondition.serializeNBT();
+            conditionTag.putBoolean("Active", aBoolean);
+            list.add(conditionTag);
+        });
+        nbt.put("Conditions", list);
 
-	public void readUpdatePacket(CompoundNBT nbt)
-	{
-		this.deserializeNBT(nbt);
-	}
+        return nbt;
+    }
+
+    @Override
+    public void deserializeNBT(CompoundNBT nbt) {
+        this.unlocked = nbt.getBoolean("Unlocked");
+        this.enabled = nbt.getBoolean("Enabled");
+        this.conditions = new HashMap<>();
+        ListNBT list = nbt.getList("Conditions", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < list.size(); i++) {
+            CompoundNBT conditionTag = list.getCompound(i);
+            ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(conditionTag.getString("ConditionType")));
+            Condition condition = conditionType.create(ability);
+            condition.deserializeNBT(conditionTag);
+            this.conditions.put(condition, conditionTag.getBoolean("Active"));
+        }
+    }
+
+    public CompoundNBT getUpdatePacket() {
+        return this.serializeNBT();
+    }
+
+    public void readUpdatePacket(CompoundNBT nbt) {
+        this.deserializeNBT(nbt);
+    }
 
 }

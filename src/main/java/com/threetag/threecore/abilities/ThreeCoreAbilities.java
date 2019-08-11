@@ -3,8 +3,8 @@ package com.threetag.threecore.abilities;
 import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.capability.AbilityEventHandler;
 import com.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
-import com.threetag.threecore.abilities.client.AbilityBarRenderer;
-import com.threetag.threecore.abilities.client.AbilityKeyHandler;
+import com.threetag.threecore.abilities.client.renderer.AbilityBarRenderer;
+import com.threetag.threecore.abilities.client.AbilityClientHandler;
 import com.threetag.threecore.abilities.command.SuperpowerCommand;
 import com.threetag.threecore.abilities.condition.ConditionType;
 import com.threetag.threecore.abilities.network.*;
@@ -34,7 +34,7 @@ public class ThreeCoreAbilities {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
         MinecraftForge.EVENT_BUS.register(new AbilityEventHandler());
-        MinecraftForge.EVENT_BUS.register(new AbilityKeyHandler());
+        MinecraftForge.EVENT_BUS.register(new AbilityClientHandler());
         MinecraftForge.EVENT_BUS.register(this);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(new AbilityBarRenderer()));
 

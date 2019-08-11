@@ -2,8 +2,13 @@ package com.threetag.threecore.abilities.client;
 
 import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.Ability;
+import com.threetag.threecore.abilities.client.gui.AbilityScreen;
+import com.threetag.threecore.abilities.client.renderer.AbilityBarRenderer;
 import com.threetag.threecore.abilities.network.AbilityKeyMessage;
+import com.threetag.threecore.util.client.gui.TranslucentButton;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -15,7 +20,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 import java.util.ArrayList;
 
-public class AbilityKeyHandler {
+public class AbilityClientHandler {
 
     public static final String CATEGORY = "ThreeCore";
 
@@ -29,14 +34,14 @@ public class AbilityKeyHandler {
     public static final KeyBinding SCROLL_UP = new KeyBinding("key.threecore.scroll_up", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, 73, CATEGORY);
     public static final KeyBinding SCROLL_DOWN = new KeyBinding("key.threecore.scroll_down", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, 80, CATEGORY);
 
-    public AbilityKeyHandler() {
+    public AbilityClientHandler() {
         KEYS.add(ABILITY_1);
         KEYS.add(ABILITY_2);
         KEYS.add(ABILITY_3);
         KEYS.add(ABILITY_4);
         KEYS.add(ABILITY_5);
 
-        KEYS.forEach(k -> ClientRegistry.registerKeyBinding(k));
+        KEYS.forEach(ClientRegistry::registerKeyBinding);
         ClientRegistry.registerKeyBinding(SCROLL_UP);
         ClientRegistry.registerKeyBinding(SCROLL_DOWN);
     }
@@ -72,6 +77,13 @@ public class AbilityKeyHandler {
         if (Minecraft.getInstance().player.isSneaking() && e.getScrollDelta() != 0F) {
             AbilityBarRenderer.scroll(e.getScrollDelta() > 0);
             e.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public void onGuiInit(GuiScreenEvent.InitGuiEvent e) {
+        if (e.getGui() instanceof ChatScreen) {
+            e.addWidget(new TranslucentButton(e.getGui().width - 1 - 75, e.getGui().height - 40, 75, 20, I18n.format("gui.threecore.abilities"), b -> Minecraft.getInstance().displayGuiScreen(new AbilityScreen())));
         }
     }
 

@@ -1,6 +1,9 @@
 package com.threetag.threecore.abilities;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.threetag.threecore.abilities.condition.AbilityUnlockedCondition;
+import com.threetag.threecore.abilities.condition.Condition;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 
@@ -60,6 +63,36 @@ public class AbilityHelper {
             IAbilityContainer container = getAbilityContainerFromId(entity, new ResourceLocation(strings[0]));
             return container.getAbility(strings[1]);
         }
+    }
+
+    // TODO maybe make this a setting for conditions, instead of hardcoding it to AbilityUnlockedCondition
+    public static List<Ability> findChildrenAbilities(LivingEntity entity, Ability ability, IAbilityContainer container) {
+        List<Ability> list = Lists.newLinkedList();
+        for (Ability all : container.getAbilities()) {
+            for (Condition condition : all.getConditionManager().getConditions()) {
+                if (condition instanceof AbilityUnlockedCondition && !condition.getDataManager().get(Condition.ENABLING)) {
+                    Ability a = AbilityHelper.getAbilityById(entity, condition.getDataManager().get(AbilityUnlockedCondition.ABILITY_ID), ability.container);
+
+                    if (a == ability) {
+                        list.add(all);
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+    public static List<Ability> findParentAbilities(LivingEntity entity, Ability ability, IAbilityContainer container) {
+        List<Ability> list = Lists.newLinkedList();
+        for (Condition condition : ability.getConditionManager().getConditions()) {
+            if (condition instanceof AbilityUnlockedCondition && !condition.getDataManager().get(Condition.ENABLING)) {
+                Ability a = AbilityHelper.getAbilityById(entity, condition.getDataManager().get(AbilityUnlockedCondition.ABILITY_ID), ability.container);
+
+                if (a != null)
+                    list.add(a);
+            }
+        }
+        return list;
     }
 
 }

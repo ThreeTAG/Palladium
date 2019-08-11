@@ -1,6 +1,7 @@
-package com.threetag.threecore.abilities.client;
+package com.threetag.threecore.abilities.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.threetag.threecore.abilities.client.renderer.AbilityBarRenderer;
 import com.threetag.threecore.util.render.IIcon;
 import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.client.gui.toasts.IToast;

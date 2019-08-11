@@ -111,9 +111,6 @@
   "item.threecore.gold_titanium_alloy_plate": "Gold-Titanium-Alloy Plate",
   "item.threecore.adamantium_plate": "Adamantium Plate",
   
-  "container.threecore.grinder": "Grinder",
-  "container.threecore.hydraulic_press": "Hydraulic Press",
-  
   "commands.karma.success.player.single": "%s karma has been set to %s",
   "commands.karma.success.player.multiple": "Karma of %s players has been set to %s",
   "commands.karma.players_karma": "%s's karma is at %s. (%s)",
@@ -137,7 +134,12 @@
   "ability.threecore.teleport": "Teleport",
   "ability.threecore.attribute_modifier": "Attribute Modifier",
   
+  "ability.condition.threecore.action": "Key must be pressed once to active this ability",
+  "ability.condition.threecore.held": "Key must be held to active this ability",
+  "ability.condition.threecore.toggle": "Ability must be toggled with the key",
   "ability.condition.threecore.ability_unlocked": "%s ability must be unlocked",
+  "ability.condition.threecore.ability_enabled": "%s ability must be enabled",
+  "ability.condition.threecore.cooldown": "Ability must be cooled down",
   "ability.condition.threecore.karma": "Karma must be between %s and %s",
   "ability.condition.threecore.karma_at": "Karma must be at %s",
   "ability.condition.threecore.karma_min": "Karma must be at least %s",
@@ -147,10 +149,16 @@
   "death.attack.grinder": "%1$s was grinded to death by a grinder",
   "death.attack.grinder.player": "%1$s was grinded to death by a grinder whilst trying to escape %2$s",
   
+  "container.threecore.grinder": "Grinder",
+  "container.threecore.hydraulic_press": "Hydraulic Press",
+  
+  "gui.threecore.abilities": "Abilities",
   "gui.jei.category.threecore.grinding": "Grinding",
   "gui.jei.category.threecore.grinding.experience": "%s XP",
   "gui.jei.category.threecore.pressing": "Pressing",
   "gui.jei.category.threecore.pressing.experience": "%s XP",
+  
+  "ability_container.threecore.player": "Player Abilities",
   
   "threecore.util.energy_display": "%,d %s",
   "threecore.util.energy_storage_display": "%,d / %,d %s"

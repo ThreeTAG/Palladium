@@ -1,7 +1,6 @@
 package com.threetag.threecore.karma;
 
 import com.threetag.threecore.ThreeCore;
-import com.threetag.threecore.abilities.client.AbilityBarRenderer;
 import com.threetag.threecore.karma.capability.CapabilityKarma;
 import com.threetag.threecore.karma.capability.IKarma;
 import com.threetag.threecore.karma.capability.KarmaCapProvider;

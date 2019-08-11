@@ -8,6 +8,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TexturedIcon implements IIcon {
 
@@ -35,6 +37,7 @@ public class TexturedIcon implements IIcon {
         this(texture, u, v, width, height, 256, 256);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void draw(Minecraft mc, int x, int y) {
         mc.getTextureManager().bindTexture(this.texture);

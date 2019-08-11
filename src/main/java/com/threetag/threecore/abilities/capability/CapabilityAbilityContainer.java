@@ -5,8 +5,12 @@ import com.threetag.threecore.abilities.Ability;
 import com.threetag.threecore.abilities.AbilityMap;
 import com.threetag.threecore.abilities.AbilityType;
 import com.threetag.threecore.abilities.IAbilityContainer;
+import com.threetag.threecore.util.render.IIcon;
+import com.threetag.threecore.util.render.TexturedIcon;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -16,6 +20,7 @@ public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerial
     @CapabilityInject(IAbilityContainer.class)
     public static Capability<IAbilityContainer> ABILITY_CONTAINER;
     public static final ResourceLocation ID = new ResourceLocation(ThreeCore.MODID, "entity");
+    public static final IIcon STEVE_HEAD_ICON = new TexturedIcon(TexturedIcon.ICONS_TEXTURE, 112, 16, 16, 16);
 
     protected AbilityMap abilityMap;
 
@@ -71,5 +76,15 @@ public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerial
     @Override
     public ResourceLocation getId() {
         return ID;
+    }
+
+    @Override
+    public ITextComponent getTitle() {
+        return new TranslationTextComponent("ability_container.threecore.player");
+    }
+
+    @Override
+    public IIcon getIcon() {
+        return STEVE_HEAD_ICON;
     }
 }

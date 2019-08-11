@@ -8,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 public class ItemIcon implements IIcon {
@@ -22,6 +24,7 @@ public class ItemIcon implements IIcon {
         this.stack = new ItemStack(itemProvider);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void draw(Minecraft mc, int x, int y) {
         RenderHelper.enableGUIStandardItemLighting();

@@ -8,24 +8,23 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public abstract class Condition implements INBTSerializable<CompoundNBT>, IThreeDataHolder
-{
+public abstract class Condition implements INBTSerializable<CompoundNBT>, IThreeDataHolder {
     protected final Ability ability;
     protected final ConditionType type;
-    public ThreeDataManager dataManager = new ThreeDataManager(this);
+    protected ThreeDataManager dataManager = new ThreeDataManager(this);
 
     public static final ThreeData<ITextComponent> TITLE = new TextComponentThreeData("title").setSyncType(EnumSync.SELF).enableSetting("title", "The display name of the condition.");
     public static final ThreeData<Boolean> ENABLING = new BooleanThreeData("enabling").setSyncType(EnumSync.SELF).enableSetting("enabling", "If this condition enables. If false it instead decides whether the ability is unlocked.");
-	public static final ThreeData<Boolean> NEEDS_KEY = new BooleanThreeData("needs_key").setSyncType(EnumSync.SELF);
+    public static final ThreeData<Boolean> NEEDS_KEY = new BooleanThreeData("needs_key").setSyncType(EnumSync.SELF);
 
-    public Condition(ConditionType type, Ability ability){
+    public Condition(ConditionType type, Ability ability) {
         this.type = type;
         this.ability = ability;
         this.registerData();
     }
 
     public void registerData() {
-        this.dataManager.register(TITLE, new TranslationTextComponent(type.getRegistryName().toString()));
+        this.dataManager.register(TITLE, new TranslationTextComponent("ability.condition." + type.getRegistryName().getNamespace() + "." + type.getRegistryName().getPath()));
         this.dataManager.register(ENABLING, false);
         this.dataManager.register(NEEDS_KEY, false);
     }
@@ -36,29 +35,32 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IThree
 
     public abstract boolean test(LivingEntity entity);
 
-    public void firstTick(){}
-    public void lastTick(){}
+    public void firstTick() {
+    }
 
-    @Override public CompoundNBT serializeNBT()
-    {
+    public void lastTick() {
+    }
+
+    @Override
+    public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putString("ConditionType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.serializeNBT());
         return nbt;
     }
 
-    @Override public void deserializeNBT(CompoundNBT nbt)
-    {
+    @Override
+    public void deserializeNBT(CompoundNBT nbt) {
         this.dataManager.deserializeNBT(nbt.getCompound("Data"));
     }
 
-    @Override public void sync(EnumSync sync)
-    {
+    @Override
+    public void sync(EnumSync sync) {
         ability.sync(sync);
     }
 
-    @Override public void setDirty()
-    {
+    @Override
+    public void setDirty() {
         ability.setDirty();
     }
 }

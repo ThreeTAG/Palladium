@@ -1,9 +1,12 @@
-package com.threetag.threecore.abilities.client;
+package com.threetag.threecore.abilities.client.renderer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.abilities.Ability;
 import com.threetag.threecore.abilities.AbilityHelper;
+import com.threetag.threecore.abilities.FlightAbility;
+import com.threetag.threecore.abilities.client.AbilityClientHandler;
+import com.threetag.threecore.abilities.client.EnumAbilityColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderHelper;
@@ -87,7 +90,7 @@ public class AbilityBarRenderer {
                 Ability ability = abilities.get(i);
                 EnumAbilityColor color = ability.getColor();
                 //color = EnumAbilityColor.values()[new Random(ability.getId().hashCode() + 21321357).nextInt(EnumAbilityColor.values().length)];
-                String name = showName ? ability.getDataManager().get(Ability.TITLE).getFormattedText() : AbilityKeyHandler.KEYS.get(i).getLocalizedName();
+                String name = showName ? ability.getDataManager().get(Ability.TITLE).getFormattedText() : AbilityClientHandler.KEYS.get(i).getLocalizedName();
                 int nameLength = mc.fontRenderer.getStringWidth(name);
 
                 GlStateManager.color4f(1, 1, 1, 1);

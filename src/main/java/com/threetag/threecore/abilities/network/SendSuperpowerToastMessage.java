@@ -1,6 +1,6 @@
 package com.threetag.threecore.abilities.network;
 
-import com.threetag.threecore.abilities.client.SuperpowerToast;
+import com.threetag.threecore.abilities.client.gui.SuperpowerToast;
 import com.threetag.threecore.util.render.IIcon;
 import com.threetag.threecore.util.render.IconSerializer;
 import net.minecraft.client.Minecraft;

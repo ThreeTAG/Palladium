@@ -5,9 +5,11 @@ import com.threetag.threecore.abilities.data.EnumSync;
 import com.threetag.threecore.abilities.network.AddAbilityMessage;
 import com.threetag.threecore.abilities.network.RemoveAbilityMessage;
 import com.threetag.threecore.abilities.network.UpdateAbilityMessage;
+import com.threetag.threecore.util.render.IIcon;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -95,5 +97,9 @@ public interface IAbilityContainer {
     }
 
     ResourceLocation getId();
+
+    ITextComponent getTitle();
+
+    IIcon getIcon();
 
 }
