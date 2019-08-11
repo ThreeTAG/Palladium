@@ -17,12 +17,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
+import net.minecraft.resources.IResourceManagerReloadListener;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.resource.IResourceType;
-import net.minecraftforge.resource.ISelectiveResourceReloadListener;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -30,9 +29,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
-public class SuperpowerManager implements ISelectiveResourceReloadListener {
+public class SuperpowerManager implements IResourceManagerReloadListener {
 
     private static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static SuperpowerManager INSTANCE;
@@ -46,7 +44,7 @@ public class SuperpowerManager implements ISelectiveResourceReloadListener {
     public Map<ResourceLocation, Superpower> registeredSuperpowers = Maps.newHashMap();
 
     @Override
-    public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
+    public void onResourceManagerReload(IResourceManager resourceManager) {
         this.registeredSuperpowers.clear();
         for (ResourceLocation resourcelocation : resourceManager.getAllResourceLocations("superpowers", (name) -> name.endsWith(".json"))) {
             String s = resourcelocation.getPath();
@@ -54,6 +52,7 @@ public class SuperpowerManager implements ISelectiveResourceReloadListener {
             try (IResource iresource = resourceManager.getResource(resourcelocation)) {
                 Superpower superpower = parseSuperpower(resourcelocation1, JSONUtils.fromJson(GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
                 if (superpower != null) {
+                    ThreeCore.LOGGER.info("Registered superpower {}!", resourcelocation1);
                     this.registeredSuperpowers.put(resourcelocation1, superpower);
                 }
             } catch (Throwable throwable) {
