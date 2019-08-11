@@ -6,8 +6,7 @@ import com.threetag.threecore.util.render.IconSerializer;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 
-public class IconThreeData extends ThreeData<IIcon>
-{
+public class IconThreeData extends ThreeData<IIcon> {
 
     public IconThreeData(String key) {
         super(key);

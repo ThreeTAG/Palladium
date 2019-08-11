@@ -9,6 +9,7 @@ import com.threetag.threecore.util.render.TexturedIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.advancements.AdvancementState;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.Style;
@@ -84,26 +85,6 @@ public class AbilityTabEntry extends AbstractGui {
                 }
             }
         }
-
-//        {
-//            List<Ability> parents = AbilityHelper.findParentAbilities(Minecraft.getInstance().player, this.ability, this.ability.container);
-//            List<Ability> children = AbilityHelper.findChildrenAbilities(Minecraft.getInstance().player, this.ability, this.ability.container);
-//            System.out.println(this.ability.getId() + ": " + this.parents.size() + " parents & " + this.children.size() + " children");
-//
-//            if (!parents.isEmpty()) {
-//                System.out.println(ability.getId() + "'s parents:");
-//                for (Ability ab : parents) {
-//                    System.out.println(" - " + ab.getId());
-//                }
-//            }
-//
-//            if (!children.isEmpty()) {
-//                System.out.println(ability.getId() + "'s children:");
-//                for (Ability ab : children) {
-//                    System.out.println(" - " + ab.getId());
-//                }
-//            }
-//        }
 
         return this;
     }
@@ -254,6 +235,10 @@ public class AbilityTabEntry extends AbstractGui {
         int k = (int) (scrollY + this.y * AbilityTabGui.gridSize) - 13;
         int l = k + 26;
         return mouseX >= i && mouseX <= j && mouseY >= k && mouseY <= l;
+    }
+
+    public Screen getScreen(AbilityScreen screen) {
+        return this.ability.getScreen(screen);
     }
 
 }

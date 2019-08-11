@@ -2,13 +2,16 @@ package com.threetag.threecore.abilities;
 
 import com.google.gson.JsonObject;
 import com.threetag.threecore.abilities.client.EnumAbilityColor;
+import com.threetag.threecore.abilities.client.gui.AbilityScreen;
 import com.threetag.threecore.abilities.condition.AbilityConditionManager;
+import com.threetag.threecore.abilities.condition.Condition;
 import com.threetag.threecore.abilities.data.*;
 import com.threetag.threecore.util.render.IIcon;
 import com.threetag.threecore.util.render.ItemIcon;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
@@ -160,5 +163,17 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
         this.dataManager.readUpdatePacket(nbt.getCompound("Data"));
         this.conditionManager.readUpdatePacket(nbt.getCompound("Conditions"));
         this.additionalData = nbt.getCompound("AdditionalData");
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public Screen getScreen(AbilityScreen screen) {
+        for (Condition c : this.getConditionManager().getConditions()) {
+            Screen s = c.getScreen(screen);
+            if (s != null) {
+                return s;
+            }
+        }
+
+        return null;
     }
 }

@@ -10,8 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 /**
  * Created by Nictogen on 2019-02-15.
  */
-public class ItemStackThreeData extends ThreeData<ItemStack>
-{
+public class ItemStackThreeData extends ThreeData<ItemStack> {
 
     public ItemStackThreeData(String key) {
         super(key);

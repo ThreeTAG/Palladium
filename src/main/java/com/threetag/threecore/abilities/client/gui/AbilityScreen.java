@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.StringTextComponent;
 
 import java.util.List;
@@ -17,14 +18,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AbilityScreen extends Screen {
 
-    private static final ResourceLocation WINDOW = new ResourceLocation(ThreeCore.MODID, "textures/gui/abilities/window.png");
-    private static final ResourceLocation TABS = new ResourceLocation(ThreeCore.MODID, "textures/gui/abilities/tabs.png");
+    public static final ResourceLocation WINDOW = new ResourceLocation(ThreeCore.MODID, "textures/gui/abilities/window.png");
+    public static final ResourceLocation TABS = new ResourceLocation(ThreeCore.MODID, "textures/gui/abilities/tabs.png");
     public static final ResourceLocation WIDGETS = new ResourceLocation(ThreeCore.MODID, "textures/gui/abilities/widgets.png");
 
     private final int guiWidth = 252;
-    private final int guiHeight = 201;
+    private final int guiHeight = 196;
     private List<AbilityTabGui> tabs = Lists.newLinkedList();
     private AbilityTabGui selectedTab = null;
+    public Screen overlayScreen = null;
     private boolean isScrolling;
 
     public AbilityScreen() {
@@ -44,23 +46,37 @@ public class AbilityScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-
+        if (this.overlayScreen != null)
+            this.overlayScreen.init(this.minecraft, this.width, this.height);
     }
 
     @Override
-    public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int type) {
+    public boolean mouseClicked(double mouseX, double mouseY, int type) {
         if (type == 0) {
             int i = (this.width - guiWidth) / 2;
             int j = (this.height - guiHeight) / 2;
 
-            for (AbilityTabGui tab : this.tabs) {
-                if (tab.isMouseOver(i, j, p_mouseClicked_1_, p_mouseClicked_3_)) {
-                    this.selectedTab = tab;
-                    break;
+            if (this.isOverOverlayScreen(mouseX, mouseY)) {
+                return this.overlayScreen.mouseClicked(mouseX, mouseY, type);
+            } else {
+                for (AbilityTabGui tab : this.tabs) {
+                    if (tab.isMouseOver(i, j, mouseX, mouseY)) {
+                        this.selectedTab = tab;
+                        break;
+                    }
+                }
+
+                if (selectedTab != null) {
+                    AbilityTabEntry entry = this.selectedTab.getAbilityHoveredOver((int) (mouseX - i - 9), (int) (mouseY - j - 18), i, j);
+                    if (entry != null) {
+                        this.overlayScreen = entry.getScreen(this);
+                        if (this.overlayScreen != null)
+                            this.overlayScreen.init(this.minecraft, this.width, this.height);
+                    }
                 }
             }
         }
-        return super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, type);
+        return super.mouseClicked(mouseX, mouseY, type);
     }
 
     @Override
@@ -89,6 +105,10 @@ public class AbilityScreen extends Screen {
         this.renderInside(mouseX, mouseY, i, j);
         this.renderWindow(i, j);
         this.renderToolTips(mouseX, mouseY, i, j);
+        if (this.overlayScreen != null) {
+            this.overlayScreen.render(mouseX, mouseY, partialTicks);
+            this.selectedTab.fade = MathHelper.clamp(this.selectedTab.fade + 0.02F, 0, 0.5F);
+        }
     }
 
     public void renderWindow(int x, int y) {
@@ -143,18 +163,21 @@ public class AbilityScreen extends Screen {
             GlStateManager.pushMatrix();
             GlStateManager.enableDepthTest();
             GlStateManager.translatef((float) (x + 9), (float) (y + 18), 400.0F);
-            this.selectedTab.drawToolTips(mouseX - x - 9, mouseY - y - 18, x, y, this);
+            this.selectedTab.drawToolTips(mouseX - x - 9, mouseY - y - 18, x, y, this, this.overlayScreen != null);
             GlStateManager.disableDepthTest();
             GlStateManager.popMatrix();
         }
 
-        if (this.tabs.size() > 0) {
+        if (this.overlayScreen == null && this.tabs.size() > 0) {
             for (AbilityTabGui tab : this.tabs) {
                 if (tab.isMouseOver(x, y, (double) mouseX, (double) mouseY)) {
                     this.renderTooltip(tab.getTitle().getFormattedText(), mouseX, mouseY);
                 }
             }
         }
+    }
 
+    public boolean isOverOverlayScreen(double mouseX, double mouseY) {
+        return overlayScreen != null;
     }
 }

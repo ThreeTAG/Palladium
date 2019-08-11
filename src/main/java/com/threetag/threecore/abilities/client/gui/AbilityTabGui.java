@@ -8,7 +8,6 @@ import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -29,7 +28,7 @@ public class AbilityTabGui extends AbstractGui {
     private boolean centered;
     private double scrollX;
     private double scrollY;
-    private float fade;
+    public float fade;
     private int minX = Integer.MAX_VALUE;
     private int minY = Integer.MAX_VALUE;
     private int maxX = Integer.MIN_VALUE;
@@ -219,30 +218,47 @@ public class AbilityTabGui extends AbstractGui {
         }
     }
 
-    public void drawToolTips(int mouseX, int mouseY, int x, int y, AbilityScreen screen) {
+    public void drawToolTips(int mouseX, int mouseY, int x, int y, AbilityScreen screen, boolean overlayActive) {
         GlStateManager.pushMatrix();
         GlStateManager.translatef(0.0F, 0.0F, 200.0F);
         fill(0, 0, innerWidth, innerHeight, MathHelper.floor(this.fade * 255.0F) << 24);
         boolean flag = false;
-        int i = MathHelper.floor(this.scrollX);
-        int j = MathHelper.floor(this.scrollY);
-        if (mouseX > 0 && mouseX < innerWidth && mouseY > 0 && mouseY < innerHeight) {
-            for (AbilityTabEntry entry : this.abilities) {
-                if (entry.isMouseOver(i, j, mouseX, mouseY)) {
-                    flag = true;
-                    entry.drawHover(i, j, this.fade, x, y, screen);
-                    break;
+
+        if(!overlayActive) {
+            int i = MathHelper.floor(this.scrollX);
+            int j = MathHelper.floor(this.scrollY);
+            if (mouseX > 0 && mouseX < innerWidth && mouseY > 0 && mouseY < innerHeight) {
+                for (AbilityTabEntry entry : this.abilities) {
+                    if (entry.isMouseOver(i, j, mouseX, mouseY)) {
+                        flag = true;
+                        entry.drawHover(i, j, this.fade, x, y, screen);
+                        break;
+                    }
                 }
             }
         }
 
         GlStateManager.popMatrix();
-        if (flag) {
-            this.fade = MathHelper.clamp(this.fade + 0.02F, 0.0F, 0.3F);
-        } else {
-            this.fade = MathHelper.clamp(this.fade - 0.04F, 0.0F, 1.0F);
+        if(!overlayActive) {
+            if (flag) {
+                this.fade = MathHelper.clamp(this.fade + 0.02F, 0.0F, 0.3F);
+            } else {
+                this.fade = MathHelper.clamp(this.fade - 0.04F, 0.0F, 1.0F);
+            }
         }
+    }
 
+    public AbilityTabEntry getAbilityHoveredOver(int mouseX, int mouseY, int x, int y) {
+        int i = MathHelper.floor(this.scrollX);
+        int j = MathHelper.floor(this.scrollY);
+        if (mouseX > 0 && mouseX < innerWidth && mouseY > 0 && mouseY < innerHeight) {
+            for (AbilityTabEntry entry : this.abilities) {
+                if (entry.isMouseOver(i, j, mouseX, mouseY)) {
+                    return entry;
+                }
+            }
+        }
+        return null;
     }
 
     public boolean isMouseOver(int mouseX, int mouseY, double p_195627_3_, double p_195627_5_) {

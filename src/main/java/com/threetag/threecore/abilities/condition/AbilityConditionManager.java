@@ -1,6 +1,5 @@
 package com.threetag.threecore.abilities.condition;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -11,15 +10,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
-import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AbilityConditionManager implements INBTSerializable<CompoundNBT> {
@@ -41,7 +35,7 @@ public class AbilityConditionManager implements INBTSerializable<CompoundNBT> {
                 JsonObject jsonCondition = jsonElement.getAsJsonObject();
                 ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(JSONUtils.getString(jsonCondition, "type")));
                 Condition condition = Objects.requireNonNull(conditionType).create(ability);
-                condition.dataManager.readFromJson(jsonCondition);
+                condition.readFromJson(jsonCondition);
                 this.addCondition(condition);
             }
         }
@@ -52,8 +46,31 @@ public class AbilityConditionManager implements INBTSerializable<CompoundNBT> {
     }
 
     public AbilityConditionManager addCondition(Condition condition) {
-        this.conditions.put(condition, false);
+        return addCondition(condition, false);
+    }
+
+    public AbilityConditionManager addCondition(Condition condition, boolean active) {
+        if (condition.getUniqueId() == null) {
+            UUID uuid = UUID.randomUUID();
+            while (getByUniqueId(uuid) != null) {
+                uuid = UUID.randomUUID();
+            }
+            condition.id = uuid;
+        }
+        this.conditions.put(condition, active);
         return this;
+    }
+
+    public Condition getByUniqueId(UUID uuid) {
+        Objects.requireNonNull(uuid);
+
+        for (Condition c : this.getConditions()) {
+            if (c.getUniqueId().equals(uuid)) {
+                return c;
+            }
+        }
+
+        return null;
     }
 
     public void update(LivingEntity entity) {
@@ -169,9 +186,10 @@ public class AbilityConditionManager implements INBTSerializable<CompoundNBT> {
         for (int i = 0; i < list.size(); i++) {
             CompoundNBT conditionTag = list.getCompound(i);
             ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(conditionTag.getString("ConditionType")));
+            // TODO save check if condition type is null (maybe same for abilities?)
             Condition condition = conditionType.create(ability);
             condition.deserializeNBT(conditionTag);
-            this.conditions.put(condition, conditionTag.getBoolean("Active"));
+            this.addCondition(condition, conditionTag.getBoolean("Active"));
         }
     }
 

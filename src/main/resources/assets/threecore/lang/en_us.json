@@ -143,6 +143,13 @@
   "ability.condition.threecore.karma": "Karma must be between %s and %s",
   "ability.condition.threecore.karma_at": "Karma must be at %s",
   "ability.condition.threecore.karma_min": "Karma must be at least %s",
+  "ability.condition.threecore.xp_buy": "Experience must be spent",
+  "ability.condition.threecore.xp_buy.levels": "%s experience levels must be spent",
+  "ability.condition.threecore.xp_buy.points": "%s experience points must be spent",
+  "ability.condition.threecore.xp_buy.info.levels": "%s experience levels",
+  "ability.condition.threecore.xp_buy.info.points": "%s experience points",
+  "ability.condition.threecore.item_buy": "An item must be spent",
+  "ability.condition.threecore.item_buy.info": "%sx %s",
   
   "superpower.toast.title": "New superpower!",
   
@@ -153,6 +160,7 @@
   "container.threecore.hydraulic_press": "Hydraulic Press",
   
   "gui.threecore.abilities": "Abilities",
+  "gui.threecore.abilities.fulfill_condition": "Do you want to fulfill this condition?",
   "gui.jei.category.threecore.grinding": "Grinding",
   "gui.jei.category.threecore.grinding.experience": "%s XP",
   "gui.jei.category.threecore.pressing": "Pressing",
