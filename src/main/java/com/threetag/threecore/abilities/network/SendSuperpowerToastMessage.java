@@ -1,11 +1,13 @@
 package com.threetag.threecore.abilities.network;
 
-import com.threetag.threecore.abilities.client.gui.SuperpowerToast;
 import com.threetag.threecore.util.render.IIcon;
 import com.threetag.threecore.util.render.IconSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -31,8 +33,14 @@ public class SendSuperpowerToastMessage {
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> Minecraft.getInstance().getToastGui().add(new SuperpowerToast(this.name, this.icon)));
+        DistExecutor.callWhenOn(Dist.CLIENT, () -> () -> ctx.get().enqueueWork(this::showToast));
         ctx.get().setPacketHandled(true);
     }
+
+    @OnlyIn(Dist.CLIENT)
+    public void showToast() {
+        Minecraft.getInstance().getToastGui().add(new com.threetag.threecore.abilities.client.gui.SuperpowerToast(this.name, this.icon));
+    }
+
 
 }

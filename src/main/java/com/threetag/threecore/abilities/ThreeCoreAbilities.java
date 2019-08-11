@@ -34,9 +34,11 @@ public class ThreeCoreAbilities {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
         MinecraftForge.EVENT_BUS.register(new AbilityEventHandler());
-        MinecraftForge.EVENT_BUS.register(new AbilityClientHandler());
         MinecraftForge.EVENT_BUS.register(this);
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(new AbilityBarRenderer()));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            MinecraftForge.EVENT_BUS.register(new AbilityBarRenderer());
+            MinecraftForge.EVENT_BUS.register(new AbilityClientHandler());
+        });
 
         AbilityHelper.registerAbilityContainer(CapabilityAbilityContainer.ID, (p) -> p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
         for (EquipmentSlotType slots : EquipmentSlotType.values())
