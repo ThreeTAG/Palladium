@@ -1,6 +1,9 @@
 package com.threetag.threecore.abilities.data;
 
 import com.google.gson.JsonObject;
+import com.threetag.threecore.abilities.Ability;
+import com.threetag.threecore.abilities.condition.Condition;
+import com.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -26,9 +29,16 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT> {
         ThreeDataEntry entry = getEntry(data);
 
         if (entry != null && !entry.getValue().equals(value)) {
+            Object oldValue = entry.getValue();
             entry.setValue(value);
             this.dataHolder.sync(data.syncType);
             this.dataHolder.setDirty();
+
+            if (this.dataHolder instanceof Ability) {
+                ((Ability) this.dataHolder).getEventManager().fireEvent("ability_data_changed", new LivingEntityAccessor(((Ability) this.dataHolder).entity), this.dataHolder, data.key, oldValue, value);
+            } else if (this.dataHolder instanceof Condition) {
+                ((Condition) this.dataHolder).ability.getEventManager().fireEvent("condition_data_changed", new LivingEntityAccessor(((Condition) this.dataHolder).ability.entity), this.dataHolder, data.key, oldValue, value);
+            }
         }
     }
 

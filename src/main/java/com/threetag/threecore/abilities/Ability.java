@@ -6,8 +6,10 @@ import com.threetag.threecore.abilities.client.gui.AbilityScreen;
 import com.threetag.threecore.abilities.condition.AbilityConditionManager;
 import com.threetag.threecore.abilities.condition.Condition;
 import com.threetag.threecore.abilities.data.*;
+import com.threetag.threecore.abilities.event.AbilityEventManager;
 import com.threetag.threecore.util.render.IIcon;
 import com.threetag.threecore.util.render.ItemIcon;
+import com.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -30,15 +32,20 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
     public static final ThreeData<IIcon> ICON = new IconThreeData("icon").setSyncType(EnumSync.SELF)
             .enableSetting("icon", "Lets you customize the icon for the ability");
 
-    protected final AbilityType type;
+    public final AbilityType type;
     String id;
     public IAbilityContainer container;
     protected ThreeDataManager dataManager = new ThreeDataManager(this);
     protected AbilityConditionManager conditionManager = new AbilityConditionManager(this);
+    protected AbilityEventManager eventManager = new AbilityEventManager(this);
     protected int ticks = 0;
     public EnumSync sync = EnumSync.NONE;
     public boolean dirty = false;
     protected CompoundNBT additionalData;
+    /**
+     * Current wielder of this ability, mainly used for event managing, dont use within the actual ability!
+     */
+    public LivingEntity entity;
 
     public Ability(AbilityType type) {
         this.type = type;
@@ -48,6 +55,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
     public void readFromJson(JsonObject jsonObject) {
         this.dataManager.readFromJson(jsonObject);
         this.conditionManager.readFromJson(jsonObject);
+        this.eventManager.readFromJson(jsonObject);
     }
 
     public void registerData() {
@@ -71,6 +79,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
     }
 
     public void tick(LivingEntity entity) {
+        this.entity = entity;
         this.conditionManager.update(entity);
         if (this.conditionManager.isEnabled()) {
             if (ticks == 0) {
@@ -84,6 +93,8 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
             this.conditionManager.lastTick();
             ticks = 0;
         }
+
+        this.eventManager.fireEvent("tick", new LivingEntityAccessor(entity), this);
     }
 
     public void updateTick(LivingEntity entity) {
@@ -95,17 +106,16 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
     public void lastTick(LivingEntity entity) {
     }
 
-    // TODO Parent ability
-    public Ability getParentAbility() {
-        return null;
-    }
-
     public ThreeDataManager getDataManager() {
         return dataManager;
     }
 
     public AbilityConditionManager getConditionManager() {
         return conditionManager;
+    }
+
+    public AbilityEventManager getEventManager() {
+        return eventManager;
     }
 
     public final String getId() {
@@ -137,6 +147,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
         nbt.putString("AbilityType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.serializeNBT());
         nbt.put("Conditions", this.conditionManager.serializeNBT());
+        nbt.put("Events", this.eventManager.serializeNBT());
         if (this.additionalData != null)
             nbt.put("AdditionalData", this.additionalData);
         return nbt;
@@ -146,6 +157,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
     public void deserializeNBT(CompoundNBT nbt) {
         this.dataManager.deserializeNBT(nbt.getCompound("Data"));
         this.conditionManager.deserializeNBT(nbt.getCompound("Conditions"));
+        this.eventManager.deserializeNBT(nbt.getCompound("Events"));
         this.additionalData = nbt.getCompound("AdditionalData");
     }
 

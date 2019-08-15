@@ -5,6 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.threetag.threecore.abilities.Ability;
 import com.threetag.threecore.abilities.data.EnumSync;
+import com.threetag.threecore.util.scripts.accessors.AbilityAccessor;
+import com.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -95,11 +97,13 @@ public class AbilityConditionManager implements INBTSerializable<CompoundNBT> {
 
             if (e != this.enabled) {
                 this.enabled = e;
+                this.ability.getEventManager().fireEvent(this.enabled ? "enabled" : "disabled", new LivingEntityAccessor(this.ability.entity), new AbilityAccessor(this.ability));
                 this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
             }
 
             if (u != this.unlocked) {
                 this.unlocked = u;
+                this.ability.getEventManager().fireEvent(this.unlocked ? "unlocked" : "locked", new LivingEntityAccessor(this.ability.entity), new AbilityAccessor(this.ability));
                 this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
             }
         }

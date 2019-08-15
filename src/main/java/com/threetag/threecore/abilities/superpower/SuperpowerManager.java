@@ -94,11 +94,15 @@ public class SuperpowerManager implements IResourceManagerReloadListener {
     }
 
     public static void setSuperpower(LivingEntity entity, Superpower superpower) {
-        entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
-            abilityContainer.clearAbilities(entity, ability -> ability.getAdditionalData().getBoolean("IsFromSuperpower"));
-            abilityContainer.addAbilities(entity, superpower);
-            if (entity instanceof ServerPlayerEntity)
-                ThreeCore.NETWORK_CHANNEL.sendTo(new SendSuperpowerToastMessage(superpower.getName(), superpower.getIcon()), ((ServerPlayerEntity) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
-        });
+        try {
+            entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
+                abilityContainer.clearAbilities(entity, ability -> ability.getAdditionalData().getBoolean("IsFromSuperpower"));
+                abilityContainer.addAbilities(entity, superpower);
+                if (entity instanceof ServerPlayerEntity)
+                    ThreeCore.NETWORK_CHANNEL.sendTo(new SendSuperpowerToastMessage(superpower.getName(), superpower.getIcon()), ((ServerPlayerEntity) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
