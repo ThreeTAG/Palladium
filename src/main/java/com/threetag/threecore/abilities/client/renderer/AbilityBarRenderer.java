@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,7 +31,7 @@ public class AbilityBarRenderer {
     public static final int ENTRY_SHOW_AMOUNT = 5;
 
     public static List<Ability> getCurrentDisplayedAbilities(List<Ability> abilities) {
-        abilities = abilities.stream().filter(a -> a.getConditionManager().isUnlocked() && (a.getConditionManager().needsKey() || a.getDataManager().get(Ability.SHOW_IN_BAR)) && !a.getDataManager().get(Ability.HIDDEN)).collect(Collectors.toList());
+        abilities = abilities.stream().filter(a -> a.getConditionManager().isUnlocked() && ((a.getConditionManager().needsKey() && a.getDataManager().get(Ability.KEYBIND) > -1) || a.getDataManager().get(Ability.SHOW_IN_BAR)) && !a.getDataManager().get(Ability.HIDDEN)).collect(Collectors.toList());
         List<Ability> list = new ArrayList<>();
 
         if (abilities.isEmpty())
@@ -89,8 +90,8 @@ public class AbilityBarRenderer {
             for (int i = 0; i < abilities.size(); i++) {
                 Ability ability = abilities.get(i);
                 EnumAbilityColor color = ability.getColor();
-                //color = EnumAbilityColor.values()[new Random(ability.getId().hashCode() + 21321357).nextInt(EnumAbilityColor.values().length)];
-                String name = showName ? ability.getDataManager().get(Ability.TITLE).getFormattedText() : AbilityClientHandler.KEYS.get(i).getLocalizedName();
+                int keyBind = ability.getDataManager().get(Ability.KEYBIND);
+                String name = showName ? ability.getDataManager().get(Ability.TITLE).getFormattedText() : InputMappings.func_216507_a(keyBind);
                 int nameLength = mc.fontRenderer.getStringWidth(name);
 
                 GlStateManager.color4f(1, 1, 1, 1);

@@ -2,7 +2,7 @@ package com.threetag.threecore.abilities.condition;
 
 import com.google.gson.JsonObject;
 import com.threetag.threecore.abilities.Ability;
-import com.threetag.threecore.abilities.client.gui.AbilityScreen;
+import com.threetag.threecore.abilities.client.gui.AbilitiesScreen;
 import com.threetag.threecore.abilities.client.gui.BuyAbilityScreen;
 import com.threetag.threecore.abilities.data.EnumSync;
 import com.threetag.threecore.abilities.data.ItemStackThreeData;
@@ -77,7 +77,7 @@ public class ItemBuyableAbilityCondition extends BuyableAbilityCondition {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public Screen getScreen(AbilityScreen screen) {
+    public Screen getScreen(AbilitiesScreen screen) {
         return this.dataManager.get(BOUGHT) ? null : new BuyAbilityScreen(this.ability, this,
                 new ItemIcon(this.dataManager.get(ITEM)), new TranslationTextComponent("ability.condition.threecore.item_buy.info", this.dataManager.get(ITEM).getCount(), this.dataManager.get(ITEM).getDisplayName()), screen);
     }

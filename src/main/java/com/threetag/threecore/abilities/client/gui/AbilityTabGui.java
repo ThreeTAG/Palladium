@@ -218,7 +218,7 @@ public class AbilityTabGui extends AbstractGui {
         }
     }
 
-    public void drawToolTips(int mouseX, int mouseY, int x, int y, AbilityScreen screen, boolean overlayActive) {
+    public void drawToolTips(int mouseX, int mouseY, int x, int y, AbilitiesScreen screen, boolean overlayActive) {
         GlStateManager.pushMatrix();
         GlStateManager.translatef(0.0F, 0.0F, 200.0F);
         fill(0, 0, innerWidth, innerHeight, MathHelper.floor(this.fade * 255.0F) << 24);
@@ -275,7 +275,7 @@ public class AbilityTabGui extends AbstractGui {
         }
     }
 
-    public static AbilityTabGui create(Minecraft minecraft, AbilityScreen screen, int index, IAbilityContainer container) {
+    public static AbilityTabGui create(Minecraft minecraft, AbilitiesScreen screen, int index, IAbilityContainer container) {
         for (AbilityTabType tabType : AbilityTabType.values()) {
             if ((index % AbilityTabType.MAX_TABS) < tabType.getMax()) {
                 return new AbilityTabGui(container, tabType, index % AbilityTabType.MAX_TABS);

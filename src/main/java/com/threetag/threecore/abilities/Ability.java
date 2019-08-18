@@ -2,6 +2,7 @@ package com.threetag.threecore.abilities;
 
 import com.google.gson.JsonObject;
 import com.threetag.threecore.abilities.client.EnumAbilityColor;
+import com.threetag.threecore.abilities.client.gui.AbilitiesScreen;
 import com.threetag.threecore.abilities.client.gui.AbilityScreen;
 import com.threetag.threecore.abilities.condition.AbilityConditionManager;
 import com.threetag.threecore.abilities.condition.Condition;
@@ -31,6 +32,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
             .enableSetting("title", "Allows you to set a custom title for this ability");
     public static final ThreeData<IIcon> ICON = new IconThreeData("icon").setSyncType(EnumSync.SELF)
             .enableSetting("icon", "Lets you customize the icon for the ability");
+    public static final ThreeData<Integer> KEYBIND = new IntegerThreeData("key").setSyncType(EnumSync.SELF);
 
     public final AbilityType type;
     String id;
@@ -64,6 +66,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
         this.dataManager.register(TITLE,
                 new TranslationTextComponent("ability." + this.type.getRegistryName().getNamespace() + "." + this.type.getRegistryName().getPath()));
         this.dataManager.register(ICON, new ItemIcon(Blocks.BARRIER));
+        this.dataManager.register(KEYBIND, -1);
     }
 
     public CompoundNBT getAdditionalData() {
@@ -178,7 +181,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
     }
 
     @OnlyIn(Dist.CLIENT)
-    public Screen getScreen(AbilityScreen screen) {
+    public Screen getScreen(AbilitiesScreen screen) {
         for (Condition c : this.getConditionManager().getConditions()) {
             Screen s = c.getScreen(screen);
             if (s != null) {
@@ -186,6 +189,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
             }
         }
 
-        return null;
+        return new AbilityScreen(this, screen);
     }
 }

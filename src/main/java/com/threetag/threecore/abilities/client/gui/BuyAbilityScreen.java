@@ -11,7 +11,6 @@ import com.threetag.threecore.util.render.IIcon;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -22,13 +21,13 @@ public class BuyAbilityScreen extends Screen {
 
     public final Ability ability;
     public final BuyableAbilityCondition condition;
-    public final AbilityScreen parentScreen;
+    public final AbilitiesScreen parentScreen;
     public final IIcon icon;
     public final ITextComponent hoverText;
     private final int guiWidth = 202;
     private final int guiHeight = 60;
 
-    public BuyAbilityScreen(Ability ability, BuyableAbilityCondition condition, IIcon icon, ITextComponent hoverText, AbilityScreen parentScreen) {
+    public BuyAbilityScreen(Ability ability, BuyableAbilityCondition condition, IIcon icon, ITextComponent hoverText, AbilitiesScreen parentScreen) {
         super(condition.getDataManager().get(Condition.TITLE));
         this.ability = ability;
         this.condition = condition;
@@ -60,7 +59,7 @@ public class BuyAbilityScreen extends Screen {
         int j = (this.height - guiHeight) / 2;
 
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(AbilityScreen.WINDOW);
+        this.minecraft.getTextureManager().bindTexture(AbilitiesScreen.WINDOW);
         this.blit(i, j, 0, 196, this.guiWidth, this.guiHeight);
 
         List<String> lines = this.font.listFormattedStringToWidth(I18n.format("gui.threecore.abilities.fulfill_condition"), 132);

@@ -1,183 +1,84 @@
 package com.threetag.threecore.abilities.client.gui;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.threetag.threecore.ThreeCore;
-import com.threetag.threecore.abilities.AbilityHelper;
-import com.threetag.threecore.abilities.IAbilityContainer;
-import net.minecraft.client.Minecraft;
+import com.threetag.threecore.abilities.Ability;
+import com.threetag.threecore.abilities.network.SetAbilityKeybindMessage;
+import com.threetag.threecore.util.client.gui.BackgroundlessButton;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.StringTextComponent;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import net.minecraft.client.util.InputMappings;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class AbilityScreen extends Screen {
 
-    public static final ResourceLocation WINDOW = new ResourceLocation(ThreeCore.MODID, "textures/gui/abilities/window.png");
-    public static final ResourceLocation TABS = new ResourceLocation(ThreeCore.MODID, "textures/gui/abilities/tabs.png");
-    public static final ResourceLocation WIDGETS = new ResourceLocation(ThreeCore.MODID, "textures/gui/abilities/widgets.png");
+    public final Ability ability;
+    public final AbilitiesScreen parentScreen;
+    private final int guiWidth = 202;
+    private final int guiHeight = 60;
+    private boolean listenToKey = false;
+    private Button keyButton;
 
-    private final int guiWidth = 252;
-    private final int guiHeight = 196;
-    private List<AbilityTabGui> tabs = Lists.newLinkedList();
-    private AbilityTabGui selectedTab = null;
-    public Screen overlayScreen = null;
-    private boolean isScrolling;
-
-    public AbilityScreen() {
-        super(new StringTextComponent(""));
-        this.tabs.clear();
-        this.selectedTab = null;
-        AtomicInteger index = new AtomicInteger();
-        AbilityHelper.getAbilityContainerList().forEach((f) -> {
-            IAbilityContainer container = f.apply(Minecraft.getInstance().player);
-            if (container != null) {
-                this.tabs.add(AbilityTabGui.create(Minecraft.getInstance(), this, index.get(), container));
-                index.getAndIncrement();
-            }
-        });
+    public AbilityScreen(Ability ability, AbilitiesScreen parentScreen) {
+        super(ability.getDataManager().get(Ability.TITLE));
+        this.ability = ability;
+        this.parentScreen = parentScreen;
     }
 
     @Override
     protected void init() {
         super.init();
-        if (this.overlayScreen != null)
-            this.overlayScreen.init(this.minecraft, this.width, this.height);
-    }
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int type) {
-        if (type == 0) {
-            int i = (this.width - guiWidth) / 2;
-            int j = (this.height - guiHeight) / 2;
-
-            if (this.isOverOverlayScreen(mouseX, mouseY)) {
-                return this.overlayScreen.mouseClicked(mouseX, mouseY, type);
-            } else {
-                for (AbilityTabGui tab : this.tabs) {
-                    if (tab.isMouseOver(i, j, mouseX, mouseY)) {
-                        this.selectedTab = tab;
-                        break;
-                    }
-                }
-
-                if (selectedTab != null) {
-                    AbilityTabEntry entry = this.selectedTab.getAbilityHoveredOver((int) (mouseX - i - 9), (int) (mouseY - j - 18), i, j);
-                    if (entry != null) {
-                        this.overlayScreen = entry.getScreen(this);
-                        if (this.overlayScreen != null)
-                            this.overlayScreen.init(this.minecraft, this.width, this.height);
-                    }
-                }
-            }
-        }
-        return super.mouseClicked(mouseX, mouseY, type);
-    }
-
-    @Override
-    public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double x, double y) {
-        if (p_mouseDragged_5_ != 0) {
-            this.isScrolling = false;
-            return false;
-        } else {
-            if (!this.isScrolling) {
-                this.isScrolling = true;
-            } else if (this.selectedTab != null) {
-                this.selectedTab.scroll(x, y);
-            }
-
-            return true;
-        }
+        int i = (this.width - guiWidth) / 2;
+        int j = (this.height - guiHeight) / 2;
+        this.addButton(new BackgroundlessButton(i + 193, j + 3, 5, 5, "x", s -> parentScreen.overlayScreen = null));
+        keyButton = this.addButton(new GuiButtonExt(i + 143, j + 30, 50, 20, "/", (b) -> {
+            this.listenToKey = !this.listenToKey;
+            this.updateButton();
+        }));
+        this.updateButton();
     }
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        super.render(mouseX, mouseY, partialTicks);
-
         int i = (this.width - guiWidth) / 2;
         int j = (this.height - guiHeight) / 2;
-        this.renderBackground();
-        this.renderInside(mouseX, mouseY, i, j);
-        this.renderWindow(i, j);
-        this.renderToolTips(mouseX, mouseY, i, j);
-        if (this.overlayScreen != null) {
-            this.overlayScreen.render(mouseX, mouseY, partialTicks);
-            this.selectedTab.fade = MathHelper.clamp(this.selectedTab.fade + 0.02F, 0, 0.5F);
-        }
-    }
 
-    public void renderWindow(int x, int y) {
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.enableBlend();
-        RenderHelper.disableStandardItemLighting();
-        this.minecraft.getTextureManager().bindTexture(WINDOW);
-        this.blit(x, y, 0, 0, guiWidth, guiHeight);
-        if (this.tabs.size() > 0) {
-            this.minecraft.getTextureManager().bindTexture(TABS);
+        this.minecraft.getTextureManager().bindTexture(AbilitiesScreen.WINDOW);
+        this.blit(i, j, 0, 196, this.guiWidth, this.guiHeight);
 
-            for (AbilityTabGui tab : this.tabs) {
-                tab.drawTab(x, y, tab == this.selectedTab);
-            }
+        this.font.drawString(this.title.getFormattedText(), i + 8, j + 6, 4210752);
+        this.font.drawString(I18n.format("gui.threecore.abilities.keybind"), i + 143, j + 20, 4210752);
 
-            GlStateManager.enableRescaleNormal();
-            GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            RenderHelper.enableGUIStandardItemLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translatef(i + 14, j + 18, 0);
+        GlStateManager.scalef(2F, 2F, 1);
+        this.ability.getDataManager().get(Ability.ICON).draw(this.minecraft, 0, 0);
+        GlStateManager.popMatrix();
 
-            for (AbilityTabGui tab : this.tabs) {
-                tab.drawIcon(x, y);
-            }
-
-            GlStateManager.disableBlend();
-        }
-
-        this.font.drawString(I18n.format("gui.threecore.abilities"), (float) (x + 8), (float) (y + 6), 4210752);
+        super.render(mouseX, mouseY, partialTicks);
     }
 
-    private void renderInside(int mouseX, int mouseY, int x, int y) {
-        AbilityTabGui tab = this.selectedTab;
-        if (tab == null) {
-            fill(x + 9, y + 18, x + 9 + AbilityTabGui.innerWidth, y + 18 + AbilityTabGui.innerHeight, -16777216);
-            String s = I18n.format("advancements.empty");
-            int i = this.font.getStringWidth(s);
-            this.font.drawString(s, (float) (x + 9 + 117 - i / 2), (float) (y + 18 + 56 - 9 / 2), -1);
-            this.font.drawString(":(", (float) (x + 9 + 117 - this.font.getStringWidth(":(") / 2), (float) (y + 18 + 113 - 9), -1);
-        } else {
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef((float) (x + 9), (float) (y + 18), -400.0F);
-            GlStateManager.enableDepthTest();
-            tab.drawContents();
-            GlStateManager.popMatrix();
-            GlStateManager.depthFunc(515);
-            GlStateManager.disableDepthTest();
+    @Override
+    public boolean keyPressed(int type, int scanCode, int p_keyPressed_3_) {
+        if (this.listenToKey) {
+            this.ability.getDataManager().set(Ability.KEYBIND, InputMappings.getInputByCode(type, scanCode).getKeyCode());
+            ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.SERVER.noArg(), new SetAbilityKeybindMessage(this.ability.container.getId(), this.ability.getId(), InputMappings.getInputByCode(type, scanCode).getKeyCode()));
+            this.listenToKey = false;
+            this.updateButton();
         }
+        return super.keyPressed(type, scanCode, p_keyPressed_3_);
     }
 
-    private void renderToolTips(int mouseX, int mouseY, int x, int y) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        if (this.selectedTab != null) {
-            GlStateManager.pushMatrix();
-            GlStateManager.enableDepthTest();
-            GlStateManager.translatef((float) (x + 9), (float) (y + 18), 400.0F);
-            this.selectedTab.drawToolTips(mouseX - x - 9, mouseY - y - 18, x, y, this, this.overlayScreen != null);
-            GlStateManager.disableDepthTest();
-            GlStateManager.popMatrix();
-        }
-
-        if (this.overlayScreen == null && this.tabs.size() > 0) {
-            for (AbilityTabGui tab : this.tabs) {
-                if (tab.isMouseOver(x, y, (double) mouseX, (double) mouseY)) {
-                    this.renderTooltip(tab.getTitle().getFormattedText(), mouseX, mouseY);
-                }
-            }
-        }
-    }
-
-    public boolean isOverOverlayScreen(double mouseX, double mouseY) {
-        return overlayScreen != null;
+    public void updateButton() {
+        String button = InputMappings.func_216507_a(this.ability.getDataManager().get(Ability.KEYBIND));
+        if (button == null || button.isEmpty())
+            button = "-";
+        System.out.println(button);
+        this.keyButton.setMessage(this.listenToKey ? "> " + TextFormatting.YELLOW + button + TextFormatting.RESET + " <" : button);
     }
 }

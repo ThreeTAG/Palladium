@@ -161,6 +161,7 @@
   
   "gui.threecore.abilities": "Abilities",
   "gui.threecore.abilities.fulfill_condition": "Do you want to fulfill this condition?",
+  "gui.threecore.abilities.keybind": "Keybind:",
   "gui.jei.category.threecore.grinding": "Grinding",
   "gui.jei.category.threecore.grinding.experience": "%s XP",
   "gui.jei.category.threecore.pressing": "Pressing",

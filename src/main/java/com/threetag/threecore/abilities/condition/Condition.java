@@ -2,7 +2,7 @@ package com.threetag.threecore.abilities.condition;
 
 import com.google.gson.JsonObject;
 import com.threetag.threecore.abilities.Ability;
-import com.threetag.threecore.abilities.client.gui.AbilityScreen;
+import com.threetag.threecore.abilities.client.gui.AbilitiesScreen;
 import com.threetag.threecore.abilities.data.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.LivingEntity;
@@ -85,7 +85,7 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IThree
     }
 
     @OnlyIn(Dist.CLIENT)
-    public Screen getScreen(AbilityScreen screen) {
+    public Screen getScreen(AbilitiesScreen screen) {
         return null;
     }
 }

@@ -21,7 +21,7 @@ import java.util.List;
 
 public class AbilityTabEntry extends AbstractGui {
 
-    public static final TexturedIcon LOCKED_ICON = new TexturedIcon(AbilityScreen.WIDGETS, 90, 133, 16, 16);
+    public static final TexturedIcon LOCKED_ICON = new TexturedIcon(AbilitiesScreen.WIDGETS, 90, 133, 16, 16);
 
     protected final Ability ability;
     protected double x, y;
@@ -91,12 +91,12 @@ public class AbilityTabEntry extends AbstractGui {
 
     public void drawIcon(Minecraft mc, int x, int y) {
         GlStateManager.color4f(1, 1, 1, 1);
-        mc.getTextureManager().bindTexture(AbilityScreen.WIDGETS);
+        mc.getTextureManager().bindTexture(AbilitiesScreen.WIDGETS);
         this.blit(x - 13, y - 13, 0, this.unlocked ? 128 : 154, 26, 26);
         getDisplayIcon().draw(mc, x - 8, y - 8);
     }
 
-    public void drawHover(int x, int y, float fade, int p_191821_4_, int p_191821_5_, AbilityScreen gui) {
+    public void drawHover(int x, int y, float fade, int p_191821_4_, int p_191821_5_, AbilitiesScreen gui) {
         Minecraft minecraft = Minecraft.getInstance();
         int posX = (int) (this.x * AbilityTabGui.gridSize) - 16;
         int posY = (int) (this.y * AbilityTabGui.gridSize) - 13;
@@ -132,7 +132,7 @@ public class AbilityTabEntry extends AbstractGui {
         }
 
         int k = this.width - j;
-        minecraft.getTextureManager().bindTexture(AbilityScreen.WIDGETS);
+        minecraft.getTextureManager().bindTexture(AbilitiesScreen.WIDGETS);
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.enableBlend();
         int l = y + posY;
@@ -237,7 +237,7 @@ public class AbilityTabEntry extends AbstractGui {
         return mouseX >= i && mouseX <= j && mouseY >= k && mouseY <= l;
     }
 
-    public Screen getScreen(AbilityScreen screen) {
+    public Screen getScreen(AbilitiesScreen screen) {
         return this.ability.getScreen(screen);
     }
 
