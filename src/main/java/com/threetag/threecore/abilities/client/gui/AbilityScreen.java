@@ -78,7 +78,6 @@ public class AbilityScreen extends Screen {
         String button = InputMappings.func_216507_a(this.ability.getDataManager().get(Ability.KEYBIND));
         if (button == null || button.isEmpty())
             button = "-";
-        System.out.println(button);
         this.keyButton.setMessage(this.listenToKey ? "> " + TextFormatting.YELLOW + button + TextFormatting.RESET + " <" : button);
     }
 }

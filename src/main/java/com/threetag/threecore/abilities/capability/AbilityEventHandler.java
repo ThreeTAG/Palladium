@@ -1,26 +1,31 @@
 package com.threetag.threecore.abilities.capability;
 
 import com.threetag.threecore.ThreeCore;
-import com.threetag.threecore.abilities.FlightAbility;
-import com.threetag.threecore.abilities.HealingAbility;
-import com.threetag.threecore.abilities.AbilityHelper;
-import com.threetag.threecore.abilities.IAbilityContainer;
+import com.threetag.threecore.abilities.*;
 import com.threetag.threecore.abilities.condition.ToggleCondition;
 import com.threetag.threecore.abilities.network.SendPlayerAbilityContainerMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.NetworkDirection;
+
+import javax.annotation.Nullable;
 
 public class AbilityEventHandler {
 

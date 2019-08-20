@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.threetag.threecore.abilities.condition.AbilityUnlockedCondition;
 import com.threetag.threecore.abilities.condition.Condition;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
@@ -93,6 +94,36 @@ public class AbilityHelper {
             }
         }
         return list;
+    }
+
+    public static CompoundNBT saveToNBT(AbilityMap map, boolean network) {
+        CompoundNBT nbt = new CompoundNBT();
+        map.forEach((s, a) -> nbt.put(s, network ? a.getUpdateTag() : a.serializeNBT()));
+        return nbt;
+    }
+
+    public static CompoundNBT saveToNBT(AbilityMap map) {
+        return saveToNBT(map, false);
+    }
+
+    public static AbilityMap loadFromNBT(CompoundNBT nbt, AbilityMap map, boolean network) {
+        nbt.keySet().forEach((s) -> {
+            CompoundNBT tag = nbt.getCompound(s);
+            AbilityType abilityType = AbilityType.REGISTRY.getValue(new ResourceLocation(tag.getString("AbilityType")));
+            if (abilityType != null) {
+                Ability ability = abilityType.create();
+                if (network)
+                    ability.readUpdateTag(tag);
+                else
+                    ability.deserializeNBT(tag);
+                map.put(s, ability);
+            }
+        });
+        return map;
+    }
+
+    public static AbilityMap loadFromNBT(CompoundNBT nbt, AbilityMap map) {
+        return loadFromNBT(nbt, map, false);
     }
 
 }

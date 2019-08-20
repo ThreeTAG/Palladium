@@ -1,9 +1,8 @@
 package com.threetag.threecore.abilities.capability;
 
 import com.threetag.threecore.ThreeCore;
-import com.threetag.threecore.abilities.Ability;
+import com.threetag.threecore.abilities.AbilityHelper;
 import com.threetag.threecore.abilities.AbilityMap;
-import com.threetag.threecore.abilities.AbilityType;
 import com.threetag.threecore.abilities.IAbilityContainer;
 import com.threetag.threecore.util.render.IIcon;
 import com.threetag.threecore.util.render.TexturedIcon;
@@ -35,42 +34,22 @@ public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerial
 
     @Override
     public CompoundNBT serializeNBT() {
-        CompoundNBT nbt = new CompoundNBT();
-        this.getAbilityMap().forEach((s, a) -> nbt.put(s, a.serializeNBT()));
-        return nbt;
+        return AbilityHelper.saveToNBT(this.getAbilityMap());
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
         this.abilityMap.clear();
-        nbt.keySet().forEach((s) -> {
-            CompoundNBT tag = nbt.getCompound(s);
-            AbilityType abilityType = AbilityType.REGISTRY.getValue(new ResourceLocation(tag.getString("AbilityType")));
-            if (abilityType != null) {
-                Ability ability = abilityType.create();
-                ability.deserializeNBT(tag);
-                this.abilityMap.put(s, ability);
-            }
-        });
+        AbilityHelper.loadFromNBT(nbt, this.abilityMap);
     }
 
     public CompoundNBT getUpdateTag() {
-        CompoundNBT nbt = new CompoundNBT();
-        this.getAbilityMap().forEach((s, a) -> nbt.put(s, a.getUpdateTag()));
-        return nbt;
+        return AbilityHelper.saveToNBT(this.getAbilityMap(), true);
     }
 
     public void readUpdateTag(CompoundNBT nbt) {
         this.abilityMap.clear();
-        nbt.keySet().forEach((s) -> {
-            CompoundNBT tag = nbt.getCompound(s);
-            AbilityType abilityType = AbilityType.REGISTRY.getValue(new ResourceLocation(tag.getString("AbilityType")));
-            if (abilityType != null) {
-                Ability ability = abilityType.create();
-                ability.readUpdateTag(tag);
-                this.abilityMap.put(s, ability);
-            }
-        });
+        AbilityHelper.loadFromNBT(nbt, this.abilityMap, true);
     }
 
     @Override

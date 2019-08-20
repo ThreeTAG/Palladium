@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.threetag.threecore.abilities.Ability;
+import com.threetag.threecore.abilities.capability.ItemAbilityContainer;
 import com.threetag.threecore.abilities.data.EnumSync;
 import com.threetag.threecore.util.scripts.accessors.AbilityAccessor;
 import com.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
