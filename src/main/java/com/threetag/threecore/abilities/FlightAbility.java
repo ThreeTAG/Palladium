@@ -30,37 +30,17 @@ public class FlightAbility extends Ability {
 
     @Override
     public void updateTick(LivingEntity entity) {
-        if (entity.onGround && ticks > 20)
-            this.getConditionManager().disableKeybounds();
-
-        if (entity.moveForward > 0F && !entity.onGround) {
-            Vec3d vec = entity.getLookVec();
-            double speed = entity.isSprinting() ? this.dataManager.get(SPRINT_SPEED) : this.dataManager.get(SPEED);
-            // TODO multiply fly speed by size
-            entity.setMotion(vec.x * speed, vec.y * speed, vec.z * speed);
-
-            if (!entity.world.isRemote) {
-                entity.fallDistance = 0.0F;
+        if(!entity.onGround) {
+            if (entity.moveForward > 0F) {
+                Vec3d vec = entity.getLookVec();
+                double speed = entity.isSprinting() ? this.dataManager.get(SPRINT_SPEED) : this.dataManager.get(SPEED);
+                // TODO multiply fly speed by size
+                entity.setMotion(vec.x * speed, vec.y * speed - (entity.isSneaking() ? entity.getHeight() * 0.2F : 0), vec.z * speed);
+            } else if(entity.isSneaking()) {
+                entity.setMotion(new Vec3d(entity.getMotion().x, entity.getHeight() * -0.2F, entity.getMotion().z));
+            } else {
+                entity.setMotion(new Vec3d(entity.getMotion().x, Math.sin(entity.ticksExisted / 10F) / 100F, entity.getMotion().z));
             }
-        } else {
-            float motionY = 0F;
-            if (ticks < 20) {
-                int lowestY = entity.getPosition().getY();
-
-                while (lowestY > 0 && !entity.world.isBlockPresent(new BlockPos(entity.posX, lowestY, entity.posZ))) {
-                    lowestY--;
-                }
-
-                if (entity.getPosition().getY() - lowestY < 5) {
-                    motionY += 1;
-                }
-            }
-
-            motionY += Math.sin(entity.ticksExisted / 10F) / 100F;
-            entity.fallDistance = 0F;
-            Vec3d motion = new Vec3d(entity.getMotion().x, motionY, entity.getMotion().z);
-            entity.setMotion(motion);
         }
-
     }
 }
