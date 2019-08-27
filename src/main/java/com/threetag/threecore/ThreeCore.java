@@ -1,12 +1,10 @@
 package com.threetag.threecore;
 
+import com.threetag.threecore.addonpacks.ThreeCoreAddonPacks;
 import com.threetag.threecore.base.ThreeCoreBase;
 import com.threetag.threecore.karma.ThreeCoreKarma;
 import com.threetag.threecore.util.SupporterHandler;
 import com.threetag.threecore.util.recipe.RecipeUtil;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -39,6 +37,7 @@ public class ThreeCore {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThreeCoreCommonConfig.generateConfig());
 
         // Modules
+        new ThreeCoreAddonPacks();
         new ThreeCoreBase();
         new ThreeCoreKarma();
     }
