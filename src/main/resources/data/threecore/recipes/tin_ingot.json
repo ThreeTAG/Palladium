@@ -1,8 +1,11 @@
 {
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:ores/tin"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ores/tin"
+      }
     }
   ],
   "type": "smelting",

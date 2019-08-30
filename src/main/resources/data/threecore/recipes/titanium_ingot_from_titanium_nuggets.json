@@ -16,8 +16,11 @@
   "group": "titanium_ingot",
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:nuggets/titanium"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:nuggets/titanium"
+      }
     }
   ]
 }

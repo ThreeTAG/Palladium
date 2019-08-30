@@ -16,8 +16,11 @@
   "group": "steel_ingot",
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:nuggets/steel"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:nuggets/steel"
+      }
     }
   ]
 }

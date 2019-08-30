@@ -73,7 +73,7 @@ public class ThreeCoreBase {
 
             // TESR
             try {
-                ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, (TileEntityRenderer<HydraulicPressTileEntity>)Class.forName("com.threetag.threecore.base.client.renderer.tileentity.HydraulicPressTileEntityRenderer").newInstance());
+                ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, (TileEntityRenderer<HydraulicPressTileEntity>) Class.forName("com.threetag.threecore.base.client.renderer.tileentity.HydraulicPressTileEntityRenderer").newInstance());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

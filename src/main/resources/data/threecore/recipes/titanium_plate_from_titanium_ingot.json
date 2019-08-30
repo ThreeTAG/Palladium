@@ -1,12 +1,18 @@
 {
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:plates/titanium"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/titanium"
+      }
     },
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:ingots/titanium"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/titanium"
+      }
     }
   ],
   "type": "threecore:pressing",

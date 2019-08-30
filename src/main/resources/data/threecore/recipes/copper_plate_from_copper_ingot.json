@@ -1,12 +1,18 @@
 {
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:plates/copper"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/copper"
+      }
     },
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:ingots/copper"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/copper"
+      }
     }
   ],
   "type": "threecore:pressing",

@@ -7,7 +7,6 @@ import com.threetag.threecore.ThreeCore;
 import com.threetag.threecore.base.ThreeCoreBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -34,7 +33,7 @@ public class RecipeUtil {
     private static File RECIPE_DIR = null;
 
     public static void init() {
-        CraftingHelper.register(new ResourceLocation(ThreeCore.MODID, "tag_exists"), new RecipeConditionTagExists());
+
     }
 
     public static <T extends IRecipe<?>> IRecipeType<T> register(final ResourceLocation name) {
@@ -58,13 +57,13 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("iron_dust_from_iron_ore", "forge:dusts/iron#2", "forge:ores/iron", 0.7F, 400);
         RecipeUtil.addGrinderRecipe("iron_dust_from_iron_ingot", "forge:dusts/iron", "forge:ingots/iron", 0F, 200);
         RecipeUtil.addSmeltingRecipe("iron_ingot_from_iron_dust", new ItemStack(Items.IRON_INGOT), "forge:dusts/iron", 0F, 100);
-        RecipeUtil.addPressingRecipe("iron_plate_from_iron_ingot", null,"forge:plates/iron", "forge:ingots/iron", ThreeCoreBase.PLATE_CAST, 0F, 500);
+        RecipeUtil.addPressingRecipe("iron_plate_from_iron_ingot", null, "forge:plates/iron", "forge:ingots/iron", ThreeCoreBase.PLATE_CAST, 0F, 500);
         RecipeUtil.addShapelessRecipe("iron_plate_with_hammer", new ItemStack(ThreeCoreBase.IRON_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/iron", "forge:ingots/iron");
 
         RecipeUtil.addGrinderRecipe("gold_dust_from_gold_ore", "forge:dusts/gold#2", "forge:ores/gold", 0.7F, 400);
         RecipeUtil.addGrinderRecipe("gold_dust_from_gold_ingot", "forge:dusts/gold", "forge:ingots/gold", 0F, 200);
         RecipeUtil.addSmeltingRecipe("gold_ingot_from_gold_dust", new ItemStack(Items.GOLD_INGOT), "forge:dusts/gold", 0F, 100);
-        RecipeUtil.addPressingRecipe("gold_plate_from_gold_ingot", null,"forge:plates/gold", "forge:ingots/gold", ThreeCoreBase.PLATE_CAST, 0F, 500);
+        RecipeUtil.addPressingRecipe("gold_plate_from_gold_ingot", null, "forge:plates/gold", "forge:ingots/gold", ThreeCoreBase.PLATE_CAST, 0F, 500);
         RecipeUtil.addShapelessRecipe("gold_plate_with_hammer", new ItemStack(ThreeCoreBase.GOLD_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/gold", "forge:ingots/gold");
 
         RecipeUtil.addShapelessRecipe("copper_ingot_from_copper_block", "copper_ingot", new ItemStack(ThreeCoreBase.COPPER_INGOT, 9), "forge:storage_blocks/copper");
@@ -75,7 +74,7 @@ public class RecipeUtil {
         RecipeUtil.addGrinderRecipe("copper_dust_from_copper_ore", "forge:dusts/copper#2", "forge:ores/copper", 0.7F, 400);
         RecipeUtil.addGrinderRecipe("copper_dust_from_copper_ingot", "forge:dusts/copper", "forge:ingots/copper", 0F, 200);
         RecipeUtil.addSmeltingRecipe("copper_ingot_from_copper_dust", new ItemStack(ThreeCoreBase.COPPER_INGOT), "forge:dusts/copper", 0F, 100);
-        RecipeUtil.addPressingRecipe("copper_plate_from_copper_ingot", null,"forge:plates/copper", "forge:ingots/copper", ThreeCoreBase.PLATE_CAST, 0F, 500);
+        RecipeUtil.addPressingRecipe("copper_plate_from_copper_ingot", null, "forge:plates/copper", "forge:ingots/copper", ThreeCoreBase.PLATE_CAST, 0F, 500);
         RecipeUtil.addShapelessRecipe("copper_plate_with_hammer", new ItemStack(ThreeCoreBase.COPPER_PLATE), ThreeCoreBase.HAMMER, "forge:ingots/copper", "forge:ingots/copper");
 
         RecipeUtil.addShapelessRecipe("tin_ingot_from_tin_block", "tin_ingot", new ItemStack(ThreeCoreBase.TIN_INGOT, 9), "forge:storage_blocks/tin");
@@ -309,8 +308,13 @@ public class RecipeUtil {
     public static Map<String, Object> getCondition(Object o) {
         if (o instanceof String) {
             Map<String, Object> map = new LinkedHashMap<>();
-            map.put("type", ThreeCore.MODID + ":tag_exists");
-            map.put("tag", o.toString().split("#")[0]);
+            map.put("type", "forge:not");
+
+            Map<String, Object> notMap = new LinkedHashMap<>();
+            notMap.put("type", "forge:tag_empty");
+            notMap.put("tag", o.toString().split("#")[0]);
+
+            map.put("value", notMap);
             return map;
         } else if (o instanceof Item) {
             ResourceLocation key = ForgeRegistries.ITEMS.getKey((Item) o);

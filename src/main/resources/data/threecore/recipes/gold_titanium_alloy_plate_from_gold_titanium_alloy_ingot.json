@@ -1,12 +1,18 @@
 {
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:plates/gold_titanium_alloy"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/gold_titanium_alloy"
+      }
     },
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:ingots/gold_titanium_alloy"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/gold_titanium_alloy"
+      }
     }
   ],
   "type": "threecore:pressing",

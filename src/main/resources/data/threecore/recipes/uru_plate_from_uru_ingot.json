@@ -1,12 +1,18 @@
 {
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:plates/uru"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/uru"
+      }
     },
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:ingots/uru"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/uru"
+      }
     }
   ],
   "type": "threecore:pressing",

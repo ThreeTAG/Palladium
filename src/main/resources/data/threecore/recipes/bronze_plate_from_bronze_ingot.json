@@ -1,12 +1,18 @@
 {
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:plates/bronze"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/bronze"
+      }
     },
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:ingots/bronze"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/bronze"
+      }
     }
   ],
   "type": "threecore:pressing",

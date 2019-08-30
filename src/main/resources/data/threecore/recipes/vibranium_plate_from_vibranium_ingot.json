@@ -1,12 +1,18 @@
 {
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:plates/vibranium"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/vibranium"
+      }
     },
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:ingots/vibranium"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/vibranium"
+      }
     }
   ],
   "type": "threecore:pressing",

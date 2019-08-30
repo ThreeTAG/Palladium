@@ -1,8 +1,11 @@
 {
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:storage_blocks/steel"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:storage_blocks/steel"
+      }
     }
   ],
   "ingredients": [

@@ -1,12 +1,18 @@
 {
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:dusts/titanium"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/titanium"
+      }
     },
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:ores/titanium"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ores/titanium"
+      }
     }
   ],
   "type": "threecore:grinding",

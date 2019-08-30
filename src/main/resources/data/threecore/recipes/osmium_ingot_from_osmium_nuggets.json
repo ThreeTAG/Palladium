@@ -16,8 +16,11 @@
   "group": "osmium_ingot",
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:nuggets/osmium"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:nuggets/osmium"
+      }
     }
   ]
 }

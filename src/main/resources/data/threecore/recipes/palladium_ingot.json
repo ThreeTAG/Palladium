@@ -1,8 +1,11 @@
 {
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:ores/palladium"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ores/palladium"
+      }
     }
   ],
   "type": "smelting",

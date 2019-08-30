@@ -16,8 +16,11 @@
   "group": "copper_ingot",
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:nuggets/copper"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:nuggets/copper"
+      }
     }
   ]
 }

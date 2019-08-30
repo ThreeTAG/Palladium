@@ -16,8 +16,11 @@
   "group": "bronze_ingot",
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:nuggets/bronze"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:nuggets/bronze"
+      }
     }
   ]
 }

@@ -1,12 +1,18 @@
 {
   "conditions": [
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:plates/adamantium"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/adamantium"
+      }
     },
     {
-      "type": "threecore:tag_exists",
-      "tag": "forge:ingots/adamantium"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/adamantium"
+      }
     }
   ],
   "type": "threecore:pressing",
