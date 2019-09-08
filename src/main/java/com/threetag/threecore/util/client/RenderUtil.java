@@ -4,8 +4,15 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.event.TickEvent;
 
 public class RenderUtil {
+
+    public static float renderTickTime;
+
+    public static void onRenderGlobal(TickEvent.RenderTickEvent e) {
+        renderTickTime = e.renderTickTime;
+    }
 
     public static void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
         drawBoundingBox(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, red, green, blue, alpha);

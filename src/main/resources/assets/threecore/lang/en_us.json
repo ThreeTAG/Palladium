@@ -118,6 +118,10 @@
   "commands.karma.success.player.multiple": "Karma of %s players has been set to %s",
   "commands.karma.players_karma": "%s's karma is at %s. (%s)",
   
+  "commands.sizechange.success.entity.single": "%s was scaled to %s using '%s'",
+  "commands.sizechange.success.entity.multiple": "%s entities were scaled to %s using '%s'",
+  "commands.sizechange.error.sizeChangeTypeNotFound": "No size change type was found by the name '%1$s'",
+  
   "karma.class.tyrant": "Tyrant",
   "karma.class.villain": "Villain",
   "karma.class.thug": "Thug",
