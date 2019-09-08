@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
 version = "${minecraft_version}-${build_version}"
-group = 'com.threetag.threecore'
+group = 'net.threetag.threecore'
 archivesBaseName = 'ThreeCore'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'

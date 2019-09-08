@@ -68,7 +68,7 @@ function initializeCoreMod() {
                         //int opcode
                         INVOKESTATIC,
                         //String owner
-                        "com/threetag/threecore/sizechanging/SizeManager",
+                        "net/threetag/threecore/sizechanging/SizeManager",
                         //String name
                         "scaleEntity",
                         //String descriptor
