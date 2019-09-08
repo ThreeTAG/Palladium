@@ -1,6 +1,7 @@
 package com.threetag.threecore;
 
 import com.threetag.threecore.addonpacks.ThreeCoreAddonPacks;
+import com.threetag.threecore.abilities.ThreeCoreAbilities;
 import com.threetag.threecore.base.ThreeCoreBase;
 import com.threetag.threecore.karma.ThreeCoreKarma;
 import com.threetag.threecore.util.SupporterHandler;
@@ -32,6 +33,7 @@ public class ThreeCore {
         // Basic stuff
         RecipeUtil.init();
         SupporterHandler.load();
+        SupporterHandler.enableSupporterCheck();
 
         // Config
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThreeCoreCommonConfig.generateConfig());
@@ -39,6 +41,7 @@ public class ThreeCore {
         // Modules
         new ThreeCoreAddonPacks();
         new ThreeCoreBase();
+        new ThreeCoreAbilities();
         new ThreeCoreKarma();
     }
 

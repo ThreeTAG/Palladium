@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;

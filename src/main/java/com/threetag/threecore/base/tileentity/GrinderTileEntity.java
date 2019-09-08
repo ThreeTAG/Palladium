@@ -140,7 +140,7 @@ public class GrinderTileEntity extends TileEntity implements IRecipeHolder, IRec
     public void read(CompoundNBT nbt) {
         super.read(nbt);
 
-        this.progress = nbt.getInt("Progres");
+        this.progress = nbt.getInt("Progress");
         this.progressMax = nbt.getInt("ProgressMax");
         this.energyStorage = new EnergyStorageExt(4000, 128, 128, nbt.getInt("Energy"));
 
