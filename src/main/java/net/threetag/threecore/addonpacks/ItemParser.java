@@ -4,9 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.util.item.ItemGroupRegistry;
-import net.minecraft.client.util.JSONException;
+import com.google.gson.JsonParseException;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
@@ -21,6 +19,8 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.util.item.ItemGroupRegistry;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -69,11 +69,11 @@ public class ItemParser {
         }
     }
 
-    public static Item parse(JsonObject json) throws JSONException {
+    public static Item parse(JsonObject json) throws JsonParseException {
         BiFunction<JsonObject, Item.Properties, Item> function = itemFunctions.get(new ResourceLocation(JSONUtils.getString(json, "type")));
 
         if (function == null)
-            throw new JSONException("The item type '" + JSONUtils.getString(json, "type") + "' does not exist!");
+            throw new JsonParseException("The item type '" + JSONUtils.getString(json, "type") + "' does not exist!");
 
         Item item = function.apply(json, JSONUtils.hasField(json, "properties") ? parseProperties(JSONUtils.getJsonObject(json, "properties")) : new Item.Properties());
         return Objects.requireNonNull(item);
