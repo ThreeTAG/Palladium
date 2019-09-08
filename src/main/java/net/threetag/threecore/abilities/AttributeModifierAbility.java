@@ -2,7 +2,6 @@ package net.threetag.threecore.abilities;
 
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
-import com.threetag.threecore.abilities.data.*;
 import net.threetag.threecore.util.attributes.AttributeRegistry;
 import net.threetag.threecore.util.render.IIcon;
 import net.minecraft.entity.LivingEntity;

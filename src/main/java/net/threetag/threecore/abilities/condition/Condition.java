@@ -1,9 +1,6 @@
 package net.threetag.threecore.abilities.condition;
 
 import com.google.gson.JsonObject;
-import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
-import com.threetag.threecore.abilities.data.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -13,6 +10,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.threetag.threecore.abilities.Ability;
+import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
 import net.threetag.threecore.abilities.data.*;
 
 import java.util.UUID;

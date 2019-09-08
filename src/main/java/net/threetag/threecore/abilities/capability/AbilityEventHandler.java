@@ -1,7 +1,6 @@
 package net.threetag.threecore.abilities.capability;
 
 import net.threetag.threecore.ThreeCore;
-import com.threetag.threecore.abilities.*;
 import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.abilities.FlightAbility;
 import net.threetag.threecore.abilities.HealingAbility;

@@ -3,8 +3,6 @@ package net.threetag.threecore.util.recipe;
 import com.google.common.collect.Lists;
 import com.google.gson.*;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.base.ThreeCoreBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
@@ -21,6 +19,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.base.ThreeCoreBase;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -7,7 +7,6 @@ import net.threetag.threecore.abilities.client.AbilityClientHandler;
 import net.threetag.threecore.abilities.client.renderer.AbilityBarRenderer;
 import net.threetag.threecore.abilities.command.SuperpowerCommand;
 import net.threetag.threecore.abilities.condition.ConditionType;
-import com.threetag.threecore.abilities.network.*;
 import net.threetag.threecore.abilities.superpower.SuperpowerManager;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.nbt.INBT;

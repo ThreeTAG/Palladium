@@ -1,16 +1,6 @@
 package net.threetag.threecore.abilities;
 
 import com.google.gson.JsonObject;
-import net.threetag.threecore.abilities.client.EnumAbilityColor;
-import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
-import net.threetag.threecore.abilities.client.gui.AbilityScreen;
-import net.threetag.threecore.abilities.condition.AbilityConditionManager;
-import net.threetag.threecore.abilities.condition.Condition;
-import com.threetag.threecore.abilities.data.*;
-import net.threetag.threecore.abilities.event.AbilityEventManager;
-import net.threetag.threecore.util.render.IIcon;
-import net.threetag.threecore.util.render.ItemIcon;
-import net.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -22,7 +12,16 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.threetag.threecore.abilities.client.EnumAbilityColor;
+import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
+import net.threetag.threecore.abilities.client.gui.AbilityScreen;
+import net.threetag.threecore.abilities.condition.AbilityConditionManager;
+import net.threetag.threecore.abilities.condition.Condition;
 import net.threetag.threecore.abilities.data.*;
+import net.threetag.threecore.abilities.event.AbilityEventManager;
+import net.threetag.threecore.util.render.IIcon;
+import net.threetag.threecore.util.render.ItemIcon;
+import net.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
 
 public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDataHolder {
 
