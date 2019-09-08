@@ -160,6 +160,19 @@ public class CapabilitySizeChanging implements ISizeChanging, INBTSerializable<C
     }
 
     @Override
+    public boolean setSizeDirectly(Entity entity, @Nullable SizeChangeType type, float size) {
+        if (size != this.scale) {
+            this.scale = size;
+            this.estimatedScale = size;
+            this.scalePerTick = 0F;
+            this.sizeChangeType = type == null ? getSizeChangeType() : type;
+            this.sync(entity);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putFloat("Width", this.currentWidth);

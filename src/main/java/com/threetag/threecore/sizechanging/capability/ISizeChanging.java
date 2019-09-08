@@ -25,6 +25,8 @@ public interface ISizeChanging {
 
     boolean startSizeChange(Entity entity, @Nullable SizeChangeType type, float size);
 
+    boolean setSizeDirectly(Entity entity, @Nullable SizeChangeType type, float size);
+
     void updateBoundingBox(Entity entity);
 
     void sync(Entity entity);
