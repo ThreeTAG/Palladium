@@ -12,12 +12,13 @@ import javax.annotation.Nullable;
 public class KarmaCapProvider implements ICapabilitySerializable<CompoundNBT> {
 
     private CapabilityKarma karma = new CapabilityKarma();
+    private LazyOptional<IKarma> optional = LazyOptional.of(() -> karma);
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityKarma.KARMA) {
-            return LazyOptional.of(() -> (T) karma);
+            return (LazyOptional<T>) optional;
         }
         return LazyOptional.empty();
     }

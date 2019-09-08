@@ -4,10 +4,13 @@ import com.threetag.threecore.addonpacks.ThreeCoreAddonPacks;
 import com.threetag.threecore.abilities.ThreeCoreAbilities;
 import com.threetag.threecore.base.ThreeCoreBase;
 import com.threetag.threecore.karma.ThreeCoreKarma;
+import com.threetag.threecore.sizechanging.ThreeCoreSizeChanging;
 import com.threetag.threecore.util.SupporterHandler;
+import com.threetag.threecore.util.client.RenderUtil;
 import com.threetag.threecore.util.recipe.RecipeUtil;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -43,6 +46,10 @@ public class ThreeCore {
         new ThreeCoreBase();
         new ThreeCoreAbilities();
         new ThreeCoreKarma();
+        new ThreeCoreSizeChanging();
+
+        // Misc
+        MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
     }
 
     public static <MSG> int registerMessage(Class<MSG> messageType, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageConsumer) {

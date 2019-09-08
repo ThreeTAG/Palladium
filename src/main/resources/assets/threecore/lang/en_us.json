@@ -115,6 +115,10 @@
   "commands.karma.success.player.multiple": "Karma of %s players has been set to %s",
   "commands.karma.players_karma": "%s's karma is at %s. (%s)",
   
+  "commands.sizechange.success.entity.single": "%s was scaled to %s using '%s'",
+  "commands.sizechange.success.entity.multiple": "%s entities were scaled to %s using '%s'",
+  "commands.sizechange.error.sizeChangeTypeNotFound": "No size change type was found by the name '%1$s'",
+  
   "commands.superpower.error.superpowerNotFound": "No superpower was found by the name '%1$s'",
   "commands.superpower.error.noLivingEntity": "This entity is not a living entity",
   "commands.superpower.success.entity.single": "%s has gained the superpower %s",
