@@ -1,5 +1,6 @@
 package net.threetag.threecore.abilities.client;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.AbilityHelper;
@@ -37,6 +38,8 @@ public class AbilityClientHandler {
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent e) {
+        if(Minecraft.getInstance().player == null)
+            return;
 
         if (e.getAction() < GLFW.GLFW_REPEAT) {
             List<Ability> abilities = AbilityHelper.getAbilities(Minecraft.getInstance().player).stream().filter(a -> a.getConditionManager().isUnlocked() && a.getConditionManager().needsKey() && a.getDataManager().get(Ability.KEYBIND) > -1).collect(Collectors.toList());
@@ -56,6 +59,9 @@ public class AbilityClientHandler {
 
     @SubscribeEvent
     public void onMouse(GuiScreenEvent.MouseScrollEvent.Pre e) {
+        if(Minecraft.getInstance().player == null)
+            return;
+
         if (Minecraft.getInstance().player.isSneaking() && e.getScrollDelta() != 0F) {
             AbilityBarRenderer.scroll(e.getScrollDelta() > 0);
             e.setCanceled(true);
