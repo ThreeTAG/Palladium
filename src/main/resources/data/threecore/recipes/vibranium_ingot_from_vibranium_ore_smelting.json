@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "forge:ores/vibranium"
+  },
+  "result": "threecore:vibranium_ingot",
+  "experience": 1.0,
+  "cookingtime": 600
+}

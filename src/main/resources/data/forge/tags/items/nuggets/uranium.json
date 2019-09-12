@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:uranium_nugget"
-	]
+  "replace": false,
+  "values": [
+    "threecore:uranium_nugget"
+  ]
 }

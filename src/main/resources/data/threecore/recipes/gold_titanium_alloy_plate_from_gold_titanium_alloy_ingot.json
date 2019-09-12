@@ -1,20 +1,4 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:plates/gold_titanium_alloy"
-      }
-    },
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:ingots/gold_titanium_alloy"
-      }
-    }
-  ],
   "type": "threecore:pressing",
   "result": {
     "tag": "forge:plates/gold_titanium_alloy"
@@ -26,5 +10,5 @@
     "item": "threecore:plate_cast"
   },
   "experience": 0.0,
-  "energy": 1400
+  "energy": 500
 }

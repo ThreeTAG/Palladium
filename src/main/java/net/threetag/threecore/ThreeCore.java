@@ -14,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -34,7 +35,7 @@ public class ThreeCore {
 
     public ThreeCore() {
         // Basic stuff
-        RecipeUtil.init();
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(RecipeUtil::gatherData);
         SupporterHandler.load();
         SupporterHandler.enableSupporterCheck();
 

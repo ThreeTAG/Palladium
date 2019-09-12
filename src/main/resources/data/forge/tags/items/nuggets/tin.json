@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:tin_nugget"
-	]
+  "replace": false,
+  "values": [
+    "threecore:tin_nugget"
+  ]
 }

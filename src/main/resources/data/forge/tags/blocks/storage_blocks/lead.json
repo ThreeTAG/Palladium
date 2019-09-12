@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:lead_block"
-	]
+  "replace": false,
+  "values": [
+    "threecore:lead_block"
+  ]
 }

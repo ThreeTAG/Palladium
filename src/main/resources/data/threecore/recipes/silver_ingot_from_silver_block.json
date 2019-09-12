@@ -1,22 +1,13 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:storage_blocks/silver"
-      }
-    }
-  ],
+  "type": "minecraft:crafting_shapeless",
+  "group": "silver_ingot",
   "ingredients": [
     {
       "tag": "forge:storage_blocks/silver"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
   "result": {
     "item": "threecore:silver_ingot",
     "count": 9
-  },
-  "group": "silver_ingot"
+  }
 }

@@ -1,20 +1,4 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:plates/iridium"
-      }
-    },
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:ingots/iridium"
-      }
-    }
-  ],
   "type": "threecore:pressing",
   "result": {
     "tag": "forge:plates/iridium"

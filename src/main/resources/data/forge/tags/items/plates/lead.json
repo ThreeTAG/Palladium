@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:lead_plate"
-	]
+  "replace": false,
+  "values": [
+    "threecore:lead_plate"
+  ]
 }

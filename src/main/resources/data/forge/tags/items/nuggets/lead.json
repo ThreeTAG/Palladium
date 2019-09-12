@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:lead_nugget"
-	]
+  "replace": false,
+  "values": [
+    "threecore:lead_nugget"
+  ]
 }

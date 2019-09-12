@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:iridium_plate"
-	]
+  "replace": false,
+  "values": [
+    "threecore:iridium_plate"
+  ]
 }

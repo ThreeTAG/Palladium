@@ -1,20 +1,4 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:plates/steel"
-      }
-    },
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:ingots/steel"
-      }
-    }
-  ],
   "type": "threecore:pressing",
   "result": {
     "tag": "forge:plates/steel"
@@ -26,5 +10,5 @@
     "item": "threecore:plate_cast"
   },
   "experience": 0.0,
-  "energy": 1000
+  "energy": 500
 }

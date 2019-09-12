@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:silver_ore"
-	]
+  "replace": false,
+  "values": [
+    "threecore:silver_ore"
+  ]
 }

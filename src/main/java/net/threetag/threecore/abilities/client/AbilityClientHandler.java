@@ -1,13 +1,5 @@
 package net.threetag.threecore.abilities.client;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.abilities.AbilityHelper;
-import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
-import net.threetag.threecore.abilities.client.renderer.AbilityBarRenderer;
-import net.threetag.threecore.abilities.network.AbilityKeyMessage;
-import net.threetag.threecore.util.client.gui.TranslucentButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.resources.I18n;
@@ -18,6 +10,13 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.abilities.Ability;
+import net.threetag.threecore.abilities.AbilityHelper;
+import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
+import net.threetag.threecore.abilities.client.renderer.AbilityBarRenderer;
+import net.threetag.threecore.abilities.network.AbilityKeyMessage;
+import net.threetag.threecore.util.client.gui.TranslucentButton;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -32,13 +31,15 @@ public class AbilityClientHandler {
     public static final KeyBinding SCROLL_DOWN = new KeyBinding("key.threecore.scroll_down", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, 80, CATEGORY);
 
     public AbilityClientHandler() {
-        ClientRegistry.registerKeyBinding(SCROLL_UP);
-        ClientRegistry.registerKeyBinding(SCROLL_DOWN);
+        if (Minecraft.getInstance() != null) {
+            ClientRegistry.registerKeyBinding(SCROLL_UP);
+            ClientRegistry.registerKeyBinding(SCROLL_DOWN);
+        }
     }
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent e) {
-        if(Minecraft.getInstance().player == null)
+        if (Minecraft.getInstance().player == null)
             return;
 
         if (e.getAction() < GLFW.GLFW_REPEAT) {
@@ -59,7 +60,7 @@ public class AbilityClientHandler {
 
     @SubscribeEvent
     public void onMouse(GuiScreenEvent.MouseScrollEvent.Pre e) {
-        if(Minecraft.getInstance().player == null)
+        if (Minecraft.getInstance().player == null)
             return;
 
         if (Minecraft.getInstance().player.isSneaking() && e.getScrollDelta() != 0F) {

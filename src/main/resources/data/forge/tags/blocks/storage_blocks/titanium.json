@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:titanium_block"
-	]
+  "replace": false,
+  "values": [
+    "threecore:titanium_block"
+  ]
 }

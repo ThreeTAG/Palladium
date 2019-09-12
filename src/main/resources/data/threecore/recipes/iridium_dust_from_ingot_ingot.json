@@ -1,0 +1,11 @@
+{
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/iridium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/iridium"
+  },
+  "experience": 0.0,
+  "energy": 400
+}

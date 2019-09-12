@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:uranium_ingot_from_uranium_dust_blasting"
+    ]
+  },
+  "criteria": {
+    "has_uranium_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/uranium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:uranium_ingot_from_uranium_dust_blasting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_uranium_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

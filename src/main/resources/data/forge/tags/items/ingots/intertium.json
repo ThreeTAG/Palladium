@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:intertium_ingot"
-	]
+  "replace": false,
+  "values": [
+    "threecore:intertium_ingot"
+  ]
 }

@@ -1,0 +1,11 @@
+{
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/gold"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/gold"
+  },
+  "experience": 0.0,
+  "energy": 200
+}

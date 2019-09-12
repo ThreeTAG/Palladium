@@ -1,0 +1,46 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:vibranium_nugget"
+    ]
+  },
+  "criteria": {
+    "has_at_least_9_vibranium_nugget": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "threecore:vibranium_nugget",
+            "count": {
+              "min": 9
+            }
+          }
+        ]
+      }
+    },
+    "has_vibranium_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/vibranium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:vibranium_nugget"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_at_least_9_vibranium_nugget",
+      "has_vibranium_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

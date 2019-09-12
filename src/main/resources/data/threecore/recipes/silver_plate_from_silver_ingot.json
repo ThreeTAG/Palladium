@@ -1,20 +1,4 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:plates/silver"
-      }
-    },
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:ingots/silver"
-      }
-    }
-  ],
   "type": "threecore:pressing",
   "result": {
     "tag": "forge:plates/silver"

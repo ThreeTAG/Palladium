@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:uru_ingot"
-	]
+  "replace": false,
+  "values": [
+    "threecore:uru_ingot"
+  ]
 }

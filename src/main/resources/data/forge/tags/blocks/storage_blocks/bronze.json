@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:bronze_block"
-	]
+  "replace": false,
+  "values": [
+    "threecore:bronze_block"
+  ]
 }

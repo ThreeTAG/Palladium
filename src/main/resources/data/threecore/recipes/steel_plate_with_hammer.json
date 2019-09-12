@@ -1,13 +1,5 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:ingots/steel"
-      }
-    }
-  ],
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
       "item": "threecore:hammer"
@@ -19,7 +11,6 @@
       "tag": "forge:ingots/steel"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
   "result": {
     "item": "threecore:steel_plate"
   }

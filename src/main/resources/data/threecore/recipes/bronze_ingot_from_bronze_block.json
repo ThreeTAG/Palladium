@@ -1,22 +1,13 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:storage_blocks/bronze"
-      }
-    }
-  ],
+  "type": "minecraft:crafting_shapeless",
+  "group": "bronze_ingot",
   "ingredients": [
     {
       "tag": "forge:storage_blocks/bronze"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
   "result": {
     "item": "threecore:bronze_ingot",
     "count": 9
-  },
-  "group": "bronze_ingot"
+  }
 }

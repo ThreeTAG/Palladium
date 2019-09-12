@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:palladium_nugget"
-	]
+  "replace": false,
+  "values": [
+    "threecore:palladium_nugget"
+  ]
 }

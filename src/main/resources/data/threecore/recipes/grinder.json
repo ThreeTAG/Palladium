@@ -1,4 +1,5 @@
 {
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "SSS",
     "GCG",
@@ -18,17 +19,7 @@
       "tag": "forge:plates/iron"
     }
   },
-  "type": "minecraft:crafting_shaped",
   "result": {
     "item": "threecore:grinder"
-  },
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:plates/iron"
-      }
-    }
-  ]
+  }
 }

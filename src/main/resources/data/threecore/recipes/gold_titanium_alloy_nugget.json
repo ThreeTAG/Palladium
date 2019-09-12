@@ -1,19 +1,10 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:ingots/gold_titanium_alloy"
-      }
-    }
-  ],
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
       "tag": "forge:ingots/gold_titanium_alloy"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
   "result": {
     "item": "threecore:gold_titanium_alloy_nugget",
     "count": 9

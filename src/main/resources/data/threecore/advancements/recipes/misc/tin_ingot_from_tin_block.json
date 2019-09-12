@@ -1,0 +1,46 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:tin_ingot_from_tin_block"
+    ]
+  },
+  "criteria": {
+    "has_at_least_9_tin_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "threecore:tin_ingot",
+            "count": {
+              "min": 9
+            }
+          }
+        ]
+      }
+    },
+    "has_tin_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:storage_blocks/tin"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:tin_ingot_from_tin_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_at_least_9_tin_ingot",
+      "has_tin_block",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,22 +1,13 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:storage_blocks/lead"
-      }
-    }
-  ],
+  "type": "minecraft:crafting_shapeless",
+  "group": "lead_ingot",
   "ingredients": [
     {
       "tag": "forge:storage_blocks/lead"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
   "result": {
     "item": "threecore:lead_ingot",
     "count": 9
-  },
-  "group": "lead_ingot"
+  }
 }

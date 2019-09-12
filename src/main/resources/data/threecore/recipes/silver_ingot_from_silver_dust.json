@@ -1,18 +1,9 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:dusts/silver"
-      }
-    }
-  ],
-  "type": "smelting",
-  "result": "threecore:silver_ingot",
+  "type": "minecraft:smelting",
   "ingredient": {
     "tag": "forge:dusts/silver"
   },
+  "result": "threecore:silver_ingot",
   "experience": 0.0,
   "cookingtime": 100
 }

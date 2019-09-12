@@ -1,20 +1,21 @@
 {
-	"values": [
-		"#forge:nuggets/copper",
-		"#forge:nuggets/tin",
-		"#forge:nuggets/lead",
-		"#forge:nuggets/silver",
-		"#forge:nuggets/palladium",
-		"#forge:nuggets/vibranium",
-		"#forge:nuggets/osmium",
-		"#forge:nuggets/uranium",
-		"#forge:nuggets/titanium",
-		"#forge:nuggets/iridium",
-		"#forge:nuggets/uru",
-		"#forge:nuggets/bronze",
-		"#forge:nuggets/intertium",
-		"#forge:nuggets/steel",
-		"#forge:nuggets/gold_titanium_alloy",
-		"#forge:nuggets/adamantium"
-	]
+  "replace": false,
+  "values": [
+    "#forge:nuggets/copper",
+    "#forge:nuggets/tin",
+    "#forge:nuggets/lead",
+    "#forge:nuggets/silver",
+    "#forge:nuggets/palladium",
+    "#forge:nuggets/vibranium",
+    "#forge:nuggets/osmium",
+    "#forge:nuggets/uranium",
+    "#forge:nuggets/titanium",
+    "#forge:nuggets/iridium",
+    "#forge:nuggets/uru",
+    "#forge:nuggets/bronze",
+    "#forge:nuggets/intertium",
+    "#forge:nuggets/steel",
+    "#forge:nuggets/gold_titanium_alloy",
+    "#forge:nuggets/adamantium"
+  ]
 }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:uru_ingot_from_uru_dust"
+    ]
+  },
+  "criteria": {
+    "has_uru_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/uru"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:uru_ingot_from_uru_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_uru_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

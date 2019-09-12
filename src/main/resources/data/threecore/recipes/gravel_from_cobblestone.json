@@ -3,10 +3,6 @@
   "result": {
     "item": "minecraft:gravel"
   },
-  "byproduct": {
-    "item": "minecraft:sand",
-    "chance": 0.15
-  },
   "ingredient": {
     "item": "minecraft:cobblestone"
   },

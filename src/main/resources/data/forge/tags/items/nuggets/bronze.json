@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:bronze_nugget"
-	]
+  "replace": false,
+  "values": [
+    "threecore:bronze_nugget"
+  ]
 }

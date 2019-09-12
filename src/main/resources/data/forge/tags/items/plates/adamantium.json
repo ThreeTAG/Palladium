@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:adamantium_plate"
-	]
+  "replace": false,
+  "values": [
+    "threecore:adamantium_plate"
+  ]
 }

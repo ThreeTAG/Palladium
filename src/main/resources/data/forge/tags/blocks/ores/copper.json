@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:copper_ore"
-	]
+  "replace": false,
+  "values": [
+    "threecore:copper_ore"
+  ]
 }

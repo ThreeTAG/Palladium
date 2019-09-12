@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:uranium_block"
-	]
+  "replace": false,
+  "values": [
+    "threecore:uranium_block"
+  ]
 }

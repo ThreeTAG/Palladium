@@ -1,20 +1,5 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:plates/steel"
-      }
-    },
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:plates"
-      }
-    }
-  ],
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
       "item": "threecore:hammer"
@@ -26,9 +11,7 @@
       "tag": "forge:plates"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
   "result": {
     "item": "threecore:plate_cast"
-  },
-  "group": "threecore:cast"
+  }
 }

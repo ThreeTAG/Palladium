@@ -1,20 +1,4 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:dusts/copper"
-      }
-    },
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:ores/copper"
-      }
-    }
-  ],
   "type": "threecore:grinding",
   "result": {
     "tag": "forge:dusts/copper",

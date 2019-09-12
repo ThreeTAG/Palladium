@@ -1,20 +1,5 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:dusts/osmium"
-      }
-    },
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:dusts/iron"
-      }
-    }
-  ],
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
       "tag": "forge:dusts/osmium"
@@ -26,7 +11,6 @@
       "tag": "forge:dusts/iron"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
   "result": {
     "item": "threecore:intertium_dust",
     "count": 3

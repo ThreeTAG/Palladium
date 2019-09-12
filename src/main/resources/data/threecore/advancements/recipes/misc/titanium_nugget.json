@@ -1,0 +1,46 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:titanium_nugget"
+    ]
+  },
+  "criteria": {
+    "has_at_least_9_titanium_nugget": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "threecore:titanium_nugget",
+            "count": {
+              "min": 9
+            }
+          }
+        ]
+      }
+    },
+    "has_titanium_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/titanium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:titanium_nugget"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_at_least_9_titanium_nugget",
+      "has_titanium_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

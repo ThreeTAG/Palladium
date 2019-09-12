@@ -1,18 +1,9 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:dusts/iridium"
-      }
-    }
-  ],
-  "type": "smelting",
-  "result": "threecore:iridium_ingot",
+  "type": "minecraft:smelting",
   "ingredient": {
     "tag": "forge:dusts/iridium"
   },
+  "result": "threecore:iridium_ingot",
   "experience": 0.0,
   "cookingtime": 200
 }

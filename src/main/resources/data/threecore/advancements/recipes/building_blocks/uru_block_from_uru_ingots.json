@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:uru_block_from_uru_ingots"
+    ]
+  },
+  "criteria": {
+    "has_at_least_9_uru_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "threecore:uru_ingot",
+            "count": {
+              "min": 9
+            }
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:uru_block_from_uru_ingots"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_at_least_9_uru_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

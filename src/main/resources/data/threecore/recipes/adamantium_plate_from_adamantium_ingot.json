@@ -1,20 +1,4 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:plates/adamantium"
-      }
-    },
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:ingots/adamantium"
-      }
-    }
-  ],
   "type": "threecore:pressing",
   "result": {
     "tag": "forge:plates/adamantium"
@@ -26,5 +10,5 @@
     "item": "threecore:plate_cast"
   },
   "experience": 0.0,
-  "energy": 3000
+  "energy": 1500
 }

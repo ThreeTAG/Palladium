@@ -18,9 +18,13 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.util.data.ThreeCoreBlockTagsProvider;
+import net.threetag.threecore.util.data.ThreeCoreItemTagsProvider;
+import net.threetag.threecore.util.data.ThreeCoreRecipeProvider;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -42,6 +46,12 @@ public class RecipeUtil {
                 return name.toString();
             }
         });
+    }
+
+    public static void gatherData(GatherDataEvent e) {
+        e.getGenerator().addProvider(new ThreeCoreBlockTagsProvider(e.getGenerator()));
+        e.getGenerator().addProvider(new ThreeCoreItemTagsProvider(e.getGenerator()));
+        e.getGenerator().addProvider(new ThreeCoreRecipeProvider(e.getGenerator()));
     }
 
     public static void generateThreeCoreRecipes() {

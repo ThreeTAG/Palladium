@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I I",
+    "LCL",
+    "PXP"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "L": {
+      "tag": "forge:ingots/lead"
+    },
+    "X": {
+      "tag": "forge:ingots/intertium"
+    },
+    "P": {
+      "tag": "forge:plates/iron"
+    },
+    "C": {
+      "item": "threecore:circuit"
+    }
+  },
+  "result": {
+    "item": "threecore:advanced_capacitor"
+  }
+}

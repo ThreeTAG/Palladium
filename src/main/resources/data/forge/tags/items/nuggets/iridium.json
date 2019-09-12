@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:iridium_nugget"
-	]
+  "replace": false,
+  "values": [
+    "threecore:iridium_nugget"
+  ]
 }

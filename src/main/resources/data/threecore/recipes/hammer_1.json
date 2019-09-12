@@ -1,29 +1,20 @@
 {
+  "type": "minecraft:crafting_shaped",
+  "group": "hammer",
   "pattern": [
     "III",
     "ISI",
     " S "
   ],
   "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
-    },
     "S": {
       "item": "minecraft:stick"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
     }
   },
-  "type": "minecraft:crafting_shaped",
   "result": {
     "item": "threecore:hammer"
-  },
-  "group": "threecore:hammer",
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:ingots/iron"
-      }
-    }
-  ]
+  }
 }

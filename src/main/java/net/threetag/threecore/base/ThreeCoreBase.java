@@ -167,7 +167,7 @@ public class ThreeCoreBase {
     public static Item GOLD_TITANIUM_ALLOY_INGOT;
     public static Item ADAMANTIUM_INGOT;
 
-    // Ingots
+    // Nuggets
     public static Item COPPER_NUGGET;
     public static Item TIN_NUGGET;
     public static Item LEAD_NUGGET;

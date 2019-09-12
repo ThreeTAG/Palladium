@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:iridium_ingot_from_iridium_dust"
+    ]
+  },
+  "criteria": {
+    "has_iridium_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/iridium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:iridium_ingot_from_iridium_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iridium_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

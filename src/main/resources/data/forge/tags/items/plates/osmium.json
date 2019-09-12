@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:osmium_plate"
-	]
+  "replace": false,
+  "values": [
+    "threecore:osmium_plate"
+  ]
 }

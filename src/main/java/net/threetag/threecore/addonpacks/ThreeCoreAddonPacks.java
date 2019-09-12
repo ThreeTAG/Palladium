@@ -45,7 +45,11 @@ public class ThreeCoreAddonPacks {
         FMLJavaModLoadingContext.get().getModEventBus().register(new ItemParser());
 
         // Add Pack Finder to client
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().getResourcePackList().addPackFinder(new AddonPackFinder()));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            // for the case you run runData
+            if (Minecraft.getInstance() != null)
+                Minecraft.getInstance().getResourcePackList().addPackFinder(new AddonPackFinder());
+        });
     }
 
     public static ThreeCoreAddonPacks getInstance() {

@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:iridium_ingot"
-	]
+  "replace": false,
+  "values": [
+    "threecore:iridium_ingot"
+  ]
 }

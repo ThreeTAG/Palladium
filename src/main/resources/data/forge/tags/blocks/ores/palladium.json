@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:palladium_ore"
-	]
+  "replace": false,
+  "values": [
+    "threecore:palladium_ore"
+  ]
 }

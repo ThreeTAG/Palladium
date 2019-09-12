@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:grinder"
+    ]
+  },
+  "criteria": {
+    "has_circuit": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "threecore:circuit"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:grinder"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_circuit",
+      "has_the_recipe"
+    ]
+  ]
+}

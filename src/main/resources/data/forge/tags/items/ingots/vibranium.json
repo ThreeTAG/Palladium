@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:vibranium_ingot"
-	]
+  "replace": false,
+  "values": [
+    "threecore:vibranium_ingot"
+  ]
 }

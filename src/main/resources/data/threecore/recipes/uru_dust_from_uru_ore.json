@@ -1,20 +1,4 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:dusts/uru"
-      }
-    },
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:ores/uru"
-      }
-    }
-  ],
   "type": "threecore:grinding",
   "result": {
     "tag": "forge:dusts/uru",
@@ -23,6 +7,6 @@
   "ingredient": {
     "tag": "forge:ores/uru"
   },
-  "experience": 1.5,
-  "energy": 800
+  "experience": 0.7,
+  "energy": 1200
 }

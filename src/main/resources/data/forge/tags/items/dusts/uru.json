@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:uru_dust"
-	]
+  "replace": false,
+  "values": [
+    "threecore:uru_dust"
+  ]
 }

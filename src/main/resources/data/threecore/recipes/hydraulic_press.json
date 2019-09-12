@@ -1,4 +1,5 @@
 {
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "PBP",
     "OCW",
@@ -24,17 +25,7 @@
       "item": "minecraft:obsidian"
     }
   },
-  "type": "minecraft:crafting_shaped",
   "result": {
     "item": "threecore:hydraulic_press"
-  },
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:plates/iron"
-      }
-    }
-  ]
+  }
 }

@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:gold_titanium_alloy_nugget"
-	]
+  "replace": false,
+  "values": [
+    "threecore:gold_titanium_alloy_nugget"
+  ]
 }

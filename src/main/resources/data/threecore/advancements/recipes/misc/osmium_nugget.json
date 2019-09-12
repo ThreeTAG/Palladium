@@ -1,0 +1,46 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:osmium_nugget"
+    ]
+  },
+  "criteria": {
+    "has_at_least_9_osmium_nugget": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "threecore:osmium_nugget",
+            "count": {
+              "min": 9
+            }
+          }
+        ]
+      }
+    },
+    "has_osmium_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/osmium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:osmium_nugget"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_at_least_9_osmium_nugget",
+      "has_osmium_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

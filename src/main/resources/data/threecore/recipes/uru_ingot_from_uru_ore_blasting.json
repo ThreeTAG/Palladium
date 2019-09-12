@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "tag": "forge:ores/uru"
+  },
+  "result": "threecore:uru_ingot",
+  "experience": 1.0,
+  "cookingtime": 300
+}

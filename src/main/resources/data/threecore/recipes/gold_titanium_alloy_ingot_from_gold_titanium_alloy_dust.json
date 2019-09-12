@@ -1,18 +1,9 @@
 {
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:dusts/gold_titanium_alloy"
-      }
-    }
-  ],
-  "type": "smelting",
-  "result": "threecore:gold_titanium_alloy_ingot",
+  "type": "minecraft:smelting",
   "ingredient": {
     "tag": "forge:dusts/gold_titanium_alloy"
   },
+  "result": "threecore:gold_titanium_alloy_ingot",
   "experience": 0.0,
-  "cookingtime": 280
+  "cookingtime": 100
 }

@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:uranium_ore"
-	]
+  "replace": false,
+  "values": [
+    "threecore:uranium_ore"
+  ]
 }

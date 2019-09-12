@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:palladium_block"
-	]
+  "replace": false,
+  "values": [
+    "threecore:palladium_block"
+  ]
 }

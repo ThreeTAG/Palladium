@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:lead_dust"
-	]
+  "replace": false,
+  "values": [
+    "threecore:lead_dust"
+  ]
 }

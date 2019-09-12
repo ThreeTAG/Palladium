@@ -10,6 +10,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
 
 version = "${minecraft_version}-${build_version}"
 group = 'net.threetag.threecore'
@@ -26,10 +27,13 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
             property 'forge.logging.console.level', 'debug'
+
             mods {
-                examplemod {
+                threecore {
                     source sourceSets.main
                 }
             }
@@ -37,10 +41,29 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
             property 'forge.logging.console.level', 'debug'
+
             mods {
-                examplemod {
+                threecore {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', 'threecore', '--all', '--output', file('src/generated/resources/')
+
+            mods {
+                threecore {
                     source sourceSets.main
                 }
             }
@@ -58,7 +81,7 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    
+
     // JEI
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")

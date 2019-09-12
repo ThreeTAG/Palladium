@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:copper_dust"
-	]
+  "replace": false,
+  "values": [
+    "threecore:copper_dust"
+  ]
 }

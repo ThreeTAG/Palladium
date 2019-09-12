@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:tin_ore"
-	]
+  "replace": false,
+  "values": [
+    "threecore:tin_ore"
+  ]
 }

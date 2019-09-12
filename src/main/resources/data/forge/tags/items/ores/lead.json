@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:lead_ore"
-	]
+  "replace": false,
+  "values": [
+    "threecore:lead_ore"
+  ]
 }

@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:adamantium_ingot"
-	]
+  "replace": false,
+  "values": [
+    "threecore:adamantium_ingot"
+  ]
 }

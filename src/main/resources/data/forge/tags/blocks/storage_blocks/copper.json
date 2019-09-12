@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:copper_block"
-	]
+  "replace": false,
+  "values": [
+    "threecore:copper_block"
+  ]
 }

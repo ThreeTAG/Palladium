@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:iron_plate"
-	]
+  "replace": false,
+  "values": [
+    "threecore:iron_plate"
+  ]
 }

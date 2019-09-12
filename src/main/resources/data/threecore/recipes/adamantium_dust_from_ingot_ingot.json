@@ -1,0 +1,11 @@
+{
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/adamantium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/adamantium"
+  },
+  "experience": 0.0,
+  "energy": 600
+}

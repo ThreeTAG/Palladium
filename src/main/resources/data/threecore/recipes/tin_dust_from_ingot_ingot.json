@@ -1,0 +1,11 @@
+{
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/tin"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/tin"
+  },
+  "experience": 0.0,
+  "energy": 200
+}

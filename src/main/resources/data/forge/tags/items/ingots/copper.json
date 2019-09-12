@@ -1,5 +1,6 @@
 {
-	"values": [
-		"threecore:copper_ingot"
-	]
+  "replace": false,
+  "values": [
+    "threecore:copper_ingot"
+  ]
 }
