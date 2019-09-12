@@ -1,19 +1,23 @@
 package net.threetag.threecore.abilities;
 
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.data.EnumSync;
 import net.threetag.threecore.abilities.network.AddAbilityMessage;
 import net.threetag.threecore.abilities.network.RemoveAbilityMessage;
 import net.threetag.threecore.abilities.network.UpdateAbilityMessage;
 import net.threetag.threecore.util.render.IIcon;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.PacketDistributor;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
@@ -101,5 +105,10 @@ public interface IAbilityContainer {
     ITextComponent getTitle();
 
     IIcon getIcon();
+
+    @Nonnull
+    default <T> LazyOptional<T> getCapability(@Nonnull LivingEntity entity, @Nonnull Capability<T> cap, @Nullable Direction side) {
+        return LazyOptional.empty();
+    }
 
 }

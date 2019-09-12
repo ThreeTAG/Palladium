@@ -1,18 +1,24 @@
 package net.threetag.threecore.abilities.capability;
 
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.AbilityHelper;
-import net.threetag.threecore.abilities.AbilityMap;
-import net.threetag.threecore.abilities.IAbilityContainer;
-import net.threetag.threecore.util.render.IIcon;
-import net.threetag.threecore.util.render.TexturedIcon;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.common.util.LazyOptional;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.abilities.AbilityHelper;
+import net.threetag.threecore.abilities.AbilityMap;
+import net.threetag.threecore.abilities.IAbilityContainer;
+import net.threetag.threecore.util.render.IIcon;
+import net.threetag.threecore.util.render.TexturedIcon;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerializable<CompoundNBT> {
 
@@ -65,5 +71,11 @@ public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerial
     @Override
     public IIcon getIcon() {
         return STEVE_HEAD_ICON;
+    }
+
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull LivingEntity entity, @Nonnull Capability<T> cap, @Nullable Direction side) {
+        return entity.getCapability(cap, side);
     }
 }

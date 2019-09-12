@@ -1,5 +1,8 @@
 package net.threetag.threecore.abilities.capability;
 
+import net.minecraft.util.Direction;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.abilities.AbilityMap;
@@ -14,6 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ItemAbilityContainer implements IAbilityContainer {
@@ -86,5 +91,11 @@ public class ItemAbilityContainer implements IAbilityContainer {
     @Override
     public IIcon getIcon() {
         return new ItemIcon(this.stack);
+    }
+
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull LivingEntity entity, @Nonnull Capability<T> cap, @Nullable Direction side) {
+        return this.stack.getCapability(cap, side);
     }
 }
