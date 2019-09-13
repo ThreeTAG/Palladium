@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.AbilityGenerator;
+import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.abilities.AbilityType;
 import net.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
 import net.threetag.threecore.abilities.network.SendSuperpowerToastMessage;
@@ -67,15 +68,7 @@ public class SuperpowerManager implements IResourceManagerReloadListener {
         List<AbilityGenerator> abilityGenerators = Lists.newArrayList();
         if (JSONUtils.hasField(json, "abilities")) {
             JsonObject abilities = JSONUtils.getJsonObject(json, "abilities");
-            abilities.entrySet().forEach((e) -> {
-                if (e.getValue() instanceof JsonObject) {
-                    JsonObject o = (JsonObject) e.getValue();
-                    AbilityType type = AbilityType.REGISTRY.getValue(new ResourceLocation(JSONUtils.getString(o, "ability")));
-                    if (type == null)
-                        throw new JsonSyntaxException("Expected 'ability' to be an ability, was unknown string '" + JSONUtils.getString(o, "ability") + "'");
-                    abilityGenerators.add(new AbilityGenerator(e.getKey(), type, o));
-                }
-            });
+            abilityGenerators.addAll(AbilityHelper.parseAbilityGenerators(abilities));
         }
 
         return new Superpower(resourceLocation, name, icon, abilityGenerators);

@@ -2,11 +2,14 @@ package net.threetag.threecore.abilities;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.threetag.threecore.abilities.condition.AbilityUnlockedCondition;
-import net.threetag.threecore.abilities.condition.Condition;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.threetag.threecore.abilities.condition.AbilityUnlockedCondition;
+import net.threetag.threecore.abilities.condition.Condition;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -124,6 +127,28 @@ public class AbilityHelper {
 
     public static AbilityMap loadFromNBT(CompoundNBT nbt, AbilityMap map) {
         return loadFromNBT(nbt, map, false);
+    }
+
+    public static List<AbilityGenerator> parseAbilityGenerators(JsonObject jsonObject, boolean useId) {
+        List<AbilityGenerator> abilityGenerators = Lists.newArrayList();
+        jsonObject.entrySet().forEach((e) -> {
+            if (e.getValue() instanceof JsonObject) {
+                JsonObject o = (JsonObject) e.getValue();
+                if (useId) {
+                    abilityGenerators.add(new AbilityGenerator(e.getKey(), new ResourceLocation(JSONUtils.getString(o, "ability")), o));
+                } else {
+                    AbilityType type = AbilityType.REGISTRY.getValue(new ResourceLocation(JSONUtils.getString(o, "ability")));
+                    if (type == null)
+                        throw new JsonSyntaxException("Expected 'ability' to be an ability, was unknown string '" + JSONUtils.getString(o, "ability") + "'");
+                    abilityGenerators.add(new AbilityGenerator(e.getKey(), type, o));
+                }
+            }
+        });
+        return abilityGenerators;
+    }
+
+    public static List<AbilityGenerator> parseAbilityGenerators(JsonObject jsonObject) {
+        return parseAbilityGenerators(jsonObject, false);
     }
 
 }

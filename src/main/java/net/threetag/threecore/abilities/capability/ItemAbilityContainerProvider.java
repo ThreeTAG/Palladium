@@ -16,16 +16,18 @@ public class ItemAbilityContainerProvider implements ICapabilitySerializable<Com
 
     public final ItemStack stack;
     public final IAbilityContainer abilityContainer;
+    public LazyOptional<IAbilityContainer> lazyOptional;
 
     public ItemAbilityContainerProvider(ItemStack stack) {
         this.stack = stack;
         this.abilityContainer = new ItemAbilityContainer(stack);
+        this.lazyOptional = LazyOptional.of(() -> this.abilityContainer);
     }
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        return cap == CapabilityAbilityContainer.ABILITY_CONTAINER ? LazyOptional.of(() -> (T) this.abilityContainer) : LazyOptional.empty();
+        return cap == CapabilityAbilityContainer.ABILITY_CONTAINER ? (LazyOptional<T>) this.lazyOptional : LazyOptional.empty();
     }
 
     @Override

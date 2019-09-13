@@ -1,4 +1,4 @@
-package net.threetag.threecore.addonpacks;
+package net.threetag.threecore.addonpacks.item;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -20,6 +20,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.abilities.AbilityHelper;
+import net.threetag.threecore.addonpacks.ThreeCoreAddonPacks;
 import net.threetag.threecore.util.item.ItemGroupRegistry;
 
 import java.io.BufferedReader;
@@ -37,7 +39,7 @@ public class ItemParser {
 
     static {
         // Default
-        registerItemParser(new ResourceLocation(ThreeCore.MODID, "default"), (j, p) -> new Item(p));
+        registerItemParser(new ResourceLocation(ThreeCore.MODID, "default"), (j, p) -> new AbilityItem(p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null));
     }
 
     public static void registerItemParser(ResourceLocation resourceLocation, BiFunction<JsonObject, Item.Properties, Item> function) {

@@ -8,6 +8,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
@@ -75,6 +76,7 @@ public interface IAbilityContainer {
     default boolean removeAbility(@Nullable LivingEntity entity, String id) {
         if (!this.getAbilityMap().containsKey(id))
             return false;
+        this.getAbilityMap().get(id).lastTick(entity);
         this.getAbilityMap().remove(id);
         if (entity != null && entity.world instanceof ServerWorld) {
             ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new RemoveAbilityMessage(entity.getEntityId(), getId(), id));
