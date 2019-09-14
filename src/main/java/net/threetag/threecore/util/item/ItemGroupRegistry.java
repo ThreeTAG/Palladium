@@ -1,8 +1,8 @@
 package net.threetag.threecore.util.item;
 
-import net.threetag.threecore.base.ThreeCoreBase;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.threetag.threecore.base.ThreeCoreBase;
 
 import java.util.HashMap;
 import java.util.Map;

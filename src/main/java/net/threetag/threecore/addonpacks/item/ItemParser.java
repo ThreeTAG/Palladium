@@ -5,14 +5,21 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Food;
+import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.LazyLoadBase;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -22,6 +29,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.addonpacks.ThreeCoreAddonPacks;
+import net.threetag.threecore.util.item.ArmorMaterialRegistry;
 import net.threetag.threecore.util.item.ItemGroupRegistry;
 
 import java.io.BufferedReader;
@@ -30,6 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 public class ItemParser {
 
@@ -40,6 +49,9 @@ public class ItemParser {
     static {
         // Default
         registerItemParser(new ResourceLocation(ThreeCore.MODID, "default"), (j, p) -> new AbilityItem(p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null));
+
+        // Armor
+        registerItemParser(new ResourceLocation(ThreeCore.MODID, "armor"), (j, p) -> AbilityArmorItem.parse(j, p));
     }
 
     public static void registerItemParser(ResourceLocation resourceLocation, BiFunction<JsonObject, Item.Properties, Item> function) {
@@ -148,6 +160,84 @@ public class ItemParser {
     public static ToolType getToolType(String name) {
         Map<String, ToolType> values = ObfuscationReflectionHelper.getPrivateValue(ToolType.class, null, "values");
         return values.get(name);
+    }
+
+    public static IArmorMaterial parseArmorMaterial(JsonObject jsonObject) {
+        String name = JSONUtils.getString(jsonObject, "name");
+        if (ArmorMaterialRegistry.getArmorMaterial(name) != null) {
+            return ArmorMaterialRegistry.getArmorMaterial(name);
+        } else {
+            int maxDamageFactor = JSONUtils.getInt(jsonObject, "max_damage_factor");
+            int[] damageReductionAmountArray = new int[4];
+            JsonArray dmgReduction = JSONUtils.getJsonArray(jsonObject, "damage_reduction");
+            if (dmgReduction.size() != 4)
+                throw new JsonParseException("The damage_reduction array must contain 4 entries, one for each armor part!");
+            for (int i = 0; i < dmgReduction.size(); i++)
+                damageReductionAmountArray[i] = dmgReduction.get(i).getAsInt();
+            int enchantibility = JSONUtils.getInt(jsonObject, "enchantibility", 0);
+            LazyLoadBase soundEvent = new LazyLoadBase(() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(JSONUtils.getString(jsonObject, "equip_sound", ""))));
+            float toughness = JSONUtils.getFloat(jsonObject, "toughness", 0F);
+            Supplier<Ingredient> repairMaterial = () -> JSONUtils.hasField(jsonObject, "repair_material") ? Ingredient.deserialize(jsonObject.get("repair_material")) : Ingredient.EMPTY;
+            return ArmorMaterialRegistry.addArmorMaterial(name, new ArmorMaterial(name, maxDamageFactor, damageReductionAmountArray, enchantibility, soundEvent, toughness, repairMaterial));
+        }
+    }
+
+    public static class ArmorMaterial implements IArmorMaterial {
+
+        private static final int[] MAX_DAMAGE_ARRAY = new int[]{13, 15, 16, 11};
+        private final String name;
+        private final int maxDamageFactor;
+        private final int[] damageReductionAmountArray;
+        private final int enchantability;
+        private final LazyLoadBase<SoundEvent> soundEvent;
+        private final float toughness;
+        private final LazyLoadBase<Ingredient> repairMaterial;
+
+        private ArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, LazyLoadBase<SoundEvent> equipSoundIn, float toughness, Supplier<Ingredient> repairMaterialSupplier) {
+            this.name = nameIn;
+            this.maxDamageFactor = maxDamageFactorIn;
+            this.damageReductionAmountArray = damageReductionAmountsIn;
+            this.enchantability = enchantabilityIn;
+            this.soundEvent = equipSoundIn;
+            this.toughness = toughness;
+            this.repairMaterial = new LazyLoadBase<>(repairMaterialSupplier);
+        }
+
+        @Override
+        public int getDurability(EquipmentSlotType slotIn) {
+            return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
+        }
+
+        @Override
+        public int getDamageReductionAmount(EquipmentSlotType slotIn) {
+            return this.damageReductionAmountArray[slotIn.getIndex()];
+        }
+
+        @Override
+        public int getEnchantability() {
+            return this.enchantability;
+        }
+
+        @Override
+        public SoundEvent getSoundEvent() {
+            return this.soundEvent.getValue();
+        }
+
+        @Override
+        public Ingredient getRepairMaterial() {
+            return this.repairMaterial.getValue();
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public String getName() {
+            return this.name;
+        }
+
+        @Override
+        public float getToughness() {
+            return this.toughness;
+        }
     }
 
 }
