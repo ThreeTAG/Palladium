@@ -2,11 +2,11 @@ package net.threetag.threecore.util.render;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.data.ExperienceThreeData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.abilities.data.ExperienceThreeData;
 
 public class ExperienceIcon implements IIcon {
 
@@ -62,6 +62,11 @@ public class ExperienceIcon implements IIcon {
         @Override
         public CompoundNBT serialize(ExperienceIcon icon) {
             return icon.experience.serializeNBT();
+        }
+
+        @Override
+        public JsonObject serializeJson(ExperienceIcon icon) {
+            return icon.experience.writeToJson();
         }
 
         @Override

@@ -95,6 +95,16 @@ public class ExperienceThreeData extends ThreeData<ExperienceThreeData.Experienc
             }
         }
 
+        public JsonObject writeToJson() {
+            JsonObject jsonObject = new JsonObject();
+            if(this.levels) {
+                jsonObject.addProperty("experience", this.value + "L");
+            } else {
+                jsonObject.addProperty("experience", this.value);
+            }
+            return jsonObject;
+        }
+
         @Override
         public CompoundNBT serializeNBT() {
             CompoundNBT nbt = new CompoundNBT();

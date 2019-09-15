@@ -1,7 +1,6 @@
 package net.threetag.threecore.util.render;
 
 import com.google.gson.JsonObject;
-import net.threetag.threecore.ThreeCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
@@ -11,6 +10,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.threetag.threecore.ThreeCore;
 
 public class ItemIcon implements IIcon {
 
@@ -30,7 +31,7 @@ public class ItemIcon implements IIcon {
         RenderHelper.enableGUIStandardItemLighting();
         mc.getItemRenderer().renderItemIntoGUI(this.stack, x, y);
         RenderHelper.disableStandardItemLighting();
-        if(this.stack.getCount() > 1) {
+        if (this.stack.getCount() > 1) {
             String text = this.stack.getCount() + "x";
             mc.fontRenderer.drawString(text, (float) (x + 9), (float) y + 8, 0);
             mc.fontRenderer.drawString(text, (float) (x + 7), (float) y + 8, 0);
@@ -73,6 +74,14 @@ public class ItemIcon implements IIcon {
         @Override
         public CompoundNBT serialize(ItemIcon icon) {
             return icon.stack.serializeNBT();
+        }
+
+        @Override
+        public JsonObject serializeJson(ItemIcon icon) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("item", ForgeRegistries.ITEMS.getKey(icon.stack.getItem()).toString());
+            jsonObject.addProperty("count", icon.stack.getCount());
+            return jsonObject;
         }
 
         @Override

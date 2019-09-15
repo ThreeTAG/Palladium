@@ -1,7 +1,6 @@
 package net.threetag.threecore.util.render;
 
 import com.google.gson.JsonObject;
-import net.threetag.threecore.ThreeCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.nbt.CompoundNBT;
@@ -9,6 +8,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.threetag.threecore.ThreeCore;
 
 public class TexturedIcon implements IIcon {
 
@@ -98,6 +98,19 @@ public class TexturedIcon implements IIcon {
             nbt.putInt("TextureWidth", icon.textureWidth);
             nbt.putInt("TextureHeight", icon.textureHeight);
             return nbt;
+        }
+
+        @Override
+        public JsonObject serializeJson(TexturedIcon icon) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("texture", icon.texture.toString());
+            jsonObject.addProperty("u", icon.u);
+            jsonObject.addProperty("v", icon.v);
+            jsonObject.addProperty("width", icon.width);
+            jsonObject.addProperty("height", icon.height);
+            jsonObject.addProperty("texture_width", icon.textureWidth);
+            jsonObject.addProperty("texture_height", icon.textureHeight);
+            return jsonObject;
         }
 
         @Override
