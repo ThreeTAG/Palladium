@@ -45,13 +45,4 @@ public abstract class SizeChangeType extends ForgeRegistryEntry<SizeChangeType> 
 
     public abstract void end(Entity entity, ISizeChanging data, float size);
 
-    @OnlyIn(Dist.CLIENT)
-    public void render(Entity entity, EntityRenderer renderer, List<Entity> entities, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void renderEntity(Entity entity, double x, double y, double z, float entityYaw, float partialTicks) {
-    }
-
 }
