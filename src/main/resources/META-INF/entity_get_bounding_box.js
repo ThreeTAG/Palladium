@@ -58,8 +58,6 @@ function initializeCoreMod() {
 
                 instructions.insert(injectionPoint, preInstructions);
 
-                print("HALLO getBoundingBox was patched!");
-
                 return methodNode;
             }
         }

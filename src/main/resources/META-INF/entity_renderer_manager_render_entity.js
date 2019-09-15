@@ -100,8 +100,6 @@ function initializeCoreMod() {
                     instructions.insert(injectionPoint2, preInstructions);
                 }
 
-                print("HALLO renderEntity was patched!");
-
                 return methodNode;
             }
         }

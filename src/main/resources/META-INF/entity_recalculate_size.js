@@ -91,8 +91,6 @@ function initializeCoreMod() {
 
                 instructions.insert(injectionPoint, preInstructions);
 
-                print("HALLO recalculateSize was patched!");
-
                 return methodNode;
             }
         }
