@@ -1,5 +1,6 @@
 package net.threetag.threecore.karma;
 
+import net.minecraft.entity.passive.WolfEntity;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.karma.capability.CapabilityKarma;
 import net.threetag.threecore.karma.capability.IKarma;
@@ -132,8 +133,9 @@ public class ThreeCoreKarma {
             PlayerEntity attacker = (PlayerEntity) e.getSource().getTrueSource();
             LivingEntity attacked = e.getEntityLiving();
 
-            // TODO only passive pig zombies
-            if (attacked instanceof ZombiePigmanEntity)
+            if (attacked instanceof ZombiePigmanEntity && !((ZombiePigmanEntity)attacked).isAngry())
+                CapabilityKarma.addKarma(attacker, -1);
+            else if (attacked instanceof WolfEntity && !((WolfEntity) attacked).isAngry())
                 CapabilityKarma.addKarma(attacker, -1);
             else if (attacked instanceof SpiderEntity && attacked.getBrightness() >= 0.5F)
                 CapabilityKarma.addKarma(attacker, -1);
