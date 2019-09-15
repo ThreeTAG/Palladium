@@ -155,6 +155,12 @@
   "ability.condition.threecore.item_buy": "An item must be spent",
   "ability.condition.threecore.item_buy.info": "%sx %s",
   "ability.condition.threecore.equipment_slot": "Item needs to be in the %s slot",
+  "ability.condition.threecore.equipment_slot.mainhand": "main hand",
+  "ability.condition.threecore.equipment_slot.offhand": "off hand",
+  "ability.condition.threecore.equipment_slot.feet": "feet",
+  "ability.condition.threecore.equipment_slot.legs": "legs",
+  "ability.condition.threecore.equipment_slot.chest": "chest",
+  "ability.condition.threecore.equipment_slot.head": "head",
   
   "superpower.toast.title": "New superpower!",
   

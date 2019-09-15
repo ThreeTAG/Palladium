@@ -26,8 +26,7 @@ public class EquipmentSlotCondition extends Condition {
     @Override
     public void readFromJson(JsonObject json) {
         super.readFromJson(json);
-        // TODO Translate slot name
-        this.dataManager.set(Condition.TITLE, new TranslationTextComponent("ability.condition.threecore.equipment_slot", this.dataManager.get(EQUIPMENT_SLOT).getName()));
+        this.dataManager.set(Condition.TITLE, new TranslationTextComponent("ability.condition.threecore.equipment_slot", new TranslationTextComponent("ability.condition.threecore.equipment_slot." + this.dataManager.get(EQUIPMENT_SLOT).getName())));
     }
 
     @Override
