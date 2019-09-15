@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.condition.AbilityUnlockedCondition;
 import net.threetag.threecore.abilities.condition.Condition;
 
@@ -117,6 +118,8 @@ public class AbilityHelper {
                 else
                     ability.deserializeNBT(tag);
                 map.put(s, ability);
+            } else {
+                ThreeCore.LOGGER.error("Ability type " + tag.getString("AbilityType") + " does not exist!");
             }
         });
         return map;

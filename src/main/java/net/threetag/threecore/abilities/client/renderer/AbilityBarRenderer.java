@@ -1,10 +1,6 @@
 package net.threetag.threecore.abilities.client.renderer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.abilities.AbilityHelper;
-import net.threetag.threecore.abilities.client.EnumAbilityColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderHelper;
@@ -14,6 +10,10 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.abilities.Ability;
+import net.threetag.threecore.abilities.AbilityHelper;
+import net.threetag.threecore.abilities.client.EnumAbilityColor;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AbilityBarRenderer {
-
-    // TODO new ability key binding
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/gui/ability_bar.png");
     public static int INDEX = 0;

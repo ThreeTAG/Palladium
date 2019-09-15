@@ -3,10 +3,7 @@ package net.threetag.threecore.abilities.condition;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.abilities.data.EnumSync;
-import net.threetag.threecore.util.scripts.accessors.AbilityAccessor;
-import net.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
+import com.google.gson.JsonParseException;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -14,6 +11,11 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.abilities.Ability;
+import net.threetag.threecore.abilities.data.EnumSync;
+import net.threetag.threecore.util.scripts.accessors.AbilityAccessor;
+import net.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,10 +38,13 @@ public class AbilityConditionManager implements INBTSerializable<CompoundNBT> {
             for (JsonElement jsonElement : jsonArray) {
                 JsonObject jsonCondition = jsonElement.getAsJsonObject();
                 ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(JSONUtils.getString(jsonCondition, "type")));
-                // TODO make this not crash when condition type is null
-                Condition condition = Objects.requireNonNull(conditionType).create(ability);
-                condition.readFromJson(jsonCondition);
-                this.addCondition(condition);
+                if (conditionType != null) {
+                    Condition condition = conditionType.create(ability);
+                    condition.readFromJson(jsonCondition);
+                    this.addCondition(condition);
+                } else {
+                    throw new JsonParseException("Condition type " + JSONUtils.getString(jsonCondition, "type") + " does not exist!");
+                }
             }
         }
     }
@@ -191,10 +196,13 @@ public class AbilityConditionManager implements INBTSerializable<CompoundNBT> {
         for (int i = 0; i < list.size(); i++) {
             CompoundNBT conditionTag = list.getCompound(i);
             ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(conditionTag.getString("ConditionType")));
-            // TODO save check if condition type is null (maybe same for abilities?)
-            Condition condition = conditionType.create(ability);
-            condition.deserializeNBT(conditionTag);
-            this.addCondition(condition, conditionTag.getBoolean("Active"));
+            if (conditionType != null) {
+                Condition condition = conditionType.create(ability);
+                condition.deserializeNBT(conditionTag);
+                this.addCondition(condition, conditionTag.getBoolean("Active"));
+            } else {
+                ThreeCore.LOGGER.error("Condition type " + conditionTag.getString("ConditionType") + " does not exist!");
+            }
         }
     }
 
