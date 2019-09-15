@@ -42,6 +42,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
     public static final ConditionType KARMA = new ConditionType(KarmaCondition::new, ThreeCore.MODID, "karma");
     public static final ConditionType XP_BUY = new ConditionType(XPBuyableAbilityCondition::new, ThreeCore.MODID, "xp_buy");
     public static final ConditionType ITEM_BUY = new ConditionType(ItemBuyableAbilityCondition::new, ThreeCore.MODID, "item_buy");
+    public static final ConditionType EQUIPMENT_SLOT = new ConditionType(EquipmentSlotCondition::new, ThreeCore.MODID, "equipment_slot");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -59,6 +60,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
         e.getRegistry().register(KARMA);
         e.getRegistry().register(XP_BUY);
         e.getRegistry().register(ITEM_BUY);
+        e.getRegistry().register(EQUIPMENT_SLOT);
     }
 
     @OnlyIn(Dist.CLIENT)

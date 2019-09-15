@@ -1,6 +1,11 @@
 package net.threetag.threecore.abilities.capability;
 
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.threetag.threecore.ThreeCore;
@@ -11,11 +16,6 @@ import net.threetag.threecore.abilities.IAbilityProvider;
 import net.threetag.threecore.abilities.data.EnumSync;
 import net.threetag.threecore.util.render.IIcon;
 import net.threetag.threecore.util.render.ItemIcon;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

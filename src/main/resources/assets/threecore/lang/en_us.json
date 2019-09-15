@@ -154,6 +154,7 @@
   "ability.condition.threecore.xp_buy.info.points": "%s experience points",
   "ability.condition.threecore.item_buy": "An item must be spent",
   "ability.condition.threecore.item_buy.info": "%sx %s",
+  "ability.condition.threecore.equipment_slot": "Item needs to be in the %s slot",
   
   "superpower.toast.title": "New superpower!",
   

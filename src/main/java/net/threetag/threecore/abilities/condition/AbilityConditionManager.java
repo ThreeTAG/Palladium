@@ -36,6 +36,7 @@ public class AbilityConditionManager implements INBTSerializable<CompoundNBT> {
             for (JsonElement jsonElement : jsonArray) {
                 JsonObject jsonCondition = jsonElement.getAsJsonObject();
                 ConditionType conditionType = ConditionType.REGISTRY.getValue(new ResourceLocation(JSONUtils.getString(jsonCondition, "type")));
+                // TODO make this not crash when condition type is null
                 Condition condition = Objects.requireNonNull(conditionType).create(ability);
                 condition.readFromJson(jsonCondition);
                 this.addCondition(condition);

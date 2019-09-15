@@ -34,10 +34,7 @@ public class AbilityHelper {
     public static IAbilityContainer getAbilityContainerFromId(LivingEntity entity, ResourceLocation id) {
         Function<LivingEntity, IAbilityContainer> function = REGISTRY.get(id);
         if (function != null) {
-            IAbilityContainer container = function.apply(entity);
-            if (container != null) {
-                return container;
-            }
+            return function.apply(entity);
         }
         return null;
     }
@@ -61,7 +58,7 @@ public class AbilityHelper {
 
         if (strings.length == 1 && currentContainer == null)
             return null;
-        else if (strings.length == 1 && currentContainer != null)
+        else if (strings.length == 1)
             return currentContainer.getAbility(strings[0]);
         else {
             IAbilityContainer container = getAbilityContainerFromId(entity, new ResourceLocation(strings[0]));

@@ -1,14 +1,14 @@
 package net.threetag.threecore.abilities.condition;
 
 import com.google.gson.JsonSyntaxException;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.data.EnumSync;
 import net.threetag.threecore.abilities.data.IntegerThreeData;
 import net.threetag.threecore.abilities.data.ThreeData;
 import net.threetag.threecore.karma.capability.CapabilityKarma;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
