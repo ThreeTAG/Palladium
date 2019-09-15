@@ -1,21 +1,5 @@
 package net.threetag.threecore.base;
 
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.ThreeCoreCommonConfig;
-import net.threetag.threecore.base.block.GrinderBlock;
-import net.threetag.threecore.base.block.HydraulicPressBlock;
-import net.threetag.threecore.base.block.VibraniumBlock;
-import net.threetag.threecore.base.client.gui.GrinderScreen;
-import net.threetag.threecore.base.client.gui.HydraulicPressScreen;
-import net.threetag.threecore.base.inventory.GrinderContainer;
-import net.threetag.threecore.base.inventory.HydraulicPressContainer;
-import net.threetag.threecore.base.item.CapacitorItem;
-import net.threetag.threecore.base.item.HammerItem;
-import net.threetag.threecore.base.recipe.GrinderRecipe;
-import net.threetag.threecore.base.recipe.PressingRecipe;
-import net.threetag.threecore.base.tileentity.GrinderTileEntity;
-import net.threetag.threecore.base.tileentity.HydraulicPressTileEntity;
-import net.threetag.threecore.util.item.ItemGroupRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -32,6 +16,7 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.placement.CountRangeConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -41,6 +26,22 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.ThreeCoreCommonConfig;
+import net.threetag.threecore.base.block.GrinderBlock;
+import net.threetag.threecore.base.block.HydraulicPressBlock;
+import net.threetag.threecore.base.block.VibraniumBlock;
+import net.threetag.threecore.base.client.gui.GrinderScreen;
+import net.threetag.threecore.base.client.gui.HydraulicPressScreen;
+import net.threetag.threecore.base.inventory.GrinderContainer;
+import net.threetag.threecore.base.inventory.HydraulicPressContainer;
+import net.threetag.threecore.base.item.CapacitorItem;
+import net.threetag.threecore.base.item.HammerItem;
+import net.threetag.threecore.base.recipe.GrinderRecipe;
+import net.threetag.threecore.base.recipe.PressingRecipe;
+import net.threetag.threecore.base.tileentity.GrinderTileEntity;
+import net.threetag.threecore.base.tileentity.HydraulicPressTileEntity;
+import net.threetag.threecore.util.item.ItemGroupRegistry;
 
 @ObjectHolder(ThreeCore.MODID)
 public class ThreeCoreBase {
@@ -105,125 +106,220 @@ public class ThreeCoreBase {
 
     // Misc Items
     @ObjectHolder("hammer")
-    public static Item HAMMER;
+    public static final Item HAMMER = null;
     @ObjectHolder("plate_cast")
-    public static Item PLATE_CAST;
+    public static final Item PLATE_CAST = null;
     @ObjectHolder("capacitor")
-    public static Item CAPACITOR;
+    public static final Item CAPACITOR = null;
     @ObjectHolder("advanced_capacitor")
-    public static Item ADVANCED_CAPACITOR;
+    public static final Item ADVANCED_CAPACITOR = null;
     @ObjectHolder("circuit")
-    public static Item CIRCUIT;
+    public static final Item CIRCUIT = null;
     @ObjectHolder("advanced_circuit")
-    public static Item ADVANCED_CIRCUIT;
+    public static final Item ADVANCED_CIRCUIT = null;
 
     // Storage Blocks
     // TODO Harvest levels
-    public static Block COPPER_BLOCK;
-    public static Block TIN_BLOCK;
-    public static Block LEAD_BLOCK;
-    public static Block SILVER_BLOCK;
-    public static Block PALLADIUM_BLOCK;
-    public static Block VIBRANIUM_BLOCK;
-    public static Block OSMIUM_BLOCK;
-    public static Block URANIUM_BLOCK;
-    public static Block TITANIUM_BLOCK;
-    public static Block IRIDIUM_BLOCK;
-    public static Block URU_BLOCK;
-    public static Block BRONZE_BLOCK;
-    public static Block INTERTIUM_BLOCK;
-    public static Block STEEL_BLOCK;
-    public static Block GOLD_TITANIUM_ALLOY_BLOCK;
-    public static Block ADAMANTIUM_BLOCK;
+    @ObjectHolder("copper_block")
+    public static final Block COPPER_BLOCK = null;
+    @ObjectHolder("tin_block")
+    public static final Block TIN_BLOCK = null;
+    @ObjectHolder("lead_block")
+    public static final Block LEAD_BLOCK = null;
+    @ObjectHolder("silver_block")
+    public static final Block SILVER_BLOCK = null;
+    @ObjectHolder("palladium_block")
+    public static final Block PALLADIUM_BLOCK = null;
+    @ObjectHolder("vibranium_block")
+    public static final Block VIBRANIUM_BLOCK = null;
+    @ObjectHolder("osmium_block")
+    public static final Block OSMIUM_BLOCK = null;
+    @ObjectHolder("uranium_block")
+    public static final Block URANIUM_BLOCK = null;
+    @ObjectHolder("titanium_block")
+    public static final Block TITANIUM_BLOCK = null;
+    @ObjectHolder("iridium_block")
+    public static final Block IRIDIUM_BLOCK = null;
+    @ObjectHolder("uru_block")
+    public static final Block URU_BLOCK = null;
+    @ObjectHolder("bronze_block")
+    public static final Block BRONZE_BLOCK = null;
+    @ObjectHolder("intertium_block")
+    public static final Block INTERTIUM_BLOCK = null;
+    @ObjectHolder("steel_block")
+    public static final Block STEEL_BLOCK = null;
+    @ObjectHolder("gold_titanium_alloy_block")
+    public static final Block GOLD_TITANIUM_ALLOY_BLOCK = null;
+    @ObjectHolder("adamantium_block")
+    public static final Block ADAMANTIUM_BLOCK = null;
 
     // Ores
-    public static Block COPPER_ORE;
-    public static Block TIN_ORE;
-    public static Block LEAD_ORE;
-    public static Block SILVER_ORE;
-    public static Block PALLADIUM_ORE;
-    public static Block VIBRANIUM_ORE;
-    public static Block OSMIUM_ORE;
-    public static Block URANIUM_ORE;
-    public static Block TITANIUM_ORE;
-    public static Block IRIDIUM_ORE;
-    public static Block URU_ORE;
+    @ObjectHolder("copper_ore")
+    public static final Block COPPER_ORE = null;
+    @ObjectHolder("tin_ore")
+    public static final Block TIN_ORE = null;
+    @ObjectHolder("lead_ore")
+    public static final Block LEAD_ORE = null;
+    @ObjectHolder("silver_ore")
+    public static final Block SILVER_ORE = null;
+    @ObjectHolder("palladium_ore")
+    public static final Block PALLADIUM_ORE = null;
+    @ObjectHolder("vibranium_ore")
+    public static final Block VIBRANIUM_ORE = null;
+    @ObjectHolder("osmium_ore")
+    public static final Block OSMIUM_ORE = null;
+    @ObjectHolder("uranium_ore")
+    public static final Block URANIUM_ORE = null;
+    @ObjectHolder("titanium_ore")
+    public static final Block TITANIUM_ORE = null;
+    @ObjectHolder("iridium_ore")
+    public static final Block IRIDIUM_ORE = null;
+    @ObjectHolder("uru_ore")
+    public static final Block URU_ORE = null;
 
     // Ingots
-    public static Item COPPER_INGOT;
-    public static Item TIN_INGOT;
-    public static Item LEAD_INGOT;
-    public static Item SILVER_INGOT;
-    public static Item PALLADIUM_INGOT;
-    public static Item VIBRANIUM_INGOT;
-    public static Item OSMIUM_INGOT;
-    public static Item URANIUM_INGOT;
-    public static Item TITANIUM_INGOT;
-    public static Item IRIDIUM_INGOT;
-    public static Item URU_INGOT;
-    public static Item BRONZE_INGOT;
-    public static Item INTERTIUM_INGOT;
-    public static Item STEEL_INGOT;
-    public static Item GOLD_TITANIUM_ALLOY_INGOT;
-    public static Item ADAMANTIUM_INGOT;
+    @ObjectHolder("copper_ingot")
+    public static final Block COPPER_INGOT = null;
+    @ObjectHolder("tin_ingot")
+    public static final Block TIN_INGOT = null;
+    @ObjectHolder("lead_ingot")
+    public static final Block LEAD_INGOT = null;
+    @ObjectHolder("silver_ingot")
+    public static final Block SILVER_INGOT = null;
+    @ObjectHolder("palladium_ingot")
+    public static final Block PALLADIUM_INGOT = null;
+    @ObjectHolder("vibranium_ingot")
+    public static final Block VIBRANIUM_INGOT = null;
+    @ObjectHolder("osmium_ingot")
+    public static final Block OSMIUM_INGOT = null;
+    @ObjectHolder("uranium_ingot")
+    public static final Block URANIUM_INGOT = null;
+    @ObjectHolder("titanium_ingot")
+    public static final Block TITANIUM_INGOT = null;
+    @ObjectHolder("iridium_ingot")
+    public static final Block IRIDIUM_INGOT = null;
+    @ObjectHolder("uru_ingot")
+    public static final Block URU_INGOT = null;
+    @ObjectHolder("bronze_ingot")
+    public static final Block BRONZE_INGOT = null;
+    @ObjectHolder("intertium_ingot")
+    public static final Block INTERTIUM_INGOT = null;
+    @ObjectHolder("steel_ingot")
+    public static final Block STEEL_INGOT = null;
+    @ObjectHolder("gold_titanium_alloy_ingot")
+    public static final Block GOLD_TITANIUM_ALLOY_INGOT = null;
+    @ObjectHolder("adamantium_ingot")
+    public static final Block ADAMANTIUM_INGOT = null;
 
     // Nuggets
-    public static Item COPPER_NUGGET;
-    public static Item TIN_NUGGET;
-    public static Item LEAD_NUGGET;
-    public static Item SILVER_NUGGET;
-    public static Item PALLADIUM_NUGGET;
-    public static Item VIBRANIUM_NUGGET;
-    public static Item OSMIUM_NUGGET;
-    public static Item URANIUM_NUGGET;
-    public static Item TITANIUM_NUGGET;
-    public static Item IRIDIUM_NUGGET;
-    public static Item URU_NUGGET;
-    public static Item BRONZE_NUGGET;
-    public static Item INTERTIUM_NUGGET;
-    public static Item STEEL_NUGGET;
-    public static Item GOLD_TITANIUM_ALLOY_NUGGET;
-    public static Item ADAMANTIUM_NUGGET;
+    @ObjectHolder("copper_nugget")
+    public static final Block COPPER_NUGGET = null;
+    @ObjectHolder("tin_nugget")
+    public static final Block TIN_NUGGET = null;
+    @ObjectHolder("lead_nugget")
+    public static final Block LEAD_NUGGET = null;
+    @ObjectHolder("silver_nugget")
+    public static final Block SILVER_NUGGET = null;
+    @ObjectHolder("palladium_nugget")
+    public static final Block PALLADIUM_NUGGET = null;
+    @ObjectHolder("vibranium_nugget")
+    public static final Block VIBRANIUM_NUGGET = null;
+    @ObjectHolder("osmium_nugget")
+    public static final Block OSMIUM_NUGGET = null;
+    @ObjectHolder("uranium_nugget")
+    public static final Block URANIUM_NUGGET = null;
+    @ObjectHolder("titanium_nugget")
+    public static final Block TITANIUM_NUGGET = null;
+    @ObjectHolder("iridium_nugget")
+    public static final Block IRIDIUM_NUGGET = null;
+    @ObjectHolder("uru_nugget")
+    public static final Block URU_NUGGET = null;
+    @ObjectHolder("bronze_nugget")
+    public static final Block BRONZE_NUGGET = null;
+    @ObjectHolder("intertium_nugget")
+    public static final Block INTERTIUM_NUGGET = null;
+    @ObjectHolder("steel_nugget")
+    public static final Block STEEL_NUGGET = null;
+    @ObjectHolder("gold_titanium_alloy_nugget")
+    public static final Block GOLD_TITANIUM_ALLOY_NUGGET = null;
+    @ObjectHolder("adamantium_nugget")
+    public static final Block ADAMANTIUM_NUGGET = null;
 
     // Dusts
-    public static Item IRON_DUST;
-    public static Item GOLD_DUST;
-    public static Item COPPER_DUST;
-    public static Item TIN_DUST;
-    public static Item LEAD_DUST;
-    public static Item SILVER_DUST;
-    public static Item PALLADIUM_DUST;
-    public static Item VIBRANIUM_DUST;
-    public static Item OSMIUM_DUST;
-    public static Item URANIUM_DUST;
-    public static Item TITANIUM_DUST;
-    public static Item IRIDIUM_DUST;
-    public static Item URU_DUST;
-    public static Item BRONZE_DUST;
-    public static Item INTERTIUM_DUST;
-    public static Item STEEL_DUST;
-    public static Item GOLD_TITANIUM_ALLOY_DUST;
-    public static Item ADAMANTIUM_DUST;
+    @ObjectHolder("iron_dust")
+    public static final Item IRON_DUST = null;
+    @ObjectHolder("gold_dust")
+    public static final Item GOLD_DUST = null;
+    @ObjectHolder("copper_dust")
+    public static final Block COPPER_DUST = null;
+    @ObjectHolder("tin_dust")
+    public static final Block TIN_DUST = null;
+    @ObjectHolder("lead_dust")
+    public static final Block LEAD_DUST = null;
+    @ObjectHolder("silver_dust")
+    public static final Block SILVER_DUST = null;
+    @ObjectHolder("palladium_dust")
+    public static final Block PALLADIUM_DUST = null;
+    @ObjectHolder("vibranium_dust")
+    public static final Block VIBRANIUM_DUST = null;
+    @ObjectHolder("osmium_dust")
+    public static final Block OSMIUM_DUST = null;
+    @ObjectHolder("uranium_dust")
+    public static final Block URANIUM_DUST = null;
+    @ObjectHolder("titanium_dust")
+    public static final Block TITANIUM_DUST = null;
+    @ObjectHolder("iridium_dust")
+    public static final Block IRIDIUM_DUST = null;
+    @ObjectHolder("uru_dust")
+    public static final Block URU_DUST = null;
+    @ObjectHolder("bronze_dust")
+    public static final Block BRONZE_DUST = null;
+    @ObjectHolder("intertium_dust")
+    public static final Block INTERTIUM_DUST = null;
+    @ObjectHolder("steel_dust")
+    public static final Block STEEL_DUST = null;
+    @ObjectHolder("gold_titanium_alloy_dust")
+    public static final Block GOLD_TITANIUM_ALLOY_DUST = null;
+    @ObjectHolder("adamantium_dust")
+    public static final Block ADAMANTIUM_DUST = null;
 
     // Plates
-    public static Item IRON_PLATE;
-    public static Item GOLD_PLATE;
-    public static Item COPPER_PLATE;
-    public static Item TIN_PLATE;
-    public static Item LEAD_PLATE;
-    public static Item SILVER_PLATE;
-    public static Item PALLADIUM_PLATE;
-    public static Item VIBRANIUM_PLATE;
-    public static Item OSMIUM_PLATE;
-    public static Item URANIUM_PLATE;
-    public static Item TITANIUM_PLATE;
-    public static Item IRIDIUM_PLATE;
-    public static Item URU_PLATE;
-    public static Item BRONZE_PLATE;
-    public static Item INTERTIUM_PLATE;
-    public static Item STEEL_PLATE;
-    public static Item GOLD_TITANIUM_ALLOY_PLATE;
-    public static Item ADAMANTIUM_PLATE;
+    @ObjectHolder("iron_plate")
+    public static final Item IRON_PLATE = null;
+    @ObjectHolder("gold_plate")
+    public static final Item GOLD_PLATE = null;
+    @ObjectHolder("copper_plate")
+    public static final Block COPPER_PLATE = null;
+    @ObjectHolder("tin_plate")
+    public static final Block TIN_PLATE = null;
+    @ObjectHolder("lead_plate")
+    public static final Block LEAD_PLATE = null;
+    @ObjectHolder("silver_plate")
+    public static final Block SILVER_PLATE = null;
+    @ObjectHolder("palladium_plate")
+    public static final Block PALLADIUM_PLATE = null;
+    @ObjectHolder("vibranium_plate")
+    public static final Block VIBRANIUM_PLATE = null;
+    @ObjectHolder("osmium_plate")
+    public static final Block OSMIUM_PLATE = null;
+    @ObjectHolder("uranium_plate")
+    public static final Block URANIUM_PLATE = null;
+    @ObjectHolder("titanium_plate")
+    public static final Block TITANIUM_PLATE = null;
+    @ObjectHolder("iridium_plate")
+    public static final Block IRIDIUM_PLATE = null;
+    @ObjectHolder("uru_plate")
+    public static final Block URU_PLATE = null;
+    @ObjectHolder("bronze_plate")
+    public static final Block BRONZE_PLATE = null;
+    @ObjectHolder("intertium_plate")
+    public static final Block INTERTIUM_PLATE = null;
+    @ObjectHolder("steel_plate")
+    public static final Block STEEL_PLATE = null;
+    @ObjectHolder("gold_titanium_alloy_plate")
+    public static final Block GOLD_TITANIUM_ALLOY_PLATE = null;
+    @ObjectHolder("adamantium_plate")
+    public static final Block ADAMANTIUM_PLATE = null;
 
     @SubscribeEvent
     public void registerBlocks(RegistryEvent.Register<Block> e) {
@@ -232,34 +328,34 @@ public class ThreeCoreBase {
         registry.register(new GrinderBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "grinder"));
         registry.register(new HydraulicPressBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "hydraulic_press"));
 
-        registry.register(COPPER_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "copper_block"));
-        registry.register(TIN_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "tin_block"));
-        registry.register(LEAD_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(4.0F, 12.0F)).setRegistryName(ThreeCore.MODID, "lead_block"));
-        registry.register(SILVER_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "silver_block"));
-        registry.register(PALLADIUM_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "palladium_block"));
-        registry.register(VIBRANIUM_BLOCK = new VibraniumBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(15.0F, 18.0F)).setRegistryName(ThreeCore.MODID, "vibranium_block"));
-        registry.register(OSMIUM_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "osmium_block"));
-        registry.register(URANIUM_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "uranium_block"));
-        registry.register(TITANIUM_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10.0F, 12.0F)).setRegistryName(ThreeCore.MODID, "titanium_block"));
-        registry.register(IRIDIUM_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10.0F, 15.0F)).setRegistryName(ThreeCore.MODID, "iridium_block"));
-        registry.register(URU_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10.0F, 15.0F)).setRegistryName(ThreeCore.MODID, "uru_block"));
-        registry.register(BRONZE_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "bronze_block"));
-        registry.register(INTERTIUM_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "intertium_block"));
-        registry.register(STEEL_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "steel_block"));
-        registry.register(GOLD_TITANIUM_ALLOY_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(7.0F, 8.0F)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_block"));
-        registry.register(ADAMANTIUM_BLOCK = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(15F, 18.0F)).setRegistryName(ThreeCore.MODID, "adamantium_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "copper_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "tin_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(4.0F, 12.0F)).setRegistryName(ThreeCore.MODID, "lead_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "silver_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "palladium_block"));
+        registry.register(new VibraniumBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(15.0F, 18.0F)).setRegistryName(ThreeCore.MODID, "vibranium_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "osmium_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "uranium_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(10.0F, 12.0F)).setRegistryName(ThreeCore.MODID, "titanium_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(10.0F, 15.0F)).setRegistryName(ThreeCore.MODID, "iridium_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(10.0F, 15.0F)).setRegistryName(ThreeCore.MODID, "uru_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "bronze_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "intertium_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "steel_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(7.0F, 8.0F)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_block"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(15F, 18.0F)).setRegistryName(ThreeCore.MODID, "adamantium_block"));
 
-        registry.register(COPPER_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "copper_ore"));
-        registry.register(TIN_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "tin_ore"));
-        registry.register(LEAD_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "lead_ore"));
-        registry.register(SILVER_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "silver_ore"));
-        registry.register(PALLADIUM_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "palladium_ore"));
-        registry.register(VIBRANIUM_ORE = new VibraniumBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F).lightValue(4)).setRegistryName(ThreeCore.MODID, "vibranium_ore"));
-        registry.register(OSMIUM_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "osmium_ore"));
-        registry.register(URANIUM_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "uranium_ore"));
-        registry.register(TITANIUM_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "titanium_ore"));
-        registry.register(IRIDIUM_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "iridium_ore"));
-        registry.register(URU_ORE = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "uru_ore"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "copper_ore"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "tin_ore"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "lead_ore"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "silver_ore"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "palladium_ore"));
+        registry.register(new VibraniumBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F).lightValue(4)).setRegistryName(ThreeCore.MODID, "vibranium_ore"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "osmium_ore"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "uranium_ore"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "titanium_ore"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "iridium_ore"));
+        registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "uru_ore"));
     }
 
     @SubscribeEvent
@@ -322,77 +418,77 @@ public class ThreeCoreBase {
         registry.register(makeItem(IRIDIUM_ORE, Rarity.UNCOMMON));
         registry.register(makeItem(URU_ORE, Rarity.EPIC));
 
-        registry.register(COPPER_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_ingot"));
-        registry.register(TIN_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "tin_ingot"));
-        registry.register(LEAD_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "lead_ingot"));
-        registry.register(SILVER_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "silver_ingot"));
-        registry.register(PALLADIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "palladium_ingot"));
-        registry.register(VIBRANIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_ingot"));
-        registry.register(OSMIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "osmium_ingot"));
-        registry.register(URANIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "uranium_ingot"));
-        registry.register(TITANIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "titanium_ingot"));
-        registry.register(IRIDIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_ingot"));
-        registry.register(URU_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_ingot"));
-        registry.register(BRONZE_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "bronze_ingot"));
-        registry.register(INTERTIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "intertium_ingot"));
-        registry.register(STEEL_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_ingot"));
-        registry.register(GOLD_TITANIUM_ALLOY_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_ingot"));
-        registry.register(ADAMANTIUM_INGOT = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "tin_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "lead_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "silver_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "palladium_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "osmium_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "uranium_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "titanium_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "bronze_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "intertium_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_ingot"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_ingot"));
 
-        registry.register(COPPER_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_nugget"));
-        registry.register(TIN_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "tin_nugget"));
-        registry.register(LEAD_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "lead_nugget"));
-        registry.register(SILVER_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "silver_nugget"));
-        registry.register(PALLADIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "palladium_nugget"));
-        registry.register(VIBRANIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_nugget"));
-        registry.register(OSMIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "osmium_nugget"));
-        registry.register(URANIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "uranium_nugget"));
-        registry.register(TITANIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "titanium_nugget"));
-        registry.register(IRIDIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_nugget"));
-        registry.register(URU_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_nugget"));
-        registry.register(BRONZE_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "bronze_nugget"));
-        registry.register(INTERTIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "intertium_nugget"));
-        registry.register(STEEL_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_nugget"));
-        registry.register(GOLD_TITANIUM_ALLOY_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_nugget"));
-        registry.register(ADAMANTIUM_NUGGET = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "tin_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "lead_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "silver_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "palladium_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "osmium_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "uranium_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "titanium_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "bronze_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "intertium_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_nugget"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_nugget"));
 
-        registry.register(IRON_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "iron_dust"));
-        registry.register(GOLD_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_dust"));
-        registry.register(COPPER_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_dust"));
-        registry.register(TIN_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "tin_dust"));
-        registry.register(LEAD_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "lead_dust"));
-        registry.register(SILVER_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "silver_dust"));
-        registry.register(PALLADIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "palladium_dust"));
-        registry.register(VIBRANIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_dust"));
-        registry.register(OSMIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "osmium_dust"));
-        registry.register(URANIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "uranium_dust"));
-        registry.register(TITANIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "titanium_dust"));
-        registry.register(IRIDIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_dust"));
-        registry.register(URU_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_dust"));
-        registry.register(BRONZE_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "bronze_dust"));
-        registry.register(INTERTIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "intertium_dust"));
-        registry.register(STEEL_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_dust"));
-        registry.register(GOLD_TITANIUM_ALLOY_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_dust"));
-        registry.register(ADAMANTIUM_DUST = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "iron_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "tin_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "lead_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "silver_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "palladium_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "osmium_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "uranium_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "titanium_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "bronze_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "intertium_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_dust"));
 
-        registry.register(IRON_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "iron_plate"));
-        registry.register(GOLD_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_plate"));
-        registry.register(COPPER_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_plate"));
-        registry.register(TIN_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "tin_plate"));
-        registry.register(LEAD_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "lead_plate"));
-        registry.register(SILVER_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "silver_plate"));
-        registry.register(PALLADIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "palladium_plate"));
-        registry.register(VIBRANIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_plate"));
-        registry.register(OSMIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "osmium_plate"));
-        registry.register(URANIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "uranium_plate"));
-        registry.register(TITANIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "titanium_plate"));
-        registry.register(IRIDIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_plate"));
-        registry.register(URU_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_plate"));
-        registry.register(BRONZE_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "bronze_plate"));
-        registry.register(INTERTIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "intertium_plate"));
-        registry.register(STEEL_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_plate"));
-        registry.register(GOLD_TITANIUM_ALLOY_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_plate"));
-        registry.register(ADAMANTIUM_PLATE = new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "iron_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "tin_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "lead_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "silver_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "palladium_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "vibranium_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "osmium_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "uranium_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "titanium_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.UNCOMMON)).setRegistryName(ThreeCore.MODID, "iridium_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.EPIC)).setRegistryName(ThreeCore.MODID, "uru_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "bronze_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "intertium_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_plate"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_plate"));
     }
 
     public static Item makeItem(Block block) {
