@@ -41,7 +41,8 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider {
 
     public AbilityArmorItem(IArmorMaterial materialIn, EquipmentSlotType slot, Properties builder) {
         super(materialIn, slot, builder);
-        this.addArmorTexturePropertyOverride(new ResourceLocation(ThreeCore.MODID, "sneaking"), ((stack, world, entity) -> entity.isSneaking() ? 1F : 0));
+        this.addArmorTexturePropertyOverride(new ResourceLocation(ThreeCore.MODID, "sneaking"), (stack, world, entity) -> entity.isSneaking() ? 1F : 0);
+        this.addArmorTexturePropertyOverride(new ResourceLocation(ThreeCore.MODID, "damage"), ((stack, world, entity) -> stack.getMaxDamage() == 0 ? 0 : (float) stack.getDamage() / (float) stack.getMaxDamage()));
     }
 
     public final void addArmorTexturePropertyOverride(ResourceLocation key, IArmorTexturePropertyGetter getter) {
