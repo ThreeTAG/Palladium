@@ -39,7 +39,7 @@ public class AbilityClientHandler {
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent e) {
-        if (Minecraft.getInstance().player == null)
+        if (Minecraft.getInstance().player == null || Minecraft.getInstance().currentScreen != null)
             return;
 
         if (e.getAction() < GLFW.GLFW_REPEAT) {
