@@ -75,4 +75,7 @@ public abstract class ThreeData<T> {
         return false;
     }
 
+    public EnumSync getSyncType() {
+        return syncType;
+    }
 }

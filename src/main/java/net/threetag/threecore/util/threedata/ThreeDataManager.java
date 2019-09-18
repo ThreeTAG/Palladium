@@ -31,7 +31,7 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT> {
         if (entry != null && !entry.getValue().equals(value)) {
             Object oldValue = entry.getValue();
             entry.setValue(value);
-            this.dataHolder.sync(data.syncType);
+            this.dataHolder.update(data, value);
             this.dataHolder.setDirty();
 
             if (this.dataHolder instanceof Ability) {
@@ -82,10 +82,10 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT> {
         return this.dataEntryList.values();
     }
 
-    public ThreeData<?> getAbilityDataByName(String name) {
-        for (ThreeData<?> datas : getSettingData()) {
-            if (datas.key.equals(name)) {
-                return datas;
+    public ThreeData<?> getDataByName(String name) {
+        for (ThreeData<?> data : getData()) {
+            if (data.key.equals(name)) {
+                return data;
             }
         }
         return null;

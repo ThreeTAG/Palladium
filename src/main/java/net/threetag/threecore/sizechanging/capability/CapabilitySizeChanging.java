@@ -1,25 +1,30 @@
 package net.threetag.threecore.sizechanging.capability;
 
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.sizechanging.SizeChangeType;
-import net.threetag.threecore.sizechanging.SizeManager;
-import net.threetag.threecore.sizechanging.network.SyncSizeMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.PacketDistributor;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.sizechanging.SizeChangeType;
+import net.threetag.threecore.sizechanging.SizeManager;
+import net.threetag.threecore.sizechanging.network.UpdateSizeData;
+import net.threetag.threecore.util.threedata.*;
 
 import javax.annotation.Nullable;
 
-public class CapabilitySizeChanging implements ISizeChanging, INBTSerializable<CompoundNBT> {
+public class CapabilitySizeChanging implements ISizeChanging, IThreeDataHolder, INBTSerializable<CompoundNBT> {
 
     @CapabilityInject(ISizeChanging.class)
     public static Capability<ISizeChanging> SIZE_CHANGING;
@@ -27,66 +32,56 @@ public class CapabilitySizeChanging implements ISizeChanging, INBTSerializable<C
     public static final float MIN_SIZE = 0.05F;
     public static final float MAX_SIZE = 16F;
 
-    protected float currentWidth = 1F;
-    protected float currentHeight = 1F;
-    protected float prevWidth = 1F;
-    protected float prevHeight = 1F;
-    protected float scale = 1F;
-    protected float estimatedScale = 1F;
-    protected float scalePerTick;
-    protected SizeChangeType sizeChangeType;
+    public static final ThreeData<Float> SCALE = new FloatThreeData("scale").setSyncType(EnumSync.NONE);
+    public static final ThreeData<Float> ESTIMATED_SCALE = new FloatThreeData("estimated_scale");
+    public static final ThreeData<Float> SCALE_PER_TICK = new FloatThreeData("scale_per_tick");
+    public static final ThreeData<SizeChangeType> SIZE_CHANGE_TYPE = new SizeChangeTypeThreeData("size_change_type");
+
+    public final ThreeDataManager dataManager = new ThreeDataManager(this);
+    public final Entity entity;
+    private float prevWidth = 1F;
+    private float prevHeight = 1F;
     private boolean dirty = false;
 
+    public CapabilitySizeChanging(Entity entity) {
+        this.entity = entity;
+        this.dataManager.register(SCALE, 1F);
+        this.dataManager.register(ESTIMATED_SCALE, 1F);
+        this.dataManager.register(SCALE_PER_TICK, 0F);
+        this.dataManager.register(SIZE_CHANGE_TYPE, SizeChangeType.DEFAULT_TYPE);
+    }
+
     @Override
-    public void tick(Entity entity) {
-        if (this.currentWidth <= 0F || this.currentHeight <= 0F || this.scale <= 0F) {
-            this.currentWidth = 1F;
-            this.currentHeight = 1F;
-            this.prevWidth = 1F;
-            this.prevHeight = 1F;
-            this.scale = 1F;
-        }
-        this.prevWidth = this.currentWidth;
-        this.prevHeight = this.currentHeight;
+    public void tick() {
+        this.prevWidth = this.getWidth();
+        this.prevHeight = this.getHeight();
+        this.fixValues();
 
-        if (!entity.world.isRemote) {
-            this.currentWidth = 1F;
-            this.currentHeight = 1F;
+        if (this.dataManager.get(SCALE_PER_TICK) != 0F) {
+            this.dataManager.set(SCALE, this.dataManager.get(SCALE) + this.dataManager.get(SCALE_PER_TICK));
 
-            if (entity instanceof LivingEntity) {
-                this.currentWidth *= ((LivingEntity) entity).getAttribute(SizeManager.SIZE_WIDTH).getValue();
-                this.currentHeight *= ((LivingEntity) entity).getAttribute(SizeManager.SIZE_HEIGHT).getValue();
+            if (Math.abs(this.dataManager.get(SCALE) - this.dataManager.get(ESTIMATED_SCALE)) < Math.abs(this.dataManager.get(SCALE_PER_TICK))) {
+                this.dataManager.set(SCALE_PER_TICK, 0F);
+                this.dataManager.set(SCALE, this.dataManager.get(ESTIMATED_SCALE));
+                this.getSizeChangeType().end(entity, this, this.dataManager.get(SCALE));
             }
 
-            if (this.scalePerTick != 0F) {
-                this.scale += this.scalePerTick;
-
-                if (Math.abs(this.scale - this.estimatedScale) < Math.abs(this.scalePerTick)) {
-                    this.scalePerTick = 0F;
-                    this.scale = this.estimatedScale;
-                    this.getSizeChangeType().end(entity, this, this.scale);
-                }
-
-                this.getSizeChangeType().onSizeChanged(entity, this, this.scale);
-            }
-
-            this.getSizeChangeType().onUpdate(entity, this, this.scale);
-
-            this.currentWidth *= this.scale;
-            this.currentHeight *= this.scale;
+            this.getSizeChangeType().onSizeChanged(entity, this, this.dataManager.get(SCALE));
+        } else {
+            this.dataManager.set(SCALE, this.dataManager.get(ESTIMATED_SCALE));
         }
 
-        this.currentWidth = MathHelper.clamp(this.currentWidth, MIN_SIZE, MAX_SIZE);
-        this.currentHeight = MathHelper.clamp(this.currentHeight, MIN_SIZE, MAX_SIZE);
+        this.getSizeChangeType().onUpdate(entity, this, this.dataManager.get(SCALE));
 
-        if (this.currentWidth != this.prevWidth || this.currentHeight != this.prevHeight || this.dirty) {
-            updateBoundingBox(entity);
-            this.sync(entity);
+        if (this.getWidth() != this.prevWidth || this.getHeight() != this.prevHeight || this.dirty) {
+            this.updateBoundingBox();
+            this.setDirty();
+            this.dirty = false;
         }
     }
 
     @Override
-    public void updateBoundingBox(Entity entity) {
+    public void updateBoundingBox() {
         boolean b = entity.firstUpdate;
         entity.firstUpdate = true;
         entity.recalculateSize();
@@ -95,102 +90,179 @@ public class CapabilitySizeChanging implements ISizeChanging, INBTSerializable<C
         entity.firstUpdate = b;
     }
 
-    @Override
-    public void sync(Entity entity) {
-        if (!entity.world.isRemote) {
-            SyncSizeMessage msg = new SyncSizeMessage(entity.getEntityId(), this.serializeNBT());
-            ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), msg);
+    protected void pushOutOfBlocks(double x, double y, double z) {
+        BlockPos blockpos = new BlockPos(x, y, z);
+        if (this.isInBlock(blockpos)) {
+            double d0 = x - (double) blockpos.getX();
+            double d1 = z - (double) blockpos.getZ();
+            Direction direction = null;
+            double d2 = 9999.0D;
+            if (!this.isInBlock(blockpos.west()) && d0 < d2) {
+                d2 = d0;
+                direction = Direction.WEST;
+            }
 
-            if (entity instanceof ServerPlayerEntity)
-                ThreeCore.NETWORK_CHANNEL.sendTo(msg, ((ServerPlayerEntity) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+            if (!this.isInBlock(blockpos.east()) && 1.0D - d0 < d2) {
+                d2 = 1.0D - d0;
+                direction = Direction.EAST;
+            }
+
+            if (!this.isInBlock(blockpos.north()) && d1 < d2) {
+                d2 = d1;
+                direction = Direction.NORTH;
+            }
+
+            if (!this.isInBlock(blockpos.south()) && 1.0D - d1 < d2) {
+                d2 = 1.0D - d1;
+                direction = Direction.SOUTH;
+            }
+
+            if (direction != null) {
+                Vec3d vec3d = entity.getMotion();
+                switch (direction) {
+                    case WEST:
+                        entity.setMotion(-0.1D, vec3d.y, vec3d.z);
+                        break;
+                    case EAST:
+                        entity.setMotion(0.1D, vec3d.y, vec3d.z);
+                        break;
+                    case NORTH:
+                        entity.setMotion(vec3d.x, vec3d.y, -0.1D);
+                        break;
+                    case SOUTH:
+                        entity.setMotion(vec3d.x, vec3d.y, 0.1D);
+                }
+            }
         }
+    }
+
+    private boolean isInBlock(BlockPos pos) {
+        AxisAlignedBB axisalignedbb = entity.getBoundingBox();
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(pos);
+
+        for (int i = MathHelper.floor(axisalignedbb.minY); i < MathHelper.ceil(axisalignedbb.maxY); ++i) {
+            blockpos$mutableblockpos.setY(i);
+            if (!entity.world.getBlockState(pos).causesSuffocation(entity.world, pos)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void fixValues() {
+        if (this.dataManager.get(SCALE) <= 0F)
+            this.dataManager.set(SCALE, 1F);
+        if (this.dataManager.get(ESTIMATED_SCALE) <= 0F)
+            this.dataManager.set(ESTIMATED_SCALE, 1F);
     }
 
     @Override
     public float getWidth() {
-        return this.currentWidth;
+        float f = this.dataManager.get(SCALE);
+        if (this.entity instanceof LivingEntity)
+            f *= ((LivingEntity) this.entity).getAttribute(SizeManager.SIZE_WIDTH).getValue();
+        return MathHelper.clamp(f, MIN_SIZE, MAX_SIZE);
     }
 
     @Override
     public float getHeight() {
-        return this.currentHeight;
+        float f = this.dataManager.get(SCALE);
+        if (this.entity instanceof LivingEntity)
+            f *= ((LivingEntity) this.entity).getAttribute(SizeManager.SIZE_HEIGHT).getValue();
+        return MathHelper.clamp(f, MIN_SIZE, MAX_SIZE);
     }
 
     @Override
     public float getRenderWidth(float partialTicks) {
-        return this.prevWidth + (this.currentWidth - this.prevWidth) * partialTicks;
+        return this.prevWidth + (this.getWidth() - this.prevWidth) * partialTicks;
     }
 
     @Override
     public float getRenderHeight(float partialTicks) {
-        return this.prevHeight + (this.currentHeight - this.prevHeight) * partialTicks;
+        return this.prevHeight + (this.getHeight() - this.prevHeight) * partialTicks;
     }
 
     @Override
     public float getScale() {
-        return this.scale;
+        return this.dataManager.get(SCALE);
     }
 
     @Override
     public SizeChangeType getSizeChangeType() {
-        return this.sizeChangeType == null ? SizeChangeType.DEFAULT_TYPE : this.sizeChangeType;
+        return this.dataManager.get(SIZE_CHANGE_TYPE);
     }
 
     @Override
     public void changeSizeChangeType(SizeChangeType type) {
-        if (this.sizeChangeType != type && type != null) {
-            this.sizeChangeType = type;
-            this.dirty = true;
+        if (type != null) {
+            this.dataManager.set(SIZE_CHANGE_TYPE, type);
         }
     }
 
     @Override
-    public boolean startSizeChange(Entity entity, @Nullable SizeChangeType type, float size) {
-        if (size != this.estimatedScale) {
-            type = type == null ? getSizeChangeType() : type;
-            if (!type.start(entity, this, this.scale, size))
+    public boolean startSizeChange(@Nullable SizeChangeType type, float size) {
+        if (size != this.dataManager.get(ESTIMATED_SCALE)) {
+            if (type != null)
+                this.dataManager.set(SIZE_CHANGE_TYPE, type);
+            if (!getSizeChangeType().start(entity, this, this.dataManager.get(SCALE), size))
                 return false;
-            this.estimatedScale = size;
-            this.scalePerTick = (float) (this.estimatedScale - this.scale) / this.getSizeChangeType().getSizeChangingTime(entity, this, this.estimatedScale);
-            this.sizeChangeType = type;
-            this.sync(entity);
+            this.dataManager.set(ESTIMATED_SCALE, size);
+            this.dataManager.set(SCALE_PER_TICK, (float) (size - this.dataManager.get(SCALE)) / this.getSizeChangeType().getSizeChangingTime(entity, this, size));
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean setSizeDirectly(Entity entity, @Nullable SizeChangeType type, float size) {
-        if (size != this.scale) {
-            this.scale = size;
-            this.estimatedScale = size;
-            this.scalePerTick = 0F;
-            this.sizeChangeType = type == null ? getSizeChangeType() : type;
-            this.sync(entity);
+    public boolean setSizeDirectly(@Nullable SizeChangeType type, float size) {
+        if (size != this.dataManager.get(SCALE)) {
+            this.dataManager.set(SCALE, size);
+            this.dataManager.set(ESTIMATED_SCALE, size);
+            this.dataManager.set(SCALE_PER_TICK, 0F);
+            if (type != null)
+                this.dataManager.set(SIZE_CHANGE_TYPE, type);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public <T> void update(ThreeData<T> data, T value) {
+        if (entity.world.isRemote)
+            return;
+
+        CompoundNBT nbt = new CompoundNBT();
+        data.writeToNBT(nbt, value);
+
+        if (data.getSyncType() != EnumSync.NONE && entity instanceof ServerPlayerEntity) {
+            ThreeCore.NETWORK_CHANNEL.sendTo(new UpdateSizeData(entity.getEntityId(), data.getKey(), nbt), ((ServerPlayerEntity) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+        }
+        if (data.getSyncType() == EnumSync.EVERYONE && entity.world instanceof ServerWorld) {
+            ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new UpdateSizeData(entity.getEntityId(), data.getKey(), nbt));
+        }
+    }
+
+    @Override
+    public void setData(String dataKey, CompoundNBT dataTag) {
+        ThreeData data = this.dataManager.getDataByName(dataKey);
+        if (data != null) {
+            this.dataManager.set(data, data.readFromNBT(dataTag, this.dataManager.getDefaultValue(data)));
+        }
+    }
+
+    @Override
+    public void setDirty() {
+        this.dirty = true;
     }
 
     @Override
     public CompoundNBT serializeNBT() {
-        CompoundNBT nbt = new CompoundNBT();
-        nbt.putFloat("Width", this.currentWidth);
-        nbt.putFloat("Height", this.currentHeight);
-        nbt.putFloat("Scale", this.scale);
-        nbt.putFloat("EstimatedScale", this.estimatedScale);
-        nbt.putFloat("ScalePerTick", this.scalePerTick);
-        nbt.putString("SizeChangeType", this.getSizeChangeType().getRegistryName().toString());
-        return nbt;
+        return this.dataManager.serializeNBT();
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        this.currentWidth = nbt.getFloat("Width");
-        this.currentHeight = nbt.getFloat("Height");
-        this.scale = nbt.getFloat("Scale");
-        this.estimatedScale = nbt.getFloat("EstimatedScale");
-        this.scalePerTick = nbt.getFloat("ScalePerTick");
-        this.sizeChangeType = SizeChangeType.REGISTRY.getValue(new ResourceLocation(nbt.getString("SizeChangeType")));
+        this.dataManager.deserializeNBT(nbt);
     }
 }

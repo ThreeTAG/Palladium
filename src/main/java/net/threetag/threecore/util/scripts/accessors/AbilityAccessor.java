@@ -20,12 +20,12 @@ public class AbilityAccessor {
     }
 
     public Object getData(String key) {
-        ThreeData data = this.ability.getDataManager().getAbilityDataByName(key);
+        ThreeData data = this.ability.getDataManager().getDataByName(key);
         return data == null ? null : this.ability.getDataManager().get(data);
     }
 
     public boolean setData(String key, Object value) {
-        ThreeData data = this.ability.getDataManager().getAbilityDataByName(key);
+        ThreeData data = this.ability.getDataManager().getDataByName(key);
         if (data == null)
             return false;
         this.ability.getDataManager().set(data, value);

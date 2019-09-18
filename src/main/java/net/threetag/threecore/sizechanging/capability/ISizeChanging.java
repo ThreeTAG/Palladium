@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 public interface ISizeChanging {
 
-    void tick(Entity entity);
+    void tick();
 
     float getWidth();
 
@@ -23,12 +23,10 @@ public interface ISizeChanging {
 
     void changeSizeChangeType(SizeChangeType type);
 
-    boolean startSizeChange(Entity entity, @Nullable SizeChangeType type, float size);
+    boolean startSizeChange(@Nullable SizeChangeType type, float size);
 
-    boolean setSizeDirectly(Entity entity, @Nullable SizeChangeType type, float size);
+    boolean setSizeDirectly(@Nullable SizeChangeType type, float size);
 
-    void updateBoundingBox(Entity entity);
-
-    void sync(Entity entity);
+    void updateBoundingBox();
 
 }

@@ -1,6 +1,7 @@
 package net.threetag.threecore.sizechanging;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.threetag.threecore.sizechanging.capability.CapabilitySizeChanging;
 import net.threetag.threecore.util.client.RenderUtil;
 import net.minecraft.entity.Entity;
@@ -17,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class SizeManager {
 
     public static final IAttribute SIZE_WIDTH = (new RangedAttribute(null, "generic.sizeWidth", 1D, 0.1D, 32D)).setShouldWatch(true);
-    public static final IAttribute SIZE_HEIGHT = (new RangedAttribute(null, "generic.sieHeight", 1D, 0.1D, 32D)).setShouldWatch(true);
+    public static final IAttribute SIZE_HEIGHT = (new RangedAttribute(null, "generic.sizeHeight", 1D, 0.1D, 32D)).setShouldWatch(true);
 
     public static Vec2f getSize(Entity entity, Pose pose) {
         AtomicReference<Float> width = new AtomicReference<>(1F);
@@ -30,7 +31,7 @@ public class SizeManager {
     }
 
     public static void entityTick(Entity entity) {
-        entity.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(s -> s.tick(entity));
+        entity.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(s -> s.tick());
     }
 
     public static EntitySize getOverridenSize(EntitySize entitySize, Entity entity, Pose pose) {

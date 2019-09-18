@@ -75,8 +75,8 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IThree
     }
 
     @Override
-    public void sync(EnumSync sync) {
-        ability.sync(sync);
+    public <T> void update(ThreeData<T> data, T value) {
+        ability.update(data, value);
     }
 
     @Override

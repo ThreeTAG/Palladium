@@ -1,10 +1,5 @@
 package net.threetag.threecore.sizechanging;
 
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.sizechanging.capability.CapabilitySizeChanging;
-import net.threetag.threecore.sizechanging.capability.ISizeChanging;
-import net.threetag.threecore.sizechanging.command.SizeChangeCommand;
-import net.threetag.threecore.sizechanging.network.SyncSizeMessage;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,6 +9,12 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.sizechanging.capability.CapabilitySizeChanging;
+import net.threetag.threecore.sizechanging.capability.ISizeChanging;
+import net.threetag.threecore.sizechanging.command.SizeChangeCommand;
+import net.threetag.threecore.sizechanging.network.SyncSizeMessage;
+import net.threetag.threecore.sizechanging.network.UpdateSizeData;
 
 import javax.annotation.Nullable;
 
@@ -32,6 +33,7 @@ public class ThreeCoreSizeChanging {
     public void setup(FMLCommonSetupEvent e) {
         // Network
         ThreeCore.registerMessage(SyncSizeMessage.class, SyncSizeMessage::toBytes, SyncSizeMessage::new, SyncSizeMessage::handle);
+        ThreeCore.registerMessage(UpdateSizeData.class, UpdateSizeData::toBytes, UpdateSizeData::new, UpdateSizeData::handle);
 
         // Capability
         CapabilityManager.INSTANCE.register(ISizeChanging.class, new Capability.IStorage<ISizeChanging>() {
@@ -52,6 +54,6 @@ public class ThreeCoreSizeChanging {
                             throw new IllegalArgumentException("Can not serialize to an instance that isn't an instance of INBTSerializable");
                     }
                 },
-                () -> new CapabilitySizeChanging());
+                () -> new CapabilitySizeChanging(null));
     }
 }

@@ -43,7 +43,7 @@ public class SizeChangeCommand {
         AtomicInteger result = new AtomicInteger(0);
         entities.forEach(e -> {
             e.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
-                if (sizeChanging.startSizeChange(e, sizeChangeType, scale))
+                if (sizeChanging.startSizeChange(sizeChangeType, scale))
                     result.incrementAndGet();
             });
         });

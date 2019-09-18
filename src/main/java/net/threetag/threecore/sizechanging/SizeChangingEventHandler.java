@@ -1,9 +1,5 @@
 package net.threetag.threecore.sizechanging;
 
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.sizechanging.capability.CapabilitySizeChanging;
-import net.threetag.threecore.sizechanging.capability.SizeChangingProvider;
-import net.threetag.threecore.sizechanging.network.SyncSizeMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -20,19 +16,26 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.network.NetworkDirection;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.sizechanging.capability.CapabilitySizeChanging;
+import net.threetag.threecore.sizechanging.capability.SizeChangingProvider;
+import net.threetag.threecore.sizechanging.network.SyncSizeMessage;
 
 public class SizeChangingEventHandler {
 
     @SubscribeEvent
     public void onAttachCapabilities(AttachCapabilitiesEvent<Entity> e) {
         if (!e.getObject().getCapability(CapabilitySizeChanging.SIZE_CHANGING).isPresent()) {
-            e.addCapability(new ResourceLocation(ThreeCore.MODID, "size_changing"), new SizeChangingProvider(new CapabilitySizeChanging()));
+            e.addCapability(new ResourceLocation(ThreeCore.MODID, "size_changing"), new SizeChangingProvider(new CapabilitySizeChanging(e.getObject())));
         }
     }
 
     @SubscribeEvent
     public void onJoinWorld(EntityJoinWorldEvent e) {
-        e.getEntity().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> sizeChanging.sync(e.getEntity()));
+        e.getEntity().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
+            if (e.getEntity() instanceof ServerPlayerEntity && sizeChanging instanceof INBTSerializable)
+                ThreeCore.NETWORK_CHANNEL.sendTo(new SyncSizeMessage(e.getEntity().getEntityId(), (CompoundNBT) ((INBTSerializable) sizeChanging).serializeNBT()), ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+        });
 
         Entity thrower = null;
         if (e.getEntity() instanceof ThrowableEntity)
@@ -77,7 +80,7 @@ public class SizeChangingEventHandler {
     public static void copyScale(Entity source, Entity entity) {
         source.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging1 -> {
             entity.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
-                sizeChanging.setSizeDirectly(entity, sizeChanging1.getSizeChangeType(), sizeChanging1.getScale());
+                sizeChanging.setSizeDirectly(sizeChanging1.getSizeChangeType(), sizeChanging1.getScale());
             });
         });
     }
