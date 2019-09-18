@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.data.ExperienceThreeData;
+import net.threetag.threecore.util.threedata.ExperienceThreeData;
 
 public class ExperienceIcon implements IIcon {
 

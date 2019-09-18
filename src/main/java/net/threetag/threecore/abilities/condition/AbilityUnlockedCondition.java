@@ -2,9 +2,9 @@ package net.threetag.threecore.abilities.condition;
 
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.AbilityHelper;
-import net.threetag.threecore.abilities.data.EnumSync;
-import net.threetag.threecore.abilities.data.StringThreeData;
-import net.threetag.threecore.abilities.data.ThreeData;
+import net.threetag.threecore.util.threedata.EnumSync;
+import net.threetag.threecore.util.threedata.StringThreeData;
+import net.threetag.threecore.util.threedata.ThreeData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;

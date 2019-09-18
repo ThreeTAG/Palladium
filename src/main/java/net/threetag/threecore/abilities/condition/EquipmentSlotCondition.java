@@ -6,8 +6,8 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.capability.ItemAbilityContainer;
-import net.threetag.threecore.abilities.data.EquipmentSlotThreeData;
-import net.threetag.threecore.abilities.data.ThreeData;
+import net.threetag.threecore.util.threedata.EquipmentSlotThreeData;
+import net.threetag.threecore.util.threedata.ThreeData;
 
 public class EquipmentSlotCondition extends Condition {
 

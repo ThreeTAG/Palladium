@@ -1,4 +1,4 @@
-package net.threetag.threecore.abilities.data;
+package net.threetag.threecore.util.threedata;
 
 /**
  * Created by Nictogen on 2019-06-08.

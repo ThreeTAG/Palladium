@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
-import net.threetag.threecore.abilities.data.*;
+import net.threetag.threecore.util.threedata.*;
 
 import java.util.UUID;
 

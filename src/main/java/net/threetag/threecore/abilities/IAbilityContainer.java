@@ -11,7 +11,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.data.EnumSync;
+import net.threetag.threecore.util.threedata.EnumSync;
 import net.threetag.threecore.abilities.network.AddAbilityMessage;
 import net.threetag.threecore.abilities.network.RemoveAbilityMessage;
 import net.threetag.threecore.abilities.network.UpdateAbilityMessage;

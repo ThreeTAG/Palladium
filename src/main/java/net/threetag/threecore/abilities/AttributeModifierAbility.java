@@ -7,7 +7,7 @@ import net.threetag.threecore.util.render.IIcon;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
-import net.threetag.threecore.abilities.data.*;
+import net.threetag.threecore.util.threedata.*;
 
 import java.util.Iterator;
 import java.util.Map;

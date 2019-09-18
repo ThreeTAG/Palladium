@@ -1,7 +1,7 @@
 package net.threetag.threecore.util.scripts.accessors;
 
 import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.abilities.data.ThreeData;
+import net.threetag.threecore.util.threedata.ThreeData;
 
 public class AbilityAccessor {
 

@@ -1,9 +1,9 @@
 package net.threetag.threecore.abilities;
 
-import net.threetag.threecore.abilities.data.ThreeData;
-import net.threetag.threecore.abilities.data.FloatThreeData;
-import net.threetag.threecore.abilities.data.IntegerThreeData;
-import net.threetag.threecore.abilities.data.EnumSync;
+import net.threetag.threecore.util.threedata.ThreeData;
+import net.threetag.threecore.util.threedata.FloatThreeData;
+import net.threetag.threecore.util.threedata.IntegerThreeData;
+import net.threetag.threecore.util.threedata.EnumSync;
 import net.threetag.threecore.util.render.TexturedIcon;
 import net.minecraft.entity.LivingEntity;
 

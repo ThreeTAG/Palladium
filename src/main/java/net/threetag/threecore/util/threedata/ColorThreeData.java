@@ -1,4 +1,4 @@
-package net.threetag.threecore.abilities.data;
+package net.threetag.threecore.util.threedata;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

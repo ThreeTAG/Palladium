@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.abilities.data.EnumSync;
+import net.threetag.threecore.util.threedata.EnumSync;
 import net.threetag.threecore.util.scripts.accessors.AbilityAccessor;
 import net.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
 

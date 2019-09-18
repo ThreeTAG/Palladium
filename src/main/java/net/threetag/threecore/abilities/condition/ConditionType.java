@@ -4,7 +4,7 @@ import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.AbilityType;
 import net.threetag.threecore.abilities.AttributeModifierAbility;
-import net.threetag.threecore.abilities.data.ThreeData;
+import net.threetag.threecore.util.threedata.ThreeData;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.api.distmarker.Dist;

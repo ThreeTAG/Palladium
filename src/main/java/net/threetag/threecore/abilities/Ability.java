@@ -17,7 +17,7 @@ import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
 import net.threetag.threecore.abilities.client.gui.AbilityScreen;
 import net.threetag.threecore.abilities.condition.AbilityConditionManager;
 import net.threetag.threecore.abilities.condition.Condition;
-import net.threetag.threecore.abilities.data.*;
+import net.threetag.threecore.util.threedata.*;
 import net.threetag.threecore.abilities.event.AbilityEventManager;
 import net.threetag.threecore.util.render.IIcon;
 import net.threetag.threecore.util.render.ItemIcon;

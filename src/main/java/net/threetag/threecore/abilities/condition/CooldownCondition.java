@@ -1,9 +1,9 @@
 package net.threetag.threecore.abilities.condition;
 
 import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.abilities.data.EnumSync;
-import net.threetag.threecore.abilities.data.IntegerThreeData;
-import net.threetag.threecore.abilities.data.ThreeData;
+import net.threetag.threecore.util.threedata.EnumSync;
+import net.threetag.threecore.util.threedata.IntegerThreeData;
+import net.threetag.threecore.util.threedata.ThreeData;
 import net.minecraft.entity.LivingEntity;
 
 /**
