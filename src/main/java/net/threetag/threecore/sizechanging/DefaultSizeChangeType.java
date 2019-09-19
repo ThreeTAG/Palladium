@@ -1,5 +1,6 @@
 package net.threetag.threecore.sizechanging;
 
+import net.minecraft.entity.monster.CreeperEntity;
 import net.threetag.threecore.sizechanging.capability.ISizeChanging;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -31,6 +32,10 @@ public class DefaultSizeChangeType extends SizeChangeType {
             setAttribute(map, SharedMonsterAttributes.ATTACK_DAMAGE, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
             setAttribute(map, PlayerEntity.REACH_DISTANCE, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
             setAttribute(map, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, (size - 1F) * 0.5D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
+
+            if(entity instanceof CreeperEntity) {
+                ((CreeperEntity)entity).explosionRadius = (int) (3F * size);
+            }
         }
     }
 

@@ -90,66 +90,6 @@ public class CapabilitySizeChanging implements ISizeChanging, IThreeDataHolder, 
         entity.firstUpdate = b;
     }
 
-    protected void pushOutOfBlocks(double x, double y, double z) {
-        BlockPos blockpos = new BlockPos(x, y, z);
-        if (this.isInBlock(blockpos)) {
-            double d0 = x - (double) blockpos.getX();
-            double d1 = z - (double) blockpos.getZ();
-            Direction direction = null;
-            double d2 = 9999.0D;
-            if (!this.isInBlock(blockpos.west()) && d0 < d2) {
-                d2 = d0;
-                direction = Direction.WEST;
-            }
-
-            if (!this.isInBlock(blockpos.east()) && 1.0D - d0 < d2) {
-                d2 = 1.0D - d0;
-                direction = Direction.EAST;
-            }
-
-            if (!this.isInBlock(blockpos.north()) && d1 < d2) {
-                d2 = d1;
-                direction = Direction.NORTH;
-            }
-
-            if (!this.isInBlock(blockpos.south()) && 1.0D - d1 < d2) {
-                d2 = 1.0D - d1;
-                direction = Direction.SOUTH;
-            }
-
-            if (direction != null) {
-                Vec3d vec3d = entity.getMotion();
-                switch (direction) {
-                    case WEST:
-                        entity.setMotion(-0.1D, vec3d.y, vec3d.z);
-                        break;
-                    case EAST:
-                        entity.setMotion(0.1D, vec3d.y, vec3d.z);
-                        break;
-                    case NORTH:
-                        entity.setMotion(vec3d.x, vec3d.y, -0.1D);
-                        break;
-                    case SOUTH:
-                        entity.setMotion(vec3d.x, vec3d.y, 0.1D);
-                }
-            }
-        }
-    }
-
-    private boolean isInBlock(BlockPos pos) {
-        AxisAlignedBB axisalignedbb = entity.getBoundingBox();
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(pos);
-
-        for (int i = MathHelper.floor(axisalignedbb.minY); i < MathHelper.ceil(axisalignedbb.maxY); ++i) {
-            blockpos$mutableblockpos.setY(i);
-            if (!entity.world.getBlockState(pos).causesSuffocation(entity.world, pos)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public void fixValues() {
         if (this.dataManager.get(SCALE) <= 0F)
             this.dataManager.set(SCALE, 1F);
