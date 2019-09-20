@@ -14,8 +14,8 @@ import net.threetag.threecore.abilities.AbilityMap;
 import net.threetag.threecore.abilities.IAbilityContainer;
 import net.threetag.threecore.abilities.IAbilityProvider;
 import net.threetag.threecore.util.threedata.EnumSync;
-import net.threetag.threecore.util.render.IIcon;
-import net.threetag.threecore.util.render.ItemIcon;
+import net.threetag.threecore.util.icon.IIcon;
+import net.threetag.threecore.util.icon.ItemIcon;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

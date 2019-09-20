@@ -18,8 +18,8 @@ import net.threetag.threecore.abilities.client.gui.AbilityScreen;
 import net.threetag.threecore.abilities.condition.AbilityConditionManager;
 import net.threetag.threecore.abilities.condition.Condition;
 import net.threetag.threecore.abilities.event.AbilityEventManager;
-import net.threetag.threecore.util.render.IIcon;
-import net.threetag.threecore.util.render.ItemIcon;
+import net.threetag.threecore.util.icon.IIcon;
+import net.threetag.threecore.util.icon.ItemIcon;
 import net.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
 import net.threetag.threecore.util.threedata.*;
 

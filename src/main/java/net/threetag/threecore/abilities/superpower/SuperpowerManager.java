@@ -5,61 +5,50 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.AbilityGenerator;
-import net.threetag.threecore.abilities.AbilityHelper;
-import net.threetag.threecore.abilities.AbilityType;
-import net.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
-import net.threetag.threecore.abilities.network.SendSuperpowerToastMessage;
-import net.threetag.threecore.util.render.IIcon;
-import net.threetag.threecore.util.render.IconSerializer;
+import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.resources.IResource;
+import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
-import net.minecraft.resources.IResourceManagerReloadListener;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.NetworkDirection;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.abilities.AbilityGenerator;
+import net.threetag.threecore.abilities.AbilityHelper;
+import net.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
+import net.threetag.threecore.abilities.network.SendSuperpowerToastMessage;
+import net.threetag.threecore.util.icon.IIcon;
+import net.threetag.threecore.util.icon.IconSerializer;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class SuperpowerManager implements IResourceManagerReloadListener {
+public class SuperpowerManager extends JsonReloadListener {
 
     private static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static SuperpowerManager INSTANCE;
-    public static final int resourcePrefix = "superpowers/".length();
-    public static final int resourceSuffix = ".json".length();
+    private Map<ResourceLocation, Superpower> registeredSuperpowers = Maps.newHashMap();
 
     public SuperpowerManager() {
+        super(GSON, "superpowers");
         INSTANCE = this;
     }
 
-    public Map<ResourceLocation, Superpower> registeredSuperpowers = Maps.newHashMap();
-
     @Override
-    public void onResourceManagerReload(IResourceManager resourceManager) {
-        this.registeredSuperpowers.clear();
-        for (ResourceLocation resourcelocation : resourceManager.getAllResourceLocations("superpowers", (name) -> name.endsWith(".json"))) {
-            String s = resourcelocation.getPath();
-            ResourceLocation resourcelocation1 = new ResourceLocation(resourcelocation.getNamespace(), s.substring(resourcePrefix, s.length() - resourceSuffix));
-            try (IResource iresource = resourceManager.getResource(resourcelocation)) {
-                Superpower superpower = parseSuperpower(resourcelocation1, JSONUtils.fromJson(GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
-                if (superpower != null) {
-                    ThreeCore.LOGGER.info("Registered superpower {}!", resourcelocation1);
-                    this.registeredSuperpowers.put(resourcelocation1, superpower);
-                }
-            } catch (Throwable throwable) {
-                ThreeCore.LOGGER.error("Couldn't read superpower {} from {}", resourcelocation1, resourcelocation, throwable);
+    protected void apply(Map<ResourceLocation, JsonObject> splashList, IResourceManager resourceManagerIn, IProfiler profilerIn) {
+        for (Map.Entry<ResourceLocation, JsonObject> entry : splashList.entrySet()) {
+            ResourceLocation resourcelocation = entry.getKey();
+            try {
+                Superpower superpower = parseSuperpower(resourcelocation, entry.getValue());
+                this.registeredSuperpowers.put(resourcelocation, superpower);
+            } catch (Exception e) {
+                ThreeCore.LOGGER.error("Parsing error loading superpower {}", resourcelocation, e);
             }
         }
+        ThreeCore.LOGGER.info("Loaded {} superpowers", this.registeredSuperpowers.size());
     }
 
     public Superpower parseSuperpower(ResourceLocation resourceLocation, JsonObject json) throws Exception {

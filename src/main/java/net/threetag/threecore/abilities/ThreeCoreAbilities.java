@@ -1,13 +1,5 @@
 package net.threetag.threecore.abilities;
 
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.capability.AbilityEventHandler;
-import net.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
-import net.threetag.threecore.abilities.client.AbilityClientHandler;
-import net.threetag.threecore.abilities.client.renderer.AbilityBarRenderer;
-import net.threetag.threecore.abilities.command.SuperpowerCommand;
-import net.threetag.threecore.abilities.condition.ConditionType;
-import net.threetag.threecore.abilities.superpower.SuperpowerManager;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
@@ -21,9 +13,18 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.abilities.capability.AbilityEventHandler;
+import net.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
+import net.threetag.threecore.abilities.client.AbilityClientHandler;
+import net.threetag.threecore.abilities.client.renderer.AbilityBarRenderer;
+import net.threetag.threecore.abilities.command.SuperpowerCommand;
+import net.threetag.threecore.abilities.condition.ConditionType;
 import net.threetag.threecore.abilities.network.*;
+import net.threetag.threecore.abilities.superpower.SuperpowerManager;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -88,6 +89,10 @@ public class ThreeCoreAbilities {
     @SubscribeEvent
     public void serverStarting(FMLServerStartingEvent e) {
         SuperpowerCommand.register(e.getCommandDispatcher());
+    }
+
+    @SubscribeEvent
+    public void serverAboutToStart(FMLServerAboutToStartEvent e) {
         e.getServer().getResourceManager().addReloadListener(new SuperpowerManager());
     }
 }

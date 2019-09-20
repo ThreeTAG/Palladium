@@ -1,7 +1,7 @@
 package net.threetag.threecore.base.block;
 
 import net.threetag.threecore.base.tileentity.GrinderTileEntity;
-import net.threetag.threecore.util.TCDamageSources;
+import net.threetag.threecore.util.damage.TCDamageSources;
 import net.threetag.threecore.util.block.BlockUtil;
 import net.threetag.threecore.util.sounds.ThreeCoreSounds;
 import net.minecraft.block.*;

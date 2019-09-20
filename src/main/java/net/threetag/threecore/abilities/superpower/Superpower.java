@@ -4,7 +4,7 @@ import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.AbilityGenerator;
 import net.threetag.threecore.abilities.AbilityMap;
 import net.threetag.threecore.abilities.IAbilityProvider;
-import net.threetag.threecore.util.render.IIcon;
+import net.threetag.threecore.util.icon.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 

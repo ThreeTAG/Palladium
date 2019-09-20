@@ -1,4 +1,4 @@
-package net.threetag.threecore.util;
+package net.threetag.threecore.util.damage;
 
 import net.minecraft.util.DamageSource;
 

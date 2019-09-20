@@ -7,7 +7,7 @@ import net.threetag.threecore.abilities.client.gui.BuyAbilityScreen;
 import net.threetag.threecore.util.threedata.EnumSync;
 import net.threetag.threecore.util.threedata.ItemStackThreeData;
 import net.threetag.threecore.util.threedata.ThreeData;
-import net.threetag.threecore.util.render.ItemIcon;
+import net.threetag.threecore.util.icon.ItemIcon;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;

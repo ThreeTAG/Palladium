@@ -7,7 +7,7 @@ import net.threetag.threecore.abilities.condition.BuyableAbilityCondition;
 import net.threetag.threecore.abilities.condition.Condition;
 import net.threetag.threecore.abilities.network.BuyConditionMessage;
 import net.threetag.threecore.util.client.gui.BackgroundlessButton;
-import net.threetag.threecore.util.render.IIcon;
+import net.threetag.threecore.util.icon.IIcon;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;

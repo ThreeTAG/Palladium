@@ -1,4 +1,4 @@
-package net.threetag.threecore.util.render;
+package net.threetag.threecore.util.icon;
 
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;

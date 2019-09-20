@@ -1,6 +1,6 @@
 package net.threetag.threecore.abilities.client.gui;
 
-import net.threetag.threecore.util.render.IIcon;
+import net.threetag.threecore.util.icon.IIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 

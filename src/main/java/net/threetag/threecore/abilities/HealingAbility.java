@@ -4,7 +4,7 @@ import net.threetag.threecore.util.threedata.ThreeData;
 import net.threetag.threecore.util.threedata.FloatThreeData;
 import net.threetag.threecore.util.threedata.IntegerThreeData;
 import net.threetag.threecore.util.threedata.EnumSync;
-import net.threetag.threecore.util.render.TexturedIcon;
+import net.threetag.threecore.util.icon.TexturedIcon;
 import net.minecraft.entity.LivingEntity;
 
 public class HealingAbility extends Ability {

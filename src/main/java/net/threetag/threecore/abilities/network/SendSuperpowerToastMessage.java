@@ -1,7 +1,7 @@
 package net.threetag.threecore.abilities.network;
 
-import net.threetag.threecore.util.render.IIcon;
-import net.threetag.threecore.util.render.IconSerializer;
+import net.threetag.threecore.util.icon.IIcon;
+import net.threetag.threecore.util.icon.IconSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;

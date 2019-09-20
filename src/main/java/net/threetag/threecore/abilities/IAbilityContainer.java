@@ -15,7 +15,7 @@ import net.threetag.threecore.util.threedata.EnumSync;
 import net.threetag.threecore.abilities.network.AddAbilityMessage;
 import net.threetag.threecore.abilities.network.RemoveAbilityMessage;
 import net.threetag.threecore.abilities.network.UpdateAbilityMessage;
-import net.threetag.threecore.util.render.IIcon;
+import net.threetag.threecore.util.icon.IIcon;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

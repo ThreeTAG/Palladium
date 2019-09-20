@@ -1,4 +1,4 @@
-package net.threetag.threecore.util.render;
+package net.threetag.threecore.util.icon;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;

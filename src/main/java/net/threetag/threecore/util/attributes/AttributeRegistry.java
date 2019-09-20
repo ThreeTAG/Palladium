@@ -1,8 +1,8 @@
 package net.threetag.threecore.util.attributes;
 
-import net.threetag.threecore.util.render.IIcon;
-import net.threetag.threecore.util.render.ItemIcon;
-import net.threetag.threecore.util.render.TexturedIcon;
+import net.threetag.threecore.util.icon.IIcon;
+import net.threetag.threecore.util.icon.ItemIcon;
+import net.threetag.threecore.util.icon.TexturedIcon;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;

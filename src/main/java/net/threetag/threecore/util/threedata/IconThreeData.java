@@ -3,8 +3,8 @@ package net.threetag.threecore.util.threedata;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
-import net.threetag.threecore.util.render.IIcon;
-import net.threetag.threecore.util.render.IconSerializer;
+import net.threetag.threecore.util.icon.IIcon;
+import net.threetag.threecore.util.icon.IconSerializer;
 
 public class IconThreeData extends ThreeData<IIcon> {
 

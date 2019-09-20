@@ -3,7 +3,7 @@ package net.threetag.threecore.abilities;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import net.threetag.threecore.util.attributes.AttributeRegistry;
-import net.threetag.threecore.util.render.IIcon;
+import net.threetag.threecore.util.icon.IIcon;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;

@@ -7,7 +7,7 @@ import net.threetag.threecore.abilities.client.gui.BuyAbilityScreen;
 import net.threetag.threecore.util.threedata.EnumSync;
 import net.threetag.threecore.util.threedata.ExperienceThreeData;
 import net.threetag.threecore.util.threedata.ThreeData;
-import net.threetag.threecore.util.render.ExperienceIcon;
+import net.threetag.threecore.util.icon.ExperienceIcon;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
