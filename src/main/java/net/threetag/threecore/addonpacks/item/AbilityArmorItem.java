@@ -7,7 +7,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
@@ -15,17 +18,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.LazyLoadBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.DistExecutor;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.AbilityGenerator;
 import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.abilities.AbilityMap;
 import net.threetag.threecore.abilities.IAbilityProvider;
 import net.threetag.threecore.abilities.capability.ItemAbilityContainerProvider;
+import net.threetag.threecore.util.client.model.ModelRegistry;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -38,6 +44,8 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider {
     public final Map<ResourceLocation, IArmorTexturePropertyGetter> armorTextureProperties = Maps.newLinkedHashMap();
     private ResourceLocation armorTexture;
     private Map<List<Pair<ResourceLocation, Float>>, ResourceLocation> armorTextureOverrides = Maps.newLinkedHashMap();
+    @OnlyIn(Dist.CLIENT)
+    public LazyLoadBase<BipedModel> model;
 
     public AbilityArmorItem(IArmorMaterial materialIn, EquipmentSlotType slot, Properties builder) {
         super(materialIn, slot, builder);
@@ -87,6 +95,18 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider {
         return this;
     }
 
+    public AbilityArmorItem setArmorModel(String key) {
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            this.model = new LazyLoadBase<BipedModel>(() -> {
+                Model model = ModelRegistry.getModel(key);
+                if (model instanceof BipedModel)
+                    return (BipedModel) model;
+                return null;
+            });
+        });
+        return this;
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Nullable
     @Override
@@ -109,6 +129,17 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider {
                 return resourceLocation[0].toString();
         }
         return this.armorTexture == null ? null : this.armorTexture.toString();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Nullable
+    @Override
+    public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
+        if (this.model != null && this.model.getValue() != null) {
+            this.model.getValue().setModelAttributes(_default);
+            return (A) this.model.getValue();
+        }
+        return null;
     }
 
     @Nullable
@@ -150,6 +181,9 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider {
                 }
             }
         }
+
+        item.setArmorModel(JSONUtils.getString(jsonObject, "armor_model", ""));
+
         return item.setAbilities(JSONUtils.hasField(jsonObject, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(jsonObject, "abilities"), true) : null);
     }
 

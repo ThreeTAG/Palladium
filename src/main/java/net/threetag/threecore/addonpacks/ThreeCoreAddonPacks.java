@@ -48,8 +48,9 @@ public class ThreeCoreAddonPacks {
         // Add Pack Finder to client
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             // for the case you run runData
-            if (Minecraft.getInstance() != null)
+            if (Minecraft.getInstance() != null) {
                 Minecraft.getInstance().getResourcePackList().addPackFinder(new AddonPackFinder());
+            }
         });
     }
 

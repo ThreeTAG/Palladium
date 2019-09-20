@@ -1,8 +1,12 @@
 package net.threetag.threecore;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -18,6 +22,7 @@ import net.threetag.threecore.karma.ThreeCoreKarma;
 import net.threetag.threecore.sizechanging.ThreeCoreSizeChanging;
 import net.threetag.threecore.util.SupporterHandler;
 import net.threetag.threecore.util.client.RenderUtil;
+import net.threetag.threecore.util.client.model.EntityModelManager;
 import net.threetag.threecore.util.data.ThreeCoreBlockTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreItemTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreRecipeProvider;
@@ -54,6 +59,7 @@ public class ThreeCore {
 
         // Misc
         MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new EntityModelManager()));
     }
 
     public void gatherData(GatherDataEvent e) {
