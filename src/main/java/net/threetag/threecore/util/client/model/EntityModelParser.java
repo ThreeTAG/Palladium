@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.JSONUtils;
+import net.threetag.threecore.util.json.TCJsonUtil;
 
 import java.util.List;
 import java.util.function.Function;
@@ -33,9 +34,17 @@ public class EntityModelParser implements Function<JsonObject, EntityModel> {
     }
 
     public static RendererModel parseRendererModel(JsonObject json, Model model) {
-        RendererModel rendererModel = new RendererModel(model, JSONUtils.getInt(json, "texture_offset_x", 0), JSONUtils.getInt(json, "texture_offset_y", 0));
-        rendererModel.addBox(JSONUtils.getFloat(json, "offset_x", 0F), JSONUtils.getFloat(json, "offset_y", 0F), JSONUtils.getFloat(json, "offset_z", 0F), JSONUtils.getInt(json, "width", 1), JSONUtils.getInt(json, "height", 1), JSONUtils.getInt(json, "depth", 1), JSONUtils.getFloat(json, "scale", 0F));
-        rendererModel.setRotationPoint(JSONUtils.getFloat(json, "rotation_point_x", 0F), JSONUtils.getFloat(json, "rotation_point_y", 0F), JSONUtils.getFloat(json, "rotation_point_z", 0F));
+        int[] textureOffsets = TCJsonUtil.getIntArray(json, 2, "texture_offset", 0, 0);
+        RendererModel rendererModel = new RendererModel(model, textureOffsets[0], textureOffsets[1]);
+        float[] offsets = TCJsonUtil.getFloatArray(json, 3, "offset", 0, 0, 0);
+        float[] rotationPoint = TCJsonUtil.getFloatArray(json, 3, "rotation_point", 0, 0, 0);
+        float[] rotation = TCJsonUtil.getFloatArray(json, 3, "rotation", 0, 0, 0);
+        int[] size = TCJsonUtil.getIntArray(json, 3, "size", 1, 1, 1);
+        rendererModel.addBox(offsets[0], offsets[1], offsets[2], size[0], size[1], size[2], JSONUtils.getFloat(json, "scale", 0F));
+        rendererModel.setRotationPoint(rotationPoint[0], rotationPoint[1], rotationPoint[2]);
+        rendererModel.rotateAngleX = rotation[0];
+        rendererModel.rotateAngleY = rotation[1];
+        rendererModel.rotateAngleZ = rotation[2];
 
         if (JSONUtils.hasField(json, "children")) {
             JsonArray children = JSONUtils.getJsonArray(json, "children");
