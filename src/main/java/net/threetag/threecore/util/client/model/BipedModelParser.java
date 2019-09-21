@@ -125,6 +125,7 @@ public class BipedModelParser extends EntityModelParser {
         public void render(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
             super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
             GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
             if (this.isChild) {
                 GlStateManager.scalef(0.5F, 0.5F, 0.5F);
                 GlStateManager.translatef(0.0F, 24.0F * scale, 0.0F);
@@ -149,6 +150,7 @@ public class BipedModelParser extends EntityModelParser {
                 cube.render(scale);
             }
 
+            GlStateManager.disableBlend();
             GlStateManager.popMatrix();
         }
 

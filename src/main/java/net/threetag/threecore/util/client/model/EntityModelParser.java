@@ -3,6 +3,8 @@ package net.threetag.threecore.util.client.model;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.model.Model;
@@ -42,10 +44,10 @@ public class EntityModelParser implements Function<JsonObject, EntityModel> {
         int[] size = TCJsonUtil.getIntArray(json, 3, "size", 1, 1, 1);
         rendererModel.addBox(offsets[0], offsets[1], offsets[2], size[0], size[1], size[2], JSONUtils.getFloat(json, "scale", 0F));
         rendererModel.setRotationPoint(rotationPoint[0], rotationPoint[1], rotationPoint[2]);
-        rendererModel.rotateAngleX = rotation[0];
-        rendererModel.rotateAngleY = rotation[1];
-        rendererModel.rotateAngleZ = rotation[2];
-
+        rendererModel.rotateAngleX = (float) Math.toRadians(rotation[0]);
+        rendererModel.rotateAngleY = (float) Math.toRadians(rotation[1]);
+        rendererModel.rotateAngleZ = (float) Math.toRadians(rotation[2]);
+        rendererModel.mirror = JSONUtils.getBoolean(json, "mirror");
         if (JSONUtils.hasField(json, "children")) {
             JsonArray children = JSONUtils.getJsonArray(json, "children");
             for (int i = 0; i < children.size(); i++) {
@@ -75,9 +77,13 @@ public class EntityModelParser implements Function<JsonObject, EntityModel> {
 
         @Override
         public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
             for (RendererModel cube : this.cubes) {
                 cube.render(scale);
             }
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 
