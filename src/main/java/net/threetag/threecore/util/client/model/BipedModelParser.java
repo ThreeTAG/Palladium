@@ -4,6 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.gui.RenderComponentsUtil;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
@@ -126,6 +129,7 @@ public class BipedModelParser extends EntityModelParser {
             super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
             if (this.isChild) {
                 GlStateManager.scalef(0.5F, 0.5F, 0.5F);
                 GlStateManager.translatef(0.0F, 24.0F * scale, 0.0F);

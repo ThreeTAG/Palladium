@@ -47,7 +47,7 @@ public class EntityModelParser implements Function<JsonObject, EntityModel> {
         rendererModel.rotateAngleX = (float) Math.toRadians(rotation[0]);
         rendererModel.rotateAngleY = (float) Math.toRadians(rotation[1]);
         rendererModel.rotateAngleZ = (float) Math.toRadians(rotation[2]);
-        rendererModel.mirror = JSONUtils.getBoolean(json, "mirror");
+        rendererModel.mirror = JSONUtils.getBoolean(json, "mirror", false);
         if (JSONUtils.hasField(json, "children")) {
             JsonArray children = JSONUtils.getJsonArray(json, "children");
             for (int i = 0; i < children.size(); i++) {
