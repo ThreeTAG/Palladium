@@ -77,6 +77,11 @@ public class SizeChangingEventHandler {
         });
     }
 
+    @SubscribeEvent
+    public void visibility(PlayerEvent.Visibility e) {
+        e.getPlayer().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> e.modifyVisibility(sizeChanging.getScale()));
+    }
+
     public static void copyScale(Entity source, Entity entity) {
         source.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging1 -> {
             entity.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
