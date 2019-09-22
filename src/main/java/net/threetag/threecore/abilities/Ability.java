@@ -20,6 +20,7 @@ import net.threetag.threecore.abilities.condition.Condition;
 import net.threetag.threecore.abilities.event.AbilityEventManager;
 import net.threetag.threecore.util.icon.IIcon;
 import net.threetag.threecore.util.icon.ItemIcon;
+import net.threetag.threecore.util.scripts.accessors.AbilityAccessor;
 import net.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
 import net.threetag.threecore.util.threedata.*;
 
@@ -97,7 +98,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
             ticks = 0;
         }
 
-        this.eventManager.fireEvent("tick", new LivingEntityAccessor(entity), this);
+        this.eventManager.fireEvent("tick", new LivingEntityAccessor(entity), new AbilityAccessor(this));
     }
 
     public void updateTick(LivingEntity entity) {
