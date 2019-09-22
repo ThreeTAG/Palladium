@@ -142,6 +142,7 @@
   "ability.threecore.invisibility": "Invisibility",
   "ability.threecore.slowfall": "Slowfall",
   "ability.threecore.water_breathing": "Water Breathing",
+  "ability.threecore.size_change": "Size Change",
   
   "ability.condition.threecore.action": "Key must be pressed once to active this ability",
   "ability.condition.threecore.held": "Key must be held to active this ability",
