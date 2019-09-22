@@ -1,7 +1,5 @@
 package net.threetag.threecore.sizechanging;
 
-import net.minecraft.entity.monster.CreeperEntity;
-import net.threetag.threecore.sizechanging.capability.ISizeChanging;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -9,8 +7,14 @@ import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.threetag.threecore.sizechanging.capability.ISizeChanging;
 
+import java.util.Random;
 import java.util.UUID;
 
 public class DefaultSizeChangeType extends SizeChangeType {
@@ -33,10 +37,25 @@ public class DefaultSizeChangeType extends SizeChangeType {
             setAttribute(map, PlayerEntity.REACH_DISTANCE, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
             setAttribute(map, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, (size - 1F) * 0.5D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
 
-            if(entity instanceof CreeperEntity) {
-                ((CreeperEntity)entity).explosionRadius = (int) (3F * size);
-            }
+            changeCreeperExplosionRadius(entity, size);
+            spawnWaterParticles(entity);
         }
+    }
+
+    public void changeCreeperExplosionRadius(Entity entity, float size) {
+        if (entity instanceof CreeperEntity) {
+            ((CreeperEntity) entity).explosionRadius = (int) (3F * size);
+        }
+    }
+
+    public void spawnWaterParticles(Entity entity) {
+        AxisAlignedBB box = entity.getBoundingBox();
+        Random random = new Random();
+        double x = box.minX + (box.maxX - box.minX) * random.nextDouble();
+        double y = box.minY + (box.maxY - box.minY) * random.nextDouble();
+        double z = box.minZ + (box.maxZ - box.minZ) * random.nextDouble();
+        if (entity.world.hasWater(new BlockPos(x, y, z)))
+            entity.world.addParticle(ParticleTypes.BUBBLE, x, y, z, 0, 0, 0);
     }
 
     @Override
