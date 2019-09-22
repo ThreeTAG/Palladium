@@ -38,6 +38,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType ATTRIBUTE_MODIFIER = new AbilityType(AttributeModifierAbility::new, ThreeCore.MODID, "attribute_modifier");
     public static final AbilityType INVISIBILITY = new AbilityType(InvisibilityAbility::new, ThreeCore.MODID, "invisibility");
     public static final AbilityType SLOWFALL = new AbilityType(SlowfallAbility::new, ThreeCore.MODID, "slowfall");
+    public static final AbilityType WATER_BREATHING = new AbilityType(WaterBreathingAbility::new, ThreeCore.MODID, "water_breathing");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -54,6 +55,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(ATTRIBUTE_MODIFIER);
         e.getRegistry().register(INVISIBILITY);
         e.getRegistry().register(SLOWFALL);
+        e.getRegistry().register(WATER_BREATHING);
     }
 
     @OnlyIn(Dist.CLIENT)
