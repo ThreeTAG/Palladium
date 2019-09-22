@@ -10,6 +10,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -26,6 +27,10 @@ import net.threetag.threecore.util.client.model.EntityModelManager;
 import net.threetag.threecore.util.data.ThreeCoreBlockTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreItemTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreRecipeProvider;
+import net.threetag.threecore.util.threedata.capability.CapabilityThreeData;
+import net.threetag.threecore.util.threedata.capability.SyncThreeDataMessage;
+import net.threetag.threecore.util.threedata.capability.ThreeDataProvider;
+import net.threetag.threecore.util.threedata.capability.UpdateThreeDataMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,6 +49,7 @@ public class ThreeCore {
     public ThreeCore() {
         // Basic stuff
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::gatherData);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         SupporterHandler.load();
         SupporterHandler.enableSupporterCheck();
 
@@ -60,6 +66,14 @@ public class ThreeCore {
         // Misc
         MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new EntityModelManager()));
+    }
+
+    public void setup(FMLCommonSetupEvent e) {
+        // ThreeData Cap
+        CapabilityThreeData.init();
+        registerMessage(UpdateThreeDataMessage.class, UpdateThreeDataMessage::toBytes, UpdateThreeDataMessage::new, UpdateThreeDataMessage::handle);
+        registerMessage(SyncThreeDataMessage.class, SyncThreeDataMessage::toBytes, SyncThreeDataMessage::new, SyncThreeDataMessage::handle);
+        MinecraftForge.EVENT_BUS.register(new ThreeDataProvider.EventHandler());
     }
 
     public void gatherData(GatherDataEvent e) {
