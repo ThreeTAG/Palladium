@@ -19,7 +19,6 @@ import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.capability.AbilityEventHandler;
 import net.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
 import net.threetag.threecore.abilities.client.AbilityClientHandler;
 import net.threetag.threecore.abilities.client.renderer.AbilityBarRenderer;

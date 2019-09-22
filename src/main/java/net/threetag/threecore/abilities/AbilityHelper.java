@@ -13,10 +13,7 @@ import net.threetag.threecore.abilities.condition.AbilityUnlockedCondition;
 import net.threetag.threecore.abilities.condition.Condition;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 public class AbilityHelper {
@@ -65,6 +62,21 @@ public class AbilityHelper {
             IAbilityContainer container = getAbilityContainerFromId(entity, new ResourceLocation(strings[0]));
             return container.getAbility(strings[1]);
         }
+    }
+
+    public static <T extends Ability> List<T> getAbilitiesFromClass(LivingEntity entity, Class<T> abilityClass) {
+        return getAbilitiesFromClass(getAbilities(entity), abilityClass);
+    }
+
+    public static <T extends Ability> List<T> getAbilitiesFromClass(List<Ability> list, Class<T> abilityClass) {
+        List<T> abilities = new LinkedList<>();
+        for (Ability ab : list) {
+            if (ab.getClass() == abilityClass) {
+                abilities.add((T) ab);
+            }
+        }
+
+        return abilities;
     }
 
     // TODO maybe make this a setting for conditions, instead of hardcoding it to AbilityUnlockedCondition

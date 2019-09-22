@@ -139,6 +139,7 @@
   "ability.threecore.flight": "Flight",
   "ability.threecore.teleport": "Teleport",
   "ability.threecore.attribute_modifier": "Attribute Modifier",
+  "ability.threecore.invisibility": "Invisibility",
   
   "ability.condition.threecore.action": "Key must be pressed once to active this ability",
   "ability.condition.threecore.held": "Key must be held to active this ability",

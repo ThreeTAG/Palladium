@@ -1,4 +1,4 @@
-package net.threetag.threecore.abilities.capability;
+package net.threetag.threecore.abilities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -14,8 +14,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.AbilityHelper;
-import net.threetag.threecore.abilities.IAbilityContainer;
+import net.threetag.threecore.abilities.capability.AbilityContainerProvider;
+import net.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
 import net.threetag.threecore.abilities.network.SendPlayerAbilityContainerMessage;
 
 public class AbilityEventHandler {
@@ -75,6 +75,16 @@ public class AbilityEventHandler {
     public void onChangeEquipment(LivingEquipmentChangeEvent e) {
         // Make sure to call lastTick when player unequips item with abilities on it. Otherwise players could e.g. keep attribute modifiers
         e.getFrom().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(a -> a.getAbilityMap().forEach((s, ability) -> ability.lastTick(e.getEntityLiving())));
+    }
+
+    @SubscribeEvent
+    public void onRenderLivingPre(PlayerEvent.Visibility e) {
+        for (InvisibilityAbility invisibilityAbility : AbilityHelper.getAbilitiesFromClass(e.getPlayer(), InvisibilityAbility.class)) {
+            if (invisibilityAbility.getConditionManager().isEnabled()) {
+                e.modifyVisibility(0D);
+                return;
+            }
+        }
     }
 
 }
