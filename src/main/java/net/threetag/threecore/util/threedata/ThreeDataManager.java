@@ -34,9 +34,9 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT> {
             this.dataHolder.update(data, value);
             this.dataHolder.setDirty();
 
-            if (this.dataHolder instanceof Ability) {
+            if (this.dataHolder instanceof Ability && ((Ability) this.dataHolder).entity != null) {
                 ((Ability) this.dataHolder).getEventManager().fireEvent("ability_data_changed", new LivingEntityAccessor(((Ability) this.dataHolder).entity), this.dataHolder, data.key, oldValue, value);
-            } else if (this.dataHolder instanceof Condition) {
+            } else if (this.dataHolder instanceof Condition && ((Condition) this.dataHolder).ability.entity != null) {
                 ((Condition) this.dataHolder).ability.getEventManager().fireEvent("condition_data_changed", new LivingEntityAccessor(((Condition) this.dataHolder).ability.entity), this.dataHolder, data.key, oldValue, value);
             }
         }
