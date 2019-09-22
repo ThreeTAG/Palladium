@@ -1,7 +1,5 @@
 package net.threetag.threecore.abilities;
 
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.util.threedata.ThreeData;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.api.distmarker.Dist;
@@ -14,6 +12,8 @@ import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.util.threedata.ThreeData;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,6 +30,8 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
 
     public static IForgeRegistry<AbilityType> REGISTRY;
 
+    public static final AbilityType DUMMY = new AbilityType(DummyAbility::new, ThreeCore.MODID, "dummy");
+    public static final AbilityType COMMAND = new AbilityType(CommandAbility::new, ThreeCore.MODID, "command");
     public static final AbilityType HEALING = new AbilityType(HealingAbility::new, ThreeCore.MODID, "healing");
     public static final AbilityType FLIGHT = new AbilityType(FlightAbility::new, ThreeCore.MODID, "flight");
     public static final AbilityType TELEPORT = new AbilityType(TeleportAbility::new, ThreeCore.MODID, "teleport");
@@ -42,6 +44,8 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
 
     @SubscribeEvent
     public static void onRegisterAbilityTypes(RegistryEvent.Register<AbilityType> e) {
+        e.getRegistry().register(DUMMY);
+        e.getRegistry().register(COMMAND);
         e.getRegistry().register(HEALING);
         e.getRegistry().register(FLIGHT);
         e.getRegistry().register(TELEPORT);

@@ -133,6 +133,8 @@
   "karma.class.legend": "Legend",
   "karma.toast.title": "Your karma has changed!",
   
+  "ability.threecore.dummy": "Dummy",
+  "ability.threecore.command": "Command",
   "ability.threecore.healing": "Healing",
   "ability.threecore.flight": "Flight",
   "ability.threecore.teleport": "Teleport",
