@@ -1,5 +1,7 @@
 package net.threetag.threecore.util.attributes;
 
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.sizechanging.SizeManager;
 import net.threetag.threecore.util.icon.IIcon;
 import net.threetag.threecore.util.icon.ItemIcon;
 import net.threetag.threecore.util.icon.TexturedIcon;
@@ -33,6 +35,8 @@ public class AttributeRegistry {
         REGISTRY.register(new ResourceLocation("minecraft", "reach_distance"), new AttributeEntry(PlayerEntity.REACH_DISTANCE));
         REGISTRY.register(new ResourceLocation("minecraft", "nametag_distance"), new AttributeEntry(LivingEntity.NAMETAG_DISTANCE));
         REGISTRY.register(new ResourceLocation("minecraft", "swim_speed"), new AttributeEntry(LivingEntity.SWIM_SPEED));
+        REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "size_width"), new AttributeEntry(SizeManager.SIZE_WIDTH));
+        REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "size_height"), new AttributeEntry(SizeManager.SIZE_HEIGHT));
     }
 
     public static AttributeEntry getEntry(IAttribute attribute) {
