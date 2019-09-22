@@ -1,84 +1,79 @@
 package net.threetag.threecore.util.scripts.accessors;
 
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.ResourceLocation;
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.abilities.IAbilityContainer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.threetag.threecore.util.player.PlayerHelper;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class LivingEntityAccessor {
+public class LivingEntityAccessor extends EntityAccessor {
 
-    public final LivingEntity entity;
+    public final LivingEntity livingEntity;
 
     public LivingEntityAccessor(LivingEntity entity) {
-        this.entity = entity;
+        super(entity);
+        this.livingEntity = entity;
     }
 
-    public String getName() {
-        return this.entity.getDisplayName().getFormattedText();
+    public boolean isChild() {
+        return this.livingEntity.isChild();
     }
 
-    public void setName(String name) {
-        this.entity.setCustomName(new StringTextComponent(name));
+    public float getHealth() {
+        return this.livingEntity.getHealth();
     }
 
-    public void setNameVisible(boolean visible) {
-        this.entity.setCustomNameVisible(visible);
+    public void setHealth(float health) {
+        this.livingEntity.setHealth(health);
     }
 
-    public UUID getUUID() {
-        return this.entity.getUniqueID();
+    public float getMaxHealth() {
+        return this.livingEntity.getMaxHealth();
     }
 
-    public double getPosX() {
-        return this.entity.posX;
+    public void heal(float amount) {
+        this.livingEntity.heal(amount);
     }
 
-    public double getPosY() {
-        return this.entity.posY;
+    public boolean isUndead() {
+        return this.livingEntity.isEntityUndead();
     }
 
-    public double getPosZ() {
-        return this.entity.posZ;
+    public boolean isOnLadder() {
+        return this.livingEntity.isOnLadder();
     }
 
-    public void setPosition(double x, double y, double z) {
-        this.entity.setPositionAndUpdate(x, y, z);
+    public boolean isSleeping() {
+        return this.livingEntity.isSleeping();
     }
 
-    public float getWidth() {
-        return this.entity.getWidth();
+    public boolean isElytraFlying() {
+        return this.livingEntity.isElytraFlying();
     }
 
-    public float getHeight() {
-        return this.entity.getHeight();
+    public int getIdleTime() {
+        return this.getIdleTime();
     }
 
-    public int getTicksExisted() {
-        return this.entity.ticksExisted;
+    public float getAbsorptionAmount() {
+        return this.livingEntity.getAbsorptionAmount();
     }
 
-    public void sendMessage(String message) {
-        this.entity.sendMessage(new StringTextComponent(message));
+    public float getMovementSpeed() {
+        return this.livingEntity.getAIMoveSpeed();
     }
 
-    public void sendTranslatedMessage(String message, Object... args) {
-        this.entity.sendMessage(new TranslationTextComponent(message, args));
-    }
-
-    public boolean isSneaking() {
-        return this.entity.isSneaking();
+    public void setMovementSpeed(float speed) {
+        this.livingEntity.setAIMoveSpeed(speed);
     }
 
     public AbilityAccessor[] getAbilities() {
-        List<Ability> list = AbilityHelper.getAbilities(this.entity);
+        List<Ability> list = AbilityHelper.getAbilities(this.livingEntity);
         AbilityAccessor[] array = new AbilityAccessor[list.size()];
 
         for (int i = 0; i < list.size(); i++) {
@@ -89,7 +84,7 @@ public class LivingEntityAccessor {
     }
 
     public AbilityAccessor[] getAbilities(String containerId) {
-        IAbilityContainer container = AbilityHelper.getAbilityContainerFromId(this.entity, new ResourceLocation(containerId));
+        IAbilityContainer container = AbilityHelper.getAbilityContainerFromId(this.livingEntity, new ResourceLocation(containerId));
 
         if (container != null)
             return new AbilityAccessor[0];
@@ -106,4 +101,13 @@ public class LivingEntityAccessor {
         return array;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return this.livingEntity.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.livingEntity.hashCode();
+    }
 }

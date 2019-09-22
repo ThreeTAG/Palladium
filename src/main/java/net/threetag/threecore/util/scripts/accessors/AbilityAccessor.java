@@ -40,4 +40,14 @@ public class AbilityAccessor {
         return this.ability.getConditionManager().isEnabled();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return this.ability.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.ability.hashCode();
+    }
+
 }
