@@ -1,17 +1,18 @@
 package net.threetag.threecore.sizechanging;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.threetag.threecore.sizechanging.capability.CapabilitySizeChanging;
-import net.threetag.threecore.util.client.RenderUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.util.math.Vec2f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.threetag.threecore.sizechanging.capability.CapabilitySizeChanging;
+import net.threetag.threecore.util.client.RenderUtil;
+import org.objectweb.asm.tree.InsnList;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -49,4 +50,11 @@ public class SizeManager {
         });
     }
 
+    @OnlyIn(Dist.CLIENT)
+    public static void renderInInvCallback(LivingEntity entity) {
+        entity.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
+            float width = 1F / sizeChanging.getRenderWidth(RenderUtil.renderTickTime);
+            GlStateManager.scalef(width, 1F / sizeChanging.getRenderHeight(RenderUtil.renderTickTime), width);
+        });
+    }
 }

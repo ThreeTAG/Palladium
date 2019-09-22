@@ -1,5 +1,6 @@
 package net.threetag.threecore.sizechanging;
 
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
