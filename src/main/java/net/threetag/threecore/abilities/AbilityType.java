@@ -37,6 +37,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType TELEPORT = new AbilityType(TeleportAbility::new, ThreeCore.MODID, "teleport");
     public static final AbilityType ATTRIBUTE_MODIFIER = new AbilityType(AttributeModifierAbility::new, ThreeCore.MODID, "attribute_modifier");
     public static final AbilityType INVISIBILITY = new AbilityType(InvisibilityAbility::new, ThreeCore.MODID, "invisibility");
+    public static final AbilityType SLOWFALL = new AbilityType(SlowfallAbility::new, ThreeCore.MODID, "slowfall");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -52,6 +53,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(TELEPORT);
         e.getRegistry().register(ATTRIBUTE_MODIFIER);
         e.getRegistry().register(INVISIBILITY);
+        e.getRegistry().register(SLOWFALL);
     }
 
     @OnlyIn(Dist.CLIENT)
