@@ -18,8 +18,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class SizeManager {
 
-    public static final IAttribute SIZE_WIDTH = (new RangedAttribute(null, "generic.sizeWidth", 1D, 0.1D, 32D)).setShouldWatch(true);
-    public static final IAttribute SIZE_HEIGHT = (new RangedAttribute(null, "generic.sizeHeight", 1D, 0.1D, 32D)).setShouldWatch(true);
+    public static final IAttribute SIZE_WIDTH = (new RangedAttribute(null, "threecore.sizeWidth", 1D, 0.1D, 32D)).setShouldWatch(true);
+    public static final IAttribute SIZE_HEIGHT = (new RangedAttribute(null, "threecore.sizeHeight", 1D, 0.1D, 32D)).setShouldWatch(true);
 
     public static Vec2f getSize(Entity entity, Pose pose) {
         AtomicReference<Float> width = new AtomicReference<>(1F);

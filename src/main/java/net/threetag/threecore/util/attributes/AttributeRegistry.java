@@ -1,10 +1,5 @@
 package net.threetag.threecore.util.attributes;
 
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.sizechanging.SizeManager;
-import net.threetag.threecore.util.icon.IIcon;
-import net.threetag.threecore.util.icon.ItemIcon;
-import net.threetag.threecore.util.icon.TexturedIcon;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
@@ -12,6 +7,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.SimpleRegistry;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.sizechanging.SizeManager;
+import net.threetag.threecore.util.icon.IIcon;
+import net.threetag.threecore.util.icon.ItemIcon;
+import net.threetag.threecore.util.icon.TexturedIcon;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -37,6 +37,10 @@ public class AttributeRegistry {
         REGISTRY.register(new ResourceLocation("minecraft", "swim_speed"), new AttributeEntry(LivingEntity.SWIM_SPEED));
         REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "size_width"), new AttributeEntry(SizeManager.SIZE_WIDTH));
         REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "size_height"), new AttributeEntry(SizeManager.SIZE_HEIGHT));
+        REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "step_height"), new AttributeEntry(TCAttributes.STEP_HEIGHT));
+        REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "fall_resistance"), new AttributeEntry(TCAttributes.FALL_RESISTANCE));
+        REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "jump_height"), new AttributeEntry(TCAttributes.JUMP_HEIGHT));
+        REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "sprint_speed"), new AttributeEntry(TCAttributes.SPRINT_SPEED));
     }
 
     public static AttributeEntry getEntry(IAttribute attribute) {

@@ -14,6 +14,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.threetag.threecore.sizechanging.capability.ISizeChanging;
+import net.threetag.threecore.util.attributes.TCAttributes;
 
 import java.util.Random;
 import java.util.UUID;
@@ -30,10 +31,8 @@ public class DefaultSizeChangeType extends SizeChangeType {
         if (entity instanceof LivingEntity) {
             AbstractAttributeMap map = ((LivingEntity) entity).getAttributes();
             setAttribute(map, SharedMonsterAttributes.MOVEMENT_SPEED, (size - 1F) * 0.5D, AttributeModifier.Operation.MULTIPLY_TOTAL, SizeChangeType.ATTRIBUTE_UUID);
-            // TODO reimplement those attributes
-            //setAttribute(map, LCAttributes.JUMP_HEIGHT, (size - 1F) * 1D, 0, SizeChangeType.ATTRIBUTE_UUID);
-            //setAttribute(map, LCAttributes.FALL_RESISTANCE, size > 1F ? 1F / size : size, 1, SizeChangeType.ATTRIBUTE_UUID);
-            //setAttribute(map, LCAttributes.STEP_HEIGHT, size, 1, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute(map, TCAttributes.JUMP_HEIGHT, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute(map, TCAttributes.FALL_RESISTANCE, size > 1F ? 1F / size : size, AttributeModifier.Operation.MULTIPLY_BASE, SizeChangeType.ATTRIBUTE_UUID);
             setAttribute(map, SharedMonsterAttributes.ATTACK_DAMAGE, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
             setAttribute(map, PlayerEntity.REACH_DISTANCE, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
             setAttribute(map, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, (size - 1F) * 0.5D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
