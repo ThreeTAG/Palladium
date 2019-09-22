@@ -79,7 +79,8 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
                     "td.other{background-color:#42A3FFAA;}\n" +
                     "td.error{color:#FF0000;}\n" +
                     "th,td.true,td.false,td.other{text-align:center;}\n" +
-                    "</style></head><body>");
+                    "</style><link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"https://i.imgur.com/am80ox1.png\">" +
+                    "</head><body>");
 
             List<Condition> conditions = new ArrayList<>();
             Map<String, List<Condition>> sorted = new HashMap<>();
