@@ -117,7 +117,6 @@ public class ThreeCoreBase {
     public static final Item ADVANCED_CIRCUIT = null;
 
     // Storage Blocks
-    // TODO Harvest levels
     @ObjectHolder("copper_block")
     public static final Block COPPER_BLOCK = null;
     @ObjectHolder("tin_block")
@@ -177,71 +176,71 @@ public class ThreeCoreBase {
 
     // Ingots
     @ObjectHolder("copper_ingot")
-    public static final Block COPPER_INGOT = null;
+    public static final Item COPPER_INGOT = null;
     @ObjectHolder("tin_ingot")
-    public static final Block TIN_INGOT = null;
+    public static final Item TIN_INGOT = null;
     @ObjectHolder("lead_ingot")
-    public static final Block LEAD_INGOT = null;
+    public static final Item LEAD_INGOT = null;
     @ObjectHolder("silver_ingot")
-    public static final Block SILVER_INGOT = null;
+    public static final Item SILVER_INGOT = null;
     @ObjectHolder("palladium_ingot")
-    public static final Block PALLADIUM_INGOT = null;
+    public static final Item PALLADIUM_INGOT = null;
     @ObjectHolder("vibranium_ingot")
-    public static final Block VIBRANIUM_INGOT = null;
+    public static final Item VIBRANIUM_INGOT = null;
     @ObjectHolder("osmium_ingot")
-    public static final Block OSMIUM_INGOT = null;
+    public static final Item OSMIUM_INGOT = null;
     @ObjectHolder("uranium_ingot")
-    public static final Block URANIUM_INGOT = null;
+    public static final Item URANIUM_INGOT = null;
     @ObjectHolder("titanium_ingot")
-    public static final Block TITANIUM_INGOT = null;
+    public static final Item TITANIUM_INGOT = null;
     @ObjectHolder("iridium_ingot")
-    public static final Block IRIDIUM_INGOT = null;
+    public static final Item IRIDIUM_INGOT = null;
     @ObjectHolder("uru_ingot")
-    public static final Block URU_INGOT = null;
+    public static final Item URU_INGOT = null;
     @ObjectHolder("bronze_ingot")
-    public static final Block BRONZE_INGOT = null;
+    public static final Item BRONZE_INGOT = null;
     @ObjectHolder("intertium_ingot")
-    public static final Block INTERTIUM_INGOT = null;
+    public static final Item INTERTIUM_INGOT = null;
     @ObjectHolder("steel_ingot")
-    public static final Block STEEL_INGOT = null;
+    public static final Item STEEL_INGOT = null;
     @ObjectHolder("gold_titanium_alloy_ingot")
-    public static final Block GOLD_TITANIUM_ALLOY_INGOT = null;
+    public static final Item GOLD_TITANIUM_ALLOY_INGOT = null;
     @ObjectHolder("adamantium_ingot")
-    public static final Block ADAMANTIUM_INGOT = null;
+    public static final Item ADAMANTIUM_INGOT = null;
 
     // Nuggets
     @ObjectHolder("copper_nugget")
-    public static final Block COPPER_NUGGET = null;
+    public static final Item COPPER_NUGGET = null;
     @ObjectHolder("tin_nugget")
-    public static final Block TIN_NUGGET = null;
+    public static final Item TIN_NUGGET = null;
     @ObjectHolder("lead_nugget")
-    public static final Block LEAD_NUGGET = null;
+    public static final Item LEAD_NUGGET = null;
     @ObjectHolder("silver_nugget")
-    public static final Block SILVER_NUGGET = null;
+    public static final Item SILVER_NUGGET = null;
     @ObjectHolder("palladium_nugget")
-    public static final Block PALLADIUM_NUGGET = null;
+    public static final Item PALLADIUM_NUGGET = null;
     @ObjectHolder("vibranium_nugget")
-    public static final Block VIBRANIUM_NUGGET = null;
+    public static final Item VIBRANIUM_NUGGET = null;
     @ObjectHolder("osmium_nugget")
-    public static final Block OSMIUM_NUGGET = null;
+    public static final Item OSMIUM_NUGGET = null;
     @ObjectHolder("uranium_nugget")
-    public static final Block URANIUM_NUGGET = null;
+    public static final Item URANIUM_NUGGET = null;
     @ObjectHolder("titanium_nugget")
-    public static final Block TITANIUM_NUGGET = null;
+    public static final Item TITANIUM_NUGGET = null;
     @ObjectHolder("iridium_nugget")
-    public static final Block IRIDIUM_NUGGET = null;
+    public static final Item IRIDIUM_NUGGET = null;
     @ObjectHolder("uru_nugget")
-    public static final Block URU_NUGGET = null;
+    public static final Item URU_NUGGET = null;
     @ObjectHolder("bronze_nugget")
-    public static final Block BRONZE_NUGGET = null;
+    public static final Item BRONZE_NUGGET = null;
     @ObjectHolder("intertium_nugget")
-    public static final Block INTERTIUM_NUGGET = null;
+    public static final Item INTERTIUM_NUGGET = null;
     @ObjectHolder("steel_nugget")
-    public static final Block STEEL_NUGGET = null;
+    public static final Item STEEL_NUGGET = null;
     @ObjectHolder("gold_titanium_alloy_nugget")
-    public static final Block GOLD_TITANIUM_ALLOY_NUGGET = null;
+    public static final Item GOLD_TITANIUM_ALLOY_NUGGET = null;
     @ObjectHolder("adamantium_nugget")
-    public static final Block ADAMANTIUM_NUGGET = null;
+    public static final Item ADAMANTIUM_NUGGET = null;
 
     // Dusts
     @ObjectHolder("iron_dust")
@@ -249,37 +248,37 @@ public class ThreeCoreBase {
     @ObjectHolder("gold_dust")
     public static final Item GOLD_DUST = null;
     @ObjectHolder("copper_dust")
-    public static final Block COPPER_DUST = null;
+    public static final Item COPPER_DUST = null;
     @ObjectHolder("tin_dust")
-    public static final Block TIN_DUST = null;
+    public static final Item TIN_DUST = null;
     @ObjectHolder("lead_dust")
-    public static final Block LEAD_DUST = null;
+    public static final Item LEAD_DUST = null;
     @ObjectHolder("silver_dust")
-    public static final Block SILVER_DUST = null;
+    public static final Item SILVER_DUST = null;
     @ObjectHolder("palladium_dust")
-    public static final Block PALLADIUM_DUST = null;
+    public static final Item PALLADIUM_DUST = null;
     @ObjectHolder("vibranium_dust")
-    public static final Block VIBRANIUM_DUST = null;
+    public static final Item VIBRANIUM_DUST = null;
     @ObjectHolder("osmium_dust")
-    public static final Block OSMIUM_DUST = null;
+    public static final Item OSMIUM_DUST = null;
     @ObjectHolder("uranium_dust")
-    public static final Block URANIUM_DUST = null;
+    public static final Item URANIUM_DUST = null;
     @ObjectHolder("titanium_dust")
-    public static final Block TITANIUM_DUST = null;
+    public static final Item TITANIUM_DUST = null;
     @ObjectHolder("iridium_dust")
-    public static final Block IRIDIUM_DUST = null;
+    public static final Item IRIDIUM_DUST = null;
     @ObjectHolder("uru_dust")
-    public static final Block URU_DUST = null;
+    public static final Item URU_DUST = null;
     @ObjectHolder("bronze_dust")
-    public static final Block BRONZE_DUST = null;
+    public static final Item BRONZE_DUST = null;
     @ObjectHolder("intertium_dust")
-    public static final Block INTERTIUM_DUST = null;
+    public static final Item INTERTIUM_DUST = null;
     @ObjectHolder("steel_dust")
-    public static final Block STEEL_DUST = null;
+    public static final Item STEEL_DUST = null;
     @ObjectHolder("gold_titanium_alloy_dust")
-    public static final Block GOLD_TITANIUM_ALLOY_DUST = null;
+    public static final Item GOLD_TITANIUM_ALLOY_DUST = null;
     @ObjectHolder("adamantium_dust")
-    public static final Block ADAMANTIUM_DUST = null;
+    public static final Item ADAMANTIUM_DUST = null;
 
     // Plates
     @ObjectHolder("iron_plate")
@@ -287,37 +286,37 @@ public class ThreeCoreBase {
     @ObjectHolder("gold_plate")
     public static final Item GOLD_PLATE = null;
     @ObjectHolder("copper_plate")
-    public static final Block COPPER_PLATE = null;
+    public static final Item COPPER_PLATE = null;
     @ObjectHolder("tin_plate")
-    public static final Block TIN_PLATE = null;
+    public static final Item TIN_PLATE = null;
     @ObjectHolder("lead_plate")
-    public static final Block LEAD_PLATE = null;
+    public static final Item LEAD_PLATE = null;
     @ObjectHolder("silver_plate")
-    public static final Block SILVER_PLATE = null;
+    public static final Item SILVER_PLATE = null;
     @ObjectHolder("palladium_plate")
-    public static final Block PALLADIUM_PLATE = null;
+    public static final Item PALLADIUM_PLATE = null;
     @ObjectHolder("vibranium_plate")
-    public static final Block VIBRANIUM_PLATE = null;
+    public static final Item VIBRANIUM_PLATE = null;
     @ObjectHolder("osmium_plate")
-    public static final Block OSMIUM_PLATE = null;
+    public static final Item OSMIUM_PLATE = null;
     @ObjectHolder("uranium_plate")
-    public static final Block URANIUM_PLATE = null;
+    public static final Item URANIUM_PLATE = null;
     @ObjectHolder("titanium_plate")
-    public static final Block TITANIUM_PLATE = null;
+    public static final Item TITANIUM_PLATE = null;
     @ObjectHolder("iridium_plate")
-    public static final Block IRIDIUM_PLATE = null;
+    public static final Item IRIDIUM_PLATE = null;
     @ObjectHolder("uru_plate")
-    public static final Block URU_PLATE = null;
+    public static final Item URU_PLATE = null;
     @ObjectHolder("bronze_plate")
-    public static final Block BRONZE_PLATE = null;
+    public static final Item BRONZE_PLATE = null;
     @ObjectHolder("intertium_plate")
-    public static final Block INTERTIUM_PLATE = null;
+    public static final Item INTERTIUM_PLATE = null;
     @ObjectHolder("steel_plate")
-    public static final Block STEEL_PLATE = null;
+    public static final Item STEEL_PLATE = null;
     @ObjectHolder("gold_titanium_alloy_plate")
-    public static final Block GOLD_TITANIUM_ALLOY_PLATE = null;
+    public static final Item GOLD_TITANIUM_ALLOY_PLATE = null;
     @ObjectHolder("adamantium_plate")
-    public static final Block ADAMANTIUM_PLATE = null;
+    public static final Item ADAMANTIUM_PLATE = null;
 
     @SubscribeEvent
     public void registerBlocks(RegistryEvent.Register<Block> e) {
