@@ -28,7 +28,7 @@ public class BuyAbilityScreen extends Screen {
     private final int guiHeight = 60;
 
     public BuyAbilityScreen(Ability ability, BuyableAbilityCondition condition, IIcon icon, ITextComponent hoverText, AbilitiesScreen parentScreen) {
-        super(condition.getDataManager().get(Condition.TITLE));
+        super(condition.getDisplayName());
         this.ability = ability;
         this.condition = condition;
         this.icon = icon;

@@ -223,7 +223,7 @@ public class AbilityTabEntry extends AbstractGui {
 
         for (Condition condition : conditions) {
             boolean active = this.ability.getConditionManager().isActive(condition);
-            list.add(condition.getDataManager().get(Condition.TITLE).shallowCopy().setStyle(new Style().setColor(active ? TextFormatting.GREEN : TextFormatting.RED)).getFormattedText());
+            list.add(condition.getDisplayName().shallowCopy().setStyle(new Style().setColor(active ? TextFormatting.GREEN : TextFormatting.RED)).getFormattedText());
         }
 
         return list;

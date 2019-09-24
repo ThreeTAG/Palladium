@@ -52,8 +52,6 @@ public class ThreeCoreBase {
 
     @SubscribeEvent
     public void setup(final FMLCommonSetupEvent e) {
-        //RecipeUtil.generateThreeCoreRecipes();
-
         // Ores
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, COPPER_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.COPPER));
         ForgeRegistries.BIOMES.getValues().forEach((b) -> addOreFeature(b, TIN_ORE.getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TIN));

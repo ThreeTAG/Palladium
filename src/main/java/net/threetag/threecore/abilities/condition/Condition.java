@@ -24,6 +24,7 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IThree
     protected ThreeDataManager dataManager = new ThreeDataManager(this);
 
     public static final ThreeData<ITextComponent> TITLE = new TextComponentThreeData("title").setSyncType(EnumSync.SELF).enableSetting("title", "The display name of the condition.");
+    public static final ThreeData<Boolean> INVERT = new BooleanThreeData("invert").enableSetting("invert", "Lets you invert the condition");
     public static final ThreeData<Boolean> ENABLING = new BooleanThreeData("enabling").setSyncType(EnumSync.SELF).enableSetting("enabling", "If this condition enables. If false it instead decides whether the ability is unlocked.");
     public static final ThreeData<Boolean> NEEDS_KEY = new BooleanThreeData("needs_key").setSyncType(EnumSync.SELF);
 
@@ -35,8 +36,22 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IThree
 
     public void registerData() {
         this.dataManager.register(TITLE, new TranslationTextComponent("ability.condition." + type.getRegistryName().getNamespace() + "." + type.getRegistryName().getPath()));
+        this.dataManager.register(INVERT, false);
         this.dataManager.register(ENABLING, false);
         this.dataManager.register(NEEDS_KEY, false);
+    }
+
+    public ITextComponent getDisplayName() {
+        ITextComponent textComponent = this.dataManager.get(TITLE);
+
+        if (!this.dataManager.get(INVERT))
+            return textComponent;
+
+        if (textComponent instanceof TranslationTextComponent) {
+            textComponent = new TranslationTextComponent(((TranslationTextComponent) textComponent).getKey() + ".not", ((TranslationTextComponent) textComponent).getFormatArgs(), ((TranslationTextComponent)textComponent).children.toArray());
+        }
+
+        return textComponent;
     }
 
     public final UUID getUniqueId() {

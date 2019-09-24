@@ -88,7 +88,7 @@ public class AbilityConditionManager implements INBTSerializable<CompoundNBT> {
 
             for (Condition condition : this.conditions.keySet()) {
                 boolean active = this.conditions.get(condition);
-                boolean b = condition.test(entity);
+                boolean b = condition.getDataManager().get(Condition.INVERT) != condition.test(entity);
 
                 if (b != active) {
                     this.conditions.put(condition, b);
