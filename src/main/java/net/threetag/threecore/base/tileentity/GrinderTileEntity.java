@@ -2,11 +2,6 @@ package net.threetag.threecore.base.tileentity;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.threetag.threecore.base.ThreeCoreBase;
-import net.threetag.threecore.base.block.GrinderBlock;
-import net.threetag.threecore.base.inventory.GrinderContainer;
-import net.threetag.threecore.base.recipe.GrinderRecipe;
-import net.threetag.threecore.util.energy.EnergyStorageExt;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,16 +9,13 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IRecipeHelperPopulator;
 import net.minecraft.inventory.IRecipeHolder;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
-import net.minecraft.util.INameable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -38,17 +30,20 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.block.GrinderBlock;
+import net.threetag.threecore.base.inventory.GrinderContainer;
+import net.threetag.threecore.base.recipe.GrinderRecipe;
+import net.threetag.threecore.util.energy.EnergyStorageExt;
+import net.threetag.threecore.util.tileentity.LockableItemCapTileEntity;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class GrinderTileEntity extends TileEntity implements IRecipeHolder, IRecipeHelperPopulator, ITickableTileEntity, INamedContainerProvider, INameable {
-
-    // TODO make own TileEntityLockable
+public class GrinderTileEntity extends LockableItemCapTileEntity implements IRecipeHolder, IRecipeHelperPopulator, ITickableTileEntity {
 
     private final Map<ResourceLocation, Integer> recipeUseCounts = Maps.newHashMap();
-    private ITextComponent customName;
     private EnergyStorageExt energyStorage = new EnergyStorageExt(4000, 128, 128);
     public int progress;
     public int progressMax;
@@ -157,9 +152,6 @@ public class GrinderTileEntity extends TileEntity implements IRecipeHolder, IRec
             int k = nbt.getInt("RecipeAmount" + j);
             this.recipeUseCounts.put(resourcelocation, k);
         }
-
-        if (nbt.contains("CustomName", 8))
-            this.customName = ITextComponent.Serializer.fromJson(nbt.getString("CustomName"));
     }
 
     @Override
@@ -182,8 +174,6 @@ public class GrinderTileEntity extends TileEntity implements IRecipeHolder, IRec
             ++i;
         }
 
-        if (this.customName != null)
-            nbt.putString("CustomName", ITextComponent.Serializer.toJson(this.customName));
         return nbt;
     }
 
@@ -295,13 +285,14 @@ public class GrinderTileEntity extends TileEntity implements IRecipeHolder, IRec
             }
 
             if (!this.world.isRemote) {
-                this.canUseRecipe(this.world, (ServerPlayerEntity) null, recipe);
+                this.canUseRecipe(this.world, null, recipe);
             }
 
             this.inputSlot.getStackInSlot(0).shrink(1);
         }
     }
 
+    @Override
     public boolean isUsableByPlayer(PlayerEntity player) {
         if (Objects.requireNonNull(this.world).getTileEntity(this.pos) != this) {
             return false;
@@ -311,32 +302,12 @@ public class GrinderTileEntity extends TileEntity implements IRecipeHolder, IRec
     }
 
     @Override
-    public ITextComponent getName() {
-        return this.customName != null ? this.customName : new TranslationTextComponent("container.threecore.grinder");
+    protected ITextComponent getDefaultName() {
+        return new TranslationTextComponent("container.threecore.grinder");
     }
 
     @Override
-    public boolean hasCustomName() {
-        return this.customName != null;
-    }
-
-    @Nullable
-    @Override
-    public ITextComponent getCustomName() {
-        return this.customName;
-    }
-
-    public void setCustomName(@Nullable ITextComponent name) {
-        this.customName = name;
-    }
-
-    @Override
-    public ITextComponent getDisplayName() {
-        return this.getName();
-    }
-
-    @Override
-    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+    protected Container createMenu(int id, PlayerInventory playerInventory) {
         return new GrinderContainer(id, playerInventory, this, this.intArray);
     }
 
@@ -358,10 +329,6 @@ public class GrinderTileEntity extends TileEntity implements IRecipeHolder, IRec
     @Nullable
     public IRecipe getRecipeUsed() {
         return null;
-    }
-
-    public Map<ResourceLocation, Integer> getRecipeUseCounts() {
-        return this.recipeUseCounts;
     }
 
     @Override
