@@ -1,4 +1,4 @@
-package net.threetag.threecore.util.armorlayer;
+package net.threetag.threecore.util.modellayer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
@@ -17,7 +17,7 @@ import net.threetag.threecore.ThreeCore;
 import java.util.ArrayList;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID, value = Dist.CLIENT)
-public class AdvancedArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A extends BipedModel<T>> extends LayerRenderer<T, M> {
+public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>, A extends BipedModel<T>> extends LayerRenderer<T, M> {
 
     private static ArrayList<Class<? extends LivingEntity>> entitiesWithLayer = new ArrayList<>();
 
@@ -25,12 +25,12 @@ public class AdvancedArmorLayer<T extends LivingEntity, M extends BipedModel<T>,
     @SubscribeEvent
     public static void renderEntityPre(RenderLivingEvent.Pre e) {
         if (!entitiesWithLayer.contains(e.getEntity().getClass())) {
-            e.getRenderer().addLayer(new AdvancedArmorLayer(e.getRenderer()));
+            e.getRenderer().addLayer(new ModelLayerRenderer(e.getRenderer()));
             entitiesWithLayer.add(e.getEntity().getClass());
         }
     }
 
-    public AdvancedArmorLayer(IEntityRenderer<T, M> entityRendererIn) {
+    public ModelLayerRenderer(IEntityRenderer<T, M> entityRendererIn) {
         super(entityRendererIn);
     }
 
@@ -45,8 +45,8 @@ public class AdvancedArmorLayer<T extends LivingEntity, M extends BipedModel<T>,
     public void renderLayers(T entity, EquipmentSlotType slot, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         ItemStack stack = entity.getItemStackFromSlot(slot);
 
-        if (stack.getItem() instanceof IArmorLayerProvider) {
-            for (ArmorLayer layer : ((IArmorLayerProvider) stack.getItem()).getArmorLayers(stack, entity)) {
+        if (stack.getItem() instanceof IModelLayerProvider) {
+            for (ModelLayer layer : ((IModelLayerProvider) stack.getItem()).getArmorLayers(stack, entity)) {
                 if (layer.isActive(stack, entity)) {
                     GlStateManager.pushMatrix();
                     GlStateManager.color4f(1F, 1F, 1F, 1F);

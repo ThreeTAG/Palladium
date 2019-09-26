@@ -1,14 +1,13 @@
-package net.threetag.threecore.util.armorlayer.predicates;
+package net.threetag.threecore.util.modellayer.predicates;
 
-import net.minecraft.command.impl.GiveCommand;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
-import net.threetag.threecore.util.armorlayer.ArmorLayerManager;
+import net.threetag.threecore.util.modellayer.ModelLayerManager;
 
 import javax.annotation.Nullable;
 
-public class ItemDurabilityPredicate implements ArmorLayerManager.IArmorLayerPredicate {
+public class ItemDurabilityPredicate implements ModelLayerManager.IArmorLayerPredicate {
 
     public final float min;
     public final float max;

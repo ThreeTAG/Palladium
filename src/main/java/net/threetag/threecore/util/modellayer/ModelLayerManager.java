@@ -1,4 +1,4 @@
-package net.threetag.threecore.util.armorlayer;
+package net.threetag.threecore.util.modellayer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -12,32 +12,32 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.LazyLoadBase;
 import net.minecraft.util.ResourceLocation;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.util.armorlayer.predicates.ItemDurabilityPredicate;
-import net.threetag.threecore.util.armorlayer.predicates.NotPredicate;
 import net.threetag.threecore.util.client.model.ModelRegistry;
+import net.threetag.threecore.util.modellayer.predicates.ItemDurabilityPredicate;
+import net.threetag.threecore.util.modellayer.predicates.NotPredicate;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class ArmorLayerManager {
+public class ModelLayerManager {
 
     private static final Map<ResourceLocation, Function<JsonObject, IArmorLayerPredicate>> PREDICATES = Maps.newHashMap();
-    private static final Map<ResourceLocation, Function<JsonObject, ArmorLayer>> ARMOR_LAYERS = Maps.newHashMap();
+    private static final Map<ResourceLocation, Function<JsonObject, ModelLayer>> MODEL_LAYERS = Maps.newHashMap();
 
     static {
         // Default Layer
-        registerArmorLayer(new ResourceLocation(ThreeCore.MODID, "default"), j -> new ModelArmorLayer(new LazyLoadBase<BipedModel>(() -> {
+        registerArmorLayer(new ResourceLocation(ThreeCore.MODID, "default"), j -> new ModelModelLayer(new LazyLoadBase<BipedModel>(() -> {
             Model model = ModelRegistry.getModel(JSONUtils.getString(j, "model"));
             return model instanceof BipedModel ? (BipedModel) model : null;
-        }), new ResourceLocation(JSONUtils.getString(j, "texture"))));
+        }), ModelLayerTexture.fromJson(j.get("texture"))));
 
         // Glow Layer
-        registerArmorLayer(new ResourceLocation(ThreeCore.MODID, "glow"), j -> new GlowArmorLayer(new LazyLoadBase<BipedModel>(() -> {
+        registerArmorLayer(new ResourceLocation(ThreeCore.MODID, "glow"), j -> new GlowModelLayer(new LazyLoadBase<BipedModel>(() -> {
             Model model = ModelRegistry.getModel(JSONUtils.getString(j, "model"));
             return model instanceof BipedModel ? (BipedModel) model : null;
-        }), new ResourceLocation(JSONUtils.getString(j, "texture"))));
+        }), ModelLayerTexture.fromJson(j.get("texture"))));
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -62,10 +62,10 @@ public class ArmorLayerManager {
         PREDICATES.put(id, function);
     }
 
-    public static void registerArmorLayer(ResourceLocation id, Function<JsonObject, ArmorLayer> function) {
+    public static void registerArmorLayer(ResourceLocation id, Function<JsonObject, ModelLayer> function) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(function);
-        ARMOR_LAYERS.put(id, function);
+        MODEL_LAYERS.put(id, function);
     }
 
     public static IArmorLayerPredicate parsePredicate(JsonObject json) {
@@ -77,13 +77,13 @@ public class ArmorLayerManager {
         return function.apply(json);
     }
 
-    public static ArmorLayer parseLayer(JsonObject json) {
-        Function<JsonObject, ArmorLayer> function = ARMOR_LAYERS.get(new ResourceLocation(JSONUtils.getString(json, "type")));
+    public static ModelLayer parseLayer(JsonObject json) {
+        Function<JsonObject, ModelLayer> function = MODEL_LAYERS.get(new ResourceLocation(JSONUtils.getString(json, "type")));
 
         if (function == null)
             return null;
 
-        ArmorLayer layer = function.apply(json);
+        ModelLayer layer = function.apply(json);
         if (JSONUtils.hasField(json, "predicates")) {
             JsonArray predicateArray = JSONUtils.getJsonArray(json, "predicates");
             for (int i = 0; i < predicateArray.size(); i++) {

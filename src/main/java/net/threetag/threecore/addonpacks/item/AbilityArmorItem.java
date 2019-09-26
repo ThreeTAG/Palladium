@@ -23,20 +23,20 @@ import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.abilities.AbilityMap;
 import net.threetag.threecore.abilities.IAbilityProvider;
 import net.threetag.threecore.abilities.capability.ItemAbilityContainerProvider;
-import net.threetag.threecore.util.armorlayer.ArmorLayer;
-import net.threetag.threecore.util.armorlayer.ArmorLayerManager;
-import net.threetag.threecore.util.armorlayer.IArmorLayerProvider;
+import net.threetag.threecore.util.modellayer.ModelLayer;
+import net.threetag.threecore.util.modellayer.ModelLayerManager;
+import net.threetag.threecore.util.modellayer.IModelLayerProvider;
 import net.threetag.threecore.util.client.model.DummyBipedModel;
 
 import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IArmorLayerProvider {
+public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IModelLayerProvider {
 
     private List<AbilityGenerator> abilityGenerators;
     @OnlyIn(Dist.CLIENT)
-    public List<ArmorLayer> layers = new LinkedList<>();
+    public List<ModelLayer> layers = new LinkedList<>();
 
     public AbilityArmorItem(IArmorMaterial materialIn, EquipmentSlotType slot, Properties builder) {
         super(materialIn, slot, builder);
@@ -84,7 +84,7 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IAr
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public List<ArmorLayer> getArmorLayers(ItemStack stack, LivingEntity entity) {
+    public List<ModelLayer> getArmorLayers(ItemStack stack, LivingEntity entity) {
         return this.layers;
     }
 
@@ -98,7 +98,7 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IAr
             JsonArray layersArray = JSONUtils.getJsonArray(jsonObject, "layers");
 
             for (int i = 0; i < layersArray.size(); i++) {
-                ArmorLayer layer = ArmorLayerManager.parseLayer(layersArray.get(i).getAsJsonObject());
+                ModelLayer layer = ModelLayerManager.parseLayer(layersArray.get(i).getAsJsonObject());
                 if (layer != null)
                     item.layers.add(layer);
             }

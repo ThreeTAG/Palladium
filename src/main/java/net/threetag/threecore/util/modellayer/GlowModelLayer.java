@@ -1,4 +1,4 @@
-package net.threetag.threecore.util.armorlayer;
+package net.threetag.threecore.util.modellayer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
@@ -7,11 +7,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.LazyLoadBase;
-import net.minecraft.util.ResourceLocation;
 
-public class GlowArmorLayer extends ModelArmorLayer {
+public class GlowModelLayer extends ModelModelLayer {
 
-    public GlowArmorLayer(LazyLoadBase<BipedModel> model, ResourceLocation texture) {
+    public GlowModelLayer(LazyLoadBase<BipedModel> model, ModelLayerTexture texture) {
         super(model, texture);
     }
 

@@ -1,11 +1,6 @@
 package net.threetag.threecore.abilities.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.abilities.AbilityHelper;
-import net.threetag.threecore.abilities.condition.Condition;
-import net.threetag.threecore.util.icon.IIcon;
-import net.threetag.threecore.util.icon.TexturedIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.advancements.AdvancementState;
@@ -14,6 +9,11 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
+import net.threetag.threecore.abilities.Ability;
+import net.threetag.threecore.abilities.AbilityHelper;
+import net.threetag.threecore.abilities.condition.Condition;
+import net.threetag.threecore.util.icon.IIcon;
+import net.threetag.threecore.util.icon.TexturedIcon;
 
 import java.util.Collection;
 import java.util.LinkedList;

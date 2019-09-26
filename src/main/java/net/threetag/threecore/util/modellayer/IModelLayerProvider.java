@@ -1,4 +1,4 @@
-package net.threetag.threecore.util.armorlayer;
+package net.threetag.threecore.util.modellayer;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -7,9 +7,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
-public interface IArmorLayerProvider {
+public interface IModelLayerProvider {
 
     @OnlyIn(Dist.CLIENT)
-    List<ArmorLayer> getArmorLayers(ItemStack stack, LivingEntity entity);
+    List<ModelLayer> getArmorLayers(ItemStack stack, LivingEntity entity);
 
 }

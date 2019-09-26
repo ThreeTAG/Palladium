@@ -1,4 +1,4 @@
-package net.threetag.threecore.util.armorlayer;
+package net.threetag.threecore.util.modellayer;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
@@ -8,24 +8,23 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.LazyLoadBase;
-import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
-public class ModelArmorLayer extends ArmorLayer {
+public class ModelModelLayer extends ModelLayer {
 
     public final LazyLoadBase<BipedModel> model;
-    public final ResourceLocation texture;
-    public final List<ArmorLayerManager.IArmorLayerPredicate> predicateList = Lists.newLinkedList();
+    public final ModelLayerTexture texture;
+    public final List<ModelLayerManager.IArmorLayerPredicate> predicateList = Lists.newLinkedList();
 
-    public ModelArmorLayer(LazyLoadBase<BipedModel> model, ResourceLocation texture) {
+    public ModelModelLayer(LazyLoadBase<BipedModel> model, ModelLayerTexture texture) {
         this.model = model;
         this.texture = texture;
     }
 
     @Override
     public void render(ItemStack stack, LivingEntity entity, IEntityRenderer entityRenderer, EquipmentSlotType slot, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        Minecraft.getInstance().getTextureManager().bindTexture(this.getTexture(stack, entity));
+        Minecraft.getInstance().getTextureManager().bindTexture(this.getTexture(stack, entity).getTexture(entity.ticksExisted));
         BipedModel model = getModel(stack, entity);
         if (model != null) {
             entityRenderer.getEntityModel().setModelAttributes(model);
@@ -40,17 +39,17 @@ public class ModelArmorLayer extends ArmorLayer {
         return this.model.getValue();
     }
 
-    public ResourceLocation getTexture(ItemStack stack, LivingEntity entity) {
+    public ModelLayerTexture getTexture(ItemStack stack, LivingEntity entity) {
         return this.texture;
     }
 
     @Override
     public boolean isActive(ItemStack stack, LivingEntity entity) {
-        return ArmorLayerManager.arePredicatesFulFilled(this.predicateList, stack, entity);
+        return ModelLayerManager.arePredicatesFulFilled(this.predicateList, stack, entity);
     }
 
     @Override
-    public ArmorLayer addPredicate(ArmorLayerManager.IArmorLayerPredicate predicate) {
+    public ModelLayer addPredicate(ModelLayerManager.IArmorLayerPredicate predicate) {
         this.predicateList.add(predicate);
         return this;
     }
