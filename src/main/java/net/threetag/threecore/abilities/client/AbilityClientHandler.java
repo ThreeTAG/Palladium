@@ -1,7 +1,7 @@
 package net.threetag.threecore.abilities.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.AbilityHelper;
-import net.threetag.threecore.abilities.ColorHeartsAbility;
+import net.threetag.threecore.abilities.CustomHotbarAbility;
 import net.threetag.threecore.abilities.InvisibilityAbility;
 import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
 import net.threetag.threecore.abilities.client.renderer.AbilityBarRenderer;
@@ -24,7 +24,6 @@ import net.threetag.threecore.abilities.network.AbilityKeyMessage;
 import net.threetag.threecore.util.client.gui.TranslucentButton;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,20 +93,19 @@ public class AbilityClientHandler {
 
     @SubscribeEvent
     public void onHeartsPre(RenderGameOverlayEvent.Pre e) {
-        if (e.getType() == RenderGameOverlayEvent.ElementType.HEALTH) {
-            for (ColorHeartsAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, ColorHeartsAbility.class)) {
-                if (ability.getConditionManager().isEnabled()) {
-                    Color color = ability.getDataManager().get(ColorHeartsAbility.COLOR);
-                    GlStateManager.color3f(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F);
-                }
+        for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, CustomHotbarAbility.class)) {
+            if (ability.getConditionManager().isEnabled() && e.getType() == ability.getDataManager().get(CustomHotbarAbility.HOTBAR_ELEMENT)) {
+                Minecraft.getInstance().getTextureManager().bindTexture(ability.getDataManager().get(CustomHotbarAbility.TEXTURE));
             }
         }
     }
 
     @SubscribeEvent
     public void onHeartsPost(RenderGameOverlayEvent.Post e) {
-        if (e.getType() == RenderGameOverlayEvent.ElementType.HEALTH) {
-            GlStateManager.color4f(1F, 1F, 1F, 1F);
+        for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, CustomHotbarAbility.class)) {
+            if (ability.getConditionManager().isEnabled() && e.getType() == ability.getDataManager().get(CustomHotbarAbility.HOTBAR_ELEMENT)) {
+                Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+            }
         }
     }
 
