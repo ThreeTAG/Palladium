@@ -34,12 +34,12 @@ public class ThreeCoreAbilities {
 
     public ThreeCoreAbilities() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        MinecraftForge.EVENT_BUS.addListener(this::initGui);
         MinecraftForge.EVENT_BUS.register(new AbilityEventHandler());
         MinecraftForge.EVENT_BUS.register(this);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.register(new AbilityBarRenderer());
             MinecraftForge.EVENT_BUS.register(new AbilityClientHandler());
+            MinecraftForge.EVENT_BUS.addListener(this::initGui);
         });
 
         AbilityHelper.registerAbilityContainer(CapabilityAbilityContainer.ID, (p) -> p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
