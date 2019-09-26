@@ -94,8 +94,8 @@ public class TexturedIcon implements IIcon {
             int textureWidth = JSONUtils.getInt(json, "texture_width", 256);
             int textureHeight = JSONUtils.getInt(json, "texture_height", 256);
             Color tint = null;
-            if (JSONUtils.hasField(json, "color")) {
-                int[] color = TCJsonUtil.getIntArray(json, 3, "color", new int[]{1, 1, 1});
+            if (JSONUtils.hasField(json, "tint")) {
+                int[] color = TCJsonUtil.getIntArray(json, 3, "tint", new int[]{1, 1, 1});
                 tint = new Color(color[0], color[1], color[2]);
             }
             return new TexturedIcon(texture, u, v, width, height, textureWidth, textureHeight, tint);
@@ -150,7 +150,7 @@ public class TexturedIcon implements IIcon {
                 array.add(icon.tint.getRed());
                 array.add(icon.tint.getGreen());
                 array.add(icon.tint.getBlue());
-                jsonObject.add("color", array);
+                jsonObject.add("tint", array);
             }
             return jsonObject;
         }
