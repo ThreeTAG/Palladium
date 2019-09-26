@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -95,7 +96,8 @@ public class AbilityClientHandler {
     public void onHeartsPre(RenderGameOverlayEvent.Pre e) {
         for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, CustomHotbarAbility.class)) {
             if (ability.getConditionManager().isEnabled() && e.getType() == ability.getDataManager().get(CustomHotbarAbility.HOTBAR_ELEMENT)) {
-                Minecraft.getInstance().getTextureManager().bindTexture(ability.getDataManager().get(CustomHotbarAbility.TEXTURE));
+                AbstractGui.GUI_ICONS_LOCATION = ability.getDataManager().get(CustomHotbarAbility.TEXTURE);
+                Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
             }
         }
     }
@@ -104,6 +106,7 @@ public class AbilityClientHandler {
     public void onHeartsPost(RenderGameOverlayEvent.Post e) {
         for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, CustomHotbarAbility.class)) {
             if (ability.getConditionManager().isEnabled() && e.getType() == ability.getDataManager().get(CustomHotbarAbility.HOTBAR_ELEMENT)) {
+                AbstractGui.GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
                 Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
             }
         }
