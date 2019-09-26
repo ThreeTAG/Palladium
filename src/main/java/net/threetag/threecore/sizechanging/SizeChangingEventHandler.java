@@ -33,6 +33,7 @@ public class SizeChangingEventHandler {
     @SubscribeEvent
     public void onJoinWorld(EntityJoinWorldEvent e) {
         e.getEntity().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
+            sizeChanging.updateBoundingBox();
             if (e.getEntity() instanceof ServerPlayerEntity && sizeChanging instanceof INBTSerializable)
                 ThreeCore.NETWORK_CHANNEL.sendTo(new SyncSizeMessage(e.getEntity().getEntityId(), (CompoundNBT) ((INBTSerializable) sizeChanging).serializeNBT()), ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
         });
