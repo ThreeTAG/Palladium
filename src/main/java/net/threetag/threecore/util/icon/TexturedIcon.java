@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.icon;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.nbt.CompoundNBT;
@@ -9,6 +11,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.util.json.TCJsonUtil;
+
+import java.awt.*;
 
 public class TexturedIcon implements IIcon {
 
@@ -21,6 +26,7 @@ public class TexturedIcon implements IIcon {
     public final int height;
     public final int textureWidth;
     public final int textureHeight;
+    public final Color tint;
 
     public TexturedIcon(ResourceLocation texture, int u, int v, int width, int height, int textureWidth, int textureHeight) {
         this.texture = texture;
@@ -30,6 +36,18 @@ public class TexturedIcon implements IIcon {
         this.height = height;
         this.textureWidth = textureWidth;
         this.textureHeight = textureHeight;
+        this.tint = null;
+    }
+
+    public TexturedIcon(ResourceLocation texture, int u, int v, int width, int height, int textureWidth, int textureHeight, Color tint) {
+        this.texture = texture;
+        this.u = u;
+        this.v = v;
+        this.width = width;
+        this.height = height;
+        this.textureWidth = textureWidth;
+        this.textureHeight = textureHeight;
+        this.tint = tint;
     }
 
     public TexturedIcon(ResourceLocation texture, int u, int v, int width, int height) {
@@ -40,7 +58,10 @@ public class TexturedIcon implements IIcon {
     @Override
     public void draw(Minecraft mc, int x, int y) {
         mc.getTextureManager().bindTexture(this.texture);
+        if (this.tint != null)
+            GlStateManager.color3f(this.tint.getRed() / 255F, this.tint.getGreen() / 255F, this.tint.getBlue() / 255F);
         AbstractGui.blit(x, y, this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
+        GlStateManager.color3f(1F, 1F, 1F);
     }
 
     @Override
@@ -72,7 +93,12 @@ public class TexturedIcon implements IIcon {
             int height = JSONUtils.getInt(json, "height", 16);
             int textureWidth = JSONUtils.getInt(json, "texture_width", 256);
             int textureHeight = JSONUtils.getInt(json, "texture_height", 256);
-            return new TexturedIcon(texture, u, v, width, height, textureWidth, textureHeight);
+            Color tint = null;
+            if (JSONUtils.hasField(json, "color")) {
+                int[] color = TCJsonUtil.getIntArray(json, 3, "color", new int[]{1, 1, 1});
+                tint = new Color(color[0], color[1], color[2]);
+            }
+            return new TexturedIcon(texture, u, v, width, height, textureWidth, textureHeight, tint);
         }
 
         @Override
@@ -84,7 +110,11 @@ public class TexturedIcon implements IIcon {
             int height = nbt.getInt("Height");
             int textureWidth = nbt.getInt("TextureWidth");
             int textureHeight = nbt.getInt("TextureHeight");
-            return new TexturedIcon(texture, u, v, width, height, textureWidth, textureHeight);
+            Color tint = null;
+            if (nbt.contains("ColorRed") && nbt.contains("ColorGreen") && nbt.contains("ColorBlue")) {
+                tint = new Color(nbt.getInt("ColorRed"), nbt.getInt("ColorGreen"), nbt.getInt("ColorBlue"));
+            }
+            return new TexturedIcon(texture, u, v, width, height, textureWidth, textureHeight, tint);
         }
 
         @Override
@@ -97,6 +127,11 @@ public class TexturedIcon implements IIcon {
             nbt.putInt("Height", icon.height);
             nbt.putInt("TextureWidth", icon.textureWidth);
             nbt.putInt("TextureHeight", icon.textureHeight);
+            if (icon.tint != null) {
+                nbt.putInt("ColorRed", icon.tint.getRed());
+                nbt.putInt("ColorGreen", icon.tint.getGreen());
+                nbt.putInt("ColorBlue", icon.tint.getBlue());
+            }
             return nbt;
         }
 
@@ -110,6 +145,13 @@ public class TexturedIcon implements IIcon {
             jsonObject.addProperty("height", icon.height);
             jsonObject.addProperty("texture_width", icon.textureWidth);
             jsonObject.addProperty("texture_height", icon.textureHeight);
+            if (icon.tint != null) {
+                JsonArray array = new JsonArray();
+                array.add(icon.tint.getRed());
+                array.add(icon.tint.getGreen());
+                array.add(icon.tint.getBlue());
+                jsonObject.add("color", array);
+            }
             return jsonObject;
         }
 

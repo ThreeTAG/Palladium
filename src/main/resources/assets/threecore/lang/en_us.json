@@ -143,6 +143,7 @@
   "ability.threecore.slowfall": "Slowfall",
   "ability.threecore.water_breathing": "Water Breathing",
   "ability.threecore.size_change": "Size Change",
+  "ability.threecore.color_hearts": "Colored Hearts",
   
   "ability.condition.threecore.action": "Key must be pressed once to active this ability",
   "ability.condition.threecore.action.not": "Key must be pressed once to deactivate this ability",

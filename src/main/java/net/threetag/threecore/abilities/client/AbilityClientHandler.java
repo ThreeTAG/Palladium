@@ -1,5 +1,6 @@
 package net.threetag.threecore.abilities.client;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.resources.I18n;
@@ -7,6 +8,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,6 +16,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.AbilityHelper;
+import net.threetag.threecore.abilities.ColorHeartsAbility;
 import net.threetag.threecore.abilities.InvisibilityAbility;
 import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
 import net.threetag.threecore.abilities.client.renderer.AbilityBarRenderer;
@@ -21,6 +24,7 @@ import net.threetag.threecore.abilities.network.AbilityKeyMessage;
 import net.threetag.threecore.util.client.gui.TranslucentButton;
 import org.lwjgl.glfw.GLFW;
 
+import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,11 +84,30 @@ public class AbilityClientHandler {
 
     @SubscribeEvent
     public void onRenderLivingPre(RenderLivingEvent.Pre e) {
-        for(InvisibilityAbility invisibilityAbility : AbilityHelper.getAbilitiesFromClass(e.getEntity(), InvisibilityAbility.class)) {
-            if(invisibilityAbility.getConditionManager().isEnabled()) {
+        for (InvisibilityAbility invisibilityAbility : AbilityHelper.getAbilitiesFromClass(e.getEntity(), InvisibilityAbility.class)) {
+            if (invisibilityAbility.getConditionManager().isEnabled()) {
                 e.setCanceled(true);
                 return;
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onHeartsPre(RenderGameOverlayEvent.Pre e) {
+        if (e.getType() == RenderGameOverlayEvent.ElementType.HEALTH) {
+            for (ColorHeartsAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, ColorHeartsAbility.class)) {
+                if (ability.getConditionManager().isEnabled()) {
+                    Color color = ability.getDataManager().get(ColorHeartsAbility.COLOR);
+                    GlStateManager.color3f(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onHeartsPost(RenderGameOverlayEvent.Post e) {
+        if (e.getType() == RenderGameOverlayEvent.ElementType.HEALTH) {
+            GlStateManager.color4f(1F, 1F, 1F, 1F);
         }
     }
 
