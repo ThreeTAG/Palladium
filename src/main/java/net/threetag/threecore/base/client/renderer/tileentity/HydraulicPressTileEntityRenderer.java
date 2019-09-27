@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.block.HydraulicPressBlock;
+import net.threetag.threecore.base.block.MachineBlock;
 import net.threetag.threecore.base.client.renderer.model.HydraulicPressPistonModel;
 import net.threetag.threecore.base.tileentity.HydraulicPressTileEntity;
 import net.threetag.threecore.util.client.RenderUtil;
@@ -34,7 +35,7 @@ public class HydraulicPressTileEntityRenderer extends TileEntityRenderer<Hydraul
         GlStateManager.scalef(1.0F, -1.0F, -1.0F);
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        BlockState blockstate = tileEntityIn.hasWorld() ? tileEntityIn.getBlockState() : ThreeCoreBase.HYDRAULIC_PRESS.getDefaultState().with(HydraulicPressBlock.FACING, Direction.SOUTH);
+        BlockState blockstate = tileEntityIn.hasWorld() ? tileEntityIn.getBlockState() : ThreeCoreBase.HYDRAULIC_PRESS.getDefaultState().with(MachineBlock.FACING, Direction.SOUTH);
         float f = blockstate.get(ChestBlock.FACING).getHorizontalAngle();
         if ((double) Math.abs(f) > 1.0E-5D) {
             GlStateManager.translatef(0.5F, 0.5F, 0.5F);
@@ -42,8 +43,7 @@ public class HydraulicPressTileEntityRenderer extends TileEntityRenderer<Hydraul
             GlStateManager.translatef(-0.5F, -0.5F, -0.5F);
         }
 
-        float progress = blockstate.get(HydraulicPressBlock.LIT) ? MathHelper.sin((Minecraft.getInstance().player.ticksExisted + partialTicks) / 5F) / 2F + 0.5F : 0F;
-        //progress = MathHelper.clamp(TCMathHelper.interpolate(tileEntityIn.prevProgress, tileEntityIn.progress, partialTicks) / (float) tileEntityIn.progressMax, 0F, 1F);
+        float progress = blockstate.get(MachineBlock.LIT) ? MathHelper.sin((Minecraft.getInstance().player.ticksExisted + partialTicks) / 5F) / 2F + 0.5F : 0F;
         float pixel = 0.0625F;
         this.bindTexture(TEXTURE);
         MODEL.render(progress, pixel);
