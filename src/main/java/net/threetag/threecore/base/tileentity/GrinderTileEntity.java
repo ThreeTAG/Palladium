@@ -6,14 +6,11 @@ import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.IRecipeHelperPopulator;
-import net.minecraft.inventory.IRecipeHolder;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.ResourceLocation;
@@ -31,19 +28,20 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.threetag.threecore.base.ThreeCoreBase;
-import net.threetag.threecore.base.block.GrinderBlock;
+import net.threetag.threecore.base.block.MachineBlock;
 import net.threetag.threecore.base.inventory.GrinderContainer;
 import net.threetag.threecore.base.recipe.GrinderRecipe;
 import net.threetag.threecore.util.energy.EnergyStorageExt;
-import net.threetag.threecore.util.tileentity.LockableItemCapTileEntity;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
-public class GrinderTileEntity extends LockableItemCapTileEntity implements IRecipeHolder, IRecipeHelperPopulator, ITickableTileEntity {
+public class GrinderTileEntity extends MachineTileEntity {
 
-    private final Map<ResourceLocation, Integer> recipeUseCounts = Maps.newHashMap();
     private EnergyStorageExt energyStorage = new EnergyStorageExt(4000, 128, 128);
     public int progress;
     public int progressMax;
@@ -127,8 +125,13 @@ public class GrinderTileEntity extends LockableItemCapTileEntity implements IRec
     }
 
     @Override
-    public void setWorld(World p_145834_1_) {
-        super.setWorld(p_145834_1_);
+    protected ITextComponent getDefaultName() {
+        return new TranslationTextComponent("container.threecore.grinder");
+    }
+
+    @Override
+    protected Container createMenu(int id, PlayerInventory playerInventory) {
+        return new GrinderContainer(id, playerInventory, this, this.intArray);
     }
 
     @Override
@@ -145,13 +148,6 @@ public class GrinderTileEntity extends LockableItemCapTileEntity implements IRec
             inputSlot.deserializeNBT((CompoundNBT) nbt.get("InputSlots"));
         if (nbt.contains("OutputSlots"))
             outputSlots.deserializeNBT((CompoundNBT) nbt.get("OutputSlots"));
-
-        int i = nbt.getShort("RecipesUsedSize");
-        for (int j = 0; j < i; ++j) {
-            ResourceLocation resourcelocation = new ResourceLocation(nbt.getString("RecipeLocation" + j));
-            int k = nbt.getInt("RecipeAmount" + j);
-            this.recipeUseCounts.put(resourcelocation, k);
-        }
     }
 
     @Override
@@ -164,15 +160,6 @@ public class GrinderTileEntity extends LockableItemCapTileEntity implements IRec
         nbt.put("EnergySlots", energySlot.serializeNBT());
         nbt.put("InputSlots", inputSlot.serializeNBT());
         nbt.put("OutputSlots", outputSlots.serializeNBT());
-
-        nbt.putShort("RecipesUsedSize", (short) this.recipeUseCounts.size());
-        int i = 0;
-
-        for (Map.Entry<ResourceLocation, Integer> entry : this.recipeUseCounts.entrySet()) {
-            nbt.putString("RecipeLocation" + i, entry.getKey().toString());
-            nbt.putInt("RecipeAmount" + i, entry.getValue());
-            ++i;
-        }
 
         return nbt;
     }
@@ -215,7 +202,7 @@ public class GrinderTileEntity extends LockableItemCapTileEntity implements IRec
 
         if (working != this.isWorking()) {
             dirty = true;
-            this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(GrinderBlock.LIT, Boolean.valueOf(this.isWorking())), 3);
+            this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(MachineBlock.LIT, this.isWorking()), 3);
         }
 
         if (dirty)
@@ -290,25 +277,6 @@ public class GrinderTileEntity extends LockableItemCapTileEntity implements IRec
 
             this.inputSlot.getStackInSlot(0).shrink(1);
         }
-    }
-
-    @Override
-    public boolean isUsableByPlayer(PlayerEntity player) {
-        if (Objects.requireNonNull(this.world).getTileEntity(this.pos) != this) {
-            return false;
-        } else {
-            return !(player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) > 64.0D);
-        }
-    }
-
-    @Override
-    protected ITextComponent getDefaultName() {
-        return new TranslationTextComponent("container.threecore.grinder");
-    }
-
-    @Override
-    protected Container createMenu(int id, PlayerInventory playerInventory) {
-        return new GrinderContainer(id, playerInventory, this, this.intArray);
     }
 
     @Override
