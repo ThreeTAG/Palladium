@@ -58,7 +58,7 @@ public class SizeChangeCommand {
     }
 
     public static SizeChangeType getSizeChangeType(CommandContext<CommandSource> context, String key) throws CommandSyntaxException {
-        ResourceLocation resourceLocation = (ResourceLocation) context.getArgument(key, ResourceLocation.class);
+        ResourceLocation resourceLocation = context.getArgument(key, ResourceLocation.class);
         SizeChangeType sizeChangeType = SizeChangeType.REGISTRY.getValue(resourceLocation);
         if (sizeChangeType == null) {
             throw SIZE_CHANGE_TYPE_NOT_FOUND.create(resourceLocation);

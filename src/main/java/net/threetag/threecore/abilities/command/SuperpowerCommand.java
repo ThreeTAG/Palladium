@@ -28,7 +28,7 @@ public class SuperpowerCommand {
     };
 
     public static final DynamicCommandExceptionType SUPERPOWER_NOT_FOUND = new DynamicCommandExceptionType((object) -> {
-        return new TranslationTextComponent("commands.superpower.error.superpowerNotFound", new Object[]{object});
+        return new TranslationTextComponent("commands.superpower.error.superpowerNotFound", object);
     });
 
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
@@ -40,7 +40,7 @@ public class SuperpowerCommand {
     }
 
     public static Superpower getSuperpower(CommandContext<CommandSource> context, String key) throws CommandSyntaxException {
-        ResourceLocation resourceLocation = (ResourceLocation)context.getArgument(key, ResourceLocation.class);
+        ResourceLocation resourceLocation = context.getArgument(key, ResourceLocation.class);
         Superpower superpower = SuperpowerManager.getInstance().getSuperpower(resourceLocation);
         if (superpower == null) {
             throw SUPERPOWER_NOT_FOUND.create(resourceLocation);
@@ -64,9 +64,9 @@ public class SuperpowerCommand {
         }
 
         if (i == 1) {
-            commandSource.sendFeedback(new TranslationTextComponent("commands.superpower.success.entity.single", new Object[]{(entities.iterator().next()).getDisplayName(), superpower.getName()}), true);
+            commandSource.sendFeedback(new TranslationTextComponent("commands.superpower.success.entity.single", (entities.iterator().next()).getDisplayName(), superpower.getName()), true);
         } else {
-            commandSource.sendFeedback(new TranslationTextComponent("commands.superpower.success.entity.multiple", new Object[]{i, superpower.getName()}), true);
+            commandSource.sendFeedback(new TranslationTextComponent("commands.superpower.success.entity.multiple", i, superpower.getName()), true);
         }
 
         return i;

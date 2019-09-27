@@ -186,8 +186,8 @@ public class AbilityTabGui extends AbstractGui {
 
     public void drawContents() {
         if (!this.centered) {
-            this.scrollX = (double) (innerWidth / 2 - (this.maxX + this.minX) / 2);
-            this.scrollY = (double) (innerHeight / 2 - (this.maxY + this.minY) / 2);
+            this.scrollX = innerWidth / 2 - (this.maxX + this.minX) / 2;
+            this.scrollY = innerHeight / 2 - (this.maxY + this.minY) / 2;
             this.centered = true;
         }
 
@@ -267,11 +267,11 @@ public class AbilityTabGui extends AbstractGui {
 
     public void scroll(double x, double y) {
         if (this.maxX - this.minX > innerWidth) {
-            this.scrollX = MathHelper.clamp(this.scrollX + x, (double) (-(this.maxX - innerWidth)), 0.0D);
+            this.scrollX = MathHelper.clamp(this.scrollX + x, -(this.maxX - innerWidth), 0.0D);
         }
 
         if (this.maxY - this.minY > innerHeight) {
-            this.scrollY = MathHelper.clamp(this.scrollY + y, (double) (-(this.maxY - innerHeight)), 0.0D);
+            this.scrollY = MathHelper.clamp(this.scrollY + y, -(this.maxY - innerHeight), 0.0D);
         }
     }
 

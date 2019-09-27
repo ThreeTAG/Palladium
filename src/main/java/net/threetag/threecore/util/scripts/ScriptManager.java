@@ -48,7 +48,7 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
             try (
                     IResource iresource = resourceManagerIn.getResource(resourcelocation);
                     InputStream inputstream = iresource.getInputStream();
-                    Reader reader = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8));
+                    Reader reader = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8))
             ) {
                 String script = IOUtils.toString(reader);
                 if (script != null) {

@@ -266,7 +266,7 @@ public class HydraulicPressTileEntity extends LockableItemCapTileEntity implemen
             }
 
             if (!this.world.isRemote) {
-                this.canUseRecipe(this.world, (ServerPlayerEntity) null, recipe);
+                this.canUseRecipe(this.world, null, recipe);
             }
 
             this.inputSlot.getStackInSlot(1).shrink(1);

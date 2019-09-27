@@ -39,9 +39,9 @@ public class KarmaCommand {
         }
 
         if (i == 1) {
-            commandSource.sendFeedback(new TranslationTextComponent("commands.karma.success.player.single", new Object[]{(players.iterator().next()).getDisplayName(), karma}), true);
+            commandSource.sendFeedback(new TranslationTextComponent("commands.karma.success.player.single", (players.iterator().next()).getDisplayName(), karma), true);
         } else {
-            commandSource.sendFeedback(new TranslationTextComponent("commands.karma.success.player.multiple", new Object[]{i, karma}), true);
+            commandSource.sendFeedback(new TranslationTextComponent("commands.karma.success.player.multiple", i, karma), true);
         }
 
         return players.size();

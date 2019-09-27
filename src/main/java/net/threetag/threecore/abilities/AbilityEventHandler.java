@@ -49,7 +49,7 @@ public class AbilityEventHandler {
         if (e.getEntity() instanceof ServerPlayerEntity) {
             e.getEntity().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent((a) -> {
                 if (a instanceof CapabilityAbilityContainer)
-                    ThreeCore.NETWORK_CHANNEL.sendTo(new SendPlayerAbilityContainerMessage(e.getEntity().getEntityId(), (CompoundNBT) ((CapabilityAbilityContainer) a).getUpdateTag()), ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                    ThreeCore.NETWORK_CHANNEL.sendTo(new SendPlayerAbilityContainerMessage(e.getEntity().getEntityId(), ((CapabilityAbilityContainer) a).getUpdateTag()), ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             });
         }
     }
@@ -58,7 +58,7 @@ public class AbilityEventHandler {
     public void onStartTracking(PlayerEvent.StartTracking e) {
         e.getTarget().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent((a) -> {
             if (a instanceof CapabilityAbilityContainer)
-                ThreeCore.NETWORK_CHANNEL.sendTo(new SendPlayerAbilityContainerMessage(e.getTarget().getEntityId(), (CompoundNBT) ((CapabilityAbilityContainer) a).getUpdateTag()), ((ServerPlayerEntity) e.getEntityPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                ThreeCore.NETWORK_CHANNEL.sendTo(new SendPlayerAbilityContainerMessage(e.getTarget().getEntityId(), ((CapabilityAbilityContainer) a).getUpdateTag()), ((ServerPlayerEntity) e.getEntityPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
         });
     }
 

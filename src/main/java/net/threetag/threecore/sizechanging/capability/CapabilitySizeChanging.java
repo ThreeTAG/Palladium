@@ -148,7 +148,7 @@ public class CapabilitySizeChanging implements ISizeChanging, IThreeDataHolder, 
             if (!getSizeChangeType().start(entity, this, this.dataManager.get(SCALE), size))
                 return false;
             this.dataManager.set(ESTIMATED_SCALE, size);
-            this.dataManager.set(SCALE_PER_TICK, (float) (size - this.dataManager.get(SCALE)) / this.getSizeChangeType().getSizeChangingTime(entity, this, size));
+            this.dataManager.set(SCALE_PER_TICK, (size - this.dataManager.get(SCALE)) / this.getSizeChangeType().getSizeChangingTime(entity, this, size));
             return true;
         }
         return false;

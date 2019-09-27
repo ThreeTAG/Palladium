@@ -175,7 +175,7 @@ public class AbilitiesScreen extends Screen {
 
         if (this.overlayScreen == null && this.tabs.size() > 0) {
             for (AbilityTabGui tab : this.tabs) {
-                if (tab.isMouseOver(x, y, (double) mouseX, (double) mouseY)) {
+                if (tab.isMouseOver(x, y, mouseX, mouseY)) {
                     this.renderTooltip(tab.getTitle().getFormattedText(), mouseX, mouseY);
                 }
             }
