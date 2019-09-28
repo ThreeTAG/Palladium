@@ -33,8 +33,9 @@ public class AttributeRegistry {
         REGISTRY.register(new ResourceLocation("minecraft", "armor_toughness"), new AttributeEntry(SharedMonsterAttributes.ARMOR_TOUGHNESS));
         REGISTRY.register(new ResourceLocation("minecraft", "luck"), new AttributeEntry(SharedMonsterAttributes.LUCK, () -> new ItemIcon(Items.RABBIT_FOOT)));
         REGISTRY.register(new ResourceLocation("minecraft", "reach_distance"), new AttributeEntry(PlayerEntity.REACH_DISTANCE));
-        REGISTRY.register(new ResourceLocation("minecraft", "nametag_distance"), new AttributeEntry(LivingEntity.NAMETAG_DISTANCE));
-        REGISTRY.register(new ResourceLocation("minecraft", "swim_speed"), new AttributeEntry(LivingEntity.SWIM_SPEED));
+        REGISTRY.register(new ResourceLocation("forge", "nametag_distance"), new AttributeEntry(LivingEntity.NAMETAG_DISTANCE));
+        REGISTRY.register(new ResourceLocation("forge", "swim_speed"), new AttributeEntry(LivingEntity.SWIM_SPEED));
+        REGISTRY.register(new ResourceLocation("forge", "gravity"), new AttributeEntry(LivingEntity.ENTITY_GRAVITY));
         REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "size_width"), new AttributeEntry(SizeManager.SIZE_WIDTH));
         REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "size_height"), new AttributeEntry(SizeManager.SIZE_HEIGHT));
         REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "step_height"), new AttributeEntry(TCAttributes.STEP_HEIGHT));
