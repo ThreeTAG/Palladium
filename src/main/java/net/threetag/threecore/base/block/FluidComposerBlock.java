@@ -72,7 +72,7 @@ public class FluidComposerBlock extends MachineBlock {
                 FluidStack fluidStack = ((FluidComposerTileEntity) tileEntity).outputFluidTank.getFluid();
 
                 if (!fluidStack.isEmpty() && fluidStack.getFluid().getAttributes().getTemperature(fluidStack) >= 1000) {
-                    entity.setFire(100);
+                    entity.setFire(10);
                 }
             }
         }
