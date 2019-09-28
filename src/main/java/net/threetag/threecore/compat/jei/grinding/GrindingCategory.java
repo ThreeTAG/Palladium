@@ -36,7 +36,7 @@ public class GrindingCategory<T> implements IRecipeCategory<GrinderRecipe> {
         this.title = I18n.format("gui.jei.category.threecore.grinding");
         this.background = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 0, 0, 107, 26).addPadding(0, 10, 0, 0).build();
         this.icon = guiHelper.createDrawableIngredient(new ItemStack(ThreeCoreBase.GRINDER));
-        this.arrow = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 82, 128, 107, 0)
+        this.arrow = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 107, 0, 24, 17)
                 .buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
@@ -77,14 +77,13 @@ public class GrindingCategory<T> implements IRecipeCategory<GrinderRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, GrinderRecipe recipe, IIngredients ingredients) {
-        IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
         IGuiItemStackGroup itemStacks = recipeLayout.getItemStacks();
 
-        guiItemStacks.init(inputSlot, true, 0, 4);
-        guiItemStacks.init(primaryOutputSlot, false, 60, 4);
-        guiItemStacks.init(secondaryOutputSlot, false, 89, 4);
+        itemStacks.init(inputSlot, true, 0, 4);
+        itemStacks.init(primaryOutputSlot, false, 60, 4);
+        itemStacks.init(secondaryOutputSlot, false, 89, 4);
 
-        guiItemStacks.set(ingredients);
+        itemStacks.set(ingredients);
 
         itemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
             if (slotIndex == secondaryOutputSlot && !ingredient.isEmpty()) {

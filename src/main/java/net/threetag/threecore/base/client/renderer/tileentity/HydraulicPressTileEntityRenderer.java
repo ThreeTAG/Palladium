@@ -1,15 +1,7 @@
 package net.threetag.threecore.base.client.renderer.tileentity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.base.ThreeCoreBase;
-import net.threetag.threecore.base.block.HydraulicPressBlock;
-import net.threetag.threecore.base.block.MachineBlock;
-import net.threetag.threecore.base.client.renderer.model.HydraulicPressPistonModel;
-import net.threetag.threecore.base.tileentity.HydraulicPressTileEntity;
-import net.threetag.threecore.util.client.RenderUtil;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ChestBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.util.Direction;
@@ -17,6 +9,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.block.MachineBlock;
+import net.threetag.threecore.base.client.renderer.model.HydraulicPressPistonModel;
+import net.threetag.threecore.base.tileentity.HydraulicPressTileEntity;
+import net.threetag.threecore.util.client.RenderUtil;
 
 @OnlyIn(Dist.CLIENT)
 public class HydraulicPressTileEntityRenderer extends TileEntityRenderer<HydraulicPressTileEntity> {
@@ -36,7 +34,7 @@ public class HydraulicPressTileEntityRenderer extends TileEntityRenderer<Hydraul
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         BlockState blockstate = tileEntityIn.hasWorld() ? tileEntityIn.getBlockState() : ThreeCoreBase.HYDRAULIC_PRESS.getDefaultState().with(MachineBlock.FACING, Direction.SOUTH);
-        float f = blockstate.get(ChestBlock.FACING).getHorizontalAngle();
+        float f = blockstate.get(MachineBlock.FACING).getHorizontalAngle();
         if ((double) Math.abs(f) > 1.0E-5D) {
             GlStateManager.translatef(0.5F, 0.5F, 0.5F);
             GlStateManager.rotatef(f, 0.0F, 1.0F, 0.0F);

@@ -3,14 +3,17 @@ package net.threetag.threecore.util.data;
 import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.*;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.common.crafting.conditions.TagEmptyCondition;
+import net.minecraftforge.fluids.FluidStack;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.util.fluid.FluidIngredient;
 import net.threetag.threecore.util.item.ThreeCoreItemTags;
 
 import java.util.function.Consumer;
@@ -27,6 +30,7 @@ public class ThreeCoreRecipeProvider extends RecipeProvider implements IConditio
         // Basic Stuff
         ShapedRecipeBuilder.shapedRecipe(ThreeCoreBase.GRINDER).patternLine("SSS").patternLine("GCG").patternLine("PPP").key('S', Blocks.STONECUTTER).key('G', Blocks.GRINDSTONE).key('C', ThreeCoreBase.CIRCUIT).key('P', ThreeCoreItemTags.IRON_PLATES).addCriterion("has_circuit", this.hasItem(ThreeCoreBase.CIRCUIT)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(ThreeCoreBase.HYDRAULIC_PRESS).patternLine("PBP").patternLine("OCW").patternLine("III").key('P', Blocks.PISTON).key('B', Blocks.IRON_BARS).key('C', ThreeCoreBase.CIRCUIT).key('I', ThreeCoreItemTags.IRON_PLATES).key('W', Items.WATER_BUCKET).key('O', Blocks.OBSIDIAN).addCriterion("has_circuit", this.hasItem(ThreeCoreBase.CIRCUIT)).build(consumer);
+        ShapedRecipeBuilder.shapedRecipe(ThreeCoreBase.FLUID_COMPOSER).patternLine("GCG").patternLine("BSB").patternLine("III").key('G', Items.GLASS_BOTTLE).key('C', Blocks.CAULDRON).key('B', Items.BUCKET).key('I', ThreeCoreItemTags.IRON_PLATES).key('S', ThreeCoreBase.CIRCUIT).addCriterion("has_circuit", this.hasItem(ThreeCoreBase.CIRCUIT)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(ThreeCoreBase.HAMMER).setGroup("hammer").patternLine("III").patternLine("ISI").patternLine(" S ").key('S', Items.STICK).key('I', Tags.Items.INGOTS_IRON).addCriterion("has_iron_ingot", this.hasItem(Items.IRON_INGOT)).build(consumer, new ResourceLocation(ThreeCore.MODID, "hammer_1"));
         ShapedRecipeBuilder.shapedRecipe(ThreeCoreBase.HAMMER).setGroup("hammer").patternLine(" II").patternLine("SSI").patternLine(" II").key('S', Items.STICK).key('I', Tags.Items.INGOTS_IRON).addCriterion("has_iron_ingot", this.hasItem(Items.IRON_INGOT)).build(consumer, new ResourceLocation(ThreeCore.MODID, "hammer_2"));
         ShapelessRecipeBuilder.shapelessRecipe(ThreeCoreBase.PLATE_CAST).addIngredient(ThreeCoreBase.HAMMER).addIngredient(ThreeCoreItemTags.STEEL_PLATES).addIngredient(ThreeCoreItemTags.PLATES).addCriterion("has_hammer", this.hasItem(ThreeCoreBase.HAMMER)).build(consumer);

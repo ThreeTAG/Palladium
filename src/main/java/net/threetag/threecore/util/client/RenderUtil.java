@@ -1,14 +1,22 @@
 package net.threetag.threecore.util.client;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
-import org.lwjgl.opengl.ARBMultitexture;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 
+@OnlyIn(Dist.CLIENT)
 public class RenderUtil {
 
     public static float renderTickTime;
@@ -94,5 +102,82 @@ public class RenderUtil {
         builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
         builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
     }
+
+    public static void renderGuiTank(IFluidHandler fluidHandler, int tank, double x, double y, double zLevel, double width, double height) {
+        FluidStack stack = fluidHandler.getFluidInTank(tank);
+        int tankCapacity = fluidHandler.getTankCapacity(tank);
+        renderGuiTank(stack, tankCapacity, x, y, zLevel, width, height);
+    }
+
+    public static void renderGuiTank(FluidStack stack, int tankCapacity, double x, double y, double zLevel, double width, double height) {
+        int amount = stack.getAmount();
+        if (stack.getFluid() == null || amount <= 0) {
+            return;
+        }
+
+        ResourceLocation stillTexture = stack.getFluid().getAttributes().getStillTexture();
+        TextureAtlasSprite icon = Minecraft.getInstance().getTextureMap().getSprite(stillTexture);
+
+        int renderAmount = (int) Math.max(Math.min(height, amount * height / tankCapacity), 1);
+        int posY = (int) (y + height - renderAmount);
+
+        Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+        setColorRGBA(stack.getFluid().getAttributes().getColor(stack));
+
+        GlStateManager.enableBlend();
+        for (int i = 0; i < width; i += 16) {
+            for (int j = 0; j < renderAmount; j += 16) {
+                int drawWidth = (int) Math.min(width - i, 16);
+                int drawHeight = Math.min(renderAmount - j, 16);
+
+                int drawX = (int) (x + i);
+                int drawY = posY + j;
+
+                double minU = icon.getMinU();
+                double maxU = icon.getMaxU();
+                double minV = icon.getMinV();
+                double maxV = icon.getMaxV();
+                double u = minU + (maxU - minU) * drawWidth / 16F;
+                double v = minV + (maxV - minV) * drawHeight / 16F;
+
+                Tessellator tessellator = Tessellator.getInstance();
+                BufferBuilder tes = tessellator.getBuffer();
+                tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+                tes.pos(drawX, drawY + drawHeight, zLevel).tex(minU, v).endVertex();
+                tes.pos(drawX + drawWidth, drawY + drawHeight, zLevel).tex(u, v).endVertex();
+                tes.pos(drawX + drawWidth, drawY, zLevel).tex(u, minV).endVertex();
+                tes.pos(drawX, drawY, zLevel).tex(minU, minV).endVertex();
+                tessellator.draw();
+            }
+        }
+        GlStateManager.disableBlend();
+        GlStateManager.color3f(1, 1, 1);
+    }
+
+    public static void setColorRGBA(int color) {
+        float a = (float) alpha(color) / 255.0F;
+        float r = (float) red(color) / 255.0F;
+        float g = (float) green(color) / 255.0F;
+        float b = (float) blue(color) / 255.0F;
+
+        GlStateManager.color4f(r, g, b, a);
+    }
+
+    public static int alpha(int c) {
+        return (c >> 24) & 0xFF;
+    }
+
+    public static int red(int c) {
+        return (c >> 16) & 0xFF;
+    }
+
+    public static int green(int c) {
+        return (c >> 8) & 0xFF;
+    }
+
+    public static int blue(int c) {
+        return (c) & 0xFF;
+    }
+
 
 }

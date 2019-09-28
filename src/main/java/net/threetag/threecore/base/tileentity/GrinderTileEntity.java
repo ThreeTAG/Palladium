@@ -114,11 +114,6 @@ public class GrinderTileEntity extends MachineTileEntity {
     };
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(energySlot, inputSlot, outputSlots);
     private RecipeWrapper recipeWrapper = new RecipeWrapper(this.combinedHandler);
-    private LazyOptional<IItemHandlerModifiable> combinedInvHandler = LazyOptional.of(() -> combinedHandler);
-    private LazyOptional<IItemHandlerModifiable> inputSlotHandler = LazyOptional.of(() -> inputSlot);
-    private LazyOptional<IItemHandlerModifiable> outputSlotHandler = LazyOptional.of(() -> outputSlots);
-    private LazyOptional<IItemHandlerModifiable> energySlotHandler = LazyOptional.of(() -> energySlot);
-    private LazyOptional<EnergyStorage> energyHandler = LazyOptional.of(() -> energyStorage);
 
     public GrinderTileEntity() {
         super(ThreeCoreBase.GRINDER_TILE_ENTITY);
@@ -143,11 +138,11 @@ public class GrinderTileEntity extends MachineTileEntity {
         this.energyStorage = new EnergyStorageExt(4000, 128, 128, nbt.getInt("Energy"));
 
         if (nbt.contains("EnergySlots"))
-            energySlot.deserializeNBT((CompoundNBT) nbt.get("EnergySlots"));
+            this.energySlot.deserializeNBT(nbt.getCompound("EnergySlots"));
         if (nbt.contains("InputSlots"))
-            inputSlot.deserializeNBT((CompoundNBT) nbt.get("InputSlots"));
+            this.inputSlot.deserializeNBT(nbt.getCompound("InputSlots"));
         if (nbt.contains("OutputSlots"))
-            outputSlots.deserializeNBT((CompoundNBT) nbt.get("OutputSlots"));
+            this.outputSlots.deserializeNBT(nbt.getCompound("OutputSlots"));
     }
 
     @Override
@@ -157,9 +152,9 @@ public class GrinderTileEntity extends MachineTileEntity {
         nbt.putInt("Progress", this.progress);
         nbt.putInt("ProgressMax", this.progressMax);
         nbt.putInt("Energy", this.energyStorage.getEnergyStored());
-        nbt.put("EnergySlots", energySlot.serializeNBT());
-        nbt.put("InputSlots", inputSlot.serializeNBT());
-        nbt.put("OutputSlots", outputSlots.serializeNBT());
+        nbt.put("EnergySlots", this.energySlot.serializeNBT());
+        nbt.put("InputSlots", this.inputSlot.serializeNBT());
+        nbt.put("OutputSlots", this.outputSlots.serializeNBT());
 
         return nbt;
     }
@@ -299,21 +294,6 @@ public class GrinderTileEntity extends MachineTileEntity {
         return null;
     }
 
-    @Override
-    public boolean canUseRecipe(World worldIn, ServerPlayerEntity player, @Nullable IRecipe recipe) {
-        if (recipe != null) {
-            this.setRecipeUsed(recipe);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public void onCrafting(PlayerEntity player) {
-
-    }
-
     public void unlockRecipes(PlayerEntity player) {
         List<IRecipe<?>> list = Lists.newArrayList();
         Iterator var3 = this.field_214022_n.entrySet().iterator();
@@ -358,6 +338,12 @@ public class GrinderTileEntity extends MachineTileEntity {
     public int getMaxEnergy() {
         return this.energyStorage.getMaxEnergyStored();
     }
+
+    private LazyOptional<IItemHandlerModifiable> combinedInvHandler = LazyOptional.of(() -> combinedHandler);
+    private LazyOptional<IItemHandlerModifiable> inputSlotHandler = LazyOptional.of(() -> inputSlot);
+    private LazyOptional<IItemHandlerModifiable> outputSlotHandler = LazyOptional.of(() -> outputSlots);
+    private LazyOptional<IItemHandlerModifiable> energySlotHandler = LazyOptional.of(() -> energySlot);
+    private LazyOptional<EnergyStorage> energyHandler = LazyOptional.of(() -> energyStorage);
 
     @Nonnull
     @Override

@@ -94,7 +94,7 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (this.canWork(itemstack1)) {
+                } else if (this.isRecipeIngredient(itemstack1)) {
                     if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -125,7 +125,7 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
         return itemstack;
     }
 
-    private boolean canWork(ItemStack stack) {
+    private boolean isRecipeIngredient(ItemStack stack) {
         return this.world.getRecipeManager().getRecipe(GrinderRecipe.RECIPE_TYPE, new Inventory(ItemStack.EMPTY, stack), this.world).isPresent();
     }
 

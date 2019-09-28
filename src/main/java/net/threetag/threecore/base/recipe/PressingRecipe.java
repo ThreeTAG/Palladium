@@ -1,6 +1,7 @@
 package net.threetag.threecore.base.recipe;
 
 import com.google.gson.JsonObject;
+import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.util.recipe.RecipeUtil;
@@ -110,9 +111,7 @@ public class PressingRecipe implements IRecipe<IInventory> {
         return RECIPE_TYPE;
     }
 
-    public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<PressingRecipe> {
-
-        public static final ResourceLocation NAME = new ResourceLocation(ThreeCore.MODID, "grinding");
+    public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<PressingRecipe> {
 
         @Override
         public PressingRecipe read(ResourceLocation recipeId, JsonObject json) {
@@ -142,7 +141,7 @@ public class PressingRecipe implements IRecipe<IInventory> {
 
         @Override
         public PressingRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
-            String s = buffer.readString(32767);
+            String s = buffer.readString();
             Ingredient ingredient = Ingredient.read(buffer);
             Ingredient cast = Ingredient.read(buffer);
             ItemStack itemstack = buffer.readItemStack();

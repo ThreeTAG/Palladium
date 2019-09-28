@@ -1,9 +1,5 @@
 package net.threetag.threecore.compat.jei.pressing;
 
-import net.threetag.threecore.base.ThreeCoreBase;
-import net.threetag.threecore.base.recipe.PressingRecipe;
-import net.threetag.threecore.compat.jei.ThreeCoreJEIPlugin;
-import net.threetag.threecore.util.energy.EnergyUtil;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -17,6 +13,10 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.recipe.PressingRecipe;
+import net.threetag.threecore.compat.jei.ThreeCoreJEIPlugin;
+import net.threetag.threecore.util.energy.EnergyUtil;
 
 public class PressingCategory<T> implements IRecipeCategory<PressingRecipe> {
 
@@ -33,7 +33,7 @@ public class PressingCategory<T> implements IRecipeCategory<PressingRecipe> {
         this.title = I18n.format("gui.jei.category.threecore.pressing");
         this.background = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 0, 26, 116, 60).build();
         this.icon = guiHelper.createDrawableIngredient(new ItemStack(ThreeCoreBase.HYDRAULIC_PRESS));
-        this.arrow = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 82, 128, 107, 0)
+        this.arrow = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 107, 0, 24, 17)
                 .buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
@@ -81,7 +81,7 @@ public class PressingCategory<T> implements IRecipeCategory<PressingRecipe> {
 
     @Override
     public void draw(PressingRecipe recipe, double mouseX, double mouseY) {
-        arrow.draw(24, 4);
+        arrow.draw(58, 22);
 
         Minecraft minecraft = Minecraft.getInstance();
         FontRenderer fontRenderer = minecraft.fontRenderer;

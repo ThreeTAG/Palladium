@@ -65,7 +65,10 @@ public class ThreeCore {
 
         // Misc
         MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new EntityModelManager()));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            if(Minecraft.getInstance() != null)
+                ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new EntityModelManager());
+        });
     }
 
     public void setup(FMLCommonSetupEvent e) {

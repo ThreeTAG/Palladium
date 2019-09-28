@@ -3,6 +3,8 @@
   
   "block.threecore.grinder": "Grinder",
   "block.threecore.hydraulic_press": "Hydraulic Press",
+  "block.threecore.fluid_composer": "Fluid Composer",
+  
   "item.threecore.hammer": "Hammer",
   "item.threecore.plate_cast": "Plate Cast",
   "item.threecore.capacitor": "Capacitor",
@@ -190,6 +192,7 @@
   
   "container.threecore.grinder": "Grinder",
   "container.threecore.hydraulic_press": "Hydraulic Press",
+  "container.threecore.fluid_composer": "Fluid Composer",
   
   "gui.threecore.abilities": "Abilities",
   "gui.threecore.abilities.fulfill_condition": "Do you want to fulfill this condition?",
@@ -202,5 +205,7 @@
   "ability_container.threecore.player": "Player Abilities",
   
   "threecore.util.energy_display": "%,d %s",
-  "threecore.util.energy_storage_display": "%,d / %,d %s"
+  "threecore.util.energy_storage_display": "%,d / %,d %s",
+  "threecore.util.fluid_display": "%,d %s",
+  "threecore.util.fluid_tank_display": "%,d / %,d %s"
 }
