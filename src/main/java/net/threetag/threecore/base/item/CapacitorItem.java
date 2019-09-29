@@ -1,5 +1,7 @@
 package net.threetag.threecore.base.item;
 
+import net.minecraft.item.MusicDiscItem;
+import net.minecraft.util.text.TextFormatting;
 import net.threetag.threecore.util.energy.EnergyStorageItem;
 import net.threetag.threecore.util.energy.EnergyUtil;
 import net.minecraft.client.util.ITooltipFlag;
@@ -37,7 +39,7 @@ public class CapacitorItem extends Item {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        stack.getCapability(CapabilityEnergy.ENERGY).ifPresent((e) -> list.add(EnergyUtil.getFormattedEnergy(e)));
+        stack.getCapability(CapabilityEnergy.ENERGY).ifPresent((e) -> list.add(EnergyUtil.getFormattedEnergy(e).applyTextStyle(TextFormatting.GRAY)));
     }
 
     @Override
