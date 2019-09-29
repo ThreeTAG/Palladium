@@ -93,10 +93,12 @@ public class FluidComposingCategory<T> implements IRecipeCategory<FluidComposing
 
     @Override
     public void draw(FluidComposingRecipe recipe, double mouseX, double mouseY) {
-        arrow.draw(87, 19);
+        arrow.draw(87, 18);
 
         Minecraft minecraft = Minecraft.getInstance();
         FontRenderer fontRenderer = minecraft.fontRenderer;
-        fontRenderer.drawString(I18n.format("threecore.util.energy_display", recipe.getEnergy(), EnergyUtil.ENERGY_UNIT), 0, 28, 0xFF808080);
+        String s = I18n.format("threecore.util.energy_display", recipe.getEnergy(), EnergyUtil.ENERGY_UNIT);
+        int length = fontRenderer.getStringWidth(s);
+        fontRenderer.drawString(s, 134 / 2 - length / 2, 55, 0xFF808080);
     }
 }

@@ -81,7 +81,7 @@ public class PressingCategory<T> implements IRecipeCategory<PressingRecipe> {
 
     @Override
     public void draw(PressingRecipe recipe, double mouseX, double mouseY) {
-        arrow.draw(58, 22);
+        arrow.draw(58, 21);
 
         Minecraft minecraft = Minecraft.getInstance();
         FontRenderer fontRenderer = minecraft.fontRenderer;

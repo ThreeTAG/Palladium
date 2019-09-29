@@ -52,7 +52,7 @@ public class FluidComposerScreen extends ContainerScreen<FluidComposerContainer>
         int energy = (int) (this.container.getEnergyPercentage() * 40);
         this.blit(left + 68, top + 97, 200, 0, energy, 12);
         int progress = this.container.getProgressScaled(24);
-        this.blit(left + 108, top + 47, 176, 0, progress, 16);
+        this.blit(left + 108, top + 46, 176, 0, progress, 16);
 
         RenderUtil.renderGuiTank(this.container.fluidComposerTileEntity.inputFluidTank, 0, left + 8, top + 38, 0, 16, 60);
         RenderUtil.renderGuiTank(this.container.fluidComposerTileEntity.outputFluidTank, 0, left + 152, top + 38, 0, 16, 60);
