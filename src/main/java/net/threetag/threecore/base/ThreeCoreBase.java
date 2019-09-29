@@ -423,7 +423,7 @@ public class ThreeCoreBase {
         registry.register(makeItem(GRINDER, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(makeItem(HYDRAULIC_PRESS, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(makeItem(FLUID_COMPOSER, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
-        registry.register(new CapacitorBlockItem(CAPACITOR_BLOCK, new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), 40000, 1000).setRegistryName(CAPACITOR_BLOCK.getRegistryName()));
+        registry.register(new CapacitorBlockItem(CAPACITOR_BLOCK, new Item.Properties().maxStackSize(1).group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), 40000, 1000).setRegistryName(CAPACITOR_BLOCK.getRegistryName()));
         registry.register(new HammerItem(4.5F, -2.75F, ItemTier.IRON, new Item.Properties().group(ItemGroup.TOOLS).maxStackSize(1).maxDamage(16)).setRegistryName(ThreeCore.MODID, "hammer"));
         registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "plate_cast"));
         registry.register(new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)).maxStackSize(1), 40000, 100).setRegistryName(ThreeCore.MODID, "capacitor"));
