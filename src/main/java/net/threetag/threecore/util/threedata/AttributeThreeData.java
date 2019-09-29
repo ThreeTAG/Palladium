@@ -2,13 +2,14 @@ package net.threetag.threecore.util.threedata;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import net.threetag.threecore.util.attributes.AttributeRegistry;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.threetag.threecore.util.attributes.AttributeRegistry;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class AttributeThreeData extends ThreeData<IAttribute> {
 
@@ -35,7 +36,8 @@ public class AttributeThreeData extends ThreeData<IAttribute> {
     public IAttribute readFromNBT(CompoundNBT nbt, IAttribute defaultValue) {
         if (!nbt.contains(this.key))
             return defaultValue;
-        return AttributeRegistry.REGISTRY.getOrDefault(new ResourceLocation(nbt.getString(this.key))).getAttribute();
+        Optional<AttributeRegistry.AttributeEntry> entry = AttributeRegistry.REGISTRY.getValue(new ResourceLocation(nbt.getString(this.key)));
+        return entry.isPresent() ? entry.get().getAttribute() : defaultValue;
     }
 
     @Override
