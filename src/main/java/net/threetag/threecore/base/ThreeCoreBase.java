@@ -33,21 +33,22 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ThreeCoreCommonConfig;
-import net.threetag.threecore.base.block.FluidComposerBlock;
-import net.threetag.threecore.base.block.GrinderBlock;
-import net.threetag.threecore.base.block.HydraulicPressBlock;
-import net.threetag.threecore.base.block.VibraniumBlock;
+import net.threetag.threecore.base.block.*;
+import net.threetag.threecore.base.client.gui.CapacitorBlockScreen;
 import net.threetag.threecore.base.client.gui.FluidComposerScreen;
 import net.threetag.threecore.base.client.gui.GrinderScreen;
 import net.threetag.threecore.base.client.gui.HydraulicPressScreen;
+import net.threetag.threecore.base.inventory.CapacitorBlockContainer;
 import net.threetag.threecore.base.inventory.FluidComposerContainer;
 import net.threetag.threecore.base.inventory.GrinderContainer;
 import net.threetag.threecore.base.inventory.HydraulicPressContainer;
+import net.threetag.threecore.base.item.CapacitorBlockItem;
 import net.threetag.threecore.base.item.CapacitorItem;
 import net.threetag.threecore.base.item.HammerItem;
 import net.threetag.threecore.base.recipe.FluidComposingRecipe;
 import net.threetag.threecore.base.recipe.GrinderRecipe;
 import net.threetag.threecore.base.recipe.PressingRecipe;
+import net.threetag.threecore.base.tileentity.CapacitorBlockTileEntity;
 import net.threetag.threecore.base.tileentity.FluidComposerTileEntity;
 import net.threetag.threecore.base.tileentity.GrinderTileEntity;
 import net.threetag.threecore.base.tileentity.HydraulicPressTileEntity;
@@ -80,6 +81,7 @@ public class ThreeCoreBase {
             ScreenManager.registerFactory(GRINDER_CONTAINER, GrinderScreen::new);
             ScreenManager.registerFactory(HYDRAULIC_PRESS_CONTAINER, HydraulicPressScreen::new);
             ScreenManager.registerFactory(FLUID_COMPOSER_CONTAINER, FluidComposerScreen::new);
+            ScreenManager.registerFactory(CAPACITOR_BLOCK_CONTAINER, CapacitorBlockScreen::new);
 
             // TESR
             try {
@@ -122,6 +124,13 @@ public class ThreeCoreBase {
     public static final ContainerType<FluidComposerContainer> FLUID_COMPOSER_CONTAINER = null;
     @ObjectHolder("fluid_composing")
     public static final IRecipeSerializer<FluidComposingRecipe> FLUID_COMPOSING_RECIPE_SERIALIZER = null;
+
+    @ObjectHolder("capacitor_block")
+    public static final Block CAPACITOR_BLOCK = null;
+    @ObjectHolder("capacitor_block")
+    public static final TileEntityType<CapacitorBlockTileEntity> CAPACITOR_BLOCK_TILE_ENTITY = null;
+    @ObjectHolder("capacitor_block")
+    public static final ContainerType<CapacitorBlockContainer> CAPACITOR_BLOCK_CONTAINER = null;
 
     // Misc Items
     @ObjectHolder("hammer")
@@ -346,6 +355,7 @@ public class ThreeCoreBase {
         registry.register(new GrinderBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "grinder"));
         registry.register(new HydraulicPressBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "hydraulic_press"));
         registry.register(new FluidComposerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "fluid_composer"));
+        registry.register(new CapacitorBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "capacitor_block"));
 
         registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "copper_block"));
         registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "tin_block"));
@@ -382,6 +392,7 @@ public class ThreeCoreBase {
         e.getRegistry().register(TileEntityType.Builder.create(GrinderTileEntity::new, GRINDER).build(null).setRegistryName(ThreeCore.MODID, "grinder"));
         e.getRegistry().register(TileEntityType.Builder.create(HydraulicPressTileEntity::new, HYDRAULIC_PRESS).build(null).setRegistryName(ThreeCore.MODID, "hydraulic_press"));
         e.getRegistry().register(TileEntityType.Builder.create(FluidComposerTileEntity::new, FLUID_COMPOSER).build(null).setRegistryName(ThreeCore.MODID, "fluid_composer"));
+        e.getRegistry().register(TileEntityType.Builder.create(CapacitorBlockTileEntity::new, CAPACITOR_BLOCK).build(null).setRegistryName(ThreeCore.MODID, "capacitor_block"));
     }
 
     @SubscribeEvent
@@ -395,6 +406,7 @@ public class ThreeCoreBase {
                 return tileEntity instanceof FluidComposerTileEntity ? new FluidComposerContainer(windowId, inv, (FluidComposerTileEntity) tileEntity) : null;
             }
         }).setRegistryName(ThreeCore.MODID, "fluid_composer"));
+        e.getRegistry().register(new ContainerType<>(CapacitorBlockContainer::new).setRegistryName(ThreeCore.MODID, "capacitor_block"));
     }
 
     @SubscribeEvent
@@ -411,6 +423,7 @@ public class ThreeCoreBase {
         registry.register(makeItem(GRINDER, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(makeItem(HYDRAULIC_PRESS, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(makeItem(FLUID_COMPOSER, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
+        registry.register(new CapacitorBlockItem(CAPACITOR_BLOCK, new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), 40000, 1000).setRegistryName(CAPACITOR_BLOCK.getRegistryName()));
         registry.register(new HammerItem(4.5F, -2.75F, ItemTier.IRON, new Item.Properties().group(ItemGroup.TOOLS).maxStackSize(1).maxDamage(16)).setRegistryName(ThreeCore.MODID, "hammer"));
         registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "plate_cast"));
         registry.register(new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)).maxStackSize(1), 40000, 100).setRegistryName(ThreeCore.MODID, "capacitor"));

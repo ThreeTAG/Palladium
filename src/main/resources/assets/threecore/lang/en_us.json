@@ -4,6 +4,7 @@
   "block.threecore.grinder": "Grinder",
   "block.threecore.hydraulic_press": "Hydraulic Press",
   "block.threecore.fluid_composer": "Fluid Composer",
+  "block.threecore.capacitor_block": "Capacitor Block",
   
   "item.threecore.hammer": "Hammer",
   "item.threecore.plate_cast": "Plate Cast",
@@ -193,6 +194,7 @@
   "container.threecore.grinder": "Grinder",
   "container.threecore.hydraulic_press": "Hydraulic Press",
   "container.threecore.fluid_composer": "Fluid Composer",
+  "container.threecore.capacitor_block": "Capacitor Block",
   
   "gui.threecore.abilities": "Abilities",
   "gui.threecore.abilities.fulfill_condition": "Do you want to fulfill this condition?",

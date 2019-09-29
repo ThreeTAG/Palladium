@@ -106,7 +106,7 @@ public class FluidComposerContainer extends Container {
     @Override
     public ItemStack transferStackInSlot(PlayerEntity player, int index) {
         ItemStack stack = ItemStack.EMPTY;
-        Slot slot = (Slot) this.inventorySlots.get(index);
+        Slot slot = this.inventorySlots.get(index);
         if (slot != null && slot.getHasStack()) {
             ItemStack stack1 = slot.getStack();
             stack = stack1.copy();

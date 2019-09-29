@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "threecore:block/capacitor_block/top",
+        "side": "threecore:block/capacitor_block/side_10"
+    }
+}

@@ -2,14 +2,10 @@ package net.threetag.threecore.sizechanging.capability;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -108,8 +104,9 @@ public class CapabilitySizeChanging implements ISizeChanging, IThreeDataHolder, 
     @Override
     public float getHeight() {
         float f = this.dataManager.get(SCALE);
-        if (this.entity instanceof LivingEntity)
+        if (this.entity instanceof LivingEntity) {
             f *= ((LivingEntity) this.entity).getAttribute(SizeManager.SIZE_HEIGHT).getValue();
+        }
         return MathHelper.clamp(f, MIN_SIZE, MAX_SIZE);
     }
 

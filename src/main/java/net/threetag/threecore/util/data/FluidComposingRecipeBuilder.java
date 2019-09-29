@@ -45,19 +45,19 @@ public class FluidComposingRecipeBuilder {
     }
 
     public FluidComposingRecipeBuilder addIngredient(IItemProvider itemProvider) {
-        return this.addIngredient((IItemProvider) itemProvider, 1);
+        return this.addIngredient(itemProvider, 1);
     }
 
     public FluidComposingRecipeBuilder addIngredient(IItemProvider itemProvider, int count) {
         for (int i = 0; i < count; ++i) {
-            this.addIngredient(Ingredient.fromItems(new IItemProvider[]{itemProvider}));
+            this.addIngredient(Ingredient.fromItems(itemProvider));
         }
 
         return this;
     }
 
     public FluidComposingRecipeBuilder addIngredient(Ingredient ingredient) {
-        return this.addIngredient((Ingredient) ingredient, 1);
+        return this.addIngredient(ingredient, 1);
     }
 
     public FluidComposingRecipeBuilder addIngredient(Ingredient ingredient, int count) {
