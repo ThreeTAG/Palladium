@@ -16,8 +16,6 @@ import java.util.List;
 
 public abstract class FastFluidTESR<T extends TileEntity> extends TileEntityRendererFast<T> {
 
-    private static final float FLUID_ALPHA = 0.9f;
-
     @Override
     public void renderTileEntityFast(T te, double x, double y, double z, float partialTicks, int destroyStage, BufferBuilder buffer) {
         for (TankRenderInfo tankRenderInfo : getTanksToRender(te)) {
