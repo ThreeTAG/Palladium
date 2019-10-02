@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.util.recipe.IEnergyRecipe;
 import net.threetag.threecore.util.recipe.RecipeUtil;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
-public class GrinderRecipe implements IRecipe<IInventory> {
+public class GrinderRecipe implements IEnergyRecipe<IInventory> {
 
     public static final IRecipeType<GrinderRecipe> RECIPE_TYPE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(ThreeCore.MODID, "grinder"), new IRecipeType<GrinderRecipe>() {
         public String toString() {
@@ -88,7 +89,8 @@ public class GrinderRecipe implements IRecipe<IInventory> {
         return this.group;
     }
 
-    public int getEnergy() {
+    @Override
+    public int getRequiredEnergy() {
         return this.energy;
     }
 

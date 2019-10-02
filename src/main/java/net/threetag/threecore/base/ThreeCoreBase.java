@@ -432,8 +432,6 @@ public class ThreeCoreBase {
         registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "circuit"));
         registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
 
-        System.out.println("HALLO " + ThreeCoreServerConfig.ENERGY.CAPACITOR.capacity.get());
-
         registry.register(makeItem(COPPER_BLOCK));
         registry.register(makeItem(TIN_BLOCK));
         registry.register(makeItem(LEAD_BLOCK));

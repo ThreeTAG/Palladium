@@ -1,18 +1,13 @@
 package net.threetag.threecore.base.tileentity;
 
-import com.google.common.collect.Maps;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.LavaFluid;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.RecipeItemHelper;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -28,31 +23,23 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.ThreeCoreBase;
-import net.threetag.threecore.base.block.MachineBlock;
 import net.threetag.threecore.base.inventory.FluidComposerContainer;
 import net.threetag.threecore.base.recipe.FluidComposingRecipe;
-import net.threetag.threecore.util.energy.EnergyStorageExt;
+import net.threetag.threecore.util.energy.IEnergyConfig;
 import net.threetag.threecore.util.fluid.FluidInventory;
 import net.threetag.threecore.util.fluid.FluidTankExt;
 import net.threetag.threecore.util.fluid.TCFluidUtil;
+import net.threetag.threecore.util.item.ItemStackHandlerExt;
 import net.threetag.threecore.util.player.PlayerHelper;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Map;
 
-public class FluidComposerTileEntity extends MachineTileEntity {
+public class FluidComposerTileEntity extends ProgressableMachineTileEntity<FluidComposingRecipe> {
 
     public static final int TANK_CAPACITY = 5000;
-
-    private EnergyStorageExt energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.FLUID_COMPOSER);
-    public int progress;
-    public int progressMax;
-    private final Map<ResourceLocation, Integer> field_214022_n = Maps.newHashMap();
 
     protected final IIntArray intArray = new IIntArray() {
         @Override
@@ -61,7 +48,7 @@ public class FluidComposerTileEntity extends MachineTileEntity {
                 case 0:
                     return progress;
                 case 1:
-                    return progressMax;
+                    return maxProgress;
                 case 2:
                     return energyStorage.getEnergyStored();
                 case 3:
@@ -77,7 +64,7 @@ public class FluidComposerTileEntity extends MachineTileEntity {
                 case 0:
                     progress = value;
                 case 1:
-                    progressMax = value;
+                    maxProgress = value;
                 case 2:
                     energyStorage.setEnergyStored(value);
                 case 3:
@@ -91,53 +78,8 @@ public class FluidComposerTileEntity extends MachineTileEntity {
         }
     };
 
-    private ItemStackHandler energySlot = new ItemStackHandler(1) {
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            return stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
-        }
-
-        @Override
-        protected void onContentsChanged(int slot) {
-            FluidComposerTileEntity.this.markDirty();
-        }
-    };
-    private ItemStackHandler inputSlots = new ItemStackHandler(9) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            FluidComposerTileEntity.this.markDirty();
-        }
-    };
-    private ItemStackHandler fluidSlots = new ItemStackHandler(4) {
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            return FluidUtil.getFluidHandler(stack).isPresent();
-        }
-
-        @Override
-        public int getSlotLimit(int slot) {
-            return 1;
-        }
-
-        @Override
-        protected void onContentsChanged(int slot) {
-            FluidComposerTileEntity.this.markDirty();
-            FluidTank tank = slot <= 1 ? inputFluidTank : outputFluidTank;
-            if (slot == 0 || slot == 2) {
-                FluidActionResult res = TCFluidUtil.transferFluidFromItemToTank(this.getStackInSlot(slot), tank, fluidSlots, null);
-                if (res.isSuccess()) {
-                    this.setStackInSlot(slot, res.getResult());
-                }
-            } else {
-                FluidActionResult res = TCFluidUtil.transferFluidFromTankToItem(this.getStackInSlot(slot), tank, fluidSlots, null);
-                if (res.isSuccess()) {
-                    this.setStackInSlot(slot, res.getResult());
-                }
-            }
-        }
-    };
-
     public FluidTankExt inputFluidTank = new FluidTankExt(TANK_CAPACITY).setCallback(f -> {
+        this.updateRecipe(this.recipeWrapper);
         if (getWorld() != null)
             getWorld().notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 3);
     }).setSoundHandler(sound -> {
@@ -152,6 +94,38 @@ public class FluidComposerTileEntity extends MachineTileEntity {
         if (sound != null)
             PlayerHelper.playSoundToAll(world, getPos().getX(), getPos().getY(), getPos().getZ(), 50, sound, SoundCategory.BLOCKS);
     });
+
+    private ItemStackHandlerExt energySlot = new ItemStackHandlerExt(1)
+            .setValidator((handler, slot, stack) -> stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
+            .setChangedCallback((handler, slot) -> FluidComposerTileEntity.this.markDirty());
+
+    private ItemStackHandlerExt inputSlots = new ItemStackHandlerExt(9)
+            .setChangedCallback((handler, slot) -> {
+                this.updateRecipe(this.recipeWrapper);
+                FluidComposerTileEntity.this.markDirty();
+            });
+
+    private ItemStackHandlerExt fluidSlots = new ItemStackHandlerExt(4) {
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
+        }
+    }.setValidator((handler, slot, stack) -> FluidUtil.getFluidHandler(stack).isPresent())
+            .setChangedCallback((handler, slot) -> {
+                FluidComposerTileEntity.this.markDirty();
+                FluidTank tank = slot <= 1 ? inputFluidTank : outputFluidTank;
+                if (slot == 0 || slot == 2) {
+                    FluidActionResult res = TCFluidUtil.transferFluidFromItemToTank(this.getStackInSlot(slot), tank, handler, null);
+                    if (res.isSuccess()) {
+                        handler.setStackInSlot(slot, res.getResult());
+                    }
+                } else {
+                    FluidActionResult res = TCFluidUtil.transferFluidFromTankToItem(this.getStackInSlot(slot), tank, handler, null);
+                    if (res.isSuccess()) {
+                        handler.setStackInSlot(slot, res.getResult());
+                    }
+                }
+            });
 
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(energySlot, fluidSlots, inputSlots);
     public FluidInventory recipeWrapper = new FluidInventory(this.inputSlots, inputFluidTank);
@@ -171,98 +145,34 @@ public class FluidComposerTileEntity extends MachineTileEntity {
     }
 
     @Override
-    public void tick() {
-        boolean working = this.isWorking();
-        boolean dirty = false;
-
-        if (this.world != null && !this.world.isRemote) {
-            this.energySlot.getStackInSlot(0).getCapability(CapabilityEnergy.ENERGY).ifPresent((e) -> {
-                int energy = e.extractEnergy(e.getEnergyStored(), true);
-                energy = energyStorage.receiveEnergy(energy, true);
-                if (energy > 0) {
-                    this.energyStorage.receiveEnergy(energy, false);
-                    e.extractEnergy(energy, false);
-                }
-            });
-
-            FluidComposingRecipe recipe = this.world.getRecipeManager().getRecipe(FluidComposingRecipe.RECIPE_TYPE, this.recipeWrapper, this.world).orElse(null);
-            if (canWork(recipe)) {
-                this.progressMax = recipe.getEnergy();
-                if (progress >= progressMax) {
-                    produceOutput(recipe);
-                    progress = 0;
-                    dirty = true;
-                } else {
-                    progress++;
-                    this.energyStorage.extractEnergy(1, false);
-                }
-            } else {
-                progress = 0;
-            }
-        }
-
-        if (working != this.isWorking()) {
-            dirty = true;
-            this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(MachineBlock.LIT, this.isWorking()), 3);
-        }
-
-        if (dirty)
-            this.markDirty();
+    public IRecipeType<FluidComposingRecipe> getRecipeType() {
+        return FluidComposingRecipe.RECIPE_TYPE;
     }
 
-    public boolean isWorking() {
-        return this.progress > 0;
+    @Override
+    public IEnergyConfig getEnergyConfig() {
+        return ThreeCoreServerConfig.ENERGY.FLUID_COMPOSER;
     }
 
+    @Override
     public boolean canWork(FluidComposingRecipe recipe) {
-        if (recipe != null && this.energyStorage.extractEnergy(1, true) == 1) {
-            FluidStack result = recipe.getResult(this.recipeWrapper);
+        FluidStack result = recipe.getResult(this.recipeWrapper);
 
-            if (result.isEmpty())
-                return false;
-
-            return this.outputFluidTank.fill(result, IFluidHandler.FluidAction.SIMULATE) == result.getAmount();
-        } else {
+        if (result.isEmpty())
             return false;
-        }
+
+        return this.outputFluidTank.fill(result, IFluidHandler.FluidAction.SIMULATE) == result.getAmount();
     }
 
     public void produceOutput(FluidComposingRecipe recipe) {
-        if (recipe != null && this.canWork(recipe)) {
-            if (!TCFluidUtil.drainIngredient(this.inputFluidTank, recipe.getInputFluid(), IFluidHandler.FluidAction.EXECUTE))
-                return;
+        if (!TCFluidUtil.drainIngredient(this.inputFluidTank, recipe.getInputFluid(), IFluidHandler.FluidAction.EXECUTE))
+            return;
 
-            this.outputFluidTank.fill(recipe.getResult(this.recipeWrapper), IFluidHandler.FluidAction.EXECUTE);
+        this.outputFluidTank.fill(recipe.getResult(this.recipeWrapper), IFluidHandler.FluidAction.EXECUTE);
 
-            if (!this.world.isRemote) {
-                this.canUseRecipe(this.world, null, recipe);
-            }
-
-            for (int i = 0; i < this.inputSlots.getSlots(); i++) {
-                this.inputSlots.getStackInSlot(i).shrink(1);
-            }
+        for (int i = 0; i < this.inputSlots.getSlots(); i++) {
+            this.inputSlots.getStackInSlot(i).shrink(1);
         }
-    }
-
-    @Override
-    public void fillStackedContents(RecipeItemHelper recipeItemHelper) {
-        for (int i = 0; i < this.combinedHandler.getSlots(); i++) {
-            ItemStack stack = this.combinedHandler.getStackInSlot(i);
-            recipeItemHelper.accountStack(stack);
-        }
-    }
-
-    @Override
-    public void setRecipeUsed(IRecipe recipe) {
-        if (recipe != null) {
-            this.field_214022_n.compute(recipe.getId(), (resourceLocation, integer) -> 1 + (integer == null ? 0 : integer));
-        }
-    }
-
-    @Nullable
-    @Override
-    public IRecipe<?> getRecipeUsed() {
-        return null;
     }
 
     @Override
@@ -299,10 +209,6 @@ public class FluidComposerTileEntity extends MachineTileEntity {
     public void read(CompoundNBT nbt) {
         super.read(nbt);
 
-        this.progress = nbt.getInt("Progress");
-        this.progressMax = nbt.getInt("ProgressMax");
-        this.energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.FLUID_COMPOSER, nbt.getInt("Energy"));
-
         if (nbt.contains("EnergySlots"))
             this.energySlot.deserializeNBT(nbt.getCompound("EnergySlots"));
         if (nbt.contains("InputSlots"))
@@ -316,9 +222,6 @@ public class FluidComposerTileEntity extends MachineTileEntity {
 
     @Override
     public CompoundNBT write(CompoundNBT nbt) {
-        nbt.putInt("Progress", this.progress);
-        nbt.putInt("ProgressMax", this.progressMax);
-        nbt.putInt("Energy", this.energyStorage.getEnergyStored());
         nbt.put("EnergySlots", this.energySlot.serializeNBT());
         nbt.put("InputSlots", this.inputSlots.serializeNBT());
         nbt.put("FluidSlots", this.fluidSlots.serializeNBT());

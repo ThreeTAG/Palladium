@@ -1,24 +1,71 @@
 package net.threetag.threecore.base.tileentity;
 
-import com.google.common.collect.Maps;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IRecipeHelperPopulator;
-import net.minecraft.inventory.IRecipeHolder;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Direction;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.IItemHandler;
+import net.threetag.threecore.util.energy.EnergyStorageExt;
+import net.threetag.threecore.util.energy.IEnergyConfig;
 import net.threetag.threecore.util.tileentity.LockableItemCapTileEntity;
 
-import java.util.Map;
+import javax.annotation.Nullable;
 import java.util.Objects;
 
-public abstract class MachineTileEntity extends LockableItemCapTileEntity implements IRecipeHolder, IRecipeHelperPopulator, ITickableTileEntity {
+public abstract class MachineTileEntity extends LockableItemCapTileEntity implements ITickableTileEntity {
 
-    private final Map<ResourceLocation, Integer> recipeUseCounts = Maps.newHashMap();
+    protected EnergyStorageExt energyStorage;
+    private LazyOptional<IEnergyStorage> energyStorageLazyOptional = LazyOptional.of(() -> energyStorage);
 
     public MachineTileEntity(TileEntityType<?> tileEntityType) {
         super(tileEntityType);
+        this.energyStorage = new EnergyStorageExt(this.getEnergyConfig());
+    }
+
+    public abstract IEnergyConfig getEnergyConfig();
+
+    public IItemHandler getEnergyInputSlots() {
+        return null;
+    }
+
+    public IItemHandler getEnergyOutputSlots() {
+        return null;
+    }
+
+    @Override
+    public void tick() {
+        if (this.getWorld() != null && !this.getWorld().isRemote) {
+            if (getEnergyInputSlots() != null) {
+                for (int i = 0; i < this.getEnergyInputSlots().getSlots(); i++) {
+                    this.getEnergyInputSlots().getStackInSlot(i).getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> {
+                        int energy = energyStorage.extractEnergy(energyStorage.getEnergyStored(), true);
+                        energy = this.energyStorage.receiveEnergy(energy, true);
+                        if (energy > 0) {
+                            this.energyStorage.receiveEnergy(energy, false);
+                            energyStorage.extractEnergy(energy, false);
+                        }
+                    });
+                }
+            }
+
+            if (getEnergyOutputSlots() != null) {
+                for (int i = 0; i < this.getEnergyOutputSlots().getSlots(); i++) {
+                    this.getEnergyOutputSlots().getStackInSlot(i).getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> {
+                        int energy = this.energyStorage.extractEnergy(this.energyStorage.getEnergyStored(), true);
+                        energy = energyStorage.receiveEnergy(energy, true);
+                        if (energy > 0) {
+                            energyStorage.receiveEnergy(energy, false);
+                            this.energyStorage.extractEnergy(energy, false);
+                        }
+                    });
+                }
+            }
+        }
     }
 
     @Override
@@ -30,29 +77,24 @@ public abstract class MachineTileEntity extends LockableItemCapTileEntity implem
         }
     }
 
+    @Nullable
+    @Override
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
+        if (cap == CapabilityEnergy.ENERGY)
+            return this.energyStorageLazyOptional.cast();
+        return super.getCapability(cap, side);
+    }
+
     @Override
     public void read(CompoundNBT nbt) {
         super.read(nbt);
 
-        int i = nbt.getShort("RecipesUsedSize");
-        for (int j = 0; j < i; ++j) {
-            ResourceLocation resourcelocation = new ResourceLocation(nbt.getString("RecipeLocation" + j));
-            int k = nbt.getInt("RecipeAmount" + j);
-            this.recipeUseCounts.put(resourcelocation, k);
-        }
+        this.energyStorage = new EnergyStorageExt(this.getEnergyConfig(), nbt.getInt("Energy"));
     }
 
     @Override
     public CompoundNBT write(CompoundNBT nbt) {
-        nbt.putShort("RecipesUsedSize", (short) this.recipeUseCounts.size());
-        int i = 0;
-
-        for (Map.Entry<ResourceLocation, Integer> entry : this.recipeUseCounts.entrySet()) {
-            nbt.putString("RecipeLocation" + i, entry.getKey().toString());
-            nbt.putInt("RecipeAmount" + i, entry.getValue());
-            ++i;
-        }
-
+        nbt.putInt("Energy", this.energyStorage.getEnergyStored());
         return super.write(nbt);
     }
 }

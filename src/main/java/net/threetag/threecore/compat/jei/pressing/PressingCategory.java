@@ -86,7 +86,7 @@ public class PressingCategory<T> implements IRecipeCategory<PressingRecipe> {
         Minecraft minecraft = Minecraft.getInstance();
         FontRenderer fontRenderer = minecraft.fontRenderer;
         {
-            String energyString = I18n.format("threecore.util.energy_display", recipe.getEnergy(), EnergyUtil.ENERGY_UNIT);
+            String energyString = I18n.format("threecore.util.energy_display", recipe.getRequiredEnergy(), EnergyUtil.ENERGY_UNIT);
             int stringWidth = fontRenderer.getStringWidth(energyString);
             fontRenderer.drawString(energyString, background.getWidth() - stringWidth, 50, 0xFF808080);
         }

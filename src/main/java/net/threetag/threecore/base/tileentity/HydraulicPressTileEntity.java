@@ -1,51 +1,34 @@
 package net.threetag.threecore.base.tileentity;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.RecipeItemHelper;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.ThreeCoreBase;
-import net.threetag.threecore.base.block.MachineBlock;
 import net.threetag.threecore.base.inventory.HydraulicPressContainer;
 import net.threetag.threecore.base.recipe.PressingRecipe;
-import net.threetag.threecore.util.energy.EnergyStorageExt;
+import net.threetag.threecore.util.energy.IEnergyConfig;
+import net.threetag.threecore.util.item.ItemStackHandlerExt;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-public class HydraulicPressTileEntity extends MachineTileEntity {
-
-    private EnergyStorageExt energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.HYDRAULIC_PRESS);
-    public int progress;
-    public int progressMax;
-    private final Map<ResourceLocation, Integer> field_214022_n = Maps.newHashMap();
+public class HydraulicPressTileEntity extends ProgressableMachineTileEntity<PressingRecipe> {
 
     protected final IIntArray intArray = new IIntArray() {
         @Override
@@ -54,7 +37,7 @@ public class HydraulicPressTileEntity extends MachineTileEntity {
                 case 0:
                     return progress;
                 case 1:
-                    return progressMax;
+                    return maxProgress;
                 case 2:
                     return energyStorage.getEnergyStored();
                 case 3:
@@ -70,7 +53,7 @@ public class HydraulicPressTileEntity extends MachineTileEntity {
                 case 0:
                     progress = value;
                 case 1:
-                    progressMax = value;
+                    maxProgress = value;
                 case 2:
                     energyStorage.setEnergyStored(value);
                 case 3:
@@ -84,39 +67,24 @@ public class HydraulicPressTileEntity extends MachineTileEntity {
         }
     };
 
-    private ItemStackHandler energySlot = new ItemStackHandler(1) {
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            return stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
-        }
+    private ItemStackHandlerExt energySlot = new ItemStackHandlerExt(1)
+            .setValidator((handler, slot, stack) -> stack.getCapability(CapabilityEnergy.ENERGY).isPresent())
+            .setChangedCallback((handler, slot) -> HydraulicPressTileEntity.this.markDirty());
 
-        @Override
-        protected void onContentsChanged(int slot) {
-            HydraulicPressTileEntity.this.markDirty();
-        }
-    };
-    private ItemStackHandler inputSlot = new ItemStackHandler(2) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            HydraulicPressTileEntity.this.markDirty();
-        }
-
+    private ItemStackHandlerExt inputSlot = new ItemStackHandlerExt(2) {
         @Override
         public int getSlotLimit(int slot) {
             return slot == 0 ? 1 : super.getSlotLimit(slot);
         }
-    };
-    private ItemStackHandler outputSlots = new ItemStackHandler(1) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            HydraulicPressTileEntity.this.markDirty();
-        }
+    }.setChangedCallback((handler, slot) -> {
+        this.updateRecipe(this.recipeWrapper);
+        HydraulicPressTileEntity.this.markDirty();
+    });
 
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            return false;
-        }
-    };
+    private ItemStackHandlerExt outputSlots = new ItemStackHandlerExt(1)
+            .setValidator((handler, slot, stack) -> false)
+            .setChangedCallback((handler, slot) -> HydraulicPressTileEntity.this.markDirty());
+
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(energySlot, inputSlot, outputSlots);
     public RecipeWrapper recipeWrapper = new RecipeWrapper(this.inputSlot);
 
@@ -135,12 +103,64 @@ public class HydraulicPressTileEntity extends MachineTileEntity {
     }
 
     @Override
+    public IEnergyConfig getEnergyConfig() {
+        return ThreeCoreServerConfig.ENERGY.HYDRAULIC_PRESS;
+    }
+
+    @Override
+    public IRecipeType getRecipeType() {
+        return PressingRecipe.RECIPE_TYPE;
+    }
+
+    @Override
+    public float getXpFromRecipe(PressingRecipe recipe) {
+        return recipe.getExperience();
+    }
+
+    @Override
+    public IItemHandler getEnergyInputSlots() {
+        return this.energySlot;
+    }
+
+    @Override
+    public boolean canWork(PressingRecipe recipe) {
+        ItemStack recipeOutput = recipe.getRecipeOutput();
+        if (recipeOutput.isEmpty()) {
+            return false;
+        } else {
+            boolean output;
+            ItemStack outputSlot = this.outputSlots.getStackInSlot(0);
+
+            if (outputSlot.isEmpty()) {
+                output = true;
+            } else if (!outputSlot.isItemEqual(recipeOutput)) {
+                output = false;
+            } else if (outputSlot.getCount() + recipeOutput.getCount() <= this.outputSlots.getSlotLimit(0) && outputSlot.getCount() < outputSlot.getMaxStackSize()) {
+                output = true;
+            } else {
+                output = outputSlot.getCount() + recipeOutput.getCount() <= recipeOutput.getMaxStackSize();
+            }
+
+            return output;
+        }
+    }
+
+    @Override
+    public void produceOutput(PressingRecipe recipe) {
+        ItemStack recipeOutput = recipe.getRecipeOutput();
+        ItemStack outputSlot = outputSlots.getStackInSlot(0);
+        if (outputSlot.isEmpty()) {
+            this.outputSlots.setStackInSlot(0, recipeOutput.copy());
+        } else if (outputSlot.getItem() == recipeOutput.getItem()) {
+            outputSlot.grow(recipeOutput.getCount());
+        }
+
+        this.inputSlot.getStackInSlot(1).shrink(1);
+    }
+
+    @Override
     public void read(CompoundNBT nbt) {
         super.read(nbt);
-
-        this.progress = nbt.getInt("Progress");
-        this.progressMax = nbt.getInt("ProgressMax");
-        this.energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.HYDRAULIC_PRESS, nbt.getInt("Energy"));
 
         if (nbt.contains("EnergySlots"))
             this.energySlot.deserializeNBT(nbt.getCompound("EnergySlots"));
@@ -154,172 +174,11 @@ public class HydraulicPressTileEntity extends MachineTileEntity {
     public CompoundNBT write(CompoundNBT nbt) {
         super.write(nbt);
 
-        nbt.putInt("Progress", this.progress);
-        nbt.putInt("ProgressMax", this.progressMax);
-        nbt.putInt("Energy", this.energyStorage.getEnergyStored());
         nbt.put("EnergySlots", this.energySlot.serializeNBT());
         nbt.put("InputSlots", this.inputSlot.serializeNBT());
         nbt.put("OutputSlots", this.outputSlots.serializeNBT());
 
         return nbt;
-    }
-
-    @Override
-    public void tick() {
-        boolean working = this.isWorking();
-        boolean dirty = false;
-
-        if (this.world != null && !this.world.isRemote) {
-            this.energySlot.getStackInSlot(0).getCapability(CapabilityEnergy.ENERGY).ifPresent((e) -> {
-                int energy = e.extractEnergy(e.getEnergyStored(), true);
-                energy = energyStorage.receiveEnergy(energy, true);
-                if (energy > 0) {
-                    this.energyStorage.receiveEnergy(energy, false);
-                    e.extractEnergy(energy, false);
-                }
-            });
-
-            ItemStack input = this.inputSlot.getStackInSlot(1);
-            if (!input.isEmpty()) {
-                PressingRecipe recipe = this.world.getRecipeManager().getRecipe(PressingRecipe.RECIPE_TYPE, this.recipeWrapper, this.world).orElse(null);
-                if (canWork(recipe)) {
-                    this.progressMax = recipe.getEnergy();
-                    if (progress >= progressMax) {
-                        produceOutput(recipe);
-                        progress = 0;
-                        dirty = true;
-                    } else {
-                        progress++;
-                        this.energyStorage.extractEnergy(1, false);
-                    }
-                } else {
-                    progress = 0;
-                }
-            } else {
-                progress = 0;
-            }
-        }
-
-        if (working != this.isWorking()) {
-            dirty = true;
-            this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(MachineBlock.LIT, this.isWorking()), 3);
-        }
-
-        if (dirty)
-            this.markDirty();
-    }
-
-    public boolean isWorking() {
-        return this.progress > 0;
-    }
-
-    public boolean canWork(PressingRecipe recipe) {
-        if (recipe != null && this.energyStorage.extractEnergy(1, true) == 1) {
-            ItemStack recipeOutput = recipe.getRecipeOutput();
-            if (recipeOutput.isEmpty()) {
-                return false;
-            } else {
-                boolean output;
-                ItemStack outputSlot = this.outputSlots.getStackInSlot(0);
-
-                if (outputSlot.isEmpty()) {
-                    output = true;
-                } else if (!outputSlot.isItemEqual(recipeOutput)) {
-                    output = false;
-                } else if (outputSlot.getCount() + recipeOutput.getCount() <= this.outputSlots.getSlotLimit(0) && outputSlot.getCount() < outputSlot.getMaxStackSize()) {
-                    output = true;
-                } else {
-                    output = outputSlot.getCount() + recipeOutput.getCount() <= recipeOutput.getMaxStackSize();
-                }
-
-                return output;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    public void produceOutput(PressingRecipe recipe) {
-        if (recipe != null && this.canWork(recipe)) {
-            ItemStack recipeOutput = recipe.getRecipeOutput();
-            ItemStack outputSlot = outputSlots.getStackInSlot(0);
-            if (outputSlot.isEmpty()) {
-                this.outputSlots.setStackInSlot(0, recipeOutput.copy());
-            } else if (outputSlot.getItem() == recipeOutput.getItem()) {
-                outputSlot.grow(recipeOutput.getCount());
-            }
-
-            if (!this.world.isRemote) {
-                this.canUseRecipe(this.world, null, recipe);
-            }
-
-            this.inputSlot.getStackInSlot(1).shrink(1);
-        }
-    }
-
-    @Override
-    public void fillStackedContents(RecipeItemHelper recipeItemHelper) {
-        for (int i = 0; i < this.combinedHandler.getSlots(); i++) {
-            ItemStack stack = this.combinedHandler.getStackInSlot(i);
-            recipeItemHelper.accountStack(stack);
-        }
-    }
-
-    @Override
-    public void setRecipeUsed(@Nullable IRecipe recipe) {
-        if (recipe != null) {
-            this.field_214022_n.compute(recipe.getId(), (resourceLocation, integer) -> 1 + (integer == null ? 0 : integer));
-        }
-    }
-
-    @Nullable
-    public IRecipe getRecipeUsed() {
-        return null;
-    }
-
-    public void unlockRecipes(PlayerEntity player) {
-        List<IRecipe<?>> list = Lists.newArrayList();
-        Iterator var3 = this.field_214022_n.entrySet().iterator();
-
-        while (var3.hasNext()) {
-            Map.Entry<ResourceLocation, Integer> entry = (Map.Entry) var3.next();
-            player.world.getRecipeManager().getRecipe(entry.getKey()).ifPresent((recipe) -> {
-                list.add(recipe);
-                spawnXP(player, entry.getValue(), ((PressingRecipe) recipe).getExperience());
-            });
-        }
-
-        player.unlockRecipes(list);
-        this.field_214022_n.clear();
-    }
-
-    private static void spawnXP(PlayerEntity player, int amount, float value) {
-        int i;
-        if (value == 0.0F) {
-            amount = 0;
-        } else if (value < 1.0F) {
-            i = MathHelper.floor((float) amount * value);
-            if (i < MathHelper.ceil((float) amount * value) && Math.random() < (double) ((float) amount * value - (float) i)) {
-                ++i;
-            }
-
-            amount = i;
-        }
-
-        while (amount > 0) {
-            i = ExperienceOrbEntity.getXPSplit(amount);
-            amount -= i;
-            player.world.addEntity(new ExperienceOrbEntity(player.world, player.posX, player.posY + 0.5D, player.posZ + 0.5D, i));
-        }
-
-    }
-
-    public int getEnergy() {
-        return this.energyStorage.getEnergyStored();
-    }
-
-    public int getMaxEnergy() {
-        return this.energyStorage.getMaxEnergyStored();
     }
 
     private LazyOptional<IItemHandlerModifiable> combinedInvHandler = LazyOptional.of(() -> combinedHandler);

@@ -1,13 +1,8 @@
 package net.threetag.threecore.base.recipe;
 
 import com.google.gson.JsonObject;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.base.ThreeCoreBase;
-import net.threetag.threecore.util.recipe.RecipeUtil;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
@@ -17,8 +12,13 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.util.recipe.IEnergyRecipe;
+import net.threetag.threecore.util.recipe.RecipeUtil;
 
-public class PressingRecipe implements IRecipe<IInventory> {
+public class PressingRecipe implements IEnergyRecipe<IInventory> {
 
     public static final IRecipeType<PressingRecipe> RECIPE_TYPE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(ThreeCore.MODID, "pressing"), new IRecipeType<PressingRecipe>() {
         public String toString() {
@@ -89,7 +89,7 @@ public class PressingRecipe implements IRecipe<IInventory> {
         return this.group;
     }
 
-    public int getEnergy() {
+    public int getRequiredEnergy() {
         return this.energy;
     }
 

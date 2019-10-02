@@ -3,8 +3,12 @@ package net.threetag.threecore.base.recipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.*;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.NonNullList;
@@ -18,10 +22,11 @@ import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.fluid.FluidIngredient;
 import net.threetag.threecore.util.fluid.FluidInventory;
 import net.threetag.threecore.util.fluid.TCFluidUtil;
+import net.threetag.threecore.util.recipe.IEnergyRecipe;
 
 import javax.annotation.Nullable;
 
-public class FluidComposingRecipe implements IRecipe<FluidInventory> {
+public class FluidComposingRecipe implements IEnergyRecipe<IInventory> {
 
     public static final int MAX_WIDTH = 9;
     public static final int MAX_HEIGHT = 9;
@@ -51,8 +56,8 @@ public class FluidComposingRecipe implements IRecipe<FluidInventory> {
     }
 
     @Override
-    public boolean matches(FluidInventory inv, World worldIn) {
-        if (!this.inputFluid.test(inv.getFluidTank().getFluid()))
+    public boolean matches(IInventory inv, World worldIn) {
+        if (!(inv instanceof FluidInventory) || !this.inputFluid.test(((FluidInventory) inv).getFluidTank().getFluid()))
             return false;
 
         RecipeItemHelper recipeitemhelper = new RecipeItemHelper();
@@ -73,15 +78,16 @@ public class FluidComposingRecipe implements IRecipe<FluidInventory> {
     }
 
     @Override
-    public ItemStack getCraftingResult(FluidInventory inv) {
+    public ItemStack getCraftingResult(IInventory inv) {
         return ItemStack.EMPTY;
     }
 
-    public FluidStack getResult(@Nullable FluidInventory inv) {
+    public FluidStack getResult(@Nullable IInventory inv) {
         return this.output;
     }
 
-    public int getEnergy() {
+    @Override
+    public int getRequiredEnergy() {
         return energy;
     }
 
