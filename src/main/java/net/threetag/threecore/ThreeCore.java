@@ -56,6 +56,7 @@ public class ThreeCore {
 
         // Config
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThreeCoreCommonConfig.generateConfig());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ThreeCoreServerConfig.generateConfig());
 
         // Modules
         new ThreeCoreAddonPacks();

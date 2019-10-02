@@ -1,9 +1,5 @@
 package net.threetag.threecore.base.item;
 
-import net.minecraft.item.MusicDiscItem;
-import net.minecraft.util.text.TextFormatting;
-import net.threetag.threecore.util.energy.EnergyStorageItem;
-import net.threetag.threecore.util.energy.EnergyUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -12,6 +8,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -20,20 +17,31 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.threetag.threecore.ThreeCoreServerConfig;
+import net.threetag.threecore.util.energy.EnergyStorageItem;
+import net.threetag.threecore.util.energy.EnergyUtil;
+import net.threetag.threecore.util.energy.IEnergyConfig;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 public class CapacitorItem extends Item {
 
-    int capacity, maxTransfer;
+    private Supplier<Integer> capacity, maxTransfer;
 
     public CapacitorItem(Properties properties, int capacity, int maxTransfer) {
         super(properties);
-        this.capacity = capacity;
-        this.maxTransfer = maxTransfer;
+        this.capacity = () -> capacity;
+        this.maxTransfer = () -> maxTransfer;
+    }
+
+    public CapacitorItem(Properties properties, IEnergyConfig energyConfig) {
+        super(properties);
+        this.capacity = energyConfig::getCapacity;
+        this.maxTransfer = energyConfig::getPower;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -55,7 +63,7 @@ public class CapacitorItem extends Item {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        return new EnergyItemCapabilityProvider(stack, this.capacity, this.maxTransfer);
+        return new EnergyItemCapabilityProvider(stack, this.capacity.get(), this.maxTransfer.get());
     }
 
     @Override
@@ -79,10 +87,12 @@ public class CapacitorItem extends Item {
 
         final ItemStack stack;
         final IEnergyStorage energyStorage;
+        final LazyOptional<IEnergyStorage> lazyOptional;
 
         public EnergyItemCapabilityProvider(ItemStack stack, int capacity, int maxReceive, int maxExtract) {
             this.stack = stack;
             this.energyStorage = new EnergyStorageItem(stack, capacity, maxReceive, maxExtract);
+            this.lazyOptional = LazyOptional.of(() -> energyStorage);
         }
 
         public EnergyItemCapabilityProvider(ItemStack stack, int capacity, int maxTransfer) {
@@ -96,7 +106,7 @@ public class CapacitorItem extends Item {
         @Nonnull
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return cap == CapabilityEnergy.ENERGY ? LazyOptional.of(() -> (T) this.energyStorage) : LazyOptional.empty();
+            return cap == CapabilityEnergy.ENERGY ? (LazyOptional<T>) this.lazyOptional : LazyOptional.empty();
         }
     }
 

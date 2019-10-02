@@ -15,6 +15,7 @@ public class ThreeCoreCommonConfig {
     // -------------------------------------------------------------------------------
 
     public static class Materials {
+
         public OreConfig COPPER;
         public OreConfig TIN;
         public OreConfig LEAD;

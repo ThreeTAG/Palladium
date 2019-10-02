@@ -20,6 +20,14 @@ public class EnergyStorageExt extends EnergyStorage {
         super(capacity, maxReceive, maxExtract, energy);
     }
 
+    public EnergyStorageExt(IEnergyConfig energyConfig) {
+        this(energyConfig.getCapacity(), energyConfig.getPower());
+    }
+
+    public EnergyStorageExt(IEnergyConfig energyConfig, int energy) {
+        this(energyConfig.getCapacity(), energyConfig.getPower(), energyConfig.getPower(), energy);
+    }
+
     public void setEnergyStored(int energy) {
         this.energy = energy;
     }

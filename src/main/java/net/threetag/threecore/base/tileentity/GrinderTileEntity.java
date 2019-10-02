@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -17,7 +16,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -27,6 +25,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.block.MachineBlock;
 import net.threetag.threecore.base.inventory.GrinderContainer;
@@ -42,7 +41,7 @@ import java.util.Random;
 
 public class GrinderTileEntity extends MachineTileEntity {
 
-    private EnergyStorageExt energyStorage = new EnergyStorageExt(4000, 128, 128);
+    private EnergyStorageExt energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.GRINDER);
     public int progress;
     public int progressMax;
     private final Map<ResourceLocation, Integer> field_214022_n = Maps.newHashMap();
@@ -135,7 +134,7 @@ public class GrinderTileEntity extends MachineTileEntity {
 
         this.progress = nbt.getInt("Progress");
         this.progressMax = nbt.getInt("ProgressMax");
-        this.energyStorage = new EnergyStorageExt(4000, 128, 128, nbt.getInt("Energy"));
+        this.energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.GRINDER, nbt.getInt("Energy"));
 
         if (nbt.contains("EnergySlots"))
             this.energySlot.deserializeNBT(nbt.getCompound("EnergySlots"));

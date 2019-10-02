@@ -3,7 +3,10 @@ package net.threetag.threecore.base.item;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.IItemPropertyGetter;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -16,19 +19,21 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.energy.EnergyUtil;
+import net.threetag.threecore.util.energy.IEnergyConfig;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 public class CapacitorBlockItem extends BlockItem {
 
-    int capacity, maxTransfer;
+    private Supplier<Integer> capacity, maxTransfer;
 
     public CapacitorBlockItem(Block blockIn, Properties builder, int capacity, int maxTransfer) {
         super(blockIn, builder);
-        this.capacity = capacity;
-        this.maxTransfer = maxTransfer;
+        this.capacity = () -> capacity;
+        this.maxTransfer = () -> maxTransfer;
         this.addPropertyOverride(new ResourceLocation(ThreeCore.MODID, "energy"), new IItemPropertyGetter() {
             @OnlyIn(Dist.CLIENT)
             @Override
@@ -40,6 +45,12 @@ public class CapacitorBlockItem extends BlockItem {
                 return f.get();
             }
         });
+    }
+
+    public CapacitorBlockItem(Block blockIn, Properties builder, IEnergyConfig energyConfig) {
+        this(blockIn, builder, 0, 0);
+        this.capacity = energyConfig::getCapacity;
+        this.maxTransfer = energyConfig::getPower;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -61,7 +72,7 @@ public class CapacitorBlockItem extends BlockItem {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        return new CapacitorItem.EnergyItemCapabilityProvider(stack, this.capacity, this.maxTransfer);
+        return new CapacitorItem.EnergyItemCapabilityProvider(stack, this.capacity.get(), this.maxTransfer.get());
     }
 
     @Override

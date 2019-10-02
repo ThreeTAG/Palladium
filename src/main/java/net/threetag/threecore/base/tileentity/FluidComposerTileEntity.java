@@ -30,6 +30,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.block.MachineBlock;
 import net.threetag.threecore.base.inventory.FluidComposerContainer;
@@ -48,7 +49,7 @@ public class FluidComposerTileEntity extends MachineTileEntity {
 
     public static final int TANK_CAPACITY = 5000;
 
-    private EnergyStorageExt energyStorage = new EnergyStorageExt(4000, 128, 128);
+    private EnergyStorageExt energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.FLUID_COMPOSER);
     public int progress;
     public int progressMax;
     private final Map<ResourceLocation, Integer> field_214022_n = Maps.newHashMap();
@@ -300,7 +301,7 @@ public class FluidComposerTileEntity extends MachineTileEntity {
 
         this.progress = nbt.getInt("Progress");
         this.progressMax = nbt.getInt("ProgressMax");
-        this.energyStorage = new EnergyStorageExt(4000, 128, 128, nbt.getInt("Energy"));
+        this.energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.FLUID_COMPOSER, nbt.getInt("Energy"));
 
         if (nbt.contains("EnergySlots"))
             this.energySlot.deserializeNBT(nbt.getCompound("EnergySlots"));
