@@ -27,7 +27,7 @@
 			"faces": {
 				"north": {"uv": [2, 0, 14, 8], "texture": "#side"},
 				"south": {"uv": [2, 0, 14, 8], "texture": "#side"},
-				"up": {"uv": [14, 0, 2, 2], "texture": "#top"}
+				"up": {"uv": [14, 2, 2, 0], "texture": "#top"}
 			}
 		},
 		{
