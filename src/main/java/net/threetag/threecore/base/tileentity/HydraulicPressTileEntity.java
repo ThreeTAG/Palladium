@@ -12,7 +12,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -181,26 +180,24 @@ public class HydraulicPressTileEntity extends ProgressableMachineTileEntity<Pres
         return nbt;
     }
 
-    private LazyOptional<IItemHandlerModifiable> combinedInvHandler = LazyOptional.of(() -> combinedHandler);
-    private LazyOptional<IItemHandlerModifiable> inputSlotHandler = LazyOptional.of(() -> inputSlot);
-    private LazyOptional<IItemHandlerModifiable> outputSlotHandler = LazyOptional.of(() -> outputSlots);
-    private LazyOptional<IItemHandlerModifiable> energySlotHandler = LazyOptional.of(() -> energySlot);
-    private LazyOptional<EnergyStorage> energyHandler = LazyOptional.of(() -> energyStorage);
+    private LazyOptional<IItemHandlerModifiable> combinedInvLazyOptional = LazyOptional.of(() -> combinedHandler);
+    private LazyOptional<IItemHandlerModifiable> inputLazyOptional = LazyOptional.of(() -> inputSlot);
+    private LazyOptional<IItemHandlerModifiable> outputLazyOptional = LazyOptional.of(() -> outputSlots);
+    private LazyOptional<IItemHandlerModifiable> energySlotLazyOptional = LazyOptional.of(() -> energySlot);
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (side == null)
-                return combinedInvHandler.cast();
+                return combinedInvLazyOptional.cast();
             else if (side == Direction.UP)
-                return inputSlotHandler.cast();
+                return inputLazyOptional.cast();
             else if (side == Direction.DOWN)
-                return outputSlotHandler.cast();
+                return outputLazyOptional.cast();
             else
-                return energySlotHandler.cast();
-        } else if (cap == CapabilityEnergy.ENERGY)
-            return energyHandler.cast();
+                return energySlotLazyOptional.cast();
+        }
         return super.getCapability(cap, side);
     }
 }

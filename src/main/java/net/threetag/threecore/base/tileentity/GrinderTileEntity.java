@@ -197,23 +197,23 @@ public class GrinderTileEntity extends ProgressableMachineTileEntity<GrinderReci
         return nbt;
     }
 
-    private LazyOptional<IItemHandlerModifiable> combinedInvHandler = LazyOptional.of(() -> combinedHandler);
-    private LazyOptional<IItemHandlerModifiable> inputSlotHandler = LazyOptional.of(() -> inputSlot);
-    private LazyOptional<IItemHandlerModifiable> outputSlotHandler = LazyOptional.of(() -> outputSlots);
-    private LazyOptional<IItemHandlerModifiable> energySlotHandler = LazyOptional.of(() -> energySlot);
+    private LazyOptional<IItemHandlerModifiable> combinedInvLazyOptional = LazyOptional.of(() -> combinedHandler);
+    private LazyOptional<IItemHandlerModifiable> inputLazyOptional = LazyOptional.of(() -> inputSlot);
+    private LazyOptional<IItemHandlerModifiable> outputLazyOptional = LazyOptional.of(() -> outputSlots);
+    private LazyOptional<IItemHandlerModifiable> energySlotLazyOptional = LazyOptional.of(() -> energySlot);
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (side == null)
-                return combinedInvHandler.cast();
+                return combinedInvLazyOptional.cast();
             else if (side == Direction.UP)
-                return inputSlotHandler.cast();
+                return inputLazyOptional.cast();
             else if (side == Direction.DOWN)
-                return outputSlotHandler.cast();
+                return outputLazyOptional.cast();
             else
-                return energySlotHandler.cast();
+                return energySlotLazyOptional.cast();
         }
         return super.getCapability(cap, side);
     }

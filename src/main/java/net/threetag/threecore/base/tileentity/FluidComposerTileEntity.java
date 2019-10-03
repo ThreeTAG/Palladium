@@ -14,7 +14,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -115,12 +114,12 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
                 FluidComposerTileEntity.this.markDirty();
                 FluidTank tank = slot <= 1 ? inputFluidTank : outputFluidTank;
                 if (slot == 0 || slot == 2) {
-                    FluidActionResult res = TCFluidUtil.transferFluidFromItemToTank(this.getStackInSlot(slot), tank, handler, null);
+                    FluidActionResult res = TCFluidUtil.transferFluidFromItemToTank(handler.getStackInSlot(slot), tank, handler, null);
                     if (res.isSuccess()) {
                         handler.setStackInSlot(slot, res.getResult());
                     }
                 } else {
-                    FluidActionResult res = TCFluidUtil.transferFluidFromTankToItem(this.getStackInSlot(slot), tank, handler, null);
+                    FluidActionResult res = TCFluidUtil.transferFluidFromTankToItem(handler.getStackInSlot(slot), tank, handler, null);
                     if (res.isSuccess()) {
                         handler.setStackInSlot(slot, res.getResult());
                     }
@@ -230,11 +229,10 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
         return super.write(nbt);
     }
 
-    private LazyOptional<IItemHandlerModifiable> combinedInvHandler = LazyOptional.of(() -> combinedHandler);
-    private LazyOptional<IItemHandlerModifiable> energySlotHandler = LazyOptional.of(() -> energySlot);
-    private LazyOptional<IItemHandlerModifiable> fluidSlotHandler = LazyOptional.of(() -> fluidSlots);
-    private LazyOptional<IItemHandlerModifiable> inputSlotHandler = LazyOptional.of(() -> inputSlots);
-    private LazyOptional<EnergyStorage> energyHandler = LazyOptional.of(() -> energyStorage);
+    private LazyOptional<IItemHandlerModifiable> combinedInvLazyOptional = LazyOptional.of(() -> combinedHandler);
+    private LazyOptional<IItemHandlerModifiable> energySlotLazyOptional = LazyOptional.of(() -> energySlot);
+    private LazyOptional<IItemHandlerModifiable> fluidSlotLazyOptional = LazyOptional.of(() -> fluidSlots);
+    private LazyOptional<IItemHandlerModifiable> inputLazyOptional = LazyOptional.of(() -> inputSlots);
     private LazyOptional<IFluidHandler> inputFluidHandler = LazyOptional.of(() -> inputFluidTank);
     private LazyOptional<IFluidHandler> outputFluidHandler = LazyOptional.of(() -> outputFluidTank);
 
@@ -243,16 +241,14 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (side == null)
-                return combinedInvHandler.cast();
+                return combinedInvLazyOptional.cast();
             else if (side == Direction.UP)
-                return inputSlotHandler.cast();
+                return inputLazyOptional.cast();
             else if (side == Direction.DOWN)
-                return fluidSlotHandler.cast();
+                return fluidSlotLazyOptional.cast();
             else
-                return energySlotHandler.cast();
-        } else if (cap == CapabilityEnergy.ENERGY)
-            return energyHandler.cast();
-        else if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+                return energySlotLazyOptional.cast();
+        } else if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             if (side == Direction.UP || side == Direction.DOWN)
                 return outputFluidHandler.cast();
             else
