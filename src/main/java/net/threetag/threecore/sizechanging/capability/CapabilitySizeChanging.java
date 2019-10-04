@@ -165,6 +165,11 @@ public class CapabilitySizeChanging implements ISizeChanging, IThreeDataHolder, 
     }
 
     @Override
+    public boolean isSizeChanging() {
+        return this.dataManager.get(SCALE_PER_TICK) != 0F;
+    }
+
+    @Override
     public <T> void update(ThreeData<T> data, T value) {
         if (entity.world.isRemote)
             return;

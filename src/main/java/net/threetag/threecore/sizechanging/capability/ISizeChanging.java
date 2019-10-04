@@ -27,6 +27,8 @@ public interface ISizeChanging {
 
     boolean setSizeDirectly(@Nullable SizeChangeType type, float size);
 
+    boolean isSizeChanging();
+
     void updateBoundingBox();
 
 }
