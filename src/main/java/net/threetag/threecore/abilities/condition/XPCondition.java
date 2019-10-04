@@ -1,37 +1,28 @@
 package net.threetag.threecore.abilities.condition;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.karma.capability.CapabilityKarma;
 import net.threetag.threecore.util.threedata.EnumSync;
 import net.threetag.threecore.util.threedata.IntegerThreeData;
 import net.threetag.threecore.util.threedata.ThreeData;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+public class XPCondition extends Condition {
 
-public class KarmaCondition extends Condition {
+    public static final ThreeData<Integer> MIN = new IntegerThreeData("min").setSyncType(EnumSync.SELF).enableSetting("min", "The minimum xp level required for the condition to be true.");
+    public static final ThreeData<Integer> MAX = new IntegerThreeData("max").setSyncType(EnumSync.SELF).enableSetting("max", "The maximum xp level required for the condition to be true.");
 
-    public static final ThreeData<Integer> MIN = new IntegerThreeData("min").setSyncType(EnumSync.SELF).enableSetting("min", "The minimum karma required for the condition to be true.");
-    public static final ThreeData<Integer> MAX = new IntegerThreeData("max").setSyncType(EnumSync.SELF).enableSetting("max", "The maximum karma required for the condition to be true.");
-
-    public KarmaCondition(Ability ability) {
-        super(ConditionType.KARMA, ability);
-    }
-
-    @Override
-    public boolean test(LivingEntity entity) {
-        AtomicBoolean b = new AtomicBoolean(false);
-        entity.getCapability(CapabilityKarma.KARMA).ifPresent(k -> b.set(k.getKarma() >= this.dataManager.get(MIN) && k.getKarma() <= this.dataManager.get(MAX)));
-        return b.get();
+    public XPCondition(Ability ability) {
+        super(ConditionType.XP, ability);
     }
 
     @Override
     public void registerData() {
         super.registerData();
-        this.dataManager.register(MIN, Integer.MIN_VALUE);
+        this.dataManager.register(MIN, 0);
         this.dataManager.register(MAX, Integer.MAX_VALUE);
     }
 
@@ -47,4 +38,12 @@ public class KarmaCondition extends Condition {
             return new TranslationTextComponent(Util.makeTranslationKey("ability.condition", this.type.getRegistryName()) + "_min" + (this.dataManager.get(INVERT) ? ".not" : ""), min);
     }
 
+    @Override
+    public boolean test(LivingEntity entity) {
+        if (entity instanceof PlayerEntity) {
+            int level = ((PlayerEntity) entity).experienceLevel;
+            return level >= this.dataManager.get(MIN) && level <= this.dataManager.get(MAX);
+        }
+        return false;
+    }
 }

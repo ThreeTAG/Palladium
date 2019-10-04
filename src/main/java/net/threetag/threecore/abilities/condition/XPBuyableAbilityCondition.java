@@ -1,19 +1,21 @@
 package net.threetag.threecore.abilities.condition;
 
 import com.google.gson.JsonObject;
-import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
-import net.threetag.threecore.abilities.client.gui.BuyAbilityScreen;
-import net.threetag.threecore.util.threedata.EnumSync;
-import net.threetag.threecore.util.threedata.ExperienceThreeData;
-import net.threetag.threecore.util.threedata.ThreeData;
-import net.threetag.threecore.util.icon.ExperienceIcon;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.threetag.threecore.abilities.Ability;
+import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
+import net.threetag.threecore.abilities.client.gui.BuyAbilityScreen;
+import net.threetag.threecore.util.icon.ExperienceIcon;
+import net.threetag.threecore.util.threedata.EnumSync;
+import net.threetag.threecore.util.threedata.ExperienceThreeData;
+import net.threetag.threecore.util.threedata.ThreeData;
 
 public class XPBuyableAbilityCondition extends BuyableAbilityCondition {
 
@@ -30,9 +32,14 @@ public class XPBuyableAbilityCondition extends BuyableAbilityCondition {
     }
 
     @Override
-    public void readFromJson(JsonObject json) {
-        super.readFromJson(json);
-        this.dataManager.set(TITLE, new TranslationTextComponent(this.dataManager.get(EXPERIENCE).isLevels() ? "ability.condition.threecore.xp_buy.levels" : "ability.condition.threecore.xp_buy.points", this.dataManager.get(EXPERIENCE).getValue()));
+    public ITextComponent createTitle() {
+        ExperienceThreeData.Experience xp = this.dataManager.get(EXPERIENCE);
+        if (xp == null)
+            return super.createTitle();
+        else if (xp.isLevels())
+            return new TranslationTextComponent(Util.makeTranslationKey("ability.condition", this.type.getRegistryName()) + ".levels" + (this.dataManager.get(INVERT) ? ".not" : ""), xp.getValue());
+        else
+            return new TranslationTextComponent(Util.makeTranslationKey("ability.condition", this.type.getRegistryName()) + ".points" + (this.dataManager.get(INVERT) ? ".not" : ""), xp.getValue());
     }
 
     @Override

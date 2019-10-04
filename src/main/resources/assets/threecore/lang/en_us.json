@@ -185,6 +185,12 @@
   "ability.condition.threecore.equipment_slot.legs": "legs",
   "ability.condition.threecore.equipment_slot.chest": "chest",
   "ability.condition.threecore.equipment_slot.head": "head",
+  "ability.condition.threecore.xp": "Karma must be between %s and %s",
+  "ability.condition.threecore.xp.not": "Karma must be outside of %s and %s",
+  "ability.condition.threecore.xp_at": "Karma must be at %s",
+  "ability.condition.threecore.xp_at.not": "Karma must something else than %s",
+  "ability.condition.threecore.xp_min": "Karma must be at least %s",
+  "ability.condition.threecore.xp_min.not": "Karma must be lower than %s",
   
   "superpower.toast.title": "New superpower!",
   

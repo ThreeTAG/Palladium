@@ -43,6 +43,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
     public static final ConditionType XP_BUY = new ConditionType(XPBuyableAbilityCondition::new, ThreeCore.MODID, "xp_buy");
     public static final ConditionType ITEM_BUY = new ConditionType(ItemBuyableAbilityCondition::new, ThreeCore.MODID, "item_buy");
     public static final ConditionType EQUIPMENT_SLOT = new ConditionType(EquipmentSlotCondition::new, ThreeCore.MODID, "equipment_slot");
+    public static final ConditionType XP = new ConditionType(XPCondition::new, ThreeCore.MODID, "xp");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -61,6 +62,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
         e.getRegistry().register(XP_BUY);
         e.getRegistry().register(ITEM_BUY);
         e.getRegistry().register(EQUIPMENT_SLOT);
+        e.getRegistry().register(XP);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -102,7 +104,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
                     bw.write("<h1>" + s + "</h1>\n");
                     bw.write("<ul>\n");
                     for (Condition condition : l) {
-                        bw.write("<li><a href=\"#" + condition.type.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(condition.dataManager.get(Condition.TITLE).getFormattedText()) + "</a></li>\n");
+                        bw.write("<li><a href=\"#" + condition.type.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(condition.getDisplayName().getFormattedText()) + "</a></li>\n");
                     }
                     bw.write("</ul>\n");
                 } catch (IOException e) {
@@ -118,7 +120,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
                 bw.write("<hr>\n");
 
                 // Title
-                bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(condition.dataManager.get(Condition.TITLE).getFormattedText()) + "</h1>\n");
+                bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(condition.getDisplayName().getFormattedText()) + "</h1>\n");
                 bw.write("<h3>" + entry.getRegistryName().toString() + "</h3>\n");
                 List<ThreeData<?>> dataList = condition.dataManager.getSettingData();
 
