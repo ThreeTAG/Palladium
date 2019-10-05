@@ -17,6 +17,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.block.CapacitorBlock;
 import net.threetag.threecore.base.inventory.CapacitorBlockContainer;
@@ -120,7 +121,7 @@ public class CapacitorBlockTileEntity extends LockableItemCapTileEntity implemen
     @Override
     public void read(CompoundNBT compound) {
         super.read(compound);
-        this.energyStorage = new EnergyStorageExt(40000, 1000, 1000, compound.getInt("Energy"));
+        this.energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.CAPACITOR, compound.getInt("Energy"));
         this.inputSlot.deserializeNBT(compound.getCompound("InputSlot"));
         this.outputSlot.deserializeNBT(compound.getCompound("OutputSlot"));
     }
