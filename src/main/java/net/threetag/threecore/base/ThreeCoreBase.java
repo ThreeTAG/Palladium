@@ -3,6 +3,7 @@ package net.threetag.threecore.base;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,6 +21,7 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.placement.CountRangeConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.FluidContainerColorer;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -46,6 +48,7 @@ import net.threetag.threecore.base.inventory.HydraulicPressContainer;
 import net.threetag.threecore.base.item.CapacitorBlockItem;
 import net.threetag.threecore.base.item.CapacitorItem;
 import net.threetag.threecore.base.item.HammerItem;
+import net.threetag.threecore.base.item.VialItem;
 import net.threetag.threecore.base.recipe.FluidComposingRecipe;
 import net.threetag.threecore.base.recipe.GrinderRecipe;
 import net.threetag.threecore.base.recipe.PressingRecipe;
@@ -83,6 +86,9 @@ public class ThreeCoreBase {
             ScreenManager.registerFactory(HYDRAULIC_PRESS_CONTAINER, HydraulicPressScreen::new);
             ScreenManager.registerFactory(FLUID_COMPOSER_CONTAINER, FluidComposerScreen::new);
             ScreenManager.registerFactory(CAPACITOR_BLOCK_CONTAINER, CapacitorBlockScreen::new);
+
+            // Item Colors
+            Minecraft.getInstance().getItemColors().register(new VialItem.ItemColor(), VIAL);
 
             // TESR
             try {
@@ -146,6 +152,8 @@ public class ThreeCoreBase {
     public static final Item CIRCUIT = null;
     @ObjectHolder("advanced_circuit")
     public static final Item ADVANCED_CIRCUIT = null;
+    @ObjectHolder("vial")
+    public static final Item VIAL = null;
 
     // Storage Blocks
     @ObjectHolder("copper_block")
@@ -431,6 +439,7 @@ public class ThreeCoreBase {
         registry.register(new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)).maxStackSize(1), ThreeCoreServerConfig.ENERGY.ADVANCED_CAPACITOR).setRegistryName(ThreeCore.MODID, "advanced_capacitor"));
         registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "circuit"));
         registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
+        registry.register(new VialItem(new Item.Properties().group(ItemGroup.MISC).maxStackSize(1)).setRegistryName("vial"));
 
         registry.register(makeItem(COPPER_BLOCK));
         registry.register(makeItem(TIN_BLOCK));

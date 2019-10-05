@@ -93,15 +93,22 @@ public class TCFluidUtil {
 
     @OnlyIn(Dist.CLIENT)
     public static String getFormattedFluidInfo(int amount, int capacity) {
-        return I18n.format("threecore.util.fluid_display", amount, capacity, "mB");
+        return I18n.format("threecore.util.fluid_display", amount, "mB");
     }
 
     @OnlyIn(Dist.CLIENT)
     public static List<String> getFormattedFluidInfo(FluidTank fluidTank) {
         List<String> list = new ArrayList<>();
-        if (fluidTank.getFluid() != null)
-            list.add(fluidTank.getFluid().getDisplayName().getFormattedText());
+        list.add(fluidTank.getFluid().getDisplayName().getFormattedText());
         list.add(TextFormatting.GRAY + I18n.format("threecore.util.fluid_tank_display", fluidTank.getFluidAmount(), fluidTank.getCapacity(), "mB"));
+        return list;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static List<String> getFormattedFluidInfo(FluidStack fluidStack, int capacity) {
+        List<String> list = new ArrayList<>();
+        list.add(fluidStack.getDisplayName().getFormattedText());
+        list.add(TextFormatting.GRAY + I18n.format("threecore.util.fluid_tank_display", fluidStack.getAmount(), capacity, "mB"));
         return list;
     }
 

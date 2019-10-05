@@ -3,17 +3,14 @@ package net.threetag.threecore.util.data;
 import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.*;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.common.crafting.conditions.TagEmptyCondition;
-import net.minecraftforge.fluids.FluidStack;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.base.ThreeCoreBase;
-import net.threetag.threecore.util.fluid.FluidIngredient;
 import net.threetag.threecore.util.item.ThreeCoreItemTags;
 
 import java.util.function.Consumer;
@@ -39,6 +36,7 @@ public class ThreeCoreRecipeProvider extends RecipeProvider implements IConditio
         ShapedRecipeBuilder.shapedRecipe(ThreeCoreBase.ADVANCED_CIRCUIT).patternLine("RSR").patternLine("LCL").patternLine("RSR").key('S', ThreeCoreItemTags.SILVER_INGOTS).key('L', Tags.Items.GEMS_LAPIS).key('C', ThreeCoreBase.CIRCUIT).key('R', Tags.Items.DUSTS_REDSTONE).addCriterion("has_copper", this.hasItem(ThreeCoreItemTags.COPPER_INGOTS)).addCriterion("has_circuit", this.hasItem(ThreeCoreBase.CIRCUIT)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(ThreeCoreBase.CAPACITOR).patternLine("I I").patternLine("LRL").patternLine("PCP").key('I', Tags.Items.INGOTS_IRON).key('L', ThreeCoreItemTags.LEAD_INGOTS).key('R', Tags.Items.STORAGE_BLOCKS_REDSTONE).key('P', ThreeCoreItemTags.IRON_PLATES).key('C', ThreeCoreItemTags.COPPER_INGOTS).addCriterion("has_iron", this.hasItem(Tags.Items.INGOTS_IRON)).addCriterion("has_redstone", this.hasItem(Tags.Items.STORAGE_BLOCKS_REDSTONE)).addCriterion("has_lead", this.hasItem(ThreeCoreItemTags.LEAD_INGOTS)).addCriterion("has_copper", this.hasItem(ThreeCoreItemTags.COPPER_INGOTS)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(ThreeCoreBase.ADVANCED_CAPACITOR).patternLine("I I").patternLine("LCL").patternLine("PXP").key('I', Tags.Items.INGOTS_IRON).key('L', ThreeCoreItemTags.LEAD_INGOTS).key('X', ThreeCoreItemTags.INTERTIUM_INGOTS).key('P', ThreeCoreItemTags.IRON_PLATES).key('C', ThreeCoreBase.CIRCUIT).addCriterion("has_capacitor", this.hasItem(ThreeCoreBase.CAPACITOR)).build(consumer);
+        ShapedRecipeBuilder.shapedRecipe(ThreeCoreBase.VIAL, 4).patternLine("GIG").patternLine("G G").patternLine("GIG").key('G', Tags.Items.GLASS).key('I', ThreeCoreItemTags.IRON_PLATES).addCriterion("has_iron", this.hasItem(ThreeCoreItemTags.IRON_PLATES)).build(consumer);
 
 
         // Misc Grinder Recipes
