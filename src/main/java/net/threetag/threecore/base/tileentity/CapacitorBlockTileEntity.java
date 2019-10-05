@@ -31,8 +31,7 @@ import java.util.Objects;
 
 public class CapacitorBlockTileEntity extends LockableItemCapTileEntity implements ITickableTileEntity {
 
-    // TODO make those energy values a config
-    public EnergyStorageExt energyStorage = new EnergyStorageExt(40000, 1000);
+    public EnergyStorageExt energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.CAPACITOR);
     public final ItemStackHandler inputSlot = new ItemStackHandler(1);
     public final ItemStackHandler outputSlot = new ItemStackHandler(1);
     public final CombinedInvWrapper combinedInvWrapper = new CombinedInvWrapper(inputSlot, outputSlot);
