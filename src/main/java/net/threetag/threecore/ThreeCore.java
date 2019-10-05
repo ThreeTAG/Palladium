@@ -69,8 +69,8 @@ public class ThreeCore {
         TCLootFunctions.register();
 
         // Misc
-        MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
             if (Minecraft.getInstance() != null)
                 ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new EntityModelManager());
         });

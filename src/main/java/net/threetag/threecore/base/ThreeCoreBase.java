@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -87,11 +88,11 @@ public class ThreeCoreBase {
             ScreenManager.registerFactory(FLUID_COMPOSER_CONTAINER, FluidComposerScreen::new);
             ScreenManager.registerFactory(CAPACITOR_BLOCK_CONTAINER, CapacitorBlockScreen::new);
 
-            // Item Colors
-            Minecraft.getInstance().getItemColors().register(new VialItem.ItemColor(), VIAL);
-
-            // TESR
             try {
+                // Item Colors
+                Minecraft.getInstance().getItemColors().register((IItemColor) Class.forName("net.threetag.threecore.base.item.VialItem.ItemColor").newInstance(), VIAL);
+
+                // TESR
                 ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, (TileEntityRenderer<HydraulicPressTileEntity>) Class.forName("net.threetag.threecore.base.client.renderer.tileentity.HydraulicPressTileEntityRenderer").newInstance());
                 ClientRegistry.bindTileEntitySpecialRenderer(FluidComposerTileEntity.class, (TileEntityRenderer<FluidComposerTileEntity>) Class.forName("net.threetag.threecore.base.client.renderer.tileentity.FluidComposerTileEntityRenderer").newInstance());
             } catch (Exception ex) {
