@@ -98,7 +98,7 @@ public class VialItem extends Item {
 
         @Override
         public int getColor(@Nonnull ItemStack stack, int tintIndex) {
-            FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
+            FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
             if (!fluidStack.isEmpty() && fluidStack.getFluid().isEquivalentTo(Fluids.LAVA) && tintIndex == 1)
                 return 0xff6700;
             else

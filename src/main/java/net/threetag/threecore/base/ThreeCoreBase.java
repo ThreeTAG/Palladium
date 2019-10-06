@@ -90,7 +90,7 @@ public class ThreeCoreBase {
 
             try {
                 // Item Colors
-                Minecraft.getInstance().getItemColors().register((IItemColor) Class.forName("net.threetag.threecore.base.item.VialItem.ItemColor").newInstance(), VIAL);
+                Minecraft.getInstance().getItemColors().register((IItemColor) Class.forName("net.threetag.threecore.base.item.VialItem$ItemColor").newInstance(), VIAL);
 
                 // TESR
                 ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, (TileEntityRenderer<HydraulicPressTileEntity>) Class.forName("net.threetag.threecore.base.client.renderer.tileentity.HydraulicPressTileEntityRenderer").newInstance());
