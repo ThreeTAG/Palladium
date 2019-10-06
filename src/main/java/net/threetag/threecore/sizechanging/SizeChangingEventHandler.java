@@ -2,6 +2,7 @@ package net.threetag.threecore.sizechanging;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.HangingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
@@ -25,9 +26,15 @@ public class SizeChangingEventHandler {
 
     @SubscribeEvent
     public void onAttachCapabilities(AttachCapabilitiesEvent<Entity> e) {
-        if (!e.getObject().getCapability(CapabilitySizeChanging.SIZE_CHANGING).isPresent()) {
+        if (canSizeChange(e.getObject()) && !e.getObject().getCapability(CapabilitySizeChanging.SIZE_CHANGING).isPresent()) {
             e.addCapability(new ResourceLocation(ThreeCore.MODID, "size_changing"), new SizeChangingProvider(new CapabilitySizeChanging(e.getObject())));
         }
+    }
+
+    public static boolean canSizeChange(Entity entity) {
+        if(entity instanceof HangingEntity)
+            return false;
+        return true;
     }
 
     @SubscribeEvent
