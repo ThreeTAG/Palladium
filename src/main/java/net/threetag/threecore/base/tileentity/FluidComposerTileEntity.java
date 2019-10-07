@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.threetag.threecore.ThreeCoreServerConfig;
@@ -151,6 +152,11 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
     @Override
     public IEnergyConfig getEnergyConfig() {
         return ThreeCoreServerConfig.ENERGY.FLUID_COMPOSER;
+    }
+
+    @Override
+    public IItemHandler getEnergyInputSlots() {
+        return this.energySlot;
     }
 
     @Override
