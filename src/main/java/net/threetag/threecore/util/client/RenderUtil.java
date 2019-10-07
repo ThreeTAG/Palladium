@@ -1,5 +1,6 @@
 package net.threetag.threecore.util.client;
 
+import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -20,9 +21,21 @@ import org.lwjgl.opengl.GL11;
 public class RenderUtil {
 
     public static float renderTickTime;
+    private static float lastBrightnessX = GLX.lastBrightnessX;
+    private static float lastBrightnessY = GLX.lastBrightnessY;
 
     public static void onRenderGlobal(TickEvent.RenderTickEvent e) {
         renderTickTime = e.renderTickTime;
+    }
+
+    public static void setLightmapTextureCoords(float x, float y) {
+        lastBrightnessX = GLX.lastBrightnessX;
+        lastBrightnessY = GLX.lastBrightnessY;
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, x, y);
+    }
+
+    public static void restoreLightmapTextureCoords() {
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, lastBrightnessX, lastBrightnessY);
     }
 
     public static void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
