@@ -1,5 +1,6 @@
 package net.threetag.threecore.util.energy;
 
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.energy.EnergyStorage;
 
 public class EnergyStorageExt extends EnergyStorage {
@@ -36,4 +37,15 @@ public class EnergyStorageExt extends EnergyStorage {
         this.capacity = energy;
     }
 
+    public void modifyEnergy(int amount) {
+        this.energy = MathHelper.clamp(this.energy + amount, 0, this.capacity);
+    }
+
+    public int getMaxExtract() {
+        return maxExtract;
+    }
+
+    public int getMaxReceive() {
+        return maxReceive;
+    }
 }

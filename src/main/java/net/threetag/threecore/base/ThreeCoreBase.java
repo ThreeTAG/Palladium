@@ -22,7 +22,6 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.placement.CountRangeConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.FluidContainerColorer;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,10 +52,7 @@ import net.threetag.threecore.base.item.VialItem;
 import net.threetag.threecore.base.recipe.FluidComposingRecipe;
 import net.threetag.threecore.base.recipe.GrinderRecipe;
 import net.threetag.threecore.base.recipe.PressingRecipe;
-import net.threetag.threecore.base.tileentity.CapacitorBlockTileEntity;
-import net.threetag.threecore.base.tileentity.FluidComposerTileEntity;
-import net.threetag.threecore.base.tileentity.GrinderTileEntity;
-import net.threetag.threecore.base.tileentity.HydraulicPressTileEntity;
+import net.threetag.threecore.base.tileentity.*;
 import net.threetag.threecore.util.item.ItemGroupRegistry;
 
 @ObjectHolder(ThreeCore.MODID)
@@ -139,6 +135,11 @@ public class ThreeCoreBase {
     public static final TileEntityType<CapacitorBlockTileEntity> CAPACITOR_BLOCK_TILE_ENTITY = null;
     @ObjectHolder("capacitor_block")
     public static final ContainerType<CapacitorBlockContainer> CAPACITOR_BLOCK_CONTAINER = null;
+
+    @ObjectHolder("solar_panel")
+    public static final Block SOLAR_PANEL = null;
+    @ObjectHolder("solar_panel")
+    public static final TileEntityType<SolarPanelTileEntity> SOLAR_PANEL_TILE_ENTITY = null;
 
     // Misc Items
     @ObjectHolder("hammer")
@@ -283,6 +284,10 @@ public class ThreeCoreBase {
     public static final Item ADAMANTIUM_NUGGET = null;
 
     // Dusts
+    @ObjectHolder("coal_dust")
+    public static final Item COAL_DUST = null;
+    @ObjectHolder("charcoal_dust")
+    public static final Item CHARCOAL_DUST = null;
     @ObjectHolder("iron_dust")
     public static final Item IRON_DUST = null;
     @ObjectHolder("gold_dust")
@@ -366,6 +371,7 @@ public class ThreeCoreBase {
         registry.register(new HydraulicPressBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "hydraulic_press"));
         registry.register(new FluidComposerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "fluid_composer"));
         registry.register(new CapacitorBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "capacitor_block"));
+        registry.register(new SolarPanelBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "solar_panel"));
 
         registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "copper_block"));
         registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "tin_block"));
@@ -403,6 +409,7 @@ public class ThreeCoreBase {
         e.getRegistry().register(TileEntityType.Builder.create(HydraulicPressTileEntity::new, HYDRAULIC_PRESS).build(null).setRegistryName(ThreeCore.MODID, "hydraulic_press"));
         e.getRegistry().register(TileEntityType.Builder.create(FluidComposerTileEntity::new, FLUID_COMPOSER).build(null).setRegistryName(ThreeCore.MODID, "fluid_composer"));
         e.getRegistry().register(TileEntityType.Builder.create(CapacitorBlockTileEntity::new, CAPACITOR_BLOCK).build(null).setRegistryName(ThreeCore.MODID, "capacitor_block"));
+        e.getRegistry().register(TileEntityType.Builder.create(SolarPanelTileEntity::new, SOLAR_PANEL).build(null).setRegistryName(ThreeCore.MODID, "solar_panel"));
     }
 
     @SubscribeEvent
@@ -434,6 +441,8 @@ public class ThreeCoreBase {
         registry.register(makeItem(HYDRAULIC_PRESS, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(makeItem(FLUID_COMPOSER, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(new CapacitorBlockItem(CAPACITOR_BLOCK, new Item.Properties().maxStackSize(1).group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), ThreeCoreServerConfig.ENERGY.CAPACITOR).setRegistryName(CAPACITOR_BLOCK.getRegistryName()));
+        registry.register(makeItem(SOLAR_PANEL, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
+
         registry.register(new HammerItem(4.5F, -2.75F, ItemTier.IRON, new Item.Properties().group(ItemGroup.TOOLS).maxStackSize(1).maxDamage(16)).setRegistryName(ThreeCore.MODID, "hammer"));
         registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "plate_cast"));
         registry.register(new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)).maxStackSize(1), ThreeCoreServerConfig.ENERGY.CAPACITOR).setRegistryName(ThreeCore.MODID, "capacitor"));
@@ -505,6 +514,8 @@ public class ThreeCoreBase {
         registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_nugget"));
         registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_nugget"));
 
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "coal_dust"));
+        registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "charcoal_dust"));
         registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "iron_dust"));
         registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_dust"));
         registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "copper_dust"));

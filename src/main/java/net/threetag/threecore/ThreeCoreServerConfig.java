@@ -18,6 +18,7 @@ public class ThreeCoreServerConfig {
     public static class Energy {
 
         public EnergyConfig CAPACITOR;
+        public EnergyConfig SOLAR_PANEL;
         public EnergyConfig ADVANCED_CAPACITOR;
         public EnergyConfig GRINDER;
         public EnergyConfig HYDRAULIC_PRESS;
@@ -27,6 +28,8 @@ public class ThreeCoreServerConfig {
             builder.comment("ThreeCore energy settings").push("base.energy");
 
             CAPACITOR = new EnergyConfig(builder, "capacitor", 2000000, 1000);
+            // TODO energy values
+            SOLAR_PANEL = new EnergyConfig(builder, "solarPanel", 20000, 20);
             ADVANCED_CAPACITOR = new EnergyConfig(builder, "advancedCapacitor", 8000000, 4000);
             GRINDER = new EnergyConfig(builder, "grinder", 20000, 20);
             HYDRAULIC_PRESS = new EnergyConfig(builder, "hydraulicPress", 20000, 20);

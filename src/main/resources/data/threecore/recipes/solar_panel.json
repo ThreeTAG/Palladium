@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CGC",
+    "GCG",
+    "XBX"
+  ],
+  "key": {
+    "C": {
+      "tag": "forge:dusts/coal"
+    },
+    "G": {
+      "tag": "forge:glass"
+    },
+    "X": {
+      "item": "threecore:circuit"
+    },
+    "B": {
+      "item": "threecore:capacitor_block"
+    }
+  },
+  "result": {
+    "item": "threecore:solar_panel"
+  }
+}

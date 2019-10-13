@@ -5,6 +5,7 @@
   "block.threecore.hydraulic_press": "Hydraulic Press",
   "block.threecore.fluid_composer": "Fluid Composer",
   "block.threecore.capacitor_block": "Capacitor Block",
+  "block.threecore.solar_panel": "Solar Panel",
   
   "item.threecore.hammer": "Hammer",
   "item.threecore.plate_cast": "Plate Cast",
@@ -77,6 +78,8 @@
   "item.threecore.gold_titanium_alloy_nugget": "Gold-Titanium-Alloy Nugget",
   "item.threecore.adamantium_nugget": "Adamantium Nugget",
   
+  "item.threecore.coal_dust": "Coal Dust",
+  "item.threecore.charcoal_dust": "Charcoal Dust",
   "item.threecore.iron_dust": "Iron Dust",
   "item.threecore.gold_dust": "Gold Dust",
   "item.threecore.copper_dust": "Copper Dust",

@@ -79,6 +79,8 @@ public class ThreeCoreItemTagsProvider extends ItemTagsProvider {
         addToBoth(ThreeCoreItemTags.NUGGETS, ThreeCoreItemTags.GOLD_TITANIUM_ALLOY_NUGGETS, ThreeCoreBase.GOLD_TITANIUM_ALLOY_NUGGET);
         addToBoth(ThreeCoreItemTags.NUGGETS, ThreeCoreItemTags.ADAMANTIUM_NUGGETS, ThreeCoreBase.ADAMANTIUM_NUGGET);
 
+        addToBoth(ThreeCoreItemTags.DUSTS, ThreeCoreItemTags.COAL_DUSTS, ThreeCoreBase.COAL_DUST);
+        addToBoth(ThreeCoreItemTags.DUSTS, ThreeCoreItemTags.CHARCOAL_DUSTS, ThreeCoreBase.CHARCOAL_DUST);
         addToBoth(ThreeCoreItemTags.DUSTS, ThreeCoreItemTags.IRON_DUSTS, ThreeCoreBase.IRON_DUST);
         addToBoth(ThreeCoreItemTags.DUSTS, ThreeCoreItemTags.GOLD_DUSTS, ThreeCoreBase.GOLD_DUST);
         addToBoth(ThreeCoreItemTags.DUSTS, ThreeCoreItemTags.COPPER_DUSTS, ThreeCoreBase.COPPER_DUST);

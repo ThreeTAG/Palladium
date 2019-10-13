@@ -35,7 +35,7 @@ public class BlockUtil {
                     ItemStack itemstack = itemHandler.getStackInSlot(j);
                     if (!itemstack.isEmpty()) {
                         int finalJ = j;
-                        f.updateAndGet(v -> new Float(v + (float) itemstack.getCount() / (float) Math.min(itemHandler.getSlotLimit(finalJ), itemstack.getMaxStackSize())));
+                        f.updateAndGet(v -> v + (float) itemstack.getCount() / (float) Math.min(itemHandler.getSlotLimit(finalJ), itemstack.getMaxStackSize()));
                         i.incrementAndGet();
                     }
                 }
