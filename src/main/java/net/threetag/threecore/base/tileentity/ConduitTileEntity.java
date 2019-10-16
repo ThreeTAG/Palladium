@@ -46,10 +46,10 @@ public class ConduitTileEntity extends TileEntity implements ITickableTileEntity
                 TileEntity tileEntity = this.world.getTileEntity(pos.offset(direction));
 
                 if (tileEntity instanceof ConduitTileEntity) {
-                    if (this.energyStorage.getEnergyStored() > ((ConduitTileEntity) tileEntity).energyStorage.getEnergyStored()) {
-                        tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(machineEnergy -> {
-                            this.energyStorage.modifyEnergy(-machineEnergy.receiveEnergy(Math.min(this.energyStorage.getEnergyStored(), this.energyStorage.getMaxExtract()), false));
-                        });
+                    EnergyStorageExt otherCableEnergy = ((ConduitTileEntity) tileEntity).energyStorage;
+                    if (this.energyStorage.getEnergyStored() > otherCableEnergy.getEnergyStored() && Math.abs(this.energyStorage.getEnergyStored() - otherCableEnergy.getEnergyStored()) > 1) {
+                        int transfer = (this.energyStorage.getEnergyStored() - otherCableEnergy.getEnergyStored()) / 2;
+                        this.energyStorage.modifyEnergy(-otherCableEnergy.receiveEnergy(Math.min(transfer, this.energyStorage.getMaxExtract()), false));
                     }
                 } else if (tileEntity != null) {
                     tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(machineEnergy -> {
