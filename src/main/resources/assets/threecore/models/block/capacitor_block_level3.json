@@ -1,7 +1,12 @@
 {
-    "parent": "block/cube_column",
+    "parent": "block/cube",
     "textures": {
-        "end": "threecore:block/capacitor_block/top",
-        "side": "threecore:block/capacitor_block/side_3"
+        "particle": "threecore:block/capacitor_block/top",
+        "up": "threecore:block/capacitor_block/top",
+        "down": "threecore:block/capacitor_block/bottom",
+		"north": "threecore:block/capacitor_block/side_3",
+        "east": "threecore:block/capacitor_block/side_3",
+        "south": "threecore:block/capacitor_block/side_3",
+        "west": "threecore:block/capacitor_block/side_3"
     }
 }

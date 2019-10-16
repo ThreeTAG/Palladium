@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.text.ITextComponent;
@@ -21,7 +22,6 @@ import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.block.CapacitorBlock;
 import net.threetag.threecore.base.inventory.CapacitorBlockContainer;
-import net.threetag.threecore.base.inventory.GrinderContainer;
 import net.threetag.threecore.util.energy.EnergyStorageExt;
 import net.threetag.threecore.util.tileentity.LockableItemCapTileEntity;
 
@@ -89,6 +89,16 @@ public class CapacitorBlockTileEntity extends LockableItemCapTileEntity implemen
                     this.energyStorage.extractEnergy(energy, false);
                 }
             });
+
+            TileEntity tileEntity = this.world.getTileEntity(this.getPos().down());
+
+            if (tileEntity != null) {
+                tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> {
+                    if (energyStorage.canReceive()) {
+                        this.energyStorage.modifyEnergy(-energyStorage.receiveEnergy(Math.min(this.energyStorage.getEnergyStored(), this.energyStorage.getMaxExtract()), false));
+                    }
+                });
+            }
 
             int level = (int) (10F * (float) this.energyStorage.getEnergyStored() / (float) this.energyStorage.getMaxEnergyStored());
             int currentLevel = this.world.getBlockState(this.pos).get(CapacitorBlock.LEVEL_0_10);
