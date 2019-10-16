@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "I I",
+    "X X",
     "LRL",
     "PCP"
   ],
   "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
+    "X": {
+      "item": "threecore:copper_conduit"
     },
     "L": {
       "tag": "forge:ingots/lead"

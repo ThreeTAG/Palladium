@@ -3,7 +3,7 @@
   "pattern": [
     "CGC",
     "GCG",
-    "XBX"
+    "XBD"
   ],
   "key": {
     "C": {
@@ -17,6 +17,9 @@
     },
     "B": {
       "item": "threecore:capacitor_block"
+    },
+    "D": {
+      "item": "minecraft:daylight_detector"
     }
   },
   "result": {

@@ -19,21 +19,29 @@ public class ThreeCoreServerConfig {
 
         public EnergyConfig CAPACITOR;
         public EnergyConfig SOLAR_PANEL;
+        public ForgeConfigSpec.ConfigValue<Integer> SOLAR_PANEL_PRODUCTION;
         public EnergyConfig ADVANCED_CAPACITOR;
         public EnergyConfig GRINDER;
         public EnergyConfig HYDRAULIC_PRESS;
         public EnergyConfig FLUID_COMPOSER;
+        public ForgeConfigSpec.ConfigValue<Integer> GOLD_CONDUIT;
+        public ForgeConfigSpec.ConfigValue<Integer> COPPER_CONDUIT;
+        public ForgeConfigSpec.ConfigValue<Integer> SILVER_CONDUIT;
 
         private Energy(ForgeConfigSpec.Builder builder) {
             builder.comment("ThreeCore energy settings").push("base.energy");
 
             CAPACITOR = new EnergyConfig(builder, "capacitor", 2000000, 1000);
-            // TODO energy values
             SOLAR_PANEL = new EnergyConfig(builder, "solarPanel", 20000, 20);
+            SOLAR_PANEL_PRODUCTION = builder.defineInRange("solarPanel.production", 1, 1, 1000);
             ADVANCED_CAPACITOR = new EnergyConfig(builder, "advancedCapacitor", 8000000, 4000);
             GRINDER = new EnergyConfig(builder, "grinder", 20000, 20);
             HYDRAULIC_PRESS = new EnergyConfig(builder, "hydraulicPress", 20000, 20);
             FLUID_COMPOSER = new EnergyConfig(builder, "fluidComposer", 20000, 20);
+
+            GOLD_CONDUIT = builder.defineInRange("goldConduit.transferRate", 128, 1, 10000);
+            COPPER_CONDUIT = builder.defineInRange("copperConduit.transferRate", 512, 1, 10000);
+            SILVER_CONDUIT = builder.defineInRange("silverConduit.transferRate", 1024, 1, 10000);
 
             builder.pop();
         }

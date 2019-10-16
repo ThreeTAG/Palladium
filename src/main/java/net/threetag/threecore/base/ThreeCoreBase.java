@@ -141,6 +141,15 @@ public class ThreeCoreBase {
     @ObjectHolder("solar_panel")
     public static final TileEntityType<SolarPanelTileEntity> SOLAR_PANEL_TILE_ENTITY = null;
 
+    @ObjectHolder("gold_conduit")
+    public static final Block GOLD_CONDUIT = null;
+    @ObjectHolder("copper_conduit")
+    public static final Block COPPER_CONDUIT = null;
+    @ObjectHolder("silver_conduit")
+    public static final Block SILVER_CONDUIT = null;
+    @ObjectHolder("conduit")
+    public static final TileEntityType<ConduitTileEntity> CONDUIT_TILE_ENTITY = null;
+
     // Misc Items
     @ObjectHolder("hammer")
     public static final Item HAMMER = null;
@@ -372,6 +381,9 @@ public class ThreeCoreBase {
         registry.register(new FluidComposerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "fluid_composer"));
         registry.register(new CapacitorBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "capacitor_block"));
         registry.register(new SolarPanelBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "solar_panel"));
+        registry.register(new ConduitBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F), ConduitBlock.ConduitType.GOLD, 2F / 16F).setRegistryName(ThreeCore.MODID, "gold_conduit"));
+        registry.register(new ConduitBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F), ConduitBlock.ConduitType.COPPER, 2F / 16F).setRegistryName(ThreeCore.MODID, "copper_conduit"));
+        registry.register(new ConduitBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F), ConduitBlock.ConduitType.SILVER, 2F / 16F).setRegistryName(ThreeCore.MODID, "silver_conduit"));
 
         registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "copper_block"));
         registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "tin_block"));
@@ -410,6 +422,7 @@ public class ThreeCoreBase {
         e.getRegistry().register(TileEntityType.Builder.create(FluidComposerTileEntity::new, FLUID_COMPOSER).build(null).setRegistryName(ThreeCore.MODID, "fluid_composer"));
         e.getRegistry().register(TileEntityType.Builder.create(CapacitorBlockTileEntity::new, CAPACITOR_BLOCK).build(null).setRegistryName(ThreeCore.MODID, "capacitor_block"));
         e.getRegistry().register(TileEntityType.Builder.create(SolarPanelTileEntity::new, SOLAR_PANEL).build(null).setRegistryName(ThreeCore.MODID, "solar_panel"));
+        e.getRegistry().register(TileEntityType.Builder.create(() -> new ConduitTileEntity(ConduitBlock.ConduitType.GOLD), GOLD_CONDUIT, COPPER_CONDUIT, SILVER_CONDUIT).build(null).setRegistryName(ThreeCore.MODID, "conduit"));
     }
 
     @SubscribeEvent
@@ -442,6 +455,9 @@ public class ThreeCoreBase {
         registry.register(makeItem(FLUID_COMPOSER, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(new CapacitorBlockItem(CAPACITOR_BLOCK, new Item.Properties().maxStackSize(1).group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), ThreeCoreServerConfig.ENERGY.CAPACITOR).setRegistryName(CAPACITOR_BLOCK.getRegistryName()));
         registry.register(makeItem(SOLAR_PANEL, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
+        registry.register(makeItem(GOLD_CONDUIT, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
+        registry.register(makeItem(COPPER_CONDUIT, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
+        registry.register(makeItem(SILVER_CONDUIT, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
 
         registry.register(new HammerItem(4.5F, -2.75F, ItemTier.IRON, new Item.Properties().group(ItemGroup.TOOLS).maxStackSize(1).maxDamage(16)).setRegistryName(ThreeCore.MODID, "hammer"));
         registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "plate_cast"));

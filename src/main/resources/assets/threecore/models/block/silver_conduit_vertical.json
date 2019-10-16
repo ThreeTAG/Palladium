@@ -1,0 +1,7 @@
+{
+	"parent": "threecore:block/copper_conduit_vertical",
+	"textures": {
+		"texture": "threecore:block/silver_conduit",
+		"particle": "threecore:block/silver_conduit"
+	}
+}

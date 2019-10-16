@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "I I",
+    "S S",
     "LCL",
     "PXP"
   ],
   "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
+    "S": {
+      "item": "threecore:silver_conduit"
     },
     "L": {
       "tag": "forge:ingots/lead"
@@ -19,7 +19,7 @@
       "tag": "forge:plates/iron"
     },
     "C": {
-      "item": "threecore:circuit"
+      "item": "threecore:capacitor"
     }
   },
   "result": {

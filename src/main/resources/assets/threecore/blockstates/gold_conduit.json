@@ -1,0 +1,160 @@
+{
+	"multipart": [
+		{
+			"when": {
+				"north": "conduit"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_connection"
+			}
+		},
+		{
+			"when": {
+				"east": "conduit"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_connection",
+				"y": 90,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"south": "conduit"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_connection",
+				"y": 180,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"west": "conduit"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_connection",
+				"y": 270,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"up": "conduit"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_connection",
+				"x": 270,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"down": "conduit"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_connection",
+				"x": 90,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"north": "machine"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_connection_machine",
+				"uvlock": false
+			}
+		},
+		{
+			"when": {
+				"east": "machine"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_connection_machine",
+				"y": 90,
+				"uvlock": false
+			}
+		},
+		{
+			"when": {
+				"south": "machine"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_connection_machine",
+				"y": 180,
+				"uvlock": false
+			}
+		},
+		{
+			"when": {
+				"west": "machine"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_connection_machine",
+				"y": 270,
+				"uvlock": false
+			}
+		},
+		{
+			"when": {
+				"up": "machine"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_connection_machine",
+				"x": 270,
+				"uvlock": false
+			}
+		},
+		{
+			"when": {
+				"down": "machine"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_connection_machine",
+				"x": 90,
+				"uvlock": false
+			}
+		},
+		{
+			"when": {
+				"direction": "x"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit",
+				"y": 90,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"direction": "z"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit",
+				"x": 90,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"direction": "y"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_vertical",
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"direction": "multiple"
+			},
+			"apply": {
+				"model": "threecore:block/gold_conduit_corner",
+				"x": 90,
+				"uvlock": true
+			}
+		}
+	]
+}

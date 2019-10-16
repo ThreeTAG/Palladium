@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 
 public class SolarPanelTileEntity extends TileEntity implements ITickableTileEntity {
 
-    public EnergyStorageExt energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.SOLAR_PANEL);
+    public EnergyStorageExt energyStorage = EnergyStorageExt.noReceive(ThreeCoreServerConfig.ENERGY.SOLAR_PANEL);
     private LazyOptional<IEnergyStorage> energyStorageLazyOptional = LazyOptional.of(() -> energyStorage);
 
     public SolarPanelTileEntity() {
@@ -30,7 +30,7 @@ public class SolarPanelTileEntity extends TileEntity implements ITickableTileEnt
             return;
 
         if (canProduce()) {
-            this.energyStorage.receiveEnergy(1, false);
+            this.energyStorage.modifyEnergy(ThreeCoreServerConfig.ENERGY.SOLAR_PANEL_PRODUCTION.get());
         }
 
         if (this.energyStorage.getEnergyStored() > 0) {
@@ -40,8 +40,9 @@ public class SolarPanelTileEntity extends TileEntity implements ITickableTileEnt
 
                     if (tileEntity != null) {
                         tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> {
-                            if (energyStorage.canReceive())
+                            if (energyStorage.canReceive()) {
                                 this.energyStorage.modifyEnergy(-energyStorage.receiveEnergy(Math.min(this.energyStorage.getEnergyStored(), this.energyStorage.getMaxExtract()), false));
+                            }
                         });
                     }
                 }
@@ -56,7 +57,7 @@ public class SolarPanelTileEntity extends TileEntity implements ITickableTileEnt
     @Override
     public void read(CompoundNBT compound) {
         super.read(compound);
-        this.energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.SOLAR_PANEL, compound.getInt("Energy"));
+        this.energyStorage = EnergyStorageExt.noReceive(ThreeCoreServerConfig.ENERGY.SOLAR_PANEL, compound.getInt("Energy"));
     }
 
     @Override

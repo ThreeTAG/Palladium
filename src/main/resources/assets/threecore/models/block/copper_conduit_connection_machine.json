@@ -1,0 +1,34 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"ambientocclusion": false,
+	"textures": {
+		"1": "threecore:block/copper_conduit_machine_connection",
+		"texture": "threecore:block/copper_conduit",
+		"particle": "threecore:block/copper_conduit"
+	},
+	"elements": [
+		{
+			"from": [6, 6, 2],
+			"to": [10, 10, 6],
+			"faces": {
+				"east": {"uv": [10, 6, 14, 10], "texture": "#texture"},
+				"west": {"uv": [2, 6, 6, 10], "texture": "#texture"},
+				"up": {"uv": [6, 2, 10, 6], "texture": "#texture"},
+				"down": {"uv": [6, 10, 10, 14], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [5, 5, 0],
+			"to": [11, 11, 2],
+			"faces": {
+				"north": {"uv": [0, 0, 6, 6], "texture": "#1"},
+				"east": {"uv": [2, 6, 4, 12], "texture": "#1"},
+				"south": {"uv": [6, 0, 12, 6], "texture": "#1"},
+				"west": {"uv": [0, 6, 2, 12], "texture": "#1"},
+				"up": {"uv": [4, 6, 10, 8], "texture": "#1"},
+				"down": {"uv": [4, 8, 10, 10], "texture": "#1"}
+			}
+		}
+	]
+}

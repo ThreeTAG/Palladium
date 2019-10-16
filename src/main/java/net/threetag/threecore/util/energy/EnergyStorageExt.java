@@ -48,4 +48,21 @@ public class EnergyStorageExt extends EnergyStorage {
     public int getMaxReceive() {
         return maxReceive;
     }
+
+    public static EnergyStorageExt noReceive(IEnergyConfig energyConfig) {
+        return noReceive(energyConfig, 0);
+    }
+
+    public static EnergyStorageExt noReceive(IEnergyConfig energyConfig, int energy) {
+        return new EnergyStorageExt(energyConfig.getCapacity(), 0, energyConfig.getPower(), energy);
+    }
+
+    public static EnergyStorageExt noExtract(IEnergyConfig energyConfig) {
+        return noExtract(energyConfig, 0);
+    }
+
+    public static EnergyStorageExt noExtract(IEnergyConfig energyConfig, int energy) {
+        return new EnergyStorageExt(energyConfig.getCapacity(), energyConfig.getPower(), 0, energy);
+    }
+
 }
