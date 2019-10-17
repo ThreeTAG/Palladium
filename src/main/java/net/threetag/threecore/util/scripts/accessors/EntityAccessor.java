@@ -22,9 +22,13 @@ public class EntityAccessor {
     public final Entity entity;
     public final WorldAccessor world;
 
-    public EntityAccessor(Entity entity) {
+    protected EntityAccessor(Entity entity) {
         this.entity = entity;
         this.world = new WorldAccessor(entity.world);
+    }
+
+    public static EntityAccessor create(Entity entity) {
+        return entity instanceof LivingEntity ? new LivingEntityAccessor((LivingEntity) entity) : new EntityAccessor(entity);
     }
 
     public String getName() {

@@ -70,10 +70,12 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
     @Override
     protected void apply(Map<ResourceLocation, String> splashList, IResourceManager resourceManagerIn, IProfiler profilerIn) {
         this.engines.clear();
+        ScriptEventManager.reset();
 
         for (Map.Entry<ResourceLocation, String> entry : splashList.entrySet()) {
             try {
                 ScriptEngine engine = getEngine(entry.getKey().getNamespace());
+                engine.put("eventManager", new ScriptEventManager.EventManagerAccessor());
                 engine.eval(entry.getValue());
                 ThreeCore.LOGGER.info("Executed script file {}!", entry.getKey());
             } catch (ScriptException e) {

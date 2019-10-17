@@ -15,7 +15,7 @@ public class LivingEntityAccessor extends EntityAccessor {
 
     public final LivingEntity livingEntity;
 
-    public LivingEntityAccessor(LivingEntity entity) {
+    protected LivingEntityAccessor(LivingEntity entity) {
         super(entity);
         this.livingEntity = entity;
     }
