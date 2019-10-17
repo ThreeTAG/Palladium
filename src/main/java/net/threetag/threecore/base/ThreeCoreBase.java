@@ -131,6 +131,8 @@ public class ThreeCoreBase {
 
     @ObjectHolder("capacitor_block")
     public static final Block CAPACITOR_BLOCK = null;
+    @ObjectHolder("advanced_capacitor_block")
+    public static final Block ADVANCED_CAPACITOR_BLOCK = null;
     @ObjectHolder("capacitor_block")
     public static final TileEntityType<CapacitorBlockTileEntity> CAPACITOR_BLOCK_TILE_ENTITY = null;
     @ObjectHolder("capacitor_block")
@@ -148,7 +150,7 @@ public class ThreeCoreBase {
     @ObjectHolder("silver_conduit")
     public static final Block SILVER_CONDUIT = null;
     @ObjectHolder("conduit")
-    public static final TileEntityType<ConduitTileEntity> CONDUIT_TILE_ENTITY = null;
+    public static final TileEntityType<EnergyConduitTileEntity> CONDUIT_TILE_ENTITY = null;
 
     // Misc Items
     @ObjectHolder("hammer")
@@ -376,14 +378,15 @@ public class ThreeCoreBase {
     public void registerBlocks(RegistryEvent.Register<Block> e) {
         IForgeRegistry<Block> registry = e.getRegistry();
 
-        registry.register(new GrinderBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "grinder"));
-        registry.register(new HydraulicPressBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "hydraulic_press"));
-        registry.register(new FluidComposerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "fluid_composer"));
-        registry.register(new CapacitorBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "capacitor_block"));
-        registry.register(new SolarPanelBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "solar_panel"));
-        registry.register(new ConduitBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F), ConduitBlock.ConduitType.GOLD, 2F / 16F).setRegistryName(ThreeCore.MODID, "gold_conduit"));
-        registry.register(new ConduitBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F), ConduitBlock.ConduitType.COPPER, 2F / 16F).setRegistryName(ThreeCore.MODID, "copper_conduit"));
-        registry.register(new ConduitBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 6.0F), ConduitBlock.ConduitType.SILVER, 2F / 16F).setRegistryName(ThreeCore.MODID, "silver_conduit"));
+        registry.register(new GrinderBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "grinder"));
+        registry.register(new HydraulicPressBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "hydraulic_press"));
+        registry.register(new FluidComposerBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "fluid_composer"));
+        registry.register(new CapacitorBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F), CapacitorBlock.Type.NORMAL).setRegistryName(ThreeCore.MODID, "capacitor_block"));
+        registry.register(new CapacitorBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F), CapacitorBlock.Type.ADVANCED).setRegistryName(ThreeCore.MODID, "advanced_capacitor_block"));
+        registry.register(new SolarPanelBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "solar_panel"));
+        registry.register(new EnergyConduitBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F), EnergyConduitBlock.ConduitType.GOLD, 2F / 16F).setRegistryName(ThreeCore.MODID, "gold_conduit"));
+        registry.register(new EnergyConduitBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F), EnergyConduitBlock.ConduitType.COPPER, 2F / 16F).setRegistryName(ThreeCore.MODID, "copper_conduit"));
+        registry.register(new EnergyConduitBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F), EnergyConduitBlock.ConduitType.SILVER, 2F / 16F).setRegistryName(ThreeCore.MODID, "silver_conduit"));
 
         registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "copper_block"));
         registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "tin_block"));
@@ -420,9 +423,9 @@ public class ThreeCoreBase {
         e.getRegistry().register(TileEntityType.Builder.create(GrinderTileEntity::new, GRINDER).build(null).setRegistryName(ThreeCore.MODID, "grinder"));
         e.getRegistry().register(TileEntityType.Builder.create(HydraulicPressTileEntity::new, HYDRAULIC_PRESS).build(null).setRegistryName(ThreeCore.MODID, "hydraulic_press"));
         e.getRegistry().register(TileEntityType.Builder.create(FluidComposerTileEntity::new, FLUID_COMPOSER).build(null).setRegistryName(ThreeCore.MODID, "fluid_composer"));
-        e.getRegistry().register(TileEntityType.Builder.create(CapacitorBlockTileEntity::new, CAPACITOR_BLOCK).build(null).setRegistryName(ThreeCore.MODID, "capacitor_block"));
+        e.getRegistry().register(TileEntityType.Builder.create(() -> new CapacitorBlockTileEntity(CapacitorBlock.Type.NORMAL), CAPACITOR_BLOCK, ADVANCED_CAPACITOR_BLOCK).build(null).setRegistryName(ThreeCore.MODID, "capacitor_block"));
         e.getRegistry().register(TileEntityType.Builder.create(SolarPanelTileEntity::new, SOLAR_PANEL).build(null).setRegistryName(ThreeCore.MODID, "solar_panel"));
-        e.getRegistry().register(TileEntityType.Builder.create(() -> new ConduitTileEntity(ConduitBlock.ConduitType.GOLD), GOLD_CONDUIT, COPPER_CONDUIT, SILVER_CONDUIT).build(null).setRegistryName(ThreeCore.MODID, "conduit"));
+        e.getRegistry().register(TileEntityType.Builder.create(() -> new EnergyConduitTileEntity(EnergyConduitBlock.ConduitType.GOLD), GOLD_CONDUIT, COPPER_CONDUIT, SILVER_CONDUIT).build(null).setRegistryName(ThreeCore.MODID, "conduit"));
     }
 
     @SubscribeEvent
@@ -454,6 +457,7 @@ public class ThreeCoreBase {
         registry.register(makeItem(HYDRAULIC_PRESS, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(makeItem(FLUID_COMPOSER, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(new CapacitorBlockItem(CAPACITOR_BLOCK, new Item.Properties().maxStackSize(1).group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), ThreeCoreServerConfig.ENERGY.CAPACITOR).setRegistryName(CAPACITOR_BLOCK.getRegistryName()));
+        registry.register(new CapacitorBlockItem(ADVANCED_CAPACITOR_BLOCK, new Item.Properties().maxStackSize(1).group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), ThreeCoreServerConfig.ENERGY.ADVANCED_CAPACITOR).setRegistryName(ADVANCED_CAPACITOR_BLOCK.getRegistryName()));
         registry.register(makeItem(SOLAR_PANEL, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(makeItem(GOLD_CONDUIT, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(makeItem(COPPER_CONDUIT, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));

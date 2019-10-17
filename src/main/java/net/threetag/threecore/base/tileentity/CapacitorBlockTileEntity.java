@@ -18,11 +18,11 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
-import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.block.CapacitorBlock;
 import net.threetag.threecore.base.inventory.CapacitorBlockContainer;
 import net.threetag.threecore.util.energy.EnergyStorageExt;
+import net.threetag.threecore.util.energy.IEnergyConfig;
 import net.threetag.threecore.util.tileentity.LockableItemCapTileEntity;
 
 import javax.annotation.Nonnull;
@@ -31,7 +31,8 @@ import java.util.Objects;
 
 public class CapacitorBlockTileEntity extends LockableItemCapTileEntity implements ITickableTileEntity {
 
-    public EnergyStorageExt energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.CAPACITOR);
+    public CapacitorBlock.Type type;
+    public EnergyStorageExt energyStorage;
     public final ItemStackHandler inputSlot = new ItemStackHandler(1);
     public final ItemStackHandler outputSlot = new ItemStackHandler(1);
     public final CombinedInvWrapper combinedInvWrapper = new CombinedInvWrapper(inputSlot, outputSlot);
@@ -65,8 +66,14 @@ public class CapacitorBlockTileEntity extends LockableItemCapTileEntity implemen
         }
     };
 
-    public CapacitorBlockTileEntity() {
+    public CapacitorBlockTileEntity(CapacitorBlock.Type type) {
         super(ThreeCoreBase.CAPACITOR_BLOCK_TILE_ENTITY);
+        this.type = type;
+        this.energyStorage = new EnergyStorageExt(getEnergyConfig());
+    }
+
+    public IEnergyConfig getEnergyConfig() {
+        return this.type.getEnergyConfig();
     }
 
     @Override
@@ -130,13 +137,15 @@ public class CapacitorBlockTileEntity extends LockableItemCapTileEntity implemen
     @Override
     public void read(CompoundNBT compound) {
         super.read(compound);
-        this.energyStorage = new EnergyStorageExt(ThreeCoreServerConfig.ENERGY.CAPACITOR, compound.getInt("Energy"));
+        this.type = CapacitorBlock.Type.getByName(compound.getString("Type"));
+        this.energyStorage = new EnergyStorageExt(getEnergyConfig(), compound.getInt("Energy"));
         this.inputSlot.deserializeNBT(compound.getCompound("InputSlot"));
         this.outputSlot.deserializeNBT(compound.getCompound("OutputSlot"));
     }
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
+        compound.putString("Type", this.type.getName());
         compound.putInt("Energy", this.energyStorage.getEnergyStored());
         compound.put("InputSlot", this.inputSlot.serializeNBT());
         compound.put("OutputSlot", this.outputSlot.serializeNBT());

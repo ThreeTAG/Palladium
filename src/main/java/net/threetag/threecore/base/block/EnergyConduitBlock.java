@@ -25,7 +25,7 @@ import net.minecraft.world.IWorld;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.threetag.threecore.ThreeCoreServerConfig;
-import net.threetag.threecore.base.tileentity.ConduitTileEntity;
+import net.threetag.threecore.base.tileentity.EnergyConduitTileEntity;
 import net.threetag.threecore.util.energy.EnergyUtil;
 
 import javax.annotation.Nullable;
@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.IntSupplier;
 
-public class ConduitBlock extends Block {
+public class EnergyConduitBlock extends Block {
 
     private static final Direction[] FACING_VALUES = Direction.values();
     private static final ConduitConnection[] CONNECTION_VALUES = ConduitConnection.values();
@@ -55,7 +55,7 @@ public class ConduitBlock extends Block {
     protected final VoxelShape[] shapes;
     protected final ConduitType type;
 
-    public ConduitBlock(Properties properties, ConduitType type, float apothem) {
+    public EnergyConduitBlock(Properties properties, ConduitType type, float apothem) {
         super(properties);
         this.type = type;
         this.shapes = this.makeShapes(apothem);
@@ -70,7 +70,7 @@ public class ConduitBlock extends Block {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new ConduitTileEntity(this.type);
+        return new EnergyConduitTileEntity(this.type);
     }
 
     private VoxelShape[] makeShapes(float apothem) {
@@ -153,7 +153,7 @@ public class ConduitBlock extends Block {
         TileEntity tileEntity = reader.getTileEntity(pos.offset(direction));
 
         if (tileEntity != null) {
-            if (tileEntity instanceof ConduitTileEntity)
+            if (tileEntity instanceof EnergyConduitTileEntity)
                 return ConduitConnection.CONDUIT;
             else if (tileEntity.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite()).isPresent())
                 return ConduitConnection.MACHINE;

@@ -6,61 +6,61 @@
 			"predicate": {
 				"threecore:energy": 0.1
 			},
-			"model": "threecore:item/capacitor_block_level1"
+			"model": "threecore:block/capacitor_block_level1"
 		},
 		{
 			"predicate": {
 				"threecore:energy": 0.2
 			},
-			"model": "threecore:item/capacitor_block_level2"
+			"model": "threecore:block/capacitor_block_level2"
 		},
 		{
 			"predicate": {
 				"threecore:energy": 0.3
 			},
-			"model": "threecore:item/capacitor_block_level3"
+			"model": "threecore:block/capacitor_block_level3"
 		},
 		{
 			"predicate": {
 				"threecore:energy": 0.4
 			},
-			"model": "threecore:item/capacitor_block_level4"
+			"model": "threecore:block/capacitor_block_level4"
 		},
 		{
 			"predicate": {
 				"threecore:energy": 0.5
 			},
-			"model": "threecore:item/capacitor_block_level5"
+			"model": "threecore:block/capacitor_block_level5"
 		},
 		{
 			"predicate": {
 				"threecore:energy": 0.6
 			},
-			"model": "threecore:item/capacitor_block_level6"
+			"model": "threecore:block/capacitor_block_level6"
 		},
 		{
 			"predicate": {
 				"threecore:energy": 0.7
 			},
-			"model": "threecore:item/capacitor_block_level7"
+			"model": "threecore:block/capacitor_block_level7"
 		},
 		{
 			"predicate": {
 				"threecore:energy": 0.8
 			},
-			"model": "threecore:item/capacitor_block_level8"
+			"model": "threecore:block/capacitor_block_level8"
 		},
 		{
 			"predicate": {
 				"threecore:energy": 0.9
 			},
-			"model": "threecore:item/capacitor_block_level9"
+			"model": "threecore:block/capacitor_block_level9"
 		},
 		{
 			"predicate": {
 				"threecore:energy": 1
 			},
-			"model": "threecore:item/capacitor_block_level10"
+			"model": "threecore:block/capacitor_block_level10"
 		}
 	]
 }

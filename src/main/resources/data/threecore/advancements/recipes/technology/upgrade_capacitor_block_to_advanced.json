@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:upgrade_capacitor_block_to_advanced"
+    ]
+  },
+  "criteria": {
+    "has_capacitor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "threecore:capacitor"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:upgrade_capacitor_block_to_advanced"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_capacitor",
+      "has_the_recipe"
+    ]
+  ]
+}

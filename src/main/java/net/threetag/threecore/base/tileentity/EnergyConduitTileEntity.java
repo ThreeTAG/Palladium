@@ -10,19 +10,19 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.threetag.threecore.base.ThreeCoreBase;
-import net.threetag.threecore.base.block.ConduitBlock;
+import net.threetag.threecore.base.block.EnergyConduitBlock;
 import net.threetag.threecore.util.energy.EnergyStorageExt;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ConduitTileEntity extends TileEntity implements ITickableTileEntity {
+public class EnergyConduitTileEntity extends TileEntity implements ITickableTileEntity {
 
     public EnergyStorageExt energyStorage;
     private LazyOptional<IEnergyStorage> energyStorageLazyOptional;
-    protected ConduitBlock.ConduitType type;
+    protected EnergyConduitBlock.ConduitType type;
 
-    public ConduitTileEntity(ConduitBlock.ConduitType type) {
+    public EnergyConduitTileEntity(EnergyConduitBlock.ConduitType type) {
         super(ThreeCoreBase.CONDUIT_TILE_ENTITY);
         this.type = type;
         this.energyStorage = new EnergyStorageExt(type.getTransferRate().getAsInt() * 5, type.getTransferRate().getAsInt());
@@ -42,11 +42,11 @@ public class ConduitTileEntity extends TileEntity implements ITickableTileEntity
 
         BlockState state = this.world.getBlockState(this.pos);
         for (Direction direction : Direction.values()) {
-            if (state.get(ConduitBlock.FACING_TO_PROPERTY_MAP.get(direction)).hasConnection()) {
+            if (state.get(EnergyConduitBlock.FACING_TO_PROPERTY_MAP.get(direction)).hasConnection()) {
                 TileEntity tileEntity = this.world.getTileEntity(pos.offset(direction));
 
-                if (tileEntity instanceof ConduitTileEntity) {
-                    EnergyStorageExt otherCableEnergy = ((ConduitTileEntity) tileEntity).energyStorage;
+                if (tileEntity instanceof EnergyConduitTileEntity) {
+                    EnergyStorageExt otherCableEnergy = ((EnergyConduitTileEntity) tileEntity).energyStorage;
                     if (this.energyStorage.getEnergyStored() > otherCableEnergy.getEnergyStored() && Math.abs(this.energyStorage.getEnergyStored() - otherCableEnergy.getEnergyStored()) > 1) {
                         int transfer = (this.energyStorage.getEnergyStored() - otherCableEnergy.getEnergyStored()) / 2;
                         this.energyStorage.modifyEnergy(-otherCableEnergy.receiveEnergy(Math.min(transfer, this.energyStorage.getMaxExtract()), false));
@@ -64,7 +64,7 @@ public class ConduitTileEntity extends TileEntity implements ITickableTileEntity
     public void read(CompoundNBT nbt) {
         super.read(nbt);
 
-        this.type = ConduitBlock.ConduitType.getByName(nbt.getString("Type"));
+        this.type = EnergyConduitBlock.ConduitType.getByName(nbt.getString("Type"));
         this.energyStorage = new EnergyStorageExt(this.type.getTransferRate().getAsInt() * 5, this.type.getTransferRate().getAsInt(), this.type.getTransferRate().getAsInt(), nbt.getInt("Energy"));
     }
 

@@ -13,30 +13,35 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.tileentity.CapacitorBlockTileEntity;
 import net.threetag.threecore.util.block.BlockUtil;
+import net.threetag.threecore.util.energy.IEnergyConfig;
 
 import javax.annotation.Nullable;
 
 public class CapacitorBlock extends ContainerBlock {
 
     public static final IntegerProperty LEVEL_0_10 = IntegerProperty.create("level", 0, 10);
+    private final Type type;
 
-    public CapacitorBlock(Properties properties) {
+    public CapacitorBlock(Properties properties, Type type) {
         super(properties);
+        this.type = type;
         this.setDefaultState(this.stateContainer.getBaseState().with(LEVEL_0_10, Integer.valueOf(0)));
     }
 
     @Nullable
     @Override
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
-        return new CapacitorBlockTileEntity();
+        return new CapacitorBlockTileEntity(this.type);
     }
 
     @Override
@@ -96,5 +101,36 @@ public class CapacitorBlock extends ContainerBlock {
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(LEVEL_0_10);
+    }
+
+    public static enum Type implements IStringSerializable {
+
+        NORMAL("normal", ThreeCoreServerConfig.ENERGY.CAPACITOR), ADVANCED("advanced", ThreeCoreServerConfig.ENERGY.ADVANCED_CAPACITOR);
+
+        private final String name;
+        private final IEnergyConfig energyConfig;
+
+        Type(String name, IEnergyConfig energyConfig) {
+            this.name = name;
+            this.energyConfig = energyConfig;
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+
+        public IEnergyConfig getEnergyConfig() {
+            return energyConfig;
+        }
+
+        public static Type getByName(String name) {
+            for (Type type : values()) {
+                if (type.getName().equalsIgnoreCase(name)) {
+                    return type;
+                }
+            }
+            return values()[0];
+        }
     }
 }

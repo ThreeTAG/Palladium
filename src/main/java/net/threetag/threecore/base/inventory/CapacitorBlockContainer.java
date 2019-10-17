@@ -17,6 +17,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.block.CapacitorBlock;
 import net.threetag.threecore.base.tileentity.CapacitorBlockTileEntity;
 
 public class CapacitorBlockContainer extends Container {
@@ -26,7 +27,7 @@ public class CapacitorBlockContainer extends Container {
     private final IIntArray intArray;
 
     public CapacitorBlockContainer(int id, PlayerInventory inventoryPlayer) {
-        this(id, inventoryPlayer, new CapacitorBlockTileEntity(), new IntArray(2));
+        this(id, inventoryPlayer, new CapacitorBlockTileEntity(CapacitorBlock.Type.NORMAL), new IntArray(2));
     }
 
     public CapacitorBlockContainer(int id, PlayerInventory playerInventory, CapacitorBlockTileEntity capacitorBlockTileEntity, IIntArray intArray) {
