@@ -3,7 +3,9 @@ package net.threetag.threecore.base.block;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -14,14 +16,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.tileentity.ConduitTileEntity;
+import net.threetag.threecore.util.energy.EnergyUtil;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Map;
 import java.util.function.IntSupplier;
 
@@ -52,6 +60,11 @@ public class ConduitBlock extends Block {
         this.type = type;
         this.shapes = this.makeShapes(apothem);
         this.setDefaultState(this.stateContainer.getBaseState().with(NORTH, ConduitConnection.NONE).with(EAST, ConduitConnection.NONE).with(SOUTH, ConduitConnection.NONE).with(WEST, ConduitConnection.NONE).with(UP, ConduitConnection.NONE).with(DOWN, ConduitConnection.NONE));
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new TranslationTextComponent("block.threecore.conduit_tooltip", new StringTextComponent(this.type.getTransferRate().getAsInt() + "").applyTextStyle(TextFormatting.GOLD), new StringTextComponent(EnergyUtil.ENERGY_UNIT).applyTextStyle(TextFormatting.GRAY)).applyTextStyle(TextFormatting.GRAY));
     }
 
     @Nullable

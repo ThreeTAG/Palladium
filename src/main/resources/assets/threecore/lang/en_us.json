@@ -9,6 +9,7 @@
 	"block.threecore.gold_conduit": "Gold Conduit",
 	"block.threecore.copper_conduit": "Copper Conduit",
 	"block.threecore.silver_conduit": "Silver Conduit",
+	"block.threecore.conduit_tooltip": "Transfers %s %s/tick",
 	
 	"item.threecore.hammer": "Hammer",
 	"item.threecore.plate_cast": "Plate Cast",
