@@ -1,10 +1,13 @@
 package net.threetag.threecore;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -16,7 +19,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.threetag.threecore.abilities.AbilityType;
 import net.threetag.threecore.abilities.ThreeCoreAbilities;
+import net.threetag.threecore.abilities.condition.ConditionType;
 import net.threetag.threecore.addonpacks.ThreeCoreAddonPacks;
 import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.karma.ThreeCoreKarma;
@@ -28,6 +33,7 @@ import net.threetag.threecore.util.data.ThreeCoreBlockTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreItemTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreRecipeProvider;
 import net.threetag.threecore.util.loot.function.TCLootFunctions;
+import net.threetag.threecore.util.scripts.ScriptEventManager;
 import net.threetag.threecore.util.threedata.capability.CapabilityThreeData;
 import net.threetag.threecore.util.threedata.capability.SyncThreeDataMessage;
 import net.threetag.threecore.util.threedata.capability.ThreeDataProvider;
@@ -48,6 +54,7 @@ public class ThreeCore {
     public static SimpleChannel NETWORK_CHANNEL;
     private static int networkId = -1;
     public static final File MOD_SUBFOLDER = new File("mods/" + MODID);
+    private static boolean htmlGenerated = false;
 
     public ThreeCore() {
         // Basic stuff
@@ -73,6 +80,7 @@ public class ThreeCore {
         // Misc
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
+            MinecraftForge.EVENT_BUS.addListener(this::initGui);
             if (Minecraft.getInstance() != null)
                 ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new EntityModelManager());
         });
@@ -90,6 +98,19 @@ public class ThreeCore {
         e.getGenerator().addProvider(new ThreeCoreBlockTagsProvider(e.getGenerator()));
         e.getGenerator().addProvider(new ThreeCoreItemTagsProvider(e.getGenerator()));
         e.getGenerator().addProvider(new ThreeCoreRecipeProvider(e.getGenerator()));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void initGui(GuiScreenEvent.InitGuiEvent e) {
+        // abilities.html
+        if (e.getGui() instanceof MainMenuScreen) {
+            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+                AbilityType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "abilities.html"));
+                ConditionType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "conditions.html"));
+                ScriptEventManager.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_events.html"));
+            });
+            htmlGenerated = true;
+        }
     }
 
     public static <MSG> int registerMessage(Class<MSG> messageType, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageConsumer) {

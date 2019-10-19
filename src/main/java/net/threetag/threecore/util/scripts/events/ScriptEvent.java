@@ -2,6 +2,7 @@ package net.threetag.threecore.util.scripts.events;
 
 import net.minecraftforge.eventbus.api.Event;
 import net.threetag.threecore.util.scripts.ScriptEventManager;
+import net.threetag.threecore.util.scripts.ScriptParameterName;
 
 public class ScriptEvent {
 
@@ -11,8 +12,8 @@ public class ScriptEvent {
         this.event = event;
     }
 
-    public void setCancelled(boolean cancelled) {
-        this.event.setCanceled(cancelled);
+    public void setCanceled(@ScriptParameterName("canceled") boolean canceled) {
+        this.event.setCanceled(canceled);
     }
 
     public boolean isCancelled() {

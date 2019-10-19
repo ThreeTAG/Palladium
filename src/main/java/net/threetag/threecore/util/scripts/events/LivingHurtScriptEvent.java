@@ -2,6 +2,7 @@ package net.threetag.threecore.util.scripts.events;
 
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.threetag.threecore.util.scripts.ScriptParameterName;
 
 public class LivingHurtScriptEvent extends LivingScriptEvent {
 
@@ -22,7 +23,7 @@ public class LivingHurtScriptEvent extends LivingScriptEvent {
         return getEvent().getAmount();
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(@ScriptParameterName("amount") float amount) {
         this.getEvent().setAmount(amount);
     }
 

@@ -39,7 +39,6 @@ public class ThreeCoreAbilities {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.register(new AbilityBarRenderer());
             MinecraftForge.EVENT_BUS.register(new AbilityClientHandler());
-            MinecraftForge.EVENT_BUS.addListener(this::initGui);
         });
 
         AbilityHelper.registerAbilityContainer(CapabilityAbilityContainer.ID, (p) -> p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
@@ -77,20 +76,6 @@ public class ThreeCoreAbilities {
                     }
                 },
                 () -> new CapabilityAbilityContainer());
-    }
-
-    private static boolean htmlGenerated = false;
-
-    @OnlyIn(Dist.CLIENT)
-    public void initGui(GuiScreenEvent.InitGuiEvent e) {
-        // abilities.html
-        if (e.getGui() instanceof MainMenuScreen && !htmlGenerated) {
-            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-                AbilityType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "abilities.html"));
-                ConditionType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "conditions.html"));
-            });
-            htmlGenerated = true;
-        }
     }
 
     @SubscribeEvent

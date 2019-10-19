@@ -1,6 +1,7 @@
 package net.threetag.threecore.util.scripts.events;
 
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.threetag.threecore.util.scripts.ScriptParameterName;
 
 public class LivingFallScriptEvent extends LivingScriptEvent {
 
@@ -16,7 +17,7 @@ public class LivingFallScriptEvent extends LivingScriptEvent {
         return getEvent().getDistance();
     }
 
-    public void setDistance(float distance) {
+    public void setDistance(@ScriptParameterName("distance") float distance, @ScriptParameterName("damageMultiplier") float test) {
         this.getEvent().setDistance(distance);
     }
 
@@ -24,7 +25,7 @@ public class LivingFallScriptEvent extends LivingScriptEvent {
         return getEvent().getDamageMultiplier();
     }
 
-    public void setDamageMultiplier(float damageMultiplier) {
+    public void setDamageMultiplier(@ScriptParameterName("damageMultiplier") float damageMultiplier) {
         this.getEvent().setDamageMultiplier(damageMultiplier);
     }
 
