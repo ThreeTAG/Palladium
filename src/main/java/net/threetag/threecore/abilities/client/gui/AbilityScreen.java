@@ -1,10 +1,6 @@
 package net.threetag.threecore.abilities.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.abilities.network.SetAbilityKeybindMessage;
-import net.threetag.threecore.util.client.gui.BackgroundlessButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
@@ -12,6 +8,10 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.network.PacketDistributor;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.abilities.Ability;
+import net.threetag.threecore.abilities.network.SetAbilityKeybindMessage;
+import net.threetag.threecore.util.client.gui.BackgroundlessButton;
 
 public class AbilityScreen extends Screen {
 
@@ -35,11 +35,13 @@ public class AbilityScreen extends Screen {
         int i = (this.width - guiWidth) / 2;
         int j = (this.height - guiHeight) / 2;
         this.addButton(new BackgroundlessButton(i + 193, j + 3, 5, 5, "x", s -> parentScreen.overlayScreen = null));
-        keyButton = this.addButton(new GuiButtonExt(i + 143, j + 30, 50, 20, "/", (b) -> {
-            this.listenToKey = !this.listenToKey;
+        if (this.ability.getConditionManager().needsKey()) {
+            keyButton = this.addButton(new GuiButtonExt(i + 143, j + 30, 50, 20, "/", (b) -> {
+                this.listenToKey = !this.listenToKey;
+                this.updateButton();
+            }));
             this.updateButton();
-        }));
-        this.updateButton();
+        }
     }
 
     @Override
@@ -52,7 +54,8 @@ public class AbilityScreen extends Screen {
         this.blit(i, j, 0, 196, this.guiWidth, this.guiHeight);
 
         this.font.drawString(this.title.getFormattedText(), i + 8, j + 6, 4210752);
-        this.font.drawString(I18n.format("gui.threecore.abilities.keybind"), i + 143, j + 20, 4210752);
+        if (this.keyButton != null)
+            this.font.drawString(I18n.format("gui.threecore.abilities.keybind"), i + 143, j + 20, 4210752);
 
         GlStateManager.pushMatrix();
         GlStateManager.translatef(i + 14, j + 18, 0);
@@ -65,7 +68,7 @@ public class AbilityScreen extends Screen {
 
     @Override
     public boolean keyPressed(int type, int scanCode, int p_keyPressed_3_) {
-        if (this.listenToKey) {
+        if (this.keyButton != null && this.listenToKey) {
             this.ability.getDataManager().set(Ability.KEYBIND, InputMappings.getInputByCode(type, scanCode).getKeyCode());
             ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.SERVER.noArg(), new SetAbilityKeybindMessage(this.ability.container.getId(), this.ability.getId(), InputMappings.getInputByCode(type, scanCode).getKeyCode()));
             this.listenToKey = false;
