@@ -1,32 +1,37 @@
 package net.threetag.threecore.util.scripts.events;
 
-import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraft.entity.LivingEntity;
 import net.threetag.threecore.util.scripts.ScriptParameterName;
 
 public class LivingFallScriptEvent extends LivingScriptEvent {
 
-    public LivingFallScriptEvent(LivingFallEvent event) {
-        super(event);
-    }
+    private float distance;
+    private float damageMultiplier;
 
-    private LivingFallEvent getEvent() {
-        return (LivingFallEvent) this.event;
+    public LivingFallScriptEvent(LivingEntity livingEntity, float distance, float damageMultiplier) {
+        super(livingEntity);
+        this.distance = distance;
+        this.damageMultiplier = damageMultiplier;
     }
 
     public float getDistance() {
-        return getEvent().getDistance();
+        return this.distance;
     }
 
-    public void setDistance(@ScriptParameterName("distance") float distance, @ScriptParameterName("damageMultiplier") float test) {
-        this.getEvent().setDistance(distance);
+    public void setDistance(@ScriptParameterName("distance") float distance) {
+        this.distance = distance;
     }
 
     public float getDamageMultiplier() {
-        return getEvent().getDamageMultiplier();
+        return this.damageMultiplier;
     }
 
     public void setDamageMultiplier(@ScriptParameterName("damageMultiplier") float damageMultiplier) {
-        this.getEvent().setDamageMultiplier(damageMultiplier);
+        this.damageMultiplier = damageMultiplier;
     }
 
+    @Override
+    public boolean isCancelable() {
+        return true;
+    }
 }

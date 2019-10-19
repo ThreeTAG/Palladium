@@ -1,11 +1,16 @@
 package net.threetag.threecore.util.scripts.events;
 
-import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraft.entity.Entity;
 
 public class EntityJoinWorldScriptEvent extends EntityScriptEvent {
 
-    public EntityJoinWorldScriptEvent(EntityEvent event) {
-        super(event);
+    public EntityJoinWorldScriptEvent(Entity entity) {
+        super(entity);
+    }
+
+    @Override
+    public boolean isCancelable() {
+        return true;
     }
 
 }

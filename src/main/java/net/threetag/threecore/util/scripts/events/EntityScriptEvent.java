@@ -1,20 +1,15 @@
 package net.threetag.threecore.util.scripts.events;
 
-import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraft.entity.Entity;
 import net.threetag.threecore.util.scripts.accessors.EntityAccessor;
 import net.threetag.threecore.util.scripts.accessors.WorldAccessor;
 
-public class EntityScriptEvent extends ScriptEvent {
+public abstract class EntityScriptEvent extends ScriptEvent {
 
     private final EntityAccessor entityAccessor;
 
-    public EntityScriptEvent(EntityEvent event) {
-        super(event);
-        this.entityAccessor = EntityAccessor.create(event.getEntity());
-    }
-
-    private EntityEvent getEntityEvent() {
-        return (EntityEvent) this.event;
+    public EntityScriptEvent(Entity entity) {
+        this.entityAccessor = EntityAccessor.create(entity);
     }
 
     public EntityAccessor getEntity() {

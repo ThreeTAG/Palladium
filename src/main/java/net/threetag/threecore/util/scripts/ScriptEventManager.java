@@ -4,7 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ThreeCore;
@@ -31,6 +32,13 @@ public class ScriptEventManager {
         registerEvent("livingHurt", LivingHurtScriptEvent.class);
         registerEvent("livingDeath", LivingDeathScriptEvent.class);
         registerEvent("livingFall", LivingFallScriptEvent.class);
+        registerEvent("abilityTick", AbilityTickScriptEvent.class);
+        registerEvent("abilityLocked", AbilityLockedScriptEvent.class);
+        registerEvent("abilityUnlocked", AbilityUnlockedScriptEvent.class);
+        registerEvent("abilityEnabled", AbilityEnabledScriptEvent.class);
+        registerEvent("abilityDisabled", AbilityDisabledScriptEvent.class);
+        registerEvent("abilityDataUpdated", AbilityDataUpdatedScriptEvent.class);
+        registerEvent("conditionDataUpdated", ConditionDataUpdatedScriptEvent.class);
     }
 
     public static void reset() {
@@ -82,7 +90,37 @@ public class ScriptEventManager {
 
         @SubscribeEvent
         public static void onLivingJump(LivingEvent.LivingJumpEvent e) {
-            new LivingJumpScriptEvent(e).fire();
+            new LivingJumpScriptEvent(e.getEntityLiving()).fire(e);
+        }
+
+        @SubscribeEvent
+        public static void onEntityJoinWorld(EntityJoinWorldEvent e) {
+            new EntityJoinWorldScriptEvent(e.getEntity()).fire(e);
+        }
+
+        @SubscribeEvent
+        public static void onLivingAttack(LivingAttackEvent e) {
+            new LivingAttackScriptEvent(e.getEntityLiving(), e.getSource(), e.getAmount()).fire(e);
+        }
+
+        @SubscribeEvent
+        public static void onLivingDeath(LivingDeathEvent e) {
+            new LivingDeathScriptEvent(e.getEntityLiving(), e.getSource()).fire(e);
+        }
+
+        @SubscribeEvent
+        public static void onLivingFall(LivingFallEvent e) {
+            LivingFallScriptEvent scriptEvent = new LivingFallScriptEvent(e.getEntityLiving(), e.getDistance(), e.getDamageMultiplier());
+            scriptEvent.fire(e);
+            e.setDistance(scriptEvent.getDistance());
+            e.setDamageMultiplier(scriptEvent.getDamageMultiplier());
+        }
+
+        @SubscribeEvent
+        public static void onLivingHurt(LivingHurtEvent e) {
+            LivingHurtScriptEvent scriptEvent = new LivingHurtScriptEvent(e.getEntityLiving(), e.getSource(), e.getAmount());
+            scriptEvent.fire(e);
+            e.setAmount(scriptEvent.getAmount());
         }
 
     }

@@ -103,7 +103,7 @@ public class ThreeCore {
     @OnlyIn(Dist.CLIENT)
     public void initGui(GuiScreenEvent.InitGuiEvent e) {
         // abilities.html
-        if (e.getGui() instanceof MainMenuScreen) {
+        if (e.getGui() instanceof MainMenuScreen && !htmlGenerated) {
             DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
                 AbilityType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "abilities.html"));
                 ConditionType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "conditions.html"));

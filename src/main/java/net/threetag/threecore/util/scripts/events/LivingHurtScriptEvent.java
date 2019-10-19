@@ -1,30 +1,35 @@
 package net.threetag.threecore.util.scripts.events;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.threetag.threecore.util.scripts.ScriptParameterName;
 
 public class LivingHurtScriptEvent extends LivingScriptEvent {
 
-    public LivingHurtScriptEvent(LivingHurtEvent event) {
-        super(event);
-    }
+    private final DamageSource damageSource;
+    private float damageAmount;
 
-    private LivingHurtEvent getEvent() {
-        return (LivingHurtEvent) this.event;
+    public LivingHurtScriptEvent(LivingEntity livingEntity, DamageSource damageSource, float damageAmount) {
+        super(livingEntity);
+        this.damageSource = damageSource;
+        this.damageAmount = damageAmount;
     }
 
     // TODO make DamageSourceAccessor
     public DamageSource getDamageSource() {
-        return getEvent().getSource();
+        return this.damageSource;
     }
 
     public float getAmount() {
-        return getEvent().getAmount();
+        return this.damageAmount;
     }
 
     public void setAmount(@ScriptParameterName("amount") float amount) {
-        this.getEvent().setAmount(amount);
+        this.damageAmount = amount;
     }
 
+    @Override
+    public boolean isCancelable() {
+        return true;
+    }
 }

@@ -1,12 +1,12 @@
 package net.threetag.threecore.util.scripts.events;
 
-import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraft.entity.LivingEntity;
 import net.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
 
-public class LivingScriptEvent extends EntityScriptEvent {
+public abstract class LivingScriptEvent extends EntityScriptEvent {
 
-    public LivingScriptEvent(EntityEvent event) {
-        super(event);
+    public LivingScriptEvent(LivingEntity livingEntity) {
+        super(livingEntity);
     }
 
     public LivingEntityAccessor getLivingEntity() {

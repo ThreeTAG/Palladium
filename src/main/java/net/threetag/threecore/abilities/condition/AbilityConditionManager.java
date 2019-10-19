@@ -13,6 +13,10 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.Ability;
+import net.threetag.threecore.util.scripts.events.AbilityDisabledScriptEvent;
+import net.threetag.threecore.util.scripts.events.AbilityEnabledScriptEvent;
+import net.threetag.threecore.util.scripts.events.AbilityLockedScriptEvent;
+import net.threetag.threecore.util.scripts.events.AbilityUnlockedScriptEvent;
 import net.threetag.threecore.util.threedata.EnumSync;
 
 import java.util.*;
@@ -101,13 +105,19 @@ public class AbilityConditionManager implements INBTSerializable<CompoundNBT> {
 
             if (e != this.enabled) {
                 this.enabled = e;
-                // TODO enabled/disabled event
+                if (this.enabled)
+                    new AbilityEnabledScriptEvent(entity, this.ability).fire();
+                else
+                    new AbilityDisabledScriptEvent(entity, this.ability).fire();
                 this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
             }
 
             if (u != this.unlocked) {
                 this.unlocked = u;
-                // TODO locked/unlocked event
+                if (this.unlocked)
+                    new AbilityUnlockedScriptEvent(entity, this.ability).fire();
+                else
+                    new AbilityLockedScriptEvent(entity, this.ability).fire();
                 this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
             }
         }

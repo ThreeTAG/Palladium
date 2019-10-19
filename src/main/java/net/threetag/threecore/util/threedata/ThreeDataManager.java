@@ -3,6 +3,10 @@ package net.threetag.threecore.util.threedata;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.threetag.threecore.abilities.Ability;
+import net.threetag.threecore.abilities.condition.Condition;
+import net.threetag.threecore.util.scripts.events.AbilityDataUpdatedScriptEvent;
+import net.threetag.threecore.util.scripts.events.ConditionDataUpdatedScriptEvent;
 
 import java.util.*;
 
@@ -30,6 +34,14 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT> {
             entry.setValue(value);
             this.dataHolder.update(data, value);
             this.dataHolder.setDirty();
+
+            if (this.dataHolder instanceof Ability && ((Ability) this.dataHolder).entity != null) {
+                new AbilityDataUpdatedScriptEvent(((Ability) this.dataHolder).entity, (Ability) this.dataHolder, data.key, value, oldValue);
+            } else if (this.dataHolder instanceof Condition && ((Condition) this.dataHolder).ability.entity != null) {
+                Condition c = (Condition) this.dataHolder;
+                new ConditionDataUpdatedScriptEvent(c.ability.entity, c.ability, c, data.key, value, oldValue);
+            }
+
         }
     }
 

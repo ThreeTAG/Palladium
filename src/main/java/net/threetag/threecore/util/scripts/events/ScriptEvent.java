@@ -4,28 +4,32 @@ import net.minecraftforge.eventbus.api.Event;
 import net.threetag.threecore.util.scripts.ScriptEventManager;
 import net.threetag.threecore.util.scripts.ScriptParameterName;
 
-public class ScriptEvent {
+import javax.annotation.Nullable;
 
-    protected final Event event;
+public abstract class ScriptEvent {
 
-    public ScriptEvent(Event event) {
-        this.event = event;
-    }
+    private boolean canceled = false;
 
     public void setCanceled(@ScriptParameterName("canceled") boolean canceled) {
-        this.event.setCanceled(canceled);
+        if (this.isCancelable())
+            this.canceled = canceled;
     }
 
     public boolean isCancelled() {
-        return this.event.isCanceled();
+        return this.isCancelable() && this.canceled;
     }
 
-    public boolean isCancelable() {
-        return this.event.isCancelable();
+    public abstract boolean isCancelable();
+
+    public boolean fire() {
+        return this.fire(null);
     }
 
-    public void fire() {
+    public boolean fire(@Nullable Event event) {
         ScriptEventManager.fireEvent(this);
+        if (event != null && event.isCanceled())
+            event.setCanceled(true);
+        return this.isCancelled();
     }
 
 }
