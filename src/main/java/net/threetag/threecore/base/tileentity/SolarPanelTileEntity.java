@@ -39,7 +39,7 @@ public class SolarPanelTileEntity extends TileEntity implements ITickableTileEnt
                     TileEntity tileEntity = this.world.getTileEntity(this.getPos().offset(direction));
 
                     if (tileEntity != null) {
-                        tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> {
+                        tileEntity.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite()).ifPresent(energyStorage -> {
                             if (energyStorage.canReceive()) {
                                 this.energyStorage.modifyEnergy(-energyStorage.receiveEnergy(Math.min(this.energyStorage.getEnergyStored(), this.energyStorage.getMaxExtract()), false));
                             }

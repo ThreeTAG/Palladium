@@ -52,7 +52,7 @@ public class EnergyConduitTileEntity extends TileEntity implements ITickableTile
                         this.energyStorage.modifyEnergy(-otherCableEnergy.receiveEnergy(Math.min(transfer, this.energyStorage.getMaxExtract()), false));
                     }
                 } else if (tileEntity != null) {
-                    tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(machineEnergy -> {
+                    tileEntity.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite()).ifPresent(machineEnergy -> {
                         this.energyStorage.modifyEnergy(-machineEnergy.receiveEnergy(Math.min(this.energyStorage.getEnergyStored(), this.energyStorage.getMaxExtract()), false));
                     });
                 }

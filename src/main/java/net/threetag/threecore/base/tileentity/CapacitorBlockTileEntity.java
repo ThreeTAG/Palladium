@@ -23,6 +23,7 @@ import net.threetag.threecore.base.block.CapacitorBlock;
 import net.threetag.threecore.base.inventory.CapacitorBlockContainer;
 import net.threetag.threecore.util.energy.EnergyStorageExt;
 import net.threetag.threecore.util.energy.IEnergyConfig;
+import net.threetag.threecore.util.energy.NoReceiveEnergyWrapper;
 import net.threetag.threecore.util.tileentity.LockableItemCapTileEntity;
 
 import javax.annotation.Nonnull;
@@ -100,7 +101,7 @@ public class CapacitorBlockTileEntity extends LockableItemCapTileEntity implemen
             TileEntity tileEntity = this.world.getTileEntity(this.getPos().down());
 
             if (tileEntity != null) {
-                tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> {
+                tileEntity.getCapability(CapabilityEnergy.ENERGY, Direction.UP).ifPresent(energyStorage -> {
                     if (energyStorage.canReceive()) {
                         this.energyStorage.modifyEnergy(-energyStorage.receiveEnergy(Math.min(this.energyStorage.getEnergyStored(), this.energyStorage.getMaxExtract()), false));
                     }
@@ -153,6 +154,8 @@ public class CapacitorBlockTileEntity extends LockableItemCapTileEntity implemen
     }
 
     public final LazyOptional<IEnergyStorage> energyStorageOptional = LazyOptional.of(() -> energyStorage);
+    public final NoReceiveEnergyWrapper noReceiveEnergyWrapper = new NoReceiveEnergyWrapper(this.energyStorage);
+    public final LazyOptional<IEnergyStorage> energyStorageOptionalBottom = LazyOptional.of(() -> noReceiveEnergyWrapper);
     public final LazyOptional<IItemHandler> inputSlotOptional = LazyOptional.of(() -> inputSlot);
     public final LazyOptional<IItemHandler> outputSlotOptional = LazyOptional.of(() -> outputSlot);
     public final LazyOptional<IItemHandler> combinedInvOptional = LazyOptional.of(() -> combinedInvWrapper);
@@ -163,7 +166,7 @@ public class CapacitorBlockTileEntity extends LockableItemCapTileEntity implemen
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return side == null ? combinedInvOptional.cast() : side == Direction.DOWN ? this.outputSlotOptional.cast() : this.inputSlotOptional.cast();
         } else if (cap == CapabilityEnergy.ENERGY) {
-            return this.energyStorageOptional.cast();
+            return side == Direction.DOWN ? energyStorageOptionalBottom.cast() : this.energyStorageOptional.cast();
         }
         return super.getCapability(cap, side);
     }
