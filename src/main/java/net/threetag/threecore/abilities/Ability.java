@@ -17,11 +17,8 @@ import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
 import net.threetag.threecore.abilities.client.gui.AbilityScreen;
 import net.threetag.threecore.abilities.condition.AbilityConditionManager;
 import net.threetag.threecore.abilities.condition.Condition;
-import net.threetag.threecore.abilities.event.AbilityEventManager;
 import net.threetag.threecore.util.icon.IIcon;
 import net.threetag.threecore.util.icon.ItemIcon;
-import net.threetag.threecore.util.scripts.accessors.AbilityAccessor;
-import net.threetag.threecore.util.scripts.accessors.EntityAccessor;
 import net.threetag.threecore.util.threedata.*;
 
 public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDataHolder {
@@ -40,7 +37,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
     public IAbilityContainer container;
     protected ThreeDataManager dataManager = new ThreeDataManager(this);
     protected AbilityConditionManager conditionManager = new AbilityConditionManager(this);
-    protected AbilityEventManager eventManager = new AbilityEventManager(this);
     protected int ticks = 0;
     public EnumSync sync = EnumSync.NONE;
     public boolean dirty = false;
@@ -58,7 +54,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
     public void readFromJson(JsonObject jsonObject) {
         this.dataManager.readFromJson(jsonObject);
         this.conditionManager.readFromJson(jsonObject);
-        this.eventManager.readFromJson(jsonObject);
     }
 
     public void registerData() {
@@ -97,8 +92,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
             this.conditionManager.lastTick();
             ticks = 0;
         }
-
-        this.eventManager.fireEvent("tick", EntityAccessor.create(entity), new AbilityAccessor(this));
     }
 
     public void updateTick(LivingEntity entity) {
@@ -116,10 +109,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
 
     public AbilityConditionManager getConditionManager() {
         return conditionManager;
-    }
-
-    public AbilityEventManager getEventManager() {
-        return eventManager;
     }
 
     public final String getId() {
@@ -151,7 +140,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
         nbt.putString("AbilityType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.serializeNBT());
         nbt.put("Conditions", this.conditionManager.serializeNBT());
-        nbt.put("Events", this.eventManager.serializeNBT());
         if (this.additionalData != null)
             nbt.put("AdditionalData", this.additionalData);
         return nbt;
@@ -161,7 +149,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
     public void deserializeNBT(CompoundNBT nbt) {
         this.dataManager.deserializeNBT(nbt.getCompound("Data"));
         this.conditionManager.deserializeNBT(nbt.getCompound("Conditions"));
-        this.eventManager.deserializeNBT(nbt.getCompound("Events"));
         this.additionalData = nbt.getCompound("AdditionalData");
     }
 

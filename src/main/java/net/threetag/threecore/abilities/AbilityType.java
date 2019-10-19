@@ -65,6 +65,9 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     @OnlyIn(Dist.CLIENT)
     public static void generateHtmlFile(File file) {
         try {
+            if(!file.getParentFile().exists())
+                file.getParentFile().mkdirs();
+
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             bw.write("<html><head><title>Abilities</title><style>\n" +
                     "table{font-family:arial, sans-serif;border-collapse:collapse;}\n" +

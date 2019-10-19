@@ -35,6 +35,7 @@ import net.threetag.threecore.util.threedata.capability.UpdateThreeDataMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -46,6 +47,7 @@ public class ThreeCore {
     public static final Logger LOGGER = LogManager.getLogger();
     public static SimpleChannel NETWORK_CHANNEL;
     private static int networkId = -1;
+    public static final File MOD_SUBFOLDER = new File("mods/" + MODID);
 
     public ThreeCore() {
         // Basic stuff

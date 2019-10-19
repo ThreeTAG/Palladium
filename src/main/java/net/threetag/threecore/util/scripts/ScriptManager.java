@@ -12,10 +12,7 @@ import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.threetag.threecore.ThreeCore;
 import org.apache.commons.io.IOUtils;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import javax.script.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -27,7 +24,13 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
     public static ScriptEngineManager manager = new ScriptEngineManager();
     private static final int JSON_EXTENSION_LENGTH = ".json".length();
     private final String folder;
-    private Map<String, ScriptEngine> engines = Maps.newHashMap();
+
+    private static final String[] BLOCKED_FUNCTIONS = {
+            "load",
+            "loadWithNewGlobal",
+            "exit",
+            "quit"
+    };
 
     public ScriptManager() {
         INSTANCE = this;
@@ -69,12 +72,21 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
 
     @Override
     protected void apply(Map<ResourceLocation, String> splashList, IResourceManager resourceManagerIn, IProfiler profilerIn) {
-        this.engines.clear();
         ScriptEventManager.reset();
 
         for (Map.Entry<ResourceLocation, String> entry : splashList.entrySet()) {
             try {
-                ScriptEngine engine = getEngine(entry.getKey().getNamespace());
+                ScriptEngine engine = manager.getEngineByName("javascript");
+                ScriptContext context = engine.getContext();
+                if (!(engine instanceof Invocable)) {
+                    ThreeCore.LOGGER.error("Engine is not invocable?");
+                    continue;
+                }
+
+                for (String s : BLOCKED_FUNCTIONS)
+                    context.removeAttribute(s, context.getAttributesScope(s));
+
+                engine.put("namespace", entry.getKey().toString());
                 engine.put("eventManager", new ScriptEventManager.EventManagerAccessor());
                 engine.eval(entry.getValue());
                 ThreeCore.LOGGER.info("Executed script file {}!", entry.getKey());
@@ -82,37 +94,6 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
                 ThreeCore.LOGGER.error("Error when executing script file {}", entry.getKey(), e);
             }
         }
-    }
-
-    public ScriptEngine getEngine(String namespace) {
-        if (this.engines.containsKey(namespace))
-            return this.engines.get(namespace);
-        else {
-            ScriptEngine engine = manager.getEngineByName("javascript");
-            if (!(engine instanceof Invocable)) {
-                ThreeCore.LOGGER.error("Engine is not invocable?");
-                return null;
-            }
-            engine.put("namespace", namespace);
-            this.engines.put(namespace, engine);
-            return engine;
-        }
-    }
-
-    public Object invoke(String function, Object... args) {
-        String[] strings = function.split(":", 2);
-
-        if (strings.length < 2)
-            return null;
-
-        try {
-
-            return ((Invocable) getEngine(strings[0])).invokeFunction(strings[1], args);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     @SubscribeEvent

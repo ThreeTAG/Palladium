@@ -86,8 +86,8 @@ public class ThreeCoreAbilities {
         // abilities.html
         if (e.getGui() instanceof MainMenuScreen && !htmlGenerated) {
             DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-                AbilityType.generateHtmlFile(new File("abilities.html"));
-                ConditionType.generateHtmlFile(new File("conditions.html"));
+                AbilityType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "abilities.html"));
+                ConditionType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "conditions.html"));
             });
             htmlGenerated = true;
         }
