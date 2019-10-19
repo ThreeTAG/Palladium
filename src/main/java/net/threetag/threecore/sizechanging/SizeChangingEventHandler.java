@@ -2,7 +2,9 @@ package net.threetag.threecore.sizechanging;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.EnderCrystalEntity;
 import net.minecraft.entity.item.HangingEntity;
+import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
@@ -32,7 +34,7 @@ public class SizeChangingEventHandler {
     }
 
     public static boolean canSizeChange(Entity entity) {
-        if(entity instanceof HangingEntity)
+        if(entity instanceof HangingEntity || entity instanceof ShulkerEntity || entity instanceof EnderCrystalEntity)
             return false;
         return true;
     }
