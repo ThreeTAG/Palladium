@@ -21,7 +21,7 @@ import java.util.UUID;
 public abstract class Condition implements INBTSerializable<CompoundNBT>, IThreeDataHolder {
 
     public final Ability ability;
-    protected final ConditionType type;
+    public final ConditionType type;
     UUID id;
     protected ThreeDataManager dataManager = new ThreeDataManager(this);
 

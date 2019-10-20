@@ -1,50 +1,56 @@
 package net.threetag.threecore.util.scripts.accessors;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.threetag.threecore.util.scripts.ScriptParameterName;
 
-public class WorldAccessor {
+public class WorldAccessor extends ScriptAccessor<World> {
 
-    public final World world;
-
-    public WorldAccessor(World world) {
-        this.world = world;
+    public WorldAccessor(World value) {
+        super(value);
     }
 
     public long getTime() {
-        return this.world.getDayTime();
+        return this.value.getDayTime();
     }
 
-    public void setTime(long time) {
-        this.world.setDayTime(time);
+    public void setTime(@ScriptParameterName("time") long time) {
+        this.value.setDayTime(time);
     }
 
     public boolean isRaining() {
-        return this.world.isRaining();
+        return this.value.isRaining();
     }
 
     public boolean isThundering() {
-        return this.world.isThundering();
+        return this.value.isThundering();
     }
 
-    public void setRainStrength(float strength) {
-        this.world.setRainStrength(strength);
+    public void setRainStrength(@ScriptParameterName("strength") float strength) {
+        this.value.setRainStrength(strength);
     }
 
-    public void summonLightning(double x, double y, double z, boolean effectOnly) {
-        if (this.world instanceof ServerWorld)
-            ((ServerWorld) this.world).addLightningBolt(new LightningBoltEntity(world, x, y, z, effectOnly));
+    public void summonLightning(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z, @ScriptParameterName("effectOnly") boolean effectOnly) {
+        if (this.value instanceof ServerWorld)
+            ((ServerWorld) this.value).addLightningBolt(new LightningBoltEntity(this.value, x, y, z, effectOnly));
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return this.world.equals(obj);
+    public void setBlockState(@ScriptParameterName("block") Object block, @ScriptParameterName("x") int x, @ScriptParameterName("y") int y, @ScriptParameterName("z") int z) {
+        BlockState b = block instanceof BlockStateAccessor ? ((BlockStateAccessor) block).value :
+                (block instanceof String && ForgeRegistries.BLOCKS.containsKey(new ResourceLocation((String) block)) ?
+                        ForgeRegistries.BLOCKS.getValue(new ResourceLocation((String) block)).getDefaultState() : null);
+        if (block != null) {
+            this.value.setBlockState(new BlockPos(x, y, z), b);
+        }
     }
 
-    @Override
-    public int hashCode() {
-        return this.world.hashCode();
+    public BlockStateAccessor getBlockState(@ScriptParameterName("x") int x, @ScriptParameterName("y") int y, @ScriptParameterName("z") int z) {
+        return (BlockStateAccessor) ScriptAccessor.makeAccessor(this.value.getBlockState(new BlockPos(x, y, z)));
     }
 
 }

@@ -2,6 +2,7 @@ package net.threetag.threecore.util.scripts;
 
 import com.google.common.collect.Maps;
 import net.minecraft.client.resources.ReloadListener;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
@@ -10,6 +11,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
+import net.threetag.threecore.util.scripts.accessors.ScriptAccessor;
 import org.apache.commons.io.IOUtils;
 
 import javax.script.*;

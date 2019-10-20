@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -27,6 +28,7 @@ public class ScriptEventManager {
 
     static {
         registerEvent("entityJoinWorld", EntityJoinWorldScriptEvent.class);
+        registerEvent("entityStruckByLightning", EntityStruckByLightningScriptEvent.class);
         registerEvent("livingJump", LivingJumpScriptEvent.class);
         registerEvent("livingAttack", LivingAttackScriptEvent.class);
         registerEvent("livingHurt", LivingHurtScriptEvent.class);
@@ -123,6 +125,11 @@ public class ScriptEventManager {
             e.setAmount(scriptEvent.getAmount());
         }
 
+        @SubscribeEvent
+        public static void onEntityStruckByLightning(EntityStruckByLightningEvent e) {
+            new EntityStruckByLightningScriptEvent(e.getEntity(), e.getLightning()).fire(e);
+        }
+
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -148,6 +155,14 @@ public class ScriptEventManager {
                     "th,td.true,td.false,td.other{text-align:center;}\n" +
                     "</style><link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"https://i.imgur.com/am80ox1.png\">" +
                     "</head><body>");
+
+            lines.add("<ul>");
+            for (Map.Entry<String, Class<? extends ScriptEvent>> entry : events.entrySet()) {
+                String name = entry.getKey();
+                lines.add("<li><a href=\"#" + name + "\">" + name + "</a></li>");
+            }
+            lines.add("</ul>");
+            lines.add("<hr>\n");
 
             for (Map.Entry<String, Class<? extends ScriptEvent>> entry : events.entrySet()) {
                 String name = entry.getKey();

@@ -2,18 +2,18 @@ package net.threetag.threecore.util.scripts.events;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
+import net.threetag.threecore.util.scripts.accessors.DamageSourceAccessor;
 
 public class LivingDeathScriptEvent extends LivingScriptEvent {
 
-    private final DamageSource damageSource;
+    private final DamageSourceAccessor damageSource;
 
     public LivingDeathScriptEvent(LivingEntity livingEntity, DamageSource damageSource) {
         super(livingEntity);
-        this.damageSource = damageSource;
+        this.damageSource = new DamageSourceAccessor(damageSource);
     }
 
-    // TODO make DamageSourceAccessor
-    public DamageSource getDamageSource() {
+    public DamageSourceAccessor getDamageSource() {
         return this.damageSource;
     }
 

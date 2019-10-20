@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.abilities.IAbilityContainer;
-import net.threetag.threecore.util.player.PlayerHelper;
+import net.threetag.threecore.util.scripts.ScriptParameterName;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +28,7 @@ public class LivingEntityAccessor extends EntityAccessor {
         return this.livingEntity.getHealth();
     }
 
-    public void setHealth(float health) {
+    public void setHealth(@ScriptParameterName("health") float health) {
         this.livingEntity.setHealth(health);
     }
 
@@ -36,7 +36,7 @@ public class LivingEntityAccessor extends EntityAccessor {
         return this.livingEntity.getMaxHealth();
     }
 
-    public void heal(float amount) {
+    public void heal(@ScriptParameterName("amount") float amount) {
         this.livingEntity.heal(amount);
     }
 
@@ -68,7 +68,7 @@ public class LivingEntityAccessor extends EntityAccessor {
         return this.livingEntity.getAIMoveSpeed();
     }
 
-    public void setMovementSpeed(float speed) {
+    public void setMovementSpeed(@ScriptParameterName("speed") float speed) {
         this.livingEntity.setAIMoveSpeed(speed);
     }
 
@@ -83,7 +83,7 @@ public class LivingEntityAccessor extends EntityAccessor {
         return array;
     }
 
-    public AbilityAccessor[] getAbilities(String containerId) {
+    public AbilityAccessor[] getAbilities(@ScriptParameterName("containerId") String containerId) {
         IAbilityContainer container = AbilityHelper.getAbilityContainerFromId(this.livingEntity, new ResourceLocation(containerId));
 
         if (container != null)
@@ -99,15 +99,5 @@ public class LivingEntityAccessor extends EntityAccessor {
         }
 
         return array;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return this.livingEntity.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return this.livingEntity.hashCode();
     }
 }

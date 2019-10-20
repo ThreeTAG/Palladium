@@ -163,7 +163,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
             bw.write("</body></html>");
             bw.close();
 
-            ThreeCore.LOGGER.info("Successfully generated conditions.html!");
+            ThreeCore.LOGGER.info("Successfully generated " + file.getName() + "!");
         } catch (IOException e) {
             e.printStackTrace();
         }

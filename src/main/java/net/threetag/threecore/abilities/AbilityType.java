@@ -159,7 +159,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
             bw.write("</body></html>");
             bw.close();
 
-            ThreeCore.LOGGER.info("Successfully generated abilities.html!");
+            ThreeCore.LOGGER.info("Successfully generated " + file.getName() + "!");
         } catch (IOException e) {
             e.printStackTrace();
         }

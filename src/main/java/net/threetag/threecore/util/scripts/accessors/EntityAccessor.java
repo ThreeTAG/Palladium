@@ -14,33 +14,29 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.sizechanging.SizeChangeType;
 import net.threetag.threecore.sizechanging.capability.CapabilitySizeChanging;
 import net.threetag.threecore.util.player.PlayerHelper;
+import net.threetag.threecore.util.scripts.ScriptParameterName;
 
 import java.util.UUID;
 
-public class EntityAccessor {
+public class EntityAccessor extends ScriptAccessor<Entity> {
 
-    public final Entity entity;
     public final WorldAccessor world;
 
-    protected EntityAccessor(Entity entity) {
-        this.entity = entity;
-        this.world = new WorldAccessor(entity.world);
-    }
-
-    public static EntityAccessor create(Entity entity) {
-        return entity instanceof LivingEntity ? new LivingEntityAccessor((LivingEntity) entity) : new EntityAccessor(entity);
+    public EntityAccessor(Entity value) {
+        super(value);
+        this.world = (WorldAccessor) makeAccessor(value.world);
     }
 
     public String getName() {
-        return this.entity.getDisplayName().getFormattedText();
+        return this.value.getDisplayName().getFormattedText();
     }
 
-    public void setName(String name) {
-        this.entity.setCustomName(new StringTextComponent(name));
+    public void setName(@ScriptParameterName("name") String name) {
+        this.value.setCustomName(new StringTextComponent(name));
     }
 
-    public void setNameVisible(boolean visible) {
-        this.entity.setCustomNameVisible(visible);
+    public void setNameVisible(@ScriptParameterName("visible") boolean visible) {
+        this.value.setCustomNameVisible(visible);
     }
 
     public WorldAccessor getWorld() {
@@ -48,221 +44,211 @@ public class EntityAccessor {
     }
 
     public UUID getUUID() {
-        return this.entity.getUniqueID();
+        return this.value.getUniqueID();
     }
 
     public double getPosX() {
-        return this.entity.posX;
+        return this.value.posX;
     }
 
     public double getPosY() {
-        return this.entity.posY;
+        return this.value.posY;
     }
 
     public double getPosZ() {
-        return this.entity.posZ;
+        return this.value.posZ;
     }
 
     public float getYaw() {
-        return this.entity.rotationYaw;
+        return this.value.rotationYaw;
     }
 
-    public float setYaw(float yaw) {
-        return this.entity.rotationYaw = yaw;
+    public float setYaw(@ScriptParameterName("yaw") float yaw) {
+        return this.value.rotationYaw = yaw;
     }
 
     public float getPitch() {
-        return this.entity.rotationPitch;
+        return this.value.rotationPitch;
     }
 
-    public void setPitch(float pitch) {
-        this.entity.rotationPitch = pitch;
+    public void setPitch(@ScriptParameterName("pitch") float pitch) {
+        this.value.rotationPitch = pitch;
     }
 
-    public void setPosition(double x, double y, double z) {
-        this.entity.setPositionAndUpdate(x, y, z);
+    public void setPosition(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z) {
+        this.value.setPositionAndUpdate(x, y, z);
     }
 
-    public void setRotation(float yaw, float pitch) {
+    public void setRotation(@ScriptParameterName("yaw") float yaw, @ScriptParameterName("pitch") float pitch) {
         setPositionAndRotation(getPosX(), getPosY(), getPosZ(), yaw, pitch);
     }
 
-    public void setPositionAndRotation(double x, double y, double z, float yaw, float pitch) {
+    public void setPositionAndRotation(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z, @ScriptParameterName("yaw") float yaw, @ScriptParameterName("pitch") float pitch) {
         this.setYaw(yaw);
         this.setPitch(pitch);
-        this.entity.setPositionAndUpdate(x, y, z);
+        this.value.setPositionAndUpdate(x, y, z);
     }
 
     public Vec3d getMotion() {
-        return this.entity.getMotion();
+        return this.value.getMotion();
     }
 
-    public void setMotion(double x, double y, double z) {
-        this.entity.setMotion(x, y, z);
+    public void setMotion(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z) {
+        this.value.setMotion(x, y, z);
     }
 
-    public void addMotion(double x, double y, double z) {
-        this.setMotion(this.entity.getMotion().x + x, this.entity.getMotion().y + y, this.entity.getMotion().z + z);
+    public void addMotion(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z) {
+        this.setMotion(this.value.getMotion().x + x, this.value.getMotion().y + y, this.value.getMotion().z + z);
     }
 
     public Direction getHorizontalFacing() {
-        return this.entity.getHorizontalFacing();
+        return this.value.getHorizontalFacing();
     }
 
     public float getWidth() {
-        return this.entity.getWidth();
+        return this.value.getWidth();
     }
 
     public float getHeight() {
-        return this.entity.getHeight();
+        return this.value.getHeight();
     }
 
     public float getEyeHeight() {
-        return this.entity.getEyeHeight();
+        return this.value.getEyeHeight();
     }
 
     public int getTicksExisted() {
-        return this.entity.ticksExisted;
+        return this.value.ticksExisted;
     }
 
-    public void sendMessage(String message) {
-        this.entity.sendMessage(new StringTextComponent(message));
+    public void sendMessage(@ScriptParameterName("message") String message) {
+        this.value.sendMessage(new StringTextComponent(message));
     }
 
-    public void sendTranslatedMessage(String message, Object... args) {
-        this.entity.sendMessage(new TranslationTextComponent(message, args));
+    public void sendTranslatedMessage(@ScriptParameterName("translationKey") String message, @ScriptParameterName("args") Object... args) {
+        this.value.sendMessage(new TranslationTextComponent(message, args));
     }
 
     public boolean isSneaking() {
-        return this.entity.isSneaking();
+        return this.value.isSneaking();
     }
 
     public boolean isAlive() {
-        return this.entity.isAlive();
+        return this.value.isAlive();
     }
 
     public boolean isPlayer() {
-        return this.entity instanceof PlayerEntity;
+        return this.value instanceof PlayerEntity;
     }
 
     public boolean isLiving() {
-        return this.entity instanceof LivingEntity;
+        return this.value instanceof LivingEntity;
     }
 
     public void kill() {
-        this.entity.onKillCommand();
+        this.value.onKillCommand();
     }
 
     public boolean isInvisible() {
-        return this.entity.isInvisible();
+        return this.value.isInvisible();
     }
 
-    public void setInvisible(boolean invisible) {
-        this.entity.setInvisible(invisible);
+    public void setInvisible(@ScriptParameterName("invisible") boolean invisible) {
+        this.value.setInvisible(invisible);
     }
 
     public boolean isOnGround() {
-        return this.entity.onGround;
+        return this.value.onGround;
     }
 
     public float getFallDistance() {
-        return this.entity.fallDistance;
+        return this.value.fallDistance;
     }
 
-    public void setFallDistance(float fallDistance) {
-        this.entity.fallDistance = fallDistance;
+    public void setFallDistance(@ScriptParameterName("fallDistance") float fallDistance) {
+        this.value.fallDistance = fallDistance;
     }
 
     public boolean noClip() {
-        return this.entity.noClip;
+        return this.value.noClip;
     }
 
-    public void setNoClip(boolean noClip) {
-        this.entity.noClip = noClip;
+    public void setNoClip(@ScriptParameterName("noClip") boolean noClip) {
+        this.value.noClip = noClip;
     }
 
     public boolean hasNoGravity() {
-        return this.entity.hasNoGravity();
+        return this.value.hasNoGravity();
     }
 
-    public void setNoGravity(boolean noGravity) {
-        this.entity.setNoGravity(noGravity);
+    public void setNoGravity(@ScriptParameterName("noGravity") boolean noGravity) {
+        this.value.setNoGravity(noGravity);
     }
 
-    public int executeCommand(String command) {
-        if (this.entity.world instanceof ServerWorld) {
-            return ((ServerWorld) this.entity.world).getServer().getCommandManager().handleCommand(this.entity.getCommandSource(), command);
+    public int executeCommand(@ScriptParameterName("command") String command) {
+        if (this.value.world instanceof ServerWorld) {
+            return ((ServerWorld) this.value.world).getServer().getCommandManager().handleCommand(this.value.getCommandSource(), command);
         }
 
         return 0;
     }
 
-    public boolean startRiding(EntityAccessor entity, boolean force) {
-        return this.entity.startRiding(entity.entity, force);
+    public boolean startRiding(@ScriptParameterName("entity") EntityAccessor entity, @ScriptParameterName("force") boolean force) {
+        return this.value.startRiding(entity.value, force);
     }
 
     public void removePassengers() {
-        this.entity.removePassengers();
+        this.value.removePassengers();
     }
 
     public void stopRiding() {
-        entity.stopRiding();
+        this.value.stopRiding();
     }
 
     public EntityAccessor[] getPassengers() {
-        EntityAccessor[] passengers = new EntityAccessor[this.entity.getPassengers().size()];
+        EntityAccessor[] passengers = new EntityAccessor[this.value.getPassengers().size()];
         for (int i = 0; i < passengers.length; i++) {
-            passengers[i] = new EntityAccessor(this.entity.getPassengers().get(i));
+            passengers[i] = new EntityAccessor(this.value.getPassengers().get(i));
         }
         return passengers;
     }
 
-    public boolean isPassenger(EntityAccessor entity) {
-        return this.entity.isPassenger(entity.entity);
+    public boolean isPassenger(@ScriptParameterName("entity") EntityAccessor entity) {
+        return this.value.isPassenger(entity.value);
     }
 
-    public void setOnFire(int seconds) {
-        this.entity.setFire(seconds);
+    public void setOnFire(@ScriptParameterName("seconds") int seconds) {
+        this.value.setFire(seconds);
     }
 
     public boolean isImmuneToFire() {
-        return this.entity.isImmuneToFire();
+        return this.value.isImmuneToFire();
     }
 
     public void extinguish() {
-        this.entity.extinguish();
+        this.value.extinguish();
     }
 
-    public void playSoundAt(String id, float volume, float pitch) {
+    public void playSoundAt(@ScriptParameterName("id") String id, @ScriptParameterName("volume") float volume, @ScriptParameterName("pitch") float pitch) {
         SoundEvent soundEvent = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(id));
 
         if (soundEvent != null) {
-            PlayerHelper.playSoundToAll(this.entity.world, this.getPosX(), this.getPosY() + this.getHeight() / 2D, this.getPosZ(), 50, soundEvent, this.entity.getSoundCategory(), volume, pitch);
+            PlayerHelper.playSoundToAll(this.value.world, this.getPosX(), this.getPosY() + this.getHeight() / 2D, this.getPosZ(), 50, soundEvent, this.value.getSoundCategory(), volume, pitch);
         }
     }
 
-    public void startSizeChange(float size, String sizeChangeType) {
-        this.entity.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
+    public void startSizeChange(@ScriptParameterName("size") float size, @ScriptParameterName("sizeChangeType") String sizeChangeType) {
+        this.value.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
             SizeChangeType type = SizeChangeType.REGISTRY.getValue(new ResourceLocation(sizeChangeType));
             sizeChanging.startSizeChange(type, size);
         });
     }
 
-    public void setSizeDirectly(float size, String sizeChangeType) {
-        this.entity.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
+    public void setSizeDirectly(@ScriptParameterName("size") float size, @ScriptParameterName("sizeChangeType") String sizeChangeType) {
+        this.value.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
             SizeChangeType type = SizeChangeType.REGISTRY.getValue(new ResourceLocation(sizeChangeType));
             sizeChanging.setSizeDirectly(type, size);
         });
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return this.entity.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return this.entity.hashCode();
     }
 
 }

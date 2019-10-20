@@ -34,6 +34,7 @@ import net.threetag.threecore.util.data.ThreeCoreItemTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreRecipeProvider;
 import net.threetag.threecore.util.loot.function.TCLootFunctions;
 import net.threetag.threecore.util.scripts.ScriptEventManager;
+import net.threetag.threecore.util.scripts.accessors.ScriptAccessor;
 import net.threetag.threecore.util.threedata.capability.CapabilityThreeData;
 import net.threetag.threecore.util.threedata.capability.SyncThreeDataMessage;
 import net.threetag.threecore.util.threedata.capability.ThreeDataProvider;
@@ -103,10 +104,11 @@ public class ThreeCore {
     @OnlyIn(Dist.CLIENT)
     public void initGui(GuiScreenEvent.InitGuiEvent e) {
         // abilities.html
-        if (e.getGui() instanceof MainMenuScreen && !htmlGenerated) {
+        if (e.getGui() instanceof MainMenuScreen) {
             DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
                 AbilityType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "abilities.html"));
                 ConditionType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "conditions.html"));
+                ScriptAccessor.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_accessors.html"));
                 ScriptEventManager.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_events.html"));
             });
             htmlGenerated = true;

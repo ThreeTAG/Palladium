@@ -1,22 +1,20 @@
 package net.threetag.threecore.util.scripts.accessors;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.threetag.threecore.abilities.Ability;
+import net.threetag.threecore.abilities.condition.Condition;
 import net.threetag.threecore.util.scripts.ScriptParameterName;
 import net.threetag.threecore.util.threedata.ThreeData;
 
-public class AbilityAccessor extends ScriptAccessor<Ability> {
+public class ConditionAccessor extends ScriptAccessor<Condition> {
 
-    public AbilityAccessor(Ability value) {
+    private final AbilityAccessor abilityAccessor;
+
+    public ConditionAccessor(Condition value) {
         super(value);
+        this.abilityAccessor = new AbilityAccessor(value.ability);
     }
 
     public String getType() {
         return this.value.type.getRegistryName().toString();
-    }
-
-    public String getId() {
-        return this.value.getId();
     }
 
     public Object getData(@ScriptParameterName("key") String key) {
@@ -32,16 +30,15 @@ public class AbilityAccessor extends ScriptAccessor<Ability> {
         return true;
     }
 
-    public boolean isUnlocked() {
-        return this.value.getConditionManager().isUnlocked();
+    public boolean isEnabling() {
+        return this.value.getDataManager().get(Condition.ENABLING);
     }
 
-    public boolean isEnabled() {
-        return this.value.getConditionManager().isEnabled();
+    public boolean isInverted() {
+        return this.value.getDataManager().get(Condition.INVERT);
     }
 
-    public CompoundNBT getAdditionalNbtData() {
-        return this.value.getAdditionalData();
+    public AbilityAccessor getAbility() {
+        return abilityAccessor;
     }
-
 }
