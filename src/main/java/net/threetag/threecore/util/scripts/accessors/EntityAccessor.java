@@ -15,6 +15,10 @@ import net.threetag.threecore.sizechanging.SizeChangeType;
 import net.threetag.threecore.sizechanging.capability.CapabilitySizeChanging;
 import net.threetag.threecore.util.player.PlayerHelper;
 import net.threetag.threecore.util.scripts.ScriptParameterName;
+import net.threetag.threecore.util.threedata.IntegerThreeData;
+import net.threetag.threecore.util.threedata.ThreeData;
+import net.threetag.threecore.util.threedata.capability.CapabilityThreeData;
+import net.threetag.threecore.util.threedata.capability.IThreeData;
 
 import java.util.UUID;
 
@@ -249,6 +253,34 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
             SizeChangeType type = SizeChangeType.REGISTRY.getValue(new ResourceLocation(sizeChangeType));
             sizeChanging.setSizeDirectly(type, size);
         });
+    }
+
+    public Object getThreeData(@ScriptParameterName("key") String key) {
+        IThreeData threeData = this.value.getCapability(CapabilityThreeData.THREE_DATA).orElse(null);
+        if (threeData == null)
+            return null;
+        ThreeData data = threeData.getDataByName(key);
+        return data == null ? null : threeData.getData(data);
+    }
+
+    public boolean setThreeData(@ScriptParameterName("key") String key, @ScriptParameterName("value") Object value) {
+        IThreeData threeData = this.value.getCapability(CapabilityThreeData.THREE_DATA).orElse(null);
+        if (threeData == null)
+            return false;
+        ThreeData data = threeData.getDataByName(key);
+        if (data == null)
+            return false;
+
+        // ugly fix since JavaScript numbers are apparently always doubles?
+        if(data instanceof IntegerThreeData) {
+            if(value instanceof Double)
+                value = ((Double) value).intValue();
+            else if(value instanceof Float)
+                value = ((Float) value).intValue();
+        }
+
+        threeData.setData(data, value);
+        return true;
     }
 
 }

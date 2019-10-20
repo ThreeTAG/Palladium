@@ -78,6 +78,11 @@ public class CapabilityThreeData implements IThreeData, INBTSerializable<Compoun
     }
 
     @Override
+    public ThreeData<?> getDataByName(String name) {
+        return this.dataManager.getDataByName(name);
+    }
+
+    @Override
     public CompoundNBT serializeNBT() {
         return this.dataManager.serializeNBT();
     }

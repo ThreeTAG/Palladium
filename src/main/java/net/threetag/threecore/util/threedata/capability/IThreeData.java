@@ -11,4 +11,6 @@ public interface IThreeData extends IThreeDataHolder {
 
     <T> T getData(ThreeData<T> data);
 
+    ThreeData<?> getDataByName(String name);
+
 }

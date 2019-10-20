@@ -11,6 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.scripts.events.*;
+import net.threetag.threecore.util.threedata.capability.RegisterThreeDataEvent;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -29,6 +30,7 @@ public class ScriptEventManager {
     static {
         registerEvent("entityJoinWorld", EntityJoinWorldScriptEvent.class);
         registerEvent("entityStruckByLightning", EntityStruckByLightningScriptEvent.class);
+        registerEvent("livingUpdate", LivingUpdateScriptEvent.class);
         registerEvent("livingJump", LivingJumpScriptEvent.class);
         registerEvent("livingAttack", LivingAttackScriptEvent.class);
         registerEvent("livingHurt", LivingHurtScriptEvent.class);
@@ -41,6 +43,7 @@ public class ScriptEventManager {
         registerEvent("abilityDisabled", AbilityDisabledScriptEvent.class);
         registerEvent("abilityDataUpdated", AbilityDataUpdatedScriptEvent.class);
         registerEvent("conditionDataUpdated", ConditionDataUpdatedScriptEvent.class);
+        registerEvent("registerThreeData", RegisterThreeDataScriptEvent.class);
     }
 
     public static void reset() {
@@ -91,6 +94,11 @@ public class ScriptEventManager {
     public static class EventHandler {
 
         @SubscribeEvent
+        public static void onLivingUpdate(LivingEvent.LivingUpdateEvent e) {
+            new LivingUpdateScriptEvent(e.getEntityLiving()).fire(e);
+        }
+
+        @SubscribeEvent
         public static void onLivingJump(LivingEvent.LivingJumpEvent e) {
             new LivingJumpScriptEvent(e.getEntityLiving()).fire(e);
         }
@@ -128,6 +136,11 @@ public class ScriptEventManager {
         @SubscribeEvent
         public static void onEntityStruckByLightning(EntityStruckByLightningEvent e) {
             new EntityStruckByLightningScriptEvent(e.getEntity(), e.getLightning()).fire(e);
+        }
+
+        @SubscribeEvent
+        public static void onRegisterThreeData(RegisterThreeDataEvent e) {
+            new RegisterThreeDataScriptEvent(e.getEntity(), e.getThreeData()).fire(e);
         }
 
     }

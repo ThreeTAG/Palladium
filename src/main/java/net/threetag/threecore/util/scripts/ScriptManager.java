@@ -2,7 +2,6 @@ package net.threetag.threecore.util.scripts;
 
 import com.google.common.collect.Maps;
 import net.minecraft.client.resources.ReloadListener;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
@@ -11,14 +10,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.util.scripts.accessors.LivingEntityAccessor;
-import net.threetag.threecore.util.scripts.accessors.ScriptAccessor;
+import net.threetag.threecore.util.scripts.bindings.ThreeDataBuilder;
 import org.apache.commons.io.IOUtils;
 
 import javax.script.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID)
 public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>> {
@@ -27,6 +26,7 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
     public static ScriptEngineManager manager = new ScriptEngineManager();
     private static final int JSON_EXTENSION_LENGTH = ".json".length();
     private final String folder;
+    private static final Map<String, Supplier<?>> bindings = Maps.newHashMap();
 
     private static final String[] BLOCKED_FUNCTIONS = {
             "load",
@@ -34,6 +34,15 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
             "exit",
             "quit"
     };
+
+    public static void registerBinding(String name, Supplier<?> supplier) {
+        bindings.put(name, supplier);
+    }
+
+    static {
+        registerBinding("eventManager", () -> new ScriptEventManager.EventManagerAccessor());
+        registerBinding("threeDataBuilder", () -> new ThreeDataBuilder());
+    }
 
     public ScriptManager() {
         INSTANCE = this;
@@ -90,7 +99,7 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
                     context.removeAttribute(s, context.getAttributesScope(s));
 
                 engine.put("namespace", entry.getKey().toString());
-                engine.put("eventManager", new ScriptEventManager.EventManagerAccessor());
+                bindings.forEach((s, b) -> engine.put(s, b.get()));
                 engine.eval(entry.getValue());
                 ThreeCore.LOGGER.info("Executed script file {}!", entry.getKey());
             } catch (ScriptException e) {
