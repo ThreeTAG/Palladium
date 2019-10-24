@@ -33,6 +33,7 @@ import net.threetag.threecore.util.data.ThreeCoreBlockTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreItemTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreRecipeProvider;
 import net.threetag.threecore.util.loot.function.TCLootFunctions;
+import net.threetag.threecore.util.modellayer.ModelLayerManager;
 import net.threetag.threecore.util.scripts.ScriptEventManager;
 import net.threetag.threecore.util.scripts.accessors.ScriptAccessor;
 import net.threetag.threecore.util.threedata.capability.CapabilityThreeData;

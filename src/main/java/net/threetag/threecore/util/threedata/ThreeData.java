@@ -47,6 +47,10 @@ public abstract class ThreeData<T> {
         return this;
     }
 
+    public ThreeData<T> enableSetting(String desc) {
+        return this.enableSetting(this.key, desc);
+    }
+
     public ThreeData<T> setSyncType(EnumSync syncType) {
         this.syncType = syncType;
         return this;

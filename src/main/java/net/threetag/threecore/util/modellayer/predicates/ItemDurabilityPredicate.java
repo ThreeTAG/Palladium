@@ -7,7 +7,7 @@ import net.threetag.threecore.util.modellayer.ModelLayerManager;
 
 import javax.annotation.Nullable;
 
-public class ItemDurabilityPredicate implements ModelLayerManager.IArmorLayerPredicate {
+public class ItemDurabilityPredicate implements ModelLayerManager.IModelLayerPredicate {
 
     public final float min;
     public final float max;

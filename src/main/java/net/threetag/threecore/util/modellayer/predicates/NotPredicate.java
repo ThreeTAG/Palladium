@@ -6,11 +6,11 @@ import net.threetag.threecore.util.modellayer.ModelLayerManager;
 
 import javax.annotation.Nullable;
 
-public class NotPredicate implements ModelLayerManager.IArmorLayerPredicate {
+public class NotPredicate implements ModelLayerManager.IModelLayerPredicate {
 
-    public final ModelLayerManager.IArmorLayerPredicate predicate;
+    public final ModelLayerManager.IModelLayerPredicate predicate;
 
-    public NotPredicate(ModelLayerManager.IArmorLayerPredicate predicate) {
+    public NotPredicate(ModelLayerManager.IModelLayerPredicate predicate) {
         this.predicate = predicate;
     }
 

@@ -14,6 +14,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ThreeCore;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID, value = Dist.CLIENT)
@@ -50,7 +52,19 @@ public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>,
                 if (layer.isActive(stack, entity)) {
                     GlStateManager.pushMatrix();
                     GlStateManager.color4f(1F, 1F, 1F, 1F);
-                    layer.render(stack, entity, this.entityRenderer, slot, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+                    layer.render(new IModelLayerContext() {
+                        @Nullable
+                        @Override
+                        public ItemStack getAsItem() {
+                            return stack;
+                        }
+
+                        @Nonnull
+                        @Override
+                        public LivingEntity getAsEntity() {
+                            return entity;
+                        }
+                    }, this.entityRenderer, slot, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
                     GlStateManager.popMatrix();
                 }
             }

@@ -11,33 +11,65 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.LazyLoadBase;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.NonNullFunction;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.client.model.ModelRegistry;
 import net.threetag.threecore.util.modellayer.predicates.ItemDurabilityPredicate;
 import net.threetag.threecore.util.modellayer.predicates.NotPredicate;
+import net.threetag.threecore.util.modellayer.texture.DefaultModelTexture;
+import net.threetag.threecore.util.modellayer.texture.ModelLayerTexture;
+import net.threetag.threecore.util.modellayer.texture.transformer.AlphaMaskTextureTransformer;
+import net.threetag.threecore.util.modellayer.texture.transformer.ITextureTransformer;
+import net.threetag.threecore.util.modellayer.texture.variable.ITextureVariable;
+import net.threetag.threecore.util.modellayer.texture.variable.IntegerNbtTextureVariable;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 public class ModelLayerManager {
 
-    private static final Map<ResourceLocation, Function<JsonObject, IArmorLayerPredicate>> PREDICATES = Maps.newHashMap();
-    private static final Map<ResourceLocation, Function<JsonObject, ModelLayer>> MODEL_LAYERS = Maps.newHashMap();
+    private static final Map<ResourceLocation, NonNullFunction<JsonObject, IModelLayerPredicate>> PREDICATES = Maps.newHashMap();
+    private static final Map<ResourceLocation, NonNullFunction<JsonObject, ModelLayer>> MODEL_LAYERS = Maps.newHashMap();
+    private static final Map<ResourceLocation, NonNullFunction<JsonObject, ModelLayerTexture>> MODEL_LAYER_TEXTURES = Maps.newHashMap();
+    private static final Map<ResourceLocation, NonNullFunction<JsonObject, ITextureVariable>> TEXTURE_VARIABLES = Maps.newHashMap();
+    private static final Map<ResourceLocation, NonNullFunction<JsonObject, ITextureTransformer>> TEXTURE_TRANSFORMERS = Maps.newHashMap();
 
     static {
         // Default Layer
-        registerArmorLayer(new ResourceLocation(ThreeCore.MODID, "default"), j -> new ModelModelLayer(new LazyLoadBase<BipedModel>(() -> {
+        registerModelLayer(new ResourceLocation(ThreeCore.MODID, "default"), j -> new ModelLayer(new LazyLoadBase<BipedModel>(() -> {
             Model model = ModelRegistry.getModel(JSONUtils.getString(j, "model"));
             return model instanceof BipedModel ? (BipedModel) model : null;
-        }), ModelLayerTexture.fromJson(j.get("texture"))));
+        }), ModelLayerTexture.parse(j.get("texture"))));
 
-        // Glow Layer
-        registerArmorLayer(new ResourceLocation(ThreeCore.MODID, "glow"), j -> new GlowModelLayer(new LazyLoadBase<BipedModel>(() -> {
-            Model model = ModelRegistry.getModel(JSONUtils.getString(j, "model"));
-            return model instanceof BipedModel ? (BipedModel) model : null;
-        }), ModelLayerTexture.fromJson(j.get("texture"))));
+        // ----------------------------------------------------------------------------------------------------------------------------------------------
+
+        // Default
+        registerModelTexture(new ResourceLocation(ThreeCore.MODID, "default"), j -> {
+            DefaultModelTexture texture = new DefaultModelTexture(JSONUtils.getString(j, "base"), JSONUtils.getString(j, "output"));
+            if (JSONUtils.hasField(j, "variables")) {
+                JsonObject variables = JSONUtils.getJsonObject(j, "variables");
+                variables.entrySet().forEach(e -> {
+                    ITextureVariable textureVariable = parseTextureVariable(e.getValue().getAsJsonObject());
+                    if (textureVariable != null) {
+                        texture.addVariable(e.getKey(), textureVariable);
+                    } else {
+                        ThreeCore.LOGGER.warn("Texture transformer type '" + JSONUtils.getString(e.getValue().getAsJsonObject(), "type") + "' does not exist!");
+                    }
+                });
+            }
+            return texture;
+        });
+
+        // ----------------------------------------------------------------------------------------------------------------------------------------------
+
+        // Alpha Mask
+        registerTextureTransformer(new ResourceLocation(ThreeCore.MODID, "alpha_mask"), j -> new AlphaMaskTextureTransformer(JSONUtils.getString(j, "mask")));
+
+        // ----------------------------------------------------------------------------------------------------------------------------------------------
+
+        // Integer NBT
+        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), j -> new IntegerNbtTextureVariable(JSONUtils.getString(j, "nbt_tag")));
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -45,40 +77,67 @@ public class ModelLayerManager {
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "not"), j -> new NotPredicate(parsePredicate(JSONUtils.getJsonObject(j, "predicate"))));
 
         // Sneaking
-        registerPredicate(new ResourceLocation(ThreeCore.MODID, "sneaking"), j -> new IArmorLayerPredicate() {
-            @Override
-            public boolean test(ItemStack stack, @Nullable LivingEntity entity) {
-                return entity != null && entity.isSneaking();
-            }
-        });
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "sneaking"), j -> (stack, entity) -> entity != null && entity.isSneaking());
 
         // Damage
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "durability"), j -> new ItemDurabilityPredicate(JSONUtils.getFloat(j, "min", 0F), JSONUtils.getFloat(j, "max", 1F)));
     }
 
-    public static void registerPredicate(ResourceLocation id, Function<JsonObject, IArmorLayerPredicate> function) {
+    public static void registerPredicate(ResourceLocation id, NonNullFunction<JsonObject, IModelLayerPredicate> function) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(function);
         PREDICATES.put(id, function);
     }
 
-    public static void registerArmorLayer(ResourceLocation id, Function<JsonObject, ModelLayer> function) {
+    public static void registerModelLayer(ResourceLocation id, NonNullFunction<JsonObject, ModelLayer> function) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(function);
         MODEL_LAYERS.put(id, function);
     }
 
-    public static IArmorLayerPredicate parsePredicate(JsonObject json) {
-        Function<JsonObject, IArmorLayerPredicate> function = PREDICATES.get(new ResourceLocation(JSONUtils.getString(json, "type")));
+    public static void registerModelTexture(ResourceLocation id, NonNullFunction<JsonObject, ModelLayerTexture> function) {
+        Preconditions.checkNotNull(id);
+        Preconditions.checkNotNull(function);
+        MODEL_LAYER_TEXTURES.put(id, function);
+    }
 
-        if (function == null)
-            return null;
+    public static void registerTextureVariable(ResourceLocation id, NonNullFunction<JsonObject, ITextureVariable> textureVariable) {
+        Preconditions.checkNotNull(id);
+        Preconditions.checkNotNull(textureVariable);
+        TEXTURE_VARIABLES.put(id, textureVariable);
+    }
 
-        return function.apply(json);
+    public static void registerTextureTransformer(ResourceLocation id, NonNullFunction<JsonObject, ITextureTransformer> function) {
+        Preconditions.checkNotNull(id);
+        Preconditions.checkNotNull(function);
+        TEXTURE_TRANSFORMERS.put(id, function);
+    }
+
+    public static ModelLayerTexture parseTexture(JsonObject jsonObject) {
+        ResourceLocation id = new ResourceLocation(JSONUtils.getString(jsonObject, "type", ThreeCore.MODID + ":default"));
+        NonNullFunction<JsonObject, ModelLayerTexture> function = MODEL_LAYER_TEXTURES.get(id);
+        return function != null ? function.apply(jsonObject) : null;
+    }
+
+    public static ITextureTransformer parseTextureTransformer(JsonObject jsonObject) {
+        ResourceLocation id = new ResourceLocation(JSONUtils.getString(jsonObject, "type"));
+        NonNullFunction<JsonObject, ITextureTransformer> function = TEXTURE_TRANSFORMERS.get(id);
+        return function != null ? function.apply(jsonObject) : null;
+    }
+
+    public static ITextureVariable parseTextureVariable(JsonObject jsonObject) {
+        ResourceLocation id = new ResourceLocation(JSONUtils.getString(jsonObject, "type"));
+        NonNullFunction<JsonObject, ITextureVariable> function = TEXTURE_VARIABLES.get(id);
+        return function != null ? function.apply(jsonObject) : null;
+    }
+
+    public static IModelLayerPredicate parsePredicate(JsonObject json) {
+        NonNullFunction<JsonObject, IModelLayerPredicate> function = PREDICATES.get(new ResourceLocation(JSONUtils.getString(json, "type", ThreeCore.MODID + ":default")));
+        return function != null ? function.apply(json) : null;
     }
 
     public static ModelLayer parseLayer(JsonObject json) {
-        Function<JsonObject, ModelLayer> function = MODEL_LAYERS.get(new ResourceLocation(JSONUtils.getString(json, "type")));
+        NonNullFunction<JsonObject, ModelLayer> function = MODEL_LAYERS.get(new ResourceLocation(JSONUtils.getString(json, "type")));
 
         if (function == null)
             return null;
@@ -87,7 +146,7 @@ public class ModelLayerManager {
         if (JSONUtils.hasField(json, "predicates")) {
             JsonArray predicateArray = JSONUtils.getJsonArray(json, "predicates");
             for (int i = 0; i < predicateArray.size(); i++) {
-                IArmorLayerPredicate predicate = parsePredicate(predicateArray.get(i).getAsJsonObject());
+                IModelLayerPredicate predicate = parsePredicate(predicateArray.get(i).getAsJsonObject());
                 if (predicate != null)
                     layer.addPredicate(predicate);
             }
@@ -95,15 +154,15 @@ public class ModelLayerManager {
         return layer;
     }
 
-    public static boolean arePredicatesFulFilled(List<IArmorLayerPredicate> predicates, ItemStack stack, LivingEntity entity) {
-        for (IArmorLayerPredicate predicate : predicates) {
+    public static boolean arePredicatesFulFilled(List<IModelLayerPredicate> predicates, ItemStack stack, LivingEntity entity) {
+        for (IModelLayerPredicate predicate : predicates) {
             if (!predicate.test(stack, entity))
                 return false;
         }
         return true;
     }
 
-    public interface IArmorLayerPredicate {
+    public interface IModelLayerPredicate {
 
         boolean test(ItemStack stack, @Nullable LivingEntity entity);
 

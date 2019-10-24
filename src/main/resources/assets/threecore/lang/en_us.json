@@ -156,6 +156,7 @@
 	"ability.threecore.water_breathing": "Water Breathing",
 	"ability.threecore.size_change": "Size Change",
 	"ability.threecore.custom_hotbar": "Custom Hotbar",
+	"ability.threecore.opening_nbt_timer": "Open/Close",
 	
 	"ability.condition.threecore.action": "Key must be pressed once to active this ability",
 	"ability.condition.threecore.action.not": "Key must be pressed once to deactivate this ability",
