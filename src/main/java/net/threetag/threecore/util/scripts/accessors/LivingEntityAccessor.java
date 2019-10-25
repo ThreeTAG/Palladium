@@ -1,7 +1,10 @@
 package net.threetag.threecore.util.scripts.accessors;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.abilities.IAbilityContainer;
@@ -56,10 +59,6 @@ public class LivingEntityAccessor extends EntityAccessor {
         return this.livingEntity.isElytraFlying();
     }
 
-    public int getIdleTime() {
-        return this.getIdleTime();
-    }
-
     public float getAbsorptionAmount() {
         return this.livingEntity.getAbsorptionAmount();
     }
@@ -70,6 +69,26 @@ public class LivingEntityAccessor extends EntityAccessor {
 
     public void setMovementSpeed(@ScriptParameterName("speed") float speed) {
         this.livingEntity.setAIMoveSpeed(speed);
+    }
+
+    public ItemStackAccessor getItemInSlot(@ScriptParameterName("slot") String slot) {
+        try {
+            EquipmentSlotType slotType = EquipmentSlotType.fromString(slot);
+            return new ItemStackAccessor(this.livingEntity.getItemStackFromSlot(slotType));
+        } catch (Exception e) {
+            return ItemStackAccessor.EMPTY;
+        }
+    }
+
+    public void setItemInSlot(@ScriptParameterName("slot") String slot, @ScriptParameterName("item") Object item) {
+        try {
+            EquipmentSlotType slotType = EquipmentSlotType.fromString(slot);
+            ItemStackAccessor stack = item instanceof ItemStackAccessor ? (ItemStackAccessor) item :
+                    new ItemStackAccessor(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(item.toString()))));
+            this.livingEntity.setItemStackToSlot(slotType, stack.value);
+        } catch (Exception e) {
+
+        }
     }
 
     public AbilityAccessor[] getAbilities() {

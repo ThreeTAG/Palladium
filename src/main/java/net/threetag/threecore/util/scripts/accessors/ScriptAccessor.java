@@ -24,7 +24,7 @@ import java.util.List;
 
 public class ScriptAccessor<T> {
 
-    protected final T value;
+    public final T value;
 
     protected ScriptAccessor(T value) {
         this.value = value;
