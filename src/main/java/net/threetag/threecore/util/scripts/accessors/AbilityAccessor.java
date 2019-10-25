@@ -19,6 +19,10 @@ public class AbilityAccessor extends ScriptAccessor<Ability> {
         return this.value.getId();
     }
 
+    public String getContainerId() {
+        return this.value.container.getId().toString();
+    }
+
     public Object getData(@ScriptParameterName("key") String key) {
         ThreeData data = this.value.getDataManager().getDataByName(key);
         return data == null ? null : this.value.getDataManager().get(data);

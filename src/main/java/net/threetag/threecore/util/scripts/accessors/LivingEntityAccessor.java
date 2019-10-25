@@ -100,4 +100,8 @@ public class LivingEntityAccessor extends EntityAccessor {
 
         return array;
     }
+
+    public AbilityAccessor getAbilityById(@ScriptParameterName("abilityId") String id) {
+        return (AbilityAccessor) AbilityAccessor.makeAccessor(AbilityHelper.getAbilityById(this.livingEntity, id, null));
+    }
 }
