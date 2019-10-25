@@ -178,6 +178,8 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
         for (int i = 0; i < this.inputSlots.getSlots(); i++) {
             this.inputSlots.getStackInSlot(i).shrink(1);
         }
+
+        this.updateRecipe(this.recipeWrapper);
     }
 
     @Override

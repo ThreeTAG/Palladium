@@ -155,6 +155,7 @@ public class HydraulicPressTileEntity extends ProgressableMachineTileEntity<Pres
         }
 
         this.inputSlot.getStackInSlot(1).shrink(1);
+        this.updateRecipe(this.recipeWrapper);
     }
 
     @Override

@@ -40,8 +40,8 @@ public abstract class ProgressableMachineTileEntity<T extends IEnergyRecipe<IInv
             if (recipe != null && this.energyStorage.extractEnergy(1, true) == 1 && canWork(recipe)) {
                 this.maxProgress = recipe.getRequiredEnergy();
                 if (progress >= maxProgress) {
-                    produceOutput(recipe);
                     this.addXP();
+                    produceOutput(recipe);
                     progress = 0;
                     dirty = true;
                 } else {
@@ -78,7 +78,8 @@ public abstract class ProgressableMachineTileEntity<T extends IEnergyRecipe<IInv
     public abstract void produceOutput(T recipe);
 
     public void addXP() {
-        this.xpMap.compute(recipe.getId(), (resourceLocation, integer) -> 1 + (integer == null ? 0 : integer));
+        if(this.xpMap != null)
+            this.xpMap.compute(recipe.getId(), (resourceLocation, integer) -> 1 + (integer == null ? 0 : integer));
     }
 
     public void updateRecipe(T recipe) {

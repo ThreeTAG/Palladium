@@ -174,6 +174,7 @@ public class GrinderTileEntity extends ProgressableMachineTileEntity<GrinderReci
         }
 
         this.inputSlot.getStackInSlot(0).shrink(1);
+        this.updateRecipe(this.recipeWrapper);
     }
 
     @Override
