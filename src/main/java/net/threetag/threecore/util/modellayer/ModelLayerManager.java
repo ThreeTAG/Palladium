@@ -20,6 +20,7 @@ import net.threetag.threecore.util.modellayer.texture.DefaultModelTexture;
 import net.threetag.threecore.util.modellayer.texture.ModelLayerTexture;
 import net.threetag.threecore.util.modellayer.texture.transformer.AlphaMaskTextureTransformer;
 import net.threetag.threecore.util.modellayer.texture.transformer.ITextureTransformer;
+import net.threetag.threecore.util.modellayer.texture.transformer.OverlayTextureTransformer;
 import net.threetag.threecore.util.modellayer.texture.variable.ITextureVariable;
 import net.threetag.threecore.util.modellayer.texture.variable.IntegerNbtTextureVariable;
 
@@ -65,6 +66,9 @@ public class ModelLayerManager {
 
         // Alpha Mask
         registerTextureTransformer(new ResourceLocation(ThreeCore.MODID, "alpha_mask"), j -> new AlphaMaskTextureTransformer(JSONUtils.getString(j, "mask")));
+
+        // Overlay
+        registerTextureTransformer(new ResourceLocation(ThreeCore.MODID, "overlay"), j -> new OverlayTextureTransformer(JSONUtils.getString(j, "overlay")));
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
 

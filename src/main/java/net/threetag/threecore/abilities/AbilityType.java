@@ -67,7 +67,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     @OnlyIn(Dist.CLIENT)
     public static void generateHtmlFile(File file) {
         try {
-            if(!file.getParentFile().exists())
+            if (!file.getParentFile().exists())
                 file.getParentFile().mkdirs();
 
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));

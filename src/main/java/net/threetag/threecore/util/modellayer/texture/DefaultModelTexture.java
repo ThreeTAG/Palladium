@@ -26,12 +26,11 @@ public class DefaultModelTexture extends ModelLayerTexture {
 
     @Override
     public ResourceLocation getTexture(IModelLayerContext context) {
-        String s = replaceVariables(base, context, this.textureVariableMap);
-
-        ResourceLocation texture = new ResourceLocation(s);
         ResourceLocation output = new ResourceLocation(replaceVariables(this.output, context, this.textureVariableMap));
 
         if (Minecraft.getInstance().getTextureManager().getTexture(output) == null) {
+            String s = replaceVariables(base, context, this.textureVariableMap);
+            ResourceLocation texture = new ResourceLocation(s);
             Minecraft.getInstance().getTextureManager().loadTexture(output, new TransformedTexture(texture, this.transformers, transformerPath -> replaceVariables(transformerPath, context, this.textureVariableMap)));
         }
 
