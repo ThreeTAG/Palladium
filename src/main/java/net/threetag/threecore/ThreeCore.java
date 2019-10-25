@@ -63,7 +63,7 @@ public class ThreeCore {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::gatherData);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         SupporterHandler.load();
-        SupporterHandler.enableSupporterCheck();
+//        SupporterHandler.enableSupporterCheck();
 
         // Config
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThreeCoreCommonConfig.generateConfig());
