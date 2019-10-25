@@ -2,12 +2,14 @@ package net.threetag.threecore.util.modellayer;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.LazyLoadBase;
+import net.threetag.threecore.util.client.RenderUtil;
 import net.threetag.threecore.util.modellayer.texture.ModelLayerTexture;
 
 import java.util.List;
@@ -17,11 +19,13 @@ public class ModelLayer {
 
     public final LazyLoadBase<BipedModel> model;
     public final ModelLayerTexture texture;
+    public final boolean glow;
     public final List<ModelLayerManager.IModelLayerPredicate> predicateList = Lists.newLinkedList();
 
-    public ModelLayer(LazyLoadBase<BipedModel> model, ModelLayerTexture texture) {
+    public ModelLayer(LazyLoadBase<BipedModel> model, ModelLayerTexture texture, boolean glow) {
         this.model = Objects.requireNonNull(model);
         this.texture = Objects.requireNonNull(texture);
+        this.glow = glow;
     }
 
     public void render(IModelLayerContext context, IEntityRenderer entityRenderer, EquipmentSlotType slot, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
@@ -31,8 +35,16 @@ public class ModelLayer {
             entityRenderer.getEntityModel().setModelAttributes(model);
             model.isSneak = context.getAsEntity().isSneaking();
             this.setModelSlotVisible(model, slot);
+            if (this.glow) {
+                RenderHelper.disableStandardItemLighting();
+                RenderUtil.setLightmapTextureCoords(240, 240);
+            }
             model.setLivingAnimations(context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
             model.render(context.getAsEntity(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            if (this.glow) {
+                RenderUtil.restoreLightmapTextureCoords();
+                RenderHelper.enableStandardItemLighting();
+            }
         }
     }
 

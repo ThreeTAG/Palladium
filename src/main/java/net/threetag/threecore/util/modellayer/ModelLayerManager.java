@@ -41,7 +41,7 @@ public class ModelLayerManager {
         registerModelLayer(new ResourceLocation(ThreeCore.MODID, "default"), j -> new ModelLayer(new LazyLoadBase<BipedModel>(() -> {
             Model model = ModelRegistry.getModel(JSONUtils.getString(j, "model"));
             return model instanceof BipedModel ? (BipedModel) model : null;
-        }), ModelLayerTexture.parse(j.get("texture"))));
+        }), ModelLayerTexture.parse(j.get("texture")), JSONUtils.getBoolean(j, "glow", false)));
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
 
