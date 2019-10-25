@@ -10,6 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.util.scripts.bindings.BlockStateBuilder;
 import net.threetag.threecore.util.scripts.bindings.ThreeDataBuilder;
 import org.apache.commons.io.IOUtils;
 
@@ -40,8 +41,9 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
     }
 
     static {
-        registerBinding("eventManager", () -> new ScriptEventManager.EventManagerAccessor());
-        registerBinding("threeDataBuilder", () -> new ThreeDataBuilder());
+        registerBinding("eventManager", ScriptEventManager.EventManagerAccessor::new);
+        registerBinding("threeDataBuilder", ThreeDataBuilder::new);
+        registerBinding("blockStateBuilder", BlockStateBuilder::new);
     }
 
     public ScriptManager() {
