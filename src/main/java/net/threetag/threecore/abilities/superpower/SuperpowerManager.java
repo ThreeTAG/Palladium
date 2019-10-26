@@ -87,4 +87,14 @@ public class SuperpowerManager extends JsonReloadListener {
             e.printStackTrace();
         }
     }
+
+    public static void removeSuperpower(LivingEntity entity) {
+        try {
+            entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
+                abilityContainer.clearAbilities(entity, ability -> ability.getAdditionalData().getBoolean("IsFromSuperpower"));
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
