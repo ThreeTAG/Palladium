@@ -10,6 +10,6 @@ import java.util.List;
 public interface IModelLayerProvider {
 
     @OnlyIn(Dist.CLIENT)
-    List<ModelLayer> getArmorLayers(ItemStack stack, LivingEntity entity);
+    List<ModelLayer> getModelLayers(IModelLayerContext context);
 
 }

@@ -5,9 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.LazyLoadBase;
 import net.threetag.threecore.util.client.RenderUtil;
 import net.threetag.threecore.util.modellayer.texture.ModelLayerTexture;
@@ -28,13 +26,14 @@ public class ModelLayer {
         this.glow = glow;
     }
 
-    public void render(IModelLayerContext context, IEntityRenderer entityRenderer, EquipmentSlotType slot, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(IModelLayerContext context, IEntityRenderer entityRenderer, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         Minecraft.getInstance().getTextureManager().bindTexture(this.getTexture(context).getTexture(context));
         BipedModel model = getModel(context);
         if (model != null) {
             entityRenderer.getEntityModel().setModelAttributes(model);
             model.isSneak = context.getAsEntity().isSneaking();
-            this.setModelSlotVisible(model, slot);
+            if (context.getSlot() != null)
+                this.setModelSlotVisible(model, context.getSlot());
             if (this.glow) {
                 RenderHelper.disableStandardItemLighting();
                 RenderUtil.setLightmapTextureCoords(240, 240);
@@ -56,8 +55,8 @@ public class ModelLayer {
         return this.texture;
     }
 
-    public boolean isActive(ItemStack stack, LivingEntity entity) {
-        return ModelLayerManager.arePredicatesFulFilled(this.predicateList, stack, entity);
+    public boolean isActive(IModelLayerContext context) {
+        return ModelLayerManager.arePredicatesFulFilled(this.predicateList, context);
     }
 
     public ModelLayer addPredicate(ModelLayerManager.IModelLayerPredicate predicate) {
@@ -88,4 +87,5 @@ public class ModelLayer {
         }
 
     }
+
 }

@@ -4,7 +4,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.threetag.threecore.abilities.capability.ItemAbilityContainer;
 import net.threetag.threecore.util.icon.ItemIcon;
 import net.threetag.threecore.util.threedata.*;
 
@@ -36,8 +35,8 @@ public class OpeningNbtTimerAbility extends Ability {
     public void tick(LivingEntity entity) {
         super.tick(entity);
 
-        if (!entity.world.isRemote && this.container instanceof ItemAbilityContainer) {
-            CompoundNBT nbt = ((ItemAbilityContainer) this.container).stack.getOrCreateTag();
+        if (!entity.world.isRemote && this.container.getNbtTag(entity) != null) {
+            CompoundNBT nbt = this.container.getNbtTag(entity);
             String tag = this.dataManager.get(NBT_TAG);
             int timer = nbt.getInt(tag);
             int maxTimer = this.dataManager.get(MAX);

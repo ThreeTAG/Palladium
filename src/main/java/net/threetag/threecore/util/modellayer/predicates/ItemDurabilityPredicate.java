@@ -1,11 +1,9 @@
 package net.threetag.threecore.util.modellayer.predicates;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import net.threetag.threecore.util.modellayer.IModelLayerContext;
 import net.threetag.threecore.util.modellayer.ModelLayerManager;
-
-import javax.annotation.Nullable;
 
 public class ItemDurabilityPredicate implements ModelLayerManager.IModelLayerPredicate {
 
@@ -21,7 +19,10 @@ public class ItemDurabilityPredicate implements ModelLayerManager.IModelLayerPre
     }
 
     @Override
-    public boolean test(ItemStack stack, @Nullable LivingEntity entity) {
+    public boolean test(IModelLayerContext context) {
+        ItemStack stack = context.getAsItem();
+        if (stack == null || stack.isEmpty())
+            return false;
         float dmg = 1F - (float) stack.getDamage() / (float) stack.getMaxDamage();
         return dmg >= min && dmg <= max;
     }

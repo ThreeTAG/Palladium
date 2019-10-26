@@ -3,6 +3,7 @@ package net.threetag.threecore.util.modellayer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.Model;
@@ -81,7 +82,7 @@ public class ModelLayerManager {
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "not"), j -> new NotPredicate(parsePredicate(JSONUtils.getJsonObject(j, "predicate"))));
 
         // Sneaking
-        registerPredicate(new ResourceLocation(ThreeCore.MODID, "sneaking"), j -> (stack, entity) -> entity != null && entity.isSneaking());
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "sneaking"), j -> context -> context.getAsEntity().isSneaking());
 
         // Damage
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "durability"), j -> new ItemDurabilityPredicate(JSONUtils.getFloat(j, "min", 0F), JSONUtils.getFloat(j, "max", 1F)));
@@ -140,7 +141,12 @@ public class ModelLayerManager {
         return function != null ? function.apply(json) : null;
     }
 
-    public static ModelLayer parseLayer(JsonObject json) {
+    public static ModelLayer parseLayer(JsonElement jsonElement) {
+        if (jsonElement.isJsonPrimitive()) {
+            return ModelLayerLoader.getModelLayer(new ResourceLocation(jsonElement.getAsString()));
+        }
+
+        JsonObject json = jsonElement.getAsJsonObject();
         NonNullFunction<JsonObject, ModelLayer> function = MODEL_LAYERS.get(new ResourceLocation(JSONUtils.getString(json, "type")));
 
         if (function == null)
@@ -158,9 +164,9 @@ public class ModelLayerManager {
         return layer;
     }
 
-    public static boolean arePredicatesFulFilled(List<IModelLayerPredicate> predicates, ItemStack stack, LivingEntity entity) {
+    public static boolean arePredicatesFulFilled(List<IModelLayerPredicate> predicates, IModelLayerContext context) {
         for (IModelLayerPredicate predicate : predicates) {
-            if (!predicate.test(stack, entity))
+            if (!predicate.test(context))
                 return false;
         }
         return true;
@@ -168,7 +174,7 @@ public class ModelLayerManager {
 
     public interface IModelLayerPredicate {
 
-        boolean test(ItemStack stack, @Nullable LivingEntity entity);
+        boolean test(IModelLayerContext context);
 
     }
 

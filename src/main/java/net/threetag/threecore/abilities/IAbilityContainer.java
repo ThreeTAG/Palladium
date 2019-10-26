@@ -2,6 +2,7 @@ package net.threetag.threecore.abilities;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -106,6 +107,8 @@ public interface IAbilityContainer {
     ITextComponent getTitle();
 
     IIcon getIcon();
+
+    CompoundNBT getNbtTag(@Nonnull LivingEntity entity);
 
     @Nonnull
     default <T> LazyOptional<T> getCapability(@Nonnull LivingEntity entity, @Nonnull Capability<T> cap, @Nullable Direction side) {

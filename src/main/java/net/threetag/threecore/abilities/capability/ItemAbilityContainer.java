@@ -3,6 +3,7 @@ package net.threetag.threecore.abilities.capability;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -91,6 +92,11 @@ public class ItemAbilityContainer implements IAbilityContainer {
     @Override
     public IIcon getIcon() {
         return new ItemIcon(this.stack);
+    }
+
+    @Override
+    public CompoundNBT getNbtTag(@Nonnull LivingEntity entity) {
+        return this.stack.getOrCreateTag();
     }
 
     @Nonnull

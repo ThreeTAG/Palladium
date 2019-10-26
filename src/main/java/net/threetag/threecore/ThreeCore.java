@@ -33,7 +33,7 @@ import net.threetag.threecore.util.data.ThreeCoreBlockTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreItemTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreRecipeProvider;
 import net.threetag.threecore.util.loot.function.TCLootFunctions;
-import net.threetag.threecore.util.modellayer.ModelLayerManager;
+import net.threetag.threecore.util.modellayer.ModelLayerLoader;
 import net.threetag.threecore.util.scripts.ScriptEventManager;
 import net.threetag.threecore.util.scripts.accessors.ScriptAccessor;
 import net.threetag.threecore.util.threedata.capability.CapabilityThreeData;
@@ -83,8 +83,10 @@ public class ThreeCore {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
             MinecraftForge.EVENT_BUS.addListener(this::initGui);
-            if (Minecraft.getInstance() != null)
+            if (Minecraft.getInstance() != null) {
                 ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new EntityModelManager());
+                ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new ModelLayerLoader());
+            }
         });
     }
 

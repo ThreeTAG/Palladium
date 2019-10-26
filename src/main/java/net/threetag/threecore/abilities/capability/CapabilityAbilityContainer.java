@@ -73,6 +73,11 @@ public class CapabilityAbilityContainer implements IAbilityContainer, INBTSerial
         return STEVE_HEAD_ICON;
     }
 
+    @Override
+    public CompoundNBT getNbtTag(@Nonnull LivingEntity entity) {
+        return entity.getPersistentData();
+    }
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull LivingEntity entity, @Nonnull Capability<T> cap, @Nullable Direction side) {

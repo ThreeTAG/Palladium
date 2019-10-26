@@ -23,10 +23,8 @@ import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.abilities.AbilityMap;
 import net.threetag.threecore.abilities.IAbilityProvider;
 import net.threetag.threecore.abilities.capability.ItemAbilityContainerProvider;
-import net.threetag.threecore.util.modellayer.ModelLayer;
-import net.threetag.threecore.util.modellayer.ModelLayerManager;
-import net.threetag.threecore.util.modellayer.IModelLayerProvider;
 import net.threetag.threecore.util.client.model.DummyBipedModel;
+import net.threetag.threecore.util.modellayer.*;
 
 import javax.annotation.Nullable;
 import java.util.LinkedList;
@@ -84,7 +82,7 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public List<ModelLayer> getArmorLayers(ItemStack stack, LivingEntity entity) {
+    public List<ModelLayer> getModelLayers(IModelLayerContext context) {
         return this.layers;
     }
 
@@ -94,15 +92,25 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
             throw new JsonParseException("Slot type must be an armor slot!");
         AbilityArmorItem item = new AbilityArmorItem(ItemParser.parseArmorMaterial(JSONUtils.getJsonObject(jsonObject, "armor_material")), slot, properties);
 
-        if (JSONUtils.hasField(jsonObject, "layers")) {
-            JsonArray layersArray = JSONUtils.getJsonArray(jsonObject, "layers");
+        // Since items are registered before any resources are loaded I need to push this back using the resource callback
+        ModelLayerLoader.POST_LOAD_CALLBACKS.add(() -> {
+            if (JSONUtils.hasField(jsonObject, "layers")) {
+                if (jsonObject.get("layers").isJsonPrimitive()) {
+                    ModelLayer layer = ModelLayerManager.parseLayer(jsonObject.get("layers"));
 
-            for (int i = 0; i < layersArray.size(); i++) {
-                ModelLayer layer = ModelLayerManager.parseLayer(layersArray.get(i).getAsJsonObject());
-                if (layer != null)
-                    item.layers.add(layer);
+                    if (layer != null)
+                        item.layers.add(layer);
+                } else {
+                    JsonArray layersArray = JSONUtils.getJsonArray(jsonObject, "layers");
+
+                    for (int i = 0; i < layersArray.size(); i++) {
+                        ModelLayer layer = ModelLayerManager.parseLayer(layersArray.get(i).getAsJsonObject());
+                        if (layer != null)
+                            item.layers.add(layer);
+                    }
+                }
             }
-        }
+        });
 
         return item.setAbilities(JSONUtils.hasField(jsonObject, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(jsonObject, "abilities"), true) : null);
     }

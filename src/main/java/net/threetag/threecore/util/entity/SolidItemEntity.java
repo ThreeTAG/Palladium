@@ -1,6 +1,7 @@
 package net.threetag.threecore.util.entity;
 
 import net.minecraft.entity.*;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -146,7 +147,7 @@ public class SolidItemEntity extends Entity {
                 }
             }
 
-            if (!this.onGround || func_213296_b(this.getMotion()) > (double) 1.0E-5F || (this.ticksExisted + this.getEntityId()) % 4 == 0) {
+            if (!this.onGround || horizontalMag(this.getMotion()) > (double) 1.0E-5F || (this.ticksExisted + this.getEntityId()) % 4 == 0) {
                 this.move(MoverType.SELF, this.getMotion());
                 float f = 0.98F;
                 if (this.onGround) {
