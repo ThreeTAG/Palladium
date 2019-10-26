@@ -4,12 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.gui.RenderComponentsUtil;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.JSONUtils;
@@ -33,6 +29,16 @@ public class BipedModelParser extends EntityModelParser {
                     parent.addChild(parseRendererModel(cubeJson, model));
                 else
                     model.addCube(parseRendererModel(cubeJson, model));
+            }
+        }
+
+        if (JSONUtils.hasField(jsonObject, "disabled")) {
+            JsonArray disabledJson = JSONUtils.getJsonArray(jsonObject, "disabled");
+
+            for (int i = 0; i < disabledJson.size(); i++) {
+                RendererModel part = getPart(disabledJson.get(i).getAsString(), model);
+                if (part != null)
+                    model.disabled.add(part);
             }
         }
 
@@ -70,6 +76,7 @@ public class BipedModelParser extends EntityModelParser {
     public static class ParsedBipedModel<T extends LivingEntity> extends BipedModel<T> {
 
         public List<RendererModel> cubes = Lists.newLinkedList();
+        public List<RendererModel> disabled = Lists.newLinkedList();
         public final RendererModel bipedLeftArmwear;
         public final RendererModel bipedRightArmwear;
         public final RendererModel bipedLeftLegwear;
@@ -126,6 +133,9 @@ public class BipedModelParser extends EntityModelParser {
 
         @Override
         public void render(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+            for(RendererModel part : this.disabled) {
+                part.showModel = false;
+            }
             super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();

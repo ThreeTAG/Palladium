@@ -2,6 +2,7 @@ package net.threetag.threecore.util.client.model;
 
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
@@ -13,6 +14,7 @@ import net.minecraft.util.JSONUtils;
 import net.threetag.threecore.util.json.TCJsonUtil;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class EntityModelParser implements Function<JsonObject, EntityModel> {
