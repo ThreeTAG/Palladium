@@ -71,4 +71,11 @@ public class PlayerHelper {
             ObfuscationReflectionHelper.setPrivateValue(NetworkPlayerInfo.class, playerInfo, false, 4);
     }
 
+    @OnlyIn(Dist.CLIENT)
+    public static boolean hasSmallArms(PlayerEntity player) {
+        if (player instanceof AbstractClientPlayerEntity)
+            return ((AbstractClientPlayerEntity) player).getSkinType().equalsIgnoreCase("slim");
+        return false;
+    }
+
 }

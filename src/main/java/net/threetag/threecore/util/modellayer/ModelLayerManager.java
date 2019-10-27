@@ -7,8 +7,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.Model;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.LazyLoadBase;
 import net.minecraft.util.ResourceLocation;
@@ -24,8 +22,8 @@ import net.threetag.threecore.util.modellayer.texture.transformer.ITextureTransf
 import net.threetag.threecore.util.modellayer.texture.transformer.OverlayTextureTransformer;
 import net.threetag.threecore.util.modellayer.texture.variable.ITextureVariable;
 import net.threetag.threecore.util.modellayer.texture.variable.IntegerNbtTextureVariable;
+import net.threetag.threecore.util.modellayer.texture.variable.SmallArmsTextureVariable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -75,6 +73,8 @@ public class ModelLayerManager {
 
         // Integer NBT
         registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), j -> new IntegerNbtTextureVariable(JSONUtils.getString(j, "nbt_tag")));
+
+        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "small_arms"), j -> new SmallArmsTextureVariable(JSONUtils.getString(j, "name", "")));
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
 
