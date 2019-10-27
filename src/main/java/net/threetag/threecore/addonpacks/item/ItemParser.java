@@ -5,11 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Food;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.resources.IResource;
@@ -17,9 +13,6 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.LazyLoadBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -31,6 +24,8 @@ import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.addonpacks.ThreeCoreAddonPacks;
 import net.threetag.threecore.util.item.ArmorMaterialRegistry;
 import net.threetag.threecore.util.item.ItemGroupRegistry;
+import net.threetag.threecore.util.item.SimpleArmorMaterial;
+import net.threetag.threecore.util.item.SimpleItemTier;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -52,6 +47,26 @@ public class ItemParser {
 
         // Armor
         registerItemParser(new ResourceLocation(ThreeCore.MODID, "armor"), (j, p) -> AbilityArmorItem.parse(j, p));
+
+        // Tools
+        registerItemParser(new ResourceLocation(ThreeCore.MODID, "tool"), (j, p) -> {
+            IItemTier tier = parseItemTier(JSONUtils.getJsonObject(j, "item_tier"));
+            String type = JSONUtils.getString(j, "type");
+            int attackDamage = type.equalsIgnoreCase("hoe") ? 0 : JSONUtils.getInt(j, "attack_damage");
+            float attackSpeed = JSONUtils.getFloat(j, "attack_speed");
+            if (type.equalsIgnoreCase("hoe"))
+                return new HoeAbilityItem(tier, attackSpeed, p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null);
+            else if (type.equalsIgnoreCase("shovel"))
+                return new ShovelAbilityItem(tier, attackDamage, attackSpeed, p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null);
+            else if (type.equalsIgnoreCase("axe"))
+                return new AxeAbilityItem(tier, attackDamage, attackSpeed, p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null);
+            else if (type.equalsIgnoreCase("pickaxe"))
+                return new PickaxeAbilityItem(tier, attackDamage, attackSpeed, p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null);
+            else if (type.equalsIgnoreCase("sword"))
+                return new SwordAbilityItem(tier, attackDamage, attackSpeed, p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null);
+            else
+                throw new JsonParseException("Tool type '" + type + "' does not exist!");
+        });
     }
 
     public static void registerItemParser(ResourceLocation resourceLocation, BiFunction<JsonObject, Item.Properties, Item> function) {
@@ -162,6 +177,7 @@ public class ItemParser {
         return values.get(name);
     }
 
+    // TODO instead of this, put them all into a list, and when parsing look for an identical and use that if it exists. or just get rid of shared armor materials completely
     public static IArmorMaterial parseArmorMaterial(JsonObject jsonObject) {
         String name = JSONUtils.getString(jsonObject, "name");
         if (ArmorMaterialRegistry.getArmorMaterial(name) != null) {
@@ -178,66 +194,18 @@ public class ItemParser {
             LazyLoadBase soundEvent = new LazyLoadBase(() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(JSONUtils.getString(jsonObject, "equip_sound", ""))));
             float toughness = JSONUtils.getFloat(jsonObject, "toughness", 0F);
             Supplier<Ingredient> repairMaterial = () -> JSONUtils.hasField(jsonObject, "repair_material") ? Ingredient.deserialize(jsonObject.get("repair_material")) : Ingredient.EMPTY;
-            return ArmorMaterialRegistry.addArmorMaterial(name, new ArmorMaterial(name, maxDamageFactor, damageReductionAmountArray, enchantibility, soundEvent, toughness, repairMaterial));
+            return ArmorMaterialRegistry.addArmorMaterial(name, new SimpleArmorMaterial(name, maxDamageFactor, damageReductionAmountArray, enchantibility, soundEvent, toughness, repairMaterial));
         }
     }
 
-    public static class ArmorMaterial implements IArmorMaterial {
-
-        private static final int[] MAX_DAMAGE_ARRAY = new int[]{13, 15, 16, 11};
-        private final String name;
-        private final int maxDamageFactor;
-        private final int[] damageReductionAmountArray;
-        private final int enchantability;
-        private final LazyLoadBase<SoundEvent> soundEvent;
-        private final float toughness;
-        private final LazyLoadBase<Ingredient> repairMaterial;
-
-        private ArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, LazyLoadBase<SoundEvent> equipSoundIn, float toughness, Supplier<Ingredient> repairMaterialSupplier) {
-            this.name = nameIn;
-            this.maxDamageFactor = maxDamageFactorIn;
-            this.damageReductionAmountArray = damageReductionAmountsIn;
-            this.enchantability = enchantabilityIn;
-            this.soundEvent = equipSoundIn;
-            this.toughness = toughness;
-            this.repairMaterial = new LazyLoadBase<>(repairMaterialSupplier);
-        }
-
-        @Override
-        public int getDurability(EquipmentSlotType slotIn) {
-            return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
-        }
-
-        @Override
-        public int getDamageReductionAmount(EquipmentSlotType slotIn) {
-            return this.damageReductionAmountArray[slotIn.getIndex()];
-        }
-
-        @Override
-        public int getEnchantability() {
-            return this.enchantability;
-        }
-
-        @Override
-        public SoundEvent getSoundEvent() {
-            return this.soundEvent.getValue();
-        }
-
-        @Override
-        public Ingredient getRepairMaterial() {
-            return this.repairMaterial.getValue();
-        }
-
-        @OnlyIn(Dist.CLIENT)
-        @Override
-        public String getName() {
-            return this.name;
-        }
-
-        @Override
-        public float getToughness() {
-            return this.toughness;
-        }
+    public static IItemTier parseItemTier(JsonObject jsonObject) {
+        int maxUses = JSONUtils.getInt(jsonObject, "max_uses");
+        float efficiency = JSONUtils.getFloat(jsonObject, "efficiency");
+        float attackDamage = JSONUtils.getFloat(jsonObject, "attack_damage");
+        int harvestLevel = JSONUtils.getInt(jsonObject, "harvest_level");
+        int enchantibility = JSONUtils.getInt(jsonObject, "enchantibility");
+        Supplier<Ingredient> repairMaterial = () -> JSONUtils.hasField(jsonObject, "repair_material") ? Ingredient.deserialize(jsonObject.get("repair_material")) : Ingredient.EMPTY;
+        return new SimpleItemTier(maxUses, efficiency, attackDamage, harvestLevel, enchantibility, repairMaterial);
     }
 
 }
