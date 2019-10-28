@@ -51,7 +51,7 @@ public class ItemParser {
         // Tools
         registerItemParser(new ResourceLocation(ThreeCore.MODID, "tool"), (j, p) -> {
             IItemTier tier = parseItemTier(JSONUtils.getJsonObject(j, "item_tier"));
-            String type = JSONUtils.getString(j, "type");
+            String type = JSONUtils.getString(j, "tool_type");
             int attackDamage = type.equalsIgnoreCase("hoe") ? 0 : JSONUtils.getInt(j, "attack_damage");
             float attackSpeed = JSONUtils.getFloat(j, "attack_speed");
             if (type.equalsIgnoreCase("hoe"))
