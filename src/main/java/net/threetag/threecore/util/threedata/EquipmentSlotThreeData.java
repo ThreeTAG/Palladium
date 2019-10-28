@@ -42,4 +42,9 @@ public class EquipmentSlotThreeData extends ThreeData<EquipmentSlotType> {
     public String getDisplay(EquipmentSlotType value) {
         return value.getName();
     }
+
+    @Override
+    public boolean displayAsString(EquipmentSlotType value) {
+        return true;
+    }
 }
