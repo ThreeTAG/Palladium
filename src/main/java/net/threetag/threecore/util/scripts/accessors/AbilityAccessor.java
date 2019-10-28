@@ -1,6 +1,5 @@
 package net.threetag.threecore.util.scripts.accessors;
 
-import net.minecraft.nbt.CompoundNBT;
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.util.scripts.ScriptParameterName;
 import net.threetag.threecore.util.threedata.ThreeData;
@@ -44,8 +43,8 @@ public class AbilityAccessor extends ScriptAccessor<Ability> {
         return this.value.getConditionManager().isEnabled();
     }
 
-    public CompoundNBT getAdditionalNbtData() {
-        return this.value.getAdditionalData();
+    public CompoundNBTAccessor getAdditionalNbtData() {
+        return new CompoundNBTAccessor(this.value.getAdditionalData());
     }
 
 }

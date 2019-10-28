@@ -20,8 +20,6 @@ import net.threetag.threecore.util.threedata.ThreeData;
 import net.threetag.threecore.util.threedata.capability.CapabilityThreeData;
 import net.threetag.threecore.util.threedata.capability.IThreeData;
 
-import java.util.UUID;
-
 public class EntityAccessor extends ScriptAccessor<Entity> {
 
     public final WorldAccessor world;
@@ -47,8 +45,8 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         return this.world;
     }
 
-    public UUID getUUID() {
-        return this.value.getUniqueID();
+    public String getUUID() {
+        return this.value.getUniqueID().toString();
     }
 
     public double getPosX() {
@@ -233,6 +231,10 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         this.value.extinguish();
     }
 
+    public CompoundNBTAccessor getPersistentData() {
+        return new CompoundNBTAccessor(this.value.getPersistentData());
+    }
+
     public void playSoundAt(@ScriptParameterName("id") String id, @ScriptParameterName("volume") float volume, @ScriptParameterName("pitch") float pitch) {
         SoundEvent soundEvent = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(id));
 
@@ -272,10 +274,10 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
             return false;
 
         // ugly fix since JavaScript numbers are apparently always doubles?
-        if(data instanceof IntegerThreeData) {
-            if(value instanceof Double)
+        if (data instanceof IntegerThreeData) {
+            if (value instanceof Double)
                 value = ((Double) value).intValue();
-            else if(value instanceof Float)
+            else if (value instanceof Float)
                 value = ((Float) value).intValue();
         }
 

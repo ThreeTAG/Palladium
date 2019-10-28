@@ -1,7 +1,6 @@
 package net.threetag.threecore.util.scripts.accessors;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.threetag.threecore.util.scripts.ScriptParameterName;
 
 public class ItemStackAccessor extends ScriptAccessor<ItemStack> {
@@ -58,8 +57,8 @@ public class ItemStackAccessor extends ScriptAccessor<ItemStack> {
         return new ItemStackAccessor(this.value.copy());
     }
 
-    public CompoundNBT getNbtTag() {
-        return this.value.getOrCreateTag();
+    public CompoundNBTAccessor getNbtTag() {
+        return new CompoundNBTAccessor(this.value.getOrCreateTag());
     }
 
 }

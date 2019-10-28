@@ -62,7 +62,7 @@ public class ScriptAccessor<T> {
     public static void generateHtmlFile(File file) {
         List<String> ignoredMethods = Arrays.asList("fire", "wait", "equals", "toString", "hashCode", "getClass", "notify", "notifyAll");
         List<Class<? extends ScriptAccessor>> accessorClasses = Arrays.asList(EntityAccessor.class, LivingEntityAccessor.class,
-                WorldAccessor.class, BlockStateAccessor.class, DamageSourceAccessor.class, AbilityAccessor.class, ConditionAccessor.class);
+                WorldAccessor.class, BlockStateAccessor.class, DamageSourceAccessor.class, AbilityAccessor.class, ConditionAccessor.class, CompoundNBTAccessor.class);
         try {
             if (!file.getParentFile().exists())
                 file.getParentFile().mkdirs();
