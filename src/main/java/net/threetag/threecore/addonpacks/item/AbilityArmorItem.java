@@ -2,6 +2,7 @@ package net.threetag.threecore.addonpacks.item;
 
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.client.renderer.entity.model.BipedModel;
@@ -24,6 +25,7 @@ import net.threetag.threecore.abilities.AbilityMap;
 import net.threetag.threecore.abilities.IAbilityProvider;
 import net.threetag.threecore.abilities.capability.ItemAbilityContainerProvider;
 import net.threetag.threecore.util.client.model.DummyBipedModel;
+import net.threetag.threecore.util.item.ArmorMaterialRegistry;
 import net.threetag.threecore.util.modellayer.*;
 
 import javax.annotation.Nullable;
@@ -90,7 +92,12 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
         EquipmentSlotType slot = EquipmentSlotType.fromString(JSONUtils.getString(jsonObject, "slot"));
         if (slot.getSlotType() == EquipmentSlotType.Group.HAND)
             throw new JsonParseException("Slot type must be an armor slot!");
-        AbilityArmorItem item = new AbilityArmorItem(ItemParser.parseArmorMaterial(JSONUtils.getJsonObject(jsonObject, "armor_material")), slot, properties);
+
+        JsonElement materialJson = jsonObject.get("armor_material");
+        IArmorMaterial material = materialJson.isJsonPrimitive() ? ArmorMaterialRegistry.getArmorMaterial(materialJson.getAsString()) : ItemParser.parseArmorMaterial(materialJson.getAsJsonObject(), false);
+        if (material == null)
+            throw new JsonParseException("The armor material '" + materialJson.getAsString() + "' can not be found!");
+        AbilityArmorItem item = new AbilityArmorItem(material, slot, properties);
 
         // Since items are registered before any resources are loaded I need to push this back using the resource callback
         ModelLayerLoader.POST_LOAD_CALLBACKS.add(() -> {

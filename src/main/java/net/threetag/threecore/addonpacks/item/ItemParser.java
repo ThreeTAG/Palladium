@@ -3,6 +3,7 @@ package net.threetag.threecore.addonpacks.item;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.item.*;
@@ -22,10 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.addonpacks.ThreeCoreAddonPacks;
-import net.threetag.threecore.util.item.ArmorMaterialRegistry;
-import net.threetag.threecore.util.item.ItemGroupRegistry;
-import net.threetag.threecore.util.item.SimpleArmorMaterial;
-import net.threetag.threecore.util.item.SimpleItemTier;
+import net.threetag.threecore.util.item.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -50,7 +48,10 @@ public class ItemParser {
 
         // Tools
         registerItemParser(new ResourceLocation(ThreeCore.MODID, "tool"), (j, p) -> {
-            IItemTier tier = parseItemTier(JSONUtils.getJsonObject(j, "item_tier"));
+            JsonElement tierJson = j.get("item_tier");
+            IItemTier tier = tierJson.isJsonPrimitive() ? ItemTierRegistry.getItemTier(tierJson.getAsString()) : ItemParser.parseItemTier(tierJson.getAsJsonObject());
+            if (tier == null)
+                throw new JsonParseException("The item tier '" + tierJson.getAsString() + "' can not be found!");
             String type = JSONUtils.getString(j, "tool_type");
             int attackDamage = type.equalsIgnoreCase("hoe") ? 0 : JSONUtils.getInt(j, "attack_damage");
             float attackSpeed = JSONUtils.getFloat(j, "attack_speed");
@@ -84,17 +85,42 @@ public class ItemParser {
             String s = resourcelocation.getPath();
             ResourceLocation resourcelocation1 = new ResourceLocation(resourcelocation.getNamespace(), s.substring(resourcePrefix, s.length() - resourceSuffix));
 
-            try (IResource iresource = resourceManager.getResource(resourcelocation)) {
-                Item item = parse(JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
-                if (item != null) {
-                    item.setRegistryName(resourcelocation1);
-                    e.getRegistry().register(item);
-                    ThreeCore.LOGGER.info("Registered addonpack item {}!", resourcelocation1);
+            // Armor materials
+            if (resourcelocation.getPath().startsWith("items/_armor_materials")) {
+                try (IResource iresource = resourceManager.getResource(resourcelocation)) {
+                    JsonArray jsonArray = JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonArray.class);
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        IArmorMaterial material = parseArmorMaterial(jsonArray.get(i).getAsJsonObject());
+                        ArmorMaterialRegistry.addArmorMaterial(material.getName(), material);
+                        ThreeCore.LOGGER.info("Registered addonpack armor material {} from {}!", material.getName(), resourcelocation);
+                    }
+                } catch (Throwable throwable) {
+                    ThreeCore.LOGGER.error("Couldn't read addonpack armor materials from {}", resourcelocation, throwable);
                 }
-            } catch (Throwable throwable) {
-                ThreeCore.LOGGER.error("Couldn't read addonpack item {} from {}", resourcelocation1, resourcelocation, throwable);
+            } else if (resourcelocation.getPath().startsWith("items/_item_tiers")) {
+                try (IResource iresource = resourceManager.getResource(resourcelocation)) {
+                    JsonArray jsonArray = JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonArray.class);
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        String name = JSONUtils.getString(jsonArray.get(i).getAsJsonObject(), "name");
+                        IItemTier tier = parseItemTier(jsonArray.get(i).getAsJsonObject());
+                        ItemTierRegistry.addItemTier(name, tier);
+                        ThreeCore.LOGGER.info("Registered addonpack item tier {} from {}!", name, resourcelocation);
+                    }
+                } catch (Throwable throwable) {
+                    ThreeCore.LOGGER.error("Couldn't read addonpack item tier from {}", resourcelocation, throwable);
+                }
+            } else {
+                try (IResource iresource = resourceManager.getResource(resourcelocation)) {
+                    Item item = parse(JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
+                    if (item != null) {
+                        item.setRegistryName(resourcelocation1);
+                        e.getRegistry().register(item);
+                        ThreeCore.LOGGER.info("Registered addonpack item {}!", resourcelocation1);
+                    }
+                } catch (Throwable throwable) {
+                    ThreeCore.LOGGER.error("Couldn't read addonpack item {} from {}", resourcelocation1, resourcelocation, throwable);
+                }
             }
-
         }
     }
 
@@ -177,25 +203,24 @@ public class ItemParser {
         return values.get(name);
     }
 
-    // TODO instead of this, put them all into a list, and when parsing look for an identical and use that if it exists. or just get rid of shared armor materials completely
-    public static IArmorMaterial parseArmorMaterial(JsonObject jsonObject) {
-        String name = JSONUtils.getString(jsonObject, "name");
-        if (ArmorMaterialRegistry.getArmorMaterial(name) != null) {
-            return ArmorMaterialRegistry.getArmorMaterial(name);
-        } else {
-            int maxDamageFactor = JSONUtils.getInt(jsonObject, "max_damage_factor");
-            int[] damageReductionAmountArray = new int[4];
-            JsonArray dmgReduction = JSONUtils.getJsonArray(jsonObject, "damage_reduction");
-            if (dmgReduction.size() != 4)
-                throw new JsonParseException("The damage_reduction array must contain 4 entries, one for each armor part!");
-            for (int i = 0; i < dmgReduction.size(); i++)
-                damageReductionAmountArray[i] = dmgReduction.get(i).getAsInt();
-            int enchantibility = JSONUtils.getInt(jsonObject, "enchantibility", 0);
-            LazyLoadBase soundEvent = new LazyLoadBase(() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(JSONUtils.getString(jsonObject, "equip_sound", ""))));
-            float toughness = JSONUtils.getFloat(jsonObject, "toughness", 0F);
-            Supplier<Ingredient> repairMaterial = () -> JSONUtils.hasField(jsonObject, "repair_material") ? Ingredient.deserialize(jsonObject.get("repair_material")) : Ingredient.EMPTY;
-            return ArmorMaterialRegistry.addArmorMaterial(name, new SimpleArmorMaterial(name, maxDamageFactor, damageReductionAmountArray, enchantibility, soundEvent, toughness, repairMaterial));
-        }
+    public static IArmorMaterial parseArmorMaterial(JsonObject json) {
+        return parseArmorMaterial(json, true);
+    }
+
+    public static IArmorMaterial parseArmorMaterial(JsonObject json, boolean requireName) {
+        String name = requireName ? JSONUtils.getString(json, "name") : "";
+        int maxDamageFactor = JSONUtils.getInt(json, "max_damage_factor");
+        int[] damageReductionAmountArray = new int[4];
+        JsonArray dmgReduction = JSONUtils.getJsonArray(json, "damage_reduction");
+        if (dmgReduction.size() != 4)
+            throw new JsonParseException("The damage_reduction array must contain 4 entries, one for each armor part!");
+        for (int i = 0; i < dmgReduction.size(); i++)
+            damageReductionAmountArray[i] = dmgReduction.get(i).getAsInt();
+        int enchantibility = JSONUtils.getInt(json, "enchantibility", 0);
+        LazyLoadBase soundEvent = new LazyLoadBase(() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(JSONUtils.getString(json, "equip_sound", ""))));
+        float toughness = JSONUtils.getFloat(json, "toughness", 0F);
+        Supplier<Ingredient> repairMaterial = () -> JSONUtils.hasField(json, "repair_material") ? Ingredient.deserialize(json.get("repair_material")) : Ingredient.EMPTY;
+        return new SimpleArmorMaterial(name, maxDamageFactor, damageReductionAmountArray, enchantibility, soundEvent, toughness, repairMaterial);
     }
 
     public static IItemTier parseItemTier(JsonObject jsonObject) {
