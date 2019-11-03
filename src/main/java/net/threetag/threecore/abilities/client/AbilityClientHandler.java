@@ -52,7 +52,7 @@ public class AbilityClientHandler {
             List<Ability> abilities = AbilityHelper.getAbilities(Minecraft.getInstance().player).stream().filter(a -> a.getConditionManager().isUnlocked() && a.getConditionManager().needsKey() && a.getDataManager().get(Ability.KEYBIND) > -1).collect(Collectors.toList());
 
             for (Ability ability : abilities) {
-                if (ability != null && ability.getDataManager().get(Ability.KEYBIND) == e.getKey())
+                if (ability != null && ability.getContainer() != null && ability.getDataManager().get(Ability.KEYBIND) == e.getKey())
                     ThreeCore.NETWORK_CHANNEL.sendToServer(new AbilityKeyMessage(ability.getContainer().getId(), ability.getId(), e.getAction() == GLFW.GLFW_PRESS));
             }
         }
