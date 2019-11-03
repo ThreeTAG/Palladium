@@ -46,6 +46,13 @@ public class ItemParser {
         // Armor
         registerItemParser(new ResourceLocation(ThreeCore.MODID, "armor"), (j, p) -> AbilityArmorItem.parse(j, p));
 
+        // Shield
+        registerItemParser(new ResourceLocation(ThreeCore.MODID, "shield"), (j, p) ->
+                new ShieldAbilityItem(p,
+                        JSONUtils.getInt(j, "use_duration", 72000),
+                        () -> (JSONUtils.hasField(j, "repair_material") ? Ingredient.deserialize(j.get("repair_material")) : Ingredient.EMPTY))
+                        .setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null));
+
         // Tools
         registerItemParser(new ResourceLocation(ThreeCore.MODID, "tool"), (j, p) -> {
             JsonElement tierJson = j.get("item_tier");
