@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.JSONUtils;
 
 import java.util.List;
@@ -73,7 +74,7 @@ public class BipedModelParser extends EntityModelParser {
         return null;
     }
 
-    public static class ParsedBipedModel<T extends LivingEntity> extends BipedModel<T> {
+    public static class ParsedBipedModel<T extends LivingEntity> extends BipedModel<T> implements ISlotDependentVisibility {
 
         public List<RendererModel> cubes = Lists.newLinkedList();
         public List<RendererModel> disabled = Lists.newLinkedList();
@@ -132,8 +133,40 @@ public class BipedModelParser extends EntityModelParser {
         }
 
         @Override
+        public void setSlotVisibility(EquipmentSlotType slot) {
+            this.setVisible(false);
+            switch (slot) {
+                case HEAD:
+                    this.bipedHead.showModel = true;
+                    this.bipedHeadwear.showModel = true;
+                    break;
+                case CHEST:
+                    this.bipedBody.showModel = true;
+                    this.bipedBodyWear.showModel = true;
+                    this.bipedRightArm.showModel = true;
+                    this.bipedRightArmwear.showModel = true;
+                    this.bipedLeftArm.showModel = true;
+                    this.bipedLeftArmwear.showModel = true;
+                    break;
+                case LEGS:
+                    this.bipedBody.showModel = true;
+                    this.bipedBodyWear.showModel = true;
+                    this.bipedRightLeg.showModel = true;
+                    this.bipedRightLegwear.showModel = true;
+                    this.bipedLeftLeg.showModel = true;
+                    this.bipedLeftLegwear.showModel = true;
+                    break;
+                case FEET:
+                    this.bipedRightLeg.showModel = true;
+                    this.bipedRightLegwear.showModel = true;
+                    this.bipedLeftLeg.showModel = true;
+                    this.bipedLeftLegwear.showModel = true;
+            }
+        }
+
+        @Override
         public void render(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-            for(RendererModel part : this.disabled) {
+            for (RendererModel part : this.disabled) {
                 part.showModel = false;
             }
             super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);

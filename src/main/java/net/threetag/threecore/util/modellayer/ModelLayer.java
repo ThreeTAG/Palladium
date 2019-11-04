@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.LazyLoadBase;
 import net.threetag.threecore.util.client.RenderUtil;
+import net.threetag.threecore.util.client.model.ISlotDependentVisibility;
 import net.threetag.threecore.util.modellayer.texture.ModelLayerTexture;
 
 import java.util.List;
@@ -65,25 +66,29 @@ public class ModelLayer {
     }
 
     protected void setModelSlotVisible(BipedModel model, EquipmentSlotType slotIn) {
-        model.setVisible(false);
-        switch (slotIn) {
-            case HEAD:
-                model.bipedHead.showModel = true;
-                model.bipedHeadwear.showModel = true;
-                break;
-            case CHEST:
-                model.bipedBody.showModel = true;
-                model.bipedRightArm.showModel = true;
-                model.bipedLeftArm.showModel = true;
-                break;
-            case LEGS:
-                model.bipedBody.showModel = true;
-                model.bipedRightLeg.showModel = true;
-                model.bipedLeftLeg.showModel = true;
-                break;
-            case FEET:
-                model.bipedRightLeg.showModel = true;
-                model.bipedLeftLeg.showModel = true;
+        if (model instanceof ISlotDependentVisibility)
+            ((ISlotDependentVisibility) model).setSlotVisibility(slotIn);
+        else {
+            model.setVisible(false);
+            switch (slotIn) {
+                case HEAD:
+                    model.bipedHead.showModel = true;
+                    model.bipedHeadwear.showModel = true;
+                    break;
+                case CHEST:
+                    model.bipedBody.showModel = true;
+                    model.bipedRightArm.showModel = true;
+                    model.bipedLeftArm.showModel = true;
+                    break;
+                case LEGS:
+                    model.bipedBody.showModel = true;
+                    model.bipedRightLeg.showModel = true;
+                    model.bipedLeftLeg.showModel = true;
+                    break;
+                case FEET:
+                    model.bipedRightLeg.showModel = true;
+                    model.bipedLeftLeg.showModel = true;
+            }
         }
 
     }
