@@ -8,14 +8,20 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.moddiscovery.ModFile;
+import net.minecraftforge.fml.packs.ModFileResourcePack;
+import net.minecraftforge.fml.packs.ResourcePackLoader;
 import net.threetag.threecore.addonpacks.item.ItemParser;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -38,9 +44,14 @@ public class ThreeCoreAddonPacks {
 
         // Setup resource manager
         addonpackFinder.addPackFinder(new AddonPackFinder());
+        Map<ModFile, ModFileResourcePack> modResourcePacks = ModList.get().getModFiles().stream().
+                filter(mf -> !Objects.equals(mf.getModLoader(), "minecraft")).
+                map(mf -> new ModFileResourcePack(mf.getFile())).
+                collect(Collectors.toMap(ModFileResourcePack::getModFile, Function.identity()));
         addonpackFinder.reloadPacksFromFinders();
         List<IResourcePack> list = this.addonpackFinder.getAllPacks().stream().map(ResourcePackInfo::getResourcePack).collect(Collectors.toList());
         list.forEach(pack -> resourceManager.addResourcePack(pack));
+        modResourcePacks.forEach((f, p) -> resourceManager.addResourcePack(p));
 
         // Setup default parsers
         FMLJavaModLoadingContext.get().getModEventBus().register(new ItemParser());
@@ -89,6 +100,19 @@ public class ThreeCoreAddonPacks {
 
         private Supplier<IResourcePack> createResourcePack(File file) {
             return file.isDirectory() ? () -> new FolderPack(file) : () -> new FilePack(file);
+        }
+    }
+
+    private static class LambdaFriendlyPackFinder implements IPackFinder {
+        private ResourcePackLoader.IPackInfoFinder wrapped;
+
+        private LambdaFriendlyPackFinder(final ResourcePackLoader.IPackInfoFinder wrapped) {
+            this.wrapped = wrapped;
+        }
+
+        @Override
+        public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> packList, ResourcePackInfo.IFactory<T> factory) {
+            wrapped.addPackInfosToMap(packList, factory);
         }
     }
 
