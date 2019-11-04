@@ -147,7 +147,7 @@ public class ModelLayerManager {
         }
 
         JsonObject json = jsonElement.getAsJsonObject();
-        NonNullFunction<JsonObject, ModelLayer> function = MODEL_LAYERS.get(new ResourceLocation(JSONUtils.getString(json, "type")));
+        NonNullFunction<JsonObject, ModelLayer> function = MODEL_LAYERS.get(new ResourceLocation(JSONUtils.getString(json, "type", ThreeCore.MODID + ":default")));
 
         if (function == null)
             return null;
