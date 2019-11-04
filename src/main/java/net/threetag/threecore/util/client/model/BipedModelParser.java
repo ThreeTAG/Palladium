@@ -8,8 +8,10 @@ import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.JSONUtils;
+import net.threetag.threecore.util.player.PlayerHelper;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class BipedModelParser extends EntityModelParser {
 
     @Override
     public EntityModel apply(JsonObject jsonObject) {
-        ParsedBipedModel model = new ParsedBipedModel(JSONUtils.getFloat(jsonObject, "scale", 0F), JSONUtils.getBoolean(jsonObject, "small_arms", false), JSONUtils.getInt(jsonObject, "texture_width", 64), JSONUtils.getInt(jsonObject, "texture_height", 64));
+        ParsedBipedModel model = new ParsedBipedModel(JSONUtils.getFloat(jsonObject, "scale", 0F), BipedArmType.getFromName(JSONUtils.getString(jsonObject, "arm_type", "default")), JSONUtils.getInt(jsonObject, "texture_width", 64), JSONUtils.getInt(jsonObject, "texture_height", 64));
 
         if (JSONUtils.hasField(jsonObject, "cubes")) {
             JsonArray cubes = JSONUtils.getJsonArray(jsonObject, "cubes");
@@ -83,12 +85,12 @@ public class BipedModelParser extends EntityModelParser {
         public final RendererModel bipedLeftLegwear;
         public final RendererModel bipedRightLegwear;
         public final RendererModel bipedBodyWear;
-        private final boolean smallArms;
+        private final BipedArmType bipedArmType;
 
-        public ParsedBipedModel(float modelSize, boolean smallArmsIn, int textureWidth, int textureHeight) {
+        public ParsedBipedModel(float modelSize, BipedArmType bipedArmType, int textureWidth, int textureHeight) {
             super(modelSize, 0.0F, textureWidth, textureHeight);
-            this.smallArms = smallArmsIn;
-            if (smallArmsIn) {
+            this.bipedArmType = bipedArmType;
+            if (bipedArmType == BipedArmType.SMALL) {
                 this.bipedLeftArm = new RendererModel(this, 32, 48);
                 this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, modelSize);
                 this.bipedLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
@@ -169,6 +171,15 @@ public class BipedModelParser extends EntityModelParser {
             for (RendererModel part : this.disabled) {
                 part.showModel = false;
             }
+
+            if (this.bipedArmType == BipedArmType.FIXED) {
+                boolean smallArms = entityIn instanceof PlayerEntity && PlayerHelper.hasSmallArms((PlayerEntity) entityIn);
+                this.bipedLeftArm.rotationPointY =
+                        this.bipedLeftArmwear.rotationPointY =
+                                this.bipedRightArm.rotationPointY =
+                                        this.bipedRightArmwear.rotationPointY = smallArms ? 2.5F : 2.0F;
+            }
+
             super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
@@ -220,6 +231,30 @@ public class BipedModelParser extends EntityModelParser {
             this.bipedRightLegwear.showModel = visible;
             this.bipedBodyWear.showModel = visible;
         }
+    }
+
+    public enum BipedArmType {
+
+        NORMAL("normal"),
+        SMALL("small"),
+        FIXED("fixed");
+
+        private final String name;
+
+        BipedArmType(String name) {
+            this.name = name;
+        }
+
+        public static BipedArmType getFromName(String name) {
+            for (BipedArmType type : values()) {
+                if (type.name.equalsIgnoreCase(name)) {
+                    return type;
+                }
+            }
+
+            return NORMAL;
+        }
+
     }
 
 }
