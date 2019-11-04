@@ -1,7 +1,10 @@
 package net.threetag.threecore.util.item;
 
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.base.ThreeCoreBase;
 
 import java.util.HashMap;
@@ -13,9 +16,11 @@ public class ItemGroupRegistry {
     private static Map<String, ItemGroup> TABS = new HashMap<>();
 
     public static final String TECHNOLOGY = "technology";
+    public static final String SUITS_AND_ARMOR = "suits_and_armor";
 
     static {
         getOrCreateCreativeTab(TECHNOLOGY, () -> new ItemStack(ThreeCoreBase.CIRCUIT));
+        addItemGroup(SUITS_AND_ARMOR, new SuitsAndArmorItemGroup(SUITS_AND_ARMOR));
     }
 
     public static ItemGroup getItemGroup(String name) {
@@ -70,6 +75,30 @@ public class ItemGroupRegistry {
             return tab;
         else {
             return addItemGroup(name, stackSupplier);
+        }
+    }
+
+    public static class SuitsAndArmorItemGroup extends ItemGroup {
+
+        public SuitsAndArmorItemGroup(String label) {
+            super(label);
+        }
+
+        @Override
+        public ItemStack createIcon() {
+            return new ItemStack(Items.LEATHER_CHESTPLATE);
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public void fill(NonNullList<ItemStack> items) {
+            for (Item item : ForgeRegistries.ITEMS) {
+                item.fillItemGroup(this, items);
+
+                if (item.getRegistryName().getNamespace().equalsIgnoreCase("minecraft") && item instanceof ArmorItem) {
+                    items.add(new ItemStack(item));
+                }
+            }
         }
     }
 
