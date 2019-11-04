@@ -7,12 +7,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.Model;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.LazyLoadBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.client.model.ModelRegistry;
+import net.threetag.threecore.util.modellayer.predicates.IsSizeChangingPredicate;
 import net.threetag.threecore.util.modellayer.predicates.ItemDurabilityPredicate;
 import net.threetag.threecore.util.modellayer.predicates.NotPredicate;
 import net.threetag.threecore.util.modellayer.texture.DefaultModelTexture;
@@ -23,6 +25,7 @@ import net.threetag.threecore.util.modellayer.texture.transformer.OverlayTexture
 import net.threetag.threecore.util.modellayer.texture.variable.ITextureVariable;
 import net.threetag.threecore.util.modellayer.texture.variable.IntegerNbtTextureVariable;
 import net.threetag.threecore.util.modellayer.texture.variable.SmallArmsTextureVariable;
+import net.threetag.threecore.util.player.PlayerHelper;
 
 import java.util.List;
 import java.util.Map;
@@ -86,6 +89,12 @@ public class ModelLayerManager {
 
         // Damage
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "durability"), j -> new ItemDurabilityPredicate(JSONUtils.getFloat(j, "min", 0F), JSONUtils.getFloat(j, "max", 1F)));
+
+        // Small Arms
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "small_arms"), j -> c -> c.getAsEntity() instanceof PlayerEntity && PlayerHelper.hasSmallArms((PlayerEntity) c.getAsEntity()));
+
+        // Is Size Changing
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "is_size_changing"), j -> new IsSizeChangingPredicate());
     }
 
     public static void registerPredicate(ResourceLocation id, NonNullFunction<JsonObject, IModelLayerPredicate> function) {
