@@ -6,7 +6,7 @@ import net.threetag.threecore.util.modellayer.ModelLayerManager;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class IsSizeChangingPredicate implements ModelLayerManager.IModelLayerPredicate {
+public class IsSizeChangingPredicate implements IModelLayerPredicate {
 
     @Override
     public boolean test(IModelLayerContext context) {

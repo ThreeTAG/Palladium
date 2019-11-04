@@ -9,6 +9,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.LazyLoadBase;
 import net.threetag.threecore.util.client.RenderUtil;
 import net.threetag.threecore.util.client.model.ISlotDependentVisibility;
+import net.threetag.threecore.util.modellayer.predicates.IModelLayerPredicate;
 import net.threetag.threecore.util.modellayer.texture.ModelLayerTexture;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class ModelLayer {
     public final LazyLoadBase<BipedModel> model;
     public final ModelLayerTexture texture;
     public final boolean glow;
-    public final List<ModelLayerManager.IModelLayerPredicate> predicateList = Lists.newLinkedList();
+    public final List<IModelLayerPredicate> predicateList = Lists.newLinkedList();
 
     public ModelLayer(LazyLoadBase<BipedModel> model, ModelLayerTexture texture, boolean glow) {
         this.model = Objects.requireNonNull(model);
@@ -60,7 +61,7 @@ public class ModelLayer {
         return ModelLayerManager.arePredicatesFulFilled(this.predicateList, context);
     }
 
-    public ModelLayer addPredicate(ModelLayerManager.IModelLayerPredicate predicate) {
+    public ModelLayer addPredicate(IModelLayerPredicate predicate) {
         this.predicateList.add(predicate);
         return this;
     }

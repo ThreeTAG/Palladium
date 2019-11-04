@@ -5,7 +5,7 @@ import net.minecraft.util.math.MathHelper;
 import net.threetag.threecore.util.modellayer.IModelLayerContext;
 import net.threetag.threecore.util.modellayer.ModelLayerManager;
 
-public class ItemDurabilityPredicate implements ModelLayerManager.IModelLayerPredicate {
+public class ItemDurabilityPredicate implements IModelLayerPredicate {
 
     public final float min;
     public final float max;

@@ -1,13 +1,12 @@
 package net.threetag.threecore.util.modellayer.predicates;
 
 import net.threetag.threecore.util.modellayer.IModelLayerContext;
-import net.threetag.threecore.util.modellayer.ModelLayerManager;
 
-public class NotPredicate implements ModelLayerManager.IModelLayerPredicate {
+public class NotPredicate implements IModelLayerPredicate {
 
-    public final ModelLayerManager.IModelLayerPredicate predicate;
+    public final IModelLayerPredicate predicate;
 
-    public NotPredicate(ModelLayerManager.IModelLayerPredicate predicate) {
+    public NotPredicate(IModelLayerPredicate predicate) {
         this.predicate = predicate;
     }
 

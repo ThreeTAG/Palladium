@@ -14,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.client.model.ModelRegistry;
+import net.threetag.threecore.util.modellayer.predicates.IModelLayerPredicate;
 import net.threetag.threecore.util.modellayer.predicates.IsSizeChangingPredicate;
 import net.threetag.threecore.util.modellayer.predicates.ItemDurabilityPredicate;
 import net.threetag.threecore.util.modellayer.predicates.NotPredicate;
@@ -179,12 +180,6 @@ public class ModelLayerManager {
                 return false;
         }
         return true;
-    }
-
-    public interface IModelLayerPredicate {
-
-        boolean test(IModelLayerContext context);
-
     }
 
 }
