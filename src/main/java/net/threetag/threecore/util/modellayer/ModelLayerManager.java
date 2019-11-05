@@ -5,15 +5,11 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.Model;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.LazyLoadBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.util.client.model.ModelRegistry;
 import net.threetag.threecore.util.modellayer.predicates.IModelLayerPredicate;
 import net.threetag.threecore.util.modellayer.predicates.IsSizeChangingPredicate;
 import net.threetag.threecore.util.modellayer.predicates.ItemDurabilityPredicate;
@@ -41,10 +37,7 @@ public class ModelLayerManager {
 
     static {
         // Default Layer
-        registerModelLayer(new ResourceLocation(ThreeCore.MODID, "default"), j -> new ModelLayer(new LazyLoadBase<BipedModel>(() -> {
-            Model model = ModelRegistry.getModel(JSONUtils.getString(j, "model"));
-            return model instanceof BipedModel ? (BipedModel) model : null;
-        }), ModelLayerTexture.parse(j.get("texture")), JSONUtils.getBoolean(j, "glow", false)));
+        registerModelLayer(new ResourceLocation(ThreeCore.MODID, "default"), ModelLayer::parse);
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
 
