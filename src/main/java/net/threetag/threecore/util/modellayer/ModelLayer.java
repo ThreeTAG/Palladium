@@ -33,7 +33,9 @@ public class ModelLayer {
         BipedModel model = getModel(context);
         if (model != null) {
             entityRenderer.getEntityModel().setModelAttributes(model);
-            model.isSneak = context.getAsEntity().isSneaking();
+            model.isSneak = context.getAsEntity().shouldRenderSneaking();
+            model.rightArmPose = ((BipedModel)entityRenderer.getEntityModel()).rightArmPose;
+            model.leftArmPose = ((BipedModel)entityRenderer.getEntityModel()).leftArmPose;
             if (context.getSlot() != null)
                 this.setModelSlotVisible(model, context.getSlot());
             if (this.glow) {
