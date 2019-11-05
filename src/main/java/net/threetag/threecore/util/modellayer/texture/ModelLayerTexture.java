@@ -22,7 +22,7 @@ public abstract class ModelLayerTexture {
 
     public static ModelLayerTexture parse(JsonElement jsonElement) {
         if (jsonElement.isJsonPrimitive()) {
-            return new DefaultModelTexture(jsonElement.getAsString(), jsonElement.getAsString());
+            return new DefaultModelTexture(jsonElement.getAsString(), null);
         } else if (jsonElement.isJsonObject()) {
             JsonObject json = jsonElement.getAsJsonObject();
             String type = JSONUtils.getString(json, "type", ThreeCore.MODID + ":default");

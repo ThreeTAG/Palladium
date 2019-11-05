@@ -50,7 +50,7 @@ public class ModelLayerManager {
 
         // Default
         registerModelTexture(new ResourceLocation(ThreeCore.MODID, "default"), j -> {
-            DefaultModelTexture texture = new DefaultModelTexture(JSONUtils.getString(j, "base"), JSONUtils.getString(j, "output"));
+            DefaultModelTexture texture = new DefaultModelTexture(JSONUtils.getString(j, "base"), JSONUtils.getString(j, "output", ""));
             if (JSONUtils.hasField(j, "variables")) {
                 JsonObject variables = JSONUtils.getJsonObject(j, "variables");
                 variables.entrySet().forEach(e -> {

@@ -9,23 +9,29 @@ import net.threetag.threecore.util.modellayer.texture.transformer.ITextureTransf
 import net.threetag.threecore.util.modellayer.texture.transformer.TransformedTexture;
 import net.threetag.threecore.util.modellayer.texture.variable.ITextureVariable;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
 public class DefaultModelTexture extends ModelLayerTexture {
 
     private final String base;
+    @Nullable
     private final String output;
     private final Map<String, ITextureVariable> textureVariableMap = Maps.newHashMap();
     private List<ITextureTransformer> transformers = Lists.newLinkedList();
 
-    public DefaultModelTexture(String base, String output) {
+    public DefaultModelTexture(String base, @Nullable String output) {
         this.base = base;
         this.output = output;
     }
 
     @Override
     public ResourceLocation getTexture(IModelLayerContext context) {
+        if (this.output == null || this.output.isEmpty() || this.transformers.isEmpty()) {
+            return new ResourceLocation(replaceVariables(this.base, context, this.textureVariableMap));
+        }
+
         ResourceLocation output = new ResourceLocation(replaceVariables(this.output, context, this.textureVariableMap));
 
         if (Minecraft.getInstance().getTextureManager().getTexture(output) == null) {
