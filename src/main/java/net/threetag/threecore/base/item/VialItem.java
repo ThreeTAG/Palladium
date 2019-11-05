@@ -54,21 +54,24 @@ public class VialItem extends Item {
 
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+        super.fillItemGroup(group, items);
         if (CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null && this.isInGroup(group)) {
             ForgeRegistries.FLUIDS.getEntries().forEach(entry -> {
                 ItemStack stack = new ItemStack(this);
-                if (entry.getValue() instanceof FlowingFluid) {
-                    if (((FlowingFluid) entry.getValue()).getStillFluid() == entry.getValue()) {
+                if(!entry.getKey().toString().equalsIgnoreCase("minecraft:empty")) {
+                    if (entry.getValue() instanceof FlowingFluid) {
+                        if (((FlowingFluid) entry.getValue()).getStillFluid() == entry.getValue()) {
+                            stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fluidHandler -> {
+                                fluidHandler.fill(new FluidStack(((FlowingFluid) entry.getValue()).getStillFluid(), 500), IFluidHandler.FluidAction.EXECUTE);
+                            });
+                            items.add(stack);
+                        }
+                    } else {
                         stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fluidHandler -> {
-                            fluidHandler.fill(new FluidStack(((FlowingFluid) entry.getValue()).getStillFluid(), 500), IFluidHandler.FluidAction.EXECUTE);
+                            fluidHandler.fill(new FluidStack(entry.getValue(), 500), IFluidHandler.FluidAction.EXECUTE);
                         });
                         items.add(stack);
                     }
-                } else {
-                    stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fluidHandler -> {
-                        fluidHandler.fill(new FluidStack(entry.getValue(), 500), IFluidHandler.FluidAction.EXECUTE);
-                    });
-                    items.add(stack);
                 }
             });
         }
