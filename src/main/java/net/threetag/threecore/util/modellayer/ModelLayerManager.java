@@ -10,10 +10,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.util.modellayer.predicates.IModelLayerPredicate;
-import net.threetag.threecore.util.modellayer.predicates.IsSizeChangingPredicate;
-import net.threetag.threecore.util.modellayer.predicates.ItemDurabilityPredicate;
-import net.threetag.threecore.util.modellayer.predicates.NotPredicate;
+import net.threetag.threecore.util.modellayer.predicates.*;
 import net.threetag.threecore.util.modellayer.texture.DefaultModelTexture;
 import net.threetag.threecore.util.modellayer.texture.ModelLayerTexture;
 import net.threetag.threecore.util.modellayer.texture.transformer.AlphaMaskTextureTransformer;
@@ -36,10 +33,13 @@ public class ModelLayerManager {
     private static final Map<ResourceLocation, NonNullFunction<JsonObject, ITextureTransformer>> TEXTURE_TRANSFORMERS = Maps.newHashMap();
 
     static {
+        // Layer Types
+
         // Default Layer
         registerModelLayer(new ResourceLocation(ThreeCore.MODID, "default"), ModelLayer::parse);
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
+        // Texture Types
 
         // Default
         registerModelTexture(new ResourceLocation(ThreeCore.MODID, "default"), j -> {
@@ -59,6 +59,7 @@ public class ModelLayerManager {
         });
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
+        // Transformers
 
         // Alpha Mask
         registerTextureTransformer(new ResourceLocation(ThreeCore.MODID, "alpha_mask"), j -> new AlphaMaskTextureTransformer(JSONUtils.getString(j, "mask")));
@@ -67,6 +68,7 @@ public class ModelLayerManager {
         registerTextureTransformer(new ResourceLocation(ThreeCore.MODID, "overlay"), j -> new OverlayTextureTransformer(JSONUtils.getString(j, "overlay")));
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
+        // Variables
 
         // Integer NBT
         registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), j -> new IntegerNbtTextureVariable(JSONUtils.getString(j, "nbt_tag")));
@@ -74,6 +76,7 @@ public class ModelLayerManager {
         registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "small_arms"), j -> new SmallArmsTextureVariable(JSONUtils.getString(j, "normal_arms_value", null), JSONUtils.getString(j, "small_arms_value", null)));
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
+        // Predicates
 
         // Not
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "not"), j -> new NotPredicate(parsePredicate(JSONUtils.getJsonObject(j, "predicate"))));
@@ -89,6 +92,12 @@ public class ModelLayerManager {
 
         // Is Size Changing
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "is_size_changing"), j -> new IsSizeChangingPredicate());
+
+        // Size
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "size"), j -> new SizePredicate(JSONUtils.getFloat(j, "min", 1F), JSONUtils.getFloat(j, "max", 1F)));
+
+        // Karma
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "karma"), j -> new KarmaPredicate(JSONUtils.getInt(j, "min", 0), JSONUtils.getInt(j, "max", 0)));
     }
 
     public static void registerPredicate(ResourceLocation id, NonNullFunction<JsonObject, IModelLayerPredicate> function) {
