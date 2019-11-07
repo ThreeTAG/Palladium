@@ -43,6 +43,10 @@ public class ThreeDataBuilder {
             return new TextComponentThreeData(name);
         if (type.equalsIgnoreCase("uuid"))
             return new UUIDThreeData(name);
+        if (type.equalsIgnoreCase("ingredient"))
+            return new IngredientThreeData(name);
+        if (type.equalsIgnoreCase("item_tag"))
+            return new ItemTagThreeData(name);
         return new StringThreeData(name);
     }
 

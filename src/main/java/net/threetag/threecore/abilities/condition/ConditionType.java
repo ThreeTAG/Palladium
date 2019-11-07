@@ -1,10 +1,5 @@
 package net.threetag.threecore.abilities.condition;
 
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.abilities.AbilityType;
-import net.threetag.threecore.abilities.AttributeModifierAbility;
-import net.threetag.threecore.util.threedata.ThreeData;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,6 +10,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.abilities.Ability;
+import net.threetag.threecore.abilities.AbilityType;
+import net.threetag.threecore.abilities.AttributeModifierAbility;
+import net.threetag.threecore.util.threedata.ThreeData;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -44,6 +44,8 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
     public static final ConditionType ITEM_BUY = new ConditionType(ItemBuyableAbilityCondition::new, ThreeCore.MODID, "item_buy");
     public static final ConditionType EQUIPMENT_SLOT = new ConditionType(EquipmentSlotCondition::new, ThreeCore.MODID, "equipment_slot");
     public static final ConditionType XP = new ConditionType(XPCondition::new, ThreeCore.MODID, "xp");
+    public static final ConditionType WEARING_ITEM = new ConditionType(WearingItemCondition::new, ThreeCore.MODID, "wearing_item");
+    public static final ConditionType WEARING_ITEM_TAG = new ConditionType(WearingItemTagCondition::new, ThreeCore.MODID, "wearing_item_tag");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -63,12 +65,14 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
         e.getRegistry().register(ITEM_BUY);
         e.getRegistry().register(EQUIPMENT_SLOT);
         e.getRegistry().register(XP);
+        e.getRegistry().register(WEARING_ITEM);
+        e.getRegistry().register(WEARING_ITEM_TAG);
     }
 
     @OnlyIn(Dist.CLIENT)
     public static void generateHtmlFile(File file) {
         try {
-            if(!file.getParentFile().exists())
+            if (!file.getParentFile().exists())
                 file.getParentFile().mkdirs();
 
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
