@@ -15,6 +15,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.LazyLoadBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -92,8 +93,17 @@ public class ItemParser {
             String s = resourcelocation.getPath();
             ResourceLocation resourcelocation1 = new ResourceLocation(resourcelocation.getNamespace(), s.substring(resourcePrefix, s.length() - resourceSuffix));
 
-            // Armor materials
-            if (resourcelocation.getPath().startsWith("items/_armor_materials")) {
+            if (resourcelocation.getPath().startsWith("items/_item_groups")) {
+                try (IResource iresource = resourceManager.getResource(resourcelocation)) {
+                    JsonArray jsonArray = JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonArray.class);
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        SimpleItemGroup itemGroup = parseItemGroup(jsonArray.get(i).getAsJsonObject());
+                        ThreeCore.LOGGER.info("Registered addonpack item group {} from {}!", itemGroup.getName(), resourcelocation);
+                    }
+                } catch (Throwable throwable) {
+                    ThreeCore.LOGGER.error("Couldn't read addonpack armor materials from {}", resourcelocation, throwable);
+                }
+            } else if (resourcelocation.getPath().startsWith("items/_armor_materials")) {
                 try (IResource iresource = resourceManager.getResource(resourcelocation)) {
                     JsonArray jsonArray = JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonArray.class);
                     for (int i = 0; i < jsonArray.size(); i++) {
@@ -208,6 +218,10 @@ public class ItemParser {
     public static ToolType getToolType(String name) {
         Map<String, ToolType> values = ObfuscationReflectionHelper.getPrivateValue(ToolType.class, null, "values");
         return values.get(name);
+    }
+
+    public static SimpleItemGroup parseItemGroup(JsonObject json) {
+        return new SimpleItemGroup(JSONUtils.getString(json, "name"), () -> CraftingHelper.getItemStack(JSONUtils.getJsonObject(json, "icon"), true));
     }
 
     public static IArmorMaterial parseArmorMaterial(JsonObject json) {
