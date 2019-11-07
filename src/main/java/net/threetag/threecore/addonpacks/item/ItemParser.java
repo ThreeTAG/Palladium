@@ -89,10 +89,7 @@ public class ItemParser {
     public void registerItems(RegistryEvent.Register<Item> e) {
         IResourceManager resourceManager = ThreeCoreAddonPacks.getInstance().getResourceManager();
 
-        for (ResourceLocation resourcelocation : resourceManager.getAllResourceLocations("items", (name) -> name.endsWith(".json"))) {
-            String s = resourcelocation.getPath();
-            ResourceLocation resourcelocation1 = new ResourceLocation(resourcelocation.getNamespace(), s.substring(resourcePrefix, s.length() - resourceSuffix));
-
+        for (ResourceLocation resourcelocation : resourceManager.getAllResourceLocations("items", (name) -> name.endsWith(".json") && name.startsWith("items/_"))) {
             if (resourcelocation.getPath().startsWith("items/_item_groups")) {
                 try (IResource iresource = resourceManager.getResource(resourcelocation)) {
                     JsonArray jsonArray = JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonArray.class);
@@ -126,17 +123,22 @@ public class ItemParser {
                 } catch (Throwable throwable) {
                     ThreeCore.LOGGER.error("Couldn't read addonpack item tier from {}", resourcelocation, throwable);
                 }
-            } else {
-                try (IResource iresource = resourceManager.getResource(resourcelocation)) {
-                    Item item = parse(JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
-                    if (item != null) {
-                        item.setRegistryName(resourcelocation1);
-                        e.getRegistry().register(item);
-                        ThreeCore.LOGGER.info("Registered addonpack item {}!", resourcelocation1);
-                    }
-                } catch (Throwable throwable) {
-                    ThreeCore.LOGGER.error("Couldn't read addonpack item {} from {}", resourcelocation1, resourcelocation, throwable);
+            }
+        }
+
+        for (ResourceLocation resourcelocation : resourceManager.getAllResourceLocations("items", (name) -> name.endsWith(".json") && !name.startsWith("items/_"))) {
+            String s = resourcelocation.getPath();
+            ResourceLocation resourcelocation1 = new ResourceLocation(resourcelocation.getNamespace(), s.substring(resourcePrefix, s.length() - resourceSuffix));
+
+            try (IResource iresource = resourceManager.getResource(resourcelocation)) {
+                Item item = parse(JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
+                if (item != null) {
+                    item.setRegistryName(resourcelocation1);
+                    e.getRegistry().register(item);
+                    ThreeCore.LOGGER.info("Registered addonpack item {}!", resourcelocation1);
                 }
+            } catch (Throwable throwable) {
+                ThreeCore.LOGGER.error("Couldn't read addonpack item {} from {}", resourcelocation1, resourcelocation, throwable);
             }
         }
     }
