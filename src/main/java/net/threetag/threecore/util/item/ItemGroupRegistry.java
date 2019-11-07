@@ -51,12 +51,7 @@ public class ItemGroupRegistry {
     }
 
     public static ItemGroup addItemGroup(String name, Supplier<ItemStack> stackSupplier) {
-        return addItemGroup(name, new ItemGroup(name) {
-            @Override
-            public ItemStack createIcon() {
-                return stackSupplier.get();
-            }
-        });
+        return addItemGroup(name, new SimpleItemGroup(name, stackSupplier));
     }
 
     public static ItemGroup addItemGroup(String name, ItemGroup tab) {
