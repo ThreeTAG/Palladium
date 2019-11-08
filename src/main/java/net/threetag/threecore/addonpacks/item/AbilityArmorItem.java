@@ -111,7 +111,7 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
                     JsonArray layersArray = JSONUtils.getJsonArray(jsonObject, "layers");
 
                     for (int i = 0; i < layersArray.size(); i++) {
-                        ModelLayer layer = ModelLayerManager.parseLayer(layersArray.get(i).getAsJsonObject());
+                        ModelLayer layer = ModelLayerManager.parseLayer(layersArray.get(i));
                         if (layer != null)
                             item.layers.add(layer);
                     }
