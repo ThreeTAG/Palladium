@@ -26,4 +26,9 @@ public class CustomHotbarAbility extends Ability {
         this.dataManager.register(HOTBAR_ELEMENT, RenderGameOverlayEvent.ElementType.HEALTH);
         this.dataManager.register(TEXTURE, AbstractGui.GUI_ICONS_LOCATION);
     }
+
+    @Override
+    public boolean isEffect() {
+        return true;
+    }
 }

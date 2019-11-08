@@ -31,6 +31,11 @@ public class ModelLayerAbility extends Ability implements IModelLayerProvider {
     }
 
     @Override
+    public boolean isEffect() {
+        return true;
+    }
+
+    @Override
     public List<ModelLayer> getModelLayers(IModelLayerContext context) {
         return Collections.singletonList(modelLayer.getValue());
     }

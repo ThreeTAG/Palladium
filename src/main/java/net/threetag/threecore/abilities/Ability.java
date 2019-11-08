@@ -59,7 +59,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
 
     public void registerData() {
         this.dataManager.register(SHOW_IN_BAR, false);
-        this.dataManager.register(HIDDEN, false);
+        this.dataManager.register(HIDDEN, isEffect());
         this.dataManager.register(TITLE,
                 new TranslationTextComponent("ability." + this.type.getRegistryName().getNamespace() + "." + this.type.getRegistryName().getPath()));
         this.dataManager.register(ICON, new ItemIcon(Blocks.BARRIER));
@@ -76,6 +76,10 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
     public void drawIcon(Minecraft mc, AbstractGui gui, int x, int y) {
         if (this.getDataManager().has(ICON))
             this.getDataManager().get(ICON).draw(mc, x, y);
+    }
+
+    public boolean isEffect() {
+        return false;
     }
 
     public void tick(LivingEntity entity) {
