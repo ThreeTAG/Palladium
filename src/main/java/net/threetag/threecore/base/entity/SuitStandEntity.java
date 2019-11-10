@@ -75,16 +75,18 @@ public class SuitStandEntity extends ArmorStandEntity {
 
     @Override
     public ActionResultType applyPlayerInteraction(PlayerEntity player, Vec3d vec3d, Hand hand) {
-        ItemStack stack = player.getHeldItem(hand);
+        if (!player.isSneaking()) {
+            ItemStack stack = player.getHeldItem(hand);
 
-        if (stack.getItem().isIn(Tags.Items.DYES)) {
-            DyeColor color = DyeColor.getColor(stack);
-            if (color != null) {
-                this.setDyeColor(color);
-                stack.shrink(1);
-                return ActionResultType.SUCCESS;
-            } else {
-                return ActionResultType.PASS;
+            if (stack.getItem().isIn(Tags.Items.DYES)) {
+                DyeColor color = DyeColor.getColor(stack);
+                if (color != null) {
+                    this.setDyeColor(color);
+                    stack.shrink(1);
+                    return ActionResultType.SUCCESS;
+                } else {
+                    return ActionResultType.PASS;
+                }
             }
         }
 
