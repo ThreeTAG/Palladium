@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -32,6 +33,10 @@ import net.threetag.threecore.util.client.model.EntityModelManager;
 import net.threetag.threecore.util.data.ThreeCoreBlockTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreItemTagsProvider;
 import net.threetag.threecore.util.data.ThreeCoreRecipeProvider;
+import net.threetag.threecore.util.entity.armorstand.ArmorStandPoseCommand;
+import net.threetag.threecore.util.entity.armorstand.ArmorStandPoseManager;
+import net.threetag.threecore.util.entity.armorstand.SendArmorStandCommandMessage;
+import net.threetag.threecore.util.entity.armorstand.SetArmorStandPoseMessage;
 import net.threetag.threecore.util.loot.function.TCLootFunctions;
 import net.threetag.threecore.util.modellayer.ModelLayerLoader;
 import net.threetag.threecore.util.scripts.ScriptEventManager;
@@ -62,6 +67,7 @@ public class ThreeCore {
         // Basic stuff
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::gatherData);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
         SupporterHandler.load();
 //        SupporterHandler.enableSupporterCheck();
 
@@ -83,6 +89,8 @@ public class ThreeCore {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
             MinecraftForge.EVENT_BUS.addListener(this::initGui);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(ArmorStandPoseManager::clientSetup);
+
             if (Minecraft.getInstance() != null) {
                 ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new EntityModelManager());
                 ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new ModelLayerLoader());
@@ -96,12 +104,20 @@ public class ThreeCore {
         registerMessage(UpdateThreeDataMessage.class, UpdateThreeDataMessage::toBytes, UpdateThreeDataMessage::new, UpdateThreeDataMessage::handle);
         registerMessage(SyncThreeDataMessage.class, SyncThreeDataMessage::toBytes, SyncThreeDataMessage::new, SyncThreeDataMessage::handle);
         MinecraftForge.EVENT_BUS.register(new ThreeDataProvider.EventHandler());
+
+        // ArmorStandPoses
+        registerMessage(SetArmorStandPoseMessage.class, SetArmorStandPoseMessage::toBytes, SetArmorStandPoseMessage::new, SetArmorStandPoseMessage::handle);
+        registerMessage(SendArmorStandCommandMessage.class, SendArmorStandCommandMessage::toBytes, SendArmorStandCommandMessage::new, SendArmorStandCommandMessage::handle);
     }
 
     public void gatherData(GatherDataEvent e) {
         e.getGenerator().addProvider(new ThreeCoreBlockTagsProvider(e.getGenerator()));
         e.getGenerator().addProvider(new ThreeCoreItemTagsProvider(e.getGenerator()));
         e.getGenerator().addProvider(new ThreeCoreRecipeProvider(e.getGenerator()));
+    }
+
+    public void serverStarting(FMLServerStartingEvent e) {
+        ArmorStandPoseCommand.register(e.getCommandDispatcher());
     }
 
     @OnlyIn(Dist.CLIENT)

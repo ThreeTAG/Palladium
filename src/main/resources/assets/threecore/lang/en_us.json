@@ -142,6 +142,10 @@
 	"commands.superpower.remove.success.entity.single": "%s's superpower was removed",
 	"commands.superpower.remove.success.entity.multiple": "The superpower of %s entities was removed",
 	
+	"commands.armorstandpose.reloaded": "Loaded %s armor stand poses!",
+	"commands.armorstandpose.pose_not_found": "The pose '%s' does not exist!",
+	"commands.armorstandpose.no_armor_stand": "You are not looking at an armor stand!",
+	
 	"karma.class.tyrant": "Tyrant",
 	"karma.class.villain": "Villain",
 	"karma.class.thug": "Thug",
