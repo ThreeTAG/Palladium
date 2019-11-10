@@ -216,7 +216,6 @@ public class BipedModelParser extends EntityModelParser {
                 this.bipedHead.rotateAngleX = ((float) Math.PI / 180F) * armorStandEntity.getHeadRotation().getX();
                 this.bipedHead.rotateAngleY = ((float) Math.PI / 180F) * armorStandEntity.getHeadRotation().getY();
                 this.bipedHead.rotateAngleZ = ((float) Math.PI / 180F) * armorStandEntity.getHeadRotation().getZ();
-                this.bipedHead.setRotationPoint(0.0F, 1.0F, 0.0F);
                 this.bipedBody.rotateAngleX = ((float) Math.PI / 180F) * armorStandEntity.getBodyRotation().getX();
                 this.bipedBody.rotateAngleY = ((float) Math.PI / 180F) * armorStandEntity.getBodyRotation().getY();
                 this.bipedBody.rotateAngleZ = ((float) Math.PI / 180F) * armorStandEntity.getBodyRotation().getZ();
@@ -229,14 +228,13 @@ public class BipedModelParser extends EntityModelParser {
                 this.bipedLeftLeg.rotateAngleX = ((float) Math.PI / 180F) * armorStandEntity.getLeftLegRotation().getX();
                 this.bipedLeftLeg.rotateAngleY = ((float) Math.PI / 180F) * armorStandEntity.getLeftLegRotation().getY();
                 this.bipedLeftLeg.rotateAngleZ = ((float) Math.PI / 180F) * armorStandEntity.getLeftLegRotation().getZ();
-                this.bipedLeftLeg.setRotationPoint(1.9F, 11.0F, 0.0F);
                 this.bipedRightLeg.rotateAngleX = ((float) Math.PI / 180F) * armorStandEntity.getRightLegRotation().getX();
                 this.bipedRightLeg.rotateAngleY = ((float) Math.PI / 180F) * armorStandEntity.getRightLegRotation().getY();
                 this.bipedRightLeg.rotateAngleZ = ((float) Math.PI / 180F) * armorStandEntity.getRightLegRotation().getZ();
-                this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
                 this.bipedHeadwear.copyModelAngles(this.bipedHead);
             } else {
                 super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                this.bipedHead.rotateAngleZ = 0;
             }
 
             this.bipedLeftLegwear.copyModelAngles(this.bipedLeftLeg);

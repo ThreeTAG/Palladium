@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " B ",
+    "SBS",
+    "SXS"
+  ],
+  "key": {
+    "B": {
+      "tag": "forge:storage_blocks/quartz"
+    },
+    "S": [
+      {
+        "item": "minecraft:quartz_slab"
+      },
+      {
+        "item": "minecraft:smooth_quartz_slab"
+      }
+    ],
+    "X": {
+      "item": "minecraft:smooth_stone_slab"
+    }
+  },
+  "result": {
+    "item": "threecore:suit_stand"
+  }
+}

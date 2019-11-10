@@ -20,6 +20,7 @@
 	"item.threecore.circuit": "Circuit",
 	"item.threecore.advanced_circuit": "Advanced Circuit",
 	"item.threecore.vial": "Vial",
+	"item.threecore.suit_stand": "Suit Stand",
 	
 	"block.threecore.copper_block": "Block of Copper",
 	"block.threecore.tin_block": "Block of Tin",
@@ -123,6 +124,8 @@
 	"item.threecore.steel_plate": "Steel Plate",
 	"item.threecore.gold_titanium_alloy_plate": "Gold-Titanium-Alloy Plate",
 	"item.threecore.adamantium_plate": "Adamantium Plate",
+	
+	"entity.threecore.suit_stand": "Suit Stand",
 	
 	"commands.karma.success.player.single": "%s karma has been set to %s",
 	"commands.karma.success.player.multiple": "Karma of %s players has been set to %s",

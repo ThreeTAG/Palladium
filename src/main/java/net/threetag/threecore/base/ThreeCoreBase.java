@@ -7,6 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
@@ -27,6 +29,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.IContainerFactory;
@@ -41,14 +44,13 @@ import net.threetag.threecore.base.client.gui.CapacitorBlockScreen;
 import net.threetag.threecore.base.client.gui.FluidComposerScreen;
 import net.threetag.threecore.base.client.gui.GrinderScreen;
 import net.threetag.threecore.base.client.gui.HydraulicPressScreen;
+import net.threetag.threecore.base.client.renderer.entity.SuitStandRenderer;
+import net.threetag.threecore.base.entity.SuitStandEntity;
 import net.threetag.threecore.base.inventory.CapacitorBlockContainer;
 import net.threetag.threecore.base.inventory.FluidComposerContainer;
 import net.threetag.threecore.base.inventory.GrinderContainer;
 import net.threetag.threecore.base.inventory.HydraulicPressContainer;
-import net.threetag.threecore.base.item.CapacitorBlockItem;
-import net.threetag.threecore.base.item.CapacitorItem;
-import net.threetag.threecore.base.item.HammerItem;
-import net.threetag.threecore.base.item.VialItem;
+import net.threetag.threecore.base.item.*;
 import net.threetag.threecore.base.recipe.FluidComposingRecipe;
 import net.threetag.threecore.base.recipe.GrinderRecipe;
 import net.threetag.threecore.base.recipe.PressingRecipe;
@@ -84,6 +86,9 @@ public class ThreeCoreBase {
             ScreenManager.registerFactory(FLUID_COMPOSER_CONTAINER, FluidComposerScreen::new);
             ScreenManager.registerFactory(CAPACITOR_BLOCK_CONTAINER, CapacitorBlockScreen::new);
 
+            // Entities
+            RenderingRegistry.registerEntityRenderingHandler(SuitStandEntity.class, SuitStandRenderer::new);
+
             try {
                 // Item Colors
                 Minecraft.getInstance().getItemColors().register((IItemColor) Class.forName("net.threetag.threecore.base.item.VialItem$ItemColor").newInstance(), VIAL);
@@ -100,6 +105,10 @@ public class ThreeCoreBase {
     public void addOreFeature(Biome biome, BlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
         biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, ore, config.size.get()), Placement.COUNT_RANGE, new CountRangeConfig(config.count.get(), config.minHeight.get(), 0, config.maxHeight.get() - config.minHeight.get())));
     }
+
+    // Entities
+    @ObjectHolder("suit_stand")
+    public static final EntityType<SuitStandEntity> SUIT_STAND_ENTITY = null;
 
     // Machines
     @ObjectHolder("grinder")
@@ -167,6 +176,8 @@ public class ThreeCoreBase {
     public static final Item ADVANCED_CIRCUIT = null;
     @ObjectHolder("vial")
     public static final Item VIAL = null;
+    @ObjectHolder("suit_stand")
+    public static final Item SUIT_STAND = null;
 
     // Storage Blocks
     @ObjectHolder("copper_block")
@@ -375,6 +386,11 @@ public class ThreeCoreBase {
     public static final Item ADAMANTIUM_PLATE = null;
 
     @SubscribeEvent
+    public void registerEntityTypes(RegistryEvent.Register<EntityType<?>> e) {
+        e.getRegistry().register(EntityType.Builder.<SuitStandEntity>create(SuitStandEntity::new, EntityClassification.MISC).size(12F / 16F, 2F).setCustomClientFactory((spawnEntity, world) -> SUIT_STAND_ENTITY.create(world)).build(ThreeCore.MODID + ":suit_stand").setRegistryName("suit_stand"));
+    }
+
+    @SubscribeEvent
     public void registerBlocks(RegistryEvent.Register<Block> e) {
         IForgeRegistry<Block> registry = e.getRegistry();
 
@@ -470,6 +486,7 @@ public class ThreeCoreBase {
         registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "circuit"));
         registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
         registry.register(new VialItem(new Item.Properties().group(ItemGroup.MISC).maxStackSize(1)).setRegistryName("vial"));
+        registry.register(new SuitStandItem(new Item.Properties().group(ItemGroup.DECORATIONS).maxStackSize(16)).setRegistryName("suit_stand"));
 
         registry.register(makeItem(COPPER_BLOCK));
         registry.register(makeItem(TIN_BLOCK));
