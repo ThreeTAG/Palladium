@@ -8,12 +8,16 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.EnderCrystalEntity;
 import net.minecraft.entity.item.HangingEntity;
 import net.minecraft.entity.monster.ShulkerEntity;
+import net.minecraft.entity.passive.ChickenEntity;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.SnowballEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.item.BucketItem;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -26,6 +30,7 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.threetag.threecore.ThreeCore;
@@ -95,9 +100,7 @@ public class SizeChangingEventHandler {
 
     @SubscribeEvent
     public void onLivingDrops(LivingDropsEvent e) {
-        e.getDrops().forEach(entity -> {
-            copyScale(e.getEntityLiving(), entity);
-        });
+        e.getDrops().forEach(entity -> copyScale(e.getEntityLiving(), entity));
     }
 
     @SubscribeEvent
@@ -146,6 +149,19 @@ public class SizeChangingEventHandler {
                     }
                 }
             });
+    }
+
+    @SubscribeEvent
+    public void onEntityInteract(PlayerInteractEvent.EntityInteract e) {
+        if (e.getTarget() instanceof CowEntity && e.getItemStack().getItem() instanceof BucketItem) {
+            e.getTarget().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
+                if (sizeChanging.getScale() <= 0.75F) {
+                    e.setCanceled(true);
+                    e.setCancellationResult(ActionResultType.FAIL);
+                }
+            });
+        }
+        ChickenEntity
     }
 
     @SubscribeEvent
