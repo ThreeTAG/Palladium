@@ -23,25 +23,38 @@ public class ArmorStandEventHandler {
 
     @SubscribeEvent
     public static void rightClickEntity(PlayerInteractEvent.EntityInteractSpecific e) {
-        if (e.getTarget() instanceof ArmorStandEntity && !e.getEntityLiving().isSneaking()) {
+        if (e.getTarget() instanceof ArmorStandEntity) {
             ArmorStandEntity armorStand = (ArmorStandEntity) e.getTarget();
 
-            if (!e.getItemStack().isEmpty()) {
-                if (e.getItemStack().getItem() instanceof HammerItem) {
-                    armorStand.setShowArms(!armorStand.getShowArms());
-                    e.getItemStack().damageItem(1, e.getPlayer(), (player) -> player.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-                    PlayerHelper.playSoundToAll(armorStand.world, armorStand.posX, armorStand.posY + armorStand.size.height / 2F, armorStand.posZ, 50, getSound(armorStand, armorStand.getShowArms()), armorStand.getSoundCategory());
-                    e.setCanceled(true);
-                    e.setCancellationResult(ActionResultType.SUCCESS);
-                } else if (e.getItemStack().getItem().isIn(armorStand instanceof SuitStandEntity ? Tags.Items.GEMS_QUARTZ : Tags.Items.RODS_WOODEN)) {
-                    if (armorStand.isSmall()) {
-                        e.getItemStack().shrink(1);
-                        armorStand.setSmall(false);
-                        PlayerHelper.playSoundToAll(armorStand.world, armorStand.posX, armorStand.posY + armorStand.size.height / 2F, armorStand.posZ, 50, getSound(armorStand, true), armorStand.getSoundCategory());
+            if (!e.getEntityLiving().isSneaking()) {
+                if (!e.getItemStack().isEmpty()) {
+                    if (e.getItemStack().getItem() instanceof HammerItem) {
+                        armorStand.setShowArms(!armorStand.getShowArms());
+                        e.getItemStack().damageItem(1, e.getPlayer(), (player) -> player.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+                        PlayerHelper.playSoundToAll(armorStand.world, armorStand.posX, armorStand.posY + armorStand.size.height / 2F, armorStand.posZ, 50, getSound(armorStand, armorStand.getShowArms()), armorStand.getSoundCategory());
                         e.setCanceled(true);
                         e.setCancellationResult(ActionResultType.SUCCESS);
+                    } else if (e.getItemStack().getItem().isIn(armorStand instanceof SuitStandEntity ? Tags.Items.GEMS_QUARTZ : Tags.Items.RODS_WOODEN)) {
+                        if (armorStand.isSmall()) {
+                            e.getItemStack().shrink(1);
+                            armorStand.setSmall(false);
+                            PlayerHelper.playSoundToAll(armorStand.world, armorStand.posX, armorStand.posY + armorStand.size.height / 2F, armorStand.posZ, 50, getSound(armorStand, true), armorStand.getSoundCategory());
+                            e.setCanceled(true);
+                            e.setCancellationResult(ActionResultType.SUCCESS);
+                        }
                     }
                 }
+            } else {
+                for (EquipmentSlotType slotType : EquipmentSlotType.values()) {
+                    if (slotType.getSlotType() == EquipmentSlotType.Group.ARMOR) {
+                        ItemStack standStack = armorStand.getItemStackFromSlot(slotType);
+                        ItemStack playerStack = e.getEntityLiving().getItemStackFromSlot(slotType);
+                        armorStand.setItemStackToSlot(slotType, playerStack);
+                        e.getEntityLiving().setItemStackToSlot(slotType, standStack);
+                    }
+                }
+                e.setCanceled(true);
+                e.setCancellationResult(ActionResultType.SUCCESS);
             }
         }
     }
