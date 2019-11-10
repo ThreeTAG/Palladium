@@ -29,14 +29,15 @@ public class ArmorStandEventHandler {
             if (!e.getItemStack().isEmpty()) {
                 if (e.getItemStack().getItem() instanceof HammerItem) {
                     armorStand.setShowArms(!armorStand.getShowArms());
-                    PlayerHelper.playSoundToAll(armorStand.world, armorStand.posX, armorStand.posY + armorStand.size.height / 2F, armorStand.posZ, 50, getSound(armorStand, !armorStand.getShowArms()), armorStand.getSoundCategory());
+                    e.getItemStack().damageItem(1, e.getPlayer(), (player) -> player.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+                    PlayerHelper.playSoundToAll(armorStand.world, armorStand.posX, armorStand.posY + armorStand.size.height / 2F, armorStand.posZ, 50, getSound(armorStand, armorStand.getShowArms()), armorStand.getSoundCategory());
                     e.setCanceled(true);
                     e.setCancellationResult(ActionResultType.SUCCESS);
                 } else if (e.getItemStack().getItem().isIn(armorStand instanceof SuitStandEntity ? Tags.Items.GEMS_QUARTZ : Tags.Items.RODS_WOODEN)) {
                     if (armorStand.isSmall()) {
                         e.getItemStack().shrink(1);
                         armorStand.setSmall(false);
-                        PlayerHelper.playSoundToAll(armorStand.world, armorStand.posX, armorStand.posY + armorStand.size.height / 2F, armorStand.posZ, 50, getSound(armorStand, !armorStand.isSmall()), armorStand.getSoundCategory());
+                        PlayerHelper.playSoundToAll(armorStand.world, armorStand.posX, armorStand.posY + armorStand.size.height / 2F, armorStand.posZ, 50, getSound(armorStand, true), armorStand.getSoundCategory());
                         e.setCanceled(true);
                         e.setCancellationResult(ActionResultType.SUCCESS);
                     }
@@ -54,7 +55,8 @@ public class ArmorStandEventHandler {
             if (!stack.isEmpty()) {
                 if (stack.getItem() instanceof HammerItem) {
                     armorStand.setNoBasePlate(!armorStand.hasNoBasePlate());
-                    PlayerHelper.playSoundToAll(armorStand.world, armorStand.posX, armorStand.posY + armorStand.size.height / 2F, armorStand.posZ, 50, getSound(armorStand, armorStand.hasNoBasePlate()), armorStand.getSoundCategory());
+                    stack.damageItem(1, e.getPlayer(), (player) -> player.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+                    PlayerHelper.playSoundToAll(armorStand.world, armorStand.posX, armorStand.posY + armorStand.size.height / 2F, armorStand.posZ, 50, !armorStand.hasNoBasePlate() ? SoundEvents.BLOCK_STONE_PLACE : SoundEvents.BLOCK_STONE_BREAK, armorStand.getSoundCategory());
                     e.setCanceled(true);
                 } else if (armorStand instanceof SuitStandEntity ? stack.getItem() instanceof PickaxeItem : stack.getItem() instanceof AxeItem) {
                     if (!armorStand.isSmall()) {
