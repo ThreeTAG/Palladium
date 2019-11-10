@@ -213,6 +213,7 @@ public class BipedModelParser extends EntityModelParser {
         public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
             if (entityIn instanceof ArmorStandEntity) {
                 ArmorStandEntity armorStandEntity = (ArmorStandEntity) entityIn;
+                this.bipedRightArm.showModel = this.bipedRightArmwear.showModel = this.bipedLeftArm.showModel = this.bipedLeftArmwear.showModel = ((ArmorStandEntity) entityIn).getShowArms();
                 this.bipedHead.rotateAngleX = ((float) Math.PI / 180F) * armorStandEntity.getHeadRotation().getX();
                 this.bipedHead.rotateAngleY = ((float) Math.PI / 180F) * armorStandEntity.getHeadRotation().getY();
                 this.bipedHead.rotateAngleZ = ((float) Math.PI / 180F) * armorStandEntity.getHeadRotation().getZ();
