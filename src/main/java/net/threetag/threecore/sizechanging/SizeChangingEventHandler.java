@@ -8,7 +8,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.EnderCrystalEntity;
 import net.minecraft.entity.item.HangingEntity;
 import net.minecraft.entity.monster.ShulkerEntity;
-import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -161,7 +160,6 @@ public class SizeChangingEventHandler {
                 }
             });
         }
-        ChickenEntity
     }
 
     @SubscribeEvent
