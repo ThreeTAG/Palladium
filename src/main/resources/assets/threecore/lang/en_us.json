@@ -7,6 +7,7 @@
 	"block.threecore.fluid_composer": "Fluid Composer",
 	"block.threecore.capacitor_block": "Capacitor Block",
 	"block.threecore.advanced_capacitor_block": "Advanced Capacitor Block",
+	"block.threecore.stirling_generator": "Stirling Generator",
 	"block.threecore.solar_panel": "Solar Panel",
 	"block.threecore.gold_conduit": "Gold Energy Conduit",
 	"block.threecore.copper_conduit": "Copper Energy Conduit",
@@ -223,6 +224,7 @@
 	"container.threecore.grinder": "Grinder",
 	"container.threecore.hydraulic_press": "Hydraulic Press",
 	"container.threecore.fluid_composer": "Fluid Composer",
+	"container.threecore.stirling_generator": "Stirling Generator",
 	"container.threecore.capacitor_block": "Capacitor Block",
 	
 	"gui.threecore.abilities": "Abilities",

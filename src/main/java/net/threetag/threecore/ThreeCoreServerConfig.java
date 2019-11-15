@@ -24,6 +24,7 @@ public class ThreeCoreServerConfig {
         public EnergyConfig GRINDER;
         public EnergyConfig HYDRAULIC_PRESS;
         public EnergyConfig FLUID_COMPOSER;
+        public EnergyConfig STIRLING_GENERATOR;
         public ForgeConfigSpec.ConfigValue<Integer> GOLD_CONDUIT;
         public ForgeConfigSpec.ConfigValue<Integer> COPPER_CONDUIT;
         public ForgeConfigSpec.ConfigValue<Integer> SILVER_CONDUIT;
@@ -38,6 +39,8 @@ public class ThreeCoreServerConfig {
             GRINDER = new EnergyConfig(builder, "grinder", 20000, 20);
             HYDRAULIC_PRESS = new EnergyConfig(builder, "hydraulicPress", 20000, 20);
             FLUID_COMPOSER = new EnergyConfig(builder, "fluidComposer", 20000, 20);
+
+            STIRLING_GENERATOR = new EnergyConfig(builder, "stirlingGenerator", 20000, 20);
 
             GOLD_CONDUIT = builder.defineInRange("goldConduit.transferRate", 128, 1, 10000);
             COPPER_CONDUIT = builder.defineInRange("copperConduit.transferRate", 512, 1, 10000);

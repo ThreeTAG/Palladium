@@ -1,0 +1,79 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"side": "threecore:block/stirling_generator_side",
+		"top": "threecore:block/stirling_generator_top",
+		"front": "threecore:block/stirling_generator_front",
+		"particle": "threecore:block/stirling_generator_front",
+		"bottom": "minecraft:block/blast_furnace_top"
+	},
+	"elements": [
+		{
+			"name": "left",
+			"from": [0, 8, 0],
+			"to": [2, 16, 16],
+			"faces": {
+				"north": {"uv": [14, 0, 16, 8], "texture": "#front"},
+				"east": {"uv": [0, 0, 16, 8], "texture": "#bottom"},
+				"south": {"uv": [0, 0, 2, 8], "texture": "#side"},
+				"west": {"uv": [0, 0, 16, 8], "texture": "#side"},
+				"up": {"uv": [16, 16, 14, 0], "texture": "#top"}
+			}
+		},
+		{
+			"name": "back",
+			"from": [2, 8, 14],
+			"to": [14, 16, 16],
+			"faces": {
+				"north": {"uv": [2, 0, 14, 8], "texture": "#bottom"},
+				"south": {"uv": [2, 0, 14, 8], "texture": "#side"},
+				"up": {"uv": [14, 2, 2, 0], "texture": "#top"}
+			}
+		},
+		{
+			"name": "right",
+			"from": [14, 8, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 8], "texture": "#front"},
+				"east": {"uv": [0, 0, 16, 8], "texture": "#side"},
+				"south": {"uv": [14, 0, 16, 8], "texture": "#side"},
+				"west": {"uv": [0, 0, 16, 8], "texture": "#bottom"},
+				"up": {"uv": [2, 16, 0, 0], "texture": "#top"}
+			}
+		},
+		{
+			"name": "front",
+			"from": [2, 8, 0],
+			"to": [14, 16, 2],
+			"faces": {
+				"north": {"uv": [2, 0, 14, 8], "texture": "#front"},
+				"south": {"uv": [2, 0, 14, 8], "texture": "#bottom"},
+				"up": {"uv": [14, 16, 2, 14], "texture": "#top"}
+			}
+		},
+		{
+			"name": "bottom",
+			"from": [0, 0, 0],
+			"to": [16, 8, 16],
+			"faces": {
+				"north": {"uv": [0, 8, 16, 16], "texture": "#front"},
+				"east": {"uv": [0, 8, 16, 16], "texture": "#side"},
+				"south": {"uv": [0, 8, 16, 16], "texture": "#side"},
+				"west": {"uv": [0, 8, 16, 16], "texture": "#side"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#bottom"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#bottom"}
+			}
+		},
+		{
+			"name": "glass",
+			"from": [2, 16, 2],
+			"to": [14, 16, 14],
+			"faces": {
+				"up": {"uv": [2, 2, 14, 14], "texture": "#top"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#top"}
+			}
+		}
+	]
+}

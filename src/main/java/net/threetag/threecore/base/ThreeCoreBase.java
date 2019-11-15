@@ -40,16 +40,10 @@ import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ThreeCoreCommonConfig;
 import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.block.*;
-import net.threetag.threecore.base.client.gui.CapacitorBlockScreen;
-import net.threetag.threecore.base.client.gui.FluidComposerScreen;
-import net.threetag.threecore.base.client.gui.GrinderScreen;
-import net.threetag.threecore.base.client.gui.HydraulicPressScreen;
+import net.threetag.threecore.base.client.gui.*;
 import net.threetag.threecore.base.client.renderer.entity.SuitStandRenderer;
 import net.threetag.threecore.base.entity.SuitStandEntity;
-import net.threetag.threecore.base.inventory.CapacitorBlockContainer;
-import net.threetag.threecore.base.inventory.FluidComposerContainer;
-import net.threetag.threecore.base.inventory.GrinderContainer;
-import net.threetag.threecore.base.inventory.HydraulicPressContainer;
+import net.threetag.threecore.base.inventory.*;
 import net.threetag.threecore.base.item.*;
 import net.threetag.threecore.base.recipe.FluidComposingRecipe;
 import net.threetag.threecore.base.recipe.GrinderRecipe;
@@ -84,6 +78,7 @@ public class ThreeCoreBase {
             ScreenManager.registerFactory(GRINDER_CONTAINER, GrinderScreen::new);
             ScreenManager.registerFactory(HYDRAULIC_PRESS_CONTAINER, HydraulicPressScreen::new);
             ScreenManager.registerFactory(FLUID_COMPOSER_CONTAINER, FluidComposerScreen::new);
+            ScreenManager.registerFactory(STIRLING_GENERATOR_CONTAINER, StirlingGeneratorScreen::new);
             ScreenManager.registerFactory(CAPACITOR_BLOCK_CONTAINER, CapacitorBlockScreen::new);
 
             // Entities
@@ -96,6 +91,7 @@ public class ThreeCoreBase {
                 // TESR
                 ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, (TileEntityRenderer<HydraulicPressTileEntity>) Class.forName("net.threetag.threecore.base.client.renderer.tileentity.HydraulicPressTileEntityRenderer").newInstance());
                 ClientRegistry.bindTileEntitySpecialRenderer(FluidComposerTileEntity.class, (TileEntityRenderer<FluidComposerTileEntity>) Class.forName("net.threetag.threecore.base.client.renderer.tileentity.FluidComposerTileEntityRenderer").newInstance());
+                ClientRegistry.bindTileEntitySpecialRenderer(StirlingGeneratorTileEntity.class, (TileEntityRenderer<StirlingGeneratorTileEntity>) Class.forName("net.threetag.threecore.base.client.renderer.tileentity.StirlingGeneratorTileEntityRenderer").newInstance());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -146,6 +142,13 @@ public class ThreeCoreBase {
     public static final TileEntityType<CapacitorBlockTileEntity> CAPACITOR_BLOCK_TILE_ENTITY = null;
     @ObjectHolder("capacitor_block")
     public static final ContainerType<CapacitorBlockContainer> CAPACITOR_BLOCK_CONTAINER = null;
+
+    @ObjectHolder("stirling_generator")
+    public static final Block STIRLING_GENERATOR = null;
+    @ObjectHolder("stirling_generator")
+    public static final TileEntityType<StirlingGeneratorTileEntity> STIRLING_GENERATOR_TILE_ENTITY = null;
+    @ObjectHolder("stirling_generator")
+    public static final ContainerType<StirlingGeneratorContainer> STIRLING_GENERATOR_CONTAINER = null;
 
     @ObjectHolder("solar_panel")
     public static final Block SOLAR_PANEL = null;
@@ -399,6 +402,7 @@ public class ThreeCoreBase {
         registry.register(new FluidComposerBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "fluid_composer"));
         registry.register(new CapacitorBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F), CapacitorBlock.Type.NORMAL).setRegistryName(ThreeCore.MODID, "capacitor_block"));
         registry.register(new CapacitorBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F), CapacitorBlock.Type.ADVANCED).setRegistryName(ThreeCore.MODID, "advanced_capacitor_block"));
+        registry.register(new StirlingGeneratorBlock(Block.Properties.create(Material.IRON).lightValue(13).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "stirling_generator"));
         registry.register(new SolarPanelBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)).setRegistryName(ThreeCore.MODID, "solar_panel"));
         registry.register(new EnergyConduitBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F), EnergyConduitBlock.ConduitType.GOLD, 2F / 16F).setRegistryName(ThreeCore.MODID, "gold_conduit"));
         registry.register(new EnergyConduitBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F), EnergyConduitBlock.ConduitType.COPPER, 2F / 16F).setRegistryName(ThreeCore.MODID, "copper_conduit"));
@@ -440,6 +444,7 @@ public class ThreeCoreBase {
         e.getRegistry().register(TileEntityType.Builder.create(HydraulicPressTileEntity::new, HYDRAULIC_PRESS).build(null).setRegistryName(ThreeCore.MODID, "hydraulic_press"));
         e.getRegistry().register(TileEntityType.Builder.create(FluidComposerTileEntity::new, FLUID_COMPOSER).build(null).setRegistryName(ThreeCore.MODID, "fluid_composer"));
         e.getRegistry().register(TileEntityType.Builder.create(() -> new CapacitorBlockTileEntity(CapacitorBlock.Type.NORMAL), CAPACITOR_BLOCK, ADVANCED_CAPACITOR_BLOCK).build(null).setRegistryName(ThreeCore.MODID, "capacitor_block"));
+        e.getRegistry().register(TileEntityType.Builder.create(StirlingGeneratorTileEntity::new, STIRLING_GENERATOR).build(null).setRegistryName(ThreeCore.MODID, "stirling_generator"));
         e.getRegistry().register(TileEntityType.Builder.create(SolarPanelTileEntity::new, SOLAR_PANEL).build(null).setRegistryName(ThreeCore.MODID, "solar_panel"));
         e.getRegistry().register(TileEntityType.Builder.create(() -> new EnergyConduitTileEntity(EnergyConduitBlock.ConduitType.GOLD), GOLD_CONDUIT, COPPER_CONDUIT, SILVER_CONDUIT).build(null).setRegistryName(ThreeCore.MODID, "conduit"));
     }
@@ -455,6 +460,13 @@ public class ThreeCoreBase {
                 return tileEntity instanceof FluidComposerTileEntity ? new FluidComposerContainer(windowId, inv, (FluidComposerTileEntity) tileEntity) : null;
             }
         }).setRegistryName(ThreeCore.MODID, "fluid_composer"));
+        e.getRegistry().register(new ContainerType<>(new IContainerFactory<Container>() {
+            @Override
+            public Container create(int windowId, PlayerInventory inv, PacketBuffer data) {
+                TileEntity tileEntity = inv.player.world.getTileEntity(data.readBlockPos());
+                return tileEntity instanceof StirlingGeneratorTileEntity ? new StirlingGeneratorContainer(windowId, inv, (StirlingGeneratorTileEntity) tileEntity) : null;
+            }
+        }).setRegistryName(ThreeCore.MODID, "stirling_generator"));
         e.getRegistry().register(new ContainerType<>(CapacitorBlockContainer::new).setRegistryName(ThreeCore.MODID, "capacitor_block"));
     }
 
@@ -474,6 +486,7 @@ public class ThreeCoreBase {
         registry.register(makeItem(FLUID_COMPOSER, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(new CapacitorBlockItem(CAPACITOR_BLOCK, new Item.Properties().maxStackSize(1).group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), ThreeCoreServerConfig.ENERGY.CAPACITOR).setRegistryName(CAPACITOR_BLOCK.getRegistryName()));
         registry.register(new CapacitorBlockItem(ADVANCED_CAPACITOR_BLOCK, new Item.Properties().maxStackSize(1).group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), ThreeCoreServerConfig.ENERGY.ADVANCED_CAPACITOR).setRegistryName(ADVANCED_CAPACITOR_BLOCK.getRegistryName()));
+        registry.register(makeItem(STIRLING_GENERATOR, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(makeItem(SOLAR_PANEL, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(makeItem(GOLD_CONDUIT, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));
         registry.register(makeItem(COPPER_CONDUIT, ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)));

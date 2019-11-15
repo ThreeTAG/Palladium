@@ -38,31 +38,6 @@ public class FluidComposerBlock extends MachineBlock {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
-        if (world.isRemote) {
-            return true;
-        } else {
-            ItemStack stack = player.getHeldItem(hand);
-            AtomicReference<FluidActionResult> result = new AtomicReference<>();
-            TileEntity tileEntity = world.getTileEntity(pos);
-            if (tileEntity != null && FluidUtil.getFluidHandler(stack).isPresent()) {
-                tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, rayTraceResult.getFace()).ifPresent(fluidHandler -> {
-                    player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
-                        result.set(TCFluidUtil.interactWithFluidHandler(stack, fluidHandler, itemHandler, player));
-                    });
-                });
-            }
-
-            if (result.get() == null || !result.get().isSuccess())
-                NetworkHooks.openGui((ServerPlayerEntity) player, getContainer(state, world, pos), pos);
-            else
-                player.setHeldItem(hand, result.get().getResult());
-            // TODO Stats ?
-            return true;
-        }
-    }
-
-    @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         float y = (float) pos.getY() + 0.5F;
         if (!world.isRemote && entity.getBoundingBox().minY <= (double) y) {

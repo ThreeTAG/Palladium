@@ -3,7 +3,7 @@ package net.threetag.threecore.util.energy;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.energy.EnergyStorage;
 
-public class EnergyStorageExt extends EnergyStorage {
+public class EnergyStorageExt extends EnergyStorage implements IEnergyStorageModifiable {
 
     public EnergyStorageExt(int capacity) {
         super(capacity);
@@ -29,22 +29,27 @@ public class EnergyStorageExt extends EnergyStorage {
         this(energyConfig.getCapacity(), energyConfig.getPower(), energyConfig.getPower(), energy);
     }
 
+    @Override
     public void setEnergyStored(int energy) {
         this.energy = energy;
     }
 
+    @Override
     public void setMaxEnergyStored(int energy) {
         this.capacity = energy;
     }
 
+    @Override
     public void modifyEnergy(int amount) {
         this.energy = MathHelper.clamp(this.energy + amount, 0, this.capacity);
     }
 
+    @Override
     public int getMaxExtract() {
         return maxExtract;
     }
 
+    @Override
     public int getMaxReceive() {
         return maxReceive;
     }

@@ -16,7 +16,7 @@
       "item": "threecore:circuit"
     },
     "B": {
-      "item": "threecore:capacitor_block"
+      "item": "threecore:stirling_generator"
     },
     "D": {
       "item": "minecraft:daylight_detector"

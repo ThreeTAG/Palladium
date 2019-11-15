@@ -22,9 +22,15 @@ import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.threetag.threecore.util.block.BlockUtil;
+import net.threetag.threecore.util.fluid.TCFluidUtil;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class MachineBlock extends ContainerBlock {
 
@@ -43,7 +49,21 @@ public abstract class MachineBlock extends ContainerBlock {
         if (world.isRemote) {
             return true;
         } else {
-            NetworkHooks.openGui((ServerPlayerEntity) player, getContainer(state, world, pos), pos);
+            ItemStack stack = player.getHeldItem(hand);
+            AtomicReference<FluidActionResult> result = new AtomicReference<>();
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity != null && FluidUtil.getFluidHandler(stack).isPresent()) {
+                tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, rayTraceResult.getFace()).ifPresent(fluidHandler -> {
+                    player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
+                        result.set(TCFluidUtil.interactWithFluidHandler(stack, fluidHandler, itemHandler, player));
+                    });
+                });
+            }
+
+            if (result.get() == null || !result.get().isSuccess())
+                NetworkHooks.openGui((ServerPlayerEntity) player, getContainer(state, world, pos), pos);
+            else
+                player.setHeldItem(hand, result.get().getResult());
             // TODO Stats ?
             return true;
         }

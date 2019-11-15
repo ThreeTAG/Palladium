@@ -12,6 +12,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.threetag.threecore.util.energy.EnergyStorageExt;
 import net.threetag.threecore.util.energy.IEnergyConfig;
+import net.threetag.threecore.util.energy.IEnergyStorageModifiable;
 import net.threetag.threecore.util.tileentity.LockableItemCapTileEntity;
 
 import javax.annotation.Nullable;
@@ -19,12 +20,16 @@ import java.util.Objects;
 
 public abstract class MachineTileEntity extends LockableItemCapTileEntity implements ITickableTileEntity {
 
-    protected EnergyStorageExt energyStorage;
+    protected IEnergyStorageModifiable energyStorage;
     private LazyOptional<IEnergyStorage> energyStorageLazyOptional = LazyOptional.of(() -> energyStorage);
 
     public MachineTileEntity(TileEntityType<?> tileEntityType) {
         super(tileEntityType);
-        this.energyStorage = new EnergyStorageExt(this.getEnergyConfig());
+        this.energyStorage = createEnergyStorage(0);
+    }
+
+    protected IEnergyStorageModifiable createEnergyStorage(int energy) {
+        return new EnergyStorageExt(this.getEnergyConfig(), energy);
     }
 
     public abstract IEnergyConfig getEnergyConfig();
@@ -88,8 +93,7 @@ public abstract class MachineTileEntity extends LockableItemCapTileEntity implem
     @Override
     public void read(CompoundNBT nbt) {
         super.read(nbt);
-
-        this.energyStorage = new EnergyStorageExt(this.getEnergyConfig(), nbt.getInt("Energy"));
+        this.energyStorage = createEnergyStorage(nbt.getInt("Energy"));
     }
 
     @Override
