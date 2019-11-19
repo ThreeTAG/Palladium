@@ -3,12 +3,11 @@ package net.threetag.threecore.base.recipe;
 import com.google.gson.JsonObject;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.util.recipe.IEnergyRecipe;
 import net.threetag.threecore.util.recipe.RecipeUtil;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
@@ -49,7 +48,7 @@ public class GrinderRecipe implements IEnergyRecipe<IInventory> {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(ThreeCoreBase.GRINDER);
+        return new ItemStack(TCBaseBlocks.GRINDER);
     }
 
     @Override
@@ -108,7 +107,7 @@ public class GrinderRecipe implements IEnergyRecipe<IInventory> {
 
     @Override
     public IRecipeSerializer<GrinderRecipe> getSerializer() {
-        return ThreeCoreBase.GRINDER_RECIPE_SERIALIZER;
+        return TCBaseRecipeSerializers.GRINDING;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package net.threetag.threecore.base.inventory;
 
-import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.recipe.PressingRecipe;
 import net.threetag.threecore.base.tileentity.HydraulicPressTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,7 +42,7 @@ public class HydraulicPressContainer extends RecipeBookContainer implements IRec
     }
 
     public HydraulicPressContainer(int id, PlayerInventory inventoryPlayer, HydraulicPressTileEntity hydraulicPressTileEntity, IIntArray intArray) {
-        super(ThreeCoreBase.HYDRAULIC_PRESS_CONTAINER, id);
+        super(TCBaseContainerTypes.HYDRAULIC_PRESS, id);
         this.inventoryPlayer = inventoryPlayer;
         this.hydraulicPressTileEntity = hydraulicPressTileEntity;
         this.recipeWrapper = this.hydraulicPressTileEntity.recipeWrapper;

@@ -2,10 +2,8 @@ package net.threetag.threecore.base.inventory;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.AbstractFurnaceContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.inventory.container.StonecutterContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
@@ -16,7 +14,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
-import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.block.CapacitorBlock;
 import net.threetag.threecore.base.tileentity.CapacitorBlockTileEntity;
 
@@ -31,7 +28,7 @@ public class CapacitorBlockContainer extends Container {
     }
 
     public CapacitorBlockContainer(int id, PlayerInventory playerInventory, CapacitorBlockTileEntity capacitorBlockTileEntity, IIntArray intArray) {
-        super(ThreeCoreBase.CAPACITOR_BLOCK_CONTAINER, id);
+        super(TCBaseContainerTypes.CAPACITOR_BLOCK, id);
         this.inventoryPlayer = playerInventory;
         this.tileEntity = capacitorBlockTileEntity;
         this.intArray = intArray;

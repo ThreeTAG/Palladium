@@ -26,6 +26,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.base.inventory.FluidComposerContainer;
 import net.threetag.threecore.base.recipe.FluidComposingRecipe;
 import net.threetag.threecore.util.energy.IEnergyConfig;
@@ -131,7 +132,7 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
     public FluidInventory recipeWrapper = new FluidInventory(this.inputSlots, inputFluidTank);
 
     public FluidComposerTileEntity() {
-        super(ThreeCoreBase.FLUID_COMPOSER_TILE_ENTITY);
+        super(TCBaseBlocks.FLUID_COMPOSER_TILE_ENTITY);
     }
 
     @Override

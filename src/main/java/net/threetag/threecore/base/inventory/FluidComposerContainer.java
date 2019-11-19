@@ -17,7 +17,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
-import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.tileentity.FluidComposerTileEntity;
 
 public class FluidComposerContainer extends Container {
@@ -37,7 +36,7 @@ public class FluidComposerContainer extends Container {
     }
 
     public FluidComposerContainer(int id, PlayerInventory inventoryPlayer, FluidComposerTileEntity fluidComposerTileEntity, IIntArray intArray) {
-        super(ThreeCoreBase.FLUID_COMPOSER_CONTAINER, id);
+        super(TCBaseContainerTypes.FLUID_COMPOSER, id);
 
         this.inventoryPlayer = inventoryPlayer;
         this.fluidComposerTileEntity = fluidComposerTileEntity;

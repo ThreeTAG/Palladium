@@ -6,6 +6,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.item.TCBaseItems;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class ItemGroupRegistry {
     public static final String SUITS_AND_ARMOR = "suits_and_armor";
 
     static {
-        getOrCreateCreativeTab(TECHNOLOGY, () -> new ItemStack(ThreeCoreBase.CIRCUIT));
+        getOrCreateCreativeTab(TECHNOLOGY, () -> new ItemStack(TCBaseItems.CIRCUIT));
         addItemGroup(SUITS_AND_ARMOR, new SuitsAndArmorItemGroup(SUITS_AND_ARMOR));
     }
 

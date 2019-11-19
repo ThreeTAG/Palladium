@@ -1,6 +1,7 @@
 package net.threetag.threecore.compat.jei.grinding;
 
 import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.base.recipe.GrinderRecipe;
 import net.threetag.threecore.compat.jei.ThreeCoreJEIPlugin;
 import net.threetag.threecore.util.energy.EnergyUtil;
@@ -35,7 +36,7 @@ public class GrindingCategory<T> implements IRecipeCategory<GrinderRecipe> {
     public GrindingCategory(IGuiHelper guiHelper) {
         this.title = I18n.format("gui.jei.category.threecore.grinding");
         this.background = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 0, 0, 107, 26).addPadding(0, 10, 0, 0).build();
-        this.icon = guiHelper.createDrawableIngredient(new ItemStack(ThreeCoreBase.GRINDER));
+        this.icon = guiHelper.createDrawableIngredient(new ItemStack(TCBaseBlocks.GRINDER));
         this.arrow = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 107, 0, 24, 17)
                 .buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
     }

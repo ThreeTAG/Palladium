@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.base.client.gui.FluidComposerScreen;
 import net.threetag.threecore.base.client.gui.GrinderScreen;
 import net.threetag.threecore.base.client.gui.HydraulicPressScreen;
@@ -75,8 +76,8 @@ public class ThreeCoreJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(ThreeCoreBase.GRINDER), GRINDING_CATEGORY);
-        registration.addRecipeCatalyst(new ItemStack(ThreeCoreBase.HYDRAULIC_PRESS), PRESSING_CATEGORY);
-        registration.addRecipeCatalyst(new ItemStack(ThreeCoreBase.FLUID_COMPOSER), FLUID_COMPOSING_CATEGORY);
+        registration.addRecipeCatalyst(new ItemStack(TCBaseBlocks.GRINDER), GRINDING_CATEGORY);
+        registration.addRecipeCatalyst(new ItemStack(TCBaseBlocks.HYDRAULIC_PRESS), PRESSING_CATEGORY);
+        registration.addRecipeCatalyst(new ItemStack(TCBaseBlocks.FLUID_COMPOSER), FLUID_COMPOSING_CATEGORY);
     }
 }

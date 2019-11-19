@@ -12,6 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.block.MachineBlock;
+import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.base.client.renderer.model.HydraulicPressPistonModel;
 import net.threetag.threecore.base.tileentity.HydraulicPressTileEntity;
 import net.threetag.threecore.util.client.RenderUtil;
@@ -33,7 +34,7 @@ public class HydraulicPressTileEntityRenderer extends TileEntityRenderer<Hydraul
         GlStateManager.scalef(1.0F, -1.0F, -1.0F);
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        BlockState blockstate = tileEntityIn.hasWorld() ? tileEntityIn.getBlockState() : ThreeCoreBase.HYDRAULIC_PRESS.getDefaultState().with(MachineBlock.FACING, Direction.SOUTH);
+        BlockState blockstate = tileEntityIn.hasWorld() ? tileEntityIn.getBlockState() : TCBaseBlocks.HYDRAULIC_PRESS.getDefaultState().with(MachineBlock.FACING, Direction.SOUTH);
         float f = blockstate.get(MachineBlock.FACING).getHorizontalAngle();
         if ((double) Math.abs(f) > 1.0E-5D) {
             GlStateManager.translatef(0.5F, 0.5F, 0.5F);

@@ -11,6 +11,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.block.EnergyConduitBlock;
+import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.util.energy.EnergyStorageExt;
 
 import javax.annotation.Nonnull;
@@ -23,7 +24,7 @@ public class EnergyConduitTileEntity extends TileEntity implements ITickableTile
     protected EnergyConduitBlock.ConduitType type;
 
     public EnergyConduitTileEntity(EnergyConduitBlock.ConduitType type) {
-        super(ThreeCoreBase.CONDUIT_TILE_ENTITY);
+        super(TCBaseBlocks.CONDUIT_TILE_ENTITY);
         this.type = type;
         this.energyStorage = new EnergyStorageExt(type.getTransferRate().getAsInt() * 5, type.getTransferRate().getAsInt());
         this.energyStorageLazyOptional = LazyOptional.of(() -> energyStorage);

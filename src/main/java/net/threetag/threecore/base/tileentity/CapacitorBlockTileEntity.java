@@ -20,6 +20,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.block.CapacitorBlock;
+import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.base.inventory.CapacitorBlockContainer;
 import net.threetag.threecore.util.energy.EnergyStorageExt;
 import net.threetag.threecore.util.energy.IEnergyConfig;
@@ -68,7 +69,7 @@ public class CapacitorBlockTileEntity extends LockableItemCapTileEntity implemen
     };
 
     public CapacitorBlockTileEntity(CapacitorBlock.Type type) {
-        super(ThreeCoreBase.CAPACITOR_BLOCK_TILE_ENTITY);
+        super(TCBaseBlocks.CAPACITOR_BLOCK_TILE_ENTITY);
         this.type = type;
         this.energyStorage = new EnergyStorageExt(getEnergyConfig());
     }

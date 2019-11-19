@@ -90,7 +90,7 @@ public class ThreeCoreKarma {
     @SubscribeEvent
     public void onPlayerCloned(PlayerEvent.Clone e) {
         if (e.isWasDeath()) {
-            e.getOriginal().getCapability(CapabilityKarma.KARMA).ifPresent(oldCap -> e.getEntityPlayer().getCapability(CapabilityKarma.KARMA).ifPresent(newCap -> newCap.setKarma(oldCap.getKarma())));
+            e.getOriginal().getCapability(CapabilityKarma.KARMA).ifPresent(oldCap -> e.getPlayer().getCapability(CapabilityKarma.KARMA).ifPresent(newCap -> newCap.setKarma(oldCap.getKarma())));
         }
     }
 

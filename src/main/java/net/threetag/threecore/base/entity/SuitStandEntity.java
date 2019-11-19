@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.item.TCBaseItems;
 
 import javax.annotation.Nonnull;
 
@@ -39,7 +39,7 @@ public class SuitStandEntity extends ArmorStandEntity {
     private static final DataParameter<Byte> DYE_COLOR = EntityDataManager.createKey(SuitStandEntity.class, DataSerializers.BYTE);
 
     public SuitStandEntity(World world) {
-        this(ThreeCoreBase.SUIT_STAND_ENTITY, world);
+        this(TCBaseEntityTypes.SUIT_STAND, world);
     }
 
     public SuitStandEntity(EntityType<? extends SuitStandEntity> entityType, World world) {
@@ -51,7 +51,7 @@ public class SuitStandEntity extends ArmorStandEntity {
     }
 
     public SuitStandEntity(World worldIn, double posX, double posY, double posZ) {
-        this(ThreeCoreBase.SUIT_STAND_ENTITY, worldIn);
+        this(TCBaseEntityTypes.SUIT_STAND, worldIn);
         this.setPosition(posX, posY, posZ);
     }
 
@@ -111,12 +111,12 @@ public class SuitStandEntity extends ArmorStandEntity {
 
     @Override
     public ItemStack getPickedResult(RayTraceResult target) {
-        return new ItemStack(ThreeCoreBase.SUIT_STAND);
+        return new ItemStack(TCBaseItems.SUIT_STAND);
     }
 
     @Override
     public void func_213815_f(DamageSource p_213815_1_) {
-        Block.spawnAsEntity(this.world, new BlockPos(this), new ItemStack(ThreeCoreBase.SUIT_STAND));
+        Block.spawnAsEntity(this.world, new BlockPos(this), new ItemStack(TCBaseItems.SUIT_STAND));
         this.func_213816_g(p_213815_1_);
     }
 

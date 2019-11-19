@@ -10,6 +10,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.util.energy.EnergyStorageExt;
 
 import javax.annotation.Nonnull;
@@ -21,7 +22,7 @@ public class SolarPanelTileEntity extends TileEntity implements ITickableTileEnt
     private LazyOptional<IEnergyStorage> energyStorageLazyOptional = LazyOptional.of(() -> energyStorage);
 
     public SolarPanelTileEntity() {
-        super(ThreeCoreBase.SOLAR_PANEL_TILE_ENTITY);
+        super(TCBaseBlocks.SOLAR_PANEL_TILE_ENTITY);
     }
 
     @Override

@@ -20,6 +20,7 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.base.inventory.GrinderContainer;
 import net.threetag.threecore.base.recipe.GrinderRecipe;
 import net.threetag.threecore.util.energy.IEnergyConfig;
@@ -86,7 +87,7 @@ public class GrinderTileEntity extends ProgressableMachineTileEntity<GrinderReci
     private RecipeWrapper recipeWrapper = new RecipeWrapper(this.combinedHandler);
 
     public GrinderTileEntity() {
-        super(ThreeCoreBase.GRINDER_TILE_ENTITY);
+        super(TCBaseBlocks.GRINDER_TILE_ENTITY);
     }
 
     @Override

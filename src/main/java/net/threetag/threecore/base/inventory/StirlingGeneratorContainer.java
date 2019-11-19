@@ -15,7 +15,6 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.tileentity.StirlingGeneratorTileEntity;
 
 public class StirlingGeneratorContainer extends Container {
@@ -34,7 +33,7 @@ public class StirlingGeneratorContainer extends Container {
     }
 
     public StirlingGeneratorContainer(int id, PlayerInventory inventoryPlayer, StirlingGeneratorTileEntity stirlingGeneratorTileEntity, IIntArray intArray) {
-        super(ThreeCoreBase.STIRLING_GENERATOR_CONTAINER, id);
+        super(TCBaseContainerTypes.STIRLING_GENERATOR, id);
 
         this.inventoryPlayer = inventoryPlayer;
         this.stirlingGeneratorTileEntity = stirlingGeneratorTileEntity;

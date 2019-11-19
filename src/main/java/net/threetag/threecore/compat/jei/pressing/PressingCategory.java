@@ -14,6 +14,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.base.recipe.PressingRecipe;
 import net.threetag.threecore.compat.jei.ThreeCoreJEIPlugin;
 import net.threetag.threecore.util.energy.EnergyUtil;
@@ -32,7 +33,7 @@ public class PressingCategory<T> implements IRecipeCategory<PressingRecipe> {
     public PressingCategory(IGuiHelper guiHelper) {
         this.title = I18n.format("gui.jei.category.threecore.pressing");
         this.background = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 0, 26, 116, 60).build();
-        this.icon = guiHelper.createDrawableIngredient(new ItemStack(ThreeCoreBase.HYDRAULIC_PRESS));
+        this.icon = guiHelper.createDrawableIngredient(new ItemStack(TCBaseBlocks.HYDRAULIC_PRESS));
         this.arrow = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 107, 0, 24, 17)
                 .buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
     }

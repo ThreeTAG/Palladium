@@ -19,6 +19,7 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.base.inventory.HydraulicPressContainer;
 import net.threetag.threecore.base.recipe.PressingRecipe;
 import net.threetag.threecore.util.energy.IEnergyConfig;
@@ -88,7 +89,7 @@ public class HydraulicPressTileEntity extends ProgressableMachineTileEntity<Pres
     public RecipeWrapper recipeWrapper = new RecipeWrapper(this.inputSlot);
 
     public HydraulicPressTileEntity() {
-        super(ThreeCoreBase.HYDRAULIC_PRESS_TILE_ENTITY);
+        super(TCBaseBlocks.HYDRAULIC_PRESS_TILE_ENTITY);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package net.threetag.threecore.base.inventory;
 
-import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.recipe.GrinderRecipe;
 import net.threetag.threecore.base.tileentity.GrinderTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,7 +42,7 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
     }
 
     public GrinderContainer(int id, PlayerInventory inventoryPlayer, GrinderTileEntity grinderTileEntity, IIntArray intArray) {
-        super(ThreeCoreBase.GRINDER_CONTAINER, id);
+        super(TCBaseContainerTypes.GRINDER, id);
         this.inventoryPlayer = inventoryPlayer;
         this.grinderTileEntity = grinderTileEntity;
         this.grinderTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler -> recipeWrapper = new RecipeWrapper((IItemHandlerModifiable) itemHandler)));

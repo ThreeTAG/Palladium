@@ -14,7 +14,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.util.recipe.IEnergyRecipe;
 import net.threetag.threecore.util.recipe.RecipeUtil;
 
@@ -46,7 +46,7 @@ public class PressingRecipe implements IEnergyRecipe<IInventory> {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(ThreeCoreBase.HYDRAULIC_PRESS);
+        return new ItemStack(TCBaseBlocks.HYDRAULIC_PRESS);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class PressingRecipe implements IEnergyRecipe<IInventory> {
 
     @Override
     public IRecipeSerializer<PressingRecipe> getSerializer() {
-        return ThreeCoreBase.PRESSING_RECIPE_SERIALIZER;
+        return TCBaseRecipeSerializers.PRESSING;
     }
 
     @Override

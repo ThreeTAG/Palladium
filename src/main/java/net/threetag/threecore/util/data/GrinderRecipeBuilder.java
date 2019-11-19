@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.threetag.threecore.base.ThreeCoreBase;
+import net.threetag.threecore.base.recipe.TCBaseRecipeSerializers;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -219,7 +219,7 @@ public class GrinderRecipeBuilder {
 
         @Override
         public IRecipeSerializer<?> getSerializer() {
-            return ThreeCoreBase.GRINDER_RECIPE_SERIALIZER;
+            return TCBaseRecipeSerializers.GRINDING;
         }
 
         @Nullable
