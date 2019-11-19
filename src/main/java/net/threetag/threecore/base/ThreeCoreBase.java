@@ -29,6 +29,7 @@ import net.threetag.threecore.base.item.*;
 import net.threetag.threecore.base.recipe.FluidComposingRecipe;
 import net.threetag.threecore.base.recipe.GrinderRecipe;
 import net.threetag.threecore.base.recipe.PressingRecipe;
+import net.threetag.threecore.base.recipe.TCBaseRecipeSerializers;
 import net.threetag.threecore.base.tileentity.*;
 import net.threetag.threecore.util.item.ItemGroupRegistry;
 
@@ -40,6 +41,7 @@ public class ThreeCoreBase {
         FMLJavaModLoadingContext.get().getModEventBus().register(new TCBaseContainerTypes());
         FMLJavaModLoadingContext.get().getModEventBus().register(new TCBaseItems());
         FMLJavaModLoadingContext.get().getModEventBus().register(new TCBaseEntityTypes());
+        FMLJavaModLoadingContext.get().getModEventBus().register(new TCBaseRecipeSerializers());
     }
 
 }
