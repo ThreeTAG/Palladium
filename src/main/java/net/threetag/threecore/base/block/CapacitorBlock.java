@@ -103,7 +103,7 @@ public class CapacitorBlock extends ContainerBlock {
         builder.add(LEVEL_0_10);
     }
 
-    public static enum Type implements IStringSerializable {
+    public enum Type implements IStringSerializable {
 
         NORMAL("normal", ThreeCoreServerConfig.ENERGY.CAPACITOR), ADVANCED("advanced", ThreeCoreServerConfig.ENERGY.ADVANCED_CAPACITOR);
 

@@ -23,6 +23,7 @@ import net.threetag.threecore.util.fluid.FluidIngredient;
 import net.threetag.threecore.util.fluid.FluidInventory;
 import net.threetag.threecore.util.fluid.TCFluidUtil;
 import net.threetag.threecore.util.recipe.IEnergyRecipe;
+import net.threetag.threecore.util.recipe.RecipeUtil;
 
 import javax.annotation.Nullable;
 
@@ -31,11 +32,7 @@ public class FluidComposingRecipe implements IEnergyRecipe<IInventory> {
     public static final int MAX_WIDTH = 9;
     public static final int MAX_HEIGHT = 9;
 
-    public static final IRecipeType<FluidComposingRecipe> RECIPE_TYPE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(ThreeCore.MODID, "fluid_composing"), new IRecipeType<FluidComposingRecipe>() {
-        public String toString() {
-            return "fluid_composing";
-        }
-    });
+    public static final IRecipeType<FluidComposingRecipe> RECIPE_TYPE = RecipeUtil.register("fluid_composing");
 
     private final ResourceLocation id;
     private final String group;
@@ -122,7 +119,7 @@ public class FluidComposingRecipe implements IEnergyRecipe<IInventory> {
 
     @Override
     public IRecipeSerializer<FluidComposingRecipe> getSerializer() {
-        return null;
+        return TCBaseRecipeSerializers.FLUID_COMPOSING;
     }
 
     @Override

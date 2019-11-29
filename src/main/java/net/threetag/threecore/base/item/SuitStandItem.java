@@ -36,10 +36,10 @@ public class SuitStandItem extends Item {
             BlockPos pos = blockItemUseContext.getPos();
             BlockPos up = pos.up();
             if (blockItemUseContext.canPlace() && world.getBlockState(up).isReplaceable(blockItemUseContext)) {
-                double x = (double) pos.getX();
-                double y = (double) pos.getY();
-                double z = (double) pos.getZ();
-                List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity((Entity) null, new AxisAlignedBB(x, y, z, x + 1.0D, y + 2.0D, z + 1.0D));
+                double x = pos.getX();
+                double y = pos.getY();
+                double z = pos.getZ();
+                List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(x, y, z, x + 1.0D, y + 2.0D, z + 1.0D));
                 if (!entities.isEmpty()) {
                     return ActionResultType.FAIL;
                 } else {

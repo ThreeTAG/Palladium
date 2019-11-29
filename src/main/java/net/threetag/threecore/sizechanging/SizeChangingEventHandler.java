@@ -49,9 +49,7 @@ public class SizeChangingEventHandler {
     }
 
     public static boolean canSizeChange(Entity entity) {
-        if (entity instanceof HangingEntity || entity instanceof ShulkerEntity || entity instanceof EnderCrystalEntity)
-            return false;
-        return true;
+        return !(entity instanceof HangingEntity) && !(entity instanceof ShulkerEntity) && !(entity instanceof EnderCrystalEntity);
     }
 
     @SubscribeEvent
@@ -111,7 +109,7 @@ public class SizeChangingEventHandler {
     public void oProjectileImpactFireball(ProjectileImpactEvent.Fireball e) {
         e.getFireball().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
             boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(e.getFireball().world, e.getFireball().shootingEntity);
-            e.getFireball().world.createExplosion((Entity) null, e.getFireball().posX, e.getFireball().posY, e.getFireball().posZ, sizeChanging.getScale(), flag, flag ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
+            e.getFireball().world.createExplosion(null, e.getFireball().posX, e.getFireball().posY, e.getFireball().posZ, sizeChanging.getScale(), flag, flag ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
         });
     }
 

@@ -2,6 +2,7 @@
 	"itemGroup.technology": "Technology",
 	"itemGroup.suits_and_armor": "Suits & Armor",
 	
+	"block.threecore.construction_table": "Construction Table",
 	"block.threecore.grinder": "Grinder",
 	"block.threecore.hydraulic_press": "Hydraulic Press",
 	"block.threecore.fluid_composer": "Fluid Composer",
@@ -221,6 +222,7 @@
 	"death.attack.grinder": "%1$s was grinded to death by a grinder",
 	"death.attack.grinder.player": "%1$s was grinded to death by a grinder whilst trying to escape %2$s",
 	
+	"container.threecore.construction_table": "Construction Table",
 	"container.threecore.grinder": "Grinder",
 	"container.threecore.hydraulic_press": "Hydraulic Press",
 	"container.threecore.fluid_composer": "Fluid Composer",
@@ -230,10 +232,15 @@
 	"gui.threecore.abilities": "Abilities",
 	"gui.threecore.abilities.fulfill_condition": "Do you want to fulfill this condition?",
 	"gui.threecore.abilities.keybind": "Keybind:",
+	"gui.jei.category.threecore.helmet_crafting": "Helmet Crafting",
+	"gui.jei.category.threecore.chestplate_crafting": "Chestplate Crafting",
+	"gui.jei.category.threecore.leggings_crafting": "Leggings Crafting",
+	"gui.jei.category.threecore.boots_crafting": "Boots Crafting",
 	"gui.jei.category.threecore.grinding": "Grinding",
 	"gui.jei.category.threecore.grinding.experience": "%s XP",
 	"gui.jei.category.threecore.pressing": "Pressing",
 	"gui.jei.category.threecore.pressing.experience": "%s XP",
+	"gui.jei.category.threecore.fluid_composing": "Fluid Composing",
 	
 	"ability_container.threecore.player": "Player Abilities",
 	

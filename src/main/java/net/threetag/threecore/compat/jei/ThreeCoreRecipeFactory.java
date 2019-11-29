@@ -7,9 +7,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.ResourceLocation;
-import net.threetag.threecore.base.recipe.FluidComposingRecipe;
-import net.threetag.threecore.base.recipe.GrinderRecipe;
-import net.threetag.threecore.base.recipe.PressingRecipe;
+import net.threetag.threecore.base.recipe.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,6 +15,38 @@ import java.util.List;
 import java.util.Map;
 
 public class ThreeCoreRecipeFactory {
+
+    public static List<HelmetCraftingRecipe> getHelmetCraftingRecipes() {
+        List<HelmetCraftingRecipe> list = new ArrayList<>();
+        ClientWorld world = Minecraft.getInstance().world;
+        RecipeManager recipeManager = world.getRecipeManager();
+        list.addAll(getRecipes(recipeManager, HelmetCraftingRecipe.RECIPE_TYPE));
+        return list;
+    }
+
+    public static List<ChestplateCraftingRecipe> getChestplateCraftingRecipes() {
+        List<ChestplateCraftingRecipe> list = new ArrayList<>();
+        ClientWorld world = Minecraft.getInstance().world;
+        RecipeManager recipeManager = world.getRecipeManager();
+        list.addAll(getRecipes(recipeManager, ChestplateCraftingRecipe.RECIPE_TYPE));
+        return list;
+    }
+
+    public static List<LeggingsCraftingRecipe> getLeggingsCraftingRecipes() {
+        List<LeggingsCraftingRecipe> list = new ArrayList<>();
+        ClientWorld world = Minecraft.getInstance().world;
+        RecipeManager recipeManager = world.getRecipeManager();
+        list.addAll(getRecipes(recipeManager, LeggingsCraftingRecipe.RECIPE_TYPE));
+        return list;
+    }
+
+    public static List<BootsCraftingRecipe> getBootsCraftingRecipes() {
+        List<BootsCraftingRecipe> list = new ArrayList<>();
+        ClientWorld world = Minecraft.getInstance().world;
+        RecipeManager recipeManager = world.getRecipeManager();
+        list.addAll(getRecipes(recipeManager, BootsCraftingRecipe.RECIPE_TYPE));
+        return list;
+    }
 
     public static List<GrinderRecipe> getGrinderRecipes() {
         List<GrinderRecipe> list = new ArrayList<>();

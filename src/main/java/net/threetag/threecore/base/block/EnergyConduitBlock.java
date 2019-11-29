@@ -82,12 +82,12 @@ public class EnergyConduitBlock extends Block implements IWaterLoggable {
     private VoxelShape[] makeShapes(float apothem) {
         float f = 0.5F - apothem;
         float f1 = 0.5F + apothem;
-        VoxelShape voxelshape = Block.makeCuboidShape((double) (f * 16.0F), (double) (f * 16.0F), (double) (f * 16.0F), (double) (f1 * 16.0F), (double) (f1 * 16.0F), (double) (f1 * 16.0F));
+        VoxelShape voxelshape = Block.makeCuboidShape(f * 16.0F, f * 16.0F, f * 16.0F, f1 * 16.0F, f1 * 16.0F, f1 * 16.0F);
         VoxelShape[] avoxelshape = new VoxelShape[FACING_VALUES.length];
 
         for (int i = 0; i < FACING_VALUES.length; ++i) {
             Direction direction = FACING_VALUES[i];
-            avoxelshape[i] = VoxelShapes.create(0.5D + Math.min((double) (-apothem), (double) direction.getXOffset() * 0.5D), 0.5D + Math.min((double) (-apothem), (double) direction.getYOffset() * 0.5D), 0.5D + Math.min((double) (-apothem), (double) direction.getZOffset() * 0.5D), 0.5D + Math.max((double) apothem, (double) direction.getXOffset() * 0.5D), 0.5D + Math.max((double) apothem, (double) direction.getYOffset() * 0.5D), 0.5D + Math.max((double) apothem, (double) direction.getZOffset() * 0.5D));
+            avoxelshape[i] = VoxelShapes.create(0.5D + Math.min(-apothem, (double) direction.getXOffset() * 0.5D), 0.5D + Math.min(-apothem, (double) direction.getYOffset() * 0.5D), 0.5D + Math.min(-apothem, (double) direction.getZOffset() * 0.5D), 0.5D + Math.max(apothem, (double) direction.getXOffset() * 0.5D), 0.5D + Math.max(apothem, (double) direction.getYOffset() * 0.5D), 0.5D + Math.max(apothem, (double) direction.getZOffset() * 0.5D));
         }
 
         VoxelShape[] avoxelshape1 = new VoxelShape[64];

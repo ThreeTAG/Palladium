@@ -20,11 +20,7 @@ import net.threetag.threecore.util.recipe.RecipeUtil;
 
 public class PressingRecipe implements IEnergyRecipe<IInventory> {
 
-    public static final IRecipeType<PressingRecipe> RECIPE_TYPE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(ThreeCore.MODID, "pressing"), new IRecipeType<PressingRecipe>() {
-        public String toString() {
-            return "pressing";
-        }
-    });
+    public static final IRecipeType<PressingRecipe> RECIPE_TYPE = RecipeUtil.register("pressing");
 
     private final ResourceLocation id;
     private final String group;

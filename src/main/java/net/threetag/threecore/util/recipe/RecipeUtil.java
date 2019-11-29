@@ -16,10 +16,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.threetag.threecore.ThreeCore;
 
 public class RecipeUtil {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
+    public static <T extends IRecipe<?>> IRecipeType<T> register(final String id) {
+        return register(new ResourceLocation(ThreeCore.MODID, id));
+    }
 
     public static <T extends IRecipe<?>> IRecipeType<T> register(final ResourceLocation name) {
         return Registry.register(Registry.RECIPE_TYPE, name, new IRecipeType<T>() {

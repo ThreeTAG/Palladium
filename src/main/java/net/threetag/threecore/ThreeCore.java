@@ -9,6 +9,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -39,6 +40,7 @@ import net.threetag.threecore.util.entity.armorstand.SendArmorStandCommandMessag
 import net.threetag.threecore.util.entity.armorstand.SetArmorStandPoseMessage;
 import net.threetag.threecore.util.loot.function.TCLootFunctions;
 import net.threetag.threecore.util.modellayer.ModelLayerLoader;
+import net.threetag.threecore.util.recipe.ToolIngredient;
 import net.threetag.threecore.util.scripts.ScriptEventManager;
 import net.threetag.threecore.util.scripts.accessors.ScriptAccessor;
 import net.threetag.threecore.util.threedata.capability.CapabilityThreeData;
@@ -86,6 +88,8 @@ public class ThreeCore {
         TCLootFunctions.register();
 
         // Misc
+        CraftingHelper.register(ToolIngredient.ID, new ToolIngredient.Serializer());
+
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
             MinecraftForge.EVENT_BUS.addListener(this::initGui);

@@ -41,7 +41,7 @@ public class SolidItemEntityRenderer extends EntityRenderer<SolidItemEntity> {
         RenderHelper.enableStandardItemLighting();
         GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.pushMatrix();
-        IBakedModel ibakedmodel = this.itemRenderer.getItemModelWithOverrides(itemstack, entity.world, (LivingEntity) null);
+        IBakedModel ibakedmodel = this.itemRenderer.getItemModelWithOverrides(itemstack, entity.world, null);
         GlStateManager.translated(x, y, z);
 
         if (this.renderOutlines) {

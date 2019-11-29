@@ -155,7 +155,7 @@ public class SolidItemEntity extends Entity {
                     f = this.world.getBlockState(pos).getSlipperiness(this.world, pos, this) * 0.98F;
                 }
 
-                this.setMotion(this.getMotion().mul((double) f, 0.98D, (double) f));
+                this.setMotion(this.getMotion().mul(f, 0.98D, f));
                 if (this.onGround) {
                     this.setMotion(this.getMotion().mul(1.0D, -0.5D, 1.0D));
                 }
@@ -165,7 +165,7 @@ public class SolidItemEntity extends Entity {
             int i = flag ? 2 : 40;
             if (this.ticksExisted % i == 0) {
                 if (this.world.getFluidState(new BlockPos(this)).isTagged(FluidTags.LAVA)) {
-                    this.setMotion((double) ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F), (double) 0.2F, (double) ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F));
+                    this.setMotion((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F, 0.2F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
                     this.playSound(SoundEvents.ENTITY_GENERIC_BURN, 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
                 }
             }

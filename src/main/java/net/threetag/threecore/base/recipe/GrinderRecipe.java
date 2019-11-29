@@ -20,11 +20,8 @@ import net.minecraft.world.World;
 
 public class GrinderRecipe implements IEnergyRecipe<IInventory> {
 
-    public static final IRecipeType<GrinderRecipe> RECIPE_TYPE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(ThreeCore.MODID, "grinder"), new IRecipeType<GrinderRecipe>() {
-        public String toString() {
-            return "grinder";
-        }
-    });
+    // TODO rename to "grinding"
+    public static final IRecipeType<GrinderRecipe> RECIPE_TYPE = RecipeUtil.register("grinder");
 
     private final ResourceLocation id;
     private final String group;

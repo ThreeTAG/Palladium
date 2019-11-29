@@ -5,6 +5,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.data.*;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
@@ -26,6 +27,7 @@ public class ThreeCoreRecipeProvider extends RecipeProvider implements IConditio
     protected void registerRecipes(final Consumer<IFinishedRecipe> consumer) {
 
         // Basic Stuff
+        ShapedRecipeBuilder.shapedRecipe(TCBaseBlocks.CONSTRUCTION_TABLE).patternLine("PCP").patternLine("I I").patternLine("IXI").key('P', ThreeCoreItemTags.IRON_PLATES).key('C', Blocks.CRAFTING_TABLE).key('I', Tags.Items.INGOTS_IRON).key('X', ItemTags.WOODEN_SLABS).addCriterion("has_crafting_table", this.hasItem(Blocks.CRAFTING_TABLE)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(TCBaseBlocks.GRINDER).patternLine("SSS").patternLine("GCG").patternLine("PPP").key('S', Blocks.STONECUTTER).key('G', Blocks.GRINDSTONE).key('C', TCBaseItems.CIRCUIT).key('P', ThreeCoreItemTags.IRON_PLATES).addCriterion("has_circuit", this.hasItem(TCBaseItems.CIRCUIT)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(TCBaseBlocks.HYDRAULIC_PRESS).patternLine("PBP").patternLine("OCW").patternLine("III").key('P', Blocks.PISTON).key('B', Blocks.IRON_BARS).key('C', TCBaseItems.CIRCUIT).key('I', ThreeCoreItemTags.IRON_PLATES).key('W', Items.WATER_BUCKET).key('O', Blocks.OBSIDIAN).addCriterion("has_circuit", this.hasItem(TCBaseItems.CIRCUIT)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(TCBaseBlocks.FLUID_COMPOSER).patternLine("GCG").patternLine("BSB").patternLine("III").key('G', Items.GLASS_BOTTLE).key('C', Blocks.CAULDRON).key('B', Items.BUCKET).key('I', ThreeCoreItemTags.IRON_PLATES).key('S', TCBaseItems.CIRCUIT).addCriterion("has_circuit", this.hasItem(TCBaseItems.CIRCUIT)).build(consumer);
