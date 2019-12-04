@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
+import net.threetag.threecore.ThreeCore;
 
 public class ThreeCoreItemTags {
 
@@ -117,8 +118,26 @@ public class ThreeCoreItemTags {
     public static final Tag<Item> GOLD_TITANIUM_ALLOY_PLATES = make("forge", "plates/gold_titanium_alloy");
     public static final Tag<Item> ADAMANTIUM_PLATES = make("forge", "plates/adamantium");
 
+    public static final Tag<Item> FABRIC = make("fabric");
+    public static final Tag<Item> WHITE_FABRIC = make("fabric/white");
+    public static final Tag<Item> ORANGE_FABRIC = make("fabric/orange");
+    public static final Tag<Item> MAGENTA_FABRIC = make("fabric/magenta");
+    public static final Tag<Item> LIGHT_BLUE_FABRIC = make("fabric/light_blue");
+    public static final Tag<Item> YELLOW_FABRIC = make("fabric/yellow");
+    public static final Tag<Item> LIME_FABRIC = make("fabric/lime");
+    public static final Tag<Item> PINK_FABRIC = make("fabric/pink");
+    public static final Tag<Item> GRAY_FABRIC = make("fabric/gray");
+    public static final Tag<Item> LIGHT_GRAY_FABRIC = make("fabric/light_gray");
+    public static final Tag<Item> CYAN_FABRIC = make("fabric/cyan");
+    public static final Tag<Item> PURPLE_FABRIC = make("fabric/purple");
+    public static final Tag<Item> BLUE_FABRIC = make("fabric/blue");
+    public static final Tag<Item> BROWN_FABRIC = make("fabric/brown");
+    public static final Tag<Item> GREEN_FABRIC = make("fabric/green");
+    public static final Tag<Item> RED_FABRIC = make("fabric/red");
+    public static final Tag<Item> BLACK_FABRIC = make("fabric/black");
+
     public static Tag<Item> make(String name) {
-        return new ItemTags.Wrapper(new ResourceLocation(name));
+        return new ItemTags.Wrapper(new ResourceLocation(ThreeCore.MODID, name));
     }
 
     public static Tag<Item> make(String domain, String path) {

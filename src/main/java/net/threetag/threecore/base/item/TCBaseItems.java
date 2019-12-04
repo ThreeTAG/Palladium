@@ -186,6 +186,39 @@ public class TCBaseItems {
     @ObjectHolder("adamantium_plate")
     public static final Item ADAMANTIUM_PLATE = null;
 
+    @ObjectHolder("white_fabric")
+    public static final Item WHITE_FABRIC = null;
+    @ObjectHolder("orange_fabric")
+    public static final Item ORANGE_FABRIC = null;
+    @ObjectHolder("magenta_fabric")
+    public static final Item MAGENTA_FABRIC = null;
+    @ObjectHolder("light_blue_fabric")
+    public static final Item LIGHT_BLUE_FABRIC = null;
+    @ObjectHolder("yellow_fabric")
+    public static final Item YELLOW_FABRIC = null;
+    @ObjectHolder("lime_fabric")
+    public static final Item LIME_FABRIC = null;
+    @ObjectHolder("pink_fabric")
+    public static final Item PINK_FABRIC = null;
+    @ObjectHolder("gray_fabric")
+    public static final Item GRAY_FABRIC = null;
+    @ObjectHolder("light_gray_fabric")
+    public static final Item LIGHT_GRAY_FABRIC = null;
+    @ObjectHolder("cyan_fabric")
+    public static final Item CYAN_FABRIC = null;
+    @ObjectHolder("purple_fabric")
+    public static final Item PURPLE_FABRIC = null;
+    @ObjectHolder("blue_fabric")
+    public static final Item BLUE_FABRIC = null;
+    @ObjectHolder("brown_fabric")
+    public static final Item BROWN_FABRIC = null;
+    @ObjectHolder("green_fabric")
+    public static final Item GREEN_FABRIC = null;
+    @ObjectHolder("red_fabric")
+    public static final Item RED_FABRIC = null;
+    @ObjectHolder("black_fabric")
+    public static final Item BLACK_FABRIC = null;
+
     @SubscribeEvent
     public void setup(final FMLCommonSetupEvent e) {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
@@ -203,11 +236,11 @@ public class TCBaseItems {
         IForgeRegistry<Item> registry = e.getRegistry();
 
         registry.register(new HammerItem(4.5F, -2.75F, ItemTier.IRON, new Item.Properties().group(ItemGroup.TOOLS).maxStackSize(1).maxDamage(16)).setRegistryName(ThreeCore.MODID, "hammer"));
-        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "plate_cast"));
-        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)).maxStackSize(1), ThreeCoreServerConfig.ENERGY.CAPACITOR).setRegistryName(ThreeCore.MODID, "capacitor"));
-        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)).maxStackSize(1), ThreeCoreServerConfig.ENERGY.ADVANCED_CAPACITOR).setRegistryName(ThreeCore.MODID, "advanced_capacitor"));
-        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "circuit"));
-        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY))).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup())).setRegistryName(ThreeCore.MODID, "plate_cast"));
+        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup()).maxStackSize(1), ThreeCoreServerConfig.ENERGY.CAPACITOR).setRegistryName(ThreeCore.MODID, "capacitor"));
+        registry.register(new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup()).maxStackSize(1), ThreeCoreServerConfig.ENERGY.ADVANCED_CAPACITOR).setRegistryName(ThreeCore.MODID, "advanced_capacitor"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup())).setRegistryName(ThreeCore.MODID, "circuit"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup())).setRegistryName(ThreeCore.MODID, "advanced_circuit"));
         registry.register(new VialItem(new Item.Properties().group(ItemGroup.MISC).maxStackSize(1)).setRegistryName("vial"));
         registry.register(new SuitStandItem(new Item.Properties().group(ItemGroup.DECORATIONS).maxStackSize(16)).setRegistryName("suit_stand"));
 
@@ -284,6 +317,23 @@ public class TCBaseItems {
         registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "steel_plate"));
         registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(ThreeCore.MODID, "gold_titanium_alloy_plate"));
         registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS).rarity(Rarity.RARE)).setRegistryName(ThreeCore.MODID, "adamantium_plate"));
+
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("white_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("orange_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("magenta_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("light_blue_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("yellow_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("lime_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("pink_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("gray_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("light_gray_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("cyan_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("purple_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("blue_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("brown_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("green_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("red_fabric"));
+        registry.register(new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())).setRegistryName("black_fabric"));
     }
 
 }

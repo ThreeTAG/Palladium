@@ -127,6 +127,23 @@
 	"item.threecore.gold_titanium_alloy_plate": "Gold-Titanium-Alloy Plate",
 	"item.threecore.adamantium_plate": "Adamantium Plate",
 	
+	"item.threecore.white_fabric": "White Fabric",
+	"item.threecore.orange_fabric": "Orange Fabric",
+	"item.threecore.magenta_fabric": "Magenta Fabric",
+	"item.threecore.light_blue_fabric": "Light Blue Fabric",
+	"item.threecore.yellow_fabric": "Yellow Fabric",
+	"item.threecore.lime_fabric": "Lime Fabric",
+	"item.threecore.pink_fabric": "Pink Fabric",
+	"item.threecore.gray_fabric": "Gray Fabric",
+	"item.threecore.light_gray_fabric": "Light Gray Fabric",
+	"item.threecore.cyan_fabric": "Cyan Fabric",
+	"item.threecore.purple_fabric": "Purple Fabric",
+	"item.threecore.blue_fabric": "Blue Fabric",
+	"item.threecore.brown_fabric": "Brown Fabric",
+	"item.threecore.green_fabric": "Green Fabric",
+	"item.threecore.red_fabric": "Red Fabric",
+	"item.threecore.black_fabric": "Black Fabric",
+	
 	"entity.threecore.suit_stand": "Suit Stand",
 	
 	"commands.karma.success.player.single": "%s karma has been set to %s",

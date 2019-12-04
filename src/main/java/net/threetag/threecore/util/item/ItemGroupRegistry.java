@@ -5,7 +5,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.item.TCBaseItems;
 
 import java.util.HashMap;
@@ -14,13 +13,13 @@ import java.util.function.Supplier;
 
 public class ItemGroupRegistry {
 
-    private static Map<String, ItemGroup> TABS = new HashMap<>();
+    private static Map<String, ItemGroup> ITEM_GROUPS = new HashMap<>();
 
     public static final String TECHNOLOGY = "technology";
     public static final String SUITS_AND_ARMOR = "suits_and_armor";
 
     static {
-        getOrCreateCreativeTab(TECHNOLOGY, () -> new ItemStack(TCBaseItems.CIRCUIT));
+        getOrCreateItemGroup(TECHNOLOGY, () -> new ItemStack(TCBaseItems.CIRCUIT));
         addItemGroup(SUITS_AND_ARMOR, new SuitsAndArmorItemGroup(SUITS_AND_ARMOR));
     }
 
@@ -44,7 +43,7 @@ public class ItemGroupRegistry {
         if (name.equalsIgnoreCase("brewing"))
             return ItemGroup.BREWING;
 
-        return TABS.get(name.toLowerCase());
+        return ITEM_GROUPS.get(name.toLowerCase());
     }
 
     public static ItemGroup addItemGroup(String name, ItemStack stack) {
@@ -55,23 +54,31 @@ public class ItemGroupRegistry {
         return addItemGroup(name, new SimpleItemGroup(name, stackSupplier));
     }
 
-    public static ItemGroup addItemGroup(String name, ItemGroup tab) {
-        TABS.put(name, tab);
-        return tab;
+    public static ItemGroup addItemGroup(String name, ItemGroup itemGroup) {
+        ITEM_GROUPS.put(name, itemGroup);
+        return itemGroup;
     }
 
-    public static ItemGroup getOrCreateCreativeTab(String name, ItemStack stack) {
-        return getOrCreateCreativeTab(name, () -> stack);
+    public static ItemGroup getOrCreateItemGroup(String name, ItemStack stack) {
+        return getOrCreateItemGroup(name, () -> stack);
     }
 
-    public static ItemGroup getOrCreateCreativeTab(String name, Supplier<ItemStack> stackSupplier) {
-        ItemGroup tab = getItemGroup(name);
+    public static ItemGroup getOrCreateItemGroup(String name, Supplier<ItemStack> stackSupplier) {
+        ItemGroup itemGroup = getItemGroup(name);
 
-        if (tab != null)
-            return tab;
+        if (itemGroup != null)
+            return itemGroup;
         else {
             return addItemGroup(name, stackSupplier);
         }
+    }
+
+    public static ItemGroup getTechnologyGroup() {
+        return getItemGroup(TECHNOLOGY);
+    }
+
+    public static ItemGroup getSuitsAndArmorGroup() {
+        return getItemGroup(SUITS_AND_ARMOR);
     }
 
     public static class SuitsAndArmorItemGroup extends ItemGroup {

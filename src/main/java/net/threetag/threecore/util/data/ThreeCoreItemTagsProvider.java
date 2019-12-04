@@ -119,6 +119,23 @@ public class ThreeCoreItemTagsProvider extends ItemTagsProvider {
         addToBoth(ThreeCoreItemTags.PLATES, ThreeCoreItemTags.STEEL_PLATES, TCBaseItems.STEEL_PLATE);
         addToBoth(ThreeCoreItemTags.PLATES, ThreeCoreItemTags.GOLD_TITANIUM_ALLOY_PLATES, TCBaseItems.GOLD_TITANIUM_ALLOY_PLATE);
         addToBoth(ThreeCoreItemTags.PLATES, ThreeCoreItemTags.ADAMANTIUM_PLATES, TCBaseItems.ADAMANTIUM_PLATE);
+
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.WHITE_FABRIC, TCBaseItems.WHITE_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.ORANGE_FABRIC, TCBaseItems.ORANGE_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.MAGENTA_FABRIC, TCBaseItems.MAGENTA_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.LIGHT_BLUE_FABRIC, TCBaseItems.LIGHT_BLUE_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.YELLOW_FABRIC, TCBaseItems.YELLOW_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.LIME_FABRIC, TCBaseItems.LIME_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.PINK_FABRIC, TCBaseItems.PINK_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.GRAY_FABRIC, TCBaseItems.GRAY_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.LIGHT_GRAY_FABRIC, TCBaseItems.LIGHT_GRAY_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.CYAN_FABRIC, TCBaseItems.CYAN_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.PURPLE_FABRIC, TCBaseItems.PURPLE_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.BLUE_FABRIC, TCBaseItems.BLUE_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.BROWN_FABRIC, TCBaseItems.BROWN_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.GREEN_FABRIC, TCBaseItems.GREEN_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.RED_FABRIC, TCBaseItems.RED_FABRIC);
+        addToBoth(ThreeCoreItemTags.FABRIC, ThreeCoreItemTags.BLACK_FABRIC, TCBaseItems.BLACK_FABRIC);
     }
 
     public void addToBoth(Tag<Item> root, Tag<Item> branch, IItemProvider item) {
