@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:light_blue_fabric"
+    ]
+  },
+  "criteria": {
+    "has_color": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dyes/light_blue"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:light_blue_fabric"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_color",
+      "has_the_recipe"
+    ]
+  ]
+}

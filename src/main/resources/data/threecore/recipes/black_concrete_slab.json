@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "concrete_slabs",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:black_concrete"
+    }
+  },
+  "result": {
+    "item": "threecore:black_concrete_slab",
+    "count": 6
+  }
+}

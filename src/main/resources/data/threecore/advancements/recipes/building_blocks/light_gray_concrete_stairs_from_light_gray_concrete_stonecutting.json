@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:light_gray_concrete_stairs_from_light_gray_concrete_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_concrete": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:light_gray_concrete"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:light_gray_concrete_stairs_from_light_gray_concrete_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_concrete",
+      "has_the_recipe"
+    ]
+  ]
+}

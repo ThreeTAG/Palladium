@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "threecore:hammer"
+    },
+    {
+      "tag": "forge:ingots/tin"
+    },
+    {
+      "tag": "forge:ingots/tin"
+    }
+  ],
+  "result": {
+    "item": "threecore:tin_plate"
+  }
+}

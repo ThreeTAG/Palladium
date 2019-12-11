@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:gold_titanium_alloy_ingot_from_nuggets"
+    ]
+  },
+  "criteria": {
+    "has_at_least_9_gold_titanium_alloy_nugget": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "threecore:gold_titanium_alloy_nugget",
+            "count": {
+              "min": 9
+            }
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:gold_titanium_alloy_ingot_from_nuggets"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_at_least_9_gold_titanium_alloy_nugget",
+      "has_the_recipe"
+    ]
+  ]
+}

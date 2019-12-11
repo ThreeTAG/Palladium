@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CRC",
+    "CTC",
+    "CRC"
+  ],
+  "key": {
+    "C": {
+      "item": "threecore:copper_conduit"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "T": {
+      "tag": "forge:plates/tin"
+    }
+  },
+  "result": {
+    "item": "threecore:circuit"
+  }
+}

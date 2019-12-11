@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "concrete_stairs",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:blue_concrete"
+    }
+  },
+  "result": {
+    "item": "threecore:blue_concrete_stairs",
+    "count": 4
+  }
+}

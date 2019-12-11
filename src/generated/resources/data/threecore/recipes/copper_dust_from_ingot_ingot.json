@@ -1,0 +1,11 @@
+{
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/copper"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/copper"
+  },
+  "experience": 0.0,
+  "energy": 200
+}

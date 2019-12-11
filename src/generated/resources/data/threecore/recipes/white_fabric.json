@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "threecore:fabric",
+  "ingredients": [
+    {
+      "tag": "forge:dyes/white"
+    },
+    {
+      "tag": "forge:plates/iron"
+    },
+    {
+      "item": "minecraft:leather"
+    }
+  ],
+  "result": {
+    "item": "threecore:white_fabric",
+    "count": 4
+  }
+}

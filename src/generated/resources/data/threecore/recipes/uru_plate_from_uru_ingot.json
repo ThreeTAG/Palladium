@@ -1,0 +1,14 @@
+{
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/uru"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/uru"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 1500
+}

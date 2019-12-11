@@ -1,0 +1,11 @@
+{
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/vibranium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/vibranium"
+  },
+  "experience": 0.0,
+  "energy": 600
+}

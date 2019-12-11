@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:plates/iron",
+    "#forge:plates/gold",
+    "#forge:plates/copper",
+    "#forge:plates/tin",
+    "#forge:plates/lead",
+    "#forge:plates/silver",
+    "#forge:plates/palladium",
+    "#forge:plates/vibranium",
+    "#forge:plates/osmium",
+    "#forge:plates/uranium",
+    "#forge:plates/titanium",
+    "#forge:plates/iridium",
+    "#forge:plates/uru",
+    "#forge:plates/bronze",
+    "#forge:plates/intertium",
+    "#forge:plates/steel",
+    "#forge:plates/gold_titanium_alloy",
+    "#forge:plates/adamantium"
+  ]
+}

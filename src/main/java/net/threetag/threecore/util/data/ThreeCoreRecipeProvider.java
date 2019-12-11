@@ -1,15 +1,19 @@
 package net.threetag.threecore.util.data;
 
 import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.*;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.common.crafting.conditions.TagEmptyCondition;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.base.item.TCBaseItems;
@@ -66,6 +70,17 @@ public class ThreeCoreRecipeProvider extends RecipeProvider implements IConditio
         ShapelessRecipeBuilder.shapelessRecipe(TCBaseItems.GREEN_FABRIC, 4).addIngredient(Tags.Items.DYES_GREEN).addIngredient(ThreeCoreItemTags.IRON_PLATES).addIngredient(Items.LEATHER).addCriterion("has_color", this.hasItem(Tags.Items.DYES_GREEN)).setGroup(ThreeCore.MODID + ":fabric").build(consumer);
         ShapelessRecipeBuilder.shapelessRecipe(TCBaseItems.RED_FABRIC, 4).addIngredient(Tags.Items.DYES_RED).addIngredient(ThreeCoreItemTags.IRON_PLATES).addIngredient(Items.LEATHER).addCriterion("has_color", this.hasItem(Tags.Items.DYES_RED)).setGroup(ThreeCore.MODID + ":fabric").build(consumer);
         ShapelessRecipeBuilder.shapelessRecipe(TCBaseItems.BLACK_FABRIC, 4).addIngredient(Tags.Items.DYES_BLACK).addIngredient(ThreeCoreItemTags.IRON_PLATES).addIngredient(Items.LEATHER).addCriterion("has_color", this.hasItem(Tags.Items.DYES_BLACK)).setGroup(ThreeCore.MODID + ":fabric").build(consumer);
+
+        for (DyeColor color : DyeColor.values()) {
+            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("minecraft", color.getName() + "_concrete"));
+            Block slab = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ThreeCore.MODID, color.getName() + "_concrete_slab"));
+            Block stairs = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ThreeCore.MODID, color.getName() + "_concrete_stairs"));
+            ShapedRecipeBuilder.shapedRecipe(slab, 6).key('#', block).setGroup("concrete_slabs").patternLine("###").addCriterion("has_concrete", this.hasItem(block)).build(consumer);
+            SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(block), slab, 2).addCriterion("has_concrete", this.hasItem(block)).build(consumer, new ResourceLocation(ThreeCore.MODID, color.getName() + "_concrete_slab_from_" + color.getName() + "_concrete_stonecutting"));
+
+            ShapedRecipeBuilder.shapedRecipe(stairs, 4).key('#', block).patternLine("#  ").patternLine("## ").patternLine("###").setGroup("concrete_stairs").addCriterion("has_concrete", this.hasItem(block)).build(consumer);
+            SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(block), stairs).addCriterion("has_concrete", this.hasItem(block)).build(consumer, new ResourceLocation(ThreeCore.MODID, color.getName() + "_concrete_stairs_from_" + color.getName() + "_concrete_stonecutting"));
+        }
 
         // Misc Grinder Recipes
         new GrinderRecipeBuilder(ThreeCoreItemTags.COAL_DUSTS).setIngredient(Items.COAL).setEnergy(200).addCondition(this.not(new TagEmptyCondition(ThreeCoreItemTags.COAL_DUSTS.getId()))).addCriterion("has_coal", this.hasItem(Items.COAL)).build(consumer, new ResourceLocation(ThreeCore.MODID, "coal_dust_from_coal"));

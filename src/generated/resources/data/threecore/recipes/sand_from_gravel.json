@@ -1,0 +1,11 @@
+{
+  "type": "threecore:grinding",
+  "result": {
+    "item": "minecraft:sand"
+  },
+  "ingredient": {
+    "item": "minecraft:gravel"
+  },
+  "experience": 0.0,
+  "energy": 100
+}

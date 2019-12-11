@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:adamantium_dust"
+    ]
+  },
+  "criteria": {
+    "has_adamantium_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/adamantium"
+          }
+        ]
+      }
+    },
+    "has_iron_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/iron"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:adamantium_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_adamantium_dust",
+      "has_iron_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

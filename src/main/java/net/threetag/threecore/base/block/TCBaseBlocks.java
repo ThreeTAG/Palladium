@@ -2,13 +2,13 @@ package net.threetag.threecore.base.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
@@ -31,6 +31,8 @@ import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.base.item.CapacitorBlockItem;
 import net.threetag.threecore.base.tileentity.*;
 import net.threetag.threecore.util.item.ItemGroupRegistry;
+
+import java.util.Objects;
 
 @ObjectHolder(ThreeCore.MODID)
 public class TCBaseBlocks {
@@ -137,6 +139,72 @@ public class TCBaseBlocks {
     @ObjectHolder("uru_ore")
     public static final Block URU_ORE = null;
 
+    @ObjectHolder("white_concrete_slab")
+    public static final Block WHITE_CONCRETE_SLAB = null;
+    @ObjectHolder("orange_concrete_slab")
+    public static final Block ORANGE_CONCRETE_SLAB = null;
+    @ObjectHolder("magenta_concrete_slab")
+    public static final Block MAGENTA_CONCRETE_SLAB = null;
+    @ObjectHolder("light_blue_concrete_slab")
+    public static final Block LIGHT_BLUE_CONCRETE_SLAB = null;
+    @ObjectHolder("yellow_concrete_slab")
+    public static final Block YELLOW_CONCRETE_SLAB = null;
+    @ObjectHolder("lime_concrete_slab")
+    public static final Block LIME_CONCRETE_SLAB = null;
+    @ObjectHolder("pink_concrete_slab")
+    public static final Block PINK_CONCRETE_SLAB = null;
+    @ObjectHolder("gray_concrete_slab")
+    public static final Block GRAY_CONCRETE_SLAB = null;
+    @ObjectHolder("light_gray_concrete_slab")
+    public static final Block LIGHT_GRAY_CONCRETE_SLAB = null;
+    @ObjectHolder("cyan_concrete_slab")
+    public static final Block CYAN_CONCRETE_SLAB = null;
+    @ObjectHolder("purple_concrete_slab")
+    public static final Block PURPLE_CONCRETE_SLAB = null;
+    @ObjectHolder("blue_concrete_slab")
+    public static final Block BLUE_CONCRETE_SLAB = null;
+    @ObjectHolder("brown_concrete_slab")
+    public static final Block BROWN_CONCRETE_SLAB = null;
+    @ObjectHolder("green_concrete_slab")
+    public static final Block GREEN_CONCRETE_SLAB = null;
+    @ObjectHolder("red_concrete_slab")
+    public static final Block RED_CONCRETE_SLAB = null;
+    @ObjectHolder("black_concrete_slab")
+    public static final Block BLACK_CONCRETE_SLAB = null;
+
+    @ObjectHolder("white_concrete_stairs")
+    public static final Block WHITE_CONCRETE_STAIRS = null;
+    @ObjectHolder("orange_concrete_stairs")
+    public static final Block ORANGE_CONCRETE_STAIRS = null;
+    @ObjectHolder("magenta_concrete_stairs")
+    public static final Block MAGENTA_CONCRETE_STAIRS = null;
+    @ObjectHolder("light_blue_concrete_stairs")
+    public static final Block LIGHT_BLUE_CONCRETE_STAIRS = null;
+    @ObjectHolder("yellow_concrete_stairs")
+    public static final Block YELLOW_CONCRETE_STAIRS = null;
+    @ObjectHolder("lime_concrete_stairs")
+    public static final Block LIME_CONCRETE_STAIRS = null;
+    @ObjectHolder("pink_concrete_stairs")
+    public static final Block PINK_CONCRETE_STAIRS = null;
+    @ObjectHolder("gray_concrete_stairs")
+    public static final Block GRAY_CONCRETE_STAIRS = null;
+    @ObjectHolder("light_gray_concrete_stairs")
+    public static final Block LIGHT_GRAY_CONCRETE_STAIRS = null;
+    @ObjectHolder("cyan_concrete_stairs")
+    public static final Block CYAN_CONCRETE_STAIRS = null;
+    @ObjectHolder("purple_concrete_stairs")
+    public static final Block PURPLE_CONCRETE_STAIRS = null;
+    @ObjectHolder("blue_concrete_stairs")
+    public static final Block BLUE_CONCRETE_STAIRS = null;
+    @ObjectHolder("brown_concrete_stairs")
+    public static final Block BROWN_CONCRETE_STAIRS = null;
+    @ObjectHolder("green_concrete_stairs")
+    public static final Block GREEN_CONCRETE_STAIRS = null;
+    @ObjectHolder("red_concrete_stairs")
+    public static final Block RED_CONCRETE_STAIRS = null;
+    @ObjectHolder("black_concrete_stairs")
+    public static final Block BLACK_CONCRETE_STAIRS = null;
+
     @SubscribeEvent
     public void setup(final FMLCommonSetupEvent e) {
         // Ores
@@ -214,6 +282,14 @@ public class TCBaseBlocks {
         registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "titanium_ore"));
         registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "iridium_ore"));
         registry.register(new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F)).setRegistryName(ThreeCore.MODID, "uru_ore"));
+
+        for (DyeColor color : DyeColor.values()) {
+            e.getRegistry().register(new SlabBlock(Block.Properties.create(Material.ROCK, color).hardnessAndResistance(1.8F)).setRegistryName(color.getName() + "_concrete_slab"));
+        }
+
+        for (DyeColor color : DyeColor.values()) {
+            e.getRegistry().register(new StairsBlock(() -> ForgeRegistries.BLOCKS.getValue(new ResourceLocation("minecraft", color.getName() + "_concrete")).getDefaultState(), Block.Properties.create(Material.ROCK, color).hardnessAndResistance(1.8F)).setRegistryName(color.getName() + "_concrete_stairs"));
+        }
     }
 
     @SubscribeEvent
@@ -271,6 +347,18 @@ public class TCBaseBlocks {
         registry.register(makeItem(TITANIUM_ORE));
         registry.register(makeItem(IRIDIUM_ORE, Rarity.UNCOMMON));
         registry.register(makeItem(URU_ORE, Rarity.EPIC));
+
+        for (DyeColor color : DyeColor.values()) {
+            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ThreeCore.MODID, color.getName() + "_concrete_slab"));
+            if (block != null)
+                e.getRegistry().register(new BlockItem(block, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS)).setRegistryName(Objects.requireNonNull(block.getRegistryName())));
+        }
+
+        for (DyeColor color : DyeColor.values()) {
+            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ThreeCore.MODID, color.getName() + "_concrete_stairs"));
+            if (block != null)
+                e.getRegistry().register(new BlockItem(block, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS)).setRegistryName(Objects.requireNonNull(block.getRegistryName())));
+        }
     }
 
     public static Item makeItem(Block block) {

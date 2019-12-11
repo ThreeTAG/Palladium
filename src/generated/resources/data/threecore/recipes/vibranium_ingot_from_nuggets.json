@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "vibranium_ingot",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:nuggets/vibranium"
+    }
+  },
+  "result": {
+    "item": "threecore:vibranium_ingot"
+  }
+}

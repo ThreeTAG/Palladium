@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "threecore:hammer"
+    },
+    {
+      "tag": "forge:ingots/titanium"
+    },
+    {
+      "tag": "forge:ingots/titanium"
+    }
+  ],
+  "result": {
+    "item": "threecore:titanium_plate"
+  }
+}

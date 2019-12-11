@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:pink_concrete_slab"
+    ]
+  },
+  "criteria": {
+    "has_concrete": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:pink_concrete"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:pink_concrete_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_concrete",
+      "has_the_recipe"
+    ]
+  ]
+}

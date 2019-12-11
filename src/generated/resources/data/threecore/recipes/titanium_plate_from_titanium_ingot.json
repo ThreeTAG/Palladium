@@ -1,0 +1,14 @@
+{
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/titanium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/titanium"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 1000
+}

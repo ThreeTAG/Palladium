@@ -1,0 +1,12 @@
+{
+  "type": "threecore:grinding",
+  "result": {
+    "item": "minecraft:bone_meal",
+    "count": 6
+  },
+  "ingredient": {
+    "item": "minecraft:bone"
+  },
+  "experience": 0.0,
+  "energy": 300
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "forge:dusts/intertium"
+  },
+  "result": "threecore:intertium_ingot",
+  "experience": 0.0,
+  "cookingtime": 100
+}

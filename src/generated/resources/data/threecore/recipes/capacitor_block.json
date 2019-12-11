@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RCR",
+    "LBL",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:plates/iron"
+    },
+    "R": {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    "L": {
+      "tag": "forge:plates/lead"
+    },
+    "C": {
+      "item": "threecore:circuit"
+    },
+    "B": {
+      "item": "threecore:capacitor"
+    }
+  },
+  "result": {
+    "item": "threecore:capacitor_block"
+  }
+}

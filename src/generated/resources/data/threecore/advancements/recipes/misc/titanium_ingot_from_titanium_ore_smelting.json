@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:titanium_ingot_from_titanium_ore_smelting"
+    ]
+  },
+  "criteria": {
+    "has_titanium_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ores/titanium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:titanium_ingot_from_titanium_ore_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_titanium_ore",
+      "has_the_recipe"
+    ]
+  ]
+}

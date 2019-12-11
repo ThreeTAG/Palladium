@@ -1,0 +1,11 @@
+{
+  "type": "threecore:grinding",
+  "result": {
+    "item": "minecraft:gravel"
+  },
+  "ingredient": {
+    "item": "minecraft:cobblestone"
+  },
+  "experience": 0.0,
+  "energy": 100
+}

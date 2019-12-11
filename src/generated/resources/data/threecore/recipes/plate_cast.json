@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "threecore:hammer"
+    },
+    {
+      "tag": "forge:plates/steel"
+    },
+    {
+      "tag": "forge:plates"
+    }
+  ],
+  "result": {
+    "item": "threecore:plate_cast"
+  }
+}

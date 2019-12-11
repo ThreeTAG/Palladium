@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:tin_ingot_from_tin_dust_blasting"
+    ]
+  },
+  "criteria": {
+    "has_tin_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/tin"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:tin_ingot_from_tin_dust_blasting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_tin_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

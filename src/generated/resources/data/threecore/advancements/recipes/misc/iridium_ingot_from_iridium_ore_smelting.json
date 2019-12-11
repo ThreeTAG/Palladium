@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:iridium_ingot_from_iridium_ore_smelting"
+    ]
+  },
+  "criteria": {
+    "has_iridium_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ores/iridium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:iridium_ingot_from_iridium_ore_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iridium_ore",
+      "has_the_recipe"
+    ]
+  ]
+}

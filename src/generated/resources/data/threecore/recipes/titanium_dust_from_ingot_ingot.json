@@ -1,0 +1,11 @@
+{
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/titanium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/titanium"
+  },
+  "experience": 0.0,
+  "energy": 400
+}

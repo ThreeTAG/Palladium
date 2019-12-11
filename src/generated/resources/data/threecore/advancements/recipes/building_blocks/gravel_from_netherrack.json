@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:gravel_from_netherrack"
+    ]
+  },
+  "criteria": {
+    "has_netherrack": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:netherrack"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:gravel_from_netherrack"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_netherrack",
+      "has_the_recipe"
+    ]
+  ]
+}

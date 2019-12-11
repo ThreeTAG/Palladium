@@ -1,0 +1,14 @@
+{
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/uranium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/uranium"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 500
+}

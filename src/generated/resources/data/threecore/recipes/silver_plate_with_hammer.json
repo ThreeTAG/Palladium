@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "threecore:hammer"
+    },
+    {
+      "tag": "forge:ingots/silver"
+    },
+    {
+      "tag": "forge:ingots/silver"
+    }
+  ],
+  "result": {
+    "item": "threecore:silver_plate"
+  }
+}

@@ -1,0 +1,8 @@
+{
+    "parent": "block/slab",
+    "textures": {
+        "bottom": "block/magenta_concrete",
+        "top": "block/magenta_concrete",
+        "side": "block/magenta_concrete"
+    }
+}

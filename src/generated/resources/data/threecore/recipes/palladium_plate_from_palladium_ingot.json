@@ -1,0 +1,14 @@
+{
+  "type": "threecore:pressing",
+  "result": {
+    "tag": "forge:plates/palladium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/palladium"
+  },
+  "cast": {
+    "item": "threecore:plate_cast"
+  },
+  "experience": 0.0,
+  "energy": 500
+}

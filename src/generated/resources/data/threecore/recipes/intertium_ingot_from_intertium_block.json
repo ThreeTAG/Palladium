@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "intertium_ingot",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/intertium"
+    }
+  ],
+  "result": {
+    "item": "threecore:intertium_ingot",
+    "count": 9
+  }
+}

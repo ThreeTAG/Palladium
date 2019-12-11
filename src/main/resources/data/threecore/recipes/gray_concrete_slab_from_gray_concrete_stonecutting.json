@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:gray_concrete"
+  },
+  "result": "threecore:gray_concrete_slab",
+  "count": 2
+}

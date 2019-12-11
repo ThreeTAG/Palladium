@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "LRL",
+    "PCP"
+  ],
+  "key": {
+    "X": {
+      "item": "threecore:copper_conduit"
+    },
+    "L": {
+      "tag": "forge:ingots/lead"
+    },
+    "R": {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    "P": {
+      "tag": "forge:plates/iron"
+    },
+    "C": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "result": {
+    "item": "threecore:capacitor"
+  }
+}

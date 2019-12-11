@@ -1,0 +1,11 @@
+{
+  "type": "threecore:grinding",
+  "result": {
+    "tag": "forge:dusts/palladium"
+  },
+  "ingredient": {
+    "tag": "forge:ingots/palladium"
+  },
+  "experience": 0.0,
+  "energy": 200
+}

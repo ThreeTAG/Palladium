@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=bottom": { "model": "threecore:block/magenta_concrete_slab" },
+        "type=top": { "model": "threecore:block/magenta_concrete_slab_top" },
+        "type=double": { "model": "block/magenta_concrete" }
+    }
+}
