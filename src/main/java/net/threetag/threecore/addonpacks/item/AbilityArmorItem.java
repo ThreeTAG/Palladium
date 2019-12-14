@@ -19,6 +19,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.DistExecutor;
 import net.threetag.threecore.abilities.AbilityGenerator;
 import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.abilities.AbilityMap;
@@ -35,8 +36,7 @@ import java.util.List;
 public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IModelLayerProvider {
 
     private List<AbilityGenerator> abilityGenerators;
-    @OnlyIn(Dist.CLIENT)
-    public List<ModelLayer> layers = new LinkedList<>();
+    public List layers = new LinkedList<>();
 
     public AbilityArmorItem(IArmorMaterial materialIn, EquipmentSlotType slot, Properties builder) {
         super(materialIn, slot, builder);
@@ -100,23 +100,25 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
         AbilityArmorItem item = new AbilityArmorItem(material, slot, properties);
 
         // Since items are registered before any resources are loaded I need to push this back using the resource callback
-        ModelLayerLoader.POST_LOAD_CALLBACKS.add(() -> {
-            if (JSONUtils.hasField(jsonObject, "layers")) {
-                if (jsonObject.get("layers").isJsonPrimitive()) {
-                    ModelLayer layer = ModelLayerManager.parseLayer(jsonObject.get("layers"));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            ModelLayerLoader.POST_LOAD_CALLBACKS.add(() -> {
+                if (JSONUtils.hasField(jsonObject, "layers")) {
+                    if (jsonObject.get("layers").isJsonPrimitive()) {
+                        ModelLayer layer = ModelLayerManager.parseLayer(jsonObject.get("layers"));
 
-                    if (layer != null)
-                        item.layers.add(layer);
-                } else {
-                    JsonArray layersArray = JSONUtils.getJsonArray(jsonObject, "layers");
-
-                    for (int i = 0; i < layersArray.size(); i++) {
-                        ModelLayer layer = ModelLayerManager.parseLayer(layersArray.get(i));
                         if (layer != null)
                             item.layers.add(layer);
+                    } else {
+                        JsonArray layersArray = JSONUtils.getJsonArray(jsonObject, "layers");
+
+                        for (int i = 0; i < layersArray.size(); i++) {
+                            ModelLayer layer = ModelLayerManager.parseLayer(layersArray.get(i));
+                            if (layer != null)
+                                item.layers.add(layer);
+                        }
                     }
                 }
-            }
+            });
         });
 
         return item.setAbilities(JSONUtils.hasField(jsonObject, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(jsonObject, "abilities"), true) : null);

@@ -38,7 +38,14 @@ public class ToolIngredient extends Ingredient {
         return this.toolType.test(stack);
     }
 
+    @Override
+    public IIngredientSerializer<ToolIngredient> getSerializer() {
+        return Serializer.INSTANCE;
+    }
+
     public static class Serializer implements IIngredientSerializer<ToolIngredient> {
+
+        public static final Serializer INSTANCE = new Serializer();
 
         @Override
         public ToolIngredient parse(PacketBuffer buffer) {

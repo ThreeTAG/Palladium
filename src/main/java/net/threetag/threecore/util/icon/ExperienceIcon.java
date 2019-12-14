@@ -5,6 +5,8 @@ import com.google.gson.JsonPrimitive;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.threedata.ExperienceThreeData;
 
@@ -17,6 +19,7 @@ public class ExperienceIcon implements IIcon {
         this.experience = experience;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void draw(Minecraft mc, int x, int y) {
         ICON.draw(mc, x, y);

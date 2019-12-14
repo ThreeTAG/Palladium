@@ -88,7 +88,7 @@ public class ThreeCore {
         TCLootFunctions.register();
 
         // Misc
-        CraftingHelper.register(ToolIngredient.ID, new ToolIngredient.Serializer());
+        CraftingHelper.register(ToolIngredient.ID, ToolIngredient.Serializer.INSTANCE);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
