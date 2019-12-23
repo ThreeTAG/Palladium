@@ -71,10 +71,7 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        if (this.abilityGenerators != null && !this.abilityGenerators.isEmpty())
-            return new ItemAbilityContainerProvider(stack);
-        else
-            return super.initCapabilities(stack, nbt);
+        return new ItemAbilityContainerProvider(stack);
     }
 
     @Override

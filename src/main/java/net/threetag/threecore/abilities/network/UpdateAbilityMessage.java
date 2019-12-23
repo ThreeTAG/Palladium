@@ -44,7 +44,7 @@ public class UpdateAbilityMessage {
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             Entity entity = Minecraft.getInstance().world.getEntityByID(this.entityID);
-            if (entity != null && entity instanceof LivingEntity) {
+            if (entity instanceof LivingEntity) {
                 IAbilityContainer container = AbilityHelper.getAbilityContainerFromId((LivingEntity) entity, this.containerId);
 
                 if (container != null) {

@@ -1,19 +1,21 @@
 package net.threetag.threecore.abilities.capability;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.AbilityHelper;
-import net.threetag.threecore.abilities.AbilityMap;
-import net.threetag.threecore.abilities.IAbilityContainer;
-import net.threetag.threecore.abilities.IAbilityProvider;
+import net.threetag.threecore.abilities.*;
+import net.threetag.threecore.abilities.network.UpdateAbilityMessage;
 import net.threetag.threecore.util.threedata.EnumSync;
 import net.threetag.threecore.util.icon.IIcon;
 import net.threetag.threecore.util.icon.ItemIcon;
@@ -43,35 +45,45 @@ public class ItemAbilityContainer implements IAbilityContainer {
             }
         }
 
-        AtomicBoolean dirty = new AtomicBoolean(false);
-
-        if (!entity.world.isRemote && !this.init) {
+        if (!this.init) {
             if (stack.getOrCreateTag().contains("Abilities")) {
                 AbilityHelper.loadFromNBT(stack.getOrCreateTag().getCompound("Abilities"), this.map);
-                dirty.set(true);
-            } else if (stack.getItem() instanceof IAbilityProvider) {
+            } else if (stack.getItem() instanceof IAbilityProvider && !entity.world.isRemote) {
                 this.addAbilities(null, (IAbilityProvider) stack.getItem());
+            } else {
+                return;
             }
         }
 
         getAbilityMap().forEach((s, a) -> {
             a.container = this;
             a.tick(entity);
-            if (a.sync != EnumSync.NONE || !init) {
+            if (a.sync != EnumSync.NONE || !init || a.dirty) {
                 onUpdated(entity, a, a.sync);
                 a.sync = EnumSync.NONE;
             }
             if (a.dirty) {
-                dirty.set(true);
                 a.dirty = false;
+                this.stack.getOrCreateTag().put("Abilities", AbilityHelper.saveToNBT(this.map));
             }
         });
 
-        if (entity.world.isRemote && dirty.get()) {
-            this.stack.getOrCreateTag().put("Abilities", AbilityHelper.saveToNBT(this.map));
-        }
-
         this.init = true;
+    }
+
+    @Override
+    public void onUpdated(LivingEntity entity, Ability ability, EnumSync sync) {
+        if (entity.world.isRemote)
+            return;
+
+        this.stack.getOrCreateTag().put("Abilities", AbilityHelper.saveToNBT(this.map));
+
+        if (sync != EnumSync.NONE && entity instanceof ServerPlayerEntity) {
+            ThreeCore.NETWORK_CHANNEL.sendTo(new UpdateAbilityMessage(entity.getEntityId(), this.getId(), ability.getId(), ability.getUpdateTag()), ((ServerPlayerEntity) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+        }
+        if (sync == EnumSync.EVERYONE && entity.world instanceof ServerWorld) {
+            ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new UpdateAbilityMessage(entity.getEntityId(), this.getId(), ability.getId(), ability.getUpdateTag()));
+        }
     }
 
     @Override

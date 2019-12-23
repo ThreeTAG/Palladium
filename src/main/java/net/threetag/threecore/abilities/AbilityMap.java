@@ -26,9 +26,10 @@ public class AbilityMap extends LinkedHashMap<String, Ability> {
     }
 
     public AbilityMap(List<AbilityGenerator> abilityGenerators) {
-        abilityGenerators.forEach(a -> {
-            this.put(a.key, a.create());
-        });
+        if (abilityGenerators != null)
+            abilityGenerators.forEach(a -> {
+                this.put(a.key, a.create());
+            });
     }
 
     @Override
