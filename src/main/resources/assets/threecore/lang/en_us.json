@@ -294,7 +294,15 @@
 	"gui.jei.category.threecore.fluid_composing": "Fluid Composing",
 	
 	"ability_container.threecore.player": "Player Abilities",
-	
+
+	"key.threecore.scroll_up": "Scroll Up",
+	"key.threecore.scroll_down": "Scroll Down",
+	"key.threecore.ability_1": "Ability 1",
+	"key.threecore.ability_2": "Ability 2",
+	"key.threecore.ability_3": "Ability 3",
+	"key.threecore.ability_4": "Ability 4",
+	"key.threecore.ability_5": "Ability 5",
+
 	"threecore.util.energy_display": "%,d %s",
 	"threecore.util.energy_storage_display": "%,d / %,d %s",
 	"threecore.util.fluid_display": "%,d %s",

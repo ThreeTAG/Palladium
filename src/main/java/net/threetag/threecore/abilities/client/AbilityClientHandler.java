@@ -1,5 +1,6 @@
 package net.threetag.threecore.abilities.client;
 
+import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -25,6 +26,7 @@ import net.threetag.threecore.abilities.network.AbilityKeyMessage;
 import net.threetag.threecore.util.client.gui.TranslucentButton;
 import org.lwjgl.glfw.GLFW;
 
+import java.security.Key;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,10 +38,18 @@ public class AbilityClientHandler {
     public static final KeyBinding SCROLL_UP = new KeyBinding("key.threecore.scroll_up", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, 73, CATEGORY);
     public static final KeyBinding SCROLL_DOWN = new KeyBinding("key.threecore.scroll_down", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, 80, CATEGORY);
 
+    public static List<AbilityKeyBinding> ABILITY_KEYS = Lists.newArrayList();
+
     public AbilityClientHandler() {
         if (Minecraft.getInstance() != null) {
             ClientRegistry.registerKeyBinding(SCROLL_UP);
             ClientRegistry.registerKeyBinding(SCROLL_DOWN);
+
+            for (int i = 1; i <= AbilityBarRenderer.ENTRY_SHOW_AMOUNT; i++) {
+                AbilityKeyBinding keyBinding = new AbilityKeyBinding("key.threecore.ability_" + i, KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, i == 1 ? 86 : i == 2 ? 66 : i == 3 ? 78 : i == 4 ? 77 : i == 5 ? 188 : -1, i, CATEGORY);
+                ClientRegistry.registerKeyBinding(keyBinding);
+                ABILITY_KEYS.add(keyBinding);
+            }
         }
     }
 
@@ -52,8 +62,19 @@ public class AbilityClientHandler {
             List<Ability> abilities = AbilityHelper.getAbilities(Minecraft.getInstance().player).stream().filter(a -> a.getConditionManager().isUnlocked() && a.getConditionManager().needsKey() && a.getDataManager().get(Ability.KEYBIND) > -1).collect(Collectors.toList());
 
             for (Ability ability : abilities) {
-                if (ability != null && ability.getContainer() != null && ability.getDataManager().get(Ability.KEYBIND) == e.getKey())
+                if (ability != null && ability.getContainer() != null && ability.getDataManager().get(Ability.KEYBIND) == e.getKey()) {
                     ThreeCore.NETWORK_CHANNEL.sendToServer(new AbilityKeyMessage(ability.getContainer().getId(), ability.getId(), e.getAction() == GLFW.GLFW_PRESS));
+                }
+            }
+
+            abilities = AbilityBarRenderer.getCurrentDisplayedAbilities(AbilityHelper.getAbilities(Minecraft.getInstance().player));
+            for (AbilityKeyBinding keyBinding : ABILITY_KEYS) {
+                if (keyBinding.isKeyDown() && keyBinding.index <= abilities.size()) {
+                    Ability ability = abilities.get(keyBinding.index - 1);
+                    if (ability != null && ability.getContainer() != null) {
+                        ThreeCore.NETWORK_CHANNEL.sendToServer(new AbilityKeyMessage(ability.getContainer().getId(), ability.getId(), e.getAction() == GLFW.GLFW_PRESS));
+                    }
+                }
             }
         }
 
