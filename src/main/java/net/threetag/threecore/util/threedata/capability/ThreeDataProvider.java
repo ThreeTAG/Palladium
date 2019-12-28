@@ -14,7 +14,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.capability.CapabilityAbilityContainer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -52,16 +51,16 @@ public class ThreeDataProvider implements ICapabilitySerializable<CompoundNBT> {
 
         @SubscribeEvent
         public void onAttachCapabilities(AttachCapabilitiesEvent<Entity> e) {
-            if (e.getObject() instanceof Entity && !e.getObject().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).isPresent()) {
+            if (e.getObject() instanceof Entity && !e.getObject().getCapability(CapabilityThreeData.THREE_DATA).isPresent()) {
                 e.addCapability(new ResourceLocation(ThreeCore.MODID, "three_data"), new ThreeDataProvider(new CapabilityThreeData(e.getObject())));
             }
         }
 
         @SubscribeEvent
         public void onStartTracking(PlayerEvent.StartTracking e) {
-            e.getTarget().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(sizeChanging -> {
-                if (sizeChanging instanceof INBTSerializable && e.getPlayer() instanceof ServerPlayerEntity) {
-                    ThreeCore.NETWORK_CHANNEL.sendTo(new SyncThreeDataMessage(e.getTarget().getEntityId(), (CompoundNBT) ((INBTSerializable) sizeChanging).serializeNBT()), ((ServerPlayerEntity) e.getPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+            e.getTarget().getCapability(CapabilityThreeData.THREE_DATA).ifPresent(threeData -> {
+                if (threeData instanceof INBTSerializable && e.getPlayer() instanceof ServerPlayerEntity) {
+                    ThreeCore.NETWORK_CHANNEL.sendTo(new SyncThreeDataMessage(e.getTarget().getEntityId(), (CompoundNBT) ((INBTSerializable) threeData).serializeNBT()), ((ServerPlayerEntity) e.getPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
                 }
             });
         }
