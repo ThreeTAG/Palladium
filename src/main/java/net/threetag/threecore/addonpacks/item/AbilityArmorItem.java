@@ -81,7 +81,7 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public List<ModelLayer> getModelLayers(IModelLayerContext context) {
+    public List<IModelLayer> getModelLayers(IModelLayerContext context) {
         return this.layers;
     }
 
@@ -101,7 +101,7 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
             ModelLayerLoader.POST_LOAD_CALLBACKS.add(() -> {
                 if (JSONUtils.hasField(jsonObject, "layers")) {
                     if (jsonObject.get("layers").isJsonPrimitive()) {
-                        ModelLayer layer = ModelLayerManager.parseLayer(jsonObject.get("layers"));
+                        IModelLayer layer = ModelLayerManager.parseLayer(jsonObject.get("layers"));
 
                         if (layer != null)
                             item.layers.add(layer);
@@ -109,7 +109,7 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
                         JsonArray layersArray = JSONUtils.getJsonArray(jsonObject, "layers");
 
                         for (int i = 0; i < layersArray.size(); i++) {
-                            ModelLayer layer = ModelLayerManager.parseLayer(layersArray.get(i));
+                            IModelLayer layer = ModelLayerManager.parseLayer(layersArray.get(i));
                             if (layer != null)
                                 item.layers.add(layer);
                         }

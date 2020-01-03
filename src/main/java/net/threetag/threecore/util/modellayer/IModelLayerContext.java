@@ -1,6 +1,6 @@
 package net.threetag.threecore.util.modellayer;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 
@@ -16,6 +16,6 @@ public interface IModelLayerContext {
     EquipmentSlotType getSlot();
 
     @Nonnull
-    LivingEntity getAsEntity();
+    Entity getAsEntity();
 
 }

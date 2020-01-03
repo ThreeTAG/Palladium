@@ -12,10 +12,6 @@ import net.threetag.threecore.util.modellayer.texture.transformer.ITextureTransf
 
 public abstract class ModelLayerTexture {
 
-    public ResourceLocation getTexture() {
-        return this.getTexture();
-    }
-
     public abstract ResourceLocation getTexture(IModelLayerContext context);
 
     public abstract ModelLayerTexture transform(ITextureTransformer textureTransformer);

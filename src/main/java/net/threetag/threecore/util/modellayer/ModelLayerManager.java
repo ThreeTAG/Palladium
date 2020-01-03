@@ -27,7 +27,7 @@ import java.util.Map;
 public class ModelLayerManager {
 
     private static final Map<ResourceLocation, NonNullFunction<JsonObject, IModelLayerPredicate>> PREDICATES = Maps.newHashMap();
-    private static final Map<ResourceLocation, NonNullFunction<JsonObject, ModelLayer>> MODEL_LAYERS = Maps.newHashMap();
+    private static final Map<ResourceLocation, NonNullFunction<JsonObject, IModelLayer>> MODEL_LAYERS = Maps.newHashMap();
     private static final Map<ResourceLocation, NonNullFunction<JsonObject, ModelLayerTexture>> MODEL_LAYER_TEXTURES = Maps.newHashMap();
     private static final Map<ResourceLocation, NonNullFunction<JsonObject, ITextureVariable>> TEXTURE_VARIABLES = Maps.newHashMap();
     private static final Map<ResourceLocation, NonNullFunction<JsonObject, ITextureTransformer>> TEXTURE_TRANSFORMERS = Maps.newHashMap();
@@ -37,6 +37,9 @@ public class ModelLayerManager {
 
         // Default Layer
         registerModelLayer(new ResourceLocation(ThreeCore.MODID, "default"), ModelLayer::parse);
+
+        // Compound Layer
+        registerModelLayer(new ResourceLocation(ThreeCore.MODID, "compound"), CompoundModelLayer::parse);
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
         // Texture Types
@@ -106,7 +109,7 @@ public class ModelLayerManager {
         PREDICATES.put(id, function);
     }
 
-    public static void registerModelLayer(ResourceLocation id, NonNullFunction<JsonObject, ModelLayer> function) {
+    public static void registerModelLayer(ResourceLocation id, NonNullFunction<JsonObject, IModelLayer> function) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(function);
         MODEL_LAYERS.put(id, function);
@@ -153,18 +156,18 @@ public class ModelLayerManager {
         return function != null ? function.apply(json) : null;
     }
 
-    public static ModelLayer parseLayer(JsonElement jsonElement) {
+    public static IModelLayer parseLayer(JsonElement jsonElement) {
         if (jsonElement.isJsonPrimitive()) {
             return ModelLayerLoader.getModelLayer(new ResourceLocation(jsonElement.getAsString()));
         }
 
         JsonObject json = jsonElement.getAsJsonObject();
-        NonNullFunction<JsonObject, ModelLayer> function = MODEL_LAYERS.get(new ResourceLocation(JSONUtils.getString(json, "type", ThreeCore.MODID + ":default")));
+        NonNullFunction<JsonObject, IModelLayer> function = MODEL_LAYERS.get(new ResourceLocation(JSONUtils.getString(json, "type", ThreeCore.MODID + ":default")));
 
         if (function == null)
             return null;
 
-        ModelLayer layer = function.apply(json);
+        IModelLayer layer = function.apply(json);
         if (JSONUtils.hasField(json, "predicates")) {
             JsonArray predicateArray = JSONUtils.getJsonArray(json, "predicates");
             for (int i = 0; i < predicateArray.size(); i++) {

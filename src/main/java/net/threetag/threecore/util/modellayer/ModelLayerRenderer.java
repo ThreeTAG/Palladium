@@ -56,7 +56,7 @@ public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>,
         ModelLayerContext context = new ModelLayerContext(entity, stack, slot);
 
         if (stack.getItem() instanceof IModelLayerProvider) {
-            for (ModelLayer layer : ((IModelLayerProvider) stack.getItem()).getModelLayers(context)) {
+            for (IModelLayer layer : ((IModelLayerProvider) stack.getItem()).getModelLayers(context)) {
                 if (layer.isActive(context)) {
                     GlStateManager.pushMatrix();
                     GlStateManager.color4f(1F, 1F, 1F, 1F);
@@ -68,7 +68,7 @@ public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>,
     }
 
     public void renderLayers(IModelLayerProvider provider, IModelLayerContext context, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        for (ModelLayer layer : provider.getModelLayers(context)) {
+        for (IModelLayer layer : provider.getModelLayers(context)) {
             if (layer.isActive(context)) {
                 GlStateManager.pushMatrix();
                 GlStateManager.color4f(1F, 1F, 1F, 1F);

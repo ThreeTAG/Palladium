@@ -47,6 +47,10 @@ public class ThreeDataBuilder {
             return new IngredientThreeData(name);
         if (type.equalsIgnoreCase("item_tag"))
             return new ItemTagThreeData(name);
+        if (type.equalsIgnoreCase("entity_type"))
+            return new EntityTypeThreeData(name);
+        if (type.equalsIgnoreCase("nbt"))
+            return new CompoundNBTThreeData(name);
         return new StringThreeData(name);
     }
 

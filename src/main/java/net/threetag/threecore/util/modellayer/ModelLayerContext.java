@@ -1,5 +1,6 @@
 package net.threetag.threecore.util.modellayer;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -9,17 +10,17 @@ import javax.annotation.Nullable;
 
 public class ModelLayerContext implements IModelLayerContext {
 
-    private final LivingEntity entity;
+    private final Entity entity;
     private final ItemStack stack;
     private final EquipmentSlotType slotType;
 
-    public ModelLayerContext(LivingEntity entity) {
+    public ModelLayerContext(Entity entity) {
         this.entity = entity;
         this.stack = ItemStack.EMPTY;
         this.slotType = null;
     }
 
-    public ModelLayerContext(LivingEntity entity, ItemStack stack) {
+    public ModelLayerContext(Entity entity, ItemStack stack) {
         this.entity = entity;
         this.stack = stack == null ? ItemStack.EMPTY : stack;
         this.slotType = null;
@@ -45,7 +46,7 @@ public class ModelLayerContext implements IModelLayerContext {
 
     @Nonnull
     @Override
-    public LivingEntity getAsEntity() {
+    public Entity getAsEntity() {
         return this.entity;
     }
 }

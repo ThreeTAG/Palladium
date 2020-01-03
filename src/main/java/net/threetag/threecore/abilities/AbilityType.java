@@ -43,6 +43,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType CUSTOM_HOTBAR = new AbilityType(CustomHotbarAbility::new, ThreeCore.MODID, "custom_hotbar");
     public static final AbilityType OPENING_NBT_TIMER = new AbilityType(OpeningNbtTimerAbility::new, ThreeCore.MODID, "opening_nbt_timer");
     public static final AbilityType MODEL_LAYER = new AbilityType(ModelLayerAbility::new, ThreeCore.MODID, "model_layer");
+    public static final AbilityType PROJECTILE = new AbilityType(ProjectileAbility::new, ThreeCore.MODID, "projectile");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -64,6 +65,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(CUSTOM_HOTBAR);
         e.getRegistry().register(OPENING_NBT_TIMER);
         e.getRegistry().register(MODEL_LAYER);
+        e.getRegistry().register(PROJECTILE);
     }
 
     @OnlyIn(Dist.CLIENT)

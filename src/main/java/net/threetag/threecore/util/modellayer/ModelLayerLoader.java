@@ -18,7 +18,7 @@ public class ModelLayerLoader extends JsonReloadListener {
 
     public static final List<Runnable> POST_LOAD_CALLBACKS = Lists.newLinkedList();
     private static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-    private static Map<ResourceLocation, ModelLayer> LAYERS = Maps.newHashMap();
+    private static Map<ResourceLocation, IModelLayer> LAYERS = Maps.newHashMap();
 
     public ModelLayerLoader() {
         super(GSON, "model_layers");
@@ -29,7 +29,7 @@ public class ModelLayerLoader extends JsonReloadListener {
         LAYERS.clear();
         for (Map.Entry<ResourceLocation, JsonObject> entry : resourceLocationJsonObjectMap.entrySet()) {
             try {
-                ModelLayer layer = ModelLayerManager.parseLayer(entry.getValue());
+                IModelLayer layer = ModelLayerManager.parseLayer(entry.getValue());
                 LAYERS.put(entry.getKey(), layer);
             } catch (Exception e) {
                 ThreeCore.LOGGER.error("Parsing error loading model layer {}", entry.getKey(), e);
@@ -41,7 +41,7 @@ public class ModelLayerLoader extends JsonReloadListener {
         POST_LOAD_CALLBACKS.clear();
     }
 
-    public static ModelLayer getModelLayer(ResourceLocation id) {
+    public static IModelLayer getModelLayer(ResourceLocation id) {
         return LAYERS.get(id);
     }
 }
