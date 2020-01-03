@@ -3,6 +3,7 @@ package net.threetag.threecore.util.scripts.accessors;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.abilities.Ability;
@@ -69,6 +70,10 @@ public class LivingEntityAccessor extends EntityAccessor {
 
     public void setMovementSpeed(@ScriptParameterName("speed") float speed) {
         this.livingEntity.setAIMoveSpeed(speed);
+    }
+
+    public void swingArm(@ScriptParameterName("mainHand") boolean mainHand) {
+        this.livingEntity.swingArm(mainHand ? Hand.MAIN_HAND : Hand.OFF_HAND);
     }
 
     public ItemStackAccessor getItemInSlot(@ScriptParameterName("slot") String slot) {
