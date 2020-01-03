@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -16,6 +17,9 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
+
+import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderUtil {
@@ -165,6 +169,88 @@ public class RenderUtil {
         }
         GlStateManager.disableBlend();
         GlStateManager.color3f(1, 1, 1);
+    }
+
+    public static void drawLine(float width, float length) {
+        drawLine(width, length, true, true);
+    }
+
+    public static void drawLine(float width, float length, boolean drawTop, boolean drawBottom) {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bb = tessellator.getBuffer();
+
+        bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+
+        // West Side
+        bb.pos(width, 0, -width).endVertex();
+        bb.pos(width, length, -width).endVertex();
+        bb.pos(width, length, width).endVertex();
+        bb.pos(width, 0, width).endVertex();
+
+        // East Side
+        bb.pos(-width, 0, -width).endVertex();
+        bb.pos(-width, length, -width).endVertex();
+        bb.pos(-width, length, width).endVertex();
+        bb.pos(-width, 0, width).endVertex();
+
+        // South
+        bb.pos(-width, 0, width).endVertex();
+        bb.pos(-width, length, width).endVertex();
+        bb.pos(width, length, width).endVertex();
+        bb.pos(width, 0, width).endVertex();
+
+        // North
+        bb.pos(-width, 0, -width).endVertex();
+        bb.pos(-width, length, -width).endVertex();
+        bb.pos(width, length, -width).endVertex();
+        bb.pos(width, 0, -width).endVertex();
+
+        if (drawTop) {
+            bb.pos(-width, length, -width).endVertex();
+            bb.pos(width, length, -width).endVertex();
+            bb.pos(width, length, width).endVertex();
+            bb.pos(-width, length, width).endVertex();
+        }
+
+        if (drawBottom) {
+            bb.pos(-width, 0, -width).endVertex();
+            bb.pos(width, 0, -width).endVertex();
+            bb.pos(width, 0, width).endVertex();
+            bb.pos(-width, 0, width).endVertex();
+        }
+
+        tessellator.draw();
+    }
+
+    public static void drawGlowingLine(float width, float length, Color color, boolean extendedEnd, boolean drawTop, boolean drawBottom) {
+        GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
+        GlStateManager.disableTexture();
+        GlStateManager.disableCull();
+        RenderHelper.disableStandardItemLighting();
+        RenderUtil.setLightmapTextureCoords(240, 240);
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+        GL14.glBlendEquation(GL14.GL_FUNC_ADD);
+
+        RenderUtil.drawLine(width, length);
+
+        for (int i = 1; i < 3; ++i) {
+            GlStateManager.color4f(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 1F / i / 2);
+
+            float growWidth = width + i * 0.5F * 0.0625F;
+            float growHeight = extendedEnd ? length + i * 0.5F * 0.0625F : length;
+
+            RenderUtil.drawLine(growWidth, growHeight, drawTop, drawBottom);
+        }
+
+        GL14.glBlendEquation(GL14.GL_FUNC_ADD);
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderUtil.restoreLightmapTextureCoords();
+        RenderHelper.enableStandardItemLighting();
+        GL11.glPopAttrib();
+        GlStateManager.enableCull();
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture();
     }
 
     public static void setColorRGBA(int color) {
