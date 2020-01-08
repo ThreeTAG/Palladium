@@ -43,4 +43,29 @@ public class TCJsonUtil {
         return array;
     }
 
+    public static JsonObject merge(JsonObject json1, JsonObject json2) {
+        JsonObject json = JSONUtils.fromJson(json1.toString()); // copy
+
+        json2.entrySet().forEach((entry -> {
+            if (!json.has(entry.getKey())) {
+                json.add(entry.getKey(), entry.getValue());
+            } else {
+                if (json.get(entry.getKey()).isJsonPrimitive() && entry.getValue().isJsonPrimitive()) {
+                    json.add(entry.getKey(), entry.getValue());
+                } else if (json.get(entry.getKey()).isJsonArray() && entry.getValue().isJsonArray()) {
+                    JsonArray jsonArray = json.get(entry.getKey()).getAsJsonArray();
+                    JsonArray json2Array = entry.getValue().getAsJsonArray();
+                    for (int i = 0; i < json2Array.size(); i++) {
+                        jsonArray.add(json2Array.get(i));
+                    }
+                    json.add(entry.getKey(), jsonArray);
+                } else if (json.get(entry.getKey()).isJsonObject() && entry.getValue().isJsonObject()) {
+                    json.add(entry.getKey(), merge(json.get(entry.getKey()).getAsJsonObject(), entry.getValue().getAsJsonObject()));
+                }
+            }
+        }));
+
+        return json;
+    }
+
 }

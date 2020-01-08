@@ -1,11 +1,13 @@
 package net.threetag.threecore.addonpacks.item;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.EffectInstance;
@@ -15,12 +17,12 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.LazyLoadBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.abilities.AbilityHelper;
 import net.threetag.threecore.addonpacks.ThreeCoreAddonPacks;
@@ -29,6 +31,8 @@ import net.threetag.threecore.util.item.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -39,8 +43,24 @@ public class ItemParser {
     public static final int resourcePrefix = "items/".length();
     public static final int resourceSuffix = ".json".length();
     private static Map<ResourceLocation, BiFunction<JsonObject, Item.Properties, Item>> itemFunctions = Maps.newHashMap();
+    private static List<Pair<EventPriority, ISpecialItemParser>> specialItemParsers = Lists.newArrayList();
 
     static {
+
+        // Item Groups
+        registerSpecialItemParser(new ItemGroupParser(), EventPriority.HIGH);
+
+        // Armor Material
+        registerSpecialItemParser(new ArmorMaterialParser(), EventPriority.HIGH);
+
+        // Item Tiers
+        registerSpecialItemParser(new ItemTierParser(), EventPriority.HIGH);
+
+        // Suit Sets
+        registerSpecialItemParser(new SuitSetItemParser(), EventPriority.LOWEST);
+
+        // --------------------------------------------------------------
+
         // Default
         registerItemParser(new ResourceLocation(ThreeCore.MODID, "default"), (j, p) -> new AbilityItem(p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null));
 
@@ -84,63 +104,49 @@ public class ItemParser {
         itemFunctions.put(resourceLocation, function);
     }
 
+    public static void registerSpecialItemParser(ISpecialItemParser parser) {
+        registerSpecialItemParser(parser, EventPriority.NORMAL);
+    }
+
+    public static void registerSpecialItemParser(ISpecialItemParser parser, EventPriority priority) {
+        Preconditions.checkNotNull(parser);
+        Preconditions.checkNotNull(priority);
+        specialItemParsers.add(Pair.of(priority, parser));
+    }
+
     // Set to lowest priority so that most items are already registered and can be referenced
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void registerItems(RegistryEvent.Register<Item> e) {
         IResourceManager resourceManager = ThreeCoreAddonPacks.getInstance().getResourceManager();
+        specialItemParsers.sort(Comparator.comparingInt(o -> o.getFirst().ordinal()));
+        List<ResourceLocation> used = Lists.newArrayList();
 
-        for (ResourceLocation resourcelocation : resourceManager.getAllResourceLocations("items", (name) -> name.endsWith(".json") && name.startsWith("_"))) {
-            if (resourcelocation.getPath().startsWith("items/_item_groups")) {
-                try (IResource iresource = resourceManager.getResource(resourcelocation)) {
-                    JsonArray jsonArray = JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonArray.class);
-                    for (int i = 0; i < jsonArray.size(); i++) {
-                        JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-                        String name = JSONUtils.getString(jsonObject, "name");
-                        ItemGroupRegistry.addItemGroup(name, () -> CraftingHelper.getItemStack(JSONUtils.getJsonObject(jsonObject, "icon"), true));
-                        ThreeCore.LOGGER.info("Registered addonpack item group {} from {}!", name, resourcelocation);
-                    }
-                } catch (Throwable throwable) {
-                    ThreeCore.LOGGER.error("Couldn't read addonpack item group from {}", resourcelocation, throwable);
-                }
-            } else if (resourcelocation.getPath().startsWith("items/_armor_materials")) {
-                try (IResource iresource = resourceManager.getResource(resourcelocation)) {
-                    JsonArray jsonArray = JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonArray.class);
-                    for (int i = 0; i < jsonArray.size(); i++) {
-                        IArmorMaterial material = parseArmorMaterial(jsonArray.get(i).getAsJsonObject());
-                        ArmorMaterialRegistry.addArmorMaterial(material.getName(), material);
-                        ThreeCore.LOGGER.info("Registered addonpack armor material {} from {}!", material.getName(), resourcelocation);
-                    }
-                } catch (Throwable throwable) {
-                    ThreeCore.LOGGER.error("Couldn't read addonpack armor materials from {}", resourcelocation, throwable);
-                }
-            } else if (resourcelocation.getPath().startsWith("items/_item_tiers")) {
-                try (IResource iresource = resourceManager.getResource(resourcelocation)) {
-                    JsonArray jsonArray = JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonArray.class);
-                    for (int i = 0; i < jsonArray.size(); i++) {
-                        String name = JSONUtils.getString(jsonArray.get(i).getAsJsonObject(), "name");
-                        IItemTier tier = parseItemTier(jsonArray.get(i).getAsJsonObject());
-                        ItemTierRegistry.addItemTier(name, tier);
-                        ThreeCore.LOGGER.info("Registered addonpack item tier {} from {}!", name, resourcelocation);
-                    }
-                } catch (Throwable throwable) {
-                    ThreeCore.LOGGER.error("Couldn't read addonpack item tier from {}", resourcelocation, throwable);
+        for (ResourceLocation resourcelocation : resourceManager.getAllResourceLocations("items", (name) -> name.endsWith(".json"))) {
+            for (Pair<EventPriority, ISpecialItemParser> pair : specialItemParsers) {
+                if (pair.getSecond().applies(resourcelocation)) {
+                    pair.getSecond().process(resourceManager, resourcelocation, e.getRegistry());
+                    used.add(resourcelocation);
                 }
             }
         }
 
         for (ResourceLocation resourcelocation : resourceManager.getAllResourceLocations("items", (name) -> name.endsWith(".json") && !name.startsWith("_"))) {
             String s = resourcelocation.getPath();
-            ResourceLocation resourcelocation1 = new ResourceLocation(resourcelocation.getNamespace(), s.substring(resourcePrefix, s.length() - resourceSuffix));
+            ResourceLocation id = new ResourceLocation(resourcelocation.getNamespace(), s.substring(resourcePrefix, s.length() - resourceSuffix));
+
+            if (used.contains(resourcelocation)) {
+                continue;
+            }
 
             try (IResource iresource = resourceManager.getResource(resourcelocation)) {
                 Item item = parse(JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
                 if (item != null) {
-                    item.setRegistryName(resourcelocation1);
+                    item.setRegistryName(id);
                     e.getRegistry().register(item);
-                    ThreeCore.LOGGER.info("Registered addonpack item {}!", resourcelocation1);
+                    ThreeCore.LOGGER.info("Registered addonpack item {}!", id);
                 }
             } catch (Throwable throwable) {
-                ThreeCore.LOGGER.error("Couldn't read addonpack item {} from {}", resourcelocation1, resourcelocation, throwable);
+                ThreeCore.LOGGER.error("Couldn't read addonpack item {} from {}", id, resourcelocation, throwable);
             }
         }
     }
@@ -252,6 +258,14 @@ public class ItemParser {
         int enchantibility = JSONUtils.getInt(jsonObject, "enchantibility");
         Supplier<Ingredient> repairMaterial = () -> JSONUtils.hasField(jsonObject, "repair_material") ? Ingredient.deserialize(jsonObject.get("repair_material")) : Ingredient.EMPTY;
         return new SimpleItemTier(maxUses, efficiency, attackDamage, harvestLevel, enchantibility, repairMaterial);
+    }
+
+    public interface ISpecialItemParser {
+
+        boolean applies(ResourceLocation resourceLocation);
+
+        void process(IResourceManager resourceManager, ResourceLocation resourceLocation, IForgeRegistry<Item> registry);
+
     }
 
 }
