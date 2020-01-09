@@ -6,7 +6,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
@@ -47,6 +46,10 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
 
     public String getUUID() {
         return this.value.getUniqueID().toString();
+    }
+
+    public Vec3dAccessor getPosition() {
+        return new Vec3dAccessor(this.value.getPositionVector());
     }
 
     public double getPosX() {
@@ -91,8 +94,12 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         this.value.setPositionAndUpdate(x, y, z);
     }
 
-    public Vec3d getMotion() {
-        return this.value.getMotion();
+    public Vec3dAccessor getLookVec() {
+        return new Vec3dAccessor(this.value.getLookVec());
+    }
+
+    public Vec3dAccessor getMotion() {
+        return new Vec3dAccessor(this.value.getMotion());
     }
 
     public void setMotion(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z) {

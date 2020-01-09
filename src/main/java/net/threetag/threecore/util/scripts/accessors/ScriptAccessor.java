@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -55,6 +56,8 @@ public class ScriptAccessor<T> {
             return (ScriptAccessor<T>) new AbilityAccessor((Ability) object);
         if (object instanceof Condition)
             return (ScriptAccessor<T>) new ConditionAccessor((Condition) object);
+        if (object instanceof Vec3d)
+            return (ScriptAccessor<T>) new Vec3dAccessor((Vec3d) object);
         return null;
     }
 
@@ -62,7 +65,7 @@ public class ScriptAccessor<T> {
     public static void generateHtmlFile(File file) {
         List<String> ignoredMethods = Arrays.asList("fire", "wait", "equals", "toString", "hashCode", "getClass", "notify", "notifyAll");
         List<Class<? extends ScriptAccessor>> accessorClasses = Arrays.asList(EntityAccessor.class, LivingEntityAccessor.class,
-                WorldAccessor.class, BlockStateAccessor.class, DamageSourceAccessor.class, AbilityAccessor.class, ConditionAccessor.class, CompoundNBTAccessor.class);
+                WorldAccessor.class, BlockStateAccessor.class, DamageSourceAccessor.class, AbilityAccessor.class, ConditionAccessor.class, CompoundNBTAccessor.class, Vec3dAccessor.class);
         try {
             if (!file.getParentFile().exists())
                 file.getParentFile().mkdirs();
