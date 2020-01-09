@@ -30,4 +30,14 @@ public class ItemTagThreeData extends ThreeData<Tag<Item>> {
             return defaultValue;
         return new ItemTags.Wrapper(new ResourceLocation(nbt.getString(this.key)));
     }
+
+    @Override
+    public boolean displayAsString(Tag<Item> value) {
+        return true;
+    }
+
+    @Override
+    public String getDisplay(Tag<Item> value) {
+        return value.getId().toString();
+    }
 }

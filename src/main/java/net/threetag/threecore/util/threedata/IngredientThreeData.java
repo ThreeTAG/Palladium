@@ -38,5 +38,8 @@ public class IngredientThreeData extends ThreeData<Ingredient> {
         }
     }
 
-
+    @Override
+    public String getDisplay(Ingredient value) {
+        return value.serialize().toString();
+    }
 }
