@@ -2,6 +2,7 @@ package net.threetag.threecore.util.scripts.accessors;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.state.IProperty;
+import net.minecraft.util.math.BlockPos;
 import net.threetag.threecore.util.scripts.ScriptParameterName;
 
 public class BlockStateAccessor extends ScriptAccessor<BlockState> {
@@ -12,6 +13,14 @@ public class BlockStateAccessor extends ScriptAccessor<BlockState> {
 
     public String getBlock() {
         return this.value.getBlock().getRegistryName().toString();
+    }
+
+    public MaterialAccessor getMaterial() {
+        return new MaterialAccessor(this.value.getMaterial());
+    }
+
+    public boolean isAir(@ScriptParameterName("world") WorldAccessor world, @ScriptParameterName("x") int x, @ScriptParameterName("y") int y, @ScriptParameterName("z") int z) {
+        return this.value.isAir(world.value, new BlockPos(x, y, z));
     }
 
     public IProperty getPropertyByName(@ScriptParameterName("name") String name) {

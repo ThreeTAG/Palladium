@@ -2,6 +2,7 @@ package net.threetag.threecore.util.scripts.accessors;
 
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
@@ -58,6 +59,8 @@ public class ScriptAccessor<T> {
             return (ScriptAccessor<T>) new ConditionAccessor((Condition) object);
         if (object instanceof Vec3d)
             return (ScriptAccessor<T>) new Vec3dAccessor((Vec3d) object);
+        if (object instanceof Material)
+            return (ScriptAccessor<T>) new MaterialAccessor((Material) object);
         return null;
     }
 
@@ -65,7 +68,7 @@ public class ScriptAccessor<T> {
     public static void generateHtmlFile(File file) {
         List<String> ignoredMethods = Arrays.asList("fire", "wait", "equals", "toString", "hashCode", "getClass", "notify", "notifyAll");
         List<Class<? extends ScriptAccessor>> accessorClasses = Arrays.asList(EntityAccessor.class, LivingEntityAccessor.class,
-                WorldAccessor.class, BlockStateAccessor.class, DamageSourceAccessor.class, AbilityAccessor.class, ConditionAccessor.class, CompoundNBTAccessor.class, Vec3dAccessor.class);
+                WorldAccessor.class, BlockStateAccessor.class, DamageSourceAccessor.class, AbilityAccessor.class, ConditionAccessor.class, CompoundNBTAccessor.class, Vec3dAccessor.class, MaterialAccessor.class);
         try {
             if (!file.getParentFile().exists())
                 file.getParentFile().mkdirs();
