@@ -33,6 +33,7 @@ import net.threetag.threecore.ThreeCore;
 
 import javax.annotation.Nonnull;
 
+@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 @ObjectHolder(ThreeCore.MODID)
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem, IEntityAdditionalSpawnData {
