@@ -91,7 +91,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
                 firstTick(entity);
             }
             ticks++;
-            updateTick(entity);
+            action(entity);
         } else if (ticks != 0) {
             lastTick(entity);
             this.conditionManager.lastTick();
@@ -101,7 +101,13 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
         new AbilityTickScriptEvent(entity, this).fire();
     }
 
+    public void action(LivingEntity entity) {
+        this.updateTick(entity);
+    }
+
+    @Deprecated
     public void updateTick(LivingEntity entity) {
+
     }
 
     public void firstTick(LivingEntity entity) {

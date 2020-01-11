@@ -28,7 +28,7 @@ public class FlightAbility extends Ability {
     }
 
     @Override
-    public void updateTick(LivingEntity entity) {
+    public void action(LivingEntity entity) {
         if(!entity.onGround) {
             if (entity.moveForward > 0F) {
                 Vec3d vec = entity.getLookVec();

@@ -31,7 +31,7 @@ public class TeleportAbility extends Ability {
     }
 
     @Override
-    public void updateTick(LivingEntity entity) {
+    public void action(LivingEntity entity) {
         Vec3d lookVec = entity.getLookVec().scale(this.dataManager.get(DISTANCE));
         RayTraceResult rtr = entity.world.rayTraceBlocks(new RayTraceContext(new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), new Vec3d(entity.posX + lookVec.x, entity.posY + entity.getEyeHeight() + lookVec.y, entity.posZ + lookVec.z), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
 

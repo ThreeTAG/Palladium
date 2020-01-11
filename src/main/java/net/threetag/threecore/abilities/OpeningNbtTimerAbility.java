@@ -27,7 +27,7 @@ public class OpeningNbtTimerAbility extends Ability {
     }
 
     @Override
-    public void updateTick(LivingEntity entity) {
+    public void action(LivingEntity entity) {
         this.dataManager.set(OPEN, !this.dataManager.get(OPEN));
     }
 

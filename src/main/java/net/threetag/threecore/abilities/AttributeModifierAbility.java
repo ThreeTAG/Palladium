@@ -44,7 +44,7 @@ public class AttributeModifierAbility extends Ability {
     }
 
     @Override
-    public void updateTick(LivingEntity entity) {
+    public void action(LivingEntity entity) {
         IAttribute attribute = this.dataManager.get(ATTRIBUTE);
         UUID uuid = this.dataManager.get(UUID);
 

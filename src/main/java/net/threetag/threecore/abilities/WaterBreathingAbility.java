@@ -16,7 +16,7 @@ public class WaterBreathingAbility extends Ability {
     }
 
     @Override
-    public void updateTick(LivingEntity entity) {
+    public void action(LivingEntity entity) {
         entity.setAir(entity.getMaxAir());
     }
 }

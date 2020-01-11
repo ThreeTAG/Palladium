@@ -25,7 +25,7 @@ public class HealingAbility extends Ability {
     }
 
     @Override
-    public void updateTick(LivingEntity entity) {
+    public void action(LivingEntity entity) {
         int frequency = this.dataManager.get(FREQUENCY);
         if (frequency != 0 && ticks % frequency == 0) {
             entity.heal(this.dataManager.get(AMOUNT));

@@ -33,7 +33,7 @@ public class ProjectileAbility extends Ability {
     }
 
     @Override
-    public void updateTick(LivingEntity entity) {
+    public void action(LivingEntity entity) {
         if (!entity.world.isRemote) {
             CompoundNBT compound = this.dataManager.get(ENTITY_DATA).copy();
             compound.putString("id", this.dataManager.get(ENTITY_TYPE).getRegistryName().toString());

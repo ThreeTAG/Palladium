@@ -40,7 +40,7 @@ public class SizeChangeAbility extends Ability {
     }
 
     @Override
-    public void updateTick(LivingEntity entity) {
+    public void action(LivingEntity entity) {
         if (prevEnabled != this.getConditionManager().isEnabled()) {
             entity.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
                 if (this.getConditionManager().isEnabled()) {
