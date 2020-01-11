@@ -3,10 +3,13 @@ package net.threetag.threecore.util.scripts.accessors;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.threetag.threecore.util.player.PlayerHelper;
 import net.threetag.threecore.util.scripts.ScriptParameterName;
 
 public class WorldAccessor extends ScriptAccessor<World> {
@@ -33,6 +36,20 @@ public class WorldAccessor extends ScriptAccessor<World> {
 
     public void setRainStrength(@ScriptParameterName("strength") float strength) {
         this.value.setRainStrength(strength);
+    }
+
+    public void playSound(@ScriptParameterName("id") String id, @ScriptParameterName("id") String soundCategory, @ScriptParameterName("posX") double posX, @ScriptParameterName("posY") double posY, @ScriptParameterName("posZ") double posZ, @ScriptParameterName("volume") float volume, @ScriptParameterName("pitch") float pitch) {
+        SoundEvent soundEvent = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(id));
+        SoundCategory category = null;
+        try {
+            category = SoundCategory.valueOf(soundCategory);
+        } catch (Exception ignored) {
+
+        }
+
+        if (soundEvent != null && category != null) {
+            PlayerHelper.playSoundToAll(this.value, posX, posY, posZ, 50, soundEvent, category, volume, pitch);
+        }
     }
 
     public void summonLightning(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z, @ScriptParameterName("effectOnly") boolean effectOnly) {
