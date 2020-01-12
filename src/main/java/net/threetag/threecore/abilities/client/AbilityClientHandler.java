@@ -1,6 +1,7 @@
 package net.threetag.threecore.abilities.client;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -26,8 +27,8 @@ import net.threetag.threecore.abilities.network.AbilityKeyMessage;
 import net.threetag.threecore.util.client.gui.TranslucentButton;
 import org.lwjgl.glfw.GLFW;
 
-import java.security.Key;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AbilityClientHandler {
@@ -39,6 +40,7 @@ public class AbilityClientHandler {
     public static final KeyBinding SCROLL_DOWN = new KeyBinding("key.threecore.scroll_down", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, 80, CATEGORY);
 
     public static List<AbilityKeyBinding> ABILITY_KEYS = Lists.newArrayList();
+    public static Map<Integer, Boolean> KEY_STATE = Maps.newHashMap();
 
     public AbilityClientHandler() {
         if (Minecraft.getInstance() != null) {
@@ -63,16 +65,26 @@ public class AbilityClientHandler {
 
             for (Ability ability : abilities) {
                 if (ability != null && ability.getContainer() != null && ability.getDataManager().get(Ability.KEYBIND) == e.getKey()) {
-                    ThreeCore.NETWORK_CHANNEL.sendToServer(new AbilityKeyMessage(ability.getContainer().getId(), ability.getId(), e.getAction() == GLFW.GLFW_PRESS));
+                    if (!KEY_STATE.containsKey(e.getKey()))
+                        KEY_STATE.put(e.getKey(), false);
+
+                    if (KEY_STATE.get(e.getKey()) != (e.getAction() == GLFW.GLFW_PRESS))
+                        ThreeCore.NETWORK_CHANNEL.sendToServer(new AbilityKeyMessage(ability.getContainer().getId(), ability.getId(), e.getAction() == GLFW.GLFW_PRESS));
+                    KEY_STATE.put(e.getKey(), e.getAction() == GLFW.GLFW_PRESS);
                 }
             }
 
             abilities = AbilityBarRenderer.getCurrentDisplayedAbilities(AbilityHelper.getAbilities(Minecraft.getInstance().player));
             for (AbilityKeyBinding keyBinding : ABILITY_KEYS) {
-                if (keyBinding.isKeyDown() && keyBinding.index <= abilities.size()) {
-                    Ability ability = abilities.get(keyBinding.index - 1);
-                    if (ability != null && ability.getContainer() != null) {
-                        ThreeCore.NETWORK_CHANNEL.sendToServer(new AbilityKeyMessage(ability.getContainer().getId(), ability.getId(), e.getAction() == GLFW.GLFW_PRESS));
+                if (e.getKey() == keyBinding.getKey().getKeyCode()) {
+                    if (!KEY_STATE.containsKey(e.getKey()))
+                        KEY_STATE.put(e.getKey(), false);
+                    if (keyBinding.index <= abilities.size()) {
+                        Ability ability = abilities.get(keyBinding.index - 1);
+                        if (ability != null && ability.getContainer() != null && KEY_STATE.get(e.getKey()) != (e.getAction() == GLFW.GLFW_PRESS)) {
+                            ThreeCore.NETWORK_CHANNEL.sendToServer(new AbilityKeyMessage(ability.getContainer().getId(), ability.getId(), e.getAction() == GLFW.GLFW_PRESS));
+                            KEY_STATE.put(e.getKey(), e.getAction() == GLFW.GLFW_PRESS);
+                        }
                     }
                 }
             }
