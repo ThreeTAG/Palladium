@@ -17,6 +17,7 @@ public class IconSerializer {
         register(ItemIcon.Serializer.INSTANCE);
         register(TexturedIcon.Serializer.INSTANCE);
         register(ExperienceIcon.Serializer.INSTANCE);
+        register(CompoundIcon.Serializer.INSTANCE);
     }
 
     public static <S extends IIconSerializer<T>, T extends IIcon> S register(S serializer) {
