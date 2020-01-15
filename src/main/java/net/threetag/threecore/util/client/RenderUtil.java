@@ -231,11 +231,12 @@ public class RenderUtil {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
         GL14.glBlendEquation(GL14.GL_FUNC_ADD);
-
+        float alpha = color.getAlpha() / 255F;
+        GlStateManager.color4f(1F, 1F, 1F, alpha);
         RenderUtil.drawLine(width, length);
 
         for (int i = 1; i < 3; ++i) {
-            GlStateManager.color4f(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 1F / i / 2);
+            GlStateManager.color4f(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, (1F / i / 2) * alpha);
 
             float growWidth = width + i * 0.5F * 0.0625F;
             float growHeight = extendedEnd ? length + i * 0.5F * 0.0625F : length;
