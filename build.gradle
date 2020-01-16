@@ -32,6 +32,8 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
+            environment 'MOD_CLASSES', "${project.file("out/production/resources").canonicalPath};${project.file("out/production/classes").canonicalPath}"
+            
             mods {
                 threecore {
                     source sourceSets.main
