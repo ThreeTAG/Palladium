@@ -38,6 +38,7 @@ import net.threetag.threecore.util.entity.armorstand.ArmorStandPoseCommand;
 import net.threetag.threecore.util.entity.armorstand.ArmorStandPoseManager;
 import net.threetag.threecore.util.entity.armorstand.SendArmorStandCommandMessage;
 import net.threetag.threecore.util.entity.armorstand.SetArmorStandPoseMessage;
+import net.threetag.threecore.util.entityeffect.EntityEffectUpdateMessage;
 import net.threetag.threecore.util.loot.function.TCLootFunctions;
 import net.threetag.threecore.util.modellayer.ModelLayerLoader;
 import net.threetag.threecore.util.recipe.ToolIngredient;
@@ -112,6 +113,9 @@ public class ThreeCore {
         // ArmorStandPoses
         registerMessage(SetArmorStandPoseMessage.class, SetArmorStandPoseMessage::toBytes, SetArmorStandPoseMessage::new, SetArmorStandPoseMessage::handle);
         registerMessage(SendArmorStandCommandMessage.class, SendArmorStandCommandMessage::toBytes, SendArmorStandCommandMessage::new, SendArmorStandCommandMessage::handle);
+
+        // EntityEffect message
+        registerMessage(EntityEffectUpdateMessage.class, EntityEffectUpdateMessage::toBytes, EntityEffectUpdateMessage::new, EntityEffectUpdateMessage::handle);
     }
 
     public void gatherData(GatherDataEvent e) {

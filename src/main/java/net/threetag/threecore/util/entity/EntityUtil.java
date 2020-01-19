@@ -1,11 +1,29 @@
 package net.threetag.threecore.util.entity;
 
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+
+import java.util.UUID;
+import java.util.function.Predicate;
 
 public class EntityUtil {
+
+    public static Entity getEntityByUUID(World world, UUID uuid) {
+        if (world instanceof ServerWorld) {
+            return ((ServerWorld) world).getEntityByUuid(uuid);
+        } else if (world instanceof ClientWorld) {
+            for (Entity entity : ((ClientWorld) world).getAllEntities()) {
+                if (entity.getUniqueID().equals(uuid)) {
+                    return entity;
+                }
+            }
+        }
+        return null;
+    }
 
     public static void spawnXP(World world, double x, double y, double z, int amount, float value) {
         int i;
@@ -28,6 +46,10 @@ public class EntityUtil {
     }
 
     public static RayTraceResult rayTraceWithEntities(Entity entityIn, double distance, RayTraceContext.BlockMode blockModeIn, RayTraceContext.FluidMode fluidModeIn) {
+        return rayTraceWithEntities(entityIn, distance, blockModeIn, fluidModeIn, (e) -> true);
+    }
+
+    public static RayTraceResult rayTraceWithEntities(Entity entityIn, double distance, RayTraceContext.BlockMode blockModeIn, RayTraceContext.FluidMode fluidModeIn, Predicate<Entity> entityPredicate) {
         Vec3d lookVec = entityIn.getLookVec();
         Vec3d startVec = entityIn.getPositionVec().add(0, entityIn.getEyeHeight(), 0);
         Vec3d endVec = startVec.add(entityIn.getLookVec().scale(distance));
@@ -43,8 +65,10 @@ public class EntityUtil {
             Vec3d min = pos.add(0.25F, 0.25F, 0.25F);
             Vec3d max = pos.add(-0.25F, -0.25F, -0.25F);
             for (Entity entity : entityIn.world.getEntitiesWithinAABBExcludingEntity(entityIn, new AxisAlignedBB(min.x, min.y, min.z, max.x, max.y, max.z))) {
-                entityResult = new EntityRayTraceResult(entity, pos);
-                break;
+                if (entityPredicate.test(entity)) {
+                    entityResult = new EntityRayTraceResult(entity, pos);
+                    break;
+                }
             }
         }
 

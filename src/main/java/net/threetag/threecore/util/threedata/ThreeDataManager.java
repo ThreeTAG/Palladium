@@ -18,14 +18,14 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT>, IThreeDa
     }
 
     @Override
-    public <T> ThreeData<T> register(ThreeData<T> data, T defaultValue) {
+    public <T> ThreeDataManager register(ThreeData<T> data, T defaultValue) {
         dataEntryList.put(data, new ThreeDataEntry<T>(data, defaultValue));
         dataEntryDefaults.put(data, defaultValue);
-        return data;
+        return this;
     }
 
     @Override
-    public <T> void set(ThreeData<T> data, T value) {
+    public <T> ThreeDataManager set(ThreeData<T> data, T value) {
         ThreeDataEntry<T> entry = getEntry(data);
 
         if (entry != null && !entry.getValue().equals(value)) {
@@ -34,10 +34,12 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT>, IThreeDa
             if (this.listener != null)
                 this.listener.dataChanged(data, oldValue, value);
         }
+
+        return this;
     }
 
     @Override
-    public <T> void readValue(ThreeData<T> data, CompoundNBT nbt) {
+    public <T> T readValue(ThreeData<T> data, CompoundNBT nbt) {
         ThreeDataEntry<T> entry = getEntry(data);
 
         if (entry != null) {
@@ -48,14 +50,18 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT>, IThreeDa
                 entry.setValue(data.readFromNBT(nbt, newValue));
                 if (this.listener != null)
                     this.listener.dataChanged(data, oldValue, newValue);
+
+                return newValue;
             }
         }
+
+        return null;
     }
 
     @Override
     public <T> T get(ThreeData<T> data) {
-        ThreeDataEntry entry = getEntry(data);
-        return entry == null ? null : (T) entry.getValue();
+        ThreeDataEntry<T> entry = getEntry(data);
+        return entry == null ? null : entry.getValue();
     }
 
     @Override

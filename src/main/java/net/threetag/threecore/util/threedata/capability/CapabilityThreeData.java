@@ -14,10 +14,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.util.threedata.EnumSync;
-import net.threetag.threecore.util.threedata.IThreeDataHolder;
-import net.threetag.threecore.util.threedata.ThreeData;
-import net.threetag.threecore.util.threedata.ThreeDataManager;
+import net.threetag.threecore.util.threedata.*;
 
 import javax.annotation.Nullable;
 

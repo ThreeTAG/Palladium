@@ -16,4 +16,7 @@ public class TCMathHelper {
         return f1 + (f2 - f1) * partial;
     }
 
+    public static double interpolate(double d1, double d2, float partial) {
+        return d1 + (d2 - d1) * partial;
+    }
 }

@@ -1,9 +1,6 @@
-package net.threetag.threecore.util.threedata.capability;
+package net.threetag.threecore.util.threedata;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.threetag.threecore.util.threedata.IThreeDataHolder;
-import net.threetag.threecore.util.threedata.ThreeData;
-import net.threetag.threecore.util.threedata.ThreeDataEntry;
 
 import java.util.Collection;
 
@@ -12,18 +9,20 @@ public interface IWrappedThreeDataHolder extends IThreeDataHolder {
     IThreeDataHolder getThreeDataHolder();
 
     @Override
-    default <T> ThreeData<T> register(ThreeData<T> data, T defaultValue) {
-        return this.getThreeDataHolder().register(data, defaultValue);
+    default <T> IThreeDataHolder register(ThreeData<T> data, T defaultValue) {
+        this.getThreeDataHolder().register(data, defaultValue);
+        return this;
     }
 
     @Override
-    default <T> void set(ThreeData<T> data, T value) {
+    default <T> IThreeDataHolder set(ThreeData<T> data, T value) {
         this.getThreeDataHolder().set(data, value);
+        return this;
     }
 
     @Override
-    default <T> void readValue(ThreeData<T> data, CompoundNBT nbt) {
-        this.getThreeDataHolder().readValue(data, nbt);
+    default <T> T readValue(ThreeData<T> data, CompoundNBT nbt) {
+        return this.getThreeDataHolder().readValue(data, nbt);
     }
 
     @Override

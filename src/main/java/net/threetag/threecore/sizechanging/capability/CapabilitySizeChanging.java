@@ -17,7 +17,7 @@ import net.threetag.threecore.sizechanging.SizeChangeType;
 import net.threetag.threecore.sizechanging.SizeManager;
 import net.threetag.threecore.sizechanging.network.UpdateSizeData;
 import net.threetag.threecore.util.threedata.*;
-import net.threetag.threecore.util.threedata.capability.IWrappedThreeDataHolder;
+import net.threetag.threecore.util.threedata.IWrappedThreeDataHolder;
 
 import javax.annotation.Nullable;
 

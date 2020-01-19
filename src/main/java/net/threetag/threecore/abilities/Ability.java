@@ -22,7 +22,7 @@ import net.threetag.threecore.util.icon.ItemIcon;
 import net.threetag.threecore.util.scripts.events.AbilityDataUpdatedScriptEvent;
 import net.threetag.threecore.util.scripts.events.AbilityTickScriptEvent;
 import net.threetag.threecore.util.threedata.*;
-import net.threetag.threecore.util.threedata.capability.IWrappedThreeDataHolder;
+import net.threetag.threecore.util.threedata.IWrappedThreeDataHolder;
 
 public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrappedThreeDataHolder {
 
@@ -136,6 +136,10 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
 
     public final String getId() {
         return id;
+    }
+
+    public final String getExtendedId() {
+        return getContainer().getId().toString() + "#" + this.getId();
     }
 
     public final IAbilityContainer getContainer() {

@@ -16,7 +16,7 @@ import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
 import net.threetag.threecore.util.scripts.events.ConditionDataUpdatedScriptEvent;
 import net.threetag.threecore.util.threedata.*;
-import net.threetag.threecore.util.threedata.capability.IWrappedThreeDataHolder;
+import net.threetag.threecore.util.threedata.IWrappedThreeDataHolder;
 
 import java.util.UUID;
 

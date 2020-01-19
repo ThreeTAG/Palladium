@@ -6,11 +6,11 @@ import java.util.Collection;
 
 public interface IThreeDataHolder {
 
-    <T> ThreeData<T> register(ThreeData<T> data, T defaultValue);
+    <T> IThreeDataHolder register(ThreeData<T> data, T defaultValue);
 
-    <T> void set(ThreeData<T> data, T value);
+    <T> IThreeDataHolder set(ThreeData<T> data, T value);
 
-    <T> void readValue(ThreeData<T> data, CompoundNBT nbt);
+    <T> T readValue(ThreeData<T> data, CompoundNBT nbt);
 
     <T> T get(ThreeData<T> data);
 
