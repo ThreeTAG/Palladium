@@ -14,16 +14,17 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.util.threedata.IThreeDataHolder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ThreeDataProvider implements ICapabilitySerializable<CompoundNBT> {
 
-    public final IThreeData threeData;
-    public final LazyOptional<IThreeData> lazyOptional;
+    public final IThreeDataHolder threeData;
+    public final LazyOptional<IThreeDataHolder> lazyOptional;
 
-    public ThreeDataProvider(IThreeData threeData) {
+    public ThreeDataProvider(IThreeDataHolder threeData) {
         this.threeData = threeData;
         this.lazyOptional = LazyOptional.of(() -> threeData);
     }

@@ -2,19 +2,31 @@ package net.threetag.threecore.util.threedata;
 
 import net.minecraft.nbt.CompoundNBT;
 
-/**
- * Created by Nictogen on 2019-06-08.
- */
+import java.util.Collection;
+
 public interface IThreeDataHolder {
 
-    default <T> void update(ThreeData<T> data, T value) {
-        setDirty();
+    <T> ThreeData<T> register(ThreeData<T> data, T defaultValue);
+
+    <T> void set(ThreeData<T> data, T value);
+
+    <T> void readValue(ThreeData<T> data, CompoundNBT nbt);
+
+    <T> T get(ThreeData<T> data);
+
+    <T> ThreeDataEntry<T> getEntry(ThreeData<T> data);
+
+    boolean has(ThreeData<?> data);
+
+    <T> T getDefaultValue(ThreeData<T> data);
+
+    ThreeData<?> getDataByName(String name);
+
+    default <T> IThreeDataHolder reset(ThreeData<T> data) {
+        this.set(data, getDefaultValue(data));
+        return this;
     }
 
-    default void setData(String dataKey, CompoundNBT dataTag) {
-
-    }
-
-    void setDirty();
+    Collection<ThreeDataEntry<?>> getDataEntries();
 
 }

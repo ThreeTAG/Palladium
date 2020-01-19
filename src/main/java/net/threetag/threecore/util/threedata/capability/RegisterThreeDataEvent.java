@@ -2,18 +2,19 @@ package net.threetag.threecore.util.threedata.capability;
 
 import net.minecraft.entity.Entity;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.threetag.threecore.util.threedata.IThreeDataHolder;
 import net.threetag.threecore.util.threedata.ThreeData;
 
 public class RegisterThreeDataEvent extends EntityEvent {
 
-    private final IThreeData threeData;
+    private final IThreeDataHolder threeData;
 
-    public RegisterThreeDataEvent(Entity entity, IThreeData threeData) {
+    public RegisterThreeDataEvent(Entity entity, IThreeDataHolder threeData) {
         super(entity);
         this.threeData = threeData;
     }
 
-    public IThreeData getThreeData() {
+    public IThreeDataHolder getThreeData() {
         return threeData;
     }
 

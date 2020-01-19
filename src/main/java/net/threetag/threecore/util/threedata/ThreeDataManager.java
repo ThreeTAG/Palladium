@@ -3,65 +3,77 @@ package net.threetag.threecore.util.threedata;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.threetag.threecore.abilities.Ability;
-import net.threetag.threecore.abilities.condition.Condition;
-import net.threetag.threecore.util.scripts.events.AbilityDataUpdatedScriptEvent;
-import net.threetag.threecore.util.scripts.events.ConditionDataUpdatedScriptEvent;
 
 import java.util.*;
 
-public class ThreeDataManager implements INBTSerializable<CompoundNBT> {
+public class ThreeDataManager implements INBTSerializable<CompoundNBT>, IThreeDataHolder {
 
-    public final IThreeDataHolder dataHolder;
+    private Listener listener;
     protected Map<ThreeData<?>, ThreeDataEntry<?>> dataEntryList = new LinkedHashMap<>();
     protected Map<ThreeData<?>, Object> dataEntryDefaults = new LinkedHashMap<>();
 
-    public ThreeDataManager(IThreeDataHolder dataHolder) {
-        this.dataHolder = dataHolder;
+    public ThreeDataManager setListener(Listener listener) {
+        this.listener = listener;
+        return this;
     }
 
+    @Override
     public <T> ThreeData<T> register(ThreeData<T> data, T defaultValue) {
         dataEntryList.put(data, new ThreeDataEntry<T>(data, defaultValue));
         dataEntryDefaults.put(data, defaultValue);
         return data;
     }
 
+    @Override
     public <T> void set(ThreeData<T> data, T value) {
-        ThreeDataEntry entry = getEntry(data);
+        ThreeDataEntry<T> entry = getEntry(data);
 
         if (entry != null && !entry.getValue().equals(value)) {
-            Object oldValue = entry.getValue();
+            T oldValue = entry.getValue();
             entry.setValue(value);
-            this.dataHolder.update(data, value);
-            this.dataHolder.setDirty();
-
-            if (this.dataHolder instanceof Ability && ((Ability) this.dataHolder).entity != null) {
-                new AbilityDataUpdatedScriptEvent(((Ability) this.dataHolder).entity, (Ability) this.dataHolder, data.key, value, oldValue);
-            } else if (this.dataHolder instanceof Condition && ((Condition) this.dataHolder).ability.entity != null) {
-                Condition c = (Condition) this.dataHolder;
-                new ConditionDataUpdatedScriptEvent(c.ability.entity, c.ability, c, data.key, value, oldValue);
-            }
-
+            if (this.listener != null)
+                this.listener.dataChanged(data, oldValue, value);
         }
     }
 
+    @Override
+    public <T> void readValue(ThreeData<T> data, CompoundNBT nbt) {
+        ThreeDataEntry<T> entry = getEntry(data);
+
+        if (entry != null) {
+            T oldValue = entry.getValue();
+            T newValue = data.readFromNBT(nbt, (T) this.dataEntryDefaults.get(data));
+
+            if (!oldValue.equals(newValue)) {
+                entry.setValue(data.readFromNBT(nbt, newValue));
+                if (this.listener != null)
+                    this.listener.dataChanged(data, oldValue, newValue);
+            }
+        }
+    }
+
+    @Override
     public <T> T get(ThreeData<T> data) {
         ThreeDataEntry entry = getEntry(data);
         return entry == null ? null : (T) entry.getValue();
     }
 
+    @Override
     public <T> ThreeDataEntry<T> getEntry(ThreeData<T> data) {
         return (ThreeDataEntry<T>) dataEntryList.get(data);
     }
 
+    @Override
     public boolean has(ThreeData data) {
         return dataEntryList.containsKey(data);
     }
 
+    @Override
     public <T> T getDefaultValue(ThreeData<T> data) {
         return (T) this.dataEntryDefaults.get(data);
     }
 
+    @Override
     public <T> ThreeDataManager reset(ThreeData<T> data) {
         this.set(data, getDefaultValue(data));
         return this;
@@ -81,10 +93,12 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT> {
         return list;
     }
 
+    @Override
     public Collection<ThreeDataEntry<?>> getDataEntries() {
         return this.dataEntryList.values();
     }
 
+    @Override
     public ThreeData<?> getDataByName(String name) {
         for (ThreeData<?> data : getData()) {
             if (data.key.equals(name)) {
@@ -130,6 +144,12 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT> {
         for (ThreeData data : dataEntryList.keySet()) {
             getEntry(data).setValue(data.parseValue(jsonObject, getDefaultValue(data)));
         }
+    }
+
+    public interface Listener {
+
+        <T> void dataChanged(ThreeData<T> data, T oldValue, T value);
+
     }
 
 }

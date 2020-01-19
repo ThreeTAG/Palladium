@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
+import net.threetag.threecore.util.threedata.ThreeData;
 
 import java.util.function.Supplier;
 
@@ -36,7 +37,10 @@ public class UpdateThreeDataMessage {
             Entity entity = net.minecraft.client.Minecraft.getInstance().world.getEntityByID(this.entityId);
 
             if (entity != null) {
-                entity.getCapability(CapabilityThreeData.THREE_DATA).ifPresent((sizechanging) -> sizechanging.setData(this.dataKey, this.dataTag));
+                entity.getCapability(CapabilityThreeData.THREE_DATA).ifPresent((threeDataHolder) -> {
+                    ThreeData<?> data = threeDataHolder.getDataByName(this.dataKey);
+                    threeDataHolder.readValue(data, this.dataTag);
+                });
             }
         });
         ctx.get().setPacketHandled(true);

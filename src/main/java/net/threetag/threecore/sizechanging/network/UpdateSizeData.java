@@ -3,10 +3,10 @@ package net.threetag.threecore.sizechanging.network;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.threetag.threecore.sizechanging.capability.CapabilitySizeChanging;
 import net.threetag.threecore.util.threedata.IThreeDataHolder;
+import net.threetag.threecore.util.threedata.ThreeData;
 
 import java.util.function.Supplier;
 
@@ -41,7 +41,8 @@ public class UpdateSizeData {
             if (entity != null) {
                 entity.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent((sizeChanging) -> {
                     if (sizeChanging instanceof IThreeDataHolder) {
-                        ((IThreeDataHolder) sizeChanging).setData(this.dataKey, this.dataTag);
+                        ThreeData<?> data = ((IThreeDataHolder) sizeChanging).getDataByName(this.dataKey);
+                        ((IThreeDataHolder) sizeChanging).readValue(data, this.dataTag);
                         sizeChanging.updateBoundingBox();
                     }
                 });

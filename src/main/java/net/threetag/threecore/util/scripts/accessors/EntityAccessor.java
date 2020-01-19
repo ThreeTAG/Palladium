@@ -14,10 +14,10 @@ import net.threetag.threecore.sizechanging.SizeChangeType;
 import net.threetag.threecore.sizechanging.capability.CapabilitySizeChanging;
 import net.threetag.threecore.util.player.PlayerHelper;
 import net.threetag.threecore.util.scripts.ScriptParameterName;
+import net.threetag.threecore.util.threedata.IThreeDataHolder;
 import net.threetag.threecore.util.threedata.IntegerThreeData;
 import net.threetag.threecore.util.threedata.ThreeData;
 import net.threetag.threecore.util.threedata.capability.CapabilityThreeData;
-import net.threetag.threecore.util.threedata.capability.IThreeData;
 
 public class EntityAccessor extends ScriptAccessor<Entity> {
 
@@ -265,15 +265,15 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public Object getThreeData(@ScriptParameterName("key") String key) {
-        IThreeData threeData = this.value.getCapability(CapabilityThreeData.THREE_DATA).orElse(null);
+        IThreeDataHolder threeData = this.value.getCapability(CapabilityThreeData.THREE_DATA).orElse(null);
         if (threeData == null)
             return null;
         ThreeData data = threeData.getDataByName(key);
-        return data == null ? null : threeData.getData(data);
+        return data == null ? null : threeData.get(data);
     }
 
     public boolean setThreeData(@ScriptParameterName("key") String key, @ScriptParameterName("value") Object value) {
-        IThreeData threeData = this.value.getCapability(CapabilityThreeData.THREE_DATA).orElse(null);
+        IThreeDataHolder threeData = this.value.getCapability(CapabilityThreeData.THREE_DATA).orElse(null);
         if (threeData == null)
             return false;
         ThreeData data = threeData.getDataByName(key);
@@ -288,7 +288,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
                 value = ((Float) value).intValue();
         }
 
-        threeData.setData(data, value);
+        threeData.set(data, value);
         return true;
     }
 

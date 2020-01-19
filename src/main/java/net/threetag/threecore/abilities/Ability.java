@@ -19,10 +19,12 @@ import net.threetag.threecore.abilities.condition.AbilityConditionManager;
 import net.threetag.threecore.abilities.condition.Condition;
 import net.threetag.threecore.util.icon.IIcon;
 import net.threetag.threecore.util.icon.ItemIcon;
+import net.threetag.threecore.util.scripts.events.AbilityDataUpdatedScriptEvent;
 import net.threetag.threecore.util.scripts.events.AbilityTickScriptEvent;
 import net.threetag.threecore.util.threedata.*;
+import net.threetag.threecore.util.threedata.capability.IWrappedThreeDataHolder;
 
-public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDataHolder {
+public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrappedThreeDataHolder {
 
     public static final ThreeData<Boolean> SHOW_IN_BAR = new BooleanThreeData("show_in_bar").setSyncType(EnumSync.SELF)
             .enableSetting("show_in_bar", "Determines if this ability should be displayed in the ability bar without a condition that displays it there.");
@@ -35,11 +37,19 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
 
     public final AbilityType type;
     String id;
+    public EnumSync sync = EnumSync.NONE;
     public IAbilityContainer container;
-    protected ThreeDataManager dataManager = new ThreeDataManager(this);
+    protected ThreeDataManager dataManager = new ThreeDataManager().setListener(new ThreeDataManager.Listener() {
+        @Override
+        public <T> void dataChanged(ThreeData<T> data, T oldValue, T value) {
+            sync = sync.add(data.getSyncType());
+            setDirty();
+            if (entity != null)
+                new AbilityDataUpdatedScriptEvent(entity, Ability.this, data.getKey(), value, oldValue);
+        }
+    });
     protected AbilityConditionManager conditionManager = new AbilityConditionManager(this);
     protected int ticks = 0;
-    public EnumSync sync = EnumSync.NONE;
     public boolean dirty = false;
     protected CompoundNBT additionalData;
     /**
@@ -133,11 +143,10 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IThreeDa
     }
 
     @Override
-    public <T> void update(ThreeData<T> data, T value) {
-        this.sync = this.sync.add(data.getSyncType());
+    public IThreeDataHolder getThreeDataHolder() {
+        return this.dataManager;
     }
 
-    @Override
     public void setDirty() {
         this.dirty = true;
     }

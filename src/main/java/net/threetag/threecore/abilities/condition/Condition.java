@@ -14,16 +14,26 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.threetag.threecore.abilities.Ability;
 import net.threetag.threecore.abilities.client.gui.AbilitiesScreen;
+import net.threetag.threecore.util.scripts.events.ConditionDataUpdatedScriptEvent;
 import net.threetag.threecore.util.threedata.*;
+import net.threetag.threecore.util.threedata.capability.IWrappedThreeDataHolder;
 
 import java.util.UUID;
 
-public abstract class Condition implements INBTSerializable<CompoundNBT>, IThreeDataHolder {
+public abstract class Condition implements INBTSerializable<CompoundNBT>, IWrappedThreeDataHolder {
 
     public final Ability ability;
     public final ConditionType type;
     UUID id;
-    protected ThreeDataManager dataManager = new ThreeDataManager(this);
+    protected ThreeDataManager dataManager = new ThreeDataManager().setListener(new ThreeDataManager.Listener() {
+        @Override
+        public <T> void dataChanged(ThreeData<T> data, T oldValue, T value) {
+            ability.sync = data.getSyncType().add(data.getSyncType());
+            setDirty();
+            if (ability.entity != null)
+                new ConditionDataUpdatedScriptEvent(ability.entity, ability, Condition.this, data.getKey(), value, oldValue);
+        }
+    });
 
     public static final ThreeData<ITextComponent> CUSTOM_TITLE = new TextComponentThreeData("custom_title").setSyncType(EnumSync.SELF).enableSetting("custom_title", "A custom display name for the condition.");
     public static final ThreeData<Boolean> INVERT = new BooleanThreeData("invert").enableSetting("invert", "Lets you invert the condition");
@@ -34,6 +44,11 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IThree
         this.type = type;
         this.ability = ability;
         this.registerData();
+    }
+
+    @Override
+    public IThreeDataHolder getThreeDataHolder() {
+        return this.dataManager;
     }
 
     public void registerData() {
@@ -92,12 +107,6 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IThree
         this.id = NBTUtil.readUniqueId(nbt.getCompound("UUID"));
     }
 
-    @Override
-    public <T> void update(ThreeData<T> data, T value) {
-        ability.update(data, value);
-    }
-
-    @Override
     public void setDirty() {
         ability.setDirty();
     }

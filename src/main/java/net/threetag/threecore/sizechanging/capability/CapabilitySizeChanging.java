@@ -17,10 +17,11 @@ import net.threetag.threecore.sizechanging.SizeChangeType;
 import net.threetag.threecore.sizechanging.SizeManager;
 import net.threetag.threecore.sizechanging.network.UpdateSizeData;
 import net.threetag.threecore.util.threedata.*;
+import net.threetag.threecore.util.threedata.capability.IWrappedThreeDataHolder;
 
 import javax.annotation.Nullable;
 
-public class CapabilitySizeChanging implements ISizeChanging, IThreeDataHolder, INBTSerializable<CompoundNBT> {
+public class CapabilitySizeChanging implements ISizeChanging, IWrappedThreeDataHolder, INBTSerializable<CompoundNBT> {
 
     @CapabilityInject(ISizeChanging.class)
     public static Capability<ISizeChanging> SIZE_CHANGING;
@@ -33,7 +34,12 @@ public class CapabilitySizeChanging implements ISizeChanging, IThreeDataHolder, 
     public static final ThreeData<Float> SCALE_PER_TICK = new FloatThreeData("scale_per_tick");
     public static final ThreeData<SizeChangeType> SIZE_CHANGE_TYPE = new SizeChangeTypeThreeData("size_change_type");
 
-    public final ThreeDataManager dataManager = new ThreeDataManager(this);
+    public final ThreeDataManager dataManager = new ThreeDataManager().setListener(new ThreeDataManager.Listener() {
+        @Override
+        public <T> void dataChanged(ThreeData<T> data, T oldValue, T value) {
+            update(data, value);
+        }
+    });
     public final Entity entity;
     private float prevWidth = 1F;
     private float prevHeight = 1F;
@@ -45,6 +51,11 @@ public class CapabilitySizeChanging implements ISizeChanging, IThreeDataHolder, 
         this.dataManager.register(ESTIMATED_SCALE, 1F);
         this.dataManager.register(SCALE_PER_TICK, 0F);
         this.dataManager.register(SIZE_CHANGE_TYPE, SizeChangeType.DEFAULT_TYPE);
+    }
+
+    @Override
+    public IThreeDataHolder getThreeDataHolder() {
+        return this.dataManager;
     }
 
     @Override
@@ -169,8 +180,9 @@ public class CapabilitySizeChanging implements ISizeChanging, IThreeDataHolder, 
         return this.dataManager.get(SCALE_PER_TICK) != 0F;
     }
 
-    @Override
     public <T> void update(ThreeData<T> data, T value) {
+        this.setDirty();
+
         if (entity.world.isRemote)
             return;
 
@@ -185,15 +197,6 @@ public class CapabilitySizeChanging implements ISizeChanging, IThreeDataHolder, 
         }
     }
 
-    @Override
-    public void setData(String dataKey, CompoundNBT dataTag) {
-        ThreeData data = this.dataManager.getDataByName(dataKey);
-        if (data != null) {
-            this.dataManager.set(data, data.readFromNBT(dataTag, this.dataManager.getDefaultValue(data)));
-        }
-    }
-
-    @Override
     public void setDirty() {
         this.dirty = true;
     }
