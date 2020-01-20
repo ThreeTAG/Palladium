@@ -34,6 +34,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType COMMAND = new AbilityType(CommandAbility::new, ThreeCore.MODID, "command");
     public static final AbilityType HEALING = new AbilityType(HealingAbility::new, ThreeCore.MODID, "healing");
     public static final AbilityType FLIGHT = new AbilityType(FlightAbility::new, ThreeCore.MODID, "flight");
+    public static final AbilityType ACCELERATING_FLIGHT = new AbilityType(AcceleratingFlightAbility::new, ThreeCore.MODID, "accelerating_flight");
     public static final AbilityType TELEPORT = new AbilityType(TeleportAbility::new, ThreeCore.MODID, "teleport");
     public static final AbilityType ATTRIBUTE_MODIFIER = new AbilityType(AttributeModifierAbility::new, ThreeCore.MODID, "attribute_modifier");
     public static final AbilityType INVISIBILITY = new AbilityType(InvisibilityAbility::new, ThreeCore.MODID, "invisibility");
@@ -56,6 +57,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(COMMAND);
         e.getRegistry().register(HEALING);
         e.getRegistry().register(FLIGHT);
+        e.getRegistry().register(ACCELERATING_FLIGHT);
         e.getRegistry().register(TELEPORT);
         e.getRegistry().register(ATTRIBUTE_MODIFIER);
         e.getRegistry().register(INVISIBILITY);

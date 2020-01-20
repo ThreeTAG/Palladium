@@ -213,6 +213,7 @@
 	"ability.threecore.command": "Command",
 	"ability.threecore.healing": "Healing",
 	"ability.threecore.flight": "Flight",
+	"ability.threecore.accelerating_flight": "Accelerating Flight",
 	"ability.threecore.teleport": "Teleport",
 	"ability.threecore.attribute_modifier": "Attribute Modifier",
 	"ability.threecore.invisibility": "Invisibility",
