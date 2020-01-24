@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,6 +20,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
@@ -27,6 +29,7 @@ public class RenderUtil {
     public static float renderTickTime;
     private static float lastBrightnessX = GLX.lastBrightnessX;
     private static float lastBrightnessY = GLX.lastBrightnessY;
+    private static LivingEntity currentEntityInItemRendering = null;
 
     public static void onRenderGlobal(TickEvent.RenderTickEvent e) {
         renderTickTime = e.renderTickTime;
@@ -40,6 +43,15 @@ public class RenderUtil {
 
     public static void restoreLightmapTextureCoords() {
         GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, lastBrightnessX, lastBrightnessY);
+    }
+
+    public static void setCurrentEntityInItemRendering(LivingEntity entity) {
+        RenderUtil.currentEntityInItemRendering = entity;
+    }
+
+    @Nullable
+    public static LivingEntity getCurrentEntityInItemRendering() {
+        return currentEntityInItemRendering;
     }
 
     public static void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
