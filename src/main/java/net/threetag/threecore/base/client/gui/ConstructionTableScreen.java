@@ -5,7 +5,6 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -45,7 +44,7 @@ public class ConstructionTableScreen<T extends AbstractConstructionTableContaine
 
         // Ugly fix to prevent that the mouse cursor goes back to the center of the screen once you change the tab
         if (mouseX > -1 && mouseY > -1) {
-            InputMappings.func_216504_a(minecraft.mainWindow.getHandle(), 212993, mouseX, mouseY);
+            InputMappings.setCursorPosAndMode(minecraft.mainWindow.getHandle(), 212993, mouseX, mouseY);
             mouseX = mouseY = -1;
         }
 

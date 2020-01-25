@@ -74,11 +74,12 @@ public class AbilityScreen extends Screen {
             this.listenToKey = false;
             this.updateButton();
         }
+
         return super.keyPressed(type, scanCode, p_keyPressed_3_);
     }
 
     public void updateButton() {
-        String button = InputMappings.func_216507_a(this.ability.getDataManager().get(Ability.KEYBIND));
+        String button = InputMappings.getKeynameFromKeycode(this.ability.getDataManager().get(Ability.KEYBIND));
         if (button == null || button.isEmpty())
             button = "-";
         this.keyButton.setMessage(this.listenToKey ? "> " + TextFormatting.YELLOW + button + TextFormatting.RESET + " <" : button);

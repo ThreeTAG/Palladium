@@ -96,7 +96,7 @@ public class AbilityBarRenderer {
             for (int i = 0; i < abilities.size(); i++) {
                 Ability ability = abilities.get(i);
                 EnumAbilityColor color = ability.getColor();
-                String name = showName ? ability.getDataManager().get(Ability.TITLE).getFormattedText() : InputMappings.func_216507_a(getKeyFromAbility(ability, i));
+                String name = showName ? ability.getDataManager().get(Ability.TITLE).getFormattedText() : InputMappings.getKeynameFromKeycode(getKeyFromAbility(ability, i));
                 int nameLength = mc.fontRenderer.getStringWidth(name);
 
                 GlStateManager.color4f(1, 1, 1, 1);
