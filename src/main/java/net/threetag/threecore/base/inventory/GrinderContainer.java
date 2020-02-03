@@ -1,6 +1,6 @@
 package net.threetag.threecore.base.inventory;
 
-import net.threetag.threecore.base.recipe.GrinderRecipe;
+import net.threetag.threecore.base.recipe.GrindingRecipe;
 import net.threetag.threecore.base.tileentity.GrinderTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -125,7 +125,7 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
     }
 
     private boolean isRecipeIngredient(ItemStack stack) {
-        return this.world.getRecipeManager().getRecipe(GrinderRecipe.RECIPE_TYPE, new Inventory(ItemStack.EMPTY, stack), this.world).isPresent();
+        return this.world.getRecipeManager().getRecipe(GrindingRecipe.RECIPE_TYPE, new Inventory(ItemStack.EMPTY, stack), this.world).isPresent();
     }
 
     @OnlyIn(Dist.CLIENT)

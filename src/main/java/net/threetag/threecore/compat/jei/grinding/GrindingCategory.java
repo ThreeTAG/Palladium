@@ -1,8 +1,7 @@
 package net.threetag.threecore.compat.jei.grinding;
 
-import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.block.TCBaseBlocks;
-import net.threetag.threecore.base.recipe.GrinderRecipe;
+import net.threetag.threecore.base.recipe.GrindingRecipe;
 import net.threetag.threecore.compat.jei.ThreeCoreJEIPlugin;
 import net.threetag.threecore.util.energy.EnergyUtil;
 import net.threetag.threecore.util.math.TCMathHelper;
@@ -22,7 +21,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.Arrays;
 
-public class GrindingCategory<T> implements IRecipeCategory<GrinderRecipe> {
+public class GrindingCategory<T> implements IRecipeCategory<GrindingRecipe> {
 
     protected static final int inputSlot = 0;
     protected static final int primaryOutputSlot = 1;
@@ -47,8 +46,8 @@ public class GrindingCategory<T> implements IRecipeCategory<GrinderRecipe> {
     }
 
     @Override
-    public Class<? extends GrinderRecipe> getRecipeClass() {
-        return GrinderRecipe.class;
+    public Class<? extends GrindingRecipe> getRecipeClass() {
+        return GrindingRecipe.class;
     }
 
     @Override
@@ -67,7 +66,7 @@ public class GrindingCategory<T> implements IRecipeCategory<GrinderRecipe> {
     }
 
     @Override
-    public void setIngredients(GrinderRecipe recipe, IIngredients ingredients) {
+    public void setIngredients(GrindingRecipe recipe, IIngredients ingredients) {
         ingredients.setInputIngredients(recipe.getIngredients());
         if (recipe.getByproduct() == null || recipe.getByproduct().isEmpty()) {
             ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
@@ -77,7 +76,7 @@ public class GrindingCategory<T> implements IRecipeCategory<GrinderRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, GrinderRecipe recipe, IIngredients ingredients) {
+    public void setRecipe(IRecipeLayout recipeLayout, GrindingRecipe recipe, IIngredients ingredients) {
         IGuiItemStackGroup itemStacks = recipeLayout.getItemStacks();
 
         itemStacks.init(inputSlot, true, 0, 4);
@@ -94,7 +93,7 @@ public class GrindingCategory<T> implements IRecipeCategory<GrinderRecipe> {
     }
 
     @Override
-    public void draw(GrinderRecipe recipe, double mouseX, double mouseY) {
+    public void draw(GrindingRecipe recipe, double mouseX, double mouseY) {
         arrow.draw(24, 4);
 
         Minecraft minecraft = Minecraft.getInstance();

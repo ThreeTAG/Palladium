@@ -1,10 +1,6 @@
 package net.threetag.threecore.base.recipe;
 
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ObjectHolder;
@@ -26,7 +22,7 @@ public class TCBaseRecipeSerializers {
     public static final IRecipeSerializer<BootsCraftingRecipe> BOOTS_CRAFTING = null;
 
     @ObjectHolder("grinding")
-    public static final IRecipeSerializer<GrinderRecipe> GRINDING = null;
+    public static final IRecipeSerializer<GrindingRecipe> GRINDING = null;
 
     @ObjectHolder("pressing")
     public static final IRecipeSerializer<PressingRecipe> PRESSING = null;
@@ -40,7 +36,7 @@ public class TCBaseRecipeSerializers {
         e.getRegistry().register(new ChestplateCraftingRecipe.Serializer().setRegistryName(ThreeCore.MODID, "chestplate_crafting"));
         e.getRegistry().register(new LeggingsCraftingRecipe.Serializer().setRegistryName(ThreeCore.MODID, "leggings_crafting"));
         e.getRegistry().register(new BootsCraftingRecipe.Serializer().setRegistryName(ThreeCore.MODID, "boots_crafting"));
-        e.getRegistry().register(new GrinderRecipe.Serializer().setRegistryName(ThreeCore.MODID, "grinding"));
+        e.getRegistry().register(new GrindingRecipe.Serializer().setRegistryName(ThreeCore.MODID, "grinding"));
         e.getRegistry().register(new PressingRecipe.Serializer().setRegistryName(ThreeCore.MODID, "pressing"));
         e.getRegistry().register(new FluidComposingRecipe.Serializer().setRegistryName(ThreeCore.MODID, "fluid_composing"));
     }

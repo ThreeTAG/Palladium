@@ -5,7 +5,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.text.ITextComponent;
@@ -19,10 +18,9 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.threetag.threecore.ThreeCoreServerConfig;
-import net.threetag.threecore.base.ThreeCoreBase;
 import net.threetag.threecore.base.block.TCBaseBlocks;
 import net.threetag.threecore.base.inventory.GrinderContainer;
-import net.threetag.threecore.base.recipe.GrinderRecipe;
+import net.threetag.threecore.base.recipe.GrindingRecipe;
 import net.threetag.threecore.util.energy.IEnergyConfig;
 import net.threetag.threecore.util.item.ItemStackHandlerExt;
 
@@ -30,7 +28,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class GrinderTileEntity extends ProgressableMachineTileEntity<GrinderRecipe> {
+public class GrinderTileEntity extends ProgressableMachineTileEntity<GrindingRecipe> {
 
     protected final IIntArray intArray = new IIntArray() {
         @Override
@@ -101,12 +99,12 @@ public class GrinderTileEntity extends ProgressableMachineTileEntity<GrinderReci
     }
 
     @Override
-    public IRecipeType<GrinderRecipe> getRecipeType() {
-        return GrinderRecipe.RECIPE_TYPE;
+    public IRecipeType<GrindingRecipe> getRecipeType() {
+        return GrindingRecipe.RECIPE_TYPE;
     }
 
     @Override
-    public float getXpFromRecipe(GrinderRecipe recipe) {
+    public float getXpFromRecipe(GrindingRecipe recipe) {
         return recipe.getExperience();
     }
 
@@ -121,7 +119,7 @@ public class GrinderTileEntity extends ProgressableMachineTileEntity<GrinderReci
     }
 
     @Override
-    public boolean canWork(GrinderRecipe recipe) {
+    public boolean canWork(GrindingRecipe recipe) {
         ItemStack recipeOutput = recipe.getRecipeOutput();
         if (recipeOutput.isEmpty()) {
             return false;
@@ -157,7 +155,7 @@ public class GrinderTileEntity extends ProgressableMachineTileEntity<GrinderReci
     }
 
     @Override
-    public void produceOutput(GrinderRecipe recipe) {
+    public void produceOutput(GrindingRecipe recipe) {
         ItemStack recipeOutput = recipe.getRecipeOutput();
         ItemStack outputSlot = outputSlots.getStackInSlot(0);
         if (outputSlot.isEmpty()) {

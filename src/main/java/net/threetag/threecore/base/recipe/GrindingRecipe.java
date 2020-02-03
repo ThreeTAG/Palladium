@@ -1,11 +1,6 @@
 package net.threetag.threecore.base.recipe;
 
 import com.google.gson.JsonObject;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.base.block.TCBaseBlocks;
-import net.threetag.threecore.util.recipe.IEnergyRecipe;
-import net.threetag.threecore.util.recipe.RecipeUtil;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -15,13 +10,15 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.threetag.threecore.base.block.TCBaseBlocks;
+import net.threetag.threecore.util.recipe.IEnergyRecipe;
+import net.threetag.threecore.util.recipe.RecipeUtil;
 
-public class GrinderRecipe implements IEnergyRecipe<IInventory> {
+public class GrindingRecipe implements IEnergyRecipe<IInventory> {
 
-    // TODO rename to "grinding"
-    public static final IRecipeType<GrinderRecipe> RECIPE_TYPE = RecipeUtil.register("grinder");
+    public static final IRecipeType<GrindingRecipe> RECIPE_TYPE = RecipeUtil.register("grinding");
 
     private final ResourceLocation id;
     private final String group;
@@ -32,7 +29,7 @@ public class GrinderRecipe implements IEnergyRecipe<IInventory> {
     private final float experience;
     private final int energy;
 
-    public GrinderRecipe(ResourceLocation id, String group, Ingredient input, ItemStack output, ItemStack byproduct, float byproductChance, float experience, int energy) {
+    public GrindingRecipe(ResourceLocation id, String group, Ingredient input, ItemStack output, ItemStack byproduct, float byproductChance, float experience, int energy) {
         this.id = id;
         this.group = group;
         this.input = input;
@@ -103,19 +100,19 @@ public class GrinderRecipe implements IEnergyRecipe<IInventory> {
     }
 
     @Override
-    public IRecipeSerializer<GrinderRecipe> getSerializer() {
+    public IRecipeSerializer<GrindingRecipe> getSerializer() {
         return TCBaseRecipeSerializers.GRINDING;
     }
 
     @Override
-    public IRecipeType<GrinderRecipe> getType() {
+    public IRecipeType<GrindingRecipe> getType() {
         return RECIPE_TYPE;
     }
 
-    public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<GrinderRecipe> {
+    public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<GrindingRecipe> {
 
         @Override
-        public GrinderRecipe read(ResourceLocation recipeId, JsonObject json) {
+        public GrindingRecipe read(ResourceLocation recipeId, JsonObject json) {
             String group = JSONUtils.getString(json, "group", "");
             Ingredient ingredient;
             if (JSONUtils.isJsonArray(json, "ingredient")) {
@@ -135,11 +132,11 @@ public class GrinderRecipe implements IEnergyRecipe<IInventory> {
                 byproductChance = JSONUtils.getFloat(JSONUtils.getJsonObject(json, "byproduct"), "chance", 1F);
             }
 
-            return new GrinderRecipe(recipeId, group, ingredient, RecipeUtil.parseItemStackExt(JSONUtils.getJsonObject(json, "result"), true), byproduct, byproductChance, xp, energy);
+            return new GrindingRecipe(recipeId, group, ingredient, RecipeUtil.parseItemStackExt(JSONUtils.getJsonObject(json, "result"), true), byproduct, byproductChance, xp, energy);
         }
 
         @Override
-        public GrinderRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
+        public GrindingRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
             String s = buffer.readString();
             Ingredient ingredient = Ingredient.read(buffer);
             ItemStack itemstack = buffer.readItemStack();
@@ -147,11 +144,11 @@ public class GrinderRecipe implements IEnergyRecipe<IInventory> {
             float byproductChance = buffer.readFloat();
             float xp = buffer.readFloat();
             int energy = buffer.readVarInt();
-            return new GrinderRecipe(recipeId, s, ingredient, itemstack, byproduct, byproductChance, xp, energy);
+            return new GrindingRecipe(recipeId, s, ingredient, itemstack, byproduct, byproductChance, xp, energy);
         }
 
         @Override
-        public void write(PacketBuffer buffer, GrinderRecipe recipe) {
+        public void write(PacketBuffer buffer, GrindingRecipe recipe) {
             buffer.writeString(recipe.group);
             recipe.input.write(buffer);
             buffer.writeItemStack(recipe.output);

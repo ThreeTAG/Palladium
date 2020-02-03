@@ -48,11 +48,11 @@ public class ThreeCoreRecipeFactory {
         return list;
     }
 
-    public static List<GrinderRecipe> getGrinderRecipes() {
-        List<GrinderRecipe> list = new ArrayList<>();
+    public static List<GrindingRecipe> getGrinderRecipes() {
+        List<GrindingRecipe> list = new ArrayList<>();
         ClientWorld world = Minecraft.getInstance().world;
         RecipeManager recipeManager = world.getRecipeManager();
-        list.addAll(getRecipes(recipeManager, GrinderRecipe.RECIPE_TYPE));
+        list.addAll(getRecipes(recipeManager, GrindingRecipe.RECIPE_TYPE));
         return list;
     }
 
