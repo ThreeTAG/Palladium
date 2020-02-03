@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.threetag.threecore.abilities.Ability;
+import net.threetag.threecore.util.threedata.IThreeDataHolder;
 import net.threetag.threecore.util.threedata.ThreeData;
 
 import javax.annotation.Nonnull;
@@ -12,11 +13,10 @@ import java.util.List;
 
 public class ThreeDataItemHandler implements IItemHandlerModifiable {
 
-    // TODO make this IThreeDataHolder, overhauling that aswell
-    public final Ability dataHolder;
+    public final IThreeDataHolder dataHolder;
     private final List<ThreeData<ItemStack>> dataList;
 
-    public ThreeDataItemHandler(Ability dataHolder, List<ThreeData<ItemStack>> dataList) {
+    public ThreeDataItemHandler(IThreeDataHolder dataHolder, List<ThreeData<ItemStack>> dataList) {
         this.dataHolder = dataHolder;
         this.dataList = dataList;
     }
@@ -34,7 +34,7 @@ public class ThreeDataItemHandler implements IItemHandlerModifiable {
     @Override
     public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
         this.validateSlotIndex(slot);
-        this.dataHolder.getDataManager().set(this.dataList.get(slot), stack);
+        this.dataHolder.set(this.dataList.get(slot), stack);
         this.onContentsChanged(slot);
     }
 
@@ -47,7 +47,7 @@ public class ThreeDataItemHandler implements IItemHandlerModifiable {
     @Override
     public ItemStack getStackInSlot(int slot) {
         this.validateSlotIndex(slot);
-        return this.dataHolder.getDataManager().get(this.dataList.get(slot));
+        return this.dataHolder.get(this.dataList.get(slot));
     }
 
     @Nonnull
@@ -62,7 +62,7 @@ public class ThreeDataItemHandler implements IItemHandlerModifiable {
         validateSlotIndex(slot);
 
         ThreeData<ItemStack> data = this.dataList.get(slot);
-        ItemStack existing = this.dataHolder.getDataManager().get(data);
+        ItemStack existing = this.dataHolder.get(data);
 
         int limit = getStackLimit(slot, stack);
 
@@ -80,7 +80,7 @@ public class ThreeDataItemHandler implements IItemHandlerModifiable {
 
         if (!simulate) {
             if (existing.isEmpty()) {
-                this.dataHolder.getDataManager().set(data, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack);
+                this.dataHolder.set(data, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack);
             } else {
                 existing.grow(reachedLimit ? limit : stack.getCount());
             }
@@ -99,7 +99,7 @@ public class ThreeDataItemHandler implements IItemHandlerModifiable {
         this.validateSlotIndex(slot);
 
         ThreeData<ItemStack> data = this.dataList.get(slot);
-        ItemStack existing = this.dataHolder.getDataManager().get(data);
+        ItemStack existing = this.dataHolder.get(data);
 
         if (existing.isEmpty())
             return ItemStack.EMPTY;
@@ -108,13 +108,13 @@ public class ThreeDataItemHandler implements IItemHandlerModifiable {
 
         if (existing.getCount() <= toExtract) {
             if (!simulate) {
-                this.dataHolder.getDataManager().set(data, ItemStack.EMPTY);
+                this.dataHolder.set(data, ItemStack.EMPTY);
                 this.onContentsChanged(slot);
             }
             return existing;
         } else {
             if (!simulate) {
-                this.dataHolder.getDataManager().set(data, ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
+                this.dataHolder.set(data, ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
                 this.onContentsChanged(slot);
             }
 
