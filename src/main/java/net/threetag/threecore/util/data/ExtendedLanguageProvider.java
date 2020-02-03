@@ -1,8 +1,11 @@
 package net.threetag.threecore.util.data;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.Util;
 import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.abilities.AbilityType;
 
 import java.util.function.Supplier;
@@ -30,6 +33,22 @@ public abstract class ExtendedLanguageProvider extends LanguageProvider {
 
     protected void add(AbilityType key, String name) {
         add(Util.makeTranslationKey("ability", AbilityType.REGISTRY.getKey(key)), name);
+    }
+
+    protected void addFluid(Supplier<? extends Fluid> key, String name) {
+        add(key.get(), name);
+    }
+
+    protected void add(Fluid key, String name) {
+        add(Util.makeTranslationKey("fluid", ForgeRegistries.FLUIDS.getKey(key)), name);
+    }
+
+    protected void addContainerType(Supplier<? extends ContainerType> key, String name) {
+        add(key.get(), name);
+    }
+
+    protected void add(ContainerType key, String name) {
+        add(Util.makeTranslationKey("container", ForgeRegistries.CONTAINERS.getKey(key)), name);
     }
 
 }
