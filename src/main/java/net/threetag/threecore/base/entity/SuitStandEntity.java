@@ -111,12 +111,12 @@ public class SuitStandEntity extends ArmorStandEntity {
 
     @Override
     public ItemStack getPickedResult(RayTraceResult target) {
-        return new ItemStack(TCBaseItems.SUIT_STAND);
+        return new ItemStack(TCBaseItems.SUIT_STAND.get());
     }
 
     @Override
     public void func_213815_f(DamageSource p_213815_1_) {
-        Block.spawnAsEntity(this.world, new BlockPos(this), new ItemStack(TCBaseItems.SUIT_STAND));
+        Block.spawnAsEntity(this.world, new BlockPos(this), new ItemStack(TCBaseItems.SUIT_STAND.get()));
         this.func_213816_g(p_213815_1_);
     }
 

@@ -19,7 +19,7 @@ public class ItemGroupRegistry {
     public static final String SUITS_AND_ARMOR = "suits_and_armor";
 
     static {
-        getOrCreateItemGroup(TECHNOLOGY, () -> new ItemStack(TCBaseItems.CIRCUIT));
+        getOrCreateItemGroup(TECHNOLOGY, () -> new ItemStack(TCBaseItems.CIRCUIT.get()));
         addItemGroup(SUITS_AND_ARMOR, new SuitsAndArmorItemGroup(SUITS_AND_ARMOR));
     }
 
