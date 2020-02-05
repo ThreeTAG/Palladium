@@ -6,7 +6,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.util.ResourceLocation;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.base.recipe.AbstractConstructionTableRecipe;
+import net.threetag.threecore.item.recipe.AbstractConstructionTableRecipe;
 
 public abstract class AbstractConstructionTableCategory<T extends AbstractConstructionTableRecipe> implements IRecipeCategory<T> {
 

@@ -24,9 +24,9 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.abilities.AbilityHelper;
-import net.threetag.threecore.addonpacks.ThreeCoreAddonPacks;
-import net.threetag.threecore.util.item.*;
+import net.threetag.threecore.ability.AbilityHelper;
+import net.threetag.threecore.addonpacks.AddonPackManager;
+import net.threetag.threecore.item.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -117,7 +117,7 @@ public class ItemParser {
     // Set to lowest priority so that most items are already registered and can be referenced
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void registerItems(RegistryEvent.Register<Item> e) {
-        IResourceManager resourceManager = ThreeCoreAddonPacks.getInstance().getResourceManager();
+        IResourceManager resourceManager = AddonPackManager.getInstance().getResourceManager();
         specialItemParsers.sort(Comparator.comparingInt(o -> o.getFirst().ordinal()));
         List<ResourceLocation> used = Lists.newArrayList();
 
@@ -139,7 +139,7 @@ public class ItemParser {
             }
 
             try (IResource iresource = resourceManager.getResource(resourcelocation)) {
-                Item item = parse(JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
+                Item item = parse(JSONUtils.fromJson(AddonPackManager.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
                 if (item != null) {
                     item.setRegistryName(id);
                     e.getRegistry().register(item);

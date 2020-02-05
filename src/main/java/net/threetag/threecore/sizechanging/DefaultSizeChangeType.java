@@ -1,6 +1,5 @@
 package net.threetag.threecore.sizechanging;
 
-import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -13,8 +12,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.threetag.threecore.sizechanging.capability.ISizeChanging;
-import net.threetag.threecore.util.attributes.TCAttributes;
+import net.threetag.threecore.capability.ISizeChanging;
+import net.threetag.threecore.entity.attributes.TCAttributes;
 
 import java.util.Random;
 import java.util.UUID;

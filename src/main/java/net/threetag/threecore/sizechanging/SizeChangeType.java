@@ -1,12 +1,9 @@
 package net.threetag.threecore.sizechanging;
 
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.sizechanging.capability.ISizeChanging;
-import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.threetag.threecore.capability.ISizeChanging;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -14,7 +11,6 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 
-import java.util.List;
 import java.util.UUID;
 
 

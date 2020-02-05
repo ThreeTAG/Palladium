@@ -1,7 +1,6 @@
 package net.threetag.threecore.compat.jei.constructiontable;
 
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
@@ -9,7 +8,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
-import net.threetag.threecore.base.recipe.ChestplateCraftingRecipe;
+import net.threetag.threecore.item.recipe.ChestplateCraftingRecipe;
 import net.threetag.threecore.compat.jei.ThreeCoreJEIPlugin;
 
 public class ChestplateCraftingCategory extends AbstractConstructionTableCategory<ChestplateCraftingRecipe> {

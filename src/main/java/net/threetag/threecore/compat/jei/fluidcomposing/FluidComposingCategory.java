@@ -15,10 +15,9 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.threetag.threecore.base.ThreeCoreBase;
-import net.threetag.threecore.base.block.TCBaseBlocks;
-import net.threetag.threecore.base.recipe.FluidComposingRecipe;
-import net.threetag.threecore.base.tileentity.FluidComposerTileEntity;
+import net.threetag.threecore.block.TCBlocks;
+import net.threetag.threecore.item.recipe.FluidComposingRecipe;
+import net.threetag.threecore.tileentity.FluidComposerTileEntity;
 import net.threetag.threecore.compat.jei.ThreeCoreJEIPlugin;
 import net.threetag.threecore.util.energy.EnergyUtil;
 
@@ -35,7 +34,7 @@ public class FluidComposingCategory<T> implements IRecipeCategory<FluidComposing
     public FluidComposingCategory(IGuiHelper guiHelper) {
         this.title = I18n.format("gui.jei.category.threecore.fluid_composing");
         this.background = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 0, 86, 134, 62).build();
-        this.icon = guiHelper.createDrawableIngredient(new ItemStack(TCBaseBlocks.FLUID_COMPOSER));
+        this.icon = guiHelper.createDrawableIngredient(new ItemStack(TCBlocks.FLUID_COMPOSER));
         this.arrow = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 107, 0, 24, 17)
                 .buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
         this.tankOverlay = guiHelper.createDrawable(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 135, 87, 16, 60);

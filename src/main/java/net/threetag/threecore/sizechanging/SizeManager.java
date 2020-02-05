@@ -10,9 +10,8 @@ import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.util.math.Vec2f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.threetag.threecore.sizechanging.capability.CapabilitySizeChanging;
-import net.threetag.threecore.util.client.RenderUtil;
-import org.objectweb.asm.tree.InsnList;
+import net.threetag.threecore.capability.CapabilitySizeChanging;
+import net.threetag.threecore.util.RenderUtil;
 
 import java.util.concurrent.atomic.AtomicReference;
 

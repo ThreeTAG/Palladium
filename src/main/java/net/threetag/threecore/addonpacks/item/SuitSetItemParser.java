@@ -11,8 +11,8 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.addonpacks.ThreeCoreAddonPacks;
-import net.threetag.threecore.util.json.TCJsonUtil;
+import net.threetag.threecore.addonpacks.AddonPackManager;
+import net.threetag.threecore.util.TCJsonUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -35,7 +35,7 @@ public class SuitSetItemParser implements ItemParser.ISpecialItemParser {
         String baseId = s.substring(resourcePrefix, s.length() - resourceSuffix);
 
         try (IResource iresource = resourceManager.getResource(resourceLocation)) {
-            JsonObject json = JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class);
+            JsonObject json = JSONUtils.fromJson(AddonPackManager.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class);
             JsonObject armorParts = JSONUtils.getJsonObject(json, "armor_parts");
             JsonObject overrides = JSONUtils.getJsonObject(json, "overrides", new JsonObject());
             Map<EquipmentSlotType, JsonObject> armorJsons = Maps.newHashMap();

@@ -19,7 +19,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.util.entity.EntityUtil;
+import net.threetag.threecore.util.EntityUtil;
 
 import java.util.UUID;
 

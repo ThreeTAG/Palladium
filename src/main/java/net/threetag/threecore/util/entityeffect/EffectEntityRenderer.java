@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.threetag.threecore.util.math.TCMathHelper;
+import net.threetag.threecore.util.TCMathHelper;
 
 import javax.annotation.Nullable;
 

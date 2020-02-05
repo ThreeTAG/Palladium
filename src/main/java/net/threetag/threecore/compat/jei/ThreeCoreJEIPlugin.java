@@ -9,14 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.base.block.TCBaseBlocks;
-import net.threetag.threecore.base.client.gui.ConstructionTableScreen;
-import net.threetag.threecore.base.client.gui.FluidComposerScreen;
-import net.threetag.threecore.base.client.gui.GrinderScreen;
-import net.threetag.threecore.base.client.gui.HydraulicPressScreen;
-import net.threetag.threecore.base.inventory.*;
-import net.threetag.threecore.base.recipe.AbstractConstructionTableRecipe;
-import net.threetag.threecore.base.recipe.TCBaseRecipeSerializers;
+import net.threetag.threecore.block.TCBlocks;
+import net.threetag.threecore.gui.screen.inventory.ConstructionTableScreen;
+import net.threetag.threecore.gui.screen.inventory.FluidComposerScreen;
+import net.threetag.threecore.gui.screen.inventory.GrinderScreen;
+import net.threetag.threecore.gui.screen.inventory.HydraulicPressScreen;
+import net.threetag.threecore.item.recipe.AbstractConstructionTableRecipe;
+import net.threetag.threecore.item.recipe.TCBaseRecipeSerializers;
 import net.threetag.threecore.compat.jei.constructiontable.BootsCraftingCategory;
 import net.threetag.threecore.compat.jei.constructiontable.ChestplateCraftingCategory;
 import net.threetag.threecore.compat.jei.constructiontable.HelmetCraftingCategory;
@@ -24,6 +23,7 @@ import net.threetag.threecore.compat.jei.constructiontable.LeggingsCraftingCateg
 import net.threetag.threecore.compat.jei.fluidcomposing.FluidComposingCategory;
 import net.threetag.threecore.compat.jei.grinding.GrindingCategory;
 import net.threetag.threecore.compat.jei.pressing.PressingCategory;
+import net.threetag.threecore.container.*;
 
 import java.util.Objects;
 
@@ -109,10 +109,10 @@ public class ThreeCoreJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(TCBaseBlocks.CONSTRUCTION_TABLE), HELMET_CRAFTING_CATEGORY, CHESTPLATE_CRAFTING_CATEGORY, LEGGINGS_CRAFTING_CATEGORY, BOOTS_CRAFTING_CATEGORY);
-        registration.addRecipeCatalyst(new ItemStack(TCBaseBlocks.GRINDER), GRINDING_CATEGORY);
-        registration.addRecipeCatalyst(new ItemStack(TCBaseBlocks.HYDRAULIC_PRESS), PRESSING_CATEGORY);
-        registration.addRecipeCatalyst(new ItemStack(TCBaseBlocks.FLUID_COMPOSER), FLUID_COMPOSING_CATEGORY);
+        registration.addRecipeCatalyst(new ItemStack(TCBlocks.CONSTRUCTION_TABLE), HELMET_CRAFTING_CATEGORY, CHESTPLATE_CRAFTING_CATEGORY, LEGGINGS_CRAFTING_CATEGORY, BOOTS_CRAFTING_CATEGORY);
+        registration.addRecipeCatalyst(new ItemStack(TCBlocks.GRINDER), GRINDING_CATEGORY);
+        registration.addRecipeCatalyst(new ItemStack(TCBlocks.HYDRAULIC_PRESS), PRESSING_CATEGORY);
+        registration.addRecipeCatalyst(new ItemStack(TCBlocks.FLUID_COMPOSER), FLUID_COMPOSING_CATEGORY);
     }
 
     public void addConstructionTableTransferHandler(IRecipeTransferRegistration registration, ResourceLocation id, Class<? extends AbstractConstructionTableContainer> clazz, IRecipeSerializer recipeSerializer) {

@@ -7,7 +7,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.ResourceLocation;
-import net.threetag.threecore.base.recipe.*;
+import net.threetag.threecore.item.recipe.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

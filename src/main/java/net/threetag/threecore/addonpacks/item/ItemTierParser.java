@@ -9,8 +9,8 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.addonpacks.ThreeCoreAddonPacks;
-import net.threetag.threecore.util.item.ItemTierRegistry;
+import net.threetag.threecore.addonpacks.AddonPackManager;
+import net.threetag.threecore.item.ItemTierRegistry;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -26,7 +26,7 @@ public class ItemTierParser implements ItemParser.ISpecialItemParser {
     @Override
     public void process(IResourceManager resourceManager, ResourceLocation resourceLocation, IForgeRegistry<Item> registry) {
         try (IResource iresource = resourceManager.getResource(resourceLocation)) {
-            JsonArray jsonArray = JSONUtils.fromJson(ThreeCoreAddonPacks.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonArray.class);
+            JsonArray jsonArray = JSONUtils.fromJson(AddonPackManager.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonArray.class);
             for (int i = 0; i < jsonArray.size(); i++) {
                 String name = JSONUtils.getString(jsonArray.get(i).getAsJsonObject(), "name");
                 IItemTier tier = ItemParser.parseItemTier(jsonArray.get(i).getAsJsonObject());

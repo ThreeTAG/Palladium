@@ -6,7 +6,7 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.threetag.threecore.util.attributes.AttributeRegistry;
+import net.threetag.threecore.entity.attributes.AttributeRegistry;
 
 import java.util.Objects;
 import java.util.Optional;

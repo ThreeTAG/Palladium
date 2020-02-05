@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.util.json.TCJsonUtil;
+import net.threetag.threecore.util.TCJsonUtil;
 
 import java.awt.*;
 

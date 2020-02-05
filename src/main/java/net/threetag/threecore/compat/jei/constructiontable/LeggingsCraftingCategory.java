@@ -8,7 +8,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
-import net.threetag.threecore.base.recipe.LeggingsCraftingRecipe;
+import net.threetag.threecore.item.recipe.LeggingsCraftingRecipe;
 import net.threetag.threecore.compat.jei.ThreeCoreJEIPlugin;
 
 public class LeggingsCraftingCategory extends AbstractConstructionTableCategory<LeggingsCraftingRecipe> {
