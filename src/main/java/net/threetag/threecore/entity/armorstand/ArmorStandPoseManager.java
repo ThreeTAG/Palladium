@@ -101,12 +101,12 @@ public class ArmorStandPoseManager {
 
         public static final Rotations EMPTY_ROTATION = new Rotations(0, 0, 0);
 
-        final Rotations head;
-        final Rotations body;
-        final Rotations rightArm;
-        final Rotations leftArm;
-        final Rotations rightLeg;
-        final Rotations leftLeg;
+        public final Rotations head;
+        public final Rotations body;
+        public final Rotations rightArm;
+        public final Rotations leftArm;
+        public final Rotations rightLeg;
+        public final Rotations leftLeg;
 
         public ArmorStandPose(Rotations head, Rotations body, Rotations rightArm, Rotations leftArm, Rotations rightLeg, Rotations leftLeg) {
             this.head = head;

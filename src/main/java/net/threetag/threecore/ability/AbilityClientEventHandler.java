@@ -17,11 +17,11 @@ import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.ability.client.renderer.AbilityBarRenderer;
 import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
+import net.threetag.threecore.client.gui.widget.TranslucentButton;
+import net.threetag.threecore.client.renderer.AbilityBarRenderer;
 import net.threetag.threecore.client.settings.AbilityKeyBinding;
 import net.threetag.threecore.network.AbilityKeyMessage;
-import net.threetag.threecore.client.gui.widget.TranslucentButton;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;

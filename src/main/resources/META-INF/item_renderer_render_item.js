@@ -48,7 +48,7 @@ function initializeCoreMod() {
                         //int opcode
                         INVOKESTATIC,
                         //String owner
-                        "net/threetag/threecore/util/client/RenderUtil",
+                        "net/threetag/threecore/util/RenderUtil",
                         //String name
                         "setCurrentEntityInItemRendering",
                         //String descriptor
@@ -67,7 +67,7 @@ function initializeCoreMod() {
                         //int opcode
                         INVOKESTATIC,
                         //String owner
-                        "net/threetag/threecore/util/client/RenderUtil",
+                        "net/threetag/threecore/util/RenderUtil",
                         //String name
                         "setCurrentEntityInItemRendering",
                         //String descriptor

@@ -1,12 +1,12 @@
 package net.threetag.threecore.client.gui.toast;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.threetag.threecore.ability.client.renderer.AbilityBarRenderer;
-import net.threetag.threecore.util.icon.IIcon;
-import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.client.gui.toasts.IToast;
+import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;
+import net.threetag.threecore.client.renderer.AbilityBarRenderer;
+import net.threetag.threecore.util.icon.IIcon;
 
 public class SuperpowerToast implements IToast {
 
