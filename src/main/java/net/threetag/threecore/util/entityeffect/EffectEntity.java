@@ -1,47 +1,20 @@
 package net.threetag.threecore.util.entityeffect;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.registries.ObjectHolder;
-import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.entity.TCEntityTypes;
 import net.threetag.threecore.util.EntityUtil;
 
 import java.util.UUID;
 
-@ObjectHolder(ThreeCore.MODID)
-@Mod.EventBusSubscriber(modid = ThreeCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EffectEntity extends Entity implements IEntityAdditionalSpawnData {
-
-    @ObjectHolder("effect")
-    public static final EntityType<EffectEntity> EFFECT_ENTITY = null;
-
-    @SubscribeEvent
-    public static void registerEntities(RegistryEvent.Register<EntityType<?>> e) {
-        e.getRegistry().register(EntityType.Builder.<EffectEntity>create(EffectEntity::new, EntityClassification.MISC).size(0.1F, 0.1F).setCustomClientFactory((spawnEntity, world) -> EFFECT_ENTITY.create(world)).build(ThreeCore.MODID + ":effect").setRegistryName("effect"));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public static void clientSetup(FMLClientSetupEvent e) {
-        RenderingRegistry.registerEntityRenderingHandler(EffectEntity.class, EffectEntityRenderer::new);
-    }
-
-    // -----------------------------------------------------------------------------------
 
     public UUID anchorUUID;
     public EntityEffect entityEffect;
@@ -52,7 +25,7 @@ public class EffectEntity extends Entity implements IEntityAdditionalSpawnData {
     }
 
     public EffectEntity(World worldIn, Entity anchor, EntityEffect entityEffect) {
-        this(EFFECT_ENTITY, worldIn);
+        this(TCEntityTypes.EFFECT.get(), worldIn);
         this.anchorUUID = anchor.getUniqueID();
         this.entityEffect = entityEffect;
         this.entityEffect.effectEntity = this;

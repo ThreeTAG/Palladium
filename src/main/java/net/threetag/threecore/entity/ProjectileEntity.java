@@ -43,11 +43,11 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
     }
 
     public ProjectileEntity(World world, double x, double y, double z) {
-        super(TCEntityTypes.PROJECTILE, x, y, z, world);
+        super(TCEntityTypes.PROJECTILE.get(), x, y, z, world);
     }
 
     public ProjectileEntity(World world, LivingEntity livingEntity) {
-        super(TCEntityTypes.PROJECTILE, livingEntity, world);
+        super(TCEntityTypes.PROJECTILE.get(), livingEntity, world);
     }
 
     @Override

@@ -25,15 +25,14 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.threetag.threecore.ThreeCoreServerConfig;
-import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.container.FluidComposerContainer;
-import net.threetag.threecore.item.recipe.FluidComposingRecipe;
-import net.threetag.threecore.util.energy.IEnergyConfig;
-import net.threetag.threecore.item.FluidInventory;
 import net.threetag.threecore.fluid.FluidTankExt;
-import net.threetag.threecore.util.TCFluidUtil;
+import net.threetag.threecore.item.FluidInventory;
 import net.threetag.threecore.item.ItemStackHandlerExt;
+import net.threetag.threecore.item.recipe.FluidComposingRecipe;
 import net.threetag.threecore.util.PlayerHelper;
+import net.threetag.threecore.util.TCFluidUtil;
+import net.threetag.threecore.util.energy.IEnergyConfig;
 
 import javax.annotation.Nullable;
 
@@ -131,7 +130,7 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
     public FluidInventory recipeWrapper = new FluidInventory(this.inputSlots, inputFluidTank);
 
     public FluidComposerTileEntity() {
-        super(TCBlocks.FLUID_COMPOSER_TILE_ENTITY);
+        super(TCTileEntityTypes.FLUID_COMPOSER.get());
     }
 
     @Override

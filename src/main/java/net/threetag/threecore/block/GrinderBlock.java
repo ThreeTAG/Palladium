@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.tileentity.GrinderTileEntity;
 import net.threetag.threecore.util.TCDamageSources;
-import net.threetag.threecore.sound.ThreeCoreSounds;
+import net.threetag.threecore.sound.TCSounds;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -43,7 +43,7 @@ public class GrinderBlock extends MachineBlock {
             double z = (double) pos.getZ() + 0.5D;
 
             if (random.nextDouble() < 0.4D) {
-                world.playSound(x, y, z, ThreeCoreSounds.GRINDER, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                world.playSound(x, y, z, TCSounds.GRINDER.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             }
 
             double x2 = random.nextDouble() * 0.8D - 0.4D;

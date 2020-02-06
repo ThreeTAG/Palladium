@@ -69,7 +69,7 @@ public abstract class AbstractConstructionTableContainer<T extends AbstractConst
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(this.worldPosCallable, playerIn, TCBlocks.CONSTRUCTION_TABLE);
+        return isWithinUsableDistance(this.worldPosCallable, playerIn, TCBlocks.CONSTRUCTION_TABLE.get());
     }
 
     @Override

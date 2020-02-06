@@ -116,7 +116,7 @@ public class FluidComposingRecipe implements IEnergyRecipe<IInventory> {
 
     @Override
     public IRecipeSerializer<FluidComposingRecipe> getSerializer() {
-        return TCBaseRecipeSerializers.FLUID_COMPOSING;
+        return TCRecipeSerializers.FLUID_COMPOSING.get();
     }
 
     @Override

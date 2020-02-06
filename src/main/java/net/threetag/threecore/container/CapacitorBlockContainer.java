@@ -28,7 +28,7 @@ public class CapacitorBlockContainer extends Container {
     }
 
     public CapacitorBlockContainer(int id, PlayerInventory playerInventory, CapacitorBlockTileEntity capacitorBlockTileEntity, IIntArray intArray) {
-        super(TCBaseContainerTypes.CAPACITOR_BLOCK, id);
+        super(TCContainerTypes.CAPACITOR_BLOCK.get(), id);
         this.inventoryPlayer = playerInventory;
         this.tileEntity = capacitorBlockTileEntity;
         this.intArray = intArray;

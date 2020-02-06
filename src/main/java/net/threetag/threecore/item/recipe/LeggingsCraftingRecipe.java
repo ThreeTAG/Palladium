@@ -18,7 +18,7 @@ public class LeggingsCraftingRecipe extends AbstractConstructionTableRecipe {
 
     @Override
     public IRecipeSerializer<LeggingsCraftingRecipe> getSerializer() {
-        return TCBaseRecipeSerializers.LEGGINGS_CRAFTING;
+        return TCRecipeSerializers.LEGGINGS_CRAFTING.get();
     }
 
     @Override

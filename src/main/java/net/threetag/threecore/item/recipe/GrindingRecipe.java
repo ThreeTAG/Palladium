@@ -41,7 +41,7 @@ public class GrindingRecipe implements IEnergyRecipe<IInventory> {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(TCBlocks.GRINDER);
+        return new ItemStack(TCBlocks.GRINDER.get());
     }
 
     @Override
@@ -100,7 +100,7 @@ public class GrindingRecipe implements IEnergyRecipe<IInventory> {
 
     @Override
     public IRecipeSerializer<GrindingRecipe> getSerializer() {
-        return TCBaseRecipeSerializers.GRINDING;
+        return TCRecipeSerializers.GRINDING.get();
     }
 
     @Override

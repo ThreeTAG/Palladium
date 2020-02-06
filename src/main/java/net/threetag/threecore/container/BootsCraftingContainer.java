@@ -6,7 +6,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.IWorldPosCallable;
 import net.threetag.threecore.item.recipe.AbstractConstructionTableRecipe;
 import net.threetag.threecore.item.recipe.BootsCraftingRecipe;
-import net.threetag.threecore.item.recipe.TCBaseRecipeSerializers;
+import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 
 public class BootsCraftingContainer extends AbstractConstructionTableContainer<BootsCraftingRecipe> {
 
@@ -15,7 +15,7 @@ public class BootsCraftingContainer extends AbstractConstructionTableContainer<B
     }
 
     public BootsCraftingContainer(int id, PlayerInventory playerInventory, IWorldPosCallable worldPosCallable) {
-        super(TCBaseContainerTypes.BOOTS_CRAFTING, id, playerInventory, worldPosCallable);
+        super(TCContainerTypes.BOOTS_CRAFTING.get(), id, playerInventory, worldPosCallable);
 
         this.addSlot(new Slot(this.craftingInventory, 0, 36, 29));
         this.addSlot(new Slot(this.craftingInventory, 1, 74, 29));
@@ -45,7 +45,7 @@ public class BootsCraftingContainer extends AbstractConstructionTableContainer<B
 
     @Override
     public AbstractConstructionTableRecipe.Serializer getRecipeSerializer() {
-        return (AbstractConstructionTableRecipe.Serializer) TCBaseRecipeSerializers.BOOTS_CRAFTING;
+        return (AbstractConstructionTableRecipe.Serializer) TCRecipeSerializers.BOOTS_CRAFTING.get();
     }
 
     @Override

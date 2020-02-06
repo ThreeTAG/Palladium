@@ -35,7 +35,7 @@ public class GrindingCategory<T> implements IRecipeCategory<GrindingRecipe> {
     public GrindingCategory(IGuiHelper guiHelper) {
         this.title = I18n.format("gui.jei.category.threecore.grinding");
         this.background = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 0, 0, 107, 26).addPadding(0, 10, 0, 0).build();
-        this.icon = guiHelper.createDrawableIngredient(new ItemStack(TCBlocks.GRINDER));
+        this.icon = guiHelper.createDrawableIngredient(new ItemStack(TCBlocks.GRINDER.get()));
         this.arrow = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 107, 0, 24, 17)
                 .buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
     }

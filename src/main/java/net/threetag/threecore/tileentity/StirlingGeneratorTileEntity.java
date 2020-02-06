@@ -29,7 +29,6 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RangedWrapper;
 import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.block.StirlingGeneratorBlock;
-import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.container.StirlingGeneratorContainer;
 import net.threetag.threecore.util.energy.IEnergyConfig;
 import net.threetag.threecore.util.energy.IEnergyStorageModifiable;
@@ -121,7 +120,7 @@ public class StirlingGeneratorTileEntity extends MachineTileEntity {
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(fuelSlot, fluidSlots);
 
     public StirlingGeneratorTileEntity() {
-        super(TCBlocks.STIRLING_GENERATOR_TILE_ENTITY);
+        super(TCTileEntityTypes.STIRLING_GENERATOR.get());
     }
 
     @Override

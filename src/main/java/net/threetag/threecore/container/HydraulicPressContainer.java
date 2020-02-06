@@ -42,7 +42,7 @@ public class HydraulicPressContainer extends RecipeBookContainer implements IRec
     }
 
     public HydraulicPressContainer(int id, PlayerInventory inventoryPlayer, HydraulicPressTileEntity hydraulicPressTileEntity, IIntArray intArray) {
-        super(TCBaseContainerTypes.HYDRAULIC_PRESS, id);
+        super(TCContainerTypes.HYDRAULIC_PRESS.get(), id);
         this.inventoryPlayer = inventoryPlayer;
         this.hydraulicPressTileEntity = hydraulicPressTileEntity;
         this.recipeWrapper = this.hydraulicPressTileEntity.recipeWrapper;

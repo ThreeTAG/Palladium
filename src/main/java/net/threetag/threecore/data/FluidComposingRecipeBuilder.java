@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.fluids.FluidStack;
-import net.threetag.threecore.item.recipe.TCBaseRecipeSerializers;
+import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 import net.threetag.threecore.fluid.FluidIngredient;
 import net.threetag.threecore.util.TCFluidUtil;
 
@@ -194,7 +194,7 @@ public class FluidComposingRecipeBuilder {
 
         @Override
         public IRecipeSerializer<?> getSerializer() {
-            return TCBaseRecipeSerializers.FLUID_COMPOSING;
+            return TCRecipeSerializers.FLUID_COMPOSING.get();
         }
 
         @Nullable

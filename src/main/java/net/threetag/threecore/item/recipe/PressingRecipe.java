@@ -39,7 +39,7 @@ public class PressingRecipe implements IEnergyRecipe<IInventory> {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(TCBlocks.HYDRAULIC_PRESS);
+        return new ItemStack(TCBlocks.HYDRAULIC_PRESS.get());
     }
 
     @Override
@@ -96,7 +96,7 @@ public class PressingRecipe implements IEnergyRecipe<IInventory> {
 
     @Override
     public IRecipeSerializer<PressingRecipe> getSerializer() {
-        return TCBaseRecipeSerializers.PRESSING;
+        return TCRecipeSerializers.PRESSING.get();
     }
 
     @Override

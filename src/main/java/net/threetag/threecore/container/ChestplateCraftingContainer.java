@@ -6,7 +6,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.IWorldPosCallable;
 import net.threetag.threecore.item.recipe.AbstractConstructionTableRecipe;
 import net.threetag.threecore.item.recipe.ChestplateCraftingRecipe;
-import net.threetag.threecore.item.recipe.TCBaseRecipeSerializers;
+import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 
 public class ChestplateCraftingContainer extends AbstractConstructionTableContainer<ChestplateCraftingRecipe> {
 
@@ -15,7 +15,7 @@ public class ChestplateCraftingContainer extends AbstractConstructionTableContai
     }
 
     public ChestplateCraftingContainer(int id, PlayerInventory playerInventory, IWorldPosCallable worldPosCallable) {
-        super(TCBaseContainerTypes.CHESTPLATE_CRAFTING, id, playerInventory, worldPosCallable);
+        super(TCContainerTypes.CHESTPLATE_CRAFTING.get(), id, playerInventory, worldPosCallable);
 
         this.addSlot(new Slot(this.craftingInventory, 0, 19, 28));
         this.addSlot(new Slot(this.craftingInventory, 1, 37, 28));
@@ -56,7 +56,7 @@ public class ChestplateCraftingContainer extends AbstractConstructionTableContai
 
     @Override
     public AbstractConstructionTableRecipe.Serializer getRecipeSerializer() {
-        return (AbstractConstructionTableRecipe.Serializer) TCBaseRecipeSerializers.CHESTPLATE_CRAFTING;
+        return (AbstractConstructionTableRecipe.Serializer) TCRecipeSerializers.CHESTPLATE_CRAFTING.get();
     }
 
     @Override

@@ -16,7 +16,7 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.threetag.threecore.item.recipe.TCBaseRecipeSerializers;
+import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -207,7 +207,7 @@ public class PressingRecipeBuilder {
 
         @Override
         public IRecipeSerializer<?> getSerializer() {
-            return TCBaseRecipeSerializers.PRESSING;
+            return TCRecipeSerializers.PRESSING.get();
         }
 
         @Nullable

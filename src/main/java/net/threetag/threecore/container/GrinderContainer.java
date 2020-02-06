@@ -42,7 +42,7 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
     }
 
     public GrinderContainer(int id, PlayerInventory inventoryPlayer, GrinderTileEntity grinderTileEntity, IIntArray intArray) {
-        super(TCBaseContainerTypes.GRINDER, id);
+        super(TCContainerTypes.GRINDER.get(), id);
         this.inventoryPlayer = inventoryPlayer;
         this.grinderTileEntity = grinderTileEntity;
         this.grinderTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler -> recipeWrapper = new RecipeWrapper((IItemHandlerModifiable) itemHandler)));

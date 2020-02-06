@@ -18,7 +18,7 @@ public class BootsCraftingRecipe extends AbstractConstructionTableRecipe {
 
     @Override
     public IRecipeSerializer<BootsCraftingRecipe> getSerializer() {
-        return TCBaseRecipeSerializers.BOOTS_CRAFTING;
+        return TCRecipeSerializers.BOOTS_CRAFTING.get();
     }
 
     @Override

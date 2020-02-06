@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 public class EffectEntityRenderer extends EntityRenderer<EffectEntity> {
 
-    protected EffectEntityRenderer(EntityRendererManager renderManager) {
+    public EffectEntityRenderer(EntityRendererManager renderManager) {
         super(renderManager);
     }
 

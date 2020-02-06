@@ -32,7 +32,7 @@ public class PressingCategory<T> implements IRecipeCategory<PressingRecipe> {
     public PressingCategory(IGuiHelper guiHelper) {
         this.title = I18n.format("gui.jei.category.threecore.pressing");
         this.background = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 0, 26, 116, 60).build();
-        this.icon = guiHelper.createDrawableIngredient(new ItemStack(TCBlocks.HYDRAULIC_PRESS));
+        this.icon = guiHelper.createDrawableIngredient(new ItemStack(TCBlocks.HYDRAULIC_PRESS.get()));
         this.arrow = guiHelper.drawableBuilder(ThreeCoreJEIPlugin.RECIPE_GUI_TEXTURE, 107, 0, 24, 17)
                 .buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
     }

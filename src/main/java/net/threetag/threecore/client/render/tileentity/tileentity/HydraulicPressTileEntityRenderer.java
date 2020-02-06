@@ -33,7 +33,7 @@ public class HydraulicPressTileEntityRenderer extends TileEntityRenderer<Hydraul
         GlStateManager.scalef(1.0F, -1.0F, -1.0F);
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        BlockState blockstate = tileEntityIn.hasWorld() ? tileEntityIn.getBlockState() : TCBlocks.HYDRAULIC_PRESS.getDefaultState().with(MachineBlock.FACING, Direction.SOUTH);
+        BlockState blockstate = tileEntityIn.hasWorld() ? tileEntityIn.getBlockState() : TCBlocks.HYDRAULIC_PRESS.get().getDefaultState().with(MachineBlock.FACING, Direction.SOUTH);
         float f = blockstate.get(MachineBlock.FACING).getHorizontalAngle();
         if ((double) Math.abs(f) > 1.0E-5D) {
             GlStateManager.translatef(0.5F, 0.5F, 0.5F);

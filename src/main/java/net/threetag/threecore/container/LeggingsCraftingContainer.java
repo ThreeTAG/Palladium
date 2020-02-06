@@ -6,7 +6,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.IWorldPosCallable;
 import net.threetag.threecore.item.recipe.AbstractConstructionTableRecipe;
 import net.threetag.threecore.item.recipe.LeggingsCraftingRecipe;
-import net.threetag.threecore.item.recipe.TCBaseRecipeSerializers;
+import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 
 public class LeggingsCraftingContainer extends AbstractConstructionTableContainer<LeggingsCraftingRecipe> {
 
@@ -15,7 +15,7 @@ public class LeggingsCraftingContainer extends AbstractConstructionTableContaine
     }
 
     public LeggingsCraftingContainer(int id, PlayerInventory playerInventory, IWorldPosCallable worldPosCallable) {
-        super(TCBaseContainerTypes.LEGGINGS_CRAFTING, id, playerInventory, worldPosCallable);
+        super(TCContainerTypes.LEGGINGS_CRAFTING.get(), id, playerInventory, worldPosCallable);
 
         this.addSlot(new Slot(this.craftingInventory, 0, 37, 25));
         this.addSlot(new Slot(this.craftingInventory, 1, 55, 25));
@@ -47,7 +47,7 @@ public class LeggingsCraftingContainer extends AbstractConstructionTableContaine
 
     @Override
     public AbstractConstructionTableRecipe.Serializer getRecipeSerializer() {
-        return (AbstractConstructionTableRecipe.Serializer) TCBaseRecipeSerializers.LEGGINGS_CRAFTING;
+        return (AbstractConstructionTableRecipe.Serializer) TCRecipeSerializers.LEGGINGS_CRAFTING.get();
     }
 
     @Override

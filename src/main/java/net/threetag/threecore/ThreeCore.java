@@ -38,32 +38,30 @@ import net.threetag.threecore.capability.CapabilityAbilityContainer;
 import net.threetag.threecore.capability.ThreeCoreCapabilities;
 import net.threetag.threecore.client.renderer.AbilityBarRenderer;
 import net.threetag.threecore.client.renderer.KarmaBarRenderer;
+import net.threetag.threecore.client.renderer.entity.model.EntityModelManager;
+import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerLoader;
+import net.threetag.threecore.command.ArmorStandPoseCommand;
 import net.threetag.threecore.command.KarmaCommand;
 import net.threetag.threecore.command.SizeChangeCommand;
 import net.threetag.threecore.command.SuperpowerCommand;
-import net.threetag.threecore.container.TCBaseContainerTypes;
+import net.threetag.threecore.container.TCContainerTypes;
 import net.threetag.threecore.data.ThreeCoreBlockTagsProvider;
 import net.threetag.threecore.data.ThreeCoreItemTagsProvider;
 import net.threetag.threecore.data.ThreeCoreRecipeProvider;
 import net.threetag.threecore.entity.TCEntityTypes;
-import net.threetag.threecore.item.TCItems;
-import net.threetag.threecore.item.recipe.TCBaseRecipeSerializers;
-import net.threetag.threecore.network.*;
-import net.threetag.threecore.util.SupporterHandler;
-import net.threetag.threecore.util.RenderUtil;
-import net.threetag.threecore.client.renderer.entity.model.EntityModelManager;
-import net.threetag.threecore.command.ArmorStandPoseCommand;
 import net.threetag.threecore.entity.armorstand.ArmorStandPoseManager;
-import net.threetag.threecore.network.SendArmorStandCommandMessage;
-import net.threetag.threecore.network.SetArmorStandPoseMessage;
-import net.threetag.threecore.util.entityeffect.EntityEffectUpdateMessage;
-import net.threetag.threecore.loot.function.TCLootFunctions;
-import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerLoader;
+import net.threetag.threecore.item.TCItems;
+import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 import net.threetag.threecore.item.recipe.ToolIngredient;
+import net.threetag.threecore.loot.function.TCLootFunctions;
+import net.threetag.threecore.network.*;
 import net.threetag.threecore.scripts.ScriptEventManager;
 import net.threetag.threecore.scripts.accessors.ScriptAccessor;
-import net.threetag.threecore.network.SyncThreeDataMessage;
-import net.threetag.threecore.network.UpdateThreeDataMessage;
+import net.threetag.threecore.sound.TCSounds;
+import net.threetag.threecore.tileentity.TCTileEntityTypes;
+import net.threetag.threecore.util.RenderUtil;
+import net.threetag.threecore.util.SupporterHandler;
+import net.threetag.threecore.util.entityeffect.EntityEffectUpdateMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -100,6 +98,9 @@ public class ThreeCore {
         // Loot
         TCLootFunctions.register();
 
+        // Construction Table Tabs
+        TCContainerTypes.registerConstructionTableTabls();
+
         // Ability Container
         AbilityHelper.registerAbilityContainer(CapabilityAbilityContainer.ID, (p) -> p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
         for (EquipmentSlotType slots : EquipmentSlotType.values())
@@ -127,12 +128,12 @@ public class ThreeCore {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void registries(RegistryEvent.NewRegistry e) {
         TCItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-
-        // TODO
-        FMLJavaModLoadingContext.get().getModEventBus().register(new TCBlocks());
-        FMLJavaModLoadingContext.get().getModEventBus().register(new TCBaseContainerTypes());
-        FMLJavaModLoadingContext.get().getModEventBus().register(new TCEntityTypes());
-        FMLJavaModLoadingContext.get().getModEventBus().register(new TCBaseRecipeSerializers());
+        TCBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCTileEntityTypes.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCContainerTypes.CONTAINER_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCRecipeSerializers.RECIPE_SERIALIZERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCEntityTypes.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCSounds.SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     @SubscribeEvent
@@ -147,6 +148,9 @@ public class ThreeCore {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void setupClient(FMLClientSetupEvent e) {
+        TCTileEntityTypes.initRenderers();
+        TCEntityTypes.initRenderers();
+        TCContainerTypes.initContainerScreens();
         ArmorStandPoseManager.init();
     }
 

@@ -17,34 +17,34 @@ public class ThreeCoreItemTagsProvider extends ItemTagsProvider {
 
     @Override
     protected void registerTags() {
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.COPPER_STORAGE_BLOCKS, TCBlocks.COPPER_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.TIN_STORAGE_BLOCKS, TCBlocks.TIN_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.LEAD_STORAGE_BLOCKS, TCBlocks.LEAD_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.SILVER_STORAGE_BLOCKS, TCBlocks.SILVER_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.PALLADIUM_STORAGE_BLOCKS, TCBlocks.PALLADIUM_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.VIBRANIUM_STORAGE_BLOCKS, TCBlocks.VIBRANIUM_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.OSMIUM_STORAGE_BLOCKS, TCBlocks.OSMIUM_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.URANIUM_STORAGE_BLOCKS, TCBlocks.URANIUM_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.TITANIUM_STORAGE_BLOCKS, TCBlocks.TITANIUM_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.IRIDIUM_STORAGE_BLOCKS, TCBlocks.IRIDIUM_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.URU_STORAGE_BLOCKS, TCBlocks.URU_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.BRONZE_STORAGE_BLOCKS, TCBlocks.BRONZE_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.INTERTIUM_STORAGE_BLOCKS, TCBlocks.INTERTIUM_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.STEEL_STORAGE_BLOCKS, TCBlocks.STEEL_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.GOLD_TITANIUM_ALLOY_STORAGE_BLOCKS, TCBlocks.GOLD_TITANIUM_ALLOY_BLOCK);
-        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.ADAMANTIUM_STORAGE_BLOCKS, TCBlocks.ADAMANTIUM_BLOCK);
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.COPPER_STORAGE_BLOCKS, TCBlocks.COPPER_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.TIN_STORAGE_BLOCKS, TCBlocks.TIN_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.LEAD_STORAGE_BLOCKS, TCBlocks.LEAD_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.SILVER_STORAGE_BLOCKS, TCBlocks.SILVER_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.PALLADIUM_STORAGE_BLOCKS, TCBlocks.PALLADIUM_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.VIBRANIUM_STORAGE_BLOCKS, TCBlocks.VIBRANIUM_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.OSMIUM_STORAGE_BLOCKS, TCBlocks.OSMIUM_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.URANIUM_STORAGE_BLOCKS, TCBlocks.URANIUM_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.TITANIUM_STORAGE_BLOCKS, TCBlocks.TITANIUM_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.IRIDIUM_STORAGE_BLOCKS, TCBlocks.IRIDIUM_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.URU_STORAGE_BLOCKS, TCBlocks.URU_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.BRONZE_STORAGE_BLOCKS, TCBlocks.BRONZE_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.INTERTIUM_STORAGE_BLOCKS, TCBlocks.INTERTIUM_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.STEEL_STORAGE_BLOCKS, TCBlocks.STEEL_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.GOLD_TITANIUM_ALLOY_STORAGE_BLOCKS, TCBlocks.GOLD_TITANIUM_ALLOY_BLOCK.get());
+        addToBoth(TCItemTags.STORAGE_BLOCKS, TCItemTags.ADAMANTIUM_STORAGE_BLOCKS, TCBlocks.ADAMANTIUM_BLOCK.get());
 
-        addToBoth(TCItemTags.ORES, TCItemTags.COPPER_ORES, TCBlocks.COPPER_ORE);
-        addToBoth(TCItemTags.ORES, TCItemTags.TIN_ORES, TCBlocks.TIN_ORE);
-        addToBoth(TCItemTags.ORES, TCItemTags.LEAD_ORES, TCBlocks.LEAD_ORE);
-        addToBoth(TCItemTags.ORES, TCItemTags.SILVER_ORES, TCBlocks.SILVER_ORE);
-        addToBoth(TCItemTags.ORES, TCItemTags.PALLADIUM_ORES, TCBlocks.PALLADIUM_ORE);
-        addToBoth(TCItemTags.ORES, TCItemTags.VIBRANIUM_ORES, TCBlocks.VIBRANIUM_ORE);
-        addToBoth(TCItemTags.ORES, TCItemTags.OSMIUM_ORES, TCBlocks.OSMIUM_ORE);
-        addToBoth(TCItemTags.ORES, TCItemTags.URANIUM_ORES, TCBlocks.URANIUM_ORE);
-        addToBoth(TCItemTags.ORES, TCItemTags.TITANIUM_ORES, TCBlocks.TITANIUM_ORE);
-        addToBoth(TCItemTags.ORES, TCItemTags.IRIDIUM_ORES, TCBlocks.IRIDIUM_ORE);
-        addToBoth(TCItemTags.ORES, TCItemTags.URU_ORES, TCBlocks.URU_ORE);
+        addToBoth(TCItemTags.ORES, TCItemTags.COPPER_ORES, TCBlocks.COPPER_ORE.get());
+        addToBoth(TCItemTags.ORES, TCItemTags.TIN_ORES, TCBlocks.TIN_ORE.get());
+        addToBoth(TCItemTags.ORES, TCItemTags.LEAD_ORES, TCBlocks.LEAD_ORE.get());
+        addToBoth(TCItemTags.ORES, TCItemTags.SILVER_ORES, TCBlocks.SILVER_ORE.get());
+        addToBoth(TCItemTags.ORES, TCItemTags.PALLADIUM_ORES, TCBlocks.PALLADIUM_ORE.get());
+        addToBoth(TCItemTags.ORES, TCItemTags.VIBRANIUM_ORES, TCBlocks.VIBRANIUM_ORE.get());
+        addToBoth(TCItemTags.ORES, TCItemTags.OSMIUM_ORES, TCBlocks.OSMIUM_ORE.get());
+        addToBoth(TCItemTags.ORES, TCItemTags.URANIUM_ORES, TCBlocks.URANIUM_ORE.get());
+        addToBoth(TCItemTags.ORES, TCItemTags.TITANIUM_ORES, TCBlocks.TITANIUM_ORE.get());
+        addToBoth(TCItemTags.ORES, TCItemTags.IRIDIUM_ORES, TCBlocks.IRIDIUM_ORE.get());
+        addToBoth(TCItemTags.ORES, TCItemTags.URU_ORES, TCBlocks.URU_ORE.get());
 
         addToBoth(TCItemTags.INGOTS, TCItemTags.COPPER_INGOTS, TCItems.COPPER_INGOT.get());
         addToBoth(TCItemTags.INGOTS, TCItemTags.TIN_INGOTS, TCItems.TIN_INGOT.get());

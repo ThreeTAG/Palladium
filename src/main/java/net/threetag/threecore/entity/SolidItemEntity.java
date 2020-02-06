@@ -43,7 +43,7 @@ public class SolidItemEntity extends Entity {
     }
 
     public SolidItemEntity(World worldIn, double x, double y, double z) {
-        this(TCEntityTypes.SOLID_ITEM_ENTITY, worldIn);
+        this(TCEntityTypes.SOLID_ITEM_ENTITY.get(), worldIn);
         this.setPosition(x, y, z);
         this.rotationYaw = this.rand.nextFloat() * 360.0F;
         this.setMotion(this.rand.nextDouble() * 0.2D - 0.1D, 0.2D, this.rand.nextDouble() * 0.2D - 0.1D);

@@ -33,7 +33,7 @@ public class StirlingGeneratorContainer extends Container {
     }
 
     public StirlingGeneratorContainer(int id, PlayerInventory inventoryPlayer, StirlingGeneratorTileEntity stirlingGeneratorTileEntity, IIntArray intArray) {
-        super(TCBaseContainerTypes.STIRLING_GENERATOR, id);
+        super(TCContainerTypes.STIRLING_GENERATOR.get(), id);
 
         this.inventoryPlayer = inventoryPlayer;
         this.stirlingGeneratorTileEntity = stirlingGeneratorTileEntity;

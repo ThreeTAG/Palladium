@@ -18,7 +18,7 @@ public class HelmetCraftingRecipe extends AbstractConstructionTableRecipe {
 
     @Override
     public IRecipeSerializer<HelmetCraftingRecipe> getSerializer() {
-        return TCBaseRecipeSerializers.HELMET_CRAFTING;
+        return TCRecipeSerializers.HELMET_CRAFTING.get();
     }
 
     @Override

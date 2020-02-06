@@ -39,7 +39,7 @@ public class SuitStandEntity extends ArmorStandEntity {
     private static final DataParameter<Byte> DYE_COLOR = EntityDataManager.createKey(SuitStandEntity.class, DataSerializers.BYTE);
 
     public SuitStandEntity(World world) {
-        this(TCEntityTypes.SUIT_STAND, world);
+        this(TCEntityTypes.SUIT_STAND.get(), world);
     }
 
     public SuitStandEntity(EntityType<? extends SuitStandEntity> entityType, World world) {
@@ -51,7 +51,7 @@ public class SuitStandEntity extends ArmorStandEntity {
     }
 
     public SuitStandEntity(World worldIn, double posX, double posY, double posZ) {
-        this(TCEntityTypes.SUIT_STAND, worldIn);
+        this(TCEntityTypes.SUIT_STAND.get(), worldIn);
         this.setPosition(posX, posY, posZ);
     }
 

@@ -6,7 +6,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.IWorldPosCallable;
 import net.threetag.threecore.item.recipe.AbstractConstructionTableRecipe;
 import net.threetag.threecore.item.recipe.HelmetCraftingRecipe;
-import net.threetag.threecore.item.recipe.TCBaseRecipeSerializers;
+import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 
 public class HelmetCraftingContainer extends AbstractConstructionTableContainer<HelmetCraftingRecipe> {
 
@@ -15,7 +15,7 @@ public class HelmetCraftingContainer extends AbstractConstructionTableContainer<
     }
 
     public HelmetCraftingContainer(int id, PlayerInventory playerInventory, IWorldPosCallable worldPosCallable) {
-        super(TCBaseContainerTypes.HELMET_CRAFTING, id, playerInventory, worldPosCallable);
+        super(TCContainerTypes.HELMET_CRAFTING.get(), id, playerInventory, worldPosCallable);
 
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
@@ -40,7 +40,7 @@ public class HelmetCraftingContainer extends AbstractConstructionTableContainer<
 
     @Override
     public AbstractConstructionTableRecipe.Serializer getRecipeSerializer() {
-        return (AbstractConstructionTableRecipe.Serializer) TCBaseRecipeSerializers.HELMET_CRAFTING;
+        return (AbstractConstructionTableRecipe.Serializer) TCRecipeSerializers.HELMET_CRAFTING.get();
     }
 
     @Override

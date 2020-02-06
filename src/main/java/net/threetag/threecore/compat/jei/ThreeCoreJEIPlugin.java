@@ -15,7 +15,7 @@ import net.threetag.threecore.gui.screen.inventory.FluidComposerScreen;
 import net.threetag.threecore.gui.screen.inventory.GrinderScreen;
 import net.threetag.threecore.gui.screen.inventory.HydraulicPressScreen;
 import net.threetag.threecore.item.recipe.AbstractConstructionTableRecipe;
-import net.threetag.threecore.item.recipe.TCBaseRecipeSerializers;
+import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 import net.threetag.threecore.compat.jei.constructiontable.BootsCraftingCategory;
 import net.threetag.threecore.compat.jei.constructiontable.ChestplateCraftingCategory;
 import net.threetag.threecore.compat.jei.constructiontable.HelmetCraftingCategory;
@@ -98,10 +98,10 @@ public class ThreeCoreJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        this.addConstructionTableTransferHandler(registration, HELMET_CRAFTING_CATEGORY, HelmetCraftingContainer.class, TCBaseRecipeSerializers.HELMET_CRAFTING);
-        this.addConstructionTableTransferHandler(registration, CHESTPLATE_CRAFTING_CATEGORY, ChestplateCraftingContainer.class, TCBaseRecipeSerializers.CHESTPLATE_CRAFTING);
-        this.addConstructionTableTransferHandler(registration, LEGGINGS_CRAFTING_CATEGORY, LeggingsCraftingContainer.class, TCBaseRecipeSerializers.LEGGINGS_CRAFTING);
-        this.addConstructionTableTransferHandler(registration, BOOTS_CRAFTING_CATEGORY, BootsCraftingContainer.class, TCBaseRecipeSerializers.BOOTS_CRAFTING);
+        this.addConstructionTableTransferHandler(registration, HELMET_CRAFTING_CATEGORY, HelmetCraftingContainer.class, TCRecipeSerializers.HELMET_CRAFTING.get());
+        this.addConstructionTableTransferHandler(registration, CHESTPLATE_CRAFTING_CATEGORY, ChestplateCraftingContainer.class, TCRecipeSerializers.CHESTPLATE_CRAFTING.get());
+        this.addConstructionTableTransferHandler(registration, LEGGINGS_CRAFTING_CATEGORY, LeggingsCraftingContainer.class, TCRecipeSerializers.LEGGINGS_CRAFTING.get());
+        this.addConstructionTableTransferHandler(registration, BOOTS_CRAFTING_CATEGORY, BootsCraftingContainer.class, TCRecipeSerializers.BOOTS_CRAFTING.get());
         registration.addRecipeTransferHandler(GrinderContainer.class, GRINDING_CATEGORY, 1, 1, 4, 36);
         registration.addRecipeTransferHandler(HydraulicPressContainer.class, PRESSING_CATEGORY, 1, 2, 4, 36);
         registration.addRecipeTransferHandler(FluidComposerContainer.class, FLUID_COMPOSING_CATEGORY, 5, 9, 14, 36);
@@ -109,10 +109,10 @@ public class ThreeCoreJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(TCBlocks.CONSTRUCTION_TABLE), HELMET_CRAFTING_CATEGORY, CHESTPLATE_CRAFTING_CATEGORY, LEGGINGS_CRAFTING_CATEGORY, BOOTS_CRAFTING_CATEGORY);
-        registration.addRecipeCatalyst(new ItemStack(TCBlocks.GRINDER), GRINDING_CATEGORY);
-        registration.addRecipeCatalyst(new ItemStack(TCBlocks.HYDRAULIC_PRESS), PRESSING_CATEGORY);
-        registration.addRecipeCatalyst(new ItemStack(TCBlocks.FLUID_COMPOSER), FLUID_COMPOSING_CATEGORY);
+        registration.addRecipeCatalyst(new ItemStack(TCBlocks.CONSTRUCTION_TABLE.get()), HELMET_CRAFTING_CATEGORY, CHESTPLATE_CRAFTING_CATEGORY, LEGGINGS_CRAFTING_CATEGORY, BOOTS_CRAFTING_CATEGORY);
+        registration.addRecipeCatalyst(new ItemStack(TCBlocks.GRINDER.get()), GRINDING_CATEGORY);
+        registration.addRecipeCatalyst(new ItemStack(TCBlocks.HYDRAULIC_PRESS.get()), PRESSING_CATEGORY);
+        registration.addRecipeCatalyst(new ItemStack(TCBlocks.FLUID_COMPOSER.get()), FLUID_COMPOSING_CATEGORY);
     }
 
     public void addConstructionTableTransferHandler(IRecipeTransferRegistration registration, ResourceLocation id, Class<? extends AbstractConstructionTableContainer> clazz, IRecipeSerializer recipeSerializer) {

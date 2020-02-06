@@ -18,7 +18,7 @@ public class ChestplateCraftingRecipe extends AbstractConstructionTableRecipe {
 
     @Override
     public IRecipeSerializer<ChestplateCraftingRecipe> getSerializer() {
-        return TCBaseRecipeSerializers.CHESTPLATE_CRAFTING;
+        return TCRecipeSerializers.CHESTPLATE_CRAFTING.get();
     }
 
     @Override

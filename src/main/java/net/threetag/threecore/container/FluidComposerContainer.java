@@ -36,7 +36,7 @@ public class FluidComposerContainer extends Container {
     }
 
     public FluidComposerContainer(int id, PlayerInventory inventoryPlayer, FluidComposerTileEntity fluidComposerTileEntity, IIntArray intArray) {
-        super(TCBaseContainerTypes.FLUID_COMPOSER, id);
+        super(TCContainerTypes.FLUID_COMPOSER.get(), id);
 
         this.inventoryPlayer = inventoryPlayer;
         this.fluidComposerTileEntity = fluidComposerTileEntity;
