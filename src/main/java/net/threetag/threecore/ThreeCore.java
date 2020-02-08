@@ -48,6 +48,7 @@ import net.threetag.threecore.container.TCContainerTypes;
 import net.threetag.threecore.data.ThreeCoreBlockTagsProvider;
 import net.threetag.threecore.data.ThreeCoreItemTagsProvider;
 import net.threetag.threecore.data.ThreeCoreRecipeProvider;
+import net.threetag.threecore.data.lang.English;
 import net.threetag.threecore.entity.TCEntityTypes;
 import net.threetag.threecore.entity.armorstand.ArmorStandPoseManager;
 import net.threetag.threecore.item.TCItems;
@@ -193,6 +194,7 @@ public class ThreeCore {
         e.getGenerator().addProvider(new ThreeCoreBlockTagsProvider(e.getGenerator()));
         e.getGenerator().addProvider(new ThreeCoreItemTagsProvider(e.getGenerator()));
         e.getGenerator().addProvider(new ThreeCoreRecipeProvider(e.getGenerator()));
+        e.getGenerator().addProvider(new English(e.getGenerator()));
     }
 
     @SubscribeEvent

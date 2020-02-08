@@ -14,7 +14,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.block.ConstructionTableBlock;
-import net.threetag.threecore.gui.screen.inventory.*;
+import net.threetag.threecore.client.gui.inventory.*;
 import net.threetag.threecore.tileentity.StirlingGeneratorTileEntity;
 import net.threetag.threecore.util.icon.ItemIcon;
 

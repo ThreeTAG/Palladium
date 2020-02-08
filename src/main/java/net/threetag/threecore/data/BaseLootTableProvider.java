@@ -67,11 +67,11 @@ public abstract class BaseLootTableProvider extends LootTableProvider {
     }
 
     public static <T> T withExplosionDecay(IItemProvider itemProvider, ILootFunctionConsumer<T> lootFunctionConsumer) {
-        return (T)(!BlockLootTables.IMMUNE_TO_EXPLOSIONS.contains(itemProvider.asItem()) ? lootFunctionConsumer.acceptFunction(ExplosionDecay.builder()) : lootFunctionConsumer.cast());
+        return !BlockLootTables.IMMUNE_TO_EXPLOSIONS.contains(itemProvider.asItem()) ? lootFunctionConsumer.acceptFunction(ExplosionDecay.builder()) : lootFunctionConsumer.cast();
     }
 
     protected static <T> T withSurvivesExplosion(IItemProvider itemProvider, ILootConditionConsumer<T> lootFunctionConsumer) {
-        return (T)(!BlockLootTables.IMMUNE_TO_EXPLOSIONS.contains(itemProvider.asItem()) ? lootFunctionConsumer.acceptCondition(SurvivesExplosion.builder()) : lootFunctionConsumer.cast());
+        return !BlockLootTables.IMMUNE_TO_EXPLOSIONS.contains(itemProvider.asItem()) ? lootFunctionConsumer.acceptCondition(SurvivesExplosion.builder()) : lootFunctionConsumer.cast();
     }
 
     @Override

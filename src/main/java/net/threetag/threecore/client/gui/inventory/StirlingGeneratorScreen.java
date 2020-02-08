@@ -1,4 +1,4 @@
-package net.threetag.threecore.gui.screen.inventory;
+package net.threetag.threecore.client.gui.inventory;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
