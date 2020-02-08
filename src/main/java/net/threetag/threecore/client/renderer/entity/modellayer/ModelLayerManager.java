@@ -19,7 +19,7 @@ import net.threetag.threecore.client.renderer.entity.modellayer.texture.transfor
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.ITextureVariable;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.IntegerNbtTextureVariable;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.SmallArmsTextureVariable;
-import net.threetag.threecore.util.PlayerHelper;
+import net.threetag.threecore.util.PlayerUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -91,7 +91,7 @@ public class ModelLayerManager {
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "durability"), j -> new ItemDurabilityPredicate(JSONUtils.getFloat(j, "min", 0F), JSONUtils.getFloat(j, "max", 1F)));
 
         // Small Arms
-        registerPredicate(new ResourceLocation(ThreeCore.MODID, "small_arms"), j -> c -> c.getAsEntity() instanceof PlayerEntity && PlayerHelper.hasSmallArms((PlayerEntity) c.getAsEntity()));
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "small_arms"), j -> c -> c.getAsEntity() instanceof PlayerEntity && PlayerUtil.hasSmallArms((PlayerEntity) c.getAsEntity()));
 
         // Is Size Changing
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "is_size_changing"), j -> new IsSizeChangingPredicate());

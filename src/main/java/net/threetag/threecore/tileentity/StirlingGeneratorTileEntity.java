@@ -36,7 +36,7 @@ import net.threetag.threecore.util.energy.NoReceiveEnergyWrapper;
 import net.threetag.threecore.fluid.FluidTankExt;
 import net.threetag.threecore.util.TCFluidUtil;
 import net.threetag.threecore.item.ItemStackHandlerExt;
-import net.threetag.threecore.util.PlayerHelper;
+import net.threetag.threecore.util.PlayerUtil;
 
 import javax.annotation.Nullable;
 
@@ -86,7 +86,7 @@ public class StirlingGeneratorTileEntity extends MachineTileEntity {
             getWorld().notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 3);
     }).setSoundHandler(sound -> {
         if (sound != null)
-            PlayerHelper.playSoundToAll(world, getPos().getX(), getPos().getY(), getPos().getZ(), 50, sound, SoundCategory.BLOCKS);
+            PlayerUtil.playSoundToAll(world, getPos().getX(), getPos().getY(), getPos().getZ(), 50, sound, SoundCategory.BLOCKS);
     }).setValidator((fluidStack) -> fluidStack.getFluid().isIn(FluidTags.WATER));
 
     private ItemStackHandlerExt fuelSlot = new ItemStackHandlerExt(1)

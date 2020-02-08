@@ -12,7 +12,7 @@ import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.JSONUtils;
-import net.threetag.threecore.util.PlayerHelper;
+import net.threetag.threecore.util.PlayerUtil;
 
 import java.util.List;
 
@@ -174,7 +174,7 @@ public class BipedModelParser extends EntityModelParser {
             }
 
             if (this.bipedArmType == BipedArmType.FIXED) {
-                boolean smallArms = entityIn instanceof PlayerEntity && PlayerHelper.hasSmallArms((PlayerEntity) entityIn);
+                boolean smallArms = entityIn instanceof PlayerEntity && PlayerUtil.hasSmallArms((PlayerEntity) entityIn);
                 this.bipedLeftArm.rotationPointY =
                         this.bipedLeftArmwear.rotationPointY =
                                 this.bipedRightArm.rotationPointY =

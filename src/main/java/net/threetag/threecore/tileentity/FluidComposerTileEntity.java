@@ -30,7 +30,7 @@ import net.threetag.threecore.fluid.FluidTankExt;
 import net.threetag.threecore.item.FluidInventory;
 import net.threetag.threecore.item.ItemStackHandlerExt;
 import net.threetag.threecore.item.recipe.FluidComposingRecipe;
-import net.threetag.threecore.util.PlayerHelper;
+import net.threetag.threecore.util.PlayerUtil;
 import net.threetag.threecore.util.TCFluidUtil;
 import net.threetag.threecore.util.energy.IEnergyConfig;
 
@@ -83,7 +83,7 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
             getWorld().notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 3);
     }).setSoundHandler(sound -> {
         if (sound != null)
-            PlayerHelper.playSoundToAll(world, getPos().getX(), getPos().getY(), getPos().getZ(), 50, sound, SoundCategory.BLOCKS);
+            PlayerUtil.playSoundToAll(world, getPos().getX(), getPos().getY(), getPos().getZ(), 50, sound, SoundCategory.BLOCKS);
     });
 
     public FluidTankExt outputFluidTank = new FluidTankExt(TANK_CAPACITY).setCallback(f -> {
@@ -91,7 +91,7 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
             getWorld().notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 3);
     }).setSoundHandler(sound -> {
         if (sound != null)
-            PlayerHelper.playSoundToAll(world, getPos().getX(), getPos().getY(), getPos().getZ(), 50, sound, SoundCategory.BLOCKS);
+            PlayerUtil.playSoundToAll(world, getPos().getX(), getPos().getY(), getPos().getZ(), 50, sound, SoundCategory.BLOCKS);
     });
 
     private ItemStackHandlerExt energySlot = new ItemStackHandlerExt(1)

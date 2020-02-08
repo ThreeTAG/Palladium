@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.threetag.threecore.util.TCMathHelper;
+import net.threetag.threecore.util.MathUtil;
 
 import javax.annotation.Nullable;
 
@@ -21,12 +21,12 @@ public class EffectEntityRenderer extends EntityRenderer<EffectEntity> {
         Entity anchor = entity.getAnchorEntity();
 
         if (anchor != null) {
-            double d0 = TCMathHelper.interpolate(anchor.lastTickPosX, anchor.posX, partialTicks);
-            double d1 = TCMathHelper.interpolate(anchor.lastTickPosY, anchor.posY, partialTicks);
-            double d2 = TCMathHelper.interpolate(anchor.lastTickPosZ, anchor.posZ, partialTicks);
-            x += d0 - TCMathHelper.interpolate(entity.lastTickPosX, entity.posX, partialTicks);
-            y += d1 - TCMathHelper.interpolate(entity.lastTickPosY, entity.posY, partialTicks);
-            z += d2 - TCMathHelper.interpolate(entity.lastTickPosZ, entity.posZ, partialTicks);
+            double d0 = MathUtil.interpolate(anchor.lastTickPosX, anchor.posX, partialTicks);
+            double d1 = MathUtil.interpolate(anchor.lastTickPosY, anchor.posY, partialTicks);
+            double d2 = MathUtil.interpolate(anchor.lastTickPosZ, anchor.posZ, partialTicks);
+            x += d0 - MathUtil.interpolate(entity.lastTickPosX, entity.posX, partialTicks);
+            y += d1 - MathUtil.interpolate(entity.lastTickPosY, entity.posY, partialTicks);
+            z += d2 - MathUtil.interpolate(entity.lastTickPosZ, entity.posZ, partialTicks);
 
             GlStateManager.pushMatrix();
             GlStateManager.translated(x, y, z);

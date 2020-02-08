@@ -12,7 +12,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.sizechanging.SizeChangeType;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
-import net.threetag.threecore.util.PlayerHelper;
+import net.threetag.threecore.util.PlayerUtil;
 import net.threetag.threecore.scripts.ScriptParameterName;
 import net.threetag.threecore.util.threedata.IThreeDataHolder;
 import net.threetag.threecore.util.threedata.IntegerThreeData;
@@ -246,7 +246,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         SoundEvent soundEvent = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(id));
 
         if (soundEvent != null) {
-            PlayerHelper.playSoundToAll(this.value.world, this.getPosX(), this.getPosY() + this.getHeight() / 2D, this.getPosZ(), 50, soundEvent, this.value.getSoundCategory(), volume, pitch);
+            PlayerUtil.playSoundToAll(this.value.world, this.getPosX(), this.getPosY() + this.getHeight() / 2D, this.getPosZ(), 50, soundEvent, this.value.getSoundCategory(), volume, pitch);
         }
     }
 
