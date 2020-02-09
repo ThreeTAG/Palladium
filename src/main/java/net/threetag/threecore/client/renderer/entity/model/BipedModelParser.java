@@ -1,6 +1,7 @@
 package net.threetag.threecore.client.renderer.entity.model;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -15,6 +16,7 @@ import net.minecraft.util.JSONUtils;
 import net.threetag.threecore.util.PlayerUtil;
 
 import java.util.List;
+import java.util.Map;
 
 public class BipedModelParser extends EntityModelParser {
 
@@ -36,14 +38,16 @@ public class BipedModelParser extends EntityModelParser {
             }
         }
 
-        if (JSONUtils.hasField(jsonObject, "disabled")) {
-            JsonArray disabledJson = JSONUtils.getJsonArray(jsonObject, "disabled");
+        if (JSONUtils.hasField(jsonObject, "visibility_overrides")) {
+            JsonObject overrides = JSONUtils.getJsonObject(jsonObject, "visibility_overrides");
 
-            for (int i = 0; i < disabledJson.size(); i++) {
-                RendererModel part = getPart(disabledJson.get(i).getAsString(), model);
-                if (part != null)
-                    model.disabled.add(part);
-            }
+            overrides.entrySet().forEach(entry -> {
+                RendererModel part = getPart(entry.getKey(), model);
+
+                if (part != null) {
+                    model.addVisibilityOverride(part, JSONUtils.getBoolean(overrides, entry.getKey()));
+                }
+            });
         }
 
         return model;
@@ -80,7 +84,7 @@ public class BipedModelParser extends EntityModelParser {
     public static class ParsedBipedModel<T extends LivingEntity> extends BipedModel<T> implements ISlotDependentVisibility {
 
         public List<RendererModel> cubes = Lists.newLinkedList();
-        public List<RendererModel> disabled = Lists.newLinkedList();
+        public Map<RendererModel, Boolean> visibilityOverrides = Maps.newHashMap();
         public final RendererModel bipedLeftArmwear;
         public final RendererModel bipedRightArmwear;
         public final RendererModel bipedLeftLegwear;
@@ -135,6 +139,10 @@ public class BipedModelParser extends EntityModelParser {
             return this;
         }
 
+        public void addVisibilityOverride(RendererModel rendererModel, boolean visible) {
+            this.visibilityOverrides.put(rendererModel, visible);
+        }
+
         @Override
         public void setSlotVisibility(EquipmentSlotType slot) {
             this.setVisible(false);
@@ -165,14 +173,14 @@ public class BipedModelParser extends EntityModelParser {
                     this.bipedLeftLeg.showModel = true;
                     this.bipedLeftLegwear.showModel = true;
             }
+
+            for (Map.Entry<RendererModel, Boolean> override : this.visibilityOverrides.entrySet()) {
+                override.getKey().showModel = override.getValue();
+            }
         }
 
         @Override
         public void render(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-            for (RendererModel part : this.disabled) {
-                part.showModel = false;
-            }
-
             if (this.bipedArmType == BipedArmType.FIXED) {
                 boolean smallArms = entityIn instanceof PlayerEntity && PlayerUtil.hasSmallArms((PlayerEntity) entityIn);
                 this.bipedLeftArm.rotationPointY =
