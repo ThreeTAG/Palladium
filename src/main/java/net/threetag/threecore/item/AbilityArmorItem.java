@@ -100,12 +100,12 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             ModelLayerLoader.POST_LOAD_CALLBACKS.add(() -> {
                 if (JSONUtils.hasField(jsonObject, "layers")) {
-                    if (jsonObject.get("layers").isJsonPrimitive()) {
+                    if (jsonObject.get("layers").isJsonPrimitive() || jsonObject.get("layers").isJsonObject()) {
                         IModelLayer layer = ModelLayerManager.parseLayer(jsonObject.get("layers"));
 
                         if (layer != null)
                             item.layers.add(layer);
-                    } else {
+                    } else if (jsonObject.get("layers").isJsonArray()) {
                         JsonArray layersArray = JSONUtils.getJsonArray(jsonObject, "layers");
 
                         for (int i = 0; i < layersArray.size(); i++) {
