@@ -152,7 +152,7 @@ public class ModelLayerManager {
     }
 
     public static IModelLayerPredicate parsePredicate(JsonObject json) {
-        NonNullFunction<JsonObject, IModelLayerPredicate> function = PREDICATES.get(new ResourceLocation(JSONUtils.getString(json, "type", ThreeCore.MODID + ":default")));
+        NonNullFunction<JsonObject, IModelLayerPredicate> function = PREDICATES.get(new ResourceLocation(JSONUtils.getString(json, "type", "")));
         return function != null ? function.apply(json) : null;
     }
 
