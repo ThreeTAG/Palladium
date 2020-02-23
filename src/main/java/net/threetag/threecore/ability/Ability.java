@@ -16,6 +16,7 @@ import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
 import net.threetag.threecore.client.gui.ability.AbilityScreen;
 import net.threetag.threecore.ability.condition.AbilityConditionManager;
 import net.threetag.threecore.ability.condition.Condition;
+import net.threetag.threecore.util.RenderUtil;
 import net.threetag.threecore.util.icon.IIcon;
 import net.threetag.threecore.util.icon.ItemIcon;
 import net.threetag.threecore.scripts.events.AbilityDataUpdatedScriptEvent;
@@ -83,6 +84,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
 
     @OnlyIn(Dist.CLIENT)
     public void drawIcon(Minecraft mc, AbstractGui gui, int x, int y) {
+        RenderUtil.setCurrentAbilityInIconRendering(this);
         if (this.getDataManager().has(ICON))
             this.getDataManager().get(ICON).draw(mc, x, y);
     }
