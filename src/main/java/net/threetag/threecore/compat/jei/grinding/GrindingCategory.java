@@ -4,7 +4,7 @@ import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.item.recipe.GrindingRecipe;
 import net.threetag.threecore.compat.jei.ThreeCoreJEIPlugin;
 import net.threetag.threecore.util.energy.EnergyUtil;
-import net.threetag.threecore.util.TCMathHelper;
+import net.threetag.threecore.util.MathUtil;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -87,7 +87,7 @@ public class GrindingCategory<T> implements IRecipeCategory<GrindingRecipe> {
 
         itemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
             if (slotIndex == secondaryOutputSlot && !ingredient.isEmpty()) {
-                tooltip.add(TCMathHelper.round(recipe.getByproductChance() * 100F, 2) + "%");
+                tooltip.add(MathUtil.round(recipe.getByproductChance() * 100F, 2) + "%");
             }
         });
     }

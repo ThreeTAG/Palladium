@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.threetag.threecore.util.PlayerHelper;
+import net.threetag.threecore.util.PlayerUtil;
 import net.threetag.threecore.scripts.ScriptParameterName;
 
 public class WorldAccessor extends ScriptAccessor<World> {
@@ -48,7 +48,7 @@ public class WorldAccessor extends ScriptAccessor<World> {
         }
 
         if (soundEvent != null && category != null) {
-            PlayerHelper.playSoundToAll(this.value, posX, posY, posZ, 50, soundEvent, category, volume, pitch);
+            PlayerUtil.playSoundToAll(this.value, posX, posY, posZ, 50, soundEvent, category, volume, pitch);
         }
     }
 

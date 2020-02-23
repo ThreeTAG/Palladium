@@ -1,6 +1,6 @@
 package net.threetag.threecore.util;
 
-public class TCMathHelper {
+public class MathUtil {
 
     public static double round(double value, int places) {
         if (places < 0)

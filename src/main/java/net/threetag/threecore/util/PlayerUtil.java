@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.util.Map;
 
-public class PlayerHelper {
+public class PlayerUtil {
 
     public static void playSound(PlayerEntity player, double x, double y, double z, SoundEvent sound, SoundCategory category) {
         playSound(player, x, y, z, sound, category, 1F, 1F);
