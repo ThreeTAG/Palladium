@@ -1,6 +1,5 @@
 package net.threetag.threecore.tileentity;
 
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -12,6 +11,9 @@ import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.block.CapacitorBlock;
 import net.threetag.threecore.block.EnergyConduitBlock;
 import net.threetag.threecore.block.TCBlocks;
+import net.threetag.threecore.client.render.tileentity.tileentity.FluidComposerTileEntityRenderer;
+import net.threetag.threecore.client.render.tileentity.tileentity.HydraulicPressTileEntityRenderer;
+import net.threetag.threecore.client.render.tileentity.tileentity.StirlingGeneratorTileEntityRenderer;
 
 public class TCTileEntityTypes {
 
@@ -27,13 +29,9 @@ public class TCTileEntityTypes {
 
     @OnlyIn(Dist.CLIENT)
     public static void initRenderers() {
-        try {
-            ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, (TileEntityRenderer<HydraulicPressTileEntity>) Class.forName("net.threetag.threecore.client.render.tileentity.tileentity.HydraulicPressTileEntityRenderer").newInstance());
-            ClientRegistry.bindTileEntitySpecialRenderer(FluidComposerTileEntity.class, (TileEntityRenderer<FluidComposerTileEntity>) Class.forName("net.threetag.threecore.client.render.tileentity.tileentity.FluidComposerTileEntityRenderer").newInstance());
-            ClientRegistry.bindTileEntitySpecialRenderer(StirlingGeneratorTileEntity.class, (TileEntityRenderer<StirlingGeneratorTileEntity>) Class.forName("net.threetag.threecore.client.render.tileentity.tileentity.StirlingGeneratorTileEntityRenderer").newInstance());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, new HydraulicPressTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(FluidComposerTileEntity.class, new FluidComposerTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(StirlingGeneratorTileEntity.class, new StirlingGeneratorTileEntityRenderer());
     }
 
 }
