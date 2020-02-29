@@ -157,6 +157,7 @@
   "container.threecore.stirling_generator": "Stirling Generator",
   "death.attack.grinder": "%1$s was grinded to death by a grinder",
   "death.attack.grinder.player": "%1$s was grinded to death by a grinder whilst trying to escape %2$s",
+  "effect.threecore.unconscious": "Unconscious",
   "entity.threecore.effect": "Effect",
   "entity.threecore.projectile": "Projectile",
   "entity.threecore.solid_item": "Solid Item",

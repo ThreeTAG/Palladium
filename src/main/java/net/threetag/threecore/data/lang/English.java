@@ -6,6 +6,7 @@ import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.container.TCContainerTypes;
 import net.threetag.threecore.entity.TCEntityTypes;
 import net.threetag.threecore.item.TCItems;
+import net.threetag.threecore.potion.TCEffects;
 
 public class English extends ThreeCoreLanguageProvider {
 
@@ -347,6 +348,10 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("key.threecore.ability_3", "Ability 3");
         this.add("key.threecore.ability_4", "Ability 4");
         this.add("key.threecore.ability_5", "Ability 5");
+
+
+        // Effects
+        this.addEffect(TCEffects.UNCONSCIOUS, "Unconscious");
 
 
         // Util
