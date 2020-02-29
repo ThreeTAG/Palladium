@@ -241,6 +241,11 @@ public class BipedModelParser extends EntityModelParser {
                 this.bipedRightLeg.rotateAngleY = ((float) Math.PI / 180F) * armorStandEntity.getRightLegRotation().getY();
                 this.bipedRightLeg.rotateAngleZ = ((float) Math.PI / 180F) * armorStandEntity.getRightLegRotation().getZ();
                 this.bipedHeadwear.copyModelAngles(this.bipedHead);
+
+                this.bipedRightArm.rotationPointZ = 0.0F;
+                this.bipedRightArm.rotationPointX = -5.0F;
+                this.bipedLeftArm.rotationPointZ = 0.0F;
+                this.bipedLeftArm.rotationPointX = 5.0F;
             } else {
                 super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
                 this.bipedHead.rotateAngleZ = 0;
