@@ -1,16 +1,22 @@
 package net.threetag.threecore.scripts.accessors;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.command.CommandSource;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.threetag.threecore.util.PlayerUtil;
+import net.threetag.threecore.scripts.ScriptCommandSource;
 import net.threetag.threecore.scripts.ScriptParameterName;
+import net.threetag.threecore.util.PlayerUtil;
 
 public class WorldAccessor extends ScriptAccessor<World> {
 
@@ -68,6 +74,13 @@ public class WorldAccessor extends ScriptAccessor<World> {
 
     public BlockStateAccessor getBlockState(@ScriptParameterName("x") int x, @ScriptParameterName("y") int y, @ScriptParameterName("z") int z) {
         return (BlockStateAccessor) ScriptAccessor.makeAccessor(this.value.getBlockState(new BlockPos(x, y, z)));
+    }
+
+    public void executeCommand(@ScriptParameterName("command") String command) {
+        if (this.value instanceof ServerWorld) {
+            CommandSource commandSource = new CommandSource(new ScriptCommandSource(), new Vec3d(value.getSpawnPoint()), Vec2f.ZERO, (ServerWorld) value, 4, "Script", new StringTextComponent("Script"), this.value.getServer(), (Entity) null);
+            this.value.getServer().getCommandManager().handleCommand(commandSource, command);
+        }
     }
 
 }
