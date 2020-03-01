@@ -11,9 +11,9 @@ import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.block.CapacitorBlock;
 import net.threetag.threecore.block.EnergyConduitBlock;
 import net.threetag.threecore.block.TCBlocks;
-import net.threetag.threecore.client.render.tileentity.tileentity.FluidComposerTileEntityRenderer;
-import net.threetag.threecore.client.render.tileentity.tileentity.HydraulicPressTileEntityRenderer;
-import net.threetag.threecore.client.render.tileentity.tileentity.StirlingGeneratorTileEntityRenderer;
+import net.threetag.threecore.client.render.tileentity.FluidComposerTileEntityRenderer;
+import net.threetag.threecore.client.render.tileentity.HydraulicPressTileEntityRenderer;
+import net.threetag.threecore.client.render.tileentity.StirlingGeneratorTileEntityRenderer;
 
 public class TCTileEntityTypes {
 
