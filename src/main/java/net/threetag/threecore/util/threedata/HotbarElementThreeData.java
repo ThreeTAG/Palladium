@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -33,13 +35,8 @@ public class HotbarElementThreeData extends ThreeData<RenderGameOverlayEvent.Ele
     }
 
     @Override
-    public boolean displayAsString(RenderGameOverlayEvent.ElementType value) {
-        return true;
-    }
-
-    @Override
-    public String getDisplay(RenderGameOverlayEvent.ElementType value) {
-        return value.name().toLowerCase();
+    public JsonElement serializeJson(RenderGameOverlayEvent.ElementType value) {
+        return new JsonPrimitive(value.name().toLowerCase());
     }
 
     public static RenderGameOverlayEvent.ElementType getType(String name) {

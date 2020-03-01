@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
@@ -8,8 +10,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class PotionThreeData extends ThreeData<Effect>
-{
+public class PotionThreeData extends ThreeData<Effect> {
 
     public PotionThreeData(String key) {
         super(key);
@@ -42,12 +43,7 @@ public class PotionThreeData extends ThreeData<Effect>
     }
 
     @Override
-    public String getDisplay(Effect value) {
-        return ForgeRegistries.POTIONS.getKey(value).toString();
-    }
-
-    @Override
-    public boolean displayAsString(Effect value) {
-        return true;
+    public JsonElement serializeJson(Effect value) {
+        return new JsonPrimitive(ForgeRegistries.POTIONS.getKey(value).toString());
     }
 }

@@ -1,14 +1,15 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.JSONUtils;
 
 import java.util.UUID;
 
-public class UUIDThreeData extends ThreeData<UUID>
-{
+public class UUIDThreeData extends ThreeData<UUID> {
 
     public UUIDThreeData(String key) {
         super(key);
@@ -34,13 +35,7 @@ public class UUIDThreeData extends ThreeData<UUID>
     }
 
     @Override
-    public String getDisplay(UUID value) {
-        return value.toString();
+    public JsonElement serializeJson(UUID value) {
+        return new JsonPrimitive(value.toString());
     }
-
-    @Override
-    public boolean displayAsString(UUID value) {
-        return true;
-    }
-
 }

@@ -1,5 +1,6 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
@@ -33,7 +34,7 @@ public class IconThreeData extends ThreeData<IIcon> {
     }
 
     @Override
-    public String getDisplay(IIcon value) {
-        return value.getSerializer().serializeJsonExt(value).toString();
+    public JsonElement serializeJson(IIcon value) {
+        return value.getSerializer().serializeJsonExt(value);
     }
 }

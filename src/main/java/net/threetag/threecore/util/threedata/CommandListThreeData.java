@@ -43,13 +43,8 @@ public class CommandListThreeData extends ThreeData<CommandListThreeData.Command
     }
 
     @Override
-    public boolean displayAsString(CommandList value) {
-        return false;
-    }
-
-    @Override
-    public String getDisplay(CommandList value) {
-        return value.serializeJson().toString();
+    public JsonElement serializeJson(CommandList value) {
+        return value.serializeJson();
     }
 
     public static class CommandList implements INBTSerializable<ListNBT> {

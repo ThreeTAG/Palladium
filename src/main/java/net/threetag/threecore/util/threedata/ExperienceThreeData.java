@@ -1,5 +1,6 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,13 +36,12 @@ public class ExperienceThreeData extends ThreeData<ExperienceThreeData.Experienc
     }
 
     @Override
-    public boolean displayAsString(Experience value) {
-        return value.isLevels();
-    }
-
-    @Override
-    public String getDisplay(Experience value) {
-        return value.getValue() + (value.isLevels() ? "L" : "");
+    public JsonElement serializeJson(Experience value) {
+        if (value.isLevels()) {
+            return new JsonPrimitive(value.getValue() + "L");
+        } else {
+            return new JsonPrimitive(value.getValue());
+        }
     }
 
     public static class Experience implements INBTSerializable<CompoundNBT> {
@@ -97,7 +97,7 @@ public class ExperienceThreeData extends ThreeData<ExperienceThreeData.Experienc
 
         public JsonObject writeToJson() {
             JsonObject jsonObject = new JsonObject();
-            if(this.levels) {
+            if (this.levels) {
                 jsonObject.addProperty("experience", this.value + "L");
             } else {
                 jsonObject.addProperty("experience", this.value);

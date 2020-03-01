@@ -1,11 +1,12 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 
-public class StringThreeData extends ThreeData<String>
-{
+public class StringThreeData extends ThreeData<String> {
 
     public StringThreeData(String key) {
         super(key);
@@ -29,7 +30,7 @@ public class StringThreeData extends ThreeData<String>
     }
 
     @Override
-    public boolean displayAsString(String value) {
-        return true;
+    public JsonElement serializeJson(String value) {
+        return new JsonPrimitive(value);
     }
 }

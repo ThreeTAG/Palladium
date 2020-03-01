@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -29,7 +31,7 @@ public class ResourceLocationThreeData extends ThreeData<ResourceLocation> {
     }
 
     @Override
-    public boolean displayAsString(ResourceLocation value) {
-        return true;
+    public JsonElement serializeJson(ResourceLocation value) {
+        return new JsonPrimitive(value.toString());
     }
 }

@@ -45,6 +45,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType OPENING_NBT_TIMER = new AbilityType(OpeningNbtTimerAbility::new, ThreeCore.MODID, "opening_nbt_timer");
     public static final AbilityType MODEL_LAYER = new AbilityType(ModelLayerAbility::new, ThreeCore.MODID, "model_layer");
     public static final AbilityType PROJECTILE = new AbilityType(ProjectileAbility::new, ThreeCore.MODID, "projectile");
+    public static final AbilityType DAMAGE_IMMUNITY = new AbilityType(ProjectileAbility::new, ThreeCore.MODID, "damage_immunity");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -68,6 +69,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(OPENING_NBT_TIMER);
         e.getRegistry().register(MODEL_LAYER);
         e.getRegistry().register(PROJECTILE);
+        e.getRegistry().register(DAMAGE_IMMUNITY);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -137,8 +139,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
                 StringBuilder jsonText = new StringBuilder("{\"example_ability\":{\"ability\":\"").append(entry.getRegistryName().toString()).append("\",");
                 for (int i = 0; i < dataList.size(); i++) {
                     ThreeData threeData = dataList.get(i);
-                    Object value = threeData.getDisplay(ability.getDataManager().getDefaultValue(threeData));
-                    String s = threeData.displayAsString(ability.getDataManager().getDefaultValue(threeData)) ? "\"" + value.toString() + "\"" : value.toString();
+                    String s = threeData.getJsonString(ability.getDataManager().getDefaultValue(threeData));
                     jsonText.append("  \"").append(threeData.getJsonKey()).append("\": ").append(s).append(i < dataList.size() - 1 ? "," : "");
                 }
                 jsonText.append("}}");
@@ -153,8 +154,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
                 // Table
                 bw.write("<table>\n<tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr>\n");
                 for (ThreeData threeData : dataList) {
-                    Object value = threeData.getDisplay(ability.getDataManager().getDefaultValue(threeData));
-                    String s = threeData.displayAsString(ability.getDataManager().getDefaultValue(threeData)) ? "\"" + value.toString() + "\"" : value.toString() + "";
+                    String s = threeData.getJsonString(ability.getDataManager().getDefaultValue(threeData));
                     bw.write("<tr>\n" +
                             "<td><code>" + threeData.getJsonKey() + "</code></td>\n" +
                             "<td><code>" + threeData.getType().getTypeName().substring(threeData.getType().getTypeName().lastIndexOf(".") + 1) + "</code></td>\n" +
