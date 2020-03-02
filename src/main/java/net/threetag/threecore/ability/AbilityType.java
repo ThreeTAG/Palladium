@@ -45,7 +45,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType OPENING_NBT_TIMER = new AbilityType(OpeningNbtTimerAbility::new, ThreeCore.MODID, "opening_nbt_timer");
     public static final AbilityType MODEL_LAYER = new AbilityType(ModelLayerAbility::new, ThreeCore.MODID, "model_layer");
     public static final AbilityType PROJECTILE = new AbilityType(ProjectileAbility::new, ThreeCore.MODID, "projectile");
-    public static final AbilityType DAMAGE_IMMUNITY = new AbilityType(ProjectileAbility::new, ThreeCore.MODID, "damage_immunity");
+    public static final AbilityType DAMAGE_IMMUNITY = new AbilityType(DamageImmunityAbility::new, ThreeCore.MODID, "damage_immunity");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
