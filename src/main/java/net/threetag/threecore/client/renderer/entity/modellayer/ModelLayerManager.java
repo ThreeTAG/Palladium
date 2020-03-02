@@ -76,6 +76,7 @@ public class ModelLayerManager {
         // Integer NBT
         registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), j -> new IntegerNbtTextureVariable(JSONUtils.getString(j, "nbt_tag")));
 
+        // Small Arms
         registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "small_arms"), j -> new SmallArmsTextureVariable(JSONUtils.getString(j, "normal_arms_value", null), JSONUtils.getString(j, "small_arms_value", null)));
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -101,6 +102,9 @@ public class ModelLayerManager {
 
         // Karma
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "karma"), j -> new KarmaPredicate(JSONUtils.getInt(j, "min", 0), JSONUtils.getInt(j, "max", 0)));
+
+        // Integer NBT
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), IntegerNbtPredicate::parse);
     }
 
     public static void registerPredicate(ResourceLocation id, NonNullFunction<JsonObject, IModelLayerPredicate> function) {
