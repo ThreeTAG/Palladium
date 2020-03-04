@@ -31,8 +31,8 @@ public class ThreeDataBuilder {
             return new IconThreeData(name);
         if (type.equalsIgnoreCase("itemStack"))
             return new ItemStackThreeData(name);
-        if (type.equalsIgnoreCase("potion"))
-            return new PotionThreeData(name);
+        if (type.equalsIgnoreCase("effect"))
+            return new EffectThreeData(name);
         if (type.equalsIgnoreCase("resourceLocation"))
             return new ResourceLocationThreeData(name);
         if (type.equalsIgnoreCase("sizeChangeType"))

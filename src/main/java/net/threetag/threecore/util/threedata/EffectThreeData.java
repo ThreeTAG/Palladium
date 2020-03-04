@@ -10,9 +10,9 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class PotionThreeData extends ThreeData<Effect> {
+public class EffectThreeData extends ThreeData<Effect> {
 
-    public PotionThreeData(String key) {
+    public EffectThreeData(String key) {
         super(key);
     }
 
@@ -23,7 +23,7 @@ public class PotionThreeData extends ThreeData<Effect> {
         String potionKey = JSONUtils.getString(jsonObject, this.jsonKey);
         Effect potion = ForgeRegistries.POTIONS.getValue(new ResourceLocation(potionKey));
         if (potion == null)
-            throw new JsonSyntaxException("Potion " + potionKey + " does not exist!");
+            throw new JsonSyntaxException("Effect " + potionKey + " does not exist!");
         return potion;
     }
 

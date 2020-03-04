@@ -46,6 +46,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType MODEL_LAYER = new AbilityType(ModelLayerAbility::new, ThreeCore.MODID, "model_layer");
     public static final AbilityType PROJECTILE = new AbilityType(ProjectileAbility::new, ThreeCore.MODID, "projectile");
     public static final AbilityType DAMAGE_IMMUNITY = new AbilityType(DamageImmunityAbility::new, ThreeCore.MODID, "damage_immunity");
+    public static final AbilityType POTION_EFFECT = new AbilityType(PotionEffectAbility::new, ThreeCore.MODID, "potion_effect");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -70,6 +71,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(MODEL_LAYER);
         e.getRegistry().register(PROJECTILE);
         e.getRegistry().register(DAMAGE_IMMUNITY);
+        e.getRegistry().register(POTION_EFFECT);
     }
 
     @OnlyIn(Dist.CLIENT)

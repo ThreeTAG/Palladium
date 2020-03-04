@@ -257,6 +257,7 @@ public class English extends ThreeCoreLanguageProvider {
         this.add(AbilityType.MODEL_LAYER, "Model Layer");
         this.add(AbilityType.PROJECTILE, "Projectile");
         this.add(AbilityType.DAMAGE_IMMUNITY, "Damage Immunity");
+        this.add(AbilityType.POTION_EFFECT, "Potion Effect");
 
         this.add("ability.condition.threecore.action", "Key must be pressed once to active this ability");
         this.add("ability.condition.threecore.action.not", "Key must be pressed once to deactivate this ability");
