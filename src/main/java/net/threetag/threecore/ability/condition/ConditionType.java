@@ -46,6 +46,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
     public static final ConditionType XP = new ConditionType(XPCondition::new, ThreeCore.MODID, "xp");
     public static final ConditionType WEARING_ITEM = new ConditionType(WearingItemCondition::new, ThreeCore.MODID, "wearing_item");
     public static final ConditionType WEARING_ITEM_TAG = new ConditionType(WearingItemTagCondition::new, ThreeCore.MODID, "wearing_item_tag");
+    public static final ConditionType ITEM_INTEGER_NBT = new ConditionType(WearingItemTagCondition::new, ThreeCore.MODID, "item_integer_nbt");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -67,6 +68,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
         e.getRegistry().register(XP);
         e.getRegistry().register(WEARING_ITEM);
         e.getRegistry().register(WEARING_ITEM_TAG);
+        e.getRegistry().register(ITEM_INTEGER_NBT);
     }
 
     @OnlyIn(Dist.CLIENT)
