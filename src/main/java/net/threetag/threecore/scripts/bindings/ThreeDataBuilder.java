@@ -39,6 +39,8 @@ public class ThreeDataBuilder {
             return new SizeChangeTypeThreeData(name);
         if (type.equalsIgnoreCase("string"))
             return new StringThreeData(name);
+        if (type.equalsIgnoreCase("string_array"))
+            return new StringArrayThreeData(name);
         if (type.equalsIgnoreCase("textComponent"))
             return new TextComponentThreeData(name);
         if (type.equalsIgnoreCase("uuid"))
@@ -47,6 +49,8 @@ public class ThreeDataBuilder {
             return new IngredientThreeData(name);
         if (type.equalsIgnoreCase("item_tag"))
             return new ItemTagThreeData(name);
+        if (type.equalsIgnoreCase("fluid_tag"))
+            return new FluidTagThreeData(name);
         if (type.equalsIgnoreCase("entity_type"))
             return new EntityTypeThreeData(name);
         if (type.equalsIgnoreCase("nbt"))

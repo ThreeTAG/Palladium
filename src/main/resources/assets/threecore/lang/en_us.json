@@ -15,6 +15,7 @@
   "ability.condition.threecore.equipment_slot.mainhand": "main hand",
   "ability.condition.threecore.equipment_slot.not": "Item needs to be outside of the %s slot",
   "ability.condition.threecore.equipment_slot.offhand": "off hand",
+  "ability.condition.threecore.eyes_in_fluid": "Eyes are need to be covered by fluids in the %s tag",
   "ability.condition.threecore.held": "Key must be held to activate this ability",
   "ability.condition.threecore.held.not": "Key must be held to deactivate this ability",
   "ability.condition.threecore.item_buy": "An item must be spent",
