@@ -2,10 +2,10 @@ package net.threetag.threecore.util.threedata;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.util.JSONUtils;
+import net.threetag.threecore.util.TCJsonUtil;
 
 public class CompoundNBTThreeData extends ThreeData<CompoundNBT> {
 
@@ -39,7 +39,6 @@ public class CompoundNBTThreeData extends ThreeData<CompoundNBT> {
 
     @Override
     public JsonElement serializeJson(CompoundNBT value) {
-        // TODO check if this works
-        return new JsonPrimitive(value.toString());
+        return TCJsonUtil.nbtToJson(value);
     }
 }

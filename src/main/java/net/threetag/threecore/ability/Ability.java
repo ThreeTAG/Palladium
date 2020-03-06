@@ -12,17 +12,16 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
-import net.threetag.threecore.client.gui.ability.AbilityScreen;
 import net.threetag.threecore.ability.condition.AbilityConditionManager;
 import net.threetag.threecore.ability.condition.Condition;
+import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
+import net.threetag.threecore.client.gui.ability.AbilityScreen;
+import net.threetag.threecore.scripts.events.AbilityDataUpdatedScriptEvent;
+import net.threetag.threecore.scripts.events.AbilityTickScriptEvent;
 import net.threetag.threecore.util.RenderUtil;
 import net.threetag.threecore.util.icon.IIcon;
 import net.threetag.threecore.util.icon.ItemIcon;
-import net.threetag.threecore.scripts.events.AbilityDataUpdatedScriptEvent;
-import net.threetag.threecore.scripts.events.AbilityTickScriptEvent;
 import net.threetag.threecore.util.threedata.*;
-import net.threetag.threecore.util.threedata.IWrappedThreeDataHolder;
 
 public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrappedThreeDataHolder {
 
@@ -34,6 +33,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
     public static final ThreeData<IIcon> ICON = new IconThreeData("icon").setSyncType(EnumSync.SELF)
             .enableSetting("icon", "Lets you customize the icon for the ability");
     public static final ThreeData<Integer> KEYBIND = new IntegerThreeData("key").setSyncType(EnumSync.SELF);
+    public static final ThreeData<CompoundNBT> ADDITIONAL_DATA = new CompoundNBTThreeData("additional_data").enableSetting("You can store additional data here, especially useful if you use scripts and want to mark certain abilities");
 
     public final AbilityType type;
     String id;
@@ -74,6 +74,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
                 new TranslationTextComponent("ability." + this.type.getRegistryName().getNamespace() + "." + this.type.getRegistryName().getPath()));
         this.dataManager.register(ICON, new ItemIcon(Blocks.BARRIER));
         this.dataManager.register(KEYBIND, -1);
+        this.dataManager.register(ADDITIONAL_DATA, new CompoundNBT());
     }
 
     public CompoundNBT getAdditionalData() {
