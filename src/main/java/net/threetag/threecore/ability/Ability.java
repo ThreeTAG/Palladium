@@ -51,7 +51,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
     protected AbilityConditionManager conditionManager = new AbilityConditionManager(this);
     protected int ticks = 0;
     public boolean dirty = false;
-    protected CompoundNBT additionalData;
     /**
      * Current wielder of this ability, mainly used for event managing, dont use within the actual ability!
      */
@@ -78,9 +77,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
     }
 
     public CompoundNBT getAdditionalData() {
-        if (this.additionalData == null)
-            this.additionalData = new CompoundNBT();
-        return additionalData;
+        return this.get(ADDITIONAL_DATA);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -168,8 +165,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
         nbt.putString("AbilityType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.serializeNBT());
         nbt.put("Conditions", this.conditionManager.serializeNBT());
-        if (this.additionalData != null)
-            nbt.put("AdditionalData", this.additionalData);
         return nbt;
     }
 
@@ -177,7 +172,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
     public void deserializeNBT(CompoundNBT nbt) {
         this.dataManager.deserializeNBT(nbt.getCompound("Data"));
         this.conditionManager.deserializeNBT(nbt.getCompound("Conditions"));
-        this.additionalData = nbt.getCompound("AdditionalData");
     }
 
     public CompoundNBT getUpdateTag() {
@@ -185,15 +179,12 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
         nbt.putString("AbilityType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.getUpdatePacket());
         nbt.put("Conditions", this.conditionManager.getUpdatePacket());
-        if (this.additionalData != null)
-            nbt.put("AdditionalData", this.additionalData);
         return nbt;
     }
 
     public void readUpdateTag(CompoundNBT nbt) {
         this.dataManager.readUpdatePacket(nbt.getCompound("Data"));
         this.conditionManager.readUpdatePacket(nbt.getCompound("Conditions"));
-        this.additionalData = nbt.getCompound("AdditionalData");
     }
 
     @OnlyIn(Dist.CLIENT)
