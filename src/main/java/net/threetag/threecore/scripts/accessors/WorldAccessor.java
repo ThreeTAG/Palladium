@@ -47,10 +47,12 @@ public class WorldAccessor extends ScriptAccessor<World> {
     public void playSound(@ScriptParameterName("id") String id, @ScriptParameterName("id") String soundCategory, @ScriptParameterName("posX") double posX, @ScriptParameterName("posY") double posY, @ScriptParameterName("posZ") double posZ, @ScriptParameterName("volume") float volume, @ScriptParameterName("pitch") float pitch) {
         SoundEvent soundEvent = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(id));
         SoundCategory category = null;
-        try {
-            category = SoundCategory.valueOf(soundCategory);
-        } catch (Exception ignored) {
 
+        for (SoundCategory category1 : SoundCategory.values()) {
+            if (category1.getName().equalsIgnoreCase(soundCategory)) {
+                category = category1;
+                break;
+            }
         }
 
         if (soundEvent != null && category != null) {
