@@ -10,8 +10,8 @@ import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.scripts.events.*;
 import net.threetag.threecore.event.RegisterThreeDataEvent;
+import net.threetag.threecore.scripts.events.*;
 
 import java.io.BufferedWriter;
 import java.io.File;

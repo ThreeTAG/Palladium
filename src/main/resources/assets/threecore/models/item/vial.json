@@ -1,16 +1,9 @@
 {
-	"parent": "item/generated",
+	"parent": "forge:item/default",
+    "loader": "forge:bucket",
 	"textures": {
-		"layer0": "threecore:item/vial",
-		"layer1": "threecore:item/vial_fluid"
+        "base": "threecore:item/vial",
+        "fluid": "threecore:item/vial_fluid"
 	},
-	
-	"overrides": [
-		{
-			"predicate": {
-				"threecore:empty": 1
-			},
-			"model": "threecore:item/vial_empty"
-		}
-	]
+    "fluid": "minecraft:empty"
 }
