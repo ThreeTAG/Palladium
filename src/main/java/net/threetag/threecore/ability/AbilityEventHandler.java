@@ -61,7 +61,9 @@ public class AbilityEventHandler {
     @SubscribeEvent
     public static void onChangeEquipment(LivingEquipmentChangeEvent e) {
         // Make sure to call lastTick when player unequips item with abilities on it. Otherwise players could e.g. keep attribute modifiers
-        e.getFrom().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(a -> a.getAbilityMap().forEach((s, ability) -> ability.lastTick(e.getEntityLiving())));
+        if (e.getEntityLiving() != null) {
+            e.getFrom().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(a -> a.getAbilityMap().forEach((s, ability) -> ability.lastTick(e.getEntityLiving())));
+        }
     }
 
     @SubscribeEvent
