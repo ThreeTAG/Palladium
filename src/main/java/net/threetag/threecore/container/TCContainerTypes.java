@@ -15,6 +15,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.block.ConstructionTableBlock;
 import net.threetag.threecore.client.gui.inventory.*;
+import net.threetag.threecore.tileentity.FluidComposerTileEntity;
 import net.threetag.threecore.tileentity.StirlingGeneratorTileEntity;
 import net.threetag.threecore.util.icon.ItemIcon;
 
@@ -34,7 +35,10 @@ public class TCContainerTypes {
 
     public static final RegistryObject<ContainerType<HydraulicPressContainer>> HYDRAULIC_PRESS = CONTAINER_TYPES.register("hydraulic_press", () -> new ContainerType<>(HydraulicPressContainer::new));
 
-    public static final RegistryObject<ContainerType<FluidComposerContainer>> FLUID_COMPOSER = CONTAINER_TYPES.register("fluid_composer", () -> new ContainerType<>(FluidComposerContainer::new));
+    public static final RegistryObject<ContainerType<FluidComposerContainer>> FLUID_COMPOSER = CONTAINER_TYPES.register("fluid_composer", () -> new ContainerType<>((IContainerFactory<FluidComposerContainer>) (windowId, inv, data) -> {
+        TileEntity tileEntity = inv.player.world.getTileEntity(data.readBlockPos());
+        return tileEntity instanceof FluidComposerTileEntity ? new FluidComposerContainer(windowId, inv, (FluidComposerTileEntity) tileEntity) : null;
+    }));
 
     public static final RegistryObject<ContainerType<CapacitorBlockContainer>> CAPACITOR_BLOCK = CONTAINER_TYPES.register("capacitor_block", () -> new ContainerType<>(CapacitorBlockContainer::new));
 

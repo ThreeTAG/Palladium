@@ -82,7 +82,7 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
         if (getWorld() != null)
             getWorld().notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 3);
     }).setSoundHandler(sound -> {
-        if (sound != null)
+        if (sound != null && getWorld() != null)
             PlayerUtil.playSoundToAll(world, getPos().getX(), getPos().getY(), getPos().getZ(), 50, sound, SoundCategory.BLOCKS);
     });
 
@@ -90,7 +90,7 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
         if (getWorld() != null)
             getWorld().notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 3);
     }).setSoundHandler(sound -> {
-        if (sound != null)
+        if (sound != null && getWorld() != null)
             PlayerUtil.playSoundToAll(world, getPos().getX(), getPos().getY(), getPos().getZ(), 50, sound, SoundCategory.BLOCKS);
     });
 
