@@ -74,7 +74,7 @@ public class ModelLayerManager {
         // Variables
 
         // Integer NBT
-        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), j -> new IntegerNbtTextureVariable(JSONUtils.getString(j, "nbt_tag")));
+        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), j -> new IntegerNbtTextureVariable(JSONUtils.getString(j, "nbt_tag"), JSONUtils.getInt(j, "add", 0)));
 
         // Small Arms
         registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "small_arms"), j -> new SmallArmsTextureVariable(JSONUtils.getString(j, "normal_arms_value", null), JSONUtils.getString(j, "small_arms_value", null)));
