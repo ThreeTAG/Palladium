@@ -46,6 +46,11 @@ public class AttributeModifierAbility extends Ability {
     @Override
     public void action(LivingEntity entity) {
         IAttribute attribute = this.dataManager.get(ATTRIBUTE);
+
+        if(entity.getAttributes().getAttributeInstance(attribute) == null) {
+            return;
+        }
+
         UUID uuid = this.dataManager.get(UUID);
 
         if (entity.getAttributes().getAllAttributes().stream().noneMatch(iAttributeInstance -> iAttributeInstance.getAttribute() == attribute)) {
@@ -66,7 +71,7 @@ public class AttributeModifierAbility extends Ability {
 
     @Override
     public void lastTick(LivingEntity entity) {
-        if (entity.getAttributes().getAttributeInstance(this.dataManager.get(ATTRIBUTE)).getModifier(this.dataManager.get(UUID)) != null) {
+        if (entity.getAttributes().getAttributeInstance(this.dataManager.get(ATTRIBUTE)) != null && entity.getAttributes().getAttributeInstance(this.dataManager.get(ATTRIBUTE)).getModifier(this.dataManager.get(UUID)) != null) {
             entity.getAttributes().getAttributeInstance(this.dataManager.get(ATTRIBUTE)).removeModifier(this.dataManager.get(UUID));
         }
     }
