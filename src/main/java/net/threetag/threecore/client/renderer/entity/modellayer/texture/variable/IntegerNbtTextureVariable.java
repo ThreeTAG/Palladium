@@ -6,14 +6,16 @@ import net.threetag.threecore.client.renderer.entity.modellayer.IModelLayerConte
 public class IntegerNbtTextureVariable implements ITextureVariable {
 
     private final String nbtTag;
+    private final int addValue;
 
-    public IntegerNbtTextureVariable(String nbtTag) {
+    public IntegerNbtTextureVariable(String nbtTag, int addValue) {
         this.nbtTag = nbtTag;
+        this.addValue = addValue;
     }
 
     @Override
     public Object get(IModelLayerContext context) {
         CompoundNBT nbt = context.getAsItem() == null || context.getAsItem().isEmpty() ? context.getAsEntity().getPersistentData() : context.getAsItem().getOrCreateTag();
-        return nbt.getInt(this.nbtTag);
+        return addValue + nbt.getInt(this.nbtTag);
     }
 }
