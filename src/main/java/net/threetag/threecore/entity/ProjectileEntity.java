@@ -215,9 +215,7 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
                 nbt.putString("ModelLayer", this.modelLayer.toString());
             } else {
                 nbt.putBoolean("Energy", this.energy);
-                nbt.putInt("ColorRed", this.color.getRed());
-	            nbt.putInt("ColorGreen", this.color.getGreen());
-	            nbt.putInt("ColorBlue", this.color.getBlue());
+	            nbt.putIntArray("Color", new int[]{this.color.getRed(), this.color.getGreen(), this.getColor().getBlue()});
             }
             return nbt;
         }
@@ -230,7 +228,10 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
                 this.modelLayer = new ResourceLocation(nbt.getString("ModelLayer"));
             } else {
                 this.energy = nbt.getBoolean("Energy");
-                this.color = new Color(nbt.getInt("ColorRed"), nbt.getInt("ColorGreen"), nbt.getInt("ColorBlue"));
+                if (nbt.keySet().contains("Color") && nbt.getIntArray("Color").length == 3)
+                    this.color = new Color(nbt.getIntArray("Color")[0], nbt.getIntArray("Color")[1], nbt.getIntArray("Color")[2]);
+                else
+                	this.color = Color.RED;
             }
         }
     }
