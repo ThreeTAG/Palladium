@@ -105,6 +105,9 @@ public class ModelLayerManager {
 
         // Integer NBT
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), IntegerNbtPredicate::parse);
+
+        // Flying
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "flying"), j -> new FlyingPredicate());
     }
 
     public static void registerPredicate(ResourceLocation id, NonNullFunction<JsonObject, IModelLayerPredicate> function) {
