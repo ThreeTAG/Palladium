@@ -27,6 +27,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem, IEntityAdditionalSpawnData {
@@ -156,24 +157,32 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
         private ItemStack stack;
         private ResourceLocation modelLayer;
         private boolean energy;
+        private Color color;
 
         public ProjectileRenderInfo(ItemStack stack) {
             this.stack = stack;
             this.modelLayer = null;
             this.energy = false;
+            this.color = null;
         }
 
         public ProjectileRenderInfo(ResourceLocation modelLayer) {
             this.stack = null;
             this.modelLayer = modelLayer;
             this.energy = false;
+	        this.color = null;
         }
 
         public ProjectileRenderInfo(boolean energy) {
-            this.stack = null;
-            this.modelLayer = null;
-            this.energy = true;
+            this(energy, Color.RED);
         }
+
+	    public ProjectileRenderInfo(boolean energy, Color color) {
+		    this.stack = null;
+		    this.modelLayer = null;
+		    this.energy = energy;
+		    this.color = color;
+	    }
 
         public ProjectileRenderInfo(CompoundNBT nbt) {
             this.deserializeNBT(nbt);
@@ -195,6 +204,8 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
             return this.energy;
         }
 
+        public Color getColor() { return this.color; }
+
         @Override
         public CompoundNBT serializeNBT() {
             CompoundNBT nbt = new CompoundNBT();
@@ -204,6 +215,9 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
                 nbt.putString("ModelLayer", this.modelLayer.toString());
             } else {
                 nbt.putBoolean("Energy", this.energy);
+                nbt.putInt("ColorRed", this.color.getRed());
+	            nbt.putInt("ColorGreen", this.color.getGreen());
+	            nbt.putInt("ColorBlue", this.color.getBlue());
             }
             return nbt;
         }
@@ -216,6 +230,7 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
                 this.modelLayer = new ResourceLocation(nbt.getString("ModelLayer"));
             } else {
                 this.energy = nbt.getBoolean("Energy");
+                this.color = new Color(nbt.getInt("ColorRed"), nbt.getInt("ColorGreen"), nbt.getInt("ColorBlue"));
             }
         }
     }
