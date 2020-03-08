@@ -66,6 +66,11 @@ public class CompoundNBTAccessor extends ScriptAccessor<CompoundNBT> {
         return this;
     }
 
+    public CompoundNBTAccessor putBoolean(@ScriptParameterName("key") String key, @ScriptParameterName("value") boolean value) {
+        this.value.putBoolean(key, value);
+        return this;
+    }
+
     public byte getTagId(@ScriptParameterName("key") String key) {
         return this.value.getTagId(key);
     }
