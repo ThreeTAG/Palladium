@@ -86,6 +86,9 @@ public class ModelLayerManager {
         // Not
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "not"), j -> new NotPredicate(parsePredicate(JSONUtils.getJsonObject(j, "predicate"))));
 
+        // Or
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "or"), OrPredicate::parse);
+
         // Sneaking
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "sneaking"), j -> context -> context.getAsEntity().isSneaking());
 
