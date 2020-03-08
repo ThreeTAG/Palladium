@@ -47,6 +47,7 @@ import net.threetag.threecore.command.SizeChangeCommand;
 import net.threetag.threecore.command.SuperpowerCommand;
 import net.threetag.threecore.container.TCContainerTypes;
 import net.threetag.threecore.data.ThreeCoreBlockTagsProvider;
+import net.threetag.threecore.data.ThreeCoreEntityTypeTagsProvider;
 import net.threetag.threecore.data.ThreeCoreItemTagsProvider;
 import net.threetag.threecore.data.ThreeCoreRecipeProvider;
 import net.threetag.threecore.data.lang.English;
@@ -197,6 +198,7 @@ public class ThreeCore {
     public void gatherData(GatherDataEvent e) {
         e.getGenerator().addProvider(new ThreeCoreBlockTagsProvider(e.getGenerator()));
         e.getGenerator().addProvider(new ThreeCoreItemTagsProvider(e.getGenerator()));
+        e.getGenerator().addProvider(new ThreeCoreEntityTypeTagsProvider(e.getGenerator()));
         e.getGenerator().addProvider(new ThreeCoreRecipeProvider(e.getGenerator()));
         e.getGenerator().addProvider(new English(e.getGenerator()));
     }
