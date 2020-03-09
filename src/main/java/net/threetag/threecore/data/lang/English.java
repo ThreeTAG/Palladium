@@ -306,6 +306,12 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("ability.condition.threecore.wearing_item_tag", "Entity must wear items within the %s tag");
         this.add("ability.condition.threecore.item_integer_nbt", "Item in %s slot must have specific value in % nbt tag");
         this.add("ability.condition.threecore.eyes_in_fluid", "Eyes are need to be covered by fluids in the %s tag");
+        this.add("ability.condition.threecore.size", "Size must be between %s and %s");
+        this.add("ability.condition.threecore.size.not", "Size must be outside of %s and %s");
+        this.add("ability.condition.threecore.size_at", "Size must be at %s");
+        this.add("ability.condition.threecore.size_at.not", "Size must something else than %s");
+        this.add("ability.condition.threecore.size_min", "Size must be at least %s");
+        this.add("ability.condition.threecore.size_min.not", "Size must be lower than %s");
 
 
         // Container
