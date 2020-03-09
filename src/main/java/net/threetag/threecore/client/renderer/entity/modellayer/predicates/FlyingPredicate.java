@@ -18,7 +18,9 @@ public class FlyingPredicate implements IModelLayerPredicate {
 
             for (Ability ability : abilityList) {
                 if (ability instanceof FlightAbility || ability instanceof AcceleratingFlightAbility) {
-                    return true;
+                    if (ability.getConditionManager().isEnabled()) {
+                        return true;
+                    }
                 }
             }
         }
