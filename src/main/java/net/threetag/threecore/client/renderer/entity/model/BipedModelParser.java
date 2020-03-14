@@ -246,6 +246,27 @@ public class BipedModelParser extends EntityModelParser {
                 this.bipedRightArm.rotationPointX = -5.0F;
                 this.bipedLeftArm.rotationPointZ = 0.0F;
                 this.bipedLeftArm.rotationPointX = 5.0F;
+
+                this.bipedBody.setRotationPoint(0.0F, 0.0F, 0.0F);
+                this.bipedBodyWear.setRotationPoint(0.0F, 0.0F, 0.0F);
+                this.bipedHead.setRotationPoint(0.0F, 0.0F, 0.0F);
+                this.bipedHeadwear.setRotationPoint(0.0F, 0.0F, 0.0F);
+                this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
+                this.bipedRightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
+                this.bipedLeftLegwear.setRotationPoint(1.9F, 12.0F, 0.0F);
+                this.bipedRightLegwear.setRotationPoint(-1.9F, 12.0F, 0.0F);
+
+                if (bipedArmType == BipedArmType.SMALL) {
+                    this.bipedLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
+                    this.bipedRightArm.setRotationPoint(-5.0F, 2.5F, 0.0F);
+                    this.bipedLeftArmwear.setRotationPoint(5.0F, 2.5F, 0.0F);
+                    this.bipedRightArmwear.setRotationPoint(-5.0F, 2.5F, 10.0F);
+                } else {
+                    this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
+                    this.bipedLeftArmwear.setRotationPoint(5.0F, 2.0F, 0.0F);
+                    this.bipedRightArmwear.setRotationPoint(-5.0F, 2.0F, 10.0F);
+                }
+
             } else {
                 super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
                 this.bipedHead.rotateAngleZ = 0;
