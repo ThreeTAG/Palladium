@@ -45,7 +45,7 @@ public class AbilityClientEventHandler {
             ClientRegistry.registerKeyBinding(SCROLL_DOWN);
 
             for (int i = 1; i <= AbilityBarRenderer.ENTRY_SHOW_AMOUNT; i++) {
-                AbilityKeyBinding keyBinding = new AbilityKeyBinding("key.threecore.ability_" + i, KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, i == 1 ? 86 : i == 2 ? 66 : i == 3 ? 78 : i == 4 ? 77 : i == 5 ? 188 : -1, i, CATEGORY);
+                AbilityKeyBinding keyBinding = new AbilityKeyBinding("key.threecore.ability_" + i, KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, i == 1 ? 86 : i == 2 ? 66 : i == 3 ? 78 : i == 4 ? 77 : i == 5 ? 44 : -1, i, CATEGORY);
                 ClientRegistry.registerKeyBinding(keyBinding);
                 ABILITY_KEYS.add(keyBinding);
             }
