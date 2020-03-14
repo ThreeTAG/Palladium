@@ -12,8 +12,8 @@ public class HelmetCraftingRecipe extends AbstractConstructionTableRecipe {
 
     public static final IRecipeType<HelmetCraftingRecipe> RECIPE_TYPE = RecipeUtil.register("helmet_crafting");
 
-    public HelmetCraftingRecipe(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack recipeOutput) {
-        super(id, group, recipeItems, toolIngredient, recipeOutput);
+    public HelmetCraftingRecipe(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack recipeOutput, boolean consumesTool) {
+        super(id, group, recipeItems, toolIngredient, recipeOutput, consumesTool);
     }
 
     @Override
@@ -38,8 +38,8 @@ public class HelmetCraftingRecipe extends AbstractConstructionTableRecipe {
         }
 
         @Override
-        public HelmetCraftingRecipe create(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack result) {
-            return new HelmetCraftingRecipe(id, group, recipeItems, toolIngredient, result);
+        public HelmetCraftingRecipe create(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack result, boolean consumesTool) {
+            return new HelmetCraftingRecipe(id, group, recipeItems, toolIngredient, result, consumesTool);
         }
     }
 }

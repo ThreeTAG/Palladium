@@ -12,8 +12,8 @@ public class ChestplateCraftingRecipe extends AbstractConstructionTableRecipe {
 
     public static final IRecipeType<ChestplateCraftingRecipe> RECIPE_TYPE = RecipeUtil.register("chestplate_crafting");
 
-    public ChestplateCraftingRecipe(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack recipeOutput) {
-        super(id, group, recipeItems, toolIngredient, recipeOutput);
+    public ChestplateCraftingRecipe(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack recipeOutput, boolean consumesTool) {
+        super(id, group, recipeItems, toolIngredient, recipeOutput, consumesTool);
     }
 
     @Override
@@ -38,8 +38,8 @@ public class ChestplateCraftingRecipe extends AbstractConstructionTableRecipe {
         }
 
         @Override
-        public ChestplateCraftingRecipe create(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack result) {
-            return new ChestplateCraftingRecipe(id, group, recipeItems, toolIngredient, result);
+        public ChestplateCraftingRecipe create(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack result, boolean consumesTool) {
+            return new ChestplateCraftingRecipe(id, group, recipeItems, toolIngredient, result, consumesTool);
         }
     }
 }
