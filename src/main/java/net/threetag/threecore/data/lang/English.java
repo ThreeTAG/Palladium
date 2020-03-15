@@ -324,6 +324,7 @@ public class English extends ThreeCoreLanguageProvider {
         this.addContainerType(TCContainerTypes.FLUID_COMPOSER, "Fluid Composer");
         this.addContainerType(TCContainerTypes.STIRLING_GENERATOR, "Stirling Generator");
         this.addContainerType(TCContainerTypes.CAPACITOR_BLOCK, "Capacitor Block");
+        this.add("container.threecore.construction_table", "Construction Table");
 
 
         // Gui
