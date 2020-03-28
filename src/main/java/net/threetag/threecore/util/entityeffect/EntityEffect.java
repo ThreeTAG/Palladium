@@ -1,5 +1,7 @@
 package net.threetag.threecore.util.entityeffect;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
@@ -49,7 +51,7 @@ public abstract class EntityEffect implements INBTSerializable<CompoundNBT>, IWr
     }
 
     @OnlyIn(Dist.CLIENT)
-    public abstract void render(EffectEntity entity, Entity anchor, boolean isFirstPerson, float partialTicks);
+    public abstract void render(EffectEntity entity, Entity anchor, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLightIn, boolean isFirstPerson, float partialTicks);
 
     public abstract void tick(EffectEntity entity, Entity anchor);
 

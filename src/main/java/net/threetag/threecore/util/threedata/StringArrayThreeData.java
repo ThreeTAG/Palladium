@@ -40,7 +40,7 @@ public class StringArrayThreeData extends ThreeData<String[]> {
     public void writeToNBT(CompoundNBT nbt, String[] value) {
         ListNBT list = new ListNBT();
         for (String s : value) {
-            list.add(new StringNBT(s));
+            list.add(StringNBT.valueOf(s));
         }
         nbt.put(this.key, list);
     }
@@ -59,7 +59,7 @@ public class StringArrayThreeData extends ThreeData<String[]> {
 
     @Override
     public JsonElement serializeJson(String[] value) {
-        if(value.length == 1) {
+        if (value.length == 1) {
             return new JsonPrimitive(value[0]);
         } else {
             JsonArray jsonArray = new JsonArray();

@@ -47,7 +47,7 @@ public class TCAttributes {
 
     @SubscribeEvent
     public static void onFall(LivingEvent.LivingJumpEvent e) {
-        if (!e.getEntityLiving().isSneaking()) {
+        if (!e.getEntityLiving().isCrouching()) {
             e.getEntityLiving().setMotion(e.getEntity().getMotion().x, e.getEntity().getMotion().y + 0.1F * e.getEntityLiving().getAttribute(JUMP_HEIGHT).getValue(), e.getEntity().getMotion().z);
         }
     }
@@ -72,7 +72,7 @@ public class TCAttributes {
         }
 
         e.player.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(SPRINT_UUID);
-        if (e.player.isSprinting() && e.player.getAttribute(SPRINT_SPEED).getModifiers().size() > 0) {
+        if (e.player.isSprinting() && e.player.getAttribute(SPRINT_SPEED).func_225505_c_().size() > 0) {
             double amount = e.player.getAttribute(SPRINT_SPEED).getValue();
             e.player.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier(SPRINT_UUID, "Sprint modifier", amount, AttributeModifier.Operation.MULTIPLY_BASE));
         }

@@ -99,7 +99,7 @@ public class AbilityClientEventHandler {
         if (Minecraft.getInstance().player == null)
             return;
 
-        if (Minecraft.getInstance().player.isSneaking() && e.getScrollDelta() != 0F) {
+        if (Minecraft.getInstance().player.isCrouching() && e.getScrollDelta() != 0F) {
             AbilityBarRenderer.scroll(e.getScrollDelta() > 0);
             e.setCanceled(true);
         }

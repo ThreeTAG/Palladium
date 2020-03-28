@@ -53,7 +53,7 @@ public class ThreeCoreCapabilities {
                     @Nullable
                     @Override
                     public INBT writeNBT(Capability<IKarma> capability, IKarma instance, Direction side) {
-                        return new IntNBT(instance.getKarma());
+                        return IntNBT.valueOf(instance.getKarma());
                     }
 
                     @Override

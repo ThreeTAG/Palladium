@@ -94,7 +94,7 @@ public class SizeChangingEventHandler {
     public static void oProjectileImpactFireball(ProjectileImpactEvent.Fireball e) {
         e.getFireball().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
             boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(e.getFireball().world, e.getFireball().shootingEntity);
-            e.getFireball().world.createExplosion(null, e.getFireball().posX, e.getFireball().posY, e.getFireball().posZ, sizeChanging.getScale(), flag, flag ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
+            e.getFireball().world.createExplosion(null, e.getFireball().getPosX(), e.getFireball().getPosY(), e.getFireball().getPosZ(), sizeChanging.getScale(), flag, flag ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
         });
     }
 
@@ -107,7 +107,7 @@ public class SizeChangingEventHandler {
                     List<BlockPos> positions = Lists.newLinkedList();
                     for (int x = 0; x < radius; x++) {
                         for (int z = 0; z < radius; z++) {
-                            BlockPos pos = new BlockPos(e.getThrowable().posX + x - radius / 2F, e.getThrowable().posY + e.getThrowable().size.height / 2F + radius / 2F, e.getThrowable().posZ + z - radius / 2F);
+                            BlockPos pos = new BlockPos(e.getThrowable().getPosX() + x - radius / 2F, e.getThrowable().getPosY() + e.getThrowable().size.height / 2F + radius / 2F, e.getThrowable().getPosZ() + z - radius / 2F);
                             int i = 0;
                             boolean b = false;
                             while (i < radius && !b) {

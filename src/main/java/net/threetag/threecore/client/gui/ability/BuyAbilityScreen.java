@@ -1,18 +1,18 @@
 package net.threetag.threecore.client.gui.ability;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.ability.Ability;
-import net.threetag.threecore.ability.condition.BuyableAbilityCondition;
-import net.threetag.threecore.network.BuyConditionMessage;
-import net.threetag.threecore.client.gui.widget.BackgroundlessButton;
-import net.threetag.threecore.util.icon.IIcon;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.ability.Ability;
+import net.threetag.threecore.ability.condition.BuyableAbilityCondition;
+import net.threetag.threecore.client.gui.widget.BackgroundlessButton;
+import net.threetag.threecore.network.BuyConditionMessage;
+import net.threetag.threecore.util.icon.IIcon;
 
 import java.util.List;
 
@@ -57,7 +57,7 @@ public class BuyAbilityScreen extends Screen {
         int i = (this.width - guiWidth) / 2;
         int j = (this.height - guiHeight) / 2;
 
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(AbilitiesScreen.WINDOW);
         this.blit(i, j, 0, 196, this.guiWidth, this.guiHeight);
 
@@ -68,11 +68,11 @@ public class BuyAbilityScreen extends Screen {
             this.font.drawString(text, i + 120 - width / 2, j + 9 + k * 10, 4210752);
         }
 
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(i + 14, j + 14, 0);
-        GlStateManager.scalef(2F, 2F, 1);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(i + 14, j + 14, 0);
+        RenderSystem.scalef(2F, 2F, 1);
         this.icon.draw(this.minecraft, 0, 0);
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
 
         super.render(mouseX, mouseY, partialTicks);
 

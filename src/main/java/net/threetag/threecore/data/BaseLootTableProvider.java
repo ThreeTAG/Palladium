@@ -2,6 +2,7 @@ package net.threetag.threecore.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.data.DataGenerator;
@@ -45,9 +46,9 @@ public abstract class BaseLootTableProvider extends LootTableProvider {
                 .rolls(ConstantRange.of(1))
                 .addEntry(ItemLootEntry.builder(block)
                         .acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
-                        .acceptFunction(CopyNbt.func_215881_a(CopyNbt.Source.BLOCK_ENTITY)
-                                .func_216055_a("inv", "BlockEntityTag.inv", CopyNbt.Action.REPLACE)
-                                .func_216055_a("energy", "BlockEntityTag.energy", CopyNbt.Action.REPLACE))
+                        .acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
+                                .addOperation("inv", "BlockEntityTag.inv", CopyNbt.Action.REPLACE)
+                                .addOperation("energy", "BlockEntityTag.energy", CopyNbt.Action.REPLACE))
                         .acceptFunction(SetContents.func_215920_b()
                                 .func_216075_a(DynamicLootEntry.func_216162_a(new ResourceLocation("minecraft", "contents"))))
                 );
@@ -59,7 +60,7 @@ public abstract class BaseLootTableProvider extends LootTableProvider {
     }
 
     public static LootTable.Builder droppingSlab(Block block) {
-        return LootTable.builder().addLootPool(LootPool.builder().name(block.getRegistryName().toString()).rolls(ConstantRange.of(1)).addEntry(withExplosionDecay(block, ItemLootEntry.builder(block).acceptFunction(SetCount.builder(ConstantRange.of(2)).acceptCondition(BlockStateProperty.builder(block).with(SlabBlock.TYPE, SlabType.DOUBLE))))));
+        return LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(withExplosionDecay(block, ItemLootEntry.builder(block).acceptFunction(SetCount.builder(ConstantRange.of(2)).acceptCondition(BlockStateProperty.builder(block).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withProp(SlabBlock.TYPE, SlabType.DOUBLE)))))));
     }
 
     public static LootTable.Builder droppingWithName(Block block) {

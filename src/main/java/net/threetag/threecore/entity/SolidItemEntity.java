@@ -99,9 +99,9 @@ public class SolidItemEntity extends Entity {
         } else {
             super.tick();
 
-            this.prevPosX = this.posX;
-            this.prevPosY = this.posY;
-            this.prevPosZ = this.posZ;
+            this.prevPosX = this.getPosX();
+            this.prevPosY = this.getPosY();
+            this.prevPosZ = this.getPosZ();
             Vec3d vec3d = this.getMotion();
             if (this.areEyesInFluid(FluidTags.WATER)) {
                 this.applyFloatMotion();
@@ -112,9 +112,9 @@ public class SolidItemEntity extends Entity {
             if (this.world.isRemote) {
                 this.noClip = false;
             } else {
-                this.noClip = !this.world.areCollisionShapesEmpty(this);
+                this.noClip = !this.world.hasNoCollisions(this);
                 if (this.noClip) {
-                    this.pushOutOfBlocks(this.posX, (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.posZ);
+                    this.pushOutOfBlocks(this.getPosX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.getPosZ());
                 }
             }
 
@@ -122,7 +122,7 @@ public class SolidItemEntity extends Entity {
                 this.move(MoverType.SELF, this.getMotion());
                 float f = 0.98F;
                 if (this.onGround) {
-                    BlockPos pos = new BlockPos(this.posX, this.getBoundingBox().minY - 1.0D, this.posZ);
+                    BlockPos pos = new BlockPos(this.getPosX(), this.getBoundingBox().minY - 1.0D, this.getPosZ());
                     f = this.world.getBlockState(pos).getSlipperiness(this.world, pos, this) * 0.98F;
                 }
 
@@ -132,7 +132,7 @@ public class SolidItemEntity extends Entity {
                 }
             }
 
-            boolean flag = MathHelper.floor(this.prevPosX) != MathHelper.floor(this.posX) || MathHelper.floor(this.prevPosY) != MathHelper.floor(this.posY) || MathHelper.floor(this.prevPosZ) != MathHelper.floor(this.posZ);
+            boolean flag = MathHelper.floor(this.prevPosX) != MathHelper.floor(this.getPosX()) || MathHelper.floor(this.prevPosY) != MathHelper.floor(this.getPosY()) || MathHelper.floor(this.prevPosZ) != MathHelper.floor(this.getPosZ());
             int i = flag ? 2 : 40;
             if (this.ticksExisted % i == 0) {
                 if (this.world.getFluidState(new BlockPos(this)).isTagged(FluidTags.LAVA)) {

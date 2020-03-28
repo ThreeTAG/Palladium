@@ -1,6 +1,6 @@
 package net.threetag.threecore.sizechanging;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.LivingEntity;
@@ -44,8 +44,8 @@ public class SizeManager {
         entity.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
             float width = sizeChanging.getRenderWidth(RenderUtil.renderTickTime);
             float height = sizeChanging.getRenderHeight(RenderUtil.renderTickTime);
-            GlStateManager.scalef(width, height, width);
-            GlStateManager.translated((x / width) - x, (y / height) - y, (z / width) - z);
+            RenderSystem.scalef(width, height, width);
+            RenderSystem.translated((x / width) - x, (y / height) - y, (z / width) - z);
         });
     }
 
@@ -53,7 +53,7 @@ public class SizeManager {
     public static void renderInInvCallback(LivingEntity entity) {
         entity.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
             float width = 1F / sizeChanging.getRenderWidth(RenderUtil.renderTickTime);
-            GlStateManager.scalef(width, 1F / sizeChanging.getRenderHeight(RenderUtil.renderTickTime), width);
+            RenderSystem.scalef(width, 1F / sizeChanging.getRenderHeight(RenderUtil.renderTickTime), width);
         });
     }
 }

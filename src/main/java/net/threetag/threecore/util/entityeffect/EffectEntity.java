@@ -29,7 +29,7 @@ public class EffectEntity extends Entity implements IEntityAdditionalSpawnData {
         this.anchorUUID = anchor.getUniqueID();
         this.entityEffect = entityEffect;
         this.entityEffect.effectEntity = this;
-        this.setLocationAndAngles(anchor.posX, anchor.posY + anchor.getYOffset() + anchor.getEyeHeight(), anchor.posZ, anchor.rotationYaw, anchor.rotationPitch);
+        this.setLocationAndAngles(anchor.getPosX(), anchor.getPosY() + anchor.getYOffset() + anchor.getEyeHeight(), anchor.getPosZ(), anchor.rotationYaw, anchor.rotationPitch);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class EffectEntity extends Entity implements IEntityAdditionalSpawnData {
                     this.remove();
             } else {
                 this.entityEffect.tick(this, anchor);
-                this.setLocationAndAngles(anchor.posX, anchor.posY + anchor.getYOffset() + anchor.getEyeHeight(), anchor.posZ, anchor.rotationYaw, anchor.rotationPitch);
+                this.setLocationAndAngles(anchor.getPosX(), anchor.getPosY() + anchor.getYOffset() + anchor.getEyeHeight(), anchor.getPosZ(), anchor.rotationYaw, anchor.rotationPitch);
             }
         } else if (!this.world.isRemote) {
             this.remove();

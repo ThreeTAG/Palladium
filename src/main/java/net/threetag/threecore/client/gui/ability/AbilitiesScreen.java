@@ -1,17 +1,17 @@
 package net.threetag.threecore.client.gui.ability;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.ability.AbilityHelper;
-import net.threetag.threecore.ability.IAbilityContainer;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.StringTextComponent;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.ability.AbilityHelper;
+import net.threetag.threecore.ability.IAbilityContainer;
+import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,7 +30,7 @@ public class AbilitiesScreen extends Screen {
     private boolean isScrolling;
 
     public AbilitiesScreen() {
-        super(new StringTextComponent(""));
+        super(NarratorChatListener.EMPTY);
         this.tabs.clear();
         this.selectedTab = null;
         AtomicInteger index = new AtomicInteger();
@@ -117,9 +117,8 @@ public class AbilitiesScreen extends Screen {
     }
 
     public void renderWindow(int x, int y) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.enableBlend();
-        RenderHelper.disableStandardItemLighting();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.enableBlend();
         this.minecraft.getTextureManager().bindTexture(WINDOW);
         this.blit(x, y, 0, 0, guiWidth, guiHeight);
         if (this.tabs.size() > 0) {
@@ -129,15 +128,14 @@ public class AbilitiesScreen extends Screen {
                 tab.drawTab(x, y, tab == this.selectedTab);
             }
 
-            GlStateManager.enableRescaleNormal();
-            GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            RenderHelper.enableGUIStandardItemLighting();
+            RenderSystem.enableRescaleNormal();
+            RenderSystem.defaultBlendFunc();
 
             for (AbilityTabGui tab : this.tabs) {
                 tab.drawIcon(x, y);
             }
 
-            GlStateManager.disableBlend();
+            RenderSystem.disableBlend();
         }
 
         this.font.drawString(I18n.format("gui.threecore.abilities"), (float) (x + 8), (float) (y + 6), 4210752);
@@ -152,25 +150,24 @@ public class AbilitiesScreen extends Screen {
             this.font.drawString(s, (float) (x + 9 + 117 - i / 2), (float) (y + 18 + 56 - 9 / 2), -1);
             this.font.drawString(":(", (float) (x + 9 + 117 - this.font.getStringWidth(":(") / 2), (float) (y + 18 + 113 - 9), -1);
         } else {
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef((float) (x + 9), (float) (y + 18), -400.0F);
-            GlStateManager.enableDepthTest();
+            RenderSystem.pushMatrix();
+            RenderSystem.translatef((float) (x + 9), (float) (y + 18), -400.0F);
             tab.drawContents();
-            GlStateManager.popMatrix();
-            GlStateManager.depthFunc(515);
-            GlStateManager.disableDepthTest();
+            RenderSystem.popMatrix();
+            RenderSystem.depthFunc(GL11.GL_LEQUAL);
+            RenderSystem.disableDepthTest();
         }
     }
 
     private void renderToolTips(int mouseX, int mouseY, int x, int y) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.selectedTab != null) {
-            GlStateManager.pushMatrix();
-            GlStateManager.enableDepthTest();
-            GlStateManager.translatef((float) (x + 9), (float) (y + 18), 400.0F);
+            RenderSystem.pushMatrix();
+            RenderSystem.enableDepthTest();
+            RenderSystem.translatef((float) (x + 9), (float) (y + 18), 400.0F);
             this.selectedTab.drawToolTips(mouseX - x - 9, mouseY - y - 18, x, y, this, this.overlayScreen != null);
-            GlStateManager.disableDepthTest();
-            GlStateManager.popMatrix();
+            RenderSystem.disableDepthTest();
+            RenderSystem.popMatrix();
         }
 
         if (this.overlayScreen == null && this.tabs.size() > 0) {

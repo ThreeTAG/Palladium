@@ -1,7 +1,5 @@
 package net.threetag.threecore.container;
 
-import net.threetag.threecore.item.recipe.GrindingRecipe;
-import net.threetag.threecore.tileentity.GrinderTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftResultInventory;
@@ -26,6 +24,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.threetag.threecore.item.recipe.GrindingRecipe;
+import net.threetag.threecore.tileentity.GrinderTileEntity;
 
 import javax.annotation.Nonnull;
 
@@ -161,7 +161,7 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
     }
 
     @Override
-    public void func_201771_a(RecipeItemHelper recipeItemHelper) {
+    public void fillStackedContents(RecipeItemHelper recipeItemHelper) {
         if (this.grinderTileEntity instanceof IRecipeHelperPopulator) {
             ((IRecipeHelperPopulator) this.grinderTileEntity).fillStackedContents(recipeItemHelper);
         }

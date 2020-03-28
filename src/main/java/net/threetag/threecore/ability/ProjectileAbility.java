@@ -43,7 +43,7 @@ public class ProjectileAbility extends Ability {
                 if (!(projectile instanceof IProjectile))
                     return null;
 
-                projectile.setLocationAndAngles(entity.posX, entity.posY + entity.getEyeHeight() - 0.1D, entity.posZ, projectile.rotationYaw, projectile.rotationPitch);
+                projectile.setLocationAndAngles(entity.getPosX(), entity.getPosY() + entity.getEyeHeight() - 0.1D, entity.getPosZ(), projectile.rotationYaw, projectile.rotationPitch);
                 float pitchOffset = 0;
                 float velocity = this.dataManager.get(VELOCITY);
                 float inaccuracy = this.dataManager.get(INACCURACY);

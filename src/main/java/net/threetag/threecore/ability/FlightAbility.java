@@ -44,8 +44,8 @@ public class FlightAbility extends Ability implements FlightSound.IFlyingAbility
                 Vec3d vec = entity.getLookVec();
                 double speed = entity.isSprinting() ? this.dataManager.get(SPRINT_SPEED) : this.dataManager.get(SPEED);
                 // TODO multiply fly speed by size
-                entity.setMotion(vec.x * speed, vec.y * speed - (entity.isSneaking() ? entity.getHeight() * 0.2F : 0), vec.z * speed);
-            } else if (entity.isSneaking()) {
+                entity.setMotion(vec.x * speed, vec.y * speed - (entity.isCrouching() ? entity.getHeight() * 0.2F : 0), vec.z * speed);
+            } else if (entity.isCrouching()) {
                 entity.setMotion(new Vec3d(entity.getMotion().x, entity.getHeight() * -0.2F, entity.getMotion().z));
             } else {
                 entity.setMotion(new Vec3d(entity.getMotion().x, Math.sin(entity.ticksExisted / 10F) / 100F, entity.getMotion().z));

@@ -99,7 +99,7 @@ public abstract class ProgressableMachineTileEntity<T extends IEnergyRecipe<IInv
         for (Map.Entry<ResourceLocation, Integer> entry : this.xpMap.entrySet()) {
             player.world.getRecipeManager().getRecipe(entry.getKey()).ifPresent((recipe) -> {
                 list.add(recipe);
-                EntityUtil.spawnXP(player.world, player.posX, player.posY + 0.5D, player.posZ + 0.5D, entry.getValue(), getXpFromRecipe((T) recipe));
+                EntityUtil.spawnXP(player.world, player.getPosX(), player.getPosY() + 0.5D, player.getPosZ() + 0.5D, entry.getValue(), getXpFromRecipe((T) recipe));
             });
         }
 

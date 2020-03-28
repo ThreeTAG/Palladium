@@ -93,7 +93,7 @@ public class CapabilitySizeChanging implements ISizeChanging, IWrappedThreeDataH
         entity.firstUpdate = true;
         entity.recalculateSize();
         double d0 = (double) entity.size.width / 2.0D;
-        entity.setBoundingBox(new AxisAlignedBB(entity.posX - d0, entity.posY, entity.posZ - d0, entity.posX + d0, entity.posY + (double) entity.size.height, entity.posZ + d0));
+        entity.setBoundingBox(new AxisAlignedBB(entity.getPosX() - d0, entity.getPosY(), entity.getPosZ() - d0, entity.getPosX() + d0, entity.getPosY() + (double) entity.size.height, entity.getPosZ() + d0));
         entity.firstUpdate = b;
     }
 

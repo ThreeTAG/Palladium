@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.LazyLoadBase;
+import net.minecraft.util.LazyValue;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.threetag.threecore.ability.AbilityGenerator;
 import net.threetag.threecore.ability.AbilityMap;
@@ -20,12 +20,12 @@ public class ShieldAbilityItem extends ShieldItem implements IAbilityProvider {
 
     private List<AbilityGenerator> abilityGenerators;
     private final int useDuration;
-    private final LazyLoadBase<Ingredient> repairMaterial;
+    private final LazyValue<Ingredient> repairMaterial;
 
     public ShieldAbilityItem(Properties properties, int useDuration, Supplier<Ingredient> repairMaterial) {
         super(properties);
         this.useDuration = useDuration;
-        this.repairMaterial = new LazyLoadBase<>(repairMaterial);
+        this.repairMaterial = new LazyValue<>(repairMaterial);
     }
 
     @Override

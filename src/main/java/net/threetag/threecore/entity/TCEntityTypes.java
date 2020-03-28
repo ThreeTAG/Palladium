@@ -30,10 +30,10 @@ public class TCEntityTypes {
 
     @OnlyIn(Dist.CLIENT)
     public static void initRenderers() {
-        RenderingRegistry.registerEntityRenderingHandler(SuitStandEntity.class, SuitStandRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ProjectileEntity.class, manager -> new ProjectileEntityRenderer(manager, Minecraft.getInstance().getItemRenderer()));
-        RenderingRegistry.registerEntityRenderingHandler(SolidItemEntity.class, SolidItemEntityRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EffectEntity.class, EffectEntityRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(SUIT_STAND.get(), SuitStandRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(PROJECTILE.get(), manager -> new ProjectileEntityRenderer(manager, Minecraft.getInstance().getItemRenderer()));
+        RenderingRegistry.registerEntityRenderingHandler(SOLID_ITEM_ENTITY.get(), SolidItemEntityRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EFFECT.get(), EffectEntityRenderer::new);
     }
 
     public static <T extends Entity> RegistryObject<EntityType<T>> register(String id, Supplier<EntityType.Builder<T>> builderSupplier) {

@@ -1,13 +1,14 @@
 package net.threetag.threecore.client.gui.ability;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.threetag.threecore.ability.Ability;
-import net.threetag.threecore.ability.IAbilityContainer;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.threetag.threecore.ability.Ability;
+import net.threetag.threecore.ability.IAbilityContainer;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -191,13 +192,20 @@ public class AbilityTabGui extends AbstractGui {
             this.centered = true;
         }
 
-        GlStateManager.depthFunc(518);
-        fill(0, 0, innerWidth, innerHeight, -16777216);
-        GlStateManager.depthFunc(515);
+        RenderSystem.pushMatrix();
+        RenderSystem.enableDepthTest();
+        RenderSystem.translatef(0.0F, 0.0F, 950.0F);
+        RenderSystem.colorMask(false, false, false, false);
+        fill(4680, 2260, -4680, -2260, -16777216);
+        RenderSystem.colorMask(true, true, true, true);
+        RenderSystem.translatef(0.0F, 0.0F, -950.0F);
+        RenderSystem.depthFunc(GL11.GL_GEQUAL);
+        fill(innerWidth, innerHeight, 0, 0, -16777216);
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
 
         Minecraft mc = Minecraft.getInstance();
         mc.getTextureManager().bindTexture(new ResourceLocation("textures/block/red_wool.png"));
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+
         int i = MathHelper.floor(this.scrollX);
         int j = MathHelper.floor(this.scrollY);
         int k = i % 16;
@@ -216,15 +224,24 @@ public class AbilityTabGui extends AbstractGui {
         for (AbilityTabEntry entry : this.abilities) {
             entry.drawIcon(mc, i + (int) (entry.x * gridSize), j + (int) (entry.y * gridSize));
         }
+
+        RenderSystem.depthFunc(GL11.GL_GEQUAL);
+        RenderSystem.translatef(0.0F, 0.0F, -950.0F);
+        RenderSystem.colorMask(false, false, false, false);
+        fill(4680, 2260, -4680, -2260, -16777216);
+        RenderSystem.colorMask(true, true, true, true);
+        RenderSystem.translatef(0.0F, 0.0F, 950.0F);
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
+        RenderSystem.popMatrix();
     }
 
     public void drawToolTips(int mouseX, int mouseY, int x, int y, AbilitiesScreen screen, boolean overlayActive) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(0.0F, 0.0F, 200.0F);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(0.0F, 0.0F, 200.0F);
         fill(0, 0, innerWidth, innerHeight, MathHelper.floor(this.fade * 255.0F) << 24);
         boolean flag = false;
 
-        if(!overlayActive) {
+        if (!overlayActive) {
             int i = MathHelper.floor(this.scrollX);
             int j = MathHelper.floor(this.scrollY);
             if (mouseX > 0 && mouseX < innerWidth && mouseY > 0 && mouseY < innerHeight) {
@@ -238,8 +255,8 @@ public class AbilityTabGui extends AbstractGui {
             }
         }
 
-        GlStateManager.popMatrix();
-        if(!overlayActive) {
+        RenderSystem.popMatrix();
+        if (!overlayActive) {
             if (flag) {
                 this.fade = MathHelper.clamp(this.fade + 0.02F, 0.0F, 0.3F);
             } else {

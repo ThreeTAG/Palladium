@@ -1,6 +1,6 @@
 package net.threetag.threecore.client.gui.toast;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.toasts.IToast;
 import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.client.resources.I18n;
@@ -24,7 +24,7 @@ public class KarmaToast implements IToast {
         this.prevKarma = this.karma;
         guiToast.getMinecraft().getTextureManager().bindTexture(KarmaBarRenderer.TEXTURE);
         boolean good = this.karma >= 0;
-        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+        RenderSystem.color3f(1.0F, 1.0F, 1.0F);
         guiToast.blit(0, 0, 0, good ? 46 : 15, 160, 32);
 
         guiToast.getMinecraft().fontRenderer.drawString(I18n.format("karma.toast.title"), 25.0F, 7.0F, good ? 0xff7b0000 : 0xffffffff);

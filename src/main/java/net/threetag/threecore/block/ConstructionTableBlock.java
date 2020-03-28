@@ -67,21 +67,16 @@ public class ConstructionTableBlock extends HorizontalBlock {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         player.openContainer(state.getContainer(worldIn, pos));
         // TODO stats?
 //        player.addStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
     public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
         return TABS.size() == 0 ? null : getContainerProvider(worldIn, pos, TABS.values().iterator().next());
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package net.threetag.threecore.client.renderer;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -22,14 +22,14 @@ public class UnconsciousRenderer {
             float opacity = MathUtil.interpolate(prevProgress, progress, e.getPartialTicks()) / 50F;
 
             if (opacity > 0F) {
-                GlStateManager.disableDepthTest();
-                GlStateManager.disableAlphaTest();
-                int width = Minecraft.getInstance().mainWindow.getScaledWidth();
-                int height = Minecraft.getInstance().mainWindow.getScaledHeight();
+                RenderSystem.disableDepthTest();
+                RenderSystem.disableAlphaTest();
+                int width = Minecraft.getInstance().getMainWindow().getScaledWidth();
+                int height = Minecraft.getInstance().getMainWindow().getScaledHeight();
                 int color = (int) (255F * opacity) << 24;
                 fill(0, 0, width, height, color);
-                GlStateManager.enableAlphaTest();
-                GlStateManager.enableDepthTest();
+                RenderSystem.enableAlphaTest();
+                RenderSystem.enableDepthTest();
             }
         }
     }
@@ -53,7 +53,7 @@ public class UnconsciousRenderer {
             e.getMovementInput().leftKeyDown = false;
             e.getMovementInput().forwardKeyDown = false;
             e.getMovementInput().backKeyDown = false;
-            e.getMovementInput().sneak = false;
+            e.getMovementInput().field_228350_h_ = false;
             e.getMovementInput().jump = false;
         }
     }

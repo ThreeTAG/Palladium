@@ -90,7 +90,7 @@ public class ModelLayerManager {
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "or"), OrPredicate::parse);
 
         // Sneaking
-        registerPredicate(new ResourceLocation(ThreeCore.MODID, "sneaking"), j -> context -> context.getAsEntity().isSneaking());
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "sneaking"), j -> context -> context.getAsEntity().isCrouching());
 
         // Damage
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "durability"), j -> new ItemDurabilityPredicate(JSONUtils.getFloat(j, "min", 0F), JSONUtils.getFloat(j, "max", 1F)));

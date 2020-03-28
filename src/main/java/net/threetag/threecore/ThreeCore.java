@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
@@ -36,6 +37,7 @@ import net.threetag.threecore.addonpacks.AddonPackManager;
 import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.capability.CapabilityAbilityContainer;
 import net.threetag.threecore.capability.ThreeCoreCapabilities;
+import net.threetag.threecore.client.render.tileentity.HydraulicPressTileEntityRenderer;
 import net.threetag.threecore.client.renderer.AbilityBarRenderer;
 import net.threetag.threecore.client.renderer.KarmaBarRenderer;
 import net.threetag.threecore.client.renderer.UnconsciousRenderer;
@@ -144,6 +146,9 @@ public class ThreeCore {
 
     @SubscribeEvent
     public void setup(FMLCommonSetupEvent e) {
+        // Ores
+        TCBlocks.initOres();
+
         // Capabilities
         ThreeCoreCapabilities.init();
 
@@ -154,10 +159,17 @@ public class ThreeCore {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void setupClient(FMLClientSetupEvent e) {
+        TCBlocks.initRenderTypes();
         TCTileEntityTypes.initRenderers();
         TCEntityTypes.initRenderers();
         TCContainerTypes.initContainerScreens();
         ArmorStandPoseManager.init();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public void textureStichPre(TextureStitchEvent.Pre e) {
+        e.addSprite(HydraulicPressTileEntityRenderer.TEXTURE.getTextureLocation());
     }
 
     public void registerMessages() {

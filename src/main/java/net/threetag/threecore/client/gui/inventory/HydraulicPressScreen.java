@@ -1,14 +1,14 @@
 package net.threetag.threecore.client.gui.inventory;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.container.HydraulicPressContainer;
-import net.threetag.threecore.util.energy.EnergyUtil;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.container.HydraulicPressContainer;
+import net.threetag.threecore.util.energy.EnergyUtil;
 
 public class HydraulicPressScreen extends ContainerScreen<HydraulicPressContainer> {
 
@@ -40,7 +40,7 @@ public class HydraulicPressScreen extends ContainerScreen<HydraulicPressContaine
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(HYDRAULIC_PRESS_GUI_TEXTURES);
         int left = this.guiLeft;
         int top = this.guiTop;

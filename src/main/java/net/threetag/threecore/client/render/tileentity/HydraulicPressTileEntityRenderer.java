@@ -1,14 +1,22 @@
 package net.threetag.threecore.client.render.tileentity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.block.MachineBlock;
 import net.threetag.threecore.block.TCBlocks;
@@ -19,39 +27,42 @@ import net.threetag.threecore.util.RenderUtil;
 @OnlyIn(Dist.CLIENT)
 public class HydraulicPressTileEntityRenderer extends TileEntityRenderer<HydraulicPressTileEntity> {
 
-    public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/block/hydraulic_press_pistons.png");
+    public static final Material TEXTURE;
     public static HydraulicPressPistonModel MODEL = new HydraulicPressPistonModel();
 
-    @Override
-    public void render(HydraulicPressTileEntity tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage) {
-        GlStateManager.enableDepthTest();
-        GlStateManager.depthFunc(515);
-        GlStateManager.depthMask(true);
-        GlStateManager.pushMatrix();
-        GlStateManager.enableRescaleNormal();
-        GlStateManager.translatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
-        GlStateManager.scalef(1.0F, -1.0F, -1.0F);
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+    static {
+        TEXTURE = ModelLoaderRegistry.blockMaterial(new ResourceLocation(ThreeCore.MODID, "block/hydraulic_press_pistons"));
+    }
 
-        BlockState blockstate = tileEntityIn.hasWorld() ? tileEntityIn.getBlockState() : TCBlocks.HYDRAULIC_PRESS.get().getDefaultState().with(MachineBlock.FACING, Direction.SOUTH);
+    public HydraulicPressTileEntityRenderer(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
+        super(tileEntityRendererDispatcher);
+    }
+
+    @Override
+    public void render(HydraulicPressTileEntity tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int combinedLightIn, int combinedOverlayIn) {
+        matrixStack.push();
+        BlockState blockstate = tileEntity.hasWorld() ? tileEntity.getBlockState() : TCBlocks.HYDRAULIC_PRESS.get().getDefaultState().with(MachineBlock.FACING, Direction.SOUTH);
+
         float f = blockstate.get(MachineBlock.FACING).getHorizontalAngle();
+        float pixel = 0.0625F;
+
         if ((double) Math.abs(f) > 1.0E-5D) {
-            GlStateManager.translatef(0.5F, 0.5F, 0.5F);
-            GlStateManager.rotatef(f, 0.0F, 1.0F, 0.0F);
-            GlStateManager.translatef(-0.5F, -0.5F, -0.5F);
+            matrixStack.translate(0.5F, 0.5F, 0.5F);
+            matrixStack.rotate(Vector3f.YP.rotationDegrees(f));
+            matrixStack.translate(-0.5F, -0.5F, -0.5F);
         }
 
+        matrixStack.translate(0, pixel * 10F, 0);
         float progress = blockstate.get(MachineBlock.LIT) ? MathHelper.sin((Minecraft.getInstance().player.ticksExisted + partialTicks) / 5F) / 2F + 0.5F : 0F;
-        float pixel = 0.0625F;
-        this.bindTexture(TEXTURE);
-        MODEL.render(progress, pixel);
+//        progress = 1F;
+        MODEL.setProgress(progress);
+        IVertexBuilder vertexBuilder = TEXTURE.getBuffer(renderTypeBuffer, RenderType::getEntitySolid);
+        MODEL.render(matrixStack, vertexBuilder, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
 
-        GlStateManager.disableTexture();
-        RenderUtil.renderFilledBox(2 * pixel, 2.5F * pixel, 7.5F * pixel, 3 * pixel - MODEL.plate1.rotationPointX * pixel, 3.5 * pixel, 8.5F * pixel, 0.5F, 0.5F, 0.5F, 1);
-        RenderUtil.renderFilledBox(13 * pixel - MODEL.plate2.rotationPointX * pixel, 2.5F * pixel, 7.5F * pixel, 14 * pixel, 3.5 * pixel, 8.5F * pixel, 0.5F, 0.5F, 0.5F, 1);
-        GlStateManager.enableTexture();
+        IVertexBuilder boxBuilder = renderTypeBuffer.getBuffer(RenderUtil.RenderTypes.POSITION_COLOR);
+        WorldRenderer.drawBoundingBox(matrixStack, boxBuilder, 2 * pixel, 2.5F * pixel, 7.5F * pixel, 3 * pixel - MODEL.plate1.rotationPointX * pixel, 3.5F * pixel, 8.5F * pixel, 1F, 1F, 1F, 1);
+        WorldRenderer.drawBoundingBox(matrixStack, boxBuilder, 13 * pixel - MODEL.plate2.rotationPointX * pixel, 2.5F * pixel, 7.5F * pixel, 14 * pixel, 3.5F * pixel, 8.5F * pixel, 0.5F, 0.5F, 0.5F, 1);
 
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.popMatrix();
+        matrixStack.pop();
     }
 }

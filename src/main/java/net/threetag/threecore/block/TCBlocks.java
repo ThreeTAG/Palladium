@@ -2,6 +2,8 @@ package net.threetag.threecore.block;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -50,7 +52,7 @@ public class TCBlocks {
     public static final RegistryObject<Block> LEAD_BLOCK = register("lead_block", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(4.0F, 12.0F)));
     public static final RegistryObject<Block> SILVER_BLOCK = register("silver_block", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)));
     public static final RegistryObject<Block> PALLADIUM_BLOCK = register("palladium_block", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)));
-    public static final RegistryObject<Block> VIBRANIUM_BLOCK = register("vibranium_block", () -> new VibraniumBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(15.0F, 18.0F)), Rarity.RARE);
+    public static final RegistryObject<Block> VIBRANIUM_BLOCK = register("vibranium_block", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(15.0F, 18.0F)), Rarity.RARE);
     public static final RegistryObject<Block> OSMIUM_BLOCK = register("osmium_block", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)));
     public static final RegistryObject<Block> URANIUM_BLOCK = register("uranium_block", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)));
     public static final RegistryObject<Block> TITANIUM_BLOCK = register("titanium_block", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(10.0F, 12.0F)));
@@ -68,7 +70,7 @@ public class TCBlocks {
     public static final RegistryObject<Block> LEAD_ORE = register("lead_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
     public static final RegistryObject<Block> SILVER_ORE = register("silver_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
     public static final RegistryObject<Block> PALLADIUM_ORE = register("palladium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
-    public static final RegistryObject<Block> VIBRANIUM_ORE = register("vibranium_ore", () -> new VibraniumBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F).lightValue(4)), Rarity.RARE);
+    public static final RegistryObject<Block> VIBRANIUM_ORE = register("vibranium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F).lightValue(4)), Rarity.RARE);
     public static final RegistryObject<Block> OSMIUM_ORE = register("osmium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
     public static final RegistryObject<Block> URANIUM_ORE = register("uranium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
     public static final RegistryObject<Block> TITANIUM_ORE = register("titanium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F)));
@@ -125,8 +127,17 @@ public class TCBlocks {
         });
     }
 
+    public static void initRenderTypes() {
+        RenderTypeLookup.setRenderLayer(CONSTRUCTION_TABLE.get(), RenderType.getCutoutMipped());
+        RenderTypeLookup.setRenderLayer(GRINDER.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(HYDRAULIC_PRESS.get(), RenderType.getCutoutMipped());
+        RenderTypeLookup.setRenderLayer(FLUID_COMPOSER.get(), RenderType.getCutoutMipped());
+        RenderTypeLookup.setRenderLayer(STIRLING_GENERATOR.get(), RenderType.getCutoutMipped());
+        RenderTypeLookup.setRenderLayer(VIBRANIUM_BLOCK.get(), RenderType.getTranslucent());
+    }
+
     public static void addOreFeature(Biome biome, BlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
-        biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, ore, config.size.get()), Placement.COUNT_RANGE, new CountRangeConfig(config.count.get(), config.minHeight.get(), 0, config.maxHeight.get() - config.minHeight.get())));
+        biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, ore, config.size.get())).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(config.count.get(), config.minHeight.get(), 0, config.maxHeight.get() - config.minHeight.get()))));
     }
 
 

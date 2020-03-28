@@ -53,15 +53,15 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public double getPosX() {
-        return this.value.posX;
+        return this.value.getPosX();
     }
 
     public double getPosY() {
-        return this.value.posY;
+        return this.value.getPosY();
     }
 
     public double getPosZ() {
-        return this.value.posZ;
+        return this.value.getPosZ();
     }
 
     public float getYaw() {
@@ -138,8 +138,8 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         this.value.sendMessage(new TranslationTextComponent(message, args));
     }
 
-    public boolean isSneaking() {
-        return this.value.isSneaking();
+    public boolean isCrouching() {
+        return this.value.isCrouching();
     }
 
     public boolean isAlive() {

@@ -94,7 +94,7 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
             IParticleData particle = this.makeParticle();
 
             for (int i = 0; i < 8; ++i) {
-                this.world.addParticle(particle, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+                this.world.addParticle(particle, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
             }
         }
     }

@@ -14,7 +14,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.LazyLoadBase;
+import net.minecraft.util.LazyValue;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
@@ -280,7 +280,7 @@ public class ItemParser {
         for (int i = 0; i < dmgReduction.size(); i++)
             damageReductionAmountArray[i] = dmgReduction.get(i).getAsInt();
         int enchantibility = JSONUtils.getInt(json, "enchantibility", 0);
-        LazyLoadBase soundEvent = new LazyLoadBase(() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(JSONUtils.getString(json, "equip_sound", ""))));
+        LazyValue soundEvent = new LazyValue(() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(JSONUtils.getString(json, "equip_sound", ""))));
         float toughness = JSONUtils.getFloat(json, "toughness", 0F);
         Supplier<Ingredient> repairMaterial = () -> JSONUtils.hasField(json, "repair_material") ? Ingredient.deserialize(json.get("repair_material")) : Ingredient.EMPTY;
         return new SimpleArmorMaterial(name, maxDamageFactor, damageReductionAmountArray, enchantibility, soundEvent, toughness, repairMaterial);

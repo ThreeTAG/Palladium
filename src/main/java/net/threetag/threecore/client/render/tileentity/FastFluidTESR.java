@@ -1,34 +1,43 @@
 package net.threetag.threecore.client.render.tileentity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.client.model.animation.TileEntityRendererFast;
 import net.minecraftforge.fluids.IFluidTank;
 import net.threetag.threecore.util.RenderUtil;
 
 import java.util.BitSet;
 import java.util.List;
 
-public abstract class FastFluidTESR<T extends TileEntity> extends TileEntityRendererFast<T> {
+public abstract class FastFluidTESR<T extends TileEntity> extends TileEntityRenderer<T> {
+
+    public FastFluidTESR(TileEntityRendererDispatcher rendererDispatcher) {
+        super(rendererDispatcher);
+    }
 
     @Override
-    public void renderTileEntityFast(T te, double x, double y, double z, float partialTicks, int destroyStage, BufferBuilder buffer) {
+    public void render(T te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int combinedLightIn, int combinedOverlayIn) {
         for (TankRenderInfo tankRenderInfo : getTanksToRender(te)) {
-            doRender(te, x, y, z, buffer, tankRenderInfo);
+            doRender(te, partialTicks, matrixStack, renderTypeBuffer, combinedLightIn, combinedOverlayIn, tankRenderInfo);
         }
     }
 
-    private void doRender(T te, double x, double y, double z, BufferBuilder buffer, TankRenderInfo tankRenderInfo) {
+    private void doRender(T te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int combinedLightIn, int combinedOverlayIn, TankRenderInfo tankRenderInfo) {
         IFluidTank tank = tankRenderInfo.tank;
         if (tank.getFluidAmount() == 0) return;
 
         Fluid f = tank.getFluid().getFluid();
-        TextureAtlasSprite still = Minecraft.getInstance().getTextureMap().getAtlasSprite(f.getAttributes().getStillTexture().toString());
+        TextureAtlasSprite still = Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(f.getAttributes().getStillTexture());
         float u1 = still.getMinU(), v1 = still.getMinV(), u2 = still.getMaxU(), v2 = still.getMaxV();
 
         int color = f.getAttributes().getColor(tank.getFluid());
@@ -37,69 +46,64 @@ public abstract class FastFluidTESR<T extends TileEntity> extends TileEntityRend
         float blue = RenderUtil.blue(color) / 255F;
         float alpha = RenderUtil.alpha(color) / 255F;
 
-        buffer.setTranslation(x, y, z);
-
         AxisAlignedBB bounds = getRenderBounds(tank, tankRenderInfo.bounds);
+        // TODO check if this is correct
+        IVertexBuilder builder = renderTypeBuffer.getBuffer(RenderType.getTranslucent());
+
+        matrixStack.push();
 
         if (tankRenderInfo.shouldRender(Direction.DOWN)) {
-            int downCombined = getWorld().getCombinedLight(te.getPos().down(), 0);
-            int downLMa = downCombined >> 16 & 65535;
-            int downLMb = downCombined & 65535;
-            buffer.pos(bounds.minX, bounds.minY, bounds.maxZ).color(red, green, blue, alpha).tex(u1, v2).lightmap(downLMa, downLMb).endVertex();
-            buffer.pos(bounds.minX, bounds.minY, bounds.minZ).color(red, green, blue, alpha).tex(u1, v1).lightmap(downLMa, downLMb).endVertex();
-            buffer.pos(bounds.maxX, bounds.minY, bounds.minZ).color(red, green, blue, alpha).tex(u2, v1).lightmap(downLMa, downLMb).endVertex();
-            buffer.pos(bounds.maxX, bounds.minY, bounds.maxZ).color(red, green, blue, alpha).tex(u2, v2).lightmap(downLMa, downLMb).endVertex();
+            this.add(builder, matrixStack, (float) bounds.minX, (float) bounds.minY, (float) bounds.maxZ, u1, v2, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.minX, (float) bounds.minY, (float) bounds.minZ, u1, v1, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.maxX, (float) bounds.minY, (float) bounds.minZ, u2, v1, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.maxX, (float) bounds.minY, (float) bounds.maxZ, u2, v2, red, green, blue, alpha, combinedLightIn);
         }
 
         if (tankRenderInfo.shouldRender(Direction.UP)) {
-            int upCombined = getWorld().getCombinedLight(te.getPos().up(), 0);
-            int upLMa = upCombined >> 16 & 65535;
-            int upLMb = upCombined & 65535;
-            buffer.pos(bounds.minX, bounds.maxY, bounds.maxZ).color(red, green, blue, alpha).tex(u1, v2).lightmap(upLMa, upLMb).endVertex();
-            buffer.pos(bounds.maxX, bounds.maxY, bounds.maxZ).color(red, green, blue, alpha).tex(u2, v2).lightmap(upLMa, upLMb).endVertex();
-            buffer.pos(bounds.maxX, bounds.maxY, bounds.minZ).color(red, green, blue, alpha).tex(u2, v1).lightmap(upLMa, upLMb).endVertex();
-            buffer.pos(bounds.minX, bounds.maxY, bounds.minZ).color(red, green, blue, alpha).tex(u1, v1).lightmap(upLMa, upLMb).endVertex();
+            this.add(builder, matrixStack, (float) bounds.minX, (float) bounds.maxY, (float) bounds.maxZ, u1, v2, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.maxX, (float) bounds.maxY, (float) bounds.maxZ, u2, v2, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.maxX, (float) bounds.maxY, (float) bounds.minZ, u2, v1, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.minX, (float) bounds.maxY, (float) bounds.minZ, u1, v1, red, green, blue, alpha, combinedLightIn);
         }
 
         if (tankRenderInfo.shouldRender(Direction.NORTH)) {
-            int northCombined = getWorld().getCombinedLight(te.getPos().north(), 0);
-            int northLMa = northCombined >> 16 & 65535;
-            int northLMb = northCombined & 65535;
-            buffer.pos(bounds.minX, bounds.minY, bounds.minZ).color(red, green, blue, alpha).tex(u1, v1).lightmap(northLMa, northLMb).endVertex();
-            buffer.pos(bounds.minX, bounds.maxY, bounds.minZ).color(red, green, blue, alpha).tex(u1, v2).lightmap(northLMa, northLMb).endVertex();
-            buffer.pos(bounds.maxX, bounds.maxY, bounds.minZ).color(red, green, blue, alpha).tex(u2, v2).lightmap(northLMa, northLMb).endVertex();
-            buffer.pos(bounds.maxX, bounds.minY, bounds.minZ).color(red, green, blue, alpha).tex(u2, v1).lightmap(northLMa, northLMb).endVertex();
+            this.add(builder, matrixStack, (float) bounds.minX, (float) bounds.minY, (float) bounds.minZ, u1, v1, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.minX, (float) bounds.maxY, (float) bounds.minZ, u1, v2, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.maxX, (float) bounds.maxY, (float) bounds.minZ, u2, v2, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.maxX, (float) bounds.minY, (float) bounds.minZ, u2, v1, red, green, blue, alpha, combinedLightIn);
         }
 
         if (tankRenderInfo.shouldRender(Direction.SOUTH)) {
-            int southCombined = getWorld().getCombinedLight(te.getPos().south(), 0);
-            int southLMa = southCombined >> 16 & 65535;
-            int southLMb = southCombined & 65535;
-            buffer.pos(bounds.maxX, bounds.minY, bounds.maxZ).color(red, green, blue, alpha).tex(u2, v1).lightmap(southLMa, southLMb).endVertex();
-            buffer.pos(bounds.maxX, bounds.maxY, bounds.maxZ).color(red, green, blue, alpha).tex(u2, v2).lightmap(southLMa, southLMb).endVertex();
-            buffer.pos(bounds.minX, bounds.maxY, bounds.maxZ).color(red, green, blue, alpha).tex(u1, v2).lightmap(southLMa, southLMb).endVertex();
-            buffer.pos(bounds.minX, bounds.minY, bounds.maxZ).color(red, green, blue, alpha).tex(u1, v1).lightmap(southLMa, southLMb).endVertex();
+            this.add(builder, matrixStack, (float) bounds.maxX, (float) bounds.minY, (float) bounds.maxZ, u2, v1, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.maxX, (float) bounds.maxY, (float) bounds.maxZ, u2, v2, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.minX, (float) bounds.maxY, (float) bounds.maxZ, u1, v2, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.minX, (float) bounds.minY, (float) bounds.maxZ, u1, v1, red, green, blue, alpha, combinedLightIn);
         }
 
         if (tankRenderInfo.shouldRender(Direction.WEST)) {
-            int westCombined = getWorld().getCombinedLight(te.getPos().west(), 0);
-            int westLMa = westCombined >> 16 & 65535;
-            int westLMb = westCombined & 65535;
-            buffer.pos(bounds.minX, bounds.minY, bounds.maxZ).color(red, green, blue, alpha).tex(u1, v2).lightmap(westLMa, westLMb).endVertex();
-            buffer.pos(bounds.minX, bounds.maxY, bounds.maxZ).color(red, green, blue, alpha).tex(u2, v2).lightmap(westLMa, westLMb).endVertex();
-            buffer.pos(bounds.minX, bounds.maxY, bounds.minZ).color(red, green, blue, alpha).tex(u2, v1).lightmap(westLMa, westLMb).endVertex();
-            buffer.pos(bounds.minX, bounds.minY, bounds.minZ).color(red, green, blue, alpha).tex(u1, v1).lightmap(westLMa, westLMb).endVertex();
+            this.add(builder, matrixStack, (float) bounds.minX, (float) bounds.minY, (float) bounds.maxZ, u1, v2, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.minX, (float) bounds.maxY, (float) bounds.maxZ, u2, v2, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.minX, (float) bounds.maxY, (float) bounds.minZ, u2, v1, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.minX, (float) bounds.minY, (float) bounds.minZ, u1, v1, red, green, blue, alpha, combinedLightIn);
         }
 
         if (tankRenderInfo.shouldRender(Direction.EAST)) {
-            int eastCombined = getWorld().getCombinedLight(te.getPos().east(), 0);
-            int eastLMa = eastCombined >> 16 & 65535;
-            int eastLMb = eastCombined & 65535;
-            buffer.pos(bounds.maxX, bounds.minY, bounds.minZ).color(red, green, blue, alpha).tex(u1, v1).lightmap(eastLMa, eastLMb).endVertex();
-            buffer.pos(bounds.maxX, bounds.maxY, bounds.minZ).color(red, green, blue, alpha).tex(u2, v1).lightmap(eastLMa, eastLMb).endVertex();
-            buffer.pos(bounds.maxX, bounds.maxY, bounds.maxZ).color(red, green, blue, alpha).tex(u2, v2).lightmap(eastLMa, eastLMb).endVertex();
-            buffer.pos(bounds.maxX, bounds.minY, bounds.maxZ).color(red, green, blue, alpha).tex(u1, v2).lightmap(eastLMa, eastLMb).endVertex();
+            this.add(builder, matrixStack, (float) bounds.maxX, (float) bounds.minY, (float) bounds.minZ, u1, v1, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.maxX, (float) bounds.maxY, (float) bounds.minZ, u2, v1, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.maxX, (float) bounds.maxY, (float) bounds.maxZ, u2, v2, red, green, blue, alpha, combinedLightIn);
+            this.add(builder, matrixStack, (float) bounds.maxX, (float) bounds.minY, (float) bounds.maxZ, u1, v2, red, green, blue, alpha, combinedLightIn);
         }
+
+        matrixStack.pop();
+    }
+
+    private void add(IVertexBuilder builder, MatrixStack matrixStack, float x, float y, float z, float u, float v, float red, float green, float blue, float alpha, int light) {
+        builder.pos(matrixStack.getLast().getMatrix(), x, y, z)
+                .color(red, green, blue, alpha)
+                .tex(u, v)
+                .lightmap(light)
+                .normal(1, 0, 0)
+                .endVertex();
     }
 
     private AxisAlignedBB getRenderBounds(IFluidTank tank, AxisAlignedBB tankBounds) {

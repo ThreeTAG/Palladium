@@ -1,8 +1,8 @@
 package net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer;
 
-import com.mojang.blaze3d.platform.TextureUtil;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.client.renderer.texture.SimpleTexture;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 

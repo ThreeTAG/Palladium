@@ -6,10 +6,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Item;
@@ -24,8 +24,8 @@ import net.threetag.threecore.ability.AbilityGenerator;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.AbilityMap;
 import net.threetag.threecore.ability.IAbilityProvider;
-import net.threetag.threecore.capability.ItemAbilityContainerProvider;
 import net.threetag.threecore.addonpacks.item.ItemParser;
+import net.threetag.threecore.capability.ItemAbilityContainerProvider;
 import net.threetag.threecore.client.renderer.entity.model.DummyBipedModel;
 import net.threetag.threecore.client.renderer.entity.modellayer.*;
 
@@ -65,7 +65,7 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
     @Nullable
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-        return AtlasTexture.LOCATION_BLOCKS_TEXTURE.toString();
+        return PlayerContainer.LOCATION_BLOCKS_TEXTURE.toString();
     }
 
     @Nullable

@@ -3,10 +3,12 @@ package net.threetag.threecore.client.renderer.entity.model;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.JSONUtils;
 import net.threetag.threecore.util.TCJsonUtil;
@@ -34,9 +36,9 @@ public class EntityModelParser implements Function<JsonObject, EntityModel> {
         return model;
     }
 
-    public static RendererModel parseRendererModel(JsonObject json, Model model) {
+    public static ModelRenderer parseRendererModel(JsonObject json, Model model) {
         int[] textureOffsets = TCJsonUtil.getIntArray(json, 2, "texture_offset", 0, 0);
-        RendererModel rendererModel = new RendererModel(model, textureOffsets[0], textureOffsets[1]);
+        ModelRenderer rendererModel = new ModelRenderer(model, textureOffsets[0], textureOffsets[1]);
         float[] offsets = TCJsonUtil.getFloatArray(json, 3, "offset", 0, 0, 0);
         float[] rotationPoint = TCJsonUtil.getFloatArray(json, 3, "rotation_point", 0, 0, 0);
         float[] rotation = TCJsonUtil.getFloatArray(json, 3, "rotation", 0, 0, 0);
@@ -59,9 +61,9 @@ public class EntityModelParser implements Function<JsonObject, EntityModel> {
 
     public static class ParsedModel extends EntityModel {
 
-        public List<RendererModel> cubes = Lists.newLinkedList();
+        public List<ModelRenderer> cubes = Lists.newLinkedList();
 
-        public ParsedModel(List<RendererModel> cubes) {
+        public ParsedModel(List<ModelRenderer> cubes) {
             this.cubes = cubes;
         }
 
@@ -69,20 +71,24 @@ public class EntityModelParser implements Function<JsonObject, EntityModel> {
 
         }
 
-        public ParsedModel addCube(RendererModel rendererModel) {
+        public ParsedModel addCube(ModelRenderer rendererModel) {
             this.cubes.add(rendererModel);
             return this;
         }
 
         @Override
-        public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-            GlStateManager.pushMatrix();
-            GlStateManager.enableBlend();
-            for (RendererModel cube : this.cubes) {
-                cube.render(scale);
+        public void setRotationAngles(Entity entity, float v, float v1, float v2, float v3, float v4) {
+
+        }
+
+        @Override
+        // TODO fix parameters
+        public void render(MatrixStack matrixStack, IVertexBuilder vertexBuilder, int i, int i1, float v, float v1, float v2, float v3) {
+            RenderSystem.enableBlend();
+            for (ModelRenderer cube : this.cubes) {
+                cube.render(matrixStack, vertexBuilder, i, i1, v, v1, v2, v3);
             }
-            GlStateManager.disableBlend();
-            GlStateManager.popMatrix();
+            RenderSystem.disableBlend();
         }
     }
 

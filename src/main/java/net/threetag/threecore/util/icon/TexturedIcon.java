@@ -2,7 +2,7 @@ package net.threetag.threecore.util.icon;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.nbt.CompoundNBT;
@@ -59,9 +59,9 @@ public class TexturedIcon implements IIcon {
     public void draw(Minecraft mc, int x, int y) {
         mc.getTextureManager().bindTexture(this.texture);
         if (this.tint != null)
-            GlStateManager.color3f(this.tint.getRed() / 255F, this.tint.getGreen() / 255F, this.tint.getBlue() / 255F);
+            RenderSystem.color3f(this.tint.getRed() / 255F, this.tint.getGreen() / 255F, this.tint.getBlue() / 255F);
         AbstractGui.blit(x, y, this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
-        GlStateManager.color3f(1F, 1F, 1F);
+        RenderSystem.color3f(1F, 1F, 1F);
     }
 
     @Override

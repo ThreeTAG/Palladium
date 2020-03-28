@@ -45,9 +45,9 @@ public abstract class MachineBlock extends ContainerBlock {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         if (world.isRemote) {
-            return true;
+            return ActionResultType.SUCCESS;
         } else {
             ItemStack stack = player.getHeldItem(hand);
             AtomicReference<FluidActionResult> result = new AtomicReference<>();
@@ -65,7 +65,7 @@ public abstract class MachineBlock extends ContainerBlock {
             else
                 player.setHeldItem(hand, result.get().getResult());
             // TODO Stats ?
-            return true;
+            return ActionResultType.SUCCESS;
         }
     }
 
@@ -115,11 +115,6 @@ public abstract class MachineBlock extends ContainerBlock {
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package net.threetag.threecore.client.renderer.entity.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
@@ -8,20 +10,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class DummyBipedModel<T extends LivingEntity> extends BipedModel<T> {
 
-    public static final DummyBipedModel INSTANCE = new DummyBipedModel();
+    public static final DummyBipedModel INSTANCE = new DummyBipedModel(0F);
 
-    @Override
-    public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-
+    public DummyBipedModel(float p_i1148_1_) {
+        super(p_i1148_1_);
     }
 
     @Override
-    public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-
-    }
-
-    @Override
-    public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+    // TODO fix parameters
+    public void render(MatrixStack p_225598_1_, IVertexBuilder p_225598_2_, int p_225598_3_, int p_225598_4_, float p_225598_5_, float p_225598_6_, float p_225598_7_, float p_225598_8_) {
 
     }
 }

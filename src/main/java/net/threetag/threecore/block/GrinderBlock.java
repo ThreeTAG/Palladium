@@ -65,8 +65,8 @@ public class GrinderBlock extends MachineBlock {
             if (state.get(MachineBlock.LIT)) {
                 entity.attackEntityFrom(TCDamageSources.GRINDER, 2F);
             } else {
-                double xSpeed = Math.abs(entity.posX - entity.lastTickPosX);
-                double zSpeed = Math.abs(entity.posZ - entity.lastTickPosZ);
+                double xSpeed = Math.abs(entity.getPosX() - entity.lastTickPosX);
+                double zSpeed = Math.abs(entity.getPosZ() - entity.lastTickPosZ);
                 if (xSpeed >= 0.003000000026077032D || zSpeed >= 0.003000000026077032D) {
                     entity.attackEntityFrom(TCDamageSources.GRINDER, 1.0F);
                 }
