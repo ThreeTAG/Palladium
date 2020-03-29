@@ -1,6 +1,7 @@
 package net.threetag.threecore.client.gui.ability;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
@@ -11,7 +12,6 @@ import net.minecraft.util.math.MathHelper;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.IAbilityContainer;
-import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -152,9 +152,10 @@ public class AbilitiesScreen extends Screen {
         } else {
             RenderSystem.pushMatrix();
             RenderSystem.translatef((float) (x + 9), (float) (y + 18), -400.0F);
+            GlStateManager.enableDepthTest();
             tab.drawContents();
             RenderSystem.popMatrix();
-            RenderSystem.depthFunc(GL11.GL_LEQUAL);
+            RenderSystem.depthFunc(515);
             RenderSystem.disableDepthTest();
         }
     }

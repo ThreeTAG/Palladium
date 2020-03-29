@@ -47,7 +47,6 @@ public abstract class FastFluidTESR<T extends TileEntity> extends TileEntityRend
         float alpha = RenderUtil.alpha(color) / 255F;
 
         AxisAlignedBB bounds = getRenderBounds(tank, tankRenderInfo.bounds);
-        // TODO check if this is correct
         IVertexBuilder builder = renderTypeBuffer.getBuffer(RenderType.getTranslucent());
 
         matrixStack.push();

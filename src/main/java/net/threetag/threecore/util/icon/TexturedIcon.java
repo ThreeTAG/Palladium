@@ -61,7 +61,7 @@ public class TexturedIcon implements IIcon {
         if (this.tint != null)
             RenderSystem.color3f(this.tint.getRed() / 255F, this.tint.getGreen() / 255F, this.tint.getBlue() / 255F);
         AbstractGui.blit(x, y, this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
-        RenderSystem.color3f(1F, 1F, 1F);
+        RenderSystem.color4f(1F, 1F, 1F, 1F);
     }
 
     @Override

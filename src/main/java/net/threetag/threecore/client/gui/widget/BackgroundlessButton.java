@@ -17,6 +17,6 @@ public class BackgroundlessButton extends Button {
 
     @Override
     public void drawCenteredString(FontRenderer fontRenderer, String text, int x, int y, int color) {
-        fontRenderer.drawString(text, (float) (x - fontRenderer.getStringWidth(text) / 2), (float) y, 4210752);
+        fontRenderer.drawString(text, (float) (x - fontRenderer.getStringWidth(text) / 2), (float) y, color);
     }
 }

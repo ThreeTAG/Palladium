@@ -31,5 +31,7 @@ public class IconButton extends Button {
         this.blit(this.x, this.y, 0, i, 20, this.height);
         this.icon.draw(minecraft, this.x + 2, this.y + 2);
         this.renderBg(minecraft, mouseX, mouseY);
+        RenderSystem.disableBlend();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1F);
     }
 }

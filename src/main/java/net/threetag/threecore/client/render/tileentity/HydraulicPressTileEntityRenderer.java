@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -54,14 +53,17 @@ public class HydraulicPressTileEntityRenderer extends TileEntityRenderer<Hydraul
 
         matrixStack.translate(0, pixel * 10F, 0);
         float progress = blockstate.get(MachineBlock.LIT) ? MathHelper.sin((Minecraft.getInstance().player.ticksExisted + partialTicks) / 5F) / 2F + 0.5F : 0F;
-//        progress = 1F;
+
         MODEL.setProgress(progress);
         IVertexBuilder vertexBuilder = TEXTURE.getBuffer(renderTypeBuffer, RenderType::getEntitySolid);
         MODEL.render(matrixStack, vertexBuilder, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
 
-        IVertexBuilder boxBuilder = renderTypeBuffer.getBuffer(RenderUtil.RenderTypes.POSITION_COLOR);
-        WorldRenderer.drawBoundingBox(matrixStack, boxBuilder, 2 * pixel, 2.5F * pixel, 7.5F * pixel, 3 * pixel - MODEL.plate1.rotationPointX * pixel, 3.5F * pixel, 8.5F * pixel, 1F, 1F, 1F, 1);
-        WorldRenderer.drawBoundingBox(matrixStack, boxBuilder, 13 * pixel - MODEL.plate2.rotationPointX * pixel, 2.5F * pixel, 7.5F * pixel, 14 * pixel, 3.5F * pixel, 8.5F * pixel, 0.5F, 0.5F, 0.5F, 1);
+        IVertexBuilder boxBuilder = renderTypeBuffer.getBuffer(RenderUtil.RenderTypes.HYDRAULIC_PRESS_PISTONS);
+        float hue = 0.3F;
+        RenderUtil.renderFilledBox(matrixStack.getLast().getMatrix(), boxBuilder, 2 * pixel, 2.5F * pixel, 7.5F * pixel, 3 * pixel - MODEL.plate1.rotationPointX * pixel, 3.5F * pixel, 8.5F * pixel, hue, hue, hue, 1, combinedLightIn);
+        RenderUtil.renderFilledBox(matrixStack.getLast().getMatrix(), boxBuilder, 13 * pixel - MODEL.plate2.rotationPointX * pixel, 2.5F * pixel, 7.5F * pixel, 14 * pixel, 3.5F * pixel, 8.5F * pixel, hue, hue, hue, 1, combinedLightIn);
+        IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+        buffer.finish(RenderUtil.RenderTypes.HYDRAULIC_PRESS_PISTONS);
 
         matrixStack.pop();
     }

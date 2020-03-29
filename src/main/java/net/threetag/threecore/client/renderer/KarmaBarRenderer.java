@@ -35,6 +35,7 @@ public class KarmaBarRenderer {
                         mc.ingameGUI.blit(mainWindow.getScaledWidth() / 2 - 85 + (int) (f1 * 170) - 1, 9, 6, 5, 2, 7);
                     }
                 }
+                RenderSystem.color4f(1, 1, 1, 1F);
                 RenderSystem.popMatrix();
             });
         }
