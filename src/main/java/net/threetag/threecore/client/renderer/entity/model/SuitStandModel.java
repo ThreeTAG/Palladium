@@ -1,5 +1,6 @@
 package net.threetag.threecore.client.renderer.entity.model;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.threetag.threecore.entity.SuitStandEntity;
@@ -24,6 +25,11 @@ public class SuitStandModel extends BipedModel<SuitStandEntity> {
         this.bipedLeftLeg = new ModelRenderer(this, 16, 16);
         this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0F);
         this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getBodyParts() {
+        return ImmutableList.of(this.bipedBody, this.bipedRightArm, this.bipedLeftArm, this.bipedRightLeg, this.bipedLeftLeg);
     }
 
     @Override

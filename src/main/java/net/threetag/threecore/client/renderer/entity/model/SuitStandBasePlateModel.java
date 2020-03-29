@@ -5,6 +5,8 @@ import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.threetag.threecore.entity.SuitStandEntity;
 
+import java.util.Collections;
+
 public class SuitStandBasePlateModel extends BipedModel<SuitStandEntity> {
 
     private final ModelRenderer basePlate;
@@ -23,8 +25,14 @@ public class SuitStandBasePlateModel extends BipedModel<SuitStandEntity> {
     }
 
     @Override
+    protected Iterable<ModelRenderer> getHeadParts() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public void setRotationAngles(SuitStandEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        this.bipedHeadwear.showModel = false;
         this.bipedLeftArm.showModel = entityIn.getShowArms();
         this.bipedRightArm.showModel = entityIn.getShowArms();
         this.bipedHead.rotateAngleX = ((float) Math.PI / 180F) * entityIn.getHeadRotation().getX();
