@@ -1,5 +1,6 @@
 package net.threetag.threecore.sizechanging;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -55,5 +56,20 @@ public class SizeManager {
             float width = 1F / sizeChanging.getRenderWidth(RenderUtil.renderTickTime);
             RenderSystem.scalef(width, 1F / sizeChanging.getRenderHeight(RenderUtil.renderTickTime), width);
         });
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void preRenderCallback(Entity entityIn, MatrixStack matrixStackIn, float partialTicks) {
+        matrixStackIn.push();
+        entityIn.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
+            float width = sizeChanging.getRenderWidth(RenderUtil.renderTickTime);
+            float height = sizeChanging.getRenderHeight(RenderUtil.renderTickTime);
+            matrixStackIn.scale(width, height, width);
+        });
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void postRenderCallback(Entity entityIn, MatrixStack matrixStackIn, float partialTicks) {
+        matrixStackIn.pop();
     }
 }
