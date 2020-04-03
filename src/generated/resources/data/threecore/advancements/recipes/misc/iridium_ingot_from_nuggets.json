@@ -6,15 +6,12 @@
     ]
   },
   "criteria": {
-    "has_at_least_9_iridium_nugget": {
+    "has_iridium_nugget": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "threecore:iridium_nugget",
-            "count": {
-              "min": 9
-            }
+            "tag": "forge:nuggets/iridium"
           }
         ]
       }
@@ -28,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_at_least_9_iridium_nugget",
+      "has_iridium_nugget",
       "has_the_recipe"
     ]
   ]

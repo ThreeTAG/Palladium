@@ -6,15 +6,12 @@
     ]
   },
   "criteria": {
-    "has_at_least_9_vibranium_nugget": {
+    "has_vibranium_nugget": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "threecore:vibranium_nugget",
-            "count": {
-              "min": 9
-            }
+            "tag": "forge:nuggets/vibranium"
           }
         ]
       }
@@ -28,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_at_least_9_vibranium_nugget",
+      "has_vibranium_nugget",
       "has_the_recipe"
     ]
   ]

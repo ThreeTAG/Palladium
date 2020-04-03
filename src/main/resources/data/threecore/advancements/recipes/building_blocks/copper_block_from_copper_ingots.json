@@ -6,15 +6,12 @@
     ]
   },
   "criteria": {
-    "has_at_least_9_copper_ingot": {
+    "has_copper_ingot": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "threecore:copper_ingot",
-            "count": {
-              "min": 9
-            }
+            "tag": "forge:ingots/copper"
           }
         ]
       }
@@ -28,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_at_least_9_copper_ingot",
+      "has_copper_ingot",
       "has_the_recipe"
     ]
   ]

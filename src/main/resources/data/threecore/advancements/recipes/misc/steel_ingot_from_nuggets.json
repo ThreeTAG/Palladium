@@ -6,15 +6,12 @@
     ]
   },
   "criteria": {
-    "has_at_least_9_steel_nugget": {
+    "has_steel_nugget": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "threecore:steel_nugget",
-            "count": {
-              "min": 9
-            }
+            "tag": "forge:nuggets/steel"
           }
         ]
       }
@@ -28,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_at_least_9_steel_nugget",
+      "has_steel_nugget",
       "has_the_recipe"
     ]
   ]

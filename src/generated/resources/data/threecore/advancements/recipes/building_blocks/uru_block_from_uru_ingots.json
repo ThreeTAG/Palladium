@@ -6,15 +6,12 @@
     ]
   },
   "criteria": {
-    "has_at_least_9_uru_ingot": {
+    "has_uru_ingot": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "threecore:uru_ingot",
-            "count": {
-              "min": 9
-            }
+            "tag": "forge:ingots/uru"
           }
         ]
       }
@@ -28,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_at_least_9_uru_ingot",
+      "has_uru_ingot",
       "has_the_recipe"
     ]
   ]

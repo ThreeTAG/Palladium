@@ -6,15 +6,12 @@
     ]
   },
   "criteria": {
-    "has_at_least_9_titanium_nugget": {
+    "has_titanium_nugget": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "threecore:titanium_nugget",
-            "count": {
-              "min": 9
-            }
+            "tag": "forge:nuggets/titanium"
           }
         ]
       }
@@ -28,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_at_least_9_titanium_nugget",
+      "has_titanium_nugget",
       "has_the_recipe"
     ]
   ]

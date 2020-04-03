@@ -6,15 +6,12 @@
     ]
   },
   "criteria": {
-    "has_at_least_9_uranium_ingot": {
+    "has_uranium_ingot": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "threecore:uranium_ingot",
-            "count": {
-              "min": 9
-            }
+            "tag": "forge:ingots/uranium"
           }
         ]
       }
@@ -28,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_at_least_9_uranium_ingot",
+      "has_uranium_ingot",
       "has_the_recipe"
     ]
   ]
