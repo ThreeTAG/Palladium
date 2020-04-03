@@ -17,6 +17,7 @@ import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLay
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.AlphaMaskTextureTransformer;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.ITextureTransformer;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.OverlayTextureTransformer;
+import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.EntityTicksTextureVariable;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.ITextureVariable;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.IntegerNbtTextureVariable;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.SmallArmsTextureVariable;
@@ -74,8 +75,11 @@ public class ModelLayerManager {
         // ----------------------------------------------------------------------------------------------------------------------------------------------
         // Variables
 
+        // Entity Ticks
+        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "entity_ticks"), EntityTicksTextureVariable::new);
+
         // Integer NBT
-        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), j -> new IntegerNbtTextureVariable(JSONUtils.getString(j, "nbt_tag"), JSONUtils.getInt(j, "add", 0)));
+        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), j -> new IntegerNbtTextureVariable(JSONUtils.getString(j, "nbt_tag"), j));
 
         // Small Arms
         registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "small_arms"), j -> new SmallArmsTextureVariable(JSONUtils.getString(j, "normal_arms_value", null), JSONUtils.getString(j, "small_arms_value", null)));
