@@ -82,11 +82,10 @@ public class EntityModelParser implements Function<JsonObject, EntityModel> {
         }
 
         @Override
-        // TODO fix parameters
-        public void render(MatrixStack matrixStack, IVertexBuilder vertexBuilder, int i, int i1, float v, float v1, float v2, float v3) {
+        public void render(MatrixStack matrixStack, IVertexBuilder vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
             RenderSystem.enableBlend();
             for (ModelRenderer cube : this.cubes) {
-                cube.render(matrixStack, vertexBuilder, i, i1, v, v1, v2, v3);
+                cube.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             }
             RenderSystem.disableBlend();
         }

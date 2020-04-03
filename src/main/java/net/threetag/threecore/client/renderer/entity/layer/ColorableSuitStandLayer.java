@@ -20,29 +20,29 @@ public class ColorableSuitStandLayer extends LayerRenderer<SuitStandEntity, Suit
     }
 
     @Override
-    // TODO fix parameters & variables
-    public void render(MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int i, SuitStandEntity suitStandEntity, float p_225628_5_, float p_225628_6_, float p_225628_7_, float p_225628_8_, float p_225628_9_, float p_225628_10_) {
+    // TODO fix variables
+    public void render(MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLightIn, SuitStandEntity suitStandEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         matrixStack.push();
         if (!suitStandEntity.isInvisible()) {
-            float lvt_11_2_;
-            float lvt_12_2_;
-            float lvt_13_2_;
+            float red;
+            float green;
+            float blue;
             if (suitStandEntity.hasCustomName() && "jeb_".equals(suitStandEntity.getName().getUnformattedComponentText())) {
                 int lvt_15_1_ = suitStandEntity.ticksExisted / 25 + suitStandEntity.getEntityId();
                 int lvt_16_1_ = DyeColor.values().length;
                 int lvt_17_1_ = lvt_15_1_ % lvt_16_1_;
                 int lvt_18_1_ = (lvt_15_1_ + 1) % lvt_16_1_;
-                float lvt_19_1_ = ((float) (suitStandEntity.ticksExisted % 25) + p_225628_7_) / 25.0F;
+                float lvt_19_1_ = ((float) (suitStandEntity.ticksExisted % 25) + partialTicks) / 25.0F;
                 float[] lvt_20_1_ = SheepEntity.getDyeRgb(DyeColor.byId(lvt_17_1_));
                 float[] lvt_21_1_ = SheepEntity.getDyeRgb(DyeColor.byId(lvt_18_1_));
-                lvt_11_2_ = lvt_20_1_[0] * (1.0F - lvt_19_1_) + lvt_21_1_[0] * lvt_19_1_;
-                lvt_12_2_ = lvt_20_1_[1] * (1.0F - lvt_19_1_) + lvt_21_1_[1] * lvt_19_1_;
-                lvt_13_2_ = lvt_20_1_[2] * (1.0F - lvt_19_1_) + lvt_21_1_[2] * lvt_19_1_;
+                red = lvt_20_1_[0] * (1.0F - lvt_19_1_) + lvt_21_1_[0] * lvt_19_1_;
+                green = lvt_20_1_[1] * (1.0F - lvt_19_1_) + lvt_21_1_[1] * lvt_19_1_;
+                blue = lvt_20_1_[2] * (1.0F - lvt_19_1_) + lvt_21_1_[2] * lvt_19_1_;
             } else {
                 float[] lvt_14_2_ = SheepEntity.getDyeRgb(suitStandEntity.getDyeColor());
-                lvt_11_2_ = lvt_14_2_[0];
-                lvt_12_2_ = lvt_14_2_[1];
-                lvt_13_2_ = lvt_14_2_[2];
+                red = lvt_14_2_[0];
+                green = lvt_14_2_[1];
+                blue = lvt_14_2_[2];
             }
 
             float scale = 0.9375F;
@@ -50,7 +50,7 @@ public class ColorableSuitStandLayer extends LayerRenderer<SuitStandEntity, Suit
             matrixStack.translate(0F, 0.1F, 0F);
             this.getEntityModel().setModelAttributes(this.model);
 
-            renderCopyCutoutModel(this.getEntityModel(), this.model, SuitStandRenderer.TEXTURE, matrixStack, renderTypeBuffer, i, suitStandEntity, p_225628_5_, p_225628_6_, p_225628_8_, p_225628_9_, p_225628_10_, p_225628_7_, lvt_11_2_, lvt_12_2_, lvt_13_2_);
+            renderCopyCutoutModel(this.getEntityModel(), this.model, SuitStandRenderer.TEXTURE, matrixStack, renderTypeBuffer, packedLightIn, suitStandEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks, red, green, blue);
             matrixStack.pop();
         }
     }

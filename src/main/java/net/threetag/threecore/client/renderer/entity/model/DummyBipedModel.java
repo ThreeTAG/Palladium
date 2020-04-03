@@ -17,8 +17,7 @@ public class DummyBipedModel<T extends LivingEntity> extends BipedModel<T> {
     }
 
     @Override
-    // TODO fix parameters
-    public void render(MatrixStack p_225598_1_, IVertexBuilder p_225598_2_, int p_225598_3_, int p_225598_4_, float p_225598_5_, float p_225598_6_, float p_225598_7_, float p_225598_8_) {
+    public void render(MatrixStack matrixStack, IVertexBuilder vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 
     }
 }

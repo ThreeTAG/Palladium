@@ -40,16 +40,16 @@ public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>,
 
     @Override
     // TODO fix parameters
-    public void render(MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int i, T entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        renderItemLayers(matrixStack, renderTypeBuffer, i, entityIn, EquipmentSlotType.HEAD, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
-        renderItemLayers(matrixStack, renderTypeBuffer, i, entityIn, EquipmentSlotType.CHEST, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
-        renderItemLayers(matrixStack, renderTypeBuffer, i, entityIn, EquipmentSlotType.LEGS, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
-        renderItemLayers(matrixStack, renderTypeBuffer, i, entityIn, EquipmentSlotType.FEET, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+    public void render(MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLightIn, T entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        renderItemLayers(matrixStack, renderTypeBuffer, packedLightIn, entityIn, EquipmentSlotType.HEAD, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+        renderItemLayers(matrixStack, renderTypeBuffer, packedLightIn, entityIn, EquipmentSlotType.CHEST, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+        renderItemLayers(matrixStack, renderTypeBuffer, packedLightIn, entityIn, EquipmentSlotType.LEGS, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+        renderItemLayers(matrixStack, renderTypeBuffer, packedLightIn, entityIn, EquipmentSlotType.FEET, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
 
         ModelLayerContext context = new ModelLayerContext(entityIn);
         for (Ability ability : AbilityHelper.getAbilities(entityIn)) {
             if (ability instanceof IModelLayerProvider && ability.getConditionManager().isEnabled()) {
-                renderLayers(matrixStack, renderTypeBuffer, i, (IModelLayerProvider) ability, context, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                renderLayers(matrixStack, renderTypeBuffer, packedLightIn, (IModelLayerProvider) ability, context, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
             }
         }
     }
