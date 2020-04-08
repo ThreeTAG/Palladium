@@ -1,5 +1,6 @@
 package net.threetag.threecore.ability.superpower;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityGenerator;
 import net.threetag.threecore.ability.AbilityMap;
@@ -49,7 +50,9 @@ public class Superpower implements IAbilityProvider {
         AbilityMap abilityMap = new AbilityMap();
         this.abilityGenerators.forEach(a -> {
             Ability ability = a.create();
-            ability.getAdditionalData().putString("Superpower", this.getId().toString());
+            CompoundNBT nbt = ability.getAdditionalData();
+            nbt.putString("Superpower", this.getId().toString());
+            ability.setAdditionalData(nbt);
             abilityMap.put(a.key, ability);
         });
         return abilityMap;
