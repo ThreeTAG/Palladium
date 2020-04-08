@@ -56,7 +56,7 @@ public class ModelLayerManager {
                     if (textureVariable != null) {
                         texture.addVariable(e.getKey(), textureVariable);
                     } else {
-                        ThreeCore.LOGGER.warn("Texture transformer type '" + JSONUtils.getString(e.getValue().getAsJsonObject(), "type") + "' does not exist!");
+                        ThreeCore.LOGGER.warn("Texture variable type '" + JSONUtils.getString(e.getValue().getAsJsonObject(), "type") + "' does not exist!");
                     }
                 });
             }

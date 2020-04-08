@@ -191,8 +191,15 @@ public class AbilityTabGui extends AbstractGui {
             this.centered = true;
         }
 
+        RenderSystem.pushMatrix();
+        RenderSystem.enableDepthTest();
+        RenderSystem.translatef(0.0F, 0.0F, 950.0F);
+        RenderSystem.colorMask(false, false, false, false);
+        fill(4680, 2260, -4680, -2260, -16777216);
+        RenderSystem.colorMask(true, true, true, true);
+        RenderSystem.translatef(0.0F, 0.0F, -950.0F);
         RenderSystem.depthFunc(518);
-        fill(0, 0, innerWidth, innerHeight, -16777216);
+        fill(innerWidth, innerHeight, 0, 0, -16777216);
         RenderSystem.depthFunc(515);
 
         Minecraft mc = Minecraft.getInstance();
@@ -204,7 +211,7 @@ public class AbilityTabGui extends AbstractGui {
         int l = j % 16;
 
         for (int i1 = -1; i1 <= 15; ++i1) {
-            for (int j1 = -1; j1 <= 10; ++j1) {
+            for (int j1 = -1; j1 <= 11; ++j1) {
                 blit(k + 16 * i1, l + 16 * j1, 0.0F, 0.0F, 16, 16, 16, 16);
             }
         }
@@ -216,6 +223,15 @@ public class AbilityTabGui extends AbstractGui {
         for (AbilityTabEntry entry : this.abilities) {
             entry.drawIcon(mc, i + (int) (entry.x * gridSize), j + (int) (entry.y * gridSize));
         }
+
+        RenderSystem.depthFunc(518);
+        RenderSystem.translatef(0.0F, 0.0F, -950.0F);
+        RenderSystem.colorMask(false, false, false, false);
+        fill(4680, 2260, -4680, -2260, -16777216);
+        RenderSystem.colorMask(true, true, true, true);
+        RenderSystem.translatef(0.0F, 0.0F, 950.0F);
+        RenderSystem.depthFunc(515);
+        RenderSystem.popMatrix();
     }
 
     public void drawToolTips(int mouseX, int mouseY, int x, int y, AbilitiesScreen screen, boolean overlayActive) {

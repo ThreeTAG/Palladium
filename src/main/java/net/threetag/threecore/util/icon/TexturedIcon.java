@@ -2,9 +2,11 @@ package net.threetag.threecore.util.icon;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -57,11 +59,24 @@ public class TexturedIcon implements IIcon {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void draw(Minecraft mc, int x, int y) {
+        RenderSystem.pushMatrix();
+        RenderSystem.enableRescaleNormal();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.defaultAlphaFunc();
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderHelper.setupGuiFlatDiffuseLighting();
         mc.getTextureManager().bindTexture(this.texture);
         if (this.tint != null)
             RenderSystem.color3f(this.tint.getRed() / 255F, this.tint.getGreen() / 255F, this.tint.getBlue() / 255F);
         AbstractGui.blit(x, y, this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
+        RenderHelper.setupGui3DDiffuseLighting();
         RenderSystem.color4f(1F, 1F, 1F, 1F);
+        RenderSystem.enableDepthTest();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.disableRescaleNormal();
+        RenderSystem.popMatrix();
     }
 
     @Override

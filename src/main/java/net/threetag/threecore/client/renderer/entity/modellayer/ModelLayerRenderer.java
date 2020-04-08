@@ -39,7 +39,6 @@ public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>,
     }
 
     @Override
-    // TODO fix parameters
     public void render(MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLightIn, T entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         renderItemLayers(matrixStack, renderTypeBuffer, packedLightIn, entityIn, EquipmentSlotType.HEAD, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         renderItemLayers(matrixStack, renderTypeBuffer, packedLightIn, entityIn, EquipmentSlotType.CHEST, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
@@ -54,7 +53,7 @@ public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>,
         }
     }
 
-    public void renderItemLayers(MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int i, T entity, EquipmentSlotType slot, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void renderItemLayers(MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLightIn, T entity, EquipmentSlotType slot, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         ItemStack stack = entity.getItemStackFromSlot(slot);
         ModelLayerContext context = new ModelLayerContext(entity, stack, slot);
 
@@ -63,7 +62,7 @@ public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>,
                 if (layer.isActive(context)) {
                     matrixStack.push();
                     RenderSystem.color4f(1F, 1F, 1F, 1F);
-                    layer.render(context, matrixStack, renderTypeBuffer, i, this.entityRenderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                    layer.render(context, matrixStack, renderTypeBuffer, packedLightIn, this.entityRenderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
                     matrixStack.pop();
                 }
             }

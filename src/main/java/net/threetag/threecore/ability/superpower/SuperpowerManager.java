@@ -78,7 +78,7 @@ public class SuperpowerManager extends JsonReloadListener {
     public static void setSuperpower(LivingEntity entity, Superpower superpower) {
         try {
             entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
-                abilityContainer.clearAbilities(entity, ability -> ability.getAdditionalData().getBoolean("IsFromSuperpower"));
+                abilityContainer.clearAbilities(entity, ability -> ability.getAdditionalData().contains("Superpower"));
                 abilityContainer.addAbilities(entity, superpower);
                 if (entity instanceof ServerPlayerEntity)
                     ThreeCore.NETWORK_CHANNEL.sendTo(new SendSuperpowerToastMessage(superpower.getName(), superpower.getIcon()), ((ServerPlayerEntity) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
@@ -91,7 +91,7 @@ public class SuperpowerManager extends JsonReloadListener {
     public static void removeSuperpower(LivingEntity entity) {
         try {
             entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
-                abilityContainer.clearAbilities(entity, ability -> ability.getAdditionalData().getBoolean("IsFromSuperpower"));
+                abilityContainer.clearAbilities(entity, ability -> ability.getAdditionalData().contains("Superpower"));
             });
         } catch (Exception e) {
             e.printStackTrace();

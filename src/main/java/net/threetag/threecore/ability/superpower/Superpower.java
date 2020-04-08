@@ -49,7 +49,7 @@ public class Superpower implements IAbilityProvider {
         AbilityMap abilityMap = new AbilityMap();
         this.abilityGenerators.forEach(a -> {
             Ability ability = a.create();
-            ability.getAdditionalData().putBoolean("IsFromSuperpower", true);
+            ability.getAdditionalData().putString("Superpower", this.getId().toString());
             abilityMap.put(a.key, ability);
         });
         return abilityMap;

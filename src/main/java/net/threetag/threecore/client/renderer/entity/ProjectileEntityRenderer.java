@@ -12,7 +12,6 @@ import net.threetag.threecore.client.renderer.entity.modellayer.IModelLayer;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerContext;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerLoader;
 import net.threetag.threecore.entity.ProjectileEntity;
-import net.threetag.threecore.util.RenderUtil;
 
 public class ProjectileEntityRenderer extends SpriteRenderer<ProjectileEntity> {
 
@@ -26,7 +25,7 @@ public class ProjectileEntityRenderer extends SpriteRenderer<ProjectileEntity> {
             if (entity.renderInfo.isEnergy()) {
                 this.preRender(entity, matrixStackIn, bufferIn, entityYaw, partialTicks);
                 matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90.0F));
-                RenderUtil.drawGlowingLine(0.05F, 1F, entity.renderInfo.getColor(), true, true, true);
+//                RenderUtil.drawGlowingLine(0.05F, 1F, entity.renderInfo.getColor(), true, true, true);
                 matrixStackIn.pop();
             } else {
                 IModelLayer layer = ModelLayerLoader.getModelLayer(entity.renderInfo.getModelLayer());

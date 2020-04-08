@@ -8,7 +8,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
@@ -43,17 +42,9 @@ public class ModelLayer implements IModelLayer {
     }
 
     @Override
-    public void render(IModelLayerContext context, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int i, IEntityRenderer<? extends Entity, ? extends EntityModel<?>> entityRenderer, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-//        Minecraft.getInstance().getTextureManager().bindTexture(this.getTexture(context).getTexture(context));
+    public void render(IModelLayerContext context, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLight, IEntityRenderer<? extends Entity, ? extends EntityModel<?>> entityRenderer, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         Model model = getModel(context);
         boolean glow = ModelLayerManager.arePredicatesFulFilled(this.glowPredicates, context);
-
-        // TODO cleanup
-
-        if (glow) {
-            RenderHelper.disableStandardItemLighting();
-            RenderUtil.setLightmapTextureCoords(240, 240);
-        }
 
         if (model instanceof BipedModel && entityRenderer.getEntityModel() instanceof BipedModel && context.getAsEntity() instanceof LivingEntity) {
 
@@ -69,21 +60,17 @@ public class ModelLayer implements IModelLayer {
                 this.setModelSlotVisible(bipedModel, context.getSlot());
 
             bipedModel.setLivingAnimations((LivingEntity) context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
+            bipedModel.setRotationAngles((LivingEntity) context.getAsEntity(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-            IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(renderTypeBuffer, RenderType.getEntityCutoutNoCull(this.getTexture(context).getTexture(context)), false, false);
-            bipedModel.render(matrixStack, ivertexbuilder, i, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+            IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(renderTypeBuffer, glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderType.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
+            bipedModel.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
 
         } else if (model instanceof EntityModel) {
 
-            ((EntityModel) model).setLivingAnimations(context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
-            IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(renderTypeBuffer, RenderType.getEntityCutoutNoCull(this.getTexture(context).getTexture(context)), false, false);
-            ((EntityModel) model).render(matrixStack, ivertexbuilder, i, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+//            ((EntityModel) model).setLivingAnimations(context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
+//            IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(renderTypeBuffer,  glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderUtil.RenderTypes.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
+//            model.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
 
-        }
-
-        if (glow) {
-            RenderUtil.restoreLightmapTextureCoords();
-            RenderHelper.enableStandardItemLighting();
         }
     }
 
