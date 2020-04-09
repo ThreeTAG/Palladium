@@ -26,7 +26,7 @@ public class ProjectileEntityRenderer extends SpriteRenderer<ProjectileEntity> {
                 GlStateManager.rotatef(90F, 1.0F, 0.0F, 0.0F);
                 RenderUtil.drawGlowingLine(0.05F, 1F, entity.renderInfo.getColor(), true, true, true);
                 GlStateManager.popMatrix();
-            } else {
+            } else if (entity.renderInfo.getModelLayer() != null) {
                 IModelLayer layer = ModelLayerLoader.getModelLayer(entity.renderInfo.getModelLayer());
                 if (layer != null) {
                     this.preRender(entity, x, y, z, entityYaw, partialTicks);

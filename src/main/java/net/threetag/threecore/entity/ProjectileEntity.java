@@ -1,5 +1,7 @@
 package net.threetag.threecore.entity;
 
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -12,6 +14,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ItemParticleData;
+import net.minecraft.particles.ParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -28,6 +31,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
+import java.util.Random;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem, IEntityAdditionalSpawnData {
@@ -100,6 +104,22 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
     }
 
     @Override
+    public void tick() {
+        super.tick();
+
+        if (this.world.isRemote && this.renderInfo.isParticles()) {
+            Random random = new Random();
+            float sX = (random.nextFloat() - 0.5F) * this.renderInfo.getParticleSpread();
+            float sY = (random.nextFloat() - 0.5F) * this.renderInfo.getParticleSpread();
+            float sZ = (random.nextFloat() - 0.5F) * this.renderInfo.getParticleSpread();
+            try {
+                this.world.addParticle(this.renderInfo.getParticleType().getDeserializer().deserialize(this.renderInfo.getParticleType(), new StringReader(this.renderInfo.particleOptions)), this.getPosX(), this.getPosY(), this.getPosZ(), sX, sY, sZ);
+            } catch (CommandSyntaxException e) {
+            }
+        }
+    }
+
+    @Override
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putFloat("Damage", this.damage);
@@ -143,7 +163,8 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
-        this.renderInfo = new ProjectileRenderInfo(additionalData.readCompoundTag());
+        CompoundNBT nbt = additionalData.readCompoundTag();
+        this.renderInfo = new ProjectileRenderInfo(nbt);
     }
 
     @Nonnull
@@ -154,46 +175,56 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
 
     public static class ProjectileRenderInfo implements INBTSerializable<CompoundNBT> {
 
+        /**
+         * 0 = nothing
+         * 1 = item
+         * 2 = model layer
+         * 3 = energy
+         * 4 = particles
+         */
+        private int type;
         private ItemStack stack;
         private ResourceLocation modelLayer;
-        private boolean energy;
         private Color color;
+        private ParticleType<?> particleType;
+        private float particleSpread;
+        private String particleOptions;
 
         public ProjectileRenderInfo(ItemStack stack) {
+            this.type = 1;
             this.stack = stack;
-            this.modelLayer = null;
-            this.energy = false;
-            this.color = null;
         }
 
         public ProjectileRenderInfo(ResourceLocation modelLayer) {
-            this.stack = null;
+            this.type = 2;
             this.modelLayer = modelLayer;
-            this.energy = false;
-	        this.color = null;
         }
 
-        public ProjectileRenderInfo(boolean energy) {
-            this(energy, Color.RED);
+        public ProjectileRenderInfo(Color energyColor) {
+            this.type = 3;
+            this.color = energyColor;
         }
 
-	    public ProjectileRenderInfo(boolean energy, Color color) {
-		    this.stack = null;
-		    this.modelLayer = null;
-		    this.energy = energy;
-		    this.color = color;
-	    }
+        public ProjectileRenderInfo(ParticleType particleType, float particleSpread) {
+            this.type = 4;
+            this.particleType = particleType;
+            this.particleSpread = particleSpread;
+        }
 
         public ProjectileRenderInfo(CompoundNBT nbt) {
             this.deserializeNBT(nbt);
         }
 
         public boolean isItem() {
-            return this.stack != null;
+            return this.type == 1 && this.stack != null;
         }
 
         public ItemStack getStack() {
             return this.stack;
+        }
+
+        public boolean isModelLayer() {
+            return this.type == 2 && this.modelLayer != null;
         }
 
         public ResourceLocation getModelLayer() {
@@ -201,37 +232,81 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
         }
 
         public boolean isEnergy() {
-            return this.energy;
+            return this.type == 3;
         }
 
-        public Color getColor() { return this.color; }
+        public Color getColor() {
+            return this.color;
+        }
+
+        public boolean isParticles() {
+            return this.type == 4 && this.particleType != null;
+        }
+
+        public ParticleType getParticleType() {
+            return particleType;
+        }
+
+        public float getParticleSpread() {
+            return particleSpread;
+        }
 
         @Override
         public CompoundNBT serializeNBT() {
             CompoundNBT nbt = new CompoundNBT();
+            nbt.putInt("Type", this.type);
             if (this.isItem()) {
                 nbt.put("Item", this.stack.serializeNBT());
             } else if (this.getModelLayer() != null) {
                 nbt.putString("ModelLayer", this.modelLayer.toString());
-            } else {
-                nbt.putBoolean("Energy", this.energy);
-	            nbt.putIntArray("Color", new int[]{this.color.getRed(), this.color.getGreen(), this.getColor().getBlue()});
+            } else if (this.isEnergy()) {
+                nbt.putIntArray("EnergyColor", new int[]{this.color.getRed(), this.color.getGreen(), this.getColor().getBlue()});
+            } else if (this.isParticles()) {
+                nbt.putString("ParticleType", ForgeRegistries.PARTICLE_TYPES.getKey(this.particleType).toString());
+                nbt.putFloat("ParticleSpread", this.particleSpread);
+                nbt.putString("ParticleOptions", this.particleOptions);
             }
             return nbt;
         }
 
         @Override
         public void deserializeNBT(CompoundNBT nbt) {
-            if (nbt.contains("Item")) {
-                this.stack = nbt.get("Item") instanceof CompoundNBT ? ItemStack.read(nbt.getCompound("Item")) : new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("Item"))));
-            } else if (nbt.contains("ModelLayer")) {
-                this.modelLayer = new ResourceLocation(nbt.getString("ModelLayer"));
+            if (nbt.contains("Type")) {
+                this.type = nbt.getInt("Type");
+
+                if (type == 1) {
+                    this.stack = nbt.get("Item") instanceof CompoundNBT ? ItemStack.read(nbt.getCompound("Item")) : new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("Item"))));
+                } else if (type == 2) {
+                    this.modelLayer = new ResourceLocation(nbt.getString("ModelLayer"));
+                } else if (type == 3) {
+                    if (nbt.keySet().contains("EnergyColor") && nbt.getIntArray("EnergyColor").length == 3)
+                        this.color = new Color(nbt.getIntArray("EnergyColor")[0], nbt.getIntArray("EnergyColor")[1], nbt.getIntArray("EnergyColor")[2]);
+                    else
+                        this.color = Color.RED;
+                } else if (type == 4) {
+                    this.particleType = ForgeRegistries.PARTICLE_TYPES.getValue(new ResourceLocation(nbt.getString("ParticleType")));
+                    this.particleSpread = nbt.getFloat("ParticleSpread");
+                    this.particleOptions = nbt.getString("ParticleOptions");
+                }
             } else {
-                this.energy = nbt.getBoolean("Energy");
-                if (nbt.keySet().contains("Color") && nbt.getIntArray("Color").length == 3)
-                    this.color = new Color(nbt.getIntArray("Color")[0], nbt.getIntArray("Color")[1], nbt.getIntArray("Color")[2]);
-                else
-                	this.color = Color.RED;
+                if (nbt.contains("Item")) {
+                    this.type = 1;
+                    this.stack = nbt.get("Item") instanceof CompoundNBT ? ItemStack.read(nbt.getCompound("Item")) : new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("Item"))));
+                } else if (nbt.contains("ModelLayer")) {
+                    this.type = 2;
+                    this.modelLayer = new ResourceLocation(nbt.getString("ModelLayer"));
+                } else if (nbt.contains("EnergyColor")) {
+                    this.type = 3;
+                    if (nbt.keySet().contains("EnergyColor") && nbt.getIntArray("EnergyColor").length == 3)
+                        this.color = new Color(nbt.getIntArray("EnergyColor")[0], nbt.getIntArray("EnergyColor")[1], nbt.getIntArray("EnergyColor")[2]);
+                    else
+                        this.color = Color.RED;
+                } else if (nbt.contains("ParticleType")) {
+                    this.type = 4;
+                    this.particleType = ForgeRegistries.PARTICLE_TYPES.getValue(new ResourceLocation(nbt.getString("ParticleType")));
+                    this.particleSpread = nbt.getFloat("ParticleSpread");
+                    this.particleOptions = nbt.getString("ParticleOptions");
+                }
             }
         }
     }
