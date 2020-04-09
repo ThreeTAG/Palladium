@@ -27,7 +27,7 @@ public class ProjectileEntityRenderer extends SpriteRenderer<ProjectileEntity> {
                 matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90.0F));
 //                RenderUtil.drawGlowingLine(0.05F, 1F, entity.renderInfo.getColor(), true, true, true);
                 matrixStackIn.pop();
-            } else {
+            } else if (entity.renderInfo.getModelLayer() != null) {
                 IModelLayer layer = ModelLayerLoader.getModelLayer(entity.renderInfo.getModelLayer());
                 if (layer != null) {
                     this.preRender(entity, matrixStackIn, bufferIn, entityYaw, partialTicks);
