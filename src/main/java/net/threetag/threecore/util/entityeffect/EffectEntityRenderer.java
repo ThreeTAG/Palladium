@@ -20,9 +20,9 @@ public class EffectEntityRenderer extends EntityRenderer<EffectEntity> {
         Entity anchor = entity.getAnchorEntity();
 
         if (anchor != null) {
-            double x = MathUtil.interpolate(anchor.lastTickPosX, anchor.getPosX(), partialTicks);
-            double y = MathUtil.interpolate(anchor.lastTickPosY, anchor.getPosY(), partialTicks);
-            double z = MathUtil.interpolate(anchor.lastTickPosZ, anchor.getPosZ(), partialTicks);
+            double x = MathUtil.interpolate(anchor.lastTickPosX, anchor.getPosX(), partialTicks) - MathUtil.interpolate(entity.lastTickPosX, entity.getPosX(), partialTicks);
+            double y = MathUtil.interpolate(anchor.lastTickPosY, anchor.getPosY(), partialTicks) - MathUtil.interpolate(entity.lastTickPosY, entity.getPosY(), partialTicks);
+            double z = MathUtil.interpolate(anchor.lastTickPosZ, anchor.getPosZ(), partialTicks) - MathUtil.interpolate(entity.lastTickPosZ, entity.getPosZ(), partialTicks);
 
             matrixStack.push();
             matrixStack.translate(x, y, z);
