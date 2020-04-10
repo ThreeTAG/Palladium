@@ -19,31 +19,16 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.renderer.ItemRenderer',
-                'methodName': 'func_184392_a',
-                'methodDesc': '(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/client/renderer/model/ItemCameraTransforms$TransformType;Z)V'
+                'methodName': 'func_229109_a_',
+                'methodDesc': '(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/model/ItemCameraTransforms$TransformType;ZLcom/mojang/blaze3d/matrix/MatrixStack;Lnet/minecraft/client/renderer/IRenderTypeBuffer;Lnet/minecraft/world/World;II)V'
             },
             'transformer': function (methodNode) {
                 var instructions = methodNode.instructions;
-                var injectionPoint1 = null;
-                var injectionPoint2 = null;
-                var renderItemModel_name = ASMAPI.mapMethod('func_184394_a');
-
-                for (var i = 0; i < instructions.size(); i++) {
-                    var instruction = instructions.get(i);
-
-                    if(instruction.getOpcode() == IFNULL) {
-                        injectionPoint1 = instructions.get(i);
-                    }
-
-                    if (instruction.getOpcode() == INVOKEVIRTUAL && instruction.name == renderItemModel_name) {
-                        injectionPoint2 = instructions.get(i);
-                    }
-                }
 
                 // RenderUtil.setCurrentEntityInItemRendering(entitylivingbaseIn);
                 {
                     var preInstructions = new InsnList();
-                    preInstructions.add(new VarInsnNode(ALOAD, 2));
+                    preInstructions.add(new VarInsnNode(ALOAD, 1));
                     preInstructions.add(new MethodInsnNode(
                         //int opcode
                         INVOKESTATIC,
@@ -56,14 +41,14 @@ function initializeCoreMod() {
                         //boolean isInterface
                         false
                     ));
-                    instructions.insert(injectionPoint1, preInstructions);
+                    instructions.insert(preInstructions);
                 }
 
                 // RenderUtil.setCurrentEntityInItemRendering(null);
                 {
-                    var preInstructions = new InsnList();
-                    preInstructions.add(new InsnNode(ACONST_NULL));
-                    preInstructions.add(new MethodInsnNode(
+                    var postInstructions = new InsnList();
+                    postInstructions.add(new InsnNode(ACONST_NULL));
+                    postInstructions.add(new MethodInsnNode(
                         //int opcode
                         INVOKESTATIC,
                         //String owner
@@ -75,7 +60,7 @@ function initializeCoreMod() {
                         //boolean isInterface
                         false
                     ));
-                    instructions.insert(injectionPoint2, preInstructions);
+                    instructions.add(postInstructions);
                 }
 
                 return methodNode;

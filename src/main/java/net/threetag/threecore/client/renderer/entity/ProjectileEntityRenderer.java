@@ -1,6 +1,7 @@
 package net.threetag.threecore.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Vector3f;
@@ -12,6 +13,7 @@ import net.threetag.threecore.client.renderer.entity.modellayer.IModelLayer;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerContext;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerLoader;
 import net.threetag.threecore.entity.ProjectileEntity;
+import net.threetag.threecore.util.RenderUtil;
 
 public class ProjectileEntityRenderer extends SpriteRenderer<ProjectileEntity> {
 
@@ -25,7 +27,8 @@ public class ProjectileEntityRenderer extends SpriteRenderer<ProjectileEntity> {
             if (entity.renderInfo.isEnergy()) {
                 this.preRender(entity, matrixStackIn, bufferIn, entityYaw, partialTicks);
                 matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90.0F));
-//                RenderUtil.drawGlowingLine(0.05F, 1F, entity.renderInfo.getColor(), true, true, true);
+                IVertexBuilder vertexBuilder = bufferIn.getBuffer(RenderUtil.RenderTypes.LASER);
+                RenderUtil.drawGlowingLine(matrixStackIn.getLast().getMatrix(), vertexBuilder, 1F, 0.05F, entity.renderInfo.getColor().getRed() / 255F, entity.renderInfo.getColor().getGreen() / 255F, entity.renderInfo.getColor().getBlue() / 255F, 1F, 15728640);
                 matrixStackIn.pop();
             } else if (entity.renderInfo.getModelLayer() != null) {
                 IModelLayer layer = ModelLayerLoader.getModelLayer(entity.renderInfo.getModelLayer());

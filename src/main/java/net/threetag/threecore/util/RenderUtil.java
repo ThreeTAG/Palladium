@@ -203,9 +203,10 @@ public class RenderUtil {
                 .build(false));
 
         public static final RenderType LASER = makeType(ThreeCore.MODID + ":laser", DefaultVertexFormats.POSITION_COLOR_LIGHTMAP, GL11.GL_QUADS, 256, false, false, RenderType.State.getBuilder()
-                .texture(BLOCK_SHEET)
+                .texture(RenderState.NO_TEXTURE)
+                .cull(RenderState.CULL_ENABLED)
                 .alpha(DEFAULT_ALPHA)
-                .transparency(LIGHTNING_TRANSPARENCY)
+                .transparency(RenderState.LIGHTNING_TRANSPARENCY)
                 .build(true));
 
         public static RenderType getGlowing(ResourceLocation locationIn) {
