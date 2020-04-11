@@ -279,7 +279,7 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
                 } else if (type == 2) {
                     this.modelLayer = new ResourceLocation(nbt.getString("ModelLayer"));
                 } else if (type == 3) {
-                    if (nbt.keySet().contains("EnergyColor") && nbt.getIntArray("EnergyColor").length == 3)
+                    if (nbt.contains("EnergyColor") && nbt.getIntArray("EnergyColor").length == 3)
                         this.color = new Color(nbt.getIntArray("EnergyColor")[0], nbt.getIntArray("EnergyColor")[1], nbt.getIntArray("EnergyColor")[2]);
                     else
                         this.color = Color.RED;
@@ -297,7 +297,7 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
                     this.modelLayer = new ResourceLocation(nbt.getString("ModelLayer"));
                 } else if (nbt.contains("EnergyColor")) {
                     this.type = 3;
-                    if (nbt.keySet().contains("EnergyColor") && nbt.getIntArray("EnergyColor").length == 3)
+                    if (nbt.getIntArray("EnergyColor").length == 3)
                         this.color = new Color(nbt.getIntArray("EnergyColor")[0], nbt.getIntArray("EnergyColor")[1], nbt.getIntArray("EnergyColor")[2]);
                     else
                         this.color = Color.RED;
