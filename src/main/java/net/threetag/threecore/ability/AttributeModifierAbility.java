@@ -47,14 +47,26 @@ public class AttributeModifierAbility extends Ability {
     public void action(LivingEntity entity) {
         IAttribute attribute = this.dataManager.get(ATTRIBUTE);
 
-        if (entity.getAttributes().getAttributeInstance(attribute) == null) {
+        if(entity.getAttributes().getAttributeInstance(attribute) == null) {
             return;
         }
 
         UUID uuid = this.dataManager.get(UUID);
-        entity.getAttributes().getAttributeInstance(attribute).removeModifier(uuid);
-        AttributeModifier modifier = new AttributeModifier(uuid, this.dataManager.get(TITLE).getFormattedText(), this.dataManager.get(AMOUNT), this.dataManager.get(OPERATION)).setSaved(false);
-        entity.getAttributes().getAttributeInstance(attribute).applyModifier(modifier);
+
+        if (entity.getAttributes().getAllAttributes().stream().noneMatch(iAttributeInstance -> iAttributeInstance.getAttribute() == attribute)) {
+            entity.getAttributes().registerAttribute(attribute).setBaseValue(attribute.getDefaultValue());
+        }
+
+        if (entity.getAttributes().getAttributeInstance(attribute).getModifier(uuid) != null && (
+                entity.getAttribute(attribute).getModifier(uuid).getAmount() != this.dataManager.get(AMOUNT)
+                        || entity.getAttribute(attribute).getModifier(uuid).getOperation() != this.dataManager.get(OPERATION))) {
+            entity.getAttributes().getAttributeInstance(attribute).removeModifier(uuid);
+        }
+
+        if (entity.getAttributes().getAttributeInstance(attribute).getModifier(uuid) == null) {
+            AttributeModifier modifier = new AttributeModifier(uuid, this.dataManager.get(TITLE).getFormattedText(), this.dataManager.get(AMOUNT), this.dataManager.get(OPERATION)).setSaved(false);
+            entity.getAttributes().getAttributeInstance(attribute).applyModifier(modifier);
+        }
     }
 
     @Override
