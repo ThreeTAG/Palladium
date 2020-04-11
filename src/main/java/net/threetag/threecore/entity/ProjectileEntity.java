@@ -113,7 +113,7 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
             float sY = (random.nextFloat() - 0.5F) * this.renderInfo.getParticleSpread();
             float sZ = (random.nextFloat() - 0.5F) * this.renderInfo.getParticleSpread();
             try {
-                this.world.addParticle(this.renderInfo.getParticleType().getDeserializer().deserialize(this.renderInfo.getParticleType(), new StringReader(this.renderInfo.particleOptions)), this.getPosX(), this.getPosY(), this.getPosZ(), sX, sY, sZ);
+                this.world.addParticle(this.renderInfo.getParticleType().getDeserializer().deserialize(this.renderInfo.getParticleType(), new StringReader(this.renderInfo.particleOptions)), this.posX, this.posY, this.posZ, sX, sY, sZ);
             } catch (CommandSyntaxException e) {
             }
         }
