@@ -2,6 +2,9 @@ package net.threetag.threecore.ability;
 
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.play.server.SEntityPropertiesPacket;
 import net.threetag.threecore.entity.attributes.AttributeRegistry;
 import net.threetag.threecore.util.icon.IIcon;
 import net.minecraft.entity.LivingEntity;
@@ -9,10 +12,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.threetag.threecore.util.threedata.*;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class AttributeModifierAbility extends Ability {
 
@@ -47,7 +47,7 @@ public class AttributeModifierAbility extends Ability {
     public void action(LivingEntity entity) {
         IAttribute attribute = this.dataManager.get(ATTRIBUTE);
 
-        if(entity.getAttributes().getAttributeInstance(attribute) == null) {
+        if (entity.getAttributes().getAttributeInstance(attribute) == null) {
             return;
         }
 
@@ -66,6 +66,13 @@ public class AttributeModifierAbility extends Ability {
         if (entity.getAttributes().getAttributeInstance(attribute).getModifier(uuid) == null) {
             AttributeModifier modifier = new AttributeModifier(uuid, this.dataManager.get(TITLE).getFormattedText(), this.dataManager.get(AMOUNT), this.dataManager.get(OPERATION)).setSaved(false);
             entity.getAttributes().getAttributeInstance(attribute).applyModifier(modifier);
+        }
+
+        if (entity.ticksExisted < 20 && entity instanceof ServerPlayerEntity) {
+            Collection<IAttributeInstance> set = entity.getAttributes().getAllAttributes();
+            if (!set.isEmpty()) {
+                ((ServerPlayerEntity) entity).connection.sendPacket(new SEntityPropertiesPacket(entity.getEntityId(), set));
+            }
         }
     }
 
