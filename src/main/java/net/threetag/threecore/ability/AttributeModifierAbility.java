@@ -32,7 +32,7 @@ public class AttributeModifierAbility extends Ability {
         this.dataManager.register(ATTRIBUTE, AttributeRegistry.REGISTRY.getRandom(new Random()).getAttribute());
         this.dataManager.register(AMOUNT, 1F);
         this.dataManager.register(OPERATION, AttributeModifier.Operation.ADDITION);
-        this.dataManager.register(UUID, java.util.UUID.randomUUID());
+        this.dataManager.register(UUID, java.util.UUID.fromString("498be4fb-af04-42f2-8948-e6ccdc0d99e1"));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class AttributeModifierAbility extends Ability {
     public void action(LivingEntity entity) {
         IAttribute attribute = this.dataManager.get(ATTRIBUTE);
 
-        if (entity.getAttributes().getAttributeInstance(attribute) == null) {
+        if (entity.getAttributes().getAttributeInstance(attribute) == null || entity.world.isRemote) {
             return;
         }
 
