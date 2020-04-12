@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.ItemTags;
@@ -32,12 +34,7 @@ public class ItemTagThreeData extends ThreeData<Tag<Item>> {
     }
 
     @Override
-    public boolean displayAsString(Tag<Item> value) {
-        return true;
-    }
-
-    @Override
-    public String getDisplay(Tag<Item> value) {
-        return value.getId().toString();
+    public JsonElement serializeJson(Tag<Item> value) {
+        return new JsonPrimitive(value.getId().toString());
     }
 }

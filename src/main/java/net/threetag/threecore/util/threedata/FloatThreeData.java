@@ -1,11 +1,12 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 
-public class FloatThreeData extends ThreeData<Float>
-{
+public class FloatThreeData extends ThreeData<Float> {
 
     public FloatThreeData(String key) {
         super(key);
@@ -26,5 +27,10 @@ public class FloatThreeData extends ThreeData<Float>
         if (!nbt.contains(this.key))
             return defaultValue;
         return nbt.getFloat(this.key);
+    }
+
+    @Override
+    public JsonElement serializeJson(Float value) {
+        return new JsonPrimitive(value);
     }
 }

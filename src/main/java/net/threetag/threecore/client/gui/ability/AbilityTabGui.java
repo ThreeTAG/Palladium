@@ -48,7 +48,9 @@ public class AbilityTabGui extends AbstractGui {
 
         // Create entry for each ability
         for (Ability ability : container.getAbilities()) {
-            abilities.add(new AbilityTabEntry(ability));
+            if (!ability.get(Ability.HIDDEN)) {
+                abilities.add(new AbilityTabEntry(ability));
+            }
         }
 
         // Find parents and children for each
@@ -204,7 +206,7 @@ public class AbilityTabGui extends AbstractGui {
         int l = j % 16;
 
         for (int i1 = -1; i1 <= 15; ++i1) {
-            for (int j1 = -1; j1 <= 10; ++j1) {
+            for (int j1 = -1; j1 <= 11; ++j1) {
                 blit(k + 16 * i1, l + 16 * j1, 0.0F, 0.0F, 16, 16, 16, 16);
             }
         }
@@ -224,7 +226,7 @@ public class AbilityTabGui extends AbstractGui {
         fill(0, 0, innerWidth, innerHeight, MathHelper.floor(this.fade * 255.0F) << 24);
         boolean flag = false;
 
-        if(!overlayActive) {
+        if (!overlayActive) {
             int i = MathHelper.floor(this.scrollX);
             int j = MathHelper.floor(this.scrollY);
             if (mouseX > 0 && mouseX < innerWidth && mouseY > 0 && mouseY < innerHeight) {
@@ -239,7 +241,7 @@ public class AbilityTabGui extends AbstractGui {
         }
 
         GlStateManager.popMatrix();
-        if(!overlayActive) {
+        if (!overlayActive) {
             if (flag) {
                 this.fade = MathHelper.clamp(this.fade + 0.02F, 0.0F, 0.3F);
             } else {

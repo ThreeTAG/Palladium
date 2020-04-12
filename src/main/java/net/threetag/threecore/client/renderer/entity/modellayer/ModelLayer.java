@@ -125,7 +125,7 @@ public class ModelLayer implements IModelLayer {
             JsonElement glowJson = json.get("glow");
 
             if (glowJson.isJsonPrimitive() && glowJson.getAsBoolean()) {
-                glowPredicates.add((c) -> false);
+                glowPredicates.add((c) -> true);
             } else {
                 JsonArray predicateArray = JSONUtils.getJsonArray(json, "glow");
                 for (int i = 0; i < predicateArray.size(); i++) {

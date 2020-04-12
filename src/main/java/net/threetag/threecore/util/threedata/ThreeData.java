@@ -1,6 +1,7 @@
 package net.threetag.threecore.util.threedata;
 
 import com.google.common.reflect.TypeToken;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundNBT;
 
@@ -71,12 +72,18 @@ public abstract class ThreeData<T> {
 
     public abstract T readFromNBT(CompoundNBT nbt, T defaultValue);
 
-    public String getDisplay(T value) {
-        return value.toString();
-    }
+    public abstract JsonElement serializeJson(T value);
 
-    public boolean displayAsString(T value) {
-        return false;
+    public final String getJsonString(T value) {
+        JsonElement element = serializeJson(value);
+
+        if (element.isJsonPrimitive()) {
+            return serializeJson(value).toString().replaceAll("\\\\\"", "\"");
+        } else if (element.isJsonObject()) {
+            String s = serializeJson(value).toString().replaceAll("\\\\\"", "\"");
+            return "{" + s.substring(1, s.length() - 1) + "}";
+        }
+        return serializeJson(value).toString().replaceAll("\\\\\"", "\"");
     }
 
     public EnumSync getSyncType() {

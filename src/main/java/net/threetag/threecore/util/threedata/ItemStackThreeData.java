@@ -1,5 +1,6 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -36,7 +37,10 @@ public class ItemStackThreeData extends ThreeData<ItemStack> {
     }
 
     @Override
-    public String getDisplay(ItemStack value) {
-        return "{ \"item\": \"" + ForgeRegistries.ITEMS.getKey(value.getItem()).toString() + "\", \"count\": " + value.getCount() + " }";
+    public JsonElement serializeJson(ItemStack value) {
+        JsonObject object = new JsonObject();
+        object.addProperty("item", ForgeRegistries.ITEMS.getKey(value.getItem()).toString());
+        object.addProperty("count", value.getCount());
+        return object;
     }
 }

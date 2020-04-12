@@ -1,4 +1,4 @@
-package net.threetag.threecore.client.render.tileentity.tileentity;
+package net.threetag.threecore.client.render.tileentity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;

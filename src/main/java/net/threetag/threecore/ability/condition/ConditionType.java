@@ -46,6 +46,9 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
     public static final ConditionType XP = new ConditionType(XPCondition::new, ThreeCore.MODID, "xp");
     public static final ConditionType WEARING_ITEM = new ConditionType(WearingItemCondition::new, ThreeCore.MODID, "wearing_item");
     public static final ConditionType WEARING_ITEM_TAG = new ConditionType(WearingItemTagCondition::new, ThreeCore.MODID, "wearing_item_tag");
+    public static final ConditionType ITEM_INTEGER_NBT = new ConditionType(ItemIntegerNbtCondition::new, ThreeCore.MODID, "item_integer_nbt");
+    public static final ConditionType EYES_IN_FLUID = new ConditionType(EyesInFluidCondition::new, ThreeCore.MODID, "eyes_in_fluid");
+    public static final ConditionType SIZE = new ConditionType(SizeCondition::new, ThreeCore.MODID, "size");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -67,6 +70,9 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
         e.getRegistry().register(XP);
         e.getRegistry().register(WEARING_ITEM);
         e.getRegistry().register(WEARING_ITEM_TAG);
+        e.getRegistry().register(ITEM_INTEGER_NBT);
+        e.getRegistry().register(EYES_IN_FLUID);
+        e.getRegistry().register(SIZE);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -137,8 +143,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
                 StringBuilder jsonText = new StringBuilder("[{\"type\":\"").append(entry.getRegistryName().toString()).append("\",");
                 for (int i = 0; i < dataList.size(); i++) {
                     ThreeData threeData = dataList.get(i);
-                    Object value = threeData.getDisplay(condition.getDataManager().getDefaultValue(threeData));
-                    String s = threeData.displayAsString(condition.getDataManager().getDefaultValue(threeData)) ? "\"" + value.toString() + "\"" : value.toString();
+                    String s = threeData.getJsonString(condition.getDataManager().getDefaultValue(threeData));
                     jsonText.append("  \"").append(threeData.getJsonKey()).append("\": ").append(s).append(i < dataList.size() - 1 ? "," : "");
                 }
                 jsonText.append("}]");
@@ -153,8 +158,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
                 // Table
                 bw.write("<table>\n<tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr>\n");
                 for (ThreeData threeData : dataList) {
-                    Object value = threeData.getDisplay(condition.getDataManager().getDefaultValue(threeData));
-                    String s = threeData.displayAsString(condition.getDataManager().getDefaultValue(threeData)) ? "\"" + value.toString() + "\"" : value.toString() + "";
+                    String s = threeData.getJsonString(condition.getDataManager().getDefaultValue(threeData));
                     bw.write("<tr>\n" +
                             "<td><code>" + threeData.getJsonKey() + "</code></td>\n" +
                             "<td><code>" + threeData.getType().getTypeName().substring(threeData.getType().getTypeName().lastIndexOf(".") + 1) + "</code></td>\n" +

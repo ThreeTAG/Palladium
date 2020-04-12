@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.CompoundNBT;
@@ -43,12 +45,7 @@ public class BlockThreeData extends ThreeData<Block>
     }
 
     @Override
-    public String getDisplay(Block value) {
-        return ForgeRegistries.BLOCKS.getKey(value).toString();
-    }
-
-    @Override
-    public boolean displayAsString(Block value) {
-        return true;
+    public JsonElement serializeJson(Block value) {
+        return new JsonPrimitive(ForgeRegistries.BLOCKS.getKey(value).toString());
     }
 }

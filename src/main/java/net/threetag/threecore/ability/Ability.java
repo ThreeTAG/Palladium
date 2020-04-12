@@ -12,27 +12,28 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
-import net.threetag.threecore.client.gui.ability.AbilityScreen;
 import net.threetag.threecore.ability.condition.AbilityConditionManager;
 import net.threetag.threecore.ability.condition.Condition;
-import net.threetag.threecore.util.icon.IIcon;
-import net.threetag.threecore.util.icon.ItemIcon;
+import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
+import net.threetag.threecore.client.gui.ability.AbilityScreen;
 import net.threetag.threecore.scripts.events.AbilityDataUpdatedScriptEvent;
 import net.threetag.threecore.scripts.events.AbilityTickScriptEvent;
+import net.threetag.threecore.util.RenderUtil;
+import net.threetag.threecore.util.icon.IIcon;
+import net.threetag.threecore.util.icon.ItemIcon;
 import net.threetag.threecore.util.threedata.*;
-import net.threetag.threecore.util.threedata.IWrappedThreeDataHolder;
 
 public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrappedThreeDataHolder {
 
     public static final ThreeData<Boolean> SHOW_IN_BAR = new BooleanThreeData("show_in_bar").setSyncType(EnumSync.SELF)
             .enableSetting("show_in_bar", "Determines if this ability should be displayed in the ability bar without a condition that displays it there.");
-    public static final ThreeData<Boolean> HIDDEN = new BooleanThreeData("hidden").setSyncType(EnumSync.SELF);
+    public static final ThreeData<Boolean> HIDDEN = new BooleanThreeData("hidden").setSyncType(EnumSync.SELF).enableSetting("If enabled, the ability will be invisible for the ability GUI & ability bar");
     public static final ThreeData<ITextComponent> TITLE = new TextComponentThreeData("title").setSyncType(EnumSync.SELF)
             .enableSetting("title", "Allows you to set a custom title for this ability");
     public static final ThreeData<IIcon> ICON = new IconThreeData("icon").setSyncType(EnumSync.SELF)
             .enableSetting("icon", "Lets you customize the icon for the ability");
     public static final ThreeData<Integer> KEYBIND = new IntegerThreeData("key").setSyncType(EnumSync.SELF);
+    public static final ThreeData<CompoundNBT> ADDITIONAL_DATA = new CompoundNBTThreeData("additional_data").enableSetting("You can store additional data here, especially useful if you use scripts and want to mark certain abilities");
 
     public final AbilityType type;
     String id;
@@ -50,7 +51,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
     protected AbilityConditionManager conditionManager = new AbilityConditionManager(this);
     protected int ticks = 0;
     public boolean dirty = false;
-    protected CompoundNBT additionalData;
     /**
      * Current wielder of this ability, mainly used for event managing, dont use within the actual ability!
      */
@@ -73,16 +73,16 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
                 new TranslationTextComponent("ability." + this.type.getRegistryName().getNamespace() + "." + this.type.getRegistryName().getPath()));
         this.dataManager.register(ICON, new ItemIcon(Blocks.BARRIER));
         this.dataManager.register(KEYBIND, -1);
+        this.dataManager.register(ADDITIONAL_DATA, new CompoundNBT());
     }
 
     public CompoundNBT getAdditionalData() {
-        if (this.additionalData == null)
-            this.additionalData = new CompoundNBT();
-        return additionalData;
+        return this.get(ADDITIONAL_DATA);
     }
 
     @OnlyIn(Dist.CLIENT)
     public void drawIcon(Minecraft mc, AbstractGui gui, int x, int y) {
+        RenderUtil.setCurrentAbilityInIconRendering(this);
         if (this.getDataManager().has(ICON))
             this.getDataManager().get(ICON).draw(mc, x, y);
     }
@@ -165,8 +165,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
         nbt.putString("AbilityType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.serializeNBT());
         nbt.put("Conditions", this.conditionManager.serializeNBT());
-        if (this.additionalData != null)
-            nbt.put("AdditionalData", this.additionalData);
         return nbt;
     }
 
@@ -174,7 +172,6 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
     public void deserializeNBT(CompoundNBT nbt) {
         this.dataManager.deserializeNBT(nbt.getCompound("Data"));
         this.conditionManager.deserializeNBT(nbt.getCompound("Conditions"));
-        this.additionalData = nbt.getCompound("AdditionalData");
     }
 
     public CompoundNBT getUpdateTag() {
@@ -182,15 +179,12 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
         nbt.putString("AbilityType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.getUpdatePacket());
         nbt.put("Conditions", this.conditionManager.getUpdatePacket());
-        if (this.additionalData != null)
-            nbt.put("AdditionalData", this.additionalData);
         return nbt;
     }
 
     public void readUpdateTag(CompoundNBT nbt) {
         this.dataManager.readUpdatePacket(nbt.getCompound("Data"));
         this.conditionManager.readUpdatePacket(nbt.getCompound("Conditions"));
-        this.additionalData = nbt.getCompound("AdditionalData");
     }
 
     @OnlyIn(Dist.CLIENT)

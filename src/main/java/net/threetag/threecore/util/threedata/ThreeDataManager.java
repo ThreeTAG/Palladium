@@ -10,7 +10,6 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT>, IThreeDa
 
     private Listener listener;
     protected Map<ThreeData<?>, ThreeDataEntry<?>> dataEntryList = new LinkedHashMap<>();
-    protected Map<ThreeData<?>, Object> dataEntryDefaults = new LinkedHashMap<>();
 
     public ThreeDataManager setListener(Listener listener) {
         this.listener = listener;
@@ -19,8 +18,7 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT>, IThreeDa
 
     @Override
     public <T> ThreeDataManager register(ThreeData<T> data, T defaultValue) {
-        dataEntryList.put(data, new ThreeDataEntry<T>(data, defaultValue));
-        dataEntryDefaults.put(data, defaultValue);
+        dataEntryList.put(data, new ThreeDataEntry<T>(data, defaultValue, defaultValue));
         return this;
     }
 
@@ -44,7 +42,7 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT>, IThreeDa
 
         if (entry != null) {
             T oldValue = entry.getValue();
-            T newValue = data.readFromNBT(nbt, (T) this.dataEntryDefaults.get(data));
+            T newValue = data.readFromNBT(nbt, entry.getDefaultValue());
 
             if (!oldValue.equals(newValue)) {
                 entry.setValue(data.readFromNBT(nbt, newValue));
@@ -76,7 +74,7 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT>, IThreeDa
 
     @Override
     public <T> T getDefaultValue(ThreeData<T> data) {
-        return (T) this.dataEntryDefaults.get(data);
+        return (T) this.dataEntryList.get(data).getDefaultValue();
     }
 
     @Override
@@ -118,8 +116,13 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT>, IThreeDa
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
         for (ThreeData data : dataEntryList.keySet()) {
-            if (data.canBeSaved())
-                data.writeToNBT(nbt, getEntry(data).getValue());
+            if (data.canBeSaved()) {
+                ThreeDataEntry entry = getEntry(data);
+
+                if (!entry.holdsDefaultValue()) {
+                    data.writeToNBT(nbt, entry.getValue());
+                }
+            }
         }
         return nbt;
     }
@@ -127,8 +130,9 @@ public class ThreeDataManager implements INBTSerializable<CompoundNBT>, IThreeDa
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
         for (ThreeData data : dataEntryList.keySet()) {
-            if (data.canBeSaved())
+            if (data.canBeSaved()) {
                 getEntry(data).setValue(data.readFromNBT(nbt, getDefaultValue(data)));
+            }
         }
     }
 

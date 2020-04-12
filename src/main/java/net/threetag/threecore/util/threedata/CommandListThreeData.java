@@ -4,13 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -46,13 +43,8 @@ public class CommandListThreeData extends ThreeData<CommandListThreeData.Command
     }
 
     @Override
-    public boolean displayAsString(CommandList value) {
-        return false;
-    }
-
-    @Override
-    public String getDisplay(CommandList value) {
-        return value.serializeJson().toString();
+    public JsonElement serializeJson(CommandList value) {
+        return value.serializeJson();
     }
 
     public static class CommandList implements INBTSerializable<ListNBT> {
@@ -78,15 +70,6 @@ public class CommandListThreeData extends ThreeData<CommandListThreeData.Command
 
         public List<String> getCommands() {
             return commands;
-        }
-
-        public int execute(Commands commandManager, CommandSource source) {
-            ServerWorld wo = null;
-            int i = 0;
-            for (String s : this.commands) {
-                i = Math.max(i, commandManager.handleCommand(source, s));
-            }
-            return i;
         }
 
         @Override

@@ -1,7 +1,6 @@
 package net.threetag.threecore.item;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemTier;
@@ -124,12 +123,11 @@ public class TCItems {
     public static final RegistryObject<Item> BLACK_FABRIC = ITEMS.register("black_fabric", () -> new Item(new Item.Properties().group(ItemGroupRegistry.getSuitsAndArmorGroup())));
 
     public static void loadItemColors() {
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            try {
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> new Runnable() {
+            @Override
+            public void run() {
                 // Item Colors
-                Minecraft.getInstance().getItemColors().register((IItemColor) Class.forName("net.threetag.threecore.base.item.VialItem$ItemColor").newInstance(), VIAL.get());
-            } catch (Exception ex) {
-                ex.printStackTrace();
+                Minecraft.getInstance().getItemColors().register(new VialItem.ItemColor(), VIAL.get());
             }
         });
     }

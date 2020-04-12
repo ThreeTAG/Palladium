@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
@@ -39,12 +41,7 @@ public class EquipmentSlotThreeData extends ThreeData<EquipmentSlotType> {
     }
 
     @Override
-    public String getDisplay(EquipmentSlotType value) {
-        return value.getName();
-    }
-
-    @Override
-    public boolean displayAsString(EquipmentSlotType value) {
-        return true;
+    public JsonElement serializeJson(EquipmentSlotType value) {
+        return new JsonPrimitive(value.getName());
     }
 }

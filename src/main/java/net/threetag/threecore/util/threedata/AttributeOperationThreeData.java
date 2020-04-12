@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
@@ -29,8 +31,7 @@ public class AttributeOperationThreeData extends ThreeData<AttributeModifier.Ope
     }
 
     @Override
-    public String getDisplay(AttributeModifier.Operation value) {
-        return Integer.valueOf(value.getId()).toString();
+    public JsonElement serializeJson(AttributeModifier.Operation value) {
+        return new JsonPrimitive(value.getId());
     }
-
 }
