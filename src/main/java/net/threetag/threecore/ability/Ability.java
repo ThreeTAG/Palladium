@@ -27,7 +27,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
 
     public static final ThreeData<Boolean> SHOW_IN_BAR = new BooleanThreeData("show_in_bar").setSyncType(EnumSync.SELF)
             .enableSetting("show_in_bar", "Determines if this ability should be displayed in the ability bar without a condition that displays it there.");
-    public static final ThreeData<Boolean> HIDDEN = new BooleanThreeData("hidden").setSyncType(EnumSync.SELF);
+    public static final ThreeData<Boolean> HIDDEN = new BooleanThreeData("hidden").setSyncType(EnumSync.SELF).enableSetting("If enabled, the ability will be invisible for the ability GUI & ability bar");
     public static final ThreeData<ITextComponent> TITLE = new TextComponentThreeData("title").setSyncType(EnumSync.SELF)
             .enableSetting("title", "Allows you to set a custom title for this ability");
     public static final ThreeData<IIcon> ICON = new IconThreeData("icon").setSyncType(EnumSync.SELF)
