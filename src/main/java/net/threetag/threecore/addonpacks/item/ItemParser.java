@@ -31,10 +31,7 @@ import net.threetag.threecore.item.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
@@ -44,6 +41,7 @@ public class ItemParser {
     public static final int resourceSuffix = ".json".length();
     private static Map<ResourceLocation, BiFunction<JsonObject, Item.Properties, Item>> itemFunctions = Maps.newHashMap();
     private static List<Pair<EventPriority, ISpecialItemParser>> specialItemParsers = Lists.newArrayList();
+    public static final Map<String, List<String>> LOADING_ORDER = Maps.newHashMap();
 
     static {
 
@@ -58,6 +56,9 @@ public class ItemParser {
 
         // Suit Sets
         registerSpecialItemParser(new SuitSetItemParser(), EventPriority.LOWEST);
+
+        // Item Order
+        registerSpecialItemParser(new LoadingOrderParser(), EventPriority.LOWEST);
 
         // --------------------------------------------------------------
 
@@ -130,6 +131,8 @@ public class ItemParser {
             }
         }
 
+        LinkedHashMap<ResourceLocation, JsonObject> items = Maps.newLinkedHashMap();
+
         for (ResourceLocation resourcelocation : resourceManager.getAllResourceLocations("items", (name) -> name.endsWith(".json") && !name.startsWith("_"))) {
             String s = resourcelocation.getPath();
             ResourceLocation id = new ResourceLocation(resourcelocation.getNamespace(), s.substring(resourcePrefix, s.length() - resourceSuffix));
@@ -139,16 +142,49 @@ public class ItemParser {
             }
 
             try (IResource iresource = resourceManager.getResource(resourcelocation)) {
-                Item item = parse(JSONUtils.fromJson(AddonPackManager.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
-                if (item != null) {
-                    item.setRegistryName(id);
-                    e.getRegistry().register(item);
-                    ThreeCore.LOGGER.info("Registered addonpack item {}!", id);
-                }
+                items.put(id, JSONUtils.fromJson(AddonPackManager.GSON, new BufferedReader(new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)), JsonObject.class));
             } catch (Throwable throwable) {
                 ThreeCore.LOGGER.error("Couldn't read addonpack item {} from {}", id, resourcelocation, throwable);
             }
         }
+
+        Map<ResourceLocation, JsonObject> sorted = new TreeMap<ResourceLocation, JsonObject>((id1, id2) -> {
+            if (id1.getNamespace().equals(id2.getNamespace())) {
+                List<String> order = LOADING_ORDER.get(id1.getNamespace());
+
+                if (order == null) {
+                    return id1.compareTo(id2);
+                }
+
+                if (order.contains(id1.getPath()) && !order.contains(id2.getPath())) {
+                    return -1;
+                } else if (!order.contains(id1.getPath()) && order.contains(id2.getPath())) {
+                    return 1;
+                } else if (!order.contains(id1.getPath()) && !order.contains(id2.getPath())) {
+                    return id1.compareTo(id2);
+                } else {
+                    return order.indexOf(id1.getPath()) - order.indexOf(id2.getPath());
+                }
+            } else {
+                return id1.compareTo(id2);
+            }
+        });
+        sorted.putAll(items);
+
+        for (Map.Entry<ResourceLocation, JsonObject> entry : sorted.entrySet()) {
+            try {
+                Item item = parse(entry.getValue());
+                if (item != null) {
+                    item.setRegistryName(entry.getKey());
+                    e.getRegistry().register(item);
+                    ThreeCore.LOGGER.info("Registered addonpack item {}!", entry.getKey());
+                }
+            } catch (Throwable throwable) {
+                ThreeCore.LOGGER.error("Couldn't read addonpack item {}", entry.getKey(), throwable);
+            }
+        }
+
+        LOADING_ORDER.clear();
     }
 
     public static Item parse(JsonObject json) throws JsonParseException {

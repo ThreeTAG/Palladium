@@ -6,13 +6,11 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.threetag.threecore.entity.ProjectileEntity;
-import net.threetag.threecore.util.RenderUtil;
 import net.threetag.threecore.client.renderer.entity.modellayer.IModelLayer;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerContext;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerLoader;
-
-import java.awt.*;
+import net.threetag.threecore.entity.ProjectileEntity;
+import net.threetag.threecore.util.RenderUtil;
 
 public class ProjectileEntityRenderer extends SpriteRenderer<ProjectileEntity> {
 
@@ -26,9 +24,9 @@ public class ProjectileEntityRenderer extends SpriteRenderer<ProjectileEntity> {
             if (entity.renderInfo.isEnergy()) {
                 this.preRender(entity, x, y, z, entityYaw, partialTicks);
                 GlStateManager.rotatef(90F, 1.0F, 0.0F, 0.0F);
-                RenderUtil.drawGlowingLine(0.05F, 1F, Color.RED, true, true, true);
+                RenderUtil.drawGlowingLine(0.05F, 1F, entity.renderInfo.getColor(), true, true, true);
                 GlStateManager.popMatrix();
-            } else {
+            } else if (entity.renderInfo.getModelLayer() != null) {
                 IModelLayer layer = ModelLayerLoader.getModelLayer(entity.renderInfo.getModelLayer());
                 if (layer != null) {
                     this.preRender(entity, x, y, z, entityYaw, partialTicks);

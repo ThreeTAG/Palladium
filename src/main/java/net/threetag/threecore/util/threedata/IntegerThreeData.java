@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 
@@ -26,5 +28,10 @@ public class IntegerThreeData extends ThreeData<Integer>
         if (!nbt.contains(this.key))
             return defaultValue;
         return nbt.getInt(this.key);
+    }
+
+    @Override
+    public JsonElement serializeJson(Integer value) {
+        return new JsonPrimitive(value);
     }
 }

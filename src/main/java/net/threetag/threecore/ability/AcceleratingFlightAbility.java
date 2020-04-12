@@ -40,8 +40,11 @@ public class AcceleratingFlightAbility extends Ability implements FlightSound.IF
 
     @Override
     public void firstTick(LivingEntity entity) {
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            Minecraft.getInstance().getSoundHandler().play(new FlightSound(this, entity, SoundEvents.ITEM_ELYTRA_FLYING, SoundCategory.PLAYERS));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> new Runnable() {
+            @Override
+            public void run() {
+                Minecraft.getInstance().getSoundHandler().play(new FlightSound(AcceleratingFlightAbility.this, entity, SoundEvents.ITEM_ELYTRA_FLYING, SoundCategory.PLAYERS));
+            }
         });
     }
 
@@ -80,8 +83,11 @@ public class AcceleratingFlightAbility extends Ability implements FlightSound.IF
 
     public void startSound(LivingEntity entity) {
         if (this.sound == null)
-            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-                Minecraft.getInstance().getSoundHandler().play((ISound) (this.sound = new FlightSound(this, entity, SoundEvents.ITEM_ELYTRA_FLYING, SoundCategory.PLAYERS)));
+            DistExecutor.runWhenOn(Dist.CLIENT, () -> new Runnable() {
+                @Override
+                public void run() {
+                    Minecraft.getInstance().getSoundHandler().play((ISound) (sound = new FlightSound(AcceleratingFlightAbility.this, entity, SoundEvents.ITEM_ELYTRA_FLYING, SoundCategory.PLAYERS)));
+                }
             });
     }
 

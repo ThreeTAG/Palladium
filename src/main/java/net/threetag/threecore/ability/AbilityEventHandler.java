@@ -3,8 +3,10 @@ package net.threetag.threecore.ability;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -59,7 +61,9 @@ public class AbilityEventHandler {
     @SubscribeEvent
     public static void onChangeEquipment(LivingEquipmentChangeEvent e) {
         // Make sure to call lastTick when player unequips item with abilities on it. Otherwise players could e.g. keep attribute modifiers
-        e.getFrom().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(a -> a.getAbilityMap().forEach((s, ability) -> ability.lastTick(e.getEntityLiving())));
+        if (e.getEntityLiving() != null) {
+            e.getFrom().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(a -> a.getAbilityMap().forEach((s, ability) -> ability.lastTick(e.getEntityLiving())));
+        }
     }
 
     @SubscribeEvent
@@ -68,6 +72,25 @@ public class AbilityEventHandler {
             if (invisibilityAbility.getConditionManager().isEnabled()) {
                 e.modifyVisibility(0D);
                 return;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingAttack(LivingAttackEvent e) {
+        for (DamageImmunityAbility ability : AbilityHelper.getAbilitiesFromClass(e.getEntityLiving(), DamageImmunityAbility.class)) {
+            if (ability.getConditionManager().isEnabled() && ability.isImmuneAgainst(e.getSource())) {
+                e.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent e) {
+        for (DamageImmunityAbility ability : AbilityHelper.getAbilitiesFromClass(e.getEntityLiving(), DamageImmunityAbility.class)) {
+            if (ability.getConditionManager().isEnabled() && ability.isImmuneAgainst(e.getSource())) {
+                e.setCanceled(true);
+                e.setAmount(0);
             }
         }
     }

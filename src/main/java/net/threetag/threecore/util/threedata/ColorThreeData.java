@@ -1,6 +1,7 @@
 package net.threetag.threecore.util.threedata;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
@@ -39,7 +40,11 @@ public class ColorThreeData extends ThreeData<Color>
     }
 
     @Override
-    public String getDisplay(Color value) {
-        return "[" + value.getRed() + ", " + value.getGreen() + ", " + value.getBlue() + "]";
+    public JsonElement serializeJson(Color value) {
+        JsonArray jsonArray = new JsonArray();
+        jsonArray.add(value.getRed());
+        jsonArray.add(value.getGreen());
+        jsonArray.add(value.getBlue());
+        return jsonArray;
     }
 }

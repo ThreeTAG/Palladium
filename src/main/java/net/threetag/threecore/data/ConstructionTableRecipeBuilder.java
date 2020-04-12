@@ -34,6 +34,7 @@ public class ConstructionTableRecipeBuilder {
     private Ingredient toolIngredient;
     private final Builder advancementBuilder = Builder.builder();
     private String group;
+    private boolean consumesTool;
 
     public ConstructionTableRecipeBuilder(IRecipeSerializer<? extends AbstractConstructionTableRecipe> recipeSerializer, IItemProvider itemProvider, int amount) {
         this.recipeSerializer = recipeSerializer;
@@ -65,6 +66,11 @@ public class ConstructionTableRecipeBuilder {
             this.key.put(character, ingredient);
             return this;
         }
+    }
+
+    public ConstructionTableRecipeBuilder enableToolConsuming() {
+        this.consumesTool = true;
+        return this;
     }
 
     public ConstructionTableRecipeBuilder patternLine(String patternLine) {
@@ -103,7 +109,7 @@ public class ConstructionTableRecipeBuilder {
     public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation location) {
         this.validate(location);
         this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", new Instance(location)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(location)).withRequirementsStrategy(IRequirementsStrategy.OR);
-        consumer.accept(new Result(this.recipeSerializer, location, this.result, this.group == null ? "" : this.group, this.pattern, this.key, this.toolIngredient, this.advancementBuilder, new ResourceLocation(location.getNamespace(), "recipes/" + this.result.getGroup() + "/" + location.getPath())));
+        consumer.accept(new Result(this.recipeSerializer, location, this.result, this.group == null ? "" : this.group, this.pattern, this.key, this.toolIngredient, this.advancementBuilder, new ResourceLocation(location.getNamespace(), "recipes/" + this.result.getGroup() + "/" + location.getPath()), this.consumesTool));
     }
 
     private void validate(ResourceLocation location) {
@@ -126,8 +132,9 @@ public class ConstructionTableRecipeBuilder {
         private final Ingredient toolIngredient;
         private final Builder advancementBuilder;
         private final ResourceLocation advancementId;
+        private final boolean consumesTool;
 
-        public Result(IRecipeSerializer<? extends AbstractConstructionTableRecipe> recipeSerializer, ResourceLocation id, ExtRecipeOutput result, String group, List<String> pattern, Map<Character, Ingredient> key, Ingredient toolIngredient, Builder advancementBuilder, ResourceLocation advancementId) {
+        public Result(IRecipeSerializer<? extends AbstractConstructionTableRecipe> recipeSerializer, ResourceLocation id, ExtRecipeOutput result, String group, List<String> pattern, Map<Character, Ingredient> key, Ingredient toolIngredient, Builder advancementBuilder, ResourceLocation advancementId, boolean consumesTool) {
             this.recipeSerializer = recipeSerializer;
             this.id = id;
             this.result = result;
@@ -137,6 +144,7 @@ public class ConstructionTableRecipeBuilder {
             this.toolIngredient = toolIngredient;
             this.advancementBuilder = advancementBuilder;
             this.advancementId = advancementId;
+            this.consumesTool = consumesTool;
         }
 
         public void serialize(JsonObject json) {
@@ -167,6 +175,8 @@ public class ConstructionTableRecipeBuilder {
                 json.add("tool", this.toolIngredient.serialize());
             }
 
+            json.addProperty("consumes_tool", this.consumesTool);
+            
             json.add("result", this.result.serialize());
         }
 

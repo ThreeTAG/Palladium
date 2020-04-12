@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.nbt.CompoundNBT;
@@ -41,12 +43,7 @@ public class AttributeThreeData extends ThreeData<IAttribute> {
     }
 
     @Override
-    public String getDisplay(IAttribute value) {
-        return AttributeRegistry.REGISTRY.getKey(AttributeRegistry.getEntry(value)).toString();
-    }
-
-    @Override
-    public boolean displayAsString(IAttribute value) {
-        return true;
+    public JsonElement serializeJson(IAttribute value) {
+        return new JsonPrimitive(AttributeRegistry.REGISTRY.getKey(AttributeRegistry.getEntry(value)).toString());
     }
 }

@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
@@ -39,13 +41,7 @@ public class EntityTypeThreeData extends ThreeData<EntityType<?>> {
     }
 
     @Override
-    public String getDisplay(EntityType<?> value) {
-        return ForgeRegistries.ENTITIES.getKey(value).toString();
+    public JsonElement serializeJson(EntityType<?> value) {
+        return new JsonPrimitive(ForgeRegistries.ENTITIES.getKey(value).toString());
     }
-
-    @Override
-    public boolean displayAsString(EntityType<?> value) {
-        return true;
-    }
-
 }

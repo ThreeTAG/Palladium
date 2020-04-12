@@ -1,4 +1,4 @@
-7378c8c285f4c8b0b73e5d7c9610bfea128ed931 assets\threecore\lang\en_us.json
+82ccb6e5f43a525ee12389ce079de8975f8e9801 assets\threecore\lang\en_us.json
 ffab721378533f3bf856b0247f8972289e30c886 data\forge\tags\blocks\ores.json
 001be7427e53d06fc53924d946a0876bf4717ab2 data\forge\tags\blocks\ores\copper.json
 5dfb61ddc9b2259f06f7962f259cb543aaaebd80 data\forge\tags\blocks\ores\iridium.json
@@ -737,6 +737,7 @@ adde09590ca8e63ea8ca29024ab4126ae804ba34 data\threecore\recipes\white_fabric.jso
 a110b9d9d6213333c6dff2a01f535e546c36fdb5 data\threecore\recipes\yellow_concrete_stairs.json
 53ac4a1758034e9100e46fa64f6a4dec644c1e1c data\threecore\recipes\yellow_concrete_stairs_from_yellow_concrete_stonecutting.json
 55e20702c9dcbee36ce20cf34976247517144394 data\threecore\recipes\yellow_fabric.json
+163944b8ec3bd095eabaa7e1aaea2399e8a0a4f8 data\threecore\tags\entity_types\armor_stands.json
 48fdee33073f1402564229a84c6b99774c96a89f data\threecore\tags\items\fabric.json
 df63274b60eca612063a5bb248d7ae53cd324ec2 data\threecore\tags\items\fabric\black.json
 160fea143720d940b9e5836f52c87105346343c8 data\threecore\tags\items\fabric\blue.json

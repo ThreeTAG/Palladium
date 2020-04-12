@@ -6,6 +6,7 @@ import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.container.TCContainerTypes;
 import net.threetag.threecore.entity.TCEntityTypes;
 import net.threetag.threecore.item.TCItems;
+import net.threetag.threecore.potion.TCEffects;
 
 public class English extends ThreeCoreLanguageProvider {
 
@@ -255,6 +256,8 @@ public class English extends ThreeCoreLanguageProvider {
         this.add(AbilityType.OPENING_NBT_TIMER, "Open/Close");
         this.add(AbilityType.MODEL_LAYER, "Model Layer");
         this.add(AbilityType.PROJECTILE, "Projectile");
+        this.add(AbilityType.DAMAGE_IMMUNITY, "Damage Immunity");
+        this.add(AbilityType.POTION_EFFECT, "Potion Effect");
 
         this.add("ability.condition.threecore.action", "Key must be pressed once to active this ability");
         this.add("ability.condition.threecore.action.not", "Key must be pressed once to deactivate this ability");
@@ -301,6 +304,14 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("ability.condition.threecore.xp_min.not", "Karma must be lower than %s");
         this.add("ability.condition.threecore.wearing_item", "Entity must wear specific items");
         this.add("ability.condition.threecore.wearing_item_tag", "Entity must wear items within the %s tag");
+        this.add("ability.condition.threecore.item_integer_nbt", "Item in %s slot must have specific value in % nbt tag");
+        this.add("ability.condition.threecore.eyes_in_fluid", "Eyes are need to be covered by fluids in the %s tag");
+        this.add("ability.condition.threecore.size", "Size must be between %s and %s");
+        this.add("ability.condition.threecore.size.not", "Size must be outside of %s and %s");
+        this.add("ability.condition.threecore.size_at", "Size must be at %s");
+        this.add("ability.condition.threecore.size_at.not", "Size must something else than %s");
+        this.add("ability.condition.threecore.size_min", "Size must be at least %s");
+        this.add("ability.condition.threecore.size_min.not", "Size must be lower than %s");
 
 
         // Container
@@ -313,6 +324,7 @@ public class English extends ThreeCoreLanguageProvider {
         this.addContainerType(TCContainerTypes.FLUID_COMPOSER, "Fluid Composer");
         this.addContainerType(TCContainerTypes.STIRLING_GENERATOR, "Stirling Generator");
         this.addContainerType(TCContainerTypes.CAPACITOR_BLOCK, "Capacitor Block");
+        this.add("container.threecore.construction_table", "Construction Table");
 
 
         // Gui
@@ -347,6 +359,10 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("key.threecore.ability_3", "Ability 3");
         this.add("key.threecore.ability_4", "Ability 4");
         this.add("key.threecore.ability_5", "Ability 5");
+
+
+        // Effects
+        this.addEffect(TCEffects.UNCONSCIOUS, "Unconscious");
 
 
         // Util

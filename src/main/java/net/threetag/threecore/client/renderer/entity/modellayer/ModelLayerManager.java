@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.NonNullFunction;
@@ -16,6 +17,7 @@ import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLay
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.AlphaMaskTextureTransformer;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.ITextureTransformer;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.OverlayTextureTransformer;
+import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.EntityTicksTextureVariable;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.ITextureVariable;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.IntegerNbtTextureVariable;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.SmallArmsTextureVariable;
@@ -73,9 +75,13 @@ public class ModelLayerManager {
         // ----------------------------------------------------------------------------------------------------------------------------------------------
         // Variables
 
-        // Integer NBT
-        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), j -> new IntegerNbtTextureVariable(JSONUtils.getString(j, "nbt_tag")));
+        // Entity Ticks
+        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "entity_ticks"), EntityTicksTextureVariable::new);
 
+        // Integer NBT
+        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), j -> new IntegerNbtTextureVariable(JSONUtils.getString(j, "nbt_tag"), j));
+
+        // Small Arms
         registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "small_arms"), j -> new SmallArmsTextureVariable(JSONUtils.getString(j, "normal_arms_value", null), JSONUtils.getString(j, "small_arms_value", null)));
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -83,6 +89,9 @@ public class ModelLayerManager {
 
         // Not
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "not"), j -> new NotPredicate(parsePredicate(JSONUtils.getJsonObject(j, "predicate"))));
+
+        // Or
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "or"), OrPredicate::parse);
 
         // Sneaking
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "sneaking"), j -> context -> context.getAsEntity().isSneaking());
@@ -101,6 +110,18 @@ public class ModelLayerManager {
 
         // Karma
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "karma"), j -> new KarmaPredicate(JSONUtils.getInt(j, "min", 0), JSONUtils.getInt(j, "max", 0)));
+
+        // Integer NBT
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "integer_nbt"), IntegerNbtPredicate::parse);
+
+        // Flying
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "flying"), j -> new FlyingPredicate());
+
+        // Entity Type
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "entity_type"), j -> new EntityTypePredicate(new ResourceLocation(JSONUtils.getString(j, "entity_type"))));
+
+        // Entity Tag
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "entity_tag"), j -> new EntityTagPredicate(new EntityTypeTags.Wrapper(new ResourceLocation(JSONUtils.getString(j, "entity_tag")))));
     }
 
     public static void registerPredicate(ResourceLocation id, NonNullFunction<JsonObject, IModelLayerPredicate> function) {

@@ -1,8 +1,7 @@
 package net.threetag.threecore.util;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
+import net.minecraft.nbt.*;
 import net.minecraft.util.JSONUtils;
 
 public class TCJsonUtil {
@@ -66,6 +65,28 @@ public class TCJsonUtil {
         }));
 
         return json;
+    }
+
+    public static JsonElement nbtToJson(INBT nbt) {
+        if (nbt instanceof NumberNBT) {
+            return new JsonPrimitive(((NumberNBT) nbt).getAsNumber());
+        } else if (nbt instanceof CollectionNBT) {
+            JsonArray jsonArray = new JsonArray();
+            for (int i = 0; i < ((CollectionNBT<?>) nbt).size(); i++) {
+                jsonArray.add(nbtToJson(((CollectionNBT<?>) nbt).get(i)));
+            }
+            return jsonArray;
+        } else if (nbt instanceof StringNBT) {
+            return new JsonPrimitive(nbt.getString());
+        } else if (nbt instanceof CompoundNBT) {
+            JsonObject jsonObject = new JsonObject();
+            for (String key : ((CompoundNBT) nbt).keySet()) {
+                jsonObject.add(key, nbtToJson(((CompoundNBT) nbt).get(key)));
+            }
+            return jsonObject;
+        } else {
+            return new JsonObject();
+        }
     }
 
 }

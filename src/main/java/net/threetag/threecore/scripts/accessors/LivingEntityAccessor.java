@@ -3,8 +3,9 @@ package net.threetag.threecore.scripts.accessors;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
+import net.minecraft.network.play.server.SAnimateHandPacket;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
@@ -73,7 +74,9 @@ public class LivingEntityAccessor extends EntityAccessor {
     }
 
     public void swingArm(@ScriptParameterName("mainHand") boolean mainHand) {
-        this.livingEntity.swingArm(mainHand ? Hand.MAIN_HAND : Hand.OFF_HAND);
+        if (this.livingEntity.world instanceof ServerWorld) {
+            ((ServerWorld) this.livingEntity.world).getChunkProvider().sendToTrackingAndSelf(this.livingEntity, new SAnimateHandPacket(this.livingEntity, mainHand ? 0 : 3));
+        }
     }
 
     public ItemStackAccessor getItemInSlot(@ScriptParameterName("slot") String slot) {

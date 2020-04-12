@@ -1,16 +1,13 @@
 package net.threetag.threecore.item;
 
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -25,31 +22,16 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.TCFluidUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class VialItem extends Item {
 
     public VialItem(Properties properties) {
         super(properties);
-
-        this.addPropertyOverride(new ResourceLocation(ThreeCore.MODID, "empty"), new IItemPropertyGetter() {
-            @OnlyIn(Dist.CLIENT)
-            @Override
-            public float call(ItemStack stack, @Nullable World world, @Nullable LivingEntity entity) {
-                AtomicReference<Float> f = new AtomicReference<>((float) 0);
-                stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fluid -> {
-                    if (fluid.getFluidInTank(0).isEmpty())
-                        f.set(1F);
-                });
-                return f.get();
-            }
-        });
     }
 
     @Override

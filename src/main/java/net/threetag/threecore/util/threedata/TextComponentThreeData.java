@@ -1,12 +1,12 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.text.ITextComponent;
 
-public class TextComponentThreeData extends ThreeData<ITextComponent>
-{
+public class TextComponentThreeData extends ThreeData<ITextComponent> {
 
     public TextComponentThreeData(String key) {
         super(key);
@@ -32,7 +32,7 @@ public class TextComponentThreeData extends ThreeData<ITextComponent>
     }
 
     @Override
-    public String getDisplay(ITextComponent value) {
-        return ITextComponent.Serializer.toJson(value);
+    public JsonElement serializeJson(ITextComponent value) {
+        return ITextComponent.Serializer.toJsonTree(value);
     }
 }

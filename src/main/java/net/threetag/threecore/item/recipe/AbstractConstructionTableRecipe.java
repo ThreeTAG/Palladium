@@ -29,13 +29,15 @@ public abstract class AbstractConstructionTableRecipe implements IRecipe<Constru
     final NonNullList<Ingredient> recipeItems;
     final Ingredient toolIngredient;
     final ItemStack recipeOutput;
+    final boolean consumesTool;
 
-    public AbstractConstructionTableRecipe(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack recipeOutput) {
+    public AbstractConstructionTableRecipe(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack recipeOutput, boolean consumesTool) {
         this.id = id;
         this.group = group;
         this.recipeItems = recipeItems;
         this.toolIngredient = toolIngredient == null ? Ingredient.EMPTY : toolIngredient;
         this.recipeOutput = recipeOutput;
+        this.consumesTool = consumesTool;
     }
 
     @Override
@@ -94,13 +96,19 @@ public abstract class AbstractConstructionTableRecipe implements IRecipe<Constru
         for (int i = 0; i < remaining.size(); ++i) {
             ItemStack item = inventory.getStackInSlot(i);
 
-            if (i == remaining.size() - 1 && item.isDamageable()) {
-                ItemStack copy = item.copy();
-                boolean[] broken = new boolean[]{false};
-                PlayerEntity playerEntity = ForgeHooks.getCraftingPlayer();
-                copy.attemptDamageItem(1, playerEntity.getRNG(), playerEntity instanceof ServerPlayerEntity ? (ServerPlayerEntity) playerEntity : null);
-                inventory.markDirty();
-                remaining.set(i, broken[0] ? ItemStack.EMPTY : copy);
+            if (i == remaining.size() - 1) {
+                if (this.consumesTool) {
+                    remaining.set(i, ItemStack.EMPTY);
+                } else if (item.isDamageable()) {
+                    ItemStack copy = item.copy();
+                    boolean[] broken = new boolean[]{false};
+                    PlayerEntity playerEntity = ForgeHooks.getCraftingPlayer();
+                    copy.attemptDamageItem(1, playerEntity.getRNG(), playerEntity instanceof ServerPlayerEntity ? (ServerPlayerEntity) playerEntity : null);
+                    inventory.markDirty();
+                    remaining.set(i, broken[0] ? ItemStack.EMPTY : copy);
+                } else {
+                    remaining.set(i, item.getContainerItem());
+                }
             } else if (item.hasContainerItem()) {
                 remaining.set(i, item.getContainerItem());
             }
@@ -123,7 +131,7 @@ public abstract class AbstractConstructionTableRecipe implements IRecipe<Constru
             this.size = i;
         }
 
-        public abstract T create(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack result);
+        public abstract T create(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack result, boolean constumesTool);
 
         @Override
         public T read(ResourceLocation recipeId, JsonObject json) {
@@ -159,7 +167,7 @@ public abstract class AbstractConstructionTableRecipe implements IRecipe<Constru
             }
 
             ItemStack itemstack = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
-            return this.create(recipeId, group, recipeItems, toolIngredient, itemstack);
+            return this.create(recipeId, group, recipeItems, toolIngredient, itemstack, JSONUtils.getBoolean(json, "consumes_tool", false));
         }
 
         @Nullable
@@ -174,7 +182,7 @@ public abstract class AbstractConstructionTableRecipe implements IRecipe<Constru
 
             Ingredient ingredient = Ingredient.read(buffer);
             ItemStack result = buffer.readItemStack();
-            return this.create(recipeId, group, recipeItems, ingredient, result);
+            return this.create(recipeId, group, recipeItems, ingredient, result, buffer.readBoolean());
         }
 
         @Override
@@ -187,6 +195,7 @@ public abstract class AbstractConstructionTableRecipe implements IRecipe<Constru
 
             recipe.toolIngredient.write(buffer);
             buffer.writeItemStack(recipe.recipeOutput);
+            buffer.writeBoolean(recipe.consumesTool);
         }
     }
 

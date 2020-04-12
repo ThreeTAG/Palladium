@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
@@ -8,10 +10,9 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class PotionThreeData extends ThreeData<Effect>
-{
+public class EffectThreeData extends ThreeData<Effect> {
 
-    public PotionThreeData(String key) {
+    public EffectThreeData(String key) {
         super(key);
     }
 
@@ -22,7 +23,7 @@ public class PotionThreeData extends ThreeData<Effect>
         String potionKey = JSONUtils.getString(jsonObject, this.jsonKey);
         Effect potion = ForgeRegistries.POTIONS.getValue(new ResourceLocation(potionKey));
         if (potion == null)
-            throw new JsonSyntaxException("Potion " + potionKey + " does not exist!");
+            throw new JsonSyntaxException("Effect " + potionKey + " does not exist!");
         return potion;
     }
 
@@ -42,12 +43,7 @@ public class PotionThreeData extends ThreeData<Effect>
     }
 
     @Override
-    public String getDisplay(Effect value) {
-        return ForgeRegistries.POTIONS.getKey(value).toString();
-    }
-
-    @Override
-    public boolean displayAsString(Effect value) {
-        return true;
+    public JsonElement serializeJson(Effect value) {
+        return new JsonPrimitive(ForgeRegistries.POTIONS.getKey(value).toString());
     }
 }

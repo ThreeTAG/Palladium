@@ -34,7 +34,6 @@ public class CooldownCondition extends Condition {
         } else return true;
     }
 
-
     @Override
     public void lastTick() {
         this.dataManager.set(COOLDOWN, this.dataManager.get(MAX_COOLDOWN));

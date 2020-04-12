@@ -12,8 +12,8 @@ public class LeggingsCraftingRecipe extends AbstractConstructionTableRecipe {
 
     public static final IRecipeType<LeggingsCraftingRecipe> RECIPE_TYPE = RecipeUtil.register("leggings_crafting");
 
-    public LeggingsCraftingRecipe(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack recipeOutput) {
-        super(id, group, recipeItems, toolIngredient, recipeOutput);
+    public LeggingsCraftingRecipe(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack recipeOutput, boolean consumesTool) {
+        super(id, group, recipeItems, toolIngredient, recipeOutput, consumesTool);
     }
 
     @Override
@@ -38,8 +38,8 @@ public class LeggingsCraftingRecipe extends AbstractConstructionTableRecipe {
         }
 
         @Override
-        public LeggingsCraftingRecipe create(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack result) {
-            return new LeggingsCraftingRecipe(id, group, recipeItems, toolIngredient, result);
+        public LeggingsCraftingRecipe create(ResourceLocation id, String group, NonNullList<Ingredient> recipeItems, Ingredient toolIngredient, ItemStack result, boolean consumesTool) {
+            return new LeggingsCraftingRecipe(id, group, recipeItems, toolIngredient, result, consumesTool);
         }
     }
 }

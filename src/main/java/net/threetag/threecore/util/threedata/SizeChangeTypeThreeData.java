@@ -1,6 +1,8 @@
 package net.threetag.threecore.util.threedata;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
@@ -38,12 +40,7 @@ public class SizeChangeTypeThreeData extends ThreeData<SizeChangeType> {
     }
 
     @Override
-    public String getDisplay(SizeChangeType value) {
-        return SizeChangeType.REGISTRY.getKey(value).toString();
-    }
-
-    @Override
-    public boolean displayAsString(SizeChangeType value) {
-        return true;
+    public JsonElement serializeJson(SizeChangeType value) {
+        return new JsonPrimitive(SizeChangeType.REGISTRY.getKey(value).toString());
     }
 }

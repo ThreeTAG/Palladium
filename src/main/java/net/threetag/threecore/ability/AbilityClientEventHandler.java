@@ -45,7 +45,7 @@ public class AbilityClientEventHandler {
             ClientRegistry.registerKeyBinding(SCROLL_DOWN);
 
             for (int i = 1; i <= AbilityBarRenderer.ENTRY_SHOW_AMOUNT; i++) {
-                AbilityKeyBinding keyBinding = new AbilityKeyBinding("key.threecore.ability_" + i, KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, i == 1 ? 86 : i == 2 ? 66 : i == 3 ? 78 : i == 4 ? 77 : i == 5 ? 188 : -1, i, CATEGORY);
+                AbilityKeyBinding keyBinding = new AbilityKeyBinding("key.threecore.ability_" + i, KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, i == 1 ? 86 : i == 2 ? 66 : i == 3 ? 78 : i == 4 ? 77 : i == 5 ? 44 : -1, i, CATEGORY);
                 ClientRegistry.registerKeyBinding(keyBinding);
                 ABILITY_KEYS.add(keyBinding);
             }
@@ -109,6 +109,11 @@ public class AbilityClientEventHandler {
     public void onGuiInit(GuiScreenEvent.InitGuiEvent e) {
         if (e.getGui() instanceof ChatScreen) {
             e.addWidget(new TranslucentButton(e.getGui().width - 1 - 75, e.getGui().height - 40, 75, 20, I18n.format("gui.threecore.abilities"), b -> Minecraft.getInstance().displayGuiScreen(new AbilitiesScreen())));
+        }
+
+        // Set all keys to unpressed; when an ability opens a GUI, the unpressing of the button will not register and therefore you will need to hit the button twice the next time
+        for (Integer i : KEY_STATE.keySet()) {
+            KEY_STATE.put(i, false);
         }
     }
 

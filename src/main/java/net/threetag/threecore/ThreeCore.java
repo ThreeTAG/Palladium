@@ -38,6 +38,7 @@ import net.threetag.threecore.capability.CapabilityAbilityContainer;
 import net.threetag.threecore.capability.ThreeCoreCapabilities;
 import net.threetag.threecore.client.renderer.AbilityBarRenderer;
 import net.threetag.threecore.client.renderer.KarmaBarRenderer;
+import net.threetag.threecore.client.renderer.UnconsciousRenderer;
 import net.threetag.threecore.client.renderer.entity.model.EntityModelManager;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerLoader;
 import net.threetag.threecore.command.ArmorStandPoseCommand;
@@ -46,6 +47,7 @@ import net.threetag.threecore.command.SizeChangeCommand;
 import net.threetag.threecore.command.SuperpowerCommand;
 import net.threetag.threecore.container.TCContainerTypes;
 import net.threetag.threecore.data.ThreeCoreBlockTagsProvider;
+import net.threetag.threecore.data.ThreeCoreEntityTypeTagsProvider;
 import net.threetag.threecore.data.ThreeCoreItemTagsProvider;
 import net.threetag.threecore.data.ThreeCoreRecipeProvider;
 import net.threetag.threecore.data.lang.English;
@@ -56,6 +58,7 @@ import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 import net.threetag.threecore.item.recipe.ToolIngredient;
 import net.threetag.threecore.loot.function.TCLootFunctions;
 import net.threetag.threecore.network.*;
+import net.threetag.threecore.potion.TCEffects;
 import net.threetag.threecore.scripts.ScriptEventManager;
 import net.threetag.threecore.scripts.accessors.ScriptAccessor;
 import net.threetag.threecore.sound.TCSounds;
@@ -115,6 +118,7 @@ public class ThreeCore {
             MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
             MinecraftForge.EVENT_BUS.register(new KarmaBarRenderer());
             MinecraftForge.EVENT_BUS.register(new AbilityBarRenderer());
+            MinecraftForge.EVENT_BUS.register(new UnconsciousRenderer());
 
             // Client Setup
             MinecraftForge.EVENT_BUS.register(new AbilityClientEventHandler());
@@ -135,6 +139,7 @@ public class ThreeCore {
         TCRecipeSerializers.RECIPE_SERIALIZERS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCEntityTypes.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCSounds.SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCEffects.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     @SubscribeEvent
@@ -193,6 +198,7 @@ public class ThreeCore {
     public void gatherData(GatherDataEvent e) {
         e.getGenerator().addProvider(new ThreeCoreBlockTagsProvider(e.getGenerator()));
         e.getGenerator().addProvider(new ThreeCoreItemTagsProvider(e.getGenerator()));
+        e.getGenerator().addProvider(new ThreeCoreEntityTypeTagsProvider(e.getGenerator()));
         e.getGenerator().addProvider(new ThreeCoreRecipeProvider(e.getGenerator()));
         e.getGenerator().addProvider(new English(e.getGenerator()));
     }

@@ -17,6 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.threetag.threecore.ability.Ability;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
@@ -30,6 +31,7 @@ public class RenderUtil {
     private static float lastBrightnessX = GLX.lastBrightnessX;
     private static float lastBrightnessY = GLX.lastBrightnessY;
     private static LivingEntity currentEntityInItemRendering = null;
+    private static Ability currentAbilityInIconRendering = null;
 
     public static void onRenderGlobal(TickEvent.RenderTickEvent e) {
         renderTickTime = e.renderTickTime;
@@ -52,6 +54,14 @@ public class RenderUtil {
     @Nullable
     public static LivingEntity getCurrentEntityInItemRendering() {
         return currentEntityInItemRendering;
+    }
+
+    public static void setCurrentAbilityInIconRendering(Ability ability) {
+        RenderUtil.currentAbilityInIconRendering = ability;
+    }
+
+    public static Ability getCurrentAbilityInIconRendering() {
+        return currentAbilityInIconRendering;
     }
 
     public static void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
