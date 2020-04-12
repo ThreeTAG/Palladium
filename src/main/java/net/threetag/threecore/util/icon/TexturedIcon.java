@@ -95,7 +95,7 @@ public class TexturedIcon implements IIcon {
             int textureHeight = JSONUtils.getInt(json, "texture_height", 256);
             Color tint = null;
             if (JSONUtils.hasField(json, "tint")) {
-                int[] color = TCJsonUtil.getIntArray(json, 3, "tint", 1, 1, 1);
+                int[] color = TCJsonUtil.getIntArray(json, 3, "tint", 255, 255, 255);
                 tint = new Color(color[0], color[1], color[2]);
             }
             return new TexturedIcon(texture, u, v, width, height, textureWidth, textureHeight, tint);
