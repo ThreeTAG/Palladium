@@ -206,7 +206,7 @@ public class AbilityTabGui extends AbstractGui {
         int l = j % 16;
 
         for (int i1 = -1; i1 <= 15; ++i1) {
-            for (int j1 = -1; j1 <= 10; ++j1) {
+            for (int j1 = -1; j1 <= 11; ++j1) {
                 blit(k + 16 * i1, l + 16 * j1, 0.0F, 0.0F, 16, 16, 16, 16);
             }
         }
