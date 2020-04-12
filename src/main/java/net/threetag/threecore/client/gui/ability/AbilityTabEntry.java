@@ -12,7 +12,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.condition.Condition;
-import net.threetag.threecore.util.icon.IIcon;
 import net.threetag.threecore.util.icon.TexturedIcon;
 
 import java.util.Collection;
@@ -50,8 +49,12 @@ public class AbilityTabEntry extends AbstractGui {
         this.width = l + 3 + 5;
     }
 
-    public IIcon getDisplayIcon() {
-        return this.unlocked ? this.ability.getDataManager().get(Ability.ICON) : LOCKED_ICON;
+    public void drawDisplayIcon(Minecraft mc, int x, int y) {
+        if (this.unlocked) {
+            this.ability.drawIcon(mc, this, x, y);
+        } else {
+            LOCKED_ICON.draw(mc, x, y);
+        }
     }
 
     public AbilityTabEntry updatePosition(double x, double y, AbilityTabGui gui) {
@@ -93,7 +96,7 @@ public class AbilityTabEntry extends AbstractGui {
         RenderSystem.color4f(1, 1, 1, 1);
         mc.getTextureManager().bindTexture(AbilitiesScreen.WIDGETS);
         this.blit(x - 13, y - 13, 0, this.unlocked ? 128 : 154, 26, 26);
-        getDisplayIcon().draw(mc, x - 8, y - 8);
+        this.drawDisplayIcon(mc, x - 8, y - 8);
     }
 
     public void drawHover(int x, int y, float fade, int p_191821_4_, int p_191821_5_, AbilitiesScreen gui) {
@@ -178,7 +181,7 @@ public class AbilityTabEntry extends AbstractGui {
         }
 
         RenderHelper.enableStandardItemLighting();
-        getDisplayIcon().draw(minecraft, x + posX + 8, y + posY + 5);
+        this.drawDisplayIcon(minecraft, x + posX + 8, y + posY + 5);
     }
 
     protected void render9Sprite(int p_192994_1_, int p_192994_2_, int p_192994_3_, int p_192994_4_, int p_192994_5_, int p_192994_6_, int p_192994_7_, int p_192994_8_, int p_192994_9_) {

@@ -10,6 +10,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.IntNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.IParticleData;
@@ -114,6 +116,22 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
             float sZ = (random.nextFloat() - 0.5F) * this.renderInfo.getParticleSpread();
             try {
                 this.world.addParticle(this.renderInfo.getParticleType().getDeserializer().deserialize(this.renderInfo.getParticleType(), new StringReader(this.renderInfo.particleOptions)), this.getPosX(), this.getPosY(), this.getPosZ(), sX, sY, sZ);
+            } catch (CommandSyntaxException e) {
+            }
+        }
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (this.world.isRemote && this.renderInfo.isParticles()) {
+            Random random = new Random();
+            float sX = (random.nextFloat() - 0.5F) * this.renderInfo.getParticleSpread();
+            float sY = (random.nextFloat() - 0.5F) * this.renderInfo.getParticleSpread();
+            float sZ = (random.nextFloat() - 0.5F) * this.renderInfo.getParticleSpread();
+            try {
+                this.world.addParticle(this.renderInfo.getParticleType().getDeserializer().deserialize(this.renderInfo.getParticleType(), new StringReader(this.renderInfo.particleOptions)), this.posX, this.posY, this.posZ, sX, sY, sZ);
             } catch (CommandSyntaxException e) {
             }
         }
@@ -260,7 +278,11 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
             } else if (this.getModelLayer() != null) {
                 nbt.putString("ModelLayer", this.modelLayer.toString());
             } else if (this.isEnergy()) {
-                nbt.putIntArray("EnergyColor", new int[]{this.color.getRed(), this.color.getGreen(), this.getColor().getBlue()});
+                ListNBT listNBT = new ListNBT();
+                listNBT.add(new IntNBT(this.color.getRed()));
+                listNBT.add(new IntNBT(this.color.getGreen()));
+                listNBT.add(new IntNBT(this.color.getBlue()));
+                nbt.put("EnergyColor", listNBT);
             } else if (this.isParticles()) {
                 nbt.putString("ParticleType", ForgeRegistries.PARTICLE_TYPES.getKey(this.particleType).toString());
                 nbt.putFloat("ParticleSpread", this.particleSpread);
@@ -279,8 +301,9 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
                 } else if (type == 2) {
                     this.modelLayer = new ResourceLocation(nbt.getString("ModelLayer"));
                 } else if (type == 3) {
-                    if (nbt.keySet().contains("EnergyColor") && nbt.getIntArray("EnergyColor").length == 3)
-                        this.color = new Color(nbt.getIntArray("EnergyColor")[0], nbt.getIntArray("EnergyColor")[1], nbt.getIntArray("EnergyColor")[2]);
+                    ListNBT listNBT = nbt.getList("EnergyColor", Constants.NBT.TAG_INT);
+                    if (nbt.contains("EnergyColor") && listNBT.size() == 3)
+                        this.color = new Color(listNBT.getInt(0), listNBT.getInt(1), listNBT.getInt(2));
                     else
                         this.color = Color.RED;
                 } else if (type == 4) {
@@ -297,8 +320,9 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
                     this.modelLayer = new ResourceLocation(nbt.getString("ModelLayer"));
                 } else if (nbt.contains("EnergyColor")) {
                     this.type = 3;
-                    if (nbt.keySet().contains("EnergyColor") && nbt.getIntArray("EnergyColor").length == 3)
-                        this.color = new Color(nbt.getIntArray("EnergyColor")[0], nbt.getIntArray("EnergyColor")[1], nbt.getIntArray("EnergyColor")[2]);
+                    ListNBT listNBT = nbt.getList("EnergyColor", Constants.NBT.TAG_INT);
+                    if (listNBT.size() == 3)
+                        this.color = new Color(listNBT.getInt(0), listNBT.getInt(1), listNBT.getInt(2));
                     else
                         this.color = Color.RED;
                 } else if (nbt.contains("ParticleType")) {

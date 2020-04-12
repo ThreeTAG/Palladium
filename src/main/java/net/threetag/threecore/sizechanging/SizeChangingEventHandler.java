@@ -12,6 +12,7 @@ import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.SnowballEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.BucketItem;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
@@ -22,6 +23,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -56,6 +58,18 @@ public class SizeChangingEventHandler {
         if (thrower != null) {
             copyScale(thrower, e.getEntity());
         }
+    }
+
+    @SubscribeEvent
+    public static void onLivingTick(LivingEvent.LivingUpdateEvent e) {
+        e.getEntity().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(size -> {
+            if(size.getScale() <= 0.3F) {
+                if(!e.getEntityLiving().onGround && (e.getEntityLiving().getHeldItemMainhand().getItem() == Items.PAPER || e.getEntityLiving().getHeldItemOffhand().getItem() == Items.PAPER || e.getEntityLiving().getHeldItemMainhand().getItem() == Items.FEATHER || e.getEntityLiving().getHeldItemOffhand().getItem() == Items.FEATHER)) {
+                    e.getEntityLiving().fallDistance = 0;
+                    e.getEntityLiving().setMotion(e.getEntity().getMotion().x, e.getEntity().getMotion().y * 0.6D, e.getEntity().getMotion().z);
+                }
+            }
+        });
     }
 
     @SubscribeEvent

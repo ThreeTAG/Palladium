@@ -48,7 +48,9 @@ public class AbilityTabGui extends AbstractGui {
 
         // Create entry for each ability
         for (Ability ability : container.getAbilities()) {
-            abilities.add(new AbilityTabEntry(ability));
+            if (!ability.get(Ability.HIDDEN)) {
+                abilities.add(new AbilityTabEntry(ability));
+            }
         }
 
         // Find parents and children for each

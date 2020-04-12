@@ -36,7 +36,7 @@ public class AbilitiesScreen extends Screen {
         AtomicInteger index = new AtomicInteger();
         AbilityHelper.getAbilityContainerList().forEach((f) -> {
             IAbilityContainer container = f.apply(Minecraft.getInstance().player);
-            if (container != null) {
+            if (container != null && !container.getAbilities().isEmpty()) {
                 this.tabs.add(AbilityTabGui.create(Minecraft.getInstance(), this, index.get(), container));
                 index.getAndIncrement();
             }
