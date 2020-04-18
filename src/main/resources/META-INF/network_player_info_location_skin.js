@@ -5,38 +5,41 @@ function initializeCoreMod() {
     InsnList = Java.type("org.objectweb.asm.tree.InsnList");
     VarInsnNode = Java.type("org.objectweb.asm.tree.VarInsnNode");
     MethodInsnNode = Java.type("org.objectweb.asm.tree.MethodInsnNode");
+    InsnNode = Java.type("org.objectweb.asm.tree.InsnNode");
 
     ALOAD = Opcodes.ALOAD;
+    ARETURN = Opcodes.ARETURN;
     INVOKESTATIC = Opcodes.INVOKESTATIC;
 
     return {
-        'Entity#tick': {
+        'NetworkPlayerInfo#getLocationSkin': {
             'target': {
                 'type': 'METHOD',
-                'class': 'net.minecraft.entity.Entity',
-                'methodName': 'func_70071_h_',
-                'methodDesc': '()V'
+                'class': 'net.minecraft.client.network.play.NetworkPlayerInfo',
+                'methodName': 'func_178837_g',
+                'methodDesc': '()Lnet/minecraft/util/ResourceLocation;'
             },
             'transformer': function (methodNode) {
                 var instructions = methodNode.instructions;
 
-                var preInstructions = new InsnList();
+                instructions.clear();
 
-                preInstructions.add(new VarInsnNode(ALOAD, 0));
-                preInstructions.add(new MethodInsnNode(
+                instructions.add(new VarInsnNode(ALOAD, 0));
+                instructions.add(new MethodInsnNode(
                     //int opcode
                     INVOKESTATIC,
                     //String owner
                     "net/threetag/threecore/util/AsmHooks",
                     //String name
-                    "entityTick",
+                    "getLocationSkin",
                     //String descriptor
-                    "(Lnet/minecraft/entity/Entity;)V",
+                    "(Lnet/minecraft/client/network/play/NetworkPlayerInfo;)Lnet/minecraft/util/ResourceLocation;",
                     //boolean isInterface
                     false
                 ));
+                instructions.add(new InsnNode(ARETURN));
 
-                instructions.insert(preInstructions);
+                instructions.add();
 
                 return methodNode;
             }

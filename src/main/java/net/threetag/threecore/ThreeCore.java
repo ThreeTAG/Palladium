@@ -33,6 +33,8 @@ import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.AbilityType;
 import net.threetag.threecore.ability.condition.ConditionType;
 import net.threetag.threecore.ability.superpower.SuperpowerManager;
+import net.threetag.threecore.accessoires.AccessoireLayerRenderer;
+import net.threetag.threecore.accessoires.Accessoires;
 import net.threetag.threecore.addonpacks.AddonPackManager;
 import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.capability.CapabilityAbilityContainer;
@@ -142,6 +144,7 @@ public class ThreeCore {
         TCEntityTypes.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCSounds.SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCEffects.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        Accessoires.ACCESSOIRES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     @SubscribeEvent
@@ -164,6 +167,8 @@ public class ThreeCore {
         TCEntityTypes.initRenderers();
         TCContainerTypes.initContainerScreens();
         ArmorStandPoseManager.init();
+
+        Minecraft.getInstance().getRenderManager().getSkinMap().forEach((s, pl) -> pl.addLayer(new AccessoireLayerRenderer(pl)));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -204,6 +209,10 @@ public class ThreeCore {
 
         // EntityEffect
         registerMessage(EntityEffectUpdateMessage.class, EntityEffectUpdateMessage::toBytes, EntityEffectUpdateMessage::new, EntityEffectUpdateMessage::handle);
+
+        // Accessoires
+        registerMessage(SyncAccessoiresMessage.class, SyncAccessoiresMessage::toBytes, SyncAccessoiresMessage::new, SyncAccessoiresMessage::handle);
+        registerMessage(ToggleAccessoireMessage.class, ToggleAccessoireMessage::toBytes, ToggleAccessoireMessage::new, ToggleAccessoireMessage::handle);
     }
 
     @SubscribeEvent

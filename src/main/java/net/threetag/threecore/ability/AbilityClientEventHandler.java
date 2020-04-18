@@ -5,6 +5,8 @@ import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.CustomizeSkinScreen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
@@ -17,6 +19,7 @@ import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.client.gui.AccessoireScreen;
 import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
 import net.threetag.threecore.client.gui.widget.TranslucentButton;
 import net.threetag.threecore.client.renderer.AbilityBarRenderer;
@@ -109,6 +112,12 @@ public class AbilityClientEventHandler {
     public void onGuiInit(GuiScreenEvent.InitGuiEvent e) {
         if (e.getGui() instanceof ChatScreen) {
             e.addWidget(new TranslucentButton(e.getGui().width - 1 - 75, e.getGui().height - 40, 75, 20, I18n.format("gui.threecore.abilities"), b -> Minecraft.getInstance().displayGuiScreen(new AbilitiesScreen())));
+        }
+
+        if (e.getGui() instanceof CustomizeSkinScreen) {
+            e.addWidget(new Button(e.getGui().width / 2 - 100, e.getGui().height / 6 + 24 * (12 >> 1), 200, 20, I18n.format("gui.threecore.accessoires"), (p_213079_1_) -> {
+                e.getGui().getMinecraft().displayGuiScreen(new AccessoireScreen(e.getGui()));
+            }));
         }
 
         // Set all keys to unpressed; when an ability opens a GUI, the unpressing of the button will not register and therefore you will need to hit the button twice the next time

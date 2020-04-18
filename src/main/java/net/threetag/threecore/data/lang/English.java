@@ -2,6 +2,7 @@ package net.threetag.threecore.data.lang;
 
 import net.minecraft.data.DataGenerator;
 import net.threetag.threecore.ability.AbilityType;
+import net.threetag.threecore.accessoires.Accessoires;
 import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.container.TCContainerTypes;
 import net.threetag.threecore.entity.TCEntityTypes;
@@ -344,6 +345,15 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("gui.jei.category.threecore.fluid_composing", "Fluid Composing");
 
         this.add("ability_container.threecore.player", "Player Abilities");
+
+        this.add("gui.threecore.accessoires", "Accessoires");
+
+
+        // Accessoires
+        this.addAccessoire(Accessoires.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
+        this.addAccessoire(Accessoires.HEROBRINE_EYES, "Herobrine Eyes");
+        this.addAccessoire(Accessoires.WOODEN_LEG, "Wooden Leg");
+        this.addAccessoire(Accessoires.HYPERION_ARM, "Hyperion Arm");
 
 
         // Death
