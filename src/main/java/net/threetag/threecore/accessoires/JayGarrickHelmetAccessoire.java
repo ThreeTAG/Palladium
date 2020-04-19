@@ -11,12 +11,13 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.threetag.threecore.client.renderer.entity.model.StrawhatModel;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.client.renderer.entity.model.JayGarrickHelmetModel;
 
-public class StrawhatAccessoire extends Accessoire {
+public class JayGarrickHelmetAccessoire extends Accessoire {
 
-    public static final StrawhatModel MODEL = new StrawhatModel(RenderType::getEntityTranslucent);
-    public static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/villager/profession/farmer.png");
+    public static JayGarrickHelmetModel MODEL = new JayGarrickHelmetModel(RenderType::getEntityTranslucent);
+    public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/jay_garrick_helmet.png");
 
     @Override
     public boolean isAvailable(PlayerEntity entity) {
@@ -26,12 +27,13 @@ public class StrawhatAccessoire extends Accessoire {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void render(PlayerRenderer renderer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, AbstractClientPlayerEntity player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if(!player.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty())
+        if (!player.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty())
             return;
 
         matrixStackIn.push();
+        MODEL = new JayGarrickHelmetModel(RenderType::getEntityTranslucent);
         renderer.getEntityModel().bipedHead.translateRotate(matrixStackIn);
-        matrixStackIn.translate(0, -0.35F, 0);
+        matrixStackIn.translate(0, -0.4F, 0);
         MODEL.render(matrixStackIn, bufferIn.getBuffer(MODEL.getRenderType(TEXTURE)), packedLightIn, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
         matrixStackIn.pop();
     }
