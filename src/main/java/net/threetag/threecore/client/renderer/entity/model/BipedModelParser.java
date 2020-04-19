@@ -1,5 +1,6 @@
 package net.threetag.threecore.client.renderer.entity.model;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -181,7 +182,7 @@ public class BipedModelParser extends EntityModelParser {
 
         @Override
         protected Iterable<ModelRenderer> getBodyParts() {
-            return Iterables.concat(super.getBodyParts(), this.cubes);
+            return Iterables.concat(super.getBodyParts(), ImmutableList.of(this.bipedBodyWear, this.bipedRightArmwear, this.bipedLeftArmwear, this.bipedRightLegwear, this.bipedLeftLegwear), this.cubes);
         }
 
         @Override
