@@ -30,8 +30,10 @@ public class CommandAbility extends Ability implements ICommandSource {
 
     @Override
     public void action(LivingEntity entity) {
-        for(String command : this.get(COMMANDS).getCommands()) {
-            entity.world.getServer().getCommandManager().handleCommand(new CommandSource(this, entity.getPositionVec(), entity.getPitchYaw(), entity.world instanceof ServerWorld ? (ServerWorld)entity.world : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.world.getServer(), entity), command);
+        if (entity.world.getServer() != null) {
+            for (String command : this.get(COMMANDS).getCommands()) {
+                entity.world.getServer().getCommandManager().handleCommand(new CommandSource(this, entity.getPositionVec(), entity.getPitchYaw(), entity.world instanceof ServerWorld ? (ServerWorld) entity.world : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.world.getServer(), entity), command);
+            }
         }
     }
 
