@@ -144,6 +144,9 @@ public class ThreeCore {
 
     @SubscribeEvent
     public void setup(FMLCommonSetupEvent e) {
+        // Ores
+        TCBlocks.initOres();
+
         // Capabilities
         ThreeCoreCapabilities.init();
 
