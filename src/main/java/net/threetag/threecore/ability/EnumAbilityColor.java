@@ -34,4 +34,14 @@ public enum EnumAbilityColor {
     public int getY() {
         return y;
     }
+
+    public static EnumAbilityColor getByName(String name) {
+        for (EnumAbilityColor type : values()) {
+            if (type.name().equalsIgnoreCase(name)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
 }
