@@ -8,11 +8,9 @@ import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -134,6 +132,18 @@ public class AbilityClientEventHandler {
             if (invisibilityAbility.getConditionManager().isEnabled()) {
                 e.setCanceled(true);
                 return;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onRenderLivingPre(RenderNameplateEvent e) {
+        if (e.getEntity() instanceof LivingEntity) {
+            for (NameChangeAbility ability : AbilityHelper.getAbilitiesFromClass((LivingEntity) e.getEntity(), NameChangeAbility.class)) {
+                if (ability.getConditionManager().isEnabled()) {
+                    e.setContent(ability.get(NameChangeAbility.NAME).getFormattedText());
+                    return;
+                }
             }
         }
     }
