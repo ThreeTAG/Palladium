@@ -44,6 +44,7 @@ public class ScriptEventManager {
         registerEvent("abilityDataUpdated", AbilityDataUpdatedScriptEvent.class);
         registerEvent("conditionDataUpdated", ConditionDataUpdatedScriptEvent.class);
         registerEvent("registerThreeData", RegisterThreeDataScriptEvent.class);
+        registerEvent("multiJump", MultiJumpScriptEvent.class);
     }
 
     public static void reset() {
