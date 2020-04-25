@@ -9,6 +9,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.settings.KeyConflictContext;
@@ -93,7 +94,7 @@ public class AbilityClientEventHandler {
         }
 
         // Multi Jump
-        if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && !Minecraft.getInstance().player.onGround) {
+        if (!Minecraft.getInstance().player.isCreative() && Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && !Minecraft.getInstance().player.onGround) {
             for (MultiJumpAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, MultiJumpAbility.class)) {
                 if (ability.getConditionManager().isEnabled()) {
                     ThreeCore.NETWORK_CHANNEL.sendToServer(new MultiJumpMessage(ability.container.getId(), ability.getId()));
@@ -138,10 +139,14 @@ public class AbilityClientEventHandler {
 
     @SubscribeEvent
     public void onRenderLivingPre(RenderNameplateEvent e) {
-        if (e.getEntity() instanceof LivingEntity) {
+        if (e.getEntity() instanceof LivingEntity && !(e.getEntity() instanceof ArmorStandEntity)) {
             for (NameChangeAbility ability : AbilityHelper.getAbilitiesFromClass((LivingEntity) e.getEntity(), NameChangeAbility.class)) {
                 if (ability.getConditionManager().isEnabled()) {
-                    e.setContent(ability.get(NameChangeAbility.NAME).getFormattedText());
+                    if (Minecraft.getInstance().player.isCreative()) {
+                        e.setContent(ability.get(NameChangeAbility.NAME).getFormattedText() + " (" + e.getOriginalContent() + ")");
+                    } else {
+                        e.setContent(ability.get(NameChangeAbility.NAME).getFormattedText());
+                    }
                     return;
                 }
             }
