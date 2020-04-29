@@ -92,6 +92,9 @@ public class ModelLayer implements IModelLayer {
             boolean glow = ModelLayerManager.arePredicatesFulFilled(this.glowPredicates, context);
             IVertexBuilder vertexBuilder = ItemRenderer.getBuffer(buffer, glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderType.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
 
+            if (context.getSlot() != null)
+                this.setModelSlotVisible(bipedModel, context.getSlot());
+
             if (bipedModel instanceof IArmRenderingModel) {
                 ((IArmRenderingModel) bipedModel).renderArm(handSide, matrixStack, vertexBuilder, packedLight);
             } else {
