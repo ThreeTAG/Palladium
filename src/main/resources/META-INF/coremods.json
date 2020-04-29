@@ -4,5 +4,6 @@
   "entity_renderer_manager_render_entity": "META-INF/entity_renderer_manager_render_entity.js",
   "entity_tick": "META-INF/entity_tick.js",
   "inventory_screen_draw_entity": "META-INF/inventory_screen_draw_entity.js",
-  "item_renderer_render_item": "META-INF/item_renderer_render_item.js"
+  "item_renderer_render_item": "META-INF/item_renderer_render_item.js",
+  "first_person_renderer_render_arm": "META-INF/first_person_renderer_render_arm.js"
 }

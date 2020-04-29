@@ -3,7 +3,9 @@ package net.threetag.threecore.client.renderer.entity.model;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
@@ -12,17 +14,20 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.JSONUtils;
 import net.threetag.threecore.util.PlayerUtil;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 public class BipedModelParser extends EntityModelParser {
 
     @Override
     public EntityModel apply(JsonObject jsonObject) {
-        ParsedBipedModel model = new ParsedBipedModel(JSONUtils.getFloat(jsonObject, "scale", 0F), BipedArmType.getFromName(JSONUtils.getString(jsonObject, "arm_type", "default")), JSONUtils.getInt(jsonObject, "texture_width", 64), JSONUtils.getInt(jsonObject, "texture_height", 64));
+        ParsedBipedModel model = new ParsedBipedModel(parseModelScales(jsonObject.get("scale")), BipedArmType.getFromName(JSONUtils.getString(jsonObject, "arm_type", "default")), JSONUtils.getInt(jsonObject, "texture_width", 64), JSONUtils.getInt(jsonObject, "texture_height", 64));
 
         if (JSONUtils.hasField(jsonObject, "cubes")) {
             JsonArray cubes = JSONUtils.getJsonArray(jsonObject, "cubes");
@@ -53,6 +58,30 @@ public class BipedModelParser extends EntityModelParser {
         return model;
     }
 
+    public Function<String, Float> parseModelScales(JsonElement jsonElement) {
+        if (jsonElement.isJsonPrimitive()) {
+            return s -> jsonElement.getAsFloat();
+        } else if (jsonElement.isJsonObject()) {
+            Map<String, Float> scales = Maps.newHashMap();
+            AtomicReference<Float> fallback = new AtomicReference<>(-999F);
+            jsonElement.getAsJsonObject().entrySet().forEach(entry -> {
+                if (entry.getKey().equalsIgnoreCase("fallback")) {
+                    fallback.set(entry.getValue().getAsFloat());
+                } else {
+                    scales.put(entry.getKey(), entry.getValue().getAsFloat());
+                }
+            });
+            return s -> {
+                if (scales.containsKey(s)) {
+                    return scales.get(s);
+                }
+                return fallback.get() <= -999F ? s.equalsIgnoreCase("head") ? 0.5F : 0.25F : fallback.get();
+            };
+        } else {
+            throw new JsonParseException("Model scale must be either a single float or a json object with each model part!");
+        }
+    }
+
     public RendererModel getPart(String name, ParsedBipedModel model) {
         if (name.equalsIgnoreCase("head"))
             return model.bipedHead;
@@ -81,7 +110,7 @@ public class BipedModelParser extends EntityModelParser {
         return null;
     }
 
-    public static class ParsedBipedModel<T extends LivingEntity> extends BipedModel<T> implements ISlotDependentVisibility {
+    public static class ParsedBipedModel<T extends LivingEntity> extends BipedModel<T> implements ISlotDependentVisibility, IArmRenderingModel {
 
         public List<RendererModel> cubes = Lists.newLinkedList();
         public Map<RendererModel, Boolean> visibilityOverrides = Maps.newHashMap();
@@ -92,45 +121,68 @@ public class BipedModelParser extends EntityModelParser {
         public final RendererModel bipedBodyWear;
         private final BipedArmType bipedArmType;
 
-        public ParsedBipedModel(float modelSize, BipedArmType bipedArmType, int textureWidth, int textureHeight) {
-            super(modelSize, 0.0F, textureWidth, textureHeight);
+        public ParsedBipedModel(Function<String, Float> scales, BipedArmType bipedArmType, int textureWidth, int textureHeight) {
+            super(0F, 0.0F, textureWidth, textureHeight);
             this.bipedArmType = bipedArmType;
+
+            this.bipedHead = new RendererModel(this, 0, 0);
+            this.bipedHead.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, scales.apply("head"));
+            this.bipedHead.setRotationPoint(0.0F, 0.0F, 0.0F);
+            this.bipedHeadwear = new RendererModel(this, 32, 0);
+            this.bipedHeadwear.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, scales.apply("head") + 0.5F);
+            this.bipedHeadwear.setRotationPoint(0.0F, 0.0F, 0.0F);
+            this.bipedBody = new RendererModel(this, 16, 16);
+            this.bipedBody.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, scales.apply("chest"));
+            this.bipedBody.setRotationPoint(0.0F, 0.0F, 0.0F);
+            this.bipedRightLeg = new RendererModel(this, 0, 16);
+            this.bipedRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, scales.apply("right_leg"));
+            this.bipedRightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
+
             if (bipedArmType == BipedArmType.SMALL) {
                 this.bipedLeftArm = new RendererModel(this, 32, 48);
-                this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, modelSize);
+                this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, scales.apply("left_arm"));
                 this.bipedLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
+
                 this.bipedRightArm = new RendererModel(this, 40, 16);
-                this.bipedRightArm.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, modelSize);
+                this.bipedRightArm.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, scales.apply("right_arm"));
                 this.bipedRightArm.setRotationPoint(-5.0F, 2.5F, 0.0F);
+
                 this.bipedLeftArmwear = new RendererModel(this, 48, 48);
-                this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, modelSize + 0.25F);
+                this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, scales.apply("left_arm") + 0.25F);
                 this.bipedLeftArmwear.setRotationPoint(5.0F, 2.5F, 0.0F);
+
                 this.bipedRightArmwear = new RendererModel(this, 40, 32);
-                this.bipedRightArmwear.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, modelSize + 0.25F);
+                this.bipedRightArmwear.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, scales.apply("right_arm") + 0.25F);
                 this.bipedRightArmwear.setRotationPoint(-5.0F, 2.5F, 10.0F);
             } else {
                 this.bipedLeftArm = new RendererModel(this, 32, 48);
-                this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
+                this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, scales.apply("left_arm"));
                 this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
+
+                this.bipedRightArm = new RendererModel(this, 40, 16);
+                this.bipedRightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, scales.apply("right_arm"));
+                this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
+
                 this.bipedLeftArmwear = new RendererModel(this, 48, 48);
-                this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
+                this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, scales.apply("left_arm") + 0.25F);
                 this.bipedLeftArmwear.setRotationPoint(5.0F, 2.0F, 0.0F);
+
                 this.bipedRightArmwear = new RendererModel(this, 40, 32);
-                this.bipedRightArmwear.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
+                this.bipedRightArmwear.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, scales.apply("right_arm") + 0.25F);
                 this.bipedRightArmwear.setRotationPoint(-5.0F, 2.0F, 10.0F);
             }
 
             this.bipedLeftLeg = new RendererModel(this, 16, 48);
-            this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelSize);
+            this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, scales.apply("left_leg"));
             this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
             this.bipedLeftLegwear = new RendererModel(this, 0, 48);
-            this.bipedLeftLegwear.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
+            this.bipedLeftLegwear.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, scales.apply("left_leg") + 0.25F);
             this.bipedLeftLegwear.setRotationPoint(1.9F, 12.0F, 0.0F);
             this.bipedRightLegwear = new RendererModel(this, 0, 32);
-            this.bipedRightLegwear.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
+            this.bipedRightLegwear.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, scales.apply("right_leg") + 0.25F);
             this.bipedRightLegwear.setRotationPoint(-1.9F, 12.0F, 0.0F);
             this.bipedBodyWear = new RendererModel(this, 16, 32);
-            this.bipedBodyWear.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, modelSize + 0.25F);
+            this.bipedBodyWear.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, scales.apply("chest") + 0.25F);
             this.bipedBodyWear.setRotationPoint(0.0F, 0.0F, 0.0F);
         }
 
@@ -287,6 +339,21 @@ public class BipedModelParser extends EntityModelParser {
             this.bipedLeftLegwear.showModel = visible;
             this.bipedRightLegwear.showModel = visible;
             this.bipedBodyWear.showModel = visible;
+        }
+
+        @Override
+        public void renderArm(HandSide handSide) {
+            if(handSide == HandSide.RIGHT) {
+                this.bipedRightArm.rotateAngleX = 0.0F;
+                this.bipedRightArm.render(0.0625F);
+                this.bipedRightArmwear.rotateAngleX = 0.0F;
+                this.bipedRightArmwear.render(0.0625F);
+            } else {
+                this.bipedLeftArm.rotateAngleX = 0.0F;
+                this.bipedLeftArm.render(0.0625F);
+                this.bipedLeftArmwear.rotateAngleX = 0.0F;
+                this.bipedLeftArmwear.render(0.0625F);
+            }
         }
     }
 

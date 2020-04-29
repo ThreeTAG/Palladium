@@ -22,6 +22,7 @@ import net.threetag.threecore.client.gui.widget.TranslucentButton;
 import net.threetag.threecore.client.renderer.AbilityBarRenderer;
 import net.threetag.threecore.client.settings.AbilityKeyBinding;
 import net.threetag.threecore.network.AbilityKeyMessage;
+import net.threetag.threecore.network.MultiJumpMessage;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -91,6 +92,16 @@ public class AbilityClientEventHandler {
             AbilityBarRenderer.scroll(true);
         } else if (SCROLL_DOWN.isKeyDown()) {
             AbilityBarRenderer.scroll(false);
+        }
+
+        // Multi Jump
+        if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && !Minecraft.getInstance().player.onGround) {
+            for (MultiJumpAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, MultiJumpAbility.class)) {
+                if (ability.getConditionManager().isEnabled()) {
+                    ThreeCore.NETWORK_CHANNEL.sendToServer(new MultiJumpMessage(ability.container.getId(), ability.getId()));
+//                    Minecraft.getInstance().player.jump();
+                }
+            }
         }
     }
 

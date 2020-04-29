@@ -47,6 +47,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType PROJECTILE = new AbilityType(ProjectileAbility::new, ThreeCore.MODID, "projectile");
     public static final AbilityType DAMAGE_IMMUNITY = new AbilityType(DamageImmunityAbility::new, ThreeCore.MODID, "damage_immunity");
     public static final AbilityType POTION_EFFECT = new AbilityType(PotionEffectAbility::new, ThreeCore.MODID, "potion_effect");
+    public static final AbilityType MULTI_JUMP = new AbilityType(MultiJumpAbility::new, ThreeCore.MODID, "multi_jump");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -72,6 +73,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(PROJECTILE);
         e.getRegistry().register(DAMAGE_IMMUNITY);
         e.getRegistry().register(POTION_EFFECT);
+        e.getRegistry().register(MULTI_JUMP);
     }
 
     @OnlyIn(Dist.CLIENT)
