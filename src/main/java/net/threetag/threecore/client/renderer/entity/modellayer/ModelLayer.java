@@ -91,6 +91,9 @@ public class ModelLayer implements IModelLayer {
             bipedModel.setRotationAngles((LivingEntity) context.getAsEntity(), 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
             Minecraft.getInstance().getTextureManager().bindTexture(this.getTexture(context).getTexture(context));
 
+            if (context.getSlot() != null)
+                this.setModelSlotVisible(bipedModel, context.getSlot());
+
             if (bipedModel instanceof IArmRenderingModel) {
                 ((IArmRenderingModel) bipedModel).renderArm(handSide);
             } else {
