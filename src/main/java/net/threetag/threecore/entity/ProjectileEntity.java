@@ -30,6 +30,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.threetag.threecore.scripts.events.ProjectileTickScriptEvent;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -107,6 +108,10 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
 
     @Override
     public void tick() {
+        ProjectileTickScriptEvent event = new ProjectileTickScriptEvent(this);
+        if (event.fire(null))
+            return;
+
         super.tick();
 
         if (this.world.isRemote && this.renderInfo.isParticles()) {
