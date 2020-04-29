@@ -4,22 +4,27 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.LazyLoadBase;
-import net.threetag.threecore.util.RenderUtil;
+import net.threetag.threecore.client.renderer.entity.model.IArmRenderingModel;
 import net.threetag.threecore.client.renderer.entity.model.ISlotDependentVisibility;
 import net.threetag.threecore.client.renderer.entity.model.ModelRegistry;
 import net.threetag.threecore.client.renderer.entity.modellayer.predicates.IModelLayerPredicate;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLayerTexture;
+import net.threetag.threecore.util.RenderUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -68,6 +73,38 @@ public class ModelLayer implements IModelLayer {
         if (glow) {
             RenderUtil.restoreLightmapTextureCoords();
             RenderHelper.enableStandardItemLighting();
+        }
+    }
+
+    @Override
+    public void renderArm(HandSide handSide, IModelLayerContext context, PlayerRenderer playerRenderer) {
+        Model model = getModel(context);
+
+        if (model instanceof BipedModel && context.getAsEntity() instanceof PlayerEntity) {
+            GlStateManager.pushMatrix();
+            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1F);
+            BipedModel bipedModel = (BipedModel) model;
+            GlStateManager.enableBlend();
+            bipedModel.swingProgress = 0.0F;
+            bipedModel.isSneak = false;
+            bipedModel.swimAnimation = 0.0F;
+            bipedModel.setRotationAngles((LivingEntity) context.getAsEntity(), 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            Minecraft.getInstance().getTextureManager().bindTexture(this.getTexture(context).getTexture(context));
+
+            if (bipedModel instanceof IArmRenderingModel) {
+                ((IArmRenderingModel) bipedModel).renderArm(handSide);
+            } else {
+                if (handSide == HandSide.RIGHT) {
+                    bipedModel.bipedRightArm.rotateAngleX = 0.0F;
+                    bipedModel.bipedRightArm.render(0.0625F);
+                } else {
+                    bipedModel.bipedLeftArm.rotateAngleX = 0.0F;
+                    bipedModel.bipedLeftArm.render(0.0625F);
+                }
+            }
+
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 

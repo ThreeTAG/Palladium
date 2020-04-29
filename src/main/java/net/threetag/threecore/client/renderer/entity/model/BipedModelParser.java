@@ -14,6 +14,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.JSONUtils;
 import net.threetag.threecore.util.PlayerUtil;
 
@@ -109,7 +110,7 @@ public class BipedModelParser extends EntityModelParser {
         return null;
     }
 
-    public static class ParsedBipedModel<T extends LivingEntity> extends BipedModel<T> implements ISlotDependentVisibility {
+    public static class ParsedBipedModel<T extends LivingEntity> extends BipedModel<T> implements ISlotDependentVisibility, IArmRenderingModel {
 
         public List<RendererModel> cubes = Lists.newLinkedList();
         public Map<RendererModel, Boolean> visibilityOverrides = Maps.newHashMap();
@@ -338,6 +339,21 @@ public class BipedModelParser extends EntityModelParser {
             this.bipedLeftLegwear.showModel = visible;
             this.bipedRightLegwear.showModel = visible;
             this.bipedBodyWear.showModel = visible;
+        }
+
+        @Override
+        public void renderArm(HandSide handSide) {
+            if(handSide == HandSide.RIGHT) {
+                this.bipedRightArm.rotateAngleX = 0.0F;
+                this.bipedRightArm.render(0.0625F);
+                this.bipedRightArmwear.rotateAngleX = 0.0F;
+                this.bipedRightArmwear.render(0.0625F);
+            } else {
+                this.bipedLeftArm.rotateAngleX = 0.0F;
+                this.bipedLeftArm.render(0.0625F);
+                this.bipedLeftArmwear.rotateAngleX = 0.0F;
+                this.bipedLeftArmwear.render(0.0625F);
+            }
         }
     }
 
