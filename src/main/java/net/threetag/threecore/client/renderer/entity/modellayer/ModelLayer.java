@@ -10,15 +10,19 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.LazyValue;
+import net.threetag.threecore.client.renderer.entity.model.IArmRenderingModel;
 import net.threetag.threecore.client.renderer.entity.model.ISlotDependentVisibility;
 import net.threetag.threecore.client.renderer.entity.model.ModelRegistry;
 import net.threetag.threecore.client.renderer.entity.modellayer.predicates.IModelLayerPredicate;
@@ -44,7 +48,6 @@ public class ModelLayer implements IModelLayer {
     @Override
     public void render(IModelLayerContext context, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLight, IEntityRenderer<? extends Entity, ? extends EntityModel<?>> entityRenderer, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         Model model = getModel(context);
-        boolean glow = ModelLayerManager.arePredicatesFulFilled(this.glowPredicates, context);
 
         if (model instanceof BipedModel && entityRenderer.getEntityModel() instanceof BipedModel && context.getAsEntity() instanceof LivingEntity) {
 
@@ -62,15 +65,45 @@ public class ModelLayer implements IModelLayer {
             bipedModel.setLivingAnimations((LivingEntity) context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
             bipedModel.setRotationAngles((LivingEntity) context.getAsEntity(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
+            boolean glow = ModelLayerManager.arePredicatesFulFilled(this.glowPredicates, context);
             IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(renderTypeBuffer, glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderType.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
             bipedModel.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
 
         } else if (model instanceof EntityModel) {
 
+            // TODO
 //            ((EntityModel) model).setLivingAnimations(context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
 //            IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(renderTypeBuffer,  glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderUtil.RenderTypes.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
 //            model.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
 
+        }
+    }
+
+    @Override
+    public void renderArm(HandSide handSide, IModelLayerContext context, PlayerRenderer playerRenderer, MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight) {
+        Model model = getModel(context);
+
+        if (model instanceof BipedModel && context.getAsEntity() instanceof PlayerEntity) {
+            BipedModel bipedModel = (BipedModel) model;
+            bipedModel.swingProgress = 0.0F;
+            bipedModel.isSneak = false;
+            bipedModel.swimAnimation = 0.0F;
+            bipedModel.setRotationAngles((LivingEntity) context.getAsEntity(), 0F, 0F, 0F, 0F, 0F);
+            boolean glow = ModelLayerManager.arePredicatesFulFilled(this.glowPredicates, context);
+            IVertexBuilder vertexBuilder = ItemRenderer.getBuffer(buffer, glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderType.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
+
+            if (bipedModel instanceof IArmRenderingModel) {
+                ((IArmRenderingModel) bipedModel).renderArm(handSide, matrixStack, vertexBuilder, packedLight);
+            } else {
+
+                if (handSide == HandSide.RIGHT) {
+                    bipedModel.bipedRightArm.rotateAngleX = 0.0F;
+                    bipedModel.bipedRightArm.render(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY);
+                } else {
+                    bipedModel.bipedLeftArm.rotateAngleX = 0.0F;
+                    bipedModel.bipedLeftArm.render(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY);
+                }
+            }
         }
     }
 

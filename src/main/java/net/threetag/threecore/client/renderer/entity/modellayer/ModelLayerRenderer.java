@@ -1,7 +1,6 @@
 package net.threetag.threecore.client.renderer.entity.modellayer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -60,10 +59,7 @@ public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>,
         if (stack.getItem() instanceof IModelLayerProvider) {
             for (IModelLayer layer : ((IModelLayerProvider) stack.getItem()).getModelLayers(context)) {
                 if (layer.isActive(context)) {
-                    matrixStack.push();
-                    RenderSystem.color4f(1F, 1F, 1F, 1F);
                     layer.render(context, matrixStack, renderTypeBuffer, packedLightIn, this.entityRenderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
-                    matrixStack.pop();
                 }
             }
         }
@@ -72,10 +68,7 @@ public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>,
     public void renderLayers(MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int i, IModelLayerProvider provider, IModelLayerContext context, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         for (IModelLayer layer : provider.getModelLayers(context)) {
             if (layer.isActive(context)) {
-                matrixStack.push();
-                RenderSystem.color4f(1F, 1F, 1F, 1F);
                 layer.render(context, matrixStack, renderTypeBuffer, i, this.entityRenderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
-                matrixStack.pop();
             }
         }
     }
