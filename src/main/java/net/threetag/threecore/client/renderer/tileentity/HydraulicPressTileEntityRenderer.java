@@ -1,4 +1,4 @@
-package net.threetag.threecore.client.render.tileentity;
+package net.threetag.threecore.client.renderer.tileentity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.block.BlockState;
