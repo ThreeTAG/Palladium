@@ -10,11 +10,10 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -25,6 +24,7 @@ import net.threetag.threecore.client.gui.widget.TranslucentButton;
 import net.threetag.threecore.client.renderer.AbilityBarRenderer;
 import net.threetag.threecore.client.settings.AbilityKeyBinding;
 import net.threetag.threecore.network.AbilityKeyMessage;
+import net.threetag.threecore.network.MultiJumpMessage;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -95,6 +95,16 @@ public class AbilityClientEventHandler {
         } else if (SCROLL_DOWN.isKeyDown()) {
             AbilityBarRenderer.scroll(false);
         }
+
+        // Multi Jump
+        if (!Minecraft.getInstance().player.isCreative() && Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && !Minecraft.getInstance().player.onGround) {
+            for (MultiJumpAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, MultiJumpAbility.class)) {
+                if (ability.getConditionManager().isEnabled()) {
+                    ThreeCore.NETWORK_CHANNEL.sendToServer(new MultiJumpMessage(ability.container.getId(), ability.getId()));
+//                    Minecraft.getInstance().player.jump();
+                }
+            }
+        }
     }
 
     @SubscribeEvent
@@ -132,6 +142,22 @@ public class AbilityClientEventHandler {
             if (invisibilityAbility.getConditionManager().isEnabled()) {
                 e.setCanceled(true);
                 return;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onRenderLivingPre(RenderNameplateEvent e) {
+        if (e.getEntity() instanceof LivingEntity && !(e.getEntity() instanceof ArmorStandEntity)) {
+            for (NameChangeAbility ability : AbilityHelper.getAbilitiesFromClass((LivingEntity) e.getEntity(), NameChangeAbility.class)) {
+                if (ability.getConditionManager().isEnabled()) {
+                    if (Minecraft.getInstance().player.isCreative()) {
+                        e.setContent(ability.get(NameChangeAbility.NAME).getFormattedText() + " (" + e.getOriginalContent() + ")");
+                    } else {
+                        e.setContent(ability.get(NameChangeAbility.NAME).getFormattedText());
+                    }
+                    return;
+                }
             }
         }
     }

@@ -39,12 +39,12 @@ import net.threetag.threecore.addonpacks.AddonPackManager;
 import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.capability.CapabilityAbilityContainer;
 import net.threetag.threecore.capability.ThreeCoreCapabilities;
-import net.threetag.threecore.client.render.tileentity.HydraulicPressTileEntityRenderer;
 import net.threetag.threecore.client.renderer.AbilityBarRenderer;
 import net.threetag.threecore.client.renderer.KarmaBarRenderer;
 import net.threetag.threecore.client.renderer.UnconsciousRenderer;
 import net.threetag.threecore.client.renderer.entity.model.EntityModelManager;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerLoader;
+import net.threetag.threecore.client.renderer.tileentity.HydraulicPressTileEntityRenderer;
 import net.threetag.threecore.command.ArmorStandPoseCommand;
 import net.threetag.threecore.command.KarmaCommand;
 import net.threetag.threecore.command.SizeChangeCommand;
@@ -190,6 +190,7 @@ public class ThreeCore {
         ThreeCore.registerMessage(SendSuperpowerToastMessage.class, SendSuperpowerToastMessage::toBytes, SendSuperpowerToastMessage::new, SendSuperpowerToastMessage::handle);
         ThreeCore.registerMessage(BuyConditionMessage.class, BuyConditionMessage::toBytes, BuyConditionMessage::new, BuyConditionMessage::handle);
         ThreeCore.registerMessage(SetAbilityKeybindMessage.class, SetAbilityKeybindMessage::toBytes, SetAbilityKeybindMessage::new, SetAbilityKeybindMessage::handle);
+        ThreeCore.registerMessage(MultiJumpMessage.class, MultiJumpMessage::toBytes, MultiJumpMessage::new, MultiJumpMessage::handle);
 
         // Karma
         ThreeCore.registerMessage(SyncKarmaMessage.class, SyncKarmaMessage::toBytes, SyncKarmaMessage::new, SyncKarmaMessage::handle);

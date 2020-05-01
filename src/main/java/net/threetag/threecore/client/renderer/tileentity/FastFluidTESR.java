@@ -1,4 +1,4 @@
-package net.threetag.threecore.client.render.tileentity;
+package net.threetag.threecore.client.renderer.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

@@ -33,6 +33,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
     public static final ThreeData<IIcon> ICON = new IconThreeData("icon").setSyncType(EnumSync.SELF)
             .enableSetting("icon", "Lets you customize the icon for the ability");
     public static final ThreeData<Integer> KEYBIND = new IntegerThreeData("key").setSyncType(EnumSync.SELF);
+    public static final ThreeData<EnumAbilityColor> COLOR = new AbilityColorThreeData("bar_color").setSyncType(EnumSync.SELF).enableSetting("Changes the color of the ability in the ability bar");
     public static final ThreeData<CompoundNBT> ADDITIONAL_DATA = new CompoundNBTThreeData("additional_data").enableSetting("You can store additional data here, especially useful if you use scripts and want to mark certain abilities");
 
     public final AbilityType type;
@@ -73,6 +74,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
                 new TranslationTextComponent("ability." + this.type.getRegistryName().getNamespace() + "." + this.type.getRegistryName().getPath()));
         this.dataManager.register(ICON, new ItemIcon(Blocks.BARRIER));
         this.dataManager.register(KEYBIND, -1);
+        this.dataManager.register(COLOR, EnumAbilityColor.LIGHT_GRAY);
         this.dataManager.register(ADDITIONAL_DATA, new CompoundNBT());
     }
 
@@ -161,7 +163,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
 
     @OnlyIn(Dist.CLIENT)
     public EnumAbilityColor getColor() {
-        return EnumAbilityColor.LIGHT_GRAY;
+        return this.get(COLOR);
     }
 
     @Override

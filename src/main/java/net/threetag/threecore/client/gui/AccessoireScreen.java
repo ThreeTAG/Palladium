@@ -169,7 +169,7 @@ public class AccessoireScreen extends SettingsScreen {
 
     public static class AccessoireListEntry extends ExtendedList.AbstractListEntry<AccessoireListEntry> {
 
-        public static final TexturedIcon TICK_ICON = new TexturedIcon(TexturedIcon.ICONS_TEXTURE, 144, 16, 16, 16);
+        public static final TexturedIcon TICK_ICON = new TexturedIcon(TexturedIcon.ICONS_TEXTURE, 160, 16, 16, 16);
 
         private final Accessoire accessoire;
         private final AccessoireScreen parent;

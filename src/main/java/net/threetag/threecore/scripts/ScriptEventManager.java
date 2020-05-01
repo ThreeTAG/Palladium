@@ -6,6 +6,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -44,6 +45,9 @@ public class ScriptEventManager {
         registerEvent("abilityDataUpdated", AbilityDataUpdatedScriptEvent.class);
         registerEvent("conditionDataUpdated", ConditionDataUpdatedScriptEvent.class);
         registerEvent("registerThreeData", RegisterThreeDataScriptEvent.class);
+        registerEvent("multiJump", MultiJumpScriptEvent.class);
+        registerEvent("projectileImpact", ProjectileImpactScriptEvent.class);
+        registerEvent("projectileTick", ProjectileTickScriptEvent.class);
     }
 
     public static void reset() {
@@ -141,6 +145,11 @@ public class ScriptEventManager {
         @SubscribeEvent
         public static void onRegisterThreeData(RegisterThreeDataEvent e) {
             new RegisterThreeDataScriptEvent(e.getEntity(), e.getThreeData()).fire(e);
+        }
+
+        @SubscribeEvent
+        public static void onProjectileImpactEvent(ProjectileImpactEvent e) {
+            new ProjectileImpactScriptEvent(e.getEntity()).fire(e);
         }
 
     }

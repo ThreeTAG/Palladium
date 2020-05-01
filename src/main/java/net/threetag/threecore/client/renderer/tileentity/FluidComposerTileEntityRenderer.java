@@ -1,4 +1,4 @@
-package net.threetag.threecore.client.render.tileentity;
+package net.threetag.threecore.client.renderer.tileentity;
 
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
