@@ -6,6 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -16,6 +18,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -36,6 +40,7 @@ import java.util.List;
 public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IModelLayerProvider {
 
     private List<AbilityGenerator> abilityGenerators;
+    private List<ITextComponent> description;
     public List layers = new LinkedList<>();
 
     public AbilityArmorItem(IArmorMaterial materialIn, EquipmentSlotType slot, Properties builder) {
@@ -52,6 +57,27 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
             this.abilityGenerators = Lists.newArrayList();
         this.abilityGenerators.add(abilityGenerator);
         return this;
+    }
+
+    public AbilityArmorItem setDescription(List<ITextComponent> description) {
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> this.description = description);
+        return this;
+    }
+
+    public AbilityArmorItem addDescriptionLine(ITextComponent line) {
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            if (this.description == null)
+                this.description = Lists.newArrayList();
+            this.description.add(line);
+        });
+        return this;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        if (this.description != null)
+            tooltip.addAll(this.description);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -117,6 +143,8 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
                 }
             });
         });
+
+        item.setDescription(JSONUtils.hasField(jsonObject, "description") ? ItemParser.parseDescriptionLines(jsonObject.get("description")) : null);
 
         return item.setAbilities(JSONUtils.hasField(jsonObject, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(jsonObject, "abilities"), true) : null);
     }

@@ -16,6 +16,8 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.LazyValue;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -24,6 +26,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.ability.AbilityGenerator;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.addonpacks.AddonPackManager;
 import net.threetag.threecore.item.*;
@@ -63,17 +66,13 @@ public class ItemParser {
         // --------------------------------------------------------------
 
         // Default
-        registerItemParser(new ResourceLocation(ThreeCore.MODID, "default"), (j, p) -> new AbilityItem(p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null));
+        registerItemParser(new ResourceLocation(ThreeCore.MODID, "default"), AbilityItem::new);
 
         // Armor
-        registerItemParser(new ResourceLocation(ThreeCore.MODID, "armor"), (j, p) -> AbilityArmorItem.parse(j, p));
+        registerItemParser(new ResourceLocation(ThreeCore.MODID, "armor"), AbilityArmorItem::parse);
 
         // Shield
-        registerItemParser(new ResourceLocation(ThreeCore.MODID, "shield"), (j, p) ->
-                new ShieldAbilityItem(p,
-                        JSONUtils.getInt(j, "use_duration", 72000),
-                        () -> (JSONUtils.hasField(j, "repair_material") ? Ingredient.deserialize(j.get("repair_material")) : Ingredient.EMPTY))
-                        .setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null));
+        registerItemParser(new ResourceLocation(ThreeCore.MODID, "shield"), ShieldAbilityItem::parse);
 
         // Tools
         registerItemParser(new ResourceLocation(ThreeCore.MODID, "tool"), (j, p) -> {
@@ -84,16 +83,18 @@ public class ItemParser {
             String type = JSONUtils.getString(j, "tool_type");
             int attackDamage = type.equalsIgnoreCase("hoe") ? 0 : JSONUtils.getInt(j, "attack_damage");
             float attackSpeed = JSONUtils.getFloat(j, "attack_speed");
+            List<AbilityGenerator> abilityGenerators = JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null;
+            List<ITextComponent> description = JSONUtils.hasField(j, "description") ? ItemParser.parseDescriptionLines(j.get("description")) : null;
             if (type.equalsIgnoreCase("hoe"))
-                return new HoeAbilityItem(tier, attackSpeed, p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null);
+                return new HoeAbilityItem(tier, attackSpeed, p).setDescription(description).setAbilities(abilityGenerators);
             else if (type.equalsIgnoreCase("shovel"))
-                return new ShovelAbilityItem(tier, attackDamage, attackSpeed, p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null);
+                return new ShovelAbilityItem(tier, attackDamage, attackSpeed, p).setDescription(description).setAbilities(abilityGenerators);
             else if (type.equalsIgnoreCase("axe"))
-                return new AxeAbilityItem(tier, attackDamage, attackSpeed, p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null);
+                return new AxeAbilityItem(tier, attackDamage, attackSpeed, p).setDescription(description).setAbilities(abilityGenerators);
             else if (type.equalsIgnoreCase("pickaxe"))
-                return new PickaxeAbilityItem(tier, attackDamage, attackSpeed, p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null);
+                return new PickaxeAbilityItem(tier, attackDamage, attackSpeed, p).setDescription(description).setAbilities(abilityGenerators);
             else if (type.equalsIgnoreCase("sword"))
-                return new SwordAbilityItem(tier, attackDamage, attackSpeed, p).setAbilities(JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null);
+                return new SwordAbilityItem(tier, attackDamage, attackSpeed, p).setDescription(description).setAbilities(abilityGenerators);
             else
                 throw new JsonParseException("Tool type '" + type + "' does not exist!");
         });
@@ -259,6 +260,23 @@ public class ItemParser {
         }
 
         return properties;
+    }
+
+    public static List<ITextComponent> parseDescriptionLines(JsonElement jsonElement) {
+        List<ITextComponent> lines = Lists.newArrayList();
+
+        if (jsonElement.isJsonArray()) {
+            JsonArray jsonArray = jsonElement.getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                lines.addAll(parseDescriptionLines(jsonArray.get(i)));
+            }
+        } else if (jsonElement.isJsonObject()) {
+            lines.add(ITextComponent.Serializer.fromJson(jsonElement));
+        } else if (jsonElement.isJsonPrimitive()) {
+            lines.add(new StringTextComponent(jsonElement.getAsString()));
+        }
+
+        return lines;
     }
 
     public static ToolType getToolType(String name) {
