@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
-import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -32,11 +31,6 @@ public class AsmHooks {
     public static ResourceLocation getLocationSkin(NetworkPlayerInfo playerInfo) {
         playerInfo.loadPlayerTextures();
         return PlayerSkinHandler.getCurrentSkin(playerInfo.gameProfile, MoreObjects.firstNonNull(playerInfo.playerTextures.get(MinecraftProfileTexture.Type.SKIN), DefaultPlayerSkin.getDefaultSkin(playerInfo.gameProfile.getId())));
-    }
-
-    public static void registerNativeImage(String url, NativeImage nativeImage) {
-        System.out.println(url + " - " + nativeImage);
-//        MinecraftForgeClient.registerImageLayerSupplier(resourceLocation, () -> nativeImage);
     }
 
     public static EntitySize getOverridenSize(EntitySize entitySize, Entity entity, Pose pose) {

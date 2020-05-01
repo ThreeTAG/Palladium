@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.threetag.threecore.ThreeCore;
@@ -30,8 +29,6 @@ public class WingsAccessoire extends Accessoire {
 
     @Override
     public void render(PlayerRenderer renderer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, AbstractClientPlayerEntity player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (!player.getItemStackFromSlot(EquipmentSlotType.CHEST).isEmpty()) return;
-
         float motion = Math.abs(MathHelper.sin(limbSwing * 0.033F + (float) Math.PI) * 0.4F) * limbSwingAmount;
         boolean flapWings = player.world.isAirBlock(player.getPosition().down());
         float speed = 0.55f + 0.5f * motion;
