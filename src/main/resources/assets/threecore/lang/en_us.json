@@ -60,6 +60,7 @@
   "ability.threecore.dummy": "Dummy",
   "ability.threecore.flight": "Flight",
   "ability.threecore.healing": "Healing",
+  "ability.threecore.hud": "HUD",
   "ability.threecore.invisibility": "Invisibility",
   "ability.threecore.model_layer": "Model Layer",
   "ability.threecore.multi_jump": "Multi Jump",
