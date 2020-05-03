@@ -11,11 +11,14 @@ import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.JSONUtils;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.util.TCJsonUtil;
 
 import java.util.List;
 import java.util.function.Function;
 
+@OnlyIn(Dist.CLIENT)
 public class EntityModelParser implements Function<JsonObject, EntityModel> {
 
     @Override

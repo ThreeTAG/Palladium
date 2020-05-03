@@ -6,6 +6,9 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.threetag.threecore.ThreeCore;
 
 import java.util.function.Function;
 
@@ -13,7 +16,11 @@ import java.util.function.Function;
  * Created by Swirtzly
  * on 26/04/2020 @ 21:44
  */
+@OnlyIn(Dist.CLIENT)
 public class WingsModel extends Model {
+
+    public static final WingsModel INSTANCE = new WingsModel(RenderType::getEntityTranslucent);
+    public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/halo_wings.png");
 
     public ModelRenderer body;
     public ModelRenderer head;
@@ -165,6 +172,10 @@ public class WingsModel extends Model {
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         left_wing_1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         right_wing_1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+    }
+
+    public void renderHalo(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 
 

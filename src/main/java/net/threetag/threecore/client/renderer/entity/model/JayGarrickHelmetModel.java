@@ -6,10 +6,17 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.threetag.threecore.ThreeCore;
 
 import java.util.function.Function;
 
+@OnlyIn(Dist.CLIENT)
 public class JayGarrickHelmetModel extends Model {
+
+    public static final JayGarrickHelmetModel INSTANCE = new JayGarrickHelmetModel(RenderType::getEntityTranslucent);
+    public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/jay_garrick_helmet.png");
 
     public ModelRenderer helmet;
 

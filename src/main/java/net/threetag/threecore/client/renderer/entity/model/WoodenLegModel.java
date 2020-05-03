@@ -6,10 +6,17 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.threetag.threecore.ThreeCore;
 
 import java.util.function.Function;
 
+@OnlyIn(Dist.CLIENT)
 public class WoodenLegModel extends Model {
+
+    public static final WoodenLegModel INSTANCE = new WoodenLegModel(RenderType::getEntityCutoutNoCull);
+    public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/wooden_leg.png");
 
     private final ModelRenderer leg;
     private final ModelRenderer playerLeg;

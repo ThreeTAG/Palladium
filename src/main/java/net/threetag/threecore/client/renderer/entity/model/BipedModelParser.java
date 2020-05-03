@@ -20,6 +20,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.JSONUtils;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.util.PlayerUtil;
 
 import java.util.List;
@@ -27,6 +29,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
+@OnlyIn(Dist.CLIENT)
 public class BipedModelParser extends EntityModelParser {
 
     @Override

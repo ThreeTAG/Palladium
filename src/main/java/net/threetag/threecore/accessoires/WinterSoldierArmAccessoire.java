@@ -3,6 +3,8 @@ package net.threetag.threecore.accessoires;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.PlayerUtil;
 
@@ -18,6 +20,7 @@ public class WinterSoldierArmAccessoire extends AbstractReplaceLimbTextureAccess
         return true;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getTexture(AbstractClientPlayerEntity player) {
         return PlayerUtil.hasSmallArms(player) ? TEXTURE_SLIM : TEXTURE;

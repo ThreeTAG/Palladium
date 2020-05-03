@@ -9,17 +9,18 @@ import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.ThreeCore;
 
 public class HerobrineEyesAccessoire extends Accessoire {
-
-    private static final RenderType RENDER_TYPE = RenderType.getEyes(new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/herobrine_eyes.png"));
 
     @Override
     public boolean isAvailable(PlayerEntity entity) {
         return true;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void render(PlayerRenderer renderer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, AbstractClientPlayerEntity player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         renderer.getEntityModel().setVisible(true);
