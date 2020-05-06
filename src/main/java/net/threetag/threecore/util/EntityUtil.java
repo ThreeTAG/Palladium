@@ -79,4 +79,8 @@ public class EntityUtil {
         }
     }
 
+    public static Vec3d getInterpolatedPositionVec(Entity entity, float partialTicks) {
+        return new Vec3d(MathHelper.lerp(partialTicks, entity.prevPosX, entity.getPosX()), MathHelper.lerp(partialTicks, entity.prevPosY, entity.getPosY()), MathHelper.lerp(partialTicks, entity.prevPosZ, entity.getPosZ()));
+    }
+
 }

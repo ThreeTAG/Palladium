@@ -1,6 +1,7 @@
 function initializeCoreMod() {
 
     Opcodes = Java.type("org.objectweb.asm.Opcodes");
+    ASMAPI = Java.type("net.minecraftforge.coremod.api.ASMAPI");
 
     MethodInsnNode = Java.type("org.objectweb.asm.tree.MethodInsnNode");
 
@@ -19,8 +20,8 @@ function initializeCoreMod() {
                 var instructions = methodNode.instructions;
                 var injectionPoint1 = null;
                 var injectionPoint2 = null;
-                var renderRightArm_name = 'renderRightArm';
-                var renderLeftArm_name = 'renderLeftArm';
+                var renderRightArm_name = ASMAPI.mapMethod('func_229144_a_');
+                var renderLeftArm_name = ASMAPI.mapMethod('func_229146_b_');
 
                 for (var i = 0; i < instructions.size(); i++) {
                     var instruction = instructions.get(i);

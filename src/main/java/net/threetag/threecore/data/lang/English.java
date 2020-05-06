@@ -261,6 +261,7 @@ public class English extends ThreeCoreLanguageProvider {
         this.add(AbilityType.POTION_EFFECT, "Potion Effect");
         this.add(AbilityType.MULTI_JUMP, "Multi Jump");
         this.add(AbilityType.NAME_CHANGE, "Name Change");
+        this.add(AbilityType.HUD, "HUD");
         this.add(AbilityType.SKIN_CHANGE, "Skin Change");
         this.add(AbilityType.HIDE_BODY_PARTS, "Hide Body Parts");
 

@@ -49,6 +49,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType POTION_EFFECT = new AbilityType(PotionEffectAbility::new, ThreeCore.MODID, "potion_effect");
     public static final AbilityType MULTI_JUMP = new AbilityType(MultiJumpAbility::new, ThreeCore.MODID, "multi_jump");
     public static final AbilityType NAME_CHANGE = new AbilityType(NameChangeAbility::new, ThreeCore.MODID, "name_change");
+    public static final AbilityType HUD = new AbilityType(HUDAbility::new, ThreeCore.MODID, "hud");
     public static final AbilityType SKIN_CHANGE = new AbilityType(SkinChangeAbility::new, ThreeCore.MODID, "skin_change");
     public static final AbilityType HIDE_BODY_PARTS = new AbilityType(HideBodyPartsAbility::new, ThreeCore.MODID, "hide_body_parts");
 
@@ -78,6 +79,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(POTION_EFFECT);
         e.getRegistry().register(MULTI_JUMP);
         e.getRegistry().register(NAME_CHANGE);
+        e.getRegistry().register(HUD);
         e.getRegistry().register(SKIN_CHANGE);
         e.getRegistry().register(HIDE_BODY_PARTS);
     }
