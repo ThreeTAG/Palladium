@@ -49,6 +49,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType POTION_EFFECT = new AbilityType(PotionEffectAbility::new, ThreeCore.MODID, "potion_effect");
     public static final AbilityType MULTI_JUMP = new AbilityType(MultiJumpAbility::new, ThreeCore.MODID, "multi_jump");
     public static final AbilityType NAME_CHANGE = new AbilityType(NameChangeAbility::new, ThreeCore.MODID, "name_change");
+    public static final AbilityType HUD = new AbilityType(HUDAbility::new, ThreeCore.MODID, "hud");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -76,6 +77,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(POTION_EFFECT);
         e.getRegistry().register(MULTI_JUMP);
         e.getRegistry().register(NAME_CHANGE);
+        e.getRegistry().register(HUD);
     }
 
     @OnlyIn(Dist.CLIENT)

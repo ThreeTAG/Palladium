@@ -2,9 +2,13 @@ package net.threetag.threecore.ability;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
@@ -165,10 +169,38 @@ public class AbilityClientEventHandler {
 
     @SubscribeEvent
     public void onHeartsPost(RenderGameOverlayEvent.Post e) {
-        for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, CustomHotbarAbility.class)) {
+        List<Ability> abilities = AbilityHelper.getAbilities(Minecraft.getInstance().player);
+
+        for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, CustomHotbarAbility.class)) {
             if (ability.getConditionManager().isEnabled() && e.getType() == ability.getDataManager().get(CustomHotbarAbility.HOTBAR_ELEMENT)) {
                 AbstractGui.GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
                 Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+            }
+        }
+
+        if (e.getType() == RenderGameOverlayEvent.ElementType.HELMET && Minecraft.getInstance().gameSettings.thirdPersonView == 0) {
+            for (HUDAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, HUDAbility.class)) {
+                if (ability.getConditionManager().isEnabled()) {
+
+                    RenderSystem.disableDepthTest();
+                    RenderSystem.depthMask(false);
+                    RenderSystem.defaultBlendFunc();
+                    RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                    RenderSystem.disableAlphaTest();
+                    Minecraft.getInstance().getTextureManager().bindTexture(ability.get(HUDAbility.TEXTURE));
+                    Tessellator tessellator = Tessellator.getInstance();
+                    BufferBuilder bufferbuilder = tessellator.getBuffer();
+                    bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+                    bufferbuilder.pos(0.0D, e.getWindow().getScaledHeight(), -90.0D).tex(0.0F, 1.0F).endVertex();
+                    bufferbuilder.pos(e.getWindow().getScaledWidth(), e.getWindow().getScaledHeight(), -90.0D).tex(1.0F, 1.0F).endVertex();
+                    bufferbuilder.pos(e.getWindow().getScaledWidth(), 0.0D, -90.0D).tex(1.0F, 0.0F).endVertex();
+                    bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0F, 0.0F).endVertex();
+                    tessellator.draw();
+                    RenderSystem.depthMask(true);
+                    RenderSystem.enableDepthTest();
+                    RenderSystem.enableAlphaTest();
+                    RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                }
             }
         }
     }
