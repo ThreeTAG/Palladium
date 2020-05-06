@@ -39,8 +39,6 @@ function initializeCoreMod() {
                 ));
                 instructions.add(new InsnNode(ARETURN));
 
-                instructions.add();
-
                 return methodNode;
             }
         }

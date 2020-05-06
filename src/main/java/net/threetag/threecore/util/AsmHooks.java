@@ -18,10 +18,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec2f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.threetag.threecore.ability.AbilityHelper;
+import net.threetag.threecore.ability.HideBodyPartsAbility;
 import net.threetag.threecore.accessoires.Accessoire;
 import net.threetag.threecore.capability.CapabilityAccessoires;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
 import net.threetag.threecore.client.renderer.entity.PlayerSkinHandler;
+import net.threetag.threecore.util.threedata.BodyPartListThreeData;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -77,6 +80,14 @@ public class AsmHooks {
 
     @OnlyIn(Dist.CLIENT)
     public static void postRotationAnglesCallback(LivingRenderer<? extends LivingEntity, ? extends EntityModel> renderer, LivingEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        for (HideBodyPartsAbility ability : AbilityHelper.getAbilitiesFromClass(entityIn, HideBodyPartsAbility.class)) {
+            if (ability.getConditionManager().isEnabled()) {
+                for(BodyPartListThreeData.BodyPart bodyPart : ability.get(HideBodyPartsAbility.BODY_PARTS)) {
+                    bodyPart.setVisibility((PlayerModel) renderer.getEntityModel(), false);
+                }
+            }
+        }
+
         entityIn.getCapability(CapabilityAccessoires.ACCESSOIRES).ifPresent(accessoireHolder -> {
             for (Accessoire accessoire : accessoireHolder.getActiveAccessoires()) {
                 if (accessoire.getPlayerPart() != null) {
