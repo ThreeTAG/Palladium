@@ -24,7 +24,7 @@ function initializeCoreMod() {
             'transformer': function (methodNode) {
                 var instructions = methodNode.instructions;
                 var injectionPoint = null;
-                var setRotationAngles_name = 'setRotationAngles';
+                var setRotationAngles_name = ASMAPI.mapMethod('func_225597_a_');
 
                 for (var i = 0; i < instructions.size(); i++) {
                     var instruction = instructions.get(i);
