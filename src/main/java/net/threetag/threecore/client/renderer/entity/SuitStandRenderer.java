@@ -37,6 +37,8 @@ public class SuitStandRenderer extends LivingRenderer<SuitStandEntity, SuitStand
 
     @Override
     protected void preRenderCallback(SuitStandEntity entity, MatrixStack matrixStack, float partialTickTime) {
+        float scale = 0.9375F;
+        matrixStack.scale(scale, scale, scale);
         if (!entity.hasNoBasePlate())
             matrixStack.translate(0, -1F / 16F, 0F);
     }

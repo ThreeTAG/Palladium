@@ -58,4 +58,5 @@ public class SuitStandModel extends BipedModel<SuitStandEntity> {
         this.bipedRightLeg.rotateAngleZ = ((float) Math.PI / 180F) * entityIn.getRightLegRotation().getZ();
         this.bipedHeadwear.copyModelAngles(this.bipedHead);
     }
+
 }
