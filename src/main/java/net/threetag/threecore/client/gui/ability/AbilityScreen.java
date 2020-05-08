@@ -34,7 +34,7 @@ public class AbilityScreen extends Screen {
 
         int i = (this.width - guiWidth) / 2;
         int j = (this.height - guiHeight) / 2;
-        this.addButton(new BackgroundlessButton(i + 193, j + 3, 5, 5, "x", s -> parentScreen.overlayScreen = null));
+        this.addButton(new BackgroundlessButton(i + 193, j + 3, 5, 5, TextFormatting.DARK_GRAY + "x", s -> parentScreen.overlayScreen = null));
         if (this.ability.getConditionManager().needsKey()) {
             keyButton = this.addButton(new ExtendedButton(i + 143, j + 30, 50, 20, "/", (b) -> {
                 this.listenToKey = !this.listenToKey;
@@ -58,9 +58,9 @@ public class AbilityScreen extends Screen {
             this.font.drawString(I18n.format("gui.threecore.abilities.keybind"), i + 143, j + 20, 4210752);
 
         RenderSystem.pushMatrix();
-        RenderSystem.translatef(i + 14, j + 18, 0);
+        RenderSystem.translatef(i + 14, j + 18, -70);
         RenderSystem.scalef(2F, 2F, 1);
-        this.ability.getDataManager().get(Ability.ICON).draw(this.minecraft, 0, 0);
+        this.ability.drawIcon(this.minecraft, this, 0, 0);
         RenderSystem.popMatrix();
 
         super.render(mouseX, mouseY, partialTicks);

@@ -335,7 +335,7 @@ public class English extends ThreeCoreLanguageProvider {
 
         this.add("gui.threecore.abilities", "Abilities");
         this.add("gui.threecore.abilities.fulfill_condition", "Do you want to fulfill this condition?");
-        this.add("gui.threecore.abilities.keybind", "Keybind, ");
+        this.add("gui.threecore.abilities.keybind", "Keybind");
         this.add("gui.jei.category.threecore.helmet_crafting", "Helmet Crafting");
         this.add("gui.jei.category.threecore.chestplate_crafting", "Chestplate Crafting");
         this.add("gui.jei.category.threecore.leggings_crafting", "Leggings Crafting");
