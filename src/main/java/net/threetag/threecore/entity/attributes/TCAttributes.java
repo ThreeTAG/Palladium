@@ -25,6 +25,8 @@ public class TCAttributes {
     public static final IAttribute FALL_RESISTANCE = (new RangedAttribute(null, "threecore.fallResistance", 0D, 0D, Double.MAX_VALUE)).setDescription("Fall Resistance");
     public static final IAttribute JUMP_HEIGHT = (new RangedAttribute(null, "threecore.jumpHeight", 0D, 0D, Double.MAX_VALUE)).setDescription("Jump Height").setShouldWatch(true);
     public static final IAttribute SPRINT_SPEED = (new RangedAttribute(null, "threecore.sprintSpeed", 0D, 0D, Double.MAX_VALUE)).setDescription("Sprint Speed").setShouldWatch(true);
+    public static final IAttribute SIZE_WIDTH = (new RangedAttribute(null, "threecore.sizeWidth", 1D, 0.1D, 32D)).setShouldWatch(true);
+    public static final IAttribute SIZE_HEIGHT = (new RangedAttribute(null, "threecore.sizeHeight", 1D, 0.1D, 32D)).setShouldWatch(true);
     public static float stepHeight;
     public static final UUID SPRINT_UUID = UUID.fromString("11faf62f-c271-4601-809e-83d982687b69");
 

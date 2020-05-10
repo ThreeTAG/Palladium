@@ -261,6 +261,8 @@ public class English extends ThreeCoreLanguageProvider {
         this.add(AbilityType.MULTI_JUMP, "Multi Jump");
         this.add(AbilityType.NAME_CHANGE, "Name Change");
         this.add(AbilityType.HUD, "HUD");
+        this.add(AbilityType.SKIN_CHANGE, "Skin Change");
+        this.add(AbilityType.HIDE_BODY_PARTS, "Hide Body Parts");
 
         this.add("ability.condition.threecore.action", "Key must be pressed once to active this ability");
         this.add("ability.condition.threecore.action.not", "Key must be pressed once to deactivate this ability");
@@ -347,6 +349,8 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("gui.jei.category.threecore.fluid_composing", "Fluid Composing");
 
         this.add("ability_container.threecore.player", "Player Abilities");
+
+        this.add("gui.threecore.accessoires", "Accessoires");
 
 
         // Death

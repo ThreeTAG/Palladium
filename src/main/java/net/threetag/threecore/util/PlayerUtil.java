@@ -1,11 +1,14 @@
 package net.threetag.threecore.util;
 
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.client.network.play.NetworkPlayerInfo;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.server.SPlaySoundPacket;
 import net.minecraft.network.play.server.SSpawnParticlePacket;
 import net.minecraft.particles.IParticleData;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -14,6 +17,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.Map;
 
 public class PlayerUtil {
 
@@ -56,6 +61,20 @@ public class PlayerUtil {
         if (player instanceof AbstractClientPlayerEntity)
             return ((AbstractClientPlayerEntity) player).getSkinType().equalsIgnoreCase("slim");
         return false;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void setPlayerSkin(AbstractClientPlayerEntity player, ResourceLocation texture) {
+        if (player.getLocationSkin().equals(texture)) {
+            return;
+        }
+        NetworkPlayerInfo playerInfo = player.playerInfo;
+        if (playerInfo == null) return;
+        Map<MinecraftProfileTexture.Type, ResourceLocation> playerTextures = playerInfo.playerTextures;
+        playerTextures.put(MinecraftProfileTexture.Type.SKIN, texture);
+        if (texture == null) {
+            playerInfo.playerTexturesLoaded = false;
+        }
     }
 
 }

@@ -3,10 +3,13 @@ package net.threetag.threecore.client.renderer.entity.model;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.entity.SuitStandEntity;
 
 import java.util.Collections;
 
+@OnlyIn(Dist.CLIENT)
 public class SuitStandBasePlateModel extends BipedModel<SuitStandEntity> {
 
     private final ModelRenderer basePlate;

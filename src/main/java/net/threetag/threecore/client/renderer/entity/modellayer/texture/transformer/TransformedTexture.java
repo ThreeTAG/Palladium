@@ -26,7 +26,6 @@ public class TransformedTexture extends SimpleTexture {
     public void loadTexture(IResourceManager manager) throws IOException {
         deleteGlTexture();
         InputStream textureStream = null;
-        InputStream maskStream = null;
 
         try {
             NativeImage image = NativeImage.read(textureStream = manager.getResource(textureLocation).getInputStream());
@@ -40,10 +39,6 @@ public class TransformedTexture extends SimpleTexture {
         } finally {
             if (textureStream != null) {
                 textureStream.close();
-            }
-
-            if (maskStream != null) {
-                maskStream.close();
             }
         }
     }

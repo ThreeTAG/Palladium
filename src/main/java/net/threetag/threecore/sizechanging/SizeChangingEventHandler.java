@@ -32,6 +32,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
+import net.threetag.threecore.entity.attributes.TCAttributes;
 import net.threetag.threecore.network.SyncSizeMessage;
 
 import java.util.List;
@@ -84,8 +85,8 @@ public class SizeChangingEventHandler {
     @SubscribeEvent
     public static void onEntityConstruct(EntityEvent.EntityConstructing e) {
         if (e.getEntity() instanceof LivingEntity) {
-            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(SizeManager.SIZE_WIDTH);
-            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(SizeManager.SIZE_HEIGHT);
+            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(TCAttributes.SIZE_WIDTH);
+            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(TCAttributes.SIZE_HEIGHT);
         }
     }
 
