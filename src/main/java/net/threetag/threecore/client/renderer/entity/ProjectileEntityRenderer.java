@@ -1,7 +1,10 @@
 package net.threetag.threecore.client.renderer.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -15,39 +18,39 @@ import net.threetag.threecore.util.RenderUtil;
 public class ProjectileEntityRenderer extends SpriteRenderer<ProjectileEntity> {
 
     public ProjectileEntityRenderer(EntityRendererManager rendererManager, ItemRenderer itemRenderer) {
-        super(rendererManager, itemRenderer, 1F);
+        super(rendererManager, itemRenderer, 1F, false);
     }
 
     @Override
-    public void doRender(ProjectileEntity entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void render(ProjectileEntity entity, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         if (entity.getRenderedItem().isEmpty()) {
             if (entity.renderInfo.isEnergy()) {
-                this.preRender(entity, x, y, z, entityYaw, partialTicks);
-                GlStateManager.rotatef(90F, 1.0F, 0.0F, 0.0F);
-                RenderUtil.drawGlowingLine(0.05F, 1F, entity.renderInfo.getColor(), true, true, true);
-                GlStateManager.popMatrix();
+                this.preRender(entity, matrixStackIn, bufferIn, entityYaw, partialTicks);
+                matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90.0F));
+                IVertexBuilder vertexBuilder = bufferIn.getBuffer(RenderUtil.RenderTypes.LASER);
+                RenderUtil.drawGlowingLine(matrixStackIn.getLast().getMatrix(), vertexBuilder, 1F, 0.05F, entity.renderInfo.getColor().getRed() / 255F, entity.renderInfo.getColor().getGreen() / 255F, entity.renderInfo.getColor().getBlue() / 255F, 1F, 15728640);
+                matrixStackIn.pop();
             } else if (entity.renderInfo.getModelLayer() != null) {
                 IModelLayer layer = ModelLayerLoader.getModelLayer(entity.renderInfo.getModelLayer());
                 if (layer != null) {
-                    this.preRender(entity, x, y, z, entityYaw, partialTicks);
-                    GlStateManager.rotatef(180.0F, 1.0F, 0.0F, 0.0F);
-                    GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
+                    this.preRender(entity, matrixStackIn, bufferIn, entityYaw, partialTicks);
+                    matrixStackIn.rotate(Vector3f.XP.rotationDegrees(180.0F));
+                    matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F));
 
-                    layer.render(new ModelLayerContext(entity), null, 0, 0, partialTicks, 0, 0, 0, 0.0625F);
-                    GlStateManager.popMatrix();
+                    layer.render(new ModelLayerContext(entity), matrixStackIn, bufferIn, packedLightIn, null, 0, 0, partialTicks, 0, 0, 0);
+                    matrixStackIn.pop();
                 }
             }
         } else {
-            super.doRender(entity, x, y, z, entityYaw, partialTicks);
+            super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         }
     }
 
-    private void preRender(ProjectileEntity entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translated(x, y, z);
+    private void preRender(ProjectileEntity entity, MatrixStack matrixStack, IRenderTypeBuffer buffer, float entityYaw, float partialTicks) {
+        matrixStack.push();
 
         Vec3d vec1 = new Vec3d(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ);
-        Vec3d vec2 = new Vec3d(entity.posX, entity.posY, entity.posZ);
+        Vec3d vec2 = new Vec3d(entity.getPosX(), entity.getPosY(), entity.getPosZ());
         vec1 = vec2.subtract(vec1);
         vec2 = vec2.subtract(vec2);
         vec1 = vec1.normalize();
@@ -58,8 +61,8 @@ public class ProjectileEntityRenderer extends SpriteRenderer<ProjectileEntity> {
         double diff = MathHelper.sqrt(x_ * x_ + z_ * z_);
         float yaw = (float) (Math.atan2(z_, x_) * 180.0D / 3.141592653589793D) - 90.0F;
         float pitch = (float) -(Math.atan2(y_, diff) * 180.0D / 3.141592653589793D);
-        GlStateManager.rotatef(-yaw, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotatef(pitch, 1.0F, 0.0F, 0.0F);
+        matrixStack.rotate(Vector3f.YP.rotation(-yaw));
+        matrixStack.rotate(Vector3f.XP.rotation(pitch));
     }
 
 }

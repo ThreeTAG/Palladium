@@ -17,7 +17,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.util.Map;
 
@@ -58,24 +57,24 @@ public class PlayerUtil {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void setPlayerSkin(AbstractClientPlayerEntity player, ResourceLocation texture) {
-        if (player.getLocationSkin() == texture) {
-            return;
-        }
-        NetworkPlayerInfo playerInfo = ObfuscationReflectionHelper.getPrivateValue(AbstractClientPlayerEntity.class, player, 0);
-        if (playerInfo == null)
-            return;
-        Map<MinecraftProfileTexture.Type, ResourceLocation> playerTextures = ObfuscationReflectionHelper.getPrivateValue(NetworkPlayerInfo.class, playerInfo, 1);
-        playerTextures.put(MinecraftProfileTexture.Type.SKIN, texture);
-        if (texture == null)
-            ObfuscationReflectionHelper.setPrivateValue(NetworkPlayerInfo.class, playerInfo, false, 4);
-    }
-
-    @OnlyIn(Dist.CLIENT)
     public static boolean hasSmallArms(PlayerEntity player) {
         if (player instanceof AbstractClientPlayerEntity)
             return ((AbstractClientPlayerEntity) player).getSkinType().equalsIgnoreCase("slim");
         return false;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void setPlayerSkin(AbstractClientPlayerEntity player, ResourceLocation texture) {
+        if (player.getLocationSkin().equals(texture)) {
+            return;
+        }
+        NetworkPlayerInfo playerInfo = player.playerInfo;
+        if (playerInfo == null) return;
+        Map<MinecraftProfileTexture.Type, ResourceLocation> playerTextures = playerInfo.playerTextures;
+        playerTextures.put(MinecraftProfileTexture.Type.SKIN, texture);
+        if (texture == null) {
+            playerInfo.playerTexturesLoaded = false;
+        }
     }
 
 }

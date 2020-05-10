@@ -75,7 +75,7 @@ public class SuitStandEntity extends ArmorStandEntity {
 
     @Override
     public ActionResultType applyPlayerInteraction(PlayerEntity player, Vec3d vec3d, Hand hand) {
-        if (!player.isSneaking()) {
+        if (!player.isCrouching()) {
             ItemStack stack = player.getHeldItem(hand);
 
             if (stack.getItem().isIn(Tags.Items.DYES)) {
@@ -123,7 +123,7 @@ public class SuitStandEntity extends ArmorStandEntity {
     @Override
     public void playParticles() {
         if (this.world instanceof ServerWorld) {
-            ((ServerWorld) this.world).spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.QUARTZ_BLOCK.getDefaultState()), this.posX, this.posY + (double) this.getHeight() / 1.5D, this.posZ, 10, this.getWidth() / 4.0F, this.getHeight() / 4.0F, this.getWidth() / 4.0F, 0.05D);
+            ((ServerWorld) this.world).spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.QUARTZ_BLOCK.getDefaultState()), this.getPosX(), this.getPosY() + (double) this.getHeight() / 1.5D, this.getPosZ(), 10, this.getWidth() / 4.0F, this.getHeight() / 4.0F, this.getWidth() / 4.0F, 0.05D);
         }
     }
 

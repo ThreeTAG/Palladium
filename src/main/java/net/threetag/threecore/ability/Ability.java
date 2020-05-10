@@ -79,7 +79,12 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
     }
 
     public CompoundNBT getAdditionalData() {
-        return this.get(ADDITIONAL_DATA);
+        return this.get(ADDITIONAL_DATA).copy();
+    }
+
+    public Ability setAdditionalData(CompoundNBT nbt) {
+        this.set(ADDITIONAL_DATA, nbt);
+        return this;
     }
 
     @OnlyIn(Dist.CLIENT)

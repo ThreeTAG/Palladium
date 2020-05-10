@@ -61,7 +61,7 @@ public class AcceleratingFlightAbility extends Ability implements FlightSound.IF
                 Vec3d vec = entity.getLookVec();
                 this.speed = MathHelper.clamp(this.speed + this.get(ACCELERATION), this.get(BASE_SPEED), this.get(MAX_SPEED));
                 // TODO multiply fly speed by size
-                entity.setMotion(vec.x * speed, vec.y * speed - (entity.isSneaking() ? entity.getHeight() * 0.2F : 0), vec.z * speed);
+                entity.setMotion(vec.x * speed, vec.y * speed - (entity.isCrouching() ? entity.getHeight() * 0.2F : 0), vec.z * speed);
 
             } else {
                 if (entity.getMotion().length() <= 1D) {
@@ -70,7 +70,7 @@ public class AcceleratingFlightAbility extends Ability implements FlightSound.IF
                     this.speed = MathHelper.clamp(this.speed - this.get(ACCELERATION), this.get(BASE_SPEED), this.get(MAX_SPEED));
                 }
 
-                if (entity.isSneaking()) {
+                if (entity.isCrouching()) {
                     entity.setMotion(new Vec3d(entity.getMotion().x, entity.getHeight() * -0.2F, entity.getMotion().z));
                 } else {
                     entity.setMotion(new Vec3d(entity.getMotion().x, Math.sin(entity.ticksExisted / 10F) / 100F, entity.getMotion().z));

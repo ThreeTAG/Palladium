@@ -56,7 +56,7 @@ public class ModelLayerManager {
                     if (textureVariable != null) {
                         texture.addVariable(e.getKey(), textureVariable);
                     } else {
-                        ThreeCore.LOGGER.warn("Texture transformer type '" + JSONUtils.getString(e.getValue().getAsJsonObject(), "type") + "' does not exist!");
+                        ThreeCore.LOGGER.warn("Texture variable type '" + JSONUtils.getString(e.getValue().getAsJsonObject(), "type") + "' does not exist!");
                     }
                 });
             }
@@ -94,7 +94,7 @@ public class ModelLayerManager {
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "or"), OrPredicate::parse);
 
         // Sneaking
-        registerPredicate(new ResourceLocation(ThreeCore.MODID, "sneaking"), j -> context -> context.getAsEntity().isSneaking());
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "sneaking"), j -> context -> context.getAsEntity().isCrouching());
 
         // Damage
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "durability"), j -> new ItemDurabilityPredicate(JSONUtils.getFloat(j, "min", 0F), JSONUtils.getFloat(j, "max", 1F)));

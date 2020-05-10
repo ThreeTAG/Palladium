@@ -27,7 +27,7 @@ function initializeCoreMod() {
                     //int opcode
                     INVOKESTATIC,
                     //String owner
-                    "net/threetag/threecore/sizechanging/SizeManager",
+                    "net/threetag/threecore/util/AsmHooks",
                     //String name
                     "entityTick",
                     //String descriptor

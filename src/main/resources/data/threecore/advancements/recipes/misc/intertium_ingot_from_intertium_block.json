@@ -6,19 +6,6 @@
     ]
   },
   "criteria": {
-    "has_at_least_9_intertium_ingot": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "threecore:intertium_ingot",
-            "count": {
-              "min": 9
-            }
-          }
-        ]
-      }
-    },
     "has_intertium_block": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -38,7 +25,6 @@
   },
   "requirements": [
     [
-      "has_at_least_9_intertium_ingot",
       "has_intertium_block",
       "has_the_recipe"
     ]

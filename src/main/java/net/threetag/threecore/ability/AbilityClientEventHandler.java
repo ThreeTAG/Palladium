@@ -2,17 +2,20 @@ package net.threetag.threecore.ability;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -95,7 +98,7 @@ public class AbilityClientEventHandler {
         }
 
         // Multi Jump
-        if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && !Minecraft.getInstance().player.onGround) {
+        if (!Minecraft.getInstance().player.isCreative() && Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && !Minecraft.getInstance().player.onGround) {
             for (MultiJumpAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, MultiJumpAbility.class)) {
                 if (ability.getConditionManager().isEnabled()) {
                     ThreeCore.NETWORK_CHANNEL.sendToServer(new MultiJumpMessage(ability.container.getId(), ability.getId()));
@@ -110,7 +113,7 @@ public class AbilityClientEventHandler {
         if (Minecraft.getInstance().player == null)
             return;
 
-        if (Minecraft.getInstance().player.isSneaking() && e.getScrollDelta() != 0F) {
+        if (Minecraft.getInstance().player.isCrouching() && e.getScrollDelta() != 0F) {
             AbilityBarRenderer.scroll(e.getScrollDelta() > 0);
             e.setCanceled(true);
         }
@@ -139,6 +142,22 @@ public class AbilityClientEventHandler {
     }
 
     @SubscribeEvent
+    public void onRenderLivingPre(RenderNameplateEvent e) {
+        if (e.getEntity() instanceof LivingEntity && !(e.getEntity() instanceof ArmorStandEntity)) {
+            for (NameChangeAbility ability : AbilityHelper.getAbilitiesFromClass((LivingEntity) e.getEntity(), NameChangeAbility.class)) {
+                if (ability.getConditionManager().isEnabled()) {
+                    if (Minecraft.getInstance().player.isCreative()) {
+                        e.setContent(ability.get(NameChangeAbility.NAME).getFormattedText() + " (" + e.getOriginalContent() + ")");
+                    } else {
+                        e.setContent(ability.get(NameChangeAbility.NAME).getFormattedText());
+                    }
+                    return;
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void onHeartsPre(RenderGameOverlayEvent.Pre e) {
         for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, CustomHotbarAbility.class)) {
             if (ability.getConditionManager().isEnabled() && e.getType() == ability.getDataManager().get(CustomHotbarAbility.HOTBAR_ELEMENT)) {
@@ -150,10 +169,38 @@ public class AbilityClientEventHandler {
 
     @SubscribeEvent
     public void onHeartsPost(RenderGameOverlayEvent.Post e) {
-        for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, CustomHotbarAbility.class)) {
+        List<Ability> abilities = AbilityHelper.getAbilities(Minecraft.getInstance().player);
+
+        for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, CustomHotbarAbility.class)) {
             if (ability.getConditionManager().isEnabled() && e.getType() == ability.getDataManager().get(CustomHotbarAbility.HOTBAR_ELEMENT)) {
                 AbstractGui.GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
                 Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+            }
+        }
+
+        if (e.getType() == RenderGameOverlayEvent.ElementType.HELMET && Minecraft.getInstance().gameSettings.thirdPersonView == 0) {
+            for (HUDAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, HUDAbility.class)) {
+                if (ability.getConditionManager().isEnabled()) {
+
+                    RenderSystem.disableDepthTest();
+                    RenderSystem.depthMask(false);
+                    RenderSystem.defaultBlendFunc();
+                    RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                    RenderSystem.disableAlphaTest();
+                    Minecraft.getInstance().getTextureManager().bindTexture(ability.get(HUDAbility.TEXTURE));
+                    Tessellator tessellator = Tessellator.getInstance();
+                    BufferBuilder bufferbuilder = tessellator.getBuffer();
+                    bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+                    bufferbuilder.pos(0.0D, e.getWindow().getScaledHeight(), -90.0D).tex(0.0F, 1.0F).endVertex();
+                    bufferbuilder.pos(e.getWindow().getScaledWidth(), e.getWindow().getScaledHeight(), -90.0D).tex(1.0F, 1.0F).endVertex();
+                    bufferbuilder.pos(e.getWindow().getScaledWidth(), 0.0D, -90.0D).tex(1.0F, 0.0F).endVertex();
+                    bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0F, 0.0F).endVertex();
+                    tessellator.draw();
+                    RenderSystem.depthMask(true);
+                    RenderSystem.enableDepthTest();
+                    RenderSystem.enableAlphaTest();
+                    RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                }
             }
         }
     }

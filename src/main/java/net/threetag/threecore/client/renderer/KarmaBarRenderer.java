@@ -1,13 +1,13 @@
 package net.threetag.threecore.client.renderer;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.karma.KarmaClass;
-import net.threetag.threecore.capability.CapabilityKarma;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MainWindow;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.capability.CapabilityKarma;
+import net.threetag.threecore.karma.KarmaClass;
 
 public class KarmaBarRenderer {
 
@@ -20,11 +20,11 @@ public class KarmaBarRenderer {
             if (!mc.ingameGUI.getChatGUI().getChatOpen())
                 return;
             mc.player.getCapability(CapabilityKarma.KARMA).ifPresent((k) -> {
-                MainWindow mainWindow = mc.mainWindow;
+                MainWindow mainWindow = mc.getMainWindow();
                 float f = (float) (k.getKarma() + (Math.abs(CapabilityKarma.MIN) + CapabilityKarma.MAX) / 2) / (float) (Math.abs(CapabilityKarma.MIN) + CapabilityKarma.MAX);
 
-                GlStateManager.pushMatrix();
-                GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+                RenderSystem.pushMatrix();
+                RenderSystem.color3f(1.0F, 1.0F, 1.0F);
                 mc.textureManager.bindTexture(TEXTURE);
                 mc.ingameGUI.blit(mainWindow.getScaledWidth() / 2 - 91, 10, 0, 0, 182, 5);
                 mc.ingameGUI.blit(mainWindow.getScaledWidth() / 2 - 85 + (int) (f * 170) - 3, 8, 0, 5, 6, 9);
@@ -35,7 +35,8 @@ public class KarmaBarRenderer {
                         mc.ingameGUI.blit(mainWindow.getScaledWidth() / 2 - 85 + (int) (f1 * 170) - 1, 9, 6, 5, 2, 7);
                     }
                 }
-                GlStateManager.popMatrix();
+                RenderSystem.color4f(1, 1, 1, 1F);
+                RenderSystem.popMatrix();
             });
         }
     }

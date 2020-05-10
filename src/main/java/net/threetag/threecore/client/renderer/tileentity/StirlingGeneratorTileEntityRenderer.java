@@ -1,5 +1,6 @@
 package net.threetag.threecore.client.renderer.tileentity;
 
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.api.distmarker.Dist;
@@ -11,6 +12,10 @@ import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class StirlingGeneratorTileEntityRenderer extends FastFluidTESR<StirlingGeneratorTileEntity> {
+
+    public StirlingGeneratorTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcher) {
+        super(rendererDispatcher);
+    }
 
     @Override
     public List<TankRenderInfo> getTanksToRender(StirlingGeneratorTileEntity te) {

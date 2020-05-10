@@ -57,7 +57,7 @@ public class SuitStandItem extends Item {
                             suitStandEntity.setCustomNameVisible(true);
                         }
                         world.addEntity(suitStandEntity);
-                        world.playSound(null, suitStandEntity.posX, suitStandEntity.posY, suitStandEntity.posZ, SoundEvents.ENTITY_ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
+                        world.playSound(null, suitStandEntity.getPosX(), suitStandEntity.getPosY(), suitStandEntity.getPosZ(), SoundEvents.ENTITY_ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
                     }
 
                     itemStack.shrink(1);

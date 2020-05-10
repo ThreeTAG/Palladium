@@ -6,15 +6,12 @@
     ]
   },
   "criteria": {
-    "has_at_least_9_palladium_nugget": {
+    "has_palladium_nugget": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "threecore:palladium_nugget",
-            "count": {
-              "min": 9
-            }
+            "tag": "forge:nuggets/palladium"
           }
         ]
       }
@@ -28,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_at_least_9_palladium_nugget",
+      "has_palladium_nugget",
       "has_the_recipe"
     ]
   ]

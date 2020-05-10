@@ -1,7 +1,7 @@
 package net.threetag.threecore.capability;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -13,11 +13,9 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.sizechanging.SizeChangeType;
-import net.threetag.threecore.sizechanging.SizeManager;
 import net.threetag.threecore.network.UpdateSizeData;
+import net.threetag.threecore.sizechanging.SizeChangeType;
 import net.threetag.threecore.util.threedata.*;
-import net.threetag.threecore.util.threedata.IWrappedThreeDataHolder;
 
 import javax.annotation.Nullable;
 
@@ -93,7 +91,7 @@ public class CapabilitySizeChanging implements ISizeChanging, IWrappedThreeDataH
         entity.firstUpdate = true;
         entity.recalculateSize();
         double d0 = (double) entity.size.width / 2.0D;
-        entity.setBoundingBox(new AxisAlignedBB(entity.posX - d0, entity.posY, entity.posZ - d0, entity.posX + d0, entity.posY + (double) entity.size.height, entity.posZ + d0));
+        entity.setBoundingBox(new AxisAlignedBB(entity.getPosX() - d0, entity.getPosY(), entity.getPosZ() - d0, entity.getPosX() + d0, entity.getPosY() + (double) entity.size.height, entity.getPosZ() + d0));
         entity.firstUpdate = b;
     }
 
@@ -107,16 +105,18 @@ public class CapabilitySizeChanging implements ISizeChanging, IWrappedThreeDataH
     @Override
     public float getWidth() {
         float f = this.dataManager.get(SCALE);
-        if (this.entity instanceof LivingEntity)
-            f *= ((LivingEntity) this.entity).getAttribute(SizeManager.SIZE_WIDTH).getValue();
+//        if (this.entity instanceof LivingEntity)
+//            f *= ((LivingEntity) this.entity).getAttribute(SizeManager.SIZE_WIDTH).getValue();
         return MathHelper.clamp(f, MIN_SIZE, MAX_SIZE);
     }
 
     @Override
     public float getHeight() {
         float f = this.dataManager.get(SCALE);
-        if (this.entity instanceof LivingEntity) {
-            f *= ((LivingEntity) this.entity).getAttribute(SizeManager.SIZE_HEIGHT).getValue();
+        if (this.entity instanceof PlayerEntity) {
+            // TODO reenable size attributes
+//            f *= ((LivingEntity) this.entity).getAttribute(SizeManager.SIZE_HEIGHT).getValue();
+//            System.out.println(((LivingEntity) this.entity).getAttribute(SizeManager.SIZE_HEIGHT).getValue());
         }
         return MathHelper.clamp(f, MIN_SIZE, MAX_SIZE);
     }

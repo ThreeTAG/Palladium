@@ -1,17 +1,17 @@
 package net.threetag.threecore.client.gui.ability;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.Ability;
-import net.threetag.threecore.network.SetAbilityKeybindMessage;
 import net.threetag.threecore.client.gui.widget.BackgroundlessButton;
+import net.threetag.threecore.network.SetAbilityKeybindMessage;
 
 public class AbilityScreen extends Screen {
 
@@ -34,9 +34,9 @@ public class AbilityScreen extends Screen {
 
         int i = (this.width - guiWidth) / 2;
         int j = (this.height - guiHeight) / 2;
-        this.addButton(new BackgroundlessButton(i + 193, j + 3, 5, 5, "x", s -> parentScreen.overlayScreen = null));
+        this.addButton(new BackgroundlessButton(i + 193, j + 3, 5, 5, TextFormatting.DARK_GRAY + "x", s -> parentScreen.overlayScreen = null));
         if (this.ability.getConditionManager().needsKey()) {
-            keyButton = this.addButton(new GuiButtonExt(i + 143, j + 30, 50, 20, "/", (b) -> {
+            keyButton = this.addButton(new ExtendedButton(i + 143, j + 30, 50, 20, "/", (b) -> {
                 this.listenToKey = !this.listenToKey;
                 this.updateButton();
             }));
@@ -49,7 +49,7 @@ public class AbilityScreen extends Screen {
         int i = (this.width - guiWidth) / 2;
         int j = (this.height - guiHeight) / 2;
 
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(AbilitiesScreen.WINDOW);
         this.blit(i, j, 0, 196, this.guiWidth, this.guiHeight);
 
@@ -57,11 +57,11 @@ public class AbilityScreen extends Screen {
         if (this.keyButton != null)
             this.font.drawString(I18n.format("gui.threecore.abilities.keybind"), i + 143, j + 20, 4210752);
 
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(i + 14, j + 18, 0);
-        GlStateManager.scalef(2F, 2F, 1);
-        this.ability.getDataManager().get(Ability.ICON).draw(this.minecraft, 0, 0);
-        GlStateManager.popMatrix();
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(i + 14, j + 18, -70);
+        RenderSystem.scalef(2F, 2F, 1);
+        this.ability.drawIcon(this.minecraft, this, 0, 0);
+        RenderSystem.popMatrix();
 
         super.render(mouseX, mouseY, partialTicks);
     }

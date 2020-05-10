@@ -76,7 +76,7 @@ public class CommandListThreeData extends ThreeData<CommandListThreeData.Command
         public ListNBT serializeNBT() {
             ListNBT list = new ListNBT();
             for (int i = 0; i < this.commands.size(); i++) {
-                list.add(i, new StringNBT(this.commands.get(i)));
+                list.add(i, StringNBT.valueOf(this.commands.get(i)));
             }
             return list;
         }

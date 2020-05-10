@@ -1,6 +1,6 @@
 package net.threetag.threecore.ability;
 
-import net.minecraft.util.LazyLoadBase;
+import net.minecraft.util.LazyValue;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -15,7 +15,7 @@ public class ModelLayerAbility extends Ability implements IModelLayerProvider {
 
     public static ThreeData<ResourceLocation> MODEL_LAYER = new ResourceLocationThreeData("model_layer").enableSetting("Determines the id for the model layer this ability will look for. The model layer json file must be in 'assets/<namespace>/model_layers'.");
     @OnlyIn(Dist.CLIENT)
-    private LazyLoadBase<IModelLayer> modelLayer = new LazyLoadBase<>(() -> ModelLayerLoader.getModelLayer(this.dataManager.get(MODEL_LAYER)));
+    private LazyValue<IModelLayer> modelLayer = new LazyValue<>(() -> ModelLayerLoader.getModelLayer(this.dataManager.get(MODEL_LAYER)));
 
     public ModelLayerAbility() {
         super(AbilityType.MODEL_LAYER);

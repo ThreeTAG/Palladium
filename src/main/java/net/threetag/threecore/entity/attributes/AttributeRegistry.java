@@ -8,7 +8,6 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.sizechanging.SizeManager;
 import net.threetag.threecore.util.icon.IIcon;
 import net.threetag.threecore.util.icon.ItemIcon;
 import net.threetag.threecore.util.icon.TexturedIcon;
@@ -36,8 +35,8 @@ public class AttributeRegistry {
         REGISTRY.register(new ResourceLocation("forge", "nametag_distance"), new AttributeEntry(LivingEntity.NAMETAG_DISTANCE));
         REGISTRY.register(new ResourceLocation("forge", "swim_speed"), new AttributeEntry(LivingEntity.SWIM_SPEED));
         REGISTRY.register(new ResourceLocation("forge", "gravity"), new AttributeEntry(LivingEntity.ENTITY_GRAVITY));
-        REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "size_width"), new AttributeEntry(SizeManager.SIZE_WIDTH));
-        REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "size_height"), new AttributeEntry(SizeManager.SIZE_HEIGHT));
+        REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "size_width"), new AttributeEntry(TCAttributes.SIZE_WIDTH));
+        REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "size_height"), new AttributeEntry(TCAttributes.SIZE_HEIGHT));
         REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "step_height"), new AttributeEntry(TCAttributes.STEP_HEIGHT));
         REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "fall_resistance"), new AttributeEntry(TCAttributes.FALL_RESISTANCE));
         REGISTRY.register(new ResourceLocation(ThreeCore.MODID, "jump_height"), new AttributeEntry(TCAttributes.JUMP_HEIGHT));

@@ -36,7 +36,7 @@ public class AddonPackManager {
     };
     public static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     public ResourcePackList<ResourcePackInfo> addonpackFinder = new ResourcePackList<>(ResourcePackInfo::new);
-    private IResourceManager resourceManager = new FallbackResourceManager(ResourcePackType.SERVER_DATA);
+    private SimpleReloadableResourceManager resourceManager = new SimpleReloadableResourceManager(ResourcePackType.SERVER_DATA, null);
 
     private AddonPackManager() {
         INSTANCE = this;

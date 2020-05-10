@@ -6,15 +6,12 @@
     ]
   },
   "criteria": {
-    "has_at_least_9_osmium_nugget": {
+    "has_osmium_nugget": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "threecore:osmium_nugget",
-            "count": {
-              "min": 9
-            }
+            "tag": "forge:nuggets/osmium"
           }
         ]
       }
@@ -28,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_at_least_9_osmium_nugget",
+      "has_osmium_nugget",
       "has_the_recipe"
     ]
   ]

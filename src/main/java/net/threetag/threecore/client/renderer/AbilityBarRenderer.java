@@ -1,9 +1,8 @@
 package net.threetag.threecore.client.renderer;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.util.InputMappings;
@@ -86,20 +85,19 @@ public class AbilityBarRenderer {
     public void renderHUD(RenderGameOverlayEvent.Post e) {
         Minecraft mc = Minecraft.getInstance();
         if (e.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+            RenderSystem.pushMatrix();
             Tessellator tes = Tessellator.getInstance();
             BufferBuilder bb = tes.getBuffer();
             List<Ability> abilities = getCurrentDisplayedAbilities(AbilityHelper.getAbilities(mc.player));
             boolean showName = mc.ingameGUI.getChatGUI().getChatOpen();
 
-            RenderHelper.enableGUIStandardItemLighting();
-            GlStateManager.enableBlend();
             for (int i = 0; i < abilities.size(); i++) {
                 Ability ability = abilities.get(i);
                 EnumAbilityColor color = ability.getColor();
                 String name = showName ? ability.getDataManager().get(Ability.TITLE).getFormattedText() : InputMappings.getKeynameFromKeycode(getKeyFromAbility(ability, i));
                 int nameLength = mc.fontRenderer.getStringWidth(name);
 
-                GlStateManager.color4f(1, 1, 1, 1);
+                RenderSystem.color4f(1, 1, 1, 1);
                 mc.textureManager.bindTexture(TEXTURE);
                 mc.ingameGUI.blit(7, 7 + i * 22, color.getX(), color.getY(), 22, 22);
 
@@ -109,21 +107,22 @@ public class AbilityBarRenderer {
                 ability.drawIcon(mc, mc.ingameGUI, 10, 10 + i * 22);
 
                 if (ability.getConditionManager().needsKey()) {
-                    GlStateManager.disableTexture();
-                    GlStateManager.disableCull();
-                    GlStateManager.color4f(0, 0, 0, 0.5F);
+                    RenderSystem.disableTexture();
+                    RenderSystem.enableBlend();
+                    RenderSystem.color4f(0, 0, 0, 0.5F);
                     bb.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION);
                     bb.pos(7 + 22, 10 + i * 22 + 1, 0).endVertex();
                     bb.pos(7 + 22 + nameLength + 8, 10 + i * 22 + 1, 0).endVertex();
                     bb.pos(7 + 22 + nameLength + 8, 10 + i * 22 + 15, 0).endVertex();
                     bb.pos(7 + 22, 10 + i * 22 + 15, 0).endVertex();
                     tes.draw();
-                    GlStateManager.enableTexture();
+                    RenderSystem.enableTexture();
+                    RenderSystem.disableBlend();
                     mc.ingameGUI.drawString(mc.fontRenderer, name, 34, 10 + i * 22 + 4, 0xffffff);
                 }
             }
-            GlStateManager.disableBlend();
-            RenderHelper.disableStandardItemLighting();
+            RenderSystem.color4f(1, 1, 1, 1F);
+            RenderSystem.popMatrix();
         }
     }
 

@@ -101,7 +101,7 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
             IParticleData particle = this.makeParticle();
 
             for (int i = 0; i < 8; ++i) {
-                this.world.addParticle(particle, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+                this.world.addParticle(particle, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
             }
         }
     }
@@ -120,7 +120,7 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
             float sY = (random.nextFloat() - 0.5F) * this.renderInfo.getParticleSpread();
             float sZ = (random.nextFloat() - 0.5F) * this.renderInfo.getParticleSpread();
             try {
-                this.world.addParticle(this.renderInfo.getParticleType().getDeserializer().deserialize(this.renderInfo.getParticleType(), new StringReader(this.renderInfo.particleOptions)), this.posX, this.posY, this.posZ, sX, sY, sZ);
+                this.world.addParticle(this.renderInfo.getParticleType().getDeserializer().deserialize(this.renderInfo.getParticleType(), new StringReader(this.renderInfo.particleOptions)), this.getPosX(), this.getPosY(), this.getPosZ(), sX, sY, sZ);
             } catch (CommandSyntaxException e) {
             }
         }
@@ -268,9 +268,9 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
                 nbt.putString("ModelLayer", this.modelLayer.toString());
             } else if (this.isEnergy()) {
                 ListNBT listNBT = new ListNBT();
-                listNBT.add(new IntNBT(this.color.getRed()));
-                listNBT.add(new IntNBT(this.color.getGreen()));
-                listNBT.add(new IntNBT(this.color.getBlue()));
+                listNBT.add(IntNBT.valueOf(this.color.getRed()));
+                listNBT.add(IntNBT.valueOf(this.color.getGreen()));
+                listNBT.add(IntNBT.valueOf(this.color.getBlue()));
                 nbt.put("EnergyColor", listNBT);
             } else if (this.isParticles()) {
                 nbt.putString("ParticleType", ForgeRegistries.PARTICLE_TYPES.getKey(this.particleType).toString());

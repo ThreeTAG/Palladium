@@ -28,7 +28,7 @@ public class ItemIcon implements IIcon {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void draw(Minecraft mc, int x, int y) {
-        RenderHelper.enableGUIStandardItemLighting();
+        RenderHelper.enableStandardItemLighting();
         mc.getItemRenderer().renderItemIntoGUI(this.stack, x, y);
         RenderHelper.disableStandardItemLighting();
         if (this.stack.getCount() > 1) {

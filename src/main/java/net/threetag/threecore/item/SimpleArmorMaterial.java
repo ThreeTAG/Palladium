@@ -3,7 +3,7 @@ package net.threetag.threecore.item;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyLoadBase;
+import net.minecraft.util.LazyValue;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -17,18 +17,18 @@ public class SimpleArmorMaterial implements IArmorMaterial {
     private final int maxDamageFactor;
     private final int[] damageReductionAmountArray;
     private final int enchantability;
-    private final LazyLoadBase<SoundEvent> soundEvent;
+    private final LazyValue<SoundEvent> soundEvent;
     private final float toughness;
-    private final LazyLoadBase<Ingredient> repairMaterial;
+    private final LazyValue<Ingredient> repairMaterial;
 
-    public SimpleArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, LazyLoadBase<SoundEvent> equipSoundIn, float toughness, Supplier<Ingredient> repairMaterialSupplier) {
+    public SimpleArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, LazyValue<SoundEvent> equipSoundIn, float toughness, Supplier<Ingredient> repairMaterialSupplier) {
         this.name = nameIn;
         this.maxDamageFactor = maxDamageFactorIn;
         this.damageReductionAmountArray = damageReductionAmountsIn;
         this.enchantability = enchantabilityIn;
         this.soundEvent = equipSoundIn;
         this.toughness = toughness;
-        this.repairMaterial = new LazyLoadBase<>(repairMaterialSupplier);
+        this.repairMaterial = new LazyValue<>(repairMaterialSupplier);
     }
 
     @Override

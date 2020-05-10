@@ -26,9 +26,9 @@ public class FlightSound extends TickableSound {
     public void tick() {
         ++this.time;
         if (this.entity.isAlive() && (this.time <= 20 || this.ability.getConditionManager().isEnabled())) {
-            this.x = (float) this.entity.posX;
-            this.y = (float) this.entity.posY;
-            this.z = (float) this.entity.posZ;
+            this.x = (float) this.entity.getPosX();
+            this.y = (float) this.entity.getPosY();
+            this.z = (float) this.entity.getPosZ();
             float f = (float) this.entity.getMotion().lengthSquared() / 4F;
             if ((double) f >= 1.0E-7D) {
                 this.volume = MathHelper.clamp(f / 4.0F, 0.0F, 1.0F);

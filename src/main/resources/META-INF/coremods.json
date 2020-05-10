@@ -5,5 +5,7 @@
   "entity_tick": "META-INF/entity_tick.js",
   "inventory_screen_draw_entity": "META-INF/inventory_screen_draw_entity.js",
   "item_renderer_render_item": "META-INF/item_renderer_render_item.js",
-  "first_person_renderer_render_arm": "META-INF/first_person_renderer_render_arm.js"
+  "first_person_renderer_render_arm": "META-INF/first_person_renderer_render_arm.js",
+  "network_player_info_location_skin": "META-INF/network_player_info_location_skin.js",
+  "living_renderer_render": "META-INF/living_renderer_render.js"
 }

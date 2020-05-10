@@ -179,7 +179,7 @@ public class HydraulicPressContainer extends RecipeBookContainer implements IRec
     }
 
     @Override
-    public void func_201771_a(RecipeItemHelper recipeItemHelper) {
+    public void fillStackedContents(RecipeItemHelper recipeItemHelper) {
         if (this.hydraulicPressTileEntity instanceof IRecipeHelperPopulator) {
             ((IRecipeHelperPopulator) this.hydraulicPressTileEntity).fillStackedContents(recipeItemHelper);
         }

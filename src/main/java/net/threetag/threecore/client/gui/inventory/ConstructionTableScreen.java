@@ -1,6 +1,6 @@
 package net.threetag.threecore.client.gui.inventory;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.util.InputMappings;
@@ -10,9 +10,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.block.ConstructionTableBlock;
-import net.threetag.threecore.network.OpenConstructionTableTabMessage;
-import net.threetag.threecore.container.*;
 import net.threetag.threecore.client.gui.widget.IconButton;
+import net.threetag.threecore.container.*;
+import net.threetag.threecore.network.OpenConstructionTableTabMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class ConstructionTableScreen<T extends AbstractConstructionTableContaine
 
         // Ugly fix to prevent that the mouse cursor goes back to the center of the screen once you change the tab
         if (mouseX > -1 && mouseY > -1) {
-            InputMappings.setCursorPosAndMode(minecraft.mainWindow.getHandle(), 212993, mouseX, mouseY);
+            InputMappings.setCursorPosAndMode(minecraft.getMainWindow().getHandle(), 212993, mouseX, mouseY);
             mouseX = mouseY = -1;
         }
 
@@ -81,7 +81,7 @@ public class ConstructionTableScreen<T extends AbstractConstructionTableContaine
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(this.texture);
         int i = this.guiLeft;
         int j = (this.height - this.ySize) / 2;

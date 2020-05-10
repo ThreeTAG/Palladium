@@ -33,16 +33,16 @@ public class TeleportAbility extends Ability {
     @Override
     public void action(LivingEntity entity) {
         Vec3d lookVec = entity.getLookVec().scale(this.dataManager.get(DISTANCE));
-        RayTraceResult rtr = entity.world.rayTraceBlocks(new RayTraceContext(new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), new Vec3d(entity.posX + lookVec.x, entity.posY + entity.getEyeHeight() + lookVec.y, entity.posZ + lookVec.z), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
+        RayTraceResult rtr = entity.world.rayTraceBlocks(new RayTraceContext(new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), new Vec3d(entity.getPosX() + lookVec.x, entity.getPosY() + entity.getEyeHeight() + lookVec.y, entity.getPosZ() + lookVec.z), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
 
-        PlayerUtil.playSoundToAll(entity.world, entity.posX, entity.posY, entity.posZ, 50, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS);
+        PlayerUtil.playSoundToAll(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 50, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS);
         entity.setPositionAndUpdate(rtr.getHitVec().x, rtr.getHitVec().y, rtr.getHitVec().z);
-        PlayerUtil.playSoundToAll(entity.world, entity.posX, entity.posY, entity.posZ, 50, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS);
+        PlayerUtil.playSoundToAll(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 50, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS);
 
         for (int i = 0; i < 30; ++i) {
             PlayerUtil.spawnParticleForAll(
-                    entity.world, 50, ParticleTypes.PORTAL, true, (float) entity.posX,
-                    (float) entity.posY + entity.world.rand.nextFloat() * entity.getHeight(), (float) entity.posZ, (
+                    entity.world, 50, ParticleTypes.PORTAL, true, (float) entity.getPosX(),
+                    (float) entity.getPosY() + entity.world.rand.nextFloat() * entity.getHeight(), (float) entity.getPosZ(), (
                             entity.world.rand.nextFloat() - 0.5F) * 2.0F, -entity.world.rand.nextFloat(), (entity.world.rand.nextFloat() - 0.5F) * 2.0F, 1,
                     10);
         }

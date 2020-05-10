@@ -35,6 +35,9 @@ public class AlphaMaskTextureTransformer implements ITextureTransformer {
                 }
             }
         }
+
+        overlay.close();
+
         return texture;
     }
 }

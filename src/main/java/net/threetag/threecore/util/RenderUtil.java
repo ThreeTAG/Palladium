@@ -1,15 +1,14 @@
 package net.threetag.threecore.util;
 
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,34 +16,21 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.Ability;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderUtil {
 
     public static float renderTickTime;
-    private static float lastBrightnessX = GLX.lastBrightnessX;
-    private static float lastBrightnessY = GLX.lastBrightnessY;
     private static LivingEntity currentEntityInItemRendering = null;
     private static Ability currentAbilityInIconRendering = null;
 
     public static void onRenderGlobal(TickEvent.RenderTickEvent e) {
         renderTickTime = e.renderTickTime;
-    }
-
-    public static void setLightmapTextureCoords(float x, float y) {
-        lastBrightnessX = GLX.lastBrightnessX;
-        lastBrightnessY = GLX.lastBrightnessY;
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, x, y);
-    }
-
-    public static void restoreLightmapTextureCoords() {
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, lastBrightnessX, lastBrightnessY);
     }
 
     public static void setCurrentEntityInItemRendering(LivingEntity entity) {
@@ -64,82 +50,55 @@ public class RenderUtil {
         return currentAbilityInIconRendering;
     }
 
-    public static void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
-        drawBoundingBox(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, red, green, blue, alpha);
+    public static void renderFilledBox(Matrix4f matrix, IVertexBuilder builder, AxisAlignedBB boundingBox, float red, float green, float blue, float alpha, int combinedLightIn) {
+        renderFilledBox(matrix, builder, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ, red, green, blue, alpha, combinedLightIn);
     }
 
-    public static void drawBoundingBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float red, float green, float blue, float alpha) {
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(3, DefaultVertexFormats.POSITION_COLOR);
-        drawBoundingBox(bufferbuilder, minX, minY, minZ, maxX, maxY, maxZ, red, green, blue, alpha);
-        tessellator.draw();
+    public static void renderFilledBox(Matrix4f matrix, IVertexBuilder builder, float startX, float startY, float startZ, float endX, float endY, float endZ, float red, float green, float blue, float alpha, int combinedLightIn) {
+        //down
+        builder.pos(matrix, startX, startY, startZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, endX, startY, startZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, endX, startY, endZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, startX, startY, endZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+
+        //up
+        builder.pos(matrix, startX, endY, startZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, startX, endY, endZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, endX, endY, endZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, endX, endY, startZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+
+        //east
+        builder.pos(matrix, startX, startY, startZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, startX, endY, startZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, endX, endY, startZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, endX, startY, startZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+
+        //west
+        builder.pos(matrix, startX, startY, endZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, endX, startY, endZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, endX, endY, endZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, startX, endY, endZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+
+        //south
+        builder.pos(matrix, endX, startY, startZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, endX, endY, startZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, endX, endY, endZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, endX, startY, endZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+
+        //north
+        builder.pos(matrix, startX, startY, startZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, startX, startY, endZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, startX, endY, endZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
+        builder.pos(matrix, startX, endY, startZ).color(red, green, blue, alpha).lightmap(combinedLightIn).endVertex();
     }
 
-    public static void drawBoundingBox(BufferBuilder buffer, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float red, float green, float blue, float alpha) {
-        buffer.pos(minX, minY, minZ).color(red, green, blue, 0.0F).endVertex();
-        buffer.pos(minX, minY, minZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(maxX, minY, minZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(maxX, minY, maxZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(minX, minY, maxZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(minX, minY, minZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(minX, maxY, minZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(maxX, maxY, minZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(maxX, maxY, maxZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(minX, maxY, maxZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(minX, maxY, minZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(minX, maxY, maxZ).color(red, green, blue, 0.0F).endVertex();
-        buffer.pos(minX, minY, maxZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(maxX, maxY, maxZ).color(red, green, blue, 0.0F).endVertex();
-        buffer.pos(maxX, minY, maxZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(maxX, maxY, minZ).color(red, green, blue, 0.0F).endVertex();
-        buffer.pos(maxX, minY, minZ).color(red, green, blue, alpha).endVertex();
-        buffer.pos(maxX, minY, minZ).color(red, green, blue, 0.0F).endVertex();
-    }
+    public static void drawGlowingLine(Matrix4f matrix, IVertexBuilder builder, float length, float width, float red, float green, float blue, float alpha, int combinedLightIn) {
+        AxisAlignedBB box = new AxisAlignedBB(-width / 2F, 0, -width / 2F, width / 2F, length, width / 2F);
+        renderFilledBox(matrix, builder, box, 1F, 1F, 1F, alpha, combinedLightIn);
 
-    public static void renderFilledBox(AxisAlignedBB aabb, float red, float green, float blue, float alpha) {
-        renderFilledBox(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ, red, green, blue, alpha);
-    }
-
-    public static void renderFilledBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float red, float green, float blue, float alpha) {
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(5, DefaultVertexFormats.POSITION_COLOR);
-        addChainedFilledBoxVertices(bufferbuilder, minX, minY, minZ, maxX, maxY, maxZ, red, green, blue, alpha);
-        tessellator.draw();
-    }
-
-    public static void addChainedFilledBoxVertices(BufferBuilder builder, double x1, double y1, double z1, double x2, double y2, double z2, float red, float green, float blue, float alpha) {
-        builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y1, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y2, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y2, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y2, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y1, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y1, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y1, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y1, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y2, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y2, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y1, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y2, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y1, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y1, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y1, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y1, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y2, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y2, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x1, y2, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y2, z1).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
-        builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
+        for(int i = 0; i < 3; i++) {
+            renderFilledBox(matrix, builder, box.grow(i * 0.5F * 0.0625F), red, green, blue, (1F / i / 2) * alpha, combinedLightIn);
+        }
     }
 
     public static void renderGuiTank(IFluidHandler fluidHandler, int tank, double x, double y, double zLevel, double width, double height) {
@@ -155,15 +114,15 @@ public class RenderUtil {
         }
 
         ResourceLocation stillTexture = stack.getFluid().getAttributes().getStillTexture();
-        TextureAtlasSprite icon = Minecraft.getInstance().getTextureMap().getSprite(stillTexture);
+        TextureAtlasSprite icon = Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(stillTexture);
 
         int renderAmount = (int) Math.max(Math.min(height, amount * height / tankCapacity), 1);
         int posY = (int) (y + height - renderAmount);
 
-        Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+        Minecraft.getInstance().getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
         setColorRGBA(stack.getFluid().getAttributes().getColor(stack));
 
-        GlStateManager.enableBlend();
+        RenderSystem.enableBlend();
         for (int i = 0; i < width; i += 16) {
             for (int j = 0; j < renderAmount; j += 16) {
                 int drawWidth = (int) Math.min(width - i, 16);
@@ -172,12 +131,12 @@ public class RenderUtil {
                 int drawX = (int) (x + i);
                 int drawY = posY + j;
 
-                double minU = icon.getMinU();
-                double maxU = icon.getMaxU();
-                double minV = icon.getMinV();
-                double maxV = icon.getMaxV();
-                double u = minU + (maxU - minU) * drawWidth / 16F;
-                double v = minV + (maxV - minV) * drawHeight / 16F;
+                float minU = icon.getMinU();
+                float maxU = icon.getMaxU();
+                float minV = icon.getMinV();
+                float maxV = icon.getMaxV();
+                float u = minU + (maxU - minU) * drawWidth / 16F;
+                float v = minV + (maxV - minV) * drawHeight / 16F;
 
                 Tessellator tessellator = Tessellator.getInstance();
                 BufferBuilder tes = tessellator.getBuffer();
@@ -189,91 +148,16 @@ public class RenderUtil {
                 tessellator.draw();
             }
         }
-        GlStateManager.disableBlend();
-        GlStateManager.color3f(1, 1, 1);
+        RenderSystem.disableBlend();
+        RenderSystem.color4f(1, 1, 1, 1);
     }
 
-    public static void drawLine(float width, float length) {
-        drawLine(width, length, true, true);
+    public static void drawLine(Matrix4f matrix, IVertexBuilder builder, float width, float length, float red, float green, float blue, float alpha, int combinedLightIn) {
+        drawLine(matrix, builder, width, length, true, true, red, green, blue, alpha, combinedLightIn);
     }
 
-    public static void drawLine(float width, float length, boolean drawTop, boolean drawBottom) {
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bb = tessellator.getBuffer();
-
-        bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-
-        // West Side
-        bb.pos(width, 0, -width).endVertex();
-        bb.pos(width, length, -width).endVertex();
-        bb.pos(width, length, width).endVertex();
-        bb.pos(width, 0, width).endVertex();
-
-        // East Side
-        bb.pos(-width, 0, -width).endVertex();
-        bb.pos(-width, length, -width).endVertex();
-        bb.pos(-width, length, width).endVertex();
-        bb.pos(-width, 0, width).endVertex();
-
-        // South
-        bb.pos(-width, 0, width).endVertex();
-        bb.pos(-width, length, width).endVertex();
-        bb.pos(width, length, width).endVertex();
-        bb.pos(width, 0, width).endVertex();
-
-        // North
-        bb.pos(-width, 0, -width).endVertex();
-        bb.pos(-width, length, -width).endVertex();
-        bb.pos(width, length, -width).endVertex();
-        bb.pos(width, 0, -width).endVertex();
-
-        if (drawTop) {
-            bb.pos(-width, length, -width).endVertex();
-            bb.pos(width, length, -width).endVertex();
-            bb.pos(width, length, width).endVertex();
-            bb.pos(-width, length, width).endVertex();
-        }
-
-        if (drawBottom) {
-            bb.pos(-width, 0, -width).endVertex();
-            bb.pos(width, 0, -width).endVertex();
-            bb.pos(width, 0, width).endVertex();
-            bb.pos(-width, 0, width).endVertex();
-        }
-
-        tessellator.draw();
-    }
-
-    public static void drawGlowingLine(float width, float length, Color color, boolean extendedEnd, boolean drawTop, boolean drawBottom) {
-        GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-        GlStateManager.disableTexture();
-        GlStateManager.disableCull();
-        RenderHelper.disableStandardItemLighting();
-        RenderUtil.setLightmapTextureCoords(240, 240);
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-        GL14.glBlendEquation(GL14.GL_FUNC_ADD);
-        float alpha = color.getAlpha() / 255F;
-        GlStateManager.color4f(1F, 1F, 1F, alpha);
-        RenderUtil.drawLine(width, length);
-
-        for (int i = 1; i < 3; ++i) {
-            GlStateManager.color4f(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, (1F / i / 2) * alpha);
-
-            float growWidth = width + i * 0.5F * 0.0625F;
-            float growHeight = extendedEnd ? length + i * 0.5F * 0.0625F : length;
-
-            RenderUtil.drawLine(growWidth, growHeight, drawTop, drawBottom);
-        }
-
-        GL14.glBlendEquation(GL14.GL_FUNC_ADD);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderUtil.restoreLightmapTextureCoords();
-        RenderHelper.enableStandardItemLighting();
-        GL11.glPopAttrib();
-        GlStateManager.enableCull();
-        GlStateManager.disableBlend();
-        GlStateManager.enableTexture();
+    public static void drawLine(Matrix4f matrix, IVertexBuilder builder, float width, float length, boolean drawTop, boolean drawBottom, float red, float green, float blue, float alpha, int combinedLightIn) {
+        renderFilledBox(matrix, builder, -width / 2F, 0, -width / 2F, width / 2F, length, width / 2F, red, green, blue, alpha, combinedLightIn);
     }
 
     public static void setColorRGBA(int color) {
@@ -282,7 +166,7 @@ public class RenderUtil {
         float g = (float) green(color) / 255.0F;
         float b = (float) blue(color) / 255.0F;
 
-        GlStateManager.color4f(r, g, b, a);
+        RenderSystem.color4f(r, g, b, a);
     }
 
     public static int alpha(int c) {
@@ -301,5 +185,34 @@ public class RenderUtil {
         return (c) & 0xFF;
     }
 
+    public static class RenderTypes extends RenderType {
+
+        public RenderTypes(String name, VertexFormat vertexFormat, int drawMode, int bufferSize, boolean useDelegate, boolean needsSorting, Runnable setupTask, Runnable clearTask) {
+            super(name, vertexFormat, drawMode, bufferSize, useDelegate, needsSorting, setupTask, clearTask);
+        }
+
+        public static final RenderType HYDRAULIC_PRESS_PISTONS = makeType(ThreeCore.MODID + ":hydraulic_press_pistons", DefaultVertexFormats.POSITION_COLOR_LIGHTMAP, GL11.GL_QUADS, 256, RenderType.State.getBuilder()
+                .layer(PROJECTION_LAYERING)
+                .transparency(TRANSLUCENT_TRANSPARENCY)
+                .texture(NO_TEXTURE)
+                .depthTest(DEPTH_LEQUAL)
+                .shadeModel(RenderState.SHADE_ENABLED)
+                .cull(CULL_ENABLED)
+                .lightmap(RenderState.LIGHTMAP_ENABLED)
+                .writeMask(COLOR_DEPTH_WRITE)
+                .build(false));
+
+        public static final RenderType LASER = makeType(ThreeCore.MODID + ":laser", DefaultVertexFormats.POSITION_COLOR_LIGHTMAP, GL11.GL_QUADS, 256, false, false, RenderType.State.getBuilder()
+                .texture(RenderState.NO_TEXTURE)
+                .cull(RenderState.CULL_ENABLED)
+                .alpha(DEFAULT_ALPHA)
+                .transparency(RenderState.LIGHTNING_TRANSPARENCY)
+                .build(true));
+
+        public static RenderType getGlowing(ResourceLocation locationIn) {
+            RenderState.TextureState textureState = new RenderState.TextureState(locationIn, false, false);
+            return makeType(ThreeCore.MODID + ":glowing", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().transparency(TRANSLUCENT_TRANSPARENCY).alpha(DEFAULT_ALPHA).cull(CULL_DISABLED).overlay(OVERLAY_ENABLED).texture(textureState).fog(BLACK_FOG).build(false));
+        }
+    }
 
 }

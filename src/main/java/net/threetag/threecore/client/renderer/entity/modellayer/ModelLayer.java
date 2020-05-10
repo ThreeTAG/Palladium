@@ -4,21 +4,24 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderHelper;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.LazyLoadBase;
+import net.minecraft.util.LazyValue;
 import net.threetag.threecore.client.renderer.entity.model.IArmRenderingModel;
 import net.threetag.threecore.client.renderer.entity.model.ISlotDependentVisibility;
 import net.threetag.threecore.client.renderer.entity.model.ModelRegistry;
@@ -31,80 +34,79 @@ import java.util.Objects;
 
 public class ModelLayer implements IModelLayer {
 
-    public final LazyLoadBase<Model> model;
+    public final LazyValue<Model> model;
     public final ModelLayerTexture texture;
     public final List<IModelLayerPredicate> glowPredicates;
     public final List<IModelLayerPredicate> predicateList = Lists.newLinkedList();
 
-    public ModelLayer(LazyLoadBase<Model> model, ModelLayerTexture texture, List<IModelLayerPredicate> glowPredicates) {
+    public ModelLayer(LazyValue<Model> model, ModelLayerTexture texture, List<IModelLayerPredicate> glowPredicates) {
         this.model = Objects.requireNonNull(model);
         this.texture = Objects.requireNonNull(texture);
         this.glowPredicates = glowPredicates;
     }
 
     @Override
-    public void render(IModelLayerContext context, IEntityRenderer<? extends Entity, ? extends EntityModel<?>> entityRenderer, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        Minecraft.getInstance().getTextureManager().bindTexture(this.getTexture(context).getTexture(context));
+    public void render(IModelLayerContext context, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLight, IEntityRenderer<? extends Entity, ? extends EntityModel<?>> entityRenderer, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         Model model = getModel(context);
-        boolean glow = ModelLayerManager.arePredicatesFulFilled(this.glowPredicates, context);
 
-        if (glow) {
-            RenderHelper.disableStandardItemLighting();
-            RenderUtil.setLightmapTextureCoords(240, 240);
-        }
+        if (model instanceof BipedModel && entityRenderer.getEntityModel() instanceof BipedModel && context.getAsEntity() instanceof LivingEntity) {
 
-        if (model instanceof BipedModel && context.getAsEntity() instanceof LivingEntity) {
             BipedModel bipedModel = (BipedModel) model;
-            entityRenderer.getEntityModel().setModelAttributes(bipedModel);
-            bipedModel.isSneak = context.getAsEntity().shouldRenderSneaking();
+            ((BipedModel) entityRenderer.getEntityModel()).setModelAttributes(bipedModel);
+
             if (entityRenderer != null) {
                 bipedModel.rightArmPose = ((BipedModel) entityRenderer.getEntityModel()).rightArmPose;
                 bipedModel.leftArmPose = ((BipedModel) entityRenderer.getEntityModel()).leftArmPose;
             }
+
             if (context.getSlot() != null)
                 this.setModelSlotVisible(bipedModel, context.getSlot());
-            bipedModel.setLivingAnimations((LivingEntity) context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
-            bipedModel.render((LivingEntity) context.getAsEntity(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        } else if (model instanceof EntityModel) {
-            ((EntityModel) model).setLivingAnimations(context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
-            ((EntityModel) model).render(context.getAsEntity(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        }
 
-        if (glow) {
-            RenderUtil.restoreLightmapTextureCoords();
-            RenderHelper.enableStandardItemLighting();
+            bipedModel.setLivingAnimations((LivingEntity) context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
+            bipedModel.setRotationAngles((LivingEntity) context.getAsEntity(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+
+            boolean glow = ModelLayerManager.arePredicatesFulFilled(this.glowPredicates, context);
+            IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(renderTypeBuffer, glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderType.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
+            bipedModel.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+
+        } else if (model instanceof EntityModel) {
+
+            boolean glow = ModelLayerManager.arePredicatesFulFilled(this.glowPredicates, context);
+            ((EntityModel) model).setLivingAnimations(context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
+            IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(renderTypeBuffer,  glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderUtil.RenderTypes.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
+            model.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+
         }
     }
 
     @Override
-    public void renderArm(HandSide handSide, IModelLayerContext context, PlayerRenderer playerRenderer) {
+    public void renderArm(HandSide handSide, IModelLayerContext context, PlayerRenderer playerRenderer, MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight) {
         Model model = getModel(context);
 
         if (model instanceof BipedModel && context.getAsEntity() instanceof PlayerEntity) {
-            GlStateManager.pushMatrix();
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1F);
             BipedModel bipedModel = (BipedModel) model;
-            GlStateManager.enableBlend();
             bipedModel.swingProgress = 0.0F;
             bipedModel.isSneak = false;
             bipedModel.swimAnimation = 0.0F;
-            bipedModel.setRotationAngles((LivingEntity) context.getAsEntity(), 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-            Minecraft.getInstance().getTextureManager().bindTexture(this.getTexture(context).getTexture(context));
+            bipedModel.setRotationAngles((LivingEntity) context.getAsEntity(), 0F, 0F, 0F, 0F, 0F);
+            boolean glow = ModelLayerManager.arePredicatesFulFilled(this.glowPredicates, context);
+            IVertexBuilder vertexBuilder = ItemRenderer.getBuffer(buffer, glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderType.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
+
+            if (context.getSlot() != null)
+                this.setModelSlotVisible(bipedModel, context.getSlot());
 
             if (bipedModel instanceof IArmRenderingModel) {
-                ((IArmRenderingModel) bipedModel).renderArm(handSide);
+                ((IArmRenderingModel) bipedModel).renderArm(handSide, matrixStack, vertexBuilder, packedLight);
             } else {
+
                 if (handSide == HandSide.RIGHT) {
                     bipedModel.bipedRightArm.rotateAngleX = 0.0F;
-                    bipedModel.bipedRightArm.render(0.0625F);
+                    bipedModel.bipedRightArm.render(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY);
                 } else {
                     bipedModel.bipedLeftArm.rotateAngleX = 0.0F;
-                    bipedModel.bipedLeftArm.render(0.0625F);
+                    bipedModel.bipedLeftArm.render(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY);
                 }
             }
-
-            GlStateManager.disableBlend();
-            GlStateManager.popMatrix();
         }
     }
 
@@ -175,7 +177,7 @@ public class ModelLayer implements IModelLayer {
             glowPredicates.add((c) -> false);
         }
 
-        return new ModelLayer(new LazyLoadBase<>(() -> ModelRegistry.getModel(JSONUtils.getString(json, "model"))), ModelLayerTexture.parse(json.get("texture")), glowPredicates);
+        return new ModelLayer(new LazyValue<>(() -> ModelRegistry.getModel(JSONUtils.getString(json, "model"))), ModelLayerTexture.parse(json.get("texture")), glowPredicates);
     }
 
 }

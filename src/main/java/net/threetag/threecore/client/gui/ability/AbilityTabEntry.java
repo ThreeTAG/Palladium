@@ -1,6 +1,6 @@
 package net.threetag.threecore.client.gui.ability;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.advancements.AdvancementState;
@@ -93,7 +93,7 @@ public class AbilityTabEntry extends AbstractGui {
     }
 
     public void drawIcon(Minecraft mc, int x, int y) {
-        GlStateManager.color4f(1, 1, 1, 1);
+        RenderSystem.color4f(1, 1, 1, 1);
         mc.getTextureManager().bindTexture(AbilitiesScreen.WIDGETS);
         this.blit(x - 13, y - 13, 0, this.unlocked ? 128 : 154, 26, 26);
         this.drawDisplayIcon(mc, x - 8, y - 8);
@@ -136,8 +136,8 @@ public class AbilityTabEntry extends AbstractGui {
 
         int k = this.width - j;
         minecraft.getTextureManager().bindTexture(AbilitiesScreen.WIDGETS);
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.enableBlend();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.enableBlend();
         int l = y + posY;
         int i1;
         if (flag) {
@@ -180,7 +180,7 @@ public class AbilityTabEntry extends AbstractGui {
             }
         }
 
-        RenderHelper.enableGUIStandardItemLighting();
+        RenderHelper.enableStandardItemLighting();
         this.drawDisplayIcon(minecraft, x + posX + 8, y + posY + 5);
     }
 

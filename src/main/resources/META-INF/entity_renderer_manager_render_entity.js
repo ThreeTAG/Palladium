@@ -9,95 +9,87 @@ function initializeCoreMod() {
 
     ALOAD = Opcodes.ALOAD;
     DLOAD = Opcodes.DLOAD;
+    FLOAD = Opcodes.FLOAD;
     GETFIELD = Opcodes.GETFIELD;
+    INVOKEVIRTUAL = Opcodes.INVOKEVIRTUAL;
     INVOKESTATIC = Opcodes.INVOKESTATIC;
 
     return {
-        'EntityRendererManager#renderEntity': {
+        'EntityRendererManager#renderEntityStatic': {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.renderer.entity.EntityRendererManager',
-                'methodName': 'func_188391_a',
-                'methodDesc': '(Lnet/minecraft/entity/Entity;DDDFFZ)V'
+                'methodName': 'func_229084_a_',
+                'methodDesc': '(Lnet/minecraft/entity/Entity;DDDFFLcom/mojang/blaze3d/matrix/MatrixStack;Lnet/minecraft/client/renderer/IRenderTypeBuffer;I)V'
             },
             'transformer': function (methodNode) {
                 var instructions = methodNode.instructions;
                 var injectionPoint1 = null;
                 var injectionPoint2 = null;
-                var textureManager_name = ASMAPI.mapField('field_78724_e');
-                var debugBoundingBox_name = ASMAPI.mapField('field_85095_o');
+                var matrixStackTranslate_name = ASMAPI.mapField('func_227861_a_');
+                var renderShadow_name = ASMAPI.mapField('func_229096_a_');
 
                 for (var i = 0; i < instructions.size(); i++) {
                     var instruction = instructions.get(i);
 
-                    if (instruction.getOpcode() == GETFIELD && instruction.name == textureManager_name && !injectionPoint1) {
-                        injectionPoint1 = instructions.get(i + 2);
+                    if (instruction.getOpcode() == INVOKEVIRTUAL && (instruction.name == matrixStackTranslate_name || instruction.name == "translate") && !injectionPoint1) {
+                        injectionPoint1 = instructions.get(i);
                     }
 
-                    if (instruction.getOpcode() == GETFIELD && instruction.name == debugBoundingBox_name && !injectionPoint2) {
-                        injectionPoint2 = instructions.get(i - 1);
+                    if (instruction.getOpcode() == INVOKESTATIC && (instruction.name == renderShadow_name || instruction.name == "renderShadow") && !injectionPoint2) {
+                        injectionPoint2 = instructions.get(i + 1);
                     }
                 }
 
                 if (!injectionPoint1 || !injectionPoint2) {
-                    print("Was not able to patch Entity#getBoundingBox()!");
+                    print("Was not able to patch EntityRendererManager#renderEntityStatic()!");
                     return methodNode;
                 }
 
                 // Hook 1
                 {
-                    var preInstructions = new InsnList();
+                    var insertingInstructions = new InsnList();
 
-                    preInstructions.add(new MethodInsnNode(
+                    insertingInstructions.add(new VarInsnNode(ALOAD, 1));
+                    insertingInstructions.add(new VarInsnNode(ALOAD, 10));
+                    insertingInstructions.add(new VarInsnNode(FLOAD, 9));
+                    insertingInstructions.add(new MethodInsnNode(
                         //int opcode
                         INVOKESTATIC,
                         //String owner
-                        "com/mojang/blaze3d/platform/GlStateManager",
+                        "net/threetag/threecore/util/AsmHooks",
                         //String name
-                        "pushMatrix",
+                        "preRenderCallback",
                         //String descriptor
-                        "()V",
-                        //boolean isInterface
-                        false
-                    ));
-                    preInstructions.add(new VarInsnNode(ALOAD, 1));
-                    preInstructions.add(new VarInsnNode(DLOAD, 2));
-                    preInstructions.add(new VarInsnNode(DLOAD, 4));
-                    preInstructions.add(new VarInsnNode(DLOAD, 6));
-                    preInstructions.add(new MethodInsnNode(
-                        //int opcode
-                        INVOKESTATIC,
-                        //String owner
-                        "net/threetag/threecore/sizechanging/SizeManager",
-                        //String name
-                        "scaleEntity",
-                        //String descriptor
-                        "(Lnet/minecraft/entity/Entity;DDD)V",
+                        "(Lnet/minecraft/entity/Entity;Lcom/mojang/blaze3d/matrix/MatrixStack;F)V",
                         //boolean isInterface
                         false
                     ));
 
-                    instructions.insert(injectionPoint1, preInstructions);
+                    instructions.insert(injectionPoint1, insertingInstructions);
                 }
 
                 // Hook 2
                 {
-                    var preInstructions = new InsnList();
+                    var insertingInstructions = new InsnList();
 
-                    preInstructions.add(new MethodInsnNode(
+                    insertingInstructions.add(new VarInsnNode(ALOAD, 1));
+                    insertingInstructions.add(new VarInsnNode(ALOAD, 10));
+                    insertingInstructions.add(new VarInsnNode(FLOAD, 9));
+                    insertingInstructions.add(new MethodInsnNode(
                         //int opcode
                         INVOKESTATIC,
                         //String owner
-                        "com/mojang/blaze3d/platform/GlStateManager",
+                        "net/threetag/threecore/util/AsmHooks",
                         //String name
-                        "popMatrix",
+                        "postRenderCallback",
                         //String descriptor
-                        "()V",
+                        "(Lnet/minecraft/entity/Entity;Lcom/mojang/blaze3d/matrix/MatrixStack;F)V",
                         //boolean isInterface
                         false
                     ));
 
-                    instructions.insert(injectionPoint2, preInstructions);
+                    instructions.insert(injectionPoint2, insertingInstructions);
                 }
 
                 return methodNode;

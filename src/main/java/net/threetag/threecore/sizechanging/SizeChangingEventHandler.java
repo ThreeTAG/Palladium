@@ -32,6 +32,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
+import net.threetag.threecore.entity.attributes.TCAttributes;
 import net.threetag.threecore.network.SyncSizeMessage;
 
 import java.util.List;
@@ -84,8 +85,8 @@ public class SizeChangingEventHandler {
     @SubscribeEvent
     public static void onEntityConstruct(EntityEvent.EntityConstructing e) {
         if (e.getEntity() instanceof LivingEntity) {
-            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(SizeManager.SIZE_WIDTH);
-            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(SizeManager.SIZE_HEIGHT);
+            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(TCAttributes.SIZE_WIDTH);
+            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(TCAttributes.SIZE_HEIGHT);
         }
     }
 
@@ -108,7 +109,7 @@ public class SizeChangingEventHandler {
     public static void oProjectileImpactFireball(ProjectileImpactEvent.Fireball e) {
         e.getFireball().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
             boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(e.getFireball().world, e.getFireball().shootingEntity);
-            e.getFireball().world.createExplosion(null, e.getFireball().posX, e.getFireball().posY, e.getFireball().posZ, sizeChanging.getScale(), flag, flag ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
+            e.getFireball().world.createExplosion(null, e.getFireball().getPosX(), e.getFireball().getPosY(), e.getFireball().getPosZ(), sizeChanging.getScale(), flag, flag ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
         });
     }
 
@@ -121,7 +122,7 @@ public class SizeChangingEventHandler {
                     List<BlockPos> positions = Lists.newLinkedList();
                     for (int x = 0; x < radius; x++) {
                         for (int z = 0; z < radius; z++) {
-                            BlockPos pos = new BlockPos(e.getThrowable().posX + x - radius / 2F, e.getThrowable().posY + e.getThrowable().size.height / 2F + radius / 2F, e.getThrowable().posZ + z - radius / 2F);
+                            BlockPos pos = new BlockPos(e.getThrowable().getPosX() + x - radius / 2F, e.getThrowable().getPosY() + e.getThrowable().size.height / 2F + radius / 2F, e.getThrowable().getPosZ() + z - radius / 2F);
                             int i = 0;
                             boolean b = false;
                             while (i < radius && !b) {

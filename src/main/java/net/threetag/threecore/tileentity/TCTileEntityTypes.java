@@ -29,9 +29,9 @@ public class TCTileEntityTypes {
 
     @OnlyIn(Dist.CLIENT)
     public static void initRenderers() {
-        ClientRegistry.bindTileEntitySpecialRenderer(HydraulicPressTileEntity.class, new HydraulicPressTileEntityRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(FluidComposerTileEntity.class, new FluidComposerTileEntityRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(StirlingGeneratorTileEntity.class, new StirlingGeneratorTileEntityRenderer());
+        ClientRegistry.bindTileEntityRenderer(TCTileEntityTypes.HYDRAULIC_PRESS.get(), HydraulicPressTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TCTileEntityTypes.FLUID_COMPOSER.get(), FluidComposerTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TCTileEntityTypes.STIRLING_GENERATOR.get(), StirlingGeneratorTileEntityRenderer::new);
     }
 
 }
