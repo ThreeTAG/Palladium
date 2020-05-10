@@ -14,7 +14,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.gui.screen.inventory.InventoryScreen',
-                'methodName': 'func_147046_a',
+                'methodName': 'func_228187_a_',
                 'methodDesc': '(IIIFFLnet/minecraft/entity/LivingEntity;)V'
             },
             'transformer': function (methodNode) {
