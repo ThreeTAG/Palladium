@@ -363,6 +363,8 @@ public class English extends ThreeCoreLanguageProvider {
         this.addAccessoire(Accessoires.JAY_GARRICK_HELMET, "Jay Garrick's Helmet");
         this.addAccessoire(Accessoires.HALO, "Angelic Halo");
         this.addAccessoire(Accessoires.WINGS, "Angelic Wings");
+        this.addAccessoire(Accessoires.GUZZLER_HELMET, "Guzzler Helmet");
+        this.addAccessoire(Accessoires.SONIC_HAND, "Sonic Hand");
 
 
         // Death
