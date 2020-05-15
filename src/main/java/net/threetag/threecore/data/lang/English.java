@@ -23,6 +23,7 @@ public class English extends ThreeCoreLanguageProvider {
 
         // Blocks
         this.addBlock(TCBlocks.CONSTRUCTION_TABLE, "Construction Table");
+        this.addBlock(TCBlocks.MULTIVERSAL_ITERATOR, "Multiversal Iterator");
         this.addBlock(TCBlocks.GRINDER, "Grinder");
         this.addBlock(TCBlocks.HYDRAULIC_PRESS, "Hydraulic Press");
         this.addBlock(TCBlocks.FLUID_COMPOSER, "Fluid Composer");
@@ -108,6 +109,7 @@ public class English extends ThreeCoreLanguageProvider {
         this.addItem(TCItems.ADVANCED_CIRCUIT, "Advanced Circuit");
         this.addItem(TCItems.VIAL, "Vial");
         this.addItem(TCItems.SUIT_STAND, "Suit Stand");
+        this.addItem(TCItems.MULTIVERSAL_EXTRAPOLATOR, "Multiversal Extrapolator");
 
         this.addItem(TCItems.COPPER_INGOT, "Copper Ingot");
         this.addItem(TCItems.TIN_INGOT, "Tin Ingot");
@@ -324,6 +326,7 @@ public class English extends ThreeCoreLanguageProvider {
         this.addContainerType(TCContainerTypes.CHESTPLATE_CRAFTING, "Chestplate Crafting");
         this.addContainerType(TCContainerTypes.LEGGINGS_CRAFTING, "Leggings Crafting");
         this.addContainerType(TCContainerTypes.BOOTS_CRAFTING, "Boots Crafting");
+        this.addContainerType(TCContainerTypes.MULTIVERSAL_ITERATOR, "Multiversal Iterator");
         this.addContainerType(TCContainerTypes.GRINDER, "Grinder");
         this.addContainerType(TCContainerTypes.HYDRAULIC_PRESS, "Hydraulic Press");
         this.addContainerType(TCContainerTypes.FLUID_COMPOSER, "Fluid Composer");
@@ -377,5 +380,10 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("threecore.util.energy_storage_display", "%,d / %,d %s");
         this.add("threecore.util.fluid_display", "%,d %s");
         this.add("threecore.util.fluid_tank_display", "%,d / %,d %s");
+
+
+        // Universes
+        this.add("universe.earth_search", "Earth-%s");
+        this.add("universe.earth-18515", "Earth-18515");
     }
 }

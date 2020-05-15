@@ -103,6 +103,7 @@ public class ThreeCore {
 
         // Loot
         TCLootFunctions.register();
+        MinecraftForge.EVENT_BUS.addListener(TCItems::onLootTableLoad);
 
         // Construction Table Tabs
         TCContainerTypes.registerConstructionTableTabls();

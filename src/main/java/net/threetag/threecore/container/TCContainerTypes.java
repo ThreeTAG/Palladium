@@ -31,6 +31,8 @@ public class TCContainerTypes {
 
     public static final RegistryObject<ContainerType<BootsCraftingContainer>> BOOTS_CRAFTING = CONTAINER_TYPES.register("boots_crafting", () -> new ContainerType<>(BootsCraftingContainer::new));
 
+    public static final RegistryObject<ContainerType<MultiversalIteratorContainer>> MULTIVERSAL_ITERATOR = CONTAINER_TYPES.register("multiversal_iterator", () -> new ContainerType<>(MultiversalIteratorContainer::new));
+
     public static final RegistryObject<ContainerType<GrinderContainer>> GRINDER = CONTAINER_TYPES.register("grinder", () -> new ContainerType<>(GrinderContainer::new));
 
     public static final RegistryObject<ContainerType<HydraulicPressContainer>> HYDRAULIC_PRESS = CONTAINER_TYPES.register("hydraulic_press", () -> new ContainerType<>(HydraulicPressContainer::new));
@@ -60,6 +62,7 @@ public class TCContainerTypes {
         ScreenManager.registerFactory(CHESTPLATE_CRAFTING.get(), ConstructionTableScreen.Chestplate::new);
         ScreenManager.registerFactory(LEGGINGS_CRAFTING.get(), ConstructionTableScreen.Leggings::new);
         ScreenManager.registerFactory(BOOTS_CRAFTING.get(), ConstructionTableScreen.Boots::new);
+        ScreenManager.registerFactory(MULTIVERSAL_ITERATOR.get(), MultiversalIteratorScreen::new);
         ScreenManager.registerFactory(GRINDER.get(), GrinderScreen::new);
         ScreenManager.registerFactory(HYDRAULIC_PRESS.get(), HydraulicPressScreen::new);
         ScreenManager.registerFactory(FLUID_COMPOSER.get(), FluidComposerScreen::new);

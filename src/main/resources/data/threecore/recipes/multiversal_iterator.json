@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "POP",
+    "IEI",
+    "SBS"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "O": {
+      "tag": "forge:plates/osmium"
+    },
+    "I": {
+      "tag": "forge:ingots/osmium"
+    },
+    "E": {
+      "item": "threecore:multiversal_extrapolator"
+    },
+    "S": {
+      "tag": "forge:ingots/steel"
+    },
+    "B": {
+      "item": "minecraft:beacon"
+    }
+  },
+  "result": {
+    "item": "threecore:multiversal_iterator"
+  }
+}
