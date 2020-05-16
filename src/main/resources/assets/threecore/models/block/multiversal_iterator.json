@@ -4,9 +4,9 @@
         "particle": "threecore:block/multiversal_iterator_side",
         "down": "threecore:block/multiversal_iterator_bottom",
         "up": "threecore:block/multiversal_iterator_top",
-        "north": "threecore:block/multiversal_iterator_side_1",
-        "east": "threecore:block/multiversal_iterator_side_2",
-        "south": "threecore:block/multiversal_iterator_side_3",
-        "west": "threecore:block/multiversal_iterator_side_4"
+        "north": "threecore:block/multiversal_iterator_side",
+        "east": "threecore:block/multiversal_iterator_side",
+        "south": "threecore:block/multiversal_iterator_side",
+        "west": "threecore:block/multiversal_iterator_side"
     }
 }

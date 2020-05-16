@@ -10,7 +10,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.SoundCategory;
@@ -63,7 +62,12 @@ public class MultiversalIteratorContainer extends Container {
         super(TCContainerTypes.MULTIVERSAL_ITERATOR.get(), windowIdIn);
         this.worldPosCallable = worldPosCallableIn;
         this.world = playerInventoryIn.player.world;
-        this.extrapolatorInventorySlot = this.addSlot(new Slot(this.extrapolatorInventory, 0, 20, 21));
+        this.extrapolatorInventorySlot = this.addSlot(new Slot(this.extrapolatorInventory, 0, 20, 21) {
+            @Override
+            public boolean isItemValid(ItemStack stack) {
+                return stack.getItem() instanceof MultiversalExtrapolatorItem;
+            }
+        });
         this.inputInventorySlot = this.addSlot(new Slot(this.inputInventory, 0, 20, 65));
         this.outputInventorySlot = this.addSlot(new Slot(this.inventory, 1, 143, 65) {
             /**
@@ -202,11 +206,19 @@ public class MultiversalIteratorContainer extends Container {
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
+            } else if (index == 0) {
+                if (!this.mergeItemStack(itemstack1, 3, 39, false)) {
+                    return ItemStack.EMPTY;
+                }
             } else if (index == 1) {
                 if (!this.mergeItemStack(itemstack1, 3, 39, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (this.world.getRecipeManager().getRecipe(IRecipeType.STONECUTTING, new Inventory(itemstack1), this.world).isPresent()) {
+            } else if (itemstack1.getItem() instanceof MultiversalExtrapolatorItem) {
+                if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (MultiversalRecipe.hasVariations(itemstack1, this.world)) {
                 if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
                     return ItemStack.EMPTY;
                 }

@@ -21,6 +21,7 @@ import net.threetag.threecore.util.RecipeUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 
 public class MultiversalRecipe implements IRecipe<IInventory> {
 
@@ -113,6 +114,19 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
             }
         });
         return items;
+    }
+
+    public static boolean hasVariations(ItemStack stack, World world) {
+        for (Map.Entry<ResourceLocation, IRecipe<IInventory>> entry : world.getRecipeManager().getRecipes(RECIPE_TYPE).entrySet()) {
+            if (entry.getValue() instanceof MultiversalRecipe) {
+                for (ItemStack stack1 : ((MultiversalRecipe) entry.getValue()).getItems()) {
+                    if (stack1.isItemEqual(stack)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<MultiversalRecipe> {
