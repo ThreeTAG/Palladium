@@ -368,6 +368,7 @@ public class English extends ThreeCoreLanguageProvider {
         this.addAccessoire(Accessoires.WINGS, "Angelic Wings");
         this.addAccessoire(Accessoires.GUZZLER_HELMET, "Guzzler Helmet");
         this.addAccessoire(Accessoires.SONIC_HAND, "Sonic Hand");
+        this.addAccessoire(Accessoires.HAMMOND_CANE, "Hammond's Cane");
 
 
         // Death
