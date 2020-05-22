@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -125,19 +124,23 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
         // Since items are registered before any resources are loaded I need to push this back using the resource callback
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             ModelLayerLoader.POST_LOAD_CALLBACKS.add(() -> {
+                item.layers.clear();
+
                 if (JSONUtils.hasField(jsonObject, "layers")) {
                     if (jsonObject.get("layers").isJsonPrimitive() || jsonObject.get("layers").isJsonObject()) {
                         IModelLayer layer = ModelLayerManager.parseLayer(jsonObject.get("layers"));
 
-                        if (layer != null)
+                        if (layer != null) {
                             item.layers.add(layer);
+                        }
                     } else if (jsonObject.get("layers").isJsonArray()) {
                         JsonArray layersArray = JSONUtils.getJsonArray(jsonObject, "layers");
 
                         for (int i = 0; i < layersArray.size(); i++) {
                             IModelLayer layer = ModelLayerManager.parseLayer(layersArray.get(i));
-                            if (layer != null)
+                            if (layer != null) {
                                 item.layers.add(layer);
+                            }
                         }
                     }
                 }
