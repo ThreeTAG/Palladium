@@ -1,0 +1,12 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "threecore:item/multiversal_extrapolator"
+    },
+    "overrides": [{
+        "predicate": {
+            "threecore:inactive": 1
+        },
+        "model": "threecore:item/multiversal_extrapolator_inactive"
+    }]
+}

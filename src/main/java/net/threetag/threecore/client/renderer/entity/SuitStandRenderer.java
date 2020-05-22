@@ -56,7 +56,7 @@ public class SuitStandRenderer extends LivingRenderer<SuitStandEntity, SuitStand
     protected boolean canRenderName(SuitStandEntity entity) {
         double distance = this.renderManager.squareDistanceTo(entity);
         float lvt_4_1_ = entity.isCrouching() ? 32.0F : 64.0F;
-        return distance >= (double)(lvt_4_1_ * lvt_4_1_) ? false : entity.isCustomNameVisible();
+        return !(distance >= (double) (lvt_4_1_ * lvt_4_1_)) && entity.isCustomNameVisible();
     }
 
     @Nullable

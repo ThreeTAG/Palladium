@@ -2,5 +2,10 @@
 	"grinder": {
 		"sounds": ["threecore:grinder"],
 		"subtitle": "subtitles.threecore.grinder"
+	},
+
+    "multiverse_search": {
+		"sounds": ["threecore:multiverse_search"],
+		"subtitle": "subtitles.threecore.multiverse_search"
 	}
 }

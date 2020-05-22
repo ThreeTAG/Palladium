@@ -3,6 +3,7 @@ package net.threetag.threecore.client.renderer.entity.modellayer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.LivingEntity;
@@ -22,14 +23,14 @@ import java.util.ArrayList;
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID, value = Dist.CLIENT)
 public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>, A extends BipedModel<T>> extends LayerRenderer<T, M> {
 
-    private static ArrayList<Class<? extends LivingEntity>> entitiesWithLayer = new ArrayList<>();
+    private static ArrayList<LivingRenderer> entitiesWithLayer = new ArrayList<>();
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void renderEntityPre(RenderLivingEvent.Pre e) {
-        if (!entitiesWithLayer.contains(e.getEntity().getClass())) {
+        if (!entitiesWithLayer.contains(e.getRenderer())) {
             e.getRenderer().addLayer(new ModelLayerRenderer(e.getRenderer()));
-            entitiesWithLayer.add(e.getEntity().getClass());
+            entitiesWithLayer.add(e.getRenderer());
         }
     }
 

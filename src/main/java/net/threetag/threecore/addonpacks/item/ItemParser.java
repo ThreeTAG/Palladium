@@ -47,7 +47,6 @@ public class ItemParser {
     public static final Map<String, List<String>> LOADING_ORDER = Maps.newHashMap();
 
     static {
-
         // Item Groups
         registerSpecialItemParser(new ItemGroupParser(), EventPriority.HIGH);
 
