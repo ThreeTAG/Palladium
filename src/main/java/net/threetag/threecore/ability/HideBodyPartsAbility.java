@@ -9,7 +9,7 @@ import java.util.List;
 
 public class HideBodyPartsAbility extends Ability {
 
-    public static final ThreeData<List<BodyPartListThreeData.BodyPart>> BODY_PARTS = new BodyPartListThreeData("body_parts").enableSetting("Determines which body parts should vanish");
+    public static final ThreeData<List<BodyPartListThreeData.BodyPart>> BODY_PARTS = new BodyPartListThreeData("body_parts").enableSetting("Determines which body parts should vanish. Available parts: " + BodyPartListThreeData.getBodyPartList());
     public static final ThreeData<Boolean> AFFECTS_FIRST_PERSON = new BooleanThreeData("affects_first_person").enableSetting("Determines if your first person arm should disappear aswell (if it's disabled)");
 
     public HideBodyPartsAbility() {

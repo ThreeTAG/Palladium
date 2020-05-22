@@ -38,7 +38,6 @@ public class ModelLayerLoader extends JsonReloadListener {
         }
 
         POST_LOAD_CALLBACKS.forEach(Runnable::run);
-        POST_LOAD_CALLBACKS.clear();
     }
 
     public static IModelLayer getModelLayer(ResourceLocation id) {

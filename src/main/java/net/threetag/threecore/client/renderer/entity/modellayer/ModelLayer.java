@@ -71,10 +71,10 @@ public class ModelLayer implements IModelLayer {
 
         } else if (model instanceof EntityModel) {
 
-            // TODO
-//            ((EntityModel) model).setLivingAnimations(context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
-//            IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(renderTypeBuffer,  glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderUtil.RenderTypes.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
-//            model.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+            boolean glow = ModelLayerManager.arePredicatesFulFilled(this.glowPredicates, context);
+            ((EntityModel) model).setLivingAnimations(context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
+            IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(renderTypeBuffer,  glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderUtil.RenderTypes.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
+            model.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
 
         }
     }

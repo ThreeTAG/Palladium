@@ -45,11 +45,7 @@ public class ColorableSuitStandLayer extends LayerRenderer<SuitStandEntity, Suit
                 blue = lvt_14_2_[2];
             }
 
-            float scale = 0.9375F;
-            matrixStack.scale(scale, scale, scale);
-            matrixStack.translate(0F, 0.1F, 0F);
             this.getEntityModel().setModelAttributes(this.model);
-
             renderCopyCutoutModel(this.getEntityModel(), this.model, SuitStandRenderer.TEXTURE, matrixStack, renderTypeBuffer, packedLightIn, suitStandEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks, red, green, blue);
             matrixStack.pop();
         }

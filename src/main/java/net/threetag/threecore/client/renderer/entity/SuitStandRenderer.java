@@ -37,6 +37,8 @@ public class SuitStandRenderer extends LivingRenderer<SuitStandEntity, SuitStand
 
     @Override
     protected void preRenderCallback(SuitStandEntity entity, MatrixStack matrixStack, float partialTickTime) {
+        float scale = 0.9375F;
+        matrixStack.scale(scale, scale, scale);
         if (!entity.hasNoBasePlate())
             matrixStack.translate(0, -1F / 16F, 0F);
     }
@@ -54,7 +56,7 @@ public class SuitStandRenderer extends LivingRenderer<SuitStandEntity, SuitStand
     protected boolean canRenderName(SuitStandEntity entity) {
         double distance = this.renderManager.squareDistanceTo(entity);
         float lvt_4_1_ = entity.isCrouching() ? 32.0F : 64.0F;
-        return distance >= (double)(lvt_4_1_ * lvt_4_1_) ? false : entity.isCustomNameVisible();
+        return !(distance >= (double) (lvt_4_1_ * lvt_4_1_)) && entity.isCustomNameVisible();
     }
 
     @Nullable

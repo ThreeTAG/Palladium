@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "threecore:steel_dust"
+    ]
+  },
+  "criteria": {
+    "has_iron_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/iron"
+          }
+        ]
+      }
+    },
+    "has_coal_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/coal"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "threecore:steel_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iron_dust",
+      "has_coal_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

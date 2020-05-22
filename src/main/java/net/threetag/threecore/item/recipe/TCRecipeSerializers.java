@@ -23,4 +23,6 @@ public class TCRecipeSerializers {
     public static final RegistryObject<IRecipeSerializer<PressingRecipe>> PRESSING = RECIPE_SERIALIZERS.register("pressing", PressingRecipe.Serializer::new);
 
     public static final RegistryObject<IRecipeSerializer<FluidComposingRecipe>> FLUID_COMPOSING = RECIPE_SERIALIZERS.register("fluid_composing", FluidComposingRecipe.Serializer::new);
+
+    public static final RegistryObject<IRecipeSerializer<MultiversalRecipe>> MULTIVERSAL = RECIPE_SERIALIZERS.register("multiversal", MultiversalRecipe.Serializer::new);
 }

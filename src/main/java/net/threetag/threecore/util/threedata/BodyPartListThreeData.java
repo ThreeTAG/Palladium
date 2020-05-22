@@ -84,6 +84,16 @@ public class BodyPartListThreeData extends ThreeData<List<BodyPartListThreeData.
         }
     }
 
+    public static String getBodyPartList() {
+        StringBuilder s = new StringBuilder();
+
+        for (BodyPart part : BodyPart.values()) {
+            s.append(", ").append(part.name);
+        }
+
+        return s.toString().substring(2);
+    }
+
     public enum BodyPart {
 
         HEAD("head"),

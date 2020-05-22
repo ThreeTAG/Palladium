@@ -1,11 +1,18 @@
 package net.threetag.threecore.item;
 
+import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemTier;
 import net.minecraft.item.Rarity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.ItemLootEntry;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -26,6 +33,7 @@ public class TCItems {
     public static final RegistryObject<Item> ADVANCED_CIRCUIT = ITEMS.register("advanced_circuit", () -> new Item(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup())));
     public static final RegistryObject<Item> VIAL = ITEMS.register("vial", () -> new VialItem(new Item.Properties().group(ItemGroup.MISC).maxStackSize(1)));
     public static final RegistryObject<Item> SUIT_STAND = ITEMS.register("suit_stand", () -> new SuitStandItem(new Item.Properties().group(ItemGroup.DECORATIONS).maxStackSize(16)));
+    public static final RegistryObject<Item> MULTIVERSAL_EXTRAPOLATOR = ITEMS.register("multiversal_extrapolator", () -> new MultiversalExtrapolatorItem(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup()).maxStackSize(16)));
 
     // Ingots
     public static final RegistryObject<Item> COPPER_INGOT = ITEMS.register("copper_ingot", () -> new Item(new Item.Properties().group(ItemGroup.MATERIALS)));
@@ -131,4 +139,22 @@ public class TCItems {
             }
         });
     }
+
+    public static void onLootTableLoad(LootTableLoadEvent e) {
+        if (e.getName().toString().toLowerCase().contains("minecraft:chests/")) {
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("chance", 0.5F);
+
+            ILootCondition.IBuilder conditionBuilder = new ILootCondition.IBuilder() {
+                @Override
+                public ILootCondition build() {
+                    return LootConditionManager.getSerializerForName(new ResourceLocation("random_chance")).deserialize(jsonObject, null);
+                }
+            };
+            e.getTable().addPool(LootPool.builder().addEntry(ItemLootEntry.builder(TCItems.MULTIVERSAL_EXTRAPOLATOR.get()).quality(1).weight(10).acceptCondition(conditionBuilder)).acceptCondition(conditionBuilder).build());
+        }
+
+    }
+
 }

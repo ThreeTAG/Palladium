@@ -124,6 +124,7 @@
   "block.threecore.lime_concrete_stairs": "Lime Concrete Stairs",
   "block.threecore.magenta_concrete_slab": "Magenta Concrete Slab",
   "block.threecore.magenta_concrete_stairs": "Magenta Concrete Stairs",
+  "block.threecore.multiversal_iterator": "Multiversal Iterator",
   "block.threecore.orange_concrete_slab": "Orange Concrete Slab",
   "block.threecore.orange_concrete_stairs": "Orange Concrete Stairs",
   "block.threecore.osmium_block": "Block of Osmium",
@@ -180,6 +181,7 @@
   "container.threecore.helmet_crafting": "Helmet Crafting",
   "container.threecore.hydraulic_press": "Hydraulic Press",
   "container.threecore.leggings_crafting": "Leggings Crafting",
+  "container.threecore.multiversal_iterator": "Multiversal Iterator",
   "container.threecore.stirling_generator": "Stirling Generator",
   "death.attack.grinder": "%1$s was grinded to death by a grinder",
   "death.attack.grinder.player": "%1$s was grinded to death by a grinder whilst trying to escape %2$s",
@@ -199,7 +201,7 @@
   "gui.jei.category.threecore.pressing.experience": "%s XP",
   "gui.threecore.abilities": "Abilities",
   "gui.threecore.abilities.fulfill_condition": "Do you want to fulfill this condition?",
-  "gui.threecore.abilities.keybind": "Keybind, ",
+  "gui.threecore.abilities.keybind": "Keybind",
   "gui.threecore.accessoires": "Accessoires",
   "item.threecore.adamantium_dust": "Adamantium Dust",
   "item.threecore.adamantium_ingot": "Adamantium Ingot",
@@ -250,6 +252,7 @@
   "item.threecore.light_gray_fabric": "Light Gray Fabric",
   "item.threecore.lime_fabric": "Lime Fabric",
   "item.threecore.magenta_fabric": "Magenta Fabric",
+  "item.threecore.multiversal_extrapolator": "Multiversal Extrapolator",
   "item.threecore.orange_fabric": "Orange Fabric",
   "item.threecore.osmium_dust": "Osmium Dust",
   "item.threecore.osmium_ingot": "Osmium Ingot",
@@ -316,5 +319,7 @@
   "threecore.util.energy_display": "%,d %s",
   "threecore.util.energy_storage_display": "%,d / %,d %s",
   "threecore.util.fluid_display": "%,d %s",
-  "threecore.util.fluid_tank_display": "%,d / %,d %s"
+  "threecore.util.fluid_tank_display": "%,d / %,d %s",
+  "universe.earth-18515": "Earth-18515",
+  "universe.earth_search": "Earth-%s"
 }

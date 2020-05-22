@@ -1,7 +1,6 @@
 package net.threetag.threecore.client.gui.ability;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
@@ -110,9 +109,14 @@ public class AbilitiesScreen extends Screen {
         this.renderInside(mouseX, mouseY, i, j);
         this.renderWindow(i, j);
         this.renderToolTips(mouseX, mouseY, i, j);
+
         if (this.overlayScreen != null) {
+            RenderSystem.pushMatrix();
+            RenderSystem.enableDepthTest();
+            RenderSystem.translatef(0, 0, 950);
             this.overlayScreen.render(mouseX, mouseY, partialTicks);
             this.selectedTab.fade = MathHelper.clamp(this.selectedTab.fade + 0.02F, 0, 0.5F);
+            RenderSystem.popMatrix();
         }
     }
 
@@ -151,8 +155,8 @@ public class AbilitiesScreen extends Screen {
             this.font.drawString(":(", (float) (x + 9 + 117 - this.font.getStringWidth(":(") / 2), (float) (y + 18 + 113 - 9), -1);
         } else {
             RenderSystem.pushMatrix();
-            RenderSystem.translatef((float) (x + 9), (float) (y + 18), -400.0F);
-            GlStateManager.enableDepthTest();
+            RenderSystem.translatef((float) (x + 9), (float) (y + 18), 0.0F);
+            RenderSystem.enableDepthTest();
             tab.drawContents();
             RenderSystem.popMatrix();
             RenderSystem.depthFunc(515);

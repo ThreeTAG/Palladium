@@ -25,6 +25,7 @@ import net.threetag.threecore.util.icon.IconSerializer;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SuperpowerManager extends JsonReloadListener {
 
@@ -96,5 +97,17 @@ public class SuperpowerManager extends JsonReloadListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean hasSuperpower(LivingEntity entity) {
+        AtomicBoolean b = new AtomicBoolean(false);
+        entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
+            abilityContainer.getAbilities().forEach(ability -> {
+                if(ability.getAdditionalData().contains("Superpower")) {
+                    b.set(true);
+                }
+            });
+        });
+        return b.get();
     }
 }
