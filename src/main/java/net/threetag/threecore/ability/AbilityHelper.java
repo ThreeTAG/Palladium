@@ -84,8 +84,8 @@ public class AbilityHelper {
         List<Ability> list = Lists.newLinkedList();
         for (Ability all : container.getAbilities()) {
             for (Condition condition : all.getConditionManager().getConditions()) {
-                if (condition instanceof AbilityUnlockedCondition && !condition.getDataManager().get(Condition.ENABLING)) {
-                    Ability a = AbilityHelper.getAbilityById(entity, condition.getDataManager().get(AbilityUnlockedCondition.ABILITY_ID), ability.container);
+                if (condition instanceof AbilityUnlockedCondition && !condition.get(Condition.ENABLING) && !condition.get(Condition.INVERT)) {
+                    Ability a = AbilityHelper.getAbilityById(entity, condition.get(AbilityUnlockedCondition.ABILITY_ID), ability.container);
 
                     if (a == ability) {
                         list.add(all);
