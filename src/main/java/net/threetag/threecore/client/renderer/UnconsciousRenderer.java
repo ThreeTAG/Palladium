@@ -53,7 +53,7 @@ public class UnconsciousRenderer {
             e.getMovementInput().leftKeyDown = false;
             e.getMovementInput().forwardKeyDown = false;
             e.getMovementInput().backKeyDown = false;
-            e.getMovementInput().field_228350_h_ = false;
+            e.getMovementInput().sneaking = false;
             e.getMovementInput().jump = false;
         }
     }
