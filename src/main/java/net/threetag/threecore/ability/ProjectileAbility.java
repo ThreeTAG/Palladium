@@ -37,6 +37,7 @@ public class ProjectileAbility extends Ability {
         if (!entity.world.isRemote) {
             CompoundNBT compound = this.dataManager.get(ENTITY_DATA).copy();
             compound.putString("id", this.dataManager.get(ENTITY_TYPE).getRegistryName().toString());
+            compound.putUniqueId("owner", entity.getUniqueID());
 
             ServerWorld world = (ServerWorld) entity.world;
             EntityType.func_220335_a(compound, world, projectile -> {
