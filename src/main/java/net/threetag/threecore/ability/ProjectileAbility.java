@@ -3,6 +3,7 @@ package net.threetag.threecore.ability;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
@@ -10,6 +11,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.server.ServerWorld;
 import net.threetag.threecore.util.icon.ItemIcon;
 import net.threetag.threecore.util.threedata.*;
+
+import java.lang.reflect.Field;
 
 public class ProjectileAbility extends Ability {
 
@@ -37,7 +40,6 @@ public class ProjectileAbility extends Ability {
         if (!entity.world.isRemote) {
             CompoundNBT compound = this.dataManager.get(ENTITY_DATA).copy();
             compound.putString("id", this.dataManager.get(ENTITY_TYPE).getRegistryName().toString());
-            compound.putUniqueId("owner", entity.getUniqueID());
 
             ServerWorld world = (ServerWorld) entity.world;
             EntityType.func_220335_a(compound, world, projectile -> {
@@ -55,6 +57,25 @@ public class ProjectileAbility extends Ability {
                 Vec3d vec3d = entity.getMotion();
                 projectile.setMotion(projectile.getMotion().add(vec3d.x, entity.onGround ? 0.0D : vec3d.y, vec3d.z));
 
+                if(projectile instanceof ThrowableEntity)
+                {
+                    try
+                    {
+                        Field field2 = ThrowableEntity.class.getDeclaredFields()[5];
+                        field2.setAccessible(true);
+                        field2.set(projectile, entity);
+                        field2.setAccessible(false);
+
+                        Field field = ThrowableEntity.class.getDeclaredFields()[6];
+                        field.setAccessible(true);
+                        field.set(projectile, entity.getUniqueID());
+                        field.setAccessible(false);
+                    }
+                    catch (IllegalAccessException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
                 return !world.summonEntity(projectile) ? null : projectile;
             });
         }
