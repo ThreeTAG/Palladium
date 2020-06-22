@@ -31,7 +31,7 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IWrapp
             ability.sync = data.getSyncType().add(data.getSyncType());
             setDirty();
             if (ability.entity != null)
-                new ConditionDataUpdatedScriptEvent(ability.entity, ability, Condition.this, data.getKey(), value, oldValue);
+                new ConditionDataUpdatedScriptEvent(ability.entity, ability, Condition.this, data.getKey(), value, oldValue).fire();
         }
     });
 

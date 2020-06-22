@@ -46,7 +46,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
             sync = sync.add(data.getSyncType());
             setDirty();
             if (entity != null)
-                new AbilityDataUpdatedScriptEvent(entity, Ability.this, data.getKey(), value, oldValue);
+                new AbilityDataUpdatedScriptEvent(entity, Ability.this, data.getKey(), value, oldValue).fire();
         }
     });
     protected AbilityConditionManager conditionManager = new AbilityConditionManager(this);
