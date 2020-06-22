@@ -154,6 +154,8 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         return this.value instanceof LivingEntity;
     }
 
+    public String getType(){ return this.value.getType().getRegistryType().toString(); };
+
     public void kill() {
         this.value.onKillCommand();
     }

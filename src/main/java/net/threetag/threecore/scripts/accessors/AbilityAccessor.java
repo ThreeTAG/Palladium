@@ -1,6 +1,7 @@
 package net.threetag.threecore.scripts.accessors;
 
 import net.threetag.threecore.ability.Ability;
+import net.threetag.threecore.ability.condition.Condition;
 import net.threetag.threecore.scripts.ScriptParameterName;
 import net.threetag.threecore.util.threedata.ThreeData;
 
@@ -45,6 +46,14 @@ public class AbilityAccessor extends ScriptAccessor<Ability> {
 
     public CompoundNBTAccessor getAdditionalNbtData() {
         return new CompoundNBTAccessor(this.value.getAdditionalData());
+    }
+
+    public ConditionAccessor[] getConditions() {
+        Condition[] list = this.value.getConditionManager().getConditions().toArray(new Condition[0]);
+        ConditionAccessor[] array = new ConditionAccessor[list.length];
+        for (int i = 0; i < list.length; i++)
+            array[i] = new ConditionAccessor(list[i]);
+        return array;
     }
 
 }
