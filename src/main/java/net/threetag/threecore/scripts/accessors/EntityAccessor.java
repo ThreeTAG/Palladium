@@ -3,7 +3,6 @@ package net.threetag.threecore.scripts.accessors;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -49,11 +48,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         return this.value.getUniqueID().toString();
     }
 
-    public CompoundNBTAccessor getNBTData(){
-        CompoundNBT tag = this.value.serializeNBT();
-        System.out.println(tag.getUniqueId("owner"));
-        return new CompoundNBTAccessor(tag);
-    }
+    public CompoundNBTAccessor getNBTData(){ return new CompoundNBTAccessor(this.value.serializeNBT()); }
 
     public Vec3dAccessor getPosition() {
         return new Vec3dAccessor(this.value.getPositionVector());
