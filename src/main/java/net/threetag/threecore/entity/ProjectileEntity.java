@@ -141,9 +141,9 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         if (compound.contains("Damage", Constants.NBT.TAG_ANY_NUMERIC))
-            this.damage = compound.getInt("Damage");
+            this.damage = compound.getFloat("Damage");
         if (compound.contains("GravityVelocity", Constants.NBT.TAG_ANY_NUMERIC))
-            this.gravityVelocity = compound.getInt("gravityVelocity");
+            this.gravityVelocity = compound.getFloat("GravityVelocity");
         if (compound.contains("DieOnEntityHit"))
             this.dieOnEntityHit = compound.getBoolean("DieOnEntityHit");
         if (compound.contains("DieOnBlockHit"))
