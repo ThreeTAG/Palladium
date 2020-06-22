@@ -3,6 +3,7 @@ package net.threetag.threecore.scripts.accessors;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -10,14 +11,14 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.threetag.threecore.sizechanging.SizeChangeType;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
-import net.threetag.threecore.util.PlayerUtil;
+import net.threetag.threecore.capability.CapabilityThreeData;
 import net.threetag.threecore.scripts.ScriptParameterName;
+import net.threetag.threecore.sizechanging.SizeChangeType;
+import net.threetag.threecore.util.PlayerUtil;
 import net.threetag.threecore.util.threedata.IThreeDataHolder;
 import net.threetag.threecore.util.threedata.IntegerThreeData;
 import net.threetag.threecore.util.threedata.ThreeData;
-import net.threetag.threecore.capability.CapabilityThreeData;
 
 public class EntityAccessor extends ScriptAccessor<Entity> {
 
@@ -46,6 +47,12 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
 
     public String getUUID() {
         return this.value.getUniqueID().toString();
+    }
+
+    public CompoundNBTAccessor getNBTData(){
+        CompoundNBT tag = this.value.serializeNBT();
+        System.out.println(tag.getUniqueId("owner"));
+        return new CompoundNBTAccessor(tag);
     }
 
     public Vec3dAccessor getPosition() {
