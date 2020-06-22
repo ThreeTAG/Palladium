@@ -99,11 +99,11 @@ public class WorldAccessor extends ScriptAccessor<World> {
         return array;
     }
 
-    public EntityAccessor[] getLivingEntitiesInBox(@ScriptParameterName("x1") double x1, @ScriptParameterName("y1") double y1, @ScriptParameterName("z1") double z1, @ScriptParameterName("x2") double x2, @ScriptParameterName("y2") double y2, @ScriptParameterName("z2") double z2){
+    public LivingEntityAccessor[] getLivingEntitiesInBox(@ScriptParameterName("x1") double x1, @ScriptParameterName("y1") double y1, @ScriptParameterName("z1") double z1, @ScriptParameterName("x2") double x2, @ScriptParameterName("y2") double y2, @ScriptParameterName("z2") double z2){
         List<Entity> list = this.value.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(x1, y1, z1, x2, y2, z2), t -> true);
-        EntityAccessor[] array = new EntityAccessor[list.size()];
+        LivingEntityAccessor[] array = new LivingEntityAccessor[list.size()];
         for (int i = 0; i < list.size(); i++)
-            array[i] = new EntityAccessor(list.get(i));
+            array[i] = new LivingEntityAccessor((LivingEntity) list.get(i));
         return array;
     }
 }
