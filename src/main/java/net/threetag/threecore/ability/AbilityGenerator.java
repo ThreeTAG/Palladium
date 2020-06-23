@@ -32,7 +32,7 @@ public class AbilityGenerator {
             ThreeCore.LOGGER.error("Ability type " + this.abilityId.toString() + " does not exist!");
             return null;
         }
-        Ability ability = this.getAbilityType().create();
+        Ability ability = this.getAbilityType().create(this.key);
         ability.readFromJson(this.jsonObject);
         return ability;
     }

@@ -124,7 +124,7 @@ public class AbilityHelper {
             CompoundNBT tag = nbt.getCompound(s);
             AbilityType abilityType = AbilityType.REGISTRY.getValue(new ResourceLocation(tag.getString("AbilityType")));
             if (abilityType != null) {
-                Ability ability = abilityType.create();
+                Ability ability = abilityType.create(s);
                 if (network)
                     ability.readUpdateTag(tag);
                 else

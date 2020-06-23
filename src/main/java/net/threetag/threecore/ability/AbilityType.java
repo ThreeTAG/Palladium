@@ -13,6 +13,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.scripts.events.RegisterAbilityThreeDataScriptEvent;
 import net.threetag.threecore.util.threedata.ThreeData;
 
 import java.io.BufferedWriter;
@@ -111,7 +112,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
 
             // Sort abilities by mods
             for (AbilityType types : REGISTRY.getValues()) {
-                Ability ability = types.create();
+                Ability ability = types.create("");
                 abilities.add(ability);
                 String modName = getModContainerFromId(types.getRegistryName().getNamespace()) != null ? getModContainerFromId(types.getRegistryName().getNamespace()).getDisplayName() : types.getRegistryName().getNamespace();
                 List<Ability> modsAbilities = sorted.containsKey(modName) ? sorted.get(modName) : new ArrayList<>();
@@ -209,8 +210,11 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         this.setRegistryName(modid, name);
     }
 
-    public Ability create() {
-        return this.supplier.get();
+    public Ability create(String id) {
+        Ability a = this.supplier.get();
+        a.id = id;
+        new RegisterAbilityThreeDataScriptEvent(a).fire();
+        return a;
     }
 
 }

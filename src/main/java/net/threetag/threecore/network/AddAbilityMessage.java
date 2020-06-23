@@ -52,7 +52,7 @@ public class AddAbilityMessage {
                     AbilityType abilityType = AbilityType.REGISTRY.getValue(new ResourceLocation(this.data.getString("AbilityType")));
 
                     if (abilityType != null) {
-                        Ability ability = abilityType.create();
+                        Ability ability = abilityType.create(this.abilityId);
                         ability.readUpdateTag(this.data);
                         container.addAbility((LivingEntity) entity, this.abilityId, ability);
                     }
