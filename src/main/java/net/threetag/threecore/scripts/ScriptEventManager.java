@@ -44,7 +44,8 @@ public class ScriptEventManager {
         registerEvent("abilityDisabled", AbilityDisabledScriptEvent.class);
         registerEvent("abilityDataUpdated", AbilityDataUpdatedScriptEvent.class);
         registerEvent("conditionDataUpdated", ConditionDataUpdatedScriptEvent.class);
-        registerEvent("registerThreeData", RegisterThreeDataScriptEvent.class);
+        registerEvent("registerEntityThreeData", RegisterEntityThreeDataScriptEvent.class);
+        registerEvent("registerAbilityThreeData", RegisterAbilityThreeDataScriptEvent.class);
         registerEvent("multiJump", MultiJumpScriptEvent.class);
         registerEvent("projectileImpact", ProjectileImpactScriptEvent.class);
         registerEvent("projectileTick", ProjectileTickScriptEvent.class);
@@ -144,7 +145,7 @@ public class ScriptEventManager {
 
         @SubscribeEvent
         public static void onRegisterThreeData(RegisterThreeDataEvent e) {
-            new RegisterThreeDataScriptEvent(e.getEntity(), e.getThreeData()).fire(e);
+            new RegisterEntityThreeDataScriptEvent(e.getEntity(), e.getThreeData()).fire(e);
         }
 
         @SubscribeEvent

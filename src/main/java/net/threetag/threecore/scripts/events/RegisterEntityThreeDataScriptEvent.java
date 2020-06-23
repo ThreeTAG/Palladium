@@ -5,11 +5,11 @@ import net.threetag.threecore.scripts.ScriptParameterName;
 import net.threetag.threecore.util.threedata.IThreeDataHolder;
 import net.threetag.threecore.util.threedata.ThreeData;
 
-public class RegisterThreeDataScriptEvent extends EntityScriptEvent {
+public class RegisterEntityThreeDataScriptEvent extends EntityScriptEvent {
 
     private final IThreeDataHolder threeData;
 
-    public RegisterThreeDataScriptEvent(Entity entity, IThreeDataHolder threeData) {
+    public RegisterEntityThreeDataScriptEvent(Entity entity, IThreeDataHolder threeData) {
         super(entity);
         this.threeData = threeData;
     }
