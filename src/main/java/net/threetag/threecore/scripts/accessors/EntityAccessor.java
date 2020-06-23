@@ -3,6 +3,8 @@ package net.threetag.threecore.scripts.accessors;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -112,6 +114,14 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         this.setMotion(this.value.getMotion().x + x, this.value.getMotion().y + y, this.value.getMotion().z + z);
     }
 
+    public void setPlayerMotion(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z) {
+        if(!this.world.value.isRemote && this.value instanceof ServerPlayerEntity)
+        {
+            this.value.setMotion(x, y, z);
+            ((ServerPlayerEntity) this.value).connection.sendPacket(new SEntityVelocityPacket(this.value));
+        }
+    }
+
     public Direction getHorizontalFacing() {
         return this.value.getHorizontalFacing();
     }
@@ -156,7 +166,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         return this.value instanceof LivingEntity;
     }
 
-    public String getType(){ return this.value.getType().getRegistryType().toString(); };
+    public String getType(){ return this.value.getType().getRegistryName().toString(); };
 
     public void kill() {
         this.value.onKillCommand();
