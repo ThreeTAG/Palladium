@@ -3,6 +3,7 @@ package net.threetag.threecore.scripts.accessors;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.condition.Condition;
 import net.threetag.threecore.scripts.ScriptParameterName;
+import net.threetag.threecore.util.threedata.IntegerThreeData;
 import net.threetag.threecore.util.threedata.ThreeData;
 
 public class AbilityAccessor extends ScriptAccessor<Ability> {
@@ -32,6 +33,15 @@ public class AbilityAccessor extends ScriptAccessor<Ability> {
         ThreeData data = this.value.getDataManager().getDataByName(key);
         if (data == null)
             return false;
+
+        // ugly fix since JavaScript numbers are apparently always doubles?
+        if (data instanceof IntegerThreeData) {
+            if (value instanceof Double)
+                value = ((Double) value).intValue();
+            else if (value instanceof Float)
+                value = ((Float) value).intValue();
+        }
+
         this.value.getDataManager().set(data, value);
         return true;
     }

@@ -11,6 +11,6 @@ public class AbilityEnabledScriptEvent extends AbilityScriptEvent {
 
     @Override
     public boolean isCancelable() {
-        return false;
+        return true;
     }
 }

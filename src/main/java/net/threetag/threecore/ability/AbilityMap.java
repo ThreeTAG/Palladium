@@ -36,7 +36,6 @@ public class AbilityMap extends LinkedHashMap<String, Ability> {
     public Ability put(String key, Ability value) {
         if (value == null)
             return null;
-        value.id = key;
         return super.put(key, value);
     }
 
