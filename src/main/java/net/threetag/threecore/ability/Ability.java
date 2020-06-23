@@ -18,6 +18,7 @@ import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
 import net.threetag.threecore.client.gui.ability.AbilityScreen;
 import net.threetag.threecore.scripts.events.AbilityDataUpdatedScriptEvent;
 import net.threetag.threecore.scripts.events.AbilityTickScriptEvent;
+import net.threetag.threecore.scripts.events.RegisterAbilityThreeDataScriptEvent;
 import net.threetag.threecore.util.RenderUtil;
 import net.threetag.threecore.util.icon.IIcon;
 import net.threetag.threecore.util.icon.ItemIcon;
@@ -60,6 +61,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
     public Ability(AbilityType type) {
         this.type = type;
         this.registerData();
+        new RegisterAbilityThreeDataScriptEvent(this).fire();
     }
 
     public void readFromJson(JsonObject jsonObject) {
