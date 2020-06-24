@@ -49,6 +49,7 @@ public class ScriptEventManager {
         registerEvent("multiJump", MultiJumpScriptEvent.class);
         registerEvent("projectileImpact", ProjectileImpactScriptEvent.class);
         registerEvent("projectileTick", ProjectileTickScriptEvent.class);
+        registerEvent("superpowerSet", SuperpowerSetScriptEvent.class);
     }
 
     public static void reset() {

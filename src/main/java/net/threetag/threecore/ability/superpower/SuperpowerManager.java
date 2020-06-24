@@ -19,6 +19,7 @@ import net.threetag.threecore.ability.AbilityGenerator;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.capability.CapabilityAbilityContainer;
 import net.threetag.threecore.network.SendSuperpowerToastMessage;
+import net.threetag.threecore.scripts.events.SuperpowerSetScriptEvent;
 import net.threetag.threecore.util.icon.IIcon;
 import net.threetag.threecore.util.icon.IconSerializer;
 
@@ -81,9 +82,21 @@ public class SuperpowerManager extends JsonReloadListener {
             entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
                 abilityContainer.clearAbilities(entity, ability -> ability.getAdditionalData().contains("Superpower"));
                 abilityContainer.addAbilities(entity, superpower);
+                new SuperpowerSetScriptEvent(entity, superpower.getId().toString()).fire();
                 if (entity instanceof ServerPlayerEntity)
                     ThreeCore.NETWORK_CHANNEL.sendTo(new SendSuperpowerToastMessage(superpower.getName(), superpower.getIcon()), ((ServerPlayerEntity) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Adds the abilities of a superpower without removing your old abilities.
+     */
+    public static void addSuperpower(LivingEntity entity, Superpower superpower) {
+        try {
+            entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> abilityContainer.addAbilities(entity, superpower));
         } catch (Exception e) {
             e.printStackTrace();
         }

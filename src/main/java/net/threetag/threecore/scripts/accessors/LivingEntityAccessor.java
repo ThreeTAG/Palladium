@@ -11,6 +11,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.IAbilityContainer;
+import net.threetag.threecore.ability.superpower.Superpower;
+import net.threetag.threecore.ability.superpower.SuperpowerManager;
 import net.threetag.threecore.scripts.ScriptParameterName;
 
 import java.util.Collection;
@@ -246,7 +248,8 @@ public class LivingEntityAccessor extends EntityAccessor
 			this.livingEntity.attackEntityFrom(DamageSource.causePlayerDamage((PlayerEntity) entity.livingEntity), amount);
 	}
 
-	public void attackEntityFromThrowable(@ScriptParameterName("throwable") EntityAccessor entity, @ScriptParameterName("@Nullable thrower") EntityAccessor thrower, @ScriptParameterName("float") float amount)
+	public void attackEntityFromThrowable(@ScriptParameterName("throwable") EntityAccessor entity,
+			@ScriptParameterName("@Nullable thrower") EntityAccessor thrower, @ScriptParameterName("float") float amount)
 	{
 		this.livingEntity.attackEntityFrom(DamageSource.causeThrownDamage(entity.value, (thrower == null) ? null : thrower.value), amount);
 	}
@@ -254,5 +257,12 @@ public class LivingEntityAccessor extends EntityAccessor
 	public void attackEntityFromExplosion(@ScriptParameterName("@Nullable attacker") LivingEntityAccessor attacker, @ScriptParameterName("float") float amount)
 	{
 		this.livingEntity.attackEntityFrom(DamageSource.causeExplosionDamage(attacker == null ? null : attacker.livingEntity), amount);
+	}
+
+	public void addSuperpower(@ScriptParameterName("superpower") String superpower)
+	{
+		Superpower s = SuperpowerManager.getInstance().getSuperpower(new ResourceLocation(superpower));
+		if (s != null)
+			SuperpowerManager.addSuperpower(this.livingEntity, s);
 	}
 }
