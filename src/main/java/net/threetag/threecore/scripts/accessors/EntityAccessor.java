@@ -8,6 +8,7 @@ import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
@@ -16,6 +17,7 @@ import net.threetag.threecore.capability.CapabilitySizeChanging;
 import net.threetag.threecore.capability.CapabilityThreeData;
 import net.threetag.threecore.scripts.ScriptParameterName;
 import net.threetag.threecore.sizechanging.SizeChangeType;
+import net.threetag.threecore.util.EntityUtil;
 import net.threetag.threecore.util.PlayerUtil;
 import net.threetag.threecore.util.threedata.IThreeDataHolder;
 import net.threetag.threecore.util.threedata.IntegerThreeData;
@@ -166,7 +168,9 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         return this.value instanceof LivingEntity;
     }
 
-    public String getType(){ return this.value.getType().getRegistryName().toString(); };
+    public LivingEntityAccessor getAsLiving() { return new LivingEntityAccessor((LivingEntity) this.value); }
+
+    public String getType(){ return this.value.getType().getRegistryName().toString(); }
 
     public void kill() {
         this.value.onKillCommand();
@@ -304,6 +308,12 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
 
         threeData.set(data, value);
         return true;
+    }
+
+    public Object rayTrace(@ScriptParameterName("distance") double distance, @ScriptParameterName("blockMode") String blockMode, @ScriptParameterName("fluidMode") String fluidMode){
+       RayTraceContext.BlockMode b = RayTraceContext.BlockMode.valueOf(blockMode.toUpperCase());
+       RayTraceContext.FluidMode f = RayTraceContext.FluidMode.valueOf(fluidMode.toUpperCase());
+       return ScriptAccessor.makeAccessor(EntityUtil.rayTraceWithEntities(this.value, distance, b, f));
     }
 
 }
