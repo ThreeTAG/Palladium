@@ -17,10 +17,7 @@ import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLay
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.AlphaMaskTextureTransformer;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.ITextureTransformer;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.OverlayTextureTransformer;
-import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.EntityTicksTextureVariable;
-import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.ITextureVariable;
-import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.IntegerNbtTextureVariable;
-import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.SmallArmsTextureVariable;
+import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.*;
 import net.threetag.threecore.util.PlayerUtil;
 
 import java.util.List;
@@ -84,6 +81,8 @@ public class ModelLayerManager {
         // Small Arms
         registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "small_arms"), j -> new SmallArmsTextureVariable(JSONUtils.getString(j, "normal_arms_value", null), JSONUtils.getString(j, "small_arms_value", null)));
 
+        //Ability Data
+        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "ability_data"), AbilityDataTextureVariable::new);
         // ----------------------------------------------------------------------------------------------------------------------------------------------
         // Predicates
 
