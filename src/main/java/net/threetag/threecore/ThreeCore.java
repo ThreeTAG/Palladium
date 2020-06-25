@@ -187,6 +187,7 @@ public class ThreeCore {
         ThreeCore.registerMessage(BuyConditionMessage.class, BuyConditionMessage::toBytes, BuyConditionMessage::new, BuyConditionMessage::handle);
         ThreeCore.registerMessage(SetAbilityKeybindMessage.class, SetAbilityKeybindMessage::toBytes, SetAbilityKeybindMessage::new, SetAbilityKeybindMessage::handle);
         ThreeCore.registerMessage(MultiJumpMessage.class, MultiJumpMessage::toBytes, MultiJumpMessage::new, MultiJumpMessage::handle);
+        ThreeCore.registerMessage(EmptyHandInteractMessage.class, EmptyHandInteractMessage::toBytes, EmptyHandInteractMessage::new, EmptyHandInteractMessage::handle);
 
         // Karma
         ThreeCore.registerMessage(SyncKarmaMessage.class, SyncKarmaMessage::toBytes, SyncKarmaMessage::new, SyncKarmaMessage::handle);

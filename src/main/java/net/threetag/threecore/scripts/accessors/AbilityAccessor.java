@@ -3,6 +3,7 @@ package net.threetag.threecore.scripts.accessors;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.condition.Condition;
 import net.threetag.threecore.scripts.ScriptParameterName;
+import net.threetag.threecore.util.threedata.FloatThreeData;
 import net.threetag.threecore.util.threedata.IntegerThreeData;
 import net.threetag.threecore.util.threedata.ThreeData;
 
@@ -40,6 +41,13 @@ public class AbilityAccessor extends ScriptAccessor<Ability> {
                 value = ((Double) value).intValue();
             else if (value instanceof Float)
                 value = ((Float) value).intValue();
+        }
+
+        if (data instanceof FloatThreeData) {
+            if (value instanceof Double)
+                value = ((Double) value).floatValue();
+            else if (value instanceof Integer)
+                value = ((Integer) value).floatValue();
         }
 
         this.value.getDataManager().set(data, value);

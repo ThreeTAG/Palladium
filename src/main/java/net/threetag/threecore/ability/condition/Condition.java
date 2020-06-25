@@ -38,7 +38,7 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IWrapp
     public static final ThreeData<ITextComponent> CUSTOM_TITLE = new TextComponentThreeData("custom_title").setSyncType(EnumSync.SELF).enableSetting("custom_title", "A custom display name for the condition.");
     public static final ThreeData<Boolean> INVERT = new BooleanThreeData("invert").enableSetting("invert", "Lets you invert the condition");
     public static final ThreeData<Boolean> ENABLING = new BooleanThreeData("enabling").setSyncType(EnumSync.SELF).enableSetting("enabling", "If this condition enables. If false it instead decides whether the ability is unlocked.");
-    public static final ThreeData<Boolean> NEEDS_KEY = new BooleanThreeData("needs_key").setSyncType(EnumSync.SELF);
+    public static final ThreeData<Boolean> NEEDS_KEY = new BooleanThreeData("needs_key").setSyncType(EnumSync.SELF).enableSetting("needs_key", "If this condition requires a key");
 
     public Condition(ConditionType type, Ability ability) {
         this.type = type;

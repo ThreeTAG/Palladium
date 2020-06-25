@@ -1,5 +1,6 @@
 package net.threetag.threecore.scripts.accessors;
 
+import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,6 +20,7 @@ import net.threetag.threecore.scripts.ScriptParameterName;
 import net.threetag.threecore.sizechanging.SizeChangeType;
 import net.threetag.threecore.util.EntityUtil;
 import net.threetag.threecore.util.PlayerUtil;
+import net.threetag.threecore.util.threedata.FloatThreeData;
 import net.threetag.threecore.util.threedata.IThreeDataHolder;
 import net.threetag.threecore.util.threedata.IntegerThreeData;
 import net.threetag.threecore.util.threedata.ThreeData;
@@ -306,6 +308,13 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
                 value = ((Float) value).intValue();
         }
 
+        if (data instanceof FloatThreeData) {
+            if (value instanceof Double)
+                value = ((Double) value).floatValue();
+            else if (value instanceof Integer)
+                value = ((Integer) value).floatValue();
+        }
+
         threeData.set(data, value);
         return true;
     }
@@ -314,6 +323,10 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
        RayTraceContext.BlockMode b = RayTraceContext.BlockMode.valueOf(blockMode.toUpperCase());
        RayTraceContext.FluidMode f = RayTraceContext.FluidMode.valueOf(fluidMode.toUpperCase());
        return ScriptAccessor.makeAccessor(EntityUtil.rayTraceWithEntities(this.value, distance, b, f));
+    }
+
+    public void lookAt(@ScriptParameterName("target") Vec3dAccessor target){
+        this.value.lookAt(EntityAnchorArgument.Type.EYES, target.value);
     }
 
 }
