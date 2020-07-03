@@ -42,7 +42,7 @@ public class ProjectileAbility extends Ability {
             compound.putString("id", this.dataManager.get(ENTITY_TYPE).getRegistryName().toString());
 
             ServerWorld world = (ServerWorld) entity.world;
-            EntityType.func_220335_a(compound, world, projectile -> {
+            EntityType.loadEntityAndExecute(compound, world, projectile -> {
                 if (!(projectile instanceof IProjectile))
                     return null;
 

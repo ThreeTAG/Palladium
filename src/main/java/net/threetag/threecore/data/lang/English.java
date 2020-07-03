@@ -320,6 +320,8 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("ability.condition.threecore.size_at.not", "Size must something else than %s");
         this.add("ability.condition.threecore.size_min", "Size must be at least %s");
         this.add("ability.condition.threecore.size_min.not", "Size must be lower than %s");
+        this.add("ability.condition.threecore.abilities_locked", "%s abilities must be locked");
+        this.add("ability.condition.threecore.abilities_locked.not", "%s abilities must be unlocked");
 
 
         // Container

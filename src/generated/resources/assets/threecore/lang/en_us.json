@@ -1,4 +1,6 @@
 {
+  "ability.condition.threecore.abilities_locked": "%s abilities must be locked",
+  "ability.condition.threecore.abilities_locked.not": "%s abilities must be unlocked",
   "ability.condition.threecore.ability_enabled": "%s ability must be enabled",
   "ability.condition.threecore.ability_enabled.not": "%s ability must be disabled",
   "ability.condition.threecore.ability_unlocked": "%s ability must be unlocked",

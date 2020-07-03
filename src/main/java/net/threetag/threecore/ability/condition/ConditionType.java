@@ -11,6 +11,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.ability.AbilitiesLockedCondition;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityType;
 import net.threetag.threecore.ability.AttributeModifierAbility;
@@ -49,6 +50,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
     public static final ConditionType ITEM_INTEGER_NBT = new ConditionType(ItemIntegerNbtCondition::new, ThreeCore.MODID, "item_integer_nbt");
     public static final ConditionType EYES_IN_FLUID = new ConditionType(EyesInFluidCondition::new, ThreeCore.MODID, "eyes_in_fluid");
     public static final ConditionType SIZE = new ConditionType(SizeCondition::new, ThreeCore.MODID, "size");
+    public static final ConditionType ABILITIES_LOCKED = new ConditionType(AbilitiesLockedCondition::new, ThreeCore.MODID, "abilities_locked");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -73,6 +75,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
         e.getRegistry().register(ITEM_INTEGER_NBT);
         e.getRegistry().register(EYES_IN_FLUID);
         e.getRegistry().register(SIZE);
+        e.getRegistry().register(ABILITIES_LOCKED);
     }
 
     @OnlyIn(Dist.CLIENT)

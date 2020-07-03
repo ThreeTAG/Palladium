@@ -92,7 +92,7 @@ public class LivingEntityAccessor extends EntityAccessor
 
 	public void swingArm(@ScriptParameterName("mainHand") boolean mainHand)
 	{
-		this.livingEntity.func_226292_a_(mainHand ? Hand.MAIN_HAND : Hand.OFF_HAND, true);
+		this.livingEntity.swing(mainHand ? Hand.MAIN_HAND : Hand.OFF_HAND, true);
 	}
 
 	public ItemStackAccessor getItemInSlot(@ScriptParameterName("slot") String slot)
