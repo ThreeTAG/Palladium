@@ -106,7 +106,7 @@ public class ThreeCore {
         MinecraftForge.EVENT_BUS.addListener(TCItems::onLootTableLoad);
 
         // Construction Table Tabs
-        TCContainerTypes.registerConstructionTableTabls();
+        TCContainerTypes.registerConstructionTableTables();
 
         // Ability Container
         AbilityHelper.registerAbilityContainer(CapabilityAbilityContainer.ID, (p) -> p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));

@@ -13,13 +13,8 @@ public class GrinderScreen extends ContainerScreen<GrinderContainer> {
 
     private static final ResourceLocation GRINDER_GUI_TEXTURES = new ResourceLocation(ThreeCore.MODID, "textures/gui/container/grinder.png");
 
-    public final PlayerInventory inventoryPlayer;
-    public final GrinderContainer grinderContainer;
-
     public GrinderScreen(GrinderContainer grinderContainer, PlayerInventory inventory, ITextComponent title) {
         super(grinderContainer, inventory, title);
-        this.inventoryPlayer = inventory;
-        this.grinderContainer = grinderContainer;
         this.ySize = 174;
     }
 
@@ -33,8 +28,8 @@ public class GrinderScreen extends ContainerScreen<GrinderContainer> {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.font.drawString(this.title.getFormattedText(), (float) (this.xSize / 2 - this.font.getStringWidth(this.title.getFormattedText()) / 2), 6.0F, 4210752);
-        this.font.drawString(this.inventoryPlayer.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
-        EnergyUtil.drawTooltip(this.grinderContainer.getEnergyStored(), this.grinderContainer.getMaxEnergyStored(), this, 10, 17, 12, 40, mouseX - this.guiLeft, mouseY - this.guiTop);
+        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
+        EnergyUtil.drawTooltip(this.container.getEnergyStored(), this.container.getMaxEnergyStored(), this, 10, 17, 12, 40, mouseX - this.guiLeft, mouseY - this.guiTop);
     }
 
     @Override
@@ -44,9 +39,9 @@ public class GrinderScreen extends ContainerScreen<GrinderContainer> {
         int left = this.guiLeft;
         int top = this.guiTop;
         this.blit(left, top, 0, 0, this.xSize, this.ySize);
-        int progress = this.grinderContainer.getProgressScaled(24);
+        int progress = this.container.getProgressScaled(24);
         this.blit(left + 67, top + 38, 176, 0, progress + 1, 16);
-        int energy = (int) (this.grinderContainer.getEnergyPercentage() * 40);
+        int energy = (int) (this.container.getEnergyPercentage() * 40);
         this.blit(left + 10, top + 17 + 40 - energy, 176, 17 + 40 - energy, 12, energy);
     }
 

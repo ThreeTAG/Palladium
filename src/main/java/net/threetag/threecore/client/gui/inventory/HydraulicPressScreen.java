@@ -14,13 +14,8 @@ public class HydraulicPressScreen extends ContainerScreen<HydraulicPressContaine
 
     private static final ResourceLocation HYDRAULIC_PRESS_GUI_TEXTURES = new ResourceLocation(ThreeCore.MODID, "textures/gui/container/hydraulic_press.png");
 
-    public final PlayerInventory inventoryPlayer;
-    public final HydraulicPressContainer hydraulicPressContainer;
-
     public HydraulicPressScreen(HydraulicPressContainer hydraulicPressContainer, PlayerInventory inventory, ITextComponent title) {
         super(hydraulicPressContainer, inventory, title);
-        this.inventoryPlayer = inventory;
-        this.hydraulicPressContainer = hydraulicPressContainer;
         this.ySize = 174;
     }
 
@@ -34,8 +29,8 @@ public class HydraulicPressScreen extends ContainerScreen<HydraulicPressContaine
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.font.drawString(this.title.getFormattedText(), (float) (this.xSize / 2 - this.font.getStringWidth(this.title.getFormattedText()) / 2), 6.0F, 4210752);
-        this.font.drawString(this.inventoryPlayer.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
-        EnergyUtil.drawTooltip(this.hydraulicPressContainer.getEnergyStored(), this.hydraulicPressContainer.getMaxEnergyStored(), this, 10, 17, 12, 40, mouseX - this.guiLeft, mouseY - this.guiTop);
+        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
+        EnergyUtil.drawTooltip(this.container.getEnergyStored(), this.container.getMaxEnergyStored(), this, 10, 17, 12, 40, mouseX - this.guiLeft, mouseY - this.guiTop);
     }
 
     @Override
@@ -45,9 +40,9 @@ public class HydraulicPressScreen extends ContainerScreen<HydraulicPressContaine
         int left = this.guiLeft;
         int top = this.guiTop;
         this.blit(left, top, 0, 0, this.xSize, this.ySize);
-        int progress = this.hydraulicPressContainer.getProgressScaled(24);
+        int progress = this.container.getProgressScaled(24);
         this.blit(left + 97, top + 38, 176, 0, progress + 1, 16);
-        int energy = (int) (this.hydraulicPressContainer.getEnergyPercentage() * 40);
+        int energy = (int) (this.container.getEnergyPercentage() * 40);
         this.blit(left + 10, top + 17 + 40 - energy, 176, 17 + 40 - energy, 12, energy);
         Slot slot = this.container.getSlot(1);
         if (slot.getStack().isEmpty())

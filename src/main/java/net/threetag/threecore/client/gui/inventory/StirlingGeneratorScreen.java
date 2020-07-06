@@ -15,13 +15,8 @@ public class StirlingGeneratorScreen extends ContainerScreen<StirlingGeneratorCo
 
     private static final ResourceLocation STIRLING_GENERATOR_GUI_TEXTURES = new ResourceLocation(ThreeCore.MODID, "textures/gui/container/stirling_generator.png");
 
-    public final PlayerInventory playerInventory;
-    public final StirlingGeneratorContainer container;
-
     public StirlingGeneratorScreen(StirlingGeneratorContainer container, PlayerInventory inventory, ITextComponent title) {
         super(container, inventory, title);
-        this.playerInventory = inventory;
-        this.container = container;
         this.ySize = 216;
     }
 

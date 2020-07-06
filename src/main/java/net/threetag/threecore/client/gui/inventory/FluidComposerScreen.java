@@ -15,13 +15,8 @@ public class FluidComposerScreen extends ContainerScreen<FluidComposerContainer>
 
     private static final ResourceLocation FLUID_COMPOSER_GUI_TEXTURES = new ResourceLocation(ThreeCore.MODID, "textures/gui/container/fluid_composer.png");
 
-    public final PlayerInventory inventoryPlayer;
-    public final FluidComposerContainer container;
-
     public FluidComposerScreen(FluidComposerContainer container, PlayerInventory inventory, ITextComponent title) {
         super(container, inventory, title);
-        this.inventoryPlayer = inventory;
-        this.container = container;
         this.ySize = 216;
     }
 
@@ -35,7 +30,7 @@ public class FluidComposerScreen extends ContainerScreen<FluidComposerContainer>
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.font.drawString(this.title.getFormattedText(), (float) (this.xSize / 2 - this.font.getStringWidth(this.title.getFormattedText()) / 2), 6.0F, 4210752);
-        this.font.drawString(this.inventoryPlayer.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
+        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
         EnergyUtil.drawTooltip(this.container.getEnergyStored(), this.container.getMaxEnergyStored(), this, 68, 97, 40, 12, mouseX - this.guiLeft, mouseY - this.guiTop);
         TCFluidUtil.drawTooltip(this.container.fluidComposerTileEntity.inputFluidTank, this, 8, 38, 16, 60, mouseX - this.guiLeft, mouseY - this.guiTop);
         TCFluidUtil.drawTooltip(this.container.fluidComposerTileEntity.outputFluidTank, this, 152, 38, 16, 60, mouseX - this.guiLeft, mouseY - this.guiTop);

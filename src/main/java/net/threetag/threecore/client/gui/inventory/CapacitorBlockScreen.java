@@ -13,14 +13,9 @@ public class CapacitorBlockScreen extends ContainerScreen<CapacitorBlockContaine
 
     private static final ResourceLocation CAPACITOR_BLOCK_GUI_TEXTURES = new ResourceLocation(ThreeCore.MODID, "textures/gui/container/capacitor_block.png");
 
-    public final PlayerInventory inventoryPlayer;
-    public final CapacitorBlockContainer screenContainer;
-
     public CapacitorBlockScreen(CapacitorBlockContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
         this.ySize = 132;
-        this.inventoryPlayer = inv;
-        this.screenContainer = screenContainer;
     }
 
     @Override
@@ -33,7 +28,7 @@ public class CapacitorBlockScreen extends ContainerScreen<CapacitorBlockContaine
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.font.drawString(this.title.getFormattedText(), 8.0F, 6.0F, 4210752);
-        this.font.drawString(this.inventoryPlayer.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
+        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
         EnergyUtil.drawTooltip(this.container.getEnergyStored(), this.container.getMaxEnergyStored(), this, 68, 20, 40, 12, mouseX - this.guiLeft, mouseY - this.guiTop);
     }
 
@@ -44,7 +39,7 @@ public class CapacitorBlockScreen extends ContainerScreen<CapacitorBlockContaine
         int left = this.guiLeft;
         int top = this.guiTop;
         this.blit(left, top, 0, 0, this.xSize, this.ySize);
-        int energy = (int) (this.screenContainer.getEnergyPercentage() * 40);
+        int energy = (int) (this.container.getEnergyPercentage() * 40);
         this.blit(left + 68, top + 20, 176, 0, energy, 12);
     }
 }
