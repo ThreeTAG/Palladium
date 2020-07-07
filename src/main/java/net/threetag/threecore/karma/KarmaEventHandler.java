@@ -17,6 +17,7 @@ import net.minecraftforge.event.entity.living.AnimalTameEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -85,6 +86,12 @@ public class KarmaEventHandler {
     @SubscribeEvent
     public static void onAnimalTame(AnimalTameEvent e) {
         e.getTamer().getCapability(CapabilityKarma.KARMA).ifPresent((k) -> CapabilityKarma.addKarma(e.getTamer(), 1));
+    }
+
+    @SubscribeEvent
+    public static void onCropTrample(BlockEvent.FarmlandTrampleEvent e) {
+        if(!(e.getEntity() instanceof PlayerEntity)) return;
+        e.getEntity().getCapability(CapabilityKarma.KARMA).ifPresent((k) -> CapabilityKarma.addKarma((PlayerEntity) e.getEntity(), -1));
     }
 
     public static boolean isMonster(LivingEntity entity) {
