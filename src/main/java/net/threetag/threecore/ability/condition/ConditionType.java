@@ -51,6 +51,8 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
     public static final ConditionType EYES_IN_FLUID = new ConditionType(EyesInFluidCondition::new, ThreeCore.MODID, "eyes_in_fluid");
     public static final ConditionType SIZE = new ConditionType(SizeCondition::new, ThreeCore.MODID, "size");
     public static final ConditionType ABILITIES_LOCKED = new ConditionType(AbilitiesLockedCondition::new, ThreeCore.MODID, "abilities_locked");
+    public static final ConditionType LIVING_VALUES = new ConditionType(LivingValuesCondition::new, ThreeCore.MODID, "living_values");
+    public static final ConditionType POTION = new ConditionType(PotionCondition::new, ThreeCore.MODID, "has_potions");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -76,6 +78,8 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
         e.getRegistry().register(EYES_IN_FLUID);
         e.getRegistry().register(SIZE);
         e.getRegistry().register(ABILITIES_LOCKED);
+        e.getRegistry().register(LIVING_VALUES);
+        e.getRegistry().register(POTION);
     }
 
     @OnlyIn(Dist.CLIENT)

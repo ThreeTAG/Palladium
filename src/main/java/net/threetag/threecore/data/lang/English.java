@@ -321,7 +321,10 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("ability.condition.threecore.size_min.not", "Size must be lower than %s");
         this.add("ability.condition.threecore.abilities_locked", "%s abilities must be locked");
         this.add("ability.condition.threecore.abilities_locked.not", "%s abilities must be unlocked");
-
+        this.add("ability.condition.threecore.living_values", "Entity %s must be %s than %s");
+        this.add("ability.condition.threecore.living_values.not", "Entity value must be compared to %s");
+        this.add("ability.condition.threecore.has_potions", "Entity must have %s potion effects");
+        this.add("ability.condition.threecore.has_potions.not", "Entity must not have %s potion effects");
 
         // Container
         this.addContainerType(TCContainerTypes.HELMET_CRAFTING, "Helmet Crafting");
