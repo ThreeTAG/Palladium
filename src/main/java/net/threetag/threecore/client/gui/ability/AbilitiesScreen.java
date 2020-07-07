@@ -40,6 +40,8 @@ public class AbilitiesScreen extends Screen {
                 index.getAndIncrement();
             }
         });
+        if(!this.tabs.isEmpty())
+            this.selectedTab = tabs.get(0);
     }
 
     @Override

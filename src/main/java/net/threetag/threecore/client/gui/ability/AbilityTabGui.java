@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.threetag.threecore.ability.Ability;
+import net.threetag.threecore.ability.ChangeAbilityTabTextureAbility;
 import net.threetag.threecore.ability.IAbilityContainer;
 
 import java.awt.*;
@@ -94,26 +95,21 @@ public class AbilityTabGui extends AbstractGui {
 
         // Fixing min & max size; make lines
         for (AbilityTabEntry entry : this.abilities) {
-            this.minX = (int) Math.min(entry.x * gridSize, this.minX);
-            this.minY = (int) Math.min(entry.y * gridSize, this.minY);
-            this.maxX = (int) Math.max(entry.x * gridSize, this.maxX);
-            this.maxY = (int) Math.max(entry.y * gridSize, this.maxY);
+            this.minX = (int) Math.min((entry.x - 1) * gridSize, this.minX);
+            this.minY = (int) Math.min((entry.y - 1) * gridSize, this.minY);
+            this.maxX = (int) Math.max((entry.x + 1)  * gridSize, this.maxX);
+            this.maxY = (int) Math.max((entry.y + 1) * gridSize, this.maxY);
 
             for (AbilityTabEntry child : entry.children) {
                 Connection connection = new Connection();
+                int startX = toCoord(entry.x);
+                int startY = toCoord(entry.y, 1D / (entry.children.size() + 1) * (entry.children.indexOf(child) + 1));
+                int endX = toCoord(child.x);
+                int endY = toCoord(child.y, 1D / (child.parents.size() + 1) * (child.parents.indexOf(entry) + 1));
                 if (entry.children.size() == 1) {
-                    int startX = toCoord(entry.x);
-                    int startY = toCoord(entry.y, 1D / (entry.children.size() + 1) * (entry.children.indexOf(child) + 1));
-                    int endX = toCoord(child.x);
-                    int endY = toCoord(child.y, 1D / (child.parents.size() + 1) * (child.parents.indexOf(entry) + 1));
-
                     connection.addLine(new ConnectionLine(startX, startY, endX, startY));
                     connection.addLine(new ConnectionLine(endX, startY, endX, endY));
                 } else {
-                    int startX = toCoord(entry.x);
-                    int startY = toCoord(entry.y, 1D / (entry.children.size() + 1) * (entry.children.indexOf(child) + 1));
-                    int endX = toCoord(child.x);
-                    int endY = toCoord(child.y, 1D / (child.parents.size() + 1) * (child.parents.indexOf(entry) + 1));
                     int midX = (startX + endX) / 2;
                     connection.addLine(new ConnectionLine(startX, startY, midX, startY));
                     connection.addLine(new ConnectionLine(midX, startY, midX, endY));
@@ -188,8 +184,8 @@ public class AbilityTabGui extends AbstractGui {
 
     public void drawContents() {
         if (!this.centered) {
-            this.scrollX = innerWidth / 2 - (this.maxX + this.minX) / 2;
-            this.scrollY = innerHeight / 2 - (this.maxY + this.minY) / 2;
+            this.scrollX = innerWidth / 2f - (this.maxX + this.minX) / 2f;
+            this.scrollY = innerHeight / 2f - (this.maxY + this.minY) / 2f;
             this.centered = true;
         }
 
@@ -204,8 +200,13 @@ public class AbilityTabGui extends AbstractGui {
         fill(innerWidth, innerHeight, 0, 0, -16777216);
         RenderSystem.depthFunc(515);
 
+
         Minecraft mc = Minecraft.getInstance();
         mc.getTextureManager().bindTexture(new ResourceLocation("textures/block/red_wool.png"));
+
+        for (Ability ability : container.getAbilities())
+            if(ability instanceof ChangeAbilityTabTextureAbility && ability.getConditionManager().isEnabled())
+                mc.getTextureManager().bindTexture(new ResourceLocation(ability.getDataManager().get(ChangeAbilityTabTextureAbility.TEXTURE)));
 
         int i = MathHelper.floor(this.scrollX);
         int j = MathHelper.floor(this.scrollY);
@@ -285,11 +286,11 @@ public class AbilityTabGui extends AbstractGui {
 
     public void scroll(double x, double y) {
         if (this.maxX - this.minX > innerWidth) {
-            this.scrollX = MathHelper.clamp(this.scrollX + x, -(this.maxX - innerWidth), 0.0D);
+            this.scrollX = MathHelper.clamp(this.scrollX + x, -(this.maxX - innerWidth), gridSize/2D);
         }
 
         if (this.maxY - this.minY > innerHeight) {
-            this.scrollY = MathHelper.clamp(this.scrollY + y, -(this.maxY - innerHeight), 0.0D);
+            this.scrollY = MathHelper.clamp(this.scrollY + y, -(this.maxY - innerHeight), gridSize/2D);
         }
     }
 
