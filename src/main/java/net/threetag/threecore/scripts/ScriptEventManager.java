@@ -13,6 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.event.RegisterThreeDataEvent;
+import net.threetag.threecore.event.SetRotationAnglesEvent;
 import net.threetag.threecore.network.EmptyHandInteractMessage;
 import net.threetag.threecore.scripts.events.*;
 
@@ -58,6 +59,7 @@ public class ScriptEventManager {
         registerEvent("leftClickBlock", LeftClickBlockScriptEvent.class);
         registerEvent("leftClickEmpty", LeftClickEmptyScriptEvent.class);
         registerEvent("rightClickEmpty", RightClickEmptyScriptEvent.class);
+        registerEvent("setRotationAngles", SetRotationAnglesScriptEvent.class);
     }
 
     public static void reset() {
@@ -184,6 +186,12 @@ public class ScriptEventManager {
         public static void onRightClickEmptyEvent(PlayerInteractEvent.RightClickEmpty e){
             new RightClickEmptyScriptEvent(e).fire(e);
             ThreeCore.NETWORK_CHANNEL.sendToServer(new EmptyHandInteractMessage(false));
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @SubscribeEvent
+        public static void onSetRotationAngles(SetRotationAnglesEvent e){
+            new SetRotationAnglesScriptEvent(e).fire(e);
         }
 
     }
