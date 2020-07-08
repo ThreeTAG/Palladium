@@ -328,7 +328,7 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("ability.condition.threecore.has_potions", "Entity must have %s potion effects");
         this.add("ability.condition.threecore.has_potions.not", "Entity must not have %s potion effects");
         this.add("ability.condition.threecore.three_data", "ThreeData value must be compared");
-        this.add("ability.condition.threecore.has_potions.not", "ThreeData value must be compared");
+        this.add("ability.condition.threecore.three_data.not", "ThreeData value must be compared");
 
         // Container
         this.addContainerType(TCContainerTypes.HELMET_CRAFTING, "Helmet Crafting");
