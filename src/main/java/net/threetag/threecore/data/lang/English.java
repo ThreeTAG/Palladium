@@ -265,6 +265,8 @@ public class English extends ThreeCoreLanguageProvider {
         this.add(AbilityType.HUD, "HUD");
         this.add(AbilityType.SKIN_CHANGE, "Skin Change");
         this.add(AbilityType.HIDE_BODY_PARTS, "Hide Body Parts");
+        this.add(AbilityType.CHANGE_ABILITY_TAB_TEXTURE, "Change Ability Tab Texture");
+        this.add(AbilityType.ENERGY, "Energy");
 
         this.add("ability.condition.threecore.action", "Key must be pressed once to active this ability");
         this.add("ability.condition.threecore.action.not", "Key must be pressed once to deactivate this ability");
@@ -325,6 +327,8 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("ability.condition.threecore.living_values.not", "Entity value must be compared to %s");
         this.add("ability.condition.threecore.has_potions", "Entity must have %s potion effects");
         this.add("ability.condition.threecore.has_potions.not", "Entity must not have %s potion effects");
+        this.add("ability.condition.threecore.three_data", "ThreeData value must be compared");
+        this.add("ability.condition.threecore.has_potions.not", "ThreeData value must be compared");
 
         // Container
         this.addContainerType(TCContainerTypes.HELMET_CRAFTING, "Helmet Crafting");
