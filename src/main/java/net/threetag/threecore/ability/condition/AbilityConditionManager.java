@@ -142,6 +142,9 @@ public class AbilityConditionManager implements INBTSerializable<CompoundNBT>
 					new AbilityLockedScriptEvent(entity, this.ability).fire();
 				this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
 			}
+
+			if(this.enabled)
+				conditions.forEach((condition, aBoolean) -> condition.whileEnabled(entity));
 		}
 	}
 

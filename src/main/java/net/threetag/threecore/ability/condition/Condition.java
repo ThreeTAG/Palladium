@@ -92,6 +92,10 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IWrapp
     public void lastTick() {
     }
 
+    public void whileEnabled(LivingEntity entity) {
+
+    }
+
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();

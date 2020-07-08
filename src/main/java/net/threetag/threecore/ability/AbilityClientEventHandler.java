@@ -203,6 +203,45 @@ public class AbilityClientEventHandler {
                 }
             }
         }
+
+        if (e.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE)
+        {
+            for (EnergyAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, EnergyAbility.class))
+            {
+                if (ability.getConditionManager().isUnlocked())
+                {
+                    Minecraft mc = Minecraft.getInstance();
+                    Integer[] energy_data = ability.dataManager.get(EnergyAbility.ENERGY_TEXTURE_INFO);
+                    Integer[] base_data = ability.dataManager.get(EnergyAbility.BASE_TEXTURE_INFO);
+                    double energy = ability.dataManager.get(EnergyAbility.AMOUNT);
+                    double max = ability.dataManager.get(EnergyAbility.MAX_AMOUNT);
+
+                    int scaledWidth = e.getWindow().getScaledWidth();
+                    int scaledHeight = e.getWindow().getScaledHeight();
+
+                    mc.getTextureManager().bindTexture(ability.dataManager.get(EnergyAbility.BASE_TEXTURE));
+
+                    int baseX = base_data[0] >= 0 ? base_data[0] : scaledWidth + base_data[0];
+                    int baseY = base_data[1] >= 0 ? base_data[1] : scaledHeight + base_data[1];
+
+                    mc.ingameGUI.blit(baseX, baseY, 0, 0, base_data[2], base_data[3]);
+
+                    mc.getTextureManager().bindTexture(ability.dataManager.get(EnergyAbility.ENERGY_TEXTURE));
+
+                    int energyX = energy_data[0] > 0 ? energy_data[0] : scaledWidth + energy_data[0];
+                    int energyY = energy_data[1] > 0 ? energy_data[1] : scaledHeight + energy_data[1];
+                    int energyWidth = energy_data[2] + (int) ((double) (Math.abs(energy_data[4]) - energy_data[2]) * (energy/max));
+                    int energyHeight = energy_data[3] + (int) ((double) (Math.abs(energy_data[5]) - energy_data[3]) * (energy/max));
+                    int energyU = energy_data[4] > 0 ? 0 : Math.abs(energy_data[4]) - energyWidth;
+                    int energyV = energy_data[5] > 0 ? 0 : Math.abs(energy_data[5]) - energyHeight;
+
+                    energyX = energy_data[4] >= 0 ? energyX : energyX + Math.abs(energy_data[4]) - energyWidth;
+                    energyY = energy_data[5] >= 0 ? energyY : energyY + Math.abs(energy_data[5]) - energyHeight;
+
+                    mc.ingameGUI.blit(energyX, energyY, energyU, energyV, energyWidth, energyHeight);
+                }
+            }
+        }
     }
 
 }

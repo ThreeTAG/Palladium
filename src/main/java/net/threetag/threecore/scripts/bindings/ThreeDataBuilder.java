@@ -55,6 +55,8 @@ public class ThreeDataBuilder {
             return new EntityTypeThreeData(name);
         if (type.equalsIgnoreCase("nbt"))
             return new CompoundNBTThreeData(name);
+        if (type.equalsIgnoreCase("int_array"))
+            return new IntegerArrayThreeData(name);
         return new StringThreeData(name);
     }
 

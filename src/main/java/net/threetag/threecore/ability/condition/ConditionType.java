@@ -53,6 +53,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
     public static final ConditionType ABILITIES_LOCKED = new ConditionType(AbilitiesLockedCondition::new, ThreeCore.MODID, "abilities_locked");
     public static final ConditionType LIVING_VALUES = new ConditionType(LivingValuesCondition::new, ThreeCore.MODID, "living_values");
     public static final ConditionType POTION = new ConditionType(PotionCondition::new, ThreeCore.MODID, "has_potions");
+    public static final ConditionType THREE_DATA = new ConditionType(ThreeDataCondition::new, ThreeCore.MODID, "three_data");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -80,6 +81,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
         e.getRegistry().register(ABILITIES_LOCKED);
         e.getRegistry().register(LIVING_VALUES);
         e.getRegistry().register(POTION);
+        e.getRegistry().register(THREE_DATA);
     }
 
     @OnlyIn(Dist.CLIENT)

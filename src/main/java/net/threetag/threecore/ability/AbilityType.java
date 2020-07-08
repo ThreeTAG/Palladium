@@ -54,6 +54,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType SKIN_CHANGE = new AbilityType(SkinChangeAbility::new, ThreeCore.MODID, "skin_change");
     public static final AbilityType HIDE_BODY_PARTS = new AbilityType(HideBodyPartsAbility::new, ThreeCore.MODID, "hide_body_parts");
     public static final AbilityType CHANGE_ABILITY_TAB_TEXTURE = new AbilityType(ChangeAbilityTabTextureAbility::new, ThreeCore.MODID, "change_ability_tab_texture");
+    public static final AbilityType ENERGY = new AbilityType(EnergyAbility::new, ThreeCore.MODID, "energy");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -85,6 +86,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(SKIN_CHANGE);
         e.getRegistry().register(HIDE_BODY_PARTS);
         e.getRegistry().register(CHANGE_ABILITY_TAB_TEXTURE);
+        e.getRegistry().register(ENERGY);
     }
 
     @OnlyIn(Dist.CLIENT)
