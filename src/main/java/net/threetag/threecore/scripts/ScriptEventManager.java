@@ -12,6 +12,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.event.AbilityEnableChangeEvent;
 import net.threetag.threecore.event.RegisterThreeDataEvent;
 import net.threetag.threecore.event.SetRotationAnglesEvent;
 import net.threetag.threecore.network.EmptyHandInteractMessage;
@@ -194,6 +195,19 @@ public class ScriptEventManager {
             new SetRotationAnglesScriptEvent(e).fire(e);
         }
 
+        @SubscribeEvent
+        public static void onAbilityEnableChange(AbilityEnableChangeEvent e){
+            switch (e.type){
+            case ENABLED:
+                if(new AbilityEnabledScriptEvent(e.getEntityLiving(), e.ability).fire())
+                    e.setCanceled(true);
+                break;
+            case DISABLED:
+                if(new AbilityDisabledScriptEvent(e.getEntityLiving(), e.ability).fire())
+                    e.setCanceled(true);
+                break;
+            }
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
