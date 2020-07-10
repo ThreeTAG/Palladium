@@ -27,9 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-/**
- * Created by Nictogen on 2019-06-08.
- */
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ConditionType extends ForgeRegistryEntry<ConditionType> {
     public static IForgeRegistry<ConditionType> REGISTRY;
@@ -54,6 +51,8 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
     public static final ConditionType LIVING_VALUES = new ConditionType(LivingValuesCondition::new, ThreeCore.MODID, "living_values");
     public static final ConditionType POTION = new ConditionType(PotionCondition::new, ThreeCore.MODID, "has_potions");
     public static final ConditionType THREE_DATA = new ConditionType(ThreeDataCondition::new, ThreeCore.MODID, "three_data");
+    public static final ConditionType EXCLUSIVE = new ConditionType(ExclusiveCondition::new, ThreeCore.MODID, "exclusive");
+    public static final ConditionType COMBO = new ConditionType(ComboCondition::new, ThreeCore.MODID, "combo");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -82,6 +81,8 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
         e.getRegistry().register(LIVING_VALUES);
         e.getRegistry().register(POTION);
         e.getRegistry().register(THREE_DATA);
+        e.getRegistry().register(EXCLUSIVE);
+        e.getRegistry().register(COMBO);
     }
 
     @OnlyIn(Dist.CLIENT)

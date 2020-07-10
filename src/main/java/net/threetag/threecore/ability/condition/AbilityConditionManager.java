@@ -9,12 +9,12 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.Ability;
-import net.threetag.threecore.scripts.events.AbilityDisabledScriptEvent;
-import net.threetag.threecore.scripts.events.AbilityEnabledScriptEvent;
+import net.threetag.threecore.event.AbilityEnableChangeEvent;
 import net.threetag.threecore.scripts.events.AbilityLockedScriptEvent;
 import net.threetag.threecore.scripts.events.AbilityUnlockedScriptEvent;
 import net.threetag.threecore.util.threedata.EnumSync;
@@ -125,9 +125,9 @@ public class AbilityConditionManager implements INBTSerializable<CompoundNBT>
 
 			if (e != this.enabled)
 			{
-				if (e && !(new AbilityEnabledScriptEvent(entity, this.ability).fire()))
+				if (e && !(MinecraftForge.EVENT_BUS.post(new AbilityEnableChangeEvent(this.ability, entity, AbilityEnableChangeEvent.Type.ENABLED))))
 					this.enabled = true;
-				else if (!e && !(new AbilityDisabledScriptEvent(entity, this.ability).fire()))
+				else if (!e && !(MinecraftForge.EVENT_BUS.post(new AbilityEnableChangeEvent(this.ability, entity, AbilityEnableChangeEvent.Type.DISABLED))))
 					this.enabled = false;
 
 				this.ability.sync = this.ability.sync.add(EnumSync.EVERYONE);
