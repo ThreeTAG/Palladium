@@ -11,7 +11,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector2f;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -86,7 +87,7 @@ public class WorldAccessor extends ScriptAccessor<World> {
 
     public void executeCommand(@ScriptParameterName("command") String command) {
         if (this.value instanceof ServerWorld) {
-            CommandSource commandSource = new CommandSource(new ScriptCommandSource(), new Vec3d(value.getSpawnPoint()), Vec2f.ZERO, (ServerWorld) value, 4, "Script", new StringTextComponent("Script"), this.value.getServer(), (Entity) null);
+            CommandSource commandSource = new CommandSource(new ScriptCommandSource(), new Vector3d(value.getSpawnPoint()), Vector2f.ZERO, (ServerWorld) value, 4, "Script", new StringTextComponent("Script"), this.value.getServer(), (Entity) null);
             this.value.getServer().getCommandManager().handleCommand(commandSource, command);
         }
     }

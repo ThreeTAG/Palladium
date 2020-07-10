@@ -13,7 +13,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -28,7 +28,7 @@ public class PlayerUtil {
 
     public static void playSound(PlayerEntity player, double x, double y, double z, SoundEvent sound, SoundCategory category, float volume, float pitch) {
         if (player instanceof ServerPlayerEntity) {
-            ((ServerPlayerEntity) player).connection.sendPacket(new SPlaySoundPacket(sound.getRegistryName(), category, new Vec3d(x, y, z), volume, pitch));
+            ((ServerPlayerEntity) player).connection.sendPacket(new SPlaySoundPacket(sound.getRegistryName(), category, new Vector3d(x, y, z), volume, pitch));
         }
     }
 

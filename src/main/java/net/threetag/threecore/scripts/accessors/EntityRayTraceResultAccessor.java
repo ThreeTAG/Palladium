@@ -12,8 +12,8 @@ public class EntityRayTraceResultAccessor extends ScriptAccessor<EntityRayTraceR
 		super(value);
 	}
 
-	public Vec3dAccessor getHitVec() {
-		return new Vec3dAccessor(this.value.getHitVec());
+	public Vector3dAccessor getHitVec() {
+		return new Vector3dAccessor(this.value.getHitVec());
 	}
 
 	public String getType(){

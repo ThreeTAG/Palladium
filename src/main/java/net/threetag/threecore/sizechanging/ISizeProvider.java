@@ -2,10 +2,10 @@ package net.threetag.threecore.sizechanging;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.Pose;
-import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.vector.Vector2f;
 
 public interface ISizeProvider {
 
-    Vec2f getSize(Entity entity, Pose pose);
+    Vector2f getSize(Entity entity, Pose pose);
 
 }

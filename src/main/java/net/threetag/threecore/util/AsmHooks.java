@@ -16,7 +16,7 @@ import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.vector.Vector2f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -38,18 +38,18 @@ public class AsmHooks {
     }
 
     public static EntitySize getOverridenSize(EntitySize entitySize, Entity entity, Pose pose) {
-        Vec2f vec = getSize(entity, pose);
+        Vector2f vec = getSize(entity, pose);
         return new EntitySize(entitySize.width * vec.x, entitySize.height * vec.y, entitySize.fixed);
     }
 
-    public static Vec2f getSize(Entity entity, Pose pose) {
+    public static Vector2f getSize(Entity entity, Pose pose) {
         AtomicReference<Float> width = new AtomicReference<>(1F);
         AtomicReference<Float> height = new AtomicReference<>(1F);
         entity.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(s -> {
             width.set(s.getWidth());
             height.set(s.getHeight());
         });
-        return new Vec2f(width.get(), height.get());
+        return new Vector2f(width.get(), height.get());
     }
 
     @OnlyIn(Dist.CLIENT)

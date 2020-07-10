@@ -56,8 +56,8 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
 
     public CompoundNBTAccessor getNBTData(){ return new CompoundNBTAccessor(this.value.serializeNBT()); }
 
-    public Vec3dAccessor getPosition() {
-        return new Vec3dAccessor(this.value.getPositionVector());
+    public Vector3dAccessor getPosition() {
+        return new Vector3dAccessor(this.value.getPositionVector());
     }
 
     public double getPosX() {
@@ -102,12 +102,12 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         this.value.setPositionAndUpdate(x, y, z);
     }
 
-    public Vec3dAccessor getLookVec() {
-        return new Vec3dAccessor(this.value.getLookVec());
+    public Vector3dAccessor getLookVec() {
+        return new Vector3dAccessor(this.value.getLookVec());
     }
 
-    public Vec3dAccessor getMotion() {
-        return new Vec3dAccessor(this.value.getMotion());
+    public Vector3dAccessor getMotion() {
+        return new Vector3dAccessor(this.value.getMotion());
     }
 
     public void setMotion(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z) {
@@ -325,7 +325,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
        return ScriptAccessor.makeAccessor(EntityUtil.rayTraceWithEntities(this.value, distance, b, f));
     }
 
-    public void lookAt(@ScriptParameterName("target") Vec3dAccessor target){
+    public void lookAt(@ScriptParameterName("target") Vector3dAccessor target){
         this.value.lookAt(EntityAnchorArgument.Type.EYES, target.value);
     }
 

@@ -7,10 +7,7 @@ import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.DamagingProjectileEntity;
-import net.minecraft.entity.projectile.SnowballEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.entity.projectile.*;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -48,24 +45,16 @@ public class SizeChangingEventHandler {
                 ThreeCore.NETWORK_CHANNEL.sendTo(new SyncSizeMessage(e.getEntity().getEntityId(), (CompoundNBT) ((INBTSerializable) sizeChanging).serializeNBT()), ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
         });
 
-        Entity thrower = null;
-        if (e.getEntity() instanceof ThrowableEntity)
-            thrower = ((ThrowableEntity) e.getEntity()).getThrower();
-        else if (e.getEntity() instanceof AbstractArrowEntity)
-            thrower = ((AbstractArrowEntity) e.getEntity()).getShooter();
-        else if (e.getEntity() instanceof DamagingProjectileEntity)
-            thrower = ((DamagingProjectileEntity) e.getEntity()).shootingEntity;
-
-        if (thrower != null) {
-            copyScale(thrower, e.getEntity());
+        if (e.getEntity() instanceof ProjectileEntity) {
+            copyScale(((ThrowableEntity) e.getEntity()).func_234616_v_(), e.getEntity());
         }
     }
 
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingUpdateEvent e) {
         e.getEntity().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(size -> {
-            if(size.getScale() <= 0.3F) {
-                if(!e.getEntityLiving().onGround && (e.getEntityLiving().getHeldItemMainhand().getItem() == Items.PAPER || e.getEntityLiving().getHeldItemOffhand().getItem() == Items.PAPER || e.getEntityLiving().getHeldItemMainhand().getItem() == Items.FEATHER || e.getEntityLiving().getHeldItemOffhand().getItem() == Items.FEATHER)) {
+            if (size.getScale() <= 0.3F) {
+                if (!e.getEntityLiving().func_233570_aj_() && (e.getEntityLiving().getHeldItemMainhand().getItem() == Items.PAPER || e.getEntityLiving().getHeldItemOffhand().getItem() == Items.PAPER || e.getEntityLiving().getHeldItemMainhand().getItem() == Items.FEATHER || e.getEntityLiving().getHeldItemOffhand().getItem() == Items.FEATHER)) {
                     e.getEntityLiving().fallDistance = 0;
                     e.getEntityLiving().setMotion(e.getEntity().getMotion().x, e.getEntity().getMotion().y * 0.6D, e.getEntity().getMotion().z);
                 }
@@ -108,7 +97,7 @@ public class SizeChangingEventHandler {
     @SubscribeEvent
     public static void oProjectileImpactFireball(ProjectileImpactEvent.Fireball e) {
         e.getFireball().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
-            boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(e.getFireball().world, e.getFireball().shootingEntity);
+            boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(e.getFireball().world, e.getFireball().func_234616_v_());
             e.getFireball().world.createExplosion(null, e.getFireball().getPosX(), e.getFireball().getPosY(), e.getFireball().getPosZ(), sizeChanging.getScale(), flag, flag ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
         });
     }
@@ -162,7 +151,7 @@ public class SizeChangingEventHandler {
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent e) {
-        if (e.getSource().getImmediateSource() instanceof IProjectile) {
+        if (e.getSource().getImmediateSource() instanceof ProjectileEntity) {
             e.getSource().getImmediateSource().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
                 e.setAmount(e.getAmount() * sizeChanging.getScale());
             });

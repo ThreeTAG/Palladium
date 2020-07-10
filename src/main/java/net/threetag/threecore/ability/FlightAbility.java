@@ -5,7 +5,7 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.threetag.threecore.sound.FlightSound;
@@ -38,17 +38,17 @@ public class FlightAbility extends Ability implements FlightSound.IFlyingAbility
 
     @Override
     public void action(LivingEntity entity) {
-        if (!entity.onGround) {
+        if (!entity.func_233570_aj_()) {
             if (entity.moveForward > 0F) {
                 this.startSound(entity);
-                Vec3d vec = entity.getLookVec();
+                Vector3d vec = entity.getLookVec();
                 double speed = entity.isSprinting() ? this.dataManager.get(SPRINT_SPEED) : this.dataManager.get(SPEED);
                 // TODO multiply fly speed by size
                 entity.setMotion(vec.x * speed, vec.y * speed - (entity.isCrouching() ? entity.getHeight() * 0.2F : 0), vec.z * speed);
             } else if (entity.isCrouching()) {
-                entity.setMotion(new Vec3d(entity.getMotion().x, entity.getHeight() * -0.2F, entity.getMotion().z));
+                entity.setMotion(new Vector3d(entity.getMotion().x, entity.getHeight() * -0.2F, entity.getMotion().z));
             } else {
-                entity.setMotion(new Vec3d(entity.getMotion().x, Math.sin(entity.ticksExisted / 10F) / 100F, entity.getMotion().z));
+                entity.setMotion(new Vector3d(entity.getMotion().x, Math.sin(entity.ticksExisted / 10F) / 100F, entity.getMotion().z));
             }
         }
     }

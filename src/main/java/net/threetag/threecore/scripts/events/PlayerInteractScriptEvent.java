@@ -4,7 +4,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.threetag.threecore.scripts.accessors.ItemStackAccessor;
-import net.threetag.threecore.scripts.accessors.Vec3dAccessor;
+import net.threetag.threecore.scripts.accessors.Vector3dAccessor;
 
 /**
  * Created by Nictogen on 2020-06-25.
@@ -23,10 +23,10 @@ public abstract class PlayerInteractScriptEvent extends LivingScriptEvent
 		return this.event.getHand().toString();
 	}
 
-	public Vec3dAccessor getPos()
+	public Vector3dAccessor getPos()
 	{
 		BlockPos pos = this.event.getPos();
-		return new Vec3dAccessor(new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
+		return new Vector3dAccessor(new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
 	}
 
 	public ItemStackAccessor getItemStack(){

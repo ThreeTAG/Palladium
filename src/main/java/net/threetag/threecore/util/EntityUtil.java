@@ -1,9 +1,11 @@
 package net.threetag.threecore.util;
 
+import com.sun.javafx.geom.Vec3d;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -50,9 +52,9 @@ public class EntityUtil {
     }
 
     public static RayTraceResult rayTraceWithEntities(Entity entityIn, double distance, RayTraceContext.BlockMode blockModeIn, RayTraceContext.FluidMode fluidModeIn, Predicate<Entity> entityPredicate) {
-        Vec3d lookVec = entityIn.getLookVec();
-        Vec3d startVec = entityIn.getPositionVec().add(0, entityIn.getEyeHeight(), 0);
-        Vec3d endVec = startVec.add(entityIn.getLookVec().scale(distance));
+        Vector3d lookVec = entityIn.getLookVec();
+        Vector3d startVec = entityIn.getPositionVec().add(0, entityIn.getEyeHeight(), 0);
+        Vector3d endVec = startVec.add(entityIn.getLookVec().scale(distance));
         RayTraceResult blockResult = entityIn.world.rayTraceBlocks(new RayTraceContext(startVec, endVec, blockModeIn, fluidModeIn, entityIn));
         RayTraceResult entityResult = null;
 
@@ -60,10 +62,10 @@ public class EntityUtil {
             if (entityResult != null)
                 break;
             float scale = i / 2F;
-            Vec3d pos = startVec.add(lookVec.scale(scale));
+            Vector3d pos = startVec.add(lookVec.scale(scale));
 
-            Vec3d min = pos.add(0.25F, 0.25F, 0.25F);
-            Vec3d max = pos.add(-0.25F, -0.25F, -0.25F);
+            Vector3d min = pos.add(0.25F, 0.25F, 0.25F);
+            Vector3d max = pos.add(-0.25F, -0.25F, -0.25F);
             for (Entity entity : entityIn.world.getEntitiesWithinAABBExcludingEntity(entityIn, new AxisAlignedBB(min.x, min.y, min.z, max.x, max.y, max.z))) {
                 if (entityPredicate.test(entity)) {
                     entityResult = new EntityRayTraceResult(entity, pos);
