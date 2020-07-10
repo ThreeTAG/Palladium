@@ -81,6 +81,8 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
+
+    maven { url = "https://maven.theillusivec4.top/" }
 }
 
 dependencies {
@@ -89,6 +91,10 @@ dependencies {
     // JEI
     compileOnly fg.deobf("mezz.jei:jei-$minecraft_version:$jei_version:api")
     runtimeOnly fg.deobf("mezz.jei:jei-$minecraft_version:$jei_version")
+
+    // Curios
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios:${curios_version}")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios:${curios_version}:api")
 }
 
 task deobfJar(type: Jar) {

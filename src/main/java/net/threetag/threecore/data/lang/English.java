@@ -329,6 +329,15 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("ability.condition.threecore.has_potions.not", "Entity must not have %s potion effects");
         this.add("ability.condition.threecore.three_data", "ThreeData value must be compared");
         this.add("ability.condition.threecore.three_data.not", "ThreeData value must be compared");
+        this.add("ability.condition.threecore.exclusive", "Ability must be the only of its kind");
+        this.add("ability.condition.threecore.exclusive.not", "Ability must not be the only of its kind");
+        this.add("ability.condition.threecore.combo", "Specific abilities must be used in specific order");
+        this.add("ability.condition.threecore.combo.not", "Specific abilities must not be used in specific order");
+        this.add("ability.condition.threecore.curios_slot", "Item needs to be in specific Curios slot");
+        this.add("ability.condition.threecore.curios_slot.not", "Item must not be in specific Curios slot");
+        this.add("ability.condition.threecore.wearing_curios", "Specific item must be in specific Curios slot");
+        this.add("ability.condition.threecore.wearing_curios.not", "Specific item must not be in specific Curios slot");
+
 
         // Container
         this.addContainerType(TCContainerTypes.HELMET_CRAFTING, "Helmet Crafting");
