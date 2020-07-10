@@ -1,14 +1,13 @@
 package net.threetag.threecore.karma;
 
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.IAngerable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.SpiderEntity;
-import net.minecraft.entity.monster.ZombiePigmanEntity;
 import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.biome.Biome;
@@ -74,9 +73,7 @@ public class KarmaEventHandler {
             PlayerEntity attacker = (PlayerEntity) e.getSource().getTrueSource();
             LivingEntity attacked = e.getEntityLiving();
 
-            if (attacked instanceof ZombiePigmanEntity && !((ZombiePigmanEntity) attacked).isAngry())
-                CapabilityKarma.addKarma(attacker, -1);
-            else if (attacked instanceof WolfEntity && !((WolfEntity) attacked).isAngry())
+            if (attacked instanceof IAngerable && !((IAngerable) attacked).func_233678_J__())
                 CapabilityKarma.addKarma(attacker, -1);
             else if (attacked instanceof SpiderEntity && attacked.getBrightness() >= 0.5F)
                 CapabilityKarma.addKarma(attacker, -1);
@@ -95,7 +92,7 @@ public class KarmaEventHandler {
     }
 
     public static boolean isMonster(LivingEntity entity) {
-        for (Biome.SpawnListEntry entry : entity.world.getBiome(entity.getPosition()).getSpawns(EntityClassification.MONSTER)) {
+        for (Biome.SpawnListEntry entry : entity.world.getBiome(entity.func_233580_cy_()).getSpawns(EntityClassification.MONSTER)) {
             if (entry.entityType == entity.getType()) {
                 return true;
             }

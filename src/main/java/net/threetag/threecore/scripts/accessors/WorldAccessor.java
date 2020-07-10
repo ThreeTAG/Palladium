@@ -3,6 +3,7 @@ package net.threetag.threecore.scripts.accessors;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.util.ResourceLocation;
@@ -10,7 +11,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
@@ -34,7 +34,8 @@ public class WorldAccessor extends ScriptAccessor<World> {
     }
 
     public void setTime(@ScriptParameterName("time") long time) {
-        this.value.setDayTime(time);
+        if(this.value instanceof ServerWorld)
+            ((ServerWorld) this.value).func_241114_a_(time);
     }
 
     public boolean isRaining() {
@@ -69,7 +70,12 @@ public class WorldAccessor extends ScriptAccessor<World> {
 
     public void summonLightning(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z, @ScriptParameterName("effectOnly") boolean effectOnly) {
         if (this.value instanceof ServerWorld)
-            ((ServerWorld) this.value).addLightningBolt(new LightningBoltEntity(this.value, x, y, z, effectOnly));
+        {
+            LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.value);
+            lightningboltentity.func_233576_c_(Vector3d.func_237492_c_(new BlockPos(x, y, z)));
+            lightningboltentity.func_233623_a_(false);
+            this.value.addEntity(lightningboltentity);
+        }
     }
 
     public void setBlockState(@ScriptParameterName("block") Object block, @ScriptParameterName("x") int x, @ScriptParameterName("y") int y, @ScriptParameterName("z") int z) {
@@ -87,7 +93,7 @@ public class WorldAccessor extends ScriptAccessor<World> {
 
     public void executeCommand(@ScriptParameterName("command") String command) {
         if (this.value instanceof ServerWorld) {
-            CommandSource commandSource = new CommandSource(new ScriptCommandSource(), new Vector3d(value.getSpawnPoint()), Vector2f.ZERO, (ServerWorld) value, 4, "Script", new StringTextComponent("Script"), this.value.getServer(), (Entity) null);
+            CommandSource commandSource = new CommandSource(new ScriptCommandSource(), Vector3d.func_237491_b_(((ServerWorld) this.value).func_241135_u_()), Vector2f.ZERO, (ServerWorld) value, 4, "Script", new StringTextComponent("Script"), this.value.getServer(), (Entity) null);
             this.value.getServer().getCommandManager().handleCommand(commandSource, command);
         }
     }

@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.threetag.threecore.potion.TCEffects;
 import net.threetag.threecore.util.MathUtil;
 
-import static net.minecraft.client.gui.AbstractGui.fill;
+import static net.minecraft.client.gui.AbstractGui.func_238467_a_;
 
 public class UnconsciousRenderer {
 
@@ -27,7 +27,7 @@ public class UnconsciousRenderer {
                 int width = Minecraft.getInstance().getMainWindow().getScaledWidth();
                 int height = Minecraft.getInstance().getMainWindow().getScaledHeight();
                 int color = (int) (255F * opacity) << 24;
-                fill(0, 0, width, height, color);
+                func_238467_a_(e.getMatrixStack(), 0, 0, width, height, color);
                 RenderSystem.enableAlphaTest();
                 RenderSystem.enableDepthTest();
             }

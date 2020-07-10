@@ -6,11 +6,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemTier;
 import net.minecraft.item.Rarity;
+import net.minecraft.loot.ItemLootEntry;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.ItemLootEntry;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
-import net.minecraft.world.storage.loot.conditions.LootConditionManager;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -22,7 +22,7 @@ import net.threetag.threecore.ThreeCoreServerConfig;
 
 public class TCItems {
 
-    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, ThreeCore.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ThreeCore.MODID);
 
     // Misc Items
     public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer", () -> new HammerItem(4.5F, -2.75F, ItemTier.IRON, new Item.Properties().group(ItemGroup.TOOLS).maxStackSize(1).maxDamage(16)));
@@ -149,7 +149,7 @@ public class TCItems {
             ILootCondition.IBuilder conditionBuilder = new ILootCondition.IBuilder() {
                 @Override
                 public ILootCondition build() {
-                    return LootConditionManager.getSerializerForName(new ResourceLocation("random_chance")).deserialize(jsonObject, null);
+                    return Registry.field_239704_ba_.getValue(new ResourceLocation("random_chance")).get().func_237408_a_().func_230423_a_(jsonObject, null);
                 }
             };
             e.getTable().addPool(LootPool.builder().addEntry(ItemLootEntry.builder(TCItems.MULTIVERSAL_EXTRAPOLATOR.get()).quality(1).weight(10).acceptCondition(conditionBuilder)).acceptCondition(conditionBuilder).build());

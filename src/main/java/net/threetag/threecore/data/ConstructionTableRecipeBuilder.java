@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement.Builder;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.IRequirementsStrategy;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger.Instance;
+import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -108,7 +108,7 @@ public class ConstructionTableRecipeBuilder {
 
     public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation location) {
         this.validate(location);
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", new Instance(location)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(location)).withRequirementsStrategy(IRequirementsStrategy.OR);
+        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.func_235675_a_(location)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(location)).withRequirementsStrategy(IRequirementsStrategy.OR);
         consumer.accept(new Result(this.recipeSerializer, location, this.result, this.group == null ? "" : this.group, this.pattern, this.key, this.toolIngredient, this.advancementBuilder, new ResourceLocation(location.getNamespace(), "recipes/" + this.result.getGroup() + "/" + location.getPath()), this.consumesTool));
     }
 

@@ -3,11 +3,18 @@ package net.threetag.threecore.sizechanging;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.*;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.SnowballEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -15,7 +22,6 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
@@ -25,14 +31,18 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
 import net.threetag.threecore.entity.attributes.TCAttributes;
 import net.threetag.threecore.network.SyncSizeMessage;
 
 import java.util.List;
+import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID)
 public class SizeChangingEventHandler {
@@ -71,12 +81,21 @@ public class SizeChangingEventHandler {
         });
     }
 
-    @SubscribeEvent
-    public static void onEntityConstruct(EntityEvent.EntityConstructing e) {
-        if (e.getEntity() instanceof LivingEntity) {
-            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(TCAttributes.SIZE_WIDTH);
-            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(TCAttributes.SIZE_HEIGHT);
-        }
+    @SubscribeEvent()
+    public static void onCommonSetup(FMLCommonSetupEvent e) {
+        DeferredWorkQueue.runLater(() -> {
+            for (EntityType<?> value : ForgeRegistries.ENTITIES.getValues())
+                if(value.getClassification() != EntityClassification.MISC)
+                {
+                    AttributeModifierMap map = GlobalEntityTypeAttributes.func_233835_a_((EntityType<? extends LivingEntity>) value);
+                    Map<Attribute, ModifiableAttributeInstance> oldAttributes = map.field_233802_a_;
+                    AttributeModifierMap.MutableAttribute newMap = AttributeModifierMap.func_233803_a_();
+                    newMap.field_233811_a_.putAll(oldAttributes);
+                    newMap.func_233814_a_(TCAttributes.SIZE_WIDTH);
+                    newMap.func_233814_a_(TCAttributes.SIZE_HEIGHT);
+                    GlobalEntityTypeAttributes.put((EntityType<? extends LivingEntity>) value, newMap.func_233813_a_());
+                }
+        });
     }
 
     @SubscribeEvent

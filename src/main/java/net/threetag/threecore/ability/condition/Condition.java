@@ -101,7 +101,7 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IWrapp
         CompoundNBT nbt = new CompoundNBT();
         nbt.putString("ConditionType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.serializeNBT());
-        nbt.put("UUID", NBTUtil.writeUniqueId(this.id));
+        nbt.put("UUID", NBTUtil.func_240626_a_(this.id));
         return nbt;
     }
 

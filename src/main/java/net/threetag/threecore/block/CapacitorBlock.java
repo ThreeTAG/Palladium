@@ -47,8 +47,8 @@ public class CapacitorBlock extends ContainerBlock {
         return BlockRenderType.MODEL;
     }
 
-    @Override
-    public int getLightValue(BlockState state) {
+    @Override public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
+    {
         return state.get(LEVEL_0_10);
     }
 

@@ -5,20 +5,20 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootFunction;
+import net.minecraft.loot.LootFunctionType;
+import net.minecraft.loot.LootParameter;
+import net.minecraft.loot.conditions.ILootCondition;
+import net.minecraft.loot.functions.CopyName;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootFunction;
-import net.minecraft.world.storage.loot.LootParameter;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
-import net.minecraft.world.storage.loot.functions.CopyName;
 import net.minecraftforge.common.capabilities.CapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.threetag.threecore.ThreeCore;
 
 import java.util.Set;
 
-public class CopyEnergyFunction extends LootFunction {
+public class CopyEnergyFunction extends LootFunction
+{
 
     private final CopyName.Source source;
 
@@ -51,14 +51,17 @@ public class CopyEnergyFunction extends LootFunction {
         });
     }
 
-    public static class Serializer extends LootFunction.Serializer<CopyEnergyFunction> {
-        public Serializer() {
-            super(new ResourceLocation(ThreeCore.MODID, "copy_energy"), CopyEnergyFunction.class);
-        }
+    @Override public LootFunctionType func_230425_b_()
+    {
+        return TCLootFunctions.COPY_ENERGY;
+    }
 
-        public void serialize(JsonObject object, CopyEnergyFunction functionClazz, JsonSerializationContext serializationContext) {
-            super.serialize(object, functionClazz, serializationContext);
-            object.addProperty("source", functionClazz.source.name);
+    public static class Serializer extends LootFunction.Serializer<CopyEnergyFunction> {
+
+        @Override public void func_230424_a_(JsonObject object, CopyEnergyFunction function, JsonSerializationContext serializationContext)
+        {
+            super.func_230424_a_(object, function, serializationContext);
+            object.addProperty("source", function.source.name);
         }
 
         public CopyEnergyFunction deserialize(JsonObject object, JsonDeserializationContext deserializationContext, ILootCondition[] conditionsIn) {

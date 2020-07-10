@@ -120,7 +120,7 @@ public class FluidComposingRecipeBuilder {
 
     public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation name) {
         this.validate(name);
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", new RecipeUnlockedTrigger.Instance(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
+        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.func_235675_a_(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
         consumer.accept(new FluidComposingRecipeBuilder.Result(name, group == null ? "" : group, ingredients, inputFluid, result, energy, conditions, advancementBuilder, new ResourceLocation(name.getNamespace(), "recipes/fluids/" + name.getPath())));
     }
 

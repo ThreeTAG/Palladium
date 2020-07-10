@@ -102,7 +102,7 @@ public class ThreeCore {
         AddonPackManager.init();
 
         // Loot
-        TCLootFunctions.register();
+        MinecraftForge.EVENT_BUS.register(new TCLootFunctions());
         MinecraftForge.EVENT_BUS.addListener(TCItems::onLootTableLoad);
 
         // Construction Table Tabs
@@ -228,7 +228,7 @@ public class ThreeCore {
 
     @SubscribeEvent
     public void serverAboutToStart(FMLServerAboutToStartEvent e) {
-        e.getServer().getResourceManager().addReloadListener(new SuperpowerManager());
+        ((IReloadableResourceManager) e.getServer().getDataPackRegistries().func_240970_h_()).addReloadListener(new SuperpowerManager());
     }
 
     @OnlyIn(Dist.CLIENT)

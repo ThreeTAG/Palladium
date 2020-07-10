@@ -15,6 +15,7 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -98,7 +99,7 @@ public class AbilityClientEventHandler {
         }
 
         // Multi Jump
-        if (!Minecraft.getInstance().player.isCreative() && Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && !Minecraft.getInstance().player.onGround) {
+        if (!Minecraft.getInstance().player.isCreative() && Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && !Minecraft.getInstance().player.func_233570_aj_()) {
             for (MultiJumpAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, MultiJumpAbility.class)) {
                 if (ability.getConditionManager().isEnabled()) {
                     ThreeCore.NETWORK_CHANNEL.sendToServer(new MultiJumpMessage(ability.container.getId(), ability.getId()));
@@ -122,7 +123,7 @@ public class AbilityClientEventHandler {
     @SubscribeEvent
     public void onGuiInit(GuiScreenEvent.InitGuiEvent e) {
         if (e.getGui() instanceof ChatScreen) {
-            e.addWidget(new TranslucentButton(e.getGui().width - 1 - 75, e.getGui().height - 40, 75, 20, I18n.format("gui.threecore.abilities"), b -> Minecraft.getInstance().displayGuiScreen(new AbilitiesScreen())));
+            e.addWidget(new TranslucentButton(e.getGui().field_230708_k_ - 1 - 75, e.getGui().field_230709_l_ - 40, 75, 20, I18n.format("gui.threecore.abilities"), b -> Minecraft.getInstance().displayGuiScreen(new AbilitiesScreen())));
         }
 
         // Set all keys to unpressed; when an ability opens a GUI, the unpressing of the button will not register and therefore you will need to hit the button twice the next time
@@ -147,9 +148,10 @@ public class AbilityClientEventHandler {
             for (NameChangeAbility ability : AbilityHelper.getAbilitiesFromClass((LivingEntity) e.getEntity(), NameChangeAbility.class)) {
                 if (ability.getConditionManager().isEnabled()) {
                     if (Minecraft.getInstance().player.isCreative()) {
-                        e.setContent(ability.get(NameChangeAbility.NAME).getFormattedText() + " (" + e.getOriginalContent() + ")");
+                       //TODO does this work right?
+                        e.setContent( new StringTextComponent(ability.get(NameChangeAbility.NAME).getString() + " (" + e.getOriginalContent() + ")"));
                     } else {
-                        e.setContent(ability.get(NameChangeAbility.NAME).getFormattedText());
+                        e.setContent(ability.get(NameChangeAbility.NAME));
                     }
                     return;
                 }
@@ -161,8 +163,8 @@ public class AbilityClientEventHandler {
     public void onHeartsPre(RenderGameOverlayEvent.Pre e) {
         for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, CustomHotbarAbility.class)) {
             if (ability.getConditionManager().isEnabled() && e.getType() == ability.getDataManager().get(CustomHotbarAbility.HOTBAR_ELEMENT)) {
-                AbstractGui.GUI_ICONS_LOCATION = ability.getDataManager().get(CustomHotbarAbility.TEXTURE);
-                Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+                AbstractGui.field_230665_h_ = ability.getDataManager().get(CustomHotbarAbility.TEXTURE);
+                Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.field_230665_h_);
             }
         }
     }
@@ -173,8 +175,8 @@ public class AbilityClientEventHandler {
 
         for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, CustomHotbarAbility.class)) {
             if (ability.getConditionManager().isEnabled() && e.getType() == ability.getDataManager().get(CustomHotbarAbility.HOTBAR_ELEMENT)) {
-                AbstractGui.GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
-                Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+                AbstractGui.field_230665_h_ = new ResourceLocation("textures/gui/icons.png");
+                Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.field_230665_h_);
             }
         }
 
@@ -224,7 +226,7 @@ public class AbilityClientEventHandler {
                     int baseX = base_data[0] >= 0 ? base_data[0] : scaledWidth + base_data[0];
                     int baseY = base_data[1] >= 0 ? base_data[1] : scaledHeight + base_data[1];
 
-                    mc.ingameGUI.blit(baseX, baseY, 0, 0, base_data[2], base_data[3]);
+                    mc.ingameGUI.func_238474_b_(e.getMatrixStack(), baseX, baseY, 0, 0, base_data[2], base_data[3]);
 
                     mc.getTextureManager().bindTexture(ability.dataManager.get(EnergyAbility.ENERGY_TEXTURE));
 
@@ -238,7 +240,7 @@ public class AbilityClientEventHandler {
                     energyX = energy_data[4] >= 0 ? energyX : energyX + Math.abs(energy_data[4]) - energyWidth;
                     energyY = energy_data[5] >= 0 ? energyY : energyY + Math.abs(energy_data[5]) - energyHeight;
 
-                    mc.ingameGUI.blit(energyX, energyY, energyU, energyV, energyWidth, energyHeight);
+                    mc.ingameGUI.func_238474_b_(e.getMatrixStack(), energyX, energyY, energyU, energyV, energyWidth, energyHeight);
                 }
             }
         }
