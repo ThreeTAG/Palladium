@@ -1,6 +1,7 @@
 package net.threetag.threecore.ability.condition;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ability.Ability;
@@ -37,7 +38,7 @@ public class ComboCondition extends Condition
 	@Mod.EventBusSubscriber
 	public static class Handler
 	{
-		@SubscribeEvent
+		@SubscribeEvent(priority = EventPriority.LOWEST)
 		public static void onAbilityEnabled(AbilityEnableChangeEvent event)
 		{
 			if (event.type == AbilityEnableChangeEvent.Type.ENABLED)
