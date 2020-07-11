@@ -63,7 +63,7 @@ public class ToolIngredient extends Ingredient {
 
         @Override
         public void write(PacketBuffer buffer, ToolIngredient ingredient) {
-            buffer.writeString(ingredient.toolType.getName());
+            buffer.writeString(ingredient.toolType.func_176610_l());
         }
     }
 
@@ -94,7 +94,7 @@ public class ToolIngredient extends Ingredient {
         public JsonObject serialize() {
             JsonObject json = new JsonObject();
             json.addProperty("type", ID.toString());
-            json.addProperty("tool", this.toolType.getName());
+            json.addProperty("tool", this.toolType.func_176610_l());
             return json;
         }
     }
@@ -103,7 +103,7 @@ public class ToolIngredient extends Ingredient {
 
         ALL("all", s -> {
             for (ToolType type : values()) {
-                if (!type.getName().equalsIgnoreCase("all") && type.test(s)) {
+                if (!type.func_176610_l().equalsIgnoreCase("all") && type.test(s)) {
                     return true;
                 }
             }
@@ -125,23 +125,23 @@ public class ToolIngredient extends Ingredient {
         }
 
         @Override
-        public String getName() {
-            return this.name;
-        }
-
-        @Override
         public boolean test(ItemStack stack) {
             return this.predicate.test(stack);
         }
 
         public static ToolType fromName(String name) {
             for (ToolType type : values()) {
-                if (type.getName().equalsIgnoreCase(name)) {
+                if (type.func_176610_l().equalsIgnoreCase(name)) {
                     return type;
                 }
             }
 
             return null;
+        }
+
+        @Override public String func_176610_l()
+        {
+            return this.name;
         }
     }
 

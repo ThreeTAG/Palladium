@@ -24,7 +24,7 @@ public class UUIDThreeData extends ThreeData<UUID> {
 
     @Override
     public void writeToNBT(CompoundNBT nbt, UUID value) {
-        nbt.put(this.key, NBTUtil.writeUniqueId(value));
+        nbt.put(this.key, NBTUtil.func_240626_a_(value));
     }
 
     @Override

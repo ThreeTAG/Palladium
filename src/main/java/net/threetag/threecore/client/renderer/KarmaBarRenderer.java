@@ -26,13 +26,13 @@ public class KarmaBarRenderer {
                 RenderSystem.pushMatrix();
                 RenderSystem.color3f(1.0F, 1.0F, 1.0F);
                 mc.textureManager.bindTexture(TEXTURE);
-                mc.ingameGUI.blit(mainWindow.getScaledWidth() / 2 - 91, 10, 0, 0, 182, 5);
-                mc.ingameGUI.blit(mainWindow.getScaledWidth() / 2 - 85 + (int) (f * 170) - 3, 8, 0, 5, 6, 9);
+                mc.ingameGUI.func_238474_b_(e.getMatrixStack(), mainWindow.getScaledWidth() / 2 - 91, 10, 0, 0, 182, 5);
+                mc.ingameGUI.func_238474_b_(e.getMatrixStack(), mainWindow.getScaledWidth() / 2 - 85 + (int) (f * 170) - 3, 8, 0, 5, 6, 9);
                 for (KarmaClass classes : KarmaClass.VALUES) {
                     if (classes != KarmaClass.NEUTRAL) {
                         int value = classes.ordinal() < KarmaClass.NEUTRAL.ordinal() ? classes.getMaximum() : classes.getMinimum();
                         float f1 = (float) (value + (Math.abs(CapabilityKarma.MIN) + CapabilityKarma.MAX) / 2) / (float) (Math.abs(CapabilityKarma.MIN) + CapabilityKarma.MAX);
-                        mc.ingameGUI.blit(mainWindow.getScaledWidth() / 2 - 85 + (int) (f1 * 170) - 1, 9, 6, 5, 2, 7);
+                        mc.ingameGUI.func_238474_b_(e.getMatrixStack(), mainWindow.getScaledWidth() / 2 - 85 + (int) (f1 * 170) - 1, 9, 6, 5, 2, 7);
                     }
                 }
                 RenderSystem.color4f(1, 1, 1, 1F);

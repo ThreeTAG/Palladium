@@ -2,6 +2,7 @@ package net.threetag.threecore.util.icon;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -21,14 +22,14 @@ public class ExperienceIcon implements IIcon {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void draw(Minecraft mc, int x, int y) {
-        ICON.draw(mc, x, y);
+    public void draw(Minecraft mc, MatrixStack stack, int x, int y) {
+        ICON.draw(mc, stack, x, y);
         String text = this.experience.getValue() + (this.experience.isLevels() ? "L" : "");
-        mc.fontRenderer.drawString(text, (float) (x + 9), (float) y + 8, 0);
-        mc.fontRenderer.drawString(text, (float) (x + 7), (float) y + 8, 0);
-        mc.fontRenderer.drawString(text, (float) x + 8, (float) (y + 9), 0);
-        mc.fontRenderer.drawString(text, (float) x + 8, (float) (y + 7), 0);
-        mc.fontRenderer.drawString(text, (float) x + 8, (float) y + 8, 8453920);
+        mc.fontRenderer.func_238421_b_(stack, text, (float) (x + 9), (float) y + 8, 0);
+        mc.fontRenderer.func_238421_b_(stack, text, (float) (x + 7), (float) y + 8, 0);
+        mc.fontRenderer.func_238421_b_(stack, text, (float) x + 8, (float) (y + 9), 0);
+        mc.fontRenderer.func_238421_b_(stack, text, (float) x + 8, (float) (y + 7), 0);
+        mc.fontRenderer.func_238421_b_(stack, text, (float) x + 8, (float) y + 8, 8453920);
     }
 
     @Override

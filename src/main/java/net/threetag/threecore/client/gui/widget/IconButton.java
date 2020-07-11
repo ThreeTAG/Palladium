@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.icon.IIcon;
 
@@ -15,7 +16,7 @@ public class IconButton extends Button {
     private final IIcon icon;
 
     public IconButton(int xPos, int yPos, IIcon icon, IPressable handler) {
-        super(xPos, yPos, 20, 20, "", handler);
+        super(xPos, yPos, 20, 20, new StringTextComponent(""), handler);
         this.icon = icon;
     }
 

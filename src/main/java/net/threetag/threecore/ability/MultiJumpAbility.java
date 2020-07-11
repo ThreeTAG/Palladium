@@ -30,13 +30,13 @@ public class MultiJumpAbility extends Ability {
 
     @Override
     public void action(LivingEntity entity) {
-        if (entity.onGround && this.jumps > 0) {
+        if (entity.func_233570_aj_() && this.jumps > 0) {
             this.jumps = 0;
         }
     }
 
     public void jump(PlayerEntity player) {
-        if (!player.onGround && this.jumps < this.get(JUMPS) - 1) {
+        if (!player.func_233570_aj_() && this.jumps < this.get(JUMPS) - 1) {
             this.jumps++;
             MultiJumpScriptEvent event = new MultiJumpScriptEvent(player, this, this.jumps);
             ScriptEventManager.fireEvent(event);

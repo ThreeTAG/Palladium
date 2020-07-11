@@ -11,9 +11,9 @@ import net.minecraft.data.IDataProvider;
 import net.minecraft.data.LootTableProvider;
 import net.minecraft.data.loot.BlockLootTables;
 import net.minecraft.loot.*;
-import net.minecraft.loot.functions.CopyName;
-import net.minecraft.loot.functions.CopyNbt;
-import net.minecraft.loot.functions.SetContents;
+import net.minecraft.loot.conditions.BlockStateProperty;
+import net.minecraft.loot.conditions.SurvivesExplosion;
+import net.minecraft.loot.functions.*;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
@@ -60,7 +60,9 @@ public abstract class BaseLootTableProvider extends LootTableProvider {
     }
 
     public static LootTable.Builder droppingSlab(Block block) {
-        return LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(withExplosionDecay(block, ItemLootEntry.builder(block).acceptFunction(SetCount.builder(ConstantRange.of(2)).acceptCondition(BlockStateProperty.builder(block).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withProp(SlabBlock.TYPE, SlabType.DOUBLE)))))));
+        return LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(withExplosionDecay(block, ItemLootEntry.builder(block).acceptFunction(
+                SetCount.builder(ConstantRange.of(2)).acceptCondition(
+                        BlockStateProperty.builder(block).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withProp(SlabBlock.TYPE, SlabType.DOUBLE)))))));
     }
 
     public static LootTable.Builder droppingWithName(Block block) {

@@ -1,5 +1,6 @@
 package net.threetag.threecore.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -89,9 +90,9 @@ public abstract class MachineTileEntity extends LockableItemCapTileEntity implem
         return super.getCapability(cap, side);
     }
 
-    @Override
-    public void read(CompoundNBT nbt) {
-        super.read(nbt);
+    @Override public void func_230337_a_(BlockState p_230337_1_, CompoundNBT nbt)
+    {
+        super.func_230337_a_(p_230337_1_, nbt);
         this.energyStorage = createEnergyStorage(nbt.getInt("Energy"));
     }
 

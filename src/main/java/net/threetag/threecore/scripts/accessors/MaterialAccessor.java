@@ -32,10 +32,6 @@ public class MaterialAccessor extends ScriptAccessor<Material> {
         return this.value.isOpaque();
     }
 
-    public boolean isToolNotRequired() {
-        return this.value.isToolNotRequired();
-    }
-
     public String getPushReaction() {
         return this.value.toString().toLowerCase();
     }

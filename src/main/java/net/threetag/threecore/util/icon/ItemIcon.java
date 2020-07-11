@@ -1,6 +1,7 @@
 package net.threetag.threecore.util.icon;
 
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
@@ -27,17 +28,17 @@ public class ItemIcon implements IIcon {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void draw(Minecraft mc, int x, int y) {
+    public void draw(Minecraft mc, MatrixStack stack, int x, int y) {
         RenderHelper.enableStandardItemLighting();
         mc.getItemRenderer().renderItemIntoGUI(this.stack, x, y);
         RenderHelper.disableStandardItemLighting();
         if (this.stack.getCount() > 1) {
             String text = this.stack.getCount() + "x";
-            mc.fontRenderer.drawString(text, (float) (x + 9), (float) y + 8, 0);
-            mc.fontRenderer.drawString(text, (float) (x + 7), (float) y + 8, 0);
-            mc.fontRenderer.drawString(text, (float) x + 8, (float) (y + 9), 0);
-            mc.fontRenderer.drawString(text, (float) x + 8, (float) (y + 7), 0);
-            mc.fontRenderer.drawString(text, (float) x + 8, (float) y + 8, 0xffffff);
+            mc.fontRenderer.func_238421_b_(stack, text, (float) (x + 9), (float) y + 8, 0);
+            mc.fontRenderer.func_238421_b_(stack, text, (float) (x + 7), (float) y + 8, 0);
+            mc.fontRenderer.func_238421_b_(stack, text, (float) x + 8, (float) (y + 9), 0);
+            mc.fontRenderer.func_238421_b_(stack, text, (float) x + 8, (float) (y + 7), 0);
+            mc.fontRenderer.func_238421_b_(stack, text, (float) x + 8, (float) y + 8, 0xffffff);
         }
     }
 

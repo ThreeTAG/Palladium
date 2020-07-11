@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
@@ -46,11 +47,11 @@ public class PressingRecipeBuilder {
         this(new ItemStack(itemProvider, amount));
     }
 
-    public PressingRecipeBuilder(Tag<Item> tag) {
+    public PressingRecipeBuilder(ITag.INamedTag<Item> tag) {
         this(tag, 1);
     }
 
-    public PressingRecipeBuilder(Tag<Item> tag, int amount) {
+    public PressingRecipeBuilder(ITag.INamedTag<Item> tag, int amount) {
         this.output = new ExtRecipeOutput(tag, amount);
     }
 
@@ -69,7 +70,7 @@ public class PressingRecipeBuilder {
         return this;
     }
 
-    public PressingRecipeBuilder setIngredient(Tag<Item> tag) {
+    public PressingRecipeBuilder setIngredient(ITag.INamedTag<Item> tag) {
         this.input = Ingredient.fromTag(tag);
         return this;
     }
@@ -144,7 +145,7 @@ public class PressingRecipeBuilder {
 
     public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation name) {
         this.validate(name);
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", new RecipeUnlockedTrigger.Instance(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
+        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.func_235675_a_(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
         consumer.accept(new Result(name, group == null ? "" : group, input, cast, output, experience, energy, conditions, advancementBuilder, new ResourceLocation(name.getNamespace(), "recipes/" + this.output.getGroup() + "/" + name.getPath())));
     }
 

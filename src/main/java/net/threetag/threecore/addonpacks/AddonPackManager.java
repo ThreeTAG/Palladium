@@ -21,6 +21,7 @@ import java.io.FileFilter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -36,7 +37,7 @@ public class AddonPackManager {
     };
     public static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     public ResourcePackList<ResourcePackInfo> addonpackFinder = new ResourcePackList<>(ResourcePackInfo::new);
-    private SimpleReloadableResourceManager resourceManager = new SimpleReloadableResourceManager(ResourcePackType.SERVER_DATA, null);
+    private SimpleReloadableResourceManager resourceManager = new SimpleReloadableResourceManager(ResourcePackType.SERVER_DATA);
 
     private AddonPackManager() {
         INSTANCE = this;
@@ -85,8 +86,12 @@ public class AddonPackManager {
 
     private static class AddonPackFinder implements IPackFinder {
 
-        @Override
-        public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> map, ResourcePackInfo.IFactory<T> iFactory) {
+        private Supplier<IResourcePack> createResourcePack(File file) {
+            return file.isDirectory() ? () -> new FolderPack(file) : () -> new FilePack(file);
+        }
+
+        @Override public <T extends ResourcePackInfo> void func_230230_a_(Consumer<T> p_230230_1_, ResourcePackInfo.IFactory<T> p_230230_2_)
+        {
             if (!DIRECTORY.exists())
                 DIRECTORY.mkdirs();
 
@@ -95,16 +100,13 @@ public class AddonPackManager {
             if (files != null) {
                 for (File file : files) {
                     String name = "addonpack:" + file.getName();
-                    T container = ResourcePackInfo.createResourcePack(name, true, this.createResourcePack(file), iFactory, ResourcePackInfo.Priority.TOP);
+                    //TODO name decorator
+                    T container = ResourcePackInfo.createResourcePack(name, true, this.createResourcePack(file), p_230230_2_, ResourcePackInfo.Priority.TOP, IPackNameDecorator.field_232625_a_);
                     if (container != null) {
-                        map.put(name, container);
+                        p_230230_1_.accept(container);
                     }
                 }
             }
-        }
-
-        private Supplier<IResourcePack> createResourcePack(File file) {
-            return file.isDirectory() ? () -> new FolderPack(file) : () -> new FilePack(file);
         }
     }
 
@@ -115,9 +117,9 @@ public class AddonPackManager {
             this.wrapped = wrapped;
         }
 
-        @Override
-        public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> packList, ResourcePackInfo.IFactory<T> factory) {
-            wrapped.addPackInfosToMap(packList, factory);
+        @Override public <T extends ResourcePackInfo> void func_230230_a_(Consumer<T> p_230230_1_, ResourcePackInfo.IFactory<T> p_230230_2_)
+        {
+            wrapped.addPackInfos(p_230230_1_, p_230230_2_);
         }
     }
 

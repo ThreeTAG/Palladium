@@ -1,5 +1,6 @@
 package net.threetag.threecore.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -197,13 +198,14 @@ public class StirlingGeneratorTileEntity extends MachineTileEntity {
         return new StirlingGeneratorContainer(id, player, this, this.intArray);
     }
 
-    @Override
-    public boolean hasFastRenderer() {
-        return true;
-    }
+    //TODO Fast Render?
+//    @Override
+//    public boolean hasFastRenderer() {
+//        return true;
+//    }
 
-    @Override
-    public void handleUpdateTag(CompoundNBT tag) {
+    @Override public void handleUpdateTag(BlockState state, CompoundNBT tag)
+    {
         this.fluidTank.readFromNBT(tag.getCompound("FluidTank"));
     }
 
@@ -222,13 +224,12 @@ public class StirlingGeneratorTileEntity extends MachineTileEntity {
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.handleUpdateTag(pkt.getNbtCompound());
+        this.handleUpdateTag(this.world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
     }
 
-    @Override
-    public void read(CompoundNBT nbt) {
-        super.read(nbt);
-
+    @Override public void func_230337_a_(BlockState p_230337_1_, CompoundNBT nbt)
+    {
+        super.func_230337_a_(p_230337_1_, nbt);
         if (nbt.contains("FuelSlots"))
             this.fuelSlot.deserializeNBT(nbt.getCompound("FuelSlots"));
         if (nbt.contains("FluidSlots"))

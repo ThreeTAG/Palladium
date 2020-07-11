@@ -2,6 +2,7 @@ package net.threetag.threecore.util.icon;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -56,27 +57,29 @@ public class TexturedIcon implements IIcon {
         this(texture, u, v, width, height, 256, 256);
     }
 
+    //TODO fix rendering
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void draw(Minecraft mc, int x, int y) {
-        RenderSystem.pushMatrix();
-        RenderSystem.enableRescaleNormal();
-        RenderSystem.enableAlphaTest();
-        RenderSystem.defaultAlphaFunc();
+    public void draw(Minecraft mc, MatrixStack stack, int x, int y) {
+        stack.push();
+//        RenderSystem.pushMatrix();
+//        RenderSystem.enableRescaleNormal();
+//        RenderSystem.enableAlphaTest();
+//        RenderSystem.defaultAlphaFunc();
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         RenderHelper.setupGuiFlatDiffuseLighting();
         mc.getTextureManager().bindTexture(this.texture);
-        if (this.tint != null)
-            RenderSystem.color3f(this.tint.getRed() / 255F, this.tint.getGreen() / 255F, this.tint.getBlue() / 255F);
-        AbstractGui.blit(x, y, this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
+//        if (this.tint != null)
+//            RenderSystem.color3f(this.tint.getRed() / 255F, this.tint.getGreen() / 255F, this.tint.getBlue() / 255F);
+        AbstractGui.func_238463_a_(stack, x, y, this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
         RenderHelper.setupGui3DDiffuseLighting();
-        RenderSystem.color4f(1F, 1F, 1F, 1F);
+//        RenderSystem.color4f(1F, 1F, 1F, 1F);
         RenderSystem.enableDepthTest();
-        RenderSystem.disableAlphaTest();
-        RenderSystem.disableRescaleNormal();
-        RenderSystem.popMatrix();
+//        RenderSystem.disableAlphaTest();
+//        RenderSystem.disableRescaleNormal();
+        stack.push();
     }
 
     @Override

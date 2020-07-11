@@ -270,7 +270,7 @@ public class ItemParser {
                 lines.addAll(parseDescriptionLines(jsonArray.get(i)));
             }
         } else if (jsonElement.isJsonObject()) {
-            lines.add(ITextComponent.Serializer.fromJson(jsonElement));
+            lines.add(ITextComponent.Serializer.func_240641_a_(jsonElement));
         } else if (jsonElement.isJsonPrimitive()) {
             lines.add(new StringTextComponent(jsonElement.getAsString()));
         }
@@ -299,8 +299,9 @@ public class ItemParser {
         int enchantibility = JSONUtils.getInt(json, "enchantibility", 0);
         LazyValue soundEvent = new LazyValue(() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(JSONUtils.getString(json, "equip_sound", ""))));
         float toughness = JSONUtils.getFloat(json, "toughness", 0F);
+        float knockbackResistance = JSONUtils.getFloat(json, "knockback_resistance", 0F);
         Supplier<Ingredient> repairMaterial = () -> JSONUtils.hasField(json, "repair_material") ? Ingredient.deserialize(json.get("repair_material")) : Ingredient.EMPTY;
-        return new SimpleArmorMaterial(name, maxDamageFactor, damageReductionAmountArray, enchantibility, soundEvent, toughness, repairMaterial);
+        return new SimpleArmorMaterial(name, maxDamageFactor, damageReductionAmountArray, enchantibility, soundEvent, toughness, knockbackResistance, repairMaterial);
     }
 
     public static IItemTier parseItemTier(JsonObject jsonObject) {

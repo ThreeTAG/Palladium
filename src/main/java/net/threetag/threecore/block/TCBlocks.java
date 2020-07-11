@@ -8,6 +8,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Rarity;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
@@ -29,7 +30,7 @@ import java.util.function.Supplier;
 
 public class TCBlocks {
 
-    public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ThreeCore.MODID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ThreeCore.MODID);
 
     public static final RegistryObject<Block> CONSTRUCTION_TABLE = register("construction_table", () -> new ConstructionTableBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)), ItemGroup.DECORATIONS);
     public static final RegistryObject<Block> MULTIVERSAL_ITERATOR = register("multiversal_iterator", () -> new MultiversalIteratorBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)), ItemGroupRegistry.getTechnologyGroup());
@@ -40,7 +41,7 @@ public class TCBlocks {
     public static final RegistryObject<Item> CAPACITOR_BLOCK_ITEM = TCItems.ITEMS.register("capacitor_block", () -> new CapacitorBlockItem(CAPACITOR_BLOCK.get(), new Item.Properties().maxStackSize(1).group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), ThreeCoreServerConfig.ENERGY.CAPACITOR));
     public static final RegistryObject<Block> ADVANCED_CAPACITOR_BLOCK = BLOCKS.register("advanced_capacitor_block", () -> new CapacitorBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F), CapacitorBlock.Type.ADVANCED));
     public static final RegistryObject<Item> ADVANCED_CAPACITOR_BLOCK_ITEM = TCItems.ITEMS.register("advanced_capacitor_block", () -> new CapacitorBlockItem(ADVANCED_CAPACITOR_BLOCK.get(), new Item.Properties().maxStackSize(1).group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), ThreeCoreServerConfig.ENERGY.ADVANCED_CAPACITOR));
-    public static final RegistryObject<Block> STIRLING_GENERATOR = register("stirling_generator", () -> new StirlingGeneratorBlock(Block.Properties.create(Material.IRON).lightValue(13).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)), ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY));
+    public static final RegistryObject<Block> STIRLING_GENERATOR = register("stirling_generator", () -> new StirlingGeneratorBlock(Block.Properties.create(Material.IRON).func_235838_a_(value -> value.get(BlockStateProperties.LIT) ? 13 : 0).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)), ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY));
     public static final RegistryObject<Block> SOLAR_PANEL = register("solar_panel", () -> new SolarPanelBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)), ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY));
     public static final RegistryObject<Block> GOLD_CONDUIT = register("gold_conduit", () -> new EnergyConduitBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F), EnergyConduitBlock.ConduitType.GOLD, 2F / 16F), ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY));
     public static final RegistryObject<Block> COPPER_CONDUIT = register("copper_conduit", () -> new EnergyConduitBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F), EnergyConduitBlock.ConduitType.COPPER, 2F / 16F), ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY));
@@ -71,7 +72,7 @@ public class TCBlocks {
     public static final RegistryObject<Block> LEAD_ORE = register("lead_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
     public static final RegistryObject<Block> SILVER_ORE = register("silver_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
     public static final RegistryObject<Block> PALLADIUM_ORE = register("palladium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
-    public static final RegistryObject<Block> VIBRANIUM_ORE = register("vibranium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F).lightValue(4)), Rarity.RARE);
+    public static final RegistryObject<Block> VIBRANIUM_ORE = register("vibranium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F).func_235838_a_(value -> 4)), Rarity.RARE);
     public static final RegistryObject<Block> OSMIUM_ORE = register("osmium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
     public static final RegistryObject<Block> URANIUM_ORE = register("uranium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
     public static final RegistryObject<Block> TITANIUM_ORE = register("titanium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F)));

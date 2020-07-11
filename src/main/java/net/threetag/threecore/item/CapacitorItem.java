@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,7 +18,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.threetag.threecore.ThreeCoreServerConfig;
 import net.threetag.threecore.util.energy.EnergyStorageItem;
 import net.threetag.threecore.util.energy.EnergyUtil;
 import net.threetag.threecore.util.energy.IEnergyConfig;
@@ -47,7 +47,7 @@ public class CapacitorItem extends Item {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        stack.getCapability(CapabilityEnergy.ENERGY).ifPresent((e) -> list.add(EnergyUtil.getFormattedEnergy(e).applyTextStyle(TextFormatting.GRAY)));
+        stack.getCapability(CapabilityEnergy.ENERGY).ifPresent((e) -> list.add(new StringTextComponent(EnergyUtil.getFormattedEnergy(e).toString()).func_240701_a_(TextFormatting.GRAY)));
     }
 
     @Override

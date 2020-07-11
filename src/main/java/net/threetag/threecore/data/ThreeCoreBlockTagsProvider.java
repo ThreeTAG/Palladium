@@ -3,7 +3,7 @@ package net.threetag.threecore.data;
 import net.minecraft.block.Block;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.tags.TCBlockTags;
 
@@ -45,9 +45,9 @@ public class ThreeCoreBlockTagsProvider extends BlockTagsProvider {
         addToBoth(TCBlockTags.ORES, TCBlockTags.URU_ORES, TCBlocks.URU_ORE.get());
     }
 
-    public void addToBoth(Tag<Block> root, Tag<Block> branch, Block block) {
-        this.getBuilder(branch).add(block);
-        this.getBuilder(root).add(branch);
+    public void addToBoth(ITag.INamedTag<Block> root, ITag.INamedTag<Block> branch, Block block) {
+        this.func_240522_a_(branch).func_240534_a_(block);
+        this.func_240522_a_(root).func_240531_a_(branch);
     }
 
     @Override

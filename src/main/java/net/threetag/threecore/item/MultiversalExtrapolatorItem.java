@@ -8,15 +8,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.sound.TCSounds;
 import net.threetag.threecore.util.PlayerUtil;
 
@@ -30,14 +31,13 @@ public class MultiversalExtrapolatorItem extends Item {
 
     public MultiversalExtrapolatorItem(Item.Properties properties) {
         super(properties);
-        this.addPropertyOverride(new ResourceLocation(ThreeCore.MODID, "inactive"), (stack, world, entity) -> !hasValidUniverse(stack) ? 1.0F : 0.0F);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.getOrCreateTag().contains("Universe") && getUniverses().contains(stack.getOrCreateTag().getString("Universe"))) {
-            tooltip.add(new TranslationTextComponent("universe." + stack.getOrCreateTag().getString("Universe")).setStyle(new Style().setColor(TextFormatting.GOLD)));
+            tooltip.add(new TranslationTextComponent("universe." + stack.getOrCreateTag().getString("Universe")).func_240701_a_(TextFormatting.GOLD));
         }
     }
 
@@ -77,7 +77,7 @@ public class MultiversalExtrapolatorItem extends Item {
                         stack.getOrCreateTag().putString("Universe", getUniverses().get(new Random().nextInt(getUniverses().size())));
                     }
 
-                    ((PlayerEntity) entityIn).sendStatusMessage(new TranslationTextComponent("universe." + stack.getOrCreateTag().getString("Universe")).applyTextStyle(TextFormatting.GOLD), true);
+                    ((PlayerEntity) entityIn).sendStatusMessage(new TranslationTextComponent("universe." + stack.getOrCreateTag().getString("Universe")).func_240701_a_(TextFormatting.GOLD), true);
                 }
             } else {
                 stack.getOrCreateTag().remove("Searching");

@@ -21,7 +21,7 @@ import net.threetag.threecore.util.icon.ItemIcon;
 
 public class TCContainerTypes {
 
-    public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = new DeferredRegister<>(ForgeRegistries.CONTAINERS, ThreeCore.MODID);
+    public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, ThreeCore.MODID);
 
     public static final RegistryObject<ContainerType<HelmetCraftingContainer>> HELMET_CRAFTING = CONTAINER_TYPES.register("helmet_crafting", () -> new ContainerType<>(HelmetCraftingContainer::new));
 

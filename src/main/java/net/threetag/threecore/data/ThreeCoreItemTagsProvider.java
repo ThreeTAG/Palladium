@@ -1,9 +1,10 @@
 package net.threetag.threecore.data;
 
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.item.Item;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.IItemProvider;
 import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.item.TCItems;
@@ -11,8 +12,8 @@ import net.threetag.threecore.tags.TCItemTags;
 
 public class ThreeCoreItemTagsProvider extends ItemTagsProvider {
 
-    public ThreeCoreItemTagsProvider(DataGenerator dataGenerator) {
-        super(dataGenerator);
+    public ThreeCoreItemTagsProvider(DataGenerator dataGenerator, BlockTagsProvider provider) {
+        super(dataGenerator, provider);
     }
 
     @Override
@@ -138,9 +139,9 @@ public class ThreeCoreItemTagsProvider extends ItemTagsProvider {
         addToBoth(TCItemTags.FABRIC, TCItemTags.BLACK_FABRIC, TCItems.BLACK_FABRIC.get());
     }
 
-    public void addToBoth(Tag<Item> root, Tag<Item> branch, IItemProvider item) {
-        this.getBuilder(branch).add(item.asItem());
-        this.getBuilder(root).add(branch);
+    public void addToBoth(ITag.INamedTag<Item> root, ITag.INamedTag<Item> branch, IItemProvider item) {
+        this.func_240522_a_(branch).func_240532_a_(item.asItem());
+        this.func_240522_a_(root).func_240531_a_(branch);
     }
 
     @Override

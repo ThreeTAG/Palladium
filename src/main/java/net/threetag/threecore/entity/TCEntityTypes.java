@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 
 public class TCEntityTypes {
 
-    public static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, ThreeCore.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, ThreeCore.MODID);
 
     public static final RegistryObject<EntityType<SuitStandEntity>> SUIT_STAND = register("suit_stand", () -> EntityType.Builder.<SuitStandEntity>create(SuitStandEntity::new, EntityClassification.MISC).size(12F / 16F, 2F));
     public static final RegistryObject<EntityType<ProjectileEntity>> PROJECTILE = register("projectile", () -> EntityType.Builder.<ProjectileEntity>create(ProjectileEntity::new, EntityClassification.MISC).size(0.25F, 0.25F));

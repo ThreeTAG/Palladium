@@ -17,8 +17,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.fluids.FluidStack;
-import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 import net.threetag.threecore.fluid.FluidIngredient;
+import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 import net.threetag.threecore.util.TCFluidUtil;
 
 import javax.annotation.Nullable;
@@ -179,7 +179,7 @@ public class FluidComposingRecipeBuilder {
                 }
             } else {
                 JsonObject fluidInput = new JsonObject();
-                fluidInput.addProperty("tag", this.inputFluid.getTag().getId().toString());
+                fluidInput.addProperty("tag", this.inputFluid.getTag().func_230234_a_().toString());
                 fluidInput.addProperty("amount", this.inputFluid.getFluids()[0].getAmount());
                 jsonObject.add("fluid_input", fluidInput);
             }

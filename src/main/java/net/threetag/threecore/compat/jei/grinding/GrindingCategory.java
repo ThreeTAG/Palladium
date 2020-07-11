@@ -1,5 +1,7 @@
 package net.threetag.threecore.compat.jei.grinding;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.util.text.StringTextComponent;
 import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.item.recipe.GrindingRecipe;
 import net.threetag.threecore.compat.jei.ThreeCoreJEIPlugin;
@@ -87,23 +89,23 @@ public class GrindingCategory<T> implements IRecipeCategory<GrindingRecipe> {
 
         itemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
             if (slotIndex == secondaryOutputSlot && !ingredient.isEmpty()) {
-                tooltip.add(MathUtil.round(recipe.getByproductChance() * 100F, 2) + "%");
+                tooltip.add(new StringTextComponent(MathUtil.round(recipe.getByproductChance() * 100F, 2) + "%"));
             }
         });
     }
 
     @Override
-    public void draw(GrindingRecipe recipe, double mouseX, double mouseY) {
-        arrow.draw(24, 4);
+    public void draw(GrindingRecipe recipe, MatrixStack stack, double mouseX, double mouseY) {
+        arrow.draw(stack, 24, 4);
 
         Minecraft minecraft = Minecraft.getInstance();
         FontRenderer fontRenderer = minecraft.fontRenderer;
-        fontRenderer.drawString(I18n.format("threecore.util.energy_display", recipe.getRequiredEnergy(), EnergyUtil.ENERGY_UNIT), 0, 28, 0xFF808080);
+        fontRenderer.func_238421_b_(stack, I18n.format("threecore.util.energy_display", recipe.getRequiredEnergy(), EnergyUtil.ENERGY_UNIT), 0, 28, 0xFF808080);
         float experience = recipe.getExperience();
         if (experience > 0) {
             String experienceString = I18n.format("gui.jei.category.threecore.grinding.experience", experience);
             int stringWidth = fontRenderer.getStringWidth(experienceString);
-            fontRenderer.drawString(experienceString, background.getWidth() - stringWidth, 28, 0xFF808080);
+            fontRenderer.func_238421_b_(stack, experienceString, background.getWidth() - stringWidth, 28, 0xFF808080);
         }
     }
 }

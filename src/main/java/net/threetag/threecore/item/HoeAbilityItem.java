@@ -26,7 +26,7 @@ public class HoeAbilityItem extends HoeItem implements IAbilityProvider {
     private List<ITextComponent> description;
 
     public HoeAbilityItem(IItemTier itemTier, float attackSpeed, Properties properties) {
-        super(itemTier, attackSpeed, properties);
+        super(itemTier, (int) itemTier.getAttackDamage(), attackSpeed, properties);
     }
 
     public HoeAbilityItem setAbilities(List<AbilityGenerator> abilities) {

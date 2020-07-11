@@ -223,9 +223,6 @@ public class LivingEntityAccessor extends EntityAccessor
 		case "dragonBreath":
 			damageSource = DamageSource.DRAGON_BREATH;
 			break;
-		case "fireworks":
-			damageSource = DamageSource.FIREWORKS;
-			break;
 		case "dryout":
 			damageSource = DamageSource.DRYOUT;
 			break;

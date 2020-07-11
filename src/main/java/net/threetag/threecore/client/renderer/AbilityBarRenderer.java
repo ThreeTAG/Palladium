@@ -94,17 +94,17 @@ public class AbilityBarRenderer {
             for (int i = 0; i < abilities.size(); i++) {
                 Ability ability = abilities.get(i);
                 EnumAbilityColor color = ability.getColor();
-                String name = showName ? ability.getDataManager().get(Ability.TITLE).getFormattedText() : InputMappings.getKeynameFromKeycode(getKeyFromAbility(ability, i));
+                String name = showName ? ability.getDataManager().get(Ability.TITLE).toString() : InputMappings.getInputByCode(getKeyFromAbility(ability, i), 0).toString();
                 int nameLength = mc.fontRenderer.getStringWidth(name);
 
                 RenderSystem.color4f(1, 1, 1, 1);
                 mc.textureManager.bindTexture(TEXTURE);
-                mc.ingameGUI.blit(7, 7 + i * 22, color.getX(), color.getY(), 22, 22);
+                mc.ingameGUI.func_238474_b_(e.getMatrixStack(), 7, 7 + i * 22, color.getX(), color.getY(), 22, 22);
 
                 if (ability.getConditionManager().isEnabled())
-                    mc.ingameGUI.blit(7, 7 + i * 22, color.getX(), color.getY() + 44, 22, 22);
+                    mc.ingameGUI.func_238474_b_(e.getMatrixStack(), 7, 7 + i * 22, color.getX(), color.getY() + 44, 22, 22);
 
-                ability.drawIcon(mc, mc.ingameGUI, 10, 10 + i * 22);
+                ability.drawIcon(mc, e.getMatrixStack(), mc.ingameGUI, 10, 10 + i * 22);
 
                 if (ability.getConditionManager().needsKey()) {
                     RenderSystem.disableTexture();
@@ -118,7 +118,7 @@ public class AbilityBarRenderer {
                     tes.draw();
                     RenderSystem.enableTexture();
                     RenderSystem.disableBlend();
-                    mc.ingameGUI.drawString(mc.fontRenderer, name, 34, 10 + i * 22 + 4, 0xffffff);
+                    mc.ingameGUI.func_238476_c_(e.getMatrixStack(), mc.fontRenderer, name, 34, 10 + i * 22 + 4, 0xffffff);
                 }
             }
             RenderSystem.color4f(1, 1, 1, 1F);

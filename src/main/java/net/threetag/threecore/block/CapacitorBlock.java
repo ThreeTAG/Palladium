@@ -113,22 +113,22 @@ public class CapacitorBlock extends ContainerBlock {
             this.energyConfig = energyConfig;
         }
 
-        @Override
-        public String getName() {
-            return this.name;
-        }
-
         public IEnergyConfig getEnergyConfig() {
             return energyConfig;
         }
 
         public static Type getByName(String name) {
             for (Type type : values()) {
-                if (type.getName().equalsIgnoreCase(name)) {
+                if (type.func_176610_l().equalsIgnoreCase(name)) {
                     return type;
                 }
             }
             return values()[0];
+        }
+
+        @Override public String func_176610_l()
+        {
+            return this.name;
         }
     }
 }

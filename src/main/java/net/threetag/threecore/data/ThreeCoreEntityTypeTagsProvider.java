@@ -14,7 +14,7 @@ public class ThreeCoreEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
     @Override
     protected void registerTags() {
-        this.getBuilder(TCEntityTypeTags.ARMOR_STANDS).add(EntityType.ARMOR_STAND).add(TCEntityTypes.SUIT_STAND.get());
+        this.func_240522_a_(TCEntityTypeTags.ARMOR_STANDS).func_240534_a_(EntityType.ARMOR_STAND).func_240534_a_(TCEntityTypes.SUIT_STAND.get());
     }
 
     @Override

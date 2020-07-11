@@ -66,8 +66,8 @@ public class VialItem extends Item {
             stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fluidHandler -> {
                 FluidStack fluidStack = fluidHandler.getFluidInTank(0);
                 if (!fluidStack.isEmpty()) {
-                    tooltip.add(fluidStack.getDisplayName().deepCopy().applyTextStyle(TextFormatting.GRAY));
-                    tooltip.add(new StringTextComponent(TCFluidUtil.getFormattedFluidInfo(fluidStack.getAmount(), fluidHandler.getTankCapacity(0))).applyTextStyle(TextFormatting.GRAY));
+                    tooltip.add(fluidStack.getDisplayName().func_230532_e_().func_240701_a_(TextFormatting.GRAY));
+                    tooltip.add(new StringTextComponent(TCFluidUtil.getFormattedFluidInfo(fluidStack.getAmount(), fluidHandler.getTankCapacity(0))).func_240701_a_(TextFormatting.GRAY));
                 }
             });
     }

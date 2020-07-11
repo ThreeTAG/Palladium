@@ -9,7 +9,7 @@ import net.threetag.threecore.ThreeCore;
 
 public class TCEffects {
 
-    public static final DeferredRegister<Effect> EFFECTS = new DeferredRegister<>(ForgeRegistries.POTIONS, ThreeCore.MODID);
+    public static final DeferredRegister<Effect> EFFECTS = DeferredRegister.create(ForgeRegistries.POTIONS, ThreeCore.MODID);
 
     public static final RegistryObject<Effect> UNCONSCIOUS = EFFECTS.register("unconscious", () -> new UnconsciousEffect(EffectType.BENEFICIAL, 9740385));
 

@@ -3,6 +3,7 @@ package net.threetag.threecore.scripts;
 import com.google.common.collect.Maps;
 import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.profiler.IProfiler;
+import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
@@ -116,7 +117,7 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
 
     @SubscribeEvent
     public static void serverAboutToStart(FMLServerAboutToStartEvent e) {
-        e.getServer().getResourceManager().addReloadListener(new ScriptManager());
+        ((IReloadableResourceManager) e.getServer().getDataPackRegistries().func_240970_h_()).addReloadListener(new ScriptManager());
     }
 
 }

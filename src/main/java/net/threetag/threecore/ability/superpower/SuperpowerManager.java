@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.entity.LivingEntity;
@@ -39,12 +40,12 @@ public class SuperpowerManager extends JsonReloadListener {
         INSTANCE = this;
     }
 
-    @Override
-    protected void apply(Map<ResourceLocation, JsonObject> splashList, IResourceManager resourceManagerIn, IProfiler profilerIn) {
-        for (Map.Entry<ResourceLocation, JsonObject> entry : splashList.entrySet()) {
+    @Override protected void apply(Map<ResourceLocation, JsonElement> splashList, IResourceManager resourceManagerIn, IProfiler profilerIn)
+    {
+        for (Map.Entry<ResourceLocation, JsonElement> entry : splashList.entrySet()) {
             ResourceLocation resourcelocation = entry.getKey();
             try {
-                Superpower superpower = parseSuperpower(resourcelocation, entry.getValue());
+                Superpower superpower = parseSuperpower(resourcelocation, (JsonObject) entry.getValue());
                 this.registeredSuperpowers.put(resourcelocation, superpower);
             } catch (Exception e) {
                 ThreeCore.LOGGER.error("Parsing error loading superpower {}", resourcelocation, e);
@@ -54,7 +55,7 @@ public class SuperpowerManager extends JsonReloadListener {
     }
 
     public Superpower parseSuperpower(ResourceLocation resourceLocation, JsonObject json) throws Exception {
-        ITextComponent name = ITextComponent.Serializer.fromJson(JSONUtils.getJsonObject(json, "name").toString());
+        ITextComponent name = ITextComponent.Serializer.func_240644_b_(JSONUtils.getJsonObject(json, "name").toString());
         IIcon icon = IconSerializer.deserialize(JSONUtils.getJsonObject(json, "icon"));
         List<AbilityGenerator> abilityGenerators = Lists.newArrayList();
         if (JSONUtils.hasField(json, "abilities")) {

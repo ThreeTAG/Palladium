@@ -120,7 +120,7 @@ public class ModelLayerManager {
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "entity_type"), j -> new EntityTypePredicate(new ResourceLocation(JSONUtils.getString(j, "entity_type"))));
 
         // Entity Tag
-        registerPredicate(new ResourceLocation(ThreeCore.MODID, "entity_tag"), j -> new EntityTagPredicate(new EntityTypeTags.Wrapper(new ResourceLocation(JSONUtils.getString(j, "entity_tag")))));
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "entity_tag"), j -> new EntityTagPredicate(EntityTypeTags.func_232896_a_(new ResourceLocation(JSONUtils.getString(j, "entity_tag")).toString())));
     }
 
     public static void registerPredicate(ResourceLocation id, NonNullFunction<JsonObject, IModelLayerPredicate> function) {

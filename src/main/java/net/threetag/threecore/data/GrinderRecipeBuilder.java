@@ -11,7 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -48,11 +48,11 @@ public class GrinderRecipeBuilder {
         this(new ItemStack(itemProvider, amount));
     }
 
-    public GrinderRecipeBuilder(Tag<Item> tag) {
+    public GrinderRecipeBuilder(ITag.INamedTag<Item> tag) {
         this(tag, 1);
     }
 
-    public GrinderRecipeBuilder(Tag<Item> tag, int amount) {
+    public GrinderRecipeBuilder(ITag.INamedTag<Item> tag, int amount) {
         this.output = new ExtRecipeOutput(tag, amount);
     }
 
@@ -69,12 +69,12 @@ public class GrinderRecipeBuilder {
         return this.setByproduct(itemProvider, 1);
     }
 
-    public GrinderRecipeBuilder setByproduct(Tag<Item> tag, int amount) {
+    public GrinderRecipeBuilder setByproduct(ITag.INamedTag<Item> tag, int amount) {
         this.byproduct = new ExtRecipeOutput(tag, amount);
         return this;
     }
 
-    public GrinderRecipeBuilder setByproduct(Tag<Item> tag) {
+    public GrinderRecipeBuilder setByproduct(ITag.INamedTag<Item> tag) {
         return this.setByproduct(tag, 1);
     }
 
@@ -98,7 +98,7 @@ public class GrinderRecipeBuilder {
         return this;
     }
 
-    public GrinderRecipeBuilder setIngredient(Tag<Item> tag) {
+    public GrinderRecipeBuilder setIngredient(ITag.INamedTag<Item> tag) {
         this.input = Ingredient.fromTag(tag);
         return this;
     }
@@ -153,7 +153,7 @@ public class GrinderRecipeBuilder {
 
     public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation name) {
         this.validate(name);
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", new RecipeUnlockedTrigger.Instance(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
+        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.func_235675_a_(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
         consumer.accept(new Result(name, group == null ? "" : group, input, output, byproduct, byproductChance, experience, energy, conditions, advancementBuilder, new ResourceLocation(name.getNamespace(), "recipes/" + this.output.getGroup() + "/" + name.getPath())));
     }
 

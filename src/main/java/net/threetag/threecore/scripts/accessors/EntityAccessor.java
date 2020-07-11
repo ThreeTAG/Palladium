@@ -35,7 +35,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public String getName() {
-        return this.value.getDisplayName().getFormattedText();
+        return this.value.getDisplayName().toString();
     }
 
     public void setName(@ScriptParameterName("name") String name) {
@@ -57,7 +57,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     public CompoundNBTAccessor getNBTData(){ return new CompoundNBTAccessor(this.value.serializeNBT()); }
 
     public Vector3dAccessor getPosition() {
-        return new Vector3dAccessor(this.value.getPositionVector());
+        return new Vector3dAccessor(this.value.getPositionVec());
     }
 
     public double getPosX() {
@@ -147,11 +147,11 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public void sendMessage(@ScriptParameterName("message") String message) {
-        this.value.sendMessage(new StringTextComponent(message));
+        this.value.sendMessage(new StringTextComponent(message), this.value.getUniqueID());
     }
 
     public void sendTranslatedMessage(@ScriptParameterName("translationKey") String message, @ScriptParameterName("args") Object... args) {
-        this.value.sendMessage(new TranslationTextComponent(message, args));
+        this.value.sendMessage(new TranslationTextComponent(message, args), this.value.getUniqueID());
     }
 
     public boolean isCrouching() {
@@ -187,7 +187,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public boolean isOnGround() {
-        return this.value.onGround;
+        return this.value.func_233570_aj_();
     }
 
     public float getFallDistance() {
@@ -251,7 +251,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public boolean isImmuneToFire() {
-        return this.value.isImmuneToFire();
+        return this.value.func_230279_az_();
     }
 
     public void extinguish() {

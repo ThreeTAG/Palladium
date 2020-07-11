@@ -72,7 +72,7 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
     protected void onImpact(RayTraceResult result) {
         if (result.getType() == RayTraceResult.Type.ENTITY) {
             Entity entity = ((EntityRayTraceResult) result).getEntity();
-            entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.damage);
+            entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), this.damage);
 
             if (this.dieOnEntityHit && !this.world.isRemote) {
                 if (this.particles)

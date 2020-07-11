@@ -1,5 +1,6 @@
 package net.threetag.threecore.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.crafting.IRecipeType;
@@ -181,8 +182,18 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
         this.updateRecipe(this.recipeWrapper);
     }
 
-    @Override
-    public void handleUpdateTag(CompoundNBT tag) {
+    @Override public IItemHandler getEnergyOutputSlots()
+    {
+        return super.getEnergyOutputSlots();
+    }
+
+    @Override protected IItemHandler createUnSidedHandler()
+    {
+        return super.createUnSidedHandler();
+    }
+
+    @Override public void handleUpdateTag(BlockState state, CompoundNBT tag)
+    {
         this.inputFluidTank.readFromNBT(tag.getCompound("InputFluid"));
         this.outputFluidTank.readFromNBT(tag.getCompound("OutputFluid"));
     }
@@ -203,18 +214,18 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.handleUpdateTag(pkt.getNbtCompound());
+        this.handleUpdateTag(this.world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
     }
 
-    @Override
-    public boolean hasFastRenderer() {
-        return true;
-    }
+    //TODO Fast Render?
+//    @Override
+//    public boolean hasFastRenderer() {
+//        return true;
+//    }
 
-    @Override
-    public void read(CompoundNBT nbt) {
-        super.read(nbt);
-
+    @Override public void func_230337_a_(BlockState p_230337_1_, CompoundNBT nbt)
+    {
+        super.func_230337_a_(p_230337_1_, nbt);
         if (nbt.contains("EnergySlots"))
             this.energySlot.deserializeNBT(nbt.getCompound("EnergySlots"));
         if (nbt.contains("InputSlots"))

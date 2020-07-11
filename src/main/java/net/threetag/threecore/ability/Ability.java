@@ -1,6 +1,7 @@
 package net.threetag.threecore.ability;
 
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -88,10 +89,10 @@ public abstract class Ability implements INBTSerializable<CompoundNBT>, IWrapped
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void drawIcon(Minecraft mc, AbstractGui gui, int x, int y) {
+    public void drawIcon(Minecraft mc, MatrixStack stack, AbstractGui gui, int x, int y) {
         RenderUtil.setCurrentAbilityInIconRendering(this);
         if (this.getDataManager().has(ICON))
-            this.getDataManager().get(ICON).draw(mc, x, y);
+            this.getDataManager().get(ICON).draw(mc, stack, x, y);
     }
 
     public boolean isEffect() {

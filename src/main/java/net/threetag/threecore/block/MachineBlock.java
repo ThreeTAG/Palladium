@@ -21,6 +21,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidUtil;
@@ -69,9 +70,9 @@ public abstract class MachineBlock extends ContainerBlock {
         }
     }
 
-    @Override
-    public int getLightValue(BlockState state) {
-        return state.get(LIT) ? super.getLightValue(state) : 0;
+    @Override public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
+    {
+        return state.get(LIT) ? super.getLightValue(state, world, pos) : 0;
     }
 
     @Override
