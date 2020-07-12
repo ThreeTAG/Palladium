@@ -1,11 +1,13 @@
 package net.threetag.threecore.client.gui.ability;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.ITextProperties;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.Ability;
@@ -36,48 +38,49 @@ public class BuyAbilityScreen extends Screen {
     }
 
     @Override
-    protected void init() {
-        super.init();
+    protected void func_231160_c_() {
+        super.func_231160_c_();
 
-        int i = (this.width - guiWidth) / 2;
-        int j = (this.height - guiHeight) / 2;
-        this.addButton(new BackgroundlessButton(i + 193, j + 3, 5, 5, "x", s -> parentScreen.overlayScreen = null));
-        Button button = new Button(i + 60, j + 33, 54, 20, I18n.format("gui.yes"), s -> {
+        int i = (this.field_230708_k_ - guiWidth) / 2;
+        int j = (this.field_230709_l_ - guiHeight) / 2;
+        this.func_230480_a_(new BackgroundlessButton(i + 193, j + 3, 5, 5, new StringTextComponent("x"), s -> parentScreen.overlayScreen = null));
+        Button button = new Button(i + 60, j + 33, 54, 20, new StringTextComponent(I18n.format("gui.yes")), s -> {
             ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.SERVER.noArg(), new BuyConditionMessage(this.ability.container.getId(), this.ability.getId(), this.condition.getUniqueId()));
-            this.minecraft.player.closeScreen();
-            this.minecraft.player.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, 1F, 1F);
+            this.field_230706_i_.player.closeScreen();
+            this.field_230706_i_.player.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, 1F, 1F);
         });
-        button.active = this.condition.isAvailable(this.minecraft.player);
-        this.addButton(button);
-        this.addButton(new Button(i + 132, j + 33, 54, 20, I18n.format("gui.no"), s -> parentScreen.overlayScreen = null));
+        //button.active
+        button.field_230693_o_ = this.condition.isAvailable(this.field_230706_i_.player);
+        this.func_230480_a_(button);
+        this.func_230480_a_(new Button(i + 132, j + 33, 54, 20, new StringTextComponent(I18n.format("gui.no")), s -> parentScreen.overlayScreen = null));
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        int i = (this.width - guiWidth) / 2;
-        int j = (this.height - guiHeight) / 2;
+    public void func_230430_a_(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+        int i = (this.field_230708_k_ - guiWidth) / 2;
+        int j = (this.field_230709_l_ - guiHeight) / 2;
 
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(AbilitiesScreen.WINDOW);
-        this.blit(i, j, 0, 196, this.guiWidth, this.guiHeight);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.field_230706_i_.getTextureManager().bindTexture(AbilitiesScreen.WINDOW);
+        this.func_238474_b_(stack, i, j, 0, 196, this.guiWidth, this.guiHeight);
 
-        List<String> lines = this.font.listFormattedStringToWidth(I18n.format("gui.threecore.abilities.fulfill_condition"), 132);
+        List<ITextProperties> lines = this.field_230712_o_.func_238425_b_(new StringTextComponent(I18n.format("gui.threecore.abilities.fulfill_condition")), 132);
         for (int k = 0; k < lines.size(); k++) {
-            String text = lines.get(k);
-            int width = this.font.getStringWidth(text);
-            this.font.drawString(text, i + 120 - width / 2, j + 9 + k * 10, 4210752);
+            ITextProperties text = lines.get(k);
+            int width = this.field_230712_o_.getStringWidth(text.toString());
+            this.field_230712_o_.func_238422_b_(stack, text, i + 120 - width / 2, j + 9 + k * 10, 4210752);
         }
 
-        RenderSystem.pushMatrix();
-        RenderSystem.translatef(i + 14, j + 14, 0);
-        RenderSystem.scalef(2F, 2F, 1);
-        this.icon.draw(this.minecraft, 0, 0);
-        RenderSystem.popMatrix();
+        stack.push();
+        stack.translate(i + 14, j + 14, 0);
+        stack.scale(2, 2, 1);
+        this.icon.draw(this.field_230706_i_, stack, 0, 0);
+        stack.pop();
 
-        super.render(mouseX, mouseY, partialTicks);
+        super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
 
         if (mouseX >= i + 14 && mouseX <= i + 14 + 32 && mouseY >= j + 14 && mouseY <= j + 14 + 32) {
-            this.renderTooltip(this.hoverText.getFormattedText(), mouseX, mouseY);
+            this.func_238652_a_(stack, this.hoverText, mouseX, mouseY);
         }
     }
 }

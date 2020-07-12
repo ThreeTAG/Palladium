@@ -123,7 +123,7 @@ public class AbilityClientEventHandler {
     @SubscribeEvent
     public void onGuiInit(GuiScreenEvent.InitGuiEvent e) {
         if (e.getGui() instanceof ChatScreen) {
-            e.addWidget(new TranslucentButton(e.getGui().field_230708_k_ - 1 - 75, e.getGui().field_230709_l_ - 40, 75, 20, I18n.format("gui.threecore.abilities"), b -> Minecraft.getInstance().displayGuiScreen(new AbilitiesScreen())));
+            e.addWidget(new TranslucentButton(e.getGui().field_230708_k_ - 1 - 75, e.getGui().field_230709_l_ - 40, 75, 20, new StringTextComponent(I18n.format("gui.threecore.abilities")), b -> Minecraft.getInstance().displayGuiScreen(new AbilitiesScreen())));
         }
 
         // Set all keys to unpressed; when an ability opens a GUI, the unpressing of the button will not register and therefore you will need to hit the button twice the next time

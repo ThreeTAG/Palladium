@@ -1,6 +1,7 @@
 package net.threetag.threecore.client.gui.ability;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
@@ -44,21 +45,24 @@ public class AbilitiesScreen extends Screen {
             this.selectedTab = tabs.get(0);
     }
 
+    //Init
     @Override
-    protected void init() {
-        super.init();
+    protected void func_231160_c_() {
+        super.func_231160_c_();
+        //Init Overlay Screen
         if (this.overlayScreen != null)
-            this.overlayScreen.init(this.minecraft, this.width, this.height);
+            this.overlayScreen.func_231158_b_(this.field_230706_i_, this.field_230708_k_, this.field_230709_l_); //minecraft, width, height
     }
 
+    //Mouse Clicked
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int type) {
+    public boolean func_231044_a_(double mouseX, double mouseY, int type) {
         if (type == 0) {
-            int i = (this.width - guiWidth) / 2;
-            int j = (this.height - guiHeight) / 2;
+            int i = (this.field_230708_k_ - guiWidth) / 2;
+            int j = (this.field_230709_l_ - guiHeight) / 2;
 
             if (this.isOverOverlayScreen(mouseX, mouseY)) {
-                return this.overlayScreen.mouseClicked(mouseX, mouseY, type);
+                return this.overlayScreen.func_231044_a_(mouseX, mouseY, type);
             } else {
                 for (AbilityTabGui tab : this.tabs) {
                     if (tab.isMouseOver(i, j, mouseX, mouseY)) {
@@ -72,16 +76,17 @@ public class AbilitiesScreen extends Screen {
                     if (entry != null) {
                         this.overlayScreen = entry.getScreen(this);
                         if (this.overlayScreen != null)
-                            this.overlayScreen.init(this.minecraft, this.width, this.height);
+                            this.overlayScreen.func_231158_b_(this.field_230706_i_, this.field_230708_k_, this.field_230709_l_);
                     }
                 }
             }
         }
-        return super.mouseClicked(mouseX, mouseY, type);
+        return super.func_231044_a_(mouseX, mouseY, type);
     }
 
+    //Mouse Dragged
     @Override
-    public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double x, double y) {
+    public boolean func_231045_a_(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double x, double y) {
         if (p_mouseDragged_5_ != 0) {
             this.isScrolling = false;
             return false;
@@ -96,91 +101,96 @@ public class AbilitiesScreen extends Screen {
         }
     }
 
+    //KeyPressed
     @Override
-    public boolean keyPressed(int type, int scanCode, int p_keyPressed_3_) {
-        return this.overlayScreen == null ? super.keyPressed(type, scanCode, p_keyPressed_3_) : this.overlayScreen.keyPressed(type, scanCode, p_keyPressed_3_);
+    public boolean func_231046_a_(int type, int scanCode, int p_keyPressed_3_) {
+        return this.overlayScreen == null ? super.func_231046_a_(type, scanCode, p_keyPressed_3_) : this.overlayScreen.func_231046_a_(type, scanCode, p_keyPressed_3_);
     }
 
+    //Render
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        super.render(mouseX, mouseY, partialTicks);
+    public void func_230430_a_(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+        super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
 
-        int i = (this.width - guiWidth) / 2;
-        int j = (this.height - guiHeight) / 2;
-        this.renderBackground();
-        this.renderInside(mouseX, mouseY, i, j);
-        this.renderWindow(i, j);
-        this.renderToolTips(mouseX, mouseY, i, j);
+        int i = (this.field_230708_k_ - guiWidth) / 2;
+        int j = (this.field_230709_l_ - guiHeight) / 2;
+        this.func_230446_a_(stack); //renderBackground
+        this.renderInside(stack, mouseX, mouseY, i, j);
+        this.renderWindow(stack, i, j);
+        this.renderToolTips(stack, mouseX, mouseY, i, j);
 
         if (this.overlayScreen != null) {
-            RenderSystem.pushMatrix();
+            stack.push();
             RenderSystem.enableDepthTest();
-            RenderSystem.translatef(0, 0, 950);
-            this.overlayScreen.render(mouseX, mouseY, partialTicks);
+            stack.translate(0, 0, 950);
+            this.overlayScreen.func_230430_a_(stack, mouseX, mouseY, partialTicks);
             this.selectedTab.fade = MathHelper.clamp(this.selectedTab.fade + 0.02F, 0, 0.5F);
-            RenderSystem.popMatrix();
+            stack.pop();
         }
     }
 
-    public void renderWindow(int x, int y) {
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+    public void renderWindow(MatrixStack stack, int x, int y) {
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableBlend();
-        this.minecraft.getTextureManager().bindTexture(WINDOW);
-        this.blit(x, y, 0, 0, guiWidth, guiHeight);
+        this.field_230706_i_.getTextureManager().bindTexture(WINDOW);
+        //blit
+        this.func_238474_b_(stack, x, y, 0, 0, guiWidth, guiHeight);
         if (this.tabs.size() > 0) {
-            this.minecraft.getTextureManager().bindTexture(TABS);
+            this.field_230706_i_.getTextureManager().bindTexture(TABS);
 
             for (AbilityTabGui tab : this.tabs) {
-                tab.drawTab(x, y, tab == this.selectedTab);
+                tab.drawTab(stack, x, y, tab == this.selectedTab);
             }
 
-            RenderSystem.enableRescaleNormal();
+//            RenderSystem.enableRescaleNormal();
             RenderSystem.defaultBlendFunc();
 
             for (AbilityTabGui tab : this.tabs) {
-                tab.drawIcon(x, y);
+                tab.drawIcon(stack, x, y);
             }
 
             RenderSystem.disableBlend();
         }
-
-        this.font.drawString(I18n.format("gui.threecore.abilities"), (float) (x + 8), (float) (y + 6), 4210752);
+        //Draw String
+        this.field_230712_o_.func_238421_b_(stack, I18n.format("gui.threecore.abilities"), (float) (x + 8), (float) (y + 6), 4210752);
     }
 
-    private void renderInside(int mouseX, int mouseY, int x, int y) {
+    private void renderInside(MatrixStack stack, int mouseX, int mouseY, int x, int y) {
         AbilityTabGui tab = this.selectedTab;
         if (tab == null) {
-            fill(x + 9, y + 18, x + 9 + AbilityTabGui.innerWidth, y + 18 + AbilityTabGui.innerHeight, -16777216);
+            func_238467_a_(stack, x + 9, y + 18, x + 9 + AbilityTabGui.innerWidth, y + 18 + AbilityTabGui.innerHeight, -16777216);
             String s = I18n.format("advancements.empty");
-            int i = this.font.getStringWidth(s);
-            this.font.drawString(s, (float) (x + 9 + 117 - i / 2), (float) (y + 18 + 56 - 9 / 2), -1);
-            this.font.drawString(":(", (float) (x + 9 + 117 - this.font.getStringWidth(":(") / 2), (float) (y + 18 + 113 - 9), -1);
+            int i = this.field_230712_o_.getStringWidth(s);
+            //Draw String
+            this.field_230712_o_.func_238421_b_(stack, s, (float) (x + 9 + 117 - i / 2), (float) (y + 18 + 56 - 9 / 2), -1);
+            this.field_230712_o_.func_238421_b_(stack, ":(", (float) (x + 9 + 117 - this.field_230712_o_.getStringWidth(":(") / 2), (float) (y + 18 + 113 - 9), -1);
         } else {
-            RenderSystem.pushMatrix();
-            RenderSystem.translatef((float) (x + 9), (float) (y + 18), 0.0F);
+            stack.push();
+            stack.translate((double) x + 9, (double) y + 18, 0.0);
             RenderSystem.enableDepthTest();
-            tab.drawContents();
-            RenderSystem.popMatrix();
+            tab.drawContents(stack);
+            stack.pop();
             RenderSystem.depthFunc(515);
             RenderSystem.disableDepthTest();
         }
     }
 
-    private void renderToolTips(int mouseX, int mouseY, int x, int y) {
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+    private void renderToolTips(MatrixStack stack, int mouseX, int mouseY, int x, int y) {
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.selectedTab != null) {
-            RenderSystem.pushMatrix();
+            stack.push();
             RenderSystem.enableDepthTest();
-            RenderSystem.translatef((float) (x + 9), (float) (y + 18), 400.0F);
-            this.selectedTab.drawToolTips(mouseX - x - 9, mouseY - y - 18, x, y, this, this.overlayScreen != null);
+            stack.translate(x + 9, y + 18, 400.0);
+            this.selectedTab.drawToolTips(stack, mouseX - x - 9, mouseY - y - 18, x, y, this, this.overlayScreen != null);
             RenderSystem.disableDepthTest();
-            RenderSystem.popMatrix();
+            stack.pop();
         }
 
         if (this.overlayScreen == null && this.tabs.size() > 0) {
             for (AbilityTabGui tab : this.tabs) {
                 if (tab.isMouseOver(x, y, mouseX, mouseY)) {
-                    this.renderTooltip(tab.getTitle().getFormattedText(), mouseX, mouseY);
+                    //render tooltip
+                    this.func_238652_a_(stack, tab.getTitle(), mouseX, mouseY);
                 }
             }
         }

@@ -1,5 +1,6 @@
 package net.threetag.threecore.client.gui.ability;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.threetag.threecore.util.icon.IIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -30,7 +31,7 @@ public enum AbilityTabType {
         return this.max;
     }
 
-    public void draw(AbstractGui guiIn, int x, int y, boolean selected, int index) {
+    public void draw(AbstractGui guiIn, MatrixStack stack, int x, int y, boolean selected, int index) {
         int i = this.textureX;
         if (index > 0) {
             i += this.width;
@@ -41,10 +42,10 @@ public enum AbilityTabType {
         }
 
         int j = selected ? this.textureY + this.height : this.textureY;
-        guiIn.blit(x + this.getX(index), y + this.getY(index), i, j, this.width, this.height);
+        guiIn.func_238474_b_(stack, x + this.getX(index), y + this.getY(index), i, j, this.width, this.height);
     }
 
-    public void drawIcon(int x, int y, int index, IIcon icon) {
+    public void drawIcon(MatrixStack stack, int x, int y, int index, IIcon icon) {
         int i = x + this.getX(index);
         int j = y + this.getY(index);
         switch (this) {
@@ -65,7 +66,7 @@ public enum AbilityTabType {
                 j += 5;
         }
 
-        icon.draw(Minecraft.getInstance(), i, j);
+        icon.draw(Minecraft.getInstance(), stack, i, j);
     }
 
     public int getX(int index) {

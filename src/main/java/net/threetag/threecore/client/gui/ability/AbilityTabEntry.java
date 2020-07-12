@@ -1,5 +1,6 @@
 package net.threetag.threecore.client.gui.ability;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -7,6 +8,8 @@ import net.minecraft.client.gui.advancements.AdvancementState;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.Color;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.threetag.threecore.ability.Ability;
@@ -25,7 +28,7 @@ public class AbilityTabEntry extends AbstractGui {
     protected final Ability ability;
     protected double x, y;
     private boolean unlocked;
-    protected String title;
+    protected ITextComponent title;
     private List<String> description;
     private final int width;
     List<AbilityTabEntry> parents = new LinkedList<>();
@@ -34,13 +37,13 @@ public class AbilityTabEntry extends AbstractGui {
     public AbilityTabEntry(Ability ability) {
         this.ability = ability;
         this.unlocked = ability.getConditionManager().isUnlocked();
-        this.title = ability.getDataManager().get(Ability.TITLE).getFormattedText();
+        this.title = ability.getDataManager().get(Ability.TITLE);
         this.description = getDescription();
 
         int i = getProgress() != null ? getProgress()[1] : 0;
         int j = String.valueOf(i).length();
         int k = i > 1 ? Minecraft.getInstance().fontRenderer.getStringWidth("  ") + Minecraft.getInstance().fontRenderer.getStringWidth("0") * j * 2 + Minecraft.getInstance().fontRenderer.getStringWidth("/") : 0;
-        int l = 29 + Minecraft.getInstance().fontRenderer.getStringWidth(this.title) + k;
+        int l = 29 + Minecraft.getInstance().fontRenderer.getStringWidth(this.title.toString()) + k;
 
         for (String s1 : this.description) {
             l = Math.max(l, Minecraft.getInstance().fontRenderer.getStringWidth(s1));
@@ -49,11 +52,11 @@ public class AbilityTabEntry extends AbstractGui {
         this.width = l + 3 + 5;
     }
 
-    public void drawDisplayIcon(Minecraft mc, int x, int y) {
+    public void drawDisplayIcon(Minecraft mc, MatrixStack stack, int x, int y) {
         if (this.unlocked) {
-            this.ability.drawIcon(mc, this, x, y);
+            this.ability.drawIcon(mc, stack, this, x, y);
         } else {
-            LOCKED_ICON.draw(mc, x, y);
+            LOCKED_ICON.draw(mc, stack, x, y);
         }
     }
 
@@ -92,18 +95,18 @@ public class AbilityTabEntry extends AbstractGui {
         return this;
     }
 
-    public void drawIcon(Minecraft mc, int x, int y) {
-        RenderSystem.color4f(1, 1, 1, 1);
+    public void drawIcon(Minecraft mc, MatrixStack stack, int x, int y) {
+//        RenderSystem.color4f(1, 1, 1, 1);
         mc.getTextureManager().bindTexture(AbilitiesScreen.WIDGETS);
-        this.blit(x - 13, y - 13, 0, this.unlocked ? 128 : 154, 26, 26);
-        this.drawDisplayIcon(mc, x - 8, y - 8);
+        this.func_238474_b_(stack, x - 13, y - 13, 0, this.unlocked ? 128 : 154, 26, 26);
+        this.drawDisplayIcon(mc, stack, x - 8, y - 8);
     }
 
-    public void drawHover(int x, int y, float fade, int p_191821_4_, int p_191821_5_, AbilitiesScreen gui) {
+    public void drawHover(MatrixStack stack, int x, int y, float fade, int p_191821_4_, int p_191821_5_, AbilitiesScreen gui) {
         Minecraft minecraft = Minecraft.getInstance();
         int posX = (int) (this.x * AbilityTabGui.gridSize) - 16;
         int posY = (int) (this.y * AbilityTabGui.gridSize) - 13;
-        boolean flag = p_191821_4_ + x + posX + this.width + 26 >= gui.width;
+        boolean flag = p_191821_4_ + x + posX + this.width + 26 >= gui.field_230708_k_;
         int[] progress = getProgress();
         String s = progress != null ? progress[0] + "/" + progress[1] : null;
         int i = s == null ? 0 : minecraft.fontRenderer.getStringWidth(s);
@@ -136,7 +139,7 @@ public class AbilityTabEntry extends AbstractGui {
 
         int k = this.width - j;
         minecraft.getTextureManager().bindTexture(AbilitiesScreen.WIDGETS);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableBlend();
         int l = y + posY;
         int i1;
@@ -149,54 +152,55 @@ public class AbilityTabEntry extends AbstractGui {
         int j1 = 32 + this.description.size() * 9;
         if (!this.description.isEmpty()) {
             if (flag1) {
-                this.render9Sprite(i1, l + 26 - j1, this.width, j1, 10, 200, 26, 0, 52);
+                this.render9Sprite(stack, i1, l + 26 - j1, this.width, j1, 10, 200, 26, 0, 52);
             } else {
-                this.render9Sprite(i1, l, this.width, j1, 10, 200, 26, 0, 52);
+                this.render9Sprite(stack, i1, l, this.width, j1, 10, 200, 26, 0, 52);
             }
         }
 
-        this.blit(i1, l, 0, advancementstate.getId() * 26, j, 26);
-        this.blit(i1 + j, l, 200 - k, advancementstate1.getId() * 26, k, 26);
-        this.blit(x + posX + 3, y + posY, 0, 128 + advancementstate2.getId() * 26, 26, 26);
+        this.func_238474_b_(stack, i1, l, 0, advancementstate.getId() * 26, j, 26);
+        this.func_238474_b_(stack, i1 + j, l, 200 - k, advancementstate1.getId() * 26, k, 26);
+        this.func_238474_b_(stack, x + posX + 3, y + posY, 0, 128 + advancementstate2.getId() * 26, 26, 26);
         if (flag) {
-            minecraft.fontRenderer.drawStringWithShadow(this.title, (float) (i1 + 5), (float) (y + posY + 9), -1);
+            //draw string with shadow
+            minecraft.fontRenderer.func_238407_a_(stack, this.title, (float) (i1 + 5), (float) (y + posY + 9), -1);
             if (s != null) {
-                minecraft.fontRenderer.drawStringWithShadow(s, (float) (x + posX - i), (float) (y + posY + 9), -1);
+                minecraft.fontRenderer.func_238405_a_(stack, s, (float) (x + posX - i), (float) (y + posY + 9), -1);
             }
         } else {
-            minecraft.fontRenderer.drawStringWithShadow(this.title, (float) (x + posX + 32), (float) (y + posY + 9), -1);
+            minecraft.fontRenderer.func_238407_a_(stack, this.title, (float) (x + posX + 32), (float) (y + posY + 9), -1);
             if (s != null) {
-                minecraft.fontRenderer.drawStringWithShadow(s, (float) (x + posX + this.width - i - 5), (float) (y + posY + 9), -1);
+                minecraft.fontRenderer.func_238405_a_(stack, s, (float) (x + posX + this.width - i - 5), (float) (y + posY + 9), -1);
             }
         }
 
         if (flag1) {
             for (int k1 = 0; k1 < this.description.size(); ++k1) {
-                minecraft.fontRenderer.drawString(this.description.get(k1), (float) (i1 + 5), (float) (l + 26 - j1 + 7 + k1 * 9), -5592406);
+                minecraft.fontRenderer.func_238421_b_(stack, this.description.get(k1), (float) (i1 + 5), (float) (l + 26 - j1 + 7 + k1 * 9), -5592406);
             }
         } else {
             for (int l1 = 0; l1 < this.description.size(); ++l1) {
-                minecraft.fontRenderer.drawString(this.description.get(l1), (float) (i1 + 5), (float) (y + posY + 9 + 17 + l1 * 9), -5592406);
+                minecraft.fontRenderer.func_238421_b_(stack, this.description.get(l1), (float) (i1 + 5), (float) (y + posY + 9 + 17 + l1 * 9), -5592406);
             }
         }
 
         RenderHelper.enableStandardItemLighting();
-        this.drawDisplayIcon(minecraft, x + posX + 8, y + posY + 5);
+        this.drawDisplayIcon(minecraft, stack, x + posX + 8, y + posY + 5);
     }
 
-    protected void render9Sprite(int p_192994_1_, int p_192994_2_, int p_192994_3_, int p_192994_4_, int p_192994_5_, int p_192994_6_, int p_192994_7_, int p_192994_8_, int p_192994_9_) {
-        this.blit(p_192994_1_, p_192994_2_, p_192994_8_, p_192994_9_, p_192994_5_, p_192994_5_);
-        this.renderRepeating(p_192994_1_ + p_192994_5_, p_192994_2_, p_192994_3_ - p_192994_5_ - p_192994_5_, p_192994_5_, p_192994_8_ + p_192994_5_, p_192994_9_, p_192994_6_ - p_192994_5_ - p_192994_5_, p_192994_7_);
-        this.blit(p_192994_1_ + p_192994_3_ - p_192994_5_, p_192994_2_, p_192994_8_ + p_192994_6_ - p_192994_5_, p_192994_9_, p_192994_5_, p_192994_5_);
-        this.blit(p_192994_1_, p_192994_2_ + p_192994_4_ - p_192994_5_, p_192994_8_, p_192994_9_ + p_192994_7_ - p_192994_5_, p_192994_5_, p_192994_5_);
-        this.renderRepeating(p_192994_1_ + p_192994_5_, p_192994_2_ + p_192994_4_ - p_192994_5_, p_192994_3_ - p_192994_5_ - p_192994_5_, p_192994_5_, p_192994_8_ + p_192994_5_, p_192994_9_ + p_192994_7_ - p_192994_5_, p_192994_6_ - p_192994_5_ - p_192994_5_, p_192994_7_);
-        this.blit(p_192994_1_ + p_192994_3_ - p_192994_5_, p_192994_2_ + p_192994_4_ - p_192994_5_, p_192994_8_ + p_192994_6_ - p_192994_5_, p_192994_9_ + p_192994_7_ - p_192994_5_, p_192994_5_, p_192994_5_);
-        this.renderRepeating(p_192994_1_, p_192994_2_ + p_192994_5_, p_192994_5_, p_192994_4_ - p_192994_5_ - p_192994_5_, p_192994_8_, p_192994_9_ + p_192994_5_, p_192994_6_, p_192994_7_ - p_192994_5_ - p_192994_5_);
-        this.renderRepeating(p_192994_1_ + p_192994_5_, p_192994_2_ + p_192994_5_, p_192994_3_ - p_192994_5_ - p_192994_5_, p_192994_4_ - p_192994_5_ - p_192994_5_, p_192994_8_ + p_192994_5_, p_192994_9_ + p_192994_5_, p_192994_6_ - p_192994_5_ - p_192994_5_, p_192994_7_ - p_192994_5_ - p_192994_5_);
-        this.renderRepeating(p_192994_1_ + p_192994_3_ - p_192994_5_, p_192994_2_ + p_192994_5_, p_192994_5_, p_192994_4_ - p_192994_5_ - p_192994_5_, p_192994_8_ + p_192994_6_ - p_192994_5_, p_192994_9_ + p_192994_5_, p_192994_6_, p_192994_7_ - p_192994_5_ - p_192994_5_);
+    protected void render9Sprite(MatrixStack stack, int p_192994_1_, int p_192994_2_, int p_192994_3_, int p_192994_4_, int p_192994_5_, int p_192994_6_, int p_192994_7_, int p_192994_8_, int p_192994_9_) {
+        this.func_238474_b_(stack, p_192994_1_, p_192994_2_, p_192994_8_, p_192994_9_, p_192994_5_, p_192994_5_);
+        this.renderRepeating(stack,p_192994_1_ + p_192994_5_, p_192994_2_, p_192994_3_ - p_192994_5_ - p_192994_5_, p_192994_5_, p_192994_8_ + p_192994_5_, p_192994_9_, p_192994_6_ - p_192994_5_ - p_192994_5_, p_192994_7_);
+        this.func_238474_b_(stack, p_192994_1_ + p_192994_3_ - p_192994_5_, p_192994_2_, p_192994_8_ + p_192994_6_ - p_192994_5_, p_192994_9_, p_192994_5_, p_192994_5_);
+        this.func_238474_b_(stack, p_192994_1_, p_192994_2_ + p_192994_4_ - p_192994_5_, p_192994_8_, p_192994_9_ + p_192994_7_ - p_192994_5_, p_192994_5_, p_192994_5_);
+        this.renderRepeating(stack,p_192994_1_ + p_192994_5_, p_192994_2_ + p_192994_4_ - p_192994_5_, p_192994_3_ - p_192994_5_ - p_192994_5_, p_192994_5_, p_192994_8_ + p_192994_5_, p_192994_9_ + p_192994_7_ - p_192994_5_, p_192994_6_ - p_192994_5_ - p_192994_5_, p_192994_7_);
+        this.func_238474_b_(stack, p_192994_1_ + p_192994_3_ - p_192994_5_, p_192994_2_ + p_192994_4_ - p_192994_5_, p_192994_8_ + p_192994_6_ - p_192994_5_, p_192994_9_ + p_192994_7_ - p_192994_5_, p_192994_5_, p_192994_5_);
+        this.renderRepeating(stack, p_192994_1_, p_192994_2_ + p_192994_5_, p_192994_5_, p_192994_4_ - p_192994_5_ - p_192994_5_, p_192994_8_, p_192994_9_ + p_192994_5_, p_192994_6_, p_192994_7_ - p_192994_5_ - p_192994_5_);
+        this.renderRepeating(stack, p_192994_1_ + p_192994_5_, p_192994_2_ + p_192994_5_, p_192994_3_ - p_192994_5_ - p_192994_5_, p_192994_4_ - p_192994_5_ - p_192994_5_, p_192994_8_ + p_192994_5_, p_192994_9_ + p_192994_5_, p_192994_6_ - p_192994_5_ - p_192994_5_, p_192994_7_ - p_192994_5_ - p_192994_5_);
+        this.renderRepeating(stack, p_192994_1_ + p_192994_3_ - p_192994_5_, p_192994_2_ + p_192994_5_, p_192994_5_, p_192994_4_ - p_192994_5_ - p_192994_5_, p_192994_8_ + p_192994_6_ - p_192994_5_, p_192994_9_ + p_192994_5_, p_192994_6_, p_192994_7_ - p_192994_5_ - p_192994_5_);
     }
 
-    protected void renderRepeating(int p_192993_1_, int p_192993_2_, int p_192993_3_, int p_192993_4_, int p_192993_5_, int p_192993_6_, int p_192993_7_, int p_192993_8_) {
+    protected void renderRepeating(MatrixStack stack, int p_192993_1_, int p_192993_2_, int p_192993_3_, int p_192993_4_, int p_192993_5_, int p_192993_6_, int p_192993_7_, int p_192993_8_) {
         for (int i = 0; i < p_192993_3_; i += p_192993_7_) {
             int j = p_192993_1_ + i;
             int k = Math.min(p_192993_7_, p_192993_3_ - i);
@@ -204,7 +208,7 @@ public class AbilityTabEntry extends AbstractGui {
             for (int l = 0; l < p_192993_4_; l += p_192993_8_) {
                 int i1 = p_192993_2_ + l;
                 int j1 = Math.min(p_192993_8_, p_192993_4_ - l);
-                this.blit(j, i1, p_192993_5_, p_192993_6_, k, j1);
+                this.func_238474_b_(stack, j, i1, p_192993_5_, p_192993_6_, k, j1);
             }
         }
     }
@@ -226,7 +230,7 @@ public class AbilityTabEntry extends AbstractGui {
 
         for (Condition condition : conditions) {
             boolean active = this.ability.getConditionManager().isActive(condition);
-            list.add(condition.getDisplayName().shallowCopy().setStyle(new Style().setColor(active ? TextFormatting.GREEN : TextFormatting.RED)).getFormattedText());
+            list.add(condition.getDisplayName().func_230531_f_().func_240703_c_(Style.field_240709_b_.func_240718_a_(Color.func_240744_a_(active ? TextFormatting.GREEN : TextFormatting.RED))).toString());
         }
 
         return list;
