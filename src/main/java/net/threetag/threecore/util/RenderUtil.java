@@ -192,7 +192,7 @@ public class RenderUtil {
             super(name, vertexFormat, drawMode, bufferSize, useDelegate, needsSorting, setupTask, clearTask);
         }
 
-        public static final RenderType HYDRAULIC_PRESS_PISTONS = makeType(ThreeCore.MODID + ":hydraulic_press_pistons", DefaultVertexFormats.POSITION_COLOR_LIGHTMAP, GL11.GL_QUADS, 256, RenderType.State.getBuilder()
+        public static final RenderType HYDRAULIC_PRESS_PISTONS = makeType(ThreeCore.MODID + ":hydraulic_press_pistons", DefaultVertexFormats.POSITION_COLOR_LIGHTMAP, GL11.GL_QUADS, 256, State.getBuilder()
                 .layer(field_239235_M_)
                 .transparency(TRANSLUCENT_TRANSPARENCY)
                 .texture(NO_TEXTURE)
@@ -203,7 +203,7 @@ public class RenderUtil {
                 .writeMask(COLOR_DEPTH_WRITE)
                 .build(false));
 
-        public static final RenderType LASER = makeType(ThreeCore.MODID + ":laser", DefaultVertexFormats.POSITION_COLOR_LIGHTMAP, GL11.GL_QUADS, 256, false, false, RenderType.State.getBuilder()
+        public static final RenderType LASER = makeType(ThreeCore.MODID + ":laser", DefaultVertexFormats.POSITION_COLOR_LIGHTMAP, GL11.GL_QUADS, 256, false, false, State.getBuilder()
                 .texture(RenderState.NO_TEXTURE)
                 .cull(RenderState.CULL_ENABLED)
                 .alpha(DEFAULT_ALPHA)
@@ -211,8 +211,8 @@ public class RenderUtil {
                 .build(true));
 
         public static RenderType getGlowing(ResourceLocation locationIn) {
-            RenderState.TextureState textureState = new RenderState.TextureState(locationIn, false, false);
-            return makeType(ThreeCore.MODID + ":glowing", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().transparency(TRANSLUCENT_TRANSPARENCY).alpha(DEFAULT_ALPHA).cull(CULL_DISABLED).overlay(OVERLAY_ENABLED).texture(textureState).fog(BLACK_FOG).build(false));
+            TextureState textureState = new TextureState(locationIn, false, false);
+            return makeType(ThreeCore.MODID + ":glowing", DefaultVertexFormats.ENTITY, 7, 256, false, true, State.getBuilder().transparency(TRANSLUCENT_TRANSPARENCY).alpha(DEFAULT_ALPHA).cull(CULL_DISABLED).overlay(OVERLAY_ENABLED).texture(textureState).fog(BLACK_FOG).build(false));
         }
     }
 

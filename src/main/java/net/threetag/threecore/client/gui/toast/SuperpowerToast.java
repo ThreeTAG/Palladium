@@ -30,6 +30,6 @@ public class SuperpowerToast implements IToast {
 
         this.icon.draw(guiToast.getMinecraft(), stack, 8, 8);
 
-        return l >= 5000L ? IToast.Visibility.HIDE : IToast.Visibility.SHOW;
+        return l >= 5000L ? Visibility.HIDE : Visibility.SHOW;
     }
 }

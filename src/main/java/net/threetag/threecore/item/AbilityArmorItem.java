@@ -110,7 +110,7 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
         return this.layers;
     }
 
-    public static AbilityArmorItem parse(JsonObject jsonObject, Item.Properties properties) {
+    public static AbilityArmorItem parse(JsonObject jsonObject, Properties properties) {
         EquipmentSlotType slot = EquipmentSlotType.fromString(JSONUtils.getString(jsonObject, "slot"));
         if (slot.getSlotType() == EquipmentSlotType.Group.HAND)
             throw new JsonParseException("Slot type must be an armor slot!");

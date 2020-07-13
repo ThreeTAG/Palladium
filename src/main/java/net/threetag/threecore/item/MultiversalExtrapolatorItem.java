@@ -29,7 +29,7 @@ public class MultiversalExtrapolatorItem extends Item {
 
     private static final List<String> UNIVERSES = Lists.newArrayList();
 
-    public MultiversalExtrapolatorItem(Item.Properties properties) {
+    public MultiversalExtrapolatorItem(Properties properties) {
         super(properties);
     }
 

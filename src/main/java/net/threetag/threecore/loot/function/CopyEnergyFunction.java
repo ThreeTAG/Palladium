@@ -45,7 +45,7 @@ public class CopyEnergyFunction extends LootFunction
         return stack;
     }
 
-    public static LootFunction.Builder<?> builder(CopyName.Source sourceIn) {
+    public static Builder<?> builder(CopyName.Source sourceIn) {
         return builder((conditions) -> {
             return new CopyEnergyFunction(conditions, sourceIn);
         });

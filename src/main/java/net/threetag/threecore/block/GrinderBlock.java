@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class GrinderBlock extends MachineBlock {
 
-    public GrinderBlock(Block.Properties properties) {
+    public GrinderBlock(Properties properties) {
         super(properties);
     }
 

@@ -58,6 +58,7 @@ import net.threetag.threecore.data.ThreeCoreRecipeProvider;
 import net.threetag.threecore.data.lang.English;
 import net.threetag.threecore.entity.TCEntityTypes;
 import net.threetag.threecore.entity.armorstand.ArmorStandPoseManager;
+import net.threetag.threecore.entity.attributes.TCAttributes;
 import net.threetag.threecore.item.TCItems;
 import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 import net.threetag.threecore.item.recipe.ToolIngredient;
@@ -66,6 +67,7 @@ import net.threetag.threecore.network.*;
 import net.threetag.threecore.potion.TCEffects;
 import net.threetag.threecore.scripts.ScriptEventManager;
 import net.threetag.threecore.scripts.accessors.ScriptAccessor;
+import net.threetag.threecore.sizechanging.SizeChangingEventHandler;
 import net.threetag.threecore.sound.TCSounds;
 import net.threetag.threecore.tileentity.TCTileEntityTypes;
 import net.threetag.threecore.util.RenderUtil;
@@ -161,6 +163,10 @@ public class ThreeCore {
 
         // Item Colors
         TCItems.loadItemColors();
+
+        //Attributes
+        SizeChangingEventHandler.initAttributes();
+        TCAttributes.init();
     }
 
     @OnlyIn(Dist.CLIENT)
