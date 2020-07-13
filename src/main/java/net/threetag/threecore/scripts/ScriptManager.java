@@ -3,13 +3,12 @@ package net.threetag.threecore.scripts;
 import com.google.common.collect.Maps;
 import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.scripts.bindings.BlockStateBuilder;
 import net.threetag.threecore.scripts.bindings.ItemStackBuilder;
@@ -116,8 +115,8 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
     }
 
     @SubscribeEvent
-    public static void serverAboutToStart(FMLServerAboutToStartEvent e) {
-        ((IReloadableResourceManager) e.getServer().getDataPackRegistries().func_240970_h_()).addReloadListener(new ScriptManager());
+    public static void serverAboutToStart(AddReloadListenerEvent e) {
+        e.addListener(new ScriptManager());
     }
 
 }

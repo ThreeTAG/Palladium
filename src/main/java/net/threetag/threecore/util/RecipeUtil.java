@@ -36,7 +36,7 @@ public class RecipeUtil {
 
     public static ItemStack parseItemStackExt(JsonObject json, boolean readNBT) {
         if (json.has("tag")) {
-            ITag.INamedTag<Item> tag = (ITag.INamedTag<Item>) ItemTags.getCollection().get(new ResourceLocation(JSONUtils.getString(json, "tag")));
+            ITag<Item> tag = ItemTags.getCollection().get(new ResourceLocation(JSONUtils.getString(json, "tag")));
 
             if (tag == null || tag.func_230236_b_().size() <= 0)
                 throw new JsonSyntaxException("Unknown tag '" + JSONUtils.getString(json, "tag") + "'");

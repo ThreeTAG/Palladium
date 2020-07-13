@@ -1,12 +1,10 @@
 package net.threetag.threecore;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -15,6 +13,7 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,7 +24,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -133,10 +131,6 @@ public class ThreeCore {
             // Client Setup
             MinecraftForge.EVENT_BUS.register(new AbilityClientEventHandler());
 
-            if (Minecraft.getInstance() != null) {
-                ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new EntityModelManager());
-                ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new ModelLayerLoader());
-            }
         });
     }
 
@@ -254,8 +248,12 @@ public class ThreeCore {
     }
 
     @SubscribeEvent
-    public void serverAboutToStart(FMLServerAboutToStartEvent e) {
-        ((IReloadableResourceManager) e.getServer().getDataPackRegistries().func_240970_h_()).addReloadListener(new SuperpowerManager());
+    public void serverAboutToStart(AddReloadListenerEvent event) {
+        event.addListener(new SuperpowerManager());
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            event.addListener(new EntityModelManager());
+            event.addListener(new ModelLayerLoader());
+        });
     }
 
     @OnlyIn(Dist.CLIENT)
