@@ -151,6 +151,7 @@ public class ThreeCore {
         TCSounds.SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCEffects.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCAttributes.ATTRIBUTES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCLootFunctions.register();
     }
 
     @SubscribeEvent
