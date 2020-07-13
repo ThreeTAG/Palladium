@@ -81,11 +81,11 @@ function initializeCoreMod() {
                     //String name
                     "getSize",
                     //String descriptor
-                    "(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Pose;)Lnet/minecraft/util/math/Vec2f;",
+                    "(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Pose;)Lnet/minecraft/util/math/vector/Vector2f;",
                     //boolean isInterface
                     false
                 ));
-                preInstructions.add(new FieldInsnNode(GETFIELD, "net/minecraft/util/math/Vec2f", y_name, 'F'));
+                preInstructions.add(new FieldInsnNode(GETFIELD, "net/minecraft/util/math/vector/Vector2f", y_name, 'F'));
                 preInstructions.add(new InsnNode(FMUL));
                 preInstructions.add(new FieldInsnNode(PUTFIELD, "net/minecraft/entity/Entity", eyeHeight_name, 'F'));
 

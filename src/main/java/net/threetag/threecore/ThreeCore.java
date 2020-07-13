@@ -67,7 +67,6 @@ import net.threetag.threecore.network.*;
 import net.threetag.threecore.potion.TCEffects;
 import net.threetag.threecore.scripts.ScriptEventManager;
 import net.threetag.threecore.scripts.accessors.ScriptAccessor;
-import net.threetag.threecore.sizechanging.SizeChangingEventHandler;
 import net.threetag.threecore.sound.TCSounds;
 import net.threetag.threecore.tileentity.TCTileEntityTypes;
 import net.threetag.threecore.util.RenderUtil;
@@ -151,6 +150,7 @@ public class ThreeCore {
         TCEntityTypes.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCSounds.SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCEffects.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCAttributes.ATTRIBUTES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     @SubscribeEvent
@@ -165,7 +165,6 @@ public class ThreeCore {
         TCItems.loadItemColors();
 
         //Attributes
-        SizeChangingEventHandler.initAttributes();
         TCAttributes.init();
     }
 

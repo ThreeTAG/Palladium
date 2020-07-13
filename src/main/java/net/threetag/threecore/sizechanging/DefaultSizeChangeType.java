@@ -26,8 +26,8 @@ public class DefaultSizeChangeType extends SizeChangeType {
         if (entity instanceof LivingEntity) {
             AttributeModifierManager map = ((LivingEntity) entity).func_233645_dx_();
             setAttribute(map, Attributes.field_233821_d_, (size - 1F) * 0.5D, AttributeModifier.Operation.MULTIPLY_TOTAL, SizeChangeType.ATTRIBUTE_UUID);
-            setAttribute(map, TCAttributes.JUMP_HEIGHT, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
-            setAttribute(map, TCAttributes.FALL_RESISTANCE, size > 1F ? 1F / size : size, AttributeModifier.Operation.MULTIPLY_BASE, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute(map, TCAttributes.JUMP_HEIGHT.get(), (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute(map, TCAttributes.FALL_RESISTANCE.get(), size > 1F ? 1F / size : size, AttributeModifier.Operation.MULTIPLY_BASE, SizeChangeType.ATTRIBUTE_UUID);
             setAttribute(map, Attributes.field_233823_f_, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
             setAttribute(map, ForgeMod.REACH_DISTANCE.get(), (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
             setAttribute(map, Attributes.field_233820_c_, (size - 1F) * 0.5D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);

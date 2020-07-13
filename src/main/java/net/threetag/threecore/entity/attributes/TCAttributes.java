@@ -1,16 +1,16 @@
 package net.threetag.threecore.entity.attributes;
 
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.*;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
@@ -22,13 +22,14 @@ import java.util.UUID;
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID)
 public class TCAttributes
 {
+	public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, ThreeCore.MODID);
 
-	public static final Attribute STEP_HEIGHT = (new RangedAttribute("threecore.stepHeight", 0.5D, 0D, 20D)).func_233753_a_(true).setRegistryName(ThreeCore.MODID, "step_height");
-	public static final Attribute FALL_RESISTANCE = (new RangedAttribute("threecore.fallResistance", 0D, 0D, Double.MAX_VALUE)).setRegistryName(ThreeCore.MODID, "fall_resistance");
-	public static final Attribute JUMP_HEIGHT = (new RangedAttribute("threecore.jumpHeight", 0D, 0D, Double.MAX_VALUE)).func_233753_a_(true).setRegistryName(ThreeCore.MODID, "jump_height");
-	public static final Attribute SPRINT_SPEED = (new RangedAttribute("threecore.sprintSpeed", 0D, 0D, Double.MAX_VALUE)).func_233753_a_(true).setRegistryName(ThreeCore.MODID, "sprint_speed");
-	public static final Attribute SIZE_WIDTH = (new RangedAttribute("threecore.sizeWidth", 1D, 0.1D, 32D)).func_233753_a_(true).setRegistryName(ThreeCore.MODID, "size_width");
-	public static final Attribute SIZE_HEIGHT = (new RangedAttribute("threecore.sizeHeight", 1D, 0.1D, 32D)).func_233753_a_(true).setRegistryName(ThreeCore.MODID, "size_height");
+	public static final RegistryObject<Attribute> STEP_HEIGHT = ATTRIBUTES.register("step_height", () -> new RangedAttribute("threecore.stepHeight", 0.5D, 0D, 20D).func_233753_a_(true));
+	public static final RegistryObject<Attribute> FALL_RESISTANCE = ATTRIBUTES.register("fall_resistance", () -> new RangedAttribute("threecore.fallResistance", 0D, 0D, Double.MAX_VALUE));
+	public static final RegistryObject<Attribute> JUMP_HEIGHT = ATTRIBUTES.register("jump_height", () -> new RangedAttribute("threecore.jumpHeight", 0D, 0D, Double.MAX_VALUE).func_233753_a_(true));
+	public static final RegistryObject<Attribute> SPRINT_SPEED = ATTRIBUTES.register("sprint_speed", () -> new RangedAttribute("threecore.sprintSpeed", 0D, 0D, Double.MAX_VALUE).func_233753_a_(true));
+	public static final RegistryObject<Attribute> SIZE_WIDTH = ATTRIBUTES.register("size_width", () -> new RangedAttribute("threecore.sizeWidth", 1D, 0.1D, 32D).func_233753_a_(true));
+	public static final RegistryObject<Attribute> SIZE_HEIGHT = ATTRIBUTES.register("size_height", () -> new RangedAttribute("threecore.sizeHeight", 1D, 0.1D, 32D).func_233753_a_(true));
 	public static float stepHeight;
 	public static final UUID SPRINT_UUID = UUID.fromString("11faf62f-c271-4601-809e-83d982687b69");
 
@@ -37,34 +38,30 @@ public class TCAttributes
 	{
 		DeferredWorkQueue.runLater(() -> {
 			for (EntityType<?> value : ForgeRegistries.ENTITIES.getValues())
-				if (value.getClassification() != EntityClassification.MISC)
+			{
+				AttributeModifierMap map = GlobalEntityTypeAttributes.func_233835_a_((EntityType<? extends LivingEntity>) value);
+				if (map != null)
 				{
-					AttributeModifierMap map = GlobalEntityTypeAttributes.func_233835_a_((EntityType<? extends LivingEntity>) value);
 					Map<Attribute, ModifiableAttributeInstance> oldAttributes = map.field_233802_a_;
 					AttributeModifierMap.MutableAttribute newMap = AttributeModifierMap.func_233803_a_();
 					newMap.field_233811_a_.putAll(oldAttributes);
-					newMap.func_233815_a_(STEP_HEIGHT, 1D);
-					newMap.func_233814_a_(FALL_RESISTANCE);
-					newMap.func_233814_a_(JUMP_HEIGHT);
-					newMap.func_233815_a_(SPRINT_SPEED, 1D);
+					newMap.func_233815_a_(STEP_HEIGHT.get(), 1D);
+					newMap.func_233814_a_(FALL_RESISTANCE.get());
+					newMap.func_233814_a_(JUMP_HEIGHT.get());
+					newMap.func_233815_a_(SPRINT_SPEED.get(), 1D);
+					newMap.func_233814_a_(SIZE_WIDTH.get());
+					newMap.func_233814_a_(SIZE_HEIGHT.get());
 					GlobalEntityTypeAttributes.put((EntityType<? extends LivingEntity>) value, newMap.func_233813_a_());
 				}
+			}
 		});
 
 	}
 
 	@SubscribeEvent
-	public static void onRegisterAttributes(RegistryEvent.Register<Attribute> event){
-		event.getRegistry().register(STEP_HEIGHT);
-		event.getRegistry().register(FALL_RESISTANCE);
-		event.getRegistry().register(JUMP_HEIGHT);
-		event.getRegistry().register(SPRINT_SPEED);
-	}
-
-	@SubscribeEvent
 	public static void onFall(LivingFallEvent e)
 	{
-		ModifiableAttributeInstance fallAttribute = e.getEntityLiving().getAttribute(FALL_RESISTANCE);
+		ModifiableAttributeInstance fallAttribute = e.getEntityLiving().getAttribute(FALL_RESISTANCE.get());
 		if (fallAttribute != null)
 		{
 			fallAttribute.setBaseValue(e.getDamageMultiplier());
@@ -78,7 +75,7 @@ public class TCAttributes
 		if (!e.getEntityLiving().isCrouching())
 		{
 			e.getEntityLiving()
-					.setMotion(e.getEntity().getMotion().x, e.getEntity().getMotion().y + 0.1F * e.getEntityLiving().getAttribute(JUMP_HEIGHT).getValue(),
+					.setMotion(e.getEntity().getMotion().x, e.getEntity().getMotion().y + 0.1F * e.getEntityLiving().getAttribute(JUMP_HEIGHT.get()).getValue(),
 							e.getEntity().getMotion().z);
 		}
 	}
@@ -98,7 +95,7 @@ public class TCAttributes
 		if (e.player.ticksExisted > 20 && e.player.world.isRemote)
 		{
 			stepHeight = e.player.stepHeight;
-			ModifiableAttributeInstance attributeInstance = e.player.getAttribute(STEP_HEIGHT);
+			ModifiableAttributeInstance attributeInstance = e.player.getAttribute(STEP_HEIGHT.get());
 			attributeInstance.setBaseValue(stepHeight);
 			e.player.stepHeight = (float) attributeInstance.getValue();
 			ISizeChanging sizeChanging = e.player.getCapability(CapabilitySizeChanging.SIZE_CHANGING).orElseGet(() -> null);
@@ -107,9 +104,9 @@ public class TCAttributes
 		}
 
 		e.player.getAttribute(Attributes.field_233821_d_).removeModifier(SPRINT_UUID);
-		if (e.player.isSprinting() && e.player.getAttribute(SPRINT_SPEED).func_225505_c_().size() > 0)
+		if (e.player.isSprinting() && e.player.getAttribute(SPRINT_SPEED.get()).func_225505_c_().size() > 0)
 		{
-			double amount = e.player.getAttribute(SPRINT_SPEED).getValue();
+			double amount = e.player.getAttribute(SPRINT_SPEED.get()).getValue();
 			e.player.getAttribute(Attributes.field_233821_d_)
 					.func_233769_c_(new AttributeModifier(SPRINT_UUID, "Sprint modifier", amount, AttributeModifier.Operation.MULTIPLY_BASE));
 		}
