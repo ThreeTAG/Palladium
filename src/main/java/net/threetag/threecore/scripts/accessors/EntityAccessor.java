@@ -35,7 +35,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public String getName() {
-        return this.value.getDisplayName().toString();
+        return this.value.getDisplayName().getString();
     }
 
     public void setName(@ScriptParameterName("name") String name) {

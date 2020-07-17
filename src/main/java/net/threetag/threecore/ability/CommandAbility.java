@@ -41,7 +41,7 @@ public class CommandAbility extends Ability implements ICommandSource {
 
     @Override
     public void sendMessage(ITextComponent component, UUID uuid) {
-        ThreeCore.LOGGER.error("Ability command error: " + component.toString());
+        ThreeCore.LOGGER.error("Ability command error: " + component.getString());
     }
 
     @Override
