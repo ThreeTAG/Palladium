@@ -42,7 +42,7 @@ public class CapacitorBlockItem extends BlockItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        stack.getCapability(CapabilityEnergy.ENERGY).ifPresent((e) -> list.add(new StringTextComponent(EnergyUtil.getFormattedEnergy(e).toString()).func_240701_a_(TextFormatting.GRAY)));
+        stack.getCapability(CapabilityEnergy.ENERGY).ifPresent((e) -> list.add(((StringTextComponent) EnergyUtil.getFormattedEnergy(e)).func_240701_a_(TextFormatting.GRAY)));
     }
 
     @Override

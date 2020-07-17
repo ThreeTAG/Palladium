@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.threetag.threecore.ThreeCore;
@@ -85,7 +86,8 @@ public class AbilityBarRenderer {
     public void renderHUD(RenderGameOverlayEvent.Post e) {
         Minecraft mc = Minecraft.getInstance();
         if (e.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-            RenderSystem.pushMatrix();
+            e.getMatrixStack().push();
+//            RenderSystem.pushMatrix();
             Tessellator tes = Tessellator.getInstance();
             BufferBuilder bb = tes.getBuffer();
             List<Ability> abilities = getCurrentDisplayedAbilities(AbilityHelper.getAbilities(mc.player));
@@ -94,10 +96,10 @@ public class AbilityBarRenderer {
             for (int i = 0; i < abilities.size(); i++) {
                 Ability ability = abilities.get(i);
                 EnumAbilityColor color = ability.getColor();
-                String name = showName ? ability.getDataManager().get(Ability.TITLE).toString() : InputMappings.getInputByCode(getKeyFromAbility(ability, i), 0).toString();
-                int nameLength = mc.fontRenderer.getStringWidth(name);
+                ITextComponent name = showName ? ability.getDataManager().get(Ability.TITLE) : InputMappings.getInputByCode(getKeyFromAbility(ability, i), 0).func_237520_d_();
+                int nameLength = mc.fontRenderer.func_238414_a_(name);
 
-                RenderSystem.color4f(1, 1, 1, 1);
+//                RenderSystem.color4f(1, 1, 1, 1);
                 mc.textureManager.bindTexture(TEXTURE);
                 mc.ingameGUI.func_238474_b_(e.getMatrixStack(), 7, 7 + i * 22, color.getX(), color.getY(), 22, 22);
 
@@ -109,7 +111,7 @@ public class AbilityBarRenderer {
                 if (ability.getConditionManager().needsKey()) {
                     RenderSystem.disableTexture();
                     RenderSystem.enableBlend();
-                    RenderSystem.color4f(0, 0, 0, 0.5F);
+//                    RenderSystem.color4f(0, 0, 0, 0.5F);
                     bb.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION);
                     bb.pos(7 + 22, 10 + i * 22 + 1, 0).endVertex();
                     bb.pos(7 + 22 + nameLength + 8, 10 + i * 22 + 1, 0).endVertex();
@@ -118,11 +120,11 @@ public class AbilityBarRenderer {
                     tes.draw();
                     RenderSystem.enableTexture();
                     RenderSystem.disableBlend();
-                    mc.ingameGUI.func_238476_c_(e.getMatrixStack(), mc.fontRenderer, name, 34, 10 + i * 22 + 4, 0xffffff);
+                    mc.ingameGUI.func_238475_b_(e.getMatrixStack(), mc.fontRenderer, name, 34, 10 + i * 22 + 4, 0xffffff);
                 }
             }
-            RenderSystem.color4f(1, 1, 1, 1F);
-            RenderSystem.popMatrix();
+//            RenderSystem.color4f(1, 1, 1, 1F);
+            e.getMatrixStack().pop();
         }
     }
 

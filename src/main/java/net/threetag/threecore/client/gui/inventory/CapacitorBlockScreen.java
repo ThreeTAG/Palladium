@@ -27,8 +27,8 @@ public class CapacitorBlockScreen extends ContainerScreen<CapacitorBlockContaine
 
     @Override
     protected void func_230451_b_(MatrixStack stack, int mouseX, int mouseY) {
-        this.field_230712_o_.func_238407_a_(stack, this.func_231171_q_(), 8.0F, 6.0F, 4210752);
-        this.field_230712_o_.func_238407_a_(stack, this.playerInventory.getDisplayName(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
+        this.field_230712_o_.func_238422_b_(stack, this.func_231171_q_(), 8.0F, 6.0F, 4210752);
+        this.field_230712_o_.func_238422_b_(stack, this.playerInventory.getDisplayName(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
         EnergyUtil.drawTooltip(stack, this.container.getEnergyStored(), this.container.getMaxEnergyStored(), this, 68, 20, 40, 12, mouseX - this.guiLeft, mouseY - this.guiTop);
     }
 

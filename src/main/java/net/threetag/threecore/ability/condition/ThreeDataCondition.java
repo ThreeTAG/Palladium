@@ -27,7 +27,7 @@ public class ThreeDataCondition extends Condition
 
 	public ThreeDataCondition(Ability ability)
 	{
-		super(ConditionType.LIVING_VALUES, ability);
+		super(ConditionType.THREE_DATA, ability);
 	}
 
 	@Override

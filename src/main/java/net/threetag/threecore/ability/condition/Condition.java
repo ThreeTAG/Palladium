@@ -18,6 +18,7 @@ import net.threetag.threecore.scripts.events.ConditionDataUpdatedScriptEvent;
 import net.threetag.threecore.util.threedata.*;
 import net.threetag.threecore.util.threedata.IWrappedThreeDataHolder;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Condition implements INBTSerializable<CompoundNBT>, IWrappedThreeDataHolder {
@@ -108,7 +109,7 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IWrapp
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
         this.dataManager.deserializeNBT(nbt.getCompound("Data"));
-        this.id = NBTUtil.readUniqueId(nbt.getCompound("UUID"));
+        this.id = NBTUtil.readUniqueId(Objects.requireNonNull(nbt.get("UUID")));
     }
 
     public void setDirty() {

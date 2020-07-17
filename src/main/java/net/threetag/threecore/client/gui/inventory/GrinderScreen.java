@@ -1,7 +1,6 @@
 package net.threetag.threecore.client.gui.inventory;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -28,14 +27,14 @@ public class GrinderScreen extends ContainerScreen<GrinderContainer> {
 
     @Override
     protected void func_230451_b_(MatrixStack stack, int mouseX, int mouseY) {
-        this.field_230712_o_.func_238407_a_(stack, this.func_231171_q_(), (float) (this.xSize / 2 - this.field_230712_o_.getStringWidth(this.func_231171_q_().toString()) / 2), 6.0F, 4210752);
-        this.field_230712_o_.func_238407_a_(stack, this.playerInventory.getDisplayName(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
+        this.field_230712_o_.func_238422_b_(stack, this.func_231171_q_(), (float) (this.xSize / 2 - this.field_230712_o_.func_238414_a_(this.func_231171_q_()) / 2), 6.0F, 4210752);
+        this.field_230712_o_.func_238422_b_(stack, this.playerInventory.getDisplayName(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
         EnergyUtil.drawTooltip(stack, this.container.getEnergyStored(), this.container.getMaxEnergyStored(), this, 10, 17, 12, 40, mouseX - this.guiLeft, mouseY - this.guiTop);
     }
 
     @Override
     protected void func_230450_a_(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.field_230706_i_.getTextureManager().bindTexture(GRINDER_GUI_TEXTURES);
         int left = this.guiLeft;
         int top = this.guiTop;

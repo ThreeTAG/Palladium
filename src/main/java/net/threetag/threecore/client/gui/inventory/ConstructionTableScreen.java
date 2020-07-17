@@ -76,8 +76,8 @@ public class ConstructionTableScreen<T extends AbstractConstructionTableContaine
 
     @Override
     protected void func_230451_b_(MatrixStack stack, int mouseX, int mouseY) {
-        this.field_230712_o_.func_238407_a_(stack, this.func_231171_q_(), 28.0F, 6.0F, 4210752);
-        this.field_230712_o_.func_238407_a_(stack, this.playerInventory.getDisplayName(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
+        this.field_230712_o_.func_238422_b_(stack, this.func_231171_q_(), 28.0F, 6.0F, 4210752);
+        this.field_230712_o_.func_238422_b_(stack, this.playerInventory.getDisplayName(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
     }
 
     @Override

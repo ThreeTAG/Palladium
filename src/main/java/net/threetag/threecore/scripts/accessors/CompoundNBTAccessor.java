@@ -137,7 +137,7 @@ public class CompoundNBTAccessor extends ScriptAccessor<CompoundNBT> {
     }
 
     //Of course vanilla has two ways of setting unique ids
-    public String getUniqueIdWithUtil(@ScriptParameterName("key") String key) { return NBTUtil.readUniqueId(this.value.getCompound(key)).toString(); }
+    public String getUniqueIdWithUtil(@ScriptParameterName("key") String key) { return NBTUtil.readUniqueId(this.value.get(key)).toString(); }
 
     public CompoundNBTAccessor remove(@ScriptParameterName("key") String key) {
         this.value.remove(key);

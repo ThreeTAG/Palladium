@@ -67,8 +67,8 @@ public class BuyAbilityScreen extends Screen {
         List<ITextProperties> lines = this.field_230712_o_.func_238425_b_(new StringTextComponent(I18n.format("gui.threecore.abilities.fulfill_condition")), 132);
         for (int k = 0; k < lines.size(); k++) {
             ITextProperties text = lines.get(k);
-            int width = this.field_230712_o_.getStringWidth(text.toString());
-            this.field_230712_o_.func_238422_b_(stack, text, i + 120 - width / 2, j + 9 + k * 10, 4210752);
+            int width = this.field_230712_o_.func_238414_a_(text);
+            this.field_230712_o_.func_238422_b_(stack, text, i + 120 - width / 2f, j + 9 + k * 10, 4210752);
         }
 
         stack.push();
