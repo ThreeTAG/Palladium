@@ -1,8 +1,10 @@
 package net.threetag.threecore.util;
 
 import com.google.gson.*;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
 import net.minecraft.util.JSONUtils;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class TCJsonUtil {
 
@@ -87,6 +89,23 @@ public class TCJsonUtil {
         } else {
             return new JsonObject();
         }
+    }
+
+    public static JsonObject serializeItemStack(ItemStack stack) {
+        return serializeItemStack(stack, true);
+    }
+
+    public static JsonObject serializeItemStack(ItemStack stack, boolean writeNbt) {
+        JsonObject json = new JsonObject();
+
+        json.addProperty("item", ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
+        json.addProperty("count", stack.getCount());
+
+        if (writeNbt && stack.hasTag()) {
+            json.add("nbt", nbtToJson(stack.getTag()));
+        }
+
+        return json;
     }
 
 }

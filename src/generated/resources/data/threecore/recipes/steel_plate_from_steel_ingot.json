@@ -1,7 +1,8 @@
 {
   "type": "threecore:pressing",
   "result": {
-    "tag": "forge:plates/steel"
+    "item": "threecore:steel_plate",
+    "count": 1
   },
   "ingredient": {
     "tag": "forge:ingots/steel"

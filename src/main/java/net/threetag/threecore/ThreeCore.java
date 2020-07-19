@@ -14,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,7 +25,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -240,11 +240,11 @@ public class ThreeCore {
     }
 
     @SubscribeEvent
-    public void serverStarting(FMLServerStartingEvent e) {
-        SuperpowerCommand.register(e.getCommandDispatcher());
-        KarmaCommand.register(e.getCommandDispatcher());
-        SizeChangeCommand.register(e.getCommandDispatcher());
-        ArmorStandPoseCommand.register(e.getCommandDispatcher());
+    public void serverStarting(RegisterCommandsEvent e) {
+        SuperpowerCommand.register(e.getDispatcher());
+        KarmaCommand.register(e.getDispatcher());
+        SizeChangeCommand.register(e.getDispatcher());
+        ArmorStandPoseCommand.register(e.getDispatcher());
     }
 
     @SubscribeEvent

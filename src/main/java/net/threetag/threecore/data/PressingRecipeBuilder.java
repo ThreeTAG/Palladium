@@ -17,7 +17,9 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.item.recipe.TCRecipeSerializers;
+import net.threetag.threecore.util.TCJsonUtil;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -29,14 +31,14 @@ public class PressingRecipeBuilder {
     private String group;
     private Ingredient input;
     private Ingredient cast;
-    private final ExtRecipeOutput output;
+    private final ItemStack output;
     private float experience = 0F;
     private int energy = 0;
     private List<ICondition> conditions = new ArrayList<>();
     private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
 
     public PressingRecipeBuilder(ItemStack output) {
-        this.output = new ExtRecipeOutput(output);
+        this.output = output;
     }
 
     public PressingRecipeBuilder(IItemProvider itemProvider) {
@@ -45,14 +47,6 @@ public class PressingRecipeBuilder {
 
     public PressingRecipeBuilder(IItemProvider itemProvider, int amount) {
         this(new ItemStack(itemProvider, amount));
-    }
-
-    public PressingRecipeBuilder(ITag.INamedTag<Item> tag) {
-        this(tag, 1);
-    }
-
-    public PressingRecipeBuilder(ITag.INamedTag<Item> tag, int amount) {
-        this.output = new ExtRecipeOutput(tag, amount);
     }
 
     public PressingRecipeBuilder setIngredient(Ingredient ingredient) {
@@ -125,17 +119,17 @@ public class PressingRecipeBuilder {
             throw new IllegalStateException("No input specified for recipe " + resourceLocation);
         } else if (this.advancementBuilder.getCriteria().isEmpty()) {
             throw new IllegalStateException("No way of obtaining recipe " + resourceLocation);
-        } else if(this.energy <= 0) {
+        } else if (this.energy <= 0) {
             throw new IllegalStateException("Energy for " + resourceLocation + " must be greater than 0!");
         }
     }
 
     public void build(Consumer<IFinishedRecipe> consumer) {
-        this.build(consumer, this.output.getId());
+        this.build(consumer, ForgeRegistries.ITEMS.getKey(this.output.getItem()).toString());
     }
 
     public void build(Consumer<IFinishedRecipe> consumer, String name) {
-        ResourceLocation resourceLocation = this.output.getId();
+        ResourceLocation resourceLocation = ForgeRegistries.ITEMS.getKey(this.output.getItem());
         if ((new ResourceLocation(name)).equals(resourceLocation)) {
             throw new IllegalStateException("Pressing Recipe " + name + " should remove its 'save' argument");
         } else {
@@ -146,7 +140,7 @@ public class PressingRecipeBuilder {
     public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation name) {
         this.validate(name);
         this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.func_235675_a_(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
-        consumer.accept(new Result(name, group == null ? "" : group, input, cast, output, experience, energy, conditions, advancementBuilder, new ResourceLocation(name.getNamespace(), "recipes/" + this.output.getGroup() + "/" + name.getPath())));
+        consumer.accept(new Result(name, group == null ? "" : group, input, cast, output, experience, energy, conditions, advancementBuilder, new ResourceLocation(name.getNamespace(), "recipes/" + this.output.getItem().getGroup().getPath() + "/" + name.getPath())));
     }
 
     public class Result implements IFinishedRecipe {
@@ -155,14 +149,14 @@ public class PressingRecipeBuilder {
         private final String group;
         private final Ingredient input;
         private final Ingredient cast;
-        private final ExtRecipeOutput output;
+        private final ItemStack output;
         private final float experience;
         private final int energy;
         private final List<ICondition> conditions;
         private final Advancement.Builder advancementBuilder;
         private final ResourceLocation advancementId;
 
-        public Result(ResourceLocation id, String group, Ingredient input, Ingredient cast, ExtRecipeOutput output, float experience, int energy, List<ICondition> conditions, Advancement.Builder advancementBuilder, ResourceLocation advancementId) {
+        public Result(ResourceLocation id, String group, Ingredient input, Ingredient cast, ItemStack output, float experience, int energy, List<ICondition> conditions, Advancement.Builder advancementBuilder, ResourceLocation advancementId) {
             this.id = id;
             this.group = group;
             this.input = input;
@@ -188,7 +182,7 @@ public class PressingRecipeBuilder {
                 jsonObject.add("conditions", conds);
             }
 
-            jsonObject.add("result", this.output.serialize());
+            jsonObject.add("result", TCJsonUtil.serializeItemStack(this.output));
 
             jsonObject.add("ingredient", this.input.serialize());
 

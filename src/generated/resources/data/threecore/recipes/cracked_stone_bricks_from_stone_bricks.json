@@ -1,7 +1,8 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "item": "minecraft:cracked_stone_bricks"
+    "item": "minecraft:cracked_stone_bricks",
+    "count": 1
   },
   "ingredient": {
     "item": "minecraft:stone_bricks"

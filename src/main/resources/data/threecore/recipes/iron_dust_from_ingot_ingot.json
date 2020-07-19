@@ -1,7 +1,8 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "tag": "forge:dusts/iron"
+    "item": "threecore:iron_dust",
+    "count": 1
   },
   "ingredient": {
     "tag": "forge:ingots/iron"

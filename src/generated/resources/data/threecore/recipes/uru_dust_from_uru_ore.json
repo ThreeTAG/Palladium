@@ -1,7 +1,7 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "tag": "forge:dusts/uru",
+    "item": "threecore:uru_dust",
     "count": 2
   },
   "ingredient": {
