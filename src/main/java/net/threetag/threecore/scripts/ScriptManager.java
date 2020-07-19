@@ -6,8 +6,6 @@ import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.scripts.bindings.BlockStateBuilder;
@@ -112,11 +110,6 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
                 ThreeCore.LOGGER.error("Error when executing script file {}", entry.getKey(), e);
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void serverAboutToStart(AddReloadListenerEvent e) {
-        e.addListener(new ScriptManager());
     }
 
 }

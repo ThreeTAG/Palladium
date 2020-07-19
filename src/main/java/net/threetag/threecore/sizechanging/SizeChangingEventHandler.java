@@ -49,7 +49,9 @@ public class SizeChangingEventHandler
 
 		if (e.getEntity() instanceof ProjectileEntity)
 		{
-			copyScale(((ThrowableEntity) e.getEntity()).func_234616_v_(), e.getEntity());
+			Entity owner = ((ThrowableEntity) e.getEntity()).func_234616_v_();
+			if (owner != null)
+				copyScale(owner, e.getEntity());
 		}
 	}
 

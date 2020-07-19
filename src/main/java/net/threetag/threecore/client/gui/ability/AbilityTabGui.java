@@ -201,7 +201,6 @@ public class AbilityTabGui extends AbstractGui {
         func_238467_a_(stack, innerWidth, innerHeight, 0, 0, -16777216);
         RenderSystem.depthFunc(515);
 
-
         Minecraft mc = Minecraft.getInstance();
         mc.getTextureManager().bindTexture(new ResourceLocation("textures/block/red_wool.png"));
 

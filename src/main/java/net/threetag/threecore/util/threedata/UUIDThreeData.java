@@ -31,7 +31,7 @@ public class UUIDThreeData extends ThreeData<UUID> {
     public UUID readFromNBT(CompoundNBT nbt, UUID defaultValue) {
         if (!nbt.contains(this.key))
             return defaultValue;
-        return NBTUtil.readUniqueId(nbt.getCompound(this.key));
+        return NBTUtil.readUniqueId(nbt.get(this.key));
     }
 
     @Override

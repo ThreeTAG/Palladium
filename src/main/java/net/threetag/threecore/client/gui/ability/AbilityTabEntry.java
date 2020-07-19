@@ -29,7 +29,7 @@ public class AbilityTabEntry extends AbstractGui {
     protected double x, y;
     private boolean unlocked;
     protected ITextComponent title;
-    private List<String> description;
+    private List<ITextComponent> description;
     private final int width;
     List<AbilityTabEntry> parents = new LinkedList<>();
     List<AbilityTabEntry> children = new LinkedList<>();
@@ -43,10 +43,10 @@ public class AbilityTabEntry extends AbstractGui {
         int i = getProgress() != null ? getProgress()[1] : 0;
         int j = String.valueOf(i).length();
         int k = i > 1 ? Minecraft.getInstance().fontRenderer.getStringWidth("  ") + Minecraft.getInstance().fontRenderer.getStringWidth("0") * j * 2 + Minecraft.getInstance().fontRenderer.getStringWidth("/") : 0;
-        int l = 29 + Minecraft.getInstance().fontRenderer.getStringWidth(this.title.toString()) + k;
+        int l = 29 + Minecraft.getInstance().fontRenderer.func_238414_a_(this.title) + k;
 
-        for (String s1 : this.description) {
-            l = Math.max(l, Minecraft.getInstance().fontRenderer.getStringWidth(s1));
+        for (ITextComponent s1 : this.description) {
+            l = Math.max(l, Minecraft.getInstance().fontRenderer.func_238414_a_(s1));
         }
 
         this.width = l + 3 + 5;
@@ -176,11 +176,11 @@ public class AbilityTabEntry extends AbstractGui {
 
         if (flag1) {
             for (int k1 = 0; k1 < this.description.size(); ++k1) {
-                minecraft.fontRenderer.func_238421_b_(stack, this.description.get(k1), (float) (i1 + 5), (float) (l + 26 - j1 + 7 + k1 * 9), -5592406);
+                minecraft.fontRenderer.func_238407_a_(stack, this.description.get(k1), (float) (i1 + 5), (float) (l + 26 - j1 + 7 + k1 * 9), -5592406);
             }
         } else {
             for (int l1 = 0; l1 < this.description.size(); ++l1) {
-                minecraft.fontRenderer.func_238421_b_(stack, this.description.get(l1), (float) (i1 + 5), (float) (y + posY + 9 + 17 + l1 * 9), -5592406);
+                minecraft.fontRenderer.func_238407_a_(stack, this.description.get(l1), (float) (i1 + 5), (float) (y + posY + 9 + 17 + l1 * 9), -5592406);
             }
         }
 
@@ -224,13 +224,13 @@ public class AbilityTabEntry extends AbstractGui {
         }
     }
 
-    public List<String> getDescription() {
-        List<String> list = new LinkedList<>();
+    public List<ITextComponent> getDescription() {
+        List<ITextComponent> list = new LinkedList<>();
         List<Condition> conditions = this.ability.getConditionManager().getFilteredConditions(false);
 
         for (Condition condition : conditions) {
             boolean active = this.ability.getConditionManager().isActive(condition);
-            list.add(condition.getDisplayName().func_230531_f_().func_240703_c_(Style.field_240709_b_.func_240718_a_(Color.func_240744_a_(active ? TextFormatting.GREEN : TextFormatting.RED))).toString());
+            list.add(condition.getDisplayName().func_230531_f_().func_240703_c_(Style.field_240709_b_.func_240718_a_(Color.func_240744_a_(active ? TextFormatting.GREEN : TextFormatting.RED))));
         }
 
         return list;

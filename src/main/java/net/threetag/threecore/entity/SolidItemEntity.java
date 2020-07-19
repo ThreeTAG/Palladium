@@ -28,6 +28,7 @@ import net.threetag.threecore.item.SolidItem;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.UUID;
 
 public class SolidItemEntity extends Entity {
@@ -184,10 +185,12 @@ public class SolidItemEntity extends Entity {
         this.health = compound.getShort("Health");
 
         if (compound.contains("Owner", Constants.NBT.TAG_COMPOUND))
-            this.owner = NBTUtil.readUniqueId(compound.getCompound("Owner"));
+            this.owner = NBTUtil.readUniqueId(Objects.requireNonNull(compound.get("Owner")));
 
         if (compound.contains("Thrower", Constants.NBT.TAG_COMPOUND))
-            this.thrower = NBTUtil.readUniqueId(compound.getCompound("Thrower"));
+        {
+            this.thrower = NBTUtil.readUniqueId(Objects.requireNonNull(compound.get("Thrower")));
+        }
 
         CompoundNBT compoundnbt = compound.getCompound("Item");
         this.setItem(ItemStack.read(compoundnbt));

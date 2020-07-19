@@ -12,8 +12,6 @@ import net.minecraft.world.server.ServerWorld;
 import net.threetag.threecore.util.icon.ItemIcon;
 import net.threetag.threecore.util.threedata.*;
 
-import java.lang.reflect.Field;
-
 public class ProjectileAbility extends Ability {
 
     public static final ThreeData<EntityType<?>> ENTITY_TYPE = new EntityTypeThreeData("entity_type").setSyncType(EnumSync.NONE).enableSetting("Determines the entity that will be spawned");
@@ -58,19 +56,7 @@ public class ProjectileAbility extends Ability {
                 projectile.setMotion(projectile.getMotion().add(vec3d.x, entity.func_233570_aj_() ? 0.0D : vec3d.y, vec3d.z));
 
                 if (projectile instanceof ThrowableEntity) {
-                    try {
-                        Field field2 = ThrowableEntity.class.getDeclaredFields()[5];
-                        field2.setAccessible(true);
-                        field2.set(projectile, entity);
-                        field2.setAccessible(false);
-
-                        Field field = ThrowableEntity.class.getDeclaredFields()[6];
-                        field.setAccessible(true);
-                        field.set(projectile, entity.getUniqueID());
-                        field.setAccessible(false);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
+                    ((ThrowableEntity) projectile).setShooter(entity);
                 }
                 return !world.summonEntity(projectile) ? null : projectile;
             });

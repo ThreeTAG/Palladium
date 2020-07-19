@@ -64,6 +64,7 @@ import net.threetag.threecore.loot.function.TCLootFunctions;
 import net.threetag.threecore.network.*;
 import net.threetag.threecore.potion.TCEffects;
 import net.threetag.threecore.scripts.ScriptEventManager;
+import net.threetag.threecore.scripts.ScriptManager;
 import net.threetag.threecore.scripts.accessors.ScriptAccessor;
 import net.threetag.threecore.sound.TCSounds;
 import net.threetag.threecore.tileentity.TCTileEntityTypes;
@@ -248,8 +249,9 @@ public class ThreeCore {
     }
 
     @SubscribeEvent
-    public void serverAboutToStart(AddReloadListenerEvent event) {
+    public void addListenerEvent(AddReloadListenerEvent event) {
         event.addListener(new SuperpowerManager());
+        event.addListener(new ScriptManager());
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             event.addListener(new EntityModelManager());
             event.addListener(new ModelLayerLoader());

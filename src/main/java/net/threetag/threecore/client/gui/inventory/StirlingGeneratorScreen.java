@@ -29,8 +29,8 @@ public class StirlingGeneratorScreen extends ContainerScreen<StirlingGeneratorCo
 
     @Override
     protected void func_230451_b_(MatrixStack stack, int mouseX, int mouseY) {
-        this.field_230712_o_.func_238407_a_(stack, this.func_231171_q_(), (float) (this.xSize / 2 - this.field_230712_o_.getStringWidth(this.func_231171_q_().toString()) / 2), 6.0F, 4210752);
-        this.field_230712_o_.func_238407_a_(stack, this.playerInventory.getDisplayName(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
+        this.field_230712_o_.func_238422_b_(stack, this.func_231171_q_(), (float) (this.xSize / 2 - this.field_230712_o_.func_238414_a_(this.func_231171_q_()) / 2), 6.0F, 4210752);
+        this.field_230712_o_.func_238422_b_(stack, this.playerInventory.getDisplayName(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
         EnergyUtil.drawTooltip(stack, this.container.getEnergyStored(), this.container.getMaxEnergyStored(), this, 8, 48, 12, 40, mouseX - this.guiLeft, mouseY - this.guiTop);
         TCFluidUtil.drawTooltip(this.container.stirlingGeneratorTileEntity.fluidTank, stack, this, 152, 38, 16, 60, mouseX - this.guiLeft, mouseY - this.guiTop);
     }

@@ -10,7 +10,7 @@ public class ScriptCommandSource implements ICommandSource {
 
     @Override public void sendMessage(ITextComponent component, UUID p_145747_2_)
     {
-        ThreeCore.LOGGER.error("Script Command Error: " + component.toString());
+        ThreeCore.LOGGER.error("Script Command Error: " + component.getString());
     }
 
     @Override
