@@ -6,9 +6,6 @@ import net.threetag.threecore.util.threedata.IntegerThreeData;
 import net.threetag.threecore.util.threedata.ThreeData;
 import net.minecraft.entity.LivingEntity;
 
-/**
- * Created by Nictogen on 2019-06-08.
- */
 public class CooldownCondition extends Condition {
 
     public static final ThreeData<Integer> MAX_COOLDOWN = new IntegerThreeData("max_cooldown").setSyncType(EnumSync.SELF).enableSetting("cooldown", "Maximum cooldown for using this ability");

@@ -19,6 +19,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -48,6 +49,7 @@ import net.threetag.threecore.command.ArmorStandPoseCommand;
 import net.threetag.threecore.command.KarmaCommand;
 import net.threetag.threecore.command.SizeChangeCommand;
 import net.threetag.threecore.command.SuperpowerCommand;
+import net.threetag.threecore.compat.curios.CuriosHandler;
 import net.threetag.threecore.container.TCContainerTypes;
 import net.threetag.threecore.data.ThreeCoreBlockTagsProvider;
 import net.threetag.threecore.data.ThreeCoreEntityTypeTagsProvider;
@@ -149,7 +151,7 @@ public class ThreeCore {
         TCLootFunctions.register();
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public void setup(FMLCommonSetupEvent e) {
         // Ores
         TCBlocks.initOres();
@@ -162,6 +164,11 @@ public class ThreeCore {
 
         //Attributes
         TCAttributes.init();
+
+        // Curios Handler
+        if (ModList.get().isLoaded("curios")) {
+            CuriosHandler.enable();
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

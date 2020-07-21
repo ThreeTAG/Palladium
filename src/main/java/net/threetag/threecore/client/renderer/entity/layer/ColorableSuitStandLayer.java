@@ -20,7 +20,6 @@ public class ColorableSuitStandLayer extends LayerRenderer<SuitStandEntity, Suit
     }
 
     @Override
-    // TODO fix variables
     public void render(MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLightIn, SuitStandEntity suitStandEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         matrixStack.push();
         if (!suitStandEntity.isInvisible()) {
@@ -28,21 +27,21 @@ public class ColorableSuitStandLayer extends LayerRenderer<SuitStandEntity, Suit
             float green;
             float blue;
             if (suitStandEntity.hasCustomName() && "jeb_".equals(suitStandEntity.getName().getUnformattedComponentText())) {
-                int lvt_15_1_ = suitStandEntity.ticksExisted / 25 + suitStandEntity.getEntityId();
-                int lvt_16_1_ = DyeColor.values().length;
-                int lvt_17_1_ = lvt_15_1_ % lvt_16_1_;
-                int lvt_18_1_ = (lvt_15_1_ + 1) % lvt_16_1_;
-                float lvt_19_1_ = ((float) (suitStandEntity.ticksExisted % 25) + partialTicks) / 25.0F;
-                float[] lvt_20_1_ = SheepEntity.getDyeRgb(DyeColor.byId(lvt_17_1_));
-                float[] lvt_21_1_ = SheepEntity.getDyeRgb(DyeColor.byId(lvt_18_1_));
-                red = lvt_20_1_[0] * (1.0F - lvt_19_1_) + lvt_21_1_[0] * lvt_19_1_;
-                green = lvt_20_1_[1] * (1.0F - lvt_19_1_) + lvt_21_1_[1] * lvt_19_1_;
-                blue = lvt_20_1_[2] * (1.0F - lvt_19_1_) + lvt_21_1_[2] * lvt_19_1_;
+                int time = suitStandEntity.ticksExisted / 25 + suitStandEntity.getEntityId();
+                int colors = DyeColor.values().length;
+                int j = time % colors;
+                int k = (time + 1) % colors;
+                float f = ((float) (suitStandEntity.ticksExisted % 25) + partialTicks) / 25.0F;
+                float[] afloat1 = SheepEntity.getDyeRgb(DyeColor.byId(j));
+                float[] afloat2 = SheepEntity.getDyeRgb(DyeColor.byId(k));
+                red = afloat1[0] * (1.0F - f) + afloat2[0] * f;
+                green = afloat1[1] * (1.0F - f) + afloat2[1] * f;
+                blue = afloat1[2] * (1.0F - f) + afloat2[2] * f;
             } else {
-                float[] lvt_14_2_ = SheepEntity.getDyeRgb(suitStandEntity.getDyeColor());
-                red = lvt_14_2_[0];
-                green = lvt_14_2_[1];
-                blue = lvt_14_2_[2];
+                float[] afloat = SheepEntity.getDyeRgb(suitStandEntity.getDyeColor());
+                red = afloat[0];
+                green = afloat[1];
+                blue = afloat[2];
             }
 
             this.getEntityModel().setModelAttributes(this.model);

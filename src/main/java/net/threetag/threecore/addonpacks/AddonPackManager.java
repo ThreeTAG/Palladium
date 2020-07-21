@@ -15,6 +15,7 @@ import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 import net.minecraftforge.fml.packs.ModFileResourcePack;
 import net.minecraftforge.fml.packs.ResourcePackLoader;
 import net.threetag.threecore.addonpacks.item.ItemParser;
+import net.threetag.threecore.addonpacks.particle.ParticleParser;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -56,6 +57,7 @@ public class AddonPackManager {
 
         // Setup default parsers
         FMLJavaModLoadingContext.get().getModEventBus().register(new ItemParser());
+        FMLJavaModLoadingContext.get().getModEventBus().register(new ParticleParser());
 
         // Add Pack Finder to client
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
