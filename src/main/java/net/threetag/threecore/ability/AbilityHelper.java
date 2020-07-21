@@ -15,6 +15,7 @@ import net.threetag.threecore.ability.condition.Condition;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class AbilityHelper {
 
@@ -141,8 +142,8 @@ public class AbilityHelper {
         return loadFromNBT(nbt, map, false);
     }
 
-    public static List<AbilityGenerator> parseAbilityGenerators(JsonObject jsonObject, boolean useId) {
-        List<AbilityGenerator> abilityGenerators = Lists.newArrayList();
+    public static List<Supplier<Ability>> parseAbilityGenerators(JsonObject jsonObject, boolean useId) {
+        List<Supplier<Ability>> abilityGenerators = Lists.newArrayList();
         jsonObject.entrySet().forEach((e) -> {
             if (e.getValue() instanceof JsonObject) {
                 JsonObject o = (JsonObject) e.getValue();
@@ -159,7 +160,7 @@ public class AbilityHelper {
         return abilityGenerators;
     }
 
-    public static List<AbilityGenerator> parseAbilityGenerators(JsonObject jsonObject) {
+    public static List<Supplier<Ability>> parseAbilityGenerators(JsonObject jsonObject) {
         return parseAbilityGenerators(jsonObject, false);
     }
 

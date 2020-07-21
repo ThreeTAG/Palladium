@@ -1,32 +1,32 @@
 package net.threetag.threecore.ability.superpower;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.threetag.threecore.ability.Ability;
-import net.threetag.threecore.ability.AbilityGenerator;
 import net.threetag.threecore.ability.AbilityMap;
 import net.threetag.threecore.ability.IAbilityProvider;
 import net.threetag.threecore.util.icon.IIcon;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class Superpower implements IAbilityProvider {
 
     protected final ResourceLocation id;
     protected ITextComponent name;
     protected IIcon icon;
-    protected List<AbilityGenerator> abilityGenerators;
+    protected List<Supplier<Ability>> abilityGenerators;
 
-    public Superpower(ResourceLocation id, ITextComponent name, IIcon icon, AbilityGenerator... abilityGenerators) {
+    public Superpower(ResourceLocation id, ITextComponent name, IIcon icon, Supplier<Ability>... abilityGenerators) {
         this.id = id;
         this.name = name;
         this.icon = icon;
         this.abilityGenerators = Arrays.asList(abilityGenerators);
     }
 
-    public Superpower(ResourceLocation id, ITextComponent name, IIcon icon, List<AbilityGenerator> abilityGenerators) {
+    public Superpower(ResourceLocation id, ITextComponent name, IIcon icon, List<Supplier<Ability>> abilityGenerators) {
         this.id = id;
         this.name = name;
         this.icon = icon;
@@ -49,11 +49,11 @@ public class Superpower implements IAbilityProvider {
     public AbilityMap getAbilities() {
         AbilityMap abilityMap = new AbilityMap();
         this.abilityGenerators.forEach(a -> {
-            Ability ability = a.create();
+            Ability ability = a.get();
             CompoundNBT nbt = ability.getAdditionalData();
             nbt.putString("Superpower", this.getId().toString());
             ability.setAdditionalData(nbt);
-            abilityMap.put(a.key, ability);
+            abilityMap.put(ability.getId(), ability);
         });
         return abilityMap;
     }

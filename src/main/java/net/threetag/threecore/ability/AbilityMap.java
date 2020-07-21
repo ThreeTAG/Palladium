@@ -3,6 +3,7 @@ package net.threetag.threecore.ability;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class AbilityMap extends LinkedHashMap<String, Ability> {
 
@@ -25,10 +26,11 @@ public class AbilityMap extends LinkedHashMap<String, Ability> {
         super(initialCapacity, loadFactor, accessOrder);
     }
 
-    public AbilityMap(List<AbilityGenerator> abilityGenerators) {
+    public AbilityMap(List<Supplier<Ability>> abilityGenerators) {
         if (abilityGenerators != null)
             abilityGenerators.forEach(a -> {
-                this.put(a.key, a.create());
+                Ability ability = a.get();
+                this.put(ability.getId(), ability);
             });
     }
 

@@ -15,10 +15,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.DistExecutor;
-import net.threetag.threecore.ability.AbilityGenerator;
-import net.threetag.threecore.ability.AbilityHelper;
-import net.threetag.threecore.ability.AbilityMap;
-import net.threetag.threecore.ability.IAbilityProvider;
+import net.threetag.threecore.ability.*;
 import net.threetag.threecore.capability.ItemAbilityContainerProvider;
 
 import javax.annotation.Nullable;
@@ -27,7 +24,7 @@ import java.util.function.Supplier;
 
 public class ShieldAbilityItem extends ShieldItem implements IAbilityProvider {
 
-    private List<AbilityGenerator> abilityGenerators;
+    private List<Supplier<Ability>> abilityGenerators;
     private List<ITextComponent> description;
     private final int useDuration;
     private final LazyValue<Ingredient> repairMaterial;
@@ -48,12 +45,12 @@ public class ShieldAbilityItem extends ShieldItem implements IAbilityProvider {
         return this.repairMaterial.getValue().test(repairMaterial);
     }
 
-    public ShieldAbilityItem setAbilities(List<AbilityGenerator> abilities) {
+    public ShieldAbilityItem setAbilities(List<Supplier<Ability>> abilities) {
         this.abilityGenerators = abilities;
         return this;
     }
 
-    public ShieldAbilityItem addAbility(AbilityGenerator abilityGenerator) {
+    public ShieldAbilityItem addAbility(Supplier<Ability> abilityGenerator) {
         if (this.abilityGenerators == null)
             this.abilityGenerators = Lists.newArrayList();
         this.abilityGenerators.add(abilityGenerator);

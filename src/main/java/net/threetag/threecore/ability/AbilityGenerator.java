@@ -4,7 +4,9 @@ import com.google.gson.JsonObject;
 import net.minecraft.util.ResourceLocation;
 import net.threetag.threecore.ThreeCore;
 
-public class AbilityGenerator {
+import java.util.function.Supplier;
+
+public class AbilityGenerator implements Supplier<Ability> {
 
     public final String key;
     public AbilityType abilityType;
@@ -37,4 +39,8 @@ public class AbilityGenerator {
         return ability;
     }
 
+    @Override
+    public Ability get() {
+        return this.create();
+    }
 }
