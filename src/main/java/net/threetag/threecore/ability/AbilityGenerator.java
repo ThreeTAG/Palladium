@@ -28,6 +28,7 @@ public class AbilityGenerator implements Supplier<Ability> {
 
     public AbilityGenerator(String key, Supplier<Ability> abilitySupplier) {
         this.key = key;
+        this.abilitySupplier = abilitySupplier;
     }
 
     public AbilityType getAbilityType() {
