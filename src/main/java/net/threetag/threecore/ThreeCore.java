@@ -1,10 +1,12 @@
 package net.threetag.threecore;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -134,6 +136,10 @@ public class ThreeCore {
             // Client Setup
             MinecraftForge.EVENT_BUS.register(new AbilityClientEventHandler());
 
+            if (Minecraft.getInstance() != null) {
+                ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new EntityModelManager());
+                ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new ModelLayerLoader());
+            }
         });
     }
 
@@ -271,10 +277,6 @@ public class ThreeCore {
         public void addListenerEvent(AddReloadListenerEvent event) {
             event.addListener(new SuperpowerManager());
             event.addListener(new ScriptManager());
-            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-                event.addListener(new EntityModelManager());
-                event.addListener(new ModelLayerLoader());
-            });
         }
 
         @OnlyIn(Dist.CLIENT)
