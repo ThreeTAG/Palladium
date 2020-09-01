@@ -22,6 +22,13 @@ public class FluidComposerScreen extends ContainerScreen<FluidComposerContainer>
     }
 
     @Override
+    protected void init() {
+        super.init();
+        this.titleX = (this.xSize - this.font.func_238414_a_(this.title)) / 2;
+        this.playerInventoryTitleY = this.ySize - 94;
+    }
+
+    @Override
     public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
@@ -30,8 +37,7 @@ public class FluidComposerScreen extends ContainerScreen<FluidComposerContainer>
 
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
-        this.font.func_238422_b_(stack, this.title.func_241878_f(),  (float) (this.xSize / 2 - this.font.getStringWidth(this.title.getString()) / 2), 6.0F, 4210752);
-        this.font.func_238422_b_(stack, this.playerInventory.getDisplayName().func_241878_f(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
+        super.drawGuiContainerForegroundLayer(stack, mouseX, mouseY);
         EnergyUtil.drawTooltip(stack, this.container.getEnergyStored(), this.container.getMaxEnergyStored(), this, 68, 97, 40, 12, mouseX - this.guiLeft, mouseY - this.guiTop);
         TCFluidUtil.drawTooltip(this.container.fluidComposerTileEntity.inputFluidTank, stack, this, 8, 38, 16, 60, mouseX - this.guiLeft, mouseY - this.guiTop);
         TCFluidUtil.drawTooltip(this.container.fluidComposerTileEntity.outputFluidTank, stack, this, 152, 38, 16, 60, mouseX - this.guiLeft, mouseY - this.guiTop);

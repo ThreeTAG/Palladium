@@ -117,12 +117,12 @@ public class AbilitiesScreen extends Screen {
         this.renderToolTips(stack, mouseX, mouseY, i, j);
 
         if (this.overlayScreen != null) {
-            stack.push();
+            RenderSystem.pushMatrix();
             RenderSystem.enableDepthTest();
-            stack.translate(0, 0, 950);
+            RenderSystem.translatef(0, 0, 950);
             this.overlayScreen.render(stack, mouseX, mouseY, partialTicks);
             this.selectedTab.fade = MathHelper.clamp(this.selectedTab.fade + 0.02F, 0, 0.5F);
-            stack.pop();
+            RenderSystem.popMatrix();
         }
     }
 
@@ -161,11 +161,11 @@ public class AbilitiesScreen extends Screen {
             this.font.func_243248_b(stack, s, (float) (x + 9 + 117 - i / 2), (float) (y + 18 + 56 - 9 / 2), -1);
             this.font.func_243248_b(stack, new StringTextComponent(":("), (float) (x + 9 + 117 - this.font.getStringWidth(":(") / 2), (float) (y + 18 + 113 - 9), -1);
         } else {
-            stack.push();
-            stack.translate((double) x + 9, (double) y + 18, 0.0);
+            RenderSystem.pushMatrix();
+            RenderSystem.translated((double) x + 9, (double) y + 18, 0.0);
             RenderSystem.enableDepthTest();
             tab.drawContents(stack);
-            stack.pop();
+            RenderSystem.popMatrix();
             RenderSystem.depthFunc(515);
             RenderSystem.disableDepthTest();
         }
@@ -174,12 +174,12 @@ public class AbilitiesScreen extends Screen {
     private void renderToolTips(MatrixStack stack, int mouseX, int mouseY, int x, int y) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.selectedTab != null) {
-            stack.push();
+            RenderSystem.pushMatrix();
             RenderSystem.enableDepthTest();
-            stack.translate(x + 9, y + 18, 400.0);
+            RenderSystem.translated(x + 9, y + 18, 400.0);
             this.selectedTab.drawToolTips(stack, mouseX - x - 9, mouseY - y - 18, x, y, this, this.overlayScreen != null);
             RenderSystem.disableDepthTest();
-            stack.pop();
+            RenderSystem.popMatrix();
         }
 
         if (this.overlayScreen == null && this.tabs.size() > 0) {

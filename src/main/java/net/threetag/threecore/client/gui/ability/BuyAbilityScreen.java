@@ -71,11 +71,11 @@ public class BuyAbilityScreen extends Screen {
             this.font.func_238407_a_(stack, text, i + 120 - width / 2f, j + 9 + k * 10, 4210752);
         }
 
-        stack.push();
-        stack.translate(i + 14, j + 14, 0);
-        stack.scale(2, 2, 1);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(i + 14, j + 14, 0);
+        RenderSystem.scalef(2, 2, 1);
         this.icon.draw(this.getMinecraft(), stack, 0, 0);
-        stack.pop();
+        RenderSystem.popMatrix();
 
         super.render(stack, mouseX, mouseY, partialTicks);
 

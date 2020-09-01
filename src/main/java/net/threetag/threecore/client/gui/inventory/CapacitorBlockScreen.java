@@ -17,6 +17,12 @@ public class CapacitorBlockScreen extends ContainerScreen<CapacitorBlockContaine
     public CapacitorBlockScreen(CapacitorBlockContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
         this.ySize = 132;
+        this.playerInventoryTitleY = this.ySize - 94;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
     }
 
     @Override
@@ -28,8 +34,7 @@ public class CapacitorBlockScreen extends ContainerScreen<CapacitorBlockContaine
 
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
-        this.font.drawString(stack, this.title.getString(), 8.0F, 6.0F, 4210752);
-        this.font.drawString(stack, this.playerInventory.getDisplayName().getString(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
+        super.drawGuiContainerForegroundLayer(stack, mouseX, mouseY);
         EnergyUtil.drawTooltip(stack, this.container.getEnergyStored(), this.container.getMaxEnergyStored(), this, 68, 20, 40, 12, mouseX - this.guiLeft, mouseY - this.guiTop);
     }
 

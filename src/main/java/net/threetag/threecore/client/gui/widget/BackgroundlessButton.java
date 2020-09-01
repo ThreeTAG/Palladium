@@ -3,7 +3,6 @@ package net.threetag.threecore.client.gui.widget;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 
 public class BackgroundlessButton extends Button {
@@ -16,7 +15,7 @@ public class BackgroundlessButton extends Button {
 
     @Override
     public void renderButton(MatrixStack matrixStack, int x, int y, float partialTicks) {
-        drawCenteredString(matrixStack, Minecraft.getInstance().fontRenderer, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, this.getFGColor() | MathHelper.ceil(this.alpha * 255.0F) << 24);
+        Minecraft.getInstance().fontRenderer.drawString(matrixStack, this.getMessage().getString(), this.x + (this.width - Minecraft.getInstance().fontRenderer.func_238414_a_(this.getMessage())) / 2F, this.y - 1, 4210752);
         if (this.isHovered()) {
             this.renderToolTip(matrixStack, x, y);
         }

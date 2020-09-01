@@ -86,8 +86,9 @@ public class AbilityBarRenderer {
     @SubscribeEvent
     public void renderHUD(RenderGameOverlayEvent.Post e) {
         Minecraft mc = Minecraft.getInstance();
+
         if (e.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-            e.getMatrixStack().push();
+            RenderSystem.pushMatrix();
             Tessellator tes = Tessellator.getInstance();
             BufferBuilder bb = tes.getBuffer();
             List<Ability> abilities = getCurrentDisplayedAbilities(AbilityHelper.getAbilities(mc.player));
@@ -124,7 +125,7 @@ public class AbilityBarRenderer {
                 }
             }
             RenderSystem.color4f(1, 1, 1, 1F);
-            e.getMatrixStack().pop();
+            RenderSystem.popMatrix();
         }
     }
 

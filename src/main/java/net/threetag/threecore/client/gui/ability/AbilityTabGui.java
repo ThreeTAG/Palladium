@@ -190,13 +190,13 @@ public class AbilityTabGui extends AbstractGui {
             this.centered = true;
         }
 
-        stack.push();
+        RenderSystem.pushMatrix();
         RenderSystem.enableDepthTest();
-        stack.translate(0, 0, 950);
+        RenderSystem.translatef(0, 0, 950);
         RenderSystem.colorMask(false, false, false, false);
         fill(stack, 4680, 2260, -4680, -2260, -16777216);
         RenderSystem.colorMask(true, true, true, true);
-        stack.translate(0, 0, -950);
+        RenderSystem.translatef(0, 0, -950);
         RenderSystem.depthFunc(518);
         fill(stack, innerWidth, innerHeight, 0, 0, -16777216);
         RenderSystem.depthFunc(515);
@@ -228,19 +228,19 @@ public class AbilityTabGui extends AbstractGui {
         }
 
         RenderSystem.depthFunc(518);
-        stack.translate(0, 0, -950);
+        RenderSystem.translatef(0, 0, -950);
         RenderSystem.colorMask(false, false, false, false);
         //fill
         fill(stack, 4680, 2260, -4680, -2260, -16777216);
         RenderSystem.colorMask(true, true, true, true);
-        stack.translate(0, 0, 950);
+        RenderSystem.translatef(0, 0, 950);
         RenderSystem.depthFunc(515);
-        stack.pop();
+        RenderSystem.popMatrix();
     }
 
     public void drawToolTips(MatrixStack stack, int mouseX, int mouseY, int x, int y, AbilitiesScreen screen, boolean overlayActive) {
-        stack.push();
-        stack.translate(0, 0, 200);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(0, 0, 200);
         fill(stack, 0, 0, innerWidth, innerHeight, MathHelper.floor(this.fade * 255.0F) << 24);
         boolean flag = false;
 
@@ -258,7 +258,7 @@ public class AbilityTabGui extends AbstractGui {
             }
         }
 
-        stack.pop();
+        RenderSystem.popMatrix();
         if (!overlayActive) {
             if (flag) {
                 this.fade = MathHelper.clamp(this.fade + 0.02F, 0.0F, 0.3F);

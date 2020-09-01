@@ -60,11 +60,11 @@ public class AbilityScreen extends Screen {
         if (this.keyButton != null)
             this.font.drawString(stack, I18n.format("gui.threecore.abilities.keybind"), i + 143, j + 20, 4210752);
 
-        stack.push();
-        stack.translate(i + 14, j + 18, -70);
-        stack.scale(2, 2, 1);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(i + 14, j + 18, -70);
+        RenderSystem.scalef(2, 2, 1);
         this.ability.drawIcon(this.getMinecraft(), stack, this, 0, 0);
-        stack.pop();
+        RenderSystem.popMatrix();
 
         super.render(stack, mouseX, mouseY, partialTicks);
     }

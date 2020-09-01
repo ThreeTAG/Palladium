@@ -1,6 +1,7 @@
 package net.threetag.threecore.client.gui.inventory;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -21,6 +22,13 @@ public class StirlingGeneratorScreen extends ContainerScreen<StirlingGeneratorCo
     }
 
     @Override
+    protected void init() {
+        super.init();
+        this.titleX = (this.xSize - this.font.func_238414_a_(this.title)) / 2;
+        this.playerInventoryTitleY = this.ySize - 94;
+    }
+
+    @Override
     public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
@@ -29,15 +37,14 @@ public class StirlingGeneratorScreen extends ContainerScreen<StirlingGeneratorCo
 
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
-        this.font.func_238422_b_(stack, this.title.func_241878_f(), (float) (this.xSize / 2 - this.font.func_238414_a_(this.title) / 2), 6.0F, 4210752);
-        this.font.func_238422_b_(stack, this.playerInventory.getDisplayName().func_241878_f(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
+        super.drawGuiContainerForegroundLayer(stack, mouseX, mouseY);
         EnergyUtil.drawTooltip(stack, this.container.getEnergyStored(), this.container.getMaxEnergyStored(), this, 8, 48, 12, 40, mouseX - this.guiLeft, mouseY - this.guiTop);
         TCFluidUtil.drawTooltip(this.container.stirlingGeneratorTileEntity.fluidTank, stack, this, 152, 38, 16, 60, mouseX - this.guiLeft, mouseY - this.guiTop);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
-//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.getMinecraft().getTextureManager().bindTexture(STIRLING_GENERATOR_GUI_TEXTURES);
         int left = this.guiLeft;
         int top = this.guiTop;

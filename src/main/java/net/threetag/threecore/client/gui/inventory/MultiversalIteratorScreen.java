@@ -32,6 +32,12 @@ public class MultiversalIteratorScreen extends ContainerScreen<MultiversalIterat
         super(containerIn, playerInv, titleIn);
         containerIn.setInventoryUpdateListener(this::onInventoryUpdate);
         this.ySize = 198;
+        this.playerInventoryTitleY = this.ySize - 94;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
     }
 
     @Override
@@ -51,8 +57,7 @@ public class MultiversalIteratorScreen extends ContainerScreen<MultiversalIterat
 
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
-        this.font.func_238422_b_(stack, this.title.func_241878_f(), 8.0F, 6.0F, 4210752);
-        this.font.func_238422_b_(stack, this.playerInventory.getDisplayName().func_241878_f(), 8.0F, (float) (this.ySize - 94), 4210752);
+        super.drawGuiContainerForegroundLayer(stack, mouseX, mouseY);
         Random random = new Random(this.getMinecraft().player.ticksExisted / 2);
         String s;
         if (MultiversalExtrapolatorItem.hasValidUniverse(this.container.getSlot(0).getStack())) {

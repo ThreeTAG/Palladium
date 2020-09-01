@@ -37,6 +37,7 @@ public class ConstructionTableScreen<T extends AbstractConstructionTableContaine
         super(container, playerInventory, title);
         this.texture = texture;
         this.ySize = ySize;
+        this.playerInventoryTitleY = this.ySize - 94;
     }
 
     @Override
@@ -65,6 +66,8 @@ public class ConstructionTableScreen<T extends AbstractConstructionTableContaine
             button.active = this.container.getType() != entry.getValue().containerType.get();
             this.addButton(button);
         }
+
+        this.titleX = 28;
     }
 
     @Override
@@ -72,12 +75,6 @@ public class ConstructionTableScreen<T extends AbstractConstructionTableContaine
         this.renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
         this.func_230459_a_(stack, mouseX, mouseY);
-    }
-
-    @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
-        this.font.func_238422_b_(stack, this.title.func_241878_f(), 28.0F, 6.0F, 4210752);
-        this.font.func_238422_b_(stack, this.playerInventory.getDisplayName().func_241878_f(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
     }
 
     @Override
