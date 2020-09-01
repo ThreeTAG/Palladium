@@ -34,11 +34,11 @@ public class ItemIcon implements IIcon {
         RenderHelper.disableStandardItemLighting();
         if (this.stack.getCount() > 1) {
             String text = this.stack.getCount() + "x";
-            mc.fontRenderer.func_238421_b_(stack, text, (float) (x + 9), (float) y + 8, 0);
-            mc.fontRenderer.func_238421_b_(stack, text, (float) (x + 7), (float) y + 8, 0);
-            mc.fontRenderer.func_238421_b_(stack, text, (float) x + 8, (float) (y + 9), 0);
-            mc.fontRenderer.func_238421_b_(stack, text, (float) x + 8, (float) (y + 7), 0);
-            mc.fontRenderer.func_238421_b_(stack, text, (float) x + 8, (float) y + 8, 0xffffff);
+            mc.fontRenderer.drawString(stack, text, (float) (x + 9), (float) y + 8, 0);
+            mc.fontRenderer.drawString(stack, text, (float) (x + 7), (float) y + 8, 0);
+            mc.fontRenderer.drawString(stack, text, (float) x + 8, (float) (y + 9), 0);
+            mc.fontRenderer.drawString(stack, text, (float) x + 8, (float) (y + 7), 0);
+            mc.fontRenderer.drawString(stack, text, (float) x + 8, (float) y + 8, 0xffffff);
         }
     }
 

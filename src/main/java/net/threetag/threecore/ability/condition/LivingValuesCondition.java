@@ -57,7 +57,7 @@ public class LivingValuesCondition extends Condition {
                     maxValue = 20;
                     break;
                 case TOUGHNESS:
-                    value = (float) entity.getAttribute(Attributes.field_233827_j_).getValue();
+                    value = (float) entity.getAttribute(Attributes.ARMOR_TOUGHNESS).getValue();
                     maxValue = 12;
                     break;
                 case EXPERIENCE_BAR:

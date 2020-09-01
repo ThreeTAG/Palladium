@@ -8,7 +8,6 @@ import net.minecraft.client.gui.advancements.AdvancementState;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.Color;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -96,9 +95,9 @@ public class AbilityTabEntry extends AbstractGui {
     }
 
     public void drawIcon(Minecraft mc, MatrixStack stack, int x, int y) {
-//        RenderSystem.color4f(1, 1, 1, 1);
+        RenderSystem.color4f(1, 1, 1, 1);
         mc.getTextureManager().bindTexture(AbilitiesScreen.WIDGETS);
-        this.func_238474_b_(stack, x - 13, y - 13, 0, this.unlocked ? 128 : 154, 26, 26);
+        this.blit(stack, x - 13, y - 13, 0, this.unlocked ? 128 : 154, 26, 26);
         this.drawDisplayIcon(mc, stack, x - 8, y - 8);
     }
 
@@ -106,7 +105,7 @@ public class AbilityTabEntry extends AbstractGui {
         Minecraft minecraft = Minecraft.getInstance();
         int posX = (int) (this.x * AbilityTabGui.gridSize) - 16;
         int posY = (int) (this.y * AbilityTabGui.gridSize) - 13;
-        boolean flag = p_191821_4_ + x + posX + this.width + 26 >= gui.field_230708_k_;
+        boolean flag = p_191821_4_ + x + posX + this.width + 26 >= gui.width;
         int[] progress = getProgress();
         String s = progress != null ? progress[0] + "/" + progress[1] : null;
         int i = s == null ? 0 : minecraft.fontRenderer.getStringWidth(s);
@@ -139,7 +138,7 @@ public class AbilityTabEntry extends AbstractGui {
 
         int k = this.width - j;
         minecraft.getTextureManager().bindTexture(AbilitiesScreen.WIDGETS);
-//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableBlend();
         int l = y + posY;
         int i1;
@@ -158,29 +157,29 @@ public class AbilityTabEntry extends AbstractGui {
             }
         }
 
-        this.func_238474_b_(stack, i1, l, 0, advancementstate.getId() * 26, j, 26);
-        this.func_238474_b_(stack, i1 + j, l, 200 - k, advancementstate1.getId() * 26, k, 26);
-        this.func_238474_b_(stack, x + posX + 3, y + posY, 0, 128 + advancementstate2.getId() * 26, 26, 26);
+        this.blit(stack, i1, l, 0, advancementstate.getId() * 26, j, 26);
+        this.blit(stack, i1 + j, l, 200 - k, advancementstate1.getId() * 26, k, 26);
+        this.blit(stack, x + posX + 3, y + posY, 0, 128 + advancementstate2.getId() * 26, 26, 26);
         if (flag) {
             //draw string with shadow
-            minecraft.fontRenderer.func_238407_a_(stack, this.title, (float) (i1 + 5), (float) (y + posY + 9), -1);
+            minecraft.fontRenderer.drawStringWithShadow(stack, this.title.getString(), (float) (i1 + 5), (float) (y + posY + 9), -1);
             if (s != null) {
-                minecraft.fontRenderer.func_238405_a_(stack, s, (float) (x + posX - i), (float) (y + posY + 9), -1);
+                minecraft.fontRenderer.drawString(stack, s, (float) (x + posX - i), (float) (y + posY + 9), -1);
             }
         } else {
-            minecraft.fontRenderer.func_238407_a_(stack, this.title, (float) (x + posX + 32), (float) (y + posY + 9), -1);
+            minecraft.fontRenderer.drawStringWithShadow(stack, this.title.getString(), (float) (x + posX + 32), (float) (y + posY + 9), -1);
             if (s != null) {
-                minecraft.fontRenderer.func_238405_a_(stack, s, (float) (x + posX + this.width - i - 5), (float) (y + posY + 9), -1);
+                minecraft.fontRenderer.drawString(stack, s, (float) (x + posX + this.width - i - 5), (float) (y + posY + 9), -1);
             }
         }
 
         if (flag1) {
             for (int k1 = 0; k1 < this.description.size(); ++k1) {
-                minecraft.fontRenderer.func_238407_a_(stack, this.description.get(k1), (float) (i1 + 5), (float) (l + 26 - j1 + 7 + k1 * 9), -5592406);
+                minecraft.fontRenderer.drawString(stack, this.description.get(k1).getString(), (float) (i1 + 5), (float) (l + 26 - j1 + 7 + k1 * 9), -5592406);
             }
         } else {
             for (int l1 = 0; l1 < this.description.size(); ++l1) {
-                minecraft.fontRenderer.func_238407_a_(stack, this.description.get(l1), (float) (i1 + 5), (float) (y + posY + 9 + 17 + l1 * 9), -5592406);
+                minecraft.fontRenderer.drawString(stack, this.description.get(l1).getString(), (float) (i1 + 5), (float) (y + posY + 9 + 17 + l1 * 9), -5592406);
             }
         }
 
@@ -189,12 +188,12 @@ public class AbilityTabEntry extends AbstractGui {
     }
 
     protected void render9Sprite(MatrixStack stack, int p_192994_1_, int p_192994_2_, int p_192994_3_, int p_192994_4_, int p_192994_5_, int p_192994_6_, int p_192994_7_, int p_192994_8_, int p_192994_9_) {
-        this.func_238474_b_(stack, p_192994_1_, p_192994_2_, p_192994_8_, p_192994_9_, p_192994_5_, p_192994_5_);
+        this.blit(stack, p_192994_1_, p_192994_2_, p_192994_8_, p_192994_9_, p_192994_5_, p_192994_5_);
         this.renderRepeating(stack,p_192994_1_ + p_192994_5_, p_192994_2_, p_192994_3_ - p_192994_5_ - p_192994_5_, p_192994_5_, p_192994_8_ + p_192994_5_, p_192994_9_, p_192994_6_ - p_192994_5_ - p_192994_5_, p_192994_7_);
-        this.func_238474_b_(stack, p_192994_1_ + p_192994_3_ - p_192994_5_, p_192994_2_, p_192994_8_ + p_192994_6_ - p_192994_5_, p_192994_9_, p_192994_5_, p_192994_5_);
-        this.func_238474_b_(stack, p_192994_1_, p_192994_2_ + p_192994_4_ - p_192994_5_, p_192994_8_, p_192994_9_ + p_192994_7_ - p_192994_5_, p_192994_5_, p_192994_5_);
+        this.blit(stack, p_192994_1_ + p_192994_3_ - p_192994_5_, p_192994_2_, p_192994_8_ + p_192994_6_ - p_192994_5_, p_192994_9_, p_192994_5_, p_192994_5_);
+        this.blit(stack, p_192994_1_, p_192994_2_ + p_192994_4_ - p_192994_5_, p_192994_8_, p_192994_9_ + p_192994_7_ - p_192994_5_, p_192994_5_, p_192994_5_);
         this.renderRepeating(stack,p_192994_1_ + p_192994_5_, p_192994_2_ + p_192994_4_ - p_192994_5_, p_192994_3_ - p_192994_5_ - p_192994_5_, p_192994_5_, p_192994_8_ + p_192994_5_, p_192994_9_ + p_192994_7_ - p_192994_5_, p_192994_6_ - p_192994_5_ - p_192994_5_, p_192994_7_);
-        this.func_238474_b_(stack, p_192994_1_ + p_192994_3_ - p_192994_5_, p_192994_2_ + p_192994_4_ - p_192994_5_, p_192994_8_ + p_192994_6_ - p_192994_5_, p_192994_9_ + p_192994_7_ - p_192994_5_, p_192994_5_, p_192994_5_);
+        this.blit(stack, p_192994_1_ + p_192994_3_ - p_192994_5_, p_192994_2_ + p_192994_4_ - p_192994_5_, p_192994_8_ + p_192994_6_ - p_192994_5_, p_192994_9_ + p_192994_7_ - p_192994_5_, p_192994_5_, p_192994_5_);
         this.renderRepeating(stack, p_192994_1_, p_192994_2_ + p_192994_5_, p_192994_5_, p_192994_4_ - p_192994_5_ - p_192994_5_, p_192994_8_, p_192994_9_ + p_192994_5_, p_192994_6_, p_192994_7_ - p_192994_5_ - p_192994_5_);
         this.renderRepeating(stack, p_192994_1_ + p_192994_5_, p_192994_2_ + p_192994_5_, p_192994_3_ - p_192994_5_ - p_192994_5_, p_192994_4_ - p_192994_5_ - p_192994_5_, p_192994_8_ + p_192994_5_, p_192994_9_ + p_192994_5_, p_192994_6_ - p_192994_5_ - p_192994_5_, p_192994_7_ - p_192994_5_ - p_192994_5_);
         this.renderRepeating(stack, p_192994_1_ + p_192994_3_ - p_192994_5_, p_192994_2_ + p_192994_5_, p_192994_5_, p_192994_4_ - p_192994_5_ - p_192994_5_, p_192994_8_ + p_192994_6_ - p_192994_5_, p_192994_9_ + p_192994_5_, p_192994_6_, p_192994_7_ - p_192994_5_ - p_192994_5_);
@@ -208,7 +207,7 @@ public class AbilityTabEntry extends AbstractGui {
             for (int l = 0; l < p_192993_4_; l += p_192993_8_) {
                 int i1 = p_192993_2_ + l;
                 int j1 = Math.min(p_192993_8_, p_192993_4_ - l);
-                this.func_238474_b_(stack, j, i1, p_192993_5_, p_192993_6_, k, j1);
+                this.blit(stack, j, i1, p_192993_5_, p_192993_6_, k, j1);
             }
         }
     }
@@ -230,7 +229,7 @@ public class AbilityTabEntry extends AbstractGui {
 
         for (Condition condition : conditions) {
             boolean active = this.ability.getConditionManager().isActive(condition);
-            list.add(condition.getDisplayName().func_230531_f_().func_240703_c_(Style.field_240709_b_.func_240718_a_(Color.func_240744_a_(active ? TextFormatting.GREEN : TextFormatting.RED))));
+            list.add(condition.getDisplayName().copyRaw().setStyle(Style.EMPTY.applyFormatting(active ? TextFormatting.GREEN : TextFormatting.RED)));
         }
 
         return list;

@@ -38,7 +38,7 @@ public class FlightAbility extends Ability implements FlightSound.IFlyingAbility
 
     @Override
     public void action(LivingEntity entity) {
-        if (!entity.func_233570_aj_()) {
+        if (!entity.isOnGround()) {
             if (entity.moveForward > 0F) {
                 this.startSound(entity);
                 Vector3d vec = entity.getLookVec();

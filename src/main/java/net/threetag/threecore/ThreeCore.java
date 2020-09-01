@@ -97,7 +97,7 @@ public class ThreeCore {
     public ThreeCore() {
         // Basic stuff
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
-        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new Events());
         SupporterHandler.load();
         registerMessages();
 //        SupporterHandler.enableSupporterCheck();
@@ -139,6 +139,7 @@ public class ThreeCore {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void registries(RegistryEvent.NewRegistry e) {
+        // TODO move
         TCItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCTileEntityTypes.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
@@ -247,39 +248,6 @@ public class ThreeCore {
         e.getGenerator().addProvider(new English(e.getGenerator()));
     }
 
-    @SubscribeEvent
-    public void serverStarting(RegisterCommandsEvent e) {
-        SuperpowerCommand.register(e.getDispatcher());
-        KarmaCommand.register(e.getDispatcher());
-        SizeChangeCommand.register(e.getDispatcher());
-        ArmorStandPoseCommand.register(e.getDispatcher());
-    }
-
-    @SubscribeEvent
-    public void addListenerEvent(AddReloadListenerEvent event) {
-        event.addListener(new SuperpowerManager());
-        event.addListener(new ScriptManager());
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            event.addListener(new EntityModelManager());
-            event.addListener(new ModelLayerLoader());
-        });
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void initGui(GuiScreenEvent.InitGuiEvent e) {
-        // abilities.html
-        if (e.getGui() instanceof MainMenuScreen && !htmlGenerated) {
-            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-                AbilityType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "abilities.html"));
-                ConditionType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "conditions.html"));
-                ScriptAccessor.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_accessors.html"));
-                ScriptEventManager.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_events.html"));
-            });
-            htmlGenerated = true;
-        }
-    }
-
     public static <MSG> int registerMessage(Class<MSG> messageType, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageConsumer) {
         if (NETWORK_CHANNEL == null)
             NETWORK_CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(ThreeCore.MODID, ThreeCore.MODID), () -> "1.0", (s) -> true, (s) -> true);
@@ -287,6 +255,43 @@ public class ThreeCore {
         int id = networkId++;
         NETWORK_CHANNEL.registerMessage(id, messageType, encoder, decoder, messageConsumer);
         return id;
+    }
+
+    public static class Events {
+
+        @SubscribeEvent
+        public void serverStarting(RegisterCommandsEvent e) {
+            SuperpowerCommand.register(e.getDispatcher());
+            KarmaCommand.register(e.getDispatcher());
+            SizeChangeCommand.register(e.getDispatcher());
+            ArmorStandPoseCommand.register(e.getDispatcher());
+        }
+
+        @SubscribeEvent
+        public void addListenerEvent(AddReloadListenerEvent event) {
+            event.addListener(new SuperpowerManager());
+            event.addListener(new ScriptManager());
+            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+                event.addListener(new EntityModelManager());
+                event.addListener(new ModelLayerLoader());
+            });
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @SubscribeEvent
+        public void initGui(GuiScreenEvent.InitGuiEvent e) {
+            // abilities.html
+            if (e.getGui() instanceof MainMenuScreen && !htmlGenerated) {
+                DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+                    AbilityType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "abilities.html"));
+                    ConditionType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "conditions.html"));
+                    ScriptAccessor.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_accessors.html"));
+                    ScriptEventManager.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_events.html"));
+                });
+                htmlGenerated = true;
+            }
+        }
+
     }
 
 }

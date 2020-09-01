@@ -71,19 +71,19 @@ public class ThreeCoreRecipeProvider extends RecipeProvider implements IConditio
         ShapelessRecipeBuilder.shapelessRecipe(TCItems.BLACK_FABRIC.get(), 4).addIngredient(Tags.Items.DYES_BLACK).addIngredient(TCItemTags.IRON_PLATES).addIngredient(Items.LEATHER).addCriterion("has_color", hasItem(Tags.Items.DYES_BLACK)).setGroup(ThreeCore.MODID + ":fabric").build(consumer);
 
         for (DyeColor color : DyeColor.values()) {
-            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("minecraft", color.func_176610_l() + "_concrete"));
-            Block slab = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ThreeCore.MODID, color.func_176610_l() + "_concrete_slab"));
-            Block stairs = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ThreeCore.MODID, color.func_176610_l() + "_concrete_stairs"));
+            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("minecraft", color.getString() + "_concrete"));
+            Block slab = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ThreeCore.MODID, color.getString() + "_concrete_slab"));
+            Block stairs = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ThreeCore.MODID, color.getString() + "_concrete_stairs"));
             ShapedRecipeBuilder.shapedRecipe(slab, 6).key('#', block).setGroup("concrete_slabs").patternLine("###").addCriterion("has_concrete", hasItem(block)).build(consumer);
-            SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(block), slab, 2).addCriterion("has_concrete", hasItem(block)).build(consumer, new ResourceLocation(ThreeCore.MODID, color.func_176610_l() + "_concrete_slab_from_" + color.func_176610_l() + "_concrete_stonecutting"));
+            SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(block), slab, 2).addCriterion("has_concrete", hasItem(block)).build(consumer, new ResourceLocation(ThreeCore.MODID, color.getString() + "_concrete_slab_from_" + color.getString() + "_concrete_stonecutting"));
 
             ShapedRecipeBuilder.shapedRecipe(stairs, 4).key('#', block).patternLine("#  ").patternLine("## ").patternLine("###").setGroup("concrete_stairs").addCriterion("has_concrete", hasItem(block)).build(consumer);
-            SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(block), stairs).addCriterion("has_concrete", hasItem(block)).build(consumer, new ResourceLocation(ThreeCore.MODID, color.func_176610_l() + "_concrete_stairs_from_" + color.func_176610_l() + "_concrete_stonecutting"));
+            SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(block), stairs).addCriterion("has_concrete", hasItem(block)).build(consumer, new ResourceLocation(ThreeCore.MODID, color.getString() + "_concrete_stairs_from_" + color.getString() + "_concrete_stonecutting"));
         }
 
         // Misc Grinder Recipes
-        new GrinderRecipeBuilder(TCItems.COAL_DUST.get()).setIngredient(Items.COAL).setEnergy(200).addCondition(this.not(new TagEmptyCondition(TCItemTags.COAL_DUSTS.func_230234_a_()))).addCriterion("has_coal", hasItem(Items.COAL)).build(consumer, new ResourceLocation(ThreeCore.MODID, "coal_dust_from_coal"));
-        new GrinderRecipeBuilder(TCItems.CHARCOAL_DUST.get()).setIngredient(Items.CHARCOAL).setEnergy(200).addCondition(this.not(new TagEmptyCondition(TCItemTags.CHARCOAL_DUSTS.func_230234_a_()))).addCriterion("has_coal", hasItem(Items.CHARCOAL)).build(consumer, new ResourceLocation(ThreeCore.MODID, "charcoal_dust_from_charcoal"));
+        new GrinderRecipeBuilder(TCItems.COAL_DUST.get()).setIngredient(Items.COAL).setEnergy(200).addCondition(this.not(new TagEmptyCondition(TCItemTags.COAL_DUSTS.getName()))).addCriterion("has_coal", hasItem(Items.COAL)).build(consumer, new ResourceLocation(ThreeCore.MODID, "coal_dust_from_coal"));
+        new GrinderRecipeBuilder(TCItems.CHARCOAL_DUST.get()).setIngredient(Items.CHARCOAL).setEnergy(200).addCondition(this.not(new TagEmptyCondition(TCItemTags.CHARCOAL_DUSTS.getName()))).addCriterion("has_coal", hasItem(Items.CHARCOAL)).build(consumer, new ResourceLocation(ThreeCore.MODID, "charcoal_dust_from_charcoal"));
         new GrinderRecipeBuilder(Blocks.GRAVEL).setIngredient(Blocks.COBBLESTONE).setByproduct(Blocks.SAND).setByproductChance(0.15F).setEnergy(100).addCriterion("has_cobblestone", hasItem(Blocks.COBBLESTONE)).build(consumer, new ResourceLocation(ThreeCore.MODID, "gravel_from_cobblestone"));
         new GrinderRecipeBuilder(Items.BONE_MEAL, 6).setIngredient(Items.BONE).setEnergy(300).addCriterion("has_bone", hasItem(Items.BONE)).build(consumer, new ResourceLocation(ThreeCore.MODID, "bone_meal_from_bone"));
         new GrinderRecipeBuilder(Blocks.SAND).setIngredient(Blocks.GRAVEL).setByproduct(Items.FLINT).setByproductChance(0.15F).setEnergy(100).addCriterion("has_gravel", hasItem(Blocks.GRAVEL)).build(consumer, new ResourceLocation(ThreeCore.MODID, "sand_from_gravel"));

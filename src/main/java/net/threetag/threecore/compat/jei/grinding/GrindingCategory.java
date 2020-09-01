@@ -100,12 +100,12 @@ public class GrindingCategory<T> implements IRecipeCategory<GrindingRecipe> {
 
         Minecraft minecraft = Minecraft.getInstance();
         FontRenderer fontRenderer = minecraft.fontRenderer;
-        fontRenderer.func_238421_b_(stack, I18n.format("threecore.util.energy_display", recipe.getRequiredEnergy(), EnergyUtil.ENERGY_UNIT), 0, 28, 0xFF808080);
+        fontRenderer.drawString(stack, I18n.format("threecore.util.energy_display", recipe.getRequiredEnergy(), EnergyUtil.ENERGY_UNIT), 0, 28, 0xFF808080);
         float experience = recipe.getExperience();
         if (experience > 0) {
             String experienceString = I18n.format("gui.jei.category.threecore.grinding.experience", experience);
             int stringWidth = fontRenderer.getStringWidth(experienceString);
-            fontRenderer.func_238421_b_(stack, experienceString, background.getWidth() - stringWidth, 28, 0xFF808080);
+            fontRenderer.drawString(stack, experienceString, background.getWidth() - stringWidth, 28, 0xFF808080);
         }
     }
 }

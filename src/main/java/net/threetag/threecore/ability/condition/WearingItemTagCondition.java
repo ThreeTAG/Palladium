@@ -35,7 +35,7 @@ public class WearingItemTagCondition extends Condition {
 
     @Override
     public ITextComponent createTitle() {
-        return new TranslationTextComponent(Util.makeTranslationKey("ability.condition", this.type.getRegistryName()) + (this.dataManager.get(INVERT) ? ".not" : ""), this.dataManager.get(ITEM_TAG).func_230234_a_().toString());
+        return new TranslationTextComponent(Util.makeTranslationKey("ability.condition", this.type.getRegistryName()) + (this.dataManager.get(INVERT) ? ".not" : ""), this.dataManager.get(ITEM_TAG).getName().toString());
     }
 
     @Override

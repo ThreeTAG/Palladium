@@ -138,7 +138,7 @@ public class GrinderRecipeBuilder {
 
     public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation name) {
         this.validate(name);
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.func_235675_a_(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
+        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
         consumer.accept(new Result(name, group == null ? "" : group, input, output, byproduct, byproductChance, experience, energy, conditions, advancementBuilder, new ResourceLocation(name.getNamespace(), "recipes/" + this.output.getItem().getGroup().getPath() + "/" + name.getPath())));
     }
 

@@ -13,7 +13,7 @@ public class UnconsciousEffect extends Effect {
 
     public UnconsciousEffect(EffectType typeIn, int liquidColorIn) {
         super(typeIn, liquidColorIn);
-        this.addAttributesModifier(Attributes.field_233821_d_, "81e019ea-39b9-4d68-b2c6-dea41c0f50ec", -5, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        this.addAttributesModifier(Attributes.MOVEMENT_SPEED, "81e019ea-39b9-4d68-b2c6-dea41c0f50ec", -5, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     @Override

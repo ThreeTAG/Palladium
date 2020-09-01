@@ -1,6 +1,7 @@
 package net.threetag.threecore.client.gui.inventory;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -19,27 +20,27 @@ public class CapacitorBlockScreen extends ContainerScreen<CapacitorBlockContaine
     }
 
     @Override
-    public void func_230430_a_(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
-        this.func_230446_a_(stack);
-        super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
+    public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(stack);
+        super.render(stack, mouseX, mouseY, partialTicks);
         this.func_230459_a_(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack stack, int mouseX, int mouseY) {
-        this.field_230712_o_.func_238422_b_(stack, this.func_231171_q_(), 8.0F, 6.0F, 4210752);
-        this.field_230712_o_.func_238422_b_(stack, this.playerInventory.getDisplayName(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
+    protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
+        this.font.drawString(stack, this.title.getString(), 8.0F, 6.0F, 4210752);
+        this.font.drawString(stack, this.playerInventory.getDisplayName().getString(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
         EnergyUtil.drawTooltip(stack, this.container.getEnergyStored(), this.container.getMaxEnergyStored(), this, 68, 20, 40, 12, mouseX - this.guiLeft, mouseY - this.guiTop);
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
-//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.field_230706_i_.getTextureManager().bindTexture(CAPACITOR_BLOCK_GUI_TEXTURES);
+    protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.getMinecraft().getTextureManager().bindTexture(CAPACITOR_BLOCK_GUI_TEXTURES);
         int left = this.guiLeft;
         int top = this.guiTop;
-        this.func_238474_b_(stack, left, top, 0, 0, this.xSize, this.ySize);
+        this.blit(stack, left, top, 0, 0, this.xSize, this.ySize);
         int energy = (int) (this.container.getEnergyPercentage() * 40);
-        this.func_238474_b_(stack, left + 68, top + 20, 176, 0, energy, 12);
+        this.blit(stack, left + 68, top + 20, 176, 0, energy, 12);
     }
 }

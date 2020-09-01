@@ -136,7 +136,7 @@ public class SolidItemEntity extends Entity {
             boolean flag = MathHelper.floor(this.prevPosX) != MathHelper.floor(this.getPosX()) || MathHelper.floor(this.prevPosY) != MathHelper.floor(this.getPosY()) || MathHelper.floor(this.prevPosZ) != MathHelper.floor(this.getPosZ());
             int i = flag ? 2 : 40;
             if (this.ticksExisted % i == 0) {
-                if (this.world.getFluidState(this.func_233580_cy_()).isTagged(FluidTags.LAVA)) {
+                if (this.world.getFluidState(this.getPosition()).isTagged(FluidTags.LAVA)) {
                     this.setMotion((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F, 0.2F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
                     this.playSound(SoundEvents.ENTITY_GENERIC_BURN, 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
                 }
@@ -187,8 +187,7 @@ public class SolidItemEntity extends Entity {
         if (compound.contains("Owner", Constants.NBT.TAG_COMPOUND))
             this.owner = NBTUtil.readUniqueId(Objects.requireNonNull(compound.get("Owner")));
 
-        if (compound.contains("Thrower", Constants.NBT.TAG_COMPOUND))
-        {
+        if (compound.contains("Thrower", Constants.NBT.TAG_COMPOUND)) {
             this.thrower = NBTUtil.readUniqueId(Objects.requireNonNull(compound.get("Thrower")));
         }
 

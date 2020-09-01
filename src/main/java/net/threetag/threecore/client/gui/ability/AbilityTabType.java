@@ -1,9 +1,9 @@
 package net.threetag.threecore.client.gui.ability;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.threetag.threecore.util.icon.IIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.threetag.threecore.util.icon.IIcon;
 
 public enum AbilityTabType {
 
@@ -42,7 +42,7 @@ public enum AbilityTabType {
         }
 
         int j = selected ? this.textureY + this.height : this.textureY;
-        guiIn.func_238474_b_(stack, x + this.getX(index), y + this.getY(index), i, j, this.width, this.height);
+        guiIn.blit(stack, x + this.getX(index), y + this.getY(index), i, j, this.width, this.height);
     }
 
     public void drawIcon(MatrixStack stack, int x, int y, int index, IIcon icon) {

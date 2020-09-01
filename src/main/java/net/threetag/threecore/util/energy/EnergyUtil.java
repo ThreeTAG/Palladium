@@ -32,7 +32,7 @@ public class EnergyUtil {
     @OnlyIn(Dist.CLIENT)
     public static void drawTooltip(MatrixStack stack, int energy, int maxEnergy, ContainerScreen gui, int x, int y, int width, int height, int mouseX, int mouseY) {
         if (mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height) {
-            gui.func_238652_a_(stack, getFormattedEnergy(energy, maxEnergy), mouseX + 10, mouseY);
+            gui.renderTooltip(stack, getFormattedEnergy(energy, maxEnergy), mouseX + 10, mouseY);
         }
     }
 

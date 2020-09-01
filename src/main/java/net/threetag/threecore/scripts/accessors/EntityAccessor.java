@@ -54,7 +54,9 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         return this.value.getUniqueID().toString();
     }
 
-    public CompoundNBTAccessor getNBTData(){ return new CompoundNBTAccessor(this.value.serializeNBT()); }
+    public CompoundNBTAccessor getNBTData() {
+        return new CompoundNBTAccessor(this.value.serializeNBT());
+    }
 
     public Vector3dAccessor getPosition() {
         return new Vector3dAccessor(this.value.getPositionVec());
@@ -119,8 +121,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public void setPlayerMotion(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z) {
-        if(!this.world.value.isRemote && this.value instanceof ServerPlayerEntity)
-        {
+        if (!this.world.value.isRemote && this.value instanceof ServerPlayerEntity) {
             this.value.setMotion(x, y, z);
             ((ServerPlayerEntity) this.value).connection.sendPacket(new SEntityVelocityPacket(this.value));
         }
@@ -170,9 +171,13 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         return this.value instanceof LivingEntity;
     }
 
-    public LivingEntityAccessor getAsLiving() { return new LivingEntityAccessor((LivingEntity) this.value); }
+    public LivingEntityAccessor getAsLiving() {
+        return new LivingEntityAccessor((LivingEntity) this.value);
+    }
 
-    public String getType(){ return this.value.getType().getRegistryName().toString(); }
+    public String getType() {
+        return this.value.getType().getRegistryName().toString();
+    }
 
     public void kill() {
         this.value.onKillCommand();
@@ -187,7 +192,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public boolean isOnGround() {
-        return this.value.func_233570_aj_();
+        return this.value.isOnGround();
     }
 
     public float getFallDistance() {
@@ -251,7 +256,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public boolean isImmuneToFire() {
-        return this.value.func_230279_az_();
+        return this.value.isImmuneToFire();
     }
 
     public void extinguish() {
@@ -319,13 +324,13 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         return true;
     }
 
-    public Object rayTrace(@ScriptParameterName("distance") double distance, @ScriptParameterName("blockMode") String blockMode, @ScriptParameterName("fluidMode") String fluidMode){
-       RayTraceContext.BlockMode b = RayTraceContext.BlockMode.valueOf(blockMode.toUpperCase());
-       RayTraceContext.FluidMode f = RayTraceContext.FluidMode.valueOf(fluidMode.toUpperCase());
-       return ScriptAccessor.makeAccessor(EntityUtil.rayTraceWithEntities(this.value, distance, b, f));
+    public Object rayTrace(@ScriptParameterName("distance") double distance, @ScriptParameterName("blockMode") String blockMode, @ScriptParameterName("fluidMode") String fluidMode) {
+        RayTraceContext.BlockMode b = RayTraceContext.BlockMode.valueOf(blockMode.toUpperCase());
+        RayTraceContext.FluidMode f = RayTraceContext.FluidMode.valueOf(fluidMode.toUpperCase());
+        return ScriptAccessor.makeAccessor(EntityUtil.rayTraceWithEntities(this.value, distance, b, f));
     }
 
-    public void lookAt(@ScriptParameterName("target") Vector3dAccessor target){
+    public void lookAt(@ScriptParameterName("target") Vector3dAccessor target) {
         this.value.lookAt(EntityAnchorArgument.Type.EYES, target.value);
     }
 

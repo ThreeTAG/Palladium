@@ -182,18 +182,18 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
         this.updateRecipe(this.recipeWrapper);
     }
 
-    @Override public IItemHandler getEnergyOutputSlots()
-    {
+    @Override
+    public IItemHandler getEnergyOutputSlots() {
         return super.getEnergyOutputSlots();
     }
 
-    @Override protected IItemHandler createUnSidedHandler()
-    {
+    @Override
+    protected IItemHandler createUnSidedHandler() {
         return super.createUnSidedHandler();
     }
 
-    @Override public void handleUpdateTag(BlockState state, CompoundNBT tag)
-    {
+    @Override
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
         this.inputFluidTank.readFromNBT(tag.getCompound("InputFluid"));
         this.outputFluidTank.readFromNBT(tag.getCompound("OutputFluid"));
     }
@@ -217,15 +217,9 @@ public class FluidComposerTileEntity extends ProgressableMachineTileEntity<Fluid
         this.handleUpdateTag(this.world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
     }
 
-    //TODO Fast Render?
-//    @Override
-//    public boolean hasFastRenderer() {
-//        return true;
-//    }
-
-    @Override public void func_230337_a_(BlockState p_230337_1_, CompoundNBT nbt)
-    {
-        super.func_230337_a_(p_230337_1_, nbt);
+    @Override
+    public void read(BlockState blockState, CompoundNBT nbt) {
+        super.read(blockState, nbt);
         if (nbt.contains("EnergySlots"))
             this.energySlot.deserializeNBT(nbt.getCompound("EnergySlots"));
         if (nbt.contains("InputSlots"))

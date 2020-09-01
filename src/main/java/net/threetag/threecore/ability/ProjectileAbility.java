@@ -40,7 +40,7 @@ public class ProjectileAbility extends Ability {
             compound.putString("id", this.dataManager.get(ENTITY_TYPE).getRegistryName().toString());
 
             ServerWorld world = (ServerWorld) entity.world;
-            EntityType.func_220335_a(compound, world, (projectile) -> {
+            EntityType.loadEntityAndExecute(compound, world, (projectile) -> {
                 if (!(projectile instanceof ProjectileEntity))
                     return null;
 
@@ -53,7 +53,7 @@ public class ProjectileAbility extends Ability {
                 float f2 = MathHelper.cos(entity.rotationYaw * ((float) Math.PI / 180F)) * MathHelper.cos(entity.rotationPitch * ((float) Math.PI / 180F));
                 ((ProjectileEntity) projectile).shoot(f, f1, f2, velocity, inaccuracy);
                 Vector3d vec3d = entity.getMotion();
-                projectile.setMotion(projectile.getMotion().add(vec3d.x, entity.func_233570_aj_() ? 0.0D : vec3d.y, vec3d.z));
+                projectile.setMotion(projectile.getMotion().add(vec3d.x, entity.isOnGround() ? 0.0D : vec3d.y, vec3d.z));
 
                 if (projectile instanceof ThrowableEntity) {
                     ((ThrowableEntity) projectile).setShooter(entity);

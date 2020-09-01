@@ -18,7 +18,7 @@ public class SlowfallAbility extends Ability {
 
     @Override
     public void action(LivingEntity entity) {
-        if (!entity.func_233570_aj_() && entity.getMotion().y < 0.0D) {
+        if (!entity.isOnGround() && entity.getMotion().y < 0.0D) {
             entity.setMotion(entity.getMotion().x, entity.getMotion().y * 0.6D, entity.getMotion().z);
             entity.fallDistance = 0F;
         }

@@ -13,7 +13,7 @@ public class FlyingPredicate implements IModelLayerPredicate {
 
     @Override
     public boolean test(IModelLayerContext context) {
-        if (context.getAsEntity() instanceof LivingEntity && !context.getAsEntity().func_233570_aj_()) {
+        if (context.getAsEntity() instanceof LivingEntity && !context.getAsEntity().isOnGround()) {
             List<Ability> abilityList = AbilityHelper.getAbilities((LivingEntity) context.getAsEntity());
 
             for (Ability ability : abilityList) {

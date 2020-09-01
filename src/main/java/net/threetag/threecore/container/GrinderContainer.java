@@ -2,22 +2,16 @@ package net.threetag.threecore.container;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.CraftResultInventory;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.IRecipeHelperPopulator;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.RecipeBookContainer;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.crafting.IRecipeContainer;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -29,7 +23,9 @@ import net.threetag.threecore.tileentity.GrinderTileEntity;
 
 import javax.annotation.Nonnull;
 
-public class GrinderContainer extends RecipeBookContainer implements IRecipeContainer {
+public class GrinderContainer extends Container {
+
+    // TODO add recipe book
 
     public final PlayerInventory inventoryPlayer;
     public final GrinderTileEntity grinderTileEntity;
@@ -148,59 +144,6 @@ public class GrinderContainer extends RecipeBookContainer implements IRecipeCont
     @OnlyIn(Dist.CLIENT)
     public int getMaxEnergyStored() {
         return this.intArray.get(3);
-    }
-
-    @Override
-    public CraftResultInventory getCraftResult() {
-        return null;
-    }
-
-    @Override
-    public CraftingInventory getCraftMatrix() {
-        return null;
-    }
-
-    @Override
-    public void fillStackedContents(RecipeItemHelper recipeItemHelper) {
-        if (this.grinderTileEntity instanceof IRecipeHelperPopulator) {
-            ((IRecipeHelperPopulator) this.grinderTileEntity).fillStackedContents(recipeItemHelper);
-        }
-    }
-
-    @Override
-    public void clear() {
-        this.grinderTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler -> {
-            if (itemHandler instanceof IItemHandlerModifiable) {
-                for (int i = 0; i < itemHandler.getSlots(); i++) {
-                    ((IItemHandlerModifiable) itemHandler).setStackInSlot(i, ItemStack.EMPTY);
-                }
-            }
-        }));
-    }
-
-    @Override
-    public boolean matches(IRecipe recipe) {
-        return recipe.matches(this.recipeWrapper, this.inventoryPlayer.player.world);
-    }
-
-    @Override
-    public int getOutputSlot() {
-        return 1;
-    }
-
-    @Override
-    public int getWidth() {
-        return 1;
-    }
-
-    @Override
-    public int getHeight() {
-        return 1;
-    }
-
-    @Override
-    public int getSize() {
-        return 3;
     }
 
     public static class GrinderResultSlot extends SlotItemHandler {

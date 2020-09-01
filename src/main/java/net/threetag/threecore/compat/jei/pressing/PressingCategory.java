@@ -89,13 +89,13 @@ public class PressingCategory<T> implements IRecipeCategory<PressingRecipe> {
         {
             String energyString = I18n.format("threecore.util.energy_display", recipe.getRequiredEnergy(), EnergyUtil.ENERGY_UNIT);
             int stringWidth = fontRenderer.getStringWidth(energyString);
-            fontRenderer.func_238421_b_(stack, energyString, background.getWidth() - stringWidth, 50, 0xFF808080);
+            fontRenderer.drawString(stack, energyString, background.getWidth() - stringWidth, 50, 0xFF808080);
         }
         float experience = recipe.getExperience();
         if (experience > 0) {
             String experienceString = I18n.format("gui.jei.category.threecore.pressing.experience", experience);
             int stringWidth = fontRenderer.getStringWidth(experienceString);
-            fontRenderer.func_238421_b_(stack, experienceString, background.getWidth() - stringWidth, 3, 0xFF808080);
+            fontRenderer.drawString(stack, experienceString, background.getWidth() - stringWidth, 3, 0xFF808080);
         }
     }
 }

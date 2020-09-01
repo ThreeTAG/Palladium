@@ -120,7 +120,7 @@ public class FluidComposingRecipeBuilder {
 
     public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation name) {
         this.validate(name);
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.func_235675_a_(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
+        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
         consumer.accept(new Result(name, group == null ? "" : group, ingredients, inputFluid, result, energy, conditions, advancementBuilder, new ResourceLocation(name.getNamespace(), "recipes/fluids/" + name.getPath())));
     }
 
@@ -179,7 +179,7 @@ public class FluidComposingRecipeBuilder {
                 }
             } else {
                 JsonObject fluidInput = new JsonObject();
-                fluidInput.addProperty("tag", this.inputFluid.getTag().func_230234_a_().toString());
+                fluidInput.addProperty("tag", this.inputFluid.getTag().getName().toString());
                 fluidInput.addProperty("amount", this.inputFluid.getFluids()[0].getAmount());
                 jsonObject.add("fluid_input", fluidInput);
             }

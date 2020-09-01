@@ -11,7 +11,7 @@ public class TCLootFunctions {
     //TODO move to forge registry when one is created
 
     public static void register() {
-        COPY_ENERGY = Registry.register(Registry.field_239694_aZ_, new ResourceLocation(ThreeCore.MODID, "copy_energy"), new LootFunctionType(new CopyEnergyFunction.Serializer()));
+        COPY_ENERGY = Registry.register(Registry.LOOT_FUNCTION_TYPE, new ResourceLocation(ThreeCore.MODID, "copy_energy"), new LootFunctionType(new CopyEnergyFunction.Serializer()));
     }
 
 }

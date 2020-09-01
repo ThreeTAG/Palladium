@@ -38,10 +38,10 @@ public class RecipeUtil {
         if (json.has("tag")) {
             ITag<Item> tag = ItemTags.getCollection().get(new ResourceLocation(JSONUtils.getString(json, "tag")));
 
-            if (tag == null || tag.func_230236_b_().size() <= 0)
+            if (tag == null || tag.getAllElements().size() <= 0)
                 throw new JsonSyntaxException("Unknown tag '" + JSONUtils.getString(json, "tag") + "'");
 
-            Item item = Lists.newArrayList(tag.func_230236_b_()).get(0);
+            Item item = Lists.newArrayList(tag.getAllElements()).get(0);
 
             if (readNBT && json.has("nbt")) {
                 // Lets hope this works? Needs test

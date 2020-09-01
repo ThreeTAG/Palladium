@@ -1,6 +1,7 @@
 package net.threetag.threecore.client.gui.toast;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.toasts.IToast;
 import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.client.resources.I18n;
@@ -24,11 +25,11 @@ public class KarmaToast implements IToast {
         this.prevKarma = this.karma;
         guiToast.getMinecraft().getTextureManager().bindTexture(KarmaBarRenderer.TEXTURE);
         boolean good = this.karma >= 0;
-//        RenderSystem.color3f(1.0F, 1.0F, 1.0F);
-        guiToast.func_238474_b_(stack, 0, 0, 0, good ? 46 : 15, 160, 32);
+        RenderSystem.color3f(1.0F, 1.0F, 1.0F);
+        guiToast.blit(stack, 0, 0, 0, good ? 46 : 15, 160, 32);
 
-        guiToast.getMinecraft().fontRenderer.func_238421_b_(stack, I18n.format("karma.toast.title"), 25.0F, 7.0F, good ? 0xff7b0000 : 0xffffffff);
-        guiToast.getMinecraft().fontRenderer.func_238421_b_(stack, I18n.format(this.karma > 0 ? "+" + this.karma : this.karma + ""), 30.0F, 18.0F, -16777216);
+        guiToast.getMinecraft().fontRenderer.drawString(stack, I18n.format("karma.toast.title"), 25.0F, 7.0F, good ? 0xff7b0000 : 0xffffffff);
+        guiToast.getMinecraft().fontRenderer.drawString(stack, I18n.format(this.karma > 0 ? "+" + this.karma : this.karma + ""), 30.0F, 18.0F, -16777216);
 
         return l - this.firstDrawTime < 5000L ? Visibility.SHOW : Visibility.HIDE;
     }

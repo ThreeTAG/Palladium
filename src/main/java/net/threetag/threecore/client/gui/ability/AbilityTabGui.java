@@ -98,7 +98,7 @@ public class AbilityTabGui extends AbstractGui {
         for (AbilityTabEntry entry : this.abilities) {
             this.minX = (int) Math.min((entry.x - 1) * gridSize, this.minX);
             this.minY = (int) Math.min((entry.y - 1) * gridSize, this.minY);
-            this.maxX = (int) Math.max((entry.x + 1)  * gridSize, this.maxX);
+            this.maxX = (int) Math.max((entry.x + 1) * gridSize, this.maxX);
             this.maxY = (int) Math.max((entry.y + 1) * gridSize, this.maxY);
 
             for (AbilityTabEntry child : entry.children) {
@@ -194,18 +194,18 @@ public class AbilityTabGui extends AbstractGui {
         RenderSystem.enableDepthTest();
         stack.translate(0, 0, 950);
         RenderSystem.colorMask(false, false, false, false);
-        func_238467_a_(stack, 4680, 2260, -4680, -2260, -16777216);
+        fill(stack, 4680, 2260, -4680, -2260, -16777216);
         RenderSystem.colorMask(true, true, true, true);
         stack.translate(0, 0, -950);
         RenderSystem.depthFunc(518);
-        func_238467_a_(stack, innerWidth, innerHeight, 0, 0, -16777216);
+        fill(stack, innerWidth, innerHeight, 0, 0, -16777216);
         RenderSystem.depthFunc(515);
 
         Minecraft mc = Minecraft.getInstance();
         mc.getTextureManager().bindTexture(new ResourceLocation("textures/block/red_wool.png"));
 
         for (Ability ability : container.getAbilities())
-            if(ability instanceof ChangeAbilityTabTextureAbility && ability.getConditionManager().isEnabled())
+            if (ability instanceof ChangeAbilityTabTextureAbility && ability.getConditionManager().isEnabled())
                 mc.getTextureManager().bindTexture(new ResourceLocation(ability.getDataManager().get(ChangeAbilityTabTextureAbility.TEXTURE)));
 
         int i = MathHelper.floor(this.scrollX);
@@ -215,7 +215,7 @@ public class AbilityTabGui extends AbstractGui {
 
         for (int i1 = -1; i1 <= 15; ++i1) {
             for (int j1 = -1; j1 <= 11; ++j1) {
-                func_238463_a_(stack, k + 16 * i1, l + 16 * j1, 0.0F, 0.0F, 16, 16, 16, 16);
+                blit(stack, k + 16 * i1, l + 16 * j1, 0.0F, 0.0F, 16, 16, 16, 16);
             }
         }
 
@@ -231,7 +231,7 @@ public class AbilityTabGui extends AbstractGui {
         stack.translate(0, 0, -950);
         RenderSystem.colorMask(false, false, false, false);
         //fill
-        func_238467_a_(stack, 4680, 2260, -4680, -2260, -16777216);
+        fill(stack, 4680, 2260, -4680, -2260, -16777216);
         RenderSystem.colorMask(true, true, true, true);
         stack.translate(0, 0, 950);
         RenderSystem.depthFunc(515);
@@ -241,7 +241,7 @@ public class AbilityTabGui extends AbstractGui {
     public void drawToolTips(MatrixStack stack, int mouseX, int mouseY, int x, int y, AbilitiesScreen screen, boolean overlayActive) {
         stack.push();
         stack.translate(0, 0, 200);
-        func_238467_a_(stack, 0, 0, innerWidth, innerHeight, MathHelper.floor(this.fade * 255.0F) << 24);
+        fill(stack, 0, 0, innerWidth, innerHeight, MathHelper.floor(this.fade * 255.0F) << 24);
         boolean flag = false;
 
         if (!overlayActive) {
@@ -287,11 +287,11 @@ public class AbilityTabGui extends AbstractGui {
 
     public void scroll(double x, double y) {
         if (this.maxX - this.minX > innerWidth) {
-            this.scrollX = MathHelper.clamp(this.scrollX + x, -(this.maxX - innerWidth), gridSize/2D);
+            this.scrollX = MathHelper.clamp(this.scrollX + x, -(this.maxX - innerWidth), gridSize / 2D);
         }
 
         if (this.maxY - this.minY > innerHeight) {
-            this.scrollY = MathHelper.clamp(this.scrollY + y, -(this.maxY - innerHeight), gridSize/2D);
+            this.scrollY = MathHelper.clamp(this.scrollY + y, -(this.maxY - innerHeight), gridSize / 2D);
         }
     }
 
@@ -353,20 +353,20 @@ public class AbilityTabGui extends AbstractGui {
             if (outline) {
                 if (this.startY == endY) {
                     //hLine
-                    gui.func_238465_a_(stack, x + startX - 2, x + endX + 1, y + startY - 2, colorCode);
-                    gui.func_238465_a_(stack, x + startX - 2, x + endX + 1, y + startY + 1, colorCode);
+                    gui.hLine(stack, x + startX - 2, x + endX + 1, y + startY - 2, colorCode);
+                    gui.hLine(stack, x + startX - 2, x + endX + 1, y + startY + 1, colorCode);
                 } else if (this.startX == endX) {
                     //func_238473_b_
-                    gui.func_238473_b_(stack, x + startX - 2, y + startY - 2, y + endY + 1, colorCode);
-                    gui.func_238473_b_(stack, x + startX + 1, y + startY - 2, y + endY + 1, colorCode);
+                    gui.vLine(stack, x + startX - 2, y + startY - 2, y + endY + 1, colorCode);
+                    gui.vLine(stack, x + startX + 1, y + startY - 2, y + endY + 1, colorCode);
                 }
             } else {
                 if (this.startY == endY) {
-                    gui.func_238465_a_(stack, x + startX - 1, x + endX, y + startY - 1, colorCode);
-                    gui.func_238465_a_(stack, x + startX - 1, x + endX, y + startY, colorCode);
+                    gui.hLine(stack, x + startX - 1, x + endX, y + startY - 1, colorCode);
+                    gui.hLine(stack, x + startX - 1, x + endX, y + startY, colorCode);
                 } else if (this.startX == endX) {
-                    gui.func_238473_b_(stack, x + startX - 1, y + startY - 1, y + endY, colorCode);
-                    gui.func_238473_b_(stack, x + startX, y + startY - 1, y + endY, colorCode);
+                    gui.vLine(stack, x + startX - 1, y + startY - 1, y + endY, colorCode);
+                    gui.vLine(stack, x + startX, y + startY - 1, y + endY, colorCode);
                 }
             }
         }

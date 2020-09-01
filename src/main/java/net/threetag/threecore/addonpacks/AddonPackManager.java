@@ -37,7 +37,7 @@ public class AddonPackManager {
         return isZip || hasMeta;
     };
     public static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-    public ResourcePackList<ResourcePackInfo> addonpackFinder = new ResourcePackList<>(ResourcePackInfo::new);
+    public ResourcePackList addonpackFinder = new ResourcePackList(ResourcePackInfo::new, new AddonPackFinder());
     private SimpleReloadableResourceManager resourceManager = new SimpleReloadableResourceManager(ResourcePackType.SERVER_DATA);
 
     private AddonPackManager() {
@@ -45,7 +45,6 @@ public class AddonPackManager {
         MinecraftForge.EVENT_BUS.register(this);
 
         // Setup resource manager
-        addonpackFinder.addPackFinder(new AddonPackFinder());
         Map<ModFile, ModFileResourcePack> modResourcePacks = ModList.get().getModFiles().stream().
                 filter(mf -> !Objects.equals(mf.getModLoader(), "minecraft")).
                 map(mf -> new ModFileResourcePack(mf.getFile())).
@@ -92,8 +91,8 @@ public class AddonPackManager {
             return file.isDirectory() ? () -> new FolderPack(file) : () -> new FilePack(file);
         }
 
-        @Override public <T extends ResourcePackInfo> void func_230230_a_(Consumer<T> p_230230_1_, ResourcePackInfo.IFactory<T> p_230230_2_)
-        {
+        @Override
+        public void func_230230_a_(Consumer<ResourcePackInfo> consumer, ResourcePackInfo.IFactory factory) {
             if (!DIRECTORY.exists())
                 DIRECTORY.mkdirs();
 
@@ -103,9 +102,9 @@ public class AddonPackManager {
                 for (File file : files) {
                     String name = "addonpack:" + file.getName();
                     //TODO name decorator
-                    T container = ResourcePackInfo.createResourcePack(name, true, this.createResourcePack(file), p_230230_2_, ResourcePackInfo.Priority.TOP, IPackNameDecorator.field_232625_a_);
+                    ResourcePackInfo container = ResourcePackInfo.createResourcePack(name, true, this.createResourcePack(file), factory, ResourcePackInfo.Priority.TOP, IPackNameDecorator.field_232625_a_);
                     if (container != null) {
-                        p_230230_1_.accept(container);
+                        consumer.accept(container);
                     }
                 }
             }
@@ -113,15 +112,16 @@ public class AddonPackManager {
     }
 
     private static class LambdaFriendlyPackFinder implements IPackFinder {
-        private ResourcePackLoader.IPackInfoFinder wrapped;
+
+        private final ResourcePackLoader.IPackInfoFinder wrapped;
 
         private LambdaFriendlyPackFinder(final ResourcePackLoader.IPackInfoFinder wrapped) {
             this.wrapped = wrapped;
         }
 
-        @Override public <T extends ResourcePackInfo> void func_230230_a_(Consumer<T> p_230230_1_, ResourcePackInfo.IFactory<T> p_230230_2_)
-        {
-            wrapped.addPackInfos(p_230230_1_, p_230230_2_);
+        @Override
+        public void func_230230_a_(Consumer<ResourcePackInfo> consumer, ResourcePackInfo.IFactory factory) {
+            wrapped.addPackInfos(consumer, factory);
         }
     }
 

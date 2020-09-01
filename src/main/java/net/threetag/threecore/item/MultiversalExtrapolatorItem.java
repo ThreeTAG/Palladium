@@ -37,7 +37,7 @@ public class MultiversalExtrapolatorItem extends Item {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.getOrCreateTag().contains("Universe") && getUniverses().contains(stack.getOrCreateTag().getString("Universe"))) {
-            tooltip.add(new TranslationTextComponent("universe." + stack.getOrCreateTag().getString("Universe")).func_240701_a_(TextFormatting.GOLD));
+            tooltip.add(new TranslationTextComponent("universe." + stack.getOrCreateTag().getString("Universe")).mergeStyle(TextFormatting.GOLD));
         }
     }
 
@@ -77,7 +77,7 @@ public class MultiversalExtrapolatorItem extends Item {
                         stack.getOrCreateTag().putString("Universe", getUniverses().get(new Random().nextInt(getUniverses().size())));
                     }
 
-                    ((PlayerEntity) entityIn).sendStatusMessage(new TranslationTextComponent("universe." + stack.getOrCreateTag().getString("Universe")).func_240701_a_(TextFormatting.GOLD), true);
+                    ((PlayerEntity) entityIn).sendStatusMessage(new TranslationTextComponent("universe." + stack.getOrCreateTag().getString("Universe")).mergeStyle(TextFormatting.GOLD), true);
                 }
             } else {
                 stack.getOrCreateTag().remove("Searching");

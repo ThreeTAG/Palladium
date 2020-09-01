@@ -14,7 +14,7 @@ public class EntityTagPredicate implements IModelLayerPredicate {
 
     @Override
     public boolean test(IModelLayerContext context) {
-       return this.tag.func_230236_b_().contains(context.getAsEntity().getType());
+       return this.tag.getAllElements().contains(context.getAsEntity().getType());
     }
 
 }

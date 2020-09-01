@@ -17,12 +17,12 @@ public class ItemTagThreeData extends ThreeData<ITag.INamedTag<Item>> {
 
     @Override
     public ITag.INamedTag<Item> parseValue(JsonObject jsonObject, ITag.INamedTag<Item> defaultValue) {
-        return ItemTags.makeWrapperTag(JSONUtils.getString(jsonObject, this.jsonKey, defaultValue.func_230234_a_().toString()));
+        return ItemTags.makeWrapperTag(JSONUtils.getString(jsonObject, this.jsonKey, defaultValue.getName().toString()));
     }
 
     @Override
     public void writeToNBT(CompoundNBT nbt, ITag.INamedTag<Item> value) {
-        nbt.putString(this.key, value.func_230234_a_().toString());
+        nbt.putString(this.key, value.getName().toString());
     }
 
     @Override
@@ -34,6 +34,6 @@ public class ItemTagThreeData extends ThreeData<ITag.INamedTag<Item>> {
 
     @Override
     public JsonElement serializeJson(ITag.INamedTag<Item> value) {
-        return new JsonPrimitive(value.func_230234_a_().toString());
+        return new JsonPrimitive(value.getName().toString());
     }
 }

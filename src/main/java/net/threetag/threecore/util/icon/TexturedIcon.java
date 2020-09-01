@@ -68,7 +68,7 @@ public class TexturedIcon implements IIcon {
         mc.getTextureManager().bindTexture(this.texture);
 //        if (this.tint != null)
 //            RenderSystem.color3f(this.tint.getRed() / 255F, this.tint.getGreen() / 255F, this.tint.getBlue() / 255F);
-        AbstractGui.func_238463_a_(stack, x, y, this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
+        AbstractGui.blit(stack, x, y, this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
         RenderHelper.setupGui3DDiffuseLighting();
         RenderSystem.enableDepthTest();
         stack.pop();

@@ -1,18 +1,21 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url='https://dist.creeper.host/Sponge/maven' }
         jcenter()
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'org.spongepowered.mixin'
 
 version = "${minecraft_version}-${build_version}"
 group = 'net.threetag.threecore'
@@ -93,8 +96,8 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-$minecraft_version:$jei_version")
 
     // Curios
-    compileOnly fg.deobf("top.theillusivec4.curios:curios:$curios_version:api")
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios:$curios_version")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:$curios_version:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:$curios_version")
 }
 
 task deobfJar(type: Jar) {

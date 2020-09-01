@@ -149,7 +149,7 @@ public class TCItems {
             ILootCondition.IBuilder conditionBuilder = new ILootCondition.IBuilder() {
                 @Override
                 public ILootCondition build() {
-                    return Registry.field_239704_ba_.getValue(new ResourceLocation("random_chance")).get().func_237408_a_().func_230423_a_(jsonObject, null);
+                    return Registry.LOOT_CONDITION_TYPE.func_241873_b(new ResourceLocation("random_chance")).get().func_237408_a_().func_230423_a_(jsonObject, null);
                 }
             };
             e.getTable().addPool(LootPool.builder().addEntry(ItemLootEntry.builder(TCItems.MULTIVERSAL_EXTRAPOLATOR.get()).quality(1).weight(10).acceptCondition(conditionBuilder)).acceptCondition(conditionBuilder).build());

@@ -90,9 +90,9 @@ public abstract class MachineTileEntity extends LockableItemCapTileEntity implem
         return super.getCapability(cap, side);
     }
 
-    @Override public void func_230337_a_(BlockState p_230337_1_, CompoundNBT nbt)
-    {
-        super.func_230337_a_(p_230337_1_, nbt);
+    @Override
+    public void read(BlockState blockState, CompoundNBT nbt) {
+        super.read(blockState, nbt);
         this.energyStorage = createEnergyStorage(nbt.getInt("Energy"));
     }
 

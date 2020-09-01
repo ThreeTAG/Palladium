@@ -9,12 +9,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Rarity;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
-import net.minecraft.world.gen.placement.CountRangeConfig;
 import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.gen.placement.TopSolidRangeConfig;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -26,6 +26,7 @@ import net.threetag.threecore.item.CapacitorBlockItem;
 import net.threetag.threecore.item.ItemGroupRegistry;
 import net.threetag.threecore.item.TCItems;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class TCBlocks {
@@ -41,7 +42,7 @@ public class TCBlocks {
     public static final RegistryObject<Item> CAPACITOR_BLOCK_ITEM = TCItems.ITEMS.register("capacitor_block", () -> new CapacitorBlockItem(CAPACITOR_BLOCK.get(), new Item.Properties().maxStackSize(1).group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), ThreeCoreServerConfig.ENERGY.CAPACITOR));
     public static final RegistryObject<Block> ADVANCED_CAPACITOR_BLOCK = BLOCKS.register("advanced_capacitor_block", () -> new CapacitorBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F), CapacitorBlock.Type.ADVANCED));
     public static final RegistryObject<Item> ADVANCED_CAPACITOR_BLOCK_ITEM = TCItems.ITEMS.register("advanced_capacitor_block", () -> new CapacitorBlockItem(ADVANCED_CAPACITOR_BLOCK.get(), new Item.Properties().maxStackSize(1).group(ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY)), ThreeCoreServerConfig.ENERGY.ADVANCED_CAPACITOR));
-    public static final RegistryObject<Block> STIRLING_GENERATOR = register("stirling_generator", () -> new StirlingGeneratorBlock(Block.Properties.create(Material.IRON).func_235838_a_(value -> value.get(BlockStateProperties.LIT) ? 13 : 0).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)), ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY));
+    public static final RegistryObject<Block> STIRLING_GENERATOR = register("stirling_generator", () -> new StirlingGeneratorBlock(Block.Properties.create(Material.IRON).setLightLevel(value -> value.get(BlockStateProperties.LIT) ? 13 : 0).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)), ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY));
     public static final RegistryObject<Block> SOLAR_PANEL = register("solar_panel", () -> new SolarPanelBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)), ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY));
     public static final RegistryObject<Block> GOLD_CONDUIT = register("gold_conduit", () -> new EnergyConduitBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F), EnergyConduitBlock.ConduitType.GOLD, 2F / 16F), ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY));
     public static final RegistryObject<Block> COPPER_CONDUIT = register("copper_conduit", () -> new EnergyConduitBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(5.0F, 6.0F), EnergyConduitBlock.ConduitType.COPPER, 2F / 16F), ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY));
@@ -72,7 +73,7 @@ public class TCBlocks {
     public static final RegistryObject<Block> LEAD_ORE = register("lead_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
     public static final RegistryObject<Block> SILVER_ORE = register("silver_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
     public static final RegistryObject<Block> PALLADIUM_ORE = register("palladium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
-    public static final RegistryObject<Block> VIBRANIUM_ORE = register("vibranium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F).func_235838_a_(value -> 4)), Rarity.RARE);
+    public static final RegistryObject<Block> VIBRANIUM_ORE = register("vibranium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F).setLightLevel(value -> 4)), Rarity.RARE);
     public static final RegistryObject<Block> OSMIUM_ORE = register("osmium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
     public static final RegistryObject<Block> URANIUM_ORE = register("uranium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(3.0F, 5.0F)));
     public static final RegistryObject<Block> TITANIUM_ORE = register("titanium_ore", () -> new Block(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).hardnessAndResistance(3.0F, 5.0F)));
@@ -114,19 +115,17 @@ public class TCBlocks {
     public static final RegistryObject<Block> BLACK_CONCRETE_STAIRS = register("black_concrete_stairs", () -> new StairsBlock(Blocks.BLACK_CONCRETE::getDefaultState, Block.Properties.from(Blocks.BLACK_CONCRETE)));
 
     public static void initOres() {
-        ForgeRegistries.BIOMES.getValues().forEach((b) -> {
-            addOreFeature(b, COPPER_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.COPPER);
-            addOreFeature(b, TIN_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TIN);
-            addOreFeature(b, LEAD_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.LEAD);
-            addOreFeature(b, SILVER_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.SILVER);
-            addOreFeature(b, PALLADIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.PALLADIUM);
-            addOreFeature(b, VIBRANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.VIBRANIUM);
-            addOreFeature(b, OSMIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.OSMIUM);
-            addOreFeature(b, URANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URANIUM);
-            addOreFeature(b, TITANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TITANIUM);
-            addOreFeature(b, IRIDIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.IRIDIUM);
-            addOreFeature(b, URU_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URU);
-        });
+        addOreFeature(COPPER_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.COPPER);
+        addOreFeature(TIN_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TIN);
+        addOreFeature(LEAD_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.LEAD);
+        addOreFeature(SILVER_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.SILVER);
+        addOreFeature(PALLADIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.PALLADIUM);
+        addOreFeature(VIBRANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.VIBRANIUM);
+        addOreFeature(OSMIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.OSMIUM);
+        addOreFeature(URANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URANIUM);
+        addOreFeature(TITANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TITANIUM);
+        addOreFeature(IRIDIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.IRIDIUM);
+        addOreFeature(URU_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URU);
     }
 
     public static void initRenderTypes() {
@@ -138,8 +137,8 @@ public class TCBlocks {
         RenderTypeLookup.setRenderLayer(VIBRANIUM_BLOCK.get(), RenderType.getTranslucent());
     }
 
-    public static void addOreFeature(Biome biome, BlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
-        biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, ore, config.size.get())).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(config.count.get(), config.minHeight.get(), 0, config.maxHeight.get() - config.minHeight.get()))));
+    public static void addOreFeature(BlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
+        Registry.register(WorldGenRegistries.field_243653_e, Objects.requireNonNull(ore.getBlock().getRegistryName()), Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.field_241882_a, ore, config.size.get())).withPlacement(Placement.field_242907_l.configure(new TopSolidRangeConfig(config.minHeight.get(), config.minHeight.get(), config.maxHeight.get()))).func_242728_a().func_242731_b(config.size.get()));
     }
 
 

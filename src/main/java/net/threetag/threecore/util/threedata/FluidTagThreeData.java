@@ -17,12 +17,12 @@ public class FluidTagThreeData extends ThreeData<ITag.INamedTag<Fluid>> {
 
     @Override
     public ITag.INamedTag<Fluid> parseValue(JsonObject jsonObject, ITag.INamedTag<Fluid> defaultValue) {
-        return FluidTags.makeWrapperTag(JSONUtils.getString(jsonObject, this.jsonKey, defaultValue.func_230234_a_().toString()));
+        return FluidTags.makeWrapperTag(JSONUtils.getString(jsonObject, this.jsonKey, defaultValue.getName().toString()));
     }
 
     @Override
     public void writeToNBT(CompoundNBT nbt, ITag.INamedTag<Fluid> value) {
-        nbt.putString(this.key, value.func_230234_a_().toString());
+        nbt.putString(this.key, value.getName().toString());
     }
 
     @Override
@@ -34,6 +34,6 @@ public class FluidTagThreeData extends ThreeData<ITag.INamedTag<Fluid>> {
 
     @Override
     public JsonElement serializeJson(ITag.INamedTag<Fluid> value) {
-        return new JsonPrimitive(value.func_230234_a_().toString());
+        return new JsonPrimitive(value.getName().toString());
     }
 }

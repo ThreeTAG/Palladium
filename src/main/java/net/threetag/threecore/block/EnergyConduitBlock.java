@@ -70,7 +70,7 @@ public class EnergyConduitBlock extends Block implements IWaterLoggable {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.threecore.conduit_tooltip", new StringTextComponent(this.type.getTransferRate().getAsInt() + "").func_240699_a_(TextFormatting.GOLD), new StringTextComponent(EnergyUtil.ENERGY_UNIT).func_240699_a_(TextFormatting.GRAY)).func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.threecore.conduit_tooltip", new StringTextComponent(this.type.getTransferRate().getAsInt() + "").mergeStyle(TextFormatting.GOLD), new StringTextComponent(EnergyUtil.ENERGY_UNIT).mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.GRAY));
     }
 
     @Nullable
@@ -209,7 +209,7 @@ public class EnergyConduitBlock extends Block implements IWaterLoggable {
         }
 
         @Override
-        public String func_176610_l() {
+        public String getString() {
             return this.name;
         }
     }
@@ -229,7 +229,7 @@ public class EnergyConduitBlock extends Block implements IWaterLoggable {
         }
 
         @Override
-        public String func_176610_l() {
+        public String getString() {
             return this.name;
         }
     }

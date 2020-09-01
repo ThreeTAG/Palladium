@@ -72,8 +72,8 @@ public class SuitStandEntity extends ArmorStandEntity {
         compound.putByte("Color", (byte) this.getDyeColor().getId());
     }
 
-    @Override public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand)
-    {
+    @Override
+    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
         if (!player.isCrouching()) {
             ItemStack stack = player.getHeldItem(hand);
 
@@ -113,9 +113,9 @@ public class SuitStandEntity extends ArmorStandEntity {
     }
 
     @Override
-    public void func_213815_f(DamageSource p_213815_1_) {
-        Block.spawnAsEntity(this.world, this.func_233580_cy_(), new ItemStack(TCItems.SUIT_STAND.get()));
-        this.func_213816_g(p_213815_1_);
+    public void breakArmorStand(DamageSource damageSource) {
+        Block.spawnAsEntity(this.world, this.getPosition(), new ItemStack(TCItems.SUIT_STAND.get()));
+        this.func_213816_g(damageSource);
     }
 
     @Override

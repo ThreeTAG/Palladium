@@ -158,9 +158,9 @@ public class HydraulicPressTileEntity extends ProgressableMachineTileEntity<Pres
         this.updateRecipe(this.recipeWrapper);
     }
 
-    @Override public void func_230337_a_(BlockState p_230337_1_, CompoundNBT nbt)
-    {
-        super.func_230337_a_(p_230337_1_, nbt);
+    @Override
+    public void read(BlockState blockState, CompoundNBT nbt) {
+        super.read(blockState, nbt);
         if (nbt.contains("EnergySlots"))
             this.energySlot.deserializeNBT(nbt.getCompound("EnergySlots"));
         if (nbt.contains("InputSlots"))

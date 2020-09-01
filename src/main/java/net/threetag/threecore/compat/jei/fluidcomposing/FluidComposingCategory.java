@@ -100,6 +100,6 @@ public class FluidComposingCategory<T> implements IRecipeCategory<FluidComposing
         FontRenderer fontRenderer = minecraft.fontRenderer;
         String s = I18n.format("threecore.util.energy_display", recipe.getRequiredEnergy(), EnergyUtil.ENERGY_UNIT);
         int length = fontRenderer.getStringWidth(s);
-        fontRenderer.func_238421_b_(stack, s, 134 / 2 - length / 2, 55, 0xFF808080);
+        fontRenderer.drawString(stack, s, 134 / 2F - length / 2F, 55, 0xFF808080);
     }
 }

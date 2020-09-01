@@ -1,35 +1,31 @@
 package net.threetag.threecore.container;
 
-import net.threetag.threecore.item.recipe.PressingRecipe;
-import net.threetag.threecore.tileentity.HydraulicPressTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.CraftResultInventory;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.IRecipeHelperPopulator;
-import net.minecraft.inventory.container.RecipeBookContainer;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.crafting.IRecipeContainer;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.threetag.threecore.item.recipe.PressingRecipe;
+import net.threetag.threecore.tileentity.HydraulicPressTileEntity;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class HydraulicPressContainer extends RecipeBookContainer implements IRecipeContainer {
+public class HydraulicPressContainer extends Container {
+
+    // TODO add recipe book
 
     public final PlayerInventory inventoryPlayer;
     public final HydraulicPressTileEntity hydraulicPressTileEntity;
@@ -166,59 +162,6 @@ public class HydraulicPressContainer extends RecipeBookContainer implements IRec
     @OnlyIn(Dist.CLIENT)
     public int getMaxEnergyStored() {
         return this.intArray.get(3);
-    }
-
-    @Override
-    public CraftResultInventory getCraftResult() {
-        return null;
-    }
-
-    @Override
-    public CraftingInventory getCraftMatrix() {
-        return null;
-    }
-
-    @Override
-    public void fillStackedContents(RecipeItemHelper recipeItemHelper) {
-        if (this.hydraulicPressTileEntity instanceof IRecipeHelperPopulator) {
-            ((IRecipeHelperPopulator) this.hydraulicPressTileEntity).fillStackedContents(recipeItemHelper);
-        }
-    }
-
-    @Override
-    public void clear() {
-        this.hydraulicPressTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler -> {
-            if (itemHandler instanceof IItemHandlerModifiable) {
-                for (int i = 0; i < itemHandler.getSlots(); i++) {
-                    ((IItemHandlerModifiable) itemHandler).setStackInSlot(i, ItemStack.EMPTY);
-                }
-            }
-        }));
-    }
-
-    @Override
-    public boolean matches(IRecipe recipe) {
-        return recipe.matches(this.recipeWrapper, this.inventoryPlayer.player.world);
-    }
-
-    @Override
-    public int getOutputSlot() {
-        return 1;
-    }
-
-    @Override
-    public int getWidth() {
-        return 1;
-    }
-
-    @Override
-    public int getHeight() {
-        return 1;
-    }
-
-    @Override
-    public int getSize() {
-        return 3;
     }
 
     public static class HydraulicPressResultSlot extends SlotItemHandler {

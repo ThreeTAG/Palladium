@@ -54,9 +54,9 @@ public class SolarPanelTileEntity extends TileEntity implements ITickableTileEnt
         return world.func_230315_m_().hasSkyLight() && world.canBlockSeeSky(this.getPos().up()) && !world.isRaining() && !world.isThundering() && world.isDaytime();
     }
 
-    @Override public void func_230337_a_(BlockState p_230337_1_, CompoundNBT compound)
-    {
-        super.func_230337_a_(p_230337_1_, compound);
+    @Override
+    public void read(BlockState blockState, CompoundNBT compound) {
+        super.read(blockState, compound);
         this.energyStorage = EnergyStorageExt.noReceive(ThreeCoreServerConfig.ENERGY.SOLAR_PANEL, compound.getInt("Energy"));
 
     }

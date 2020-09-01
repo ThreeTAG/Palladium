@@ -110,7 +110,7 @@ public class ConstructionTableRecipeBuilder {
 
     public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation location) {
         this.validate(location);
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.func_235675_a_(location)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(location)).withRequirementsStrategy(IRequirementsStrategy.OR);
+        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(location)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(location)).withRequirementsStrategy(IRequirementsStrategy.OR);
         consumer.accept(new Result(this.recipeSerializer, location, this.result, this.group == null ? "" : this.group, this.pattern, this.key, this.toolIngredient, this.advancementBuilder, new ResourceLocation(location.getNamespace(), "recipes/" + this.result.getItem().getGroup().getPath() + "/" + location.getPath()), this.consumesTool));
     }
 

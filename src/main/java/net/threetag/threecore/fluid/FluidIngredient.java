@@ -21,8 +21,8 @@ public class FluidIngredient implements Predicate<FluidStack> {
 
     public FluidIngredient(ITag.INamedTag<Fluid> tag, int amount) {
         this.tag = tag;
-        Iterator<Fluid> iterator = tag.func_230236_b_().iterator();
-        this.matching = new FluidStack[tag.func_230236_b_().size()];
+        Iterator<Fluid> iterator = tag.getAllElements().iterator();
+        this.matching = new FluidStack[tag.getAllElements().size()];
         int i = 0;
         while (iterator.hasNext()) {
             matching[i] = new FluidStack(iterator.next(), amount);
@@ -89,7 +89,7 @@ public class FluidIngredient implements Predicate<FluidStack> {
                     return new FluidIngredient(TCFluidUtil.deserializeFluidStack(jsonObject));
                 } else if (JSONUtils.hasField(jsonObject, "tag")) {
                     ResourceLocation tag = new ResourceLocation(JSONUtils.getString(jsonObject, "tag"));
-                    ITag.INamedTag<Fluid> fluidTag = FluidTags.func_241280_c_().stream().filter(fluidNamedTag -> fluidNamedTag.func_230234_a_().equals(tag)).findFirst().orElse(null);
+                    ITag.INamedTag<Fluid> fluidTag = FluidTags.func_241280_c_().stream().filter(fluidNamedTag -> fluidNamedTag.getName().equals(tag)).findFirst().orElse(null);
                     if (fluidTag == null) {
                         throw new JsonSyntaxException("Unknown fluid tag '" + tag + "'");
                     } else {

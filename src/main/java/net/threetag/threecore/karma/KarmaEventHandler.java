@@ -1,6 +1,5 @@
 package net.threetag.threecore.karma;
 
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.IAngerable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -10,7 +9,6 @@ import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.AnimalTameEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -87,18 +85,12 @@ public class KarmaEventHandler {
 
     @SubscribeEvent
     public static void onCropTrample(BlockEvent.FarmlandTrampleEvent e) {
-        if(!(e.getEntity() instanceof PlayerEntity)) return;
+        if (!(e.getEntity() instanceof PlayerEntity)) return;
         e.getEntity().getCapability(CapabilityKarma.KARMA).ifPresent((k) -> CapabilityKarma.addKarma((PlayerEntity) e.getEntity(), -1));
     }
 
     public static boolean isMonster(LivingEntity entity) {
-        for (Biome.SpawnListEntry entry : entity.world.getBiome(entity.func_233580_cy_()).getSpawns(EntityClassification.MONSTER)) {
-            if (entry.entityType == entity.getType()) {
-                return true;
-            }
-        }
-
-        return false;
+        return !entity.getType().getClassification().getPeacefulCreature();
     }
 
 }

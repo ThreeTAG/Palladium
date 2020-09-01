@@ -14,8 +14,8 @@ public class TranslucentButton extends Button {
     }
 
     @Override
-    public void func_238474_b_(MatrixStack stack, int x, int y, int textureU, int textureV, int width, int height) {
-        AbstractGui.func_238467_a_(stack, x, y, x + width, y + height, Integer.MIN_VALUE);
+    public void blit(MatrixStack stack, int x, int y, int textureU, int textureV, int width, int height) {
+        AbstractGui.fill(stack, x, y, x + width, y + height, Integer.MIN_VALUE);
     }
 
 }

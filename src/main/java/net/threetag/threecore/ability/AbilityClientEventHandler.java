@@ -99,7 +99,7 @@ public class AbilityClientEventHandler {
         }
 
         // Multi Jump
-        if (!Minecraft.getInstance().player.isCreative() && Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && !Minecraft.getInstance().player.func_233570_aj_()) {
+        if (!Minecraft.getInstance().player.isCreative() && Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && !Minecraft.getInstance().player.isOnGround()) {
             for (MultiJumpAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, MultiJumpAbility.class)) {
                 if (ability.getConditionManager().isEnabled()) {
                     ThreeCore.NETWORK_CHANNEL.sendToServer(new MultiJumpMessage(ability.container.getId(), ability.getId()));
@@ -123,7 +123,7 @@ public class AbilityClientEventHandler {
     @SubscribeEvent
     public void onGuiInit(GuiScreenEvent.InitGuiEvent e) {
         if (e.getGui() instanceof ChatScreen) {
-            e.addWidget(new TranslucentButton(e.getGui().field_230708_k_ - 1 - 75, e.getGui().field_230709_l_ - 40, 75, 20, new StringTextComponent(I18n.format("gui.threecore.abilities")), b -> Minecraft.getInstance().displayGuiScreen(new AbilitiesScreen())));
+            e.addWidget(new TranslucentButton(e.getGui().width - 1 - 75, e.getGui().height - 40, 75, 20, new StringTextComponent(I18n.format("gui.threecore.abilities")), b -> Minecraft.getInstance().displayGuiScreen(new AbilitiesScreen())));
         }
 
         // Set all keys to unpressed; when an ability opens a GUI, the unpressing of the button will not register and therefore you will need to hit the button twice the next time
@@ -163,8 +163,8 @@ public class AbilityClientEventHandler {
     public void onHeartsPre(RenderGameOverlayEvent.Pre e) {
         for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, CustomHotbarAbility.class)) {
             if (ability.getConditionManager().isEnabled() && e.getType() == ability.getDataManager().get(CustomHotbarAbility.HOTBAR_ELEMENT)) {
-                AbstractGui.field_230665_h_ = ability.getDataManager().get(CustomHotbarAbility.TEXTURE);
-                Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.field_230665_h_);
+                AbstractGui.GUI_ICONS_LOCATION = ability.getDataManager().get(CustomHotbarAbility.TEXTURE);
+                Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
             }
         }
     }
@@ -175,12 +175,12 @@ public class AbilityClientEventHandler {
 
         for (CustomHotbarAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, CustomHotbarAbility.class)) {
             if (ability.getConditionManager().isEnabled() && e.getType() == ability.getDataManager().get(CustomHotbarAbility.HOTBAR_ELEMENT)) {
-                AbstractGui.field_230665_h_ = new ResourceLocation("textures/gui/icons.png");
-                Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.field_230665_h_);
+                AbstractGui.GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
+                Minecraft.getInstance().getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
             }
         }
 
-        if (e.getType() == RenderGameOverlayEvent.ElementType.HELMET && Minecraft.getInstance().gameSettings.thirdPersonView == 0) {
+        if (e.getType() == RenderGameOverlayEvent.ElementType.HELMET && Minecraft.getInstance().gameSettings.func_243230_g().func_243192_a()) {
             for (HUDAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, HUDAbility.class)) {
                 if (ability.getConditionManager().isEnabled()) {
 
@@ -226,7 +226,7 @@ public class AbilityClientEventHandler {
                     int baseX = base_data[0] >= 0 ? base_data[0] : scaledWidth + base_data[0];
                     int baseY = base_data[1] >= 0 ? base_data[1] : scaledHeight + base_data[1];
 
-                    mc.ingameGUI.func_238474_b_(e.getMatrixStack(), baseX, baseY, 0, 0, base_data[2], base_data[3]);
+                    mc.ingameGUI.blit(e.getMatrixStack(), baseX, baseY, 0, 0, base_data[2], base_data[3]);
 
                     mc.getTextureManager().bindTexture(ability.dataManager.get(EnergyAbility.ENERGY_TEXTURE));
 
@@ -240,7 +240,7 @@ public class AbilityClientEventHandler {
                     energyX = energy_data[4] >= 0 ? energyX : energyX + Math.abs(energy_data[4]) - energyWidth;
                     energyY = energy_data[5] >= 0 ? energyY : energyY + Math.abs(energy_data[5]) - energyHeight;
 
-                    mc.ingameGUI.func_238474_b_(e.getMatrixStack(), energyX, energyY, energyU, energyV, energyWidth, energyHeight);
+                    mc.ingameGUI.blit(e.getMatrixStack(), energyX, energyY, energyU, energyV, energyWidth, energyHeight);
                 }
             }
         }

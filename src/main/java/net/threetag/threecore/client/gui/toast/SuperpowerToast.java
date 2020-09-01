@@ -23,10 +23,10 @@ public class SuperpowerToast implements IToast {
     public Visibility func_230444_a_(MatrixStack stack, ToastGui guiToast, long l) {
         guiToast.getMinecraft().getTextureManager().bindTexture(AbilityBarRenderer.TEXTURE);
         RenderSystem.color3f(1.0F, 1.0F, 1.0F);
-        guiToast.func_238474_b_(stack, 0, 0, 0, 224, 160, 32);
+        guiToast.blit(stack, 0, 0, 0, 224, 160, 32);
 
-        guiToast.getMinecraft().fontRenderer.func_238421_b_(stack, I18n.format("superpower.toast.title"), 30.0F, 7.0F, 0xff7b0000);
-        guiToast.getMinecraft().fontRenderer.func_238422_b_(stack, this.name, 30.0F, 18.0F, -16777216);
+        guiToast.getMinecraft().fontRenderer.drawString(stack, I18n.format("superpower.toast.title"), 30.0F, 7.0F, 0xff7b0000);
+        guiToast.getMinecraft().fontRenderer.func_243248_b(stack, this.name, 30.0F, 18.0F, -16777216);
 
         this.icon.draw(guiToast.getMinecraft(), stack, 8, 8);
 

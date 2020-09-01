@@ -50,7 +50,7 @@ public class AcceleratingFlightAbility extends Ability implements FlightSound.IF
 
     @Override
     public void action(LivingEntity entity) {
-        if (!entity.func_233570_aj_()) {
+        if (!entity.isOnGround()) {
 
 //            if (!entity.world.isRemote && this.prevMotion.distanceTo(motion) >= 5F && this.prevMotion.length() > motion.length()) {
 //                entity.world.createExplosion(null, entity.posX, entity.posY + entity.size.height / 2D, entity.posZ, (float) motion.length(), Explosion.Mode.DESTROY);

@@ -24,13 +24,13 @@ public class DefaultSizeChangeType extends SizeChangeType {
     @Override
     public void onSizeChanged(Entity entity, ISizeChanging data, float size) {
         if (entity instanceof LivingEntity) {
-            AttributeModifierManager map = ((LivingEntity) entity).func_233645_dx_();
-            setAttribute(map, Attributes.field_233821_d_, (size - 1F) * 0.5D, AttributeModifier.Operation.MULTIPLY_TOTAL, SizeChangeType.ATTRIBUTE_UUID);
-            setAttribute(map, TCAttributes.JUMP_HEIGHT.get(), (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
-            setAttribute(map, TCAttributes.FALL_RESISTANCE.get(), size > 1F ? 1F / size : size, AttributeModifier.Operation.MULTIPLY_BASE, SizeChangeType.ATTRIBUTE_UUID);
-            setAttribute(map, Attributes.field_233823_f_, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
-            setAttribute(map, ForgeMod.REACH_DISTANCE.get(), (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
-            setAttribute(map, Attributes.field_233820_c_, (size - 1F) * 0.5D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
+
+            setAttribute((LivingEntity) entity, Attributes.MOVEMENT_SPEED, (size - 1F) * 0.5D, AttributeModifier.Operation.MULTIPLY_TOTAL, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute((LivingEntity) entity, TCAttributes.JUMP_HEIGHT.get(), (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute((LivingEntity) entity, TCAttributes.FALL_RESISTANCE.get(), size > 1F ? 1F / size : size, AttributeModifier.Operation.MULTIPLY_BASE, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute((LivingEntity) entity, Attributes.ATTACK_DAMAGE, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute((LivingEntity) entity, ForgeMod.REACH_DISTANCE.get(), (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute((LivingEntity) entity, Attributes.KNOCKBACK_RESISTANCE, (size - 1F) * 0.5D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
 
             changeCreeperExplosionRadius(entity, size);
             spawnWaterParticles(entity);
@@ -68,12 +68,12 @@ public class DefaultSizeChangeType extends SizeChangeType {
 
     }
 
-    public void setAttribute(AttributeModifierManager map, Attribute attribute, double value, AttributeModifier.Operation operation, UUID uuid) {
-        if (map.func_233779_a_(attribute) != null) {
-            ModifiableAttributeInstance instance = map.func_233779_a_(attribute);
+    public void setAttribute(LivingEntity entity, Attribute attribute, double value, AttributeModifier.Operation operation, UUID uuid) {
+        if (entity.getAttribute(attribute) != null) {
+            ModifiableAttributeInstance instance = entity.getAttribute(attribute);
             if (instance.getModifier(uuid) != null)
                 instance.removeModifier(uuid);
-            instance.func_233767_b_(new AttributeModifier(uuid, "default_size_changer", value, operation));
+            instance.applyNonPersistentModifier(new AttributeModifier(uuid, "default_size_changer", value, operation));
         }
     }
 

@@ -4,9 +4,6 @@ import com.google.common.collect.Lists;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.threetag.threecore.ability.AbilityHelper;
-import net.threetag.threecore.capability.CapabilityAbilityContainer;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import top.theillusivec4.curios.api.CuriosApi;
 
@@ -20,12 +17,12 @@ public class CuriosHandler extends DefaultCuriosHandler {
     public static void enable() {
         DefaultCuriosHandler.INSTANCE = new CuriosHandler();
 
-        CuriosApi.getSlotHelper().getSlotTypeIds().forEach(id -> {
-            AbilityHelper.registerAbilityContainer(new ResourceLocation("curios", id), (p) -> {
-                List<ItemStack> list = INSTANCE.getItemsInSlot(p, id);
-                return list.size() > 0 ? list.get(0).getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null) : null;
-            });
-        });
+//        CuriosApi.getSlotHelper().getSlotTypeIds().forEach(id -> {
+//            AbilityHelper.registerAbilityContainer(new ResourceLocation("curios", id), (p) -> {
+//                List<ItemStack> list = INSTANCE.getItemsInSlot(p, id);
+//                return list.size() > 0 ? list.get(0).getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null) : null;
+//            });
+//        });
     }
 
     @Override

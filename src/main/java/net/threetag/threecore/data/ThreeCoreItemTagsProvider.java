@@ -140,8 +140,8 @@ public class ThreeCoreItemTagsProvider extends ItemTagsProvider {
     }
 
     public void addToBoth(ITag.INamedTag<Item> root, ITag.INamedTag<Item> branch, IItemProvider item) {
-        this.func_240522_a_(branch).func_240532_a_(item.asItem());
-        this.func_240522_a_(root).func_240531_a_(branch);
+        this.getOrCreateBuilder(branch).add(item.asItem());
+        this.getOrCreateBuilder(root).addTag(branch);
     }
 
     @Override

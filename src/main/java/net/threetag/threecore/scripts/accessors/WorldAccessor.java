@@ -34,7 +34,7 @@ public class WorldAccessor extends ScriptAccessor<World> {
     }
 
     public void setTime(@ScriptParameterName("time") long time) {
-        if(this.value instanceof ServerWorld)
+        if (this.value instanceof ServerWorld)
             ((ServerWorld) this.value).func_241114_a_(time);
     }
 
@@ -46,7 +46,9 @@ public class WorldAccessor extends ScriptAccessor<World> {
         return this.value.isThundering();
     }
 
-    public boolean isRemote(){ return this.value.isRemote; }
+    public boolean isRemote() {
+        return this.value.isRemote;
+    }
 
     public void setRainStrength(@ScriptParameterName("strength") float strength) {
         this.value.setRainStrength(strength);
@@ -69,11 +71,10 @@ public class WorldAccessor extends ScriptAccessor<World> {
     }
 
     public void summonLightning(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z, @ScriptParameterName("effectOnly") boolean effectOnly) {
-        if (this.value instanceof ServerWorld)
-        {
+        if (this.value instanceof ServerWorld) {
             LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.value);
-            lightningboltentity.func_233576_c_(Vector3d.func_237492_c_(new BlockPos(x, y, z)));
-            lightningboltentity.func_233623_a_(false);
+            lightningboltentity.moveForced(Vector3d.copyCenteredHorizontally(new BlockPos(x, y, z)));
+            lightningboltentity.setEffectOnly(effectOnly);
             this.value.addEntity(lightningboltentity);
         }
     }
@@ -93,12 +94,12 @@ public class WorldAccessor extends ScriptAccessor<World> {
 
     public void executeCommand(@ScriptParameterName("command") String command) {
         if (this.value instanceof ServerWorld) {
-            CommandSource commandSource = new CommandSource(new ScriptCommandSource(), Vector3d.func_237491_b_(((ServerWorld) this.value).func_241135_u_()), Vector2f.ZERO, (ServerWorld) value, 4, "Script", new StringTextComponent("Script"), this.value.getServer(), (Entity) null);
+            CommandSource commandSource = new CommandSource(new ScriptCommandSource(), Vector3d.copy(((ServerWorld) this.value).func_241135_u_()), Vector2f.ZERO, (ServerWorld) value, 4, "Script", new StringTextComponent("Script"), this.value.getServer(), (Entity) null);
             this.value.getServer().getCommandManager().handleCommand(commandSource, command);
         }
     }
 
-    public EntityAccessor[] getEntitiesInBox(@ScriptParameterName("x1") double x1, @ScriptParameterName("y1") double y1, @ScriptParameterName("z1") double z1, @ScriptParameterName("x2") double x2, @ScriptParameterName("y2") double y2, @ScriptParameterName("z2") double z2){
+    public EntityAccessor[] getEntitiesInBox(@ScriptParameterName("x1") double x1, @ScriptParameterName("y1") double y1, @ScriptParameterName("z1") double z1, @ScriptParameterName("x2") double x2, @ScriptParameterName("y2") double y2, @ScriptParameterName("z2") double z2) {
         List<Entity> list = this.value.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x1, y1, z1, x2, y2, z2), t -> true);
         EntityAccessor[] array = new EntityAccessor[list.size()];
         for (int i = 0; i < list.size(); i++)
@@ -106,7 +107,7 @@ public class WorldAccessor extends ScriptAccessor<World> {
         return array;
     }
 
-    public LivingEntityAccessor[] getLivingEntitiesInBox(@ScriptParameterName("x1") double x1, @ScriptParameterName("y1") double y1, @ScriptParameterName("z1") double z1, @ScriptParameterName("x2") double x2, @ScriptParameterName("y2") double y2, @ScriptParameterName("z2") double z2){
+    public LivingEntityAccessor[] getLivingEntitiesInBox(@ScriptParameterName("x1") double x1, @ScriptParameterName("y1") double y1, @ScriptParameterName("z1") double z1, @ScriptParameterName("x2") double x2, @ScriptParameterName("y2") double y2, @ScriptParameterName("z2") double z2) {
         List<Entity> list = this.value.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(x1, y1, z1, x2, y2, z2), t -> true);
         LivingEntityAccessor[] array = new LivingEntityAccessor[list.size()];
         for (int i = 0; i < list.size(); i++)

@@ -24,7 +24,7 @@ public class CustomHotbarAbility extends Ability {
         super.registerData();
         this.dataManager.register(ICON, new ItemIcon(Items.STICK));
         this.dataManager.register(HOTBAR_ELEMENT, RenderGameOverlayEvent.ElementType.HEALTH);
-        this.dataManager.register(TEXTURE, AbstractGui.field_230665_h_);
+        this.dataManager.register(TEXTURE, AbstractGui.GUI_ICONS_LOCATION);
     }
 
     @Override

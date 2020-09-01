@@ -47,8 +47,8 @@ public class CapacitorBlock extends ContainerBlock {
         return BlockRenderType.MODEL;
     }
 
-    @Override public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
-    {
+    @Override
+    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
         return state.get(LEVEL_0_10);
     }
 
@@ -119,16 +119,17 @@ public class CapacitorBlock extends ContainerBlock {
 
         public static Type getByName(String name) {
             for (Type type : values()) {
-                if (type.func_176610_l().equalsIgnoreCase(name)) {
+                if (type.getString().equalsIgnoreCase(name)) {
                     return type;
                 }
             }
             return values()[0];
         }
 
-        @Override public String func_176610_l()
-        {
+        @Override
+        public String getString() {
             return this.name;
         }
+
     }
 }

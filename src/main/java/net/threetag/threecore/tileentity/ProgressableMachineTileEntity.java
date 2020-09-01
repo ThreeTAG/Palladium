@@ -79,7 +79,7 @@ public abstract class ProgressableMachineTileEntity<T extends IEnergyRecipe<IInv
     public abstract void produceOutput(T recipe);
 
     public void addXP() {
-        if(this.xpMap != null)
+        if (this.xpMap != null)
             this.xpMap.compute(recipe.getId(), (resourceLocation, integer) -> 1 + (integer == null ? 0 : integer));
     }
 
@@ -107,9 +107,9 @@ public abstract class ProgressableMachineTileEntity<T extends IEnergyRecipe<IInv
         player.unlockRecipes(list);
     }
 
-    @Override public void func_230337_a_(BlockState p_230337_1_, CompoundNBT nbt)
-    {
-        super.func_230337_a_(p_230337_1_, nbt);
+    @Override
+    public void read(BlockState blockState, CompoundNBT nbt) {
+        super.read(blockState, nbt);
         this.recipe = getRecipe(new ResourceLocation(nbt.getString("Recipe")));
         this.progress = nbt.getInt("Progress");
         this.maxProgress = nbt.getInt("MaxProgress");
