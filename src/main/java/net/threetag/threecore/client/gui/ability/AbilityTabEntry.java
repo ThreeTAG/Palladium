@@ -9,7 +9,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
@@ -175,11 +174,11 @@ public class AbilityTabEntry extends AbstractGui {
 
         if (flag1) {
             for (int k1 = 0; k1 < this.description.size(); ++k1) {
-                minecraft.fontRenderer.drawString(stack, this.description.get(k1).getString(), (float) (i1 + 5), (float) (l + 26 - j1 + 7 + k1 * 9), -5592406);
+                minecraft.fontRenderer.func_243248_b(stack, this.description.get(k1), (float) (i1 + 5), (float) (l + 26 - j1 + 7 + k1 * 9), -5592406);
             }
         } else {
             for (int l1 = 0; l1 < this.description.size(); ++l1) {
-                minecraft.fontRenderer.drawString(stack, this.description.get(l1).getString(), (float) (i1 + 5), (float) (y + posY + 9 + 17 + l1 * 9), -5592406);
+                minecraft.fontRenderer.func_243248_b(stack, this.description.get(l1), (float) (i1 + 5), (float) (y + posY + 9 + 17 + l1 * 9), -5592406);
             }
         }
 
@@ -229,7 +228,7 @@ public class AbilityTabEntry extends AbstractGui {
 
         for (Condition condition : conditions) {
             boolean active = this.ability.getConditionManager().isActive(condition);
-            list.add(condition.getDisplayName().copyRaw().setStyle(Style.EMPTY.applyFormatting(active ? TextFormatting.GREEN : TextFormatting.RED)));
+            list.add(condition.getDisplayName().deepCopy().mergeStyle(active ? TextFormatting.GREEN : TextFormatting.RED));
         }
 
         return list;

@@ -31,7 +31,7 @@
   "ability.condition.threecore.item_buy": "An item must be spent",
   "ability.condition.threecore.item_buy.info": "%sx %s",
   "ability.condition.threecore.item_buy.not": "An item must be spent",
-  "ability.condition.threecore.item_integer_nbt": "Item in %s slot must have specific value in % nbt tag",
+  "ability.condition.threecore.item_integer_nbt": "Item in %s slot must have specific value in %s nbt tag",
   "ability.condition.threecore.karma": "Karma must be between %s and %s",
   "ability.condition.threecore.karma.not": "Karma must be outside of %s and %s",
   "ability.condition.threecore.karma_at": "Karma must be at %s",
