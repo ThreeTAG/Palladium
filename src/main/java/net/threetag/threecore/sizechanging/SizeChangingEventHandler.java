@@ -7,7 +7,6 @@ import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.SnowballEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -46,7 +45,7 @@ public class SizeChangingEventHandler {
         });
 
         if (e.getEntity() instanceof ProjectileEntity) {
-            Entity owner = ((ThrowableEntity) e.getEntity()).func_234616_v_();
+            Entity owner = ((ProjectileEntity) e.getEntity()).func_234616_v_();
             if (owner != null)
                 copyScale(owner, e.getEntity());
         }
