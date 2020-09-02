@@ -1,6 +1,5 @@
 package net.threetag.threecore.util;
 
-import com.sun.javafx.geom.Vec3d;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -81,8 +80,8 @@ public class EntityUtil {
         }
     }
 
-    public static Vec3d getInterpolatedPositionVec(Entity entity, float partialTicks) {
-        return new Vec3d(MathHelper.lerp(partialTicks, entity.prevPosX, entity.getPosX()), MathHelper.lerp(partialTicks, entity.prevPosY, entity.getPosY()), MathHelper.lerp(partialTicks, entity.prevPosZ, entity.getPosZ()));
+    public static Vector3d getInterpolatedPositionVec(Entity entity, float partialTicks) {
+        return new Vector3d(MathHelper.lerp(partialTicks, entity.prevPosX, entity.getPosX()), MathHelper.lerp(partialTicks, entity.prevPosY, entity.getPosY()), MathHelper.lerp(partialTicks, entity.prevPosZ, entity.getPosZ()));
     }
 
 }
