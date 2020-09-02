@@ -82,7 +82,7 @@ public class AbilityScreen extends Screen {
     }
 
     public void updateButton() {
-        String button = this.ability.getDataManager().get(Ability.KEYBIND) == -1 ? "-" : InputMappings.getInputByCode(this.ability.getDataManager().get(Ability.KEYBIND), 0).getTranslationKey();
+        String button = this.ability.getDataManager().get(Ability.KEYBIND) == -1 ? "-" : InputMappings.getInputByCode(this.ability.getDataManager().get(Ability.KEYBIND), 0).func_237520_d_().getString();
         if (button.isEmpty())
             button = "-";
         this.keyButton.setMessage(new StringTextComponent(this.listenToKey ? "> " + TextFormatting.YELLOW + button + TextFormatting.RESET + " <" : button));
