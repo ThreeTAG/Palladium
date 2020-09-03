@@ -126,6 +126,17 @@ public class ThreeCore {
         // Misc
         CraftingHelper.register(ToolIngredient.ID, ToolIngredient.Serializer.INSTANCE);
 
+        // Registries
+        TCItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCTileEntityTypes.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCContainerTypes.CONTAINER_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCRecipeSerializers.RECIPE_SERIALIZERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCEntityTypes.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCSounds.SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCEffects.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCAttributes.ATTRIBUTES.register(FMLJavaModLoadingContext.get().getModEventBus());
+
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             // Rendering Stuff
             MinecraftForge.EVENT_BUS.addListener(RenderUtil::onRenderGlobal);
@@ -145,16 +156,6 @@ public class ThreeCore {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void registries(RegistryEvent.NewRegistry e) {
-        // TODO move
-        TCItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCTileEntityTypes.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCContainerTypes.CONTAINER_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCRecipeSerializers.RECIPE_SERIALIZERS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCEntityTypes.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCSounds.SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCEffects.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCAttributes.ATTRIBUTES.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCLootFunctions.register();
     }
 

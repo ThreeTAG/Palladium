@@ -57,21 +57,20 @@ public class TexturedIcon implements IIcon {
         this(texture, u, v, width, height, 256, 256);
     }
 
-    //TODO fix rendering
     @OnlyIn(Dist.CLIENT)
     @Override
     public void draw(Minecraft mc, MatrixStack stack, int x, int y) {
-        stack.push();
+        RenderSystem.pushMatrix();
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderHelper.setupGuiFlatDiffuseLighting();
         mc.getTextureManager().bindTexture(this.texture);
-//        if (this.tint != null)
-//            RenderSystem.color3f(this.tint.getRed() / 255F, this.tint.getGreen() / 255F, this.tint.getBlue() / 255F);
+        if (this.tint != null)
+            RenderSystem.color3f(this.tint.getRed() / 255F, this.tint.getGreen() / 255F, this.tint.getBlue() / 255F);
         AbstractGui.blit(stack, x, y, this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
         RenderHelper.setupGui3DDiffuseLighting();
         RenderSystem.enableDepthTest();
-        stack.pop();
+        RenderSystem.popMatrix();
     }
 
     @Override
