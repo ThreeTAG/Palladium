@@ -3,6 +3,7 @@ package net.threetag.threecore.sizechanging;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -14,6 +15,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
@@ -33,6 +35,21 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID)
 public class SizeChangingEventHandler {
+
+    @SubscribeEvent
+    public static void onEntitySize(EntityEvent.Size e) {
+        if (e.getEntity().isAddedToWorld()) {
+            e.getEntity().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
+                EntitySize size = e.getOldSize();
+                if (e.getOldSize().fixed) {
+                    e.setNewSize(EntitySize.fixed(size.width * sizeChanging.getWidth(), size.height * sizeChanging.getHeight()));
+                } else {
+                    e.setNewSize(EntitySize.flexible(size.width * sizeChanging.getWidth(), size.height * sizeChanging.getHeight()));
+                }
+                e.setNewEyeHeight(e.getOldEyeHeight() * sizeChanging.getHeight());
+            });
+        }
+    }
 
     @SubscribeEvent
     public static void onJoinWorld(EntityJoinWorldEvent e) {
