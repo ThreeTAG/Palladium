@@ -1,13 +1,10 @@
 package net.threetag.threecore.entity.attributes;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.*;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -16,7 +13,6 @@ import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
 import net.threetag.threecore.capability.ISizeChanging;
 
-import java.util.Map;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID)
@@ -31,31 +27,6 @@ public class TCAttributes {
     public static final RegistryObject<Attribute> SIZE_HEIGHT = ATTRIBUTES.register("size_height", () -> new RangedAttribute("threecore.sizeHeight", 1D, 0.1D, 32D).func_233753_a_(true));
     public static float stepHeight;
     public static final UUID SPRINT_UUID = UUID.fromString("11faf62f-c271-4601-809e-83d982687b69");
-
-
-	public static void init()
-	{
-		DeferredWorkQueue.runLater(() -> {
-			for (EntityType<?> value : ForgeRegistries.ENTITIES.getValues())
-			{
-				AttributeModifierMap map = GlobalEntityTypeAttributes.getAttributesForEntity((EntityType<? extends LivingEntity>) value);
-				if (map != null)
-				{
-					Map<Attribute, ModifiableAttributeInstance> oldAttributes = map.attributeMap;
-					AttributeModifierMap.MutableAttribute newMap = AttributeModifierMap.func_233803_a_();
-					newMap.attributeMap.putAll(oldAttributes);
-					newMap.createMutableAttribute(STEP_HEIGHT.get(), 1D);
-					newMap.createMutableAttribute(FALL_RESISTANCE.get());
-					newMap.createMutableAttribute(JUMP_HEIGHT.get());
-					newMap.createMutableAttribute(SPRINT_SPEED.get(), 1D);
-					newMap.createMutableAttribute(SIZE_WIDTH.get());
-					newMap.createMutableAttribute(SIZE_HEIGHT.get());
-					GlobalEntityTypeAttributes.put((EntityType<? extends LivingEntity>) value, newMap.create());
-				}
-			}
-		});
-
-	}
 
     @SubscribeEvent
     public static void onFall(LivingFallEvent e) {

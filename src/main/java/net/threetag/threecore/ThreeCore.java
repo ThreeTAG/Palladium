@@ -170,7 +170,7 @@ public class ThreeCore {
         TCItems.loadItemColors();
 
         //Attributes
-        TCAttributes.init();
+        e.enqueueWork(TCEntityTypes::initAttributes);
 
         // Curios Handler
         if (ModList.get().isLoaded("curios")) {
