@@ -9,11 +9,16 @@ import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class DefaultCuriosHandler {
 
     public static DefaultCuriosHandler INSTANCE = new DefaultCuriosHandler();
+
+    public Set<String> getSlotTypeIds() {
+        return Collections.emptySet();
+    }
 
     public Optional<ImmutableTriple<String, Integer, ItemStack>> getCurioEquipped(Item item, @Nonnull LivingEntity livingEntity) {
         return Optional.empty();

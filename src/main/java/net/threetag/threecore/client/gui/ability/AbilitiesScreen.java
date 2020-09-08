@@ -13,7 +13,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.AbilityHelper;
-import net.threetag.threecore.ability.IAbilityContainer;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -36,9 +35,8 @@ public class AbilitiesScreen extends Screen {
         this.tabs.clear();
         this.selectedTab = null;
         AtomicInteger index = new AtomicInteger();
-        AbilityHelper.getAbilityContainerList().forEach((f) -> {
-            IAbilityContainer container = f.apply(Minecraft.getInstance().player);
-            if (container != null && !container.getAbilities().isEmpty()) {
+        AbilityHelper.getAbilityContainers(Minecraft.getInstance().player).forEach((container) -> {
+            if (!container.getAbilities().isEmpty()) {
                 this.tabs.add(AbilityTabGui.create(Minecraft.getInstance(), this, index.get(), container));
                 index.getAndIncrement();
             }

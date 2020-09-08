@@ -1,5 +1,6 @@
 package net.threetag.threecore;
 
+import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.data.BlockTagsProvider;
@@ -35,6 +36,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.threetag.threecore.ability.AbilityClientEventHandler;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.AbilityType;
+import net.threetag.threecore.ability.IAbilityContainer;
 import net.threetag.threecore.ability.condition.ConditionType;
 import net.threetag.threecore.ability.superpower.SuperpowerManager;
 import net.threetag.threecore.addonpacks.AddonPackManager;
@@ -79,6 +81,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -119,9 +123,14 @@ public class ThreeCore {
         TCContainerTypes.registerConstructionTableTables();
 
         // Ability Container
-        AbilityHelper.registerAbilityContainer(CapabilityAbilityContainer.ID, (p) -> p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
-        for (EquipmentSlotType slots : EquipmentSlotType.values())
-            AbilityHelper.registerAbilityContainer(new ResourceLocation(ThreeCore.MODID, "item_" + slots.getName().toLowerCase()), (p) -> p.getItemStackFromSlot(slots).getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
+        AbilityHelper.registerAbilityContainer((p) -> Collections.singleton(p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null)));
+        AbilityHelper.registerAbilityContainer((p) -> {
+            List<IAbilityContainer> containerList = Lists.newArrayList();
+            for (EquipmentSlotType slots : EquipmentSlotType.values()) {
+                p.getItemStackFromSlot(slots).getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(containerList::add);
+            }
+            return containerList;
+        });
 
         // Misc
         CraftingHelper.register(ToolIngredient.ID, ToolIngredient.Serializer.INSTANCE);
