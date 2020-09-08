@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class AbilityHelper {
 
@@ -149,8 +150,8 @@ public class AbilityHelper {
         return loadFromNBT(nbt, map, false);
     }
 
-    public static List<AbilityGenerator> parseAbilityGenerators(JsonObject jsonObject, boolean useId) {
-        List<AbilityGenerator> abilityGenerators = Lists.newArrayList();
+    public static List<Supplier<Ability>> parseAbilityGenerators(JsonObject jsonObject, boolean useId) {
+        List<Supplier<Ability>> abilityGenerators = Lists.newArrayList();
         jsonObject.entrySet().forEach((e) -> {
             if (e.getValue() instanceof JsonObject) {
                 JsonObject o = (JsonObject) e.getValue();
@@ -167,7 +168,7 @@ public class AbilityHelper {
         return abilityGenerators;
     }
 
-    public static List<AbilityGenerator> parseAbilityGenerators(JsonObject jsonObject) {
+    public static List<Supplier<Ability>> parseAbilityGenerators(JsonObject jsonObject) {
         return parseAbilityGenerators(jsonObject, false);
     }
 

@@ -12,29 +12,30 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.DistExecutor;
-import net.threetag.threecore.ability.AbilityGenerator;
+import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityMap;
 import net.threetag.threecore.ability.IAbilityProvider;
 import net.threetag.threecore.capability.ItemAbilityContainerProvider;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class AxeAbilityItem extends AxeItem implements IAbilityProvider {
 
-    private List<AbilityGenerator> abilityGenerators;
+    private List<Supplier<Ability>> abilityGenerators;
     private List<ITextComponent> description;
 
     public AxeAbilityItem(IItemTier itemTier, int attackDamage, float attackSpeed, Properties properties) {
         super(itemTier, attackDamage, attackSpeed, properties);
     }
 
-    public AxeAbilityItem setAbilities(List<AbilityGenerator> abilities) {
+    public AxeAbilityItem setAbilities(List<Supplier<Ability>> abilities) {
         this.abilityGenerators = abilities;
         return this;
     }
 
-    public AxeAbilityItem addAbility(AbilityGenerator abilityGenerator) {
+    public AxeAbilityItem addAbility(Supplier<Ability> abilityGenerator) {
         if (this.abilityGenerators == null)
             this.abilityGenerators = Lists.newArrayList();
         this.abilityGenerators.add(abilityGenerator);

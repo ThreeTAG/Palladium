@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.ability.AbilityGenerator;
+import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.capability.CapabilityAbilityContainer;
 import net.threetag.threecore.network.SendSuperpowerToastMessage;
@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 public class SuperpowerManager extends JsonReloadListener {
 
@@ -57,7 +58,7 @@ public class SuperpowerManager extends JsonReloadListener {
     public Superpower parseSuperpower(ResourceLocation resourceLocation, JsonObject json) throws Exception {
         ITextComponent name = ITextComponent.Serializer.func_240644_b_(JSONUtils.getJsonObject(json, "name").toString());
         IIcon icon = IconSerializer.deserialize(JSONUtils.getJsonObject(json, "icon"));
-        List<AbilityGenerator> abilityGenerators = Lists.newArrayList();
+        List<Supplier<Ability>> abilityGenerators = Lists.newArrayList();
         if (JSONUtils.hasField(json, "abilities")) {
             JsonObject abilities = JSONUtils.getJsonObject(json, "abilities");
             abilityGenerators.addAll(AbilityHelper.parseAbilityGenerators(abilities));

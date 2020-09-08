@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.ability.AbilityGenerator;
+import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.addonpacks.AddonPackManager;
 import net.threetag.threecore.item.*;
@@ -82,7 +82,7 @@ public class ItemParser {
             String type = JSONUtils.getString(j, "tool_type");
             int attackDamage = type.equalsIgnoreCase("hoe") ? 0 : JSONUtils.getInt(j, "attack_damage");
             float attackSpeed = JSONUtils.getFloat(j, "attack_speed");
-            List<AbilityGenerator> abilityGenerators = JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null;
+            List<Supplier<Ability>> abilityGenerators = JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null;
             List<ITextComponent> description = JSONUtils.hasField(j, "description") ? ItemParser.parseDescriptionLines(j.get("description")) : null;
             if (type.equalsIgnoreCase("hoe"))
                 return new HoeAbilityItem(tier, attackSpeed, p).setDescription(description).setAbilities(abilityGenerators);
