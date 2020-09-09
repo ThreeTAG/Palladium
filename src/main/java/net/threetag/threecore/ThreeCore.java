@@ -81,7 +81,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
@@ -123,7 +122,11 @@ public class ThreeCore {
         TCContainerTypes.registerConstructionTableTables();
 
         // Ability Container
-        AbilityHelper.registerAbilityContainer((p) -> Collections.singleton(p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null)));
+        AbilityHelper.registerAbilityContainer((p) -> {
+            List<IAbilityContainer> containerList = Lists.newArrayList();
+            p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(containerList::add);
+            return containerList;
+        });
         AbilityHelper.registerAbilityContainer((p) -> {
             List<IAbilityContainer> containerList = Lists.newArrayList();
             for (EquipmentSlotType slots : EquipmentSlotType.values()) {
