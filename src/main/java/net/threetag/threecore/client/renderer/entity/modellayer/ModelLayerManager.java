@@ -40,6 +40,9 @@ public class ModelLayerManager {
         // Compound Layer
         registerModelLayer(new ResourceLocation(ThreeCore.MODID, "compound"), CompoundModelLayer::parse);
 
+        // Cape
+        registerModelLayer(new ResourceLocation(ThreeCore.MODID, "cape"), CapeModelLayer::parse);
+
         // ----------------------------------------------------------------------------------------------------------------------------------------------
         // Texture Types
 
