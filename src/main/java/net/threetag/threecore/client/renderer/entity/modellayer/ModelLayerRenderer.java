@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
+import net.threetag.threecore.compat.curios.DefaultCuriosHandler;
 
 import java.util.ArrayList;
 
@@ -49,6 +50,16 @@ public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>,
         for (Ability ability : AbilityHelper.getAbilities(entityIn)) {
             if (ability instanceof IModelLayerProvider && ability.getConditionManager().isEnabled()) {
                 renderLayers(matrixStack, renderTypeBuffer, packedLightIn, (IModelLayerProvider) ability, context, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+            }
+        }
+
+        // Curios
+        for (String id : DefaultCuriosHandler.INSTANCE.getSlotTypeIds()) {
+            for (ItemStack stack : DefaultCuriosHandler.INSTANCE.getItemsInSlot(entityIn, id)) {
+                if (stack.getItem() instanceof IModelLayerProvider) {
+                    context = new ModelLayerContext(entityIn, stack);
+                    renderLayers(matrixStack, renderTypeBuffer, packedLightIn, (IModelLayerProvider) stack.getItem(), context, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                }
             }
         }
     }
