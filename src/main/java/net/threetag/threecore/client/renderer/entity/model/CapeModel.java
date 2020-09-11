@@ -29,7 +29,7 @@ public class CapeModel extends Model {
         connection = new ModelRenderer(this);
         connection.setRotationPoint(0.0F, 0.0F, 0.0F);
         setRotationAngle(connection, 0.0F, 3.1416F, 0.0F);
-        connection.setTextureOffset(-5, 3).addBox(-7.0F, 0.0F, -2.0F, 14.0F, 0.0F, 5.0F, 0.0F, true);
+        connection.setTextureOffset(-5, 3).addBox(-7.0F, 0.0F, -2.0F, 14.0F, 0.0F, 5.0F, 0.0F, false);
     }
 
     @Override
