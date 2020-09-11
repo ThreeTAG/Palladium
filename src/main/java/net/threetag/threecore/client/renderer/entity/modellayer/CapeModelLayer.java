@@ -25,6 +25,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 import net.threetag.threecore.client.renderer.entity.modellayer.predicates.IModelLayerPredicate;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLayerTexture;
+import net.threetag.threecore.util.RenderUtil;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -61,7 +62,9 @@ public class CapeModelLayer implements IModelLayer {
             matrixStack.push();
             float rotation = 0F;
 
-            if (context.getAsEntity() instanceof PlayerEntity) {
+            if (context.getAsEntity() instanceof LivingEntity && ((LivingEntity) context.getAsEntity()).isElytraFlying()) {
+                rotation = 0F;
+            } else if (context.getAsEntity() instanceof PlayerEntity) {
                 PlayerEntity entity = (PlayerEntity) context.getAsEntity();
                 double d0 = MathHelper.lerp(partialTicks, entity.prevChasingPosX, entity.chasingPosX) - MathHelper.lerp(partialTicks, entity.prevPosX, entity.getPosX());
                 double d1 = MathHelper.lerp(partialTicks, entity.prevChasingPosY, entity.chasingPosY) - MathHelper.lerp(partialTicks, entity.prevPosY, entity.getPosY());
@@ -84,13 +87,22 @@ public class CapeModelLayer implements IModelLayer {
             }
 
             ((BipedModel) entityRenderer.getEntityModel()).bipedBody.translateRotate(matrixStack);
-            matrixStack.translate(0, -0.02F, 0.05F);
+            matrixStack.translate(0, -0.02F, 0.2F);
 
             IVertexBuilder vertex = ItemRenderer.func_239391_c_(renderTypeBuffer, RenderType.getEntityTranslucent(this.texture.getTexture(context)), false, context.getAsItem() != null && context.getAsItem().hasEffect());
-            renderCape(context, matrixStack, vertex, rotation, 255, 255, 255, packedLight, partialTicks);
+            int color = getColor(context);
+            if (color > -1) {
+                renderCape(context, matrixStack, vertex, rotation, RenderUtil.red(color), RenderUtil.green(color), RenderUtil.blue(color), packedLight, partialTicks);
+            } else {
+                renderCape(context, matrixStack, vertex, rotation, 255, 255, 255, packedLight, partialTicks);
+            }
 
             matrixStack.pop();
         }
+    }
+
+    public int getColor(IModelLayerContext context) {
+        return -1;
     }
 
     public void renderCape(IModelLayerContext context, MatrixStack matrixStack, IVertexBuilder vertex, float rotation, int red, int green, int blue, int packedLight, float partialTicks) {
