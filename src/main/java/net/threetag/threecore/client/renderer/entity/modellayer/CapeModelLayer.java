@@ -87,13 +87,13 @@ public class CapeModelLayer implements IModelLayer {
             matrixStack.translate(0, -0.02F, 0.05F);
 
             IVertexBuilder vertex = ItemRenderer.func_239391_c_(renderTypeBuffer, RenderType.getEntityTranslucent(this.texture.getTexture(context)), false, context.getAsItem() != null && context.getAsItem().hasEffect());
-            renderCape(context, matrixStack, vertex, rotation, 255, 255, 255, packedLight);
+            renderCape(context, matrixStack, vertex, rotation, 255, 255, 255, packedLight, partialTicks);
 
             matrixStack.pop();
         }
     }
 
-    public void renderCape(IModelLayerContext context, MatrixStack matrixStack, IVertexBuilder vertex, float rotation, int red, int green, int blue, int packedLight) {
+    public void renderCape(IModelLayerContext context, MatrixStack matrixStack, IVertexBuilder vertex, float rotation, int red, int green, int blue, int packedLight, float partialTicks) {
         drawVertex(matrixStack, vertex, 0.4F, 0, 0, 0F, 8F / 32F, 0, 1, 0, packedLight, red, green, blue);
         drawVertex(matrixStack, vertex, -0.4F, 0, 0, 14F / 64F, 8F / 32F, 0, 1, 0, packedLight, red, green, blue);
         drawVertex(matrixStack, vertex, -0.4F, 0, -0.4F, 14F / 64F, 0F, 0, 1, 0, packedLight, red, green, blue);
