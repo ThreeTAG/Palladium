@@ -5,17 +5,24 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerModelPart;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ElytraItem;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.MathHelper;
-import net.threetag.threecore.client.renderer.entity.model.CapeModel;
+import net.minecraft.util.math.vector.Vector3f;
 import net.threetag.threecore.client.renderer.entity.modellayer.predicates.IModelLayerPredicate;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLayerTexture;
 
@@ -41,8 +48,18 @@ public class CapeModelLayer implements IModelLayer {
 
     @Override
     public void render(IModelLayerContext context, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLight, @Nullable IEntityRenderer<? extends Entity, ? extends EntityModel<?>> entityRenderer, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entityRenderer != null && entityRenderer.getEntityModel() instanceof BipedModel) {
+        if (entityRenderer != null && entityRenderer.getEntityModel() instanceof BipedModel && context.getAsEntity() instanceof LivingEntity) {
+
+            if (((LivingEntity) context.getAsEntity()).getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() instanceof ElytraItem) {
+                return;
+            }
+
+            if (context.getAsEntity() instanceof ClientPlayerEntity && ((PlayerEntity) context.getAsEntity()).isWearing(PlayerModelPart.CAPE) && ((ClientPlayerEntity) context.getAsEntity()).getLocationCape() != null) {
+                return;
+            }
+
             matrixStack.push();
+            float rotation = 0F;
 
             if (context.getAsEntity() instanceof PlayerEntity) {
                 PlayerEntity entity = (PlayerEntity) context.getAsEntity();
@@ -63,17 +80,45 @@ public class CapeModelLayer implements IModelLayer {
                 float f4 = MathHelper.lerp(partialTicks, entity.prevCameraYaw, entity.cameraYaw);
                 f1 = f1 + MathHelper.sin(MathHelper.lerp(partialTicks, entity.prevDistanceWalkedModified, entity.distanceWalkedModified) * 6.0F) * 32.0F * f4;
 
-                CapeModel.INSTANCE.setCapeRotation(-(6.0F + f2 / 2.0F + f1));
-            } else {
-                CapeModel.INSTANCE.setCapeRotation(0);
+                rotation = 6.0F + f2 / 2.0F + f1;
             }
 
             ((BipedModel) entityRenderer.getEntityModel()).bipedBody.translateRotate(matrixStack);
             matrixStack.translate(0, -0.02F, 0.05F);
-            matrixStack.scale(0.9F, 0.9F, 0.9F);
-            CapeModel.INSTANCE.render(matrixStack, renderTypeBuffer.getBuffer(RenderType.getEntityTranslucentCull(this.texture.getTexture(context))), packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+
+            IVertexBuilder vertex = ItemRenderer.func_239391_c_(renderTypeBuffer, RenderType.getEntityTranslucent(this.texture.getTexture(context)), false, context.getAsItem() != null && context.getAsItem().hasEffect());
+            renderCape(context, matrixStack, vertex, rotation, 255, 255, 255, packedLight);
+
             matrixStack.pop();
         }
+    }
+
+    public void renderCape(IModelLayerContext context, MatrixStack matrixStack, IVertexBuilder vertex, float rotation, int red, int green, int blue, int packedLight) {
+        drawVertex(matrixStack, vertex, 0.4F, 0, 0, 0F, 8F / 32F, 0, 1, 0, packedLight, red, green, blue);
+        drawVertex(matrixStack, vertex, -0.4F, 0, 0, 14F / 64F, 8F / 32F, 0, 1, 0, packedLight, red, green, blue);
+        drawVertex(matrixStack, vertex, -0.4F, 0, -0.4F, 14F / 64F, 0F, 0, 1, 0, packedLight, red, green, blue);
+        drawVertex(matrixStack, vertex, 0.4F, 0, -0.4F, 0F, 0F, 0, 1, 0, packedLight, red, green, blue);
+
+        drawVertex(matrixStack, vertex, 0.4F, 0.0001F, 0, 14F / 64F, 8F / 32F, 0, 1, 0, packedLight, red, green, blue);
+        drawVertex(matrixStack, vertex, -0.4F, 0.0001F, 0, 28F / 64F, 8F / 32F, 0, 1, 0, packedLight, red, green, blue);
+        drawVertex(matrixStack, vertex, -0.4F, 0.0001F, -0.4F, 28F / 64F, 0F, 0, 1, 0, packedLight, red, green, blue);
+        drawVertex(matrixStack, vertex, 0.4F, 0.0001F, -0.4F, 14F / 64F, 0F, 0, 1, 0, packedLight, red, green, blue);
+
+        matrixStack.rotate(Vector3f.XP.rotationDegrees(rotation));
+
+        drawVertex(matrixStack, vertex, 0.4F, 0, 0, 0F, 8F / 32F, 0, 1, 0, packedLight, red, green, blue);
+        drawVertex(matrixStack, vertex, -0.4F, 0, 0, 14F / 64F, 8F / 32F, 0, 1, 0, packedLight, red, green, blue);
+        drawVertex(matrixStack, vertex, -0.4F, 1.2F, 0, 14F / 64F, 1F, 0, 1, 0, packedLight, red, green, blue);
+        drawVertex(matrixStack, vertex, 0.4F, 1.2F, 0, 0F, 1F, 0, 1, 0, packedLight, red, green, blue);
+
+        drawVertex(matrixStack, vertex, 0.4F, 0, -0.0001F, 14F / 64F, 8F / 32F, 0, 1, 0, packedLight, red, green, blue);
+        drawVertex(matrixStack, vertex, -0.4F, 0, -0.0001F, 28F / 64F, 8F / 32F, 0, 1, 0, packedLight, red, green, blue);
+        drawVertex(matrixStack, vertex, -0.4F, 1.2F, -0.0001F, 28F / 64F, 1F, 0, 1, 0, packedLight, red, green, blue);
+        drawVertex(matrixStack, vertex, 0.4F, 1.2F, -0.0001F, 14F / 64F, 1F, 0, 1, 0, packedLight, red, green, blue);
+    }
+
+    public void drawVertex(MatrixStack matrixStack, IVertexBuilder vertexBuilder, float offsetX, float offsetY, float offsetZ, float textureX, float textureY, int normalX, int normalY, int normalZ, int packedLightIn, int red, int green, int blue) {
+        vertexBuilder.pos(matrixStack.getLast().getMatrix(), offsetX, offsetY, offsetZ).color(red, green, blue, 255).tex(textureX, textureY).overlay(OverlayTexture.NO_OVERLAY).lightmap(packedLightIn).normal(matrixStack.getLast().getNormal(), (float) normalX, (float) normalZ, (float) normalY).endVertex();
     }
 
     @Override
