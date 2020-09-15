@@ -8,14 +8,12 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'org.spongepowered.mixin'
 
 version = "${minecraft_version}-${build_version}"
 group = 'net.threetag.threecore'

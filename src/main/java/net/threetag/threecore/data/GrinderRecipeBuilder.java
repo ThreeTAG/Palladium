@@ -83,7 +83,7 @@ public class GrinderRecipeBuilder {
         return this;
     }
 
-    public GrinderRecipeBuilder setIngredient(ITag.INamedTag<Item> tag) {
+    public GrinderRecipeBuilder setIngredient(ITag<Item> tag) {
         this.input = Ingredient.fromTag(tag);
         return this;
     }

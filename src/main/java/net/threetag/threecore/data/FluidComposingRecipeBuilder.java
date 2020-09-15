@@ -11,7 +11,7 @@ import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -40,7 +40,7 @@ public class FluidComposingRecipeBuilder {
         this.result = result;
     }
 
-    public FluidComposingRecipeBuilder addIngredient(Tag<Item> tag) {
+    public FluidComposingRecipeBuilder addIngredient(ITag<Item> tag) {
         return this.addIngredient(Ingredient.fromTag(tag));
     }
 

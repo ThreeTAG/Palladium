@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -64,7 +63,7 @@ public class PressingRecipeBuilder {
         return this;
     }
 
-    public PressingRecipeBuilder setIngredient(ITag.INamedTag<Item> tag) {
+    public PressingRecipeBuilder setIngredient(ITag<Item> tag) {
         this.input = Ingredient.fromTag(tag);
         return this;
     }
@@ -84,7 +83,7 @@ public class PressingRecipeBuilder {
         return this;
     }
 
-    public PressingRecipeBuilder setCast(Tag<Item> tag) {
+    public PressingRecipeBuilder setCast(ITag<Item> tag) {
         this.cast = Ingredient.fromTag(tag);
         return this;
     }

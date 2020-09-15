@@ -13,7 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -51,7 +51,7 @@ public class ConstructionTableRecipeBuilder {
         return new ConstructionTableRecipeBuilder(recipeSerializer, itemProvider, amount);
     }
 
-    public ConstructionTableRecipeBuilder key(Character character, Tag<Item> tag) {
+    public ConstructionTableRecipeBuilder key(Character character, ITag<Item> tag) {
         return this.key(character, Ingredient.fromTag(tag));
     }
 
