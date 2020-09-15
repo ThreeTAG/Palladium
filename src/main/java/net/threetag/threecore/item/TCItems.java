@@ -2,16 +2,15 @@ package net.threetag.threecore.item;
 
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemTier;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.*;
 import net.minecraft.loot.ItemLootEntry;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.RegistryObject;
@@ -19,6 +18,11 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ThreeCoreServerConfig;
+import net.threetag.threecore.block.TCBlocks;
+
+import java.util.concurrent.atomic.AtomicReference;
+
+import static net.threetag.threecore.item.MultiversalExtrapolatorItem.hasValidUniverse;
 
 public class TCItems {
 
@@ -138,6 +142,17 @@ public class TCItems {
                 Minecraft.getInstance().getItemColors().register(new VialItem.ItemColor(), VIAL.get());
             }
         });
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void initItemProperties() {
+        ItemModelsProperties.func_239418_a_(TCBlocks.ADVANCED_CAPACITOR_BLOCK_ITEM.get(), new ResourceLocation(ThreeCore.MODID, "energy"), (stack, world, entity) -> {
+            AtomicReference<Float> f = new AtomicReference<>((float) 0);
+            stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> f.set((float) energyStorage.getEnergyStored() / (float) energyStorage.getMaxEnergyStored()));
+            return f.get();
+        });
+
+        ItemModelsProperties.func_239418_a_(TCItems.MULTIVERSAL_EXTRAPOLATOR.get(), new ResourceLocation(ThreeCore.MODID, "inactive"), (stack, world, entity) -> !hasValidUniverse(stack) ? 1.0F : 0.0F);
     }
 
     public static void onLootTableLoad(LootTableLoadEvent e) {

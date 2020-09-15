@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
@@ -15,7 +14,6 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -82,12 +80,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import static net.threetag.threecore.item.MultiversalExtrapolatorItem.hasValidUniverse;
 
 @Mod(ThreeCore.MODID)
 public class ThreeCore {
@@ -199,20 +194,7 @@ public class ThreeCore {
         TCEntityTypes.initRenderers();
         TCContainerTypes.initContainerScreens();
         ArmorStandPoseManager.init();
-        //TODO move
-        ItemModelsProperties.func_239418_a_(TCBlocks.CAPACITOR_BLOCK_ITEM.get(), new ResourceLocation(ThreeCore.MODID, "energy"), (stack, world, entity) -> {
-            AtomicReference<Float> f = new AtomicReference<>((float) 0);
-            stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> f.set((float) energyStorage.getEnergyStored() / (float) energyStorage.getMaxEnergyStored()));
-            return f.get();
-        });
-
-        ItemModelsProperties.func_239418_a_(TCBlocks.ADVANCED_CAPACITOR_BLOCK_ITEM.get(), new ResourceLocation(ThreeCore.MODID, "energy"), (stack, world, entity) -> {
-            AtomicReference<Float> f = new AtomicReference<>((float) 0);
-            stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> f.set((float) energyStorage.getEnergyStored() / (float) energyStorage.getMaxEnergyStored()));
-            return f.get();
-        });
-
-        ItemModelsProperties.func_239418_a_(TCItems.MULTIVERSAL_EXTRAPOLATOR.get(), new ResourceLocation(ThreeCore.MODID, "inactive"), (stack, world, entity) -> !hasValidUniverse(stack) ? 1.0F : 0.0F);
+        TCItems.initItemProperties();
     }
 
     @OnlyIn(Dist.CLIENT)
