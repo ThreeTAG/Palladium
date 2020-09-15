@@ -96,7 +96,7 @@ public class ConstructionTableRecipeBuilder {
     }
 
     public void build(Consumer<IFinishedRecipe> consumer) {
-        this.build(consumer, ForgeRegistries.ITEMS.getKey(this.result.getItem()).toString());
+        this.build(consumer, ForgeRegistries.ITEMS.getKey(this.result.getItem()));
     }
 
     public void build(Consumer<IFinishedRecipe> consumer, String name) {

@@ -6,7 +6,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.NonNullFunction;
@@ -123,7 +122,7 @@ public class ModelLayerManager {
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "entity_type"), j -> new EntityTypePredicate(new ResourceLocation(JSONUtils.getString(j, "entity_type"))));
 
         // Entity Tag
-        registerPredicate(new ResourceLocation(ThreeCore.MODID, "entity_tag"), j -> new EntityTagPredicate(EntityTypeTags.func_232896_a_(new ResourceLocation(JSONUtils.getString(j, "entity_tag")).toString())));
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "entity_tag"), j -> new EntityTagPredicate(new ResourceLocation(JSONUtils.getString(j, "entity_tag"))));
     }
 
     public static void registerPredicate(ResourceLocation id, NonNullFunction<JsonObject, IModelLayerPredicate> function) {

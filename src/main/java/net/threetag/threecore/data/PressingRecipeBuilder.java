@@ -124,7 +124,7 @@ public class PressingRecipeBuilder {
     }
 
     public void build(Consumer<IFinishedRecipe> consumer) {
-        this.build(consumer, ForgeRegistries.ITEMS.getKey(this.output.getItem()).toString());
+        this.build(consumer, ForgeRegistries.ITEMS.getKey(this.output.getItem()));
     }
 
     public void build(Consumer<IFinishedRecipe> consumer, String name) {
