@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "threecore.refmap.json",
   "mixins": [
-    "RecipeManagerMixin"
+    "RecipeManagerMixin",
+    "BipedModelMixin"
   ],
   "minVersion": "0.8"
 }
