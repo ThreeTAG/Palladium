@@ -1,7 +1,5 @@
 package net.threetag.threecore.item;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,6 +16,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
+import net.threetag.threecore.item.recipe.MultiverseManager;
 import net.threetag.threecore.sound.TCSounds;
 import net.threetag.threecore.util.PlayerUtil;
 
@@ -27,8 +27,6 @@ import java.util.Random;
 
 public class MultiversalExtrapolatorItem extends Item {
 
-    private static final List<String> UNIVERSES = Lists.newArrayList();
-
     public MultiversalExtrapolatorItem(Properties properties) {
         super(properties);
     }
@@ -36,7 +34,7 @@ public class MultiversalExtrapolatorItem extends Item {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (stack.getOrCreateTag().contains("Universe") && getUniverses().contains(stack.getOrCreateTag().getString("Universe"))) {
+        if (stack.getOrCreateTag().contains("Universe") && MultiverseManager.CLIENT_UNIVERSES.contains(stack.getOrCreateTag().getString("Universe"))) {
             tooltip.add(new TranslationTextComponent("universe." + stack.getOrCreateTag().getString("Universe")).mergeStyle(TextFormatting.GOLD));
         }
     }
@@ -44,7 +42,7 @@ public class MultiversalExtrapolatorItem extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        if (!stack.getOrCreateTag().contains("Universe") || !getUniverses().contains(stack.getOrCreateTag().getString("Universe"))) {
+        if (!stack.getOrCreateTag().contains("Universe") || !hasValidUniverse(stack)) {
             stack.getOrCreateTag().putBoolean("Searching", true);
             return ActionResult.resultSuccess(stack);
         }
@@ -74,7 +72,7 @@ public class MultiversalExtrapolatorItem extends Item {
                     }
                 } else {
                     if (progress == 60) {
-                        stack.getOrCreateTag().putString("Universe", getUniverses().get(new Random().nextInt(getUniverses().size())));
+                        stack.getOrCreateTag().putString("Universe", MultiverseManager.getRandomAvailableUniverse((PlayerEntity) entityIn).getIdentifier());
                     }
 
                     ((PlayerEntity) entityIn).sendStatusMessage(new TranslationTextComponent("universe." + stack.getOrCreateTag().getString("Universe")).mergeStyle(TextFormatting.GOLD), true);
@@ -90,35 +88,32 @@ public class MultiversalExtrapolatorItem extends Item {
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         super.fillItemGroup(group, items);
         if (this.isInGroup(group)) {
-            for (String s : getUniverses()) {
-                ItemStack stack = new ItemStack(this);
-                stack.getOrCreateTag().putString("Universe", s);
-                items.add(stack);
-            }
+            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+                for (String universe : MultiverseManager.CLIENT_UNIVERSES) {
+                    ItemStack stack = new ItemStack(this);
+                    stack.getOrCreateTag().putString("Universe", universe);
+                    items.add(stack);
+                }
+            });
+            DistExecutor.runWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
+                for (MultiverseManager.Universe s : MultiverseManager.getUniverses()) {
+                    ItemStack stack = new ItemStack(this);
+                    stack.getOrCreateTag().putString("Universe", s.getIdentifier());
+                    items.add(stack);
+                }
+            });
         }
     }
 
     public static boolean hasValidUniverse(ItemStack stack) {
-        return !stack.isEmpty() && stack.getOrCreateTag().contains("Universe") && getUniverses().contains(stack.getOrCreateTag().getString("Universe"));
+        return !stack.isEmpty() && stack.getOrCreateTag().contains("Universe") && MultiverseManager.getUniverse(stack.getOrCreateTag().getString("Universe")) != null;
+    }
+
+    public static boolean hasValidUniverseClient(ItemStack stack) {
+        return !stack.isEmpty() && stack.getOrCreateTag().contains("Universe") && MultiverseManager.CLIENT_UNIVERSES.contains(stack.getOrCreateTag().getString("Universe"));
     }
 
     public static String getUniverse(ItemStack stack) {
         return hasValidUniverse(stack) ? stack.getOrCreateTag().getString("Universe") : null;
-    }
-
-    public static String registerUniverse(String id) {
-        if (!UNIVERSES.contains(id)) {
-            UNIVERSES.add(id);
-        }
-
-        return id;
-    }
-
-    public static List<String> getUniverses() {
-        return ImmutableList.copyOf(UNIVERSES);
-    }
-
-    static {
-        registerUniverse("earth-18515");
     }
 }

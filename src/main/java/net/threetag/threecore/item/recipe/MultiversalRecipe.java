@@ -16,7 +16,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.threetag.threecore.item.MultiversalExtrapolatorItem;
 import net.threetag.threecore.util.RecipeUtil;
 
 import javax.annotation.Nullable;
@@ -107,7 +106,9 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
                 if (((MultiversalRecipe) recipe).getUniverse().equals(universe) && identifiers.contains(((MultiversalRecipe) recipe).getIdentifier()) && ((MultiversalRecipe) recipe).getUniverse().equals(universe)) {
                     for (ItemStack stack1 : ((MultiversalRecipe) recipe).getItems()) {
                         if (!stack.isItemEqual(stack1)) {
-                            items.add(stack1);
+                            ItemStack result = stack1.copy();
+                            result.setTag(stack.getTag());
+                            items.add(result);
                         }
                     }
                 }
@@ -133,7 +134,7 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
 
         @Override
         public MultiversalRecipe read(ResourceLocation recipeId, JsonObject json) {
-            String universe = MultiversalExtrapolatorItem.registerUniverse(JSONUtils.getString(json, "universe"));
+            String universe = MultiverseManager.registerUniverse(JSONUtils.getString(json, "universe"));
             String identifier = JSONUtils.getString(json, "identifier");
             List<ItemStack> items = Lists.newArrayList();
             JsonElement itemsJson = json.get("items");
@@ -162,7 +163,7 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
         @Nullable
         @Override
         public MultiversalRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
-            String universe = MultiversalExtrapolatorItem.registerUniverse(buffer.readString());
+            String universe = MultiverseManager.registerUniverse(buffer.readString());
             String identifier = buffer.readString();
             List<ItemStack> items = Lists.newArrayList();
             int amount = buffer.readInt();

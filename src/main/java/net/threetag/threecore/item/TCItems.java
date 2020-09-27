@@ -22,8 +22,6 @@ import net.threetag.threecore.block.TCBlocks;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import static net.threetag.threecore.item.MultiversalExtrapolatorItem.hasValidUniverse;
-
 public class TCItems {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ThreeCore.MODID);
@@ -37,7 +35,7 @@ public class TCItems {
     public static final RegistryObject<Item> ADVANCED_CIRCUIT = ITEMS.register("advanced_circuit", () -> new Item(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup())));
     public static final RegistryObject<Item> VIAL = ITEMS.register("vial", () -> new VialItem(new Item.Properties().group(ItemGroup.MISC).maxStackSize(1)));
     public static final RegistryObject<Item> SUIT_STAND = ITEMS.register("suit_stand", () -> new SuitStandItem(new Item.Properties().group(ItemGroup.DECORATIONS).maxStackSize(16)));
-    public static final RegistryObject<Item> MULTIVERSAL_EXTRAPOLATOR = ITEMS.register("multiversal_extrapolator", () -> new MultiversalExtrapolatorItem(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup()).maxStackSize(16)));
+    public static final RegistryObject<Item> MULTIVERSAL_EXTRAPOLATOR = ITEMS.register("multiversal_extrapolator", () -> new MultiversalExtrapolatorItem(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup()).maxDamage(12)));
 
     // Ingots
     public static final RegistryObject<Item> COPPER_INGOT = ITEMS.register("copper_ingot", () -> new Item(new Item.Properties().group(ItemGroup.MATERIALS)));
@@ -152,7 +150,7 @@ public class TCItems {
             return f.get();
         });
 
-        ItemModelsProperties.func_239418_a_(TCItems.MULTIVERSAL_EXTRAPOLATOR.get(), new ResourceLocation(ThreeCore.MODID, "inactive"), (stack, world, entity) -> !hasValidUniverse(stack) ? 1.0F : 0.0F);
+        ItemModelsProperties.func_239418_a_(TCItems.MULTIVERSAL_EXTRAPOLATOR.get(), new ResourceLocation(ThreeCore.MODID, "inactive"), (stack, world, entity) -> !MultiversalExtrapolatorItem.hasValidUniverseClient(stack) ? 1.0F : 0.0F);
     }
 
     public static void onLootTableLoad(LootTableLoadEvent e) {

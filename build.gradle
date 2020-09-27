@@ -7,13 +7,13 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'org.spongepowered.mixin'
 
 version = "${minecraft_version}-${build_version}"
 group = 'net.threetag.threecore'
@@ -21,8 +21,9 @@ archivesBaseName = 'ThreeCore'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'snapshot', version: "$mappings_version"
+    mappings channel: 'snapshot', version: "${mappings_version}"
     // makeObfSourceJar = false
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -30,6 +31,8 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+
+            arg "-mixin.config=threecore.mixins.json"
 
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
 
@@ -47,6 +50,8 @@ minecraft {
         server {
             workingDirectory project.file('run')
 
+            arg "-mixin.config=threecore.mixins.json"
+
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
 
             property 'forge.logging.console.level', 'debug'
@@ -60,6 +65,8 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
+
+            arg "-mixin.config=threecore.mixins.json"
 
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
 
@@ -84,25 +91,44 @@ repositories {
     }
 
     maven { url = "https://maven.theillusivec4.top/" }
+    maven { url 'https://repo1.maven.org/maven2' }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:$minecraft_version-$forge_version"
 
     // JEI
-    compileOnly fg.deobf("mezz.jei:jei-$minecraft_version:$jei_version:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-$minecraft_version:$jei_version")
+    compileOnly fg.deobf("mezz.jei:jei-1.16.2:$jei_version:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.2:$jei_version")
 
     // Curios
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:$curios_version:api")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:$curios_version")
 }
 
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'deobf'
+mixin {
+    add sourceSets.main, "threecore.refmap.json"
 }
 
-artifacts {
-    archives deobfJar
+jar {
+    manifest {
+        attributes([
+                "MixinConfigs": "threecore.mixins.json"
+        ])
+    }
+}
+
+jar.finalizedBy('reobfJar')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
+    }
 }

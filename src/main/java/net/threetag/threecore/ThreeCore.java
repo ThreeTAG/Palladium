@@ -237,6 +237,9 @@ public class ThreeCore {
 
         // EntityEffect
         registerMessage(EntityEffectUpdateMessage.class, EntityEffectUpdateMessage::toBytes, EntityEffectUpdateMessage::new, EntityEffectUpdateMessage::handle);
+
+        // Multiverse
+        registerMessage(SyncMultiverseMessage.class, SyncMultiverseMessage::toBytes, SyncMultiverseMessage::new, SyncMultiverseMessage::handle);
     }
 
     @SubscribeEvent

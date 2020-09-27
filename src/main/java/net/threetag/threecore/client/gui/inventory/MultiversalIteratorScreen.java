@@ -50,7 +50,7 @@ public class MultiversalIteratorScreen extends ContainerScreen<MultiversalIterat
     public void tick() {
         super.tick();
 
-        if (!MultiversalExtrapolatorItem.hasValidUniverse(this.container.getSlot(0).getStack()) && this.getMinecraft() != null && this.getMinecraft().player != null && this.getMinecraft().player.ticksExisted % 2 == 0) {
+        if (!MultiversalExtrapolatorItem.hasValidUniverseClient(this.container.getSlot(0).getStack()) && this.getMinecraft() != null && this.getMinecraft().player != null && this.getMinecraft().player.ticksExisted % 2 == 0) {
             this.getMinecraft().player.playSound(TCSounds.MULTIVERSE_SEARCH.get(), 0.5F, 1F);
         }
     }
@@ -60,7 +60,7 @@ public class MultiversalIteratorScreen extends ContainerScreen<MultiversalIterat
         super.drawGuiContainerForegroundLayer(stack, mouseX, mouseY);
         Random random = new Random(this.getMinecraft().player.ticksExisted / 2);
         String s;
-        if (MultiversalExtrapolatorItem.hasValidUniverse(this.container.getSlot(0).getStack())) {
+        if (MultiversalExtrapolatorItem.hasValidUniverseClient(this.container.getSlot(0).getStack())) {
             s = TextFormatting.GOLD + I18n.format("universe." + this.container.getSlot(0).getStack().getOrCreateTag().getString("Universe"));
         } else {
             s = I18n.format("universe.earth_search", random.nextInt(10) + "" + random.nextInt(10) + "" + random.nextInt(10));
