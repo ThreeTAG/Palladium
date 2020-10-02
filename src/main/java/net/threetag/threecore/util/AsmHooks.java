@@ -24,6 +24,7 @@ import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.HideBodyPartsAbility;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
 import net.threetag.threecore.client.renderer.entity.PlayerSkinHandler;
+import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerManager;
 import net.threetag.threecore.event.SetRotationAnglesEvent;
 import net.threetag.threecore.util.threedata.BodyPartListThreeData;
 
@@ -83,11 +84,17 @@ public class AsmHooks {
     public static void postRotationAnglesCallback(LivingRenderer<? extends LivingEntity, ? extends EntityModel> renderer, LivingEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         for (HideBodyPartsAbility ability : AbilityHelper.getAbilitiesFromClass(entityIn, HideBodyPartsAbility.class)) {
             if (ability.getConditionManager().isEnabled()) {
-                for(BodyPartListThreeData.BodyPart bodyPart : ability.get(HideBodyPartsAbility.BODY_PARTS)) {
+                for (BodyPartListThreeData.BodyPart bodyPart : ability.get(HideBodyPartsAbility.BODY_PARTS)) {
                     bodyPart.setVisibility((PlayerModel) renderer.getEntityModel(), false);
                 }
             }
         }
+
+        ModelLayerManager.forEachLayer(entityIn, (layer, context) -> {
+            if (layer.isActive(context)) {
+                layer.postRotationAnglesCallback(renderer, entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+            }
+        });
     }
 
     @OnlyIn(Dist.CLIENT)
