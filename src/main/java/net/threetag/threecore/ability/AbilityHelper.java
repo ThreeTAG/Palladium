@@ -31,7 +31,7 @@ public class AbilityHelper {
     public static IAbilityContainer getAbilityContainerFromId(LivingEntity entity, ResourceLocation id) {
         for (IAbilityContainerProvider provider : REGISTRY) {
             for (IAbilityContainer container : provider.getAbilityContainer(entity)) {
-                if (container.getId().equals(id)) {
+                if (container != null && container.getId() != null && container.getId().equals(id)) {
                     return container;
                 }
             }
