@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -85,7 +84,7 @@ public class AsmHooks {
         for (HideBodyPartsAbility ability : AbilityHelper.getAbilitiesFromClass(entityIn, HideBodyPartsAbility.class)) {
             if (ability.getConditionManager().isEnabled()) {
                 for (BodyPartListThreeData.BodyPart bodyPart : ability.get(HideBodyPartsAbility.BODY_PARTS)) {
-                    bodyPart.setVisibility((PlayerModel) renderer.getEntityModel(), false);
+                    bodyPart.setVisibility((BipedModel<?>) renderer.getEntityModel(), false);
                 }
             }
         }

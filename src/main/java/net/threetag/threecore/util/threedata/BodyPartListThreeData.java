@@ -2,6 +2,7 @@ package net.threetag.threecore.util.threedata;
 
 import com.google.common.collect.Lists;
 import com.google.gson.*;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.IntNBT;
@@ -21,8 +22,12 @@ public class BodyPartListThreeData extends ThreeData<List<BodyPartListThreeData.
     public List<BodyPart> parseValue(JsonObject jsonObject, List<BodyPart> defaultValue) {
         if (!JSONUtils.hasField(jsonObject, this.jsonKey))
             return defaultValue;
-        List<BodyPart> list = Lists.newArrayList();
         JsonElement jsonElement = jsonObject.get(this.jsonKey);
+        return parseBodyParts(jsonElement);
+    }
+
+    public static List<BodyPart> parseBodyParts(JsonElement jsonElement) {
+        List<BodyPart> list = Lists.newArrayList();
 
         if (jsonElement.isJsonPrimitive()) {
             BodyPart bodyPart = BodyPart.byName(jsonElement.getAsString());
@@ -115,7 +120,8 @@ public class BodyPartListThreeData extends ThreeData<List<BodyPartListThreeData.
             this.name = name;
         }
 
-        public void setVisibility(PlayerModel model, boolean visible) {
+        public void setVisibility(BipedModel<?> model, boolean visible) {
+            boolean player = model instanceof PlayerModel<?>;
             switch (this) {
                 case HEAD:
                     model.bipedHead.showModel = visible;
@@ -127,31 +133,36 @@ public class BodyPartListThreeData extends ThreeData<List<BodyPartListThreeData.
                     model.bipedBody.showModel = visible;
                     return;
                 case CHEST_OVERLAY:
-                    model.bipedBodyWear.showModel = visible;
+                    if (player)
+                        ((PlayerModel<?>) model).bipedBodyWear.showModel = visible;
                     return;
                 case RIGHT_ARM:
                     model.bipedRightArm.showModel = visible;
                     return;
                 case RIGHT_ARM_OVERLAY:
-                    model.bipedRightArmwear.showModel = visible;
+                    if (player)
+                        ((PlayerModel<?>) model).bipedRightArmwear.showModel = visible;
                     return;
                 case LEFT_ARM:
                     model.bipedLeftArm.showModel = visible;
                     return;
                 case LEFT_ARM_OVERLAY:
-                    model.bipedLeftArmwear.showModel = visible;
+                    if (player)
+                        ((PlayerModel<?>) model).bipedLeftArmwear.showModel = visible;
                     return;
                 case RIGHT_LEG:
                     model.bipedRightLeg.showModel = visible;
                     return;
                 case RIGHT_LEG_OVERLAY:
-                    model.bipedRightLegwear.showModel = visible;
+                    if (player)
+                        ((PlayerModel<?>) model).bipedRightLegwear.showModel = visible;
                     return;
                 case LEFT_LEG:
                     model.bipedLeftLeg.showModel = visible;
                     return;
                 default:
-                    model.bipedLeftLegwear.showModel = visible;
+                    if (player)
+                        ((PlayerModel<?>) model).bipedLeftLegwear.showModel = visible;
             }
         }
 

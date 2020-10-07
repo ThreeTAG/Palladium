@@ -120,6 +120,15 @@ jar {
 
 jar.finalizedBy('reobfJar')
 
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
+artifacts {
+    archives deobfJar
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
