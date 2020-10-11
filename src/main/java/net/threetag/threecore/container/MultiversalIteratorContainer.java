@@ -84,9 +84,12 @@ public class MultiversalIteratorContainer extends Container {
                 }
 
                 stack.getItem().onCreated(stack, thePlayer.world, thePlayer);
-                extrapolatorInventorySlot.getStack().damageItem(1, thePlayer, (player) -> {
-                    extrapolatorInventorySlot.putStack(ItemStack.EMPTY);
-                });
+
+                ItemStack extrapolator = extrapolatorInventory.getStackInSlot(0);
+                extrapolator.damageItem(1, thePlayer, (player) -> extrapolatorInventory.setInventorySlotContents(0, ItemStack.EMPTY));
+                extrapolatorInventory.setInventorySlotContents(0, extrapolator);
+                detectAndSendChanges();
+
                 worldPosCallableIn.consume((world, pos) -> {
                     long l = world.getGameTime();
                     if (MultiversalIteratorContainer.this.lastOnTake != l) {

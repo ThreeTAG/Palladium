@@ -4,13 +4,20 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -29,6 +36,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -58,6 +66,7 @@ public class MultiverseManager {
     public static void reload(IResourceManager resourceManagerIn) {
         UNIVERSES.clear();
         registerUniverse("earth-18515");
+        AtomicInteger i = new AtomicInteger();
 
         for (String namespace : resourceManagerIn.getResourceNamespaces()) {
             try {
@@ -73,6 +82,7 @@ public class MultiverseManager {
                             Universe universe = new Universe(id);
                             universe.addConditions(parseConditions(e.getValue().getAsJsonObject().get("conditions")));
                             registerUniverse(universe);
+                            i.incrementAndGet();
                         });
                     } catch (RuntimeException runtimeexception) {
                         ThreeCore.LOGGER.warn("Invalid multiverse.json in datapack: '{}'", resource.getPackName(), runtimeexception);
@@ -82,6 +92,8 @@ public class MultiverseManager {
 
             }
         }
+
+        ThreeCore.LOGGER.info(i.get() + " universes read from multiverse.json files!");
     }
 
     public static void sync() {
@@ -101,12 +113,24 @@ public class MultiverseManager {
         }
     }
 
-    public static String registerUniverse(String id) {
-        if (!UNIVERSES.containsKey(id)) {
-            UNIVERSES.put(id, new Universe(id));
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public static void onTooltip(ItemTooltipEvent e) {
+        if (InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), 340)) {
+            for (String s : MultiversalRecipe.getUniversesFromItem(e.getItemStack(), e.getEntity().world)) {
+                e.getToolTip().add(1, new TranslationTextComponent("universe." + s).mergeStyle(TextFormatting.GRAY));
+            }
         }
+    }
 
-        return id;
+    public static Universe registerUniverse(String id) {
+        if (!UNIVERSES.containsKey(id)) {
+            Universe universe = new Universe(id);
+            UNIVERSES.put(id, universe);
+            return universe;
+        } else {
+            return UNIVERSES.get(id);
+        }
     }
 
     public static Universe registerUniverse(Universe universe) {
