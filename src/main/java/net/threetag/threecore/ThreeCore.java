@@ -102,6 +102,9 @@ public class ThreeCore {
         registerMessages();
 //        SupporterHandler.enableSupporterCheck();
 
+        // Ores
+        MinecraftForge.EVENT_BUS.addListener(TCBlocks::initOres);
+
         // Config
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThreeCoreCommonConfig.generateConfig());
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ThreeCoreServerConfig.generateConfig());
@@ -168,9 +171,6 @@ public class ThreeCore {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void setup(FMLCommonSetupEvent e) {
-        // Ores
-        TCBlocks.initOres();
-
         // Capabilities
         ThreeCoreCapabilities.init();
 

@@ -4,19 +4,19 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.item.*;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Rarity;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.placement.TopSolidRangeConfig;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -27,8 +27,6 @@ import net.threetag.threecore.item.CapacitorBlockItem;
 import net.threetag.threecore.item.ItemGroupRegistry;
 import net.threetag.threecore.item.TCItems;
 
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 public class TCBlocks {
@@ -116,18 +114,22 @@ public class TCBlocks {
     public static final RegistryObject<Block> RED_CONCRETE_STAIRS = register("red_concrete_stairs", () -> new StairsBlock(Blocks.RED_CONCRETE::getDefaultState, Block.Properties.from(Blocks.RED_CONCRETE)));
     public static final RegistryObject<Block> BLACK_CONCRETE_STAIRS = register("black_concrete_stairs", () -> new StairsBlock(Blocks.BLACK_CONCRETE::getDefaultState, Block.Properties.from(Blocks.BLACK_CONCRETE)));
 
-    public static void initOres() {
-        addOreFeature(COPPER_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.COPPER);
-        addOreFeature(TIN_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TIN);
-        addOreFeature(LEAD_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.LEAD);
-        addOreFeature(SILVER_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.SILVER);
-        addOreFeature(PALLADIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.PALLADIUM);
-        addOreFeature(VIBRANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.VIBRANIUM);
-        addOreFeature(OSMIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.OSMIUM);
-        addOreFeature(URANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URANIUM);
-        addOreFeature(TITANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TITANIUM);
-        addOreFeature(IRIDIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.IRIDIUM);
-        addOreFeature(URU_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URU);
+    public static void initOres(BiomeLoadingEvent e) {
+        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(COPPER_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.COPPER));
+        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(TIN_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TIN));
+        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(LEAD_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.LEAD));
+        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(SILVER_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.SILVER));
+        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(PALLADIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.PALLADIUM));
+        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(VIBRANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.VIBRANIUM));
+        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(OSMIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.OSMIUM));
+        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(URANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URANIUM));
+        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(TITANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TITANIUM));
+        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(IRIDIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.IRIDIUM));
+        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(URU_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URU));
+    }
+
+    public static ConfiguredFeature<?, ?> createOreFeature(BlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
+        return Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.field_241882_a, ore, config.size.get())).withPlacement(Placement.field_242907_l.configure(new TopSolidRangeConfig(config.minHeight.get(), config.minHeight.get(), config.maxHeight.get()))).func_242728_a().func_242731_b(config.size.get());
     }
 
     public static void initRenderTypes() {
@@ -138,11 +140,6 @@ public class TCBlocks {
         RenderTypeLookup.setRenderLayer(STIRLING_GENERATOR.get(), RenderType.getCutoutMipped());
         RenderTypeLookup.setRenderLayer(VIBRANIUM_BLOCK.get(), RenderType.getTranslucent());
     }
-
-    public static void addOreFeature(BlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
-        Registry.register(WorldGenRegistries.field_243653_e, Objects.requireNonNull(ore.getBlock().getRegistryName()), Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.field_241882_a, ore, config.size.get())).withPlacement(Placement.field_242907_l.configure(new TopSolidRangeConfig(config.minHeight.get(), config.minHeight.get(), config.maxHeight.get()))).func_242728_a().func_242731_b(config.size.get()));
-    }
-
 
     public static <T extends Block> RegistryObject<T> register(String id, Supplier<T> blockSupplier) {
         RegistryObject<T> registryObject = BLOCKS.register(id, blockSupplier);
