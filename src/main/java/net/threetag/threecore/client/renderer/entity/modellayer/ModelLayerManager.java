@@ -1,32 +1,41 @@
 package net.threetag.threecore.client.renderer.entity.modellayer;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.NonNullFunction;
+import net.minecraftforge.fml.ModList;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.ability.Ability;
+import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.client.renderer.entity.modellayer.predicates.*;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.DefaultModelTexture;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLayerTexture;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.AlphaMaskTextureTransformer;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.ITextureTransformer;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.OverlayTextureTransformer;
-import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.EntityTicksTextureVariable;
-import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.ITextureVariable;
-import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.IntegerNbtTextureVariable;
-import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.SmallArmsTextureVariable;
+import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.*;
+import net.threetag.threecore.compat.curios.DefaultCuriosHandler;
 import net.threetag.threecore.util.PlayerUtil;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class ModelLayerManager {
+
+    public static List<Function<LivingEntity, List<Pair<IModelLayer, IModelLayerContext>>>> MODEL_LAYER_PROVIDERS = Lists.newArrayList();
 
     private static final Map<ResourceLocation, NonNullFunction<JsonObject, IModelLayerPredicate>> PREDICATES = Maps.newHashMap();
     private static final Map<ResourceLocation, NonNullFunction<JsonObject, IModelLayer>> MODEL_LAYERS = Maps.newHashMap();
@@ -35,6 +44,59 @@ public class ModelLayerManager {
     private static final Map<ResourceLocation, NonNullFunction<JsonObject, ITextureTransformer>> TEXTURE_TRANSFORMERS = Maps.newHashMap();
 
     static {
+        // Model Layer Providers
+
+        // Armor
+        registerLayerProvider(entity -> {
+            List<Pair<IModelLayer, IModelLayerContext>> list = Lists.newArrayList();
+            for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+                if (slot.getSlotType() == EquipmentSlotType.Group.ARMOR) {
+                    ItemStack stack = entity.getItemStackFromSlot(slot);
+
+                    if (stack.getItem() instanceof IModelLayerProvider) {
+                        ModelLayerContext context = new ModelLayerContext(entity, stack, slot);
+                        for (IModelLayer layer : ((IModelLayerProvider) stack.getItem()).getModelLayers(context)) {
+                            list.add(Pair.of(layer, context));
+                        }
+                    }
+                }
+            }
+            return list;
+        });
+
+        // Abilities
+        registerLayerProvider(entity -> {
+            ModelLayerContext context = new ModelLayerContext(entity);
+            List<Pair<IModelLayer, IModelLayerContext>> list = Lists.newArrayList();
+            for (Ability ability : AbilityHelper.getAbilities(entity)) {
+                if (ability instanceof IModelLayerProvider) {
+                    for (IModelLayer layer : ((IModelLayerProvider) ability).getModelLayers(context)) {
+                        list.add(Pair.of(layer, context));
+                    }
+                }
+            }
+            return list;
+        });
+
+        // Curios
+        if (ModList.get().isLoaded("curios")) {
+            registerLayerProvider(entity -> {
+                List<Pair<IModelLayer, IModelLayerContext>> list = Lists.newArrayList();
+                for (String id : DefaultCuriosHandler.INSTANCE.getSlotTypeIds()) {
+                    for (ItemStack stack : DefaultCuriosHandler.INSTANCE.getItemsInSlot(entity, id)) {
+                        if (stack.getItem() instanceof IModelLayerProvider) {
+                            ModelLayerContext context = new ModelLayerContext(entity, stack);
+                            for (IModelLayer layer : ((IModelLayerProvider) stack.getItem()).getModelLayers(context)) {
+                                list.add(Pair.of(layer, context));
+                            }
+                        }
+                    }
+                }
+                return list;
+            });
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------------------------------
         // Layer Types
 
         // Default Layer
@@ -42,6 +104,9 @@ public class ModelLayerManager {
 
         // Compound Layer
         registerModelLayer(new ResourceLocation(ThreeCore.MODID, "compound"), CompoundModelLayer::parse);
+
+        // Cape
+        registerModelLayer(new ResourceLocation(ThreeCore.MODID, "cape"), CapeModelLayer::parse);
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
         // Texture Types
@@ -84,6 +149,8 @@ public class ModelLayerManager {
         // Small Arms
         registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "small_arms"), j -> new SmallArmsTextureVariable(JSONUtils.getString(j, "normal_arms_value", null), JSONUtils.getString(j, "small_arms_value", null)));
 
+        //Ability Data
+        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "ability_data"), AbilityDataTextureVariable::new);
         // ----------------------------------------------------------------------------------------------------------------------------------------------
         // Predicates
 
@@ -121,7 +188,27 @@ public class ModelLayerManager {
         registerPredicate(new ResourceLocation(ThreeCore.MODID, "entity_type"), j -> new EntityTypePredicate(new ResourceLocation(JSONUtils.getString(j, "entity_type"))));
 
         // Entity Tag
-        registerPredicate(new ResourceLocation(ThreeCore.MODID, "entity_tag"), j -> new EntityTagPredicate(new EntityTypeTags.Wrapper(new ResourceLocation(JSONUtils.getString(j, "entity_tag")))));
+        registerPredicate(new ResourceLocation(ThreeCore.MODID, "entity_tag"), j -> new EntityTagPredicate(new ResourceLocation(JSONUtils.getString(j, "entity_tag"))));
+    }
+
+    public static List<Function<LivingEntity, List<Pair<IModelLayer, IModelLayerContext>>>> getModelLayerProviders() {
+        return MODEL_LAYER_PROVIDERS;
+    }
+
+    public static void forEachLayer(LivingEntity entity, BiConsumer<IModelLayer, IModelLayerContext> consumer) {
+        List<Function<LivingEntity, List<Pair<IModelLayer, IModelLayerContext>>>> providers = ModelLayerManager.getModelLayerProviders();
+
+        for (Function<LivingEntity, List<Pair<IModelLayer, IModelLayerContext>>> function : providers) {
+            List<Pair<IModelLayer, IModelLayerContext>> layers = function.apply(entity);
+            for (Pair<IModelLayer, IModelLayerContext> pair : layers) {
+                consumer.accept(pair.getFirst(), pair.getSecond());
+            }
+        }
+    }
+
+    public static void registerLayerProvider(Function<LivingEntity, List<Pair<IModelLayer, IModelLayerContext>>> function) {
+        Preconditions.checkNotNull(function);
+        MODEL_LAYER_PROVIDERS.add(function);
     }
 
     public static void registerPredicate(ResourceLocation id, NonNullFunction<JsonObject, IModelLayerPredicate> function) {

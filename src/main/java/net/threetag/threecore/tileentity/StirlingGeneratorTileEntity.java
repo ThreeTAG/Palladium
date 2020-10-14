@@ -1,5 +1,6 @@
 package net.threetag.threecore.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -198,12 +199,7 @@ public class StirlingGeneratorTileEntity extends MachineTileEntity {
     }
 
     @Override
-    public boolean hasFastRenderer() {
-        return true;
-    }
-
-    @Override
-    public void handleUpdateTag(CompoundNBT tag) {
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
         this.fluidTank.readFromNBT(tag.getCompound("FluidTank"));
     }
 
@@ -222,13 +218,12 @@ public class StirlingGeneratorTileEntity extends MachineTileEntity {
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.handleUpdateTag(pkt.getNbtCompound());
+        this.handleUpdateTag(this.world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
     }
 
     @Override
-    public void read(CompoundNBT nbt) {
-        super.read(nbt);
-
+    public void read(BlockState blockState, CompoundNBT nbt) {
+        super.read(blockState, nbt);
         if (nbt.contains("FuelSlots"))
             this.fuelSlot.deserializeNBT(nbt.getCompound("FuelSlots"));
         if (nbt.contains("FluidSlots"))

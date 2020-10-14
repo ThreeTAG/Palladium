@@ -60,11 +60,11 @@ public class EnergyConduitTileEntity extends TileEntity implements ITickableTile
     }
 
     @Override
-    public void read(CompoundNBT nbt) {
-        super.read(nbt);
-
+    public void read(BlockState blockState, CompoundNBT nbt) {
+        super.read(blockState, nbt);
         this.type = EnergyConduitBlock.ConduitType.getByName(nbt.getString("Type"));
         this.energyStorage = new EnergyStorageExt(this.type.getTransferRate().getAsInt() * 5, this.type.getTransferRate().getAsInt(), this.type.getTransferRate().getAsInt(), nbt.getInt("Energy"));
+
     }
 
     @Override

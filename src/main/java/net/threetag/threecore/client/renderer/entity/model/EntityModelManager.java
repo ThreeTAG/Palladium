@@ -2,10 +2,7 @@ package net.threetag.threecore.client.renderer.entity.model;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.profiler.IProfiler;
@@ -39,15 +36,15 @@ public class EntityModelManager extends JsonReloadListener {
     }
 
     @Override
-    protected Map<ResourceLocation, JsonObject> prepare(IResourceManager resourceManagerIn, IProfiler profilerIn) {
+    protected Map<ResourceLocation, JsonElement> prepare(IResourceManager resourceManagerIn, IProfiler profilerIn) {
         return super.prepare(resourceManagerIn, profilerIn);
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonObject> splashList, IResourceManager resourceManagerIn, IProfiler profilerIn) {
-        for (Map.Entry<ResourceLocation, JsonObject> entry : splashList.entrySet()) {
+    protected void apply(Map<ResourceLocation, JsonElement> splashList, IResourceManager resourceManagerIn, IProfiler profilerIn) {
+        for (Map.Entry<ResourceLocation, JsonElement> entry : splashList.entrySet()) {
             try {
-                EntityModel model = parseModel(entry.getValue());
+                EntityModel model = parseModel((JsonObject) entry.getValue());
                 ModelRegistry.registerModel(entry.getKey().toString(), model);
             } catch (Exception e) {
                 ThreeCore.LOGGER.error("Parsing error loading entity model {}", entry.getKey(), e);

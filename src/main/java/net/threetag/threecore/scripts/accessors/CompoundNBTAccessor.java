@@ -1,6 +1,7 @@
 package net.threetag.threecore.scripts.accessors;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.threetag.threecore.scripts.ScriptParameterName;
 
 import java.util.UUID;
@@ -134,6 +135,9 @@ public class CompoundNBTAccessor extends ScriptAccessor<CompoundNBT> {
     public String getUniqueId(@ScriptParameterName("key") String key) {
         return this.value.getUniqueId(key).toString();
     }
+
+    //Of course vanilla has two ways of setting unique ids
+    public String getUniqueIdWithUtil(@ScriptParameterName("key") String key) { return NBTUtil.readUniqueId(this.value.get(key)).toString(); }
 
     public CompoundNBTAccessor remove(@ScriptParameterName("key") String key) {
         this.value.remove(key);

@@ -18,6 +18,7 @@ import net.threetag.threecore.scripts.events.ConditionDataUpdatedScriptEvent;
 import net.threetag.threecore.util.threedata.*;
 import net.threetag.threecore.util.threedata.IWrappedThreeDataHolder;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Condition implements INBTSerializable<CompoundNBT>, IWrappedThreeDataHolder {
@@ -31,14 +32,14 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IWrapp
             ability.sync = data.getSyncType().add(data.getSyncType());
             setDirty();
             if (ability.entity != null)
-                new ConditionDataUpdatedScriptEvent(ability.entity, ability, Condition.this, data.getKey(), value, oldValue);
+                new ConditionDataUpdatedScriptEvent(ability.entity, ability, Condition.this, data.getKey(), value, oldValue).fire();
         }
     });
 
     public static final ThreeData<ITextComponent> CUSTOM_TITLE = new TextComponentThreeData("custom_title").setSyncType(EnumSync.SELF).enableSetting("custom_title", "A custom display name for the condition.");
     public static final ThreeData<Boolean> INVERT = new BooleanThreeData("invert").enableSetting("invert", "Lets you invert the condition");
     public static final ThreeData<Boolean> ENABLING = new BooleanThreeData("enabling").setSyncType(EnumSync.SELF).enableSetting("enabling", "If this condition enables. If false it instead decides whether the ability is unlocked.");
-    public static final ThreeData<Boolean> NEEDS_KEY = new BooleanThreeData("needs_key").setSyncType(EnumSync.SELF);
+    public static final ThreeData<Boolean> NEEDS_KEY = new BooleanThreeData("needs_key").setSyncType(EnumSync.SELF).enableSetting("needs_key", "If this condition requires a key");
 
     public Condition(ConditionType type, Ability ability) {
         this.type = type;
@@ -92,19 +93,23 @@ public abstract class Condition implements INBTSerializable<CompoundNBT>, IWrapp
     public void lastTick() {
     }
 
+    public void whileEnabled(LivingEntity entity) {
+
+    }
+
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putString("ConditionType", this.type.getRegistryName().toString());
         nbt.put("Data", this.dataManager.serializeNBT());
-        nbt.put("UUID", NBTUtil.writeUniqueId(this.id));
+        nbt.put("UUID", NBTUtil.func_240626_a_(this.id));
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
         this.dataManager.deserializeNBT(nbt.getCompound("Data"));
-        this.id = NBTUtil.readUniqueId(nbt.getCompound("UUID"));
+        this.id = NBTUtil.readUniqueId(Objects.requireNonNull(nbt.get("UUID")));
     }
 
     public void setDirty() {

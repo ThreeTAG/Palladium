@@ -11,13 +11,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.item.recipe.TCRecipeSerializers;
+import net.threetag.threecore.util.TCJsonUtil;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -28,8 +30,8 @@ public class GrinderRecipeBuilder {
 
     private String group;
     private Ingredient input;
-    private final ExtRecipeOutput output;
-    private ExtRecipeOutput byproduct;
+    private final ItemStack output;
+    private ItemStack byproduct;
     private float byproductChance = 1F;
     private float experience = 0F;
     private int energy = 0;
@@ -37,7 +39,7 @@ public class GrinderRecipeBuilder {
     private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
 
     public GrinderRecipeBuilder(ItemStack output) {
-        this.output = new ExtRecipeOutput(output);
+        this.output = output;
     }
 
     public GrinderRecipeBuilder(IItemProvider itemProvider) {
@@ -48,16 +50,8 @@ public class GrinderRecipeBuilder {
         this(new ItemStack(itemProvider, amount));
     }
 
-    public GrinderRecipeBuilder(Tag<Item> tag) {
-        this(tag, 1);
-    }
-
-    public GrinderRecipeBuilder(Tag<Item> tag, int amount) {
-        this.output = new ExtRecipeOutput(tag, amount);
-    }
-
     public GrinderRecipeBuilder setByproduct(ItemStack stack) {
-        this.byproduct = new ExtRecipeOutput(stack);
+        this.byproduct = stack;
         return this;
     }
 
@@ -67,15 +61,6 @@ public class GrinderRecipeBuilder {
 
     public GrinderRecipeBuilder setByproduct(IItemProvider itemProvider) {
         return this.setByproduct(itemProvider, 1);
-    }
-
-    public GrinderRecipeBuilder setByproduct(Tag<Item> tag, int amount) {
-        this.byproduct = new ExtRecipeOutput(tag, amount);
-        return this;
-    }
-
-    public GrinderRecipeBuilder setByproduct(Tag<Item> tag) {
-        return this.setByproduct(tag, 1);
     }
 
     public GrinderRecipeBuilder setByproductChance(float chance) {
@@ -98,7 +83,7 @@ public class GrinderRecipeBuilder {
         return this;
     }
 
-    public GrinderRecipeBuilder setIngredient(Tag<Item> tag) {
+    public GrinderRecipeBuilder setIngredient(ITag<Item> tag) {
         this.input = Ingredient.fromTag(tag);
         return this;
     }
@@ -133,17 +118,17 @@ public class GrinderRecipeBuilder {
             throw new IllegalStateException("No input specified for recipe " + resourceLocation);
         } else if (this.advancementBuilder.getCriteria().isEmpty()) {
             throw new IllegalStateException("No way of obtaining recipe " + resourceLocation);
-        } else if(this.energy <= 0) {
+        } else if (this.energy <= 0) {
             throw new IllegalStateException("Energy for " + resourceLocation + " must be greater than 0!");
         }
     }
 
     public void build(Consumer<IFinishedRecipe> consumer) {
-        this.build(consumer, this.output.getId());
+        this.build(consumer, ForgeRegistries.ITEMS.getKey(this.output.getItem()));
     }
 
     public void build(Consumer<IFinishedRecipe> consumer, String name) {
-        ResourceLocation resourceLocation = this.output.getId();
+        ResourceLocation resourceLocation = ForgeRegistries.ITEMS.getKey(this.output.getItem());
         if ((new ResourceLocation(name)).equals(resourceLocation)) {
             throw new IllegalStateException("Grinding Recipe " + name + " should remove its 'save' argument");
         } else {
@@ -153,8 +138,8 @@ public class GrinderRecipeBuilder {
 
     public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation name) {
         this.validate(name);
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", new RecipeUnlockedTrigger.Instance(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
-        consumer.accept(new Result(name, group == null ? "" : group, input, output, byproduct, byproductChance, experience, energy, conditions, advancementBuilder, new ResourceLocation(name.getNamespace(), "recipes/" + this.output.getGroup() + "/" + name.getPath())));
+        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
+        consumer.accept(new Result(name, group == null ? "" : group, input, output, byproduct, byproductChance, experience, energy, conditions, advancementBuilder, new ResourceLocation(name.getNamespace(), "recipes/" + this.output.getItem().getGroup().getPath() + "/" + name.getPath())));
     }
 
     public class Result implements IFinishedRecipe {
@@ -162,8 +147,8 @@ public class GrinderRecipeBuilder {
         private final ResourceLocation id;
         private final String group;
         private final Ingredient input;
-        private final ExtRecipeOutput output;
-        private final ExtRecipeOutput byproduct;
+        private final ItemStack output;
+        private final ItemStack byproduct;
         private final float byproductChance;
         private final float experience;
         private final int energy;
@@ -171,7 +156,7 @@ public class GrinderRecipeBuilder {
         private final Advancement.Builder advancementBuilder;
         private final ResourceLocation advancementId;
 
-        public Result(ResourceLocation id, String group, Ingredient input, ExtRecipeOutput output, ExtRecipeOutput byproduct, float byproductChance, float experience, int energy, List<ICondition> conditions, Advancement.Builder advancementBuilder, ResourceLocation advancementId) {
+        public Result(ResourceLocation id, String group, Ingredient input, ItemStack output, ItemStack byproduct, float byproductChance, float experience, int energy, List<ICondition> conditions, Advancement.Builder advancementBuilder, ResourceLocation advancementId) {
             this.id = id;
             this.group = group;
             this.input = input;
@@ -198,10 +183,10 @@ public class GrinderRecipeBuilder {
                 jsonObject.add("conditions", conds);
             }
 
-            jsonObject.add("result", this.output.serialize());
+            jsonObject.add("result", TCJsonUtil.serializeItemStack(this.output));
 
             if (this.byproduct != null) {
-                JsonObject byproductJson = this.byproduct.serialize();
+                JsonObject byproductJson = TCJsonUtil.serializeItemStack(this.byproduct);
                 byproductJson.addProperty("chance", this.byproductChance);
             }
 

@@ -1,5 +1,6 @@
 package net.threetag.threecore.client.gui.inventory;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
@@ -31,55 +32,60 @@ public class MultiversalIteratorScreen extends ContainerScreen<MultiversalIterat
         super(containerIn, playerInv, titleIn);
         containerIn.setInventoryUpdateListener(this::onInventoryUpdate);
         this.ySize = 198;
+        this.playerInventoryTitleY = this.ySize - 94;
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        super.render(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
+    protected void init() {
+        super.init();
+    }
+
+    @Override
+    public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+        super.render(stack, mouseX, mouseY, partialTicks);
+        this.func_230459_a_(stack, mouseX, mouseY);
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        if (!MultiversalExtrapolatorItem.hasValidUniverse(this.container.getSlot(0).getStack()) && this.minecraft != null && this.minecraft.player != null && this.minecraft.player.ticksExisted % 2 == 0) {
-            this.minecraft.player.playSound(TCSounds.MULTIVERSE_SEARCH.get(), 0.5F, 1F);
+        if (!MultiversalExtrapolatorItem.hasValidUniverseClient(this.container.getSlot(0).getStack()) && this.getMinecraft() != null && this.getMinecraft().player != null && this.getMinecraft().player.ticksExisted % 2 == 0) {
+            this.getMinecraft().player.playSound(TCSounds.MULTIVERSE_SEARCH.get(), 0.5F, 1F);
         }
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.font.drawString(this.title.getFormattedText(), 8.0F, 6.0F, 4210752);
-        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 94), 4210752);
-        Random random = new Random(this.minecraft.player.ticksExisted / 2);
+    protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(stack, mouseX, mouseY);
+        Random random = new Random(this.getMinecraft().player.ticksExisted / 2);
         String s;
-        if (MultiversalExtrapolatorItem.hasValidUniverse(this.container.getSlot(0).getStack())) {
+        if (MultiversalExtrapolatorItem.hasValidUniverseClient(this.container.getSlot(0).getStack())) {
             s = TextFormatting.GOLD + I18n.format("universe." + this.container.getSlot(0).getStack().getOrCreateTag().getString("Universe"));
         } else {
             s = I18n.format("universe.earth_search", random.nextInt(10) + "" + random.nextInt(10) + "" + random.nextInt(10));
         }
-        this.font.drawString(s, this.xSize / 2F - this.font.getStringWidth(s) / 2F, 25, 0xffffff);
+        this.font.drawString(stack, s, this.xSize / 2F - this.font.getStringWidth(s) / 2F, 25, 0xffffff);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        this.renderBackground();
+    protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
+        this.renderBackground(stack);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
+        this.getMinecraft().getTextureManager().bindTexture(BACKGROUND_TEXTURE);
         int i = this.guiLeft;
         int j = this.guiTop;
-        this.blit(i, j, 0, 0, this.xSize, this.ySize);
+        this.blit(stack, i, j, 0, 0, this.xSize, this.ySize);
         int k = (int) (41.0F * this.sliderProgress);
-        this.blit(i + 119, j + 47 + k, 176 + (this.canScroll() ? 0 : 12), 0, 12, 15);
+        this.blit(stack, i + 119, j + 47 + k, 176 + (this.canScroll() ? 0 : 12), 0, 12, 15);
         int l = this.guiLeft + 52;
         int i1 = this.guiTop + 46;
         int j1 = this.recipeIndexOffset + 12;
-        this.drawRecipesBackground(mouseX, mouseY, l, i1, j1);
+        this.drawRecipesBackground(stack, mouseX, mouseY, l, i1, j1);
         this.drawRecipesItems(l, i1, j1);
     }
 
-    private void drawRecipesBackground(int mouseX, int mouseY, int left, int top, int recipeIndexOffsetMax) {
+    private void drawRecipesBackground(MatrixStack stack, int mouseX, int mouseY, int left, int top, int recipeIndexOffsetMax) {
         for (int i = this.recipeIndexOffset; i < recipeIndexOffsetMax && i < this.container.getRecipeListSize(); ++i) {
             int j = i - this.recipeIndexOffset;
             int k = left + j % 4 * 16;
@@ -92,7 +98,7 @@ public class MultiversalIteratorScreen extends ContainerScreen<MultiversalIterat
                 j1 += 36;
             }
 
-            this.blit(k, i1 - 1, 0, j1, 16, 18);
+            this.blit(stack, k, i1 - 1, 0, j1, 16, 18);
         }
     }
 
@@ -104,13 +110,13 @@ public class MultiversalIteratorScreen extends ContainerScreen<MultiversalIterat
             int k = left + j % 4 * 16;
             int l = j / 4;
             int i1 = top + l * 18 + 2;
-            this.minecraft.getItemRenderer().renderItemAndEffectIntoGUI(list.get(i), k, i1);
+            this.getMinecraft().getItemRenderer().renderItemAndEffectIntoGUI(list.get(i), k, i1);
         }
 
     }
 
     @Override
-    public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
+    public boolean mouseClicked(double mouseX, double mouseY, int type) {
         this.clickedOnSroll = false;
         if (this.hasItemsInInputSlot) {
             int i = this.guiLeft + 52;
@@ -119,23 +125,23 @@ public class MultiversalIteratorScreen extends ContainerScreen<MultiversalIterat
 
             for (int l = this.recipeIndexOffset; l < k; ++l) {
                 int i1 = l - this.recipeIndexOffset;
-                double d0 = p_mouseClicked_1_ - (double) (i + i1 % 4 * 16);
-                double d1 = p_mouseClicked_3_ - (double) (j + i1 / 4 * 18);
-                if (d0 >= 0.0D && d1 >= 0.0D && d0 < 16.0D && d1 < 18.0D && this.container.enchantItem(this.minecraft.player, l)) {
+                double d0 = mouseX - (double) (i + i1 % 4 * 16);
+                double d1 = mouseY - (double) (j + i1 / 4 * 18);
+                if (d0 >= 0.0D && d1 >= 0.0D && d0 < 16.0D && d1 < 18.0D && this.container.enchantItem(this.getMinecraft().player, l)) {
                     Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(TCSounds.MULTIVERSE_SEARCH.get(), 1.0F));
-                    this.minecraft.playerController.sendEnchantPacket((this.container).windowId, l);
+                    this.getMinecraft().playerController.sendEnchantPacket((this.container).windowId, l);
                     return true;
                 }
             }
 
             i = this.guiLeft + 119;
             j = this.guiTop + 9;
-            if (p_mouseClicked_1_ >= (double) i && p_mouseClicked_1_ < (double) (i + 12) && p_mouseClicked_3_ >= (double) j && p_mouseClicked_3_ < (double) (j + 54)) {
+            if (mouseX >= (double) i && mouseX < (double) (i + 12) && mouseY >= (double) j && mouseY < (double) (j + 54)) {
                 this.clickedOnSroll = true;
             }
         }
 
-        return super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
+        return super.mouseClicked(mouseX, mouseY, type);
     }
 
     @Override

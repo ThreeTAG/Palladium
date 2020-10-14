@@ -1,7 +1,7 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "tag": "forge:dusts/vibranium",
+    "item": "threecore:vibranium_dust",
     "count": 2
   },
   "ingredient": {

@@ -1,7 +1,7 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "tag": "forge:dusts/tin",
+    "item": "threecore:tin_dust",
     "count": 2
   },
   "ingredient": {

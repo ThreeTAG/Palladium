@@ -1,7 +1,9 @@
 package net.threetag.threecore;
 
+import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.MainMenuScreen;
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.resources.IReloadableResourceManager;
@@ -12,18 +14,19 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -31,6 +34,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.threetag.threecore.ability.AbilityClientEventHandler;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.AbilityType;
+import net.threetag.threecore.ability.IAbilityContainer;
 import net.threetag.threecore.ability.condition.ConditionType;
 import net.threetag.threecore.ability.superpower.SuperpowerManager;
 import net.threetag.threecore.addonpacks.AddonPackManager;
@@ -47,6 +51,7 @@ import net.threetag.threecore.command.ArmorStandPoseCommand;
 import net.threetag.threecore.command.KarmaCommand;
 import net.threetag.threecore.command.SizeChangeCommand;
 import net.threetag.threecore.command.SuperpowerCommand;
+import net.threetag.threecore.compat.curios.CuriosHandler;
 import net.threetag.threecore.container.TCContainerTypes;
 import net.threetag.threecore.data.ThreeCoreBlockTagsProvider;
 import net.threetag.threecore.data.ThreeCoreEntityTypeTagsProvider;
@@ -55,6 +60,7 @@ import net.threetag.threecore.data.ThreeCoreRecipeProvider;
 import net.threetag.threecore.data.lang.English;
 import net.threetag.threecore.entity.TCEntityTypes;
 import net.threetag.threecore.entity.armorstand.ArmorStandPoseManager;
+import net.threetag.threecore.entity.attributes.TCAttributes;
 import net.threetag.threecore.item.TCItems;
 import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 import net.threetag.threecore.item.recipe.ToolIngredient;
@@ -62,6 +68,7 @@ import net.threetag.threecore.loot.function.TCLootFunctions;
 import net.threetag.threecore.network.*;
 import net.threetag.threecore.potion.TCEffects;
 import net.threetag.threecore.scripts.ScriptEventManager;
+import net.threetag.threecore.scripts.ScriptManager;
 import net.threetag.threecore.scripts.accessors.ScriptAccessor;
 import net.threetag.threecore.sound.TCSounds;
 import net.threetag.threecore.tileentity.TCTileEntityTypes;
@@ -72,6 +79,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -89,10 +97,13 @@ public class ThreeCore {
     public ThreeCore() {
         // Basic stuff
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
-        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new Events());
         SupporterHandler.load();
         registerMessages();
 //        SupporterHandler.enableSupporterCheck();
+
+        // Ores
+        MinecraftForge.EVENT_BUS.addListener(TCBlocks::initOres);
 
         // Config
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThreeCoreCommonConfig.generateConfig());
@@ -102,19 +113,38 @@ public class ThreeCore {
         AddonPackManager.init();
 
         // Loot
-        TCLootFunctions.register();
         MinecraftForge.EVENT_BUS.addListener(TCItems::onLootTableLoad);
 
         // Construction Table Tabs
-        TCContainerTypes.registerConstructionTableTabls();
+        TCContainerTypes.registerConstructionTableTables();
 
         // Ability Container
-        AbilityHelper.registerAbilityContainer(CapabilityAbilityContainer.ID, (p) -> p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
-        for (EquipmentSlotType slots : EquipmentSlotType.values())
-            AbilityHelper.registerAbilityContainer(new ResourceLocation(ThreeCore.MODID, "item_" + slots.getName().toLowerCase()), (p) -> p.getItemStackFromSlot(slots).getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).orElse(null));
+        AbilityHelper.registerAbilityContainer((p) -> {
+            List<IAbilityContainer> containerList = Lists.newArrayList();
+            p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(containerList::add);
+            return containerList;
+        });
+        AbilityHelper.registerAbilityContainer((p) -> {
+            List<IAbilityContainer> containerList = Lists.newArrayList();
+            for (EquipmentSlotType slots : EquipmentSlotType.values()) {
+                p.getItemStackFromSlot(slots).getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(containerList::add);
+            }
+            return containerList;
+        });
 
         // Misc
         CraftingHelper.register(ToolIngredient.ID, ToolIngredient.Serializer.INSTANCE);
+
+        // Registries
+        TCItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCTileEntityTypes.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCContainerTypes.CONTAINER_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCRecipeSerializers.RECIPE_SERIALIZERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCEntityTypes.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCSounds.SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCEffects.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCAttributes.ATTRIBUTES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             // Rendering Stuff
@@ -135,26 +165,24 @@ public class ThreeCore {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void registries(RegistryEvent.NewRegistry e) {
-        TCItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCTileEntityTypes.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCContainerTypes.CONTAINER_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCRecipeSerializers.RECIPE_SERIALIZERS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCEntityTypes.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCSounds.SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TCEffects.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TCLootFunctions.register();
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public void setup(FMLCommonSetupEvent e) {
-        // Ores
-        TCBlocks.initOres();
-
         // Capabilities
         ThreeCoreCapabilities.init();
 
         // Item Colors
         TCItems.loadItemColors();
+
+        //Attributes
+        e.enqueueWork(TCEntityTypes::initAttributes);
+
+        // Curios Handler
+        if (ModList.get().isLoaded("curios")) {
+            CuriosHandler.enable();
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -165,6 +193,7 @@ public class ThreeCore {
         TCEntityTypes.initRenderers();
         TCContainerTypes.initContainerScreens();
         ArmorStandPoseManager.init();
+        TCItems.initItemProperties();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -187,6 +216,7 @@ public class ThreeCore {
         ThreeCore.registerMessage(BuyConditionMessage.class, BuyConditionMessage::toBytes, BuyConditionMessage::new, BuyConditionMessage::handle);
         ThreeCore.registerMessage(SetAbilityKeybindMessage.class, SetAbilityKeybindMessage::toBytes, SetAbilityKeybindMessage::new, SetAbilityKeybindMessage::handle);
         ThreeCore.registerMessage(MultiJumpMessage.class, MultiJumpMessage::toBytes, MultiJumpMessage::new, MultiJumpMessage::handle);
+        ThreeCore.registerMessage(EmptyHandInteractMessage.class, EmptyHandInteractMessage::toBytes, EmptyHandInteractMessage::new, EmptyHandInteractMessage::handle);
 
         // Karma
         ThreeCore.registerMessage(SyncKarmaMessage.class, SyncKarmaMessage::toBytes, SyncKarmaMessage::new, SyncKarmaMessage::handle);
@@ -206,43 +236,19 @@ public class ThreeCore {
 
         // EntityEffect
         registerMessage(EntityEffectUpdateMessage.class, EntityEffectUpdateMessage::toBytes, EntityEffectUpdateMessage::new, EntityEffectUpdateMessage::handle);
+
+        // Multiverse
+        registerMessage(SyncMultiverseMessage.class, SyncMultiverseMessage::toBytes, SyncMultiverseMessage::new, SyncMultiverseMessage::handle);
     }
 
     @SubscribeEvent
     public void gatherData(GatherDataEvent e) {
-        e.getGenerator().addProvider(new ThreeCoreBlockTagsProvider(e.getGenerator()));
-        e.getGenerator().addProvider(new ThreeCoreItemTagsProvider(e.getGenerator()));
+        BlockTagsProvider b = new ThreeCoreBlockTagsProvider(e.getGenerator());
+        e.getGenerator().addProvider(b);
+        e.getGenerator().addProvider(new ThreeCoreItemTagsProvider(e.getGenerator(), b));
         e.getGenerator().addProvider(new ThreeCoreEntityTypeTagsProvider(e.getGenerator()));
         e.getGenerator().addProvider(new ThreeCoreRecipeProvider(e.getGenerator()));
         e.getGenerator().addProvider(new English(e.getGenerator()));
-    }
-
-    @SubscribeEvent
-    public void serverStarting(FMLServerStartingEvent e) {
-        SuperpowerCommand.register(e.getCommandDispatcher());
-        KarmaCommand.register(e.getCommandDispatcher());
-        SizeChangeCommand.register(e.getCommandDispatcher());
-        ArmorStandPoseCommand.register(e.getCommandDispatcher());
-    }
-
-    @SubscribeEvent
-    public void serverAboutToStart(FMLServerAboutToStartEvent e) {
-        e.getServer().getResourceManager().addReloadListener(new SuperpowerManager());
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void initGui(GuiScreenEvent.InitGuiEvent e) {
-        // abilities.html
-        if (e.getGui() instanceof MainMenuScreen && !htmlGenerated) {
-            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-                AbilityType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "abilities.html"));
-                ConditionType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "conditions.html"));
-                ScriptAccessor.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_accessors.html"));
-                ScriptEventManager.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_events.html"));
-            });
-            htmlGenerated = true;
-        }
     }
 
     public static <MSG> int registerMessage(Class<MSG> messageType, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageConsumer) {
@@ -252,6 +258,39 @@ public class ThreeCore {
         int id = networkId++;
         NETWORK_CHANNEL.registerMessage(id, messageType, encoder, decoder, messageConsumer);
         return id;
+    }
+
+    public static class Events {
+
+        @SubscribeEvent
+        public void serverStarting(RegisterCommandsEvent e) {
+            SuperpowerCommand.register(e.getDispatcher());
+            KarmaCommand.register(e.getDispatcher());
+            SizeChangeCommand.register(e.getDispatcher());
+            ArmorStandPoseCommand.register(e.getDispatcher());
+        }
+
+        @SubscribeEvent
+        public void addListenerEvent(AddReloadListenerEvent event) {
+            event.addListener(new SuperpowerManager());
+            event.addListener(new ScriptManager());
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @SubscribeEvent
+        public void initGui(GuiScreenEvent.InitGuiEvent e) {
+            // abilities.html
+            if (e.getGui() instanceof MainMenuScreen && !htmlGenerated) {
+                DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+                    AbilityType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "abilities.html"));
+                    ConditionType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "conditions.html"));
+                    ScriptAccessor.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_accessors.html"));
+                    ScriptEventManager.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_events.html"));
+                });
+                htmlGenerated = true;
+            }
+        }
+
     }
 
 }

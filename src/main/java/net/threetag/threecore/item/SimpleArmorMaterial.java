@@ -19,15 +19,17 @@ public class SimpleArmorMaterial implements IArmorMaterial {
     private final int enchantability;
     private final LazyValue<SoundEvent> soundEvent;
     private final float toughness;
+    private final float knockBackResistance;
     private final LazyValue<Ingredient> repairMaterial;
 
-    public SimpleArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, LazyValue<SoundEvent> equipSoundIn, float toughness, Supplier<Ingredient> repairMaterialSupplier) {
+    public SimpleArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, LazyValue<SoundEvent> equipSoundIn, float toughness, float knockBackResistance, Supplier<Ingredient> repairMaterialSupplier) {
         this.name = nameIn;
         this.maxDamageFactor = maxDamageFactorIn;
         this.damageReductionAmountArray = damageReductionAmountsIn;
         this.enchantability = enchantabilityIn;
         this.soundEvent = equipSoundIn;
         this.toughness = toughness;
+        this.knockBackResistance = knockBackResistance;
         this.repairMaterial = new LazyValue<>(repairMaterialSupplier);
     }
 
@@ -65,5 +67,10 @@ public class SimpleArmorMaterial implements IArmorMaterial {
     @Override
     public float getToughness() {
         return this.toughness;
+    }
+
+    @Override
+    public float getKnockbackResistance() {
+        return this.knockBackResistance;
     }
 }

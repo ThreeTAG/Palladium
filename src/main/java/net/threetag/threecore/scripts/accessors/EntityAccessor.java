@@ -1,23 +1,29 @@
 package net.threetag.threecore.scripts.accessors;
 
+import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.threetag.threecore.sizechanging.SizeChangeType;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
-import net.threetag.threecore.util.PlayerUtil;
+import net.threetag.threecore.capability.CapabilityThreeData;
 import net.threetag.threecore.scripts.ScriptParameterName;
+import net.threetag.threecore.sizechanging.SizeChangeType;
+import net.threetag.threecore.util.EntityUtil;
+import net.threetag.threecore.util.PlayerUtil;
+import net.threetag.threecore.util.threedata.FloatThreeData;
 import net.threetag.threecore.util.threedata.IThreeDataHolder;
 import net.threetag.threecore.util.threedata.IntegerThreeData;
 import net.threetag.threecore.util.threedata.ThreeData;
-import net.threetag.threecore.capability.CapabilityThreeData;
 
 public class EntityAccessor extends ScriptAccessor<Entity> {
 
@@ -29,7 +35,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public String getName() {
-        return this.value.getDisplayName().getFormattedText();
+        return this.value.getDisplayName().getString();
     }
 
     public void setName(@ScriptParameterName("name") String name) {
@@ -48,8 +54,12 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         return this.value.getUniqueID().toString();
     }
 
-    public Vec3dAccessor getPosition() {
-        return new Vec3dAccessor(this.value.getPositionVector());
+    public CompoundNBTAccessor getNBTData() {
+        return new CompoundNBTAccessor(this.value.serializeNBT());
+    }
+
+    public Vector3dAccessor getPosition() {
+        return new Vector3dAccessor(this.value.getPositionVec());
     }
 
     public double getPosX() {
@@ -94,12 +104,12 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         this.value.setPositionAndUpdate(x, y, z);
     }
 
-    public Vec3dAccessor getLookVec() {
-        return new Vec3dAccessor(this.value.getLookVec());
+    public Vector3dAccessor getLookVec() {
+        return new Vector3dAccessor(this.value.getLookVec());
     }
 
-    public Vec3dAccessor getMotion() {
-        return new Vec3dAccessor(this.value.getMotion());
+    public Vector3dAccessor getMotion() {
+        return new Vector3dAccessor(this.value.getMotion());
     }
 
     public void setMotion(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z) {
@@ -108,6 +118,13 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
 
     public void addMotion(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z) {
         this.setMotion(this.value.getMotion().x + x, this.value.getMotion().y + y, this.value.getMotion().z + z);
+    }
+
+    public void setPlayerMotion(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z) {
+        if (!this.world.value.isRemote && this.value instanceof ServerPlayerEntity) {
+            this.value.setMotion(x, y, z);
+            ((ServerPlayerEntity) this.value).connection.sendPacket(new SEntityVelocityPacket(this.value));
+        }
     }
 
     public Direction getHorizontalFacing() {
@@ -131,11 +148,11 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public void sendMessage(@ScriptParameterName("message") String message) {
-        this.value.sendMessage(new StringTextComponent(message));
+        this.value.sendMessage(new StringTextComponent(message), this.value.getUniqueID());
     }
 
     public void sendTranslatedMessage(@ScriptParameterName("translationKey") String message, @ScriptParameterName("args") Object... args) {
-        this.value.sendMessage(new TranslationTextComponent(message, args));
+        this.value.sendMessage(new TranslationTextComponent(message, args), this.value.getUniqueID());
     }
 
     public boolean isCrouching() {
@@ -154,6 +171,14 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         return this.value instanceof LivingEntity;
     }
 
+    public LivingEntityAccessor getAsLiving() {
+        return new LivingEntityAccessor((LivingEntity) this.value);
+    }
+
+    public String getType() {
+        return this.value.getType().getRegistryName().toString();
+    }
+
     public void kill() {
         this.value.onKillCommand();
     }
@@ -167,7 +192,7 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
     }
 
     public boolean isOnGround() {
-        return this.value.onGround;
+        return this.value.isOnGround();
     }
 
     public float getFallDistance() {
@@ -288,8 +313,25 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
                 value = ((Float) value).intValue();
         }
 
+        if (data instanceof FloatThreeData) {
+            if (value instanceof Double)
+                value = ((Double) value).floatValue();
+            else if (value instanceof Integer)
+                value = ((Integer) value).floatValue();
+        }
+
         threeData.set(data, value);
         return true;
+    }
+
+    public Object rayTrace(@ScriptParameterName("distance") double distance, @ScriptParameterName("blockMode") String blockMode, @ScriptParameterName("fluidMode") String fluidMode) {
+        RayTraceContext.BlockMode b = RayTraceContext.BlockMode.valueOf(blockMode.toUpperCase());
+        RayTraceContext.FluidMode f = RayTraceContext.FluidMode.valueOf(fluidMode.toUpperCase());
+        return ScriptAccessor.makeAccessor(EntityUtil.rayTraceWithEntities(this.value, distance, b, f));
+    }
+
+    public void lookAt(@ScriptParameterName("target") Vector3dAccessor target) {
+        this.value.lookAt(EntityAnchorArgument.Type.EYES, target.value);
     }
 
 }

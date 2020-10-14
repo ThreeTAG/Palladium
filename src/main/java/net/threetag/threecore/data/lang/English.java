@@ -265,6 +265,8 @@ public class English extends ThreeCoreLanguageProvider {
         this.add(AbilityType.HUD, "HUD");
         this.add(AbilityType.SKIN_CHANGE, "Skin Change");
         this.add(AbilityType.HIDE_BODY_PARTS, "Hide Body Parts");
+        this.add(AbilityType.CHANGE_ABILITY_TAB_TEXTURE, "Change Ability Tab Texture");
+        this.add(AbilityType.ENERGY, "Energy");
 
         this.add("ability.condition.threecore.action", "Key must be pressed once to active this ability");
         this.add("ability.condition.threecore.action.not", "Key must be pressed once to deactivate this ability");
@@ -311,7 +313,7 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("ability.condition.threecore.xp_min.not", "Karma must be lower than %s");
         this.add("ability.condition.threecore.wearing_item", "Entity must wear specific items");
         this.add("ability.condition.threecore.wearing_item_tag", "Entity must wear items within the %s tag");
-        this.add("ability.condition.threecore.item_integer_nbt", "Item in %s slot must have specific value in % nbt tag");
+        this.add("ability.condition.threecore.item_integer_nbt", "Item in %s slot must have specific value in %s nbt tag");
         this.add("ability.condition.threecore.eyes_in_fluid", "Eyes are need to be covered by fluids in the %s tag");
         this.add("ability.condition.threecore.size", "Size must be between %s and %s");
         this.add("ability.condition.threecore.size.not", "Size must be outside of %s and %s");
@@ -319,6 +321,22 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("ability.condition.threecore.size_at.not", "Size must something else than %s");
         this.add("ability.condition.threecore.size_min", "Size must be at least %s");
         this.add("ability.condition.threecore.size_min.not", "Size must be lower than %s");
+        this.add("ability.condition.threecore.abilities_locked", "%s abilities must be locked");
+        this.add("ability.condition.threecore.abilities_locked.not", "%s abilities must be unlocked");
+        this.add("ability.condition.threecore.living_values", "Entity %s must be %s than %s");
+        this.add("ability.condition.threecore.living_values.not", "Entity value must be compared to %s");
+        this.add("ability.condition.threecore.has_potions", "Entity must have %s potion effects");
+        this.add("ability.condition.threecore.has_potions.not", "Entity must not have %s potion effects");
+        this.add("ability.condition.threecore.three_data", "ThreeData value must be compared");
+        this.add("ability.condition.threecore.three_data.not", "ThreeData value must be compared");
+        this.add("ability.condition.threecore.exclusive", "Ability must be the only of its kind");
+        this.add("ability.condition.threecore.exclusive.not", "Ability must not be the only of its kind");
+        this.add("ability.condition.threecore.combo", "Specific abilities must be used in specific order");
+        this.add("ability.condition.threecore.combo.not", "Specific abilities must not be used in specific order");
+        this.add("ability.condition.threecore.curios_slot", "Item needs to be in specific Curios slot");
+        this.add("ability.condition.threecore.curios_slot.not", "Item must not be in specific Curios slot");
+        this.add("ability.condition.threecore.wearing_curios", "Specific item must be in specific Curios slot");
+        this.add("ability.condition.threecore.wearing_curios.not", "Specific item must not be in specific Curios slot");
 
 
         // Container

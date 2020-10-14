@@ -8,7 +8,7 @@ import net.threetag.threecore.ThreeCore;
 
 public class TCRecipeSerializers {
 
-    public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = new DeferredRegister<>(ForgeRegistries.RECIPE_SERIALIZERS, ThreeCore.MODID);
+    public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ThreeCore.MODID);
 
     public static final RegistryObject<IRecipeSerializer<HelmetCraftingRecipe>> HELMET_CRAFTING = RECIPE_SERIALIZERS.register("helmet_crafting", HelmetCraftingRecipe.Serializer::new);
 

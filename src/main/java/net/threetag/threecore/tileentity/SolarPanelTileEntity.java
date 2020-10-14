@@ -1,5 +1,6 @@
 package net.threetag.threecore.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -50,13 +51,14 @@ public class SolarPanelTileEntity extends TileEntity implements ITickableTileEnt
     }
 
     public boolean canProduce() {
-        return world.dimension.hasSkyLight() && world.canBlockSeeSky(this.getPos().up()) && !world.isRaining() && !world.isThundering() && world.isDaytime();
+        return world.func_230315_m_().hasSkyLight() && world.canBlockSeeSky(this.getPos().up()) && !world.isRaining() && !world.isThundering() && world.isDaytime();
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+    public void read(BlockState blockState, CompoundNBT compound) {
+        super.read(blockState, compound);
         this.energyStorage = EnergyStorageExt.noReceive(ThreeCoreServerConfig.ENERGY.SOLAR_PANEL, compound.getInt("Energy"));
+
     }
 
     @Override

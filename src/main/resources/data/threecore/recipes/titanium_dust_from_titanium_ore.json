@@ -1,7 +1,7 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "tag": "forge:dusts/titanium",
+    "item": "threecore:titanium_dust",
     "count": 2
   },
   "ingredient": {

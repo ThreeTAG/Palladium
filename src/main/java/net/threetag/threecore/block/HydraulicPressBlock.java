@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 
 public class HydraulicPressBlock extends MachineBlock {
 
-    public HydraulicPressBlock(Block.Properties properties) {
+    public HydraulicPressBlock(Properties properties) {
         super(properties);
     }
 

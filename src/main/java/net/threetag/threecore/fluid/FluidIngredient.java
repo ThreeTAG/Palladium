@@ -4,7 +4,7 @@ import com.google.gson.*;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -17,9 +17,9 @@ import java.util.function.Predicate;
 public class FluidIngredient implements Predicate<FluidStack> {
 
     private final FluidStack[] matching;
-    private final Tag<Fluid> tag;
+    private final ITag.INamedTag<Fluid> tag;
 
-    public FluidIngredient(Tag<Fluid> tag, int amount) {
+    public FluidIngredient(ITag.INamedTag<Fluid> tag, int amount) {
         this.tag = tag;
         Iterator<Fluid> iterator = tag.getAllElements().iterator();
         this.matching = new FluidStack[tag.getAllElements().size()];
@@ -39,7 +39,7 @@ public class FluidIngredient implements Predicate<FluidStack> {
         return this.matching;
     }
 
-    public Tag<Fluid> getTag() {
+    public ITag.INamedTag<Fluid> getTag() {
         return tag;
     }
 
@@ -89,7 +89,7 @@ public class FluidIngredient implements Predicate<FluidStack> {
                     return new FluidIngredient(TCFluidUtil.deserializeFluidStack(jsonObject));
                 } else if (JSONUtils.hasField(jsonObject, "tag")) {
                     ResourceLocation tag = new ResourceLocation(JSONUtils.getString(jsonObject, "tag"));
-                    Tag<Fluid> fluidTag = FluidTags.getCollection().get(tag);
+                    ITag.INamedTag<Fluid> fluidTag = FluidTags.func_241280_c_().stream().filter(fluidNamedTag -> fluidNamedTag.getName().equals(tag)).findFirst().orElse(null);
                     if (fluidTag == null) {
                         throw new JsonSyntaxException("Unknown fluid tag '" + tag + "'");
                     } else {

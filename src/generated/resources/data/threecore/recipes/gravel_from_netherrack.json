@@ -1,7 +1,8 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "item": "minecraft:gravel"
+    "item": "minecraft:gravel",
+    "count": 1
   },
   "ingredient": {
     "item": "minecraft:netherrack"

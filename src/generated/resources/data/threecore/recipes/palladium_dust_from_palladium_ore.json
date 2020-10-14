@@ -1,7 +1,7 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "tag": "forge:dusts/palladium",
+    "item": "threecore:palladium_dust",
     "count": 2
   },
   "ingredient": {

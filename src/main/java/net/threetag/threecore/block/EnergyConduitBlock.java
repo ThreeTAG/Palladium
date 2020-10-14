@@ -5,8 +5,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -70,7 +70,7 @@ public class EnergyConduitBlock extends Block implements IWaterLoggable {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("block.threecore.conduit_tooltip", new StringTextComponent(this.type.getTransferRate().getAsInt() + "").applyTextStyle(TextFormatting.GOLD), new StringTextComponent(EnergyUtil.ENERGY_UNIT).applyTextStyle(TextFormatting.GRAY)).applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("block.threecore.conduit_tooltip", new StringTextComponent(this.type.getTransferRate().getAsInt() + "").mergeStyle(TextFormatting.GOLD), new StringTextComponent(EnergyUtil.ENERGY_UNIT).mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.GRAY));
     }
 
     @Nullable
@@ -149,12 +149,12 @@ public class EnergyConduitBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public IFluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 
     public BlockState makeConnections(IBlockReader blockReader, BlockPos pos) {
-        IFluidState fluidState = blockReader.getFluidState(pos);
+        FluidState fluidState = blockReader.getFluidState(pos);
         boolean waterLogged = fluidState.isTagged(FluidTags.WATER) && fluidState.getLevel() == 8;
         ConduitConnection down = getConnection(blockReader, pos, Direction.DOWN);
         ConduitConnection up = getConnection(blockReader, pos, Direction.UP);
@@ -209,7 +209,7 @@ public class EnergyConduitBlock extends Block implements IWaterLoggable {
         }
 
         @Override
-        public String getName() {
+        public String getString() {
             return this.name;
         }
     }
@@ -229,7 +229,7 @@ public class EnergyConduitBlock extends Block implements IWaterLoggable {
         }
 
         @Override
-        public String getName() {
+        public String getString() {
             return this.name;
         }
     }

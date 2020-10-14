@@ -1,7 +1,8 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "item": "minecraft:sand"
+    "item": "minecraft:sand",
+    "count": 1
   },
   "ingredient": {
     "item": "minecraft:gravel"

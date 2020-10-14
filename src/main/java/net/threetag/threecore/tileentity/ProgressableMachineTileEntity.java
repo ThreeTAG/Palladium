@@ -2,6 +2,7 @@ package net.threetag.threecore.tileentity;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.crafting.IRecipe;
@@ -55,7 +56,7 @@ public abstract class ProgressableMachineTileEntity<T extends IEnergyRecipe<IInv
 
         if (working != this.isWorking()) {
             dirty = true;
-            if (this.world.getBlockState(this.pos).has(MachineBlock.LIT))
+            if (this.world.getBlockState(this.pos).get(MachineBlock.LIT))
                 this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(MachineBlock.LIT, this.isWorking()), 3);
         }
 
@@ -78,7 +79,7 @@ public abstract class ProgressableMachineTileEntity<T extends IEnergyRecipe<IInv
     public abstract void produceOutput(T recipe);
 
     public void addXP() {
-        if(this.xpMap != null)
+        if (this.xpMap != null)
             this.xpMap.compute(recipe.getId(), (resourceLocation, integer) -> 1 + (integer == null ? 0 : integer));
     }
 
@@ -107,9 +108,8 @@ public abstract class ProgressableMachineTileEntity<T extends IEnergyRecipe<IInv
     }
 
     @Override
-    public void read(CompoundNBT nbt) {
-        super.read(nbt);
-
+    public void read(BlockState blockState, CompoundNBT nbt) {
+        super.read(blockState, nbt);
         this.recipe = getRecipe(new ResourceLocation(nbt.getString("Recipe")));
         this.progress = nbt.getInt("Progress");
         this.maxProgress = nbt.getInt("MaxProgress");

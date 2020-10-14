@@ -6,21 +6,21 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 import net.minecraftforge.fml.packs.ModFileResourcePack;
 import net.minecraftforge.fml.packs.ResourcePackLoader;
 import net.threetag.threecore.addonpacks.item.ItemParser;
+import net.threetag.threecore.addonpacks.particle.ParticleParser;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -35,15 +35,14 @@ public class AddonPackManager {
         return isZip || hasMeta;
     };
     public static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-    public ResourcePackList<ResourcePackInfo> addonpackFinder = new ResourcePackList<>(ResourcePackInfo::new);
-    private SimpleReloadableResourceManager resourceManager = new SimpleReloadableResourceManager(ResourcePackType.SERVER_DATA, null);
+    public ResourcePackList addonpackFinder = new ResourcePackList(ResourcePackInfo::new, new AddonPackFinder());
+    private SimpleReloadableResourceManager resourceManager = new SimpleReloadableResourceManager(ResourcePackType.SERVER_DATA);
 
     private AddonPackManager() {
         INSTANCE = this;
         MinecraftForge.EVENT_BUS.register(this);
 
         // Setup resource manager
-        addonpackFinder.addPackFinder(new AddonPackFinder());
         Map<ModFile, ModFileResourcePack> modResourcePacks = ModList.get().getModFiles().stream().
                 filter(mf -> !Objects.equals(mf.getModLoader(), "minecraft")).
                 map(mf -> new ModFileResourcePack(mf.getFile())).
@@ -55,6 +54,7 @@ public class AddonPackManager {
 
         // Setup default parsers
         FMLJavaModLoadingContext.get().getModEventBus().register(new ItemParser());
+        FMLJavaModLoadingContext.get().getModEventBus().register(new ParticleParser());
 
         // Add Pack Finder to client
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
@@ -78,15 +78,14 @@ public class AddonPackManager {
         return resourceManager;
     }
 
-    @SubscribeEvent
-    public void serverStarting(FMLServerAboutToStartEvent e) {
-        e.getServer().resourcePacks.addPackFinder(new AddonPackFinder());
-    }
+    public static class AddonPackFinder implements IPackFinder {
 
-    private static class AddonPackFinder implements IPackFinder {
+        private Supplier<IResourcePack> createResourcePack(File file) {
+            return file.isDirectory() ? () -> new FolderPack(file) : () -> new FilePack(file);
+        }
 
         @Override
-        public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> map, ResourcePackInfo.IFactory<T> iFactory) {
+        public void func_230230_a_(Consumer<ResourcePackInfo> consumer, ResourcePackInfo.IFactory factory) {
             if (!DIRECTORY.exists())
                 DIRECTORY.mkdirs();
 
@@ -95,29 +94,27 @@ public class AddonPackManager {
             if (files != null) {
                 for (File file : files) {
                     String name = "addonpack:" + file.getName();
-                    T container = ResourcePackInfo.createResourcePack(name, true, this.createResourcePack(file), iFactory, ResourcePackInfo.Priority.TOP);
+                    //TODO name decorator
+                    ResourcePackInfo container = ResourcePackInfo.createResourcePack(name, true, this.createResourcePack(file), factory, ResourcePackInfo.Priority.TOP, IPackNameDecorator.field_232625_a_);
                     if (container != null) {
-                        map.put(name, container);
+                        consumer.accept(container);
                     }
                 }
             }
         }
-
-        private Supplier<IResourcePack> createResourcePack(File file) {
-            return file.isDirectory() ? () -> new FolderPack(file) : () -> new FilePack(file);
-        }
     }
 
     private static class LambdaFriendlyPackFinder implements IPackFinder {
-        private ResourcePackLoader.IPackInfoFinder wrapped;
+
+        private final ResourcePackLoader.IPackInfoFinder wrapped;
 
         private LambdaFriendlyPackFinder(final ResourcePackLoader.IPackInfoFinder wrapped) {
             this.wrapped = wrapped;
         }
 
         @Override
-        public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> packList, ResourcePackInfo.IFactory<T> factory) {
-            wrapped.addPackInfosToMap(packList, factory);
+        public void func_230230_a_(Consumer<ResourcePackInfo> consumer, ResourcePackInfo.IFactory factory) {
+            wrapped.addPackInfos(consumer, factory);
         }
     }
 

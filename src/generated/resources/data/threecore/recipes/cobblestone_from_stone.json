@@ -1,7 +1,8 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "item": "minecraft:cobblestone"
+    "item": "minecraft:cobblestone",
+    "count": 1
   },
   "ingredient": {
     "item": "minecraft:stone"

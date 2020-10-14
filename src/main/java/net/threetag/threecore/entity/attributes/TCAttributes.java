@@ -1,17 +1,14 @@
 package net.threetag.threecore.entity.attributes;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
+import net.minecraft.entity.ai.attributes.*;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
 import net.threetag.threecore.capability.ISizeChanging;
@@ -20,37 +17,30 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID)
 public class TCAttributes {
+    public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, ThreeCore.MODID);
 
-    public static final IAttribute STEP_HEIGHT = (new RangedAttribute(null, "threecore.stepHeight", 0.5D, 0D, 20D)).setDescription("Step Height").setShouldWatch(true);
-    public static final IAttribute FALL_RESISTANCE = (new RangedAttribute(null, "threecore.fallResistance", 0D, 0D, Double.MAX_VALUE)).setDescription("Fall Resistance");
-    public static final IAttribute JUMP_HEIGHT = (new RangedAttribute(null, "threecore.jumpHeight", 0D, 0D, Double.MAX_VALUE)).setDescription("Jump Height").setShouldWatch(true);
-    public static final IAttribute SPRINT_SPEED = (new RangedAttribute(null, "threecore.sprintSpeed", 0D, 0D, Double.MAX_VALUE)).setDescription("Sprint Speed").setShouldWatch(true);
-    public static final IAttribute SIZE_WIDTH = (new RangedAttribute(null, "threecore.sizeWidth", 1D, 0.1D, 32D)).setShouldWatch(true);
-    public static final IAttribute SIZE_HEIGHT = (new RangedAttribute(null, "threecore.sizeHeight", 1D, 0.1D, 32D)).setShouldWatch(true);
+    public static final RegistryObject<Attribute> STEP_HEIGHT = ATTRIBUTES.register("step_height", () -> new RangedAttribute("threecore.stepHeight", 0.5D, 0D, 20D).func_233753_a_(true));
+    public static final RegistryObject<Attribute> FALL_RESISTANCE = ATTRIBUTES.register("fall_resistance", () -> new RangedAttribute("threecore.fallResistance", 0D, 0D, Double.MAX_VALUE));
+    public static final RegistryObject<Attribute> JUMP_HEIGHT = ATTRIBUTES.register("jump_height", () -> new RangedAttribute("threecore.jumpHeight", 0D, 0D, Double.MAX_VALUE).func_233753_a_(true));
+    public static final RegistryObject<Attribute> SPRINT_SPEED = ATTRIBUTES.register("sprint_speed", () -> new RangedAttribute("threecore.sprintSpeed", 0D, 0D, Double.MAX_VALUE).func_233753_a_(true));
+    public static final RegistryObject<Attribute> SIZE_WIDTH = ATTRIBUTES.register("size_width", () -> new RangedAttribute("threecore.sizeWidth", 1D, 0.1D, 32D).func_233753_a_(true));
+    public static final RegistryObject<Attribute> SIZE_HEIGHT = ATTRIBUTES.register("size_height", () -> new RangedAttribute("threecore.sizeHeight", 1D, 0.1D, 32D).func_233753_a_(true));
     public static float stepHeight;
     public static final UUID SPRINT_UUID = UUID.fromString("11faf62f-c271-4601-809e-83d982687b69");
 
     @SubscribeEvent
-    public static void onEntityConstruct(EntityEvent.EntityConstructing e) {
-        if (e.getEntity() instanceof LivingEntity) {
-            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(STEP_HEIGHT).setBaseValue(1D);
-            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(FALL_RESISTANCE);
-            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(JUMP_HEIGHT);
-            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(SPRINT_SPEED).setBaseValue(1D);
-        }
-    }
-
-    @SubscribeEvent
     public static void onFall(LivingFallEvent e) {
-        IAttributeInstance attributeInstance = e.getEntityLiving().getAttribute(FALL_RESISTANCE);
-        attributeInstance.setBaseValue(e.getDamageMultiplier());
-        e.setDamageMultiplier((float) attributeInstance.getValue());
+        ModifiableAttributeInstance fallAttribute = e.getEntityLiving().getAttribute(FALL_RESISTANCE.get());
+        if (fallAttribute != null) {
+            fallAttribute.setBaseValue(e.getDamageMultiplier());
+            e.setDamageMultiplier((float) fallAttribute.getValue());
+        }
     }
 
     @SubscribeEvent
     public static void onFall(LivingEvent.LivingJumpEvent e) {
         if (!e.getEntityLiving().isCrouching()) {
-            e.getEntityLiving().setMotion(e.getEntity().getMotion().x, e.getEntity().getMotion().y + 0.1F * e.getEntityLiving().getAttribute(JUMP_HEIGHT).getValue(), e.getEntity().getMotion().z);
+            e.getEntityLiving().setMotion(e.getEntity().getMotion().x, e.getEntity().getMotion().y + 0.1F * e.getEntityLiving().getAttribute(JUMP_HEIGHT.get()).getValue(), e.getEntity().getMotion().z);
         }
     }
 
@@ -65,18 +55,19 @@ public class TCAttributes {
 
         if (e.player.ticksExisted > 20 && e.player.world.isRemote) {
             stepHeight = e.player.stepHeight;
-            IAttributeInstance attributeInstance = e.player.getAttribute(STEP_HEIGHT);
+            ModifiableAttributeInstance attributeInstance = e.player.getAttribute(STEP_HEIGHT.get());
             attributeInstance.setBaseValue(stepHeight);
             e.player.stepHeight = (float) attributeInstance.getValue();
             ISizeChanging sizeChanging = e.player.getCapability(CapabilitySizeChanging.SIZE_CHANGING).orElseGet(() -> null);
-            if(sizeChanging != null)
+            if (sizeChanging != null)
                 e.player.stepHeight *= sizeChanging.getHeight();
         }
 
-        e.player.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(SPRINT_UUID);
-        if (e.player.isSprinting() && e.player.getAttribute(SPRINT_SPEED).func_225505_c_().size() > 0) {
-            double amount = e.player.getAttribute(SPRINT_SPEED).getValue();
-            e.player.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier(SPRINT_UUID, "Sprint modifier", amount, AttributeModifier.Operation.MULTIPLY_BASE));
+        e.player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(SPRINT_UUID);
+        if (e.player.isSprinting() && e.player.getAttribute(SPRINT_SPEED.get()).getModifierListCopy().size() > 0) {
+            double amount = e.player.getAttribute(SPRINT_SPEED.get()).getValue();
+            e.player.getAttribute(Attributes.MOVEMENT_SPEED)
+                    .applyNonPersistentModifier(new AttributeModifier(SPRINT_UUID, "Sprint modifier", amount, AttributeModifier.Operation.MULTIPLY_BASE));
         }
 
     }

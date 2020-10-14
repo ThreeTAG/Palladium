@@ -1,0 +1,5 @@
+{
+	"type": "threecore:biped",
+	"scale": 0.1,
+	"arm_type": "fixed"
+}

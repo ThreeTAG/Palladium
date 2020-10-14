@@ -10,7 +10,8 @@
     }
   ],
   "result": {
-    "tag": "forge:dusts/charcoal"
+    "item": "threecore:charcoal_dust",
+    "count": 1
   },
   "ingredient": {
     "item": "minecraft:charcoal"

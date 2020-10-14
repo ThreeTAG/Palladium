@@ -6,13 +6,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -26,7 +26,7 @@ import net.threetag.threecore.util.RenderUtil;
 @OnlyIn(Dist.CLIENT)
 public class HydraulicPressTileEntityRenderer extends TileEntityRenderer<HydraulicPressTileEntity> {
 
-    public static final Material TEXTURE;
+    public static final RenderMaterial TEXTURE;
     public static HydraulicPressPistonModel MODEL = new HydraulicPressPistonModel();
 
     static {

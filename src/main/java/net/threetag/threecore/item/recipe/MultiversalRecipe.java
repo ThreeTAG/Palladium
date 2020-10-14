@@ -16,7 +16,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.threetag.threecore.item.MultiversalExtrapolatorItem;
 import net.threetag.threecore.util.RecipeUtil;
 
 import javax.annotation.Nullable;
@@ -30,9 +29,9 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
     private final ResourceLocation id;
     private final String universe;
     private final String identifier;
-    private final List<ItemStack> items;
+    private final List<Item> items;
 
-    public MultiversalRecipe(ResourceLocation id, String universe, String identifier, List<ItemStack> items) {
+    public MultiversalRecipe(ResourceLocation id, String universe, String identifier, List<Item> items) {
         this.id = id;
         this.universe = universe;
         this.identifier = identifier;
@@ -47,7 +46,7 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
         return identifier;
     }
 
-    public List<ItemStack> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
@@ -90,9 +89,23 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
         List<String> list = Lists.newArrayList();
         world.getRecipeManager().getRecipes(RECIPE_TYPE).forEach((id, recipe) -> {
             if (recipe instanceof MultiversalRecipe) {
-                for (ItemStack stack1 : ((MultiversalRecipe) recipe).getItems()) {
-                    if (stack.isItemEqual(stack1) && !list.contains(((MultiversalRecipe) recipe).getIdentifier())) {
+                for (Item item : ((MultiversalRecipe) recipe).getItems()) {
+                    if (stack.getItem() == item && !list.contains(((MultiversalRecipe) recipe).getIdentifier())) {
                         list.add(((MultiversalRecipe) recipe).getIdentifier());
+                    }
+                }
+            }
+        });
+        return list;
+    }
+
+    public static List<String> getUniversesFromItem(ItemStack stack, World world) {
+        List<String> list = Lists.newArrayList();
+        world.getRecipeManager().getRecipes(RECIPE_TYPE).forEach((id, recipe) -> {
+            if (recipe instanceof MultiversalRecipe) {
+                for (Item item : ((MultiversalRecipe) recipe).getItems()) {
+                    if (stack.getItem() == item && !list.contains(((MultiversalRecipe) recipe).getUniverse())) {
+                        list.add(((MultiversalRecipe) recipe).getUniverse());
                     }
                 }
             }
@@ -105,9 +118,11 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
         world.getRecipeManager().getRecipes(RECIPE_TYPE).forEach((id, recipe) -> {
             if (recipe instanceof MultiversalRecipe) {
                 if (((MultiversalRecipe) recipe).getUniverse().equals(universe) && identifiers.contains(((MultiversalRecipe) recipe).getIdentifier()) && ((MultiversalRecipe) recipe).getUniverse().equals(universe)) {
-                    for (ItemStack stack1 : ((MultiversalRecipe) recipe).getItems()) {
-                        if (!stack.isItemEqual(stack1)) {
-                            items.add(stack1);
+                    for (Item item : ((MultiversalRecipe) recipe).getItems()) {
+                        if (stack.getItem() != item) {
+                            ItemStack result = new ItemStack(item);
+                            result.setTag(stack.getTag());
+                            items.add(result);
                         }
                     }
                 }
@@ -119,8 +134,8 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
     public static boolean hasVariations(ItemStack stack, World world) {
         for (Map.Entry<ResourceLocation, IRecipe<IInventory>> entry : world.getRecipeManager().getRecipes(RECIPE_TYPE).entrySet()) {
             if (entry.getValue() instanceof MultiversalRecipe) {
-                for (ItemStack stack1 : ((MultiversalRecipe) entry.getValue()).getItems()) {
-                    if (stack1.isItemEqual(stack)) {
+                for (Item item : ((MultiversalRecipe) entry.getValue()).getItems()) {
+                    if (stack.getItem() == item) {
                         return true;
                     }
                 }
@@ -133,9 +148,9 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
 
         @Override
         public MultiversalRecipe read(ResourceLocation recipeId, JsonObject json) {
-            String universe = MultiversalExtrapolatorItem.registerUniverse(JSONUtils.getString(json, "universe"));
+            MultiverseManager.Universe universe = MultiverseManager.registerUniverse(JSONUtils.getString(json, "universe"));
             String identifier = JSONUtils.getString(json, "identifier");
-            List<ItemStack> items = Lists.newArrayList();
+            List<Item> items = Lists.newArrayList();
             JsonElement itemsJson = json.get("items");
 
             if (itemsJson.isJsonPrimitive()) {
@@ -144,7 +159,7 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
                 if (item == null)
                     throw new JsonParseException("Item " + itemsJson.getAsString() + " in recipe " + recipeId + " does not exist!");
 
-                items.add(new ItemStack(item));
+                items.add(item);
             } else if (itemsJson.isJsonArray()) {
                 for (int i = 0; i < itemsJson.getAsJsonArray().size(); i++) {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemsJson.getAsJsonArray().get(i).getAsString()));
@@ -152,24 +167,25 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
                     if (item == null)
                         throw new JsonParseException("Item " + itemsJson.getAsString() + " in recipe " + recipeId + " does not exist!");
 
-                    items.add(new ItemStack(item));
+                    items.add(item);
                 }
             }
 
-            return new MultiversalRecipe(recipeId, universe, identifier, items);
+            return new MultiversalRecipe(recipeId, universe.getIdentifier(), identifier, items);
         }
 
         @Nullable
         @Override
         public MultiversalRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
-            String universe = MultiversalExtrapolatorItem.registerUniverse(buffer.readString());
+            MultiverseManager.Universe universe = MultiverseManager.registerUniverse(buffer.readString());
             String identifier = buffer.readString();
-            List<ItemStack> items = Lists.newArrayList();
+            List<Item> items = Lists.newArrayList();
             int amount = buffer.readInt();
             for (int i = 0; i < amount; i++) {
-                items.add(buffer.readItemStack());
+                Item item = buffer.readRegistryId();
+                items.add(item);
             }
-            return new MultiversalRecipe(recipeId, universe, identifier, items);
+            return new MultiversalRecipe(recipeId, universe.getIdentifier(), identifier, items);
         }
 
         @Override
@@ -177,8 +193,8 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
             buffer.writeString(recipe.universe);
             buffer.writeString(recipe.identifier);
             buffer.writeInt(recipe.items.size());
-            for (ItemStack stack : recipe.items) {
-                buffer.writeItemStack(stack);
+            for (Item item : recipe.items) {
+                buffer.writeRegistryId(item);
             }
         }
     }

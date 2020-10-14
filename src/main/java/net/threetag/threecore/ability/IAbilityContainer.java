@@ -12,18 +12,18 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.util.threedata.EnumSync;
 import net.threetag.threecore.network.AddAbilityMessage;
 import net.threetag.threecore.network.RemoveAbilityMessage;
 import net.threetag.threecore.network.UpdateAbilityMessage;
 import net.threetag.threecore.util.icon.IIcon;
+import net.threetag.threecore.util.threedata.EnumSync;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public interface IAbilityContainer {
 
@@ -85,7 +85,7 @@ public interface IAbilityContainer {
     }
 
     default void clearAbilities(@Nullable LivingEntity entity) {
-        List<Ability> copy = this.getAbilities().stream().collect(Collectors.toList());
+        List<Ability> copy = new ArrayList<>(this.getAbilities());
 
         for (Ability ab : copy) {
             removeAbility(entity, ab.getId());
@@ -93,7 +93,7 @@ public interface IAbilityContainer {
     }
 
     default void clearAbilities(@Nullable LivingEntity entity, Predicate<Ability> predicate) {
-        List<Ability> copy = this.getAbilities().stream().collect(Collectors.toList());
+        List<Ability> copy = new ArrayList<>(this.getAbilities());
 
         for (Ability ab : copy) {
             if (predicate.test(ab)) {

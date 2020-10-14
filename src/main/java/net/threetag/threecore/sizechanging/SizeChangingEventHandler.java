@@ -3,14 +3,11 @@ package net.threetag.threecore.sizechanging;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.SnowballEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -32,7 +29,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
-import net.threetag.threecore.entity.attributes.TCAttributes;
 import net.threetag.threecore.network.SyncSizeMessage;
 
 import java.util.List;
@@ -41,31 +37,45 @@ import java.util.List;
 public class SizeChangingEventHandler {
 
     @SubscribeEvent
+    public static void onEntitySize(EntityEvent.Size e) {
+        if (e.getEntity().isAddedToWorld()) {
+            e.getEntity().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
+                EntitySize size = e.getOldSize();
+                if (e.getOldSize().fixed) {
+                    e.setNewSize(EntitySize.fixed(size.width * sizeChanging.getWidth(), size.height * sizeChanging.getHeight()));
+                } else {
+                    e.setNewSize(EntitySize.flexible(size.width * sizeChanging.getWidth(), size.height * sizeChanging.getHeight()));
+                }
+                e.setNewEyeHeight(e.getOldEyeHeight() * sizeChanging.getHeight());
+            });
+        }
+    }
+
+    @SubscribeEvent
     public static void onJoinWorld(EntityJoinWorldEvent e) {
         e.getEntity().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
             sizeChanging.updateBoundingBox();
             if (e.getEntity() instanceof ServerPlayerEntity && sizeChanging instanceof INBTSerializable)
-                ThreeCore.NETWORK_CHANNEL.sendTo(new SyncSizeMessage(e.getEntity().getEntityId(), (CompoundNBT) ((INBTSerializable) sizeChanging).serializeNBT()), ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                ThreeCore.NETWORK_CHANNEL
+                        .sendTo(new SyncSizeMessage(e.getEntity().getEntityId(), (CompoundNBT) ((INBTSerializable) sizeChanging).serializeNBT()),
+                                ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
         });
 
-        Entity thrower = null;
-        if (e.getEntity() instanceof ThrowableEntity)
-            thrower = ((ThrowableEntity) e.getEntity()).getThrower();
-        else if (e.getEntity() instanceof AbstractArrowEntity)
-            thrower = ((AbstractArrowEntity) e.getEntity()).getShooter();
-        else if (e.getEntity() instanceof DamagingProjectileEntity)
-            thrower = ((DamagingProjectileEntity) e.getEntity()).shootingEntity;
-
-        if (thrower != null) {
-            copyScale(thrower, e.getEntity());
+        if (e.getEntity() instanceof ProjectileEntity) {
+            Entity owner = ((ProjectileEntity) e.getEntity()).func_234616_v_();
+            if (owner != null)
+                copyScale(owner, e.getEntity());
         }
     }
 
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingUpdateEvent e) {
         e.getEntity().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(size -> {
-            if(size.getScale() <= 0.3F) {
-                if(!e.getEntityLiving().onGround && (e.getEntityLiving().getHeldItemMainhand().getItem() == Items.PAPER || e.getEntityLiving().getHeldItemOffhand().getItem() == Items.PAPER || e.getEntityLiving().getHeldItemMainhand().getItem() == Items.FEATHER || e.getEntityLiving().getHeldItemOffhand().getItem() == Items.FEATHER)) {
+            if (size.getScale() <= 0.3F) {
+                if (!e.getEntityLiving().isOnGround() && (e.getEntityLiving().getHeldItemMainhand().getItem() == Items.PAPER
+                        || e.getEntityLiving().getHeldItemOffhand().getItem() == Items.PAPER
+                        || e.getEntityLiving().getHeldItemMainhand().getItem() == Items.FEATHER
+                        || e.getEntityLiving().getHeldItemOffhand().getItem() == Items.FEATHER)) {
                     e.getEntityLiving().fallDistance = 0;
                     e.getEntityLiving().setMotion(e.getEntity().getMotion().x, e.getEntity().getMotion().y * 0.6D, e.getEntity().getMotion().z);
                 }
@@ -77,17 +87,11 @@ public class SizeChangingEventHandler {
     public static void onStartTracking(PlayerEvent.StartTracking e) {
         e.getTarget().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
             if (sizeChanging instanceof INBTSerializable && e.getPlayer() instanceof ServerPlayerEntity) {
-                ThreeCore.NETWORK_CHANNEL.sendTo(new SyncSizeMessage(e.getTarget().getEntityId(), (CompoundNBT) ((INBTSerializable) sizeChanging).serializeNBT()), ((ServerPlayerEntity) e.getPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                ThreeCore.NETWORK_CHANNEL
+                        .sendTo(new SyncSizeMessage(e.getTarget().getEntityId(), (CompoundNBT) ((INBTSerializable) sizeChanging).serializeNBT()),
+                                ((ServerPlayerEntity) e.getPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             }
         });
-    }
-
-    @SubscribeEvent
-    public static void onEntityConstruct(EntityEvent.EntityConstructing e) {
-        if (e.getEntity() instanceof LivingEntity) {
-            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(TCAttributes.SIZE_WIDTH);
-            ((LivingEntity) e.getEntity()).getAttributes().registerAttribute(TCAttributes.SIZE_HEIGHT);
-        }
     }
 
     @SubscribeEvent
@@ -108,8 +112,10 @@ public class SizeChangingEventHandler {
     @SubscribeEvent
     public static void oProjectileImpactFireball(ProjectileImpactEvent.Fireball e) {
         e.getFireball().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
-            boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(e.getFireball().world, e.getFireball().shootingEntity);
-            e.getFireball().world.createExplosion(null, e.getFireball().getPosX(), e.getFireball().getPosY(), e.getFireball().getPosZ(), sizeChanging.getScale(), flag, flag ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
+            boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(e.getFireball().world, e.getFireball().func_234616_v_());
+            e.getFireball().world
+                    .createExplosion(null, e.getFireball().getPosX(), e.getFireball().getPosY(), e.getFireball().getPosZ(), sizeChanging.getScale(), flag,
+                            flag ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
         });
     }
 
@@ -122,7 +128,8 @@ public class SizeChangingEventHandler {
                     List<BlockPos> positions = Lists.newLinkedList();
                     for (int x = 0; x < radius; x++) {
                         for (int z = 0; z < radius; z++) {
-                            BlockPos pos = new BlockPos(e.getThrowable().getPosX() + x - radius / 2F, e.getThrowable().getPosY() + e.getThrowable().size.height / 2F + radius / 2F, e.getThrowable().getPosZ() + z - radius / 2F);
+                            BlockPos pos = new BlockPos(e.getThrowable().getPosX() + x - radius / 2F,
+                                    e.getThrowable().getPosY() + e.getThrowable().size.height / 2F + radius / 2F, e.getThrowable().getPosZ() + z - radius / 2F);
                             int i = 0;
                             boolean b = false;
                             while (i < radius && !b) {
@@ -162,7 +169,7 @@ public class SizeChangingEventHandler {
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent e) {
-        if (e.getSource().getImmediateSource() instanceof IProjectile) {
+        if (e.getSource().getImmediateSource() instanceof ProjectileEntity) {
             e.getSource().getImmediateSource().getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
                 e.setAmount(e.getAmount() * sizeChanging.getScale());
             });

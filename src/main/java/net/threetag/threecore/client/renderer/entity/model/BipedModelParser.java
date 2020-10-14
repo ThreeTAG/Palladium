@@ -119,7 +119,7 @@ public class BipedModelParser extends EntityModelParser {
 
     public static class ParsedBipedModel<T extends LivingEntity> extends BipedModel<T> implements ISlotDependentVisibility, IArmRenderingModel {
 
-        public List<ModelRenderer> cubes = Lists.newLinkedList();
+        public List<NamedModelRenderer> cubes = Lists.newLinkedList();
         public Map<ModelRenderer, Boolean> visibilityOverrides = Maps.newHashMap();
         public final ModelRenderer bipedLeftArmwear;
         public final ModelRenderer bipedRightArmwear;
@@ -193,13 +193,35 @@ public class BipedModelParser extends EntityModelParser {
             this.bipedBodyWear.setRotationPoint(0.0F, 0.0F, 0.0F);
         }
 
-        public ParsedBipedModel addCube(ModelRenderer rendererModel) {
+        public ParsedBipedModel addCube(NamedModelRenderer rendererModel) {
             this.cubes.add(rendererModel);
             return this;
         }
 
         public void addVisibilityOverride(ModelRenderer rendererModel, boolean visible) {
             this.visibilityOverrides.put(rendererModel, visible);
+        }
+
+        public ModelRenderer getNamedPart(String name) {
+            switch (name) {
+                case "right_arm_overlay":
+                    return this.bipedRightArmwear;
+                case "left_arm_overlay":
+                    return this.bipedLeftArmwear;
+                case "right_leg_overlay":
+                    return this.bipedRightLeg;
+                case "left_leg_overlay":
+                    return this.bipedLeftLegwear;
+                case "body_overlay":
+                    return this.bipedBodyWear;
+            }
+            
+            for (NamedModelRenderer modelRenderer : this.cubes) {
+                if (modelRenderer.getName().equals(name)) {
+                    return modelRenderer;
+                }
+            }
+            return null;
         }
 
         @Override

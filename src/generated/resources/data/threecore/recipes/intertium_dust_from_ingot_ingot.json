@@ -1,7 +1,8 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "tag": "forge:dusts/intertium"
+    "item": "threecore:intertium_dust",
+    "count": 1
   },
   "ingredient": {
     "tag": "forge:ingots/intertium"

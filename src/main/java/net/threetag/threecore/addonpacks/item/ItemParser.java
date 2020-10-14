@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.ability.AbilityGenerator;
+import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.addonpacks.AddonPackManager;
 import net.threetag.threecore.item.*;
@@ -82,7 +82,7 @@ public class ItemParser {
             String type = JSONUtils.getString(j, "tool_type");
             int attackDamage = type.equalsIgnoreCase("hoe") ? 0 : JSONUtils.getInt(j, "attack_damage");
             float attackSpeed = JSONUtils.getFloat(j, "attack_speed");
-            List<AbilityGenerator> abilityGenerators = JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null;
+            List<Supplier<Ability>> abilityGenerators = JSONUtils.hasField(j, "abilities") ? AbilityHelper.parseAbilityGenerators(JSONUtils.getJsonObject(j, "abilities"), true) : null;
             List<ITextComponent> description = JSONUtils.hasField(j, "description") ? ItemParser.parseDescriptionLines(j.get("description")) : null;
             if (type.equalsIgnoreCase("hoe"))
                 return new HoeAbilityItem(tier, attackSpeed, p).setDescription(description).setAbilities(abilityGenerators);
@@ -270,7 +270,7 @@ public class ItemParser {
                 lines.addAll(parseDescriptionLines(jsonArray.get(i)));
             }
         } else if (jsonElement.isJsonObject()) {
-            lines.add(ITextComponent.Serializer.fromJson(jsonElement));
+            lines.add(ITextComponent.Serializer.func_240641_a_(jsonElement));
         } else if (jsonElement.isJsonPrimitive()) {
             lines.add(new StringTextComponent(jsonElement.getAsString()));
         }
@@ -299,8 +299,9 @@ public class ItemParser {
         int enchantibility = JSONUtils.getInt(json, "enchantibility", 0);
         LazyValue soundEvent = new LazyValue(() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(JSONUtils.getString(json, "equip_sound", ""))));
         float toughness = JSONUtils.getFloat(json, "toughness", 0F);
+        float knockbackResistance = JSONUtils.getFloat(json, "knockback_resistance", 0F);
         Supplier<Ingredient> repairMaterial = () -> JSONUtils.hasField(json, "repair_material") ? Ingredient.deserialize(json.get("repair_material")) : Ingredient.EMPTY;
-        return new SimpleArmorMaterial(name, maxDamageFactor, damageReductionAmountArray, enchantibility, soundEvent, toughness, repairMaterial);
+        return new SimpleArmorMaterial(name, maxDamageFactor, damageReductionAmountArray, enchantibility, soundEvent, toughness, knockbackResistance, repairMaterial);
     }
 
     public static IItemTier parseItemTier(JsonObject jsonObject) {

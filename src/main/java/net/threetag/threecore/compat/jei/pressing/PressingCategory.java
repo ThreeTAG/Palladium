@@ -1,5 +1,6 @@
 package net.threetag.threecore.compat.jei.pressing;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -80,21 +81,21 @@ public class PressingCategory<T> implements IRecipeCategory<PressingRecipe> {
     }
 
     @Override
-    public void draw(PressingRecipe recipe, double mouseX, double mouseY) {
-        arrow.draw(58, 21);
+    public void draw(PressingRecipe recipe, MatrixStack stack, double mouseX, double mouseY) {
+        arrow.draw(stack, 58, 21);
 
         Minecraft minecraft = Minecraft.getInstance();
         FontRenderer fontRenderer = minecraft.fontRenderer;
         {
             String energyString = I18n.format("threecore.util.energy_display", recipe.getRequiredEnergy(), EnergyUtil.ENERGY_UNIT);
             int stringWidth = fontRenderer.getStringWidth(energyString);
-            fontRenderer.drawString(energyString, background.getWidth() - stringWidth, 50, 0xFF808080);
+            fontRenderer.drawString(stack, energyString, background.getWidth() - stringWidth, 50, 0xFF808080);
         }
         float experience = recipe.getExperience();
         if (experience > 0) {
             String experienceString = I18n.format("gui.jei.category.threecore.pressing.experience", experience);
             int stringWidth = fontRenderer.getStringWidth(experienceString);
-            fontRenderer.drawString(experienceString, background.getWidth() - stringWidth, 3, 0xFF808080);
+            fontRenderer.drawString(stack, experienceString, background.getWidth() - stringWidth, 3, 0xFF808080);
         }
     }
 }

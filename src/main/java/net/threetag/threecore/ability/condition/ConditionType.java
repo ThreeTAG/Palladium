@@ -11,6 +11,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.ability.AbilitiesLockedCondition;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityType;
 import net.threetag.threecore.ability.AttributeModifierAbility;
@@ -26,9 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-/**
- * Created by Nictogen on 2019-06-08.
- */
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ConditionType extends ForgeRegistryEntry<ConditionType> {
     public static IForgeRegistry<ConditionType> REGISTRY;
@@ -49,6 +47,14 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
     public static final ConditionType ITEM_INTEGER_NBT = new ConditionType(ItemIntegerNbtCondition::new, ThreeCore.MODID, "item_integer_nbt");
     public static final ConditionType EYES_IN_FLUID = new ConditionType(EyesInFluidCondition::new, ThreeCore.MODID, "eyes_in_fluid");
     public static final ConditionType SIZE = new ConditionType(SizeCondition::new, ThreeCore.MODID, "size");
+    public static final ConditionType ABILITIES_LOCKED = new ConditionType(AbilitiesLockedCondition::new, ThreeCore.MODID, "abilities_locked");
+    public static final ConditionType LIVING_VALUES = new ConditionType(LivingValuesCondition::new, ThreeCore.MODID, "living_values");
+    public static final ConditionType POTION = new ConditionType(PotionCondition::new, ThreeCore.MODID, "has_potions");
+    public static final ConditionType THREE_DATA = new ConditionType(ThreeDataCondition::new, ThreeCore.MODID, "three_data");
+    public static final ConditionType EXCLUSIVE = new ConditionType(ExclusiveCondition::new, ThreeCore.MODID, "exclusive");
+    public static final ConditionType COMBO = new ConditionType(ComboCondition::new, ThreeCore.MODID, "combo");
+    public static final ConditionType CURIOS_SLOT = new ConditionType(CuriosSlotCondition::new, ThreeCore.MODID, "curios_slot");
+    public static final ConditionType WEARING_CURIOS = new ConditionType(WearingCuriosCondition::new, ThreeCore.MODID, "wearing_curios");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -73,6 +79,14 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
         e.getRegistry().register(ITEM_INTEGER_NBT);
         e.getRegistry().register(EYES_IN_FLUID);
         e.getRegistry().register(SIZE);
+        e.getRegistry().register(ABILITIES_LOCKED);
+        e.getRegistry().register(LIVING_VALUES);
+        e.getRegistry().register(POTION);
+        e.getRegistry().register(THREE_DATA);
+        e.getRegistry().register(EXCLUSIVE);
+        e.getRegistry().register(COMBO);
+        e.getRegistry().register(CURIOS_SLOT);
+        e.getRegistry().register(WEARING_CURIOS);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -117,7 +131,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
                     bw.write("<h1>" + s + "</h1>\n");
                     bw.write("<ul>\n");
                     for (Condition condition : l) {
-                        bw.write("<li><a href=\"#" + condition.type.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(condition.getDisplayName().getFormattedText()) + "</a></li>\n");
+                        bw.write("<li><a href=\"#" + condition.type.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(condition.getDisplayName().getString()) + "</a></li>\n");
                     }
                     bw.write("</ul>\n");
                 } catch (IOException e) {
@@ -133,7 +147,7 @@ public class ConditionType extends ForgeRegistryEntry<ConditionType> {
                 bw.write("<hr>\n");
 
                 // Title
-                bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(condition.getDisplayName().getFormattedText()) + "</h1>\n");
+                bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(condition.getDisplayName().getString()) + "</h1>\n");
                 bw.write("<h3>" + entry.getRegistryName().toString() + "</h3>\n");
                 List<ThreeData<?>> dataList = condition.dataManager.getSettingData();
 

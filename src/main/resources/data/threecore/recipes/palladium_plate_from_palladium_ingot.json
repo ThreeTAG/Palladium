@@ -1,7 +1,8 @@
 {
   "type": "threecore:pressing",
   "result": {
-    "tag": "forge:plates/palladium"
+    "item": "threecore:palladium_plate",
+    "count": 1
   },
   "ingredient": {
     "tag": "forge:ingots/palladium"

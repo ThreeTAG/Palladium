@@ -48,7 +48,7 @@ public class CapacitorBlock extends ContainerBlock {
     }
 
     @Override
-    public int getLightValue(BlockState state) {
+    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
         return state.get(LEVEL_0_10);
     }
 
@@ -113,22 +113,23 @@ public class CapacitorBlock extends ContainerBlock {
             this.energyConfig = energyConfig;
         }
 
-        @Override
-        public String getName() {
-            return this.name;
-        }
-
         public IEnergyConfig getEnergyConfig() {
             return energyConfig;
         }
 
         public static Type getByName(String name) {
             for (Type type : values()) {
-                if (type.getName().equalsIgnoreCase(name)) {
+                if (type.getString().equalsIgnoreCase(name)) {
                     return type;
                 }
             }
             return values()[0];
         }
+
+        @Override
+        public String getString() {
+            return this.name;
+        }
+
     }
 }

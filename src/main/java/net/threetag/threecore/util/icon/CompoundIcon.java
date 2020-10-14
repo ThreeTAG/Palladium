@@ -2,6 +2,7 @@ package net.threetag.threecore.util.icon;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -32,9 +33,9 @@ public class CompoundIcon implements IIcon {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void draw(Minecraft mc, int x, int y) {
+    public void draw(Minecraft mc, MatrixStack stack, int x, int y) {
         for (IIcon icon : this.icons) {
-            icon.draw(mc, x, y);
+            icon.draw(mc, stack, x, y);
         }
     }
 

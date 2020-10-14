@@ -1,5 +1,6 @@
 package net.threetag.threecore.util.energy;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;
@@ -24,15 +25,14 @@ public class EnergyUtil {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void drawTooltip(EnergyStorage energyStorage, ContainerScreen gui, int x, int y, int width, int height, int mouseX, int mouseY) {
-        drawTooltip(energyStorage.getEnergyStored(), energyStorage.getMaxEnergyStored(), gui, x, y, width, height, mouseX, mouseY);
+    public static void drawTooltip(MatrixStack stack, EnergyStorage energyStorage, ContainerScreen gui, int x, int y, int width, int height, int mouseX, int mouseY) {
+        drawTooltip(stack, energyStorage.getEnergyStored(), energyStorage.getMaxEnergyStored(), gui, x, y, width, height, mouseX, mouseY);
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void drawTooltip(int energy, int maxEnergy, ContainerScreen gui, int x, int y, int width, int height, int mouseX, int mouseY) {
+    public static void drawTooltip(MatrixStack stack, int energy, int maxEnergy, ContainerScreen gui, int x, int y, int width, int height, int mouseX, int mouseY) {
         if (mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height) {
-            String s = getFormattedEnergy(energy, maxEnergy).getFormattedText();
-            gui.renderTooltip(s, mouseX + 10, mouseY);
+            gui.renderTooltip(stack, getFormattedEnergy(energy, maxEnergy), mouseX + 10, mouseY);
         }
     }
 

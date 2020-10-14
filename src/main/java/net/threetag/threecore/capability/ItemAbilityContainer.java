@@ -15,6 +15,7 @@ import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.*;
+import net.threetag.threecore.compat.curios.DefaultCuriosHandler;
 import net.threetag.threecore.network.UpdateAbilityMessage;
 import net.threetag.threecore.util.threedata.EnumSync;
 import net.threetag.threecore.util.icon.IIcon;
@@ -26,7 +27,7 @@ import javax.annotation.Nullable;
 public class ItemAbilityContainer implements IAbilityContainer {
 
     public final ItemStack stack;
-    public EquipmentSlotType slot;
+    public ResourceLocation id;
     protected final AbilityMap map;
     public boolean init = false;
 
@@ -37,11 +38,18 @@ public class ItemAbilityContainer implements IAbilityContainer {
 
     @Override
     public void tick(LivingEntity entity) {
+        this.id = null;
         for (EquipmentSlotType slots : EquipmentSlotType.values()) {
             if (entity.getItemStackFromSlot(slots) == this.stack) {
-                this.slot = slots;
+                this.id = new ResourceLocation(ThreeCore.MODID, slots.toString().toLowerCase());
                 break;
             }
+        }
+
+        if (this.id == null) {
+            DefaultCuriosHandler.INSTANCE.getCurioEquipped(stack -> stack == this.stack, entity).ifPresent(triple -> {
+                this.id = new ResourceLocation("curios", triple.getLeft());
+            });
         }
 
         if (!this.init) {
@@ -92,7 +100,7 @@ public class ItemAbilityContainer implements IAbilityContainer {
 
     @Override
     public ResourceLocation getId() {
-        return new ResourceLocation(ThreeCore.MODID, "item_" + this.slot.toString().toLowerCase());
+        return this.id;
     }
 
     @Override

@@ -3,13 +3,16 @@ package net.threetag.threecore.scripts.accessors;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec2f;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector2f;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -17,6 +20,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.scripts.ScriptCommandSource;
 import net.threetag.threecore.scripts.ScriptParameterName;
 import net.threetag.threecore.util.PlayerUtil;
+
+import java.util.List;
 
 public class WorldAccessor extends ScriptAccessor<World> {
 
@@ -29,7 +34,8 @@ public class WorldAccessor extends ScriptAccessor<World> {
     }
 
     public void setTime(@ScriptParameterName("time") long time) {
-        this.value.setDayTime(time);
+        if (this.value instanceof ServerWorld)
+            ((ServerWorld) this.value).func_241114_a_(time);
     }
 
     public boolean isRaining() {
@@ -38,6 +44,10 @@ public class WorldAccessor extends ScriptAccessor<World> {
 
     public boolean isThundering() {
         return this.value.isThundering();
+    }
+
+    public boolean isRemote() {
+        return this.value.isRemote;
     }
 
     public void setRainStrength(@ScriptParameterName("strength") float strength) {
@@ -61,8 +71,12 @@ public class WorldAccessor extends ScriptAccessor<World> {
     }
 
     public void summonLightning(@ScriptParameterName("x") double x, @ScriptParameterName("y") double y, @ScriptParameterName("z") double z, @ScriptParameterName("effectOnly") boolean effectOnly) {
-        if (this.value instanceof ServerWorld)
-            ((ServerWorld) this.value).addLightningBolt(new LightningBoltEntity(this.value, x, y, z, effectOnly));
+        if (this.value instanceof ServerWorld) {
+            LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.value);
+            lightningboltentity.moveForced(Vector3d.copyCenteredHorizontally(new BlockPos(x, y, z)));
+            lightningboltentity.setEffectOnly(effectOnly);
+            this.value.addEntity(lightningboltentity);
+        }
     }
 
     public void setBlockState(@ScriptParameterName("block") Object block, @ScriptParameterName("x") int x, @ScriptParameterName("y") int y, @ScriptParameterName("z") int z) {
@@ -80,9 +94,24 @@ public class WorldAccessor extends ScriptAccessor<World> {
 
     public void executeCommand(@ScriptParameterName("command") String command) {
         if (this.value instanceof ServerWorld) {
-            CommandSource commandSource = new CommandSource(new ScriptCommandSource(), new Vec3d(value.getSpawnPoint()), Vec2f.ZERO, (ServerWorld) value, 4, "Script", new StringTextComponent("Script"), this.value.getServer(), (Entity) null);
+            CommandSource commandSource = new CommandSource(new ScriptCommandSource(), Vector3d.copy(((ServerWorld) this.value).func_241135_u_()), Vector2f.ZERO, (ServerWorld) value, 4, "Script", new StringTextComponent("Script"), this.value.getServer(), (Entity) null);
             this.value.getServer().getCommandManager().handleCommand(commandSource, command);
         }
     }
 
+    public EntityAccessor[] getEntitiesInBox(@ScriptParameterName("x1") double x1, @ScriptParameterName("y1") double y1, @ScriptParameterName("z1") double z1, @ScriptParameterName("x2") double x2, @ScriptParameterName("y2") double y2, @ScriptParameterName("z2") double z2) {
+        List<Entity> list = this.value.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x1, y1, z1, x2, y2, z2), t -> true);
+        EntityAccessor[] array = new EntityAccessor[list.size()];
+        for (int i = 0; i < list.size(); i++)
+            array[i] = new EntityAccessor(list.get(i));
+        return array;
+    }
+
+    public LivingEntityAccessor[] getLivingEntitiesInBox(@ScriptParameterName("x1") double x1, @ScriptParameterName("y1") double y1, @ScriptParameterName("z1") double z1, @ScriptParameterName("x2") double x2, @ScriptParameterName("y2") double y2, @ScriptParameterName("z2") double z2) {
+        List<Entity> list = this.value.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(x1, y1, z1, x2, y2, z2), t -> true);
+        LivingEntityAccessor[] array = new LivingEntityAccessor[list.size()];
+        for (int i = 0; i < list.size(); i++)
+            array[i] = new LivingEntityAccessor((LivingEntity) list.get(i));
+        return array;
+    }
 }

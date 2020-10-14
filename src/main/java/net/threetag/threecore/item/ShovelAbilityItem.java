@@ -12,29 +12,30 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.DistExecutor;
-import net.threetag.threecore.ability.AbilityGenerator;
+import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityMap;
 import net.threetag.threecore.ability.IAbilityProvider;
 import net.threetag.threecore.capability.ItemAbilityContainerProvider;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class ShovelAbilityItem extends ShovelItem implements IAbilityProvider {
 
-    private List<AbilityGenerator> abilityGenerators;
+    private List<Supplier<Ability>> abilityGenerators;
     private List<ITextComponent> description;
 
     public ShovelAbilityItem(IItemTier itemTier, int attackDamage, float attackSpeed, Properties properties) {
         super(itemTier, attackDamage, attackSpeed, properties);
     }
 
-    public ShovelAbilityItem setAbilities(List<AbilityGenerator> abilities) {
+    public ShovelAbilityItem setAbilities(List<Supplier<Ability>> abilities) {
         this.abilityGenerators = abilities;
         return this;
     }
 
-    public ShovelAbilityItem addAbility(AbilityGenerator abilityGenerator) {
+    public ShovelAbilityItem addAbility(Supplier<Ability> abilityGenerator) {
         if (this.abilityGenerators == null)
             this.abilityGenerators = Lists.newArrayList();
         this.abilityGenerators.add(abilityGenerator);

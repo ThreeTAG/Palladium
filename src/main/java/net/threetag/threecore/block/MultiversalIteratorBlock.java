@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 
 public class MultiversalIteratorBlock extends Block {
 
-    public MultiversalIteratorBlock(Block.Properties properties) {
+    public MultiversalIteratorBlock(Properties properties) {
         super(properties);
     }
 

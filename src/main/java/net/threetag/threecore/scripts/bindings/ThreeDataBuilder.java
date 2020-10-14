@@ -13,6 +13,8 @@ public class ThreeDataBuilder {
             return new BooleanThreeData(name);
         if (type.equalsIgnoreCase("block"))
             return new BlockThreeData(name);
+        if (type.equalsIgnoreCase("item"))
+            return new ItemThreeData(name);
         if (type.equalsIgnoreCase("attributeOperation"))
             return new AttributeOperationThreeData(name);
         if (type.equalsIgnoreCase("attribute"))
@@ -55,6 +57,8 @@ public class ThreeDataBuilder {
             return new EntityTypeThreeData(name);
         if (type.equalsIgnoreCase("nbt"))
             return new CompoundNBTThreeData(name);
+        if (type.equalsIgnoreCase("int_array"))
+            return new IntegerArrayThreeData(name);
         return new StringThreeData(name);
     }
 

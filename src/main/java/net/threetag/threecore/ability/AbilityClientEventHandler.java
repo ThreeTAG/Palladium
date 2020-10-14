@@ -15,6 +15,7 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -98,7 +99,7 @@ public class AbilityClientEventHandler {
         }
 
         // Multi Jump
-        if (!Minecraft.getInstance().player.isCreative() && Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && !Minecraft.getInstance().player.onGround) {
+        if (!Minecraft.getInstance().player.isCreative() && Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && !Minecraft.getInstance().player.isOnGround()) {
             for (MultiJumpAbility ability : AbilityHelper.getAbilitiesFromClass(Minecraft.getInstance().player, MultiJumpAbility.class)) {
                 if (ability.getConditionManager().isEnabled()) {
                     ThreeCore.NETWORK_CHANNEL.sendToServer(new MultiJumpMessage(ability.container.getId(), ability.getId()));
@@ -122,7 +123,7 @@ public class AbilityClientEventHandler {
     @SubscribeEvent
     public void onGuiInit(GuiScreenEvent.InitGuiEvent e) {
         if (e.getGui() instanceof ChatScreen) {
-            e.addWidget(new TranslucentButton(e.getGui().width - 1 - 75, e.getGui().height - 40, 75, 20, I18n.format("gui.threecore.abilities"), b -> Minecraft.getInstance().displayGuiScreen(new AbilitiesScreen())));
+            e.addWidget(new TranslucentButton(e.getGui().width - 1 - 75, e.getGui().height - 40, 75, 20, new StringTextComponent(I18n.format("gui.threecore.abilities")), b -> Minecraft.getInstance().displayGuiScreen(new AbilitiesScreen())));
         }
 
         // Set all keys to unpressed; when an ability opens a GUI, the unpressing of the button will not register and therefore you will need to hit the button twice the next time
@@ -147,9 +148,10 @@ public class AbilityClientEventHandler {
             for (NameChangeAbility ability : AbilityHelper.getAbilitiesFromClass((LivingEntity) e.getEntity(), NameChangeAbility.class)) {
                 if (ability.getConditionManager().isEnabled()) {
                     if (Minecraft.getInstance().player.isCreative()) {
-                        e.setContent(ability.get(NameChangeAbility.NAME).getFormattedText() + " (" + e.getOriginalContent() + ")");
+                       //TODO does this work right?
+                        e.setContent( new StringTextComponent(ability.get(NameChangeAbility.NAME).getString() + " (" + e.getOriginalContent() + ")"));
                     } else {
-                        e.setContent(ability.get(NameChangeAbility.NAME).getFormattedText());
+                        e.setContent(ability.get(NameChangeAbility.NAME));
                     }
                     return;
                 }
@@ -178,7 +180,7 @@ public class AbilityClientEventHandler {
             }
         }
 
-        if (e.getType() == RenderGameOverlayEvent.ElementType.HELMET && Minecraft.getInstance().gameSettings.thirdPersonView == 0) {
+        if (e.getType() == RenderGameOverlayEvent.ElementType.HELMET && Minecraft.getInstance().gameSettings.func_243230_g().func_243192_a()) {
             for (HUDAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, HUDAbility.class)) {
                 if (ability.getConditionManager().isEnabled()) {
 
@@ -200,6 +202,45 @@ public class AbilityClientEventHandler {
                     RenderSystem.enableDepthTest();
                     RenderSystem.enableAlphaTest();
                     RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                }
+            }
+        }
+
+        if (e.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE)
+        {
+            for (EnergyAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, EnergyAbility.class))
+            {
+                if (ability.getConditionManager().isUnlocked())
+                {
+                    Minecraft mc = Minecraft.getInstance();
+                    Integer[] energy_data = ability.dataManager.get(EnergyAbility.ENERGY_TEXTURE_INFO);
+                    Integer[] base_data = ability.dataManager.get(EnergyAbility.BASE_TEXTURE_INFO);
+                    double energy = ability.dataManager.get(EnergyAbility.AMOUNT);
+                    double max = ability.dataManager.get(EnergyAbility.MAX_AMOUNT);
+
+                    int scaledWidth = e.getWindow().getScaledWidth();
+                    int scaledHeight = e.getWindow().getScaledHeight();
+
+                    mc.getTextureManager().bindTexture(ability.dataManager.get(EnergyAbility.BASE_TEXTURE));
+
+                    int baseX = base_data[0] >= 0 ? base_data[0] : scaledWidth + base_data[0];
+                    int baseY = base_data[1] >= 0 ? base_data[1] : scaledHeight + base_data[1];
+
+                    mc.ingameGUI.blit(e.getMatrixStack(), baseX, baseY, 0, 0, base_data[2], base_data[3]);
+
+                    mc.getTextureManager().bindTexture(ability.dataManager.get(EnergyAbility.ENERGY_TEXTURE));
+
+                    int energyX = energy_data[0] > 0 ? energy_data[0] : scaledWidth + energy_data[0];
+                    int energyY = energy_data[1] > 0 ? energy_data[1] : scaledHeight + energy_data[1];
+                    int energyWidth = energy_data[2] + (int) ((double) (Math.abs(energy_data[4]) - energy_data[2]) * (energy/max));
+                    int energyHeight = energy_data[3] + (int) ((double) (Math.abs(energy_data[5]) - energy_data[3]) * (energy/max));
+                    int energyU = energy_data[4] > 0 ? 0 : Math.abs(energy_data[4]) - energyWidth;
+                    int energyV = energy_data[5] > 0 ? 0 : Math.abs(energy_data[5]) - energyHeight;
+
+                    energyX = energy_data[4] >= 0 ? energyX : energyX + Math.abs(energy_data[4]) - energyWidth;
+                    energyY = energy_data[5] >= 0 ? energyY : energyY + Math.abs(energy_data[5]) - energyHeight;
+
+                    mc.ingameGUI.blit(e.getMatrixStack(), energyX, energyY, energyU, energyV, energyWidth, energyHeight);
                 }
             }
         }

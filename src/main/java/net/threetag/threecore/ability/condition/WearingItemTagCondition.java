@@ -5,7 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class WearingItemTagCondition extends Condition {
 
-    public static final ThreeData<Tag<Item>> ITEM_TAG = new ItemTagThreeData("item_tag").setSyncType(EnumSync.SELF).enableSetting("Determines the item tag the items must have");
+    public static final ThreeData<ITag.INamedTag<Item>> ITEM_TAG = new ItemTagThreeData("item_tag").setSyncType(EnumSync.SELF).enableSetting("Determines the item tag the items must have");
     public static final Map<EquipmentSlotType, ThreeData<Boolean>> SLOT_DATA = Maps.newHashMap();
 
     static {
@@ -35,7 +35,7 @@ public class WearingItemTagCondition extends Condition {
 
     @Override
     public ITextComponent createTitle() {
-        return new TranslationTextComponent(Util.makeTranslationKey("ability.condition", this.type.getRegistryName()) + (this.dataManager.get(INVERT) ? ".not" : ""), this.dataManager.get(ITEM_TAG).getId().toString());
+        return new TranslationTextComponent(Util.makeTranslationKey("ability.condition", this.type.getRegistryName()) + (this.dataManager.get(INVERT) ? ".not" : ""), this.dataManager.get(ITEM_TAG).getName().toString());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class WearingItemTagCondition extends Condition {
 
     @Override
     public boolean test(LivingEntity entity) {
-        Tag<Item> tag = this.dataManager.get(ITEM_TAG);
+        ITag.INamedTag<Item> tag = this.dataManager.get(ITEM_TAG);
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
             ItemStack stack = entity.getItemStackFromSlot(slot);
             if (this.dataManager.get(SLOT_DATA.get(slot)) && (stack.isEmpty() || !stack.getItem().isIn(tag))) {

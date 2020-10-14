@@ -1,7 +1,7 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "tag": "forge:dusts/lead",
+    "item": "threecore:lead_dust",
     "count": 2
   },
   "ingredient": {

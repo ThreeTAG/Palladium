@@ -1,14 +1,18 @@
 package net.threetag.threecore.scripts.accessors;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.IAbilityContainer;
+import net.threetag.threecore.ability.superpower.Superpower;
+import net.threetag.threecore.ability.superpower.SuperpowerManager;
 import net.threetag.threecore.scripts.ScriptParameterName;
 
 import java.util.Collection;
@@ -72,8 +76,12 @@ public class LivingEntityAccessor extends EntityAccessor {
         this.livingEntity.setAIMoveSpeed(speed);
     }
 
+    public boolean isSprinting() {
+        return this.livingEntity.isSprinting();
+    }
+
     public void swingArm(@ScriptParameterName("mainHand") boolean mainHand) {
-        this.livingEntity.func_226292_a_(mainHand ? Hand.MAIN_HAND : Hand.OFF_HAND, true);
+        this.livingEntity.swing(mainHand ? Hand.MAIN_HAND : Hand.OFF_HAND, true);
     }
 
     public ItemStackAccessor getItemInSlot(@ScriptParameterName("slot") String slot) {
@@ -127,5 +135,100 @@ public class LivingEntityAccessor extends EntityAccessor {
 
     public AbilityAccessor getAbilityById(@ScriptParameterName("abilityId") String id) {
         return (AbilityAccessor) AbilityAccessor.makeAccessor(AbilityHelper.getAbilityById(this.livingEntity, id, null));
+    }
+
+    public void attackEntityFrom(@ScriptParameterName("sourceName") String source, @ScriptParameterName("amount") float amount) {
+        DamageSource damageSource = null;
+        switch (source) {
+            case "inFire":
+                damageSource = DamageSource.IN_FIRE;
+                break;
+            case "lightningBolt":
+                damageSource = DamageSource.LIGHTNING_BOLT;
+                break;
+            case "onFire":
+                damageSource = DamageSource.ON_FIRE;
+                break;
+            case "lava":
+                damageSource = DamageSource.LAVA;
+                break;
+            case "hotFloor":
+                damageSource = DamageSource.HOT_FLOOR;
+                break;
+            case "inWall":
+                damageSource = DamageSource.IN_WALL;
+                break;
+            case "cramming":
+                damageSource = DamageSource.CRAMMING;
+                break;
+            case "drown":
+                damageSource = DamageSource.DROWN;
+                break;
+            case "starve":
+                damageSource = DamageSource.STARVE;
+                break;
+            case "cactus":
+                damageSource = DamageSource.CACTUS;
+                break;
+            case "fall":
+                damageSource = DamageSource.FALL;
+                break;
+            case "flyIntoWall":
+                damageSource = DamageSource.FLY_INTO_WALL;
+                break;
+            case "outOfWorld":
+                damageSource = DamageSource.OUT_OF_WORLD;
+                break;
+            case "generic":
+                damageSource = DamageSource.GENERIC;
+                break;
+            case "magic":
+                damageSource = DamageSource.MAGIC;
+                break;
+            case "wither":
+                damageSource = DamageSource.WITHER;
+                break;
+            case "anvil":
+                damageSource = DamageSource.ANVIL;
+                break;
+            case "fallingBlock":
+                damageSource = DamageSource.FALLING_BLOCK;
+                break;
+            case "dragonBreath":
+                damageSource = DamageSource.DRAGON_BREATH;
+                break;
+            case "dryout":
+                damageSource = DamageSource.DRYOUT;
+                break;
+            case "sweetBerryBush":
+                damageSource = DamageSource.SWEET_BERRY_BUSH;
+                break;
+        }
+        if (damageSource != null)
+            this.livingEntity.attackEntityFrom(damageSource, amount);
+    }
+
+    public void attackEntityFromMob(@ScriptParameterName("attacker") LivingEntityAccessor entity, @ScriptParameterName("amount") float amount) {
+        this.livingEntity.attackEntityFrom(DamageSource.causeMobDamage(entity.livingEntity), amount);
+    }
+
+    public void attackEntityFromPlayer(@ScriptParameterName("playerAttacker") LivingEntityAccessor entity, @ScriptParameterName("amount") float amount) {
+        if (entity.livingEntity instanceof PlayerEntity)
+            this.livingEntity.attackEntityFrom(DamageSource.causePlayerDamage((PlayerEntity) entity.livingEntity), amount);
+    }
+
+    public void attackEntityFromThrowable(@ScriptParameterName("throwable") EntityAccessor entity,
+                                          @ScriptParameterName("@Nullable thrower") EntityAccessor thrower, @ScriptParameterName("float") float amount) {
+        this.livingEntity.attackEntityFrom(DamageSource.causeThrownDamage(entity.value, (thrower == null) ? null : thrower.value), amount);
+    }
+
+    public void attackEntityFromExplosion(@ScriptParameterName("@Nullable attacker") LivingEntityAccessor attacker, @ScriptParameterName("float") float amount) {
+        this.livingEntity.attackEntityFrom(DamageSource.causeExplosionDamage(attacker == null ? null : attacker.livingEntity), amount);
+    }
+
+    public void addSuperpower(@ScriptParameterName("superpower") String superpower) {
+        Superpower s = SuperpowerManager.getInstance().getSuperpower(new ResourceLocation(superpower));
+        if (s != null)
+            SuperpowerManager.addSuperpower(this.livingEntity, s);
     }
 }

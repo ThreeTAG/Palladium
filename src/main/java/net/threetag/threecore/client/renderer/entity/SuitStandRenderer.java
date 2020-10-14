@@ -2,7 +2,6 @@ package net.threetag.threecore.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
@@ -12,6 +11,7 @@ import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.client.renderer.entity.model.ArmorStandArmorModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3f;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.client.renderer.entity.layer.ColorableSuitStandLayer;
 import net.threetag.threecore.client.renderer.entity.model.SuitStandBasePlateModel;
@@ -23,8 +23,6 @@ import javax.annotation.Nullable;
 public class SuitStandRenderer extends LivingRenderer<SuitStandEntity, SuitStandBasePlateModel> {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/entity/suit_stand.png");
-
-    // TODO fix unmapped stuff
 
     public SuitStandRenderer(EntityRendererManager rendererManager) {
         super(rendererManager, new SuitStandBasePlateModel(0F), 0.0F);
@@ -60,15 +58,15 @@ public class SuitStandRenderer extends LivingRenderer<SuitStandEntity, SuitStand
     }
 
     @Nullable
-    protected RenderType func_230042_a_(SuitStandEntity entity, boolean p_230042_2_, boolean p_230042_3_) {
+    protected RenderType func_230496_a_(SuitStandEntity entity, boolean p_230496_2_, boolean p_230496_3_, boolean p_230496_4_) {
         if (!entity.hasMarker()) {
-            return super.func_230042_a_(entity, p_230042_2_, p_230042_3_);
+            return super.func_230496_a_(entity, p_230496_2_, p_230496_3_, p_230496_4_);
         } else {
-            ResourceLocation lvt_4_1_ = this.getEntityTexture(entity);
-            if (p_230042_3_) {
-                return RenderType.func_230168_b_(lvt_4_1_, false);
+            ResourceLocation resourcelocation = this.getEntityTexture(entity);
+            if (p_230496_3_) {
+                return RenderType.func_230168_b_(resourcelocation, false);
             } else {
-                return p_230042_2_ ? RenderType.func_230167_a_(lvt_4_1_, false) : null;
+                return p_230496_2_ ? RenderType.func_230167_a_(resourcelocation, false) : null;
             }
         }
     }

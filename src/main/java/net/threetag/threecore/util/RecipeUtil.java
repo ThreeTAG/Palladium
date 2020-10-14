@@ -9,8 +9,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
@@ -36,7 +36,7 @@ public class RecipeUtil {
 
     public static ItemStack parseItemStackExt(JsonObject json, boolean readNBT) {
         if (json.has("tag")) {
-            Tag<Item> tag = ItemTags.getCollection().get(new ResourceLocation(JSONUtils.getString(json, "tag")));
+            ITag<Item> tag = ItemTags.getCollection().get(new ResourceLocation(JSONUtils.getString(json, "tag")));
 
             if (tag == null || tag.getAllElements().size() <= 0)
                 throw new JsonSyntaxException("Unknown tag '" + JSONUtils.getString(json, "tag") + "'");

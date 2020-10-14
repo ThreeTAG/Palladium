@@ -2,16 +2,15 @@ package net.threetag.threecore.item;
 
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemTier;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.*;
+import net.minecraft.loot.ItemLootEntry;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.ItemLootEntry;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
-import net.minecraft.world.storage.loot.conditions.LootConditionManager;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.RegistryObject;
@@ -19,10 +18,13 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ThreeCoreServerConfig;
+import net.threetag.threecore.block.TCBlocks;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class TCItems {
 
-    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, ThreeCore.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ThreeCore.MODID);
 
     // Misc Items
     public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer", () -> new HammerItem(4.5F, -2.75F, ItemTier.IRON, new Item.Properties().group(ItemGroup.TOOLS).maxStackSize(1).maxDamage(16)));
@@ -33,7 +35,7 @@ public class TCItems {
     public static final RegistryObject<Item> ADVANCED_CIRCUIT = ITEMS.register("advanced_circuit", () -> new Item(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup())));
     public static final RegistryObject<Item> VIAL = ITEMS.register("vial", () -> new VialItem(new Item.Properties().group(ItemGroup.MISC).maxStackSize(1)));
     public static final RegistryObject<Item> SUIT_STAND = ITEMS.register("suit_stand", () -> new SuitStandItem(new Item.Properties().group(ItemGroup.DECORATIONS).maxStackSize(16)));
-    public static final RegistryObject<Item> MULTIVERSAL_EXTRAPOLATOR = ITEMS.register("multiversal_extrapolator", () -> new MultiversalExtrapolatorItem(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup()).maxStackSize(16)));
+    public static final RegistryObject<Item> MULTIVERSAL_EXTRAPOLATOR = ITEMS.register("multiversal_extrapolator", () -> new MultiversalExtrapolatorItem(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup()).maxDamage(12)));
 
     // Ingots
     public static final RegistryObject<Item> COPPER_INGOT = ITEMS.register("copper_ingot", () -> new Item(new Item.Properties().group(ItemGroup.MATERIALS)));
@@ -140,6 +142,17 @@ public class TCItems {
         });
     }
 
+    @OnlyIn(Dist.CLIENT)
+    public static void initItemProperties() {
+        ItemModelsProperties.func_239418_a_(TCBlocks.ADVANCED_CAPACITOR_BLOCK_ITEM.get(), new ResourceLocation(ThreeCore.MODID, "energy"), (stack, world, entity) -> {
+            AtomicReference<Float> f = new AtomicReference<>((float) 0);
+            stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> f.set((float) energyStorage.getEnergyStored() / (float) energyStorage.getMaxEnergyStored()));
+            return f.get();
+        });
+
+        ItemModelsProperties.func_239418_a_(TCItems.MULTIVERSAL_EXTRAPOLATOR.get(), new ResourceLocation(ThreeCore.MODID, "inactive"), (stack, world, entity) -> !MultiversalExtrapolatorItem.hasValidUniverseClient(stack) ? 1.0F : 0.0F);
+    }
+
     public static void onLootTableLoad(LootTableLoadEvent e) {
         if (e.getName().toString().toLowerCase().contains("minecraft:chests/")) {
 
@@ -149,7 +162,7 @@ public class TCItems {
             ILootCondition.IBuilder conditionBuilder = new ILootCondition.IBuilder() {
                 @Override
                 public ILootCondition build() {
-                    return LootConditionManager.getSerializerForName(new ResourceLocation("random_chance")).deserialize(jsonObject, null);
+                    return Registry.LOOT_CONDITION_TYPE.func_241873_b(new ResourceLocation("random_chance")).get().func_237408_a_().func_230423_a_(jsonObject, null);
                 }
             };
             e.getTable().addPool(LootPool.builder().addEntry(ItemLootEntry.builder(TCItems.MULTIVERSAL_EXTRAPOLATOR.get()).quality(1).weight(10).acceptCondition(conditionBuilder)).acceptCondition(conditionBuilder).build());

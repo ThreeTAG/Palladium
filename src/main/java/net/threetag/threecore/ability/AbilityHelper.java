@@ -1,7 +1,7 @@
 package net.threetag.threecore.ability;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.entity.LivingEntity;
@@ -13,38 +13,47 @@ import net.threetag.threecore.ability.condition.AbilityUnlockedCondition;
 import net.threetag.threecore.ability.condition.Condition;
 
 import javax.annotation.Nullable;
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class AbilityHelper {
 
-    private static final Map<ResourceLocation, Function<LivingEntity, IAbilityContainer>> REGISTRY = Maps.newHashMap();
+    private static final List<IAbilityContainerProvider> REGISTRY = Lists.newArrayList();
 
-    public static Function<LivingEntity, IAbilityContainer> registerAbilityContainer(ResourceLocation name, Function<LivingEntity, IAbilityContainer> containerSupplier) {
-        if (REGISTRY.containsKey(name)) {
-            throw new IllegalArgumentException("Duplicate ability supplier " + name.toString());
-        } else {
-            REGISTRY.put(name, containerSupplier);
-            return containerSupplier;
-        }
+    public static IAbilityContainerProvider registerAbilityContainer(IAbilityContainerProvider containerSupplier) {
+        REGISTRY.add(containerSupplier);
+        return containerSupplier;
     }
 
     public static IAbilityContainer getAbilityContainerFromId(LivingEntity entity, ResourceLocation id) {
-        Function<LivingEntity, IAbilityContainer> function = REGISTRY.get(id);
-        if (function != null) {
-            return function.apply(entity);
+        for (IAbilityContainerProvider provider : REGISTRY) {
+            for (IAbilityContainer container : provider.getAbilityContainer(entity)) {
+                if (container != null && container.getId() != null && container.getId().equals(id)) {
+                    return container;
+                }
+            }
         }
         return null;
     }
 
-    public static Collection<Function<LivingEntity, IAbilityContainer>> getAbilityContainerList() {
-        return REGISTRY.values();
+    public static Collection<IAbilityContainer> getAbilityContainers(LivingEntity entity) {
+        List<IAbilityContainer> containers = Lists.newArrayList();
+        for (IAbilityContainerProvider provider : REGISTRY) {
+            containers.addAll(provider.getAbilityContainer(entity));
+        }
+        return containers;
+    }
+
+    public static Collection<IAbilityContainerProvider> getAbilityContainerProviders() {
+        return ImmutableList.copyOf(REGISTRY);
     }
 
     public static List<Ability> getAbilities(LivingEntity entity) {
         List<Ability> list = new ArrayList<>();
-        getAbilityContainerList().forEach((f) -> {
-            IAbilityContainer container = f.apply(entity);
+        getAbilityContainers(entity).forEach((container) -> {
             if (container != null)
                 list.addAll(container.getAbilities());
         });
@@ -84,8 +93,8 @@ public class AbilityHelper {
         List<Ability> list = Lists.newLinkedList();
         for (Ability all : container.getAbilities()) {
             for (Condition condition : all.getConditionManager().getConditions()) {
-                if (condition instanceof AbilityUnlockedCondition && !condition.getDataManager().get(Condition.ENABLING)) {
-                    Ability a = AbilityHelper.getAbilityById(entity, condition.getDataManager().get(AbilityUnlockedCondition.ABILITY_ID), ability.container);
+                if (condition instanceof AbilityUnlockedCondition && !condition.get(Condition.ENABLING) && !condition.get(Condition.INVERT)) {
+                    Ability a = AbilityHelper.getAbilityById(entity, condition.get(AbilityUnlockedCondition.ABILITY_ID), ability.container);
 
                     if (a == ability) {
                         list.add(all);
@@ -124,7 +133,7 @@ public class AbilityHelper {
             CompoundNBT tag = nbt.getCompound(s);
             AbilityType abilityType = AbilityType.REGISTRY.getValue(new ResourceLocation(tag.getString("AbilityType")));
             if (abilityType != null) {
-                Ability ability = abilityType.create();
+                Ability ability = abilityType.create(s);
                 if (network)
                     ability.readUpdateTag(tag);
                 else
@@ -141,8 +150,8 @@ public class AbilityHelper {
         return loadFromNBT(nbt, map, false);
     }
 
-    public static List<AbilityGenerator> parseAbilityGenerators(JsonObject jsonObject, boolean useId) {
-        List<AbilityGenerator> abilityGenerators = Lists.newArrayList();
+    public static List<Supplier<Ability>> parseAbilityGenerators(JsonObject jsonObject, boolean useId) {
+        List<Supplier<Ability>> abilityGenerators = Lists.newArrayList();
         jsonObject.entrySet().forEach((e) -> {
             if (e.getValue() instanceof JsonObject) {
                 JsonObject o = (JsonObject) e.getValue();
@@ -159,8 +168,14 @@ public class AbilityHelper {
         return abilityGenerators;
     }
 
-    public static List<AbilityGenerator> parseAbilityGenerators(JsonObject jsonObject) {
+    public static List<Supplier<Ability>> parseAbilityGenerators(JsonObject jsonObject) {
         return parseAbilityGenerators(jsonObject, false);
+    }
+
+    public interface IAbilityContainerProvider {
+
+        Collection<IAbilityContainer> getAbilityContainer(LivingEntity entity);
+
     }
 
 }

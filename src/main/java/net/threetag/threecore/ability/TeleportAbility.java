@@ -1,10 +1,5 @@
 package net.threetag.threecore.ability;
 
-import net.threetag.threecore.util.threedata.EnumSync;
-import net.threetag.threecore.util.threedata.ThreeData;
-import net.threetag.threecore.util.threedata.FloatThreeData;
-import net.threetag.threecore.util.PlayerUtil;
-import net.threetag.threecore.util.icon.ItemIcon;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
@@ -12,7 +7,12 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
+import net.threetag.threecore.util.PlayerUtil;
+import net.threetag.threecore.util.icon.ItemIcon;
+import net.threetag.threecore.util.threedata.EnumSync;
+import net.threetag.threecore.util.threedata.FloatThreeData;
+import net.threetag.threecore.util.threedata.ThreeData;
 
 public class TeleportAbility extends Ability {
 
@@ -32,8 +32,8 @@ public class TeleportAbility extends Ability {
 
     @Override
     public void action(LivingEntity entity) {
-        Vec3d lookVec = entity.getLookVec().scale(this.dataManager.get(DISTANCE));
-        RayTraceResult rtr = entity.world.rayTraceBlocks(new RayTraceContext(new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), new Vec3d(entity.getPosX() + lookVec.x, entity.getPosY() + entity.getEyeHeight() + lookVec.y, entity.getPosZ() + lookVec.z), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
+        Vector3d lookVec = entity.getLookVec().scale(this.dataManager.get(DISTANCE));
+        RayTraceResult rtr = entity.world.rayTraceBlocks(new RayTraceContext(new Vector3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), new Vector3d(entity.getPosX() + lookVec.x, entity.getPosY() + entity.getEyeHeight() + lookVec.y, entity.getPosZ() + lookVec.z), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
 
         PlayerUtil.playSoundToAll(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 50, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS);
         entity.setPositionAndUpdate(rtr.getHitVec().x, rtr.getHitVec().y, rtr.getHitVec().z);

@@ -1,20 +1,23 @@
 package net.threetag.threecore.client.renderer.entity.modellayer.predicates;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ITag;
+import net.minecraft.util.ResourceLocation;
 import net.threetag.threecore.client.renderer.entity.modellayer.IModelLayerContext;
 
 public class EntityTagPredicate implements IModelLayerPredicate {
 
-    public final Tag<EntityType<?>> tag;
+    public final ResourceLocation tagName;
 
-    public EntityTagPredicate(Tag<EntityType<?>> tag) {
-        this.tag = tag;
+    public EntityTagPredicate(ResourceLocation tagName) {
+        this.tagName = tagName;
     }
 
     @Override
     public boolean test(IModelLayerContext context) {
-        return this.tag.contains(context.getAsEntity().getType());
+        ITag<EntityType<?>> tag = EntityTypeTags.getCollection().get(this.tagName);
+        return tag != null && tag.getAllElements().contains(context.getAsEntity().getType());
     }
 
 }

@@ -1,5 +1,6 @@
 package net.threetag.threecore.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -134,8 +135,8 @@ public class CapacitorBlockTileEntity extends LockableItemCapTileEntity implemen
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+    public void read(BlockState blockState, CompoundNBT compound) {
+        super.read(blockState, compound);
         this.type = CapacitorBlock.Type.getByName(compound.getString("Type"));
         this.energyStorage = new EnergyStorageExt(getEnergyConfig(), compound.getInt("Energy"));
         this.inputSlot.deserializeNBT(compound.getCompound("InputSlot"));
@@ -144,7 +145,7 @@ public class CapacitorBlockTileEntity extends LockableItemCapTileEntity implemen
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-        compound.putString("Type", this.type.getName());
+        compound.putString("Type", this.type.getString());
         compound.putInt("Energy", this.energyStorage.getEnergyStored());
         compound.put("InputSlot", this.inputSlot.serializeNBT());
         compound.put("OutputSlot", this.outputSlot.serializeNBT());

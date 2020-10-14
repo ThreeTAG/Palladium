@@ -1,5 +1,6 @@
 package net.threetag.threecore.compat.jei.fluidcomposing;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -92,13 +93,13 @@ public class FluidComposingCategory<T> implements IRecipeCategory<FluidComposing
     }
 
     @Override
-    public void draw(FluidComposingRecipe recipe, double mouseX, double mouseY) {
-        arrow.draw(87, 18);
+    public void draw(FluidComposingRecipe recipe, MatrixStack stack, double mouseX, double mouseY) {
+        arrow.draw(stack, 87, 18);
 
         Minecraft minecraft = Minecraft.getInstance();
         FontRenderer fontRenderer = minecraft.fontRenderer;
         String s = I18n.format("threecore.util.energy_display", recipe.getRequiredEnergy(), EnergyUtil.ENERGY_UNIT);
         int length = fontRenderer.getStringWidth(s);
-        fontRenderer.drawString(s, 134 / 2 - length / 2, 55, 0xFF808080);
+        fontRenderer.drawString(stack, s, 134 / 2F - length / 2F, 55, 0xFF808080);
     }
 }

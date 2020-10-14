@@ -1,7 +1,7 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "tag": "forge:dusts/iridium",
+    "item": "threecore:iridium_dust",
     "count": 2
   },
   "ingredient": {

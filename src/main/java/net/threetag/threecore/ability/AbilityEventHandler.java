@@ -51,10 +51,8 @@ public class AbilityEventHandler {
 
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent e) {
-        AbilityHelper.getAbilityContainerList().forEach((f) -> {
-            IAbilityContainer container = f.apply(e.getEntityLiving());
-            if (container != null)
-                container.tick(e.getEntityLiving());
+        AbilityHelper.getAbilityContainers(e.getEntityLiving()).forEach(container -> {
+            container.tick(e.getEntityLiving());
         });
     }
 

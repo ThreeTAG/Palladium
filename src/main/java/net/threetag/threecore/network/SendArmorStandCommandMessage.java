@@ -34,18 +34,18 @@ public class SendArmorStandCommandMessage {
         ctx.get().enqueueWork(() -> {
             if(this.argument.equalsIgnoreCase("reload")) {
                 int i = ArmorStandPoseManager.init();
-                Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("commands.armorstandpose.reloaded", i));
+                Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("commands.armorstandpose.reloaded", i), null);
             } else {
                 ArmorStandPoseManager.ArmorStandPose pose = ArmorStandPoseManager.POSES.get(argument);
                 if (pose == null)
-                    Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("commands.armorstandpose.pose_not_found", argument).applyTextStyle(TextFormatting.RED));
+                    Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("commands.armorstandpose.pose_not_found", argument).mergeStyle(TextFormatting.RED), null);
                 else {
                     RayTraceResult res = Minecraft.getInstance().objectMouseOver;
                     if (res instanceof EntityRayTraceResult && ((EntityRayTraceResult) res).getEntity() instanceof ArmorStandEntity) {
                         ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.SERVER.noArg(), new SetArmorStandPoseMessage(((EntityRayTraceResult) res).getEntity().getEntityId(),
                                 pose.head, pose.body, pose.rightArm, pose.leftArm, pose.rightLeg, pose.leftLeg));
                     } else {
-                        Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("commands.armorstandpose.no_armor_stand").applyTextStyle(TextFormatting.RED));
+                        Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("commands.armorstandpose.no_armor_stand").mergeStyle(TextFormatting.RED), null);
                     }
                 }
             }

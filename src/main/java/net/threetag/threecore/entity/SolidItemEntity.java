@@ -18,7 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -28,6 +28,7 @@ import net.threetag.threecore.item.SolidItem;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.UUID;
 
 public class SolidItemEntity extends Entity {
@@ -81,7 +82,7 @@ public class SolidItemEntity extends Entity {
     }
 
     @Override
-    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vec3d vec, Hand hand) {
+    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
         if (player.getHeldItem(hand).isEmpty() && this.isAlive()) {
             player.setHeldItem(hand, this.getItem());
             this.remove();
@@ -102,7 +103,7 @@ public class SolidItemEntity extends Entity {
             this.prevPosX = this.getPosX();
             this.prevPosY = this.getPosY();
             this.prevPosZ = this.getPosZ();
-            Vec3d vec3d = this.getMotion();
+            Vector3d vec3d = this.getMotion();
             if (this.areEyesInFluid(FluidTags.WATER)) {
                 this.applyFloatMotion();
             } else if (!this.hasNoGravity()) {
@@ -135,13 +136,13 @@ public class SolidItemEntity extends Entity {
             boolean flag = MathHelper.floor(this.prevPosX) != MathHelper.floor(this.getPosX()) || MathHelper.floor(this.prevPosY) != MathHelper.floor(this.getPosY()) || MathHelper.floor(this.prevPosZ) != MathHelper.floor(this.getPosZ());
             int i = flag ? 2 : 40;
             if (this.ticksExisted % i == 0) {
-                if (this.world.getFluidState(new BlockPos(this)).isTagged(FluidTags.LAVA)) {
+                if (this.world.getFluidState(this.getPosition()).isTagged(FluidTags.LAVA)) {
                     this.setMotion((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F, 0.2F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
                     this.playSound(SoundEvents.ENTITY_GENERIC_BURN, 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
                 }
             }
 
-            this.isAirBorne |= this.handleWaterMovement();
+            this.isAirBorne |= this.func_233566_aG_();
             if (!this.world.isRemote) {
                 double d0 = this.getMotion().subtract(vec3d).lengthSquared();
                 if (d0 > 0.01D) {
@@ -157,13 +158,8 @@ public class SolidItemEntity extends Entity {
     }
 
     private void applyFloatMotion() {
-        Vec3d vec3d = this.getMotion();
+        Vector3d vec3d = this.getMotion();
         this.setMotion(vec3d.x * (double) 0.99F, vec3d.y + (double) (vec3d.y < (double) 0.06F ? 5.0E-4F : 0.0F), vec3d.z * (double) 0.99F);
-    }
-
-    @Override
-    protected void dealFireDamage(int amount) {
-        this.attackEntityFrom(DamageSource.IN_FIRE, (float) amount);
     }
 
     @Override
@@ -189,10 +185,11 @@ public class SolidItemEntity extends Entity {
         this.health = compound.getShort("Health");
 
         if (compound.contains("Owner", Constants.NBT.TAG_COMPOUND))
-            this.owner = NBTUtil.readUniqueId(compound.getCompound("Owner"));
+            this.owner = NBTUtil.readUniqueId(Objects.requireNonNull(compound.get("Owner")));
 
-        if (compound.contains("Thrower", Constants.NBT.TAG_COMPOUND))
-            this.thrower = NBTUtil.readUniqueId(compound.getCompound("Thrower"));
+        if (compound.contains("Thrower", Constants.NBT.TAG_COMPOUND)) {
+            this.thrower = NBTUtil.readUniqueId(Objects.requireNonNull(compound.get("Thrower")));
+        }
 
         CompoundNBT compoundnbt = compound.getCompound("Item");
         this.setItem(ItemStack.read(compoundnbt));
@@ -205,10 +202,10 @@ public class SolidItemEntity extends Entity {
         compound.putShort("Health", (short) this.health);
 
         if (this.getThrowerId() != null)
-            compound.put("Thrower", NBTUtil.writeUniqueId(this.getThrowerId()));
+            compound.put("Thrower", NBTUtil.func_240626_a_(this.getThrowerId()));
 
         if (this.getOwnerId() != null)
-            compound.put("Owner", NBTUtil.writeUniqueId(this.getOwnerId()));
+            compound.put("Owner", NBTUtil.func_240626_a_(this.getOwnerId()));
 
         if (!this.getItem().isEmpty())
             compound.put("Item", this.getItem().write(new CompoundNBT()));

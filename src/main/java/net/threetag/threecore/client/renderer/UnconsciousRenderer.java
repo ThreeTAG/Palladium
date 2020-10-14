@@ -18,7 +18,7 @@ public class UnconsciousRenderer {
 
     @SubscribeEvent
     public void renderHUD(RenderGameOverlayEvent.Post e) {
-        if (e.getType() == RenderGameOverlayEvent.ElementType.HELMET && Minecraft.getInstance().gameSettings.thirdPersonView == 0) {
+        if (e.getType() == RenderGameOverlayEvent.ElementType.HELMET && Minecraft.getInstance().gameSettings.func_243230_g().func_243192_a()) {
             float opacity = MathUtil.interpolate(prevProgress, progress, e.getPartialTicks()) / 50F;
 
             if (opacity > 0F) {
@@ -27,9 +27,10 @@ public class UnconsciousRenderer {
                 int width = Minecraft.getInstance().getMainWindow().getScaledWidth();
                 int height = Minecraft.getInstance().getMainWindow().getScaledHeight();
                 int color = (int) (255F * opacity) << 24;
-                fill(0, 0, width, height, color);
+                fill(e.getMatrixStack(), 0, 0, width, height, color);
                 RenderSystem.enableAlphaTest();
                 RenderSystem.enableDepthTest();
+
             }
         }
     }
@@ -53,7 +54,7 @@ public class UnconsciousRenderer {
             e.getMovementInput().leftKeyDown = false;
             e.getMovementInput().forwardKeyDown = false;
             e.getMovementInput().backKeyDown = false;
-            e.getMovementInput().field_228350_h_ = false;
+            e.getMovementInput().sneaking = false;
             e.getMovementInput().jump = false;
         }
     }

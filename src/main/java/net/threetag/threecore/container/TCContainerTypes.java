@@ -21,7 +21,7 @@ import net.threetag.threecore.util.icon.ItemIcon;
 
 public class TCContainerTypes {
 
-    public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = new DeferredRegister<>(ForgeRegistries.CONTAINERS, ThreeCore.MODID);
+    public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, ThreeCore.MODID);
 
     public static final RegistryObject<ContainerType<HelmetCraftingContainer>> HELMET_CRAFTING = CONTAINER_TYPES.register("helmet_crafting", () -> new ContainerType<>(HelmetCraftingContainer::new));
 
@@ -49,7 +49,7 @@ public class TCContainerTypes {
         return tileEntity instanceof StirlingGeneratorTileEntity ? new StirlingGeneratorContainer(windowId, inv, (StirlingGeneratorTileEntity) tileEntity) : null;
     }));
 
-    public static void registerConstructionTableTabls() {
+    public static void registerConstructionTableTables() {
         ConstructionTableBlock.registerTab(new ResourceLocation(ThreeCore.MODID, "helmet_crafting"), new ConstructionTableBlock.Tab(HELMET_CRAFTING::get, (id, playerInventory, player, world, pos) -> new HelmetCraftingContainer(id, playerInventory, IWorldPosCallable.of(world, pos)), new ItemIcon(Items.IRON_HELMET)));
         ConstructionTableBlock.registerTab(new ResourceLocation(ThreeCore.MODID, "chestplate_crafting"), new ConstructionTableBlock.Tab(CHESTPLATE_CRAFTING::get, (id, playerInventory, player, world, pos) -> new ChestplateCraftingContainer(id, playerInventory, IWorldPosCallable.of(world, pos)), new ItemIcon(Items.IRON_CHESTPLATE)));
         ConstructionTableBlock.registerTab(new ResourceLocation(ThreeCore.MODID, "leggings_crafting"), new ConstructionTableBlock.Tab(LEGGINGS_CRAFTING::get, (id, playerInventory, player, world, pos) -> new LeggingsCraftingContainer(id, playerInventory, IWorldPosCallable.of(world, pos)), new ItemIcon(Items.IRON_LEGGINGS)));

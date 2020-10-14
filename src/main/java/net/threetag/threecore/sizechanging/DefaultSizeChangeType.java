@@ -2,16 +2,12 @@ package net.threetag.threecore.sizechanging;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.ai.attributes.*;
 import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.ForgeMod;
 import net.threetag.threecore.capability.ISizeChanging;
 import net.threetag.threecore.entity.attributes.TCAttributes;
 
@@ -28,13 +24,13 @@ public class DefaultSizeChangeType extends SizeChangeType {
     @Override
     public void onSizeChanged(Entity entity, ISizeChanging data, float size) {
         if (entity instanceof LivingEntity) {
-            AbstractAttributeMap map = ((LivingEntity) entity).getAttributes();
-            setAttribute(map, SharedMonsterAttributes.MOVEMENT_SPEED, (size - 1F) * 0.5D, AttributeModifier.Operation.MULTIPLY_TOTAL, SizeChangeType.ATTRIBUTE_UUID);
-            setAttribute(map, TCAttributes.JUMP_HEIGHT, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
-            setAttribute(map, TCAttributes.FALL_RESISTANCE, size > 1F ? 1F / size : size, AttributeModifier.Operation.MULTIPLY_BASE, SizeChangeType.ATTRIBUTE_UUID);
-            setAttribute(map, SharedMonsterAttributes.ATTACK_DAMAGE, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
-            setAttribute(map, PlayerEntity.REACH_DISTANCE, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
-            setAttribute(map, SharedMonsterAttributes.KNOCKBACK_RESISTANCE, (size - 1F) * 0.5D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
+
+            setAttribute((LivingEntity) entity, Attributes.MOVEMENT_SPEED, (size - 1F) * 0.5D, AttributeModifier.Operation.MULTIPLY_TOTAL, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute((LivingEntity) entity, TCAttributes.JUMP_HEIGHT.get(), (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute((LivingEntity) entity, TCAttributes.FALL_RESISTANCE.get(), size > 1F ? 1F / size : size, AttributeModifier.Operation.MULTIPLY_BASE, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute((LivingEntity) entity, Attributes.ATTACK_DAMAGE, (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute((LivingEntity) entity, ForgeMod.REACH_DISTANCE.get(), (size - 1F) * 1D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
+            setAttribute((LivingEntity) entity, Attributes.KNOCKBACK_RESISTANCE, (size - 1F) * 0.5D, AttributeModifier.Operation.ADDITION, SizeChangeType.ATTRIBUTE_UUID);
 
             changeCreeperExplosionRadius(entity, size);
             spawnWaterParticles(entity);
@@ -72,12 +68,12 @@ public class DefaultSizeChangeType extends SizeChangeType {
 
     }
 
-    public void setAttribute(AbstractAttributeMap map, IAttribute attribute, double value, AttributeModifier.Operation operation, UUID uuid) {
-        if (map.getAttributeInstance(attribute) != null) {
-            IAttributeInstance instance = map.getAttributeInstance(attribute);
+    public void setAttribute(LivingEntity entity, Attribute attribute, double value, AttributeModifier.Operation operation, UUID uuid) {
+        if (entity.getAttribute(attribute) != null) {
+            ModifiableAttributeInstance instance = entity.getAttribute(attribute);
             if (instance.getModifier(uuid) != null)
                 instance.removeModifier(uuid);
-            instance.applyModifier(new AttributeModifier(uuid, "default_size_changer", value, operation));
+            instance.applyNonPersistentModifier(new AttributeModifier(uuid, "default_size_changer", value, operation));
         }
     }
 

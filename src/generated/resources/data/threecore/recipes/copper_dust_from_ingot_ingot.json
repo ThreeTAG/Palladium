@@ -1,7 +1,8 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "tag": "forge:dusts/copper"
+    "item": "threecore:copper_dust",
+    "count": 1
   },
   "ingredient": {
     "tag": "forge:ingots/copper"

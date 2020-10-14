@@ -17,7 +17,7 @@ import net.threetag.threecore.client.renderer.tileentity.StirlingGeneratorTileEn
 
 public class TCTileEntityTypes {
 
-    public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, ThreeCore.MODID);
+    public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, ThreeCore.MODID);
 
     public static final RegistryObject<TileEntityType<GrinderTileEntity>> GRINDER = TILE_ENTITIES.register("grinder", () -> TileEntityType.Builder.create(GrinderTileEntity::new, TCBlocks.GRINDER.get()).build(null));
     public static final RegistryObject<TileEntityType<HydraulicPressTileEntity>> HYDRAULIC_PRESS = TILE_ENTITIES.register("hydraulic_press", () -> TileEntityType.Builder.create(HydraulicPressTileEntity::new, TCBlocks.HYDRAULIC_PRESS.get()).build(null));

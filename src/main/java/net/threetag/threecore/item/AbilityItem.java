@@ -13,19 +13,17 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.DistExecutor;
-import net.threetag.threecore.ability.AbilityGenerator;
-import net.threetag.threecore.ability.AbilityHelper;
-import net.threetag.threecore.ability.AbilityMap;
-import net.threetag.threecore.ability.IAbilityProvider;
+import net.threetag.threecore.ability.*;
 import net.threetag.threecore.addonpacks.item.ItemParser;
 import net.threetag.threecore.capability.ItemAbilityContainerProvider;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class AbilityItem extends Item implements IAbilityProvider {
 
-    private List<AbilityGenerator> abilityGenerators;
+    private List<Supplier<Ability>> abilityGenerators;
     private List<ITextComponent> description;
 
     public AbilityItem(Properties properties) {
@@ -38,12 +36,12 @@ public class AbilityItem extends Item implements IAbilityProvider {
         this.setDescription(JSONUtils.hasField(json, "description") ? ItemParser.parseDescriptionLines(json.get("description")) : null);
     }
 
-    public AbilityItem setAbilities(List<AbilityGenerator> abilities) {
+    public AbilityItem setAbilities(List<Supplier<Ability>> abilities) {
         this.abilityGenerators = abilities;
         return this;
     }
 
-    public AbilityItem addAbility(AbilityGenerator abilityGenerator) {
+    public AbilityItem addAbility(Supplier<Ability> abilityGenerator) {
         if (this.abilityGenerators == null)
             this.abilityGenerators = Lists.newArrayList();
         this.abilityGenerators.add(abilityGenerator);

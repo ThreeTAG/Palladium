@@ -10,9 +10,11 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
@@ -28,6 +30,7 @@ import net.threetag.threecore.client.renderer.entity.model.ModelRegistry;
 import net.threetag.threecore.client.renderer.entity.modellayer.predicates.IModelLayerPredicate;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLayerTexture;
 import net.threetag.threecore.util.RenderUtil;
+import net.threetag.threecore.util.threedata.BodyPartListThreeData;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +41,7 @@ public class ModelLayer implements IModelLayer {
     public final ModelLayerTexture texture;
     public final List<IModelLayerPredicate> glowPredicates;
     public final List<IModelLayerPredicate> predicateList = Lists.newLinkedList();
+    public final List<BodyPartListThreeData.BodyPart> disabledBodyParts = Lists.newArrayList();
 
     public ModelLayer(LazyValue<Model> model, ModelLayerTexture texture, List<IModelLayerPredicate> glowPredicates) {
         this.model = Objects.requireNonNull(model);
@@ -73,7 +77,7 @@ public class ModelLayer implements IModelLayer {
 
             boolean glow = ModelLayerManager.arePredicatesFulFilled(this.glowPredicates, context);
             ((EntityModel) model).setLivingAnimations(context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
-            IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(renderTypeBuffer,  glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderUtil.RenderTypes.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
+            IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(renderTypeBuffer, glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderUtil.RenderTypes.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
             model.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
 
         }
@@ -119,6 +123,15 @@ public class ModelLayer implements IModelLayer {
     }
 
     @Override
+    public void postRotationAnglesCallback(LivingRenderer<? extends LivingEntity, ? extends EntityModel> renderer, LivingEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        if (renderer.getEntityModel() instanceof BipedModel<?>) {
+            this.disabledBodyParts.forEach(bodyPart -> {
+                bodyPart.setVisibility((PlayerModel<?>) renderer.getEntityModel(), false);
+            });
+        }
+    }
+
+    @Override
     public boolean isActive(IModelLayerContext context) {
         return ModelLayerManager.arePredicatesFulFilled(this.predicateList, context);
     }
@@ -126,6 +139,12 @@ public class ModelLayer implements IModelLayer {
     @Override
     public ModelLayer addPredicate(IModelLayerPredicate predicate) {
         this.predicateList.add(predicate);
+        return this;
+    }
+
+    public ModelLayer addDisabledBodyParts(List<BodyPartListThreeData.BodyPart> bodyParts) {
+        if (bodyParts != null)
+            this.disabledBodyParts.addAll(bodyParts);
         return this;
     }
 
@@ -177,7 +196,12 @@ public class ModelLayer implements IModelLayer {
             glowPredicates.add((c) -> false);
         }
 
-        return new ModelLayer(new LazyValue<>(() -> ModelRegistry.getModel(JSONUtils.getString(json, "model"))), ModelLayerTexture.parse(json.get("texture")), glowPredicates);
+        List<BodyPartListThreeData.BodyPart> list = null;
+        if (json.has("disabled_body_parts")) {
+            list = BodyPartListThreeData.parseBodyParts(json.get("disabled_body_parts"));
+        }
+
+        return new ModelLayer(new LazyValue<>(() -> ModelRegistry.getModel(JSONUtils.getString(json, "model"))), ModelLayerTexture.parse(json.get("texture")), glowPredicates).addDisabledBodyParts(list);
     }
 
 }

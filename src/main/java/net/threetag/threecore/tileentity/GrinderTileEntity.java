@@ -1,5 +1,6 @@
 package net.threetag.threecore.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -177,9 +178,8 @@ public class GrinderTileEntity extends ProgressableMachineTileEntity<GrindingRec
     }
 
     @Override
-    public void read(CompoundNBT nbt) {
-        super.read(nbt);
-
+    public void read(BlockState blockState, CompoundNBT nbt) {
+        super.read(blockState, nbt);
         if (nbt.contains("EnergySlots"))
             this.energySlot.deserializeNBT(nbt.getCompound("EnergySlots"));
         if (nbt.contains("InputSlots"))

@@ -84,13 +84,18 @@ public class MultiversalIteratorContainer extends Container {
                 }
 
                 stack.getItem().onCreated(stack, thePlayer.world, thePlayer);
+
+                ItemStack extrapolator = extrapolatorInventory.getStackInSlot(0);
+                extrapolator.damageItem(1, thePlayer, (player) -> extrapolatorInventory.setInventorySlotContents(0, ItemStack.EMPTY));
+                extrapolatorInventory.setInventorySlotContents(0, extrapolator);
+                detectAndSendChanges();
+
                 worldPosCallableIn.consume((world, pos) -> {
                     long l = world.getGameTime();
                     if (MultiversalIteratorContainer.this.lastOnTake != l) {
                         world.playSound(null, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1.0F, 1.0F);
                         MultiversalIteratorContainer.this.lastOnTake = l;
                     }
-
                 });
                 return super.onTake(thePlayer, stack);
             }

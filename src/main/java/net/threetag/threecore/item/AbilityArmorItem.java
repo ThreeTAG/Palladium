@@ -23,10 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.DistExecutor;
-import net.threetag.threecore.ability.AbilityGenerator;
-import net.threetag.threecore.ability.AbilityHelper;
-import net.threetag.threecore.ability.AbilityMap;
-import net.threetag.threecore.ability.IAbilityProvider;
+import net.threetag.threecore.ability.*;
 import net.threetag.threecore.addonpacks.item.ItemParser;
 import net.threetag.threecore.capability.ItemAbilityContainerProvider;
 import net.threetag.threecore.client.renderer.entity.model.DummyBipedModel;
@@ -35,10 +32,11 @@ import net.threetag.threecore.client.renderer.entity.modellayer.*;
 import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IModelLayerProvider {
 
-    private List<AbilityGenerator> abilityGenerators;
+    private List<Supplier<Ability>> abilityGenerators;
     private List<ITextComponent> description;
     public List layers = new LinkedList<>();
 
@@ -46,12 +44,12 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
         super(materialIn, slot, builder);
     }
 
-    public AbilityArmorItem setAbilities(List<AbilityGenerator> abilities) {
+    public AbilityArmorItem setAbilities(List<Supplier<Ability>> abilities) {
         this.abilityGenerators = abilities;
         return this;
     }
 
-    public AbilityArmorItem addAbility(AbilityGenerator abilityGenerator) {
+    public AbilityArmorItem addAbility(Supplier<Ability> abilityGenerator) {
         if (this.abilityGenerators == null)
             this.abilityGenerators = Lists.newArrayList();
         this.abilityGenerators.add(abilityGenerator);
@@ -110,7 +108,7 @@ public class AbilityArmorItem extends ArmorItem implements IAbilityProvider, IMo
         return this.layers;
     }
 
-    public static AbilityArmorItem parse(JsonObject jsonObject, Item.Properties properties) {
+    public static AbilityArmorItem parse(JsonObject jsonObject, Properties properties) {
         EquipmentSlotType slot = EquipmentSlotType.fromString(JSONUtils.getString(jsonObject, "slot"));
         if (slot.getSlotType() == EquipmentSlotType.Group.HAND)
             throw new JsonParseException("Slot type must be an armor slot!");

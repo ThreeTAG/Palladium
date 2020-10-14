@@ -11,14 +11,14 @@ import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.fluids.FluidStack;
-import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 import net.threetag.threecore.fluid.FluidIngredient;
+import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 import net.threetag.threecore.util.TCFluidUtil;
 
 import javax.annotation.Nullable;
@@ -40,7 +40,7 @@ public class FluidComposingRecipeBuilder {
         this.result = result;
     }
 
-    public FluidComposingRecipeBuilder addIngredient(Tag<Item> tag) {
+    public FluidComposingRecipeBuilder addIngredient(ITag<Item> tag) {
         return this.addIngredient(Ingredient.fromTag(tag));
     }
 
@@ -120,8 +120,8 @@ public class FluidComposingRecipeBuilder {
 
     public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation name) {
         this.validate(name);
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", new RecipeUnlockedTrigger.Instance(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
-        consumer.accept(new FluidComposingRecipeBuilder.Result(name, group == null ? "" : group, ingredients, inputFluid, result, energy, conditions, advancementBuilder, new ResourceLocation(name.getNamespace(), "recipes/fluids/" + name.getPath())));
+        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(name)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(name)).withRequirementsStrategy(IRequirementsStrategy.OR);
+        consumer.accept(new Result(name, group == null ? "" : group, ingredients, inputFluid, result, energy, conditions, advancementBuilder, new ResourceLocation(name.getNamespace(), "recipes/fluids/" + name.getPath())));
     }
 
     public class Result implements IFinishedRecipe {
@@ -179,7 +179,7 @@ public class FluidComposingRecipeBuilder {
                 }
             } else {
                 JsonObject fluidInput = new JsonObject();
-                fluidInput.addProperty("tag", this.inputFluid.getTag().getId().toString());
+                fluidInput.addProperty("tag", this.inputFluid.getTag().getName().toString());
                 fluidInput.addProperty("amount", this.inputFluid.getFluids()[0].getAmount());
                 jsonObject.add("fluid_input", fluidInput);
             }

@@ -4,11 +4,11 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.threetag.threecore.client.renderer.entity.modellayer.IModelLayer;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerContext;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerLoader;
@@ -49,8 +49,8 @@ public class ProjectileEntityRenderer extends SpriteRenderer<ProjectileEntity> {
     private void preRender(ProjectileEntity entity, MatrixStack matrixStack, IRenderTypeBuffer buffer, float entityYaw, float partialTicks) {
         matrixStack.push();
 
-        Vec3d vec1 = new Vec3d(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ);
-        Vec3d vec2 = new Vec3d(entity.getPosX(), entity.getPosY(), entity.getPosZ());
+        Vector3d vec1 = new Vector3d(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ);
+        Vector3d vec2 = new Vector3d(entity.getPosX(), entity.getPosY(), entity.getPosZ());
         vec1 = vec2.subtract(vec1);
         vec2 = vec2.subtract(vec2);
         vec1 = vec1.normalize();

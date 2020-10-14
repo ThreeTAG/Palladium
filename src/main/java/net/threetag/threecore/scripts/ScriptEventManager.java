@@ -8,10 +8,14 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.event.AbilityEnableChangeEvent;
 import net.threetag.threecore.event.RegisterThreeDataEvent;
+import net.threetag.threecore.event.SetRotationAnglesEvent;
+import net.threetag.threecore.network.EmptyHandInteractMessage;
 import net.threetag.threecore.scripts.events.*;
 
 import java.io.BufferedWriter;
@@ -44,10 +48,19 @@ public class ScriptEventManager {
         registerEvent("abilityDisabled", AbilityDisabledScriptEvent.class);
         registerEvent("abilityDataUpdated", AbilityDataUpdatedScriptEvent.class);
         registerEvent("conditionDataUpdated", ConditionDataUpdatedScriptEvent.class);
-        registerEvent("registerThreeData", RegisterThreeDataScriptEvent.class);
+        registerEvent("registerEntityThreeData", RegisterEntityThreeDataScriptEvent.class);
+        registerEvent("registerAbilityThreeData", RegisterAbilityThreeDataScriptEvent.class);
         registerEvent("multiJump", MultiJumpScriptEvent.class);
         registerEvent("projectileImpact", ProjectileImpactScriptEvent.class);
         registerEvent("projectileTick", ProjectileTickScriptEvent.class);
+        registerEvent("superpowerSet", SuperpowerSetScriptEvent.class);
+        registerEvent("entityInteract", EntityInteractSpecificScriptEvent.class);
+        registerEvent("rightClickBlock", RightClickBlockScriptEvent.class);
+        registerEvent("rightClickItem", RightClickItemScriptEvent.class);
+        registerEvent("leftClickBlock", LeftClickBlockScriptEvent.class);
+        registerEvent("leftClickEmpty", LeftClickEmptyScriptEvent.class);
+        registerEvent("rightClickEmpty", RightClickEmptyScriptEvent.class);
+        registerEvent("setRotationAngles", SetRotationAnglesScriptEvent.class);
     }
 
     public static void reset() {
@@ -144,7 +157,7 @@ public class ScriptEventManager {
 
         @SubscribeEvent
         public static void onRegisterThreeData(RegisterThreeDataEvent e) {
-            new RegisterThreeDataScriptEvent(e.getEntity(), e.getThreeData()).fire(e);
+            new RegisterEntityThreeDataScriptEvent(e.getEntity(), e.getThreeData()).fire(e);
         }
 
         @SubscribeEvent
@@ -152,6 +165,49 @@ public class ScriptEventManager {
             new ProjectileImpactScriptEvent(e.getEntity()).fire(e);
         }
 
+        @SubscribeEvent
+        public static void onEntityInteractSpecificEvent(PlayerInteractEvent.EntityInteractSpecific e){ new EntityInteractSpecificScriptEvent(e).fire(e); }
+
+        @SubscribeEvent
+        public static void onRightClickBlockEvent(PlayerInteractEvent.RightClickBlock e){ new RightClickBlockScriptEvent(e).fire(e); }
+
+        @SubscribeEvent
+        public static void onRightClickItemEvent(PlayerInteractEvent.RightClickItem e){ new RightClickItemScriptEvent(e).fire(e); }
+
+        @SubscribeEvent
+        public static void onLeftClickBlockEvent(PlayerInteractEvent.LeftClickBlock e){ new LeftClickBlockScriptEvent(e).fire(e); }
+
+        @SubscribeEvent
+        public static void onLeftClickEmptyEvent(PlayerInteractEvent.LeftClickEmpty e){
+            new LeftClickEmptyScriptEvent(e).fire(e);
+            ThreeCore.NETWORK_CHANNEL.sendToServer(new EmptyHandInteractMessage(true));
+        }
+
+        @SubscribeEvent
+        public static void onRightClickEmptyEvent(PlayerInteractEvent.RightClickEmpty e){
+            new RightClickEmptyScriptEvent(e).fire(e);
+            ThreeCore.NETWORK_CHANNEL.sendToServer(new EmptyHandInteractMessage(false));
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @SubscribeEvent
+        public static void onSetRotationAngles(SetRotationAnglesEvent e){
+            new SetRotationAnglesScriptEvent(e).fire(e);
+        }
+
+        @SubscribeEvent
+        public static void onAbilityEnableChange(AbilityEnableChangeEvent e){
+            switch (e.type){
+            case ENABLED:
+                if(new AbilityEnabledScriptEvent(e.getEntityLiving(), e.ability).fire())
+                    e.setCanceled(true);
+                break;
+            case DISABLED:
+                if(new AbilityDisabledScriptEvent(e.getEntityLiving(), e.ability).fire())
+                    e.setCanceled(true);
+                break;
+            }
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

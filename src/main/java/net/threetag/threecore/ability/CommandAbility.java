@@ -13,6 +13,8 @@ import net.threetag.threecore.util.threedata.CommandListThreeData;
 import net.threetag.threecore.util.threedata.EnumSync;
 import net.threetag.threecore.util.threedata.ThreeData;
 
+import java.util.UUID;
+
 public class CommandAbility extends Ability implements ICommandSource {
 
     public static final ThreeData<CommandListThreeData.CommandList> COMMANDS = new CommandListThreeData("commands").setSyncType(EnumSync.NONE).enableSetting("commands", "Sets the commands which get executed when using the ability");
@@ -38,8 +40,8 @@ public class CommandAbility extends Ability implements ICommandSource {
     }
 
     @Override
-    public void sendMessage(ITextComponent component) {
-        ThreeCore.LOGGER.error("Ability command error: " + component.getFormattedText());
+    public void sendMessage(ITextComponent component, UUID uuid) {
+        ThreeCore.LOGGER.error("Ability command error: " + component.getString());
     }
 
     @Override

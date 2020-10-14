@@ -1,6 +1,7 @@
 modLoader="javafml"
-loaderVersion="[28,)"
+loaderVersion="[34,)"
 authors="Lucraft, Nictogen"
+license="All rights reserved"
 
 [[mods]]
 modId="threecore"
@@ -14,6 +15,6 @@ Core mod for all ThreeTAG mods.
 [[dependencies.threecore]]
     modId="forge"
     mandatory=true
-    versionRange="[28,)"
+    versionRange="[34,)"
     ordering="NONE"
     side="BOTH"

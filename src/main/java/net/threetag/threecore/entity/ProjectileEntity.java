@@ -72,7 +72,7 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
     protected void onImpact(RayTraceResult result) {
         if (result.getType() == RayTraceResult.Type.ENTITY) {
             Entity entity = ((EntityRayTraceResult) result).getEntity();
-            entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.damage);
+            entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), this.damage);
 
             if (this.dieOnEntityHit && !this.world.isRemote) {
                 if (this.particles)
@@ -141,9 +141,9 @@ public class ProjectileEntity extends ThrowableEntity implements IRendersAsItem,
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         if (compound.contains("Damage", Constants.NBT.TAG_ANY_NUMERIC))
-            this.damage = compound.getInt("Damage");
+            this.damage = compound.getFloat("Damage");
         if (compound.contains("GravityVelocity", Constants.NBT.TAG_ANY_NUMERIC))
-            this.gravityVelocity = compound.getInt("gravityVelocity");
+            this.gravityVelocity = compound.getFloat("GravityVelocity");
         if (compound.contains("DieOnEntityHit"))
             this.dieOnEntityHit = compound.getBoolean("DieOnEntityHit");
         if (compound.contains("DieOnBlockHit"))

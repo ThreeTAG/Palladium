@@ -1,7 +1,8 @@
 {
   "type": "threecore:grinding",
   "result": {
-    "tag": "forge:dusts/gold"
+    "item": "threecore:gold_dust",
+    "count": 1
   },
   "ingredient": {
     "tag": "forge:ingots/gold"

@@ -18,7 +18,7 @@ public class FluidComposerTileEntityRenderer extends FastFluidTESR<FluidComposer
     }
 
     @Override
-    public List<FastFluidTESR.TankRenderInfo> getTanksToRender(FluidComposerTileEntity te) {
+    public List<TankRenderInfo> getTanksToRender(FluidComposerTileEntity te) {
         return Arrays.asList(new TankRenderInfo(te.outputFluidTank,
                 new AxisAlignedBB(2F / 16F, 8F / 16F, 2F / 16F, 14F / 16F, 15F / 16F, 14F / 16F),
                 Direction.UP));

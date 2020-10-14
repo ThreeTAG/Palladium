@@ -7,16 +7,18 @@ import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement.Builder;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.IRequirementsStrategy;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger.Instance;
+import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.item.recipe.AbstractConstructionTableRecipe;
+import net.threetag.threecore.util.TCJsonUtil;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -28,7 +30,7 @@ import java.util.function.Consumer;
 public class ConstructionTableRecipeBuilder {
 
     private final IRecipeSerializer<? extends AbstractConstructionTableRecipe> recipeSerializer;
-    private final ExtRecipeOutput result;
+    private final ItemStack result;
     private final List<String> pattern = Lists.newArrayList();
     private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
     private Ingredient toolIngredient;
@@ -38,7 +40,7 @@ public class ConstructionTableRecipeBuilder {
 
     public ConstructionTableRecipeBuilder(IRecipeSerializer<? extends AbstractConstructionTableRecipe> recipeSerializer, IItemProvider itemProvider, int amount) {
         this.recipeSerializer = recipeSerializer;
-        this.result = new ExtRecipeOutput(new ItemStack(itemProvider, amount));
+        this.result = new ItemStack(itemProvider, amount);
     }
 
     public static ConstructionTableRecipeBuilder recipe(IRecipeSerializer<? extends AbstractConstructionTableRecipe> recipeSerializer, IItemProvider itemProvider) {
@@ -49,7 +51,7 @@ public class ConstructionTableRecipeBuilder {
         return new ConstructionTableRecipeBuilder(recipeSerializer, itemProvider, amount);
     }
 
-    public ConstructionTableRecipeBuilder key(Character character, Tag<Item> tag) {
+    public ConstructionTableRecipeBuilder key(Character character, ITag<Item> tag) {
         return this.key(character, Ingredient.fromTag(tag));
     }
 
@@ -94,11 +96,11 @@ public class ConstructionTableRecipeBuilder {
     }
 
     public void build(Consumer<IFinishedRecipe> consumer) {
-        this.build(consumer, this.result.getId());
+        this.build(consumer, ForgeRegistries.ITEMS.getKey(this.result.getItem()));
     }
 
     public void build(Consumer<IFinishedRecipe> consumer, String name) {
-        ResourceLocation id = this.result.getId();
+        ResourceLocation id = ForgeRegistries.ITEMS.getKey(this.result.getItem());
         if ((new ResourceLocation(name)).equals(id)) {
             throw new IllegalStateException("Construction Table Recipe " + name + " should remove its 'save' argument");
         } else {
@@ -108,8 +110,8 @@ public class ConstructionTableRecipeBuilder {
 
     public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation location) {
         this.validate(location);
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", new Instance(location)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(location)).withRequirementsStrategy(IRequirementsStrategy.OR);
-        consumer.accept(new Result(this.recipeSerializer, location, this.result, this.group == null ? "" : this.group, this.pattern, this.key, this.toolIngredient, this.advancementBuilder, new ResourceLocation(location.getNamespace(), "recipes/" + this.result.getGroup() + "/" + location.getPath()), this.consumesTool));
+        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(location)).withRewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(location)).withRequirementsStrategy(IRequirementsStrategy.OR);
+        consumer.accept(new Result(this.recipeSerializer, location, this.result, this.group == null ? "" : this.group, this.pattern, this.key, this.toolIngredient, this.advancementBuilder, new ResourceLocation(location.getNamespace(), "recipes/" + this.result.getItem().getGroup().getPath() + "/" + location.getPath()), this.consumesTool));
     }
 
     private void validate(ResourceLocation location) {
@@ -125,7 +127,7 @@ public class ConstructionTableRecipeBuilder {
 
         private final IRecipeSerializer<? extends AbstractConstructionTableRecipe> recipeSerializer;
         private final ResourceLocation id;
-        private final ExtRecipeOutput result;
+        private final ItemStack result;
         private final String group;
         private final List<String> pattern;
         private final Map<Character, Ingredient> key;
@@ -134,7 +136,7 @@ public class ConstructionTableRecipeBuilder {
         private final ResourceLocation advancementId;
         private final boolean consumesTool;
 
-        public Result(IRecipeSerializer<? extends AbstractConstructionTableRecipe> recipeSerializer, ResourceLocation id, ExtRecipeOutput result, String group, List<String> pattern, Map<Character, Ingredient> key, Ingredient toolIngredient, Builder advancementBuilder, ResourceLocation advancementId, boolean consumesTool) {
+        public Result(IRecipeSerializer<? extends AbstractConstructionTableRecipe> recipeSerializer, ResourceLocation id, ItemStack result, String group, List<String> pattern, Map<Character, Ingredient> key, Ingredient toolIngredient, Builder advancementBuilder, ResourceLocation advancementId, boolean consumesTool) {
             this.recipeSerializer = recipeSerializer;
             this.id = id;
             this.result = result;
@@ -176,8 +178,8 @@ public class ConstructionTableRecipeBuilder {
             }
 
             json.addProperty("consumes_tool", this.consumesTool);
-            
-            json.add("result", this.result.serialize());
+
+            json.add("result", TCJsonUtil.serializeItemStack(this.result));
         }
 
         public IRecipeSerializer<?> getSerializer() {

@@ -45,13 +45,18 @@ public class ArmorStandEventHandler {
                     }
                 }
             } else {
-                for (EquipmentSlotType slotType : EquipmentSlotType.values()) {
-                    if (slotType.getSlotType() == EquipmentSlotType.Group.ARMOR) {
-                        ItemStack standStack = armorStand.getItemStackFromSlot(slotType);
-                        ItemStack playerStack = e.getEntityLiving().getItemStackFromSlot(slotType);
-                        armorStand.setItemStackToSlot(slotType, playerStack);
-                        e.getEntityLiving().setItemStackToSlot(slotType, standStack);
+                if (e.getItemStack().isEmpty()) {
+                    for (EquipmentSlotType slotType : EquipmentSlotType.values()) {
+                        if (slotType.getSlotType() == EquipmentSlotType.Group.ARMOR) {
+                            ItemStack standStack = armorStand.getItemStackFromSlot(slotType);
+                            ItemStack playerStack = e.getEntityLiving().getItemStackFromSlot(slotType);
+                            armorStand.setItemStackToSlot(slotType, playerStack);
+                            e.getEntityLiving().setItemStackToSlot(slotType, standStack);
+                        }
                     }
+                } else {
+                    armorStand.setItemStackToSlot(EquipmentSlotType.OFFHAND, e.getItemStack());
+                    e.getEntityLiving().setItemStackToSlot(EquipmentSlotType.OFFHAND, ItemStack.EMPTY);
                 }
                 e.setCanceled(true);
                 e.setCancellationResult(ActionResultType.SUCCESS);

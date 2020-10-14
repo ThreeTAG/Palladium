@@ -18,10 +18,9 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Rotations;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.Tags;
@@ -74,7 +73,7 @@ public class SuitStandEntity extends ArmorStandEntity {
     }
 
     @Override
-    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vec3d vec3d, Hand hand) {
+    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
         if (!player.isCrouching()) {
             ItemStack stack = player.getHeldItem(hand);
 
@@ -89,8 +88,7 @@ public class SuitStandEntity extends ArmorStandEntity {
                 }
             }
         }
-
-        return super.applyPlayerInteraction(player, vec3d, hand);
+        return super.applyPlayerInteraction(player, vec, hand);
     }
 
     @Override
@@ -115,9 +113,9 @@ public class SuitStandEntity extends ArmorStandEntity {
     }
 
     @Override
-    public void func_213815_f(DamageSource p_213815_1_) {
-        Block.spawnAsEntity(this.world, new BlockPos(this), new ItemStack(TCItems.SUIT_STAND.get()));
-        this.func_213816_g(p_213815_1_);
+    public void breakArmorStand(DamageSource damageSource) {
+        Block.spawnAsEntity(this.world, this.getPosition(), new ItemStack(TCItems.SUIT_STAND.get()));
+        this.func_213816_g(damageSource);
     }
 
     @Override

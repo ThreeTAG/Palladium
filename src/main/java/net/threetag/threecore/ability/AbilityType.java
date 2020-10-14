@@ -13,6 +13,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.scripts.events.RegisterAbilityThreeDataScriptEvent;
 import net.threetag.threecore.util.threedata.ThreeData;
 
 import java.io.BufferedWriter;
@@ -52,6 +53,8 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType HUD = new AbilityType(HUDAbility::new, ThreeCore.MODID, "hud");
     public static final AbilityType SKIN_CHANGE = new AbilityType(SkinChangeAbility::new, ThreeCore.MODID, "skin_change");
     public static final AbilityType HIDE_BODY_PARTS = new AbilityType(HideBodyPartsAbility::new, ThreeCore.MODID, "hide_body_parts");
+    public static final AbilityType CHANGE_ABILITY_TAB_TEXTURE = new AbilityType(ChangeAbilityTabTextureAbility::new, ThreeCore.MODID, "change_ability_tab_texture");
+    public static final AbilityType ENERGY = new AbilityType(EnergyAbility::new, ThreeCore.MODID, "energy");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -82,6 +85,8 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(HUD);
         e.getRegistry().register(SKIN_CHANGE);
         e.getRegistry().register(HIDE_BODY_PARTS);
+        e.getRegistry().register(CHANGE_ABILITY_TAB_TEXTURE);
+        e.getRegistry().register(ENERGY);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -111,7 +116,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
 
             // Sort abilities by mods
             for (AbilityType types : REGISTRY.getValues()) {
-                Ability ability = types.create();
+                Ability ability = types.create("");
                 abilities.add(ability);
                 String modName = getModContainerFromId(types.getRegistryName().getNamespace()) != null ? getModContainerFromId(types.getRegistryName().getNamespace()).getDisplayName() : types.getRegistryName().getNamespace();
                 List<Ability> modsAbilities = sorted.containsKey(modName) ? sorted.get(modName) : new ArrayList<>();
@@ -125,7 +130,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
                     bw.write("<h1>" + s + "</h1>\n");
                     bw.write("<ul>\n");
                     for (Ability ability : l) {
-                        bw.write("<li><a href=\"#" + ability.type.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).getFormattedText()) + "</a></li>\n");
+                        bw.write("<li><a href=\"#" + ability.type.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).getString()) + "</a></li>\n");
                     }
                     bw.write("</ul>\n");
                 } catch (IOException e) {
@@ -141,7 +146,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
                 bw.write("<hr>\n");
 
                 // Title
-                bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).getFormattedText()) + "</h1>\n");
+                bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).getString()) + "</h1>\n");
                 bw.write("<h3>" + entry.getRegistryName().toString() + "</h3>\n");
                 List<ThreeData<?>> dataList = ability.getDataManager().getSettingData();
 
@@ -209,8 +214,11 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         this.setRegistryName(modid, name);
     }
 
-    public Ability create() {
-        return this.supplier.get();
+    public Ability create(String id) {
+        Ability a = this.supplier.get();
+        a.id = id;
+        new RegisterAbilityThreeDataScriptEvent(a).fire();
+        return a;
     }
 
 }
