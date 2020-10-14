@@ -9,9 +9,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.JSONUtils;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -97,25 +101,25 @@ public class TCFluidUtil {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static List<IReorderingProcessor> getFormattedFluidInfo(FluidTank fluidTank) {
-        List<IReorderingProcessor> list = new ArrayList<>();
-        list.add(fluidTank.getFluid().getDisplayName().func_241878_f());
-        list.add(new TranslationTextComponent("threecore.util.fluid_tank_display", fluidTank.getFluidAmount(), fluidTank.getCapacity(), "mB").mergeStyle(TextFormatting.GRAY).func_241878_f());
+    public static List<ITextComponent> getFormattedFluidInfo(FluidTank fluidTank) {
+        List<ITextComponent> list = new ArrayList<>();
+        list.add(fluidTank.getFluid().getDisplayName());
+        list.add(new StringTextComponent(I18n.format("threecore.util.fluid_tank_display", fluidTank.getFluidAmount(), fluidTank.getCapacity(), "mB")).mergeStyle(TextFormatting.GRAY));
         return list;
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static List<IReorderingProcessor> getFormattedFluidInfo(FluidStack fluidStack, int capacity) {
-        List<IReorderingProcessor> list = new ArrayList<>();
-        list.add(fluidStack.getDisplayName().func_241878_f());
-        list.add(new TranslationTextComponent("threecore.util.fluid_tank_display", fluidStack.getAmount(), capacity, "mB").mergeStyle(TextFormatting.GRAY).func_241878_f());
+    public static List<ITextComponent> getFormattedFluidInfo(FluidStack fluidStack, int capacity) {
+        List<ITextComponent> list = new ArrayList<>();
+        list.add(fluidStack.getDisplayName());
+        list.add(new StringTextComponent(I18n.format("threecore.util.fluid_tank_display", fluidStack.getAmount(), capacity, "mB")).mergeStyle(TextFormatting.GRAY));
         return list;
     }
 
     @OnlyIn(Dist.CLIENT)
     public static void drawTooltip(FluidTank fluidTank, MatrixStack stack, ContainerScreen gui, int x, int y, int width, int height, int mouseX, int mouseY) {
         if (mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height) {
-            gui.renderTooltip(stack, getFormattedFluidInfo(fluidTank), mouseX + 10, mouseY);
+            gui.func_243308_b(stack, getFormattedFluidInfo(fluidTank), mouseX + 10, mouseY);
         }
     }
 
