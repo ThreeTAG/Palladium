@@ -6,10 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 import net.minecraftforge.fml.packs.ModFileResourcePack;
@@ -80,12 +78,7 @@ public class AddonPackManager {
         return resourceManager;
     }
 
-    @SubscribeEvent
-    public void serverStarting(FMLServerAboutToStartEvent e) {
-        e.getServer().resourcePacks.addPackFinder(new AddonPackFinder());
-    }
-
-    private static class AddonPackFinder implements IPackFinder {
+    public static class AddonPackFinder implements IPackFinder {
 
         private Supplier<IResourcePack> createResourcePack(File file) {
             return file.isDirectory() ? () -> new FolderPack(file) : () -> new FilePack(file);

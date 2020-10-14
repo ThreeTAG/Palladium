@@ -113,7 +113,6 @@ public class ThreeCore {
         AddonPackManager.init();
 
         // Loot
-        MinecraftForge.EVENT_BUS.register(new TCLootFunctions());
         MinecraftForge.EVENT_BUS.addListener(TCItems::onLootTableLoad);
 
         // Construction Table Tabs

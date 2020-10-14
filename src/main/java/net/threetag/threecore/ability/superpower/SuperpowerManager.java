@@ -41,8 +41,8 @@ public class SuperpowerManager extends JsonReloadListener {
         INSTANCE = this;
     }
 
-    @Override protected void apply(Map<ResourceLocation, JsonElement> splashList, IResourceManager resourceManagerIn, IProfiler profilerIn)
-    {
+    @Override
+    protected void apply(Map<ResourceLocation, JsonElement> splashList, IResourceManager resourceManagerIn, IProfiler profilerIn) {
         for (Map.Entry<ResourceLocation, JsonElement> entry : splashList.entrySet()) {
             ResourceLocation resourcelocation = entry.getKey();
             try {
@@ -118,7 +118,7 @@ public class SuperpowerManager extends JsonReloadListener {
         AtomicBoolean b = new AtomicBoolean(false);
         entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
             abilityContainer.getAbilities().forEach(ability -> {
-                if(ability.getAdditionalData().contains("Superpower")) {
+                if (ability.getAdditionalData().contains("Superpower")) {
                     b.set(true);
                 }
             });
