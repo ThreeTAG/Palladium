@@ -130,7 +130,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
                     bw.write("<h1>" + s + "</h1>\n");
                     bw.write("<ul>\n");
                     for (Ability ability : l) {
-                        bw.write("<li><a href=\"#" + ability.type.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).toString()) + "</a></li>\n");
+                        bw.write("<li><a href=\"#" + ability.type.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).getString()) + "</a></li>\n");
                     }
                     bw.write("</ul>\n");
                 } catch (IOException e) {
@@ -146,7 +146,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
                 bw.write("<hr>\n");
 
                 // Title
-                bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).toString()) + "</h1>\n");
+                bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).getString()) + "</h1>\n");
                 bw.write("<h3>" + entry.getRegistryName().toString() + "</h3>\n");
                 List<ThreeData<?>> dataList = ability.getDataManager().getSettingData();
 
