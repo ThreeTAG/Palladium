@@ -39,9 +39,9 @@ public class EntityModelParser implements Function<JsonObject, EntityModel> {
         return model;
     }
 
-    public static ModelRenderer parseRendererModel(JsonObject json, Model model) {
+    public static NamedModelRenderer parseRendererModel(JsonObject json, Model model) {
         int[] textureOffsets = TCJsonUtil.getIntArray(json, 2, "texture_offset", 0, 0);
-        ModelRenderer rendererModel = new ModelRenderer(model, textureOffsets[0], textureOffsets[1]);
+        NamedModelRenderer rendererModel = new NamedModelRenderer(JSONUtils.getString(json, "name", ""), model, textureOffsets[0], textureOffsets[1]);
         float[] offsets = TCJsonUtil.getFloatArray(json, 3, "offset", 0, 0, 0);
         float[] rotationPoint = TCJsonUtil.getFloatArray(json, 3, "rotation_point", 0, 0, 0);
         float[] rotation = TCJsonUtil.getFloatArray(json, 3, "rotation", 0, 0, 0);
@@ -64,9 +64,9 @@ public class EntityModelParser implements Function<JsonObject, EntityModel> {
 
     public static class ParsedModel extends EntityModel {
 
-        public List<ModelRenderer> cubes = Lists.newLinkedList();
+        public List<NamedModelRenderer> cubes = Lists.newLinkedList();
 
-        public ParsedModel(List<ModelRenderer> cubes) {
+        public ParsedModel(List<NamedModelRenderer> cubes) {
             this.cubes = cubes;
         }
 
@@ -74,7 +74,7 @@ public class EntityModelParser implements Function<JsonObject, EntityModel> {
 
         }
 
-        public ParsedModel addCube(ModelRenderer rendererModel) {
+        public ParsedModel addCube(NamedModelRenderer rendererModel) {
             this.cubes.add(rendererModel);
             return this;
         }
@@ -82,6 +82,15 @@ public class EntityModelParser implements Function<JsonObject, EntityModel> {
         @Override
         public void setRotationAngles(Entity entity, float v, float v1, float v2, float v3, float v4) {
 
+        }
+
+        public NamedModelRenderer getNamedPart(String name) {
+            for (NamedModelRenderer modelRenderer : this.cubes) {
+                if (modelRenderer.getName().equals(name)) {
+                    return modelRenderer;
+                }
+            }
+            return null;
         }
 
         @Override

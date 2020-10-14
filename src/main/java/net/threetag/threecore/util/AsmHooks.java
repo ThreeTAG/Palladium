@@ -56,8 +56,8 @@ public class AsmHooks {
     public static void preRenderCallback(Entity entityIn, MatrixStack matrixStackIn, float partialTicks) {
         matrixStackIn.push();
         entityIn.getCapability(CapabilitySizeChanging.SIZE_CHANGING).ifPresent(sizeChanging -> {
-            float width = sizeChanging.getRenderWidth(RenderUtil.renderTickTime);
-            float height = sizeChanging.getRenderHeight(RenderUtil.renderTickTime);
+            float width = sizeChanging.getRenderWidth(partialTicks);
+            float height = sizeChanging.getRenderHeight(partialTicks);
             matrixStackIn.scale(width, height, width);
         });
     }
