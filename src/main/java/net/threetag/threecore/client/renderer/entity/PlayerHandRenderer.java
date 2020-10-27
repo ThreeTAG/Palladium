@@ -47,7 +47,7 @@ public class PlayerHandRenderer {
 
         ModelLayerManager.forEachLayer(clientPlayer, (layer, context) -> {
             if (layer.isActive(context)) {
-                layer.renderArm(HandSide.RIGHT, context, playerRenderer, matrixStack, bufferIn, combinedLightIn);
+                layer.renderArm(HandSide.LEFT, context, playerRenderer, matrixStack, bufferIn, combinedLightIn);
             }
         });
     }

@@ -14,6 +14,7 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -26,11 +27,13 @@ public class CuriosHandler extends DefaultCuriosHandler {
 
         AbilityHelper.registerAbilityContainer((entity) -> {
             List<IAbilityContainer> containers = Lists.newArrayList();
-            CuriosApi.getSlotHelper().getSlotTypeIds().forEach(id -> {
-                for (ItemStack stack : INSTANCE.getItemsInSlot(entity, id)) {
-                    stack.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(containers::add);
-                }
-            });
+            if(CuriosApi.getSlotHelper() != null) {
+                CuriosApi.getSlotHelper().getSlotTypeIds().forEach(id -> {
+                    for (ItemStack stack : INSTANCE.getItemsInSlot(entity, id)) {
+                        stack.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(containers::add);
+                    }
+                });
+            }
             return containers;
         });
 
@@ -39,29 +42,32 @@ public class CuriosHandler extends DefaultCuriosHandler {
 
     @Override
     public Set<String> getSlotTypeIds() {
-        return CuriosApi.getSlotHelper().getSlotTypeIds();
+        return CuriosApi.getSlotHelper() != null ? CuriosApi.getSlotHelper().getSlotTypeIds() : Collections.emptyNavigableSet();
     }
 
     @Override
     public Optional<ImmutableTriple<String, Integer, ItemStack>> getCurioEquipped(Item item, @Nonnull LivingEntity livingEntity) {
-        return CuriosApi.getCuriosHelper().findEquippedCurio(item, livingEntity);
+        return CuriosApi.getCuriosHelper() != null ? CuriosApi.getCuriosHelper().findEquippedCurio(item, livingEntity) : Optional.empty();
     }
 
     @Override
     public Optional<ImmutableTriple<String, Integer, ItemStack>> getCurioEquipped(Predicate<ItemStack> filter, @Nonnull LivingEntity livingEntity) {
-        return CuriosApi.getCuriosHelper().findEquippedCurio(filter, livingEntity);
+        return CuriosApi.getCuriosHelper() != null ? CuriosApi.getCuriosHelper().findEquippedCurio(filter, livingEntity) : Optional.empty();
     }
 
     @Override
     public List<ItemStack> getItemsInSlot(LivingEntity entity, String identifier) {
         List<ItemStack> list = Lists.newArrayList();
-        CuriosApi.getCuriosHelper().getCuriosHandler(entity).ifPresent(curioHandler -> {
-            curioHandler.getStacksHandler(identifier).ifPresent(slotHandler -> {
-                for (int i = 0; i < slotHandler.getStacks().getSlots(); i++) {
-                    list.add(slotHandler.getStacks().getStackInSlot(i));
-                }
+        if(CuriosApi.getCuriosHelper() != null) {
+            CuriosApi.getCuriosHelper().getCuriosHandler(entity).ifPresent(curioHandler -> {
+                curioHandler.getStacksHandler(identifier).ifPresent(slotHandler -> {
+                    for (int i = 0; i < slotHandler.getStacks().getSlots(); i++) {
+                        list.add(slotHandler.getStacks().getStackInSlot(i));
+                    }
+                });
             });
-        });
+        }
+
         return list;
     }
 
