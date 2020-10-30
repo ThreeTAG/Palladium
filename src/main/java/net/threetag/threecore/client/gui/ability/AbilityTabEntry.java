@@ -41,10 +41,10 @@ public class AbilityTabEntry extends AbstractGui {
         int i = getProgress() != null ? getProgress()[1] : 0;
         int j = String.valueOf(i).length();
         int k = i > 1 ? Minecraft.getInstance().fontRenderer.getStringWidth("  ") + Minecraft.getInstance().fontRenderer.getStringWidth("0") * j * 2 + Minecraft.getInstance().fontRenderer.getStringWidth("/") : 0;
-        int l = 29 + Minecraft.getInstance().fontRenderer.func_238414_a_(this.title) + k;
+        int l = 29 + Minecraft.getInstance().fontRenderer.getStringPropertyWidth(this.title) + k;
 
         for (ITextComponent s1 : this.description) {
-            l = Math.max(l, Minecraft.getInstance().fontRenderer.func_238414_a_(s1));
+            l = Math.max(l, Minecraft.getInstance().fontRenderer.getStringPropertyWidth(s1));
         }
 
         this.width = l + 3 + 5;

@@ -56,7 +56,7 @@ public class SuperpowerManager extends JsonReloadListener {
     }
 
     public Superpower parseSuperpower(ResourceLocation resourceLocation, JsonObject json) throws Exception {
-        ITextComponent name = ITextComponent.Serializer.func_240644_b_(JSONUtils.getJsonObject(json, "name").toString());
+        ITextComponent name = ITextComponent.Serializer.getComponentFromJson(JSONUtils.getJsonObject(json, "name").toString());
         IIcon icon = IconSerializer.deserialize(JSONUtils.getJsonObject(json, "icon"));
         List<Supplier<Ability>> abilityGenerators = Lists.newArrayList();
         if (JSONUtils.hasField(json, "abilities")) {

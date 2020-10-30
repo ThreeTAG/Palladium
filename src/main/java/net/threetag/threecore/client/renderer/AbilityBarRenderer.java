@@ -98,7 +98,7 @@ public class AbilityBarRenderer {
                 Ability ability = abilities.get(i);
                 EnumAbilityColor color = ability.getColor();
                 ITextComponent name = showName ? ability.getDataManager().get(Ability.TITLE) : InputMappings.getInputByCode(getKeyFromAbility(ability, i), 0).func_237520_d_();
-                int nameLength = mc.fontRenderer.func_238414_a_(name);
+                int nameLength = mc.fontRenderer.getStringPropertyWidth(name);
 
                 RenderSystem.color4f(1, 1, 1, 1);
                 mc.textureManager.bindTexture(TEXTURE);

@@ -51,7 +51,7 @@ public class SolarPanelTileEntity extends TileEntity implements ITickableTileEnt
     }
 
     public boolean canProduce() {
-        return world.func_230315_m_().hasSkyLight() && world.canBlockSeeSky(this.getPos().up()) && !world.isRaining() && !world.isThundering() && world.isDaytime();
+        return world.getDimensionType().hasSkyLight() && world.canBlockSeeSky(this.getPos().up()) && !world.isRaining() && !world.isThundering() && world.isDaytime();
     }
 
     @Override

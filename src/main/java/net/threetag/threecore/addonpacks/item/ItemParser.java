@@ -270,7 +270,7 @@ public class ItemParser {
                 lines.addAll(parseDescriptionLines(jsonArray.get(i)));
             }
         } else if (jsonElement.isJsonObject()) {
-            lines.add(ITextComponent.Serializer.func_240641_a_(jsonElement));
+            lines.add(ITextComponent.Serializer.getComponentFromJson(jsonElement));
         } else if (jsonElement.isJsonPrimitive()) {
             lines.add(new StringTextComponent(jsonElement.getAsString()));
         }

@@ -89,7 +89,7 @@ public class FluidIngredient implements Predicate<FluidStack> {
                     return new FluidIngredient(TCFluidUtil.deserializeFluidStack(jsonObject));
                 } else if (JSONUtils.hasField(jsonObject, "tag")) {
                     ResourceLocation tag = new ResourceLocation(JSONUtils.getString(jsonObject, "tag"));
-                    ITag.INamedTag<Fluid> fluidTag = FluidTags.func_241280_c_().stream().filter(fluidNamedTag -> fluidNamedTag.getName().equals(tag)).findFirst().orElse(null);
+                    ITag.INamedTag<Fluid> fluidTag = FluidTags.getAllTags().stream().filter(fluidNamedTag -> fluidNamedTag.getName().equals(tag)).findFirst().orElse(null);
                     if (fluidTag == null) {
                         throw new JsonSyntaxException("Unknown fluid tag '" + tag + "'");
                     } else {

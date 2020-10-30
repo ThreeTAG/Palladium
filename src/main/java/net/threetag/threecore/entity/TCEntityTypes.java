@@ -43,7 +43,7 @@ public class TCEntityTypes {
             AttributeModifierMap map = GlobalEntityTypeAttributes.getAttributesForEntity((EntityType<? extends LivingEntity>) value);
             if (map != null) {
                 Map<Attribute, ModifiableAttributeInstance> oldAttributes = map.attributeMap;
-                AttributeModifierMap.MutableAttribute newMap = AttributeModifierMap.func_233803_a_();
+                AttributeModifierMap.MutableAttribute newMap = AttributeModifierMap.createMutableAttribute();
                 newMap.attributeMap.putAll(oldAttributes);
                 newMap.createMutableAttribute(TCAttributes.STEP_HEIGHT.get(), 1D);
                 newMap.createMutableAttribute(TCAttributes.FALL_RESISTANCE.get());

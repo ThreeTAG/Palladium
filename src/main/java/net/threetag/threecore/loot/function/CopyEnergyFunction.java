@@ -51,16 +51,16 @@ public class CopyEnergyFunction extends LootFunction
         });
     }
 
-    @Override public LootFunctionType func_230425_b_()
+    @Override public LootFunctionType getFunctionType()
     {
         return TCLootFunctions.COPY_ENERGY;
     }
 
     public static class Serializer extends LootFunction.Serializer<CopyEnergyFunction> {
 
-        @Override public void func_230424_a_(JsonObject object, CopyEnergyFunction function, JsonSerializationContext serializationContext)
+        @Override public void serialize(JsonObject object, CopyEnergyFunction function, JsonSerializationContext serializationContext)
         {
-            super.func_230424_a_(object, function, serializationContext);
+            super.serialize(object, function, serializationContext);
             object.addProperty("source", function.source.name);
         }
 

@@ -64,7 +64,7 @@ public class BuyAbilityScreen extends Screen {
         this.getMinecraft().getTextureManager().bindTexture(AbilitiesScreen.WINDOW);
         this.blit(stack, i, j, 0, 196, this.guiWidth, this.guiHeight);
 
-        List<IReorderingProcessor> lines = this.font.func_238425_b_(new StringTextComponent(I18n.format("gui.threecore.abilities.fulfill_condition")), 132);
+        List<IReorderingProcessor> lines = this.font.trimStringToWidth(new StringTextComponent(I18n.format("gui.threecore.abilities.fulfill_condition")), 132);
         for (int k = 0; k < lines.size(); k++) {
             IReorderingProcessor text = lines.get(k);
             int width = this.font.getStringWidth(text.toString());

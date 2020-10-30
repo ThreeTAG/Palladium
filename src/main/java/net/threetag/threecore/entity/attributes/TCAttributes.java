@@ -19,12 +19,12 @@ import java.util.UUID;
 public class TCAttributes {
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, ThreeCore.MODID);
 
-    public static final RegistryObject<Attribute> STEP_HEIGHT = ATTRIBUTES.register("step_height", () -> new RangedAttribute("threecore.stepHeight", 0.5D, 0D, 20D).func_233753_a_(true));
+    public static final RegistryObject<Attribute> STEP_HEIGHT = ATTRIBUTES.register("step_height", () -> new RangedAttribute("threecore.stepHeight", 0.5D, 0D, 20D).setShouldWatch(true));
     public static final RegistryObject<Attribute> FALL_RESISTANCE = ATTRIBUTES.register("fall_resistance", () -> new RangedAttribute("threecore.fallResistance", 0D, 0D, Double.MAX_VALUE));
-    public static final RegistryObject<Attribute> JUMP_HEIGHT = ATTRIBUTES.register("jump_height", () -> new RangedAttribute("threecore.jumpHeight", 0D, 0D, Double.MAX_VALUE).func_233753_a_(true));
-    public static final RegistryObject<Attribute> SPRINT_SPEED = ATTRIBUTES.register("sprint_speed", () -> new RangedAttribute("threecore.sprintSpeed", 0D, 0D, Double.MAX_VALUE).func_233753_a_(true));
-    public static final RegistryObject<Attribute> SIZE_WIDTH = ATTRIBUTES.register("size_width", () -> new RangedAttribute("threecore.sizeWidth", 1D, 0.1D, 32D).func_233753_a_(true));
-    public static final RegistryObject<Attribute> SIZE_HEIGHT = ATTRIBUTES.register("size_height", () -> new RangedAttribute("threecore.sizeHeight", 1D, 0.1D, 32D).func_233753_a_(true));
+    public static final RegistryObject<Attribute> JUMP_HEIGHT = ATTRIBUTES.register("jump_height", () -> new RangedAttribute("threecore.jumpHeight", 0D, 0D, Double.MAX_VALUE).setShouldWatch(true));
+    public static final RegistryObject<Attribute> SPRINT_SPEED = ATTRIBUTES.register("sprint_speed", () -> new RangedAttribute("threecore.sprintSpeed", 0D, 0D, Double.MAX_VALUE).setShouldWatch(true));
+    public static final RegistryObject<Attribute> SIZE_WIDTH = ATTRIBUTES.register("size_width", () -> new RangedAttribute("threecore.sizeWidth", 1D, 0.1D, 32D).setShouldWatch(true));
+    public static final RegistryObject<Attribute> SIZE_HEIGHT = ATTRIBUTES.register("size_height", () -> new RangedAttribute("threecore.sizeHeight", 1D, 0.1D, 32D).setShouldWatch(true));
     public static float stepHeight;
     public static final UUID SPRINT_UUID = UUID.fromString("11faf62f-c271-4601-809e-83d982687b69");
 

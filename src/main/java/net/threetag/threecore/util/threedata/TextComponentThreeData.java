@@ -16,7 +16,7 @@ public class TextComponentThreeData extends ThreeData<ITextComponent> {
     public ITextComponent parseValue(JsonObject jsonObject, ITextComponent defaultValue) {
         if (!JSONUtils.hasField(jsonObject, this.jsonKey))
             return defaultValue;
-        return ITextComponent.Serializer.func_240643_a_(JSONUtils.getJsonObject(jsonObject, this.jsonKey).toString());
+        return ITextComponent.Serializer.getComponentFromJson(JSONUtils.getJsonObject(jsonObject, this.jsonKey).toString());
     }
 
     @Override
@@ -28,7 +28,7 @@ public class TextComponentThreeData extends ThreeData<ITextComponent> {
     public ITextComponent readFromNBT(CompoundNBT nbt, ITextComponent defaultValue) {
         if (!nbt.contains(this.key))
             return defaultValue;
-        return ITextComponent.Serializer.func_240643_a_(nbt.getString(this.key));
+        return ITextComponent.Serializer.getComponentFromJson(nbt.getString(this.key));
     }
 
     @Override

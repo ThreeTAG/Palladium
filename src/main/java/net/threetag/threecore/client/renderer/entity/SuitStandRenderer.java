@@ -64,9 +64,9 @@ public class SuitStandRenderer extends LivingRenderer<SuitStandEntity, SuitStand
         } else {
             ResourceLocation resourcelocation = this.getEntityTexture(entity);
             if (p_230496_3_) {
-                return RenderType.func_230168_b_(resourcelocation, false);
+                return RenderType.getEntityTranslucent(resourcelocation, false);
             } else {
-                return p_230496_2_ ? RenderType.func_230167_a_(resourcelocation, false) : null;
+                return p_230496_2_ ? RenderType.getEntityCutoutNoCull(resourcelocation, false) : null;
             }
         }
     }

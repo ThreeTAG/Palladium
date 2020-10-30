@@ -89,7 +89,7 @@ public class CapeModelLayer implements IModelLayer {
             ((BipedModel) entityRenderer.getEntityModel()).bipedBody.translateRotate(matrixStack);
             matrixStack.translate(0, -0.02F, 0.2F);
 
-            IVertexBuilder vertex = ItemRenderer.func_239391_c_(renderTypeBuffer, RenderType.getEntityTranslucent(this.texture.getTexture(context)), false, context.getAsItem() != null && context.getAsItem().hasEffect());
+            IVertexBuilder vertex = ItemRenderer.getEntityGlintVertexBuilder(renderTypeBuffer, RenderType.getEntityTranslucent(this.texture.getTexture(context)), false, context.getAsItem() != null && context.getAsItem().hasEffect());
             int color = getColor(context);
             if (color > -1) {
                 renderCape(context, matrixStack, vertex, rotation, RenderUtil.red(color), RenderUtil.green(color), RenderUtil.blue(color), packedLight, partialTicks);

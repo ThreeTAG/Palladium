@@ -15,7 +15,7 @@ public class BackgroundlessButton extends Button {
 
     @Override
     public void renderButton(MatrixStack matrixStack, int x, int y, float partialTicks) {
-        Minecraft.getInstance().fontRenderer.drawString(matrixStack, this.getMessage().getString(), this.x + (this.width - Minecraft.getInstance().fontRenderer.func_238414_a_(this.getMessage())) / 2F, this.y - 1, 4210752);
+        Minecraft.getInstance().fontRenderer.drawString(matrixStack, this.getMessage().getString(), this.x + (this.width - Minecraft.getInstance().fontRenderer.getStringPropertyWidth(this.getMessage())) / 2F, this.y - 1, 4210752);
         if (this.isHovered()) {
             this.renderToolTip(matrixStack, x, y);
         }
