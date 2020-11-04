@@ -6,17 +6,16 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.threetag.threecore.ability.IAbilityContainer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class AbilityContainerProvider implements ICapabilitySerializable<CompoundNBT> {
+public class MultiAbilityContainerProvider implements ICapabilitySerializable<CompoundNBT> {
 
-    public final IAbilityContainer container;
-    public final LazyOptional<IAbilityContainer> lazyOptional;
+    public final IMultiAbilityContainer container;
+    public final LazyOptional<IMultiAbilityContainer> lazyOptional;
 
-    public AbilityContainerProvider(IAbilityContainer container) {
+    public MultiAbilityContainerProvider(IMultiAbilityContainer container) {
         this.container = container;
         this.lazyOptional = LazyOptional.of(() -> container);
     }
@@ -24,7 +23,7 @@ public class AbilityContainerProvider implements ICapabilitySerializable<Compoun
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        return cap == CapabilityAbilityContainer.ABILITY_CONTAINER ? (LazyOptional<T>) this.lazyOptional : LazyOptional.empty();
+        return cap == CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER? (LazyOptional<T>) this.lazyOptional : LazyOptional.empty();
     }
 
     @Override

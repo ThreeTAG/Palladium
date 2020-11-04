@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
-import net.threetag.threecore.ability.IAbilityContainer;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.ability.MultiJumpAbility;
 
 import java.util.function.Supplier;

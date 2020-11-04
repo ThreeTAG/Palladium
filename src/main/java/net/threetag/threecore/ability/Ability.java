@@ -15,6 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.threetag.threecore.ability.condition.AbilityConditionManager;
 import net.threetag.threecore.ability.condition.Condition;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
 import net.threetag.threecore.client.gui.ability.AbilityScreen;
 import net.threetag.threecore.scripts.events.AbilityDataUpdatedScriptEvent;

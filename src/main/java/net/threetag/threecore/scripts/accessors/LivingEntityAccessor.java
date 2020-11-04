@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
-import net.threetag.threecore.ability.IAbilityContainer;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.ability.superpower.Superpower;
 import net.threetag.threecore.ability.superpower.SuperpowerManager;
 import net.threetag.threecore.scripts.ScriptParameterName;

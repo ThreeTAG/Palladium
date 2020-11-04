@@ -6,6 +6,7 @@ import net.minecraft.entity.item.EnderCrystalEntity;
 import net.minecraft.entity.item.HangingEntity;
 import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.IntNBT;
 import net.minecraft.util.Direction;
@@ -17,7 +18,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.ability.IAbilityContainer;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.karma.IKarma;
 import net.threetag.threecore.util.threedata.IThreeDataHolder;
 
@@ -39,6 +40,26 @@ public class ThreeCoreCapabilities {
 
                     @Override
                     public void readNBT(Capability<IAbilityContainer> capability, IAbilityContainer instance, Direction direction, INBT nbt) {
+                        if (instance instanceof INBTSerializable)
+                            ((INBTSerializable) instance).deserializeNBT(nbt);
+                        else
+                            throw new IllegalArgumentException("Can not serialize to an instance that isn't an instance of INBTSerializable");
+                    }
+                },
+                () -> new ItemAbilityContainer(ItemStack.EMPTY));
+
+        // Multi Abilities
+        CapabilityManager.INSTANCE.register(IMultiAbilityContainer.class, new Capability.IStorage<IMultiAbilityContainer>() {
+                    @Nullable
+                    @Override
+                    public INBT writeNBT(Capability<IMultiAbilityContainer> capability, IMultiAbilityContainer instance, Direction direction) {
+                        if (instance instanceof INBTSerializable)
+                            return ((INBTSerializable) instance).serializeNBT();
+                        throw new IllegalArgumentException("Can not serialize an instance that isn't an instance of INBTSerializable");
+                    }
+
+                    @Override
+                    public void readNBT(Capability<IMultiAbilityContainer> capability, IMultiAbilityContainer instance, Direction direction, INBT nbt) {
                         if (instance instanceof INBTSerializable)
                             ((INBTSerializable) instance).deserializeNBT(nbt);
                         else
@@ -110,8 +131,8 @@ public class ThreeCoreCapabilities {
     @SubscribeEvent
     public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> e) {
 
-        if (e.getObject() instanceof LivingEntity && !e.getObject().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).isPresent()) {
-            e.addCapability(new ResourceLocation(ThreeCore.MODID, "ability_container"), new AbilityContainerProvider(new CapabilityAbilityContainer()));
+        if (e.getObject() instanceof LivingEntity && !e.getObject().getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).isPresent()) {
+            e.addCapability(new ResourceLocation(ThreeCore.MODID, "multi_ability_container"), new MultiAbilityContainerProvider(new CapabilityAbilityContainer()));
         }
 
         if (e.getObject() instanceof PlayerEntity && !e.getObject().getCapability(CapabilityKarma.KARMA).isPresent()) {

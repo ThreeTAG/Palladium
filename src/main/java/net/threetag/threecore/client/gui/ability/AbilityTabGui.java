@@ -9,7 +9,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.ChangeAbilityTabTextureAbility;
-import net.threetag.threecore.ability.IAbilityContainer;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 
 import java.awt.*;
 import java.util.LinkedList;

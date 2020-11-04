@@ -2,7 +2,7 @@ package net.threetag.threecore.network;
 
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
-import net.threetag.threecore.ability.IAbilityContainer;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.ability.condition.BuyableAbilityCondition;
 import net.threetag.threecore.ability.condition.Condition;
 import net.minecraft.entity.player.PlayerEntity;
