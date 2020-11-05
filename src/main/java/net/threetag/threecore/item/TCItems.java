@@ -144,13 +144,13 @@ public class TCItems {
 
     @OnlyIn(Dist.CLIENT)
     public static void initItemProperties() {
-        ItemModelsProperties.func_239418_a_(TCBlocks.ADVANCED_CAPACITOR_BLOCK_ITEM.get(), new ResourceLocation(ThreeCore.MODID, "energy"), (stack, world, entity) -> {
+        ItemModelsProperties.registerProperty(TCBlocks.ADVANCED_CAPACITOR_BLOCK_ITEM.get(), new ResourceLocation(ThreeCore.MODID, "energy"), (stack, world, entity) -> {
             AtomicReference<Float> f = new AtomicReference<>((float) 0);
             stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> f.set((float) energyStorage.getEnergyStored() / (float) energyStorage.getMaxEnergyStored()));
             return f.get();
         });
 
-        ItemModelsProperties.func_239418_a_(TCItems.MULTIVERSAL_EXTRAPOLATOR.get(), new ResourceLocation(ThreeCore.MODID, "inactive"), (stack, world, entity) -> !MultiversalExtrapolatorItem.hasValidUniverseClient(stack) ? 1.0F : 0.0F);
+        ItemModelsProperties.registerProperty(TCItems.MULTIVERSAL_EXTRAPOLATOR.get(), new ResourceLocation(ThreeCore.MODID, "inactive"), (stack, world, entity) -> !MultiversalExtrapolatorItem.hasValidUniverseClient(stack) ? 1.0F : 0.0F);
     }
 
     public static void onLootTableLoad(LootTableLoadEvent e) {
@@ -162,7 +162,7 @@ public class TCItems {
             ILootCondition.IBuilder conditionBuilder = new ILootCondition.IBuilder() {
                 @Override
                 public ILootCondition build() {
-                    return Registry.LOOT_CONDITION_TYPE.func_241873_b(new ResourceLocation("random_chance")).get().func_237408_a_().func_230423_a_(jsonObject, null);
+                    return Registry.LOOT_CONDITION_TYPE.getOptional(new ResourceLocation("random_chance")).get().getSerializer().deserialize(jsonObject, null);
                 }
             };
             e.getTable().addPool(LootPool.builder().addEntry(ItemLootEntry.builder(TCItems.MULTIVERSAL_EXTRAPOLATOR.get()).quality(1).weight(10).acceptCondition(conditionBuilder)).acceptCondition(conditionBuilder).build());

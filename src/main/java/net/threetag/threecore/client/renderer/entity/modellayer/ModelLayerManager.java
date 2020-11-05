@@ -69,7 +69,7 @@ public class ModelLayerManager {
             ModelLayerContext context = new ModelLayerContext(entity);
             List<Pair<IModelLayer, IModelLayerContext>> list = Lists.newArrayList();
             for (Ability ability : AbilityHelper.getAbilities(entity)) {
-                if (ability instanceof IModelLayerProvider) {
+                if (ability instanceof IModelLayerProvider && ability.getConditionManager().isEnabled()) {
                     for (IModelLayer layer : ((IModelLayerProvider) ability).getModelLayers(context)) {
                         list.add(Pair.of(layer, context));
                     }

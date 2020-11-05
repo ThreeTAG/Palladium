@@ -1,6 +1,9 @@
 package net.threetag.threecore.ability;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -8,21 +11,38 @@ import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.ability.container.DefaultAbilityContainer;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.capability.CapabilityAbilityContainer;
 import net.threetag.threecore.network.SendPlayerAbilityContainerMessage;
+import net.threetag.threecore.util.icon.ItemIcon;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID)
 public class AbilityEventHandler {
 
     @SubscribeEvent
+    public static void onPlayerClone(PlayerInteractEvent.RightClickItem e) {
+        if (e.getItemStack().getItem() == Items.STICK) {
+            e.getPlayer().getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent(multiContainer -> {
+                IAbilityContainer container = new DefaultAbilityContainer(new ResourceLocation("lol", "test2"), new StringTextComponent("LOOOL2"), new ItemIcon(Items.BREAD), 20 * 30);
+                Ability ab = new FlightAbility();
+                ab.id = "flight";
+                container.addAbility(e.getEntityLiving(), "flight", ab);
+                multiContainer.addContainer(e.getEntityLiving(), container);
+            });
+        }
+    }
+
+    @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone e) {
-        e.getOriginal().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent((a) -> {
+        e.getOriginal().getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent((a) -> {
             if (a instanceof INBTSerializable) {
-                e.getEntityLiving().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent((a2) -> {
+                e.getEntityLiving().getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent((a2) -> {
                     if (a2 instanceof INBTSerializable) {
                         ((INBTSerializable) a2).deserializeNBT(((INBTSerializable) a).serializeNBT());
                     }
@@ -34,18 +54,18 @@ public class AbilityEventHandler {
     @SubscribeEvent
     public static void onJoin(EntityJoinWorldEvent e) {
         if (e.getEntity() instanceof ServerPlayerEntity) {
-            e.getEntity().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent((a) -> {
+            e.getEntity().getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent((a) -> {
                 if (a instanceof CapabilityAbilityContainer)
-                    ThreeCore.NETWORK_CHANNEL.sendTo(new SendPlayerAbilityContainerMessage(e.getEntity().getEntityId(), ((CapabilityAbilityContainer) a).getUpdateTag()), ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                    ThreeCore.NETWORK_CHANNEL.sendTo(new SendPlayerAbilityContainerMessage(e.getEntity().getEntityId(), ((CapabilityAbilityContainer) a).serializeNBT()), ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             });
         }
     }
 
     @SubscribeEvent
     public static void onStartTracking(PlayerEvent.StartTracking e) {
-        e.getTarget().getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent((a) -> {
+        e.getTarget().getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent((a) -> {
             if (a instanceof CapabilityAbilityContainer)
-                ThreeCore.NETWORK_CHANNEL.sendTo(new SendPlayerAbilityContainerMessage(e.getTarget().getEntityId(), ((CapabilityAbilityContainer) a).getUpdateTag()), ((ServerPlayerEntity) e.getPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                ThreeCore.NETWORK_CHANNEL.sendTo(new SendPlayerAbilityContainerMessage(e.getTarget().getEntityId(), ((CapabilityAbilityContainer) a).serializeNBT()), ((ServerPlayerEntity) e.getPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
         });
     }
 
@@ -54,6 +74,8 @@ public class AbilityEventHandler {
         AbilityHelper.getAbilityContainers(e.getEntityLiving()).forEach(container -> {
             container.tick(e.getEntityLiving());
         });
+
+        e.getEntity().getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent(multiContainer -> multiContainer.tick(e.getEntityLiving()));
     }
 
     @SubscribeEvent

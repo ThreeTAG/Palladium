@@ -35,7 +35,7 @@ public class WorldAccessor extends ScriptAccessor<World> {
 
     public void setTime(@ScriptParameterName("time") long time) {
         if (this.value instanceof ServerWorld)
-            ((ServerWorld) this.value).func_241114_a_(time);
+            ((ServerWorld) this.value).setDayTime(time);
     }
 
     public boolean isRaining() {
@@ -94,7 +94,7 @@ public class WorldAccessor extends ScriptAccessor<World> {
 
     public void executeCommand(@ScriptParameterName("command") String command) {
         if (this.value instanceof ServerWorld) {
-            CommandSource commandSource = new CommandSource(new ScriptCommandSource(), Vector3d.copy(((ServerWorld) this.value).func_241135_u_()), Vector2f.ZERO, (ServerWorld) value, 4, "Script", new StringTextComponent("Script"), this.value.getServer(), (Entity) null);
+            CommandSource commandSource = new CommandSource(new ScriptCommandSource(), Vector3d.copy(((ServerWorld) this.value).getSpawnPoint()), Vector2f.ZERO, (ServerWorld) value, 4, "Script", new StringTextComponent("Script"), this.value.getServer(), (Entity) null);
             this.value.getServer().getCommandManager().handleCommand(commandSource, command);
         }
     }

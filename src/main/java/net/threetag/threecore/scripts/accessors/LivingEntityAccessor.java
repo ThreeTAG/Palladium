@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
-import net.threetag.threecore.ability.IAbilityContainer;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.ability.superpower.Superpower;
 import net.threetag.threecore.ability.superpower.SuperpowerManager;
 import net.threetag.threecore.scripts.ScriptParameterName;
@@ -226,9 +226,32 @@ public class LivingEntityAccessor extends EntityAccessor {
         this.livingEntity.attackEntityFrom(DamageSource.causeExplosionDamage(attacker == null ? null : attacker.livingEntity), amount);
     }
 
-    public void addSuperpower(@ScriptParameterName("superpower") String superpower) {
+    public void setSuperpower(@ScriptParameterName("superpower") String superpower) {
+        this.setSuperpower(superpower, -1);
+    }
+
+    public void setSuperpower(@ScriptParameterName("superpower") String superpower, @ScriptParameterName("lifetime") int lifetime) {
         Superpower s = SuperpowerManager.getInstance().getSuperpower(new ResourceLocation(superpower));
         if (s != null)
-            SuperpowerManager.addSuperpower(this.livingEntity, s);
+            SuperpowerManager.setSuperpower(this.livingEntity, s, lifetime);
     }
+
+    public void addSuperpower(@ScriptParameterName("superpower") String superpower) {
+        this.addSuperpower(superpower, -1);
+    }
+
+    public void addSuperpower(@ScriptParameterName("superpower") String superpower, @ScriptParameterName("lifetime") int lifetime) {
+        Superpower s = SuperpowerManager.getInstance().getSuperpower(new ResourceLocation(superpower));
+        if (s != null)
+            SuperpowerManager.addSuperpower(this.livingEntity, s, lifetime);
+    }
+
+    public void removeSuperpower(@ScriptParameterName("superpower") String superpower) {
+        SuperpowerManager.removeSuperpower(this.livingEntity, new ResourceLocation(superpower));
+    }
+
+    public void removeSuperpowers() {
+        SuperpowerManager.removeSuperpowers(this.livingEntity);
+    }
+
 }

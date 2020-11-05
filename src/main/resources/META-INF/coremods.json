@@ -1,6 +1,4 @@
 {
-  "entity_get_bounding_box": "META-INF/entity_get_bounding_box.js",
-  "entity_recalculate_size": "META-INF/entity_recalculate_size.js",
   "entity_renderer_manager_render_entity": "META-INF/entity_renderer_manager_render_entity.js",
   "entity_tick": "META-INF/entity_tick.js",
   "inventory_screen_draw_entity": "META-INF/inventory_screen_draw_entity.js",

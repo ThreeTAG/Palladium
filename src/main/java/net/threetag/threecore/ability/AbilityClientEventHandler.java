@@ -180,7 +180,7 @@ public class AbilityClientEventHandler {
             }
         }
 
-        if (e.getType() == RenderGameOverlayEvent.ElementType.HELMET && Minecraft.getInstance().gameSettings.func_243230_g().func_243192_a()) {
+        if (e.getType() == RenderGameOverlayEvent.ElementType.HELMET && Minecraft.getInstance().gameSettings.getPointOfView().func_243192_a()) {
             for (HUDAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, HUDAbility.class)) {
                 if (ability.getConditionManager().isEnabled()) {
 

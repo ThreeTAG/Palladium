@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.condition.AbilityUnlockedCondition;
 import net.threetag.threecore.ability.condition.Condition;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

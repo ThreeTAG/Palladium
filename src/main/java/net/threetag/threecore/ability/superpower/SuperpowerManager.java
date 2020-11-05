@@ -18,6 +18,8 @@ import net.minecraftforge.fml.network.NetworkDirection;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
+import net.threetag.threecore.ability.container.IAbilityContainer;
+import net.threetag.threecore.ability.container.SuperpowerAbilityContainer;
 import net.threetag.threecore.capability.CapabilityAbilityContainer;
 import net.threetag.threecore.network.SendSuperpowerToastMessage;
 import net.threetag.threecore.scripts.events.SuperpowerSetScriptEvent;
@@ -28,6 +30,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 public class SuperpowerManager extends JsonReloadListener {
@@ -56,7 +59,7 @@ public class SuperpowerManager extends JsonReloadListener {
     }
 
     public Superpower parseSuperpower(ResourceLocation resourceLocation, JsonObject json) throws Exception {
-        ITextComponent name = ITextComponent.Serializer.func_240644_b_(JSONUtils.getJsonObject(json, "name").toString());
+        ITextComponent name = ITextComponent.Serializer.getComponentFromJson(JSONUtils.getJsonObject(json, "name").toString());
         IIcon icon = IconSerializer.deserialize(JSONUtils.getJsonObject(json, "icon"));
         List<Supplier<Ability>> abilityGenerators = Lists.newArrayList();
         if (JSONUtils.hasField(json, "abilities")) {
@@ -80,10 +83,22 @@ public class SuperpowerManager extends JsonReloadListener {
     }
 
     public static void setSuperpower(LivingEntity entity, Superpower superpower) {
+        setSuperpower(entity, superpower, -1);
+    }
+
+    public static void setSuperpower(LivingEntity entity, Superpower superpower, int lifetime) {
         try {
-            entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
-                abilityContainer.clearAbilities(entity, ability -> ability.getAdditionalData().contains("Superpower"));
-                abilityContainer.addAbilities(entity, superpower);
+            entity.getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent(multiContainer -> {
+                List<ResourceLocation> toRemove = Lists.newArrayList();
+                for (IAbilityContainer container : multiContainer.getAllContainers()) {
+                    if (container instanceof SuperpowerAbilityContainer) {
+                        toRemove.add(container.getId());
+                    }
+                }
+                for (ResourceLocation id : toRemove) {
+                    multiContainer.removeContainer(entity, id);
+                }
+                multiContainer.addContainer(entity, new SuperpowerAbilityContainer(superpower, lifetime));
                 new SuperpowerSetScriptEvent(entity, superpower.getId().toString()).fire();
                 if (entity instanceof ServerPlayerEntity)
                     ThreeCore.NETWORK_CHANNEL.sendTo(new SendSuperpowerToastMessage(superpower.getName(), superpower.getIcon()), ((ServerPlayerEntity) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
@@ -96,33 +111,78 @@ public class SuperpowerManager extends JsonReloadListener {
     /**
      * Adds the abilities of a superpower without removing your old abilities.
      */
-    public static void addSuperpower(LivingEntity entity, Superpower superpower) {
+    public static boolean addSuperpower(LivingEntity entity, Superpower superpower) {
+        return addSuperpower(entity, superpower, -1);
+    }
+
+    /**
+     * Adds the abilities of a superpower without removing your old abilities.
+     */
+    public static boolean addSuperpower(LivingEntity entity, Superpower superpower, int lifetime) {
+        AtomicBoolean result = new AtomicBoolean(false);
         try {
-            entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> abilityContainer.addAbilities(entity, superpower));
+            entity.getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent(multiContainer -> result.set(multiContainer.addContainer(entity, new SuperpowerAbilityContainer(superpower, lifetime))));
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return result.get();
     }
 
-    public static void removeSuperpower(LivingEntity entity) {
+    public static int removeSuperpowers(LivingEntity entity) {
+        AtomicInteger result = new AtomicInteger(0);
         try {
-            entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
-                abilityContainer.clearAbilities(entity, ability -> ability.getAdditionalData().contains("Superpower"));
+            entity.getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent(multiContainer -> {
+                List<ResourceLocation> toRemove = Lists.newArrayList();
+                for (IAbilityContainer container : multiContainer.getAllContainers()) {
+                    if (container instanceof SuperpowerAbilityContainer) {
+                        toRemove.add(container.getId());
+                    }
+                }
+                for (ResourceLocation id : toRemove) {
+                    multiContainer.removeContainer(entity, id);
+                }
+                result.set(toRemove.size());
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return result.get();
+    }
+
+    public static boolean removeSuperpower(LivingEntity entity, ResourceLocation id) {
+        AtomicBoolean result = new AtomicBoolean(false);
+        try {
+            entity.getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent(multiContainer -> {
+                result.set(multiContainer.removeContainer(entity, id));
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result.get();
     }
 
     public static boolean hasSuperpower(LivingEntity entity) {
         AtomicBoolean b = new AtomicBoolean(false);
-        entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(abilityContainer -> {
-            abilityContainer.getAbilities().forEach(ability -> {
-                if (ability.getAdditionalData().contains("Superpower")) {
+        entity.getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent(multiContainer -> {
+            for (IAbilityContainer container : multiContainer.getAllContainers()) {
+                if (container instanceof SuperpowerAbilityContainer) {
                     b.set(true);
+                    return;
                 }
-            });
+            }
         });
         return b.get();
+    }
+
+    public static Collection<ResourceLocation> getSuperpowers(LivingEntity entity) {
+        List<ResourceLocation> ids = Lists.newArrayList();
+        entity.getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent(multiContainer -> {
+            for (IAbilityContainer container : multiContainer.getAllContainers()) {
+                if (container instanceof SuperpowerAbilityContainer) {
+                    ids.add(container.getId());
+                }
+            }
+        });
+        return ids;
     }
 }

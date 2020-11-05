@@ -36,7 +36,8 @@ public class SizeChangeTypeThreeData extends ThreeData<SizeChangeType> {
     public SizeChangeType readFromNBT(CompoundNBT nbt, SizeChangeType defaultValue) {
         if (!nbt.contains(this.key))
             return defaultValue;
-        return SizeChangeType.REGISTRY.getValue(new ResourceLocation(nbt.getString(this.key)));
+        SizeChangeType type = SizeChangeType.REGISTRY.getValue(new ResourceLocation(nbt.getString(this.key)));
+        return type != null ? type : defaultValue;
     }
 
     @Override

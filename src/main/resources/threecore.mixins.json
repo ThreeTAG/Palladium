@@ -4,9 +4,11 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "threecore.refmap.json",
   "mixins": [
-	"BipedModelMixin",
 	"MinecraftServerMixin",
 	"RecipeManagerMixin"
+  ],
+  "client": [
+    "BipedModelMixin"
   ],
   "minVersion": "0.8"
 }

@@ -34,7 +34,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.threetag.threecore.ability.AbilityClientEventHandler;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.AbilityType;
-import net.threetag.threecore.ability.IAbilityContainer;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.ability.condition.ConditionType;
 import net.threetag.threecore.ability.superpower.SuperpowerManager;
 import net.threetag.threecore.addonpacks.AddonPackManager;
@@ -121,7 +121,9 @@ public class ThreeCore {
         // Ability Container
         AbilityHelper.registerAbilityContainer((p) -> {
             List<IAbilityContainer> containerList = Lists.newArrayList();
-            p.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(containerList::add);
+            p.getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent((containers) -> {
+                containerList.addAll(containers.getAllContainers());
+            });
             return containerList;
         });
         AbilityHelper.registerAbilityContainer((p) -> {
@@ -217,6 +219,8 @@ public class ThreeCore {
         ThreeCore.registerMessage(SetAbilityKeybindMessage.class, SetAbilityKeybindMessage::toBytes, SetAbilityKeybindMessage::new, SetAbilityKeybindMessage::handle);
         ThreeCore.registerMessage(MultiJumpMessage.class, MultiJumpMessage::toBytes, MultiJumpMessage::new, MultiJumpMessage::handle);
         ThreeCore.registerMessage(EmptyHandInteractMessage.class, EmptyHandInteractMessage::toBytes, EmptyHandInteractMessage::new, EmptyHandInteractMessage::handle);
+        ThreeCore.registerMessage(AddAbilityContainerMessage.class, AddAbilityContainerMessage::toBytes, AddAbilityContainerMessage::new, AddAbilityContainerMessage::handle);
+        ThreeCore.registerMessage(RemoveAbilityContainerMessage.class, RemoveAbilityContainerMessage::toBytes, RemoveAbilityContainerMessage::new, RemoveAbilityContainerMessage::handle);
 
         // Karma
         ThreeCore.registerMessage(SyncKarmaMessage.class, SyncKarmaMessage::toBytes, SyncKarmaMessage::new, SyncKarmaMessage::handle);

@@ -29,7 +29,7 @@ public class ItemIcon implements IIcon {
     @Override
     public void draw(Minecraft mc, MatrixStack stack, int x, int y) {
 //        mc.getItemRenderer().renderItemIntoGUI(this.stack, x, y);
-        mc.getItemRenderer().func_239390_c_(this.stack, x, y);
+        mc.getItemRenderer().renderItemAndEffectIntoGuiWithoutEntity(this.stack, x, y);
 
         if (this.stack.getCount() > 1) {
             String text = this.stack.getCount() + "x";

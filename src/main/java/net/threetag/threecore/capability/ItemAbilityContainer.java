@@ -15,6 +15,7 @@ import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.*;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.compat.curios.DefaultCuriosHandler;
 import net.threetag.threecore.network.UpdateAbilityMessage;
 import net.threetag.threecore.util.threedata.EnumSync;

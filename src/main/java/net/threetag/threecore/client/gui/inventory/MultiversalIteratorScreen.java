@@ -43,7 +43,7 @@ public class MultiversalIteratorScreen extends ContainerScreen<MultiversalIterat
     @Override
     public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         super.render(stack, mouseX, mouseY, partialTicks);
-        this.func_230459_a_(stack, mouseX, mouseY);
+        this.renderHoveredTooltip(stack, mouseX, mouseY);
     }
 
     @Override

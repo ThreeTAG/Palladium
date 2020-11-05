@@ -115,21 +115,21 @@ public class TCBlocks {
     public static final RegistryObject<Block> BLACK_CONCRETE_STAIRS = register("black_concrete_stairs", () -> new StairsBlock(Blocks.BLACK_CONCRETE::getDefaultState, Block.Properties.from(Blocks.BLACK_CONCRETE)));
 
     public static void initOres(BiomeLoadingEvent e) {
-        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(COPPER_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.COPPER));
-        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(TIN_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TIN));
-        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(LEAD_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.LEAD));
-        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(SILVER_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.SILVER));
-        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(PALLADIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.PALLADIUM));
-        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(VIBRANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.VIBRANIUM));
-        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(OSMIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.OSMIUM));
-        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(URANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URANIUM));
-        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(TITANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TITANIUM));
-        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(IRIDIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.IRIDIUM));
-        e.getGeneration().func_242513_a(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(URU_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URU));
+        e.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(COPPER_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.COPPER));
+        e.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(TIN_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TIN));
+        e.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(LEAD_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.LEAD));
+        e.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(SILVER_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.SILVER));
+        e.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(PALLADIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.PALLADIUM));
+        e.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(VIBRANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.VIBRANIUM));
+        e.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(OSMIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.OSMIUM));
+        e.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(URANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URANIUM));
+        e.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(TITANIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.TITANIUM));
+        e.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(IRIDIUM_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.IRIDIUM));
+        e.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, createOreFeature(URU_ORE.get().getDefaultState(), ThreeCoreCommonConfig.MATERIALS.URU));
     }
 
     public static ConfiguredFeature<?, ?> createOreFeature(BlockState ore, ThreeCoreCommonConfig.Materials.OreConfig config) {
-        return Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.field_241882_a, ore, config.size.get())).withPlacement(Placement.field_242907_l.configure(new TopSolidRangeConfig(config.minHeight.get(), config.minHeight.get(), config.maxHeight.get()))).func_242728_a().func_242731_b(config.size.get());
+        return Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, ore, config.size.get())).withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(config.minHeight.get(), config.minHeight.get(), config.maxHeight.get()))).square().func_242731_b(config.size.get());
     }
 
     public static void initRenderTypes() {

@@ -3,7 +3,7 @@ package net.threetag.threecore.network;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.AbilityType;
-import net.threetag.threecore.ability.IAbilityContainer;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -45,7 +45,7 @@ public class AddAbilityMessage {
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             Entity entity = Minecraft.getInstance().world.getEntityByID(this.entityID);
-            if (entity != null && entity instanceof LivingEntity) {
+            if (entity instanceof LivingEntity) {
                 IAbilityContainer container = AbilityHelper.getAbilityContainerFromId((LivingEntity) entity, this.containerId);
 
                 if (container != null) {

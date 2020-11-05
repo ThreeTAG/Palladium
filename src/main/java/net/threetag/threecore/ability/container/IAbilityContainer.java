@@ -1,4 +1,4 @@
-package net.threetag.threecore.ability;
+package net.threetag.threecore.ability.container;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -12,6 +12,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.ability.Ability;
+import net.threetag.threecore.ability.AbilityMap;
+import net.threetag.threecore.ability.IAbilityProvider;
 import net.threetag.threecore.network.AddAbilityMessage;
 import net.threetag.threecore.network.RemoveAbilityMessage;
 import net.threetag.threecore.network.UpdateAbilityMessage;
@@ -113,6 +116,10 @@ public interface IAbilityContainer {
     @Nonnull
     default <T> LazyOptional<T> getCapability(@Nonnull LivingEntity entity, @Nonnull Capability<T> cap, @Nullable Direction side) {
         return LazyOptional.empty();
+    }
+
+    default boolean isObsolete() {
+        return false;
     }
 
 }

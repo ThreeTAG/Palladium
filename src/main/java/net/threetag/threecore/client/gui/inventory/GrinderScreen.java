@@ -22,7 +22,7 @@ public class GrinderScreen extends ContainerScreen<GrinderContainer> {
     @Override
     protected void init() {
         super.init();
-        this.titleX = (this.xSize - this.font.func_238414_a_(this.title)) / 2;
+        this.titleX = (this.xSize - this.font.getStringPropertyWidth(this.title)) / 2;
         this.playerInventoryTitleY = this.ySize - 94;
     }
 
@@ -30,7 +30,7 @@ public class GrinderScreen extends ContainerScreen<GrinderContainer> {
     public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
-        this.func_230459_a_(stack, mouseX, mouseY);
+        this.renderHoveredTooltip(stack, mouseX, mouseY);
     }
 
     @Override

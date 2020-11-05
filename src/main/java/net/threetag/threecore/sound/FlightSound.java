@@ -49,7 +49,7 @@ public class FlightSound extends TickableSound {
                 this.pitch = 1.0F;
             }
         } else {
-            this.func_239509_o_();
+            this.finishPlaying();
             if (this.ability instanceof IFlyingAbility) {
                 ((IFlyingAbility) this.ability).onFinishedPlayingSound();
             }

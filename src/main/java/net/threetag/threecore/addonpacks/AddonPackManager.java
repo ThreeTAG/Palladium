@@ -85,7 +85,7 @@ public class AddonPackManager {
         }
 
         @Override
-        public void func_230230_a_(Consumer<ResourcePackInfo> consumer, ResourcePackInfo.IFactory factory) {
+        public void findPacks(Consumer<ResourcePackInfo> consumer, ResourcePackInfo.IFactory factory) {
             if (!DIRECTORY.exists())
                 DIRECTORY.mkdirs();
 
@@ -95,7 +95,7 @@ public class AddonPackManager {
                 for (File file : files) {
                     String name = "addonpack:" + file.getName();
                     //TODO name decorator
-                    ResourcePackInfo container = ResourcePackInfo.createResourcePack(name, true, this.createResourcePack(file), factory, ResourcePackInfo.Priority.TOP, IPackNameDecorator.field_232625_a_);
+                    ResourcePackInfo container = ResourcePackInfo.createResourcePack(name, true, this.createResourcePack(file), factory, ResourcePackInfo.Priority.TOP, IPackNameDecorator.PLAIN);
                     if (container != null) {
                         consumer.accept(container);
                     }
@@ -113,7 +113,7 @@ public class AddonPackManager {
         }
 
         @Override
-        public void func_230230_a_(Consumer<ResourcePackInfo> consumer, ResourcePackInfo.IFactory factory) {
+        public void findPacks(Consumer<ResourcePackInfo> consumer, ResourcePackInfo.IFactory factory) {
             wrapped.addPackInfos(consumer, factory);
         }
     }

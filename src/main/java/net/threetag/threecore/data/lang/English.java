@@ -225,6 +225,8 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("commands.superpower.success.entity.multiple", "%s entities have gained the superpower %s");
         this.add("commands.superpower.remove.success.entity.single", "%s's superpower was removed");
         this.add("commands.superpower.remove.success.entity.multiple", "The superpower of %s entities was removed");
+        this.add("commands.superpower.error.alreadyHasSuperpower", "%s already has that superpower");
+        this.add("commands.superpower.error.doesntHaveSuperpower", "%s does not have that superpower");
 
         this.add("commands.armorstandpose.reloaded", "Loaded %s armor stand poses!");
         this.add("commands.armorstandpose.pose_not_found", "The pose '%s' does not exist!");

@@ -18,7 +18,7 @@ public class UnconsciousRenderer {
 
     @SubscribeEvent
     public void renderHUD(RenderGameOverlayEvent.Post e) {
-        if (e.getType() == RenderGameOverlayEvent.ElementType.HELMET && Minecraft.getInstance().gameSettings.func_243230_g().func_243192_a()) {
+        if (e.getType() == RenderGameOverlayEvent.ElementType.HELMET && Minecraft.getInstance().gameSettings.getPointOfView().func_243192_a()) {
             float opacity = MathUtil.interpolate(prevProgress, progress, e.getPartialTicks()) / 50F;
 
             if (opacity > 0F) {

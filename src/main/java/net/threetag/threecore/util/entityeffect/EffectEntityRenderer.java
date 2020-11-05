@@ -26,7 +26,7 @@ public class EffectEntityRenderer extends EntityRenderer<EffectEntity> {
 
             matrixStack.push();
             matrixStack.translate(x, y, z);
-            entity.entityEffect.render(entity, anchor, matrixStack, renderTypeBuffer, packedLightIn, Minecraft.getInstance().player == anchor && Minecraft.getInstance().gameSettings.func_243230_g().func_243192_a(), partialTicks);
+            entity.entityEffect.render(entity, anchor, matrixStack, renderTypeBuffer, packedLightIn, Minecraft.getInstance().player == anchor && Minecraft.getInstance().gameSettings.getPointOfView().func_243192_a(), partialTicks);
             matrixStack.pop();
         }
     }

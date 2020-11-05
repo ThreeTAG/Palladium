@@ -33,7 +33,7 @@ public class SendPlayerAbilityContainerMessage {
         ctx.get().enqueueWork(() -> {
             Entity entity = Minecraft.getInstance().world.getEntityByID(this.entityID);
             if (entity != null) {
-                entity.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent((a) -> {
+                entity.getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent((a) -> {
                     if (a instanceof CapabilityAbilityContainer) {
                         ((CapabilityAbilityContainer) a).readUpdateTag(this.nbt);
                     }
