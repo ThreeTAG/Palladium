@@ -96,7 +96,6 @@ public class CapabilityAbilityContainer implements IMultiAbilityContainer, INBTS
                 for (Ability ability : this.getContainerById(id).getAbilities()) {
                     ability.lastTick(entity);
                 }
-                System.out.println("wech damit");
                 this.removeContainer(entity, id);
             }
         }
@@ -104,10 +103,8 @@ public class CapabilityAbilityContainer implements IMultiAbilityContainer, INBTS
 
     @Override
     public boolean addContainer(@Nullable LivingEntity entity, IAbilityContainer container) {
-        System.out.println("hallo1");
         if (!this.containers.containsKey(container.getId())) {
             this.containers.put(container.getId(), container);
-            System.out.println("hallo2");
             if (entity != null && entity.world instanceof ServerWorld && container instanceof INBTSerializable<?>) {
                 ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new AddAbilityContainerMessage(entity.getEntityId(), (CompoundNBT) ((INBTSerializable<?>) container).serializeNBT()));
             }
@@ -120,6 +117,11 @@ public class CapabilityAbilityContainer implements IMultiAbilityContainer, INBTS
     @Override
     public boolean removeContainer(@Nullable LivingEntity entity, ResourceLocation id) {
         if (this.containers.containsKey(id)) {
+            if(entity != null) {
+                for(Ability ability : this.containers.get(id).getAbilities()) {
+                    ability.lastTick(entity);
+                }
+            }
             this.containers.remove(id);
             if (entity != null && entity.world instanceof ServerWorld) {
                 ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new RemoveAbilityContainerMessage(entity.getEntityId(), id));
