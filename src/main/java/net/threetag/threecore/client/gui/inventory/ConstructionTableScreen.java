@@ -11,7 +11,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.block.ConstructionTableBlock;
-import net.threetag.threecore.client.gui.widget.IconButton;
+import net.threetag.threecore.client.gui.widget.FlatIconButton;
 import net.threetag.threecore.container.*;
 import net.threetag.threecore.network.OpenConstructionTableTabMessage;
 
@@ -58,7 +58,7 @@ public class ConstructionTableScreen<T extends AbstractConstructionTableContaine
             Map.Entry<ResourceLocation, ConstructionTableBlock.Tab> entry = entries.get(k);
             int x = (int) Math.floor(k / 5D);
             int y = k % 5;
-            Button button = new IconButton(i - 22 - x * 22, j + y * 22, entry.getValue().icon, (b) -> {
+            Button button = new FlatIconButton(i - 22 - x * 22, j + y * 22, entry.getValue().icon, (b) -> {
                 mouseX = this.getMinecraft().mouseHelper.getMouseX();
                 mouseY = this.getMinecraft().mouseHelper.getMouseY();
                 ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.SERVER.noArg(), new OpenConstructionTableTabMessage(entry.getKey()));

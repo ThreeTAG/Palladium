@@ -2,10 +2,14 @@ package net.threetag.threecore.ability;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.inventory.CreativeScreen;
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -14,6 +18,8 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.event.*;
@@ -22,11 +28,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
-import net.threetag.threecore.client.gui.widget.TranslucentButton;
+import net.threetag.threecore.client.gui.widget.IconButton;
 import net.threetag.threecore.client.renderer.AbilityBarRenderer;
 import net.threetag.threecore.client.settings.AbilityKeyBinding;
 import net.threetag.threecore.network.AbilityKeyMessage;
 import net.threetag.threecore.network.MultiJumpMessage;
+import net.threetag.threecore.util.icon.IIcon;
+import net.threetag.threecore.util.icon.ItemIcon;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -122,8 +130,41 @@ public class AbilityClientEventHandler {
 
     @SubscribeEvent
     public void onGuiInit(GuiScreenEvent.InitGuiEvent e) {
-        if (e.getGui() instanceof ChatScreen) {
-            e.addWidget(new TranslucentButton(e.getGui().width - 1 - 75, e.getGui().height - 40, 75, 20, new StringTextComponent(I18n.format("gui.threecore.abilities")), b -> Minecraft.getInstance().displayGuiScreen(new AbilitiesScreen())));
+        int abilityButtonXPos = -1;
+        int abilityButtonYPos = -1;
+
+        if (e.getGui() instanceof InventoryScreen || e.getGui().getClass().toString().equals("class top.theillusivec4.curios.client.gui.CuriosScreen")) {
+            abilityButtonXPos = ((ContainerScreen<?>) e.getGui()).getGuiLeft() + 134;
+            abilityButtonYPos = e.getGui().height / 2 - 23;
+        } else if (e.getGui() instanceof CreativeScreen) {
+            abilityButtonXPos = ((ContainerScreen<?>) e.getGui()).getGuiLeft() + 148;
+            abilityButtonYPos = e.getGui().height / 2 - 50;
+        }
+
+        if (abilityButtonXPos > 0 && abilityButtonYPos > 0) {
+            int finalAbilityButtonXPos = abilityButtonXPos;
+            int finalAbilityButtonYPos = abilityButtonYPos;
+            e.addWidget(new IconButton(finalAbilityButtonXPos, finalAbilityButtonYPos, new ItemIcon(ItemStack.EMPTY), b -> Minecraft.getInstance().displayGuiScreen(new AbilitiesScreen()), (button, matrixStack, mouseX, mouseY) -> e.getGui().renderTooltip(matrixStack, new StringTextComponent(I18n.format("gui.threecore.abilities")), mouseX, mouseY)) {
+                @Override
+                public IIcon getIcon() {
+                    List<IIcon> icons = Lists.newArrayList();
+                    Minecraft mc = Minecraft.getInstance();
+                    AbilityHelper.getAbilityContainers(mc.player).forEach(container -> icons.add(container.getIcon()));
+                    if (icons.size() <= 0) {
+                        icons.add(new ItemIcon(Blocks.BARRIER));
+                    }
+                    int i = (mc.player.ticksExisted / 20) % icons.size();
+                    return icons.get(i);
+                }
+
+                @Override
+                public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+                    this.setPosition(finalAbilityButtonXPos, finalAbilityButtonYPos);
+                    this.visible = e.getGui() instanceof CreativeScreen && ((CreativeScreen) e.getGui()).getSelectedTabIndex() == ItemGroup.INVENTORY.getIndex();
+                    this.active = this.visible && AbilityHelper.getAbilityContainers(Minecraft.getInstance().player).size() > 0;
+                    super.render(matrixStack, mouseX, mouseY, partialTicks);
+                }
+            });
         }
 
         // Set all keys to unpressed; when an ability opens a GUI, the unpressing of the button will not register and therefore you will need to hit the button twice the next time
@@ -148,8 +189,8 @@ public class AbilityClientEventHandler {
             for (NameChangeAbility ability : AbilityHelper.getAbilitiesFromClass((LivingEntity) e.getEntity(), NameChangeAbility.class)) {
                 if (ability.getConditionManager().isEnabled()) {
                     if (Minecraft.getInstance().player.isCreative()) {
-                       //TODO does this work right?
-                        e.setContent( new StringTextComponent(ability.get(NameChangeAbility.NAME).getString() + " (" + e.getOriginalContent() + ")"));
+                        //TODO does this work right?
+                        e.setContent(new StringTextComponent(ability.get(NameChangeAbility.NAME).getString() + " (" + e.getOriginalContent() + ")"));
                     } else {
                         e.setContent(ability.get(NameChangeAbility.NAME));
                     }
@@ -206,12 +247,9 @@ public class AbilityClientEventHandler {
             }
         }
 
-        if (e.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE)
-        {
-            for (EnergyAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, EnergyAbility.class))
-            {
-                if (ability.getConditionManager().isUnlocked())
-                {
+        if (e.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE) {
+            for (EnergyAbility ability : AbilityHelper.getAbilitiesFromClass(abilities, EnergyAbility.class)) {
+                if (ability.getConditionManager().isUnlocked()) {
                     Minecraft mc = Minecraft.getInstance();
                     Integer[] energy_data = ability.dataManager.get(EnergyAbility.ENERGY_TEXTURE_INFO);
                     Integer[] base_data = ability.dataManager.get(EnergyAbility.BASE_TEXTURE_INFO);
@@ -232,8 +270,8 @@ public class AbilityClientEventHandler {
 
                     int energyX = energy_data[0] > 0 ? energy_data[0] : scaledWidth + energy_data[0];
                     int energyY = energy_data[1] > 0 ? energy_data[1] : scaledHeight + energy_data[1];
-                    int energyWidth = energy_data[2] + (int) ((double) (Math.abs(energy_data[4]) - energy_data[2]) * (energy/max));
-                    int energyHeight = energy_data[3] + (int) ((double) (Math.abs(energy_data[5]) - energy_data[3]) * (energy/max));
+                    int energyWidth = energy_data[2] + (int) ((double) (Math.abs(energy_data[4]) - energy_data[2]) * (energy / max));
+                    int energyHeight = energy_data[3] + (int) ((double) (Math.abs(energy_data[5]) - energy_data[3]) * (energy / max));
                     int energyU = energy_data[4] > 0 ? 0 : Math.abs(energy_data[4]) - energyWidth;
                     int energyV = energy_data[5] > 0 ? 0 : Math.abs(energy_data[5]) - energyHeight;
 
