@@ -144,9 +144,9 @@ public class SuperpowerCommand {
 
         if (!no) {
             if (i == 1) {
-                commandSource.sendFeedback(new TranslationTextComponent("commands.superpower.add.success.entity.single", (entities.iterator().next()).getDisplayName(), superpower.getName()), true);
+                commandSource.sendFeedback(new TranslationTextComponent("commands.superpower.success.entity.single", (entities.iterator().next()).getDisplayName(), superpower.getName()), true);
             } else {
-                commandSource.sendFeedback(new TranslationTextComponent("commands.superpower.add.success.entity.multiple", i, superpower.getName()), true);
+                commandSource.sendFeedback(new TranslationTextComponent("commands.superpower.success.entity.multiple", i, superpower.getName()), true);
             }
         }
 
