@@ -18,4 +18,9 @@ public class ChangeAbilityTabTextureAbility extends Ability
 		super.registerData();
 		this.register(TEXTURE, "minecraft:textures/block/red_wool.png");
 	}
+
+	@Override
+	public boolean isEffect() {
+		return true;
+	}
 }
