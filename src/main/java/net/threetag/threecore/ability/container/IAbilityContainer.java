@@ -109,6 +109,10 @@ public interface IAbilityContainer {
 
     ITextComponent getTitle();
 
+    default ITextComponent getSubtitle() {
+        return null;
+    }
+
     IIcon getIcon();
 
     CompoundNBT getNbtTag(@Nonnull LivingEntity entity);
