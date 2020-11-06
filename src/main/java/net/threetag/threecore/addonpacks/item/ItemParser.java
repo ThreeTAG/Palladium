@@ -97,6 +97,9 @@ public class ItemParser {
             else
                 throw new JsonParseException("Tool type '" + type + "' does not exist!");
         });
+
+        // Superpower Food Item
+        registerItemParser(new ResourceLocation(ThreeCore.MODID, "superpower_food"), (j, p) -> new SuperpowerFoodItem(p, new ResourceLocation(JSONUtils.getString(j, "superpower")), JSONUtils.getInt(j, "lifetime", -1)));
     }
 
     public static void registerItemParser(ResourceLocation resourceLocation, BiFunction<JsonObject, Item.Properties, Item> function) {
