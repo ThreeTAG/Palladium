@@ -269,6 +269,7 @@ public class English extends ThreeCoreLanguageProvider {
         this.add(AbilityType.HIDE_BODY_PARTS, "Hide Body Parts");
         this.add(AbilityType.CHANGE_ABILITY_TAB_TEXTURE, "Change Ability Tab Texture");
         this.add(AbilityType.ENERGY, "Energy");
+        this.add(AbilityType.DROP_ARMOR, "Drop Armor");
 
         this.add("ability.condition.threecore.action", "Key must be pressed once to active this ability");
         this.add("ability.condition.threecore.action.not", "Key must be pressed once to deactivate this ability");

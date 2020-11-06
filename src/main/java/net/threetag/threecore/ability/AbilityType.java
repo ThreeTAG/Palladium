@@ -31,6 +31,8 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
 
     public static IForgeRegistry<AbilityType> REGISTRY;
 
+    // TODO use DeferredRegistry
+
     public static final AbilityType DUMMY = new AbilityType(DummyAbility::new, ThreeCore.MODID, "dummy");
     public static final AbilityType COMMAND = new AbilityType(CommandAbility::new, ThreeCore.MODID, "command");
     public static final AbilityType HEALING = new AbilityType(HealingAbility::new, ThreeCore.MODID, "healing");
@@ -55,6 +57,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     public static final AbilityType HIDE_BODY_PARTS = new AbilityType(HideBodyPartsAbility::new, ThreeCore.MODID, "hide_body_parts");
     public static final AbilityType CHANGE_ABILITY_TAB_TEXTURE = new AbilityType(ChangeAbilityTabTextureAbility::new, ThreeCore.MODID, "change_ability_tab_texture");
     public static final AbilityType ENERGY = new AbilityType(EnergyAbility::new, ThreeCore.MODID, "energy");
+    public static final AbilityType DROP_ARMOR = new AbilityType(DropArmorAbility::new, ThreeCore.MODID, "drop_armor");
 
     @SubscribeEvent
     public static void onRegisterNewRegistries(RegistryEvent.NewRegistry e) {
@@ -87,6 +90,7 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
         e.getRegistry().register(HIDE_BODY_PARTS);
         e.getRegistry().register(CHANGE_ABILITY_TAB_TEXTURE);
         e.getRegistry().register(ENERGY);
+        e.getRegistry().register(DROP_ARMOR);
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -1,9 +1,6 @@
 package net.threetag.threecore.ability;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -11,32 +8,15 @@ import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.ability.container.DefaultAbilityContainer;
-import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.capability.CapabilityAbilityContainer;
 import net.threetag.threecore.network.SendPlayerAbilityContainerMessage;
-import net.threetag.threecore.util.icon.ItemIcon;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID)
 public class AbilityEventHandler {
-
-    @SubscribeEvent
-    public static void onPlayerClone(PlayerInteractEvent.RightClickItem e) {
-        if (e.getItemStack().getItem() == Items.STICK) {
-            e.getPlayer().getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent(multiContainer -> {
-                IAbilityContainer container = new DefaultAbilityContainer(new ResourceLocation("lol", "test2"), new StringTextComponent("LOOOL2"), new ItemIcon(Items.BREAD), 20 * 30);
-                Ability ab = new FlightAbility();
-                ab.id = "flight";
-                container.addAbility(e.getEntityLiving(), "flight", ab);
-                multiContainer.addContainer(e.getEntityLiving(), container);
-            });
-        }
-    }
 
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone e) {

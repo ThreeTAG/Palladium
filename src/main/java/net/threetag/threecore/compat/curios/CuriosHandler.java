@@ -27,7 +27,7 @@ public class CuriosHandler extends DefaultCuriosHandler {
 
         AbilityHelper.registerAbilityContainer((entity) -> {
             List<IAbilityContainer> containers = Lists.newArrayList();
-            if(CuriosApi.getSlotHelper() != null) {
+            if (CuriosApi.getSlotHelper() != null) {
                 CuriosApi.getSlotHelper().getSlotTypeIds().forEach(id -> {
                     for (ItemStack stack : INSTANCE.getItemsInSlot(entity, id)) {
                         stack.getCapability(CapabilityAbilityContainer.ABILITY_CONTAINER).ifPresent(containers::add);
@@ -58,7 +58,7 @@ public class CuriosHandler extends DefaultCuriosHandler {
     @Override
     public List<ItemStack> getItemsInSlot(LivingEntity entity, String identifier) {
         List<ItemStack> list = Lists.newArrayList();
-        if(CuriosApi.getCuriosHelper() != null) {
+        if (CuriosApi.getCuriosHelper() != null) {
             CuriosApi.getCuriosHelper().getCuriosHandler(entity).ifPresent(curioHandler -> {
                 curioHandler.getStacksHandler(identifier).ifPresent(slotHandler -> {
                     for (int i = 0; i < slotHandler.getStacks().getSlots(); i++) {
@@ -69,6 +69,18 @@ public class CuriosHandler extends DefaultCuriosHandler {
         }
 
         return list;
+    }
+
+    @Override
+    public void dropEveryItem(LivingEntity entity) {
+        CuriosApi.getCuriosHelper().getCuriosHandler(entity).ifPresent(handler -> {
+            handler.getCurios().forEach((id, stacksHandler) -> {
+                for (int i = 0; i < stacksHandler.getStacks().getSlots(); i++) {
+                    entity.entityDropItem(stacksHandler.getStacks().getStackInSlot(i));
+                    stacksHandler.getStacks().setStackInSlot(i, ItemStack.EMPTY);
+                }
+            });
+        });
     }
 
     @SubscribeEvent
