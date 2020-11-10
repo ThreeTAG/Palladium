@@ -2,6 +2,7 @@ package net.threetag.threecore.data.lang;
 
 import net.minecraft.data.DataGenerator;
 import net.threetag.threecore.ability.AbilityType;
+import net.threetag.threecore.accessoires.Accessoires;
 import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.container.TCContainerTypes;
 import net.threetag.threecore.entity.TCEntityTypes;
@@ -375,6 +376,20 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("ability_container.threecore.player", "Player Abilities");
 
         this.add("gui.threecore.accessoires", "Accessoires");
+
+
+        // Accessoires
+        this.addAccessoire(Accessoires.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
+        this.addAccessoire(Accessoires.HEROBRINE_EYES, "Herobrine's Eyes");
+        this.addAccessoire(Accessoires.WOODEN_LEG, "Wooden Leg");
+        this.addAccessoire(Accessoires.HYPERION_ARM, "Hyperion Arm");
+        this.addAccessoire(Accessoires.STRAWHAT, "Strawhat");
+        this.addAccessoire(Accessoires.JAY_GARRICK_HELMET, "Jay Garrick's Helmet");
+        this.addAccessoire(Accessoires.HALO, "Angelic Halo");
+        this.addAccessoire(Accessoires.WINGS, "Angelic Wings");
+        this.addAccessoire(Accessoires.GUZZLER_HELMET, "Guzzler Helmet");
+        this.addAccessoire(Accessoires.SONIC_HAND, "Sonic Hand");
+        this.addAccessoire(Accessoires.HAMMOND_CANE, "Hammond's Cane");
 
 
         // Death

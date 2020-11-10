@@ -9,27 +9,25 @@ import net.threetag.threecore.scripts.accessors.Vector3dAccessor;
 /**
  * Created by Nictogen on 2020-06-25.
  */
-public abstract class PlayerInteractScriptEvent extends LivingScriptEvent
-{
-	public PlayerInteractEvent event;
+public abstract class PlayerInteractScriptEvent extends LivingScriptEvent {
 
-	public PlayerInteractScriptEvent(PlayerInteractEvent event)
-	{
-		super(event.getEntityLiving());
-		this.event = event;
-	}
+    public PlayerInteractEvent event;
 
-	public String getHand(){
-		return this.event.getHand().toString();
-	}
+    public PlayerInteractScriptEvent(PlayerInteractEvent event) {
+        super(event.getEntityLiving());
+        this.event = event;
+    }
 
-	public Vector3dAccessor getPos()
-	{
-		BlockPos pos = this.event.getPos();
-		return new Vector3dAccessor(new Vector3d(pos.getX(), pos.getY(), pos.getZ()));
-	}
+    public String getHand() {
+        return this.event.getHand().toString();
+    }
 
-	public ItemStackAccessor getItemStack(){
-		return new ItemStackAccessor(this.event.getItemStack());
-	}
+    public Vector3dAccessor getPos() {
+        BlockPos pos = this.event.getPos();
+        return new Vector3dAccessor(new Vector3d(pos.getX(), pos.getY(), pos.getZ()));
+    }
+
+    public ItemStackAccessor getItemStack() {
+        return new ItemStackAccessor(this.event.getItemStack());
+    }
 }

@@ -1,0 +1,34 @@
+package net.threetag.threecore.accessoires;
+
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.util.PlayerUtil;
+
+import javax.annotation.Nullable;
+
+public class WinterSoldierArmAccessoire extends AbstractReplaceLimbTextureAccessoire {
+
+    public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/winter_soldier_arm.png");
+    public static final ResourceLocation TEXTURE_SLIM = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/winter_soldier_arm_slim.png");
+
+    @Override
+    public boolean isAvailable(PlayerEntity entity) {
+        return true;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ResourceLocation getTexture(AbstractClientPlayerEntity player) {
+        return PlayerUtil.hasSmallArms(player) ? TEXTURE_SLIM : TEXTURE;
+    }
+
+    @Nullable
+    @Override
+    public PlayerPart getPlayerPart() {
+        return PlayerPart.LEFT_ARM;
+    }
+}

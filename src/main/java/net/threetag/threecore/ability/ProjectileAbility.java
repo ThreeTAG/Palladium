@@ -58,6 +58,7 @@ public class ProjectileAbility extends Ability {
                 if (projectile instanceof ThrowableEntity) {
                     ((ThrowableEntity) projectile).setShooter(entity);
                 }
+
                 return !world.summonEntity(projectile) ? null : projectile;
             });
         }

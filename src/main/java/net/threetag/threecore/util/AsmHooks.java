@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -21,6 +22,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.HideBodyPartsAbility;
+import net.threetag.threecore.accessoires.Accessoire;
+import net.threetag.threecore.capability.CapabilityAccessoires;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
 import net.threetag.threecore.client.renderer.entity.PlayerSkinHandler;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerManager;
@@ -94,10 +97,19 @@ public class AsmHooks {
                 layer.postRotationAnglesCallback(renderer, entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
             }
         });
+
+        entityIn.getCapability(CapabilityAccessoires.ACCESSOIRES).ifPresent(accessoireHolder -> {
+            for (Accessoire accessoire : accessoireHolder.getActiveAccessoires()) {
+                if (accessoire.getPlayerPart() != null) {
+                    accessoire.getPlayerPart().setVisibility((PlayerModel) renderer.getEntityModel(), false);
+                }
+            }
+        });
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void setRotationAnglesCallback(BipedModel model, LivingEntity entity, float f, float f1, float f2, float f3, float f4) {
+    public static void setRotationAnglesCallback(BipedModel model, LivingEntity entity, float f, float f1, float f2,
+                                                 float f3, float f4) {
         if (entity == null)
             return;
         SetRotationAnglesEvent ev = new SetRotationAnglesEvent(entity, model, f, f1, f2, f3, f4);

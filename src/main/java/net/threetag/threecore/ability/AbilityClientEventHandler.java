@@ -7,9 +7,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.screen.CustomizeSkinScreen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.screen.inventory.CreativeScreen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -22,6 +24,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.event.TickEvent;
@@ -30,6 +33,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.container.DefaultAbilityContainer;
 import net.threetag.threecore.ability.container.IAbilityContainer;
+import net.threetag.threecore.client.gui.AccessoireScreen;
 import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
 import net.threetag.threecore.client.gui.widget.IconButton;
 import net.threetag.threecore.client.renderer.AbilityBarRenderer;
@@ -179,6 +183,12 @@ public class AbilityClientEventHandler {
                     super.render(matrixStack, mouseX, mouseY, partialTicks);
                 }
             });
+        }
+
+        if (e.getGui() instanceof CustomizeSkinScreen) {
+            e.addWidget(new Button(e.getGui().width / 2 - 100, e.getGui().height / 6 + 24 * (12 >> 1), 200, 20, new TranslationTextComponent("gui.threecore.accessoires"), (p_213079_1_) -> {
+                e.getGui().getMinecraft().displayGuiScreen(new AccessoireScreen(e.getGui()));
+            }));
         }
 
         // Set all keys to unpressed; when an ability opens a GUI, the unpressing of the button will not register and therefore you will need to hit the button twice the next time

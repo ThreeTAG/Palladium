@@ -5,19 +5,18 @@ import net.minecraft.util.math.BlockRayTraceResult;
 /**
  * Created by Nictogen on 2020-06-23.
  */
-public class BlockRayTraceResultAccessor extends ScriptAccessor<BlockRayTraceResult>
-{
-	protected BlockRayTraceResultAccessor(BlockRayTraceResult value)
-	{
-		super(value);
-	}
+public class BlockRayTraceResultAccessor extends ScriptAccessor<BlockRayTraceResult> {
 
-	public Vector3dAccessor getHitVec() {
-		return new Vector3dAccessor(this.value.getHitVec());
-	}
+    protected BlockRayTraceResultAccessor(BlockRayTraceResult value) {
+        super(value);
+    }
 
-	public String getType(){
-		return this.value.getType().toString();
-	}
+    public Vector3dAccessor getHitVec() {
+        return new Vector3dAccessor(this.value.getHitVec());
+    }
+
+    public String getType() {
+        return this.value.getType().toString();
+    }
 
 }
