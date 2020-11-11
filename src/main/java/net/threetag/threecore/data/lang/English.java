@@ -385,7 +385,6 @@ public class English extends ThreeCoreLanguageProvider {
         this.addAccessoire(Accessoires.WOODEN_LEG, "Wooden Leg");
         this.addAccessoire(Accessoires.HYPERION_ARM, "Hyperion Arm");
         this.addAccessoire(Accessoires.STRAWHAT, "Strawhat");
-        this.addAccessoire(Accessoires.JAY_GARRICK_HELMET, "Jay Garrick's Helmet");
         this.addAccessoire(Accessoires.HALO, "Angelic Halo");
         this.addAccessoire(Accessoires.WINGS, "Angelic Wings");
         this.addAccessoire(Accessoires.GUZZLER_HELMET, "Guzzler Helmet");

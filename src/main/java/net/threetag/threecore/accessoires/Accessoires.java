@@ -14,7 +14,6 @@ public class Accessoires {
     public static final RegistryObject<Accessoire> WOODEN_LEG = ACCESSOIRES.register("wooden_leg", WoodenLegAccessoire::new);
     public static final RegistryObject<Accessoire> HYPERION_ARM = ACCESSOIRES.register("hyperion_arm", HyperionArmAccessoire::new);
     public static final RegistryObject<Accessoire> STRAWHAT = ACCESSOIRES.register("strawhat", StrawhatAccessoire::new);
-    public static final RegistryObject<Accessoire> JAY_GARRICK_HELMET = ACCESSOIRES.register("jay_garrick_helmet", JayGarrickHelmetAccessoire::new);
     public static final RegistryObject<Accessoire> HALO = ACCESSOIRES.register("halo", HaloAccessoire::new);
     public static final RegistryObject<Accessoire> WINGS = ACCESSOIRES.register("wings", WingsAccessoire::new);
     public static final RegistryObject<Accessoire> GUZZLER_HELMET = ACCESSOIRES.register("guzzler_helmet", GuzzlerHelmetAccessoire::new);
