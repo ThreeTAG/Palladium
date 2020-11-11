@@ -101,7 +101,7 @@ public class ThreeCore {
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
         MinecraftForge.EVENT_BUS.register(new Events());
         registerMessages();
-//        SupporterHandler.enableSupporterCheck();
+        SupporterHandler.enableSupporterCheck();
 
         // Ores
         MinecraftForge.EVENT_BUS.addListener(TCBlocks::initOres);
@@ -199,7 +199,7 @@ public class ThreeCore {
         ArmorStandPoseManager.init();
         TCItems.initItemProperties();
 
-        if (SupporterHandler.isSupporterCheckEnabled() & !SupporterHandler.loadPlayerData(Minecraft.getInstance().getSession().getProfile().getId()).hasModAccess()) {
+        if (!SupporterHandler.loadPlayerData(Minecraft.getInstance().getSession().getProfile().getId()).hasModAccess() && SupporterHandler.isSupporterCheckEnabled()) {
             // TODO maybe a fancy GUI that tells people this
             throw new RuntimeException("You are not allowed to play this mod!");
         }

@@ -12,21 +12,25 @@ import net.threetag.threecore.util.SupporterHandler;
 
 public class SupporterCloakAccessoire extends Accessoire {
 
-    @OnlyIn(Dist.CLIENT)
-    public static final CapeModelLayer MODEL_LAYER = new CapeModelLayer(new ModelLayerTexture() {
-        @Override
-        public ResourceLocation getTexture(IModelLayerContext context) {
-            return SupporterHandler.getPlayerData(context.getAsEntity().getUniqueID()).getCloakTexture();
-        }
-
-        @Override
-        public ModelLayerTexture transform(ITextureTransformer textureTransformer) {
-            return null;
-        }
-    });
-
     @Override
     public boolean isAvailable(PlayerEntity entity) {
-        return SupporterHandler.getPlayerData(entity.getUniqueID()).getCloakTexture() != null;
+        return SupporterHandler.getPlayerData(entity.getUniqueID()).hasCloak();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static class Client {
+
+        public static final CapeModelLayer MODEL_LAYER = new CapeModelLayer(new ModelLayerTexture() {
+            @Override
+            public ResourceLocation getTexture(IModelLayerContext context) {
+                return SupporterHandler.getPlayerData(context.getAsEntity().getUniqueID()).getCloakTexture();
+            }
+
+            @Override
+            public ModelLayerTexture transform(ITextureTransformer textureTransformer) {
+                return null;
+            }
+        });
+
     }
 }

@@ -60,7 +60,7 @@ public class SupporterHandler {
 
             return data;
         } catch (Exception e) {
-            ThreeCore.LOGGER.error("Was not able to read user's supporter data!");
+            ThreeCore.LOGGER.error("Was not able to read user's supporter data! (" + uuid.toString() + ")");
             e.printStackTrace();
         }
         PlayerData data = new PlayerData(uuid, new JsonObject());
@@ -111,13 +111,11 @@ public class SupporterHandler {
 
     @SubscribeEvent
     public static void onEntityJoinWorld(EntityJoinWorldEvent e) {
-        if (e.getEntity() instanceof PlayerEntity) {
-            if (SupporterHandler.getPlayerDataUnsafe(e.getEntity().getUniqueID()) == null) {
-                SupporterHandler.loadPlayerData(e.getEntity().getUniqueID());
-            }
+        if (e.getEntity() instanceof PlayerEntity && !e.getEntity().world.isRemote) {
+            SupporterHandler.loadPlayerData(((PlayerEntity) e.getEntity()).getGameProfile().getId());
 
-            if (CHECK && !SupporterHandler.getPlayerData(e.getEntity().getUniqueID()).hasModAccess() && e.getEntity() instanceof ServerPlayerEntity) {
-                ((ServerPlayerEntity) e.getEntity()).connection.disconnect(new StringTextComponent("You are not allowed to use this mod!"));
+            if (CHECK && !SupporterHandler.getPlayerData(((PlayerEntity) e.getEntity()).getGameProfile().getId()).hasModAccess() && e.getEntity() instanceof ServerPlayerEntity) {
+                ((ServerPlayerEntity) e.getEntity()).connection.disconnect(new StringTextComponent("You are not allowed to use this mod! " + ((PlayerEntity) e.getEntity()).getGameProfile().getId().toString()));
             }
         }
     }
@@ -135,6 +133,7 @@ public class SupporterHandler {
         private final UUID uuid;
         private final List<Accessoire> accessoires;
         private final boolean modAccess;
+        private final boolean hasCloak;
         private ResourceLocation cloakTexture;
 
         public PlayerData(UUID uuid, JsonObject json) {
@@ -152,11 +151,14 @@ public class SupporterHandler {
 
             this.modAccess = JSONUtils.getBoolean(json, "mod_access", false);
 
-            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-                if (JSONUtils.hasField(json, "cloak")) {
+            if (JSONUtils.hasField(json, "cloak")) {
+                this.hasCloak = true;
+                DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
                     loadCloakTexture(JSONUtils.getString(json, "cloak"));
-                }
-            });
+                });
+            } else {
+                this.hasCloak = false;
+            }
         }
 
         @OnlyIn(Dist.CLIENT)
@@ -178,6 +180,10 @@ public class SupporterHandler {
 
         public boolean hasAccessoire(Accessoire accessoire) {
             return this.accessoires.contains(accessoire);
+        }
+
+        public boolean hasCloak() {
+            return this.hasCloak;
         }
 
         @Nullable

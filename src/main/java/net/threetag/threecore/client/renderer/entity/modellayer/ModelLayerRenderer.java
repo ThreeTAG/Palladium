@@ -55,7 +55,7 @@ public class ModelLayerRenderer<T extends LivingEntity, M extends BipedModel<T>,
         if (!cape.get() && SupporterHandler.getPlayerData(entityIn.getUniqueID()).getCloakTexture() != null) {
             entityIn.getCapability(CapabilityAccessoires.ACCESSOIRES).ifPresent(accessoires -> {
                 if (accessoires.getActiveAccessoires().contains(Accessoires.SUPPORTER_CLOAK.get())) {
-                    SupporterCloakAccessoire.MODEL_LAYER.render(new ModelLayerContext(entityIn), matrixStack, renderTypeBuffer, packedLightIn, this.entityRenderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                    SupporterCloakAccessoire.Client.MODEL_LAYER.render(new ModelLayerContext(entityIn), matrixStack, renderTypeBuffer, packedLightIn, this.entityRenderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
                 }
             });
         }
