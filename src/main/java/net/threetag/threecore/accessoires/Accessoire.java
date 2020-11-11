@@ -22,6 +22,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.util.SupporterHandler;
 
 import javax.annotation.Nullable;
 
@@ -35,7 +36,9 @@ public abstract class Accessoire extends ForgeRegistryEntry<Accessoire> {
         REGISTRY = new RegistryBuilder<Accessoire>().setName(new ResourceLocation(ThreeCore.MODID, "accessoires")).setType(Accessoire.class).setIDRange(0, 512).create();
     }
 
-    public abstract boolean isAvailable(PlayerEntity entity);
+    public boolean isAvailable(PlayerEntity entity) {
+        return SupporterHandler.getPlayerData(entity.getUniqueID()).hasAccessoire(this);
+    }
 
     public ITextComponent getDisplayName() {
         return new TranslationTextComponent(Util.makeTranslationKey("accessoire", this.getRegistryName()));

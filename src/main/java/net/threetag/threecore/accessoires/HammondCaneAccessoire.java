@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.vector.Vector3f;
@@ -16,11 +15,6 @@ import net.threetag.threecore.client.renderer.entity.model.HammondCaneModel;
 import net.threetag.threecore.util.PlayerUtil;
 
 public class HammondCaneAccessoire extends Accessoire {
-
-    @Override
-    public boolean isAvailable(PlayerEntity entity) {
-        return true;
-    }
 
     @OnlyIn(Dist.CLIENT)
     @Override

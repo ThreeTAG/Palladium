@@ -379,6 +379,7 @@ public class English extends ThreeCoreLanguageProvider {
 
 
         // Accessoires
+        this.addAccessoire(Accessoires.SUPPORTER_CLOAK, "Supporter Cloak");
         this.addAccessoire(Accessoires.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
         this.addAccessoire(Accessoires.HEROBRINE_EYES, "Herobrine's Eyes");
         this.addAccessoire(Accessoires.WOODEN_LEG, "Wooden Leg");

@@ -10,6 +10,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.accessoires.Accessoire;
@@ -27,7 +28,7 @@ public class CapabilityAccessoires implements IAccessoireHolder, INBTSerializabl
 
     @Override
     public void enable(Accessoire accessoire, PlayerEntity player) {
-        if (accessoire != null && !this.accessoireList.contains(accessoire) && accessoire.isAvailable(player)) {
+        if (accessoire != null && !this.accessoireList.contains(accessoire) && canEnable(accessoire, player)) {
             Accessoire.PlayerPart playerPart = accessoire.getPlayerPart();
 
             if (playerPart != null) {
@@ -51,12 +52,29 @@ public class CapabilityAccessoires implements IAccessoireHolder, INBTSerializabl
         }
     }
 
+    public boolean canEnable(Accessoire accessoire, PlayerEntity player) {
+        return EffectiveSide.get().isClient() || accessoire.isAvailable(player);
+    }
+
     @Override
     public void disable(Accessoire accessoire, PlayerEntity player) {
         if (accessoire != null) {
             this.accessoireList.remove(accessoire);
             if (!player.world.isRemote)
                 ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new SyncAccessoiresMessage(player.getEntityId(), this.getActiveAccessoires()));
+        }
+    }
+
+    @Override
+    public void validate(PlayerEntity player) {
+        List<Accessoire> disable = Lists.newArrayList();
+        for (Accessoire accessoire : this.getActiveAccessoires()) {
+            if (!canEnable(accessoire, player)) {
+                disable.add(accessoire);
+            }
+        }
+        for (Accessoire accessoire : disable) {
+            this.disable(accessoire, player);
         }
     }
 

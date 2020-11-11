@@ -100,7 +100,6 @@ public class ThreeCore {
         // Basic stuff
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
         MinecraftForge.EVENT_BUS.register(new Events());
-        SupporterHandler.load();
         registerMessages();
 //        SupporterHandler.enableSupporterCheck();
 
@@ -200,7 +199,19 @@ public class ThreeCore {
         ArmorStandPoseManager.init();
         TCItems.initItemProperties();
 
+        if (SupporterHandler.isSupporterCheckEnabled() & !SupporterHandler.loadPlayerData(Minecraft.getInstance().getSession().getProfile().getId()).hasModAccess()) {
+            // TODO maybe a fancy GUI that tells people this
+            throw new RuntimeException("You are not allowed to play this mod!");
+        }
+
         Minecraft.getInstance().getRenderManager().getSkinMap().forEach((s, pl) -> pl.addLayer(new AccessoireLayerRenderer(pl)));
+
+        // Lines for "exporting" the current accessoires
+//        System.out.print("HALLO ");
+//        for (Accessoire accessoire : Accessoire.REGISTRY) {
+//            System.out.print(accessoire.getRegistryName().toString() + ",");
+//        }
+//        System.out.print("\n");
     }
 
     @OnlyIn(Dist.CLIENT)

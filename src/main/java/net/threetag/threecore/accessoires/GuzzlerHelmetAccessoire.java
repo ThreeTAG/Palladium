@@ -5,18 +5,12 @@ import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.client.renderer.entity.model.GuzzlerHelmetModel;
 
 public class GuzzlerHelmetAccessoire extends Accessoire {
-
-    @Override
-    public boolean isAvailable(PlayerEntity entity) {
-        return true;
-    }
 
     @OnlyIn(Dist.CLIENT)
     @Override

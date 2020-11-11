@@ -11,6 +11,8 @@ public interface IAccessoireHolder {
 
     void disable(Accessoire accessoire, PlayerEntity player);
 
+    void validate(PlayerEntity player);
+
     Collection<Accessoire> getActiveAccessoires();
 
 }

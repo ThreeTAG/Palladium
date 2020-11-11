@@ -5,7 +5,6 @@ import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,11 +16,6 @@ import net.threetag.threecore.client.renderer.entity.model.WingsModel;
  * on 26/04/2020 @ 18:34
  */
 public class HaloAccessoire extends Accessoire {
-
-    @Override
-    public boolean isAvailable(PlayerEntity entity) {
-        return true;
-    }
 
     @OnlyIn(Dist.CLIENT)
     @Override

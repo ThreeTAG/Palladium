@@ -1,7 +1,6 @@
 package net.threetag.threecore.accessoires;
 
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -14,11 +13,6 @@ public class HyperionArmAccessoire extends AbstractReplaceLimbTextureAccessoire 
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/hyperion_arm.png");
     public static final ResourceLocation TEXTURE_SLIM = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/hyperion_arm_slim.png");
-
-    @Override
-    public boolean isAvailable(PlayerEntity entity) {
-        return true;
-    }
 
     @OnlyIn(Dist.CLIENT)
     @Override

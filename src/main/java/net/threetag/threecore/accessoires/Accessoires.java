@@ -8,6 +8,7 @@ public class Accessoires {
 
     public static DeferredRegister<Accessoire> ACCESSOIRES = DeferredRegister.create(Accessoire.class, ThreeCore.MODID);
 
+    public static final RegistryObject<Accessoire> SUPPORTER_CLOAK = ACCESSOIRES.register("supporter_cloak", SupporterCloakAccessoire::new);
     public static final RegistryObject<Accessoire> WINTER_SOLDIER_ARM = ACCESSOIRES.register("winter_soldier_arm", WinterSoldierArmAccessoire::new);
     public static final RegistryObject<Accessoire> HEROBRINE_EYES = ACCESSOIRES.register("herobrine_eyes", HerobrineEyesAccessoire::new);
     public static final RegistryObject<Accessoire> WOODEN_LEG = ACCESSOIRES.register("wooden_leg", WoodenLegAccessoire::new);

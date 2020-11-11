@@ -21,11 +21,14 @@ import net.minecraft.entity.player.PlayerModelPart;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 import net.threetag.threecore.client.renderer.entity.modellayer.predicates.IModelLayerPredicate;
+import net.threetag.threecore.client.renderer.entity.modellayer.texture.DefaultModelTexture;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLayerTexture;
 import net.threetag.threecore.util.RenderUtil;
+import net.threetag.threecore.util.SupporterHandler;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -36,15 +39,24 @@ public class CapeModelLayer implements IModelLayer {
     public final ModelLayerTexture texture;
     public final List<IModelLayerPredicate> glowPredicates;
     public final List<IModelLayerPredicate> predicateList = Lists.newLinkedList();
+    public final boolean allowSupporterCloakOverride;
 
     public CapeModelLayer(ModelLayerTexture texture) {
         this.texture = texture;
         this.glowPredicates = Collections.emptyList();
+        this.allowSupporterCloakOverride = true;
     }
 
     public CapeModelLayer(ModelLayerTexture texture, List<IModelLayerPredicate> glowPredicates) {
         this.texture = texture;
         this.glowPredicates = glowPredicates;
+        this.allowSupporterCloakOverride = true;
+    }
+
+    public CapeModelLayer(ModelLayerTexture texture, List<IModelLayerPredicate> glowPredicates, boolean allowSupporterCloakOverride) {
+        this.texture = texture;
+        this.glowPredicates = glowPredicates;
+        this.allowSupporterCloakOverride = allowSupporterCloakOverride;
     }
 
     @Override
@@ -89,7 +101,7 @@ public class CapeModelLayer implements IModelLayer {
             ((BipedModel) entityRenderer.getEntityModel()).bipedBody.translateRotate(matrixStack);
             matrixStack.translate(0, -0.02F, 0.2F);
 
-            IVertexBuilder vertex = ItemRenderer.getEntityGlintVertexBuilder(renderTypeBuffer, RenderType.getEntityTranslucent(this.texture.getTexture(context)), false, context.getAsItem() != null && context.getAsItem().hasEffect());
+            IVertexBuilder vertex = ItemRenderer.getEntityGlintVertexBuilder(renderTypeBuffer, RenderType.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, context.getAsItem() != null && context.getAsItem().hasEffect());
             int color = getColor(context);
             if (color > -1) {
                 renderCape(context, matrixStack, vertex, rotation, RenderUtil.red(color), RenderUtil.green(color), RenderUtil.blue(color), packedLight, partialTicks);
@@ -99,6 +111,22 @@ public class CapeModelLayer implements IModelLayer {
 
             matrixStack.pop();
         }
+    }
+
+    public ModelLayerTexture getTexture(IModelLayerContext context) {
+        if (context.getAsEntity() instanceof PlayerEntity) {
+            ResourceLocation cloak = SupporterHandler.getPlayerData(context.getAsEntity().getUniqueID()).getCloakTexture();
+
+            if (cloak != null) {
+                return new DefaultModelTexture(null, null) {
+                    @Override
+                    public ResourceLocation getTexture(IModelLayerContext context) {
+                        return cloak;
+                    }
+                };
+            }
+        }
+        return this.texture;
     }
 
     public int getColor(IModelLayerContext context) {
@@ -164,6 +192,6 @@ public class CapeModelLayer implements IModelLayer {
             glowPredicates.add((c) -> false);
         }
 
-        return new CapeModelLayer(ModelLayerTexture.parse(json.get("texture")), glowPredicates);
+        return new CapeModelLayer(ModelLayerTexture.parse(json.get("texture")), glowPredicates, JSONUtils.getBoolean(json, "allow_supporter_cloak_override", true));
     }
 }
