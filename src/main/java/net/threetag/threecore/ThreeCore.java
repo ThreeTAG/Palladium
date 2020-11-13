@@ -37,6 +37,7 @@ import net.threetag.threecore.ability.AbilityType;
 import net.threetag.threecore.ability.condition.ConditionType;
 import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.ability.superpower.SuperpowerManager;
+import net.threetag.threecore.accessoires.Accessoire;
 import net.threetag.threecore.accessoires.AccessoireLayerRenderer;
 import net.threetag.threecore.accessoires.Accessoires;
 import net.threetag.threecore.addonpacks.AddonPackManager;
@@ -101,7 +102,7 @@ public class ThreeCore {
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
         MinecraftForge.EVENT_BUS.register(new Events());
         registerMessages();
-        SupporterHandler.enableSupporterCheck();
+//        SupporterHandler.enableSupporterCheck();
 
         // Ores
         MinecraftForge.EVENT_BUS.addListener(TCBlocks::initOres);
@@ -206,12 +207,12 @@ public class ThreeCore {
 
         Minecraft.getInstance().getRenderManager().getSkinMap().forEach((s, pl) -> pl.addLayer(new AccessoireLayerRenderer(pl)));
 
-        // Lines for "exporting" the current accessoires
-//        System.out.print("HALLO ");
-//        for (Accessoire accessoire : Accessoire.REGISTRY) {
-//            System.out.print(accessoire.getRegistryName().toString() + ",");
-//        }
-//        System.out.print("\n");
+        // Lines for "exporting" the current accessoires for SquirrelControl
+        System.out.print("HALLO ");
+        for (Accessoire accessoire : Accessoire.REGISTRY) {
+            System.out.print(accessoire.getRegistryName().toString() + ",");
+        }
+        System.out.print("\n");
     }
 
     @OnlyIn(Dist.CLIENT)

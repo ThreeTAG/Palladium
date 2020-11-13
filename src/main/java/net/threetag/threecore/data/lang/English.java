@@ -380,6 +380,7 @@ public class English extends ThreeCoreLanguageProvider {
 
         // Accessoires
         this.addAccessoire(Accessoires.SUPPORTER_CLOAK, "Supporter Cloak");
+        this.addAccessoire(Accessoires.LUCRAFT_ARC_REACTOR, "Lucraft's Arc Reactor");
         this.addAccessoire(Accessoires.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
         this.addAccessoire(Accessoires.HEROBRINE_EYES, "Herobrine's Eyes");
         this.addAccessoire(Accessoires.WOODEN_LEG, "Wooden Leg");
@@ -390,6 +391,7 @@ public class English extends ThreeCoreLanguageProvider {
         this.addAccessoire(Accessoires.GUZZLER_HELMET, "Guzzler Helmet");
         this.addAccessoire(Accessoires.SONIC_HAND, "Sonic Hand");
         this.addAccessoire(Accessoires.HAMMOND_CANE, "Hammond's Cane");
+        this.addAccessoire(Accessoires.FACE_MASK, "Face Mask");
 
 
         // Death

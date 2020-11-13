@@ -185,7 +185,7 @@ public class AbilityClientEventHandler {
             });
         }
 
-        if (e.getGui() instanceof CustomizeSkinScreen) {
+        if (e.getGui() instanceof CustomizeSkinScreen && Minecraft.getInstance().player != null) {
             e.addWidget(new Button(e.getGui().width / 2 - 100, e.getGui().height / 6 + 24 * (12 >> 1), 200, 20, new TranslationTextComponent("gui.threecore.accessoires"), (p_213079_1_) -> {
                 e.getGui().getMinecraft().displayGuiScreen(new AccessoireScreen(e.getGui()));
             }));
