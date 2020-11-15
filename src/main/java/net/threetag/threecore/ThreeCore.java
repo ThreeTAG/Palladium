@@ -37,7 +37,6 @@ import net.threetag.threecore.ability.AbilityType;
 import net.threetag.threecore.ability.condition.ConditionType;
 import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.ability.superpower.SuperpowerManager;
-import net.threetag.threecore.accessoires.Accessoire;
 import net.threetag.threecore.accessoires.AccessoireLayerRenderer;
 import net.threetag.threecore.accessoires.Accessoires;
 import net.threetag.threecore.addonpacks.AddonPackManager;
@@ -206,13 +205,6 @@ public class ThreeCore {
         }
 
         Minecraft.getInstance().getRenderManager().getSkinMap().forEach((s, pl) -> pl.addLayer(new AccessoireLayerRenderer(pl)));
-
-        // Lines for "exporting" the current accessoires for SquirrelControl
-        System.out.print("HALLO ");
-        for (Accessoire accessoire : Accessoire.REGISTRY) {
-            System.out.print(accessoire.getRegistryName().toString() + ",");
-        }
-        System.out.print("\n");
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -1,13 +1,17 @@
 package net.threetag.threecore.data.lang;
 
 import net.minecraft.data.DataGenerator;
+import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.AbilityType;
+import net.threetag.threecore.accessoires.Accessoire;
 import net.threetag.threecore.accessoires.Accessoires;
 import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.container.TCContainerTypes;
 import net.threetag.threecore.entity.TCEntityTypes;
 import net.threetag.threecore.item.TCItems;
 import net.threetag.threecore.potion.TCEffects;
+
+import java.util.Objects;
 
 public class English extends ThreeCoreLanguageProvider {
 
@@ -17,6 +21,13 @@ public class English extends ThreeCoreLanguageProvider {
 
     @Override
     protected void addTranslations() {
+        // Lines for "exporting" the current accessoires for SquirrelControl
+        StringBuilder accessoires = new StringBuilder("ACCESSOIRE-DUMP ");
+        for (Accessoire accessoire : Accessoire.REGISTRY) {
+            accessoires.append(Objects.requireNonNull(Accessoire.REGISTRY.getKey(accessoire)).toString()).append(",");
+        }
+        ThreeCore.LOGGER.info(accessoires.toString());
+
         // Item Groups
         this.add("itemGroup.technology", "Technology");
         this.add("itemGroup.suits_and_armor", "Suits & Armor");
