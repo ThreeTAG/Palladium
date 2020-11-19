@@ -21,5 +21,6 @@ public class Accessoires {
     public static final RegistryObject<Accessoire> SONIC_HAND = ACCESSOIRES.register("sonic_hand", SonicHandAccessoire::new);
     public static final RegistryObject<Accessoire> HAMMOND_CANE = ACCESSOIRES.register("hammond_cane", HammondCaneAccessoire::new);
     public static final RegistryObject<Accessoire> FACE_MASK = ACCESSOIRES.register("face_mask", FaceMaskAccessoire::new);
+    public static final RegistryObject<Accessoire> MECHANICAL_ARM = ACCESSOIRES.register("mechanical_arm", MechanicalArmAccessoire::new);
 
 }

@@ -1,7 +1,5 @@
 package net.threetag.threecore.network;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -9,18 +7,19 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.threetag.threecore.accessoires.Accessoire;
+import net.threetag.threecore.accessoires.AccessoireSlot;
 import net.threetag.threecore.capability.CapabilityAccessoires;
 import net.threetag.threecore.client.gui.AccessoireScreen;
 
-import java.util.Collection;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class SyncAccessoiresMessage {
 
     public int entityId;
-    public Collection<Accessoire> accessoires;
+    public Map<AccessoireSlot, Collection<Accessoire>> accessoires;
 
-    public SyncAccessoiresMessage(int entityId, Collection<Accessoire> accessoires) {
+    public SyncAccessoiresMessage(int entityId, Map<AccessoireSlot, Collection<Accessoire>> accessoires) {
         this.entityId = entityId;
         this.accessoires = accessoires;
     }
@@ -28,9 +27,15 @@ public class SyncAccessoiresMessage {
     public SyncAccessoiresMessage(PacketBuffer buf) {
         this.entityId = buf.readInt();
         int amount = buf.readInt();
-        this.accessoires = Lists.newArrayList();
+        this.accessoires = new HashMap<>();
         for (int i = 0; i < amount; i++) {
-            this.accessoires.add(buf.readRegistryIdSafe(Accessoire.class));
+            AccessoireSlot slot = AccessoireSlot.getSlotByName(buf.readString());
+            List<Accessoire> accessoireList = new ArrayList<>();
+            int slotAmount = buf.readInt();
+            for (int j = 0; j < slotAmount; j++) {
+                accessoireList.add(buf.readRegistryIdSafe(Accessoire.class));
+            }
+            this.accessoires.put(slot, accessoireList);
         }
     }
 
@@ -38,9 +43,13 @@ public class SyncAccessoiresMessage {
         buf.writeInt(this.entityId);
         buf.writeInt(this.accessoires.size());
 
-        for (Accessoire accessoire : this.accessoires) {
-            buf.writeRegistryId(accessoire);
-        }
+        this.accessoires.forEach((slot, accessoireList) -> {
+            buf.writeString(slot.getName());
+            buf.writeInt(accessoireList.size());
+            for (Accessoire accessoire : accessoireList) {
+                buf.writeRegistryId(accessoire);
+            }
+        });
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
@@ -49,14 +58,12 @@ public class SyncAccessoiresMessage {
 
             if (entity instanceof AbstractClientPlayerEntity) {
                 entity.getCapability(CapabilityAccessoires.ACCESSOIRES).ifPresent((k) -> {
-                    for (Accessoire accessoire : ImmutableList.copyOf(k.getActiveAccessoires())) {
-                        k.disable(accessoire, (PlayerEntity) entity);
-                        accessoire.remove((AbstractClientPlayerEntity) entity);
-                    }
-                    for (Accessoire accessoire : this.accessoires) {
-                        k.enable(accessoire, (PlayerEntity) entity);
-                        accessoire.apply((AbstractClientPlayerEntity) entity);
-                    }
+                    k.clear((PlayerEntity) entity);
+                    this.accessoires.forEach((slot, accessoireList) -> {
+                        for (Accessoire accessoire : accessoireList) {
+                            k.enable(slot, accessoire, (PlayerEntity) entity);
+                        }
+                    });
                     if (Minecraft.getInstance().currentScreen instanceof AccessoireScreen) {
                         ((AccessoireScreen) Minecraft.getInstance().currentScreen).accessoireList.refreshList();
                     }

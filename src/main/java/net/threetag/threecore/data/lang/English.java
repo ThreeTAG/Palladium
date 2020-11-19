@@ -403,6 +403,19 @@ public class English extends ThreeCoreLanguageProvider {
         this.addAccessoire(Accessoires.SONIC_HAND, "Sonic Hand");
         this.addAccessoire(Accessoires.HAMMOND_CANE, "Hammond's Cane");
         this.addAccessoire(Accessoires.FACE_MASK, "Face Mask");
+        this.addAccessoire(Accessoires.MECHANICAL_ARM, "Mechanical Arm");
+
+        this.add("accessoire_slot.hat", "Hat");
+        this.add("accessoire_slot.head", "Head");
+        this.add("accessoire_slot.chest", "Chest");
+        this.add("accessoire_slot.back", "Back");
+        this.add("accessoire_slot.main_arm", "Main Arm");
+        this.add("accessoire_slot.off_arm", "Off Arm");
+        this.add("accessoire_slot.main_hand", "Main Hand");
+        this.add("accessoire_slot.off_hand", "Off Hand");
+        this.add("accessoire_slot.right_leg", "Right Leg");
+        this.add("accessoire_slot.left_leg", "Left Leg");
+        this.add("accessoire_slot.special", "Special");
 
 
         // Death

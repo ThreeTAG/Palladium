@@ -1,6 +1,6 @@
 package net.threetag.threecore.capability;
 
-import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -14,41 +14,33 @@ import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.accessoires.Accessoire;
+import net.threetag.threecore.accessoires.AccessoireSlot;
 import net.threetag.threecore.network.SyncAccessoiresMessage;
 
-import java.util.Collection;
-import java.util.List;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class CapabilityAccessoires implements IAccessoireHolder, INBTSerializable<CompoundNBT> {
 
     @CapabilityInject(IAccessoireHolder.class)
     public static Capability<IAccessoireHolder> ACCESSOIRES;
 
-    public List<Accessoire> accessoireList = Lists.newArrayList();
+    public Map<AccessoireSlot, Collection<Accessoire>> accessoires = new HashMap<>();
 
     @Override
-    public void enable(Accessoire accessoire, PlayerEntity player) {
-        if (accessoire != null && !this.accessoireList.contains(accessoire) && canEnable(accessoire, player)) {
-            Accessoire.PlayerPart playerPart = accessoire.getPlayerPart();
-
-            if (playerPart != null) {
-                Accessoire accessoire1 = null;
-
-                for (Accessoire a : this.accessoireList) {
-                    if (a.getPlayerPart() == playerPart) {
-                        accessoire1 = a;
-                        break;
-                    }
+    public void enable(AccessoireSlot slot, Accessoire accessoire, PlayerEntity player) {
+        if (slot != null && accessoire != null && accessoire.getPossibleSlots().contains(slot) && canEnable(accessoire, player)) {
+            if (slot.allowsMultiple()) {
+                Collection<Accessoire> accessoires = getOrCreateSlotList(slot);
+                if (!accessoires.contains(accessoire)) {
+                    accessoires.add(accessoire);
                 }
-
-                if (accessoire1 != null) {
-                    this.accessoireList.remove(accessoire1);
-                }
+            } else {
+                this.accessoires.put(slot, Collections.singletonList(accessoire));
             }
 
-            this.accessoireList.add(accessoire);
             if (!player.world.isRemote)
-                ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new SyncAccessoiresMessage(player.getEntityId(), this.getActiveAccessoires()));
+                ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new SyncAccessoiresMessage(player.getEntityId(), this.getSlots()));
         }
     }
 
@@ -57,52 +49,91 @@ public class CapabilityAccessoires implements IAccessoireHolder, INBTSerializabl
     }
 
     @Override
-    public void disable(Accessoire accessoire, PlayerEntity player) {
-        if (accessoire != null) {
-            this.accessoireList.remove(accessoire);
+    public void disable(AccessoireSlot slot, @Nullable Accessoire accessoire, PlayerEntity player) {
+        if (slot != null && accessoire != null) {
+            if (slot.allowsMultiple()) {
+                if (accessoire == null) {
+                    this.accessoires.put(slot, new ArrayList<>());
+                } else {
+                    Collection<Accessoire> accessoires = getOrCreateSlotList(slot);
+                    accessoires.remove(accessoire);
+                }
+            } else {
+                this.accessoires.put(slot, new ArrayList<>());
+            }
             if (!player.world.isRemote)
-                ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new SyncAccessoiresMessage(player.getEntityId(), this.getActiveAccessoires()));
+                ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new SyncAccessoiresMessage(player.getEntityId(), this.getSlots()));
         }
     }
 
     @Override
     public void validate(PlayerEntity player) {
-        List<Accessoire> disable = Lists.newArrayList();
-        for (Accessoire accessoire : this.getActiveAccessoires()) {
-            if (!canEnable(accessoire, player)) {
-                disable.add(accessoire);
+        List<Pair<AccessoireSlot, Accessoire>> disable = new ArrayList<>();
+
+        this.accessoires.forEach((slot, accessoires) -> {
+            for (Accessoire accessoire : accessoires) {
+                if (!canEnable(accessoire, player)) {
+                    disable.add(Pair.of(slot, accessoire));
+                }
             }
+        });
+        for (Pair<AccessoireSlot, Accessoire> pair : disable) {
+            this.disable(pair.getFirst(), pair.getSecond(), player);
         }
-        for (Accessoire accessoire : disable) {
-            this.disable(accessoire, player);
+    }
+
+    public Collection<Accessoire> getOrCreateSlotList(AccessoireSlot slot) {
+        Collection<Accessoire> accessoires = this.accessoires.get(slot);
+        if (slot != null) {
+            return accessoires;
+        } else {
+            accessoires = new ArrayList<>();
+            this.accessoires.put(slot, accessoires);
+            return accessoires;
         }
     }
 
     @Override
-    public Collection<Accessoire> getActiveAccessoires() {
-        return this.accessoireList;
+    public void clear(PlayerEntity player) {
+        this.accessoires.clear();
+        for (AccessoireSlot slot : AccessoireSlot.getSlots()) {
+            this.accessoires.put(slot, new ArrayList<>());
+        }
+        if (!player.world.isRemote)
+            ThreeCore.NETWORK_CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new SyncAccessoiresMessage(player.getEntityId(), this.getSlots()));
+    }
+
+    @Override
+    public Map<AccessoireSlot, Collection<Accessoire>> getSlots() {
+        return this.accessoires;
     }
 
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
-        ListNBT listNBT = new ListNBT();
-        for (Accessoire accessoire : this.accessoireList) {
-            listNBT.add(StringNBT.valueOf(Accessoire.REGISTRY.getKey(accessoire).toString()));
-        }
-        nbt.put("Accessoires", listNBT);
+        this.accessoires.forEach((slot, list) -> {
+            ListNBT listNBT = new ListNBT();
+            for (Accessoire accessoire : list) {
+                listNBT.add(StringNBT.valueOf(Accessoire.REGISTRY.getKey(accessoire).toString()));
+            }
+            nbt.put(slot.getName(), listNBT);
+        });
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        this.accessoireList = Lists.newArrayList();
-        ListNBT listNBT = nbt.getList("Accessoires", Constants.NBT.TAG_STRING);
-        for (int i = 0; i < listNBT.size(); i++) {
-            Accessoire accessoire = Accessoire.REGISTRY.getValue(new ResourceLocation(listNBT.getString(i)));
-            if (accessoire != null) {
-                this.accessoireList.add(accessoire);
+        this.accessoires = new HashMap<>();
+        for (AccessoireSlot slot : AccessoireSlot.getSlots()) {
+            ListNBT listNBT = nbt.getList(slot.getName(), Constants.NBT.TAG_STRING);
+            List<Accessoire> accessoires = new ArrayList<>();
+            for (int i = 0; i < listNBT.size(); i++) {
+                Accessoire accessoire = Accessoire.REGISTRY.getValue(new ResourceLocation(listNBT.getString(i)));
+                if (accessoire != null) {
+                    accessoires.add(accessoire);
+                }
             }
+            this.accessoires.put(slot, accessoires);
         }
     }
 }

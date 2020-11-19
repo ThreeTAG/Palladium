@@ -33,7 +33,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.container.DefaultAbilityContainer;
 import net.threetag.threecore.ability.container.IAbilityContainer;
-import net.threetag.threecore.client.gui.AccessoireScreen;
+import net.threetag.threecore.client.gui.AccessoireSlotsScreen;
 import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
 import net.threetag.threecore.client.gui.widget.IconButton;
 import net.threetag.threecore.client.renderer.AbilityBarRenderer;
@@ -187,7 +187,7 @@ public class AbilityClientEventHandler {
 
         if (e.getGui() instanceof CustomizeSkinScreen && Minecraft.getInstance().player != null) {
             e.addWidget(new Button(e.getGui().width / 2 - 100, e.getGui().height / 6 + 24 * (12 >> 1), 200, 20, new TranslationTextComponent("gui.threecore.accessoires"), (p_213079_1_) -> {
-                e.getGui().getMinecraft().displayGuiScreen(new AccessoireScreen(e.getGui()));
+                e.getGui().getMinecraft().displayGuiScreen(new AccessoireSlotsScreen(e.getGui()));
             }));
         }
 

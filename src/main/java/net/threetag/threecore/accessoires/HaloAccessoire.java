@@ -11,6 +11,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.client.renderer.entity.model.WingsModel;
 
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Created by Swirtzly
  * on 26/04/2020 @ 18:34
@@ -19,7 +22,7 @@ public class HaloAccessoire extends Accessoire {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void render(PlayerRenderer renderer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, AbstractClientPlayerEntity player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PlayerRenderer renderer, AccessoireSlot slot, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, AbstractClientPlayerEntity player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         matrixStackIn.push();
         renderer.getEntityModel().bipedHead.translateRotate(matrixStackIn);
         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(player.world.getGameTime()));
@@ -29,5 +32,10 @@ public class HaloAccessoire extends Accessoire {
         matrixStackIn.translate(0, -0.2f + (offset * 0.05f), 0);
         WingsModel.INSTANCE.renderHalo(matrixStackIn, bufferIn.getBuffer(WingsModel.INSTANCE.getRenderType(WingsModel.TEXTURE)), packedLightIn, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
         matrixStackIn.pop();
+    }
+
+    @Override
+    public Collection<AccessoireSlot> getPossibleSlots() {
+        return Collections.singletonList(AccessoireSlot.HAT);
     }
 }

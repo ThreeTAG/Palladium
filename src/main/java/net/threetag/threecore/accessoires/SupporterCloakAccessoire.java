@@ -10,11 +10,19 @@ import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLay
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.transformer.ITextureTransformer;
 import net.threetag.threecore.util.SupporterHandler;
 
+import java.util.Collection;
+import java.util.Collections;
+
 public class SupporterCloakAccessoire extends Accessoire {
 
     @Override
     public boolean isAvailable(PlayerEntity entity) {
         return SupporterHandler.getPlayerData(entity.getUniqueID()).hasCloak();
+    }
+
+    @Override
+    public Collection<AccessoireSlot> getPossibleSlots() {
+        return Collections.singletonList(AccessoireSlot.BACK);
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -187,7 +187,7 @@ public class ThreeCoreCapabilities {
     public static void onStartTracking(PlayerEvent.StartTracking e) {
         e.getTarget().getCapability(CapabilityAccessoires.ACCESSOIRES).ifPresent(accessoireHolder -> {
             if (accessoireHolder instanceof INBTSerializable && e.getPlayer() instanceof ServerPlayerEntity) {
-                ThreeCore.NETWORK_CHANNEL.sendTo(new SyncAccessoiresMessage(e.getTarget().getEntityId(), accessoireHolder.getActiveAccessoires()), ((ServerPlayerEntity) e.getPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                ThreeCore.NETWORK_CHANNEL.sendTo(new SyncAccessoiresMessage(e.getTarget().getEntityId(), accessoireHolder.getSlots()), ((ServerPlayerEntity) e.getPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             }
         });
     }
@@ -196,7 +196,7 @@ public class ThreeCoreCapabilities {
     public static void onJoinWorld(EntityJoinWorldEvent e) {
         e.getEntity().getCapability(CapabilityAccessoires.ACCESSOIRES).ifPresent(accessoireHolder -> {
             if (e.getEntity() instanceof ServerPlayerEntity)
-                ThreeCore.NETWORK_CHANNEL.sendTo(new SyncAccessoiresMessage(e.getEntity().getEntityId(), accessoireHolder.getActiveAccessoires()), ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                ThreeCore.NETWORK_CHANNEL.sendTo(new SyncAccessoiresMessage(e.getEntity().getEntityId(), accessoireHolder.getSlots()), ((ServerPlayerEntity) e.getEntity()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
         });
     }
 

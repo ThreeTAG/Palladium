@@ -8,7 +8,9 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
@@ -25,6 +27,7 @@ import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.SupporterHandler;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public abstract class Accessoire extends ForgeRegistryEntry<Accessoire> {
@@ -45,15 +48,21 @@ public abstract class Accessoire extends ForgeRegistryEntry<Accessoire> {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void apply(AbstractClientPlayerEntity player) {
+    public void render(PlayerRenderer renderer, AccessoireSlot slot, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, AbstractClientPlayerEntity player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void remove(AbstractClientPlayerEntity player) {
+    public boolean isVisible(AccessoireSlot slot, AbstractClientPlayerEntity player) {
+        return slot.getCorrespondingEquipmentSlot() == null || player.getItemStackFromSlot(slot.getCorrespondingEquipmentSlot()).isEmpty();
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void render(PlayerRenderer renderer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, AbstractClientPlayerEntity player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public static ModelRenderer getArm(PlayerModel<?> model, boolean mainHand, HandSide primaryHand) {
+        if (mainHand) {
+            return primaryHand == HandSide.RIGHT ? model.bipedRightArm : model.bipedLeftArm;
+        } else {
+            return primaryHand == HandSide.RIGHT ? model.bipedLeftArm : model.bipedRightArm;
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -70,42 +79,6 @@ public abstract class Accessoire extends ForgeRegistryEntry<Accessoire> {
         }
     }
 
-    @Nullable
-    public PlayerPart getPlayerPart() {
-        return null;
-    }
-
-    public enum PlayerPart {
-
-        HEAD,
-        CHEST,
-        RIGHT_ARM,
-        LEFT_ARM,
-        RIGHT_LEG,
-        LEFT_LEG;
-
-        public void setVisibility(PlayerModel model, boolean visible) {
-            switch (this) {
-                case HEAD:
-                    model.bipedHead.showModel = model.bipedBodyWear.showModel = visible;
-                    return;
-                case CHEST:
-                    model.bipedBody.showModel = model.bipedBodyWear.showModel = visible;
-                    return;
-                case RIGHT_ARM:
-                    model.bipedRightArm.showModel = model.bipedRightArmwear.showModel = visible;
-                    return;
-                case LEFT_ARM:
-                    model.bipedLeftArm.showModel = model.bipedLeftArmwear.showModel = visible;
-                    return;
-                case RIGHT_LEG:
-                    model.bipedRightLeg.showModel = model.bipedRightLegwear.showModel = visible;
-                    return;
-                default:
-                    model.bipedLeftLeg.showModel = model.bipedLeftLegwear.showModel = visible;
-            }
-        }
-
-    }
+    public abstract Collection<AccessoireSlot> getPossibleSlots();
 
 }

@@ -20,10 +20,12 @@ public class AccessoireLayerRenderer extends LayerRenderer<AbstractClientPlayerE
 
     @Override
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, AbstractClientPlayerEntity player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        player.getCapability(CapabilityAccessoires.ACCESSOIRES).ifPresent(accessoires -> {
-            for(Accessoire accessoire : accessoires.getActiveAccessoires()) {
-                accessoire.render((PlayerRenderer) this.entityRenderer, matrixStackIn, bufferIn, packedLightIn, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+        player.getCapability(CapabilityAccessoires.ACCESSOIRES).ifPresent(accessoireHolder -> accessoireHolder.getSlots().forEach(((slot, accessoires) -> {
+            for (Accessoire accessoire : accessoires) {
+                if (accessoire.isVisible(slot, player)) {
+                    accessoire.render((PlayerRenderer) this.entityRenderer, slot, matrixStackIn, bufferIn, packedLightIn, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                }
             }
-        });
+        })));
     }
 }

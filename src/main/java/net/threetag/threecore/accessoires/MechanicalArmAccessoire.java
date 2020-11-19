@@ -10,33 +10,37 @@ import net.minecraft.util.HandSide;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.threetag.threecore.client.renderer.entity.model.SonicHandModel;
+import net.threetag.threecore.client.renderer.entity.model.MechanicalArmModel;
 import net.threetag.threecore.util.PlayerUtil;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-public class SonicHandAccessoire extends Accessoire {
+public class MechanicalArmAccessoire extends Accessoire {
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void render(PlayerRenderer renderer, AccessoireSlot slot, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, AbstractClientPlayerEntity player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         matrixStackIn.push();
-        ModelRenderer part = getArm(renderer.getEntityModel(), slot == AccessoireSlot.MAIN_HAND, player.getPrimaryHand());
+        ModelRenderer part = getArm(renderer.getEntityModel(), slot == AccessoireSlot.MAIN_ARM, player.getPrimaryHand());
         HandSide handSide = part == renderer.getEntityModel().bipedRightArm ? HandSide.RIGHT : HandSide.LEFT;
         part.translateRotate(matrixStackIn);
-        if(PlayerUtil.hasSmallArms(player)) {
-            matrixStackIn.translate(handSide == HandSide.LEFT ? 0.5F / 16F : -0.5F / 16F, 10F / 16F, 0);
+
+        if(handSide == HandSide.RIGHT) {
+            matrixStackIn.translate(-1F / 16F, -14F / 16F, 0);
+            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180F));
         } else {
-            matrixStackIn.translate(handSide == HandSide.LEFT ? 1F / 16F : -1F / 16F, 10F / 16F, 0);
+            matrixStackIn.translate(1F / 16F, -14F / 16F, 0);
         }
-        matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90F));
-        SonicHandModel.INSTANCE.render(matrixStackIn, bufferIn.getBuffer(SonicHandModel.INSTANCE.getRenderType(SonicHandModel.TEXTURE)), packedLightIn, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+
+        boolean smallArms = PlayerUtil.hasSmallArms(player);
+        MechanicalArmModel.INSTANCE.renderArm(smallArms, matrixStackIn, bufferIn.getBuffer(MechanicalArmModel.INSTANCE.getRenderType(smallArms ? MechanicalArmModel.TEXTURE_SLIM :
+                MechanicalArmModel.TEXTURE)), packedLightIn, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
         matrixStackIn.pop();
     }
 
     @Override
     public Collection<AccessoireSlot> getPossibleSlots() {
-        return Arrays.asList(AccessoireSlot.MAIN_HAND, AccessoireSlot.OFF_HAND);
+        return Arrays.asList(AccessoireSlot.MAIN_ARM, AccessoireSlot.OFF_ARM);
     }
 }
