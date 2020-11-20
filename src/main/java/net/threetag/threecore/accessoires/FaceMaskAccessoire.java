@@ -27,6 +27,6 @@ public class FaceMaskAccessoire extends Accessoire {
 
     @Override
     public Collection<AccessoireSlot> getPossibleSlots() {
-        return Collections.singletonList(AccessoireSlot.SPECIAL);
+        return Collections.singletonList(AccessoireSlot.FACE);
     }
 }

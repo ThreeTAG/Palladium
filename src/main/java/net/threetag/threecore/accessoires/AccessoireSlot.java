@@ -22,6 +22,7 @@ public class AccessoireSlot {
 
     public static final AccessoireSlot HAT = register("hat").setIcon(new ResourceLocation(ThreeCore.MODID, "textures/gui/accessoire_slots/hat.png")).setCorrespondingEquipmentSlot(EquipmentSlotType.HEAD);
     public static final AccessoireSlot HEAD = register("head").setIcon(new ResourceLocation(ThreeCore.MODID, "textures/gui/accessoire_slots/head.png"));
+    public static final AccessoireSlot FACE = register("face").setIcon(new ResourceLocation(ThreeCore.MODID, "textures/gui/accessoire_slots/face.png"));
     public static final AccessoireSlot CHEST = register("chest").setIcon(new ResourceLocation(ThreeCore.MODID, "textures/gui/accessoire_slots/chest.png"));
     public static final AccessoireSlot BACK = register("back").setIcon(new ResourceLocation(ThreeCore.MODID, "textures/gui/accessoire_slots/back.png"));
     public static final AccessoireSlot MAIN_ARM = register("main_arm").setIcon(new ResourceLocation(ThreeCore.MODID, "textures/gui/accessoire_slots/main_arm.png"));

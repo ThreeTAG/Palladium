@@ -405,9 +405,12 @@ public class English extends ThreeCoreLanguageProvider {
         this.addAccessoire(Accessoires.FACE_MASK, "Face Mask");
         this.addAccessoire(Accessoires.MECHANICAL_ARM, "Mechanical Arm");
         this.addAccessoire(Accessoires.FEZ, "Fez");
+        this.addAccessoire(Accessoires.ELTON_HAT, "Elton Hat");
+        this.addAccessoire(Accessoires.HEART_GLASSES, "Heart Glasses");
 
         this.add("accessoire_slot.hat", "Hat");
         this.add("accessoire_slot.head", "Head");
+        this.add("accessoire_slot.face", "Face");
         this.add("accessoire_slot.chest", "Chest");
         this.add("accessoire_slot.back", "Back");
         this.add("accessoire_slot.main_arm", "Main Arm");
