@@ -27,7 +27,9 @@ import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.SupporterHandler;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public abstract class Accessoire extends ForgeRegistryEntry<Accessoire> {
@@ -81,4 +83,15 @@ public abstract class Accessoire extends ForgeRegistryEntry<Accessoire> {
 
     public abstract Collection<AccessoireSlot> getPossibleSlots();
 
+    public static List<Accessoire> getAvailableAccessoires(SupporterHandler.PlayerData data, AccessoireSlot slot) {
+        List<Accessoire> list = new ArrayList<>();
+
+        for (Accessoire accessoire : Accessoire.REGISTRY) {
+            if (accessoire.getPossibleSlots().contains(slot) && data.hasAccessoire(accessoire)) {
+                list.add(accessoire);
+            }
+        }
+
+        return list;
+    }
 }

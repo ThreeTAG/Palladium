@@ -29,6 +29,7 @@ import net.threetag.threecore.accessoires.AccessoireSlot;
 import net.threetag.threecore.capability.CapabilityAccessoires;
 import net.threetag.threecore.client.gui.widget.FlatIconButton;
 import net.threetag.threecore.network.ToggleAccessoireMessage;
+import net.threetag.threecore.util.SupporterHandler;
 import net.threetag.threecore.util.icon.TexturedIcon;
 
 import java.util.Collection;
@@ -107,9 +108,11 @@ public class AccessoireScreen extends SettingsScreen {
             super(mcIn, widthIn, heightIn, topIn, bottomIn, slotHeightIn);
             this.listWidth = widthIn;
             for (AccessoireSlot slot : AccessoireSlot.getSlots()) {
-                mcIn.player.getCapability(CapabilityAccessoires.ACCESSOIRES).ifPresent(accessoireHolder -> {
-                    this.addEntry(new SlotListEntry(slot, parent, !accessoireHolder.getSlots().get(slot).isEmpty()));
-                });
+                if(!Accessoire.getAvailableAccessoires(SupporterHandler.getPlayerData(mcIn.player.getGameProfile().getId()), slot).isEmpty()) {
+                    mcIn.player.getCapability(CapabilityAccessoires.ACCESSOIRES).ifPresent(accessoireHolder -> {
+                        this.addEntry(new SlotListEntry(slot, parent, !accessoireHolder.getSlots().get(slot).isEmpty()));
+                    });
+                }
             }
         }
 
