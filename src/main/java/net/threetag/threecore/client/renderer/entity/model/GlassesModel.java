@@ -13,14 +13,15 @@ import net.threetag.threecore.ThreeCore;
 
 import java.util.function.Function;
 
-public class HeartGlassesModel extends Model {
+public class GlassesModel extends Model {
 
-    public static final HeartGlassesModel INSTANCE = new HeartGlassesModel(RenderType::getEntityTranslucentCull);
-    public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/heart_glasses.png");
+    public static final GlassesModel INSTANCE = new GlassesModel(RenderType::getEntityTranslucentCull);
+    public static final ResourceLocation TEXTURE_HEART_GLASSES = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/heart_glasses.png");
+    public static final ResourceLocation TEXTURE_SUN_GLASSES = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/sun_glasses.png");
 
     private final ModelRenderer hat;
 
-    public HeartGlassesModel(Function<ResourceLocation, RenderType> renderTypeIn) {
+    public GlassesModel(Function<ResourceLocation, RenderType> renderTypeIn) {
         super(renderTypeIn);
         textureWidth = 32;
         textureHeight = 16;

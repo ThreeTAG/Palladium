@@ -23,7 +23,9 @@ public class Accessoires {
     public static final RegistryObject<Accessoire> FACE_MASK = ACCESSOIRES.register("face_mask", FaceMaskAccessoire::new);
     public static final RegistryObject<Accessoire> MECHANICAL_ARM = ACCESSOIRES.register("mechanical_arm", MechanicalArmAccessoire::new);
     public static final RegistryObject<Accessoire> FEZ = ACCESSOIRES.register("fez", FezAccessoire::new);
-    public static final RegistryObject<Accessoire> ELTON_HAT = ACCESSOIRES.register("elton_hat", EltonHatAccessoire::new);
-    public static final RegistryObject<Accessoire> HEART_GLASSES = ACCESSOIRES.register("heart_glasses", HeartGlassesAccessoire::new);
+    public static final RegistryObject<Accessoire> ELTON_HAT = ACCESSOIRES.register("elton_hat", FedoraAccessoire::new);
+    public static final RegistryObject<Accessoire> OWCA_FEDORA = ACCESSOIRES.register("owca_fedora", FedoraAccessoire::new);
+    public static final RegistryObject<Accessoire> HEART_GLASSES = ACCESSOIRES.register("heart_glasses", SunGlassesAccessoire::new);
+    public static final RegistryObject<Accessoire> SUN_GLASSES = ACCESSOIRES.register("sun_glasses", SunGlassesAccessoire::new);
 
 }

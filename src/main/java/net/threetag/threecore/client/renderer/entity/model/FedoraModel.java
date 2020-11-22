@@ -16,14 +16,15 @@ import net.threetag.threecore.ThreeCore;
 import java.util.function.Function;
 
 @OnlyIn(Dist.CLIENT)
-public class EltonHatModel extends Model {
+public class FedoraModel extends Model {
 
-    public static final EltonHatModel INSTANCE = new EltonHatModel(RenderType::getEntityTranslucent);
-    public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/elton_hat.png");
+    public static final FedoraModel INSTANCE = new FedoraModel(RenderType::getEntityTranslucent);
+    public static final ResourceLocation TEXTURE_ELTON_HAT = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/elton_hat.png");
+    public static final ResourceLocation TEXTURE_OWCA_FEDORA = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/owca_fedora.png");
 
     private final ModelRenderer hat;
 
-    public EltonHatModel(Function<ResourceLocation, RenderType> renderTypeIn) {
+    public FedoraModel(Function<ResourceLocation, RenderType> renderTypeIn) {
         super(renderTypeIn);
         textureWidth = 64;
         textureHeight = 32;
