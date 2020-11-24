@@ -13,7 +13,7 @@ import net.threetag.threecore.client.renderer.entity.model.GlassesModel;
 import java.util.Collection;
 import java.util.Collections;
 
-public class SunGlassesAccessoire extends Accessoire {
+public class GlassesAccessoire extends Accessoire {
 
     @OnlyIn(Dist.CLIENT)
     @Override
@@ -27,7 +27,14 @@ public class SunGlassesAccessoire extends Accessoire {
 
     @OnlyIn(Dist.CLIENT)
     private ResourceLocation getTexture() {
-        return this == Accessoires.HEART_GLASSES.get() ? GlassesModel.TEXTURE_HEART_GLASSES : GlassesModel.TEXTURE_SUN_GLASSES;
+        if(this == Accessoires.HEART_GLASSES.get()) {
+            return GlassesModel.TEXTURE_HEART_GLASSES;
+        } else if(this == Accessoires.SUN_GLASSES.get()) {
+            return GlassesModel.TEXTURE_SUN_GLASSES;
+        } else if(this == Accessoires.GLASSES_3D.get()) {
+            return GlassesModel.TEXTURE_3D_GLASSES;
+        }
+        return null;
     }
 
     @Override
