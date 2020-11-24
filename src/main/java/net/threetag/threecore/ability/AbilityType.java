@@ -14,17 +14,14 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.scripts.events.RegisterAbilityThreeDataScriptEvent;
+import net.threetag.threecore.util.documentation.DocumentationBuilder;
 import net.threetag.threecore.util.threedata.ThreeData;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import static net.threetag.threecore.util.documentation.DocumentationBuilder.*;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AbilityType extends ForgeRegistryEntry<AbilityType> {
@@ -94,104 +91,59 @@ public class AbilityType extends ForgeRegistryEntry<AbilityType> {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void generateHtmlFile(File file) {
-        try {
-            if (!file.getParentFile().exists())
-                file.getParentFile().mkdirs();
+    public static void generateDocumentation() {
+        Map<String, List<Ability>> sorted = new HashMap<>();
 
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            bw.write("<html><head><title>Abilities</title><style>\n" +
-                    "table{font-family:arial, sans-serif;border-collapse:collapse;}\n" +
-                    "td,th{border:1px solid #666666;text-align:left;padding:8px;min-width:45px;}\n" +
-                    "th{background-color:#CCCCCC;}\n" +
-                    "p{margin:0;}\n" +
-                    "tr:nth-child(even){background-color:#D8D8D8;}\n" +
-                    "tr:nth-child(odd){background-color:#EEEEEE;}\n" +
-                    "td.true{background-color:#72FF85AA;}\n" +
-                    "td.false{background-color:#FF6666AA;}\n" +
-                    "td.other{background-color:#42A3FFAA;}\n" +
-                    "td.error{color:#FF0000;}\n" +
-                    "th,td.true,td.false,td.other{text-align:center;}\n" +
-                    "</style><link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"https://i.imgur.com/am80ox1.png\">" +
-                    "</head><body>");
+        // Sort abilities by mods
+        for (AbilityType types : REGISTRY.getValues()) {
+            Ability ability = types.create("");
+            String modName = getModContainerFromId(types.getRegistryName().getNamespace()) != null ? getModContainerFromId(types.getRegistryName().getNamespace()).getDisplayName() : types.getRegistryName().getNamespace();
+            List<Ability> modsAbilities = sorted.containsKey(modName) ? sorted.get(modName) : new ArrayList<>();
+            modsAbilities.add(ability);
+            sorted.put(modName, modsAbilities);
+        }
 
-            List<Ability> abilities = new ArrayList<>();
-            Map<String, List<Ability>> sorted = new HashMap<>();
+        DocumentationBuilder.HTMLObject overview;
+        DocumentationBuilder builder = new DocumentationBuilder(new ResourceLocation(ThreeCore.MODID, "abilities"), "Abilities")
+                .addStyle(".json-block { background-color: lightgray; display: inline-block; border: 5px solid darkgray; padding: 10px }")
+                .add(heading("Abilities")).add(hr())
+                .add(overview = paragraph(subHeading("Overview")));
 
-            // Sort abilities by mods
-            for (AbilityType types : REGISTRY.getValues()) {
-                Ability ability = types.create("");
-                abilities.add(ability);
-                String modName = getModContainerFromId(types.getRegistryName().getNamespace()) != null ? getModContainerFromId(types.getRegistryName().getNamespace()).getDisplayName() : types.getRegistryName().getNamespace();
-                List<Ability> modsAbilities = sorted.containsKey(modName) ? sorted.get(modName) : new ArrayList<>();
-                modsAbilities.add(ability);
-                sorted.put(modName, modsAbilities);
-            }
+        sorted.forEach((mod, abilities) -> {
+            overview.add(subSubHeading(mod));
+            overview.add(list(abilities.stream().map(ability -> link(StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).getString()), "#" + ability.type.getRegistryName().toString())).collect(Collectors.toList())));
+        });
 
-            // Generate overview lists
-            sorted.forEach((s, l) -> {
-                try {
-                    bw.write("<h1>" + s + "</h1>\n");
-                    bw.write("<ul>\n");
-                    for (Ability ability : l) {
-                        bw.write("<li><a href=\"#" + ability.type.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).getString()) + "</a></li>\n");
-                    }
-                    bw.write("</ul>\n");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            bw.write("\n");
-
-            // Write ability info
-            for (Ability ability : abilities) {
-                AbilityType entry = ability.type;
-                bw.write("<hr>\n");
-
-                // Title
-                bw.write("<p><h1 id=\"" + entry.getRegistryName().toString() + "\">" + StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).getString()) + "</h1>\n");
-                bw.write("<h3>" + entry.getRegistryName().toString() + "</h3>\n");
+        sorted.values().forEach(modAbilities -> {
+            modAbilities.forEach(ability -> {
+                List<Iterable<?>> data = new LinkedList<>();
                 List<ThreeData<?>> dataList = ability.getDataManager().getSettingData();
+                StringBuilder jsonText = new StringBuilder("{\"example_ability\":{\"ability\":\"").append(ability.type.getRegistryName().toString()).append("\",");
 
-                // Example
-                bw.write("<p>Example:<br>\n");
-
-                StringBuilder jsonText = new StringBuilder("{\"example_ability\":{\"ability\":\"").append(entry.getRegistryName().toString()).append("\",");
                 for (int i = 0; i < dataList.size(); i++) {
                     ThreeData threeData = dataList.get(i);
                     String s = threeData.getJsonString(ability.getDataManager().getDefaultValue(threeData));
+                    List<Object> settings = new LinkedList<>();
+                    settings.add(threeData.getJsonKey());
+                    settings.add(threeData.getType().getTypeName().substring(threeData.getType().getTypeName().lastIndexOf(".") + 1));
+                    settings.add(new HTMLObject("code", s));
+                    settings.add((threeData.getDescription() == null || threeData.getDescription().isEmpty() ? "/" : threeData.getDescription()));
+                    data.add(settings);
                     jsonText.append("  \"").append(threeData.getJsonKey()).append("\": ").append(s).append(i < dataList.size() - 1 ? "," : "");
                 }
                 jsonText.append("}}");
 
-                bw.write("<code><pre id=\"" + entry.getRegistryName().toString() + "_example\"></pre></code>");
+                builder.add(hr()).add(div().setId(ability.type.getRegistryName().toString())
+                        .add(subHeading(StringUtils.stripControlCodes(ability.dataManager.get(Ability.TITLE).getString())).add(new HTMLObject("code", ability.type.getRegistryName().toString())))
+                        .add(subSubHeading("Data Settings:"))
+                        .add(table(Arrays.asList("Setting", "Type", "Fallback Value", "Description"), data))
+                        .add(subSubHeading("Example:"))
+                        .add(new HTMLObject("pre").addAttribute("class", "json-block").setId(ability.type.getRegistryName().toString() + "_example"))
+                        .add(js("var json = JSON.parse('" + jsonText.toString() + "'); document.getElementById('" + ability.type.getRegistryName().toString() + "_example').innerHTML = JSON.stringify(json, undefined, 2);")));
+            });
+        });
 
-                bw.write("<script> var json = JSON.parse('" + jsonText.toString() + "');");
-                bw.write("document.getElementById('" + entry.getRegistryName().toString() + "_example').innerHTML = JSON.stringify(json, undefined, 2);</script>");
-
-                bw.write("\n");
-
-                // Table
-                bw.write("<table>\n<tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr>\n");
-                for (ThreeData threeData : dataList) {
-                    String s = threeData.getJsonString(ability.getDataManager().getDefaultValue(threeData));
-                    bw.write("<tr>\n" +
-                            "<td><code>" + threeData.getJsonKey() + "</code></td>\n" +
-                            "<td><code>" + threeData.getType().getTypeName().substring(threeData.getType().getTypeName().lastIndexOf(".") + 1) + "</code></td>\n" +
-                            "<td><code>" + s + "</code></td>\n" +
-                            "<td><p>" + (threeData.getDescription() == null || threeData.getDescription().isEmpty() ? "/" : threeData.getDescription()) + "</p>\n" +
-                            "</td></tr><br>");
-                }
-                bw.write("</table>\n\n\n");
-            }
-            bw.write("</body></html>");
-            bw.close();
-
-            ThreeCore.LOGGER.info("Successfully generated " + file.getName() + "!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        builder.save();
     }
 
     public static ModInfo getModContainerFromId(String modid) {

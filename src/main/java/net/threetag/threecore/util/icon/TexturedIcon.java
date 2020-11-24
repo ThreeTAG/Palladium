@@ -1,6 +1,7 @@
 package net.threetag.threecore.util.icon;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -15,8 +16,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.util.TCJsonUtil;
+import net.threetag.threecore.util.documentation.IDocumentationSettings;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class TexturedIcon implements IIcon {
 
@@ -88,7 +93,7 @@ public class TexturedIcon implements IIcon {
         return Serializer.INSTANCE;
     }
 
-    public static class Serializer implements IIconSerializer<TexturedIcon> {
+    public static class Serializer implements IIconSerializer<TexturedIcon>, IDocumentationSettings {
 
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(ThreeCore.MODID, "texture");
@@ -167,6 +172,33 @@ public class TexturedIcon implements IIcon {
         @Override
         public ResourceLocation getId() {
             return ID;
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public List<String> getColumns() {
+            return Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value");
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public List<Iterable<?>> getRows() {
+            List<Iterable<?>> rows = new ArrayList<>();
+            rows.add(Arrays.asList("texture", ResourceLocation.class, "Texture location for the icon", true, null));
+            rows.add(Arrays.asList("u", Integer.class, "U location on the texture", true, null));
+            rows.add(Arrays.asList("v", Integer.class, "V location on the texture", true, null));
+            rows.add(Arrays.asList("width", Integer.class, "Width of the icon on the texture file", false, 16));
+            rows.add(Arrays.asList("height", Integer.class, "Height of the icon on the texture file", false, 16));
+            rows.add(Arrays.asList("texture_width", Integer.class, "Width of the whole the texture file", false, 256));
+            rows.add(Arrays.asList("texture_height", Integer.class, "Height of the whole the texture file", false, 256));
+            rows.add(Arrays.asList("tint", Integer[].class, "RGB values for tinting the icon", false, null));
+            return rows;
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public JsonElement getExampleJson() {
+            return this.serializeJsonExt(new TexturedIcon(ICONS_TEXTURE, 16, 32, 16, 16, 256, 256, Color.ORANGE));
         }
     }
 }

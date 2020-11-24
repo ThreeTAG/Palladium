@@ -24,13 +24,19 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraftforge.common.util.NonNullFunction;
+import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.client.renderer.entity.modellayer.predicates.IModelLayerPredicate;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.DefaultModelTexture;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLayerTexture;
 import net.threetag.threecore.util.RenderUtil;
 import net.threetag.threecore.util.SupporterHandler;
+import net.threetag.threecore.util.documentation.IDocumentationSettings;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -172,26 +178,62 @@ public class CapeModelLayer implements IModelLayer {
         return this;
     }
 
-    public static CapeModelLayer parse(JsonObject json) {
-        List<IModelLayerPredicate> glowPredicates = Lists.newLinkedList();
+    public static class Parser implements NonNullFunction<JsonObject, IModelLayer>, IDocumentationSettings {
 
-        if (JSONUtils.hasField(json, "glow")) {
-            JsonElement glowJson = json.get("glow");
+        public static final ResourceLocation ID = new ResourceLocation(ThreeCore.MODID, "cape");
 
-            if (glowJson.isJsonPrimitive() && glowJson.getAsBoolean()) {
-                glowPredicates.add((c) -> true);
-            } else {
-                JsonArray predicateArray = JSONUtils.getJsonArray(json, "glow");
-                for (int i = 0; i < predicateArray.size(); i++) {
-                    IModelLayerPredicate predicate = ModelLayerManager.parsePredicate(predicateArray.get(i).getAsJsonObject());
-                    if (predicate != null)
-                        glowPredicates.add(predicate);
+        @Nonnull
+        @Override
+        public IModelLayer apply(@Nonnull JsonObject json) {
+            List<IModelLayerPredicate> glowPredicates = Lists.newLinkedList();
+
+            if (JSONUtils.hasField(json, "glow")) {
+                JsonElement glowJson = json.get("glow");
+
+                if (glowJson.isJsonPrimitive() && glowJson.getAsBoolean()) {
+                    glowPredicates.add((c) -> true);
+                } else {
+                    JsonArray predicateArray = JSONUtils.getJsonArray(json, "glow");
+                    for (int i = 0; i < predicateArray.size(); i++) {
+                        IModelLayerPredicate predicate = ModelLayerManager.parsePredicate(predicateArray.get(i).getAsJsonObject());
+                        if (predicate != null)
+                            glowPredicates.add(predicate);
+                    }
                 }
+            } else {
+                glowPredicates.add((c) -> false);
             }
-        } else {
-            glowPredicates.add((c) -> false);
+
+            return new CapeModelLayer(ModelLayerTexture.parse(json.get("texture")), glowPredicates, JSONUtils.getBoolean(json, "allow_supporter_cloak_override", true));
         }
 
-        return new CapeModelLayer(ModelLayerTexture.parse(json.get("texture")), glowPredicates, JSONUtils.getBoolean(json, "allow_supporter_cloak_override", true));
+        @Override
+        public ResourceLocation getId() {
+            return ID;
+        }
+
+        @Override
+        public List<String> getColumns() {
+            return Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value");
+        }
+
+        @Override
+        public List<Iterable<?>> getRows() {
+            List<Iterable<?>> rows = new ArrayList<>();
+            rows.add(Arrays.asList("texture", ModelLayerTexture.class, "Texture object", true, null));
+            rows.add(Arrays.asList("glow", IModelLayerPredicate[].class, "Array of conditions for the glow to appear OR just a boolean value (true/false)", false, false));
+            rows.add(Arrays.asList("allow_supporter_cloak_override", Boolean.class, "If true, the texture of this cape can be overriden be Supporter Cloaks", false, true));
+            return rows;
+        }
+
+        @Override
+        public JsonElement getExampleJson() {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("type", ID.toString());
+            jsonObject.addProperty("texture", "pack:textures/model/my_texture.png");
+            jsonObject.addProperty("glow", false);
+            jsonObject.addProperty("allow_supporter_cloak_override", true);
+            return jsonObject;
+        }
     }
 }

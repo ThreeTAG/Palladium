@@ -48,6 +48,7 @@ import net.threetag.threecore.client.renderer.KarmaBarRenderer;
 import net.threetag.threecore.client.renderer.UnconsciousRenderer;
 import net.threetag.threecore.client.renderer.entity.model.EntityModelManager;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerLoader;
+import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerManager;
 import net.threetag.threecore.client.renderer.tileentity.HydraulicPressTileEntityRenderer;
 import net.threetag.threecore.command.ArmorStandPoseCommand;
 import net.threetag.threecore.command.KarmaCommand;
@@ -63,6 +64,7 @@ import net.threetag.threecore.data.lang.English;
 import net.threetag.threecore.entity.TCEntityTypes;
 import net.threetag.threecore.entity.armorstand.ArmorStandPoseManager;
 import net.threetag.threecore.entity.attributes.TCAttributes;
+import net.threetag.threecore.event.GenerateDocumentationFilesEvent;
 import net.threetag.threecore.item.TCItems;
 import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 import net.threetag.threecore.item.recipe.ToolIngredient;
@@ -77,6 +79,7 @@ import net.threetag.threecore.tileentity.TCTileEntityTypes;
 import net.threetag.threecore.util.RenderUtil;
 import net.threetag.threecore.util.SupporterHandler;
 import net.threetag.threecore.util.entityeffect.EntityEffectUpdateMessage;
+import net.threetag.threecore.util.icon.IconSerializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -297,12 +300,17 @@ public class ThreeCore {
         @SubscribeEvent
         public void initGui(GuiScreenEvent.InitGuiEvent e) {
             // abilities.html
-            if (e.getGui() instanceof MainMenuScreen && !htmlGenerated) {
+            if (e.getGui() instanceof MainMenuScreen
+                    && !htmlGenerated
+            ) {
                 DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-                    AbilityType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "abilities.html"));
-                    ConditionType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "conditions.html"));
-                    ScriptAccessor.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_accessors.html"));
-                    ScriptEventManager.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_events.html"));
+                    AbilityType.generateDocumentation();
+                    ConditionType.generateDocumentation();
+                    ScriptAccessor.generateDocumentation();
+                    ScriptEventManager.generateDocumentation();
+                    IconSerializer.generateDocumentation();
+                    ModelLayerManager.generateDocumentation();
+                    MinecraftForge.EVENT_BUS.post(new GenerateDocumentationFilesEvent());
                 });
                 htmlGenerated = true;
             }

@@ -1,5 +1,6 @@
 package net.threetag.threecore.util.icon;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -9,7 +10,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.util.documentation.IDocumentationSettings;
 import net.threetag.threecore.util.threedata.ExperienceThreeData;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ExperienceIcon implements IIcon {
 
@@ -47,7 +53,7 @@ public class ExperienceIcon implements IIcon {
         return Serializer.INSTANCE;
     }
 
-    public static class Serializer implements IIconSerializer<ExperienceIcon> {
+    public static class Serializer implements IIconSerializer<ExperienceIcon>, IDocumentationSettings {
 
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(ThreeCore.MODID, "experience");
@@ -76,6 +82,26 @@ public class ExperienceIcon implements IIcon {
         @Override
         public ResourceLocation getId() {
             return ID;
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public List<String> getColumns() {
+            return Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value");
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public List<Iterable<?>> getRows() {
+            List<Iterable<?>> rows = new ArrayList<>();
+            rows.add(Arrays.asList("experience", String.class, "Experience amount. Either just a number for xp points or \"<number>L\" for full levels", true, null));
+            return rows;
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public JsonElement getExampleJson() {
+            return this.serializeJsonExt(new ExperienceIcon(new ExperienceThreeData.Experience(true, 10)));
         }
     }
 }

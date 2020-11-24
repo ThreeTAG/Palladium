@@ -1,9 +1,11 @@
 package net.threetag.threecore.util.icon;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
@@ -12,6 +14,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.util.documentation.IDocumentationSettings;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ItemIcon implements IIcon {
 
@@ -56,7 +63,7 @@ public class ItemIcon implements IIcon {
         return Serializer.INSTANCE;
     }
 
-    public static class Serializer implements IIconSerializer<ItemIcon> {
+    public static class Serializer implements IIconSerializer<ItemIcon>, IDocumentationSettings {
 
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(ThreeCore.MODID, "item");
@@ -87,6 +94,27 @@ public class ItemIcon implements IIcon {
         @Override
         public ResourceLocation getId() {
             return ID;
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public List<String> getColumns() {
+            return Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value");
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public List<Iterable<?>> getRows() {
+            List<Iterable<?>> rows = new ArrayList<>();
+            rows.add(Arrays.asList("item", String.class, "Item ID", true, null));
+            rows.add(Arrays.asList("count", Integer.class, "Item Amount", false, 1));
+            return rows;
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public JsonElement getExampleJson() {
+            return this.serializeJsonExt(new ItemIcon(new ItemStack(Items.APPLE)));
         }
     }
 
