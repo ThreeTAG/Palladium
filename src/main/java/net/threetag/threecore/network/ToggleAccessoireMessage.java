@@ -21,7 +21,7 @@ public class ToggleAccessoireMessage {
     }
 
     public ToggleAccessoireMessage(PacketBuffer packetBuffer) {
-        this.slot = AccessoireSlot.getSlotByName(packetBuffer.readString());
+        this.slot = AccessoireSlot.getSlotByName(packetBuffer.readString(32767));
         this.accessoire = packetBuffer.readRegistryIdSafe(Accessoire.class);
     }
 
