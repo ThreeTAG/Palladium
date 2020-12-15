@@ -8,10 +8,7 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.scripts.bindings.BlockStateBuilder;
-import net.threetag.threecore.scripts.bindings.ItemStackBuilder;
-import net.threetag.threecore.scripts.bindings.MathHelper;
-import net.threetag.threecore.scripts.bindings.ThreeDataBuilder;
+import net.threetag.threecore.scripts.bindings.*;
 import org.apache.commons.io.IOUtils;
 
 import javax.script.*;
@@ -46,6 +43,7 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
         registerBinding("blockStateBuilder", BlockStateBuilder::new);
         registerBinding("itemStackBuilder", ItemStackBuilder::new);
         registerBinding("mathHelper", MathHelper::new);
+        registerBinding("compoundNBTBuilder", CompoundNBTBuilder::new);
     }
 
     public ScriptManager() {

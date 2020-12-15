@@ -44,6 +44,10 @@ public class ScriptAccessor<T> {
         return this.value.hashCode();
     }
 
+    public T getValue(){
+        return value;
+    }
+
     public static <T> ScriptAccessor<T> makeAccessor(T object) {
         if (object instanceof LivingEntity)
             return (ScriptAccessor<T>) new LivingEntityAccessor((LivingEntity) object);
