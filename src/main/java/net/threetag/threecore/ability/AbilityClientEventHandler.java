@@ -178,7 +178,7 @@ public class AbilityClientEventHandler {
                 @Override
                 public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
                     this.setPosition(finalAbilityButtonXPos, finalAbilityButtonYPos);
-                    this.visible = e.getGui() instanceof CreativeScreen && ((CreativeScreen) e.getGui()).getSelectedTabIndex() == ItemGroup.INVENTORY.getIndex();
+                    this.visible = !(e.getGui() instanceof CreativeScreen) || ((CreativeScreen) e.getGui()).getSelectedTabIndex() == ItemGroup.INVENTORY.getIndex();
                     this.active = this.visible && AbilityHelper.getAbilityContainers(Minecraft.getInstance().player).size() > 0;
                     super.render(matrixStack, mouseX, mouseY, partialTicks);
                 }
