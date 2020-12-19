@@ -67,8 +67,8 @@ public class BuyAbilityScreen extends Screen {
         List<IReorderingProcessor> lines = this.font.trimStringToWidth(new StringTextComponent(I18n.format("gui.threecore.abilities.fulfill_condition")), 132);
         for (int k = 0; k < lines.size(); k++) {
             IReorderingProcessor text = lines.get(k);
-            int width = this.font.getStringWidth(text.toString());
-            this.font.func_238407_a_(stack, text, i + 120 - width / 2f, j + 9 + k * 10, 4210752);
+            int width = this.font.func_243245_a(text);
+            this.font.func_238422_b_(stack, text, i + 120 - width / 2f, j + 9 + k * 10, 4210752);
         }
 
         RenderSystem.pushMatrix();
