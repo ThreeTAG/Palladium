@@ -71,18 +71,19 @@ public class ScriptAccessor<T> {
         return null;
     }
 
+    public static List<Class<? extends ScriptAccessor<?>>> accessorClasses = Arrays.asList(EntityAccessor.class, LivingEntityAccessor.class,
+            WorldAccessor.class, BlockStateAccessor.class, DamageSourceAccessor.class, AbilityAccessor.class, ConditionAccessor.class, CompoundNBTAccessor.class, Vector3dAccessor.class, MaterialAccessor.class, ItemStackAccessor.class,
+            BlockRayTraceResultAccessor.class, EntityRayTraceResultAccessor.class);
+
     @OnlyIn(Dist.CLIENT)
     public static void generateDocumentation() {
         List<String> ignoredMethods = Arrays.asList("fire", "wait", "equals", "toString", "hashCode", "getClass", "notify", "notifyAll");
-        List<Class<? extends ScriptAccessor>> accessorClasses = Arrays.asList(EntityAccessor.class, LivingEntityAccessor.class,
-                WorldAccessor.class, BlockStateAccessor.class, DamageSourceAccessor.class, AbilityAccessor.class, ConditionAccessor.class, CompoundNBTAccessor.class, Vector3dAccessor.class, MaterialAccessor.class, ItemStackAccessor.class,
-                BlockRayTraceResultAccessor.class, EntityRayTraceResultAccessor.class);
 
         DocumentationBuilder builder = new DocumentationBuilder(new ResourceLocation(ThreeCore.MODID, "scripts/accessors"), "Script Accessors")
                 .add(heading("Script Accessors")).add(hr())
                 .add(paragraph(subHeading("Overview")).add(list(accessorClasses.stream().map(clazz -> link(clazz.getSimpleName(), "#" + clazz.getSimpleName())).collect(Collectors.toList()))));
 
-        for (Class<? extends ScriptAccessor> clazz : accessorClasses) {
+        for (Class<? extends ScriptAccessor<?>> clazz : accessorClasses) {
             builder.add(hr()).add(div().setId(clazz.getSimpleName()).add(subHeading(clazz.getSimpleName() + (clazz.getSuperclass() != ScriptAccessor.class ? " <code>extends " + clazz.getSuperclass().getSimpleName() + "</code>" : "")))
             .add(table(Arrays.asList("Function", "Return Type", "Parameters"), Arrays.stream(clazz.getMethods()).filter(method -> !ignoredMethods.contains(method.getName()) && !Modifier.isStatic(method.getModifiers())).map(method -> {
                 Collection<String> columns = new LinkedList<>();
