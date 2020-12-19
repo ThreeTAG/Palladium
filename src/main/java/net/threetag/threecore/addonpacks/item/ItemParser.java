@@ -22,7 +22,6 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.threetag.threecore.ThreeCore;
@@ -282,8 +281,7 @@ public class ItemParser {
     }
 
     public static ToolType getToolType(String name) {
-        Map<String, ToolType> values = ObfuscationReflectionHelper.getPrivateValue(ToolType.class, null, "values");
-        return values.get(name);
+        return ToolType.get(name);
     }
 
     public static IArmorMaterial parseArmorMaterial(JsonObject json) {
