@@ -1,10 +1,11 @@
 package net.threetag.threecore.scripts.bindings;
 
+import net.threetag.threecore.scripts.ScriptParameterName;
 import net.threetag.threecore.util.threedata.*;
 
 public class ThreeDataBuilder {
 
-    public ThreeData<?> create(String name, String type) {
+    public ThreeData<?> create(@ScriptParameterName("name") String name, @ScriptParameterName("type") String type) {
         if (type.equalsIgnoreCase("integer"))
             return new IntegerThreeData(name);
         if (type.equalsIgnoreCase("float"))

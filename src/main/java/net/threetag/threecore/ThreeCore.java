@@ -308,6 +308,7 @@ public class ThreeCore {
                     ConditionType.generateDocumentation();
                     ScriptAccessor.generateDocumentation();
                     ScriptEventManager.generateDocumentation();
+                    ScriptManager.generateDocumentation();
                     IconSerializer.generateDocumentation();
                     ModelLayerManager.generateDocumentation();
                     MinecraftForge.EVENT_BUS.post(new GenerateDocumentationFilesEvent());
