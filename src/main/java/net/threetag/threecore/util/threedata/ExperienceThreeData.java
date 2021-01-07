@@ -77,6 +77,13 @@ public class ExperienceThreeData extends ThreeData<ExperienceThreeData.Experienc
                 return entity.experienceTotal >= value;
         }
 
+        public void give(PlayerEntity entity) {
+            if (isLevels())
+                entity.addExperienceLevel(value);
+            else
+                entity.giveExperiencePoints(value);
+        }
+
         public void take(PlayerEntity entity) {
             if (isLevels())
                 entity.addExperienceLevel(-value);

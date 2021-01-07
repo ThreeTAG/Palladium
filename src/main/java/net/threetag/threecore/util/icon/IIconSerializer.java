@@ -3,6 +3,7 @@ package net.threetag.threecore.util.icon;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.threetag.threecore.util.TCJsonUtil;
 
 public interface IIconSerializer<T extends IIcon> {
 
@@ -23,9 +24,9 @@ public interface IIconSerializer<T extends IIcon> {
     }
 
     default JsonObject serializeJsonExt(IIcon icon) {
-        JsonObject jsonObject = this.serializeJson((T) icon);
+        JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("type", getId().toString());
-        return jsonObject;
+        return TCJsonUtil.merge(jsonObject, this.serializeJson((T) icon));
     }
 
     ResourceLocation getId();

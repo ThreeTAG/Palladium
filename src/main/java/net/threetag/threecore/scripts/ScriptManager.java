@@ -6,16 +6,27 @@ import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.scripts.bindings.BlockStateBuilder;
+import net.threetag.threecore.scripts.bindings.ItemStackBuilder;
+import net.threetag.threecore.scripts.bindings.MathHelper;
+import net.threetag.threecore.scripts.bindings.ThreeDataBuilder;
+import net.threetag.threecore.util.documentation.DocumentationBuilder;
 import net.threetag.threecore.scripts.bindings.*;
 import org.apache.commons.io.IOUtils;
 
 import javax.script.*;
 import java.io.*;
+import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import static net.threetag.threecore.util.documentation.DocumentationBuilder.*;
 
 @Mod.EventBusSubscriber(modid = ThreeCore.MODID)
 public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>> {
@@ -108,6 +119,45 @@ public class ScriptManager extends ReloadListener<Map<ResourceLocation, String>>
                 ThreeCore.LOGGER.error("Error when executing script file {}", entry.getKey(), e);
             }
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void generateDocumentation() {
+        List<String> ignoredMethods = Arrays.asList("fire", "wait", "equals", "toString", "hashCode", "getClass", "notify", "notifyAll");
+
+        DocumentationBuilder builder = new DocumentationBuilder(new ResourceLocation(ThreeCore.MODID, "scripts/utils"), "Script Utils")
+                .add(heading("Script Utils")).add(hr())
+                .add(paragraph(subHeading("Overview")).add(list(bindings.keySet().stream().map(supplier -> link(supplier, "#" + supplier)).collect(Collectors.toList()))));
+
+        for (Map.Entry<String, Supplier<?>> entry : bindings.entrySet()) {
+            builder.add(hr()).add(div().setId(entry.getKey()).add(subHeading(entry.getKey()))
+                    .add(table(Arrays.asList("Function", "Return Type", "Parameters"), Arrays.stream(entry.getValue().get().getClass().getMethods()).filter(method -> !ignoredMethods.contains(method.getName()) && !Modifier.isStatic(method.getModifiers())).map(method -> {
+                        Collection<String> columns = new LinkedList<>();
+                        columns.add(method.getName());
+                        columns.add(method.getReturnType().getSimpleName());
+
+                        if (method.getParameterCount() <= 0)
+                            columns.add("/");
+                        else {
+                            StringBuilder stringBuilder = new StringBuilder();
+                            for (int i = 0; i < method.getParameterCount(); i++) {
+                                String parameterName = method.getParameters()[i].getName();
+                                ScriptParameterName scriptParameterName = method.getParameters()[i].getAnnotation(ScriptParameterName.class);
+                                if (scriptParameterName != null)
+                                    parameterName = scriptParameterName.value();
+
+                                stringBuilder.append("<strong>").append(parameterName).append("</strong> - ").append(method.getParameterTypes()[i].getSimpleName());
+                                if (method.getParameterCount() > 1)
+                                    stringBuilder.append("<br>");
+                            }
+                            columns.add(stringBuilder.toString());
+                        }
+
+                        return columns;
+                    }).collect(Collectors.toList()))));
+        }
+
+        builder.save();
     }
 
 }

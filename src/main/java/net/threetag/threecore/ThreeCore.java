@@ -34,9 +34,11 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.threetag.threecore.ability.AbilityClientEventHandler;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.AbilityType;
-import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.ability.condition.ConditionType;
+import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.ability.superpower.SuperpowerManager;
+import net.threetag.threecore.accessoires.AccessoireLayerRenderer;
+import net.threetag.threecore.accessoires.Accessoires;
 import net.threetag.threecore.addonpacks.AddonPackManager;
 import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.capability.CapabilityAbilityContainer;
@@ -46,6 +48,7 @@ import net.threetag.threecore.client.renderer.KarmaBarRenderer;
 import net.threetag.threecore.client.renderer.UnconsciousRenderer;
 import net.threetag.threecore.client.renderer.entity.model.EntityModelManager;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerLoader;
+import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerManager;
 import net.threetag.threecore.client.renderer.tileentity.HydraulicPressTileEntityRenderer;
 import net.threetag.threecore.command.ArmorStandPoseCommand;
 import net.threetag.threecore.command.KarmaCommand;
@@ -61,6 +64,7 @@ import net.threetag.threecore.data.lang.English;
 import net.threetag.threecore.entity.TCEntityTypes;
 import net.threetag.threecore.entity.armorstand.ArmorStandPoseManager;
 import net.threetag.threecore.entity.attributes.TCAttributes;
+import net.threetag.threecore.event.GenerateDocumentationFilesEvent;
 import net.threetag.threecore.item.TCItems;
 import net.threetag.threecore.item.recipe.TCRecipeSerializers;
 import net.threetag.threecore.item.recipe.ToolIngredient;
@@ -75,6 +79,7 @@ import net.threetag.threecore.tileentity.TCTileEntityTypes;
 import net.threetag.threecore.util.RenderUtil;
 import net.threetag.threecore.util.SupporterHandler;
 import net.threetag.threecore.util.entityeffect.EntityEffectUpdateMessage;
+import net.threetag.threecore.util.icon.IconSerializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -98,7 +103,6 @@ public class ThreeCore {
         // Basic stuff
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
         MinecraftForge.EVENT_BUS.register(new Events());
-        SupporterHandler.load();
         registerMessages();
 //        SupporterHandler.enableSupporterCheck();
 
@@ -147,6 +151,7 @@ public class ThreeCore {
         TCSounds.SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCEffects.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TCAttributes.ATTRIBUTES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        Accessoires.ACCESSOIRES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             // Rendering Stuff
@@ -196,6 +201,13 @@ public class ThreeCore {
         TCContainerTypes.initContainerScreens();
         ArmorStandPoseManager.init();
         TCItems.initItemProperties();
+
+        if (!SupporterHandler.loadPlayerData(Minecraft.getInstance().getSession().getProfile().getId()).hasModAccess() && SupporterHandler.isSupporterCheckEnabled()) {
+            // TODO maybe a fancy GUI that tells people this
+            throw new RuntimeException("You are not allowed to play this mod!");
+        }
+
+        Minecraft.getInstance().getRenderManager().getSkinMap().forEach((s, pl) -> pl.addLayer(new AccessoireLayerRenderer(pl)));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -243,6 +255,10 @@ public class ThreeCore {
 
         // Multiverse
         registerMessage(SyncMultiverseMessage.class, SyncMultiverseMessage::toBytes, SyncMultiverseMessage::new, SyncMultiverseMessage::handle);
+
+        // Accessoires
+        registerMessage(SyncAccessoiresMessage.class, SyncAccessoiresMessage::toBytes, SyncAccessoiresMessage::new, SyncAccessoiresMessage::handle);
+        registerMessage(ToggleAccessoireMessage.class, ToggleAccessoireMessage::toBytes, ToggleAccessoireMessage::new, ToggleAccessoireMessage::handle);
     }
 
     @SubscribeEvent
@@ -284,12 +300,18 @@ public class ThreeCore {
         @SubscribeEvent
         public void initGui(GuiScreenEvent.InitGuiEvent e) {
             // abilities.html
-            if (e.getGui() instanceof MainMenuScreen && !htmlGenerated) {
+            if (e.getGui() instanceof MainMenuScreen
+                    && !htmlGenerated
+            ) {
                 DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-                    AbilityType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "abilities.html"));
-                    ConditionType.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "conditions.html"));
-                    ScriptAccessor.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_accessors.html"));
-                    ScriptEventManager.generateHtmlFile(new File(ThreeCore.MOD_SUBFOLDER, "script_events.html"));
+                    AbilityType.generateDocumentation();
+                    ConditionType.generateDocumentation();
+                    ScriptAccessor.generateDocumentation();
+                    ScriptEventManager.generateDocumentation();
+                    ScriptManager.generateDocumentation();
+                    IconSerializer.generateDocumentation();
+                    ModelLayerManager.generateDocumentation();
+                    MinecraftForge.EVENT_BUS.post(new GenerateDocumentationFilesEvent());
                 });
                 htmlGenerated = true;
             }

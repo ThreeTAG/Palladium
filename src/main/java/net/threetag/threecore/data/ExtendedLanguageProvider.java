@@ -7,6 +7,7 @@ import net.minecraft.util.Util;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.ability.AbilityType;
+import net.threetag.threecore.accessoires.Accessoire;
 
 import java.util.function.Supplier;
 
@@ -49,6 +50,14 @@ public abstract class ExtendedLanguageProvider extends LanguageProvider {
 
     protected void add(ContainerType key, String name) {
         add(Util.makeTranslationKey("container", ForgeRegistries.CONTAINERS.getKey(key)), name);
+    }
+
+    protected void addAccessoire(Supplier<? extends Accessoire> key, String name) {
+        add(key.get(), name);
+    }
+
+    protected void add(Accessoire key, String name) {
+        add(Util.makeTranslationKey("accessoire", Accessoire.REGISTRY.getKey(key)), name);
     }
 
 }

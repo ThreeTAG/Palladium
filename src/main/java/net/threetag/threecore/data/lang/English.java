@@ -1,12 +1,17 @@
 package net.threetag.threecore.data.lang;
 
 import net.minecraft.data.DataGenerator;
+import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.AbilityType;
+import net.threetag.threecore.accessoires.Accessoire;
+import net.threetag.threecore.accessoires.Accessoires;
 import net.threetag.threecore.block.TCBlocks;
 import net.threetag.threecore.container.TCContainerTypes;
 import net.threetag.threecore.entity.TCEntityTypes;
 import net.threetag.threecore.item.TCItems;
 import net.threetag.threecore.potion.TCEffects;
+
+import java.util.Objects;
 
 public class English extends ThreeCoreLanguageProvider {
 
@@ -16,6 +21,13 @@ public class English extends ThreeCoreLanguageProvider {
 
     @Override
     protected void addTranslations() {
+        // Lines for "exporting" the current accessoires for SquirrelControl
+        StringBuilder accessoires = new StringBuilder("ACCESSOIRE-DUMP ");
+        for (Accessoire accessoire : Accessoire.REGISTRY) {
+            accessoires.append(Objects.requireNonNull(Accessoire.REGISTRY.getKey(accessoire)).toString()).append(",");
+        }
+        ThreeCore.LOGGER.info(accessoires.toString());
+
         // Item Groups
         this.add("itemGroup.technology", "Technology");
         this.add("itemGroup.suits_and_armor", "Suits & Armor");
@@ -269,6 +281,7 @@ public class English extends ThreeCoreLanguageProvider {
         this.add(AbilityType.HIDE_BODY_PARTS, "Hide Body Parts");
         this.add(AbilityType.CHANGE_ABILITY_TAB_TEXTURE, "Change Ability Tab Texture");
         this.add(AbilityType.ENERGY, "Energy");
+        this.add(AbilityType.DROP_ARMOR, "Drop Armor");
 
         this.add("ability.condition.threecore.action", "Key must be pressed once to active this ability");
         this.add("ability.condition.threecore.action.not", "Key must be pressed once to deactivate this ability");
@@ -374,6 +387,42 @@ public class English extends ThreeCoreLanguageProvider {
         this.add("ability_container.threecore.player", "Player Abilities");
 
         this.add("gui.threecore.accessoires", "Accessoires");
+
+
+        // Accessoires
+        this.addAccessoire(Accessoires.SUPPORTER_CLOAK, "Supporter Cloak");
+        this.addAccessoire(Accessoires.LUCRAFT_ARC_REACTOR, "Lucraft's Arc Reactor");
+        this.addAccessoire(Accessoires.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
+        this.addAccessoire(Accessoires.HEROBRINE_EYES, "Herobrine's Eyes");
+        this.addAccessoire(Accessoires.WOODEN_LEG, "Wooden Leg");
+        this.addAccessoire(Accessoires.HYPERION_ARM, "Hyperion Arm");
+        this.addAccessoire(Accessoires.STRAWHAT, "Strawhat");
+        this.addAccessoire(Accessoires.HALO, "Angelic Halo");
+        this.addAccessoire(Accessoires.WINGS, "Angelic Wings");
+        this.addAccessoire(Accessoires.GUZZLER_HELMET, "Guzzler Helmet");
+        this.addAccessoire(Accessoires.SONIC_HAND, "Sonic Hand");
+        this.addAccessoire(Accessoires.HAMMOND_CANE, "Hammond's Cane");
+        this.addAccessoire(Accessoires.FACE_MASK, "Face Mask");
+        this.addAccessoire(Accessoires.MECHANICAL_ARM, "Mechanical Arm");
+        this.addAccessoire(Accessoires.FEZ, "Fez");
+        this.addAccessoire(Accessoires.ELTON_HAT, "Elton Hat");
+        this.addAccessoire(Accessoires.OWCA_FEDORA, "OWCA Fedora");
+        this.addAccessoire(Accessoires.HEART_GLASSES, "Heart Glasses");
+        this.addAccessoire(Accessoires.SUN_GLASSES, "Sun Glasses");
+        this.addAccessoire(Accessoires.GLASSES_3D, "3D Glasses");
+
+        this.add("accessoire_slot.hat", "Hat");
+        this.add("accessoire_slot.head", "Head");
+        this.add("accessoire_slot.face", "Face");
+        this.add("accessoire_slot.chest", "Chest");
+        this.add("accessoire_slot.back", "Back");
+        this.add("accessoire_slot.main_arm", "Main Arm");
+        this.add("accessoire_slot.off_arm", "Off Arm");
+        this.add("accessoire_slot.main_hand", "Main Hand");
+        this.add("accessoire_slot.off_hand", "Off Hand");
+        this.add("accessoire_slot.right_leg", "Right Leg");
+        this.add("accessoire_slot.left_leg", "Left Leg");
+        this.add("accessoire_slot.special", "Special");
 
 
         // Death

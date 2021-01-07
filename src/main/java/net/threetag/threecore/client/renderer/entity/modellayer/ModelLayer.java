@@ -24,14 +24,21 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.LazyValue;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.NonNullFunction;
+import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.client.renderer.entity.model.IArmRenderingModel;
 import net.threetag.threecore.client.renderer.entity.model.ISlotDependentVisibility;
 import net.threetag.threecore.client.renderer.entity.model.ModelRegistry;
 import net.threetag.threecore.client.renderer.entity.modellayer.predicates.IModelLayerPredicate;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLayerTexture;
 import net.threetag.threecore.util.RenderUtil;
+import net.threetag.threecore.util.documentation.IDocumentationSettings;
 import net.threetag.threecore.util.threedata.BodyPartListThreeData;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -173,35 +180,69 @@ public class ModelLayer implements IModelLayer {
                     model.bipedLeftLeg.showModel = true;
             }
         }
-
     }
 
-    public static ModelLayer parse(JsonObject json) {
-        List<IModelLayerPredicate> glowPredicates = Lists.newLinkedList();
+    public static class Parser implements NonNullFunction<JsonObject, IModelLayer>, IDocumentationSettings {
 
-        if (JSONUtils.hasField(json, "glow")) {
-            JsonElement glowJson = json.get("glow");
+        public static final ResourceLocation ID = new ResourceLocation(ThreeCore.MODID, "default");
 
-            if (glowJson.isJsonPrimitive() && glowJson.getAsBoolean()) {
-                glowPredicates.add((c) -> true);
-            } else {
-                JsonArray predicateArray = JSONUtils.getJsonArray(json, "glow");
-                for (int i = 0; i < predicateArray.size(); i++) {
-                    IModelLayerPredicate predicate = ModelLayerManager.parsePredicate(predicateArray.get(i).getAsJsonObject());
-                    if (predicate != null)
-                        glowPredicates.add(predicate);
+        @Nonnull
+        @Override
+        public ModelLayer apply(@Nonnull JsonObject json) {
+            List<IModelLayerPredicate> glowPredicates = Lists.newLinkedList();
+
+            if (JSONUtils.hasField(json, "glow")) {
+                JsonElement glowJson = json.get("glow");
+
+                if (glowJson.isJsonPrimitive() && glowJson.getAsBoolean()) {
+                    glowPredicates.add((c) -> true);
+                } else {
+                    JsonArray predicateArray = JSONUtils.getJsonArray(json, "glow");
+                    for (int i = 0; i < predicateArray.size(); i++) {
+                        IModelLayerPredicate predicate = ModelLayerManager.parsePredicate(predicateArray.get(i).getAsJsonObject());
+                        if (predicate != null)
+                            glowPredicates.add(predicate);
+                    }
                 }
+            } else {
+                glowPredicates.add((c) -> false);
             }
-        } else {
-            glowPredicates.add((c) -> false);
+
+            List<BodyPartListThreeData.BodyPart> list = null;
+            if (json.has("disabled_body_parts")) {
+                list = BodyPartListThreeData.parseBodyParts(json.get("disabled_body_parts"));
+            }
+
+            return new ModelLayer(new LazyValue<>(() -> ModelRegistry.getModel(JSONUtils.getString(json, "model"))), ModelLayerTexture.parse(json.get("texture")), glowPredicates).addDisabledBodyParts(list);
         }
 
-        List<BodyPartListThreeData.BodyPart> list = null;
-        if (json.has("disabled_body_parts")) {
-            list = BodyPartListThreeData.parseBodyParts(json.get("disabled_body_parts"));
+        @Override
+        public ResourceLocation getId() {
+            return ID;
         }
 
-        return new ModelLayer(new LazyValue<>(() -> ModelRegistry.getModel(JSONUtils.getString(json, "model"))), ModelLayerTexture.parse(json.get("texture")), glowPredicates).addDisabledBodyParts(list);
+        @Override
+        public List<String> getColumns() {
+            return Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value");
+        }
+
+        @Override
+        public List<Iterable<?>> getRows() {
+            List<Iterable<?>> rows = new ArrayList<>();
+            rows.add(Arrays.asList("model", ResourceLocation.class, "ID of the model you want to use", true, null));
+            rows.add(Arrays.asList("texture", ModelLayerTexture.class, "Texture object", true, null));
+            rows.add(Arrays.asList("glow", IModelLayerPredicate[].class, "Array of conditions for the glow to appear OR just a boolean value (true/false)", false, false));
+            return rows;
+        }
+
+        @Override
+        public JsonElement getExampleJson() {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("model", "pack:model");
+            jsonObject.addProperty("texture", "pack:textures/model/my_texture.png");
+            jsonObject.addProperty("glow", false);
+            return jsonObject;
+        }
     }
 
 }

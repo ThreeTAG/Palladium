@@ -2,6 +2,7 @@ package net.threetag.threecore.scripts;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -17,15 +18,13 @@ import net.threetag.threecore.event.RegisterThreeDataEvent;
 import net.threetag.threecore.event.SetRotationAnglesEvent;
 import net.threetag.threecore.network.EmptyHandInteractMessage;
 import net.threetag.threecore.scripts.events.*;
+import net.threetag.threecore.util.documentation.DocumentationBuilder;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Modifier;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static net.threetag.threecore.util.documentation.DocumentationBuilder.*;
 
 public class ScriptEventManager {
 
@@ -166,127 +165,95 @@ public class ScriptEventManager {
         }
 
         @SubscribeEvent
-        public static void onEntityInteractSpecificEvent(PlayerInteractEvent.EntityInteractSpecific e){ new EntityInteractSpecificScriptEvent(e).fire(e); }
+        public static void onEntityInteractSpecificEvent(PlayerInteractEvent.EntityInteractSpecific e) {
+            new EntityInteractSpecificScriptEvent(e).fire(e);
+        }
 
         @SubscribeEvent
-        public static void onRightClickBlockEvent(PlayerInteractEvent.RightClickBlock e){ new RightClickBlockScriptEvent(e).fire(e); }
+        public static void onRightClickBlockEvent(PlayerInteractEvent.RightClickBlock e) {
+            new RightClickBlockScriptEvent(e).fire(e);
+        }
 
         @SubscribeEvent
-        public static void onRightClickItemEvent(PlayerInteractEvent.RightClickItem e){ new RightClickItemScriptEvent(e).fire(e); }
+        public static void onRightClickItemEvent(PlayerInteractEvent.RightClickItem e) {
+            new RightClickItemScriptEvent(e).fire(e);
+        }
 
         @SubscribeEvent
-        public static void onLeftClickBlockEvent(PlayerInteractEvent.LeftClickBlock e){ new LeftClickBlockScriptEvent(e).fire(e); }
+        public static void onLeftClickBlockEvent(PlayerInteractEvent.LeftClickBlock e) {
+            new LeftClickBlockScriptEvent(e).fire(e);
+        }
 
         @SubscribeEvent
-        public static void onLeftClickEmptyEvent(PlayerInteractEvent.LeftClickEmpty e){
+        public static void onLeftClickEmptyEvent(PlayerInteractEvent.LeftClickEmpty e) {
             new LeftClickEmptyScriptEvent(e).fire(e);
             ThreeCore.NETWORK_CHANNEL.sendToServer(new EmptyHandInteractMessage(true));
         }
 
         @SubscribeEvent
-        public static void onRightClickEmptyEvent(PlayerInteractEvent.RightClickEmpty e){
+        public static void onRightClickEmptyEvent(PlayerInteractEvent.RightClickEmpty e) {
             new RightClickEmptyScriptEvent(e).fire(e);
             ThreeCore.NETWORK_CHANNEL.sendToServer(new EmptyHandInteractMessage(false));
         }
 
         @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
-        public static void onSetRotationAngles(SetRotationAnglesEvent e){
+        public static void onSetRotationAngles(SetRotationAnglesEvent e) {
             new SetRotationAnglesScriptEvent(e).fire(e);
         }
 
         @SubscribeEvent
-        public static void onAbilityEnableChange(AbilityEnableChangeEvent e){
-            switch (e.type){
-            case ENABLED:
-                if(new AbilityEnabledScriptEvent(e.getEntityLiving(), e.ability).fire())
-                    e.setCanceled(true);
-                break;
-            case DISABLED:
-                if(new AbilityDisabledScriptEvent(e.getEntityLiving(), e.ability).fire())
-                    e.setCanceled(true);
-                break;
+        public static void onAbilityEnableChange(AbilityEnableChangeEvent e) {
+            switch (e.type) {
+                case ENABLED:
+                    if (new AbilityEnabledScriptEvent(e.getEntityLiving(), e.ability).fire())
+                        e.setCanceled(true);
+                    break;
+                case DISABLED:
+                    if (new AbilityDisabledScriptEvent(e.getEntityLiving(), e.ability).fire())
+                        e.setCanceled(true);
+                    break;
             }
         }
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void generateHtmlFile(File file) {
+    public static void generateDocumentation() {
         List<String> ignoredMethods = Arrays.asList("fire", "wait", "equals", "toString", "hashCode", "getClass", "notify", "notifyAll");
-        try {
-            if (!file.getParentFile().exists())
-                file.getParentFile().mkdirs();
 
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            List<String> lines = Lists.newLinkedList();
-            lines.add("<html><head><title>Script Events</title><style>\n" +
-                    "table{font-family:arial, sans-serif;border-collapse:collapse;}\n" +
-                    "td,th{border:1px solid #666666;text-align:left;padding:8px;min-width:45px;}\n" +
-                    "th{background-color:#CCCCCC;}\n" +
-                    "p{margin:0;}\n" +
-                    "tr:nth-child(even){background-color:#D8D8D8;}\n" +
-                    "tr:nth-child(odd){background-color:#EEEEEE;}\n" +
-                    "td.true{background-color:#72FF85AA;}\n" +
-                    "td.false{background-color:#FF6666AA;}\n" +
-                    "td.other{background-color:#42A3FFAA;}\n" +
-                    "td.error{color:#FF0000;}\n" +
-                    "th,td.true,td.false,td.other{text-align:center;}\n" +
-                    "</style><link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"https://i.imgur.com/am80ox1.png\">" +
-                    "</head><body>");
+        DocumentationBuilder builder = new DocumentationBuilder(new ResourceLocation(ThreeCore.MODID, "scripts/events"), "Script Events")
+                .add(heading("Script Events")).add(hr())
+                .add(paragraph(subHeading("Overview")).add(list(events.entrySet().stream().map(entry -> link(entry.getKey(), "#" + entry.getKey())).collect(Collectors.toList()))));
 
-            lines.add("<ul>");
-            for (Map.Entry<String, Class<? extends ScriptEvent>> entry : events.entrySet()) {
-                String name = entry.getKey();
-                lines.add("<li><a href=\"#" + name + "\">" + name + "</a></li>");
-            }
-            lines.add("</ul>");
-            lines.add("<hr>\n");
+        for (Map.Entry<String, Class<? extends ScriptEvent>> entry : events.entrySet()) {
+            builder.add(hr()).add(div().setId(entry.getKey()).add(subHeading(entry.getKey()))
+                    .add(table(Arrays.asList("Function", "Return Type", "Parameters"), Arrays.stream(entry.getValue().getMethods()).filter(method -> !ignoredMethods.contains(method.getName()) && !Modifier.isStatic(method.getModifiers())).map(method -> {
+                        Collection<String> columns = new LinkedList<>();
+                        columns.add(method.getName());
+                        columns.add(method.getReturnType().getSimpleName());
 
-            for (Map.Entry<String, Class<? extends ScriptEvent>> entry : events.entrySet()) {
-                String name = entry.getKey();
-                Class<? extends ScriptEvent> clazz = entry.getValue();
-
-                lines.add("<p><h1 id=\"" + name + "\">" + name + "</h1>");
-
-                lines.add("<table>\n<tr><th>Function</th><th>Return Type</th><th>Parameters</th></tr>");
-
-                for (Method method : clazz.getMethods()) {
-                    if (!ignoredMethods.contains(method.getName())) {
-                        lines.add("<tr>");
-                        lines.add("<td>" + method.getName() + "</td>");
-                        lines.add("<td>" + method.getReturnType().getSimpleName() + "</td>");
-
-                        lines.add("<td>");
                         if (method.getParameterCount() <= 0)
-                            lines.add("/");
-                        else
+                            columns.add("/");
+                        else {
+                            StringBuilder stringBuilder = new StringBuilder();
                             for (int i = 0; i < method.getParameterCount(); i++) {
                                 String parameterName = method.getParameters()[i].getName();
                                 ScriptParameterName scriptParameterName = method.getParameters()[i].getAnnotation(ScriptParameterName.class);
                                 if (scriptParameterName != null)
                                     parameterName = scriptParameterName.value();
 
-                                lines.add("<strong>" + parameterName + "</strong> - " + method.getParameterTypes()[i].getSimpleName());
-                                if (method.getParameterCount() > 1 && i - 2 <= method.getParameterCount())
-                                    lines.add("<br>");
+                                stringBuilder.append("<strong>").append(parameterName).append("</strong> - ").append(method.getParameterTypes()[i].getSimpleName());
+                                if (method.getParameterCount() > 1)
+                                    stringBuilder.append("<br>");
                             }
-                        lines.add("</td>");
+                            columns.add(stringBuilder.toString());
+                        }
 
-                        lines.add("</tr>");
-                    }
-                }
-                lines.add("</table>");
-                lines.add("</p><hr>\n");
-            }
-
-            for (String s : lines)
-                bw.write(s + "\n");
-            bw.close();
-
-            ThreeCore.LOGGER.info("Successfully generated script_events.html!");
-        } catch (IOException e) {
-            e.printStackTrace();
+                        return columns;
+                    }).collect(Collectors.toList()))));
         }
+
+        builder.save();
     }
 
 }

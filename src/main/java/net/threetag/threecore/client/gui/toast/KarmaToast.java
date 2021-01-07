@@ -45,7 +45,6 @@ public class KarmaToast implements IToast {
         } else {
             karmaToast.addKarma(karma);
         }
-
     }
 
 }

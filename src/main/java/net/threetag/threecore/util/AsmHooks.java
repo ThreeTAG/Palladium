@@ -9,11 +9,13 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,6 +23,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.threetag.threecore.ability.AbilityHelper;
 import net.threetag.threecore.ability.HideBodyPartsAbility;
+import net.threetag.threecore.capability.CapabilityAccessoires;
 import net.threetag.threecore.capability.CapabilitySizeChanging;
 import net.threetag.threecore.client.renderer.entity.PlayerSkinHandler;
 import net.threetag.threecore.client.renderer.entity.modellayer.ModelLayerManager;
@@ -93,6 +96,14 @@ public class AsmHooks {
             if (layer.isActive(context)) {
                 layer.postRotationAnglesCallback(renderer, entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
             }
+        });
+
+        entityIn.getCapability(CapabilityAccessoires.ACCESSOIRES).ifPresent(accessoireHolder -> {
+            accessoireHolder.getSlots().forEach((slot, list) -> {
+                if (!list.isEmpty()) {
+                    slot.setVisibility((PlayerModel<?>) renderer.getEntityModel(), (PlayerEntity) entityIn, false);
+                }
+            });
         });
     }
 

@@ -7,7 +7,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -27,13 +26,14 @@ public class DefaultAbilityContainer implements IAbilityContainer, INBTSerializa
     protected ITextComponent title;
     protected IIcon icon;
     private int lifetime = -1;
+    private int maxLifetime = -1;
 
     public DefaultAbilityContainer(ResourceLocation id, ITextComponent title, IIcon icon, int lifetime) {
         this.abilityMap = new AbilityMap();
         this.id = id;
         this.title = title;
         this.icon = icon;
-        this.lifetime = lifetime;
+        this.lifetime = this.maxLifetime = lifetime;
     }
 
     public DefaultAbilityContainer(CompoundNBT nbt, boolean network) {
@@ -71,10 +71,15 @@ public class DefaultAbilityContainer implements IAbilityContainer, INBTSerializa
 
     @Override
     public ITextComponent getTitle() {
+        return this.title;
+    }
+
+    @Override
+    public ITextComponent getSubtitle() {
         if (this.lifetime >= 0) {
-            return this.title.deepCopy().appendString(" ").append(new StringTextComponent(StringUtils.ticksToElapsedTime(this.lifetime)).mergeStyle(TextFormatting.GRAY));
+            return new StringTextComponent(StringUtils.ticksToElapsedTime(this.lifetime));
         } else {
-            return this.title;
+            return null;
         }
     }
 
@@ -108,6 +113,7 @@ public class DefaultAbilityContainer implements IAbilityContainer, INBTSerializa
         nbt.put("Icon", this.icon.getSerializer().serializeExt(this.icon));
         nbt.put("Abilities", AbilityHelper.saveToNBT(this.getAbilityMap()));
         nbt.putInt("Lifetime", this.lifetime);
+        nbt.putInt("MaxLifetime", this.maxLifetime);
         return nbt;
     }
 
@@ -119,6 +125,7 @@ public class DefaultAbilityContainer implements IAbilityContainer, INBTSerializa
         this.abilityMap.clear();
         AbilityHelper.loadFromNBT(nbt.getCompound("Abilities"), this.abilityMap);
         this.lifetime = nbt.getInt("Lifetime");
+        this.maxLifetime = nbt.getInt("MaxLifetime");
     }
 
     public CompoundNBT getUpdateTag() {
@@ -128,6 +135,7 @@ public class DefaultAbilityContainer implements IAbilityContainer, INBTSerializa
         nbt.put("Icon", this.icon.getSerializer().serializeExt(this.icon));
         nbt.put("Abilities", AbilityHelper.saveToNBT(this.getAbilityMap(), true));
         nbt.putInt("Lifetime", this.lifetime);
+        nbt.putInt("MaxLifetime", this.maxLifetime);
         return nbt;
     }
 
@@ -138,5 +146,14 @@ public class DefaultAbilityContainer implements IAbilityContainer, INBTSerializa
         this.abilityMap.clear();
         AbilityHelper.loadFromNBT(nbt.getCompound("Abilities"), this.abilityMap, true);
         this.lifetime = nbt.getInt("Lifetime");
+        this.maxLifetime = nbt.getInt("MaxLifetime");
+    }
+
+    public int getLifetime() {
+        return lifetime;
+    }
+
+    public int getMaxLifetime() {
+        return maxLifetime;
     }
 }

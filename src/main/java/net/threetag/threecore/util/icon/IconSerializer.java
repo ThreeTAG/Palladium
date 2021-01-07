@@ -6,8 +6,16 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.util.documentation.DocumentationBuilder;
+import net.threetag.threecore.util.documentation.IDocumentationSettings;
 
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static net.threetag.threecore.util.documentation.DocumentationBuilder.*;
 
 public class IconSerializer {
 
@@ -47,6 +55,14 @@ public class IconSerializer {
         } else {
             return serializer.read(nbt);
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void generateDocumentation() {
+        new DocumentationBuilder(new ResourceLocation(ThreeCore.MODID, "icons"), "Icons")
+                .add(heading("Icons")).addDocumentationSettings(REGISTRY.values().stream().filter(serializer -> serializer instanceof IDocumentationSettings).map(serializer -> {
+            return (IDocumentationSettings) serializer;
+        }).collect(Collectors.toList())).save();
     }
 
 }

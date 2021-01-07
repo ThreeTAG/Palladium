@@ -32,4 +32,8 @@ public class DefaultCuriosHandler {
         return Collections.emptyList();
     }
 
+    public void dropEveryItem(LivingEntity entity) {
+
+    }
+
 }

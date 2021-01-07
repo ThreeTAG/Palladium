@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -121,7 +122,9 @@ public class MultiversalRecipe implements IRecipe<IInventory> {
                     for (Item item : ((MultiversalRecipe) recipe).getItems()) {
                         if (stack.getItem() != item) {
                             ItemStack result = new ItemStack(item);
-                            result.setTag(stack.getTag());
+                            CompoundNBT tag = stack.getOrCreateTag().copy();
+                            tag.remove("Abilities");
+                            result.setTag(tag);
                             items.add(result);
                         }
                     }

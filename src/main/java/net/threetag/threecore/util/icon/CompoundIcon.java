@@ -1,9 +1,12 @@
 package net.threetag.threecore.util.icon;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.JSONUtils;
@@ -12,6 +15,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.util.documentation.IDocumentationSettings;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CompoundIcon implements IIcon {
 
@@ -54,7 +62,7 @@ public class CompoundIcon implements IIcon {
         return Serializer.INSTANCE;
     }
 
-    public static class Serializer implements IIconSerializer<CompoundIcon> {
+    public static class Serializer implements IIconSerializer<CompoundIcon>, IDocumentationSettings {
 
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(ThreeCore.MODID, "compound");
@@ -104,6 +112,26 @@ public class CompoundIcon implements IIcon {
         @Override
         public ResourceLocation getId() {
             return ID;
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public List<String> getColumns() {
+            return Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value");
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public List<Iterable<?>> getRows() {
+            List<Iterable<?>> rows = new ArrayList<>();
+            rows.add(Arrays.asList("icons", IIcon[].class, "Array of icons that will be overlayed", true, null));
+            return rows;
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public JsonElement getExampleJson() {
+            return this.serializeJsonExt(new CompoundIcon(new TexturedIcon(TexturedIcon.ICONS_TEXTURE, 0, 16, 16, 16), new ItemIcon(new ItemStack(Items.PUMPKIN))));
         }
     }
 }

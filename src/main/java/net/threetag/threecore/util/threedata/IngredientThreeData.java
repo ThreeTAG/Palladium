@@ -2,7 +2,6 @@ package net.threetag.threecore.util.threedata;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.JSONUtils;
@@ -42,6 +41,6 @@ public class IngredientThreeData extends ThreeData<Ingredient> {
 
     @Override
     public JsonElement serializeJson(Ingredient value) {
-        return new JsonPrimitive(value.serialize().toString());
+        return value.serialize();
     }
 }

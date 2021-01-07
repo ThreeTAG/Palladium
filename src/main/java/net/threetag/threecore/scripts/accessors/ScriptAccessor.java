@@ -1,11 +1,11 @@
 package net.threetag.threecore.scripts.accessors;
 
-import com.google.common.collect.Lists;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
@@ -16,15 +16,16 @@ import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.condition.Condition;
 import net.threetag.threecore.scripts.ScriptParameterName;
+import net.threetag.threecore.util.documentation.DocumentationBuilder;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static net.threetag.threecore.util.documentation.DocumentationBuilder.*;
 
 public class ScriptAccessor<T> {
 
@@ -74,84 +75,47 @@ public class ScriptAccessor<T> {
         return null;
     }
 
+    public static List<Class<? extends ScriptAccessor<?>>> accessorClasses = Arrays.asList(EntityAccessor.class, LivingEntityAccessor.class,
+            WorldAccessor.class, BlockStateAccessor.class, DamageSourceAccessor.class, AbilityAccessor.class, ConditionAccessor.class, CompoundNBTAccessor.class, Vector3dAccessor.class, MaterialAccessor.class, ItemStackAccessor.class,
+            BlockRayTraceResultAccessor.class, EntityRayTraceResultAccessor.class);
+
     @OnlyIn(Dist.CLIENT)
-    public static void generateHtmlFile(File file) {
+    public static void generateDocumentation() {
         List<String> ignoredMethods = Arrays.asList("fire", "wait", "equals", "toString", "hashCode", "getClass", "notify", "notifyAll");
-        List<Class<? extends ScriptAccessor>> accessorClasses = Arrays.asList(EntityAccessor.class, LivingEntityAccessor.class,
-                WorldAccessor.class, BlockStateAccessor.class, DamageSourceAccessor.class, AbilityAccessor.class, ConditionAccessor.class, CompoundNBTAccessor.class, Vector3dAccessor.class, MaterialAccessor.class, ItemStackAccessor.class,
-                BlockRayTraceResultAccessor.class, EntityRayTraceResultAccessor.class);
-        try {
-            if (!file.getParentFile().exists())
-                file.getParentFile().mkdirs();
 
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            List<String> lines = Lists.newLinkedList();
-            lines.add("<html><head><title>Script Accessors</title><style>\n" +
-                    "table{font-family:arial, sans-serif;border-collapse:collapse;}\n" +
-                    "td,th{border:1px solid #666666;text-align:left;padding:8px;min-width:45px;}\n" +
-                    "th{background-color:#CCCCCC;}\n" +
-                    "p{margin:0;}\n" +
-                    "tr:nth-child(even){background-color:#D8D8D8;}\n" +
-                    "tr:nth-child(odd){background-color:#EEEEEE;}\n" +
-                    "td.true{background-color:#72FF85AA;}\n" +
-                    "td.false{background-color:#FF6666AA;}\n" +
-                    "td.other{background-color:#42A3FFAA;}\n" +
-                    "td.error{color:#FF0000;}\n" +
-                    "th,td.true,td.false,td.other{text-align:center;}\n" +
-                    "</style><link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"https://i.imgur.com/am80ox1.png\">" +
-                    "</head><body>");
+        DocumentationBuilder builder = new DocumentationBuilder(new ResourceLocation(ThreeCore.MODID, "scripts/accessors"), "Script Accessors")
+                .add(heading("Script Accessors")).add(hr())
+                .add(paragraph(subHeading("Overview")).add(list(accessorClasses.stream().map(clazz -> link(clazz.getSimpleName(), "#" + clazz.getSimpleName())).collect(Collectors.toList()))));
 
-            lines.add("<ul>");
-            for (Class<? extends ScriptAccessor> clazz : accessorClasses) {
-                lines.add("<li><a href=\"#" + clazz.getSimpleName() + "\">" + clazz.getSimpleName() + "</a></li>");
-            }
-            lines.add("</ul>");
-            lines.add("<hr>\n");
+        for (Class<? extends ScriptAccessor<?>> clazz : accessorClasses) {
+            builder.add(hr()).add(div().setId(clazz.getSimpleName()).add(subHeading(clazz.getSimpleName() + (clazz.getSuperclass() != ScriptAccessor.class ? " <code>extends " + clazz.getSuperclass().getSimpleName() + "</code>" : "")))
+            .add(table(Arrays.asList("Function", "Return Type", "Parameters"), Arrays.stream(clazz.getMethods()).filter(method -> !ignoredMethods.contains(method.getName()) && !Modifier.isStatic(method.getModifiers())).map(method -> {
+                Collection<String> columns = new LinkedList<>();
+                columns.add(method.getName());
+                columns.add(method.getReturnType().getSimpleName());
 
-            for (Class<? extends ScriptAccessor> clazz : accessorClasses) {
-                String name = clazz.getSimpleName();
+                if (method.getParameterCount() <= 0)
+                    columns.add("/");
+                else {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (int i = 0; i < method.getParameterCount(); i++) {
+                        String parameterName = method.getParameters()[i].getName();
+                        ScriptParameterName scriptParameterName = method.getParameters()[i].getAnnotation(ScriptParameterName.class);
+                        if (scriptParameterName != null)
+                            parameterName = scriptParameterName.value();
 
-                lines.add("<p><h1 id=\"" + name + "\">" + name + "</h1>");
-
-                lines.add("<table>\n<tr><th>Function</th><th>Return Type</th><th>Parameters</th></tr>");
-
-                for (Method method : clazz.getMethods()) {
-                    if (!ignoredMethods.contains(method.getName()) && !Modifier.isStatic(method.getModifiers())) {
-                        lines.add("<tr>");
-                        lines.add("<td>" + method.getName() + "</td>");
-                        lines.add("<td>" + method.getReturnType().getSimpleName() + "</td>");
-
-                        lines.add("<td>");
-                        if (method.getParameterCount() <= 0)
-                            lines.add("/");
-                        else
-                            for (int i = 0; i < method.getParameterCount(); i++) {
-                                String parameterName = method.getParameters()[i].getName();
-                                ScriptParameterName scriptParameterName = method.getParameters()[i].getAnnotation(ScriptParameterName.class);
-                                if (scriptParameterName != null)
-                                    parameterName = scriptParameterName.value();
-
-                                lines.add("<strong>" + parameterName + "</strong> - " + method.getParameterTypes()[i].getSimpleName());
-                                if (method.getParameterCount() > 1 && i - 2 <= method.getParameterCount())
-                                    lines.add("<br>");
-                            }
-                        lines.add("</td>");
-
-                        lines.add("</tr>");
+                        stringBuilder.append("<strong>").append(parameterName).append("</strong> - ").append(method.getParameterTypes()[i].getSimpleName());
+                        if (method.getParameterCount() > 1)
+                            stringBuilder.append("<br>");
                     }
+                    columns.add(stringBuilder.toString());
                 }
-                lines.add("</table>");
-                lines.add("</p><hr>\n");
-            }
 
-            for (String s : lines)
-                bw.write(s + "\n");
-            bw.close();
-
-            ThreeCore.LOGGER.info("Successfully generated " + file.getName() + "!");
-        } catch (IOException e) {
-            e.printStackTrace();
+                return columns;
+            }).collect(Collectors.toList()))));
         }
+
+        builder.save();
     }
 
 }

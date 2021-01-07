@@ -21,13 +21,22 @@ import net.minecraft.entity.player.PlayerModelPart;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraftforge.common.util.NonNullFunction;
+import net.threetag.threecore.ThreeCore;
 import net.threetag.threecore.client.renderer.entity.modellayer.predicates.IModelLayerPredicate;
+import net.threetag.threecore.client.renderer.entity.modellayer.texture.DefaultModelTexture;
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.ModelLayerTexture;
 import net.threetag.threecore.util.RenderUtil;
+import net.threetag.threecore.util.SupporterHandler;
+import net.threetag.threecore.util.documentation.IDocumentationSettings;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,15 +45,24 @@ public class CapeModelLayer implements IModelLayer {
     public final ModelLayerTexture texture;
     public final List<IModelLayerPredicate> glowPredicates;
     public final List<IModelLayerPredicate> predicateList = Lists.newLinkedList();
+    public final boolean allowSupporterCloakOverride;
 
     public CapeModelLayer(ModelLayerTexture texture) {
         this.texture = texture;
         this.glowPredicates = Collections.emptyList();
+        this.allowSupporterCloakOverride = true;
     }
 
     public CapeModelLayer(ModelLayerTexture texture, List<IModelLayerPredicate> glowPredicates) {
         this.texture = texture;
         this.glowPredicates = glowPredicates;
+        this.allowSupporterCloakOverride = true;
+    }
+
+    public CapeModelLayer(ModelLayerTexture texture, List<IModelLayerPredicate> glowPredicates, boolean allowSupporterCloakOverride) {
+        this.texture = texture;
+        this.glowPredicates = glowPredicates;
+        this.allowSupporterCloakOverride = allowSupporterCloakOverride;
     }
 
     @Override
@@ -89,7 +107,7 @@ public class CapeModelLayer implements IModelLayer {
             ((BipedModel) entityRenderer.getEntityModel()).bipedBody.translateRotate(matrixStack);
             matrixStack.translate(0, -0.02F, 0.2F);
 
-            IVertexBuilder vertex = ItemRenderer.getEntityGlintVertexBuilder(renderTypeBuffer, RenderType.getEntityTranslucent(this.texture.getTexture(context)), false, context.getAsItem() != null && context.getAsItem().hasEffect());
+            IVertexBuilder vertex = ItemRenderer.getEntityGlintVertexBuilder(renderTypeBuffer, RenderType.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, context.getAsItem() != null && context.getAsItem().hasEffect());
             int color = getColor(context);
             if (color > -1) {
                 renderCape(context, matrixStack, vertex, rotation, RenderUtil.red(color), RenderUtil.green(color), RenderUtil.blue(color), packedLight, partialTicks);
@@ -99,6 +117,22 @@ public class CapeModelLayer implements IModelLayer {
 
             matrixStack.pop();
         }
+    }
+
+    public ModelLayerTexture getTexture(IModelLayerContext context) {
+        if (context.getAsEntity() instanceof PlayerEntity) {
+            ResourceLocation cloak = SupporterHandler.getPlayerData(context.getAsEntity().getUniqueID()).getCloakTexture();
+
+            if (cloak != null) {
+                return new DefaultModelTexture(null, null) {
+                    @Override
+                    public ResourceLocation getTexture(IModelLayerContext context) {
+                        return cloak;
+                    }
+                };
+            }
+        }
+        return this.texture;
     }
 
     public int getColor(IModelLayerContext context) {
@@ -144,26 +178,62 @@ public class CapeModelLayer implements IModelLayer {
         return this;
     }
 
-    public static CapeModelLayer parse(JsonObject json) {
-        List<IModelLayerPredicate> glowPredicates = Lists.newLinkedList();
+    public static class Parser implements NonNullFunction<JsonObject, IModelLayer>, IDocumentationSettings {
 
-        if (JSONUtils.hasField(json, "glow")) {
-            JsonElement glowJson = json.get("glow");
+        public static final ResourceLocation ID = new ResourceLocation(ThreeCore.MODID, "cape");
 
-            if (glowJson.isJsonPrimitive() && glowJson.getAsBoolean()) {
-                glowPredicates.add((c) -> true);
-            } else {
-                JsonArray predicateArray = JSONUtils.getJsonArray(json, "glow");
-                for (int i = 0; i < predicateArray.size(); i++) {
-                    IModelLayerPredicate predicate = ModelLayerManager.parsePredicate(predicateArray.get(i).getAsJsonObject());
-                    if (predicate != null)
-                        glowPredicates.add(predicate);
+        @Nonnull
+        @Override
+        public IModelLayer apply(@Nonnull JsonObject json) {
+            List<IModelLayerPredicate> glowPredicates = Lists.newLinkedList();
+
+            if (JSONUtils.hasField(json, "glow")) {
+                JsonElement glowJson = json.get("glow");
+
+                if (glowJson.isJsonPrimitive() && glowJson.getAsBoolean()) {
+                    glowPredicates.add((c) -> true);
+                } else {
+                    JsonArray predicateArray = JSONUtils.getJsonArray(json, "glow");
+                    for (int i = 0; i < predicateArray.size(); i++) {
+                        IModelLayerPredicate predicate = ModelLayerManager.parsePredicate(predicateArray.get(i).getAsJsonObject());
+                        if (predicate != null)
+                            glowPredicates.add(predicate);
+                    }
                 }
+            } else {
+                glowPredicates.add((c) -> false);
             }
-        } else {
-            glowPredicates.add((c) -> false);
+
+            return new CapeModelLayer(ModelLayerTexture.parse(json.get("texture")), glowPredicates, JSONUtils.getBoolean(json, "allow_supporter_cloak_override", true));
         }
 
-        return new CapeModelLayer(ModelLayerTexture.parse(json.get("texture")), glowPredicates);
+        @Override
+        public ResourceLocation getId() {
+            return ID;
+        }
+
+        @Override
+        public List<String> getColumns() {
+            return Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value");
+        }
+
+        @Override
+        public List<Iterable<?>> getRows() {
+            List<Iterable<?>> rows = new ArrayList<>();
+            rows.add(Arrays.asList("texture", ModelLayerTexture.class, "Texture object", true, null));
+            rows.add(Arrays.asList("glow", IModelLayerPredicate[].class, "Array of conditions for the glow to appear OR just a boolean value (true/false)", false, false));
+            rows.add(Arrays.asList("allow_supporter_cloak_override", Boolean.class, "If true, the texture of this cape can be overriden be Supporter Cloaks", false, true));
+            return rows;
+        }
+
+        @Override
+        public JsonElement getExampleJson() {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("type", ID.toString());
+            jsonObject.addProperty("texture", "pack:textures/model/my_texture.png");
+            jsonObject.addProperty("glow", false);
+            jsonObject.addProperty("allow_supporter_cloak_override", true);
+            return jsonObject;
+        }
     }
 }

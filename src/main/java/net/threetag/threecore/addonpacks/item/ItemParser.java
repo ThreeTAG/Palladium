@@ -22,7 +22,6 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.threetag.threecore.ThreeCore;
@@ -97,6 +96,9 @@ public class ItemParser {
             else
                 throw new JsonParseException("Tool type '" + type + "' does not exist!");
         });
+
+        // Superpower Food Item
+        registerItemParser(new ResourceLocation(ThreeCore.MODID, "superpower_food"), (j, p) -> new SuperpowerFoodItem(p, new ResourceLocation(JSONUtils.getString(j, "superpower")), JSONUtils.getInt(j, "lifetime", -1)));
     }
 
     public static void registerItemParser(ResourceLocation resourceLocation, BiFunction<JsonObject, Item.Properties, Item> function) {
@@ -279,8 +281,7 @@ public class ItemParser {
     }
 
     public static ToolType getToolType(String name) {
-        Map<String, ToolType> values = ObfuscationReflectionHelper.getPrivateValue(ToolType.class, null, "values");
-        return values.get(name);
+        return ToolType.get(name);
     }
 
     public static IArmorMaterial parseArmorMaterial(JsonObject json) {

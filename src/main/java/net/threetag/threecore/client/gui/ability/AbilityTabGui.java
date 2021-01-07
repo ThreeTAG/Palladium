@@ -7,6 +7,7 @@ import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.threetag.threecore.ability.Ability;
 import net.threetag.threecore.ability.ChangeAbilityTabTextureAbility;
 import net.threetag.threecore.ability.container.IAbilityContainer;
@@ -172,7 +173,13 @@ public class AbilityTabGui extends AbstractGui {
     }
 
     public ITextComponent getTitle() {
-        return this.container.getTitle();
+        ITextComponent subtitle = this.container.getSubtitle();
+
+        if (subtitle == null) {
+            return this.container.getTitle();
+        } else {
+            return this.container.getTitle().deepCopy().appendString(" ").append(subtitle.deepCopy().mergeStyle(TextFormatting.GRAY));
+        }
     }
 
     public void drawTab(MatrixStack stack, int x, int y, boolean selected) {

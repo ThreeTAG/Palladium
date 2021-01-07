@@ -9,6 +9,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import net.threetag.threecore.ability.container.AbilityContainerTypes;
 import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.capability.CapabilityAbilityContainer;
+import net.threetag.threecore.client.gui.toast.SuperpowerTimerToast;
 
 import java.util.function.Supplier;
 
@@ -41,6 +42,9 @@ public class AddAbilityContainerMessage {
                 if (container != null) {
                     entity.getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent(multiContainer -> {
                         multiContainer.addContainer((LivingEntity) entity, container);
+                        if(entity == Minecraft.getInstance().player) {
+                            SuperpowerTimerToast.add(container.getId());
+                        }
                     });
                 }
             }

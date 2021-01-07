@@ -19,7 +19,8 @@ public class WoodenLegModel extends Model {
     public static final ResourceLocation TEXTURE = new ResourceLocation(ThreeCore.MODID, "textures/models/accessories/wooden_leg.png");
 
     private final ModelRenderer leg;
-    private final ModelRenderer playerLeg;
+    private final ModelRenderer playerRightLeg;
+    private final ModelRenderer playerLeftLeg;
 
     public WoodenLegModel(Function<ResourceLocation, RenderType> renderTypeIn) {
         super(renderTypeIn);
@@ -34,10 +35,16 @@ public class WoodenLegModel extends Model {
 
         this.textureHeight = 64;
         this.textureWidth = 64;
-        playerLeg = new ModelRenderer(this);
-        playerLeg.setRotationPoint(0.0F, 0.0F, 0.0F);
-        playerLeg.addBox("leg", -2, 12, -2, 4, 4, 4, 0, 16, 48);
-        playerLeg.addBox("leg_overlay", -2, 12, -2, 4, 4, 4, 0.5F, 0, 48);
+
+        playerRightLeg = new ModelRenderer(this);
+        playerRightLeg.setRotationPoint(0.0F, 0.0F, 0.0F);
+        playerRightLeg.addBox("leg", -2, 12, -2, 4, 4, 4, 0, 0, 16);
+        playerRightLeg.addBox("leg_overlay", -2, 12, -2, 4, 4, 4, 0.5F, 0, 48);
+
+        playerLeftLeg = new ModelRenderer(this);
+        playerLeftLeg.setRotationPoint(0.0F, 0.0F, 0.0F);
+        playerLeftLeg.addBox("leg", -2, 12, -2, 4, 4, 4, 0, 16, 48);
+        playerLeftLeg.addBox("leg_overlay", -2, 12, -2, 4, 4, 4, 0.5F, 0, 48);
     }
 
     @Override
@@ -45,8 +52,12 @@ public class WoodenLegModel extends Model {
         leg.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 
-    public void renderPlayerLeg(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        playerLeg.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+    public void renderPlayerLeg(boolean right, MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (right) {
+            playerRightLeg.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        } else {
+            playerLeftLeg.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        }
     }
 
 }

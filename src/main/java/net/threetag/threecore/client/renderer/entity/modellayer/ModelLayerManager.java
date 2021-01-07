@@ -13,6 +13,8 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.fml.ModList;
 import net.threetag.threecore.ThreeCore;
@@ -27,11 +29,16 @@ import net.threetag.threecore.client.renderer.entity.modellayer.texture.transfor
 import net.threetag.threecore.client.renderer.entity.modellayer.texture.variable.*;
 import net.threetag.threecore.compat.curios.DefaultCuriosHandler;
 import net.threetag.threecore.util.PlayerUtil;
+import net.threetag.threecore.util.documentation.DocumentationBuilder;
+import net.threetag.threecore.util.documentation.IDocumentationSettings;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static net.threetag.threecore.util.documentation.DocumentationBuilder.heading;
 
 public class ModelLayerManager {
 
@@ -100,13 +107,13 @@ public class ModelLayerManager {
         // Layer Types
 
         // Default Layer
-        registerModelLayer(new ResourceLocation(ThreeCore.MODID, "default"), ModelLayer::parse);
+        registerModelLayer(ModelLayer.Parser.ID, new ModelLayer.Parser());
 
         // Compound Layer
-        registerModelLayer(new ResourceLocation(ThreeCore.MODID, "compound"), CompoundModelLayer::parse);
+        registerModelLayer(CompoundModelLayer.Parser.ID, new CompoundModelLayer.Parser());
 
         // Cape
-        registerModelLayer(new ResourceLocation(ThreeCore.MODID, "cape"), CapeModelLayer::parse);
+        registerModelLayer(CapeModelLayer.Parser.ID, new CapeModelLayer.Parser());
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
         // Texture Types
@@ -293,6 +300,14 @@ public class ModelLayerManager {
                 return false;
         }
         return true;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void generateDocumentation() {
+        new DocumentationBuilder(new ResourceLocation(ThreeCore.MODID, "model_layers/layer_types"), "Model Layer Types")
+                .add(heading("Model Layer Types")).addDocumentationSettings(MODEL_LAYERS.values().stream().filter(serializer -> serializer instanceof IDocumentationSettings).map(serializer -> {
+            return (IDocumentationSettings) serializer;
+        }).collect(Collectors.toList())).save();
     }
 
 }

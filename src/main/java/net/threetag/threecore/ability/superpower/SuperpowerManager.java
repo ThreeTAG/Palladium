@@ -99,6 +99,7 @@ public class SuperpowerManager extends JsonReloadListener {
                     multiContainer.removeContainer(entity, id);
                 }
                 multiContainer.addContainer(entity, new SuperpowerAbilityContainer(superpower, lifetime));
+
                 new SuperpowerSetScriptEvent(entity, superpower.getId().toString()).fire();
                 if (entity instanceof ServerPlayerEntity)
                     ThreeCore.NETWORK_CHANNEL.sendTo(new SendSuperpowerToastMessage(superpower.getName(), superpower.getIcon()), ((ServerPlayerEntity) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
@@ -151,6 +152,7 @@ public class SuperpowerManager extends JsonReloadListener {
 
     public static boolean removeSuperpower(LivingEntity entity, ResourceLocation id) {
         AtomicBoolean result = new AtomicBoolean(false);
+
         try {
             entity.getCapability(CapabilityAbilityContainer.MULTI_ABILITY_CONTAINER).ifPresent(multiContainer -> {
                 result.set(multiContainer.removeContainer(entity, id));
