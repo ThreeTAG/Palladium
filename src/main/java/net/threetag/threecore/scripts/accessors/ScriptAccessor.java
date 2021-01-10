@@ -19,10 +19,7 @@ import net.threetag.threecore.scripts.ScriptParameterName;
 import net.threetag.threecore.util.documentation.DocumentationBuilder;
 
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static net.threetag.threecore.util.documentation.DocumentationBuilder.*;
@@ -71,9 +68,13 @@ public class ScriptAccessor<T> {
         return null;
     }
 
-    public static List<Class<? extends ScriptAccessor<?>>> accessorClasses = Arrays.asList(EntityAccessor.class, LivingEntityAccessor.class,
-            WorldAccessor.class, BlockStateAccessor.class, DamageSourceAccessor.class, AbilityAccessor.class, ConditionAccessor.class, CompoundNBTAccessor.class, Vector3dAccessor.class, MaterialAccessor.class, ItemStackAccessor.class,
-            BlockRayTraceResultAccessor.class, EntityRayTraceResultAccessor.class);
+    public static List<Class<? extends ScriptAccessor<?>>> accessorClasses = new ArrayList<>();
+
+    static {
+        accessorClasses.addAll(Arrays.asList(EntityAccessor.class, LivingEntityAccessor.class,
+                WorldAccessor.class, BlockStateAccessor.class, DamageSourceAccessor.class, AbilityAccessor.class, ConditionAccessor.class, CompoundNBTAccessor.class, Vector3dAccessor.class, MaterialAccessor.class, ItemStackAccessor.class,
+                BlockRayTraceResultAccessor.class, EntityRayTraceResultAccessor.class));
+    }
 
     @OnlyIn(Dist.CLIENT)
     public static void generateDocumentation() {
@@ -85,30 +86,30 @@ public class ScriptAccessor<T> {
 
         for (Class<? extends ScriptAccessor<?>> clazz : accessorClasses) {
             builder.add(hr()).add(div().setId(clazz.getSimpleName()).add(subHeading(clazz.getSimpleName() + (clazz.getSuperclass() != ScriptAccessor.class ? " <code>extends " + clazz.getSuperclass().getSimpleName() + "</code>" : "")))
-            .add(table(Arrays.asList("Function", "Return Type", "Parameters"), Arrays.stream(clazz.getMethods()).filter(method -> !ignoredMethods.contains(method.getName()) && !Modifier.isStatic(method.getModifiers())).map(method -> {
-                Collection<String> columns = new LinkedList<>();
-                columns.add(method.getName());
-                columns.add(method.getReturnType().getSimpleName());
+                    .add(table(Arrays.asList("Function", "Return Type", "Parameters"), Arrays.stream(clazz.getMethods()).filter(method -> !ignoredMethods.contains(method.getName()) && !Modifier.isStatic(method.getModifiers())).map(method -> {
+                        Collection<String> columns = new LinkedList<>();
+                        columns.add(method.getName());
+                        columns.add(method.getReturnType().getSimpleName());
 
-                if (method.getParameterCount() <= 0)
-                    columns.add("/");
-                else {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 0; i < method.getParameterCount(); i++) {
-                        String parameterName = method.getParameters()[i].getName();
-                        ScriptParameterName scriptParameterName = method.getParameters()[i].getAnnotation(ScriptParameterName.class);
-                        if (scriptParameterName != null)
-                            parameterName = scriptParameterName.value();
+                        if (method.getParameterCount() <= 0)
+                            columns.add("/");
+                        else {
+                            StringBuilder stringBuilder = new StringBuilder();
+                            for (int i = 0; i < method.getParameterCount(); i++) {
+                                String parameterName = method.getParameters()[i].getName();
+                                ScriptParameterName scriptParameterName = method.getParameters()[i].getAnnotation(ScriptParameterName.class);
+                                if (scriptParameterName != null)
+                                    parameterName = scriptParameterName.value();
 
-                        stringBuilder.append("<strong>").append(parameterName).append("</strong> - ").append(method.getParameterTypes()[i].getSimpleName());
-                        if (method.getParameterCount() > 1)
-                            stringBuilder.append("<br>");
-                    }
-                    columns.add(stringBuilder.toString());
-                }
+                                stringBuilder.append("<strong>").append(parameterName).append("</strong> - ").append(method.getParameterTypes()[i].getSimpleName());
+                                if (method.getParameterCount() > 1)
+                                    stringBuilder.append("<br>");
+                            }
+                            columns.add(stringBuilder.toString());
+                        }
 
-                return columns;
-            }).collect(Collectors.toList()))));
+                        return columns;
+                    }).collect(Collectors.toList()))));
         }
 
         builder.save();
