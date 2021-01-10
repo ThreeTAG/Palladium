@@ -39,7 +39,7 @@ public class TCAttributes {
 
     @SubscribeEvent
     public static void onFall(LivingEvent.LivingJumpEvent e) {
-        if (!e.getEntityLiving().isCrouching()) {
+        if (!e.getEntityLiving().isCrouching() && e.getEntityLiving().getAttribute(JUMP_HEIGHT.get()) != null) {
             e.getEntityLiving().setMotion(e.getEntity().getMotion().x, e.getEntity().getMotion().y + 0.1F * e.getEntityLiving().getAttribute(JUMP_HEIGHT.get()).getValue(), e.getEntity().getMotion().z);
         }
     }
