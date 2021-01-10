@@ -334,4 +334,11 @@ public class EntityAccessor extends ScriptAccessor<Entity> {
         this.value.lookAt(EntityAnchorArgument.Type.EYES, target.value);
     }
 
+    public void read(@ScriptParameterName("from") CompoundNBTAccessor from){
+        this.value.read(from.value);
+    }
+
+    public void save(@ScriptParameterName("to") CompoundNBTAccessor to){
+        this.value.writeWithoutTypeId(to.value);
+    }
 }

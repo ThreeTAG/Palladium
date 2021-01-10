@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class CompoundNBTAccessor extends ScriptAccessor<CompoundNBT> {
 
-    protected CompoundNBTAccessor(CompoundNBT value) {
+    public CompoundNBTAccessor(CompoundNBT value) {
         super(value);
     }
 

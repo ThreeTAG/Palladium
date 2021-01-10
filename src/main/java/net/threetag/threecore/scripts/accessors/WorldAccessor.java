@@ -1,27 +1,37 @@
 package net.threetag.threecore.scripts.accessors;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.network.play.server.SRespawnPacket;
+import net.minecraft.network.play.server.SServerDifficultyPacket;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeManager;
+import net.minecraft.world.gen.feature.template.PlacementSettings;
+import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.IWorldInfo;
+import net.minecraftforge.common.extensions.IForgeWorldServer;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.threecore.scripts.ScriptCommandSource;
 import net.threetag.threecore.scripts.ScriptParameterName;
 import net.threetag.threecore.util.PlayerUtil;
 
 import java.util.List;
+import java.util.Random;
 
 public class WorldAccessor extends ScriptAccessor<World> {
 
@@ -36,6 +46,27 @@ public class WorldAccessor extends ScriptAccessor<World> {
     public void setTime(@ScriptParameterName("time") long time) {
         if (this.value instanceof ServerWorld)
             ((ServerWorld) this.value).setDayTime(time);
+    }
+
+    public String getDimension() {
+        return this.value.getDimensionKey().toString();
+    }
+
+    public void loadStructure(@ScriptParameterName("x") int x, @ScriptParameterName("y") int y, @ScriptParameterName("z") int z, @ScriptParameterName("name") String name) {
+        if(this.value instanceof ServerWorld) {
+            BlockPos pos = new BlockPos(x, y, z);
+            ServerWorld worldserver = (ServerWorld) this.value;
+            TemplateManager templatemanager = worldserver.getStructureTemplateManager();
+            ResourceLocation loc = new ResourceLocation(name);
+            Template template = templatemanager.getTemplate(loc);
+            if (template != null) {
+                BlockState state = worldserver.getBlockState(pos);
+                worldserver.notifyBlockUpdate(pos, state, state, 3);
+                PlacementSettings placementsettings = (new PlacementSettings()).setMirror(Mirror.NONE)
+                        .setRotation(Rotation.NONE).setIgnoreEntities(false).setChunk(null);
+                template.func_237144_a_(worldserver, pos.add(0, 1, 0), placementsettings, new Random());
+            }
+        }
     }
 
     public boolean isRaining() {
