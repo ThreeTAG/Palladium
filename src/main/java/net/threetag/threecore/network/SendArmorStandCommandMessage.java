@@ -23,7 +23,7 @@ public class SendArmorStandCommandMessage {
     }
 
     public SendArmorStandCommandMessage(PacketBuffer packetBuffer) {
-        this.argument = packetBuffer.readString();
+        this.argument = packetBuffer.readString(32767);
     }
 
     public void toBytes(PacketBuffer buf) {

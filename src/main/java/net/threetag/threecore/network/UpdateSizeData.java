@@ -24,7 +24,7 @@ public class UpdateSizeData {
 
     public UpdateSizeData(PacketBuffer buf) {
         this.entityId = buf.readInt();
-        this.dataKey = buf.readString(32);
+        this.dataKey = buf.readString(32767);
         this.dataTag = buf.readCompoundTag();
     }
 

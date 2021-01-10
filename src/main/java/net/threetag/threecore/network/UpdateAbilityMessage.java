@@ -29,8 +29,8 @@ public class UpdateAbilityMessage {
 
     public UpdateAbilityMessage(PacketBuffer buffer) {
         this.entityID = buffer.readInt();
-        this.containerId = new ResourceLocation(buffer.readString(64));
-        this.abilityId = buffer.readString(32);
+        this.containerId = new ResourceLocation(buffer.readString(32767));
+        this.abilityId = buffer.readString(32767);
         this.data = buffer.readCompoundTag();
     }
 

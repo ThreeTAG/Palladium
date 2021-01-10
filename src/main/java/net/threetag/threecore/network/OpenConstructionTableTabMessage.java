@@ -18,7 +18,7 @@ public class OpenConstructionTableTabMessage {
     }
 
     public OpenConstructionTableTabMessage(PacketBuffer buffer) {
-        this.tabId = new ResourceLocation(buffer.readString(64));
+        this.tabId = new ResourceLocation(buffer.readString(32767));
     }
 
     public void toBytes(PacketBuffer buffer) {

@@ -20,7 +20,7 @@ public class SyncMultiverseMessage {
         this.universes = Lists.newArrayList();
         int j = buf.readInt();
         for (int i = 0; i < j; i++) {
-            this.universes.add(buf.readString());
+            this.universes.add(buf.readString(32767));
         }
     }
 

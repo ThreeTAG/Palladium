@@ -25,8 +25,8 @@ public class RemoveAbilityMessage {
 
     public RemoveAbilityMessage(PacketBuffer buffer) {
         this.entityID = buffer.readInt();
-        this.containerId = new ResourceLocation(buffer.readString(64));
-        this.abilityId = buffer.readString(32);
+        this.containerId = new ResourceLocation(buffer.readString(32767));
+        this.abilityId = buffer.readString(32767);
     }
 
     public void toBytes(PacketBuffer buffer) {

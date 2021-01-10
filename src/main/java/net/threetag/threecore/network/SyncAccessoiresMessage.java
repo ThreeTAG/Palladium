@@ -29,7 +29,7 @@ public class SyncAccessoiresMessage {
         int amount = buf.readInt();
         this.accessoires = new HashMap<>();
         for (int i = 0; i < amount; i++) {
-            AccessoireSlot slot = AccessoireSlot.getSlotByName(buf.readString());
+            AccessoireSlot slot = AccessoireSlot.getSlotByName(buf.readString(32767));
             List<Accessoire> accessoireList = new ArrayList<>();
             int slotAmount = buf.readInt();
             for (int j = 0; j < slotAmount; j++) {

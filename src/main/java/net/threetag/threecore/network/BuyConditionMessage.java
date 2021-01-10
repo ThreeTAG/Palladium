@@ -26,8 +26,8 @@ public class BuyConditionMessage {
     }
 
     public BuyConditionMessage(PacketBuffer buffer) {
-        this.containerId = new ResourceLocation(buffer.readString(64));
-        this.abilityId = buffer.readString(32);
+        this.containerId = new ResourceLocation(buffer.readString(32767));
+        this.abilityId = buffer.readString(32767);
         this.conditionId = buffer.readUniqueId();
     }
 
