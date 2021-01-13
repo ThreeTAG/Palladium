@@ -156,8 +156,12 @@ public class ModelLayerManager {
         // Small Arms
         registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "small_arms"), j -> new SmallArmsTextureVariable(JSONUtils.getString(j, "normal_arms_value", null), JSONUtils.getString(j, "small_arms_value", null)));
 
-        //Ability Data
+        // Ability Data
         registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "ability_data"), AbilityDataTextureVariable::new);
+
+        // Ability Container Time
+        registerTextureVariable(new ResourceLocation(ThreeCore.MODID, "ability_container_time"), AbilityContainerTimeTextureVariable::new);
+
         // ----------------------------------------------------------------------------------------------------------------------------------------------
         // Predicates
 

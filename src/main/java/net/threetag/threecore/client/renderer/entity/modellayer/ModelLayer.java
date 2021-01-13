@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -27,6 +28,7 @@ import net.minecraft.util.LazyValue;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.threetag.threecore.ThreeCore;
+import net.threetag.threecore.client.renderer.entity.model.BipedModelParser;
 import net.threetag.threecore.client.renderer.entity.model.IArmRenderingModel;
 import net.threetag.threecore.client.renderer.entity.model.ISlotDependentVisibility;
 import net.threetag.threecore.client.renderer.entity.model.ModelRegistry;
@@ -37,10 +39,8 @@ import net.threetag.threecore.util.documentation.IDocumentationSettings;
 import net.threetag.threecore.util.threedata.BodyPartListThreeData;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class ModelLayer implements IModelLayer {
 
@@ -70,8 +70,7 @@ public class ModelLayer implements IModelLayer {
                 bipedModel.leftArmPose = ((BipedModel) entityRenderer.getEntityModel()).leftArmPose;
             }
 
-            if (context.getSlot() != null)
-                this.setModelSlotVisible(bipedModel, context.getSlot());
+            this.setModelSlotVisible(bipedModel, context.getSlot());
 
             bipedModel.setLivingAnimations((LivingEntity) context.getAsEntity(), limbSwing, limbSwingAmount, partialTicks);
             bipedModel.setRotationAngles((LivingEntity) context.getAsEntity(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
@@ -103,8 +102,7 @@ public class ModelLayer implements IModelLayer {
             boolean glow = ModelLayerManager.arePredicatesFulFilled(this.glowPredicates, context);
             IVertexBuilder vertexBuilder = ItemRenderer.getBuffer(buffer, glow ? RenderUtil.RenderTypes.getGlowing(this.getTexture(context).getTexture(context)) : RenderType.getEntityTranslucent(this.getTexture(context).getTexture(context)), false, false);
 
-            if (context.getSlot() != null)
-                this.setModelSlotVisible(bipedModel, context.getSlot());
+            this.setModelSlotVisible(bipedModel, context.getSlot());
 
             if (bipedModel instanceof IArmRenderingModel) {
                 ((IArmRenderingModel) bipedModel).renderArm(handSide, matrixStack, vertexBuilder, packedLight);
@@ -155,29 +153,38 @@ public class ModelLayer implements IModelLayer {
         return this;
     }
 
-    protected void setModelSlotVisible(BipedModel model, EquipmentSlotType slotIn) {
-        if (model instanceof ISlotDependentVisibility)
-            ((ISlotDependentVisibility) model).setSlotVisibility(slotIn);
-        else {
-            model.setVisible(false);
-            switch (slotIn) {
-                case HEAD:
-                    model.bipedHead.showModel = true;
-                    model.bipedHeadwear.showModel = true;
-                    break;
-                case CHEST:
-                    model.bipedBody.showModel = true;
-                    model.bipedRightArm.showModel = true;
-                    model.bipedLeftArm.showModel = true;
-                    break;
-                case LEGS:
-                    model.bipedBody.showModel = true;
-                    model.bipedRightLeg.showModel = true;
-                    model.bipedLeftLeg.showModel = true;
-                    break;
-                case FEET:
-                    model.bipedRightLeg.showModel = true;
-                    model.bipedLeftLeg.showModel = true;
+    protected void setModelSlotVisible(BipedModel model, @Nullable EquipmentSlotType slotIn) {
+        if (slotIn == null) {
+            model.setVisible(true);
+            if (model instanceof BipedModelParser.ParsedBipedModel) {
+                for (Map.Entry<ModelRenderer, Boolean> override : ((BipedModelParser.ParsedBipedModel<?>) model).visibilityOverrides.entrySet()) {
+                    override.getKey().showModel = override.getValue();
+                }
+            }
+        } else {
+            if (model instanceof ISlotDependentVisibility)
+                ((ISlotDependentVisibility) model).setSlotVisibility(slotIn);
+            else {
+                model.setVisible(false);
+                switch (slotIn) {
+                    case HEAD:
+                        model.bipedHead.showModel = true;
+                        model.bipedHeadwear.showModel = true;
+                        break;
+                    case CHEST:
+                        model.bipedBody.showModel = true;
+                        model.bipedRightArm.showModel = true;
+                        model.bipedLeftArm.showModel = true;
+                        break;
+                    case LEGS:
+                        model.bipedBody.showModel = true;
+                        model.bipedRightLeg.showModel = true;
+                        model.bipedLeftLeg.showModel = true;
+                        break;
+                    case FEET:
+                        model.bipedRightLeg.showModel = true;
+                        model.bipedLeftLeg.showModel = true;
+                }
             }
         }
     }
