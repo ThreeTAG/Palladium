@@ -2,25 +2,20 @@ package net.threetag.threecore.item;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.item.*;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Rotations;
 import net.minecraft.world.World;
 import net.threetag.threecore.entity.SuitStandEntity;
+import net.threetag.threecore.util.ItemGroupFiller;
 
 import java.util.List;
-import java.util.Random;
 
 public class SuitStandItem extends Item {
+
+    public static final ItemGroupFiller FILLER = new ItemGroupFiller(() -> Items.ARMOR_STAND);
 
     public SuitStandItem(Properties properties) {
         super(properties);
@@ -69,16 +64,11 @@ public class SuitStandItem extends Item {
         }
     }
 
-    private void applyRandomRotations(SuitStandEntity suitStandEntity, Random random) {
-        Rotations rotation = suitStandEntity.getHeadRotation();
-        float f1 = random.nextFloat() * 5.0F;
-        float f2 = random.nextFloat() * 20.0F - 10.0F;
-        Rotations rotations = new Rotations(rotation.getX() + f1, rotation.getY() + f2, rotation.getZ());
-        suitStandEntity.setHeadRotation(rotations);
-        rotation = suitStandEntity.getBodyRotation();
-        f1 = random.nextFloat() * 10.0F - 5.0F;
-        rotations = new Rotations(rotation.getX(), rotation.getY() + f1, rotation.getZ());
-        suitStandEntity.setBodyRotation(rotations);
+    @Override
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+        if (this.isInGroup(group)) {
+            FILLER.fill(items, new ItemStack(this));
+        }
     }
 
 }

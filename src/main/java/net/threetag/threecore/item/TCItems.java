@@ -27,6 +27,7 @@ public class TCItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ThreeCore.MODID);
 
     // Misc Items
+    public static final RegistryObject<Item> CONSTRUCTION_TABLE = ITEMS.register("construction_table", () -> new ConstructionTableBlockItem(TCBlocks.CONSTRUCTION_TABLE.get(), new Item.Properties().group(ItemGroup.DECORATIONS)));
     public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer", () -> new HammerItem(4.5F, -2.75F, ItemTier.IRON, new Item.Properties().group(ItemGroup.TOOLS).maxStackSize(1).maxDamage(16)));
     public static final RegistryObject<Item> PLATE_CAST = ITEMS.register("plate_cast", () -> new Item(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup())));
     public static final RegistryObject<Item> CAPACITOR = ITEMS.register("capacitor", () -> new CapacitorItem(new Item.Properties().group(ItemGroupRegistry.getTechnologyGroup()).maxStackSize(1), ThreeCoreServerConfig.ENERGY.CAPACITOR));

@@ -33,7 +33,7 @@ public class TCBlocks {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ThreeCore.MODID);
 
-    public static final RegistryObject<Block> CONSTRUCTION_TABLE = register("construction_table", () -> new ConstructionTableBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)), ItemGroup.DECORATIONS);
+    public static final RegistryObject<Block> CONSTRUCTION_TABLE = BLOCKS.register("construction_table", () -> new ConstructionTableBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)));
     public static final RegistryObject<Block> MULTIVERSAL_ITERATOR = register("multiversal_iterator", () -> new MultiversalIteratorBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)), ItemGroupRegistry.getTechnologyGroup());
     public static final RegistryObject<Block> GRINDER = register("grinder", () -> new GrinderBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)), ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY));
     public static final RegistryObject<Block> HYDRAULIC_PRESS = register("hydraulic_press", () -> new HydraulicPressBlock(Block.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(5.0F, 6.0F)), ItemGroupRegistry.getItemGroup(ItemGroupRegistry.TECHNOLOGY));
