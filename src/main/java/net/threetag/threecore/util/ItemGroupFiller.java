@@ -26,20 +26,21 @@ public class ItemGroupFiller {
             offset = offsets.indexOf(toAdd.getItem());
         }
 
-        boolean found = false;
+        int index = -1;
         for (int i = 0; i < items.size(); i++) {
             ItemStack stack = items.get(i);
             if (stack.getItem() == this.item.get()) {
-                found = true;
-                if (i >= items.size() - 1) {
-                    items.add(toAdd);
-                } else {
-                    int index = i + 1 + offset;
-                    items.add(index, toAdd);
-                }
+                index = i;
             }
         }
-        if (!found) {
+        if (index > 0) {
+            if (index >= items.size() - 1) {
+                items.add(toAdd);
+            } else {
+                index = index + 1 + offset;
+                items.add(index, toAdd);
+            }
+        } else {
             items.add(toAdd);
         }
     }

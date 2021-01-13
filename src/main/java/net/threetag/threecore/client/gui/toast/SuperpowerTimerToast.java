@@ -27,7 +27,7 @@ public class SuperpowerTimerToast implements IToast {
     public Visibility func_230444_a_(MatrixStack matrixStack, ToastGui guiToast, long l) {
         IAbilityContainer container = AbilityHelper.getAbilityContainerFromId(Minecraft.getInstance().player, this.containerId);
 
-        if (!(container instanceof DefaultAbilityContainer) || ((DefaultAbilityContainer) container).getLifetime() <= 0) {
+        if (!(container instanceof DefaultAbilityContainer) || container.isObsolete() || ((DefaultAbilityContainer) container).getMaxLifetime() < 0) {
             return Visibility.HIDE;
         }
 

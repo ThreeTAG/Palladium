@@ -24,12 +24,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.settings.KeyConflictContext;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.threetag.threecore.ThreeCore;
-import net.threetag.threecore.ability.container.DefaultAbilityContainer;
-import net.threetag.threecore.ability.container.IAbilityContainer;
 import net.threetag.threecore.client.gui.ability.AbilitiesScreen;
 import net.threetag.threecore.client.gui.widget.IconButton;
 import net.threetag.threecore.client.renderer.AbilityBarRenderer;
@@ -64,17 +61,6 @@ public class AbilityClientEventHandler {
                 AbilityKeyBinding keyBinding = new AbilityKeyBinding("key.threecore.ability_" + i, KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, i == 1 ? 86 : i == 2 ? 66 : i == 3 ? 78 : i == 4 ? 77 : i == 5 ? 44 : -1, i, CATEGORY);
                 ClientRegistry.registerKeyBinding(keyBinding);
                 ABILITY_KEYS.add(keyBinding);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void onKeyInput(TickEvent.PlayerTickEvent e) {
-        if (e.phase == TickEvent.Phase.END && e.player == Minecraft.getInstance().player) {
-            for (IAbilityContainer container : AbilityHelper.getAbilityContainers(e.player)) {
-                if (container instanceof DefaultAbilityContainer && ((DefaultAbilityContainer) container).getLifetime() > -1) {
-
-                }
             }
         }
     }

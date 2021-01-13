@@ -25,7 +25,7 @@ public class DefaultAbilityContainer implements IAbilityContainer, INBTSerializa
     protected ResourceLocation id;
     protected ITextComponent title;
     protected IIcon icon;
-    private int lifetime = -1;
+    private int lifetime = 0;
     private int maxLifetime = -1;
 
     public DefaultAbilityContainer(ResourceLocation id, ITextComponent title, IIcon icon, int lifetime) {
@@ -33,7 +33,7 @@ public class DefaultAbilityContainer implements IAbilityContainer, INBTSerializa
         this.id = id;
         this.title = title;
         this.icon = icon;
-        this.lifetime = this.maxLifetime = lifetime;
+        this.maxLifetime = lifetime;
     }
 
     public DefaultAbilityContainer(CompoundNBT nbt, boolean network) {
@@ -55,8 +55,7 @@ public class DefaultAbilityContainer implements IAbilityContainer, INBTSerializa
                 a.sync = EnumSync.NONE;
             }
         });
-        if (this.lifetime > 0)
-            this.lifetime--;
+        this.lifetime++;
     }
 
     @Override
@@ -76,7 +75,7 @@ public class DefaultAbilityContainer implements IAbilityContainer, INBTSerializa
 
     @Override
     public ITextComponent getSubtitle() {
-        if (this.lifetime >= 0) {
+        if (this.maxLifetime >= 0) {
             return new StringTextComponent(StringUtils.ticksToElapsedTime(this.lifetime));
         } else {
             return null;
@@ -101,7 +100,7 @@ public class DefaultAbilityContainer implements IAbilityContainer, INBTSerializa
 
     @Override
     public boolean isObsolete() {
-        return this.lifetime == 0;
+        return this.maxLifetime >= 0 && this.lifetime >= this.maxLifetime;
     }
 
     @Override

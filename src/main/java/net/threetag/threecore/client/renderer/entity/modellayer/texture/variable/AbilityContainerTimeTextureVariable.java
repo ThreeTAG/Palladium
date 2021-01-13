@@ -32,7 +32,7 @@ public class AbilityContainerTimeTextureVariable extends AbstractIntegerTextureV
             IAbilityContainer container = AbilityHelper.getAbilityContainerFromId((LivingEntity) context.getAsEntity(), this.abilityContainer);
 
             if (container instanceof DefaultAbilityContainer) {
-                return ((DefaultAbilityContainer) container).getMaxLifetime() - ((DefaultAbilityContainer) container).getLifetime();
+                return ((DefaultAbilityContainer) container).getLifetime();
             }
         }
         return 0;

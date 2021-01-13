@@ -41,7 +41,7 @@ public class SendPlayerAbilityContainerMessage {
                         ((CapabilityAbilityContainer) a).readUpdateTag(this.nbt);
                         if(entity == Minecraft.getInstance().player) {
                             for(IAbilityContainer container : a.getAllContainers()) {
-                                if(container instanceof DefaultAbilityContainer && ((DefaultAbilityContainer) container).getLifetime() > 0) {
+                                if(container instanceof DefaultAbilityContainer && ((DefaultAbilityContainer) container).getMaxLifetime() >= 0) {
                                     SuperpowerTimerToast.add(container.getId());
                                 }
                             }
