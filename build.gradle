@@ -26,7 +26,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 def apiKeys = new Properties()
 if(file("apiKeys.properties").exists()) {
-    file("apiKeys.properties").withInputStream { props.load(it) }
+    file("apiKeys.properties").withInputStream { apiKeys.load(it) }
 }
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
