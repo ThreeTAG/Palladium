@@ -20,6 +20,7 @@ build
 # other
 eclipse
 run
+apiKeys.properties
 
 # Files from Forge MDK
 forge*changelog.txt

@@ -1,25 +1,33 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url='https://dist.creeper.host/Sponge/maven' }
+        maven { url = 'https://dist.creeper.host/Sponge/maven' }
+        maven { url = 'https://plugins.gradle.org/m2/' }
         jcenter()
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath group: 'gradle.plugin.com.matthewprenger', name: 'CurseGradle', version: '1.4.0'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'com.matthewprenger.cursegradle'
 
 version = "${minecraft_version}-${build_version}"
 group = 'net.threetag.threecore'
 archivesBaseName = 'ThreeCore'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+def apiKeys = new Properties()
+if(file("apiKeys.properties").exists()) {
+    file("apiKeys.properties").withInputStream { props.load(it) }
+}
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
@@ -129,15 +137,16 @@ artifacts {
     archives deobfJar
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
+curseforge {
+    apiKey = apiKeys.getProperty('curseforge')
+    project {
+        id = '349285'
+        changelog = file('changelog.txt')
+        releaseType = 'beta'
+        addArtifact deobfJar
+        relations {
+            optionalDependency 'jei'
+            optionalDependency 'curios'
         }
     }
 }
