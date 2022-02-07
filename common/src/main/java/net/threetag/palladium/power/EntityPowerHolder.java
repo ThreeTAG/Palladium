@@ -1,14 +1,13 @@
 package net.threetag.palladium.power;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class EntityPowerHolder implements IPowerHolder {
@@ -33,8 +32,8 @@ public class EntityPowerHolder implements IPowerHolder {
     }
 
     @Override
-    public List<AbilityConfiguration> getAbilities() {
-        return this.power != null ? this.power.getAbilities() : Collections.emptyList();
+    public Map<String, AbilityEntry> getAbilities() {
+        return ImmutableMap.copyOf(this.entryMap);
     }
 
     @Override
@@ -46,12 +45,14 @@ public class EntityPowerHolder implements IPowerHolder {
     public CompoundTag toNBT() {
         CompoundTag nbt = new CompoundTag();
 
-        if(this.power != null) {
+        if (this.power != null) {
             nbt.putString("Power", this.power.getId().toString());
 
-            CompoundTag abilitiesTag = new CompoundTag();
-            this.entryMap.forEach((id, entry) -> abilitiesTag.put(id, entry.toNBT()));
-            nbt.put("Abilities", abilitiesTag);
+            if (!this.entryMap.isEmpty()) {
+                CompoundTag abilitiesTag = new CompoundTag();
+                this.entryMap.forEach((id, entry) -> abilitiesTag.put(id, entry.toNBT()));
+                nbt.put("Abilities", abilitiesTag);
+            }
         }
 
         return nbt;
@@ -59,8 +60,7 @@ public class EntityPowerHolder implements IPowerHolder {
 
     @Override
     public void fromNBT(CompoundTag nbt) {
-        // TODO power manager
-        this.setPower(new Power(new ResourceLocation("test_power")));
+        this.setPower(PowerManager.getInstance().getPower(new ResourceLocation(nbt.getString("Power"))));
 
         CompoundTag abilitiesTag = nbt.getCompound("Abilities");
         this.entryMap.forEach((id, entry) -> entry.fromNBT(abilitiesTag.getCompound(id)));

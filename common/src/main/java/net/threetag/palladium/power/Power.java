@@ -19,7 +19,6 @@ public class Power {
     public Power(ResourceLocation id, Component name) {
         this.id = id;
         this.name = name;
-        this.abilities.add(new AbilityConfiguration("test_1", Abilities.HEALING.get()));
     }
 
     public Power addAbility(AbilityConfiguration configuration) {

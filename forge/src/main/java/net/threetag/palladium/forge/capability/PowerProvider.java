@@ -26,11 +26,11 @@ public class PowerProvider implements ICapabilitySerializable<CompoundTag> {
 
     @Override
     public CompoundTag serializeNBT() {
-        return null;
+        return this.capability.serializeNBT();
     }
 
     @Override
-    public void deserializeNBT(CompoundTag arg) {
-
+    public void deserializeNBT(CompoundTag nbt) {
+        this.capability.deserializeNBT(nbt);
     }
 }

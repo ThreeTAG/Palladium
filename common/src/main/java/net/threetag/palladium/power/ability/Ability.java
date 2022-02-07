@@ -21,15 +21,15 @@ public class Ability {
 
     final Map<PalladiumProperty<?>, Object> defaultProperties = new HashMap<>();
 
-    public void tick(LivingEntity entity, AbilityConfiguration entry, Power power, IPowerHolder holder, boolean enabled) {
+    public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
 
     }
 
-    public void firstTick(LivingEntity entity, AbilityConfiguration entry, Power power, IPowerHolder holder, boolean enabled) {
+    public void firstTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
 
     }
 
-    public void lastTick(LivingEntity entity, AbilityConfiguration entry, Power power, IPowerHolder holder, boolean enabled) {
+    public void lastTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
 
     }
 

@@ -23,12 +23,12 @@ dependencies {
 
     // Cardinal Components
     modApi "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
+    modApi "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
 
     // Mod Menu
-    modApi "com.terraformersmc:modmenu:${rootProject.modmenu_version}"
+    modRuntimeOnly "com.terraformersmc:modmenu:${rootProject.modmenu_version}"
 
     // REI
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${rootProject.rei_version}"

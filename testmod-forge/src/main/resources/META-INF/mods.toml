@@ -1,0 +1,19 @@
+modLoader = "javafml"
+loaderVersion = "[38,)"
+license = "All rights reserved"
+
+[[mods]]
+modId = "testmod"
+version = "${file.jarVersion}"
+displayName = "Palladium Test"
+authors = "Lucraft"
+description = '''
+Test Mod for Palladium
+'''
+
+[[dependencies.testmod]]
+modId = "palladium"
+mandatory = true
+versionRange = "[4.0.0,)"
+ordering = "NONE"
+side = "BOTH"

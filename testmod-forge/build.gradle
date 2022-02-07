@@ -1,0 +1,36 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "7.0.0"
+    id "com.matthewprenger.cursegradle" version "1.4.0"
+}
+
+loom {
+    forge {
+        mixinConfig "palladium.mixins.json"
+
+        localMods {
+            forge {
+                it.add(project(":forge").sourceSets.main)
+            }
+        }
+    }
+}
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+configurations {
+    common
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+}
+
+dependencies {
+    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+
+    implementation project(path: ":forge", configuration: "namedElements")
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    common(project(path: ":testmod-common", configuration: "namedElements")) { transitive false }
+}
