@@ -1,14 +1,14 @@
-package net.threetag.palladium.util.threedata;
+package net.threetag.palladium.util.property;
 
 import com.google.gson.JsonElement;
 import net.minecraft.nbt.Tag;
 
-public abstract class ThreeData<T> {
+public abstract class PalladiumProperty<T> {
 
     private final String key;
     private String description;
 
-    public ThreeData(String key) {
+    public PalladiumProperty(String key) {
         this.key = key;
     }
 
@@ -20,7 +20,7 @@ public abstract class ThreeData<T> {
         return description;
     }
 
-    public ThreeData<T> configurable(String description) {
+    public PalladiumProperty<T> configurable(String description) {
         this.description = description;
         return this;
     }

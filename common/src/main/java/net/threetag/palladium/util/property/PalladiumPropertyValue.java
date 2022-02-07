@@ -1,10 +1,10 @@
-package net.threetag.palladium.util.threedata;
+package net.threetag.palladium.util.property;
 
 import net.minecraft.nbt.Tag;
 
-public record ThreeDataEntry<T>(ThreeData<T> data, T value) {
+public record PalladiumPropertyValue<T>(PalladiumProperty<T> data, T value) {
 
-    public ThreeData<T> getData() {
+    public PalladiumProperty<T> getData() {
         return data;
     }
 

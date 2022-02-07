@@ -1,13 +1,13 @@
-package net.threetag.palladium.util.threedata;
+package net.threetag.palladium.util.property;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.Tag;
 
-public class FloatThreeData extends ThreeData<Float> {
+public class FloatProperty extends PalladiumProperty<Float> {
 
-    public FloatThreeData(String key) {
+    public FloatProperty(String key) {
         super(key);
     }
 

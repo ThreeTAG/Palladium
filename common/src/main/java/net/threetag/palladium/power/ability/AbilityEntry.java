@@ -16,6 +16,10 @@ public class AbilityEntry {
         this.abilityConfiguration = abilityConfiguration;
     }
 
+    public boolean isUnlocked() {
+        return unlocked;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -49,12 +53,11 @@ public class AbilityEntry {
     public CompoundTag toNBT() {
         CompoundTag nbt = new CompoundTag();
         nbt.putString("AbilityID", this.abilityConfiguration.getId());
-        nbt.putBoolean("Enabled", this.enabled);
         return nbt;
     }
 
     public void fromNBT(CompoundTag nbt) {
-        this.enabled = nbt.getBoolean("Enabled");
+        // TODO extra storage
     }
 
 }

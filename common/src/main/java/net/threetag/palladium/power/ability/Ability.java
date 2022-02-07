@@ -9,7 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.util.threedata.ThreeData;
+import net.threetag.palladium.util.property.PalladiumProperty;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class Ability {
     public static final ResourceKey<Registry<Ability>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "abilities"));
     public static final Registrar<Ability> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new Ability[0]).build();
 
-    final Map<ThreeData<?>, Object> defaultData = new HashMap<>();
+    final Map<PalladiumProperty<?>, Object> defaultProperties = new HashMap<>();
 
     public void tick(LivingEntity entity, AbilityConfiguration entry, Power power, IPowerHolder holder, boolean enabled) {
 
@@ -33,8 +33,8 @@ public class Ability {
 
     }
 
-    public <T> Ability registerData(ThreeData<T> data, T value) {
-        this.defaultData.put(data, value);
+    public <T> Ability withProperty(PalladiumProperty<T> data, T value) {
+        this.defaultProperties.put(data, value);
         return this;
     }
 

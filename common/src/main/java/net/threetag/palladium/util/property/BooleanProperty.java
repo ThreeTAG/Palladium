@@ -1,13 +1,13 @@
-package net.threetag.palladium.util.threedata;
+package net.threetag.palladium.util.property;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.Tag;
 
-public class BooleanThreeData extends ThreeData<Boolean> {
+public class BooleanProperty extends PalladiumProperty<Boolean> {
 
-    public BooleanThreeData(String key) {
+    public BooleanProperty(String key) {
         super(key);
     }
 

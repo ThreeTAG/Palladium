@@ -6,6 +6,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
+import net.threetag.palladium.util.property.FloatProperty;
+import net.threetag.palladium.util.property.PalladiumProperty;
 
 public class HealthCondition extends Condition {
 
@@ -23,9 +25,17 @@ public class HealthCondition extends Condition {
 
     public static class Serializer extends ConditionSerializer {
 
+        public static final PalladiumProperty<Float> MIN_HEALTH = new FloatProperty("min_health");
+        public static final PalladiumProperty<Float> MAX_HEALTH = new FloatProperty("max_health");
+
+        public Serializer() {
+            this.withProperty(MIN_HEALTH, 0F);
+            this.withProperty(MAX_HEALTH, Float.MAX_VALUE);
+        }
+
         @Override
-        public Condition fromJSON(JsonObject json) {
-            return new HealthCondition(GsonHelper.getAsFloat(json, "min_health", 0), GsonHelper.getAsFloat(json, "max_health", Float.MAX_VALUE));
+        public Condition make(JsonObject json) {
+            return new HealthCondition(getProperty(json, MIN_HEALTH), getProperty(json, MAX_HEALTH));
         }
 
     }
