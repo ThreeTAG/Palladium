@@ -1,152 +1,80 @@
-buildscript {
-    repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url = 'https://dist.creeper.host/Sponge/maven' }
-        maven { url = 'https://plugins.gradle.org/m2/' }
-        jcenter()
-        mavenCentral()
+plugins {
+    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "dev.architectury.loom" version "0.10.0-SNAPSHOT" apply false
+}
+
+architectury {
+    minecraft = rootProject.minecraft_version
+}
+
+subprojects {
+    apply plugin: "dev.architectury.loom"
+
+    loom {
+        silentMojangMappingsLicense()
     }
+
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-        classpath group: 'gradle.plugin.com.matthewprenger', name: 'CurseGradle', version: '1.4.0'
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        mappings loom.layered() {
+            officialMojangMappings()
+            parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:2021.12.19")
+        }
     }
 }
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'com.matthewprenger.cursegradle'
 
-version = "${minecraft_version}-${build_version}"
-group = 'net.threetag.threecore'
-archivesBaseName = 'ThreeCore'
+allprojects {
+    apply plugin: "java"
+    apply plugin: "architectury-plugin"
+    apply plugin: "maven-publish"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+    archivesBaseName = rootProject.archives_base_name
+    version = rootProject.mod_version
+    group = rootProject.maven_group
 
-def apiKeys = new Properties()
-if(file("apiKeys.properties").exists()) {
-    file("apiKeys.properties").withInputStream { apiKeys.load(it) }
-}
+    sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = 17
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-minecraft {
-    mappings channel: 'snapshot', version: "${mappings_version}"
-    // makeObfSourceJar = false
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.release = 17
+    }
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    runs {
-        client {
-            workingDirectory project.file('run')
-
-            arg "-mixin.config=threecore.mixins.json"
-
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            property 'forge.logging.console.level', 'debug'
-
-            environment 'MOD_CLASSES', "${project.file("out/production/resources").canonicalPath};${project.file("out/production/classes").canonicalPath}"
-
-            mods {
-                threecore {
-                    source sourceSets.main
-                }
+    repositories {
+        maven {
+            url = "https://maven.parchmentmc.net/"
+            content {
+                includeGroup "org.parchmentmc.data"
             }
         }
 
-        server {
-            workingDirectory project.file('run')
-
-            arg "-mixin.config=threecore.mixins.json"
-
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                threecore {
-                    source sourceSets.main
-                }
+        maven {
+            url "https://www.cursemaven.com"
+            content {
+                includeGroup "curse.maven"
             }
         }
 
-        data {
-            workingDirectory project.file('run')
+        maven {
+            url "https://maven.terraformersmc.com/releases/"
+        }
 
-            arg "-mixin.config=threecore.mixins.json"
+        maven {
+            url "https://maven.shedaniel.me"
+        }
 
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+        maven {
+            url "https://dvs1.progwml6.com/files/maven/"
+        }
 
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'threecore', '--all', '--output', file('src/generated/resources/')
-
-            mods {
-                threecore {
-                    source sourceSets.main
-                }
-            }
+        maven {
+            name = 'Ladysnake Mods'
+            url = 'https://ladysnake.jfrog.io/artifactory/mods'
         }
     }
-}
 
-repositories {
-    maven {
-        // JEI
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-
-    maven { url = "https://maven.theillusivec4.top/" }
-    maven { url 'https://repo1.maven.org/maven2' }
-}
-
-dependencies {
-    minecraft "net.minecraftforge:forge:$minecraft_version-$forge_version"
-
-    // JEI
-    compileOnly fg.deobf("mezz.jei:jei-$jei_version:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-$jei_version")
-
-    // Curios
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:$curios_version:api")
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:$curios_version")
-}
-
-mixin {
-    add sourceSets.main, "threecore.refmap.json"
-}
-
-jar {
-    manifest {
-        attributes([
-                "MixinConfigs": "threecore.mixins.json"
-        ])
+    java {
+        withSourcesJar()
     }
 }
 
-jar.finalizedBy('reobfJar')
-
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'deobf'
-}
-
-artifacts {
-    archives deobfJar
-}
-
-curseforge {
-    apiKey = apiKeys.getProperty('curseforge')
-    project {
-        id = '349285'
-        changelog = file('changelog.txt')
-        releaseType = 'beta'
-        addArtifact deobfJar
-        relations {
-            optionalDependency 'jei'
-            optionalDependency 'curios'
-        }
-    }
-}
+task curseforgePublish

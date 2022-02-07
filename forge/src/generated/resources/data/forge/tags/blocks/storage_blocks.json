@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:storage_blocks/lead",
+    "#c:storage_blocks",
+    "#forge:storage_blocks/silver",
+    "#c:storage_blocks",
+    "#forge:storage_blocks/titanium",
+    "#c:storage_blocks",
+    "#forge:storage_blocks/vibranium",
+    "#c:storage_blocks"
+  ]
+}

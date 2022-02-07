@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "forge:dusts/adamantium"
-  },
-  "result": "threecore:adamantium_ingot",
-  "experience": 0.0,
-  "cookingtime": 150
-}

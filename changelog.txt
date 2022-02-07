@@ -1,7 +1,0 @@
-- Added scripts/utils html file, added createFromJson function to itemStackBuilder
-- Fixed readString in many packets
-- Made list of script accessors open for other mods to hook in
-- Fixed crash when entity doesnt have jump height attribute
-- Added ability_container_time texture variable, fixed models not having correct visibility when not in armor
-- Added ItemGroupFiller utility class to place items inbetween vanilla items in creative tabs, so their place makes more sense
-- Slight changes to ItemGroupFiller and how lifetime of ability containers work

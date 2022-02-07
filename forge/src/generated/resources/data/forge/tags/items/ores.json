@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:ores/lead",
+    "#c:ores",
+    "#forge:ores/silver",
+    "#c:ores",
+    "#forge:ores/titanium",
+    "#c:ores",
+    "#forge:ores/vibranium",
+    "#c:ores"
+  ]
+}

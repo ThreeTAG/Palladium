@@ -1,0 +1,37 @@
+modLoader = "javafml"
+loaderVersion = "[38,)"
+license = "All rights reserved"
+issueTrackerURL = "https://gitlab.com/threetag/latest/palladium/-/issues"
+
+[[mods]]
+modId = "palladium"
+version = "${version}"
+displayName = "Palladium"
+authors = "Lucraft, Nictogen"
+description = '''
+Core mod for all ThreeTAG mods.
+'''
+logoFile = "palladium.png"
+itemIcon = "palladium:vibranium_circuit"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/palladium"
+
+[[dependencies.palladium]]
+modId = "forge"
+mandatory = true
+versionRange = "[38,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.palladium]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.18.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.palladium]]
+modId = "architectury"
+mandatory = true
+versionRange = "[3.3.7,)"
+ordering = "AFTER"
+side = "BOTH"

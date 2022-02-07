@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "net.threetag.palladium.forge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+  ],
+  "mixins": [
+    "AbilityMixin",
+    "ConditionSerializerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

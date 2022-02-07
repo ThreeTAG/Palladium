@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "palladium:raw_silver"
+    }
+  },
+  "result": {
+    "item": "palladium:raw_silver_block"
+  }
+}

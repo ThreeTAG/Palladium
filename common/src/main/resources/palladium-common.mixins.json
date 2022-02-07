@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "net.threetag.palladium.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

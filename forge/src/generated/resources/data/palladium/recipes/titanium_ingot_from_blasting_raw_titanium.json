@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "titanium_ingot",
+  "ingredient": {
+    "item": "palladium:raw_titanium"
+  },
+  "result": "palladium:titanium_ingot",
+  "experience": 1.0,
+  "cookingtime": 200
+}

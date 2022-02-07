@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "type=bottom": { "model": "threecore:block/blue_concrete_slab" },
-        "type=top": { "model": "threecore:block/blue_concrete_slab_top" },
-        "type=double": { "model": "block/blue_concrete" }
-    }
-}

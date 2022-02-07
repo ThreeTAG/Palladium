@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "lead_ingot",
+  "ingredients": [
+    {
+      "item": "palladium:lead_block"
+    }
+  ],
+  "result": {
+    "item": "palladium:lead_ingot",
+    "count": 9
+  }
+}

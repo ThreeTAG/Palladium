@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "palladium:lead_ingot_from_blasting_lead_ore"
+    ]
+  },
+  "criteria": {
+    "has_lead_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "palladium:lead_ore"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "palladium:lead_ingot_from_blasting_lead_ore"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lead_ore",
+      "has_the_recipe"
+    ]
+  ]
+}

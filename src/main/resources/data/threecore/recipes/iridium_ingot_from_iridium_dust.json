@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "tag": "forge:dusts/iridium"
-  },
-  "result": "threecore:iridium_ingot",
-  "experience": 0.0,
-  "cookingtime": 200
-}

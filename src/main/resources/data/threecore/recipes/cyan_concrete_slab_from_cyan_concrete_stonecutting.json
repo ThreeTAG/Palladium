@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "minecraft:cyan_concrete"
-  },
-  "result": "threecore:cyan_concrete_slab",
-  "count": 2
-}

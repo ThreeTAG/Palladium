@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "minecraft:lime_concrete"
-  },
-  "result": "threecore:lime_concrete_stairs",
-  "count": 1
-}

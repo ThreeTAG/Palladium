@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "#c:lead_ores",
+    "#c:silver_ores",
+    "#c:titanium_ores",
+    "#c:vibranium_ores"
+  ]
+}
