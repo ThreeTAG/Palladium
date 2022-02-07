@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "palladium",
+  "version": "${version}",
+  "name": "Palladium",
+  "description": "Core mod for all ThreeTAG mods.",
+  "authors": [
+    "Lucraft",
+    "Nictogen"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/palladium",
+    "sources": "https://gitlab.com/threetag/latest/palladium"
+  },
+  "license": "All rights reserved",
+  "icon": "assets/palladium/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.threetag.palladium.fabric.PalladiumFabric"
+    ],
+    "client": [
+      "net.threetag.palladium.fabric.PalladiumFabricClient"
+    ],
+    "cardinal-components": [
+      "net.threetag.palladium.fabric.components.PalladiumComponents"
+    ]
+  },
+  "mixins": [
+    "palladium.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.18.1",
+    "architectury": ">=3.3.7"
+  },
+  "suggests": {
+    "flamingo": "*"
+  },
+  "custom": {
+    "cardinal-components": [
+      "palladium:power_holder"
+    ]
+  }
+}

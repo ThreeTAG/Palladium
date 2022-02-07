@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IX",
+    "XB",
+    "CC"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "X": {
+      "tag": "forge:gems/quartz"
+    },
+    "B": {
+      "tag": "forge:storage_blocks/quartz"
+    },
+    "C": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "result": {
+    "item": "palladium:quartz_circuit",
+    "count": 3
+  }
+}

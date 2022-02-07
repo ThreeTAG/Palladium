@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "palladium:lead_ingot"
+    }
+  },
+  "result": {
+    "item": "palladium:lead_block"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "palladium:vibranium_ingot"
+    }
+  },
+  "result": {
+    "item": "palladium:vibranium_block"
+  }
+}

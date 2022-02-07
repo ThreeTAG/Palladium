@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "palladium:vibranium_ingot_from_blasting_raw_vibranium"
+    ]
+  },
+  "criteria": {
+    "has_raw_vibranium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "palladium:raw_vibranium"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "palladium:vibranium_ingot_from_blasting_raw_vibranium"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_vibranium",
+      "has_the_recipe"
+    ]
+  ]
+}

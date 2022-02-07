@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "minecraft:white_concrete"
-  },
-  "result": "threecore:white_concrete_slab",
-  "count": 2
-}

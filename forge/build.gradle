@@ -1,0 +1,113 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "com.matthewprenger.cursegradle" version "1.4.0"
+}
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+
+loom {
+    forge {
+        mixinConfig "palladium-common.mixins.json"
+        mixinConfig "palladium.mixins.json"
+
+        dataGen {
+            mod "palladium"
+        }
+    }
+
+    launches {
+        data {
+            arg "--existing", project(":common").file("src/main/resources/").absolutePath
+        }
+    }
+}
+
+configurations {
+    common
+    shadowCommon
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+}
+
+dependencies {
+    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    modCompileOnly "mezz.jei:jei-${rootProject.jei_version}:api"
+    modRuntimeOnly "mezz.jei:jei-${rootProject.jei_version}"
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("META-INF/mods.toml") {
+        expand "version": project.version
+    }
+}
+
+sourceSets.main.resources {
+    exclude '**/data/palladium/**/fabric/*'
+}
+
+shadowJar {
+    exclude "fabric.mod.json"
+
+    configurations = [project.configurations.shadowCommon]
+    classifier "dev-shadow"
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    classifier null
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : project.mod_id,
+                "Specification-Vendor"    : project.mod_author,
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : version,
+                "Implementation-Vendor"   : project.mod_author,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+
+    classifier "dev"
+}
+
+sourcesJar {
+    def commonSources = project(":common").sourcesJar
+    dependsOn commonSources
+    from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+publishing {
+    publications {
+        mavenForge(MavenPublication) {
+            artifactId = rootProject.archives_base_name + "-" + project.name
+            from components.java
+        }
+    }
+
+    repositories {
+        // Add repositories to publish to here.
+    }
+}
+
+rootProject.tasks.getByName("curseforgePublish").dependsOn tasks.getByName("curseforge")

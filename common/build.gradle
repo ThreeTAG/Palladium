@@ -1,0 +1,21 @@
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+}
+
+architectury {
+    common()
+}
+
+publishing {
+    publications {
+        mavenCommon(MavenPublication) {
+            artifactId = rootProject.archives_base_name
+            from components.java
+        }
+    }
+
+    repositories {
+        // Add repositories to publish to here.
+    }
+}

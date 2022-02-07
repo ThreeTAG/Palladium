@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "palladium:purple_dye_from_heart_shaped_herb"
+    ]
+  },
+  "criteria": {
+    "has_flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "palladium:heart_shaped_herb"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "palladium:purple_dye_from_heart_shaped_herb"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_flower",
+      "has_the_recipe"
+    ]
+  ]
+}
