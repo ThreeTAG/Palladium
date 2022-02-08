@@ -14,6 +14,7 @@ public class AbilityEntry {
     private final AbilityConfiguration abilityConfiguration;
     private boolean unlocked = true;
     private boolean enabled = true;
+    private int ticks = 0;
 
     public AbilityEntry(AbilityConfiguration abilityConfiguration) {
         this.abilityConfiguration = abilityConfiguration;
@@ -25,6 +26,10 @@ public class AbilityEntry {
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public int getTicks() {
+        return ticks;
     }
 
     public void setClientState(LivingEntity entity, IPowerHolder powerHolder, boolean unlocked, boolean enabled) {
@@ -42,7 +47,7 @@ public class AbilityEntry {
     }
 
     public void tick(LivingEntity entity, Power power, IPowerHolder powerHolder) {
-        if (entity.level.isClientSide) {
+        if (!entity.level.isClientSide) {
             boolean unlocked = true;
             boolean sync = false;
 
@@ -80,7 +85,7 @@ public class AbilityEntry {
                 }
             }
 
-            if(sync) {
+            if (sync || ticks == 0) {
                 new SyncAbilityStateMessage(entity.getId(), this.abilityConfiguration.getId(), this.unlocked, this.enabled).sendToLevel((ServerLevel) entity.getLevel());
             }
         }
@@ -88,6 +93,8 @@ public class AbilityEntry {
         if (this.enabled) {
             this.abilityConfiguration.getAbility().tick(entity, this, powerHolder, this.isEnabled());
         }
+
+        this.ticks++;
     }
 
     public <T> T getProperty(PalladiumProperty<T> property) {

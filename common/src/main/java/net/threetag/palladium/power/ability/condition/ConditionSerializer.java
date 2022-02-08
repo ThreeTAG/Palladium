@@ -2,6 +2,7 @@ package net.threetag.palladium.power.ability.condition;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import dev.architectury.core.RegistryEntry;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
 import net.minecraft.core.Registry;
@@ -9,13 +10,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.util.property.PalladiumProperty;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ConditionSerializer {
+public abstract class ConditionSerializer extends RegistryEntry<ConditionSerializer> {
 
     public static final ResourceKey<Registry<ConditionSerializer>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "condition_serializers"));
     public static final Registrar<ConditionSerializer> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new ConditionSerializer[0]).build();

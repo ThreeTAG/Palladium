@@ -1,10 +1,10 @@
 package net.threetag.palladium.power;
 
 import com.google.gson.JsonObject;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 
 import java.util.ArrayList;
@@ -32,6 +32,25 @@ public class Power {
 
     public List<AbilityConfiguration> getAbilities() {
         return abilities;
+    }
+
+    public void toBuffer(FriendlyByteBuf buf) {
+        buf.writeComponent(this.name);
+        buf.writeInt(this.abilities.size());
+        for(AbilityConfiguration configuration : this.abilities) {
+            configuration.toBuffer(buf);
+        }
+    }
+
+    public static Power fromBuffer(ResourceLocation id, FriendlyByteBuf buf) {
+        Power power = new Power(id, buf.readComponent());
+        int amount = buf.readInt();
+
+        for(int i = 0; i < amount; i++) {
+            power.addAbility(AbilityConfiguration.fromBuffer(buf));
+        }
+
+        return power;
     }
 
     public static Power fromJSON(ResourceLocation id, JsonObject json) {
