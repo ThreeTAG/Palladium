@@ -91,11 +91,11 @@ public abstract class BlockLootTableProvider extends LootTableProvider {
     }
 
     public static <T> T applyExplosionDecay(ItemLike pItem, FunctionUserBuilder<T> pFunction) {
-        return (T) (!EXPLOSION_RESISTANT.contains(pItem.asItem()) ? pFunction.apply(ApplyExplosionDecay.explosionDecay()) : pFunction.unwrap());
+        return !EXPLOSION_RESISTANT.contains(pItem.asItem()) ? pFunction.apply(ApplyExplosionDecay.explosionDecay()) : pFunction.unwrap();
     }
 
     public static <T> T applyExplosionCondition(ItemLike pItem, ConditionUserBuilder<T> pCondition) {
-        return (T) (!EXPLOSION_RESISTANT.contains(pItem.asItem()) ? pCondition.when(ExplosionCondition.survivesExplosion()) : pCondition.unwrap());
+        return !EXPLOSION_RESISTANT.contains(pItem.asItem()) ? pCondition.when(ExplosionCondition.survivesExplosion()) : pCondition.unwrap();
     }
 
     public static LootTable.Builder createSingleItemTable(ItemLike p_124127_) {

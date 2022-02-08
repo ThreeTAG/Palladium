@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class FloatProperty extends PalladiumProperty<Float> {
 
@@ -32,5 +33,15 @@ public class FloatProperty extends PalladiumProperty<Float> {
     @Override
     public Tag toNBT(Float value) {
         return FloatTag.valueOf(value);
+    }
+
+    @Override
+    public Float fromBuffer(FriendlyByteBuf buf) {
+        return buf.readFloat();
+    }
+
+    @Override
+    public void toBuffer(FriendlyByteBuf buf, Object value) {
+        buf.writeFloat((Float) value);
     }
 }

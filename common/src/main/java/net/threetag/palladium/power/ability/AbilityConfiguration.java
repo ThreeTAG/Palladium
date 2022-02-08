@@ -1,6 +1,10 @@
 package net.threetag.palladium.power.ability;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.power.ability.condition.Condition;
@@ -46,12 +50,46 @@ public class AbilityConfiguration {
         return (T) this.properties.get(property).getValue();
     }
 
+    public PalladiumProperty<?> getPropertyByName(String name) {
+        for (PalladiumProperty<?> property : this.properties.keySet()) {
+            if (property.getKey().equals(name)) {
+                return property;
+            }
+        }
+        return null;
+    }
+
     public List<Condition> getUnlockingConditions() {
         return unlockingConditions;
     }
 
     public List<Condition> getEnablingConditions() {
         return enablingConditions;
+    }
+
+    public void toBuffer(FriendlyByteBuf buf) {
+        buf.writeUtf(this.id);
+        buf.writeResourceLocation(Ability.REGISTRY.getId(this.ability));
+        buf.writeInt(this.properties.size());
+        this.properties.forEach((property, value) -> {
+            buf.writeUtf(property.getKey());
+            property.toBuffer(buf, value.getValue());
+        });
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static AbilityConfiguration fromBuffer(FriendlyByteBuf buf) {
+        String id = buf.readUtf();
+        Ability ability = Ability.REGISTRY.get(buf.readResourceLocation());
+        AbilityConfiguration configuration = new AbilityConfiguration(id, ability);
+        int amount = buf.readInt();
+
+        for (int i = 0; i < amount; i++) {
+            PalladiumProperty<?> property = configuration.getPropertyByName(buf.readUtf());
+            configuration.properties.put(property, new PalladiumPropertyValue(property, property.fromBuffer(buf)));
+        }
+
+        return configuration;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

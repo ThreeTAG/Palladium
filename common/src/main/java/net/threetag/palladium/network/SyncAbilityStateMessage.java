@@ -45,16 +45,18 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
-        Entity entity = context.getPlayer().level.getEntity(this.entityId);
+        context.queue(() -> {
+            Entity entity = context.getPlayer().level.getEntity(this.entityId);
 
-        if(entity instanceof LivingEntity livingEntity) {
-            // TODO different power contexts
-            IPowerHolder powerHolder = PowerManager.getPowerHolder(livingEntity);
-            AbilityEntry entry = powerHolder.getAbilities().get(this.abilityKey);
+            if (entity instanceof LivingEntity livingEntity) {
+                // TODO different power contexts
+                IPowerHolder powerHolder = PowerManager.getPowerHolder(livingEntity);
+                AbilityEntry entry = powerHolder.getAbilities().get(this.abilityKey);
 
-            if (entry != null) {
-                entry.setClientState(livingEntity, powerHolder, this.unlocked, this.enabled);
+                if (entry != null) {
+                    entry.setClientState(livingEntity, powerHolder, this.unlocked, this.enabled);
+                }
             }
-        }
+        });
     }
 }
