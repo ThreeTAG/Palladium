@@ -3,6 +3,7 @@ package net.threetag.palladium.network;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,7 +38,7 @@ public class SyncPowerHolder extends BaseS2CMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
-            if (context.getPlayer().level.getEntity(this.entityId) instanceof LivingEntity entity) {
+            if (Minecraft.getInstance().level.getEntity(this.entityId) instanceof LivingEntity entity) {
                 PowerManager.getPowerHolder(entity).fromNBT(this.data);
             }
         });
