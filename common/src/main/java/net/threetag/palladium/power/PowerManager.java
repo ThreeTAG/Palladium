@@ -17,7 +17,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.network.SyncPowerHolder;
@@ -60,6 +59,7 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
+        this.byName.values().forEach(Power::invalidate);
         ImmutableMap.Builder<ResourceLocation, Power> builder = ImmutableMap.builder();
         object.forEach((id, json) -> builder.put(id, Power.fromJSON(id, json.getAsJsonObject())));
         this.byName = builder.build();
@@ -70,9 +70,8 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
     public static void syncPowersToAll() {
         MinecraftServer server = GameInstance.getServer();
         if (server != null) {
-            new SyncPowersMessage(getInstance().byName).sendToAll(GameInstance.getServer());
-
-            for(Player player : server.getPlayerList().getPlayers()) {
+            for(ServerPlayer player : server.getPlayerList().getPlayers()) {
+                new SyncPowersMessage(getInstance().byName).sendTo(player);
                 new SyncPowerHolder(player.getId(), PowerManager.getPowerHolder(player).toNBT()).sendToLevel((ServerLevel) player.level);
             }
         }

@@ -3,7 +3,9 @@ package net.threetag.palladium.power;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.network.SyncPowerHolder;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
@@ -12,8 +14,13 @@ import java.util.Map;
 
 public class EntityPowerHolder implements IPowerHolder {
 
+    private final LivingEntity entity;
     private Power power;
     private final Map<String, AbilityEntry> entryMap = new HashMap<>();
+
+    public EntityPowerHolder(LivingEntity entity) {
+        this.entity = entity;
+    }
 
     @Override
     public Power getPower() {
@@ -29,6 +36,10 @@ public class EntityPowerHolder implements IPowerHolder {
                 this.entryMap.put(ability.getId(), new AbilityEntry(ability));
             }
         }
+
+        if(!this.entity.level.isClientSide) {
+            new SyncPowerHolder(entity.getId(), this.toNBT()).sendToLevel((ServerLevel) entity.level);
+        }
     }
 
     @Override
@@ -38,6 +49,20 @@ public class EntityPowerHolder implements IPowerHolder {
 
     @Override
     public void tick(LivingEntity entity) {
+        if (this.power != null && this.power.isInvalid() && !entity.level.isClientSide) {
+            Power newPower = PowerManager.getInstance().getPower(this.power.getId());
+
+            if (newPower != null) {
+                CompoundTag tag = this.toNBT();
+                this.setPower(power);
+                this.fromNBT(tag);
+            } else {
+                this.setPower(null);
+            }
+
+            new SyncPowerHolder(entity.getId(), this.toNBT()).sendToLevel((ServerLevel) entity.level);
+        }
+
         this.entryMap.forEach((id, entry) -> entry.tick(entity, this.getPower(), this));
     }
 

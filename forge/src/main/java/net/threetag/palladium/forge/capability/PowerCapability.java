@@ -1,6 +1,7 @@
 package net.threetag.palladium.forge.capability;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -12,6 +13,10 @@ public class PowerCapability extends EntityPowerHolder implements INBTSerializab
 
     public static Capability<IPowerHolder> POWER = CapabilityManager.get(new CapabilityToken<>() {
     });
+
+    public PowerCapability(LivingEntity entity) {
+        super(entity);
+    }
 
     @Override
     public CompoundTag serializeNBT() {

@@ -15,10 +15,19 @@ public class Power {
     private final ResourceLocation id;
     private final Component name;
     private final List<AbilityConfiguration> abilities = new ArrayList<>();
+    private boolean invalid = false;
 
     public Power(ResourceLocation id, Component name) {
         this.id = id;
         this.name = name;
+    }
+
+    public void invalidate() {
+        this.invalid = true;
+    }
+
+    public boolean isInvalid() {
+        return invalid;
     }
 
     public Power addAbility(AbilityConfiguration configuration) {

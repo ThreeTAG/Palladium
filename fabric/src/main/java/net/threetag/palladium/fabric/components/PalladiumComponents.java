@@ -16,8 +16,8 @@ public class PalladiumComponents implements EntityComponentInitializer {
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-        registry.registerForPlayers(POWER_HOLDER, player -> new EntityPowerHolderComponent(), RespawnCopyStrategy.CHARACTER);
-        registry.registerFor(LivingEntity.class, POWER_HOLDER, player -> new EntityPowerHolderComponent());
+        registry.registerForPlayers(POWER_HOLDER, EntityPowerHolderComponent::new, RespawnCopyStrategy.CHARACTER);
+        registry.registerFor(LivingEntity.class, POWER_HOLDER, EntityPowerHolderComponent::new);
     }
 
 }
