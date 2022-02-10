@@ -25,7 +25,7 @@ public class SyncPowersMessage extends BaseS2CMessage {
 
         for (int i = 0; i < amount; i++) {
             ResourceLocation id = buf.readResourceLocation();
-            powers.put(id, Power.fromBuffer(id, buf));
+            this.powers.put(id, Power.fromBuffer(id, buf));
         }
     }
 

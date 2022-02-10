@@ -20,6 +20,10 @@ public class AbilityEntry {
         this.abilityConfiguration = abilityConfiguration;
     }
 
+    public AbilityConfiguration getConfiguration() {
+        return abilityConfiguration;
+    }
+
     public boolean isUnlocked() {
         return unlocked;
     }
@@ -90,10 +94,7 @@ public class AbilityEntry {
             }
         }
 
-        if (this.enabled) {
-            this.abilityConfiguration.getAbility().tick(entity, this, powerHolder, this.isEnabled());
-        }
-
+        this.abilityConfiguration.getAbility().tick(entity, this, powerHolder, this.isEnabled());
         this.ticks++;
     }
 

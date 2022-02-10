@@ -15,7 +15,7 @@ public interface IPowerHolder {
 
     Map<String, AbilityEntry> getAbilities();
 
-    void tick(LivingEntity entity);
+    void tick();
 
     CompoundTag toNBT();
 

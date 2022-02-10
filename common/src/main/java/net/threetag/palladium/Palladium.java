@@ -1,12 +1,6 @@
 package net.threetag.palladium;
 
-import dev.architectury.event.CompoundEventResult;
-import dev.architectury.event.events.common.InteractionEvent;
-import dev.architectury.registry.ReloadListenerRegistry;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.world.item.Items;
+import dev.architectury.platform.Platform;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.network.PalladiumNetwork;
@@ -26,17 +20,12 @@ public class Palladium {
         PalladiumItems.ITEMS.register();
         Abilities.ABILITIES.register();
         ConditionSerializers.CONDITION_SERIALIZERS.register();
-
-        InteractionEvent.RIGHT_CLICK_ITEM.register((player, hand) -> {
-            if (player.getItemInHand(hand).getItem() == Items.STICK) {
-                PowerManager.getPowerHolder(player).setPower(PowerManager.getInstance().getPower(new ResourceLocation("testmod", "test_power")));
-                player.displayClientMessage(new TextComponent("New Power!"), false);
-            }
-            return CompoundEventResult.pass();
-        });
-
-        ReloadListenerRegistry.register(PackType.SERVER_DATA, new PowerManager());
         PalladiumNetwork.init();
+        PowerManager.init();
+
+        if(Platform.isDevelopmentEnvironment()) {
+            PalladiumDebug.init();
+        }
     }
 
 }

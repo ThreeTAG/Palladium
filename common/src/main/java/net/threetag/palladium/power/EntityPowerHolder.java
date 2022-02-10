@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.network.SyncPowerHolder;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
@@ -15,7 +16,8 @@ import java.util.Map;
 public class EntityPowerHolder implements IPowerHolder {
 
     private final LivingEntity entity;
-    private Power power;
+    private ResourceLocation powerId;
+    private Power powerCached;
     private final Map<String, AbilityEntry> entryMap = new HashMap<>();
 
     public EntityPowerHolder(LivingEntity entity) {
@@ -24,20 +26,24 @@ public class EntityPowerHolder implements IPowerHolder {
 
     @Override
     public Power getPower() {
-        return this.power;
+        if (this.powerCached == null && this.powerId != null) {
+            this.powerCached = PowerManager.getInstance(this.entity.getLevel()).getPower(this.powerId);
+        }
+        return this.powerCached;
     }
 
     @Override
     public void setPower(Power power) {
-        this.power = power;
+        this.powerId = power != null ? power.getId() : null;
+        this.powerCached = null;
         this.entryMap.clear();
-        if (this.power != null) {
-            for (AbilityConfiguration ability : this.power.getAbilities()) {
+        if (this.getPower() != null) {
+            for (AbilityConfiguration ability : this.getPower().getAbilities()) {
                 this.entryMap.put(ability.getId(), new AbilityEntry(ability));
             }
         }
 
-        if(!this.entity.level.isClientSide) {
+        if (!this.entity.level.isClientSide) {
             new SyncPowerHolder(entity.getId(), this.toNBT()).sendToLevel((ServerLevel) entity.level);
         }
     }
@@ -48,19 +54,19 @@ public class EntityPowerHolder implements IPowerHolder {
     }
 
     @Override
-    public void tick(LivingEntity entity) {
-        if (this.power != null && this.power.isInvalid() && !entity.level.isClientSide) {
-            Power newPower = PowerManager.getInstance().getPower(this.power.getId());
+    public void tick() {
+        if (this.getPower() != null && this.getPower().isInvalid() && !this.entity.level.isClientSide) {
+            Power newPower = PowerManager.getInstance(this.entity.getLevel()).getPower(this.getPower().getId());
 
             if (newPower != null) {
                 CompoundTag tag = this.toNBT();
-                this.setPower(power);
+                this.setPower(newPower);
                 this.fromNBT(tag);
             } else {
                 this.setPower(null);
             }
 
-            new SyncPowerHolder(entity.getId(), this.toNBT()).sendToLevel((ServerLevel) entity.level);
+            new SyncPowerHolder(this.entity.getId(), this.toNBT()).sendToLevel((ServerLevel) this.entity.level);
         }
 
         this.entryMap.forEach((id, entry) -> entry.tick(entity, this.getPower(), this));
@@ -70,8 +76,8 @@ public class EntityPowerHolder implements IPowerHolder {
     public CompoundTag toNBT() {
         CompoundTag nbt = new CompoundTag();
 
-        if (this.power != null) {
-            nbt.putString("Power", this.power.getId().toString());
+        if (this.getPower() != null) {
+            nbt.putString("Power", this.powerId.toString());
 
             if (!this.entryMap.isEmpty()) {
                 CompoundTag abilitiesTag = new CompoundTag();
@@ -85,7 +91,7 @@ public class EntityPowerHolder implements IPowerHolder {
 
     @Override
     public void fromNBT(CompoundTag nbt) {
-        this.setPower(PowerManager.getInstance().getPower(new ResourceLocation(nbt.getString("Power"))));
+        this.setPower(PowerManager.getInstance(this.entity.getLevel()).getPower(new ResourceLocation(nbt.getString("Power"))));
 
         CompoundTag abilitiesTag = nbt.getCompound("Abilities");
         this.entryMap.forEach((id, entry) -> entry.fromNBT(abilitiesTag.getCompound(id)));

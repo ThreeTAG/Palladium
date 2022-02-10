@@ -39,6 +39,10 @@ public class Power {
         return id;
     }
 
+    public Component getName() {
+        return name;
+    }
+
     public List<AbilityConfiguration> getAbilities() {
         return abilities;
     }

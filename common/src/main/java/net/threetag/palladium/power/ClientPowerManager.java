@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class ClientPowerManager extends PowerManager {
 
-    private static Map<ResourceLocation, Power> POWERS = new HashMap<>();
+    private static final Map<ResourceLocation, Power> POWERS = new HashMap<>();
     public static final ClientPowerManager INSTANCE = new ClientPowerManager();
 
     @Override
@@ -22,6 +22,8 @@ public class ClientPowerManager extends PowerManager {
     }
 
     public static void updatePowers(Map<ResourceLocation, Power> powers) {
-        POWERS = powers;
+        POWERS.values().forEach(Power::invalidate);
+        POWERS.clear();
+        POWERS.putAll(powers);
     }
 }
