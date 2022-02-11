@@ -1,13 +1,13 @@
 package net.threetag.palladium.power.forge;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.forge.capability.PowerCapability;
-import net.threetag.palladium.power.IPowerHolder;
+import net.threetag.palladium.forge.capability.PalladiumCapabilities;
+import net.threetag.palladium.power.IPowerHandler;
 
 public class PowerManagerImpl {
 
-    public static IPowerHolder getPowerHolder(LivingEntity entity) {
-        return entity.getCapability(PowerCapability.POWER).orElseThrow(() -> new RuntimeException("Entity does not have power capability!"));
+    public static IPowerHandler getPowerHandler(LivingEntity entity) {
+        return entity.getCapability(PalladiumCapabilities.POWER_HANDLER).orElseThrow(() -> new RuntimeException("Entity does not have power capability!"));
     }
 
 }

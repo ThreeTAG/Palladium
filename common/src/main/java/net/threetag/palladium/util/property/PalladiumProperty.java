@@ -3,6 +3,7 @@ package net.threetag.palladium.util.property;
 import com.google.gson.JsonElement;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
 
 public abstract class PalladiumProperty<T> {
 
@@ -37,4 +38,12 @@ public abstract class PalladiumProperty<T> {
     public abstract T fromBuffer(FriendlyByteBuf buf);
 
     public abstract void toBuffer(FriendlyByteBuf buf, Object value);
+
+    public void set(Entity entity, T value) {
+        EntityPropertyHandler.getHandler(entity).set(this, value);
+    }
+
+    public T get(Entity entity) {
+        return EntityPropertyHandler.getHandler(entity).get(this);
+    }
 }

@@ -1,6 +1,5 @@
 package net.threetag.palladium.power.ability;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.network.SyncAbilityStateMessage;
@@ -100,16 +99,6 @@ public class AbilityEntry {
 
     public <T> T getProperty(PalladiumProperty<T> property) {
         return this.abilityConfiguration.get(property);
-    }
-
-    public CompoundTag toNBT() {
-        CompoundTag nbt = new CompoundTag();
-
-        return nbt;
-    }
-
-    public void fromNBT(CompoundTag nbt) {
-        // TODO extra storage
     }
 
 }
