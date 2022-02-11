@@ -11,12 +11,14 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 public class AbilityEntry {
 
     private final AbilityConfiguration abilityConfiguration;
+    private final IPowerHolder holder;
     private boolean unlocked = true;
     private boolean enabled = true;
     private int ticks = 0;
 
-    public AbilityEntry(AbilityConfiguration abilityConfiguration) {
+    public AbilityEntry(AbilityConfiguration abilityConfiguration, IPowerHolder holder) {
         this.abilityConfiguration = abilityConfiguration;
+        this.holder = holder;
     }
 
     public AbilityConfiguration getConfiguration() {
@@ -89,7 +91,7 @@ public class AbilityEntry {
             }
 
             if (sync || ticks == 0) {
-                new SyncAbilityStateMessage(entity.getId(), this.abilityConfiguration.getId(), this.unlocked, this.enabled).sendToLevel((ServerLevel) entity.getLevel());
+                new SyncAbilityStateMessage(entity.getId(), this.holder.getPowerProvider(), this.abilityConfiguration.getId(), this.unlocked, this.enabled).sendToLevel((ServerLevel) entity.getLevel());
             }
         }
 

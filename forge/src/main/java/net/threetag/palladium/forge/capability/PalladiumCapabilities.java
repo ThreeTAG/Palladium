@@ -31,7 +31,7 @@ public class PalladiumCapabilities {
 
     @SubscribeEvent
     public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> e) {
-        e.addCapability(new ResourceLocation(Palladium.MOD_ID, "properties"), new EntityPropertyProvider(new EntityPropertyCapability(e.getObject())));
+        e.addCapability(new ResourceLocation(Palladium.MOD_ID, "properties"), new EntityPropertyProvider(new EntityPropertyHandler(e.getObject())));
 
         if (e.getObject() instanceof LivingEntity) {
             e.addCapability(new ResourceLocation(Palladium.MOD_ID, "power_handler"), new PowerProvider(new PowerHandler((LivingEntity) e.getObject())));

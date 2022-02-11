@@ -4,11 +4,16 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.mojang.datafixers.util.Pair;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.registry.ReloadListenerRegistry;
+import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.Registrar;
+import dev.architectury.registry.registries.Registries;
+import dev.architectury.registry.registries.RegistrySupplier;
 import dev.architectury.utils.GameInstance;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,18 +25,21 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.event.PalladiumEvents;
+import net.threetag.palladium.network.SetPowerMessage;
 import net.threetag.palladium.network.SyncPowersMessage;
-import net.threetag.palladium.power.provider.IPowerProvider;
+import net.threetag.palladium.power.provider.PowerProvider;
 import net.threetag.palladium.power.provider.SuperpowerPowerProvider;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 public class PowerManager extends SimpleJsonResourceReloadListener {
 
-    public static final Map<ResourceLocation, Pair<Integer, IPowerProvider>> PROVIDERS = new HashMap<>();
-    public static final IPowerProvider SUPERPOWER_PROVIDER = new SuperpowerPowerProvider();
+    public static final ResourceKey<Registry<PowerProvider>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "power_providers"));
+    public static final Registrar<PowerProvider> PROVIDER_REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new PowerProvider[0]).build();
+    public static final DeferredRegister<PowerProvider> PROVIDERS = DeferredRegister.create(Palladium.MOD_ID, RESOURCE_KEY);
+
+    public static final RegistrySupplier<PowerProvider> SUPERPOWER_PROVIDER = PROVIDERS.register("superpower", SuperpowerPowerProvider::new);
 
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private static PowerManager INSTANCE;
@@ -39,20 +47,21 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
     public static void init() {
         ReloadListenerRegistry.register(PackType.SERVER_DATA, INSTANCE = new PowerManager());
-        registerProvider(new ResourceLocation(Palladium.MOD_ID, "superpower"), SUPERPOWER_PROVIDER, 50);
 
-        PalladiumEvents.LIVING_UPDATE.register(entity -> PowerManager.getPowerHolder(entity).tick());
+        PalladiumEvents.LIVING_UPDATE.register(entity -> PowerManager.getPowerHandler(entity).tick());
 
         PlayerEvent.PLAYER_JOIN.register(player -> {
             new SyncPowersMessage(getInstance(player.level).byName).sendTo(player);
-            new SyncPowerHolder(player.getId(), PowerManager.getPowerHolder(player).toNBT()).sendTo(player);
+            getPowerHandler(player).getPowerHolders().forEach((provider, holder) -> new SetPowerMessage(player.getId(), provider, holder != null ? holder.getPower().getId() : null).sendTo(player));
         });
 
         PalladiumEvents.START_TRACKING.register((tracker, target) -> {
             if (target instanceof LivingEntity livingEntity && tracker instanceof ServerPlayer serverPlayer) {
-                new SyncPowerHolder(target.getId(), PowerManager.getPowerHolder(livingEntity).toNBT()).sendTo(serverPlayer);
+                getPowerHandler(livingEntity).getPowerHolders().forEach((provider, holder) -> new SetPowerMessage(target.getId(), provider, holder != null ? holder.getPower().getId() : null).sendTo(serverPlayer));
             }
         });
+
+        PalladiumEvents.REGISTER_PROPERTY.register(handler -> handler.register(SuperpowerPowerProvider.SUPERPOWER_ID, null));
     }
 
     public PowerManager() {
@@ -61,15 +70,6 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
     public static PowerManager getInstance(Level level) {
         return level.isClientSide ? ClientPowerManager.INSTANCE : INSTANCE;
-    }
-
-    public static void registerProvider(ResourceLocation id, IPowerProvider provider, int priority) {
-        PROVIDERS.put(id, Pair.of(priority, provider));
-    }
-
-    public static IPowerProvider getProvider(ResourceLocation id) {
-        var pair = PROVIDERS.get(id);
-        return pair != null ? pair.getSecond() : null;
     }
 
     @Override

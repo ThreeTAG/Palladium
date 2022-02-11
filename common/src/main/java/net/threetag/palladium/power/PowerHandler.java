@@ -1,17 +1,18 @@
 package net.threetag.palladium.power;
 
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.resources.ResourceLocation;
+import com.google.common.collect.ImmutableMap;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.provider.IPowerProvider;
+import net.threetag.palladium.network.SetPowerMessage;
+import net.threetag.palladium.power.provider.PowerProvider;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PowerHandler implements IPowerHandler {
 
-    private final Map<IPowerProvider, IPowerHolder> powers = new HashMap<>();
+    private final Map<PowerProvider, IPowerHolder> powers = new HashMap<>();
     private final LivingEntity entity;
 
     public PowerHandler(LivingEntity entity) {
@@ -19,75 +20,61 @@ public class PowerHandler implements IPowerHandler {
     }
 
     @Override
-    public Collection<IPowerHolder> getPowerHolders() {
-        return this.powers.values();
+    public Map<PowerProvider, IPowerHolder> getPowerHolders() {
+        return ImmutableMap.copyOf(this.powers);
     }
 
     @Override
     public void tick() {
         if (!this.entity.level.isClientSide) {
-            for (Map.Entry<ResourceLocation, Pair<Integer, IPowerProvider>> entry : PowerManager.PROVIDERS.entrySet()) {
+            for (PowerProvider provider : PowerManager.PROVIDER_REGISTRY) {
+                IPowerHolder holder = this.powers.get(provider);
 
-
-                
-                Pair<Integer, IPowerProvider> pair = entry.getValue();
-                IPowerProvider provider = pair.getSecond();
-                IPowerHolder newPowerHolder = pair.getSecond().createHolder(this.entity);
-
-                if (newPowerHolder != null) {
-                    if (this.powers.containsKey(provider)) {
-                        IPowerHolder powerHolder = this.powers.get(provider);
-
-                        if (powerHolder.getPower().getId().equals(newPowerHolder.getPower().getId())) {
-                            // nothing
-                        } else {
-                            this.setPowerHolder(provider, newPowerHolder);
+                if (!this.entity.level.isClientSide) {
+                    if (holder != null) {
+                        if (holder.isInvalid()) {
+                            this.setPowerHolder(provider, provider.createHolder(this.entity, null));
                         }
                     } else {
-                        this.setPowerHolder(provider, newPowerHolder);
+                        holder = provider.createHolder(this.entity, null);
+
+                        if (holder != null) {
+                            this.setPowerHolder(provider, holder);
+                        }
                     }
-                } else if (this.powers.containsKey(provider)) {
-                    this.removePowerHolder(provider);
+                }
+
+                if (holder != null) {
+                    holder.tick();
                 }
             }
         }
-
-        for (Map.Entry<IPowerProvider, IPowerHolder> entry : this.powers.entrySet()) {
-            IPowerHolder holder = entry.getValue();
-            if (!this.entity.level.isClientSide) {
-                IPowerProvider provider = entry.getKey();
-                if (holder.isInvalid()) {
-                    Power newPower = PowerManager.getInstance(this.entity.level).getPower(holder.getPower().getId());
-
-                    if (newPower != null) {
-                        this.setPowerHolder(provider, provider.createHolder(this.entity));
-                    } else {
-                        this.removePowerHolder(provider);
-                    }
-                }
-            }
-
-            holder.tick();
-        }
-    }
-
-    public void setPowerHolder(IPowerProvider provider, IPowerHolder holder) {
-        if (this.powers.containsKey(provider)) {
-            this.powers.get(provider).lastTick();
-        }
-        this.powers.put(provider, holder);
-        holder.firstTick();
-    }
-
-    public void removePowerHolder(IPowerProvider provider) {
-        if (this.powers.containsKey(provider)) {
-            this.powers.get(provider).lastTick();
-        }
-        this.powers.remove(provider);
     }
 
     @Override
-    public IPowerHolder getPowerHolder(IPowerProvider provider) {
+    public void setPowerHolder(PowerProvider provider, @Nullable IPowerHolder holder) {
+        if (this.powers.containsKey(provider)) {
+            this.powers.get(provider).lastTick();
+        }
+
+        if (holder != null) {
+            this.powers.put(provider, holder);
+            holder.firstTick();
+        } else {
+            this.powers.remove(provider);
+        }
+
+        if (!this.entity.level.isClientSide) {
+            new SetPowerMessage(this.entity.getId(), provider, holder != null ? holder.getPower().getId() : null).sendToLevel((ServerLevel) this.entity.level);
+        }
+    }
+
+    public void removePowerHolder(PowerProvider provider) {
+        this.setPowerHolder(provider, null);
+    }
+
+    @Override
+    public IPowerHolder getPowerHolder(PowerProvider provider) {
         return this.powers.get(provider);
     }
 }

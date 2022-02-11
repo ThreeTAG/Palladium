@@ -5,15 +5,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.threetag.palladium.util.property.EntityPropertyHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class EntityPropertyProvider implements ICapabilitySerializable<CompoundTag> {
 
-    public final EntityPropertyCapability capability;
-    public final LazyOptional<EntityPropertyCapability> lazyOptional;
+    public final EntityPropertyHandler capability;
+    public final LazyOptional<EntityPropertyHandler> lazyOptional;
 
-    public EntityPropertyProvider(EntityPropertyCapability capability) {
+    public EntityPropertyProvider(EntityPropertyHandler capability) {
         this.capability = capability;
         this.lazyOptional = LazyOptional.of(() -> capability);
     }
@@ -26,11 +27,11 @@ public class EntityPropertyProvider implements ICapabilitySerializable<CompoundT
 
     @Override
     public CompoundTag serializeNBT() {
-        return this.capability.serializeNBT();
+        return this.capability.toNBT();
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        this.capability.deserializeNBT(nbt);
+        this.capability.fromNBT(nbt);
     }
 }

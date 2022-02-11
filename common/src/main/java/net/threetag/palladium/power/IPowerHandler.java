@@ -1,14 +1,16 @@
 package net.threetag.palladium.power;
 
-import net.threetag.palladium.power.provider.IPowerProvider;
+import net.threetag.palladium.power.provider.PowerProvider;
 
-import java.util.Collection;
+import java.util.Map;
 
 public interface IPowerHandler {
 
-    Collection<IPowerHolder> getPowerHolders();
+    Map<PowerProvider, IPowerHolder> getPowerHolders();
 
     void tick();
 
-    IPowerHolder getPowerHolder(IPowerProvider provider);
+    void setPowerHolder(PowerProvider provider, IPowerHolder holder);
+
+    IPowerHolder getPowerHolder(PowerProvider provider);
 }

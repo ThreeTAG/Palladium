@@ -10,15 +10,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.provider.PowerProvider;
 
 public class SyncAbilityStateMessage extends BaseS2CMessage {
 
     private final int entityId;
+    private final PowerProvider provider;
     private final String abilityKey;
     private final boolean unlocked, enabled;
 
-    public SyncAbilityStateMessage(int entityId, String abilityKey, boolean unlocked, boolean enabled) {
+    public SyncAbilityStateMessage(int entityId, PowerProvider provider, String abilityKey, boolean unlocked, boolean enabled) {
         this.entityId = entityId;
+        this.provider = provider;
         this.abilityKey = abilityKey;
         this.unlocked = unlocked;
         this.enabled = enabled;
@@ -26,6 +29,7 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
 
     public SyncAbilityStateMessage(FriendlyByteBuf buf) {
         this.entityId = buf.readInt();
+        this.provider = PowerManager.PROVIDER_REGISTRY.get(buf.readResourceLocation());
         this.abilityKey = buf.readUtf();
         this.unlocked = buf.readBoolean();
         this.enabled = buf.readBoolean();
@@ -39,6 +43,7 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
     @Override
     public void write(FriendlyByteBuf buf) {
         buf.writeInt(this.entityId);
+        buf.writeResourceLocation(PowerManager.PROVIDER_REGISTRY.getId(this.provider));
         buf.writeUtf(this.abilityKey);
         buf.writeBoolean(this.unlocked);
         buf.writeBoolean(this.enabled);
@@ -50,12 +55,14 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
             Entity entity = Minecraft.getInstance().level.getEntity(this.entityId);
 
             if (entity instanceof LivingEntity livingEntity) {
-                // TODO different power contexts
-                IPowerHolder powerHolder = PowerManager.getPowerHolder(livingEntity);
-                AbilityEntry entry = powerHolder.getAbilities().get(this.abilityKey);
+                IPowerHolder powerHolder = PowerManager.getPowerHandler(livingEntity).getPowerHolder(this.provider);
 
-                if (entry != null) {
-                    entry.setClientState(livingEntity, powerHolder, this.unlocked, this.enabled);
+                if(powerHolder != null) {
+                    AbilityEntry entry = powerHolder.getAbilities().get(this.abilityKey);
+
+                    if (entry != null) {
+                        entry.setClientState(livingEntity, powerHolder, this.unlocked, this.enabled);
+                    }
                 }
             }
         });

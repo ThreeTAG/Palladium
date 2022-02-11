@@ -20,6 +20,7 @@ public class Palladium {
         PalladiumItems.ITEMS.register();
         Abilities.ABILITIES.register();
         ConditionSerializers.CONDITION_SERIALIZERS.register();
+        PowerManager.PROVIDERS.register();
         PalladiumNetwork.init();
         PowerManager.init();
 
