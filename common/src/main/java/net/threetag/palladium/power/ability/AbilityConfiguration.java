@@ -10,26 +10,24 @@ import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.power.ability.condition.Condition;
 import net.threetag.palladium.power.ability.condition.ConditionSerializer;
 import net.threetag.palladium.util.property.PalladiumProperty;
-import net.threetag.palladium.util.property.PalladiumPropertyValue;
+import net.threetag.palladium.util.property.PropertyManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class AbilityConfiguration {
 
     private final String id;
     private final Ability ability;
-    private final Map<PalladiumProperty<?>, PalladiumPropertyValue<?>> properties = new HashMap<>();
+    private final PropertyManager propertyManager;
     private final List<Condition> unlockingConditions = new ArrayList<>();
     private final List<Condition> enablingConditions = new ArrayList<>();
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public AbilityConfiguration(String id, Ability ability) {
         this.id = id;
         this.ability = ability;
-        ability.defaultProperties.forEach((d, v) -> this.properties.put(d, new PalladiumPropertyValue(d, v)));
+        this.propertyManager = ability.propertyManager.copy();
     }
 
     public String getId() {
@@ -41,22 +39,12 @@ public class AbilityConfiguration {
     }
 
     public <T> AbilityConfiguration set(PalladiumProperty<T> data, T value) {
-        this.properties.put(data, new PalladiumPropertyValue<>(data, value));
+        this.propertyManager.set(data, value);
         return this;
     }
 
-    @SuppressWarnings("unchecked")
     public <T> T get(PalladiumProperty<T> property) {
-        return (T) this.properties.get(property).getValue();
-    }
-
-    public PalladiumProperty<?> getPropertyByName(String name) {
-        for (PalladiumProperty<?> property : this.properties.keySet()) {
-            if (property.getKey().equals(name)) {
-                return property;
-            }
-        }
-        return null;
+        return this.propertyManager.get(property);
     }
 
     public List<Condition> getUnlockingConditions() {
@@ -70,29 +58,17 @@ public class AbilityConfiguration {
     public void toBuffer(FriendlyByteBuf buf) {
         buf.writeUtf(this.id);
         buf.writeResourceLocation(Ability.REGISTRY.getId(this.ability));
-        buf.writeInt(this.properties.size());
-        this.properties.forEach((property, value) -> {
-            buf.writeUtf(property.getKey());
-            property.toBuffer(buf, value.getValue());
-        });
+        this.propertyManager.toBuffer(buf);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public static AbilityConfiguration fromBuffer(FriendlyByteBuf buf) {
         String id = buf.readUtf();
         Ability ability = Ability.REGISTRY.get(buf.readResourceLocation());
-        AbilityConfiguration configuration = new AbilityConfiguration(id, ability);
-        int amount = buf.readInt();
-
-        for (int i = 0; i < amount; i++) {
-            PalladiumProperty<?> property = configuration.getPropertyByName(buf.readUtf());
-            configuration.properties.put(property, new PalladiumPropertyValue(property, property.fromBuffer(buf)));
-        }
-
+        AbilityConfiguration configuration = new AbilityConfiguration(id, Objects.requireNonNull(ability));
+        configuration.propertyManager.fromBuffer(buf);
         return configuration;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public static AbilityConfiguration fromJSON(String id, JsonObject json) {
         Ability ability = Ability.REGISTRY.get(new ResourceLocation(GsonHelper.getAsString(json, "ability")));
 
@@ -101,12 +77,7 @@ public class AbilityConfiguration {
         }
 
         AbilityConfiguration configuration = new AbilityConfiguration(id, ability);
-
-        configuration.properties.forEach(((property, value) -> {
-            if (json.has(property.getKey())) {
-                configuration.properties.put(property, new PalladiumPropertyValue(property, property.fromJSON(json.get(property.getKey()))));
-            }
-        }));
+        configuration.propertyManager.fromJSON(json);
 
         if (GsonHelper.isValidNode(json, "conditions")) {
             JsonObject conditions = GsonHelper.getAsJsonObject(json, "conditions");
