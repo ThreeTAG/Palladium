@@ -4,6 +4,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
+import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.item.PalladiumItems;
 
 public abstract class PalladiumLangProvider extends LanguageProvider {
@@ -49,6 +50,13 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.REDSTONE_CIRCUIT, "Redstone Circuit");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quartz Circuit");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibranium Circuit");
+
+            this.add("itemGroup.palladium.technology", "Technology");
+
+            this.add(PalladiumKeyMappings.CATEGORY, "Abilities");
+            for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
+                this.add("key.palladium.ability_" + i, "Ability " + i);
+            }
         }
     }
 
@@ -89,6 +97,13 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.REDSTONE_CIRCUIT, "Redstoneschaltkreis");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaltkreis");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaltkreis");
+
+            this.add("itemGroup.palladium.technology", "Technologie");
+
+            this.add(PalladiumKeyMappings.CATEGORY, "F\u00E4higkeiten");
+            for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
+                this.add("key.palladium.ability_" + i, "F\u00E4higkeit " + i);
+            }
         }
     }
 
@@ -129,6 +144,13 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.REDSTONE_CIRCUIT, "Redstoneschaldkres");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaldkres");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaldkres");
+
+            this.add("itemGroup.palladium.technology", "Technolojie");
+
+            this.add(PalladiumKeyMappings.CATEGORY, "F\u00E4hischgehden");
+            for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
+                this.add("key.palladium.ability_" + i, "F\u00E4hischgehd " + i);
+            }
         }
     }
 

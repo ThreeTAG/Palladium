@@ -40,6 +40,10 @@ dependencies {
     modCompileOnly "mezz.jei:jei-${rootProject.jei_version}:api"
     modRuntimeOnly "mezz.jei:jei-${rootProject.jei_version}"
 
+    // Configured & Catalogue
+    modRuntimeOnly "curse.maven:configured-457570:${rootProject.configured_version}"
+    modRuntimeOnly "curse.maven:catalogue-459701:${rootProject.catalogue_version}"
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }

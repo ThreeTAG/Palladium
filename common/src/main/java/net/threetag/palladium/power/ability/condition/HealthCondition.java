@@ -1,7 +1,6 @@
 package net.threetag.palladium.power.ability.condition;
 
 import com.google.gson.JsonObject;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;

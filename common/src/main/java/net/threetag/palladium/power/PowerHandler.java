@@ -26,27 +26,25 @@ public class PowerHandler implements IPowerHandler {
 
     @Override
     public void tick() {
-        if (!this.entity.level.isClientSide) {
-            for (PowerProvider provider : PowerManager.PROVIDER_REGISTRY) {
-                IPowerHolder holder = this.powers.get(provider);
+        for (PowerProvider provider : PowerManager.PROVIDER_REGISTRY) {
+            IPowerHolder holder = this.powers.get(provider);
 
-                if (!this.entity.level.isClientSide) {
+            if (!this.entity.level.isClientSide) {
+                if (holder != null) {
+                    if (holder.isInvalid()) {
+                        this.setPowerHolder(provider, provider.createHolder(this.entity, null));
+                    }
+                } else {
+                    holder = provider.createHolder(this.entity, null);
+
                     if (holder != null) {
-                        if (holder.isInvalid()) {
-                            this.setPowerHolder(provider, provider.createHolder(this.entity, null));
-                        }
-                    } else {
-                        holder = provider.createHolder(this.entity, null);
-
-                        if (holder != null) {
-                            this.setPowerHolder(provider, holder);
-                        }
+                        this.setPowerHolder(provider, holder);
                     }
                 }
+            }
 
-                if (holder != null) {
-                    holder.tick();
-                }
+            if (holder != null) {
+                holder.tick();
             }
         }
     }

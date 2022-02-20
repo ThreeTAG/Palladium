@@ -24,6 +24,9 @@
     ],
     "cardinal-components": [
       "net.threetag.palladium.fabric.components.PalladiumComponents"
+    ],
+    "modmenu": [
+      "net.threetag.palladium.fabric.compat.modmenu.ModMenuCompat"
     ]
   },
   "mixins": [
@@ -39,7 +42,8 @@
   },
   "custom": {
     "cardinal-components": [
-      "palladium:power_holder"
+      "palladium:properties",
+      "palladium:power_handler"
     ]
   }
 }

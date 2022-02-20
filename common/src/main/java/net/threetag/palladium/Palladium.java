@@ -7,6 +7,7 @@ import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.condition.ConditionSerializers;
+import net.threetag.palladium.util.icon.IconSerializers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,10 +22,11 @@ public class Palladium {
         Abilities.ABILITIES.register();
         ConditionSerializers.CONDITION_SERIALIZERS.register();
         PowerManager.PROVIDERS.register();
+        IconSerializers.ICON_SERIALIZERS.register();
         PalladiumNetwork.init();
         PowerManager.init();
 
-        if(Platform.isDevelopmentEnvironment()) {
+        if (Platform.isDevelopmentEnvironment()) {
             PalladiumDebug.init();
         }
     }

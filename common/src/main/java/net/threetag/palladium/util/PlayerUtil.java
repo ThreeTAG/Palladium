@@ -23,5 +23,9 @@ public class PlayerUtil {
         return false;
     }
 
-
+//    public static Set<ServerPlayer> getPlayersTracking(Entity e) {
+//        ChunkStorage
+//        ThreadedAnvilChunkStorage tacs = ((ServerChunkCache) e.getLevel().getChunkSource()).thre;
+//        return tacs.entityTrackers.get(e.getEntityId()).playersTracking;
+//    }
 }

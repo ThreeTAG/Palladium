@@ -26,5 +26,11 @@
   "item.palladium.silver_ingot": "Silberbarren",
   "item.palladium.titanium_ingot": "Titaniumbarren",
   "item.palladium.vibranium_circuit": "Vibraniumschaltkreis",
-  "item.palladium.vibranium_ingot": "Vibraniumbarren"
+  "item.palladium.vibranium_ingot": "Vibraniumbarren",
+  "key.palladium.ability_0": "F\u00E4higkeit 0",
+  "key.palladium.ability_1": "F\u00E4higkeit 1",
+  "key.palladium.ability_2": "F\u00E4higkeit 2",
+  "key.palladium.ability_3": "F\u00E4higkeit 3",
+  "key.palladium.ability_4": "F\u00E4higkeit 4",
+  "key.palladium.categories.abilities": "F\u00E4higkeiten"
 }

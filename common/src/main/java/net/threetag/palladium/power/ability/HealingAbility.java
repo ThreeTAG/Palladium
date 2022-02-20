@@ -1,7 +1,9 @@
 package net.threetag.palladium.power.ability;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Items;
 import net.threetag.palladium.power.IPowerHolder;
+import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.property.FloatProperty;
 import net.threetag.palladium.util.property.IntegerProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
@@ -14,6 +16,7 @@ public class HealingAbility extends Ability {
     public HealingAbility() {
         this.withProperty(FREQUENCY, 20);
         this.withProperty(AMOUNT, 3F);
+        this.withProperty(ICON, new ItemIcon(Items.APPLE));
     }
 
     @Override

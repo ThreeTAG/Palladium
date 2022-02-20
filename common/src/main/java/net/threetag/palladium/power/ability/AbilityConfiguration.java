@@ -5,6 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.power.ability.condition.Condition;
@@ -36,6 +38,12 @@ public class AbilityConfiguration {
 
     public Ability getAbility() {
         return ability;
+    }
+
+    public Component getDisplayName() {
+        Component title = this.propertyManager.get(Ability.TITLE);
+        ResourceLocation id = Ability.REGISTRY.getId(this.getAbility());
+        return title != null ? title : new TranslatableComponent("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath());
     }
 
     public <T> AbilityConfiguration set(PalladiumProperty<T> data, T value) {

@@ -21,6 +21,7 @@ public class PalladiumForge {
     public PalladiumForge() {
         EventBuses.registerModEventBus(Palladium.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         Palladium.init();
+        PalladiumConfigImpl.init();
     }
 
     @SubscribeEvent
