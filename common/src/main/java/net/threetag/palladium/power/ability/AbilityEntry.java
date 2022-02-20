@@ -57,7 +57,7 @@ public class AbilityEntry {
             boolean sync = false;
 
             for (Condition unlockingCondition : this.abilityConfiguration.getUnlockingConditions()) {
-                if (!unlockingCondition.active(entity, this.abilityConfiguration, power, powerHolder)) {
+                if (!unlockingCondition.active(entity, this, power, powerHolder)) {
                     unlocked = false;
                     break;
                 }
@@ -67,7 +67,7 @@ public class AbilityEntry {
 
             if (this.unlocked) {
                 for (Condition enablingCondition : this.abilityConfiguration.getEnablingConditions()) {
-                    if (!enablingCondition.active(entity, this.abilityConfiguration, power, powerHolder)) {
+                    if (!enablingCondition.active(entity, this, power, powerHolder)) {
                         enabled = false;
                         break;
                     }

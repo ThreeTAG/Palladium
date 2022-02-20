@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.AbilityConfiguration;
+import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.FloatProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
 
@@ -18,7 +18,7 @@ public class HealthCondition extends Condition {
     }
 
     @Override
-    public boolean active(LivingEntity entity, AbilityConfiguration entry, Power power, IPowerHolder holder) {
+    public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
         return entity.getHealth() >= this.minHealth && entity.getHealth() <= this.maxHealth;
     }
 
