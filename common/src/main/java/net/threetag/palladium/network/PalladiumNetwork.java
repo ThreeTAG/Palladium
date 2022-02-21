@@ -12,6 +12,7 @@ public class PalladiumNetwork {
     public static final MessageType SET_POWER = NETWORK.registerS2C("set_power", SetPowerMessage::new);
     public static final MessageType SYNC_ABILITY_STATE = NETWORK.registerS2C("sync_ability_state", SyncAbilityStateMessage::new);
     public static final MessageType SYNC_PROPERTY = NETWORK.registerS2C("sync_property", SyncPropertyMessage::new);
+    public static final MessageType ABILITY_KEY_PRESSED = NETWORK.registerC2S("ability_key_pressed", AbilityKeyPressedMessage::new);
 
     public static void init() {
 

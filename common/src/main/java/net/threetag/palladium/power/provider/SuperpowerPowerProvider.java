@@ -37,7 +37,9 @@ public class SuperpowerPowerProvider extends PowerProvider {
             this.power = power;
             this.provider = provider;
             for (AbilityConfiguration ability : this.getPower().getAbilities()) {
-                this.entryMap.put(ability.getId(), new AbilityEntry(ability, this));
+                AbilityEntry entry = new AbilityEntry(ability, this);
+                entry.id = ability.getId();
+                this.entryMap.put(ability.getId(), entry);
             }
         }
 

@@ -1,13 +1,23 @@
 package net.threetag.palladium.forge.data;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.power.ability.Abilities;
+import net.threetag.palladium.power.ability.Ability;
+
+import java.util.Objects;
+import java.util.function.Supplier;
 
 public abstract class PalladiumLangProvider extends LanguageProvider {
+
+    public PalladiumLangProvider(DataGenerator gen, String modid, String locale) {
+        super(gen, modid, locale);
+    }
 
     public PalladiumLangProvider(DataGenerator gen, String locale) {
         super(gen, Palladium.MOD_ID, locale);
@@ -21,6 +31,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
         @Override
         protected void addTranslations() {
+            // Blocks
             this.addBlock(PalladiumBlocks.LEAD_ORE, "Lead Ore");
             this.addBlock(PalladiumBlocks.DEEPSLATE_LEAD_ORE, "Deepslate Lead Ore");
             this.addBlock(PalladiumBlocks.SILVER_ORE, "Silver Ore");
@@ -38,6 +49,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Heart-Shaped Herb");
             this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Potted Heart-Shaped Herb");
 
+            // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Raw Lead");
             this.addItem(PalladiumItems.LEAD_INGOT, "Lead Ingot");
             this.addItem(PalladiumItems.RAW_SILVER, "Raw Silver");
@@ -51,8 +63,15 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quartz Circuit");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibranium Circuit");
 
+            // Abilities
+            this.addAbility(Abilities.COMMAND, "Command");
+            this.addAbility(Abilities.HEALING, "Healing");
+            this.addAbility(Abilities.SLOWFALL, "Slowfall");
+
+            // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
 
+            // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "Abilities");
             for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
                 this.add("key.palladium.ability_" + i, "Ability " + i);
@@ -68,6 +87,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
         @Override
         protected void addTranslations() {
+            // Blocks
             this.addBlock(PalladiumBlocks.LEAD_ORE, "Bleierz");
             this.addBlock(PalladiumBlocks.DEEPSLATE_LEAD_ORE, "Tiefenschiefer-Bleierz");
             this.addBlock(PalladiumBlocks.SILVER_ORE, "Silbererz");
@@ -85,6 +105,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Herzf\u00F6rmiges Kraut");
             this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Eingetopftes Herzf\u00F6rmige Kraut");
 
+            // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Rohblei");
             this.addItem(PalladiumItems.LEAD_INGOT, "Bleibarren");
             this.addItem(PalladiumItems.RAW_SILVER, "Rohsilber");
@@ -98,8 +119,15 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaltkreis");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaltkreis");
 
+            // Abilities
+            this.addAbility(Abilities.COMMAND, "Befehl");
+            this.addAbility(Abilities.HEALING, "Heilung");
+            this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
+
+            // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
 
+            // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "F\u00E4higkeiten");
             for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
                 this.add("key.palladium.ability_" + i, "F\u00E4higkeit " + i);
@@ -115,6 +143,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
         @Override
         protected void addTranslations() {
+            // Blocks
             this.addBlock(PalladiumBlocks.LEAD_ORE, "Bleärds");
             this.addBlock(PalladiumBlocks.DEEPSLATE_LEAD_ORE, "Diefnschieforr-Bleärds");
             this.addBlock(PalladiumBlocks.SILVER_ORE, "Silberärds");
@@ -132,6 +161,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Herzf\u00F6rmijes Graud");
             this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Eingedobbdes Herzf\u00F6rmije Graud");
 
+            // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Rohble");
             this.addItem(PalladiumItems.LEAD_INGOT, "Blebarrn");
             this.addItem(PalladiumItems.RAW_SILVER, "Rohsilber");
@@ -145,13 +175,29 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaldkres");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaldkres");
 
+            // Abilities
+            this.addAbility(Abilities.COMMAND, "Befehl");
+            this.addAbility(Abilities.HEALING, "Helung");
+            this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
+
+            // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");
 
+            // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "F\u00E4hischgehden");
             for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
                 this.add("key.palladium.ability_" + i, "F\u00E4hischgehd " + i);
             }
         }
+    }
+
+    public void addAbility(Supplier<? extends Ability> key, String name) {
+        add(key.get(), name);
+    }
+
+    public void add(Ability key, String name) {
+        ResourceLocation id = Ability.REGISTRY.getId(key);
+        add("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath(), name);
     }
 
     @Override

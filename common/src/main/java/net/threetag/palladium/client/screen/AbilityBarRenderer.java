@@ -30,7 +30,7 @@ import java.util.Map;
 public class AbilityBarRenderer implements IIngameOverlay {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(Palladium.MOD_ID, "textures/gui/ability_bar.png");
-    private static AbilityList ABILITY_LIST = null;
+    public static AbilityList ABILITY_LIST = null;
 
     public AbilityBarRenderer() {
         ClientTickEvent.CLIENT_POST.register(instance -> updateCurrentList());
@@ -209,8 +209,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
                 AbilityColor color = ability.getProperty(Ability.COLOR);
                 minecraft.gui.blit(poseStack, 0, i * 22, color.getX(), color.getY(), 24, 24);
 
-                // needs key check
-                if (ability.isUnlocked()) {
+                if (ability.getConfiguration().needsKey() && ability.isUnlocked()) {
                     Component key = PalladiumKeyMappings.ABILITY_KEYS[i].getTranslatedKeyMessage();
                     poseStack.pushPose();
                     poseStack.translate(0, 0, minecraft.getItemRenderer().blitOffset + 200);

@@ -1,4 +1,7 @@
 {
+  "ability.palladium.command": "Befehl",
+  "ability.palladium.healing": "Heilung",
+  "ability.palladium.slowfall": "Langsamer Fall",
   "block.palladium.deepslate_lead_ore": "Tiefenschiefer-Bleierz",
   "block.palladium.deepslate_silver_ore": "Tiefenschiefer-Silbererz",
   "block.palladium.heart_shaped_herb": "Herzf\u00F6rmiges Kraut",
@@ -27,6 +30,7 @@
   "item.palladium.titanium_ingot": "Titaniumbarren",
   "item.palladium.vibranium_circuit": "Vibraniumschaltkreis",
   "item.palladium.vibranium_ingot": "Vibraniumbarren",
+  "itemGroup.palladium.technology": "Technologie",
   "key.palladium.ability_0": "F\u00E4higkeit 0",
   "key.palladium.ability_1": "F\u00E4higkeit 1",
   "key.palladium.ability_2": "F\u00E4higkeit 2",

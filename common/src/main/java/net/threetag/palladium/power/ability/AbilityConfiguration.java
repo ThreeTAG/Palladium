@@ -25,6 +25,7 @@ public class AbilityConfiguration {
     private final PropertyManager propertyManager;
     private final List<Condition> unlockingConditions = new ArrayList<>();
     private final List<Condition> enablingConditions = new ArrayList<>();
+    private boolean needsKey = false;
 
     public AbilityConfiguration(String id, Ability ability) {
         this.id = id;
@@ -63,10 +64,15 @@ public class AbilityConfiguration {
         return enablingConditions;
     }
 
+    public boolean needsKey() {
+        return needsKey;
+    }
+
     public void toBuffer(FriendlyByteBuf buf) {
         buf.writeUtf(this.id);
         buf.writeResourceLocation(Ability.REGISTRY.getId(this.ability));
         this.propertyManager.toBuffer(buf);
+        buf.writeBoolean(this.needsKey);
     }
 
     public static AbilityConfiguration fromBuffer(FriendlyByteBuf buf) {
@@ -74,6 +80,7 @@ public class AbilityConfiguration {
         Ability ability = Ability.REGISTRY.get(buf.readResourceLocation());
         AbilityConfiguration configuration = new AbilityConfiguration(id, Objects.requireNonNull(ability));
         configuration.propertyManager.fromBuffer(buf);
+        configuration.needsKey = buf.readBoolean();
         return configuration;
     }
 
@@ -89,13 +96,23 @@ public class AbilityConfiguration {
 
         if (GsonHelper.isValidNode(json, "conditions")) {
             JsonObject conditions = GsonHelper.getAsJsonObject(json, "conditions");
+            boolean withKey = false;
 
             if (GsonHelper.isValidNode(conditions, "unlocking")) {
                 JsonArray unlocking = GsonHelper.getAsJsonArray(conditions, "unlocking");
 
                 for (JsonElement jsonElement : unlocking) {
                     JsonObject c = jsonElement.getAsJsonObject();
-                    configuration.getUnlockingConditions().add(ConditionSerializer.fromJSON(c));
+                    Condition condition = ConditionSerializer.fromJSON(c);
+
+                    if (condition.needsKey()) {
+                        if (withKey) {
+                            throw new JsonParseException("Can't have two key binding conditions on one ability!");
+                        }
+                        withKey = true;
+                    }
+
+                    configuration.getUnlockingConditions().add(condition);
                 }
             }
 
@@ -104,8 +121,21 @@ public class AbilityConfiguration {
 
                 for (JsonElement jsonElement : enabling) {
                     JsonObject c = jsonElement.getAsJsonObject();
-                    configuration.getEnablingConditions().add(ConditionSerializer.fromJSON(c));
+                    Condition condition = ConditionSerializer.fromJSON(c);
+
+                    if (condition.needsKey()) {
+                        if (withKey) {
+                            throw new JsonParseException("Can't have two key binding conditions on one ability!");
+                        }
+                        withKey = true;
+                    }
+
+                    configuration.getEnablingConditions().add(condition);
                 }
+            }
+
+            if (withKey) {
+                configuration.needsKey = true;
             }
         }
 

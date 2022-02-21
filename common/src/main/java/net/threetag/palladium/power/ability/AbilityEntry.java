@@ -14,7 +14,9 @@ public class AbilityEntry {
     private final IPowerHolder holder;
     private boolean unlocked = true;
     private boolean enabled = true;
+    public boolean keyPressed = false;
     private int ticks = 0;
+    public String id;
 
     public AbilityEntry(AbilityConfiguration abilityConfiguration, IPowerHolder holder) {
         this.abilityConfiguration = abilityConfiguration;
@@ -86,6 +88,7 @@ public class AbilityEntry {
                 if (this.enabled) {
                     this.abilityConfiguration.getAbility().firstTick(entity, this, powerHolder, this.isEnabled());
                 } else {
+                    this.keyPressed = false;
                     this.abilityConfiguration.getAbility().lastTick(entity, this, powerHolder, this.isEnabled());
                 }
             }
@@ -97,6 +100,30 @@ public class AbilityEntry {
 
         this.abilityConfiguration.getAbility().tick(entity, this, powerHolder, this.isEnabled());
         this.ticks++;
+    }
+
+    public void keyPressed(LivingEntity entity, boolean pressed) {
+        for (Condition condition : this.getConfiguration().getUnlockingConditions()) {
+            if (condition.needsKey()) {
+                if (pressed) {
+                    condition.onKeyPressed(entity, this, holder.getPower(), holder);
+                } else {
+                    condition.onKeyReleased(entity, this, holder.getPower(), holder);
+                }
+                return;
+            }
+        }
+
+        for (Condition condition : this.getConfiguration().getEnablingConditions()) {
+            if (condition.needsKey()) {
+                if (pressed) {
+                    condition.onKeyPressed(entity, this, holder.getPower(), holder);
+                } else {
+                    condition.onKeyReleased(entity, this, holder.getPower(), holder);
+                }
+                return;
+            }
+        }
     }
 
     public <T> T getProperty(PalladiumProperty<T> property) {

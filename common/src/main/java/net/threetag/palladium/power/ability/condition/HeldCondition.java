@@ -6,15 +6,11 @@ import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
-public class ActionCondition extends Condition {
+public class HeldCondition extends Condition {
 
     @Override
     public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
-        if(entry.keyPressed) {
-            entry.keyPressed = false;
-            return true;
-        }
-        return false;
+        return entry.keyPressed;
     }
 
     @Override
@@ -27,11 +23,16 @@ public class ActionCondition extends Condition {
         entry.keyPressed = true;
     }
 
+    @Override
+    public void onKeyReleased(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
+        entry.keyPressed = false;
+    }
+
     public static class Serializer extends ConditionSerializer {
 
         @Override
         public Condition make(JsonObject json) {
-            return new ActionCondition();
+            return new HeldCondition();
         }
 
     }

@@ -1,4 +1,7 @@
 {
+  "ability.palladium.command": "Command",
+  "ability.palladium.healing": "Healing",
+  "ability.palladium.slowfall": "Slowfall",
   "block.palladium.deepslate_lead_ore": "Deepslate Lead Ore",
   "block.palladium.deepslate_silver_ore": "Deepslate Silver Ore",
   "block.palladium.heart_shaped_herb": "Heart-Shaped Herb",
@@ -27,6 +30,7 @@
   "item.palladium.titanium_ingot": "Titanium Ingot",
   "item.palladium.vibranium_circuit": "Vibranium Circuit",
   "item.palladium.vibranium_ingot": "Vibranium Ingot",
+  "itemGroup.palladium.technology": "Technology",
   "key.palladium.ability_0": "Ability 0",
   "key.palladium.ability_1": "Ability 1",
   "key.palladium.ability_2": "Ability 2",

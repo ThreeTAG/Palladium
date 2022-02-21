@@ -1,4 +1,7 @@
 {
+  "ability.palladium.command": "Befehl",
+  "ability.palladium.healing": "Helung",
+  "ability.palladium.slowfall": "Langsamer Fall",
   "block.palladium.deepslate_lead_ore": "Diefnschieforr-Ble\u00E4rds",
   "block.palladium.deepslate_silver_ore": "Diefnschieforr-Silber\u00E4rds",
   "block.palladium.heart_shaped_herb": "Herzf\u00F6rmijes Graud",
@@ -27,6 +30,7 @@
   "item.palladium.titanium_ingot": "Titaniumbarrn",
   "item.palladium.vibranium_circuit": "Vibraniumschaldkres",
   "item.palladium.vibranium_ingot": "Vibraniumbarrn",
+  "itemGroup.palladium.technology": "Technolojie",
   "key.palladium.ability_0": "F\u00E4hischgehd 0",
   "key.palladium.ability_1": "F\u00E4hischgehd 1",
   "key.palladium.ability_2": "F\u00E4hischgehd 2",

@@ -14,7 +14,11 @@ public abstract class Condition {
     }
 
     public void onKeyPressed(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
-        entry.getConfiguration().getAbility().tick(entity, entry, holder, true);
+
+    }
+
+    public void onKeyReleased(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
+
     }
 
 }
