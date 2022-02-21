@@ -1,5 +1,7 @@
 {
+  "ability.palladium.attribute_modifier": "Attribute Modifier",
   "ability.palladium.command": "Command",
+  "ability.palladium.damage_immunity": "Damage Immunity",
   "ability.palladium.healing": "Healing",
   "ability.palladium.slowfall": "Slowfall",
   "block.palladium.deepslate_lead_ore": "Deepslate Lead Ore",

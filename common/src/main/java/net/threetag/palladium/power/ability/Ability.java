@@ -11,9 +11,15 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Items;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.power.IPowerHolder;
+import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.property.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Ability extends RegistryEntry<Ability> {
 
@@ -46,6 +52,24 @@ public class Ability extends RegistryEntry<Ability> {
     public <T> Ability withProperty(PalladiumProperty<T> data, T value) {
         this.propertyManager.register(data, value);
         return this;
+    }
+
+    public static Collection<AbilityEntry> getEntries(LivingEntity entity) {
+        List<AbilityEntry> entries = new ArrayList<>();
+        PowerManager.getPowerHandler(entity).getPowerHolders().values().stream().map(holder -> holder.getAbilities().values()).forEach(entries::addAll);
+        return entries;
+    }
+
+    public static Collection<AbilityEntry> getEntries(LivingEntity entity, Ability ability) {
+        List<AbilityEntry> entries = new ArrayList<>();
+        PowerManager.getPowerHandler(entity).getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll);
+        return entries;
+    }
+
+    public static Collection<AbilityEntry> getEnabledEntries(LivingEntity entity, Ability ability) {
+        List<AbilityEntry> entries = new ArrayList<>();
+        PowerManager.getPowerHandler(entity).getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.isEnabled() && entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll);
+        return entries;
     }
 
 }

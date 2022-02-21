@@ -65,8 +65,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // Abilities
             this.addAbility(Abilities.COMMAND, "Command");
+            this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attribute Modifier");
             this.addAbility(Abilities.HEALING, "Healing");
             this.addAbility(Abilities.SLOWFALL, "Slowfall");
+            this.addAbility(Abilities.DAMAGE_IMMUNITY, "Damage Immunity");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -121,8 +123,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
+            this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attributmodifikator");
             this.addAbility(Abilities.HEALING, "Heilung");
             this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
+            this.addAbility(Abilities.DAMAGE_IMMUNITY, "Schadensimmunit\u00E4t");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
@@ -177,8 +181,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
+            this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "\u00C4ttrib\u00FCtmodifikator");
             this.addAbility(Abilities.HEALING, "Helung");
             this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
+            this.addAbility(Abilities.DAMAGE_IMMUNITY, "Schadensimmunit\u00E4t");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");
