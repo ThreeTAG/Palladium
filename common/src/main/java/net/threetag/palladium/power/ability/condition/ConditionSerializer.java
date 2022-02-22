@@ -41,12 +41,11 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
                     return data.fromJSON(json.get(data.getKey()));
                 }
             } else {
-                this.propertyManager.get(data);
+                return this.propertyManager.get(data);
             }
         } else {
             throw new RuntimeException("Condition Serializer does not have " + data.getKey() + " data!");
         }
-        return null;
     }
 
     public abstract Condition make(JsonObject json);

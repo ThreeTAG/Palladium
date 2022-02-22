@@ -10,6 +10,13 @@ architectury {
 
 
 loom {
+    runConfigs.configureEach {
+        if (name == "client" || name == "data")
+            runDir = "../run"
+        else if (name == "server")
+            runDir = "../run/server-forge"
+    }
+
     forge {
         mixinConfig "palladium-common.mixins.json"
         mixinConfig "palladium.mixins.json"
