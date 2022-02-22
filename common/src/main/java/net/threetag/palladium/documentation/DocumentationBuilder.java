@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,8 @@ public class DocumentationBuilder {
                         "td.false{background-color:#FF6666AA;}\n" +
                         "td.other{background-color:#42A3FFAA;}\n" +
                         "td.error{color:#FF0000;}\n" +
-                        "th,td.true,td.false,td.other{text-align:center;}"))
+                        "th,td.true,td.false,td.other{text-align:center;}" +
+                        "pre{outline:1px solid #ccc;padding:5px;margin:5px;} .string{color:green;} .number{color:cornflowerblue;} .boolean{color:darkorange;} .null{color:orangered;} .key{color:purple;}"))
                 .add(new HTMLObject("link").addAttribute("rel", "shortcut icon").addAttribute("type", "image/x-icon").addAttribute("href", favicon));
         this.html = new HTMLObject("html").add(this.head).add(this.body = new HTMLObject("body"));
     }
@@ -57,13 +59,13 @@ public class DocumentationBuilder {
         return this;
     }
 
-    public DocumentationBuilder addDocumentationSettings(List<IDocumentationSettings> settings) {
-        Map<String, List<IDocumentationSettings>> sorted = new HashMap<>();
+    public DocumentationBuilder addDocumentationSettings(List<IDocumentedConfigurable> settings) {
+        Map<String, List<IDocumentedConfigurable>> sorted = new HashMap<>();
         // Sort abilities by mods
-        for (IDocumentationSettings setting : settings) {
+        for (IDocumentedConfigurable setting : settings) {
             Mod mod = Platform.getOptionalMod(setting.getId().getNamespace()).orElse(null);
             String modName = mod != null ? mod.getName() : setting.getId().getNamespace();
-            List<IDocumentationSettings> modsList = sorted.containsKey(modName) ? sorted.get(modName) : new ArrayList<>();
+            List<IDocumentedConfigurable> modsList = sorted.containsKey(modName) ? sorted.get(modName) : new ArrayList<>();
             modsList.add(setting);
             sorted.put(modName, modsList);
         }
@@ -75,14 +77,16 @@ public class DocumentationBuilder {
 
         sorted.forEach((mod, settingsList) -> {
             overview.add(subSubHeading(mod));
-            overview.add(list(settingsList.stream().map(setting -> link(setting.getId(), "#" + setting.getId().toString())).collect(Collectors.toList())));
+            overview.add(list(settingsList.stream().map(setting -> link(setting.getTitle(), "#" + setting.getId().toString())).collect(Collectors.toList())));
         });
+
+        AtomicBoolean hasJson = new AtomicBoolean(false);
 
         sorted.values().forEach(modSettings -> {
             modSettings.forEach(setting -> {
                 HTMLObject div;
                 this.add(hr()).add(div = div().setId(setting.getId().toString())
-                        .add(subHeading(setting.getId().toString()))
+                        .add(subHeading(setting.getTitle()))
                         .add(subSubHeading("Data Settings:"))
                         .add(table(setting.getColumns(), setting.getRows().stream().map(rows -> {
                             List<Object> list = new ArrayList<>();
@@ -100,12 +104,42 @@ public class DocumentationBuilder {
                             return list;
                         }).collect(Collectors.toList()))));
                 if (setting.getExampleJson() != null) {
+                    hasJson.set(true);
                     div.add(subSubHeading("Example:"))
-                            .add(new HTMLObject("pre").addAttribute("class", "json-block").setId(setting.getId().toString() + "_example"))
-                            .add(js("var json = JSON.parse('" + setting.getExampleJson().toString() + "'); document.getElementById('" + setting.getId().toString() + "_example').innerHTML = JSON.stringify(json, undefined, 2);"));
+                            .add(new HTMLObject("pre", setting.getExampleJson().toString()).addAttribute("class", "json-snippet"));
                 }
             });
         });
+
+        if (hasJson.get()) {
+            this.add(js("function syntaxHighlight(json) {\n" +
+                    "        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n" +
+                    "        return json.replace(/(\"(\\\\u[a-zA-Z0-9]{4}|\\\\[^u]|[^\\\\\"])*\"(\\s*:)?|\\b(true|false|null)\\b|-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?)/g, function (match) {\n" +
+                    "            var cls = 'number';\n" +
+                    "            if (/^\"/.test(match)) {\n" +
+                    "                if (/:$/.test(match)) {\n" +
+                    "                    cls = 'key';\n" +
+                    "                } else {\n" +
+                    "                    cls = 'string';\n" +
+                    "                }\n" +
+                    "            } else if (/true|false/.test(match)) {\n" +
+                    "                cls = 'boolean';\n" +
+                    "            } else if (/null/.test(match)) {\n" +
+                    "                cls = 'null';\n" +
+                    "            }\n" +
+                    "            return '<span class=\"' + cls + '\">' + match + '</span>';\n" +
+                    "        });\n" +
+                    "    }\n" +
+                    "\n" +
+                    "    const elements = document.getElementsByClassName(\"json-snippet\");\n" +
+                    "    const amount = elements.length;\n" +
+                    "    for (let i = 0; i < amount; i++) {\n" +
+                    "        const element = elements[0];\n" +
+                    "        const div = document.createElement(\"pre\");\n" +
+                    "        div.innerHTML = syntaxHighlight(JSON.stringify(JSON.parse(element.innerText), undefined, 4));\n" +
+                    "        element.parentNode.replaceChild(div, element);\n" +
+                    "    }"));
+        }
 
         return this;
     }

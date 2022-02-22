@@ -1,6 +1,5 @@
 package net.threetag.palladium.util.property;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundTag;
@@ -29,6 +28,10 @@ public class PropertyManager {
         this.defaultProperties.put(property, value);
         this.values.put(property, value);
         return this;
+    }
+
+    public boolean isRegistered(PalladiumProperty<?> property) {
+        return this.defaultProperties.containsKey(property);
     }
 
     @SuppressWarnings("unchecked")
@@ -75,7 +78,7 @@ public class PropertyManager {
     }
 
     public Map<PalladiumProperty<?>, Object> values() {
-        return ImmutableMap.copyOf(this.values);
+        return this.values;
     }
 
     public PropertyManager copy() {

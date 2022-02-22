@@ -1,14 +1,21 @@
 package net.threetag.palladium.util.property;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonElement;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 
+import java.lang.reflect.Type;
+
+@SuppressWarnings("UnstableApiUsage")
 public abstract class PalladiumProperty<T> {
 
     private final String key;
     private String description;
+    private final TypeToken<T> typeToken = new TypeToken<T>(getClass()) {
+    };
+    private final Type type = typeToken.getType();
 
     public PalladiumProperty(String key) {
         this.key = key;
@@ -20,6 +27,10 @@ public abstract class PalladiumProperty<T> {
 
     public String getDescription() {
         return description;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     public PalladiumProperty<T> configurable(String description) {

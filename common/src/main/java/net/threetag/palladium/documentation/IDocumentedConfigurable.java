@@ -5,9 +5,13 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
-public interface IDocumentationSettings {
+public interface IDocumentedConfigurable {
 
     ResourceLocation getId();
+
+    default String getTitle() {
+        return this.getId().toString();
+    }
 
     List<String> getColumns();
 
