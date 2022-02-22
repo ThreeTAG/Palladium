@@ -78,6 +78,14 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
                 this.add("key.palladium.ability_" + i, "Ability " + i);
             }
+
+            // Commands
+            this.add("commands.superpower.error.powerNotFound", "No power was found by the name '%1$s'");
+            this.add("commands.superpower.error.noLivingEntity", "This entity is not a living entity");
+            this.add("commands.superpower.success.entity.single", "%s has gained the superpower %s");
+            this.add("commands.superpower.success.entity.multiple", "%s entities have gained the superpower %s");
+            this.add("commands.superpower.remove.success.entity.single", "%s's superpower was removed");
+            this.add("commands.superpower.remove.success.entity.multiple", "The superpower of %s entities was removed");
         }
     }
 
@@ -136,6 +144,14 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
                 this.add("key.palladium.ability_" + i, "F\u00E4higkeit " + i);
             }
+
+            // Commands
+            this.add("commands.superpower.error.powerNotFound", "Es wurde keine Kraft mit dem Namen '%1$s' gefunden");
+            this.add("commands.superpower.error.noLivingEntity", "Objekt ist nicht lebend");
+            this.add("commands.superpower.success.entity.single", "%s hat die Superkraft %s erhalten");
+            this.add("commands.superpower.success.entity.multiple", "%s Lebewesen haben die Superkraft %s erhalten");
+            this.add("commands.superpower.remove.success.entity.single", "%s's Superkraft wurde entfernt");
+            this.add("commands.superpower.remove.success.entity.multiple", "Die Superkraft von %s Lebewesen wurde entfernt");
         }
     }
 
@@ -194,6 +210,14 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
                 this.add("key.palladium.ability_" + i, "F\u00E4hischgehd " + i);
             }
+
+            // Commands
+            this.add("commands.superpower.error.powerNotFound", "Et wurd' kene Kraft mit'm Namen '%1$s' jefunden");
+            this.add("commands.superpower.error.noLivingEntity", "Objekt ist nicht lebend");
+            this.add("commands.superpower.success.entity.single", "%s hat de Superkraft %s erhalten");
+            this.add("commands.superpower.success.entity.multiple", "%s Lebewesen haben de Superkraft %s erhalten");
+            this.add("commands.superpower.remove.success.entity.single", "%s's Superkraft wurd' entfernt");
+            this.add("commands.superpower.remove.success.entity.multiple", "De Superkraft von %s Lebewesen wurd' entfernt");
         }
     }
 
