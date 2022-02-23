@@ -1,6 +1,5 @@
 build/
 *.ipr
-run/
 *.iws
 out/
 *.iml
@@ -8,6 +7,8 @@ out/
 output/
 bin/
 libs/
+forge/run/*
+fabric/run/*
 
 .classpath
 .project
@@ -17,3 +18,13 @@ classes/
 .vscode
 .settings
 *.launch
+
+run/*
+
+!run/addonpacks
+run/addonpacks/*
+!run/addonpacks/Test Pack
+
+!run/mods
+run/mods/*
+!run/mods/documentation

@@ -3,6 +3,7 @@ package net.threetag.palladium.forge;
 import dev.architectury.platform.forge.EventBuses;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -11,6 +12,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
+import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.forge.data.*;
 
@@ -47,6 +49,11 @@ public class PalladiumForge {
         e.getGenerator().addProvider(new PalladiumLangProvider.English(e.getGenerator()));
         e.getGenerator().addProvider(new PalladiumLangProvider.German(e.getGenerator()));
         e.getGenerator().addProvider(new PalladiumLangProvider.Saxon(e.getGenerator()));
+    }
+
+    @SubscribeEvent
+    public static void packFinder(AddPackFindersEvent e) {
+        e.addRepositorySource(AddonPackManager.getInstance().getWrappedPackFinder());
     }
 
 }

@@ -1,0 +1,47 @@
+{
+  "name": {
+    "text": "Test Power"
+  },
+  "icon": {
+    "type": "palladium:item",
+    "item": "palladium:vibranium_circuit"
+  },
+  "abilities": {
+    "healing": {
+      "ability": "palladium:healing",
+      "frequency": 100,
+      "bar_color": "red",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:health",
+            "max_health": 10.0
+          }
+        ]
+      }
+    },
+    "command": {
+      "ability": "palladium:command",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action"
+          }
+        ]
+      }
+    },
+    "armor": {
+      "ability": "palladium:attribute_modifier",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle"
+          }
+        ]
+      }
+    },
+    "damage_immunity": {
+      "ability": "palladium:damage_immunity"
+    }
+  }
+}

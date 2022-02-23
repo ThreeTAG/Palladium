@@ -1,8 +1,11 @@
 package net.threetag.palladium;
 
+import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
+import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.block.PalladiumBlocks;
+import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.documentation.DocumentationBuilder;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.item.PalladiumItems;
@@ -34,7 +37,12 @@ public class Palladium {
         PalladiumNetwork.init();
         PowerManager.init();
         AbilityEventHandler.init();
+        AddonPackManager.init();
         generateDocumentation();
+
+        CommandRegistrationEvent.EVENT.register((dispatcher, selection) -> {
+            SuperpowerCommand.register(dispatcher);
+        });
 
         if (Platform.isDevelopmentEnvironment()) {
             PalladiumDebug.init();
