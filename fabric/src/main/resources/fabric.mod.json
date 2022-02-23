@@ -30,7 +30,8 @@
     ]
   },
   "mixins": [
-    "palladium.mixins.json"
+    "palladium.mixins.json",
+    "palladium-common.mixins.json"
   ],
   "depends": {
     "fabric": "*",
