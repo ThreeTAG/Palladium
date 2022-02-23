@@ -1,6 +1,7 @@
 package net.threetag.palladium.addonpack;
 
 import dev.architectury.platform.Platform;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.FolderRepositorySource;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
@@ -10,6 +11,7 @@ import java.io.File;
 public class AddonPackManager {
 
     private static AddonPackManager INSTANCE;
+    private static PackType PACK_TYPE;
 
     public static AddonPackManager getInstance() {
         return INSTANCE;
@@ -34,5 +36,17 @@ public class AddonPackManager {
 
     public RepositorySource getWrappedPackFinder() {
         return (infoConsumer, infoFactory) -> folderPackFinder.loadPacks(infoConsumer, (string, component, bl, supplier, packMetadataSection, position, packSource) -> infoFactory.create("addonpack:" + string, component, true, supplier, packMetadataSection, position, packSource));
+    }
+
+    public static PackType getPackType() {
+        if (PACK_TYPE == null) {
+            for (PackType type : PackType.values()) {
+                if (type.getDirectory().equalsIgnoreCase("addon")) {
+                    PACK_TYPE = type;
+                    return PACK_TYPE;
+                }
+            }
+        }
+        return PACK_TYPE;
     }
 }
