@@ -23,10 +23,10 @@
       "net.threetag.palladium.fabric.PalladiumFabricClient"
     ],
     "cardinal-components": [
-      "net.threetag.palladium.fabric.components.PalladiumComponents"
+      "net.threetag.palladium.components.fabric.PalladiumComponents"
     ],
     "modmenu": [
-      "net.threetag.palladium.fabric.compat.modmenu.ModMenuCompat"
+      "net.threetag.palladium.compat.modmenu.fabric.ModMenuCompat"
     ]
   },
   "mixins": [

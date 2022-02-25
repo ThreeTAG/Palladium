@@ -1,7 +1,7 @@
 package net.threetag.palladium.power.forge;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.forge.capability.PalladiumCapabilities;
+import net.threetag.palladium.capability.forge.PalladiumCapabilities;
 import net.threetag.palladium.power.IPowerHandler;
 
 public class PowerManagerImpl {

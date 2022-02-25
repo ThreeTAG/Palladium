@@ -1,5 +1,6 @@
 package net.threetag.palladium.recipe.condition.forge;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -60,6 +61,10 @@ public class RecipeConditionImpl {
                 return condition.test();
             }
         };
+    }
+
+    public static boolean processConditions(JsonArray conditions) {
+        return CraftingHelper.processConditions(conditions);
     }
 
 }

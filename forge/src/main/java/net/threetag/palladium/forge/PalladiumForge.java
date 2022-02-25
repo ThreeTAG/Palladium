@@ -14,7 +14,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.block.PalladiumBlocks;
-import net.threetag.palladium.forge.data.*;
+import net.threetag.palladium.data.forge.*;
 
 @Mod(Palladium.MOD_ID)
 @Mod.EventBusSubscriber(modid = Palladium.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

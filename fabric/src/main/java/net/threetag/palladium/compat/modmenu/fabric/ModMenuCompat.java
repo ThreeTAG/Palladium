@@ -1,4 +1,4 @@
-package net.threetag.palladium.fabric.compat.modmenu;
+package net.threetag.palladium.compat.modmenu.fabric;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

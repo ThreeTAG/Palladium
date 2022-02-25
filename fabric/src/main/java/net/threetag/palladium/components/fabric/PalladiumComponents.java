@@ -1,4 +1,4 @@
-package net.threetag.palladium.fabric.components;
+package net.threetag.palladium.components.fabric;
 
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;

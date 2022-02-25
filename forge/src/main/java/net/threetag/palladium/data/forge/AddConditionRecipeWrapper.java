@@ -1,4 +1,4 @@
-package net.threetag.palladium.forge.data;
+package net.threetag.palladium.data.forge;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

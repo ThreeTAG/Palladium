@@ -1,7 +1,7 @@
 package net.threetag.palladium.util.property.forge;
 
 import net.minecraft.world.entity.Entity;
-import net.threetag.palladium.forge.capability.PalladiumCapabilities;
+import net.threetag.palladium.capability.forge.PalladiumCapabilities;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 
 public class EntityPropertyHandlerImpl {

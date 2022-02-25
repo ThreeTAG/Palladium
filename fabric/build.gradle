@@ -8,12 +8,14 @@ architectury {
     fabric()
 }
 
+version = version + "-fabric"
+
 loom {
     runConfigs.configureEach {
         if (name == "client")
             runDir = "../run"
         else if (name == "server")
-            runDir = "../server-fabric"
+            runDir = "../run/server-fabric"
     }
 }
 

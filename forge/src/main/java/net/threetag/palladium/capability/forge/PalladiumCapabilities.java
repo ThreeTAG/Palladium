@@ -1,4 +1,4 @@
-package net.threetag.palladium.forge.capability;
+package net.threetag.palladium.capability.forge;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;

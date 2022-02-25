@@ -1,4 +1,4 @@
-package net.threetag.palladium.forge.data;
+package net.threetag.palladium.data.forge;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;

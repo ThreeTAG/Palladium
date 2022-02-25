@@ -34,10 +34,6 @@ public class RecipeConditionImpl {
         return serializer;
     }
 
-    public static boolean processConditions(JsonObject json, String memberName) {
-        return !json.has(memberName) || processConditions(GsonHelper.getAsJsonArray(json, memberName));
-    }
-
     public static boolean processConditions(JsonArray conditions) {
         for (int x = 0; x < conditions.size(); x++) {
             if (!conditions.get(x).isJsonObject())

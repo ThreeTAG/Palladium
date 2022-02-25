@@ -1,4 +1,4 @@
-package net.threetag.palladium.forge.event;
+package net.threetag.palladium.forge;
 
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
