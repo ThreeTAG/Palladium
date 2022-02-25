@@ -1,4 +1,4 @@
-package net.threetag.palladium.fabric.mixin;
+package net.threetag.palladium.mixin.fabric;
 
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackRepository;

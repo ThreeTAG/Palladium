@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "net.threetag.palladium.forge.mixin",
+  "package": "net.threetag.palladium.mixin.forge",
   "compatibilityLevel": "JAVA_17",
   "client": [
   ],

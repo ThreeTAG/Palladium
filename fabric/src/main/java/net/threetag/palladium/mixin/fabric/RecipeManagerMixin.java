@@ -1,4 +1,4 @@
-package net.threetag.palladium.fabric.mixin;
+package net.threetag.palladium.mixin.fabric;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;

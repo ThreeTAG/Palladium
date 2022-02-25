@@ -8,6 +8,7 @@ architectury {
     forge()
 }
 
+version = version + "-forge"
 
 loom {
     runConfigs.configureEach {

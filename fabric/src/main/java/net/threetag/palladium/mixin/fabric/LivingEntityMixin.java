@@ -1,4 +1,4 @@
-package net.threetag.palladium.fabric.mixin;
+package net.threetag.palladium.mixin.fabric;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.event.PalladiumEvents;
