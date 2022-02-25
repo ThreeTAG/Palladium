@@ -23,7 +23,6 @@ import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityColor;
 import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.power.provider.PowerProvider;
 
 import java.util.Map;
 
@@ -243,7 +242,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
             Player player = Minecraft.getInstance().player;
             IPowerHandler handler = PowerManager.getPowerHandler(player);
 
-            for (Map.Entry<PowerProvider, IPowerHolder> entry : handler.getPowerHolders().entrySet()) {
+            for (Map.Entry<ResourceLocation, IPowerHolder> entry : handler.getPowerHolders().entrySet()) {
                 AbilityList list = new AbilityList(entry.getKey(), entry.getValue().getPower());
 
                 for (AbilityEntry abilityEntry : entry.getValue().getAbilities().values()) {
@@ -260,12 +259,12 @@ public class AbilityBarRenderer implements IIngameOverlay {
 
     public static class AbilityList {
 
-        private final PowerProvider provider;
+        private final ResourceLocation provider;
         private final Power power;
         private final AbilityEntry[] abilities = new AbilityEntry[5];
         private ResourceLocation texture;
 
-        public AbilityList(PowerProvider provider, Power power) {
+        public AbilityList(ResourceLocation provider, Power power) {
             this.provider = provider;
             this.power = power;
         }
@@ -303,7 +302,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
             return abilities;
         }
 
-        public PowerProvider getProvider() {
+        public ResourceLocation getProvider() {
             return provider;
         }
     }

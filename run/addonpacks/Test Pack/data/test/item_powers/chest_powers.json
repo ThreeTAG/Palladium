@@ -1,0 +1,6 @@
+{
+  "slot": "chest",
+  "items": {
+    "minecraft:iron_chestplate": "test:test_power"
+  }
+}

@@ -4,25 +4,25 @@ import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.power.provider.PowerProvider;
 
 public class AbilityKeyPressedMessage extends BaseC2SMessage {
 
-    private final PowerProvider provider;
+    private final ResourceLocation provider;
     private final String abilityKey;
     private final boolean pressed;
 
-    public AbilityKeyPressedMessage(PowerProvider provider, String abilityKey, boolean pressed) {
+    public AbilityKeyPressedMessage(ResourceLocation provider, String abilityKey, boolean pressed) {
         this.provider = provider;
         this.abilityKey = abilityKey;
         this.pressed = pressed;
     }
 
     public AbilityKeyPressedMessage(FriendlyByteBuf buf) {
-        this.provider = PowerManager.PROVIDER_REGISTRY.get(buf.readResourceLocation());
+        this.provider = buf.readResourceLocation();
         this.abilityKey = buf.readUtf();
         this.pressed = buf.readBoolean();
     }
@@ -34,7 +34,7 @@ public class AbilityKeyPressedMessage extends BaseC2SMessage {
 
     @Override
     public void write(FriendlyByteBuf buf) {
-        buf.writeResourceLocation(PowerManager.PROVIDER_REGISTRY.getId(this.provider));
+        buf.writeResourceLocation(this.provider);
         buf.writeUtf(this.abilityKey);
         buf.writeBoolean(this.pressed);
     }

@@ -1,16 +1,16 @@
 package net.threetag.palladium.power;
 
-import net.threetag.palladium.power.provider.PowerProvider;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Map;
 
 public interface IPowerHandler {
 
-    Map<PowerProvider, IPowerHolder> getPowerHolders();
+    Map<ResourceLocation, IPowerHolder> getPowerHolders();
 
     void tick();
 
-    void setPowerHolder(PowerProvider provider, IPowerHolder holder);
+    void setPowerHolder(ResourceLocation provider, IPowerHolder holder);
 
-    IPowerHolder getPowerHolder(PowerProvider provider);
+    IPowerHolder getPowerHolder(ResourceLocation provider);
 }

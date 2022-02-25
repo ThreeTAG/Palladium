@@ -1,0 +1,6 @@
+{
+  "slot": "mainhand",
+  "items": {
+    "minecraft:bread": "test:test_power"
+  }
+}

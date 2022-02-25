@@ -5,21 +5,21 @@ import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.power.provider.PowerProvider;
 
 public class SyncAbilityStateMessage extends BaseS2CMessage {
 
     private final int entityId;
-    private final PowerProvider provider;
+    private final ResourceLocation provider;
     private final String abilityKey;
     private final boolean unlocked, enabled;
 
-    public SyncAbilityStateMessage(int entityId, PowerProvider provider, String abilityKey, boolean unlocked, boolean enabled) {
+    public SyncAbilityStateMessage(int entityId, ResourceLocation provider, String abilityKey, boolean unlocked, boolean enabled) {
         this.entityId = entityId;
         this.provider = provider;
         this.abilityKey = abilityKey;
@@ -29,7 +29,7 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
 
     public SyncAbilityStateMessage(FriendlyByteBuf buf) {
         this.entityId = buf.readInt();
-        this.provider = PowerManager.PROVIDER_REGISTRY.get(buf.readResourceLocation());
+        this.provider = buf.readResourceLocation();
         this.abilityKey = buf.readUtf();
         this.unlocked = buf.readBoolean();
         this.enabled = buf.readBoolean();
@@ -43,7 +43,7 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
     @Override
     public void write(FriendlyByteBuf buf) {
         buf.writeInt(this.entityId);
-        buf.writeResourceLocation(PowerManager.PROVIDER_REGISTRY.getId(this.provider));
+        buf.writeResourceLocation(this.provider);
         buf.writeUtf(this.abilityKey);
         buf.writeBoolean(this.unlocked);
         buf.writeBoolean(this.enabled);
@@ -57,7 +57,7 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
             if (entity instanceof LivingEntity livingEntity) {
                 IPowerHolder powerHolder = PowerManager.getPowerHandler(livingEntity).getPowerHolder(this.provider);
 
-                if(powerHolder != null) {
+                if (powerHolder != null) {
                     AbilityEntry entry = powerHolder.getAbilities().get(this.abilityKey);
 
                     if (entry != null) {

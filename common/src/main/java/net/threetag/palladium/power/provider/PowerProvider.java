@@ -1,20 +1,31 @@
 package net.threetag.palladium.power.provider;
 
-import dev.architectury.core.RegistryEntry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.PowerManager;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
+import java.util.function.BiFunction;
 
-public abstract class PowerProvider extends RegistryEntry<PowerProvider> {
+public class PowerProvider implements IPowerProvider {
 
-    public abstract IPowerHolder createHolder(LivingEntity entity, @Nullable Power power);
+    private final ResourceLocation key;
+    private final BiFunction<LivingEntity, Power, IPowerHolder> supplier;
 
-    public Optional<IPowerHolder> get(LivingEntity entity) {
-        return Optional.ofNullable(PowerManager.getPowerHandler(entity).getPowerHolder(this));
+    public PowerProvider(ResourceLocation key, BiFunction<LivingEntity, Power, IPowerHolder> supplier) {
+        this.key = key;
+        this.supplier = supplier;
+    }
+
+    @Override
+    public ResourceLocation getKey() {
+        return key;
+    }
+
+    @Override
+    public IPowerHolder createPower(LivingEntity entity, @Nullable Power power) {
+        return this.supplier.apply(entity, power);
     }
 
 }
