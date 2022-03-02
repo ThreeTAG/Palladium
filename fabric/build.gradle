@@ -33,10 +33,10 @@ dependencies {
     modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
     // Cardinal Components
-    modApi "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
-    modApi "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
+    modApi "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_version}"
+    modApi "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_components_version}"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_version}"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_components_version}"
 
     // Mod Menu
     modApi "com.terraformersmc:modmenu:${rootProject.modmenu_version}"
@@ -48,6 +48,11 @@ dependencies {
     // Cloth Config
     modApi("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    // Trinkets
+    modImplementation ("dev.emi:trinkets:${rootProject.trinkets_version}") {
+        exclude(group: "dev.onyxstudios.cardinal-components-api")
     }
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }

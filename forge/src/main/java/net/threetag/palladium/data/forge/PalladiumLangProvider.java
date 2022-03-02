@@ -76,7 +76,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "Abilities");
             for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
-                this.add("key.palladium.ability_" + i, "Ability " + i);
+                this.add("key.palladium.ability_" + i, "Ability " + (i + 1));
             }
 
             // Commands
@@ -142,7 +142,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "F\u00E4higkeiten");
             for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
-                this.add("key.palladium.ability_" + i, "F\u00E4higkeit " + i);
+                this.add("key.palladium.ability_" + i, "F\u00E4higkeit " + (i + 1));
             }
 
             // Commands
@@ -208,7 +208,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "F\u00E4hischgehden");
             for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
-                this.add("key.palladium.ability_" + i, "F\u00E4hischgehd " + i);
+                this.add("key.palladium.ability_" + i, "F\u00E4hischgehd " + (i + 1));
             }
 
             // Commands

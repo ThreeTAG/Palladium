@@ -52,6 +52,10 @@ dependencies {
     modRuntimeOnly "curse.maven:configured-457570:${rootProject.configured_version}"
     modRuntimeOnly "curse.maven:catalogue-459701:${rootProject.catalogue_version}"
 
+    // Curios
+    modRuntimeOnly "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}"
+    modCompileOnly "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}:api"
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
