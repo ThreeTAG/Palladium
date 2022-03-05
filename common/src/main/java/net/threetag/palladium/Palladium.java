@@ -19,6 +19,7 @@ import net.threetag.palladium.power.ability.condition.ConditionSerializer;
 import net.threetag.palladium.power.ability.condition.ConditionSerializers;
 import net.threetag.palladium.power.holderfactory.PowerProviderFactories;
 import net.threetag.palladium.util.icon.IconSerializers;
+import net.threetag.palladium.world.PalladiumFeatures;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,12 +37,18 @@ public class Palladium {
         ConditionSerializers.CONDITION_SERIALIZERS.register();
         PowerProviderFactories.FACTORIES.register();
         IconSerializers.ICON_SERIALIZERS.register();
+        PalladiumFeatures.FEATURES.register();
+
         PalladiumNetwork.init();
         PowerManager.init();
         ItemPowerManager.init();
         AbilityEventHandler.init();
         AddonPackManager.init();
         generateDocumentation();
+
+        LifecycleEvent.SETUP.register(() -> {
+            PalladiumFeatures.init();
+        });
 
         CommandRegistrationEvent.EVENT.register((dispatcher, selection) -> {
             SuperpowerCommand.register(dispatcher);

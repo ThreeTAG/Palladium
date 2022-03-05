@@ -3,7 +3,7 @@ package net.threetag.palladium.data.forge;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -48,7 +48,7 @@ public class PalladiumItemTagsProvider extends ItemTagsProvider {
         this.multiLoaderTag(PalladiumItemTags.QUARTZ_BLOCKS, PalladiumItemTags.Fabric.QUARTZ_BLOCKS, Items.QUARTZ_BLOCK);
     }
 
-    public void multiLoaderTagMetal(Tag.Named<Item> rootForge, Tag.Named<Item> rootFabric, Tag.Named<Item> forgeBranch, Tag.Named<Item> fabricBranch, ItemLike... items) {
+    public void multiLoaderTagMetal(TagKey<Item> rootForge, TagKey<Item> rootFabric, TagKey<Item> forgeBranch, TagKey<Item> fabricBranch, ItemLike... items) {
         for (ItemLike itemLike : items) {
             this.tag(fabricBranch).add(itemLike.asItem());
         }
@@ -57,7 +57,7 @@ public class PalladiumItemTagsProvider extends ItemTagsProvider {
         this.tag(rootForge).addTag(forgeBranch).addTag(rootFabric);
     }
 
-    public void multiLoaderTag(Tag.Named<Item> forgeTag, Tag.Named<Item> fabricTag, ItemLike... items) {
+    public void multiLoaderTag(TagKey<Item> forgeTag, TagKey<Item> fabricTag, ItemLike... items) {
         for (ItemLike itemLike : items) {
             this.tag(fabricTag).add(itemLike.asItem());
         }

@@ -1,11 +1,10 @@
 package net.threetag.palladium.data.forge;
 
 import com.google.common.collect.ImmutableList;
-import dev.architectury.platform.Platform;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -64,6 +63,10 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
         ShapelessRecipeBuilder.shapeless(Items.PURPLE_DYE).requires(PalladiumBlocks.HEART_SHAPED_HERB.get()).group("purple_dye").unlockedBy("has_flower", has(PalladiumBlocks.HEART_SHAPED_HERB.get())).save(consumer, new ResourceLocation(Palladium.MOD_ID, "purple_dye_from_heart_shaped_herb"));
     }
 
+    private static net.minecraft.advancements.critereon.InventoryChangeTrigger.TriggerInstance has(TagKey<Item> arg) {
+        return inventoryTrigger(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(arg).build());
+    }
+
     private static void oreSmelting(Consumer<FinishedRecipe> finishedRecipeConsumer, List<ItemLike> ingredients, ItemLike result, float experience, int cookingTime, String group) {
         oreCooking(finishedRecipeConsumer, RecipeSerializer.SMELTING_RECIPE, ingredients, result, experience, cookingTime, group, "_from_smelting");
     }
@@ -105,10 +108,6 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
 
     private static String getSimpleRecipeName(ItemLike itemLike) {
         return getItemName(itemLike);
-    }
-
-    private static Ingredient loaderDependentIngredient(boolean forge, Tag<Item> forgeIngredient, ItemLike fabricItem) {
-        return forge ? Ingredient.of(forgeIngredient) : Ingredient.of(fabricItem);
     }
 
     @SuppressWarnings("ConstantConditions")

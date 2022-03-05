@@ -3,7 +3,7 @@ package net.threetag.palladium.data.forge;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -40,7 +40,7 @@ public class PalladiumBlockTagsProvider extends BlockTagsProvider {
         this.tag(Tags.Blocks.NEEDS_NETHERITE_TOOL).add(VIBRANIUM_ORE.get(), VIBRANIUM_BLOCK.get(), RAW_VIBRANIUM_BLOCK.get());
     }
 
-    public void multiLoaderTagMetal(Tag.Named<Block> rootForge, Tag.Named<Block> rootFabric, Tag.Named<Block> forgeBranch, Tag.Named<Block> fabricBranch, Block... blocks) {
+    public void multiLoaderTagMetal(TagKey<Block> rootForge, TagKey<Block> rootFabric, TagKey<Block> forgeBranch, TagKey<Block> fabricBranch, Block... blocks) {
         for (Block block : blocks) {
             this.tag(fabricBranch).add(block);
         }
