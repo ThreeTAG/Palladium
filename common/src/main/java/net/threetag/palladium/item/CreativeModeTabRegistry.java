@@ -13,7 +13,7 @@ public class CreativeModeTabRegistry {
 
     private static final Map<ResourceLocation, CreativeModeTab> TABS = new HashMap<>();
 
-    public static final CreativeModeTab TECHNOLOGY = addTab(new ResourceLocation(Palladium.MOD_ID, "technology"), new ItemStack(PalladiumItems.VIBRANIUM_INGOT.get()));
+    public static final CreativeModeTab TECHNOLOGY = addTab(new ResourceLocation(Palladium.MOD_ID, "technology"), () -> new ItemStack(PalladiumItems.VIBRANIUM_INGOT.get()));
 
     public static CreativeModeTab getTab(ResourceLocation name) {
         if (name.getNamespace().equals("minecraft")) {
@@ -38,10 +38,6 @@ public class CreativeModeTabRegistry {
         }
 
         return TABS.get(name);
-    }
-
-    public static CreativeModeTab addTab(ResourceLocation name, ItemStack stack) {
-        return addTab(name, () -> stack);
     }
 
     public static CreativeModeTab addTab(ResourceLocation name, Supplier<ItemStack> stackSupplier) {

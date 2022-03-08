@@ -55,6 +55,11 @@ dependencies {
         exclude(group: "dev.onyxstudios.cardinal-components-api")
     }
 
+    // Energy & TechReborn
+    include modApi("teamreborn:energy:${rootProject.energy_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 }

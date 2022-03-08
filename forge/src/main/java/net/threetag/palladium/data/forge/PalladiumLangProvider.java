@@ -46,6 +46,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addBlock(PalladiumBlocks.RAW_SILVER_BLOCK, "Block of Raw Silver");
             this.addBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK, "Block of Raw Titanium");
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Block of Raw Vibranium");
+            this.addBlock(PalladiumBlocks.SOLAR_PANEL, "Solar Panel");
             this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Heart-Shaped Herb");
             this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Potted Heart-Shaped Herb");
 
@@ -112,6 +113,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addBlock(PalladiumBlocks.RAW_SILVER_BLOCK, "Rohsilberblock");
             this.addBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK, "Rohtitaniumblock");
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Rohvibraniumblock");
+            this.addBlock(PalladiumBlocks.SOLAR_PANEL, "Solarpaneel");
             this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Herzf\u00F6rmiges Kraut");
             this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Eingetopftes Herzf\u00F6rmige Kraut");
 
@@ -178,6 +180,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addBlock(PalladiumBlocks.RAW_SILVER_BLOCK, "Rohsilberblogg");
             this.addBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK, "Rohtitaniumblogg");
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Rohvibraniumblogg");
+            this.addBlock(PalladiumBlocks.SOLAR_PANEL, "Solarpaneel");
             this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Herzf\u00F6rmijes Graud");
             this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Eingedobbdes Herzf\u00F6rmije Graud");
 

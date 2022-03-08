@@ -41,6 +41,7 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> RAW_TITANIUM_BLOCK = ITEMS.register("raw_titanium_block", () -> new SortedBlockItem(PalladiumBlocks.RAW_TITANIUM_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_RAW_GOLD_BLOCK));
     public static final RegistrySupplier<Item> RAW_VIBRANIUM_BLOCK = ITEMS.register("raw_vibranium_block", () -> new SortedBlockItem(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_RAW_GOLD_BLOCK));
 
+    public static final RegistrySupplier<Item> SOLAR_PANEL = ITEMS.register("solar_panel", () -> new BlockItem(PalladiumBlocks.SOLAR_PANEL.get(), new Item.Properties().tab(CreativeModeTabRegistry.TECHNOLOGY)));
     public static final RegistrySupplier<Item> HEART_SHAPED_HERB = ITEMS.register("heart_shaped_herb", () -> new SortedBlockItem(PalladiumBlocks.HEART_SHAPED_HERB.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS), FILLER_AFTER_WITHER_ROSE));
 
     // -----------------------------------------------------------------------------------------------------------------

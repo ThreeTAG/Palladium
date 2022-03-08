@@ -1,5 +1,6 @@
 package net.threetag.palladium.addonpack;
 
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.FolderRepositorySource;
@@ -35,7 +36,12 @@ public class AddonPackManager {
     }
 
     public RepositorySource getWrappedPackFinder() {
-        return (infoConsumer, infoFactory) -> folderPackFinder.loadPacks(infoConsumer, (string, component, bl, supplier, packMetadataSection, position, packSource) -> infoFactory.create("addonpack:" + string, component, true, supplier, packMetadataSection, position, packSource));
+        return getWrappedPackFinder(this.folderPackFinder);
+    }
+
+    @ExpectPlatform
+    public static RepositorySource getWrappedPackFinder(RepositorySource folderPackFinder) {
+        throw new AssertionError();
     }
 
     public static PackType getPackType() {

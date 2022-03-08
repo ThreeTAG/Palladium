@@ -5,6 +5,7 @@
   "client": [
   ],
   "mixins": [
+    "IEnergyStorageMixin",
     "LivingEntityMixin",
     "PackRepositoryMixin",
     "RecipeManagerMixin",

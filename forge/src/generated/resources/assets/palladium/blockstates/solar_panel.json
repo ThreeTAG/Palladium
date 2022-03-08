@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "palladium:block/solar_panel"
+    }
+  }
+}
