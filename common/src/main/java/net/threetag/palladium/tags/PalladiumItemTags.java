@@ -4,8 +4,11 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.threetag.palladium.Palladium;
 
 public class PalladiumItemTags {
+
+    public static final TagKey<Item> VIBRATION_ABSORPTION_BOOTS = tag(Palladium.MOD_ID, "vibration_absorption_boots");
 
     public static final TagKey<Item> ORES = forgeTag("ores");
     public static final TagKey<Item> STORAGE_BLOCKS = forgeTag("storage_blocks");

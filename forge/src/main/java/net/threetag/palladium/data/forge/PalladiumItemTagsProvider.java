@@ -23,6 +23,8 @@ public class PalladiumItemTagsProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags() {
+        this.tag(PalladiumItemTags.VIBRATION_ABSORPTION_BOOTS).add(PalladiumItems.VIBRANIUM_WEAVE_BOOTS.get());
+
         this.multiLoaderTagMetal(PalladiumItemTags.ORES, PalladiumItemTags.Fabric.ORES, PalladiumItemTags.ORES_LEAD, PalladiumItemTags.Fabric.ORES_LEAD, LEAD_ORE.get(), DEEPSLATE_LEAD_ORE.get());
         this.multiLoaderTagMetal(PalladiumItemTags.ORES, PalladiumItemTags.Fabric.ORES, PalladiumItemTags.ORES_SILVER, PalladiumItemTags.Fabric.ORES_SILVER, SILVER_ORE.get(), DEEPSLATE_SILVER_ORE.get());
         this.multiLoaderTagMetal(PalladiumItemTags.ORES, PalladiumItemTags.Fabric.ORES, PalladiumItemTags.ORES_TITANIUM, PalladiumItemTags.Fabric.ORES_TITANIUM, TITANIUM_ORE.get());

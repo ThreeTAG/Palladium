@@ -5,7 +5,8 @@
   "client": [
   ],
   "mixins": [
-    "PackTypeMixin"
+    "PackTypeMixin",
+    "VibrationListenerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -3,12 +3,20 @@ package net.threetag.palladium.item;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Registry;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
+import net.threetag.palladium.tags.PalladiumItemTags;
 
 public class PalladiumItems {
+
+    public static final ArmorMaterial VIBRANIUM_WEAVE = new ArmorMaterial("vibranium_weave", 8,
+            new int[]{1, 2, 3, 2}, 12, () -> SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F,
+            () -> Ingredient.of(PalladiumItemTags.INGOTS_VIBRANIUM));
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Palladium.MOD_ID, Registry.ITEM_REGISTRY);
     public static final CreativeModeTabFiller FILLER_AFTER_COPPER_ORE = new CreativeModeTabFiller(() -> Items.DEEPSLATE_COPPER_ORE);
@@ -60,4 +68,6 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> REDSTONE_CIRCUIT = ITEMS.register("redstone_circuit", () -> new Item(new Item.Properties().tab(CreativeModeTabRegistry.TECHNOLOGY)));
     public static final RegistrySupplier<Item> QUARTZ_CIRCUIT = ITEMS.register("quartz_circuit", () -> new Item(new Item.Properties().tab(CreativeModeTabRegistry.TECHNOLOGY)));
     public static final RegistrySupplier<Item> VIBRANIUM_CIRCUIT = ITEMS.register("vibranium_circuit", () -> new Item(new Item.Properties().tab(CreativeModeTabRegistry.TECHNOLOGY).rarity(Rarity.RARE)));
+
+    public static final RegistrySupplier<Item> VIBRANIUM_WEAVE_BOOTS = ITEMS.register("vibranium_weave_boots", () -> new VibraniumWeaveArmorItem(VIBRANIUM_WEAVE, EquipmentSlot.FEET, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)));
 }

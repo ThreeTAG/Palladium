@@ -101,18 +101,6 @@ False</td>
 </tr>
 <tr>
 <td>
-title</td>
-<td>
-Component</td>
-<td>
-Allows you to set a custom title for this ability</td>
-<td>
-False</td>
-<td>
-null</td>
-</tr>
-<tr>
-<td>
 icon</td>
 <td>
 IIcon</td>
@@ -123,12 +111,24 @@ False</td>
 <td>
 {"item":"minecraft:command_block","count":1,"type":"palladium:item"}</td>
 </tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td>
+False</td>
+<td>
+null</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:command","bar_color":"LIGHT_GRAY","commands":["say Hello World"],"title":null,"icon":{"item":"minecraft:command_block","count":1,"type":"palladium:item"}}</pre>
+{"type":"palladium:command","bar_color":"LIGHT_GRAY","commands":["say Hello World"],"icon":{"item":"minecraft:command_block","count":1,"type":"palladium:item"},"title":null}</pre>
 </div>
 <hr>
 
@@ -167,27 +167,15 @@ False</td>
 </tr>
 <tr>
 <td>
-uuid</td>
+icon</td>
 <td>
-UUID</td>
+IIcon</td>
 <td>
-Sets the unique identifier for this attribute modifier. If not specified it will generate a random one</td>
-<td>
-False</td>
-<td>
-"498be4fb-af04-42f2-8948-e6ccdc0d99e1"</td>
-</tr>
-<tr>
-<td>
-operation</td>
-<td>
-Integer</td>
-<td>
-The operation for the giving attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)</td>
+Icon for the ability</td>
 <td>
 False</td>
 <td>
-0</td>
+{"item":"minecraft:iron_chestplate","count":1,"type":"palladium:item"}</td>
 </tr>
 <tr>
 <td>
@@ -203,15 +191,27 @@ null</td>
 </tr>
 <tr>
 <td>
-icon</td>
+amount</td>
 <td>
-IIcon</td>
+Double</td>
 <td>
-Icon for the ability</td>
+The amount for the giving attribute modifier</td>
 <td>
 False</td>
 <td>
-{"item":"minecraft:iron_chestplate","count":1,"type":"palladium:item"}</td>
+1.0</td>
+</tr>
+<tr>
+<td>
+uuid</td>
+<td>
+UUID</td>
+<td>
+Sets the unique identifier for this attribute modifier. If not specified it will generate a random one</td>
+<td>
+False</td>
+<td>
+"498be4fb-af04-42f2-8948-e6ccdc0d99e1"</td>
 </tr>
 <tr>
 <td>
@@ -227,22 +227,22 @@ False</td>
 </tr>
 <tr>
 <td>
-amount</td>
+operation</td>
 <td>
-Double</td>
+Integer</td>
 <td>
-The amount for the giving attribute modifier</td>
+The operation for the giving attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)</td>
 <td>
 False</td>
 <td>
-1.0</td>
+0</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:attribute_modifier","bar_color":"LIGHT_GRAY","uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1","operation":0,"title":null,"icon":{"item":"minecraft:iron_chestplate","count":1,"type":"palladium:item"},"attribute":8,"amount":1.0}</pre>
+{"type":"palladium:attribute_modifier","bar_color":"LIGHT_GRAY","icon":{"item":"minecraft:iron_chestplate","count":1,"type":"palladium:item"},"title":null,"amount":1.0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1","attribute":8,"operation":0}</pre>
 </div>
 <hr>
 
@@ -281,6 +281,18 @@ False</td>
 </tr>
 <tr>
 <td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td>
+False</td>
+<td>
+{"item":"minecraft:apple","count":1,"type":"palladium:item"}</td>
+</tr>
+<tr>
+<td>
 frequency</td>
 <td>
 Integer</td>
@@ -305,18 +317,6 @@ null</td>
 </tr>
 <tr>
 <td>
-icon</td>
-<td>
-IIcon</td>
-<td>
-Icon for the ability</td>
-<td>
-False</td>
-<td>
-{"item":"minecraft:apple","count":1,"type":"palladium:item"}</td>
-</tr>
-<tr>
-<td>
 frequency</td>
 <td>
 Float</td>
@@ -332,7 +332,7 @@ False</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:healing","bar_color":"LIGHT_GRAY","frequency":3.0,"title":null,"icon":{"item":"minecraft:apple","count":1,"type":"palladium:item"}}</pre>
+{"type":"palladium:healing","bar_color":"LIGHT_GRAY","icon":{"item":"minecraft:apple","count":1,"type":"palladium:item"},"frequency":3.0,"title":null}</pre>
 </div>
 <hr>
 
@@ -371,18 +371,6 @@ False</td>
 </tr>
 <tr>
 <td>
-title</td>
-<td>
-Component</td>
-<td>
-Allows you to set a custom title for this ability</td>
-<td>
-False</td>
-<td>
-null</td>
-</tr>
-<tr>
-<td>
 icon</td>
 <td>
 IIcon</td>
@@ -393,12 +381,24 @@ False</td>
 <td>
 {"item":"minecraft:feather","count":1,"type":"palladium:item"}</td>
 </tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td>
+False</td>
+<td>
+null</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:slowfall","bar_color":"LIGHT_GRAY","title":null,"icon":{"item":"minecraft:feather","count":1,"type":"palladium:item"}}</pre>
+{"type":"palladium:slowfall","bar_color":"LIGHT_GRAY","icon":{"item":"minecraft:feather","count":1,"type":"palladium:item"},"title":null}</pre>
 </div>
 <hr>
 
@@ -437,15 +437,15 @@ False</td>
 </tr>
 <tr>
 <td>
-damage_sources</td>
+icon</td>
 <td>
-String[]</td>
+IIcon</td>
 <td>
-Determines which damage sources have no effect on the entity</td>
+Icon for the ability</td>
 <td>
 False</td>
 <td>
-["lightningBolt","cactus"]</td>
+{"item":"minecraft:potion","count":1,"type":"palladium:item"}</td>
 </tr>
 <tr>
 <td>
@@ -461,22 +461,22 @@ null</td>
 </tr>
 <tr>
 <td>
-icon</td>
+damage_sources</td>
 <td>
-IIcon</td>
+String[]</td>
 <td>
-Icon for the ability</td>
+Determines which damage sources have no effect on the entity</td>
 <td>
 False</td>
 <td>
-{"item":"minecraft:potion","count":1,"type":"palladium:item"}</td>
+["lightningBolt","cactus"]</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:damage_immunity","bar_color":"LIGHT_GRAY","damage_sources":["lightningBolt","cactus"],"title":null,"icon":{"item":"minecraft:potion","count":1,"type":"palladium:item"}}</pre>
+{"type":"palladium:damage_immunity","bar_color":"LIGHT_GRAY","icon":{"item":"minecraft:potion","count":1,"type":"palladium:item"},"title":null,"damage_sources":["lightningBolt","cactus"]}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

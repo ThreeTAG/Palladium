@@ -63,6 +63,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.REDSTONE_CIRCUIT, "Redstone Circuit");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quartz Circuit");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibranium Circuit");
+            this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibranium Weave Boots");
 
             // Abilities
             this.addAbility(Abilities.COMMAND, "Command");
@@ -130,6 +131,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.REDSTONE_CIRCUIT, "Redstoneschaltkreis");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaltkreis");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaltkreis");
+            this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumgewebeschuhe");
 
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
@@ -197,6 +199,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.REDSTONE_CIRCUIT, "Redstoneschaldkres");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaldkres");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaldkres");
+            this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumjewebelaadschn");
 
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
