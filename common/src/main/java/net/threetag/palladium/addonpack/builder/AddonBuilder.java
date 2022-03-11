@@ -16,6 +16,10 @@ public abstract class AddonBuilder<T> implements Supplier<T> {
         this.id = id;
     }
 
+    public ResourceLocation getId() {
+        return this.id;
+    }
+
     protected abstract T create();
 
     @Override

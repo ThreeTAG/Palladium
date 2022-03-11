@@ -1,6 +1,5 @@
 {
   "max_stack_size": 42,
-  "max_damage": 5,
   "creative_mode_tab": "test:test_tab",
   "rarity": "epic",
   "is_fire_resistant": true,

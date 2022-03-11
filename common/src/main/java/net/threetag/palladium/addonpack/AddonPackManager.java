@@ -81,14 +81,18 @@ public class AddonPackManager {
 
     public CompletableFuture<AddonPackManager> beginLoading(Executor backgroundExecutor, Executor gameExecutor) {
         this.packList.reload();
+        // Enable all packs
+        this.packList.setSelected(this.packList.getAvailableIds());
 
         return this.resourceManager
-                .createReload(backgroundExecutor, gameExecutor, CompletableFuture.completedFuture(Unit.INSTANCE), packList.openAllSelected())
+                .createReload(backgroundExecutor, gameExecutor, CompletableFuture.completedFuture(Unit.INSTANCE), this.packList.openAllSelected())
                 .done().whenComplete((unit, throwable) -> {
                     if (throwable != null) {
                         this.resourceManager.close();
+                        throwable.printStackTrace();
                     }
                 })
                 .thenApply((unit) -> this);
     }
+
 }
