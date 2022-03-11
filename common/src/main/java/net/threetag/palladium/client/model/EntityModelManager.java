@@ -14,7 +14,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.mixin.EntityModelSetMixin;
-import net.threetag.palladium.util.PalladiumGsonHelper;
+import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,8 +68,8 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
 
             if (GsonHelper.isValidNode(part, "part_pose")) {
                 JsonObject partPoseJson = GsonHelper.getAsJsonObject(part, "part_pose");
-                float[] offset = PalladiumGsonHelper.getFloatArray(partPoseJson, 3, "offset", 0F, 0F, 0F);
-                float[] rotation = PalladiumGsonHelper.getFloatArray(partPoseJson, 3, "rotation", 0F, 0F, 0F);
+                float[] offset = GsonUtil.getFloatArray(partPoseJson, 3, "offset", 0F, 0F, 0F);
+                float[] rotation = GsonUtil.getFloatArray(partPoseJson, 3, "rotation", 0F, 0F, 0F);
                 partPose = PartPose.offsetAndRotation(offset[0], offset[1], offset[2], rotation[0], rotation[1], rotation[2]);
             }
 
@@ -80,11 +80,11 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
     }
 
     public static CubeListBuilder parseCubeListBuilder(CubeListBuilder builder, JsonObject json) {
-        float[] origin = PalladiumGsonHelper.getFloatArray(json, 3, "origin");
-        float[] dimensions = PalladiumGsonHelper.getFloatArray(json, 3, "dimensions");
-        int[] textureOffset = PalladiumGsonHelper.getIntArray(json, 2, "texture_offset", 0, 0);
-        float[] textureScale = PalladiumGsonHelper.getFloatArray(json, 2, "texture_scale", 1F, 1F);
-        float[] deformation = PalladiumGsonHelper.getFloatArray(json, 3, "deformation", 1F, 1F, 1F);
+        float[] origin = GsonUtil.getFloatArray(json, 3, "origin");
+        float[] dimensions = GsonUtil.getFloatArray(json, 3, "dimensions");
+        int[] textureOffset = GsonUtil.getIntArray(json, 2, "texture_offset", 0, 0);
+        float[] textureScale = GsonUtil.getFloatArray(json, 2, "texture_scale", 1F, 1F);
+        float[] deformation = GsonUtil.getFloatArray(json, 3, "deformation", 1F, 1F, 1F);
 
         builder.mirror(GsonHelper.getAsBoolean(json, "mirror", false));
         builder.texOffs(textureOffset[0], textureOffset[1]);

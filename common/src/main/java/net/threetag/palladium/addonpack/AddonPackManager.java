@@ -21,6 +21,7 @@ public class AddonPackManager {
 
     private static AddonPackManager INSTANCE;
     private static PackType PACK_TYPE;
+    public static boolean IGNORE_INJECT = false;
 
     public static AddonPackManager getInstance() {
         if (INSTANCE == null) {
@@ -38,9 +39,11 @@ public class AddonPackManager {
     private final PackRepository packList;
 
     private AddonPackManager() {
+        IGNORE_INJECT = true;
         this.resourceManager = new ReloadableResourceManager(getPackType());
         this.folderPackFinder = new FolderRepositorySource(getLocation(), PackSource.DEFAULT);
         this.packList = new PackRepository(getPackType(), this.folderPackFinder);
+        IGNORE_INJECT = false;
 
         this.resourceManager.registerReloadListener(new CreativeModeTabParser());
         this.resourceManager.registerReloadListener(new ItemParser());

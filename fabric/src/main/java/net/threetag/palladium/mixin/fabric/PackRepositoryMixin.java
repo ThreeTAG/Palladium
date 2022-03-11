@@ -25,8 +25,10 @@ public class PackRepositoryMixin {
 
     @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/server/packs/repository/Pack$PackConstructor;[Lnet/minecraft/server/packs/repository/RepositorySource;)V")
     private void init(Pack.PackConstructor packConstructor, RepositorySource[] repositorySources, CallbackInfo ci) {
-        this.sources = new HashSet<>(sources);
-        this.sources.add(AddonPackManager.getInstance().getWrappedPackFinder());
+        if(!AddonPackManager.IGNORE_INJECT) {
+            this.sources = new HashSet<>(sources);
+            this.sources.add(AddonPackManager.getInstance().getWrappedPackFinder());
+        }
     }
 
 }
