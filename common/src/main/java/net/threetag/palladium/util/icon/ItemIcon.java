@@ -7,7 +7,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.threetag.palladium.util.PalladiumGsonHelper;
+import net.threetag.palladium.util.json.GsonUtil;
 
 public class ItemIcon implements IIcon {
 
@@ -43,7 +43,7 @@ public class ItemIcon implements IIcon {
 
         @Override
         public ItemIcon fromJSON(JsonObject json) {
-            return new ItemIcon(PalladiumGsonHelper.readItemStack(json));
+            return new ItemIcon(GsonUtil.readItemStack(json));
         }
 
         @Override

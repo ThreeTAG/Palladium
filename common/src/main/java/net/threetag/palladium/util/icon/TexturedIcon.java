@@ -12,7 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.util.PalladiumGsonHelper;
+import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -88,7 +88,7 @@ public class TexturedIcon implements IIcon {
             int textureHeight = GsonHelper.getAsInt(json, "texture_height", 16);
             Color tint = null;
             if (GsonHelper.isValidNode(json, "tint")) {
-                int[] color = PalladiumGsonHelper.getIntArray(json, 3, "tint", 255, 255, 255);
+                int[] color = GsonUtil.getIntArray(json, 3, "tint", 255, 255, 255);
                 tint = new Color(color[0], color[1], color[2]);
             }
             return new TexturedIcon(texture, u, v, width, height, textureWidth, textureHeight, tint);

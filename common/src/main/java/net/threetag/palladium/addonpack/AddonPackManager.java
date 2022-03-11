@@ -1,12 +1,20 @@
 package net.threetag.palladium.addonpack;
 
 import dev.architectury.platform.Platform;
+import net.minecraft.Util;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.FolderRepositorySource;
+import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
+import net.minecraft.util.Unit;
+import net.threetag.palladium.addonpack.parser.CreativeModeTabParser;
+import net.threetag.palladium.addonpack.parser.ItemParser;
 
 import java.io.File;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class AddonPackManager {
 
@@ -21,10 +29,19 @@ public class AddonPackManager {
         INSTANCE = new AddonPackManager();
     }
 
+    private final ReloadableResourceManager resourceManager;
     private final RepositorySource folderPackFinder;
+    private final PackRepository packList;
 
     private AddonPackManager() {
-        folderPackFinder = new FolderRepositorySource(getLocation(), PackSource.DEFAULT);
+        this.resourceManager = new ReloadableResourceManager(getPackType());
+        this.folderPackFinder = new FolderRepositorySource(getLocation(), PackSource.DEFAULT);
+        this.packList = new PackRepository(getPackType(), this.folderPackFinder);
+
+        this.resourceManager.registerReloadListener(new CreativeModeTabParser());
+        this.resourceManager.registerReloadListener(new ItemParser());
+
+        this.beginLoading(Util.backgroundExecutor(), Runnable::run);
     }
 
     public File getLocation() {
@@ -35,7 +52,7 @@ public class AddonPackManager {
     }
 
     public RepositorySource getWrappedPackFinder() {
-        return (infoConsumer, infoFactory) -> folderPackFinder.loadPacks(infoConsumer, (string, component, bl, supplier, packMetadataSection, position, packSource) -> infoFactory.create("addonpack:" + string, component, true, supplier, packMetadataSection, position, packSource));
+        return (infoConsumer, infoFactory) -> this.folderPackFinder.loadPacks(infoConsumer, (string, component, bl, supplier, packMetadataSection, position, packSource) -> infoFactory.create("addonpack:" + string, component, true, supplier, packMetadataSection, position, packSource));
     }
 
     public static PackType getPackType() {
@@ -48,5 +65,18 @@ public class AddonPackManager {
             }
         }
         return PACK_TYPE;
+    }
+
+    public CompletableFuture<AddonPackManager> beginLoading(Executor backgroundExecutor, Executor gameExecutor) {
+        this.packList.reload();
+
+        return this.resourceManager
+                .createReload(backgroundExecutor, gameExecutor, CompletableFuture.completedFuture(Unit.INSTANCE), packList.openAllSelected())
+                .done().whenComplete((unit, throwable) -> {
+                    if (throwable != null) {
+                        this.resourceManager.close();
+                    }
+                })
+                .thenApply((unit) -> this);
     }
 }

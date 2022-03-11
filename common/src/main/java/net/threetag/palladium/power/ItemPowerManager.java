@@ -11,7 +11,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.util.PalladiumGsonHelper;
+import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public class ItemPowerManager extends SimpleJsonResourceReloadListener {
             for (String s : items.keySet()) {
                 ResourceLocation itemId = new ResourceLocation(s);
                 try {
-                    ResourceLocation powerId = PalladiumGsonHelper.getAsResourceLocation(items, s);
+                    ResourceLocation powerId = GsonUtil.getAsResourceLocation(items, s);
                     Power power = PowerManager.getInstance(null).getPower(powerId);
 
                     if (!Registry.ITEM.containsKey(itemId)) {

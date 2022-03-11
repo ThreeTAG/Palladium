@@ -1,16 +1,23 @@
-package net.threetag.palladium.util;
+package net.threetag.palladium.util.json;
 
 import com.google.gson.*;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.*;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class PalladiumGsonHelper {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Consumer;
+
+public class GsonUtil {
 
     public static int[] getIntArray(JsonObject jsonObject, int fields, String key, int... fallback) {
         if (!GsonHelper.isValidNode(jsonObject, key))
@@ -76,6 +83,120 @@ public class PalladiumGsonHelper {
 
     public static ModelLayerLocation getAsModelLayerLocation(JsonObject json, String memberName, @Nullable ModelLayerLocation fallback) {
         return json.has(memberName) ? getAsModelLayerLocation(json, memberName) : fallback;
+    }
+
+    public static UUID getAsUUID(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            return UUID.fromString(GsonHelper.getAsString(json, memberName));
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a UUID string");
+        }
+    }
+
+    public static UUID getAsUUID(JsonObject json, String memberName, @Nullable UUID fallback) {
+        return json.has(memberName) ? getAsUUID(json, memberName) : fallback;
+    }
+
+    public static int getAsIntRanged(JsonObject json, String memberName, int min, int max, int fallback) {
+        if (!GsonHelper.isValidNode(json, memberName)) {
+            return fallback;
+        }
+        return getAsIntRanged(json, memberName, min, max);
+    }
+
+    public static int getAsIntRanged(JsonObject json, String memberName, int min, int max) {
+        int i = GsonHelper.getAsInt(json, memberName);
+
+        if (i < min || i > max) {
+            throw new JsonParseException("Expected " + memberName + " to be within bounds " + min + " ~ " + max);
+        }
+
+        return i;
+    }
+
+    public static int getAsIntMin(JsonObject json, String memberName, int min, int fallback) {
+        if (!GsonHelper.isValidNode(json, memberName)) {
+            return fallback;
+        }
+        return getAsIntMin(json, memberName, min);
+    }
+
+    public static int getAsIntMin(JsonObject json, String memberName, int min) {
+        int i = GsonHelper.getAsInt(json, memberName);
+
+        if (i < min) {
+            throw new JsonParseException("Expected " + memberName + " to be greater than or equals " + min);
+        }
+
+        return i;
+    }
+
+    public static int getAsIntMax(JsonObject json, String memberName, int max, int fallback) {
+        if (!GsonHelper.isValidNode(json, memberName)) {
+            return fallback;
+        }
+        return getAsIntMax(json, memberName, max);
+    }
+
+    public static int getAsIntMax(JsonObject json, String memberName, int max) {
+        int i = GsonHelper.getAsInt(json, memberName);
+
+        if (i > max) {
+            throw new JsonParseException("Expected " + memberName + " to be less then or equals " + max);
+        }
+
+        return i;
+    }
+
+    public static Component getAsComponent(JsonObject json, String memberName) {
+        if (GsonHelper.isValidNode(json, memberName)) {
+            return Component.Serializer.fromJson(json.get(memberName));
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a Text Component definition");
+        }
+    }
+
+    public static Component getAsComponent(JsonObject json, String memberName, Component fallback) {
+        if (!GsonHelper.isValidNode(json, memberName)) {
+            return fallback;
+        }
+        return getAsComponent(json, memberName);
+    }
+
+    public static List<Component> getAsComponentList(JsonObject json, String memberName) {
+        if (GsonHelper.isValidNode(json, memberName)) {
+            if (json.get(memberName).isJsonPrimitive() || json.get(memberName).isJsonObject()) {
+                return List.of(Objects.requireNonNull(Component.Serializer.fromJson(json.get(memberName))));
+            }
+            JsonArray array = GsonHelper.convertToJsonArray(json.get(memberName), memberName);
+            List<Component> list = new ArrayList<>();
+            for (int i = 0; i < array.size(); i++) {
+                list.add(Component.Serializer.fromJson(array.get(i)));
+            }
+            return list;
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a String, a JsonObject, or an array of Text Component definitions");
+        }
+    }
+
+    public static List<Component> getAsComponentList(JsonObject json, String memberName, List<Component> fallback) {
+        if (!GsonHelper.isValidNode(json, memberName)) {
+            return fallback;
+        } else {
+            return getAsComponentList(json, memberName);
+        }
+    }
+
+    public static void ifHasKey(JsonObject json, String memberName, Consumer<JsonElement> consumer) {
+        if (GsonHelper.isValidNode(json, memberName)) {
+            consumer.accept(json.get(memberName));
+        }
+    }
+
+    public static void ifHasObject(JsonObject json, String memberName, Consumer<JsonObject> consumer) {
+        if (GsonHelper.isValidNode(json, memberName)) {
+            consumer.accept(GsonHelper.getAsJsonObject(json, memberName));
+        }
     }
 
     public static JsonObject merge(JsonObject json1, JsonObject json2) {
