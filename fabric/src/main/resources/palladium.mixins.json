@@ -5,6 +5,8 @@
   "client": [
   ],
   "mixins": [
+    "HumanoidArmorLayerMixin",
+    "IEnergyStorageMixin",
     "LivingEntityMixin",
     "PackRepositoryMixin",
     "RecipeManagerMixin",

@@ -35,6 +35,7 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.defaultBlockItem(PalladiumItems.RAW_TITANIUM_BLOCK);
         this.defaultBlockItem(PalladiumItems.RAW_VIBRANIUM_BLOCK);
 
+        this.defaultBlockItem(PalladiumItems.SOLAR_PANEL);
         this.singleTexture(PalladiumItems.HEART_SHAPED_HERB.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(Palladium.MOD_ID, "block/heart_shaped_herb"));
 
         this.defaultItem(PalladiumItems.RAW_LEAD);
@@ -50,6 +51,7 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.defaultItem(PalladiumItems.REDSTONE_CIRCUIT);
         this.defaultItem(PalladiumItems.QUARTZ_CIRCUIT);
         this.defaultItem(PalladiumItems.VIBRANIUM_CIRCUIT);
+        this.withExistingParent(PalladiumItems.VIBRANIUM_WEAVE_BOOTS.getId().getPath(), new ResourceLocation("item/generated")).texture("layer0", new ResourceLocation("item/leather_boots")).texture("layer1", new ResourceLocation(Palladium.MOD_ID, "item/vibranium_weave_boots_overlay"));
     }
 
     public void defaultItem(Supplier<Item> item) {

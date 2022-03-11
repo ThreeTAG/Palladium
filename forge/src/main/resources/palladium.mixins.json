@@ -3,6 +3,9 @@
   "package": "net.threetag.palladium.mixin.forge",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "BlockEntityMixin",
+    "HumanoidArmorLayerMixin",
+    "IEnergyStorageMixin"
   ],
   "mixins": [
   ],

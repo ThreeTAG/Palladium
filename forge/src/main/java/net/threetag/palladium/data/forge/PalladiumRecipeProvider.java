@@ -61,6 +61,8 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
         ShapedRecipeBuilder.shaped(PalladiumItems.VIBRANIUM_CIRCUIT.get(), 3).pattern("IX").pattern("XB").pattern("CC").define('I', PalladiumItemTags.INGOTS_IRON).define('X', PalladiumItemTags.INGOTS_TITANIUM).define('B', PalladiumItemTags.INGOTS_VIBRANIUM).define('C', PalladiumItemTags.INGOTS_SILVER).unlockedBy("has_silver", has(PalladiumItemTags.INGOTS_VIBRANIUM)).save(consumer);
 
         ShapelessRecipeBuilder.shapeless(Items.PURPLE_DYE).requires(PalladiumBlocks.HEART_SHAPED_HERB.get()).group("purple_dye").unlockedBy("has_flower", has(PalladiumBlocks.HEART_SHAPED_HERB.get())).save(consumer, new ResourceLocation(Palladium.MOD_ID, "purple_dye_from_heart_shaped_herb"));
+
+        UpgradeRecipeBuilder.smithing(Ingredient.of(Items.LEATHER_BOOTS), Ingredient.of(PalladiumItemTags.INGOTS_VIBRANIUM), PalladiumItems.VIBRANIUM_WEAVE_BOOTS.get()).unlocks("has_vibranium", has(PalladiumItemTags.INGOTS_VIBRANIUM)).save(consumer, new ResourceLocation(Palladium.MOD_ID, "vibranium_weave_boots_smithing"));
     }
 
     private static net.minecraft.advancements.critereon.InventoryChangeTrigger.TriggerInstance has(TagKey<Item> arg) {

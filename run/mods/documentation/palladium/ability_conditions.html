@@ -31,23 +31,53 @@ Overview</h2>
 Palladium</h3>
 <ul>
 <li>
-<a href="#palladium:toggle">
-palladium:toggle</a>
-</li>
-<li>
-<a href="#palladium:health">
-palladium:health</a>
-</li>
-<li>
 <a href="#palladium:action">
 palladium:action</a>
+</li>
+<li>
+<a href="#palladium:toggle">
+palladium:toggle</a>
 </li>
 <li>
 <a href="#palladium:held">
 palladium:held</a>
 </li>
+<li>
+<a href="#palladium:health">
+palladium:health</a>
+</li>
 </ul>
 </p>
+<hr>
+
+<div id="palladium:action">
+<h2>
+palladium:action</h2>
+<h3>
+Data Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:action"}</pre>
+</div>
 <hr>
 
 <div id="palladium:toggle">
@@ -77,6 +107,36 @@ Fallback Value</th>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:toggle"}</pre>
+</div>
+<hr>
+
+<div id="palladium:held">
+<h2>
+palladium:held</h2>
+<h3>
+Data Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:held"}</pre>
 </div>
 <hr>
 
@@ -131,66 +191,6 @@ False</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:health","max_health":3.4028235E38,"min_health":0.0}</pre>
-</div>
-<hr>
-
-<div id="palladium:action">
-<h2>
-palladium:action</h2>
-<h3>
-Data Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:action"}</pre>
-</div>
-<hr>
-
-<div id="palladium:held">
-<h2>
-palladium:held</h2>
-<h3>
-Data Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:held"}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

@@ -5,6 +5,7 @@ import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.block.PalladiumBlocks;
+import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.documentation.DocumentationBuilder;
 import net.threetag.palladium.event.PalladiumEvents;
@@ -32,6 +33,7 @@ public class Palladium {
 
     public static void init() {
         PalladiumBlocks.BLOCKS.register();
+        PalladiumBlockEntityTypes.BLOCK_ENTITIES.register();
         PalladiumItems.ITEMS.register();
         Abilities.ABILITIES.register();
         ConditionSerializers.CONDITION_SERIALIZERS.register();
