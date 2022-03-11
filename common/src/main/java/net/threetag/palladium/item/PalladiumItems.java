@@ -49,7 +49,7 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> RAW_TITANIUM_BLOCK = ITEMS.register("raw_titanium_block", () -> new SortedBlockItem(PalladiumBlocks.RAW_TITANIUM_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_RAW_GOLD_BLOCK));
     public static final RegistrySupplier<Item> RAW_VIBRANIUM_BLOCK = ITEMS.register("raw_vibranium_block", () -> new SortedBlockItem(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_RAW_GOLD_BLOCK));
 
-    public static final RegistrySupplier<Item> SOLAR_PANEL = ITEMS.register("solar_panel", () -> new BlockItem(PalladiumBlocks.SOLAR_PANEL.get(), new Item.Properties().tab(CreativeModeTabRegistry.TECHNOLOGY)));
+    public static final RegistrySupplier<Item> SOLAR_PANEL = ITEMS.register("solar_panel", () -> new BlockItem(PalladiumBlocks.SOLAR_PANEL.get(), new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY)));
     public static final RegistrySupplier<Item> HEART_SHAPED_HERB = ITEMS.register("heart_shaped_herb", () -> new SortedBlockItem(PalladiumBlocks.HEART_SHAPED_HERB.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS), FILLER_AFTER_WITHER_ROSE));
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -65,9 +65,9 @@ public class PalladiumItems {
 
 
     public static final RegistrySupplier<Item> HAMMER = ITEMS.register("hammer", () -> new HammerItem(4.5F, -2.75F, Tiers.IRON, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1).durability(16)));
-    public static final RegistrySupplier<Item> REDSTONE_CIRCUIT = ITEMS.register("redstone_circuit", () -> new Item(new Item.Properties().tab(CreativeModeTabRegistry.TECHNOLOGY)));
-    public static final RegistrySupplier<Item> QUARTZ_CIRCUIT = ITEMS.register("quartz_circuit", () -> new Item(new Item.Properties().tab(CreativeModeTabRegistry.TECHNOLOGY)));
-    public static final RegistrySupplier<Item> VIBRANIUM_CIRCUIT = ITEMS.register("vibranium_circuit", () -> new Item(new Item.Properties().tab(CreativeModeTabRegistry.TECHNOLOGY).rarity(Rarity.RARE)));
+    public static final RegistrySupplier<Item> REDSTONE_CIRCUIT = ITEMS.register("redstone_circuit", () -> new Item(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY)));
+    public static final RegistrySupplier<Item> QUARTZ_CIRCUIT = ITEMS.register("quartz_circuit", () -> new Item(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY)));
+    public static final RegistrySupplier<Item> VIBRANIUM_CIRCUIT = ITEMS.register("vibranium_circuit", () -> new Item(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY).rarity(Rarity.RARE)));
 
     public static final RegistrySupplier<Item> VIBRANIUM_WEAVE_BOOTS = ITEMS.register("vibranium_weave_boots", () -> new VibraniumWeaveArmorItem(VIBRANIUM_WEAVE, EquipmentSlot.FEET, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)));
 }

@@ -1,0 +1,37 @@
+{
+  "max_stack_size": 42,
+  "max_damage": 5,
+  "creative_mode_tab": "test:test_tab",
+  "rarity": "epic",
+  "is_fire_resistant": true,
+  "tooltip": [
+    "Line 1",
+    {
+      "text": "Line 2",
+      "underlined": true,
+      "color": "#BCD42A"
+    }
+  ],
+  "attribute_modifiers": {
+    "all": [
+      {
+        "attribute": "minecraft:generic.max_health",
+        "amount": 2,
+        "operation": 0,
+        "uuid": "f98db25e-91cb-45ca-ba40-5526ff2cd180"
+      },
+      {
+        "attribute": "minecraft:generic.armor",
+        "amount": 4,
+        "operation": 0,
+        "uuid": "f355146c-32da-4b95-9784-7d14ae101856"
+      }
+    ],
+    "chest": {
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "3a4df804-2be2-4002-a829-eaf29a629cac"
+    }
+  }
+}
