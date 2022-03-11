@@ -12,9 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class PalladiumGsonHelper {
 
-    public static int[] getIntArray(JsonObject jsonObject, int fields, String key, int... fallback) {
+    public static int[] getIntArray(JsonObject jsonObject, int fields, String key) {
         if (!GsonHelper.isValidNode(jsonObject, key))
-            return fallback;
+            throw new JsonSyntaxException("Missing " + key + ", expected to find a JsonArray");
 
         JsonArray jsonArray = GsonHelper.getAsJsonArray(jsonObject, key);
 
@@ -30,9 +30,15 @@ public class PalladiumGsonHelper {
         return array;
     }
 
-    public static float[] getFloatArray(JsonObject jsonObject, int fields, String key, float... fallback) {
+    public static int[] getIntArray(JsonObject jsonObject, int fields, String key, int... fallback) {
         if (!GsonHelper.isValidNode(jsonObject, key))
             return fallback;
+        return getIntArray(jsonObject, fields, key);
+    }
+
+    public static float[] getFloatArray(JsonObject jsonObject, int fields, String key) {
+        if (!GsonHelper.isValidNode(jsonObject, key))
+            throw new JsonSyntaxException("Missing " + key + ", expected to find a JsonArray");
 
         JsonArray jsonArray = GsonHelper.getAsJsonArray(jsonObject, key);
 
@@ -46,6 +52,12 @@ public class PalladiumGsonHelper {
         }
 
         return array;
+    }
+
+    public static float[] getFloatArray(JsonObject jsonObject, int fields, String key, float... fallback) {
+        if (!GsonHelper.isValidNode(jsonObject, key))
+            return fallback;
+        return getFloatArray(jsonObject, fields, key);
     }
 
     public static ResourceLocation getAsResourceLocation(JsonObject json, String memberName) {

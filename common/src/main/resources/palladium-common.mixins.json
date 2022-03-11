@@ -5,7 +5,9 @@
   "client": [
   ],
   "mixins": [
+    "EntityModelSetMixin",
     "PackTypeMixin",
+    "ReloadableResourceManagerMixin",
     "VibrationListenerMixin"
   ],
   "injectors": {

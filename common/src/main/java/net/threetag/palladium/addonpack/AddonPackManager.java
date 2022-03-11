@@ -15,11 +15,14 @@ public class AddonPackManager {
     private static PackType PACK_TYPE;
 
     public static AddonPackManager getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new AddonPackManager();
+        }
         return INSTANCE;
     }
 
     public static void init() {
-        INSTANCE = new AddonPackManager();
+        getInstance();
     }
 
     private final RepositorySource folderPackFinder;

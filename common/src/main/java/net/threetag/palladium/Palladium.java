@@ -48,13 +48,9 @@ public class Palladium {
         AddonPackManager.init();
         generateDocumentation();
 
-        LifecycleEvent.SETUP.register(() -> {
-            PalladiumFeatures.init();
-        });
+        LifecycleEvent.SETUP.register(PalladiumFeatures::init);
 
-        CommandRegistrationEvent.EVENT.register((dispatcher, selection) -> {
-            SuperpowerCommand.register(dispatcher);
-        });
+        CommandRegistrationEvent.EVENT.register((dispatcher, selection) -> SuperpowerCommand.register(dispatcher));
 
         if (Platform.isDevelopmentEnvironment()) {
             PalladiumDebug.init();

@@ -10,6 +10,7 @@
     "LivingEntityMixin",
     "PackRepositoryMixin",
     "RecipeManagerMixin",
+    "ReloadableResourceManagerMixin",
     "ServerEntityMixin"
   ],
   "injectors": {
