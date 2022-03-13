@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.json.GsonUtil;
 
@@ -20,10 +21,10 @@ import java.util.function.BiFunction;
 public class PackRenderLayer implements IPackRenderLayer {
 
     private final HumanoidModel<LivingEntity> model;
-    private final ResourceLocation texture;
+    private final DynamicTexture texture;
     private final BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType;
 
-    public PackRenderLayer(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType) {
+    public PackRenderLayer(ModelLayerLocation modelLayerLocation, DynamicTexture texture, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType) {
         this.model = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation));
         this.texture = texture;
         this.renderType = renderType;
@@ -34,24 +35,19 @@ public class PackRenderLayer implements IPackRenderLayer {
 //        this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         parentModel.copyPropertiesTo(this.model);
         // TODO apply enchant glint when item is enchanted
-        VertexConsumer vertexConsumer = this.renderType.apply(bufferSource, this.getTexture());
+        VertexConsumer vertexConsumer = this.renderType.apply(bufferSource, this.texture.getTexture(entity));
         this.model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
-    }
-
-    public ResourceLocation getTexture() {
-        return this.texture;
     }
 
     public static PackRenderLayer parse(JsonObject json) {
         ModelLayerLocation location = GsonUtil.getAsModelLayerLocation(json, "model");
-        ResourceLocation texture = GsonUtil.getAsResourceLocation(json, "texture");
         var renderType = PackRenderLayerManager.getRenderType(new ResourceLocation(GsonHelper.getAsString(json, "render_type", "solid")));
 
         if (renderType == null) {
             throw new JsonParseException("Unknown render type '" + new ResourceLocation(GsonHelper.getAsString(json, "render_type", "solid")) + "'");
         }
 
-        return new PackRenderLayer(location, texture, renderType);
+        return new PackRenderLayer(location, DynamicTexture.parse(json.get("texture")), renderType);
     }
 
 }

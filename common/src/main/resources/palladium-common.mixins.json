@@ -8,7 +8,8 @@
     "EntityModelSetMixin",
     "LayerDefinitionMixin",
     "MaterialDefinitionMixin",
-    "PartDefinitionMixin"
+    "PartDefinitionMixin",
+    "TextureManagerMixin"
   ],
   "mixins": [
     "ReloadableResourceManagerMixin",
