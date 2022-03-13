@@ -1,5 +1,7 @@
 package net.threetag.palladium.client.renderer.renderlayer;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -8,8 +10,10 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.function.BiFunction;
 
@@ -36,6 +40,18 @@ public class PackRenderLayer implements IPackRenderLayer {
 
     public ResourceLocation getTexture() {
         return this.texture;
+    }
+
+    public static PackRenderLayer parse(JsonObject json) {
+        ModelLayerLocation location = GsonUtil.getAsModelLayerLocation(json, "model");
+        ResourceLocation texture = GsonUtil.getAsResourceLocation(json, "texture");
+        var renderType = PackRenderLayerManager.getRenderType(new ResourceLocation(GsonHelper.getAsString(json, "render_type", "solid")));
+
+        if (renderType == null) {
+            throw new JsonParseException("Unknown render type '" + new ResourceLocation(GsonHelper.getAsString(json, "render_type", "solid")) + "'");
+        }
+
+        return new PackRenderLayer(location, texture, renderType);
     }
 
 }
