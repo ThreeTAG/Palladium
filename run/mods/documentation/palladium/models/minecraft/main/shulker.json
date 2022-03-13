@@ -1,0 +1,123 @@
+{
+  "mesh": {
+    "head": {
+      "cubes": [
+        {
+          "origin": [
+            -3.0,
+            0.0,
+            -3.0
+          ],
+          "dimensions": [
+            6.0,
+            6.0,
+            6.0
+          ],
+          "texture_offset": [
+            0.0,
+            52.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          12.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "lid": {
+      "cubes": [
+        {
+          "origin": [
+            -8.0,
+            -16.0,
+            -8.0
+          ],
+          "dimensions": [
+            16.0,
+            12.0,
+            16.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          24.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "base": {
+      "cubes": [
+        {
+          "origin": [
+            -8.0,
+            -8.0,
+            -8.0
+          ],
+          "dimensions": [
+            16.0,
+            8.0,
+            16.0
+          ],
+          "texture_offset": [
+            0.0,
+            28.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          24.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    }
+  },
+  "texture_width": 64,
+  "texture_height": 64
+}

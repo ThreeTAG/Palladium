@@ -1,0 +1,85 @@
+{
+  "mesh": {
+    "bell_body": {
+      "cubes": [
+        {
+          "origin": [
+            -3.0,
+            -6.0,
+            -3.0
+          ],
+          "dimensions": [
+            6.0,
+            7.0,
+            6.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          8.0,
+          12.0,
+          8.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {
+        "bell_base": {
+          "cubes": [
+            {
+              "origin": [
+                4.0,
+                4.0,
+                4.0
+              ],
+              "dimensions": [
+                8.0,
+                2.0,
+                8.0
+              ],
+              "texture_offset": [
+                0.0,
+                13.0
+              ],
+              "deformation": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "mirror": false
+            }
+          ],
+          "part_pose": {
+            "offset": [
+              -8.0,
+              -12.0,
+              -8.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "children": {}
+        }
+      }
+    }
+  },
+  "texture_width": 32,
+  "texture_height": 32
+}

@@ -1,0 +1,123 @@
+{
+  "mesh": {
+    "bottom": {
+      "cubes": [
+        {
+          "origin": [
+            1.0,
+            0.0,
+            1.0
+          ],
+          "dimensions": [
+            15.0,
+            10.0,
+            14.0
+          ],
+          "texture_offset": [
+            0.0,
+            19.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "lid": {
+      "cubes": [
+        {
+          "origin": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            15.0,
+            5.0,
+            14.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          9.0,
+          1.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "lock": {
+      "cubes": [
+        {
+          "origin": [
+            15.0,
+            -1.0,
+            15.0
+          ],
+          "dimensions": [
+            1.0,
+            4.0,
+            1.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          8.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    }
+  },
+  "texture_width": 64,
+  "texture_height": 64
+}

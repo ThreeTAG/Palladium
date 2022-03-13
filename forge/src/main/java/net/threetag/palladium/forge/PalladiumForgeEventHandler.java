@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.event.PalladiumEvents;
 
-@Mod.EventBusSubscriber(modid = Palladium.MOD_ID)
+@Mod.EventBusSubscriber(modid = Palladium.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PalladiumForgeEventHandler {
 
     @SubscribeEvent
@@ -18,6 +18,12 @@ public class PalladiumForgeEventHandler {
     @SubscribeEvent
     public static void onStartTracking(PlayerEvent.StartTracking e) {
         PalladiumEvents.START_TRACKING.invoker().startTracking(e.getPlayer(), e.getTarget());
+    }
+
+    @Mod.EventBusSubscriber(modid = Palladium.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class ModBus {
+
+
     }
 
 }

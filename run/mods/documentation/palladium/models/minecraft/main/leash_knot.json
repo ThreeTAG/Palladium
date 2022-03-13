@@ -1,0 +1,45 @@
+{
+  "mesh": {
+    "knot": {
+      "cubes": [
+        {
+          "origin": [
+            -3.0,
+            -8.0,
+            -3.0
+          ],
+          "dimensions": [
+            6.0,
+            8.0,
+            6.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    }
+  },
+  "texture_width": 32,
+  "texture_height": 32
+}

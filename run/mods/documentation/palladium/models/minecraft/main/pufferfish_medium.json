@@ -1,0 +1,435 @@
+{
+  "mesh": {
+    "left_blue_fin": {
+      "cubes": [
+        {
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            2.0,
+            0.0,
+            2.0
+          ],
+          "texture_offset": [
+            24.0,
+            3.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          2.5,
+          17.0,
+          -1.5
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "top_back_fin": {
+      "cubes": [
+        {
+          "origin": [
+            -2.5,
+            -1.0,
+            -1.0
+          ],
+          "dimensions": [
+            5.0,
+            1.0,
+            1.0
+          ],
+          "texture_offset": [
+            10.0,
+            16.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          17.0,
+          2.5
+        ],
+        "rotation": [
+          -0.7853982,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "left_back_fin": {
+      "cubes": [
+        {
+          "origin": [
+            0.0,
+            -5.0,
+            0.0
+          ],
+          "dimensions": [
+            1.0,
+            5.0,
+            1.0
+          ],
+          "texture_offset": [
+            4.0,
+            16.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          2.5,
+          22.0,
+          2.5
+        ],
+        "rotation": [
+          0.0,
+          -0.7853982,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "left_front_fin": {
+      "cubes": [
+        {
+          "origin": [
+            0.0,
+            -5.0,
+            0.0
+          ],
+          "dimensions": [
+            1.0,
+            5.0,
+            1.0
+          ],
+          "texture_offset": [
+            0.0,
+            16.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          2.5,
+          22.0,
+          -2.5
+        ],
+        "rotation": [
+          0.0,
+          0.7853982,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "bottom_front_fin": {
+      "cubes": [
+        {
+          "origin": [
+            -2.5,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            5.0,
+            1.0,
+            1.0
+          ],
+          "texture_offset": [
+            17.0,
+            21.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          22.0,
+          -2.5
+        ],
+        "rotation": [
+          -0.7853982,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "right_front_fin": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            -5.0,
+            0.0
+          ],
+          "dimensions": [
+            1.0,
+            5.0,
+            1.0
+          ],
+          "texture_offset": [
+            8.0,
+            16.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          -2.5,
+          22.0,
+          -2.5
+        ],
+        "rotation": [
+          0.0,
+          -0.7853982,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "right_back_fin": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            -5.0,
+            0.0
+          ],
+          "dimensions": [
+            1.0,
+            5.0,
+            1.0
+          ],
+          "texture_offset": [
+            8.0,
+            16.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          -2.5,
+          22.0,
+          2.5
+        ],
+        "rotation": [
+          0.0,
+          0.7853982,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "body": {
+      "cubes": [
+        {
+          "origin": [
+            -2.5,
+            -5.0,
+            -2.5
+          ],
+          "dimensions": [
+            5.0,
+            5.0,
+            5.0
+          ],
+          "texture_offset": [
+            12.0,
+            22.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          22.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "top_front_fin": {
+      "cubes": [
+        {
+          "origin": [
+            -2.5,
+            -1.0,
+            0.0
+          ],
+          "dimensions": [
+            5.0,
+            1.0,
+            1.0
+          ],
+          "texture_offset": [
+            15.0,
+            16.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          17.0,
+          -2.5
+        ],
+        "rotation": [
+          0.7853982,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "bottom_back_fin": {
+      "cubes": [
+        {
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "texture_offset": [
+            8.0,
+            22.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.5,
+          22.0,
+          2.5
+        ],
+        "rotation": [
+          0.7853982,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "right_blue_fin": {
+      "cubes": [
+        {
+          "origin": [
+            -2.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            2.0,
+            0.0,
+            2.0
+          ],
+          "texture_offset": [
+            24.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          -2.5,
+          17.0,
+          -1.5
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    }
+  },
+  "texture_width": 32,
+  "texture_height": 32
+}

@@ -1,0 +1,45 @@
+{
+  "mesh": {
+    "head": {
+      "cubes": [
+        {
+          "origin": [
+            -4.0,
+            -8.0,
+            -4.0
+          ],
+          "dimensions": [
+            8.0,
+            8.0,
+            8.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    }
+  },
+  "texture_width": 64,
+  "texture_height": 32
+}

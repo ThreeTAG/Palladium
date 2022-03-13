@@ -42,6 +42,10 @@
     },
     "damage_immunity": {
       "ability": "palladium:damage_immunity"
+    },
+    "render_layer": {
+      "ability": "palladium:render_layer",
+      "render_layer": "test:basic_layer"
     }
   }
 }

@@ -1,0 +1,84 @@
+{
+  "mesh": {
+    "right_wing": {
+      "cubes": [
+        {
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            10.0,
+            20.0,
+            2.0
+          ],
+          "texture_offset": [
+            22.0,
+            0.0
+          ],
+          "deformation": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mirror": true
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          -5.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.2617994,
+          0.0,
+          0.2617994
+        ]
+      },
+      "children": {}
+    },
+    "left_wing": {
+      "cubes": [
+        {
+          "origin": [
+            -10.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            10.0,
+            20.0,
+            2.0
+          ],
+          "texture_offset": [
+            22.0,
+            0.0
+          ],
+          "deformation": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          5.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.2617994,
+          0.0,
+          -0.2617994
+        ]
+      },
+      "children": {}
+    }
+  },
+  "texture_width": 64,
+  "texture_height": 32
+}

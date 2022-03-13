@@ -1,0 +1,84 @@
+{
+  "mesh": {
+    "plate": {
+      "cubes": [
+        {
+          "origin": [
+            -6.0,
+            -11.0,
+            -2.0
+          ],
+          "dimensions": [
+            12.0,
+            22.0,
+            1.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "handle": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            -3.0,
+            -1.0
+          ],
+          "dimensions": [
+            2.0,
+            6.0,
+            6.0
+          ],
+          "texture_offset": [
+            26.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    }
+  },
+  "texture_width": 64,
+  "texture_height": 64
+}

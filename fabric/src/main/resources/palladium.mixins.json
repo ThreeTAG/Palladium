@@ -3,9 +3,10 @@
   "package": "net.threetag.palladium.mixin.fabric",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "HumanoidArmorLayerMixin",
+    "EntityRenderDispatcherMixin"
   ],
   "mixins": [
-    "HumanoidArmorLayerMixin",
     "IEnergyStorageMixin",
     "LivingEntityMixin",
     "PackRepositoryMixin",

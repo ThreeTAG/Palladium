@@ -1,0 +1,396 @@
+{
+  "mesh": {
+    "tentacle0": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          "dimensions": [
+            2.0,
+            8.0,
+            2.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          -3.75,
+          24.6,
+          -5.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "tentacle1": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          "dimensions": [
+            2.0,
+            13.0,
+            2.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          1.25,
+          24.6,
+          -5.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "tentacle8": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          "dimensions": [
+            2.0,
+            12.0,
+            2.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          6.25,
+          24.6,
+          5.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "tentacle6": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          "dimensions": [
+            2.0,
+            12.0,
+            2.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          -3.75,
+          24.6,
+          5.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "tentacle7": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          "dimensions": [
+            2.0,
+            9.0,
+            2.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          1.25,
+          24.6,
+          5.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "body": {
+      "cubes": [
+        {
+          "origin": [
+            -8.0,
+            -8.0,
+            -8.0
+          ],
+          "dimensions": [
+            16.0,
+            16.0,
+            16.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          17.6,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "tentacle4": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          "dimensions": [
+            2.0,
+            11.0,
+            2.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          -1.25,
+          24.6,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "tentacle5": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          "dimensions": [
+            2.0,
+            10.0,
+            2.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          3.75,
+          24.6,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "tentacle2": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          "dimensions": [
+            2.0,
+            9.0,
+            2.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          6.25,
+          24.6,
+          -5.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "tentacle3": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          "dimensions": [
+            2.0,
+            11.0,
+            2.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          -6.25,
+          24.6,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    }
+  },
+  "texture_width": 64,
+  "texture_height": 32
+}

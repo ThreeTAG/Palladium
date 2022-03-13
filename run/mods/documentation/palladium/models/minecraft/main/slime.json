@@ -1,0 +1,162 @@
+{
+  "mesh": {
+    "right_eye": {
+      "cubes": [
+        {
+          "origin": [
+            -3.25,
+            18.0,
+            -3.5
+          ],
+          "dimensions": [
+            2.0,
+            2.0,
+            2.0
+          ],
+          "texture_offset": [
+            32.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "mouth": {
+      "cubes": [
+        {
+          "origin": [
+            0.0,
+            21.0,
+            -3.5
+          ],
+          "dimensions": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "texture_offset": [
+            32.0,
+            8.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "left_eye": {
+      "cubes": [
+        {
+          "origin": [
+            1.25,
+            18.0,
+            -3.5
+          ],
+          "dimensions": [
+            2.0,
+            2.0,
+            2.0
+          ],
+          "texture_offset": [
+            32.0,
+            4.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "cube": {
+      "cubes": [
+        {
+          "origin": [
+            -3.0,
+            17.0,
+            -3.0
+          ],
+          "dimensions": [
+            6.0,
+            6.0,
+            6.0
+          ],
+          "texture_offset": [
+            0.0,
+            16.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    }
+  },
+  "texture_width": 64,
+  "texture_height": 32
+}
