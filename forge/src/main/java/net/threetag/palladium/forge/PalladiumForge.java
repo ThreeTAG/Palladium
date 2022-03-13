@@ -16,8 +16,10 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
 import net.threetag.palladium.addonpack.AddonPackManager;
+import net.threetag.palladium.addonpack.forge.AddonPackType;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.model.EntityModelManager;
+import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.data.forge.*;
 import net.threetag.palladium.mixin.ReloadableResourceManagerMixin;
 
@@ -28,6 +30,7 @@ import java.util.List;
 public class PalladiumForge {
 
     public PalladiumForge() {
+        AddonPackType.init();
         EventBuses.registerModEventBus(Palladium.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         Palladium.init();
         PalladiumConfigImpl.init();
@@ -41,6 +44,11 @@ public class PalladiumForge {
     @SubscribeEvent
     public static void setupClient(FMLClientSetupEvent e) {
         PalladiumClient.init();
+    }
+
+    @SubscribeEvent
+    public static void reloadRegisterClient(RegisterClientReloadListenersEvent e) {
+        e.registerReloadListener(new PackRenderLayerManager());
     }
 
     @SubscribeEvent

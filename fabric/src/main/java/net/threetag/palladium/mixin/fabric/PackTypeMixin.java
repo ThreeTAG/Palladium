@@ -1,4 +1,4 @@
-package net.threetag.palladium.mixin;
+package net.threetag.palladium.mixin.fabric;
 
 import net.minecraft.server.packs.PackType;
 import org.spongepowered.asm.mixin.*;

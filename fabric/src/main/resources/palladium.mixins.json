@@ -12,7 +12,8 @@
     "PackRepositoryMixin",
     "RecipeManagerMixin",
     "ReloadableResourceManagerMixin",
-    "ServerEntityMixin"
+    "ServerEntityMixin",
+    "PackTypeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

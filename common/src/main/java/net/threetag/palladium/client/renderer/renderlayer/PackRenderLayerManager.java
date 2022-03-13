@@ -27,7 +27,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
 
     private static PackRenderLayerManager INSTANCE;
     private static Map<ResourceLocation, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer>> RENDER_TYPES = new HashMap<>();
-    private Map<ResourceLocation, IPackRenderLayer> renderLayers;
+    private Map<ResourceLocation, IPackRenderLayer> renderLayers = new HashMap<>();
 
     static {
         registerRenderType(new ResourceLocation("minecraft", "solid"), (source, texture) -> ItemRenderer.getArmorFoilBuffer(source, RenderType.armorCutoutNoCull(texture), false, false));

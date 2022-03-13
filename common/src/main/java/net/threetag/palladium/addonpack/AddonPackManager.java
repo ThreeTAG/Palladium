@@ -20,7 +20,6 @@ import java.util.concurrent.Executor;
 public class AddonPackManager {
 
     private static AddonPackManager INSTANCE;
-    private static PackType PACK_TYPE;
     public static boolean IGNORE_INJECT = false;
 
     public static AddonPackManager getInstance() {
@@ -67,16 +66,9 @@ public class AddonPackManager {
         throw new AssertionError();
     }
 
+    @ExpectPlatform
     public static PackType getPackType() {
-        if (PACK_TYPE == null) {
-            for (PackType type : PackType.values()) {
-                if (type.getDirectory().equalsIgnoreCase("addon")) {
-                    PACK_TYPE = type;
-                    return PACK_TYPE;
-                }
-            }
-        }
-        return PACK_TYPE;
+        throw new AssertionError();
     }
 
     public CompletableFuture<AddonPackManager> beginLoading(Executor backgroundExecutor, Executor gameExecutor) {

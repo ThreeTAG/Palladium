@@ -31,20 +31,20 @@ Overview</h2>
 Palladium</h3>
 <ul>
 <li>
-<a href="#palladium:render_layer">
-ability.palladium.render_layer</a>
-</li>
-<li>
-<a href="#palladium:healing">
-ability.palladium.healing</a>
-</li>
-<li>
 <a href="#palladium:command">
 ability.palladium.command</a>
 </li>
 <li>
+<a href="#palladium:render_layer">
+ability.palladium.render_layer</a>
+</li>
+<li>
 <a href="#palladium:attribute_modifier">
 ability.palladium.attribute_modifier</a>
+</li>
+<li>
+<a href="#palladium:healing">
+ability.palladium.healing</a>
 </li>
 <li>
 <a href="#palladium:slowfall">
@@ -56,6 +56,84 @@ ability.palladium.damage_immunity</a>
 </li>
 </ul>
 </p>
+<hr>
+
+<div id="palladium:command">
+<h2>
+ability.palladium.command</h2>
+<h3>
+Data Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar</td>
+<td>
+False</td>
+<td>
+"LIGHT_GRAY"</td>
+</tr>
+<tr>
+<td>
+commands</td>
+<td>
+String[]</td>
+<td>
+Sets the commands which get executed when using the ability</td>
+<td>
+False</td>
+<td>
+["say Hello World"]</td>
+</tr>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td>
+False</td>
+<td>
+{"item":"minecraft:command_block","count":1,"type":"palladium:item"}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td>
+False</td>
+<td>
+null</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:command","bar_color":"LIGHT_GRAY","commands":["say Hello World"],"icon":{"item":"minecraft:command_block","count":1,"type":"palladium:item"},"title":null}</pre>
+</div>
 <hr>
 
 <div id="palladium:render_layer">
@@ -81,27 +159,15 @@ Fallback Value</th>
 <tbody>
 <tr>
 <td>
-title</td>
+bar_color</td>
 <td>
-Component</td>
+AbilityColor</td>
 <td>
-Allows you to set a custom title for this ability</td>
-<td>
-False</td>
-<td>
-null</td>
-</tr>
-<tr>
-<td>
-icon</td>
-<td>
-IIcon</td>
-<td>
-Icon for the ability</td>
+Changes the color of the ability in the ability bar</td>
 <td>
 False</td>
 <td>
-{"item":"minecraft:blaze_rod","count":1,"type":"palladium:item"}</td>
+"LIGHT_GRAY"</td>
 </tr>
 <tr>
 <td>
@@ -117,6 +183,72 @@ False</td>
 </tr>
 <tr>
 <td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td>
+False</td>
+<td>
+{"item":"minecraft:blaze_rod","count":1,"type":"palladium:item"}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td>
+False</td>
+<td>
+null</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:render_layer","bar_color":"LIGHT_GRAY","render_layer":"namespace:render_layer_id","icon":{"item":"minecraft:blaze_rod","count":1,"type":"palladium:item"},"title":null}</pre>
+</div>
+<hr>
+
+<div id="palladium:attribute_modifier">
+<h2>
+ability.palladium.attribute_modifier</h2>
+<h3>
+Data Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+attribute</td>
+<td>
+Attribute</td>
+<td>
+Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength", "forge:swim_speed", "forge:nametag_distance", "forge:entity_gravity", "forge:reach_distance"</td>
+<td>
+False</td>
+<td>
+8</td>
+</tr>
+<tr>
+<td>
 bar_color</td>
 <td>
 AbilityColor</td>
@@ -127,12 +259,72 @@ False</td>
 <td>
 "LIGHT_GRAY"</td>
 </tr>
+<tr>
+<td>
+operation</td>
+<td>
+Integer</td>
+<td>
+The operation for the giving attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)</td>
+<td>
+False</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+uuid</td>
+<td>
+UUID</td>
+<td>
+Sets the unique identifier for this attribute modifier. If not specified it will generate a random one</td>
+<td>
+False</td>
+<td>
+"498be4fb-af04-42f2-8948-e6ccdc0d99e1"</td>
+</tr>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td>
+False</td>
+<td>
+{"item":"minecraft:iron_chestplate","count":1,"type":"palladium:item"}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td>
+False</td>
+<td>
+null</td>
+</tr>
+<tr>
+<td>
+amount</td>
+<td>
+Double</td>
+<td>
+The amount for the giving attribute modifier</td>
+<td>
+False</td>
+<td>
+1.0</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:render_layer","title":null,"icon":{"item":"minecraft:blaze_rod","count":1,"type":"palladium:item"},"render_layer":"namespace:render_layer_id","bar_color":"LIGHT_GRAY"}</pre>
+{"type":"palladium:attribute_modifier","attribute":8,"bar_color":"LIGHT_GRAY","operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1","icon":{"item":"minecraft:iron_chestplate","count":1,"type":"palladium:item"},"title":null,"amount":1.0}</pre>
 </div>
 <hr>
 
@@ -171,30 +363,6 @@ False</td>
 </tr>
 <tr>
 <td>
-title</td>
-<td>
-Component</td>
-<td>
-Allows you to set a custom title for this ability</td>
-<td>
-False</td>
-<td>
-null</td>
-</tr>
-<tr>
-<td>
-icon</td>
-<td>
-IIcon</td>
-<td>
-Icon for the ability</td>
-<td>
-False</td>
-<td>
-{"item":"minecraft:apple","count":1,"type":"palladium:item"}</td>
-</tr>
-<tr>
-<td>
 frequency</td>
 <td>
 Integer</td>
@@ -217,48 +385,6 @@ False</td>
 <td>
 "LIGHT_GRAY"</td>
 </tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:healing","frequency":20,"title":null,"icon":{"item":"minecraft:apple","count":1,"type":"palladium:item"},"bar_color":"LIGHT_GRAY"}</pre>
-</div>
-<hr>
-
-<div id="palladium:command">
-<h2>
-ability.palladium.command</h2>
-<h3>
-Data Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-title</td>
-<td>
-Component</td>
-<td>
-Allows you to set a custom title for this ability</td>
-<td>
-False</td>
-<td>
-null</td>
-</tr>
 <tr>
 <td>
 icon</td>
@@ -269,73 +395,7 @@ Icon for the ability</td>
 <td>
 False</td>
 <td>
-{"item":"minecraft:command_block","count":1,"type":"palladium:item"}</td>
-</tr>
-<tr>
-<td>
-commands</td>
-<td>
-String[]</td>
-<td>
-Sets the commands which get executed when using the ability</td>
-<td>
-False</td>
-<td>
-["say Hello World"]</td>
-</tr>
-<tr>
-<td>
-bar_color</td>
-<td>
-AbilityColor</td>
-<td>
-Changes the color of the ability in the ability bar</td>
-<td>
-False</td>
-<td>
-"LIGHT_GRAY"</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:command","title":null,"icon":{"item":"minecraft:command_block","count":1,"type":"palladium:item"},"commands":["say Hello World"],"bar_color":"LIGHT_GRAY"}</pre>
-</div>
-<hr>
-
-<div id="palladium:attribute_modifier">
-<h2>
-ability.palladium.attribute_modifier</h2>
-<h3>
-Data Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-attribute</td>
-<td>
-Attribute</td>
-<td>
-Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength"</td>
-<td>
-False</td>
-<td>
-8</td>
+{"item":"minecraft:apple","count":1,"type":"palladium:item"}</td>
 </tr>
 <tr>
 <td>
@@ -349,72 +409,12 @@ False</td>
 <td>
 null</td>
 </tr>
-<tr>
-<td>
-operation</td>
-<td>
-Integer</td>
-<td>
-The operation for the giving attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)</td>
-<td>
-False</td>
-<td>
-0</td>
-</tr>
-<tr>
-<td>
-icon</td>
-<td>
-IIcon</td>
-<td>
-Icon for the ability</td>
-<td>
-False</td>
-<td>
-{"item":"minecraft:iron_chestplate","count":1,"type":"palladium:item"}</td>
-</tr>
-<tr>
-<td>
-amount</td>
-<td>
-Double</td>
-<td>
-The amount for the giving attribute modifier</td>
-<td>
-False</td>
-<td>
-1.0</td>
-</tr>
-<tr>
-<td>
-uuid</td>
-<td>
-UUID</td>
-<td>
-Sets the unique identifier for this attribute modifier. If not specified it will generate a random one</td>
-<td>
-False</td>
-<td>
-"498be4fb-af04-42f2-8948-e6ccdc0d99e1"</td>
-</tr>
-<tr>
-<td>
-bar_color</td>
-<td>
-AbilityColor</td>
-<td>
-Changes the color of the ability in the ability bar</td>
-<td>
-False</td>
-<td>
-"LIGHT_GRAY"</td>
-</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:attribute_modifier","attribute":8,"title":null,"operation":0,"icon":{"item":"minecraft:iron_chestplate","count":1,"type":"palladium:item"},"amount":1.0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1","bar_color":"LIGHT_GRAY"}</pre>
+{"type":"palladium:healing","frequency":20,"bar_color":"LIGHT_GRAY","icon":{"item":"minecraft:apple","count":1,"type":"palladium:item"},"title":null}</pre>
 </div>
 <hr>
 
@@ -441,15 +441,15 @@ Fallback Value</th>
 <tbody>
 <tr>
 <td>
-title</td>
+bar_color</td>
 <td>
-Component</td>
+AbilityColor</td>
 <td>
-Allows you to set a custom title for this ability</td>
+Changes the color of the ability in the ability bar</td>
 <td>
 False</td>
 <td>
-null</td>
+"LIGHT_GRAY"</td>
 </tr>
 <tr>
 <td>
@@ -465,22 +465,22 @@ False</td>
 </tr>
 <tr>
 <td>
-bar_color</td>
+title</td>
 <td>
-AbilityColor</td>
+Component</td>
 <td>
-Changes the color of the ability in the ability bar</td>
+Allows you to set a custom title for this ability</td>
 <td>
 False</td>
 <td>
-"LIGHT_GRAY"</td>
+null</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:slowfall","title":null,"icon":{"item":"minecraft:feather","count":1,"type":"palladium:item"},"bar_color":"LIGHT_GRAY"}</pre>
+{"type":"palladium:slowfall","bar_color":"LIGHT_GRAY","icon":{"item":"minecraft:feather","count":1,"type":"palladium:item"},"title":null}</pre>
 </div>
 <hr>
 
@@ -507,27 +507,15 @@ Fallback Value</th>
 <tbody>
 <tr>
 <td>
-damage_sources</td>
+bar_color</td>
 <td>
-String[]</td>
+AbilityColor</td>
 <td>
-Determines which damage sources have no effect on the entity</td>
-<td>
-False</td>
-<td>
-["lightningBolt","cactus"]</td>
-</tr>
-<tr>
-<td>
-title</td>
-<td>
-Component</td>
-<td>
-Allows you to set a custom title for this ability</td>
+Changes the color of the ability in the ability bar</td>
 <td>
 False</td>
 <td>
-null</td>
+"LIGHT_GRAY"</td>
 </tr>
 <tr>
 <td>
@@ -543,22 +531,34 @@ False</td>
 </tr>
 <tr>
 <td>
-bar_color</td>
+title</td>
 <td>
-AbilityColor</td>
+Component</td>
 <td>
-Changes the color of the ability in the ability bar</td>
+Allows you to set a custom title for this ability</td>
 <td>
 False</td>
 <td>
-"LIGHT_GRAY"</td>
+null</td>
+</tr>
+<tr>
+<td>
+damage_sources</td>
+<td>
+String[]</td>
+<td>
+Determines which damage sources have no effect on the entity</td>
+<td>
+False</td>
+<td>
+["lightningBolt","cactus"]</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:damage_immunity","damage_sources":["lightningBolt","cactus"],"title":null,"icon":{"item":"minecraft:potion","count":1,"type":"palladium:item"},"bar_color":"LIGHT_GRAY"}</pre>
+{"type":"palladium:damage_immunity","bar_color":"LIGHT_GRAY","icon":{"item":"minecraft:potion","count":1,"type":"palladium:item"},"title":null,"damage_sources":["lightningBolt","cactus"]}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

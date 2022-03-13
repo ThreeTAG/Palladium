@@ -12,6 +12,8 @@ version = version + "-forge"
 
 loom {
     runConfigs.configureEach {
+        vmArgs "-noverify"
+
         if (name == "client" || name == "data")
             runDir = "../run"
         else if (name == "server")

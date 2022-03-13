@@ -2,6 +2,7 @@ package net.threetag.palladium;
 
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.block.PalladiumBlocks;
@@ -64,6 +65,11 @@ public class Palladium {
             consumer.accept(ConditionSerializer.documentationBuilder());
             PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
         });
+    }
+
+    @ExpectPlatform
+    public static void loadPackType() {
+        throw new AssertionError();
     }
 
 }
