@@ -56,7 +56,6 @@ public class EntityRenderDispatcherMixin {
 
             }
         }
-        RenderLayerRegistryImpl.REGISTERED.clear();
     }
 
 }

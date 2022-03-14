@@ -1,0 +1,15 @@
+{
+  "name": {
+    "text": "Animated Render Layer Test"
+  },
+  "icon": {
+    "type": "palladium:item",
+    "item": "palladium:quartz_circuit"
+  },
+  "abilities": {
+    "render_layer": {
+      "ability": "palladium:render_layer",
+      "render_layer": "test:cycling_texture_test"
+    }
+  }
+}
