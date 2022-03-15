@@ -8,11 +8,11 @@ public interface IEnergyStorage {
 
     int insertEnergy(int maxAmount, boolean simulate);
 
-    default boolean canExtract() {
+    default boolean canWithdraw() {
         return true;
     }
 
-    int extractEnergy(int maxAmount, boolean simulate);
+    int withdrawEnergy(int maxAmount, boolean simulate);
 
     int getEnergyAmount();
 

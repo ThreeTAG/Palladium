@@ -40,7 +40,7 @@ public class EnergyHelperImpl {
         fromBE.getCapability(CapabilityEnergy.ENERGY, fromSide).ifPresent(fromStorage -> toBE.getCapability(CapabilityEnergy.ENERGY, toSide).ifPresent(toStorage -> {
             int maxExtracted = fromStorage.extractEnergy((int) maxAmount, true);
             long accepted = toStorage.receiveEnergy(maxExtracted, false);
-            result.set(fromStorage.extractEnergy((int) maxAmount, false));
+            result.set(fromStorage.extractEnergy((int) accepted, false));
         }));
 
         return result.get();
@@ -59,12 +59,12 @@ public class EnergyHelperImpl {
         }
 
         @Override
-        public boolean canExtract() {
+        public boolean canWithdraw() {
             return this.forgeStorage.canExtract();
         }
 
         @Override
-        public int extractEnergy(int maxAmount, boolean simulate) {
+        public int withdrawEnergy(int maxAmount, boolean simulate) {
             return this.forgeStorage.extractEnergy(maxAmount, simulate);
         }
 

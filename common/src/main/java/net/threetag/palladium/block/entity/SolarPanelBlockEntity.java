@@ -22,13 +22,13 @@ public class SolarPanelBlockEntity extends BlockEntity implements IBlockEntityEn
 
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, SolarPanelBlockEntity pBlockEntity) {
         if (pBlockEntity.canProduce()) {
-            pBlockEntity.energyStorage.insertEnergy(1, false);
+            pBlockEntity.energyStorage.modifyEnergy(1);
         }
 
         if (pBlockEntity.energyStorage.getEnergyAmount() > 0) {
             for (Direction direction : Direction.values()) {
                 if (direction != Direction.UP) {
-                    EnergyHelper.moveBetweenBlockEntities(pLevel, pPos, direction, pPos.relative(direction), direction.getOpposite(), pBlockEntity.energyStorage.getEnergyAmount());
+                    EnergyHelper.moveBetweenBlockEntities(pLevel, pPos, null, pPos.relative(direction), direction.getOpposite(), pBlockEntity.energyStorage.getEnergyAmount());
                 }
             }
         }
