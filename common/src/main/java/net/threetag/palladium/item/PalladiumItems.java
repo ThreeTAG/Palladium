@@ -21,6 +21,7 @@ public class PalladiumItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Palladium.MOD_ID, Registry.ITEM_REGISTRY);
     public static final CreativeModeTabFiller FILLER_AFTER_COPPER_ORE = new CreativeModeTabFiller(() -> Items.DEEPSLATE_COPPER_ORE);
     public static final CreativeModeTabFiller FILLER_AFTER_GOLD_ORE = new CreativeModeTabFiller(() -> Items.DEEPSLATE_GOLD_ORE);
+    public static final CreativeModeTabFiller FILLER_AFTER_DEEPSLATE_REDSTONE_ORE = new CreativeModeTabFiller(() -> Items.DEEPSLATE_REDSTONE_ORE);
     public static final CreativeModeTabFiller FILLER_AFTER_GILDED_BLACKSTONE = new CreativeModeTabFiller(() -> Items.GILDED_BLACKSTONE);
     public static final CreativeModeTabFiller FILLER_AFTER_COPPER_BLOCK = new CreativeModeTabFiller(() -> Items.COPPER_BLOCK);
     public static final CreativeModeTabFiller FILLER_AFTER_GOLD_BLOCK = new CreativeModeTabFiller(() -> Items.GOLD_BLOCK);
@@ -30,6 +31,7 @@ public class PalladiumItems {
     public static final CreativeModeTabFiller FILLER_AFTER_COPPER = new CreativeModeTabFiller(() -> Items.COPPER_INGOT);
     public static final CreativeModeTabFiller FILLER_AFTER_GOLD = new CreativeModeTabFiller(() -> Items.GOLD_INGOT);
     public static final CreativeModeTabFiller FILLER_AFTER_NETHERITE = new CreativeModeTabFiller(() -> Items.NETHERITE_SCRAP);
+    public static final CreativeModeTabFiller FILLER_AFTER_REDSTONE = new CreativeModeTabFiller(() -> Items.REDSTONE);
     public static final CreativeModeTabFiller FILLER_AFTER_WITHER_ROSE = new CreativeModeTabFiller(() -> Blocks.WITHER_ROSE);
 
     public static final RegistrySupplier<Item> LEAD_ORE = ITEMS.register("lead_ore", () -> new SortedBlockItem(PalladiumBlocks.LEAD_ORE.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_COPPER_ORE));
@@ -38,6 +40,13 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> DEEPSLATE_SILVER_ORE = ITEMS.register("deepslate_silver_ore", () -> new SortedBlockItem(PalladiumBlocks.DEEPSLATE_SILVER_ORE.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_GOLD_ORE));
     public static final RegistrySupplier<Item> TITANIUM_ORE = ITEMS.register("titanium_ore", () -> new SortedBlockItem(PalladiumBlocks.TITANIUM_ORE.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_GILDED_BLACKSTONE));
     public static final RegistrySupplier<Item> VIBRANIUM_ORE = ITEMS.register("vibranium_ore", () -> new SortedBlockItem(PalladiumBlocks.VIBRANIUM_ORE.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_GILDED_BLACKSTONE));
+
+    public static final RegistrySupplier<Item> REDSTONE_FLUX_CRYSTAL_GEODE = ITEMS.register("redstone_flux_crystal_geode", () -> new SortedBlockItem(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_GEODE.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_DEEPSLATE_REDSTONE_ORE));
+    public static final RegistrySupplier<Item> DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE = ITEMS.register("deepslate_redstone_flux_crystal_geode", () -> new SortedBlockItem(PalladiumBlocks.DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_DEEPSLATE_REDSTONE_ORE));
+    public static final RegistrySupplier<Item> SMALL_REDSTONE_FLUX_CRYSTAL_BUD = ITEMS.register("small_redstone_flux_crystal_bud", () -> new BlockItem(PalladiumBlocks.SMALL_REDSTONE_FLUX_CRYSTAL_BUD.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
+    public static final RegistrySupplier<Item> MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD = ITEMS.register("medium_redstone_flux_crystal_bud", () -> new BlockItem(PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
+    public static final RegistrySupplier<Item> LARGE_REDSTONE_FLUX_CRYSTAL_BUD = ITEMS.register("large_redstone_flux_crystal_bud", () -> new BlockItem(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
+    public static final RegistrySupplier<Item> REDSTONE_FLUX_CRYSTAL_CLUSTER = ITEMS.register("redstone_flux_crystal_cluster", () -> new BlockItem(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
 
     public static final RegistrySupplier<Item> LEAD_BLOCK = ITEMS.register("lead_block", () -> new SortedBlockItem(PalladiumBlocks.LEAD_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_COPPER_BLOCK));
     public static final RegistrySupplier<Item> SILVER_BLOCK = ITEMS.register("silver_block", () -> new SortedBlockItem(PalladiumBlocks.SILVER_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_GOLD_BLOCK));
@@ -62,6 +71,7 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> TITANIUM_INGOT = ITEMS.register("titanium_ingot", () -> new SortedItem(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS), FILLER_AFTER_GOLD));
     public static final RegistrySupplier<Item> RAW_VIBRANIUM = ITEMS.register("raw_vibranium", () -> new SortedItem(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS), FILLER_AFTER_NETHERITE));
     public static final RegistrySupplier<Item> VIBRANIUM_INGOT = ITEMS.register("vibranium_ingot", () -> new SortedItem(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS), FILLER_AFTER_NETHERITE));
+    public static final RegistrySupplier<Item> REDSTONE_FLUX_CRYSTAL = ITEMS.register("redstone_flux_crystal", () -> new SortedItem(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS), FILLER_AFTER_REDSTONE));
 
 
     public static final RegistrySupplier<Item> HAMMER = ITEMS.register("hammer", () -> new HammerItem(4.5F, -2.75F, Tiers.IRON, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1).durability(16)));

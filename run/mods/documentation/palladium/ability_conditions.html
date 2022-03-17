@@ -163,18 +163,6 @@ Fallback Value</th>
 <tbody>
 <tr>
 <td>
-max_health</td>
-<td>
-Float</td>
-<td>
-/</td>
-<td>
-False</td>
-<td>
-3.4028235E38</td>
-</tr>
-<tr>
-<td>
 min_health</td>
 <td>
 Float</td>
@@ -185,12 +173,24 @@ False</td>
 <td>
 0.0</td>
 </tr>
+<tr>
+<td>
+max_health</td>
+<td>
+Float</td>
+<td>
+/</td>
+<td>
+False</td>
+<td>
+3.4028235E38</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:health","max_health":3.4028235E38,"min_health":0.0}</pre>
+{"type":"palladium:health","min_health":0.0,"max_health":3.4028235E38}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

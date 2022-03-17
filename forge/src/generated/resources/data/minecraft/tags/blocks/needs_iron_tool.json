@@ -6,6 +6,8 @@
     "palladium:lead_block",
     "palladium:silver_block",
     "palladium:raw_lead_block",
-    "palladium:raw_silver_block"
+    "palladium:raw_silver_block",
+    "palladium:redstone_flux_crystal_geode",
+    "palladium:deepslate_redstone_flux_crystal_geode"
   ]
 }

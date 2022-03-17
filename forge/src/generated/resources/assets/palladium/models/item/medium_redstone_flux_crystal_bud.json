@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "palladium:block/medium_redstone_flux_crystal_bud"
+  }
+}
