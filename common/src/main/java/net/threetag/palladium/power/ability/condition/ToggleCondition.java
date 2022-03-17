@@ -23,6 +23,11 @@ public class ToggleCondition extends Condition {
         entry.keyPressed = !entry.keyPressed;
     }
 
+    @Override
+    public ConditionSerializer getSerializer() {
+        return ConditionSerializers.TOGGLE.get();
+    }
+
     public static class Serializer extends ConditionSerializer {
 
         @Override

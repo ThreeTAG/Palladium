@@ -60,6 +60,16 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
         return conditionSerializer.make(json);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+
+        json.addProperty("type", this.getId().toString());
+        this.propertyManager.values().forEach((palladiumProperty, o) -> json.add(palladiumProperty.getKey(), ((PalladiumProperty) palladiumProperty).toJSON(o)));
+
+        return json;
+    }
+
     public static DocumentationBuilder documentationBuilder() {
         return new DocumentationBuilder(new ResourceLocation(Palladium.MOD_ID, "ability_conditions"), "Ability Conditions")
                 .add(DocumentationBuilder.heading("Ability Conditions"))

@@ -21,4 +21,6 @@ public abstract class Condition {
 
     }
 
+    public abstract ConditionSerializer getSerializer();
+
 }

@@ -31,6 +31,14 @@ Overview</h2>
 Palladium</h3>
 <ul>
 <li>
+<a href="#palladium:not">
+palladium:not</a>
+</li>
+<li>
+<a href="#palladium:or">
+palladium:or</a>
+</li>
+<li>
 <a href="#palladium:action">
 palladium:action</a>
 </li>
@@ -48,6 +56,90 @@ palladium:health</a>
 </li>
 </ul>
 </p>
+<hr>
+
+<div id="palladium:not">
+<h2>
+palladium:not</h2>
+<h3>
+Data Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+conditions</td>
+<td>
+Condition[]</td>
+<td>
+Array of conditions that must be disabled</td>
+<td>
+False</td>
+<td>
+[]</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:not","conditions":[]}</pre>
+</div>
+<hr>
+
+<div id="palladium:or">
+<h2>
+palladium:or</h2>
+<h3>
+Data Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+conditions</td>
+<td>
+Condition[]</td>
+<td>
+Array of conditions that must be disabled</td>
+<td>
+False</td>
+<td>
+[]</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:or","conditions":[]}</pre>
+</div>
 <hr>
 
 <div id="palladium:action">
@@ -163,18 +255,6 @@ Fallback Value</th>
 <tbody>
 <tr>
 <td>
-min_health</td>
-<td>
-Float</td>
-<td>
-/</td>
-<td>
-False</td>
-<td>
-0.0</td>
-</tr>
-<tr>
-<td>
 max_health</td>
 <td>
 Float</td>
@@ -185,12 +265,24 @@ False</td>
 <td>
 3.4028235E38</td>
 </tr>
+<tr>
+<td>
+min_health</td>
+<td>
+Float</td>
+<td>
+/</td>
+<td>
+False</td>
+<td>
+0.0</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:health","min_health":0.0,"max_health":3.4028235E38}</pre>
+{"type":"palladium:health","max_health":3.4028235E38,"min_health":0.0}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

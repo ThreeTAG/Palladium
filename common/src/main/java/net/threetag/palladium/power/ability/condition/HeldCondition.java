@@ -28,6 +28,11 @@ public class HeldCondition extends Condition {
         entry.keyPressed = false;
     }
 
+    @Override
+    public ConditionSerializer getSerializer() {
+        return ConditionSerializers.HELD.get();
+    }
+
     public static class Serializer extends ConditionSerializer {
 
         @Override

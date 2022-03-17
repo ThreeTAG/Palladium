@@ -1,0 +1,34 @@
+{
+  "name": {
+    "text": "Or/Not Power"
+  },
+  "icon": {
+    "type": "palladium:item",
+    "item": "palladium:vibranium_circuit"
+  },
+  "abilities": {
+    "command": {
+      "ability": "palladium:command",
+      "commands": "tell @s Or Works!",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:health",
+                "min_health": 0,
+                "max_health": 4
+              },
+              {
+                "type": "palladium:health",
+                "min_health": 16,
+                "max_health": 20
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
