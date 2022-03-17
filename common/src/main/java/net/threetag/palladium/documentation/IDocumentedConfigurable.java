@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface IDocumentedConfigurable {
 
-    void generateDocumentation(DocumentationBuilder builder);
-
     ResourceLocation getId();
 
     default String getTitle() {

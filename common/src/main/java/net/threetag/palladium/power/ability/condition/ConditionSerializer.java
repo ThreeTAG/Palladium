@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.documentation.HTMLBuilder;
+import net.threetag.palladium.documentation.DocumentationBuilder;
 import net.threetag.palladium.documentation.IDefaultDocumentedConfigurable;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
@@ -60,9 +60,9 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
         return conditionSerializer.make(json);
     }
 
-    public static HTMLBuilder documentationBuilder() {
-        return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "ability_conditions"), "Ability Conditions")
-                .add(HTMLBuilder.heading("Ability Conditions"))
+    public static DocumentationBuilder documentationBuilder() {
+        return new DocumentationBuilder(new ResourceLocation(Palladium.MOD_ID, "ability_conditions"), "Ability Conditions")
+                .add(DocumentationBuilder.heading("Ability Conditions"))
                 .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList()));
     }
 

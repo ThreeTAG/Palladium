@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Items;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.documentation.HTMLBuilder;
+import net.threetag.palladium.documentation.DocumentationBuilder;
 import net.threetag.palladium.documentation.IDefaultDocumentedConfigurable;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.PowerManager;
@@ -73,9 +73,9 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
         return entries;
     }
 
-    public static HTMLBuilder documentationBuilder() {
-        return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "abilities"), "Abilities")
-                .add(HTMLBuilder.heading("Abilities"))
+    public static DocumentationBuilder documentationBuilder() {
+        return new DocumentationBuilder(new ResourceLocation(Palladium.MOD_ID, "abilities"), "Abilities")
+                .add(DocumentationBuilder.heading("Abilities"))
                 .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList()));
     }
 

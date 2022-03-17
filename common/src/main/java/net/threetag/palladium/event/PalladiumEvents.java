@@ -7,7 +7,7 @@ import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.threetag.palladium.documentation.HTMLBuilder;
+import net.threetag.palladium.documentation.DocumentationBuilder;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 
 import java.util.function.Consumer;
@@ -39,7 +39,7 @@ public interface PalladiumEvents {
 
     interface GenerateDocumentation {
 
-        void generate(Consumer<HTMLBuilder> consumer);
+        void generate(Consumer<DocumentationBuilder> consumer);
 
     }
 
