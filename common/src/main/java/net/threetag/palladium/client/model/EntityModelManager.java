@@ -14,7 +14,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.documentation.DocumentationBuilder;
+import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.mixin.*;
 import net.threetag.palladium.util.json.GsonUtil;
 
@@ -132,7 +132,7 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
     }
 
     public static boolean dumpLayers() {
-        File file = new File(DocumentationBuilder.SUBFOLDER, "palladium/models");
+        File file = new File(HTMLBuilder.SUBFOLDER, "palladium/models");
 
         if (!file.exists() && !file.mkdirs())
             return false;

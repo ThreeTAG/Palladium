@@ -15,6 +15,28 @@ public interface IDefaultDocumentedConfigurable extends IDocumentedConfigurable 
     PropertyManager getPropertyManager();
 
     @Override
+    default void generateDocumentation(DocumentationBuilder builder) {
+        this.getPropertyManager().values().forEach(new BiConsumer<PalladiumProperty<?>, Object>() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public void accept(PalladiumProperty property, Object val) {
+                DocumentationBuilder.Entry<?> entry = builder.addProperty(property.getKey(), val.getClass())
+                        .description(property.getDescription())
+                        .fallback(val);
+
+
+                JsonElement v = property.toJSON(val);
+                rows.add(Arrays.asList(
+                        property.getKey(),
+                        property.getType().getTypeName().substring(property.getType().getTypeName().lastIndexOf(".") + 1),
+                        property.getDescription(),
+                        false,
+                        v));
+            }
+        });
+    }
+
+    @Override
     default List<String> getColumns() {
         return Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value");
     }

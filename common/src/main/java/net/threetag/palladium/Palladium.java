@@ -8,7 +8,7 @@ import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.command.SuperpowerCommand;
-import net.threetag.palladium.documentation.DocumentationBuilder;
+import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.network.PalladiumNetwork;
@@ -60,7 +60,7 @@ public class Palladium {
 
     public static void generateDocumentation() {
         LifecycleEvent.SETUP.register(() -> {
-            Consumer<DocumentationBuilder> consumer = DocumentationBuilder::save;
+            Consumer<HTMLBuilder> consumer = HTMLBuilder::save;
             consumer.accept(Ability.documentationBuilder());
             consumer.accept(ConditionSerializer.documentationBuilder());
             PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
