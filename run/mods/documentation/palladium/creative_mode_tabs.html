@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>
-Armor Materials</title>
+Creative Mode Tabs</title>
 <style>
 table{font-family:arial, sans-serif;border-collapse:collapse;}
 td,th{border:1px solid #666666;text-align:left;padding:8px;min-width:45px;}
@@ -19,10 +19,10 @@ th,td.true,td.false,td.other{text-align:center;}pre{outline:1px solid #ccc;paddi
 </head>
 <body>
 <h1>
-Armor Materials</h1>
+Creative Mode Tabs</h1>
 <div>
 <p>
-Each armor material goes into a seperate file into the 'addon/[namespace]/armor_materials' folder, which can then be used for custom armor items/suit sets.</p>
+Each creative mode tab goes into a seperate file into the 'addon/[namespace]/creative_mode_tabs' folder, which can then be used for items.</p>
 <h3>
 Settings:</h3>
 <table>
@@ -43,94 +43,22 @@ Fallback Value</th>
 <tbody>
 <tr>
 <td>
-durability_multiplier</td>
+icon</td>
 <td>
-Integer</td>
+ItemStack</td>
 <td>
-A value that gets multiplied with 13, 15, 16 or 11 (feet, legs, chest, head) depending on the slot. Used for the durability value of the item.</td>
+Icon for tab, can only be an item.</td>
 <td style="background-color: lightgreen">
 true</td>
 <td>
 /</td>
-</tr>
-<tr>
-<td>
-slot_protections</td>
-<td>
-Integer[]</td>
-<td>
-An array of 4 integers, determines the defense value of each slot. Order: feet, legs, chest, head. For reference, iron has [2, 5, 6, 2], diamond is in the example.</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-enchantment_value</td>
-<td>
-Integer</td>
-<td>
-Determines the enchantibility of the item. For reference: iron has 9, diamond 10, gold 25.</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-equip_sound</td>
-<td>
-ResourceLocation</td>
-<td>
-Sound that is played when equipping the item into the slot.</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-toughness</td>
-<td>
-Float</td>
-<td>
-Adds additional armor toughness. For reference: diamond has 2.0, netherite has 3.0, rest has 0.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0.0</td>
-</tr>
-<tr>
-<td>
-knockback_resistance</td>
-<td>
-Float</td>
-<td>
-Adds knockback resistance. For reference: netherite has 0.1, rest has 0.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0.0</td>
-</tr>
-<tr>
-<td>
-repair_ingredient</td>
-<td>
-Ingredient</td>
-<td>
-Ingredient definition for repairing the item in an anvil. Can be defined like in recipes.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-empty ingredient</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"durability_multiplier":12,"slot_protections":[3,6,8,3],"enchantment_value":12,"equip_sound":"minecraft:item.armor.equip_iron","toughness":1.5,"knockback_resistance":0.1,"repair_ingredient":{"tag":"minecraft:dirt"}}</pre>
+{"icon":"minecraft:trident"}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

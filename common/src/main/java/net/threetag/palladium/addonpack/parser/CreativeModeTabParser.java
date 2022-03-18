@@ -2,6 +2,7 @@ package net.threetag.palladium.addonpack.parser;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import dev.architectury.registry.CreativeTabRegistry;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -14,6 +15,8 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.documentation.HTMLBuilder;
+import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.Map;
@@ -45,5 +48,16 @@ public class CreativeModeTabParser extends SimpleJsonResourceReloadListener {
         });
 
         Palladium.LOGGER.info("Registered " + i.get() + " addonpack creative mode tabs");
+    }
+
+    public static HTMLBuilder documentationBuilder() {
+        JsonDocumentationBuilder builder = new JsonDocumentationBuilder()
+                .setDescription("Each creative mode tab goes into a seperate file into the 'addon/[namespace]/creative_mode_tabs' folder, which can then be used for items.");
+
+        builder.addProperty("icon", ItemStack.class)
+                .description("Icon for tab, can only be an item.")
+                .required().exampleJson(new JsonPrimitive("minecraft:trident"));
+
+        return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "creative_mode_tabs"), "Creative Mode Tabs").add(HTMLBuilder.heading("Creative Mode Tabs")).addDocumentation(builder);
     }
 }

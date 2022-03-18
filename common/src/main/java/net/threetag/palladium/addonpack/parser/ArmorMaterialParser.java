@@ -93,7 +93,7 @@ public class ArmorMaterialParser extends SimpleJsonResourceReloadListener {
 
     public static HTMLBuilder documentationBuilder() {
         JsonDocumentationBuilder builder = new JsonDocumentationBuilder()
-                .setDescription("Each armor material goes into a seperate file into the 'armor_materials', which can then be used for custom armor items/suit sets.");
+                .setDescription("Each armor material goes into a seperate file into the 'addon/[namespace]/armor_materials' folder, which can then be used for custom armor items/suit sets.");
 
         builder.addProperty("durability_multiplier", Integer.class)
                 .description("A value that gets multiplied with 13, 15, 16 or 11 (feet, legs, chest, head) depending on the slot. Used for the durability value of the item.")
