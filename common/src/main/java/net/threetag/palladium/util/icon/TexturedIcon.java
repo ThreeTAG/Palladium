@@ -75,6 +75,20 @@ public class TexturedIcon implements IIcon {
         return IconSerializers.TEXTURE.get();
     }
 
+    @Override
+    public String toString() {
+        return "TexturedIcon{" +
+                "texture=" + texture +
+                ", u=" + u +
+                ", v=" + v +
+                ", width=" + width +
+                ", height=" + height +
+                ", textureWidth=" + textureWidth +
+                ", textureHeight=" + textureHeight +
+                ", tint=" + tint +
+                '}';
+    }
+
     public static class Serializer extends IconSerializer<TexturedIcon> {
 
         @Override

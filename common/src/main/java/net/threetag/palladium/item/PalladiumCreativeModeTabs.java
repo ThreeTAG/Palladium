@@ -6,6 +6,9 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.Palladium;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PalladiumCreativeModeTabs {
 
     public static final CreativeModeTab TECHNOLOGY = CreativeTabRegistry.create(new ResourceLocation(Palladium.MOD_ID, "technology"), () -> new ItemStack(PalladiumItems.VIBRANIUM_INGOT.get()));
@@ -20,6 +23,21 @@ public class PalladiumCreativeModeTabs {
         }
 
         return null;
+    }
+
+    public static List<ResourceLocation> getTabs() {
+        List<ResourceLocation> tabs = new ArrayList<>();
+
+        for (CreativeModeTab tab : CreativeModeTab.TABS) {
+            if (tab.getRecipeFolderName().contains(".")) {
+                String[] s = tab.getRecipeFolderName().split("\\.", 2);
+                tabs.add(new ResourceLocation(s[0], s[1]));
+            } else {
+                tabs.add(new ResourceLocation(tab.getRecipeFolderName()));
+            }
+        }
+
+        return tabs;
     }
 
 }

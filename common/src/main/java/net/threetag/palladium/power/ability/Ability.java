@@ -13,6 +13,7 @@ import net.minecraft.world.item.Items;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDefaultDocumentedConfigurable;
+import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.util.icon.IIcon;
@@ -90,7 +91,8 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
     }
 
     @Override
-    public String getTitle() {
-        return new TranslatableComponent("ability." + this.getId().getNamespace() + "." + this.getId().getPath()).getString();
+    public void generateDocumentation(JsonDocumentationBuilder builder) {
+        IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
+        builder.setTitle(new TranslatableComponent("ability." + this.getId().getNamespace() + "." + this.getId().getPath()).getString());
     }
 }

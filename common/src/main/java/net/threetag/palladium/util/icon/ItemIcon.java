@@ -39,6 +39,13 @@ public class ItemIcon implements IIcon {
         return IconSerializers.ITEM.get();
     }
 
+    @Override
+    public String toString() {
+        return "ItemIcon{" +
+                "stack=" + stack +
+                '}';
+    }
+
     public static class Serializer extends IconSerializer<ItemIcon> {
 
         @Override

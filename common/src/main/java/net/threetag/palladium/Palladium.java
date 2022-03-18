@@ -2,9 +2,9 @@ package net.threetag.palladium;
 
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
 import net.threetag.palladium.addonpack.AddonPackManager;
+import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.command.SuperpowerCommand;
@@ -63,13 +63,8 @@ public class Palladium {
             Consumer<HTMLBuilder> consumer = HTMLBuilder::save;
             consumer.accept(Ability.documentationBuilder());
             consumer.accept(ConditionSerializer.documentationBuilder());
+            consumer.accept(ItemParser.documentationBuilder());
             PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
         });
     }
-
-    @ExpectPlatform
-    public static void loadPackType() {
-        throw new AssertionError();
-    }
-
 }

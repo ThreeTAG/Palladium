@@ -9,14 +9,14 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public class PropertyManager {
 
-    final Map<PalladiumProperty<?>, Object> defaultProperties = new HashMap<>();
-    final Map<PalladiumProperty<?>, Object> values = new HashMap<>();
+    final Map<PalladiumProperty<?>, Object> defaultProperties = new LinkedHashMap<>();
+    final Map<PalladiumProperty<?>, Object> values = new LinkedHashMap<>();
     Listener listener;
 
     public PropertyManager setListener(Listener listener) {

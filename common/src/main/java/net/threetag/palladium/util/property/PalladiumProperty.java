@@ -13,7 +13,7 @@ public abstract class PalladiumProperty<T> {
 
     private final String key;
     private String description;
-    private final TypeToken<T> typeToken = new TypeToken<T>(getClass()) {
+    public final TypeToken<T> typeToken = new TypeToken<T>(getClass()) {
     };
     private final Type type = typeToken.getType();
 

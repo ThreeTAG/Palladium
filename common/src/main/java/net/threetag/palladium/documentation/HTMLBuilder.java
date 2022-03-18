@@ -1,10 +1,12 @@
 package net.threetag.palladium.documentation;
 
+import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import dev.architectury.platform.Mod;
 import dev.architectury.platform.Platform;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.util.Utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,6 +26,7 @@ public class HTMLBuilder {
     private HTMLObject html;
     private HTMLObject head;
     private HTMLObject body;
+    private boolean hasJson = false;
 
     public HTMLBuilder(ResourceLocation id, String title) {
         this(id, title, "https://i.imgur.com/am80ox1.png");
@@ -59,7 +62,46 @@ public class HTMLBuilder {
         return this;
     }
 
+    public HTMLBuilder addDocumentation(JsonDocumentationBuilder builder) {
+        AtomicBoolean hasExampleJson = new AtomicBoolean(false);
+        HTMLObject div;
+        JsonObject json = new JsonObject();
+        this.add(div = div()).add(subHeading(builder.getTitle()));
+
+        if (builder.getDescription() != null) {
+            div.add(paragraph(builder.getDescription()));
+        }
+
+        div.add(subSubHeading("Data Settings:"))
+                .add(table(Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value"), builder.getEntries().stream().map(entry -> {
+                    List<Object> list = new ArrayList<>();
+                    list.add(entry.getName());
+                    list.add(entry.getTypeClass().getSimpleName());
+                    list.add(entry.getDescription());
+                    list.add(entry.isRequired());
+                    list.add(Utils.orElse(entry.getFallbackValue(), "/"));
+
+                    if (entry.getExampleJson() != null) {
+                        hasExampleJson.set(true);
+                        json.add(entry.getName(), entry.getExampleJson());
+                    }
+
+                    return list;
+                }).collect(Collectors.toList())));
+        if (hasExampleJson.get()) {
+            div.add(subSubHeading("Example:"))
+                    .add(new HTMLObject("pre", json.toString()).addAttribute("class", "json-snippet"));
+            this.hasJson = true;
+        }
+
+        return this;
+    }
+
     public HTMLBuilder addDocumentationSettings(List<IDocumentedConfigurable> settings) {
+        return this.addDocumentationSettings(settings, JsonDocumentationBuilder::new);
+    }
+
+    public HTMLBuilder addDocumentationSettings(List<IDocumentedConfigurable> settings, Supplier<JsonDocumentationBuilder> builderSupplier) {
         Map<String, List<IDocumentedConfigurable>> sorted = new HashMap<>();
         // Sort abilities by mods
         for (IDocumentedConfigurable setting : settings) {
@@ -77,69 +119,42 @@ public class HTMLBuilder {
 
         sorted.forEach((mod, settingsList) -> {
             overview.add(subSubHeading(mod));
-            overview.add(list(settingsList.stream().map(setting -> link(setting.getTitle(), "#" + setting.getId().toString())).collect(Collectors.toList())));
+            overview.add(list(settingsList.stream().map(setting -> {
+                JsonDocumentationBuilder builder = new JsonDocumentationBuilder();
+                setting.generateDocumentation(builder);
+                return link(builder.getTitle(), "#" + setting.getId().toString());
+            }).collect(Collectors.toList())));
         });
-
-        AtomicBoolean hasJson = new AtomicBoolean(false);
 
         sorted.values().forEach(modSettings -> {
             modSettings.forEach(setting -> {
+                JsonDocumentationBuilder builder = builderSupplier.get();
+                setting.generateDocumentation(builder);
                 HTMLObject div;
-                this.add(hr()).add(div = div().setId(setting.getId().toString())
-                        .add(subHeading(setting.getTitle()))
-                        .add(subSubHeading("Data Settings:"))
-                        .add(table(setting.getColumns(), setting.getRows().stream().map(rows -> {
+                JsonObject json = setting.buildExampleJson(new JsonObject(), builder);
+                this.add(hr()).add(div = div().setId(setting.getId().toString()).add(subHeading(builder.getTitle())));
+
+                if (builder.getDescription() != null) {
+                    div.add(paragraph(builder.getDescription()));
+                }
+
+                div.add(subSubHeading("Data Settings:"))
+                        .add(table(Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value"), builder.getEntries().stream().map(entry -> {
                             List<Object> list = new ArrayList<>();
-                            for (Object object : rows) {
-                                if (object == null) {
-                                    list.add("/");
-                                } else if (object instanceof Boolean) {
-                                    list.add((Boolean) object ? "True" : "False");
-                                } else if (object instanceof Class<?>) {
-                                    list.add(((Class<?>) object).getSimpleName());
-                                } else {
-                                    list.add(object);
-                                }
-                            }
+                            list.add(entry.getName());
+                            list.add(entry.getTypeClass().getSimpleName());
+                            list.add(entry.getDescription());
+                            list.add(entry.isRequired());
+                            list.add(entry.getFallbackValue());
                             return list;
-                        }).collect(Collectors.toList()))));
-                if (setting.getExampleJson() != null) {
-                    hasJson.set(true);
+                        }).collect(Collectors.toList())));
+                if (json.keySet().size() > 0) {
                     div.add(subSubHeading("Example:"))
-                            .add(new HTMLObject("pre", setting.getExampleJson().toString()).addAttribute("class", "json-snippet"));
+                            .add(new HTMLObject("pre", json.toString()).addAttribute("class", "json-snippet"));
+                    this.hasJson = true;
                 }
             });
         });
-
-        if (hasJson.get()) {
-            this.add(js("function syntaxHighlight(json) {\n" +
-                    "        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n" +
-                    "        return json.replace(/(\"(\\\\u[a-zA-Z0-9]{4}|\\\\[^u]|[^\\\\\"])*\"(\\s*:)?|\\b(true|false|null)\\b|-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?)/g, function (match) {\n" +
-                    "            var cls = 'number';\n" +
-                    "            if (/^\"/.test(match)) {\n" +
-                    "                if (/:$/.test(match)) {\n" +
-                    "                    cls = 'key';\n" +
-                    "                } else {\n" +
-                    "                    cls = 'string';\n" +
-                    "                }\n" +
-                    "            } else if (/true|false/.test(match)) {\n" +
-                    "                cls = 'boolean';\n" +
-                    "            } else if (/null/.test(match)) {\n" +
-                    "                cls = 'null';\n" +
-                    "            }\n" +
-                    "            return '<span class=\"' + cls + '\">' + match + '</span>';\n" +
-                    "        });\n" +
-                    "    }\n" +
-                    "\n" +
-                    "    const elements = document.getElementsByClassName(\"json-snippet\");\n" +
-                    "    const amount = elements.length;\n" +
-                    "    for (let i = 0; i < amount; i++) {\n" +
-                    "        const element = elements[0];\n" +
-                    "        const div = document.createElement(\"pre\");\n" +
-                    "        div.innerHTML = syntaxHighlight(JSON.stringify(JSON.parse(element.innerText), undefined, 4));\n" +
-                    "        element.parentNode.replaceChild(div, element);\n" +
-                    "    }"));
-        }
 
         return this;
     }
@@ -207,7 +222,11 @@ public class HTMLBuilder {
         for (Iterable<?> rowObjects : rows) {
             HTMLObject row = new HTMLObject("tr");
             for (Object obj : rowObjects) {
-                row.add(new HTMLObject("td", obj));
+                if (obj instanceof Boolean b) {
+                    row.add(new HTMLObject("td", obj).addAttribute("style", "background-color: " + (b ? "lightgreen" : "lightcoral")));
+                } else {
+                    row.add(new HTMLObject("td", obj));
+                }
             }
             body.add(row);
         }
@@ -226,6 +245,36 @@ public class HTMLBuilder {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void save() {
         try {
+            if (this.hasJson) {
+                this.add(js("function syntaxHighlight(json) {\n" +
+                        "        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n" +
+                        "        return json.replace(/(\"(\\\\u[a-zA-Z0-9]{4}|\\\\[^u]|[^\\\\\"])*\"(\\s*:)?|\\b(true|false|null)\\b|-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?)/g, function (match) {\n" +
+                        "            var cls = 'number';\n" +
+                        "            if (/^\"/.test(match)) {\n" +
+                        "                if (/:$/.test(match)) {\n" +
+                        "                    cls = 'key';\n" +
+                        "                } else {\n" +
+                        "                    cls = 'string';\n" +
+                        "                }\n" +
+                        "            } else if (/true|false/.test(match)) {\n" +
+                        "                cls = 'boolean';\n" +
+                        "            } else if (/null/.test(match)) {\n" +
+                        "                cls = 'null';\n" +
+                        "            }\n" +
+                        "            return '<span class=\"' + cls + '\">' + match + '</span>';\n" +
+                        "        });\n" +
+                        "    }\n" +
+                        "\n" +
+                        "    const elements = document.getElementsByClassName(\"json-snippet\");\n" +
+                        "    const amount = elements.length;\n" +
+                        "    for (let i = 0; i < amount; i++) {\n" +
+                        "        const element = elements[0];\n" +
+                        "        const div = document.createElement(\"pre\");\n" +
+                        "        div.innerHTML = syntaxHighlight(JSON.stringify(JSON.parse(element.innerText), undefined, 4));\n" +
+                        "        element.parentNode.replaceChild(div, element);\n" +
+                        "    }"));
+            }
+
             File file = new File(SUBFOLDER, this.id.getNamespace() + "/" + this.id.getPath() + ".html");
 
             if (!file.getParentFile().exists())
@@ -281,8 +330,12 @@ public class HTMLBuilder {
             this.content.forEach(content -> {
                 if (content instanceof Supplier<?>) {
                     result.append(((Supplier<?>) content).get().toString());
-                } else {
-                    result.append(content.toString());
+                } else if (content != null) {
+                    if (content instanceof String[] strings) {
+                        result.append(Arrays.toString(strings));
+                    } else {
+                        result.append(content);
+                    }
                 }
             });
             if (!this.tag.equals("br") && !this.tag.equals("hr") && !this.tag.equals("link")) {

@@ -1,0 +1,226 @@
+<html>
+<head>
+<title>
+Items</title>
+<style>
+table{font-family:arial, sans-serif;border-collapse:collapse;}
+td,th{border:1px solid #666666;text-align:left;padding:8px;min-width:45px;}
+th{background-color:#CCCCCC;}
+p{margin:0;}
+tr:nth-child(even){background-color:#D8D8D8;}
+tr:nth-child(odd){background-color:#EEEEEE;}
+td.true{background-color:#72FF85AA;}
+td.false{background-color:#FF6666AA;}
+td.other{background-color:#42A3FFAA;}
+td.error{color:#FF0000;}
+th,td.true,td.false,td.other{text-align:center;}pre{outline:1px solid #ccc;padding:5px;margin:5px;} .string{color:green;} .number{color:cornflowerblue;} .boolean{color:darkorange;} .null{color:orangered;} .key{color:purple;}</style>
+<link rel="shortcut icon" type="image/x-icon" href="https://i.imgur.com/am80ox1.png">
+
+<style>
+.json-block { background-color: lightgray; display: inline-block; border: 5px solid darkgray; padding: 10px }</style>
+</head>
+<body>
+<h1>
+Items</h1>
+<h2>
+Global Settings</h2>
+<div>
+<p>
+These settings apply to ALL item types. Keep in mind that if fields are not required, you do NOT need to write them into your json.</p>
+<h3>
+Data Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+type</td>
+<td>
+ResourceLocation</td>
+<td>
+Item Type, each come with new different settings. Listed below on this page.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+palladium:default</td>
+</tr>
+<tr>
+<td>
+max_stack_size</td>
+<td>
+Integer</td>
+<td>
+Max stack size for an itemstack. Range: 1-64</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+64</td>
+</tr>
+<tr>
+<td>
+max_damage</td>
+<td>
+Integer</td>
+<td>
+Max damage for an item. Must be greater then or equal 0.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+creative_mode_tab</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the creative mode tab the item is supposed to appear in. Possible values: [minecraft:building_blocks, minecraft:decorations, minecraft:redstone, minecraft:transportation, minecraft:hotbar, minecraft:search, minecraft:misc, minecraft:food, minecraft:tools, minecraft:combat, minecraft:brewing, minecraft:inventory, test:test_tab, palladium:technology]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+rarity</td>
+<td>
+String</td>
+<td>
+Rarity of the item, influences the item name's color. Possible values: [common, uncommon, rare, epic]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+is_fire_resistant</td>
+<td>
+Boolean</td>
+<td>
+Whether or not the item will survive being thrown into fire/lava.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td style="background-color: lightcoral">
+false</td>
+</tr>
+<tr>
+<td>
+tooltip</td>
+<td>
+Component[]</td>
+<td>
+Tooltip lines. Can be array of primitive strings or more complex text component</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+attribute_modifiers</td>
+<td>
+AttributeModifier[]</td>
+<td>
+Attribute modifiers when having the item equipped. You first specify the slot ("all" for every slot, other options: [mainhand, offhand, feet, legs, chest, head]), then an array for different modifiers. Possible attributes: [minecraft:generic.max_health, minecraft:generic.follow_range, minecraft:generic.knockback_resistance, minecraft:generic.movement_speed, minecraft:generic.flying_speed, minecraft:generic.attack_damage, minecraft:generic.attack_knockback, minecraft:generic.attack_speed, minecraft:generic.armor, minecraft:generic.armor_toughness, minecraft:generic.luck, minecraft:zombie.spawn_reinforcements, minecraft:horse.jump_strength, forge:swim_speed, forge:nametag_distance, forge:entity_gravity, forge:reach_distance]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"max_stack_size":64,"creative_mode_tab":"minecraft:decorations","rarity":"epic","is_fire_resistant":false,"tooltip":["Line 1",{"translate":"example.line2.translation_key","color":"#BCD42A","underlined":true}],"attribute_modifiers":{"all":[{"attribute":"minecraft:generic.max_health","amount":2,"operation":0,"uuid":"f98db25e-91cb-45ca-ba40-5526ff2cd180"}],"chest":[{"attribute":"minecraft:generic.movement_speed","amount":4,"operation":1,"uuid":"3a4df804-2be2-4002-a829-eaf29a629cac"}]}}</pre>
+</div>
+<h2>
+</h2>
+<hr>
+
+<p>
+<h2>
+Overview</h2>
+<h3>
+Palladium</h3>
+<ul>
+<li>
+<a href="#palladium:default">
+</a>
+</li>
+</ul>
+</p>
+<hr>
+
+<div id="palladium:default">
+<h2>
+</h2>
+<h3>
+Data Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:default"}</pre>
+</div>
+<script>
+function syntaxHighlight(json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+
+    const elements = document.getElementsByClassName("json-snippet");
+    const amount = elements.length;
+    for (let i = 0; i < amount; i++) {
+        const element = elements[0];
+        const div = document.createElement("pre");
+        div.innerHTML = syntaxHighlight(JSON.stringify(JSON.parse(element.innerText), undefined, 4));
+        element.parentNode.replaceChild(div, element);
+    }</script>
+</body>
+</html>

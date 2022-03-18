@@ -8,6 +8,8 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.threetag.palladium.power.ability.AbilityColor;
 
+import java.util.Locale;
+
 public class AbilityColorProperty extends PalladiumProperty<AbilityColor> {
 
     public AbilityColorProperty(String key) {
@@ -25,7 +27,7 @@ public class AbilityColorProperty extends PalladiumProperty<AbilityColor> {
 
     @Override
     public JsonElement toJSON(AbilityColor value) {
-        return new JsonPrimitive(value.name());
+        return new JsonPrimitive(value.name().toLowerCase(Locale.ROOT));
     }
 
     @Override
@@ -38,7 +40,7 @@ public class AbilityColorProperty extends PalladiumProperty<AbilityColor> {
 
     @Override
     public Tag toNBT(AbilityColor value) {
-        return StringTag.valueOf(value.name());
+        return StringTag.valueOf(value.name().toLowerCase(Locale.ROOT));
     }
 
     @Override
