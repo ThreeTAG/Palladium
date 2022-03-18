@@ -24,12 +24,12 @@ public interface IEnergyStorageMixin extends EnergyStorage {
 
     @Override
     default boolean supportsExtraction() {
-        return this.cast().canExtract();
+        return this.cast().canWithdraw();
     }
 
     @Override
     default long extract(long maxAmount, TransactionContext transaction) {
-        return this.cast().extractEnergy((int) maxAmount, false);
+        return this.cast().withdrawEnergy((int) maxAmount, false);
     }
 
     @Override

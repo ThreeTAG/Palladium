@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "palladium:block/redstone_flux_crystal_cluster",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "palladium:block/redstone_flux_crystal_cluster"
+    },
+    "facing=north": {
+      "model": "palladium:block/redstone_flux_crystal_cluster",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "palladium:block/redstone_flux_crystal_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "palladium:block/redstone_flux_crystal_cluster",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "palladium:block/redstone_flux_crystal_cluster",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

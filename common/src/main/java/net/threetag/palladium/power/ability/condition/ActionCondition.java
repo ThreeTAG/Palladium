@@ -10,7 +10,7 @@ public class ActionCondition extends Condition {
 
     @Override
     public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
-        if(entry.keyPressed) {
+        if (entry.keyPressed) {
             entry.keyPressed = false;
             return true;
         }
@@ -25,6 +25,11 @@ public class ActionCondition extends Condition {
     @Override
     public void onKeyPressed(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
         entry.keyPressed = true;
+    }
+
+    @Override
+    public ConditionSerializer getSerializer() {
+        return ConditionSerializers.ACTION.get();
     }
 
     public static class Serializer extends ConditionSerializer {

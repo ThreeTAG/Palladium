@@ -20,7 +20,7 @@ public class EnergyHelperImpl {
 
     public static long moveBetweenBlockEntities(Level level, BlockPos from, Direction fromSide, BlockPos to, Direction toSide, long maxAmount) {
         EnergyStorage fromStorage = EnergyStorage.SIDED.find(level, from, fromSide);
-        EnergyStorage toStorage = EnergyStorage.SIDED.find(level, from, toSide);
+        EnergyStorage toStorage = EnergyStorage.SIDED.find(level, to, toSide);
         return EnergyStorageUtil.move(fromStorage, toStorage, maxAmount, null);
     }
 
@@ -37,12 +37,12 @@ public class EnergyHelperImpl {
         }
 
         @Override
-        public boolean canExtract() {
+        public boolean canWithdraw() {
             return this.fabricStorage.supportsExtraction();
         }
 
         @Override
-        public int extractEnergy(int maxAmount, boolean simulate) {
+        public int withdrawEnergy(int maxAmount, boolean simulate) {
             return (int) this.fabricStorage.extract(maxAmount, Transaction.openNested(null));
         }
 

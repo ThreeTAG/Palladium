@@ -2,8 +2,6 @@ package net.threetag.palladium;
 
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -28,10 +26,15 @@ public class PalladiumClient {
     }
 
     public static void blockRenderTypes() {
-        RenderTypeRegistry.register(RenderType.cutout(), PalladiumBlocks.HEART_SHAPED_HERB.get(), PalladiumBlocks.POTTED_HEART_SHAPED_HERB.get());
+        RenderTypeRegistry.register(RenderType.cutout(),
+                PalladiumBlocks.HEART_SHAPED_HERB.get(),
+                PalladiumBlocks.POTTED_HEART_SHAPED_HERB.get(),
+                PalladiumBlocks.SMALL_REDSTONE_FLUX_CRYSTAL_BUD.get(),
+                PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD.get(),
+                PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD.get(),
+                PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER.get());
     }
 
-    @Environment(EnvType.CLIENT)
     public static void colorHandlers() {
         ColorHandlerRegistry.registerItemColors((itemStack, i) -> i > 0 ? -1 : ((DyeableLeatherItem) itemStack.getItem()).getColor(itemStack), PalladiumItems.VIBRANIUM_WEAVE_BOOTS.get());
     }

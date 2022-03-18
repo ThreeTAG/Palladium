@@ -2,6 +2,7 @@ package net.threetag.palladium.energy;
 
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.util.Mth;
 
 public class EnergyStorage implements IEnergyStorage {
 
@@ -46,13 +47,13 @@ public class EnergyStorage implements IEnergyStorage {
     }
 
     @Override
-    public boolean canExtract() {
+    public boolean canWithdraw() {
         return this.maxExtract > 0;
     }
 
     @Override
-    public int extractEnergy(int maxAmount, boolean simulate) {
-        if (!canExtract())
+    public int withdrawEnergy(int maxAmount, boolean simulate) {
+        if (!canWithdraw())
             return 0;
 
         int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
@@ -69,6 +70,10 @@ public class EnergyStorage implements IEnergyStorage {
     @Override
     public int getEnergyCapacity() {
         return this.capacity;
+    }
+
+    public void modifyEnergy(int energy) {
+        this.energy = Mth.clamp(this.energy + energy, 0, this.getEnergyCapacity());
     }
 
     public Tag serializeNBT() {

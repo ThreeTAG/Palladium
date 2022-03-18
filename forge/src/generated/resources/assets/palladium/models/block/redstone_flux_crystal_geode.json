@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "palladium:block/redstone_flux_crystal_geode"
+  }
+}

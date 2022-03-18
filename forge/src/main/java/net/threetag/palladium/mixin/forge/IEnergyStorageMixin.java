@@ -17,7 +17,7 @@ public interface IEnergyStorageMixin extends net.minecraftforge.energy.IEnergySt
 
     @Override
     default int extractEnergy(int maxExtract, boolean simulate) {
-        return this.cast().extractEnergy(maxExtract, simulate);
+        return this.cast().withdrawEnergy(maxExtract, simulate);
     }
 
     @Override
@@ -32,7 +32,7 @@ public interface IEnergyStorageMixin extends net.minecraftforge.energy.IEnergySt
 
     @Override
     default boolean canExtract() {
-        return this.cast().canExtract();
+        return this.cast().canWithdraw();
     }
 
     @Override

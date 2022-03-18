@@ -22,6 +22,11 @@ public class HealthCondition extends Condition {
         return entity.getHealth() >= this.minHealth && entity.getHealth() <= this.maxHealth;
     }
 
+    @Override
+    public ConditionSerializer getSerializer() {
+        return ConditionSerializers.HEALTH.get();
+    }
+
     public static class Serializer extends ConditionSerializer {
 
         public static final PalladiumProperty<Float> MIN_HEALTH = new FloatProperty("min_health");

@@ -25,6 +25,13 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.defaultBlockItem(PalladiumItems.TITANIUM_ORE);
         this.defaultBlockItem(PalladiumItems.VIBRANIUM_ORE);
 
+        this.defaultBlockItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL_GEODE);
+        this.defaultBlockItem(PalladiumItems.DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE);
+        this.defaultBlockItem2d(PalladiumItems.SMALL_REDSTONE_FLUX_CRYSTAL_BUD);
+        this.defaultBlockItem2d(PalladiumItems.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD);
+        this.defaultBlockItem2d(PalladiumItems.LARGE_REDSTONE_FLUX_CRYSTAL_BUD);
+        this.defaultBlockItem2d(PalladiumItems.REDSTONE_FLUX_CRYSTAL_CLUSTER);
+
         this.defaultBlockItem(PalladiumItems.LEAD_BLOCK);
         this.defaultBlockItem(PalladiumItems.SILVER_BLOCK);
         this.defaultBlockItem(PalladiumItems.TITANIUM_BLOCK);
@@ -46,6 +53,7 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.defaultItem(PalladiumItems.TITANIUM_INGOT);
         this.defaultItem(PalladiumItems.RAW_VIBRANIUM);
         this.defaultItem(PalladiumItems.VIBRANIUM_INGOT);
+        this.defaultItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL);
 
         this.defaultItem(PalladiumItems.HAMMER, "item/handheld");
         this.defaultItem(PalladiumItems.REDSTONE_CIRCUIT);
@@ -64,6 +72,10 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
 
     public void defaultBlockItem(Supplier<Item> item) {
         this.withExistingParent(item.get().getRegistryName().getPath(), new ResourceLocation(item.get().getRegistryName().getNamespace(), "block/" + item.get().getRegistryName().getPath()));
+    }
+
+    public void defaultBlockItem2d(Supplier<Item> item) {
+        this.singleTexture(item.get().getRegistryName().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(Palladium.MOD_ID, "block/" + item.get().getRegistryName().getPath()));
     }
 
     @Override

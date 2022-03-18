@@ -17,19 +17,13 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.forge.AddonPackType;
-import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.model.EntityModelManager;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.data.forge.*;
-import net.threetag.palladium.documentation.HTMLBuilder;
-import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.mixin.ReloadableResourceManagerMixin;
-import net.threetag.palladium.power.ability.Ability;
-import net.threetag.palladium.power.ability.condition.ConditionSerializer;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 @Mod(Palladium.MOD_ID)
 @Mod.EventBusSubscriber(modid = Palladium.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -59,11 +53,6 @@ public class PalladiumForge {
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent e) {
-        Consumer<HTMLBuilder> consumer = HTMLBuilder::save;
-        consumer.accept(Ability.documentationBuilder());
-        consumer.accept(ConditionSerializer.documentationBuilder());
-        consumer.accept(ItemParser.documentationBuilder());
-        PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
         PalladiumBlockTagsProvider blockTagsProvider = new PalladiumBlockTagsProvider(e.getGenerator(), e.getExistingFileHelper());
         e.getGenerator().addProvider(blockTagsProvider);
         e.getGenerator().addProvider(new PalladiumItemTagsProvider(e.getGenerator(), blockTagsProvider, e.getExistingFileHelper()));

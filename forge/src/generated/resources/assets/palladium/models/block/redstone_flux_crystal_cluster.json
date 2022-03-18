@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "palladium:block/redstone_flux_crystal_cluster"
+  }
+}

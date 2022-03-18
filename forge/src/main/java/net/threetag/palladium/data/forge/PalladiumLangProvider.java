@@ -38,6 +38,12 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addBlock(PalladiumBlocks.DEEPSLATE_SILVER_ORE, "Deepslate Silver Ore");
             this.addBlock(PalladiumBlocks.TITANIUM_ORE, "Titanium Ore");
             this.addBlock(PalladiumBlocks.VIBRANIUM_ORE, "Vibranium Ore");
+            this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_GEODE, "Redstone Flux Crystal Geode");
+            this.addBlock(PalladiumBlocks.DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE, "Deepslate Redstone Flux Crystal Geode");
+            this.addBlock(PalladiumBlocks.SMALL_REDSTONE_FLUX_CRYSTAL_BUD, "Small Redstone Flux Crystal Bud");
+            this.addBlock(PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD, "Medium Redstone Flux Crystal Bud");
+            this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Large Redstone Flux Crystal Bud");
+            this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER, "Redstone Flux Crystal Cluster");
             this.addBlock(PalladiumBlocks.LEAD_BLOCK, "Block of Lead");
             this.addBlock(PalladiumBlocks.SILVER_BLOCK, "Block of Silver");
             this.addBlock(PalladiumBlocks.TITANIUM_BLOCK, "Block of Titanium");
@@ -59,6 +65,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.TITANIUM_INGOT, "Titanium Ingot");
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Raw Vibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibranium Ingot");
+            this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone Flux Crystal");
             this.addItem(PalladiumItems.HAMMER, "Hammer");
             this.addItem(PalladiumItems.REDSTONE_CIRCUIT, "Redstone Circuit");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quartz Circuit");
@@ -106,6 +113,12 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addBlock(PalladiumBlocks.DEEPSLATE_SILVER_ORE, "Tiefenschiefer-Silbererz");
             this.addBlock(PalladiumBlocks.TITANIUM_ORE, "Titaniumerz");
             this.addBlock(PalladiumBlocks.VIBRANIUM_ORE, "Vibraniumerz");
+            this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_GEODE, "Redstone-Flux-Kristallgeode");
+            this.addBlock(PalladiumBlocks.DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE, "Tiefenschiefer-Redstone-Flux-Kristallgeode");
+            this.addBlock(PalladiumBlocks.SMALL_REDSTONE_FLUX_CRYSTAL_BUD, "Kleine Redstone-Flux-Kristallknospe");
+            this.addBlock(PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD, "Mittlere Redstone-Flux-Kristallknospe");
+            this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Gro\u00DFe Redstone-Flux-Kristallknospe");
+            this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER, "Redstone-Flux-Kristallhaufen");
             this.addBlock(PalladiumBlocks.LEAD_BLOCK, "Bleiblock");
             this.addBlock(PalladiumBlocks.SILVER_BLOCK, "Silberblock");
             this.addBlock(PalladiumBlocks.TITANIUM_BLOCK, "Titaniumblock");
@@ -127,6 +140,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.TITANIUM_INGOT, "Titaniumbarren");
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarren");
+            this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
             this.addItem(PalladiumItems.HAMMER, "Hammer");
             this.addItem(PalladiumItems.REDSTONE_CIRCUIT, "Redstoneschaltkreis");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaltkreis");
@@ -174,6 +188,12 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addBlock(PalladiumBlocks.DEEPSLATE_SILVER_ORE, "Diefnschieforr-Silberärds");
             this.addBlock(PalladiumBlocks.TITANIUM_ORE, "Titaniumärds");
             this.addBlock(PalladiumBlocks.VIBRANIUM_ORE, "Vibraniumärds");
+            this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_GEODE, "Redstone-Flux-Kristallgeode");
+            this.addBlock(PalladiumBlocks.DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE, "Diefnschieforr-Redstone-Flux-Kristallgeode");
+            this.addBlock(PalladiumBlocks.SMALL_REDSTONE_FLUX_CRYSTAL_BUD, "Gleene Redstone-Flux-Kristallgnosbe");
+            this.addBlock(PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD, "Mittlorre Redstone-Flux-Kristallgnosbe");
+            this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Gro\u00DFe Redstone-Flux-Kristallgnosbe");
+            this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER, "Redstone-Flux-Kristallhaufn");
             this.addBlock(PalladiumBlocks.LEAD_BLOCK, "Bleblogg");
             this.addBlock(PalladiumBlocks.SILVER_BLOCK, "Silberblogg");
             this.addBlock(PalladiumBlocks.TITANIUM_BLOCK, "Titaniumblogg");
@@ -195,6 +215,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.TITANIUM_INGOT, "Titaniumbarrn");
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarrn");
+            this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
             this.addItem(PalladiumItems.HAMMER, "Hammer");
             this.addItem(PalladiumItems.REDSTONE_CIRCUIT, "Redstoneschaldkres");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaldkres");

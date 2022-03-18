@@ -34,8 +34,8 @@ public class PalladiumBlockTagsProvider extends BlockTagsProvider {
         this.multiLoaderTagMetal(PalladiumBlockTags.STORAGE_BLOCKS, PalladiumBlockTags.Fabric.STORAGE_BLOCKS, PalladiumBlockTags.STORAGE_BLOCKS_VIBRANIUM, PalladiumBlockTags.Fabric.STORAGE_BLOCKS_VIBRANIUM, VIBRANIUM_BLOCK.get());
 
         // Harvest Tools
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(LEAD_ORE.get(), SILVER_ORE.get(), TITANIUM_ORE.get(), VIBRANIUM_ORE.get(), LEAD_BLOCK.get(), SILVER_BLOCK.get(), TITANIUM_BLOCK.get(), VIBRANIUM_BLOCK.get(), RAW_LEAD_BLOCK.get(), RAW_SILVER_BLOCK.get(), RAW_TITANIUM_BLOCK.get(), RAW_VIBRANIUM_BLOCK.get());
-        this.tag(BlockTags.NEEDS_IRON_TOOL).add(LEAD_ORE.get(), SILVER_ORE.get(), LEAD_BLOCK.get(), SILVER_BLOCK.get(), RAW_LEAD_BLOCK.get(), RAW_SILVER_BLOCK.get());
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(LEAD_ORE.get(), DEEPSLATE_LEAD_ORE.get(), SILVER_ORE.get(), DEEPSLATE_SILVER_ORE.get(), TITANIUM_ORE.get(), VIBRANIUM_ORE.get(), LEAD_BLOCK.get(), SILVER_BLOCK.get(), TITANIUM_BLOCK.get(), VIBRANIUM_BLOCK.get(), RAW_LEAD_BLOCK.get(), RAW_SILVER_BLOCK.get(), RAW_TITANIUM_BLOCK.get(), RAW_VIBRANIUM_BLOCK.get(), REDSTONE_FLUX_CRYSTAL_GEODE.get(), DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE.get());
+        this.tag(BlockTags.NEEDS_IRON_TOOL).add(LEAD_ORE.get(), SILVER_ORE.get(), LEAD_BLOCK.get(), SILVER_BLOCK.get(), RAW_LEAD_BLOCK.get(), RAW_SILVER_BLOCK.get(), REDSTONE_FLUX_CRYSTAL_GEODE.get(), DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE.get());
         this.tag(BlockTags.NEEDS_DIAMOND_TOOL).add(TITANIUM_ORE.get(), TITANIUM_BLOCK.get(), RAW_TITANIUM_BLOCK.get());
         this.tag(Tags.Blocks.NEEDS_NETHERITE_TOOL).add(VIBRANIUM_ORE.get(), VIBRANIUM_BLOCK.get(), RAW_VIBRANIUM_BLOCK.get());
     }
