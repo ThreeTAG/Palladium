@@ -14,7 +14,7 @@ import net.threetag.palladium.tags.PalladiumItemTags;
 
 public class PalladiumItems {
 
-    public static final ArmorMaterial VIBRANIUM_WEAVE = new ArmorMaterial("vibranium_weave", 8,
+    public static final SimpleArmorMaterial VIBRANIUM_WEAVE = new SimpleArmorMaterial("vibranium_weave", 8,
             new int[]{1, 2, 3, 2}, 12, () -> SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F,
             () -> Ingredient.of(PalladiumItemTags.INGOTS_VIBRANIUM));
 

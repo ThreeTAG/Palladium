@@ -4,6 +4,7 @@ import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import net.threetag.palladium.addonpack.AddonPackManager;
+import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
@@ -56,15 +57,16 @@ public class Palladium {
         if (Platform.isDevelopmentEnvironment()) {
             PalladiumDebug.init();
         }
+
+        LifecycleEvent.SETUP.register(Palladium::generateDocumentation);
     }
 
     public static void generateDocumentation() {
-        LifecycleEvent.SETUP.register(() -> {
-            Consumer<HTMLBuilder> consumer = HTMLBuilder::save;
-            consumer.accept(Ability.documentationBuilder());
-            consumer.accept(ConditionSerializer.documentationBuilder());
-            consumer.accept(ItemParser.documentationBuilder());
-            PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
-        });
+        Consumer<HTMLBuilder> consumer = HTMLBuilder::save;
+        consumer.accept(Ability.documentationBuilder());
+        consumer.accept(ConditionSerializer.documentationBuilder());
+        consumer.accept(ArmorMaterialParser.documentationBuilder());
+        consumer.accept(ItemParser.documentationBuilder());
+        PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
     }
 }

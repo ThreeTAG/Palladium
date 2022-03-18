@@ -18,6 +18,7 @@ import net.threetag.palladium.PalladiumClient;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.forge.AddonPackType;
 import net.threetag.palladium.block.PalladiumBlocks;
+import net.threetag.palladium.client.ArmorModelManager;
 import net.threetag.palladium.client.model.EntityModelManager;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.data.forge.*;
@@ -49,10 +50,13 @@ public class PalladiumForge {
     @SubscribeEvent
     public static void reloadRegisterClient(RegisterClientReloadListenersEvent e) {
         e.registerReloadListener(new PackRenderLayerManager());
+        e.registerReloadListener(new ArmorModelManager());
     }
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent e) {
+        Palladium.generateDocumentation();
+
         PalladiumBlockTagsProvider blockTagsProvider = new PalladiumBlockTagsProvider(e.getGenerator(), e.getExistingFileHelper());
         e.getGenerator().addProvider(blockTagsProvider);
         e.getGenerator().addProvider(new PalladiumItemTagsProvider(e.getGenerator(), blockTagsProvider, e.getExistingFileHelper()));

@@ -10,6 +10,7 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.Unit;
+import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.CreativeModeTabParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 
@@ -45,6 +46,7 @@ public class AddonPackManager {
         IGNORE_INJECT = false;
 
         this.resourceManager.registerReloadListener(new CreativeModeTabParser());
+        this.resourceManager.registerReloadListener(new ArmorMaterialParser());
         this.resourceManager.registerReloadListener(new ItemParser());
 
         this.beginLoading(Util.backgroundExecutor(), Runnable::run);

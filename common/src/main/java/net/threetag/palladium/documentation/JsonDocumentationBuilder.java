@@ -46,6 +46,7 @@ public class JsonDocumentationBuilder {
         private String description = null;
         private boolean required = false;
         private T fallbackValue = null;
+        private String fallbackValueSerialized = null;
         private JsonElement exampleJson = null;
 
         private Entry(String name, Class<T> clazz) {
@@ -65,12 +66,27 @@ public class JsonDocumentationBuilder {
 
         public Entry<T> fallback(T value) {
             this.fallbackValue = value;
+            this.fallbackValueSerialized = this.fallbackValue == null ? "/" : this.fallbackValue.toString();
+            return this;
+        }
+
+        public Entry<T> fallback(T value, String serialized) {
+            this.fallbackValue = value;
+            this.fallbackValueSerialized = serialized;
             return this;
         }
 
         @SuppressWarnings("unchecked")
         public Entry<T> fallbackObject(Object value) {
             this.fallbackValue = (T) value;
+            this.fallbackValueSerialized = this.fallbackValue == null ? null : this.fallbackValue.toString();
+            return this;
+        }
+
+        @SuppressWarnings("unchecked")
+        public Entry<T> fallbackObject(Object value, String serialized) {
+            this.fallbackValue = (T) value;
+            this.fallbackValueSerialized = serialized;
             return this;
         }
 
@@ -97,6 +113,10 @@ public class JsonDocumentationBuilder {
 
         public T getFallbackValue() {
             return fallbackValue;
+        }
+
+        public String getFallbackValueSerialized() {
+            return this.fallbackValueSerialized;
         }
 
         public JsonElement getExampleJson() {

@@ -79,7 +79,8 @@ public class AddonItem extends Item implements IAddonItem {
 
         @Override
         public void generateDocumentation(JsonDocumentationBuilder builder) {
-
+            builder.setTitle("Default Item");
+            builder.setDescription("Default Item Type, you don't need to specify that you want this one, leaving 'type' out of the json will make it fall back to this one.");
         }
 
         @Override

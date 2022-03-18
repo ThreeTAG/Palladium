@@ -52,7 +52,8 @@ public class HTMLBuilder {
                         "td.other{background-color:#42A3FFAA;}\n" +
                         "td.error{color:#FF0000;}\n" +
                         "th,td.true,td.false,td.other{text-align:center;}" +
-                        "pre{outline:1px solid #ccc;padding:5px;margin:5px;} .string{color:green;} .number{color:cornflowerblue;} .boolean{color:darkorange;} .null{color:orangered;} .key{color:purple;}"))
+                        "pre{outline:1px solid #ccc;padding:5px;margin:5px;} .string{color:green;} .number{color:cornflowerblue;} .boolean{color:darkorange;} .null{color:orangered;} .key{color:purple;}" +
+                        "hr { height: 5px; background-color: black }"))
                 .add(new HTMLObject("link").addAttribute("rel", "shortcut icon").addAttribute("type", "image/x-icon").addAttribute("href", favicon));
         this.html = new HTMLObject("html").add(this.head).add(this.body = new HTMLObject("body"));
     }
@@ -66,20 +67,24 @@ public class HTMLBuilder {
         AtomicBoolean hasExampleJson = new AtomicBoolean(false);
         HTMLObject div;
         JsonObject json = new JsonObject();
-        this.add(div = div()).add(subHeading(builder.getTitle()));
+        this.add(div = div());
+
+        if (builder.getTitle() != null) {
+            div.add(subHeading(builder.getTitle()));
+        }
 
         if (builder.getDescription() != null) {
             div.add(paragraph(builder.getDescription()));
         }
 
-        div.add(subSubHeading("Data Settings:"))
+        div.add(subSubHeading("Settings:"))
                 .add(table(Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value"), builder.getEntries().stream().map(entry -> {
                     List<Object> list = new ArrayList<>();
                     list.add(entry.getName());
                     list.add(entry.getTypeClass().getSimpleName());
                     list.add(entry.getDescription());
                     list.add(entry.isRequired());
-                    list.add(Utils.orElse(entry.getFallbackValue(), "/"));
+                    list.add(Utils.orElse(entry.getFallbackValueSerialized(), "/"));
 
                     if (entry.getExampleJson() != null) {
                         hasExampleJson.set(true);
@@ -138,16 +143,19 @@ public class HTMLBuilder {
                     div.add(paragraph(builder.getDescription()));
                 }
 
-                div.add(subSubHeading("Data Settings:"))
-                        .add(table(Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value"), builder.getEntries().stream().map(entry -> {
-                            List<Object> list = new ArrayList<>();
-                            list.add(entry.getName());
-                            list.add(entry.getTypeClass().getSimpleName());
-                            list.add(entry.getDescription());
-                            list.add(entry.isRequired());
-                            list.add(entry.getFallbackValue());
-                            return list;
-                        }).collect(Collectors.toList())));
+                if (!builder.getEntries().isEmpty()) {
+                    div.add(subSubHeading("Settings:"))
+                            .add(table(Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value"), builder.getEntries().stream().map(entry -> {
+                                List<Object> list = new ArrayList<>();
+                                list.add(entry.getName());
+                                list.add(entry.getTypeClass().getSimpleName());
+                                list.add(entry.getDescription());
+                                list.add(entry.isRequired());
+                                list.add(Utils.orElse(entry.getFallbackValueSerialized(), "/"));
+                                return list;
+                            }).collect(Collectors.toList())));
+                }
+
                 if (json.keySet().size() > 0) {
                     div.add(subSubHeading("Example:"))
                             .add(new HTMLObject("pre", json.toString()).addAttribute("class", "json-snippet"));

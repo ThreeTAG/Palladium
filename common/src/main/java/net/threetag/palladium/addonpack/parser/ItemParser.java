@@ -15,6 +15,7 @@ import net.threetag.palladium.addonpack.builder.ItemBuilder;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.item.AddonArmorItem;
 import net.threetag.palladium.item.AddonItem;
 import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.item.PalladiumCreativeModeTabs;
@@ -24,7 +25,7 @@ import java.util.*;
 
 public class ItemParser extends AddonParser<Item> {
 
-    private static final Map<ResourceLocation, ItemTypeSerializer> TYPE_SERIALIZERS = new HashMap<>();
+    private static final Map<ResourceLocation, ItemTypeSerializer> TYPE_SERIALIZERS = new LinkedHashMap<>();
 
     public ItemParser() {
         super(GSON, "items", Registry.ITEM_REGISTRY);
@@ -58,6 +59,7 @@ public class ItemParser extends AddonParser<Item> {
 
     static {
         registerTypeSerializer(new AddonItem.Parser());
+        registerTypeSerializer(new AddonArmorItem.Parser());
     }
 
     public static Rarity getRarity(String name) {
