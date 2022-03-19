@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -35,8 +36,9 @@ public abstract class IconSerializer<T extends IIcon> extends RegistryEntry<Icon
     public static JsonObject serializeJSON(IIcon icon) {
         IconSerializer serializer = icon.getSerializer();
         JsonObject json = serializer.toJSON(icon);
-        json.addProperty("type", Objects.requireNonNull(REGISTRY.getId(serializer)).toString());
-        return json;
+        JsonObject json2 = new JsonObject();
+        json2.addProperty("type", Objects.requireNonNull(REGISTRY.getId(serializer)).toString());
+        return GsonUtil.merge(json2, json);
     }
 
     public static IIcon parseNBT(CompoundTag tag) {

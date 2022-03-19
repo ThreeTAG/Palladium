@@ -30,15 +30,12 @@ public class TexturedIcon implements IIcon {
     public final int textureHeight;
     public final Color tint;
 
+    public TexturedIcon(ResourceLocation texture) {
+        this(texture, 0, 0, 16, 16, 16, 16);
+    }
+
     public TexturedIcon(ResourceLocation texture, int u, int v, int width, int height, int textureWidth, int textureHeight) {
-        this.texture = texture;
-        this.u = u;
-        this.v = v;
-        this.width = width;
-        this.height = height;
-        this.textureWidth = textureWidth;
-        this.textureHeight = textureHeight;
-        this.tint = null;
+        this(texture, u, v, width, height, textureWidth, textureHeight, null);
     }
 
     public TexturedIcon(ResourceLocation texture, int u, int v, int width, int height, int textureWidth, int textureHeight, Color tint) {
@@ -128,12 +125,18 @@ public class TexturedIcon implements IIcon {
         public JsonObject toJSON(TexturedIcon icon) {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("texture", icon.texture.toString());
-            jsonObject.addProperty("u", icon.u);
-            jsonObject.addProperty("v", icon.v);
-            jsonObject.addProperty("width", icon.width);
-            jsonObject.addProperty("height", icon.height);
-            jsonObject.addProperty("texture_width", icon.textureWidth);
-            jsonObject.addProperty("texture_height", icon.textureHeight);
+            if (icon.u != 0)
+                jsonObject.addProperty("u", icon.u);
+            if (icon.v != 0)
+                jsonObject.addProperty("v", icon.v);
+            if (icon.width != 16)
+                jsonObject.addProperty("width", icon.width);
+            if (icon.height != 16)
+                jsonObject.addProperty("height", icon.height);
+            if (icon.textureWidth != 16)
+                jsonObject.addProperty("texture_width", icon.textureWidth);
+            if (icon.textureHeight != 16)
+                jsonObject.addProperty("texture_height", icon.textureHeight);
             if (icon.tint != null) {
                 JsonArray array = new JsonArray();
                 array.add(icon.tint.getRed());

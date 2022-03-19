@@ -49,6 +49,7 @@ public class Palladium {
         ItemPowerManager.init();
         AbilityEventHandler.init();
         AddonPackManager.init();
+        Abilities.init();
         generateDocumentation();
 
         LifecycleEvent.SETUP.register(PalladiumFeatures::init);

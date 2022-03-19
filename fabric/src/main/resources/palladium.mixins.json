@@ -3,17 +3,18 @@
   "package": "net.threetag.palladium.mixin.fabric",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "EntityRenderDispatcherMixin",
     "HumanoidArmorLayerMixin",
-    "EntityRenderDispatcherMixin"
+    "LivingEntityRendererMixin"
   ],
   "mixins": [
     "IEnergyStorageMixin",
     "LivingEntityMixin",
     "PackRepositoryMixin",
+    "PackTypeMixin",
     "RecipeManagerMixin",
     "ReloadableResourceManagerMixin",
-    "ServerEntityMixin",
-    "PackTypeMixin"
+    "ServerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

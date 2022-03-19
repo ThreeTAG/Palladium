@@ -1,0 +1,19 @@
+{
+  "name": "Invisibility",
+  "icon": {
+    "type": "palladium:item",
+    "item": "minecraft:glass_pane"
+  },
+  "abilities": {
+    "invisibility": {
+      "ability": "palladium:invisibility",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle"
+          }
+        ]
+      }
+    }
+  }
+}

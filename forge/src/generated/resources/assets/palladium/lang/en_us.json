@@ -3,6 +3,8 @@
   "ability.palladium.command": "Command",
   "ability.palladium.damage_immunity": "Damage Immunity",
   "ability.palladium.healing": "Healing",
+  "ability.palladium.invisibility": "Invisibility",
+  "ability.palladium.render_layer": "Render Layer",
   "ability.palladium.slowfall": "Slowfall",
   "block.palladium.deepslate_lead_ore": "Deepslate Lead Ore",
   "block.palladium.deepslate_redstone_flux_crystal_geode": "Deepslate Redstone Flux Crystal Geode",

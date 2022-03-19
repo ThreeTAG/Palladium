@@ -3,6 +3,8 @@
   "ability.palladium.command": "Befehl",
   "ability.palladium.damage_immunity": "Schadensimmunit\u00E4t",
   "ability.palladium.healing": "Heilung",
+  "ability.palladium.invisibility": "Unsichtbarkeit",
+  "ability.palladium.render_layer": "Render Layer",
   "ability.palladium.slowfall": "Langsamer Fall",
   "block.palladium.deepslate_lead_ore": "Tiefenschiefer-Bleierz",
   "block.palladium.deepslate_redstone_flux_crystal_geode": "Tiefenschiefer-Redstone-Flux-Kristallgeode",

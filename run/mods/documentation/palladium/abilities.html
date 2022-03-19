@@ -54,6 +54,10 @@ ability.palladium.slowfall</a>
 <a href="#palladium:damage_immunity">
 ability.palladium.damage_immunity</a>
 </li>
+<li>
+<a href="#palladium:invisibility">
+ability.palladium.invisibility</a>
+</li>
 </ul>
 </p>
 <hr>
@@ -125,14 +129,14 @@ Sets the commands which get executed when using the ability</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-[Ljava.lang.String;@4578b8cb</td>
+[Ljava.lang.String;@2357e12b</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:command","icon":{"item":"minecraft:command_block","count":1,"type":"palladium:item"},"title":null,"bar_color":"light_gray","commands":["say Hello World"]}</pre>
+{"type":"palladium:command","icon":{"type":"palladium:item","item":"minecraft:command_block","count":1},"title":null,"bar_color":"light_gray","commands":["say Hello World"]}</pre>
 </div>
 <hr>
 
@@ -210,7 +214,7 @@ namespace:render_layer_id</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:render_layer","icon":{"item":"minecraft:blaze_rod","count":1,"type":"palladium:item"},"title":null,"bar_color":"light_gray","render_layer":"namespace:render_layer_id"}</pre>
+{"type":"palladium:render_layer","icon":{"type":"palladium:item","item":"minecraft:blaze_rod","count":1},"title":null,"bar_color":"light_gray","render_layer":"namespace:render_layer_id"}</pre>
 </div>
 <hr>
 
@@ -281,7 +285,7 @@ Determines which attribute should be modified. Possible attribute:"minecraft:gen
 <td style="background-color: lightcoral">
 false</td>
 <td>
-net.minecraft.world.entity.ai.attributes.RangedAttribute@6edbdbed</td>
+net.minecraft.world.entity.ai.attributes.RangedAttribute@1f123a7f</td>
 </tr>
 <tr>
 <td>
@@ -324,7 +328,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:attribute_modifier","icon":{"item":"minecraft:iron_chestplate","count":1,"type":"palladium:item"},"title":null,"bar_color":"light_gray","attribute":8,"amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
+{"type":"palladium:attribute_modifier","icon":{"type":"palladium:item","item":"minecraft:iron_chestplate","count":1},"title":null,"bar_color":"light_gray","attribute":8,"amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
 </div>
 <hr>
 
@@ -414,7 +418,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:healing","icon":{"item":"minecraft:apple","count":1,"type":"palladium:item"},"title":null,"bar_color":"light_gray","frequency":3.0}</pre>
+{"type":"palladium:healing","icon":{"type":"palladium:item","item":"minecraft:apple","count":1},"title":null,"bar_color":"light_gray","frequency":3.0}</pre>
 </div>
 <hr>
 
@@ -480,7 +484,7 @@ LIGHT_GRAY</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:slowfall","icon":{"item":"minecraft:feather","count":1,"type":"palladium:item"},"title":null,"bar_color":"light_gray"}</pre>
+{"type":"palladium:slowfall","icon":{"type":"palladium:item","item":"minecraft:feather","count":1},"title":null,"bar_color":"light_gray"}</pre>
 </div>
 <hr>
 
@@ -551,14 +555,80 @@ Determines which damage sources have no effect on the entity</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-[Ljava.lang.String;@7cbbcb9c</td>
+[Ljava.lang.String;@3a09b160</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:damage_immunity","icon":{"item":"minecraft:potion","count":1,"type":"palladium:item"},"title":null,"bar_color":"light_gray","damage_sources":["lightningBolt","cactus"]}</pre>
+{"type":"palladium:damage_immunity","icon":{"type":"palladium:item","item":"minecraft:potion","count":1},"title":null,"bar_color":"light_gray","damage_sources":["lightningBolt","cactus"]}</pre>
+</div>
+<hr>
+
+<div id="palladium:invisibility">
+<h2>
+ability.palladium.invisibility</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+TexturedIcon{texture=palladium:textures/icon/invisibility.png, u=0, v=0, width=16, height=16, textureWidth=16, textureHeight=16, tint=null}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:invisibility","icon":{"type":"palladium:texture","texture":"palladium:textures/icon/invisibility.png"},"title":null,"bar_color":"light_gray"}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {
