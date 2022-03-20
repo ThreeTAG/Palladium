@@ -102,8 +102,12 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
         if (GsonHelper.isValidNode(json, "part_pose")) {
             JsonObject partPoseJson = GsonHelper.getAsJsonObject(json, "part_pose");
             float[] offset = GsonUtil.getFloatArray(partPoseJson, 3, "offset", 0F, 0F, 0F);
-            float[] rotation = GsonUtil.getFloatArray(partPoseJson, 3, "rotation", 0F, 0F, 0F);
-            partPose = PartPose.offsetAndRotation(offset[0], offset[1], offset[2], rotation[0], rotation[1], rotation[2]);
+            float[] rotation1 = GsonUtil.getFloatArray(partPoseJson, 3, "rotation", 0F, 0F, 0F);
+            double[] rotation = new double[3];
+            for (int i = 0; i < 3; i++) {
+                rotation[i] = Math.toRadians(rotation1[i]);
+            }
+            partPose = PartPose.offsetAndRotation(offset[0], offset[1], offset[2], (float) rotation[0], (float) rotation[1], (float) rotation[2]);
         }
 
         PartDefinition partDefinition = parent.addOrReplaceChild(name, builder, partPose);
@@ -157,8 +161,8 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
                 });
 
                 json.add("mesh", mesh);
-                json.addProperty("texture_width", ((MaterialDefinitionMixin)((LayerDefinitionMixin) layerDefinition).getMaterial()).getXTexSize());
-                json.addProperty("texture_height", ((MaterialDefinitionMixin)((LayerDefinitionMixin) layerDefinition).getMaterial()).getYTexSize());
+                json.addProperty("texture_width", ((MaterialDefinitionMixin) ((LayerDefinitionMixin) layerDefinition).getMaterial()).getXTexSize());
+                json.addProperty("texture_height", ((MaterialDefinitionMixin) ((LayerDefinitionMixin) layerDefinition).getMaterial()).getYTexSize());
 
                 Files.writeString(outputFile.toPath(), GSON.toJson(json));
             } catch (IOException e) {
@@ -188,7 +192,7 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
 
         JsonObject partPose = new JsonObject();
         partPose.add("offset", toJson(new Vector3f(part.getPartPose().x, part.getPartPose().y, part.getPartPose().z)));
-        partPose.add("rotation", toJson(new Vector3f(part.getPartPose().xRot, part.getPartPose().yRot, part.getPartPose().zRot)));
+        partPose.add("rotation", toJson(new Vector3f((float) Math.toDegrees(part.getPartPose().xRot), (float) Math.toDegrees(part.getPartPose().yRot), (float) Math.toDegrees(part.getPartPose().zRot))));
 
         JsonObject children = new JsonObject();
         part.getChildren().forEach((s, partDefinition) -> {
