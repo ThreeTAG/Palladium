@@ -7,6 +7,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import net.threetag.palladium.util.GuiUtil;
 import net.threetag.palladium.util.json.GsonUtil;
 
 public class ItemIcon implements IIcon {
@@ -22,16 +23,17 @@ public class ItemIcon implements IIcon {
     }
 
     @Override
-    public void draw(Minecraft mc, PoseStack stack, int x, int y) {
-        mc.getItemRenderer().renderGuiItem(this.stack, x, y);
-        if (this.stack.getCount() > 1) {
-            String text = this.stack.getCount() + "x";
-            mc.font.draw(stack, text, (float) (x + 9), (float) y + 8, 0);
-            mc.font.draw(stack, text, (float) (x + 7), (float) y + 8, 0);
-            mc.font.draw(stack, text, (float) x + 8, (float) (y + 9), 0);
-            mc.font.draw(stack, text, (float) x + 8, (float) (y + 7), 0);
-            mc.font.draw(stack, text, (float) x + 8, (float) y + 8, 0xffffff);
+    public void draw(Minecraft mc, PoseStack stack, int x, int y, int width, int height) {
+        stack.pushPose();
+        stack.translate(x + width / 2D, y + height / 2D, 100);
+
+        if (width != 16 || height != 16) {
+            int s = Math.min(width, height);
+            stack.scale(s / 16F, s / 16F, s / 16F);
         }
+
+        GuiUtil.drawItem(stack, this.stack, 0, true, null);
+        stack.popPose();
     }
 
     @Override
@@ -41,9 +43,7 @@ public class ItemIcon implements IIcon {
 
     @Override
     public String toString() {
-        return "ItemIcon{" +
-                "stack=" + stack +
-                '}';
+        return "ItemIcon{" + "stack=" + stack + '}';
     }
 
     public static class Serializer extends IconSerializer<ItemIcon> {

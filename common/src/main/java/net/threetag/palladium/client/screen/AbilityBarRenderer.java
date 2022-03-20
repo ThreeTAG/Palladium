@@ -58,18 +58,12 @@ public class AbilityBarRenderer implements IIngameOverlay {
 
             poseStack.pushPose();
             translateIndicatorBackground(poseStack, mc.getWindow(), position, indicatorWidth, indicatorHeight);
-            renderIndicatorBackground(mc, poseStack, position, TEXTURE, true);
+            renderIndicator(ABILITY_LIST, mc, poseStack, position, TEXTURE, false);
             poseStack.popPose();
-            renderIndicatorIcon(mc.getWindow(), position, ABILITY_LIST, indicatorWidth, indicatorHeight, false);
-
 
             poseStack.pushPose();
             translateAbilitiesBackground(poseStack, mc.getWindow(), position, indicatorHeight, 24, 112);
             renderAbilitiesBackground(mc, poseStack, position, ABILITY_LIST, TEXTURE);
-            poseStack.popPose();
-            renderAbilityIcons(mc.getWindow(), position, ABILITY_LIST, indicatorHeight, 24, 112);
-            poseStack.pushPose();
-            translateAbilitiesBackground(poseStack, mc.getWindow(), position, indicatorHeight, 24, 112);
             renderAbilitiesOverlay(mc, poseStack, position, ABILITY_LIST, TEXTURE);
             poseStack.popPose();
         }
@@ -85,28 +79,15 @@ public class AbilityBarRenderer implements IIngameOverlay {
         }
     }
 
-    private static void renderIndicatorBackground(Minecraft minecraft, PoseStack poseStack, Position position, ResourceLocation texture, boolean showKey) {
+    private static void renderIndicator(AbilityList list, Minecraft minecraft, PoseStack poseStack, Position position, ResourceLocation texture, boolean showKey) {
         // Background
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.gui.blit(poseStack, 0, 0, position.left ? 52 : 0, position.top ? 28 : 0, 52, 28);
-    }
 
-    private static void renderIndicatorIcon(Window window, Position position, AbilityList list, int width, int height, boolean showSwitchKey) {
-        int x = 0, y = 5;
-
-        if (!position.top) {
-            y += window.getGuiScaledHeight() - height + 2;
-        }
-
-        if (!position.left) {
-            x = window.getGuiScaledWidth() - width + (showSwitchKey ? 6 : 19);
-        } else {
-            x = showSwitchKey ? 30 : 17;
-        }
-
-        list.power.getIcon().draw(Minecraft.getInstance(), RenderSystem.getModelViewStack(), x, y);
+        // Icon
+        list.power.getIcon().draw(minecraft, poseStack, showKey ? (position.left ? 30 : 6) : (position.left ? 17 : 19), position.top ? 5 : 7);
     }
 
     private static void translateAbilitiesBackground(PoseStack poseStack, Window window, Position position, int indicatorHeight, int abilitiesWidth, int abilitiesHeight) {
@@ -137,6 +118,8 @@ public class AbilityBarRenderer implements IIngameOverlay {
 
                     if (!entry.isUnlocked()) {
                         minecraft.gui.blit(poseStack, 3, i * 22 + 3, 42, 74, 18, 18);
+                    } else {
+                        entry.getProperty(Ability.ICON).draw(minecraft, poseStack, 4, 4 + i * 22);
                     }
 
                     // Ability Name
@@ -148,6 +131,8 @@ public class AbilityBarRenderer implements IIngameOverlay {
                         renderBlackBox(bb, tes, poseStack, minecraft.screen, position.left ? 24 : -width - 10, i * 22 + 5, 10 + width, 14, 0.5F);
                         minecraft.font.draw(poseStack, name, position.left ? 29 : -width - 5, i * 22 + 8, 0xffffffff);
                     }
+                } else {
+                    minecraft.gui.blit(poseStack, 3, i * 22 + 3, 60, 56, 18, 18);
                 }
             }
         }
@@ -157,30 +142,6 @@ public class AbilityBarRenderer implements IIngameOverlay {
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.gui.blit(poseStack, 0, 0, 0, 56, 24, 112);
-    }
-
-    private static void renderAbilityIcons(Window window, Position position, AbilityList list, int indicatorHeight, int abilitiesWidth, int abilitiesHeight) {
-        int startX, startY;
-
-        if (position.top) {
-            startX = !position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0;
-            startY = indicatorHeight - 1;
-        } else {
-            startX = !position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0;
-            startY = window.getGuiScaledHeight() - indicatorHeight - abilitiesHeight + 1;
-        }
-
-        for (int i = 0; i < list.abilities.length; i++) {
-            AbilityEntry ability = list.abilities[i];
-
-            if (ability != null) {
-                if (ability.isUnlocked()) {
-                    ability.getConfiguration().get(Ability.ICON).draw(Minecraft.getInstance(), RenderSystem.getModelViewStack(), startX + 4, startY + 4 + i * 22);
-                } else {
-                    // TODO draw lock icon
-                }
-            }
-        }
     }
 
     private static void renderAbilitiesOverlay(Minecraft minecraft, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture) {
@@ -201,7 +162,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
                 Lighting.setupFor3DItems();
                 RenderSystem.enableBlend();
 
-                if(!ability.isUnlocked()) {
+                if (!ability.isUnlocked()) {
                     minecraft.gui.blit(poseStack, 3, i * 22 + 3, 42, 74, 18, 18);
                 }
 

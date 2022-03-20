@@ -8,7 +8,12 @@ import net.minecraft.client.Minecraft;
 public interface IIcon {
 
     @Environment(EnvType.CLIENT)
-    void draw(Minecraft mc, PoseStack stack, int x, int y);
+    default void draw(Minecraft mc, PoseStack stack, int x, int y) {
+        this.draw(mc, stack, x, y, 16, 16);
+    }
+
+    @Environment(EnvType.CLIENT)
+    void draw(Minecraft mc, PoseStack stack, int x, int y, int width, int height);
 
     IconSerializer<?> getSerializer();
 

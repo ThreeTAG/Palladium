@@ -26,10 +26,12 @@ public class AddonParserImpl {
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> e) {
-        for (AddonBuilder<?> builder : BUILDERS.get(Registry.ITEM_REGISTRY)) {
-            e.getRegistry().register(((Item) builder.get()).setRegistryName(builder.getId()));
+        if(BUILDERS.containsKey(Registry.ITEM_REGISTRY)) {
+            for (AddonBuilder<?> builder : BUILDERS.get(Registry.ITEM_REGISTRY)) {
+                e.getRegistry().register(((Item) builder.get()).setRegistryName(builder.getId()));
+            }
+            BUILDERS.remove(Registry.ITEM_REGISTRY);
         }
-        BUILDERS.remove(Registry.ITEM_REGISTRY);
     }
 
 }
