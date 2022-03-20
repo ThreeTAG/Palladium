@@ -57,4 +57,8 @@ public abstract class PalladiumProperty<T> {
     public T get(Entity entity) {
         return EntityPropertyHandler.getHandler(entity).get(this);
     }
+
+    public String getString(T value) {
+        return value == null ? null : value.toString();
+    }
 }

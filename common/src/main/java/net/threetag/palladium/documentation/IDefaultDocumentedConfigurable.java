@@ -15,7 +15,7 @@ public interface IDefaultDocumentedConfigurable extends IDocumentedConfigurable 
         this.getPropertyManager().values().forEach((BiConsumer<PalladiumProperty, Object>) (property, val) -> {
             builder.addProperty(property.getKey(), property.typeToken.getRawType())
                     .description(property.getDescription())
-                    .fallbackObject(val)
+                    .fallbackObject(property.getString(val))
                     .exampleJson(property.toJSON(val));
         });
     }

@@ -50,17 +50,19 @@ public class ConditionArrayProperty extends PalladiumProperty<Condition[]> {
     @Override
     public Condition[] fromBuffer(FriendlyByteBuf buf) {
         throw new RuntimeException("Not supported!");
-//        Condition[] conditions = new Condition[buf.readInt()];
-//
-//        for(int i = 0; i < conditions.length; i++) {
-//            conditions.
-//        }
-//
-//        return conditions;
     }
 
     @Override
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         throw new RuntimeException("Not supported!");
+    }
+
+    @Override
+    public String getString(Condition[] value) {
+        if (value == null) {
+            return null;
+        } else {
+            return value.length + " conditions";
+        }
     }
 }

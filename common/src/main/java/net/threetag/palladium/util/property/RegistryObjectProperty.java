@@ -63,4 +63,9 @@ public class RegistryObjectProperty<T> extends PalladiumProperty<T> {
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         buf.writeResourceLocation(this.registry.getKey((T) value));
     }
+
+    @Override
+    public String getString(T value) {
+        return value != null ? Objects.requireNonNull(this.registry.getKey(value)).toString() : null;
+    }
 }

@@ -7,6 +7,8 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 
+import java.util.Arrays;
+
 public class StringArrayProperty extends PalladiumProperty<String[]> {
 
     public StringArrayProperty(String key) {
@@ -73,5 +75,10 @@ public class StringArrayProperty extends PalladiumProperty<String[]> {
         for (String string : strings) {
             buf.writeUtf(string);
         }
+    }
+
+    @Override
+    public String getString(String[] value) {
+        return value == null ? null : Arrays.toString(value);
     }
 }
