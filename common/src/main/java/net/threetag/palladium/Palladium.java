@@ -23,6 +23,7 @@ import net.threetag.palladium.power.ability.condition.ConditionSerializer;
 import net.threetag.palladium.power.ability.condition.ConditionSerializers;
 import net.threetag.palladium.power.holderfactory.PowerProviderFactories;
 import net.threetag.palladium.util.icon.IconSerializers;
+import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.world.PalladiumFeatures;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,6 +46,7 @@ public class Palladium {
         PalladiumFeatures.FEATURES.register();
 
         PalladiumNetwork.init();
+        EntityPropertyHandler.init();
         PowerManager.init();
         ItemPowerManager.init();
         AbilityEventHandler.init();
