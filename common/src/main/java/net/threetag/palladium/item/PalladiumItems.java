@@ -74,7 +74,7 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> REDSTONE_FLUX_CRYSTAL = ITEMS.register("redstone_flux_crystal", () -> new SortedItem(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS), FILLER_AFTER_REDSTONE));
 
 
-    public static final RegistrySupplier<Item> HAMMER = ITEMS.register("hammer", () -> new HammerItem(4.5F, -2.75F, Tiers.IRON, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1).durability(16)));
+    public static final RegistrySupplier<Item> HAMMER = ITEMS.register("hammer", () -> new HammerItem(Tiers.IRON, 4, -2.75F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1).durability(16)));
     public static final RegistrySupplier<Item> REDSTONE_CIRCUIT = ITEMS.register("redstone_circuit", () -> new Item(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY)));
     public static final RegistrySupplier<Item> QUARTZ_CIRCUIT = ITEMS.register("quartz_circuit", () -> new Item(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY)));
     public static final RegistrySupplier<Item> VIBRANIUM_CIRCUIT = ITEMS.register("vibranium_circuit", () -> new Item(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY).rarity(Rarity.RARE)));

@@ -11,7 +11,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
@@ -20,7 +20,6 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.addonpack.parser.ToolTierParser;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
-import net.threetag.palladium.tags.PalladiumBlockTags;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,13 +28,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HammerItem extends DiggerItem implements IAddonItem {
+public class AddonHoeItem extends HoeItem implements IAddonItem {
 
     private List<Component> tooltipLines;
     private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
 
-    public HammerItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
-        super(attackDamage, attackSpeed, tier, PalladiumBlockTags.MINEABLE_WITH_HAMNMER, properties);
+    public AddonHoeItem(Tier tier, int baseDamage, float attackSpeed, Properties properties) {
+        super(tier, baseDamage, attackSpeed, properties);
 
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             Multimap<Attribute, AttributeModifier> multimap = ArrayListMultimap.create();
@@ -88,7 +87,7 @@ public class HammerItem extends DiggerItem implements IAddonItem {
                 throw new JsonParseException("Unknown tool tier '" + GsonUtil.getAsResourceLocation(json, "tier") + "'");
             }
 
-            return new HammerItem(tier, GsonHelper.getAsInt(json, "base_damage"), GsonHelper.getAsFloat(json, "attack_speed"), properties);
+            return new AddonHoeItem(tier, GsonHelper.getAsInt(json, "base_damage"), GsonHelper.getAsFloat(json, "attack_speed"), properties);
         }
 
         @Override
@@ -100,18 +99,17 @@ public class HammerItem extends DiggerItem implements IAddonItem {
                     .required().exampleJson(new JsonPrimitive("minecraft:diamond"));
 
             builder.addProperty("base_damage", Integer.class)
-                    .description("Base value for the damage. For reference: Palladium's hammer has 4")
+                    .description("Base value for the damage. For reference: iron has -2, diamond has -3")
                     .required().exampleJson(new JsonPrimitive(-2));
 
             builder.addProperty("attack_speed", Float.class)
-                    .description("Base value for the attack speed. For reference: Palladium's hammer has -2.75")
-                    .required().exampleJson(new JsonPrimitive(-2.75F));
+                    .description("Base value for the attack speed. For reference: iron has -1.0, diamond has 0.0")
+                    .required().exampleJson(new JsonPrimitive(-1.0F));
         }
 
         @Override
         public ResourceLocation getId() {
-            return new ResourceLocation(Palladium.MOD_ID, "hammer");
+            return new ResourceLocation(Palladium.MOD_ID, "hoe");
         }
     }
-
 }

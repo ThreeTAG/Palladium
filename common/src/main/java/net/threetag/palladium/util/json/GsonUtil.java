@@ -160,6 +160,57 @@ public class GsonUtil {
         return i;
     }
 
+    public static float getAsFloatRanged(JsonObject json, String memberName, float min, float max, float fallback) {
+        if (!GsonHelper.isValidNode(json, memberName)) {
+            return fallback;
+        }
+        return getAsFloatRanged(json, memberName, min, max);
+    }
+
+    public static float getAsFloatRanged(JsonObject json, String memberName, float min, float max) {
+        float f = GsonHelper.getAsFloat(json, memberName);
+
+        if (f < min || f > max) {
+            throw new JsonParseException("Expected " + memberName + " to be within bounds " + min + " ~ " + max);
+        }
+
+        return f;
+    }
+
+    public static float getAsFloatMin(JsonObject json, String memberName, float min, float fallback) {
+        if (!GsonHelper.isValidNode(json, memberName)) {
+            return fallback;
+        }
+        return getAsFloatMin(json, memberName, min);
+    }
+
+    public static float getAsFloatMin(JsonObject json, String memberName, float min) {
+        float f = GsonHelper.getAsFloat(json, memberName);
+
+        if (f < min) {
+            throw new JsonParseException("Expected " + memberName + " to be greater than or equals " + min);
+        }
+
+        return f;
+    }
+
+    public static float getAsFloatMax(JsonObject json, String memberName, float max, float fallback) {
+        if (!GsonHelper.isValidNode(json, memberName)) {
+            return fallback;
+        }
+        return getAsFloatMax(json, memberName, max);
+    }
+
+    public static float getAsFloatMax(JsonObject json, String memberName, float max) {
+        float f = GsonHelper.getAsFloat(json, memberName);
+
+        if (f > max) {
+            throw new JsonParseException("Expected " + memberName + " to be less then or equals " + max);
+        }
+
+        return f;
+    }
+
     public static Component getAsComponent(JsonObject json, String memberName) {
         if (GsonHelper.isValidNode(json, memberName)) {
             return Component.Serializer.fromJson(json.get(memberName));

@@ -15,10 +15,7 @@ import net.threetag.palladium.addonpack.builder.ItemBuilder;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
-import net.threetag.palladium.item.AddonArmorItem;
-import net.threetag.palladium.item.AddonItem;
-import net.threetag.palladium.item.IAddonItem;
-import net.threetag.palladium.item.PalladiumCreativeModeTabs;
+import net.threetag.palladium.item.*;
 import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.*;
@@ -60,6 +57,12 @@ public class ItemParser extends AddonParser<Item> {
     static {
         registerTypeSerializer(new AddonItem.Parser());
         registerTypeSerializer(new AddonArmorItem.Parser());
+        registerTypeSerializer(new AddonSwordItem.Parser());
+        registerTypeSerializer(new AddonPickaxeItem.Parser());
+        registerTypeSerializer(new AddonAxeItem.Parser());
+        registerTypeSerializer(new AddonShovelItem.Parser());
+        registerTypeSerializer(new AddonHoeItem.Parser());
+        registerTypeSerializer(new HammerItem.Parser());
     }
 
     public static Rarity getRarity(String name) {

@@ -164,6 +164,30 @@ Default Item</a>
 <a href="#palladium:armor">
 Armor</a>
 </li>
+<li>
+<a href="#palladium:sword">
+Sword</a>
+</li>
+<li>
+<a href="#palladium:pickaxe">
+Pickaxe</a>
+</li>
+<li>
+<a href="#palladium:axe">
+Axe</a>
+</li>
+<li>
+<a href="#palladium:shovel">
+Shovel</a>
+</li>
+<li>
+<a href="#palladium:hoe">
+Hoe</a>
+</li>
+<li>
+<a href="#palladium:hammer">
+Hoe</a>
+</li>
 </ul>
 </p>
 <hr>
@@ -243,6 +267,402 @@ true</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","armor_texture":"example:textures/models/armor/example_armor.png"}</pre>
+</div>
+<hr>
+
+<div id="palladium:sword">
+<h2>
+Sword</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+tier</td>
+<td>
+Tier</td>
+<td>
+Tool tier, which defines certain characteristics about the tool. Open tool_tiers.html for seeing how to make custom ones. Possible values: [minecraft:diamond, minecraft:gold, minecraft:stone, minecraft:wood, minecraft:iron, minecraft:netherite]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+base_damage</td>
+<td>
+Integer</td>
+<td>
+Base value for the damage. For reference: swords usually have 3</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+attack_speed</td>
+<td>
+Float</td>
+<td>
+Base value for the attack speed. For reference: swords usually have -2.4</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:sword","tier":"minecraft:diamond","base_damage":3,"attack_speed":-2.4}</pre>
+</div>
+<hr>
+
+<div id="palladium:pickaxe">
+<h2>
+Pickaxe</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+tier</td>
+<td>
+Tier</td>
+<td>
+Tool tier, which defines certain characteristics about the tool. Open tool_tiers.html for seeing how to make custom ones. Possible values: [minecraft:diamond, minecraft:gold, minecraft:stone, minecraft:wood, minecraft:iron, minecraft:netherite]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+base_damage</td>
+<td>
+Integer</td>
+<td>
+Base value for the damage. For reference: pickaxes usually have 1</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+attack_speed</td>
+<td>
+Float</td>
+<td>
+Base value for the attack speed. For reference: pickaxes usually have -2.8</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:pickaxe","tier":"minecraft:diamond","base_damage":1,"attack_speed":-2.8}</pre>
+</div>
+<hr>
+
+<div id="palladium:axe">
+<h2>
+Axe</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+tier</td>
+<td>
+Tier</td>
+<td>
+Tool tier, which defines certain characteristics about the tool. Open tool_tiers.html for seeing how to make custom ones. Possible values: [minecraft:diamond, minecraft:gold, minecraft:stone, minecraft:wood, minecraft:iron, minecraft:netherite]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+base_damage</td>
+<td>
+Integer</td>
+<td>
+Base value for the damage. For reference: axes usually have roughly 6</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+attack_speed</td>
+<td>
+Float</td>
+<td>
+Base value for the attack speed. For reference: axes usually have roughly -3.0</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:axe","tier":"minecraft:diamond","base_damage":6,"attack_speed":-3.0}</pre>
+</div>
+<hr>
+
+<div id="palladium:shovel">
+<h2>
+Shovel</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+tier</td>
+<td>
+Tier</td>
+<td>
+Tool tier, which defines certain characteristics about the tool. Open tool_tiers.html for seeing how to make custom ones. Possible values: [minecraft:diamond, minecraft:gold, minecraft:stone, minecraft:wood, minecraft:iron, minecraft:netherite]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+base_damage</td>
+<td>
+Integer</td>
+<td>
+Base value for the damage. For reference: shovels usually have 1.5</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+attack_speed</td>
+<td>
+Float</td>
+<td>
+Base value for the attack speed. For reference: shovels usually have -3.0</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:shovel","tier":"minecraft:diamond","base_damage":1.5,"attack_speed":-3.0}</pre>
+</div>
+<hr>
+
+<div id="palladium:hoe">
+<h2>
+Hoe</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+tier</td>
+<td>
+Tier</td>
+<td>
+Tool tier, which defines certain characteristics about the tool. Open tool_tiers.html for seeing how to make custom ones. Possible values: [minecraft:diamond, minecraft:gold, minecraft:stone, minecraft:wood, minecraft:iron, minecraft:netherite]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+base_damage</td>
+<td>
+Integer</td>
+<td>
+Base value for the damage. For reference: iron has -2, diamond has -3</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+attack_speed</td>
+<td>
+Float</td>
+<td>
+Base value for the attack speed. For reference: iron has -1.0, diamond has 0.0</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:hoe","tier":"minecraft:diamond","base_damage":-2,"attack_speed":-1.0}</pre>
+</div>
+<hr>
+
+<div id="palladium:hammer">
+<h2>
+Hoe</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+tier</td>
+<td>
+Tier</td>
+<td>
+Tool tier, which defines certain characteristics about the tool. Open tool_tiers.html for seeing how to make custom ones. Possible values: [minecraft:diamond, minecraft:gold, minecraft:stone, minecraft:wood, minecraft:iron, minecraft:netherite]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+base_damage</td>
+<td>
+Integer</td>
+<td>
+Base value for the damage. For reference: Palladium's hammer has 4</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+attack_speed</td>
+<td>
+Float</td>
+<td>
+Base value for the attack speed. For reference: Palladium's hammer has -2.75</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:hammer","tier":"minecraft:diamond","base_damage":-2,"attack_speed":-2.75}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

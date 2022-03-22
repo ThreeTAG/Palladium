@@ -13,6 +13,7 @@ import net.minecraft.util.Unit;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.CreativeModeTabParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
+import net.threetag.palladium.addonpack.parser.ToolTierParser;
 
 import java.io.File;
 import java.util.concurrent.CompletableFuture;
@@ -47,6 +48,7 @@ public class AddonPackManager {
 
         this.resourceManager.registerReloadListener(new CreativeModeTabParser());
         this.resourceManager.registerReloadListener(new ArmorMaterialParser());
+        this.resourceManager.registerReloadListener(new ToolTierParser());
         this.resourceManager.registerReloadListener(new ItemParser());
 
         this.beginLoading(Util.backgroundExecutor(), Runnable::run);
