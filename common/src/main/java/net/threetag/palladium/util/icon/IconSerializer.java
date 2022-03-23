@@ -11,12 +11,16 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.documentation.HTMLBuilder;
+import net.threetag.palladium.documentation.IDocumentedConfigurable;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-public abstract class IconSerializer<T extends IIcon> extends RegistryEntry<IconSerializer<T>> {
+public abstract class IconSerializer<T extends IIcon> extends RegistryEntry<IconSerializer<T>> implements IDocumentedConfigurable {
 
     public static final ResourceKey<Registry<IconSerializer<?>>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "icon_serializers"));
     public static final Registrar<IconSerializer<?>> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new IconSerializer<?>[0]).build();
@@ -60,6 +64,12 @@ public abstract class IconSerializer<T extends IIcon> extends RegistryEntry<Icon
         return nbt;
     }
 
+    public static HTMLBuilder documentationBuilder() {
+        return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "icons"), "Icons")
+                .add(HTMLBuilder.heading("Icons"))
+                .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList()));
+    }
+
     @NotNull
     public abstract T fromJSON(JsonObject json);
 
@@ -69,4 +79,8 @@ public abstract class IconSerializer<T extends IIcon> extends RegistryEntry<Icon
 
     public abstract CompoundTag toNBT(T icon);
 
+    @Override
+    public ResourceLocation getId() {
+        return REGISTRY.getId(this);
+    }
 }

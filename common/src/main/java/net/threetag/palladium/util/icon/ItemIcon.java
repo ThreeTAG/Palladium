@@ -1,12 +1,15 @@
 package net.threetag.palladium.util.icon;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.GuiUtil;
 import net.threetag.palladium.util.json.GsonUtil;
 
@@ -37,7 +40,7 @@ public class ItemIcon implements IIcon {
     }
 
     @Override
-    public IconSerializer<?> getSerializer() {
+    public IconSerializer<ItemIcon> getSerializer() {
         return IconSerializers.ITEM.get();
     }
 
@@ -69,6 +72,16 @@ public class ItemIcon implements IIcon {
         @Override
         public CompoundTag toNBT(ItemIcon icon) {
             return icon.stack.save(new CompoundTag());
+        }
+
+        @Override
+        public void generateDocumentation(JsonDocumentationBuilder builder) {
+            builder.setTitle("Item Icon");
+            builder.setDescription("Uses an item as an icon.");
+
+            builder.addProperty("item", ResourceLocation.class)
+                    .description("ID of the item that's supposed to be displayed")
+                    .required().exampleJson(new JsonPrimitive("minecraft:apple"));
         }
     }
 

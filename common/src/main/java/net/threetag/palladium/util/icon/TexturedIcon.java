@@ -2,6 +2,7 @@ package net.threetag.palladium.util.icon;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,7 +59,7 @@ public class TexturedIcon implements IIcon {
     }
 
     @Override
-    public IconSerializer<?> getSerializer() {
+    public IconSerializer<TexturedIcon> getSerializer() {
         return IconSerializers.TEXTURE.get();
     }
 
@@ -116,6 +118,24 @@ public class TexturedIcon implements IIcon {
                 nbt.putInt("ColorBlue", icon.tint.getBlue());
             }
             return nbt;
+        }
+
+        @Override
+        public void generateDocumentation(JsonDocumentationBuilder builder) {
+            builder.setTitle("Textured Icon");
+            builder.setDescription("Uses a texture to render as an icon.");
+
+            builder.addProperty("texture", ResourceLocation.class)
+                    .description("Path to the texture file.")
+                    .required().exampleJson(new JsonPrimitive("example:textures/icons/my_icon.png"));
+
+            JsonArray tint = new JsonArray();
+            tint.add(123);
+            tint.add(32);
+            tint.add(212);
+            builder.addProperty("tint", Integer[].class)
+                    .description("Adds an additional tint to the texture.")
+                    .fallback(new Integer[]{255, 255, 255}, "/").exampleJson(tint);
         }
     }
 }

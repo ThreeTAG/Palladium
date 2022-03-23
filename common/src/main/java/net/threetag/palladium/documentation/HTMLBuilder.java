@@ -102,11 +102,11 @@ public class HTMLBuilder {
         return this;
     }
 
-    public HTMLBuilder addDocumentationSettings(List<IDocumentedConfigurable> settings) {
+    public HTMLBuilder addDocumentationSettings(Collection<IDocumentedConfigurable> settings) {
         return this.addDocumentationSettings(settings, JsonDocumentationBuilder::new);
     }
 
-    public HTMLBuilder addDocumentationSettings(List<IDocumentedConfigurable> settings, Supplier<JsonDocumentationBuilder> builderSupplier) {
+    public HTMLBuilder addDocumentationSettings(Collection<IDocumentedConfigurable> settings, Supplier<JsonDocumentationBuilder> builderSupplier) {
         Map<String, List<IDocumentedConfigurable>> sorted = new HashMap<>();
         // Sort abilities by mods
         for (IDocumentedConfigurable setting : settings) {

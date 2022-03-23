@@ -23,6 +23,7 @@ import net.threetag.palladium.power.ability.AbilityEventHandler;
 import net.threetag.palladium.power.ability.condition.ConditionSerializer;
 import net.threetag.palladium.power.ability.condition.ConditionSerializers;
 import net.threetag.palladium.power.holderfactory.PowerProviderFactories;
+import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.icon.IconSerializers;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.world.PalladiumFeatures;
@@ -74,6 +75,7 @@ public class Palladium {
         consumer.accept(ArmorMaterialParser.documentationBuilder());
         consumer.accept(ToolTierParser.documentationBuilder());
         consumer.accept(ItemParser.documentationBuilder());
+        consumer.accept(IconSerializer.documentationBuilder());
         PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
     }
 }

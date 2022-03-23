@@ -8,6 +8,6 @@ public class IconSerializers {
 
     public static final DeferredRegister<IconSerializer<?>> ICON_SERIALIZERS = DeferredRegister.create(Palladium.MOD_ID, IconSerializer.RESOURCE_KEY);
 
-    public static final RegistrySupplier<IconSerializer<?>> ITEM = ICON_SERIALIZERS.register("item", ItemIcon.Serializer::new);
-    public static final RegistrySupplier<IconSerializer<?>> TEXTURE = ICON_SERIALIZERS.register("texture", TexturedIcon.Serializer::new);
+    public static final RegistrySupplier<IconSerializer<ItemIcon>> ITEM = ICON_SERIALIZERS.register("item", ItemIcon.Serializer::new);
+    public static final RegistrySupplier<IconSerializer<TexturedIcon>> TEXTURE = ICON_SERIALIZERS.register("texture", TexturedIcon.Serializer::new);
 }
