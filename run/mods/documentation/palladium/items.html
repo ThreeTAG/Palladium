@@ -243,7 +243,7 @@ armor_material</td>
 <td>
 ArmorMaterial</td>
 <td>
-Armor material, which defines certain characteristics about the armor. Open armor_materials.html for seeing how to make custom ones. Possible values: [minecraft:diamond, minecraft:gold, minecraft:leather, test:dirt, minecraft:turtle, minecraft:chainmail, minecraft:iron, minecraft:netherite]</td>
+Armor material, which defines certain characteristics about the armor. Open armor_materials.html for seeing how to make custom ones. Possible values: [minecraft:diamond, test:wood, minecraft:gold, minecraft:leather, test:dirt, minecraft:turtle, minecraft:chainmail, minecraft:iron, minecraft:netherite]</td>
 <td style="background-color: lightgreen">
 true</td>
 <td>
@@ -261,12 +261,24 @@ true</td>
 <td>
 /</td>
 </tr>
+<tr>
+<td>
+armor_model</td>
+<td>
+ModelLayerLocation</td>
+<td>
+Armor model, must have the body parts for a humanoid model.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","armor_texture":"example:textures/models/armor/example_armor.png"}</pre>
+{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","armor_texture":"example:textures/models/armor/example_armor.png","armor_model":"minecraft:player#outer_armor"}</pre>
 </div>
 <hr>
 

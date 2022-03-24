@@ -1,0 +1,33 @@
+{
+  "tooltip": [
+    "Cool Wood Armor"
+  ],
+  "armor_material": "test:wood",
+  "creative_mode_tab": "combat",
+  "armor_texture": "test:textures/models/armor/wood_layer_1.png",
+  "chest": {
+    "item_name": "wooden_chestplate",
+    "tooltip": [
+      "Chestplate"
+    ]
+  },
+  "legs": {
+    "item_name": "wooden_leggings",
+    "tooltip": [
+      "Leggings"
+    ],
+    "armor_texture": "test:textures/models/armor/wood_layer_2.png"
+  },
+  "feet": {
+    "item_name": "wooden_boots",
+    "tooltip": [
+      "Boots"
+    ]
+  },
+  "head": {
+    "item_name": "wooden_helmet",
+    "tooltip": [
+      "Helmet"
+    ]
+  }
+}

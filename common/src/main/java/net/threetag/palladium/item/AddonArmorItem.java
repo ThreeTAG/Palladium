@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -104,7 +105,6 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
             AddonArmorItem item = new AddonArmorItem(armorMaterial, slot, properties);
             item.armorTexture = GsonUtil.getAsResourceLocation(json, "armor_texture");
 
-
             GsonUtil.ifHasKey(json, "armor_model", jsonElement -> ArmorModelManager.register(item, new ArmorModelManager.Simple(GsonUtil.getAsModelLayerLocation(json, "armor_model"))));
 
             return item;
@@ -125,6 +125,10 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
             builder.addProperty("armor_texture", ResourceLocation.class)
                     .description("Armor texture (rendered on the player when wearing it).")
                     .required().exampleJson(new JsonPrimitive("example:textures/models/armor/example_armor.png"));
+
+            builder.addProperty("armor_model", ModelLayerLocation.class)
+                    .description("Armor model, must have the body parts for a humanoid model.")
+                    .fallbackObject(null).exampleJson(new JsonPrimitive("minecraft:player#outer_armor"));
         }
 
         @Override

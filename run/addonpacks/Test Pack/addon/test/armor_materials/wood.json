@@ -1,0 +1,14 @@
+{
+  "durability_multiplier": 3,
+  "slot_protections": [
+    1,
+    2,
+    2,
+    1
+  ],
+  "enchantment_value": 20,
+  "equip_sound": "minecraft:block.wood.place",
+  "repair_ingredient": {
+    "tag": "minecraft:logs"
+  }
+}

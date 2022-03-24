@@ -51,9 +51,11 @@ public class ItemBuilder extends AddonBuilder<Item> {
         Utils.ifNotNull(this.rarity, properties::rarity);
         Utils.ifTrue(this.isFireResistant, properties::fireResistant);
 
-        CreativeModeTab tab = PalladiumCreativeModeTabs.getTab(this.creativeModeTab);
-        if (tab != null) {
-            properties.tab(tab);
+        if(this.creativeModeTab != null) {
+            CreativeModeTab tab = PalladiumCreativeModeTabs.getTab(this.creativeModeTab);
+            if (tab != null) {
+                properties.tab(tab);
+            }
         }
 
         IAddonItem item = this.typeSerializer != null ? this.typeSerializer.parse(this.json, properties) : new AddonItem(properties);

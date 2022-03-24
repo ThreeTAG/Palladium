@@ -10,10 +10,7 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.Unit;
-import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
-import net.threetag.palladium.addonpack.parser.CreativeModeTabParser;
-import net.threetag.palladium.addonpack.parser.ItemParser;
-import net.threetag.palladium.addonpack.parser.ToolTierParser;
+import net.threetag.palladium.addonpack.parser.*;
 
 import java.io.File;
 import java.util.concurrent.CompletableFuture;
@@ -23,6 +20,7 @@ public class AddonPackManager {
 
     private static AddonPackManager INSTANCE;
     public static boolean IGNORE_INJECT = false;
+    public static ItemParser ITEM_PARSER;
 
     public static AddonPackManager getInstance() {
         if (INSTANCE == null) {
@@ -49,7 +47,8 @@ public class AddonPackManager {
         this.resourceManager.registerReloadListener(new CreativeModeTabParser());
         this.resourceManager.registerReloadListener(new ArmorMaterialParser());
         this.resourceManager.registerReloadListener(new ToolTierParser());
-        this.resourceManager.registerReloadListener(new ItemParser());
+        this.resourceManager.registerReloadListener(ITEM_PARSER = new ItemParser());
+        this.resourceManager.registerReloadListener(new SuitSetParser());
 
         this.beginLoading(Util.backgroundExecutor(), Runnable::run);
     }
