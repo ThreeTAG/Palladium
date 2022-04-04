@@ -5,6 +5,8 @@ import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -103,9 +105,11 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
             }
 
             AddonArmorItem item = new AddonArmorItem(armorMaterial, slot, properties);
-            item.armorTexture = GsonUtil.getAsResourceLocation(json, "armor_texture");
 
-            GsonUtil.ifHasKey(json, "armor_model", jsonElement -> ArmorModelManager.register(item, new ArmorModelManager.Simple(GsonUtil.getAsModelLayerLocation(json, "armor_model"))));
+            if(Platform.getEnvironment() == Env.CLIENT) {
+                item.armorTexture = GsonUtil.getAsResourceLocation(json, "armor_texture");
+                GsonUtil.ifHasKey(json, "armor_model", jsonElement -> ArmorModelManager.register(item, GsonUtil.getAsModelLayerLocation(json, "armor_model")));
+            }
 
             return item;
         }

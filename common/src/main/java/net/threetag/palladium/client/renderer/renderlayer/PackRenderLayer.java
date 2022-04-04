@@ -32,7 +32,6 @@ public class PackRenderLayer implements IPackRenderLayer {
 
     @Override
     public void render(LivingEntity entity, AbilityEntry abilityEntry, PoseStack poseStack, MultiBufferSource bufferSource, HumanoidModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-//        this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         parentModel.copyPropertiesTo(this.model);
         // TODO apply enchant glint when item is enchanted
         VertexConsumer vertexConsumer = this.renderType.apply(bufferSource, this.texture.getTexture(entity));

@@ -15,8 +15,8 @@ public class PalladiumKeyMappings {
     public static AbilityKeyMapping[] ABILITY_KEYS = new AbilityKeyMapping[5];
 
     public static void init() {
-        for (int i = 0; i < ABILITY_KEYS.length; i++) {
-            KeyMappingRegistry.register(ABILITY_KEYS[i] = new AbilityKeyMapping("key.palladium.ability_" + i, i == 1 ? 86 : i == 2 ? 66 : i == 3 ? 78 : i == 4 ? 77 : i == 5 ? 44 : -1, CATEGORY, i));
+        for (int i = 1; i <= ABILITY_KEYS.length; i++) {
+            KeyMappingRegistry.register(ABILITY_KEYS[i-1] = new AbilityKeyMapping("key.palladium.ability_" + i, i == 1 ? 86 : i == 2 ? 66 : i == 3 ? 78 : i == 4 ? 77 : i == 5 ? 44 : -1, CATEGORY, i));
         }
 
         ClientRawInputEvent.KEY_PRESSED.register((client, keyCode, scanCode, action, modifiers) -> {
