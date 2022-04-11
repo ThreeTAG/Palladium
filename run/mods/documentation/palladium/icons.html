@@ -31,26 +31,26 @@ Overview</h2>
 Palladium</h3>
 <ul>
 <li>
-<a href="#palladium:compound">
-Compound Icon</a>
+<a href="#palladium:item">
+Item Icon</a>
 </li>
 <li>
 <a href="#palladium:texture">
 Textured Icon</a>
 </li>
 <li>
-<a href="#palladium:item">
-Item Icon</a>
+<a href="#palladium:compound">
+Compound Icon</a>
 </li>
 </ul>
 </p>
 <hr>
 
-<div id="palladium:compound">
+<div id="palladium:item">
 <h2>
-Compound Icon</h2>
+Item Icon</h2>
 <p>
-Let's you merge multiple icons into one.</p>
+Uses an item as an icon.</p>
 <h3>
 Settings:</h3>
 <table>
@@ -71,11 +71,11 @@ Fallback Value</th>
 <tbody>
 <tr>
 <td>
-icons</td>
+item</td>
 <td>
-IIcon[]</td>
+ResourceLocation</td>
 <td>
-Array of the icons you want to merge</td>
+ID of the item that's supposed to be displayed</td>
 <td style="background-color: lightgreen">
 true</td>
 <td>
@@ -86,7 +86,7 @@ true</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:compound","icons":[{"type":"palladium:item","item":"minecraft:apple","count":1},{"type":"palladium:texture","texture":"example:textures/icons/my_icon.png"}]}</pre>
+{"type":"palladium:item","item":"minecraft:apple"}</pre>
 </div>
 <hr>
 
@@ -146,11 +146,11 @@ Example:</h3>
 </div>
 <hr>
 
-<div id="palladium:item">
+<div id="palladium:compound">
 <h2>
-Item Icon</h2>
+Compound Icon</h2>
 <p>
-Uses an item as an icon.</p>
+Let's you merge multiple icons into one.</p>
 <h3>
 Settings:</h3>
 <table>
@@ -171,11 +171,11 @@ Fallback Value</th>
 <tbody>
 <tr>
 <td>
-item</td>
+icons</td>
 <td>
-ResourceLocation</td>
+IIcon[]</td>
 <td>
-ID of the item that's supposed to be displayed</td>
+Array of the icons you want to merge</td>
 <td style="background-color: lightgreen">
 true</td>
 <td>
@@ -186,7 +186,7 @@ true</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:item","item":"minecraft:apple"}</pre>
+{"type":"palladium:compound","icons":[{"type":"palladium:item","item":"minecraft:apple","count":1},{"type":"palladium:texture","texture":"example:textures/icons/my_icon.png"}]}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

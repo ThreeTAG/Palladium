@@ -6,6 +6,7 @@
     "type": "palladium:item",
     "item": "palladium:vibranium_circuit"
   },
+  "background": "minecraft:textures/block/blue_concrete.png",
   "abilities": {
     "command": {
       "ability": "palladium:command",

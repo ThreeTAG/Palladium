@@ -7,7 +7,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -218,13 +217,12 @@ public class PowerTab extends GuiComponent {
         RenderSystem.depthFunc(518);
         fill(poseStack, PowersScreen.WINDOW_INSIDE_WIDTH, PowersScreen.WINDOW_INSIDE_HEIGHT, 0, 0, -16777216);
         RenderSystem.depthFunc(515);
-        // TODO custom backgrounds
-        ResourceLocation resourceLocation = new ResourceLocation("textures/block/red_wool.png");
+        ResourceLocation resourceLocation = this.powerHolder.getPower().getBackground();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         if (resourceLocation != null) {
             RenderSystem.setShaderTexture(0, resourceLocation);
         } else {
-            RenderSystem.setShaderTexture(0, TextureManager.INTENTIONAL_MISSING_TEXTURE);
+            RenderSystem.setShaderTexture(0, new ResourceLocation("textures/block/red_wool.png"));
         }
 
         int i = Mth.floor(this.scrollX);
