@@ -30,9 +30,11 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
 
     public static final ResourceKey<Registry<Ability>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "abilities"));
     public static final Registrar<Ability> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new Ability[0]).build();
+
     public static final PalladiumProperty<Component> TITLE = new ComponentProperty("title").configurable("Allows you to set a custom title for this ability");
     public static final PalladiumProperty<IIcon> ICON = new IconProperty("icon").configurable("Icon for the ability");
     public static final PalladiumProperty<AbilityColor> COLOR = new AbilityColorProperty("bar_color").configurable("Changes the color of the ability in the ability bar");
+    public static final PalladiumProperty<Boolean> HIDDEN = new BooleanProperty("hidden").configurable("Determines if the ability is visible in the ability bar and powers screen");
 
     final PropertyManager propertyManager = new PropertyManager();
 
@@ -40,6 +42,7 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
         this.withProperty(ICON, new ItemIcon(Items.BLAZE_ROD));
         this.withProperty(TITLE, null);
         this.withProperty(COLOR, AbilityColor.LIGHT_GRAY);
+        this.withProperty(HIDDEN, false);
     }
 
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
@@ -81,6 +84,30 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
         return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "abilities"), "Abilities")
                 .add(HTMLBuilder.heading("Abilities"))
                 .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList()));
+    }
+
+    public static List<AbilityEntry> findParentAbilities(LivingEntity entity, AbilityConfiguration ability, IPowerHolder powerHolder) {
+        List<AbilityEntry> list = new ArrayList<>();
+        for (String key : ability.getDependencies()) {
+            AbilityEntry parent = powerHolder.getAbilities().get(key);
+
+            if (parent != null) {
+                list.add(parent);
+            }
+        }
+        return list;
+    }
+
+    public static List<AbilityEntry> findChildrenAbilities(LivingEntity entity, AbilityConfiguration ability, IPowerHolder powerHolder) {
+        List<AbilityEntry> list = new ArrayList<>();
+        for (Map.Entry<String, AbilityEntry> entries : powerHolder.getAbilities().entrySet()) {
+            for (String key : ability.getDependencies()) {
+                if (key.equals(entries.getKey())) {
+                    list.add(entries.getValue());
+                }
+            }
+        }
+        return list;
     }
 
     @Override

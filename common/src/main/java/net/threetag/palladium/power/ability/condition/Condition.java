@@ -5,6 +5,9 @@ import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
+import java.util.Collections;
+import java.util.List;
+
 public abstract class Condition {
 
     public abstract boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder);
@@ -23,4 +26,7 @@ public abstract class Condition {
 
     public abstract ConditionSerializer getSerializer();
 
+    public List<String> getDependentAbilities() {
+        return Collections.emptyList();
+    }
 }

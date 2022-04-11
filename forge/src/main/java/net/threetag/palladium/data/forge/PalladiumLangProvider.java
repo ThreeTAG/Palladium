@@ -97,6 +97,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("commands.superpower.success.entity.multiple", "%s entities have gained the superpower %s");
             this.add("commands.superpower.remove.success.entity.single", "%s's superpower was removed");
             this.add("commands.superpower.remove.success.entity.multiple", "The superpower of %s entities was removed");
+
+            // GUI
+            this.add("gui.palladium.powers", "Powers");
         }
     }
 
@@ -174,6 +177,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("commands.superpower.success.entity.multiple", "%s Lebewesen haben die Superkraft %s erhalten");
             this.add("commands.superpower.remove.success.entity.single", "%s's Superkraft wurde entfernt");
             this.add("commands.superpower.remove.success.entity.multiple", "Die Superkraft von %s Lebewesen wurde entfernt");
+
+            // GUI
+            this.add("gui.palladium.powers", "Kr\u00E4fte");
         }
     }
 
@@ -247,10 +253,13 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Commands
             this.add("commands.superpower.error.powerNotFound", "Et wurd' kene Kraft mit'm Namen '%1$s' jefunden");
             this.add("commands.superpower.error.noLivingEntity", "Objekt ist nicht lebend");
-            this.add("commands.superpower.success.entity.single", "%s hat de Superkraft %s erhalten");
-            this.add("commands.superpower.success.entity.multiple", "%s Lebewesen haben de Superkraft %s erhalten");
-            this.add("commands.superpower.remove.success.entity.single", "%s's Superkraft wurd' entfernt");
-            this.add("commands.superpower.remove.success.entity.multiple", "De Superkraft von %s Lebewesen wurd' entfernt");
+            this.add("commands.superpower.success.entity.single", "%s hat de Supperkraft %s erhalten");
+            this.add("commands.superpower.success.entity.multiple", "%s Lebewesen haben de Supperkraft %s erhalten");
+            this.add("commands.superpower.remove.success.entity.single", "%s's Supperkraft wurd' entfernt");
+            this.add("commands.superpower.remove.success.entity.multiple", "De Supperkraft von %s Lebewesen wurd' entfernt");
+
+            // GUI
+            this.add("gui.palladium.powers", "Kr\u00E4fte");
         }
     }
 
