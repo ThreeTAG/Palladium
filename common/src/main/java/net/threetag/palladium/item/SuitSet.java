@@ -10,7 +10,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.threetag.palladium.Palladium;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -22,7 +21,7 @@ public class SuitSet extends RegistryEntry<SuitSet> {
 
     private final Supplier<Item> mainHand, offHand, helmet, chestplate, leggings, boots;
 
-    public SuitSet(@Nullable Supplier<Item> mainHand, @Nullable Supplier<Item> offHand, @Nullable Supplier<Item> helmet, @NotNull Supplier<Item> chestplate, @Nullable Supplier<Item> leggings, @Nullable Supplier<Item> boots) {
+    public SuitSet(@Nullable Supplier<Item> mainHand, @Nullable Supplier<Item> offHand, @Nullable Supplier<Item> helmet, @Nullable Supplier<Item> chestplate, @Nullable Supplier<Item> leggings, @Nullable Supplier<Item> boots) {
         this.mainHand = mainHand;
         this.offHand = offHand;
         this.helmet = helmet;
@@ -46,7 +45,7 @@ public class SuitSet extends RegistryEntry<SuitSet> {
         return this.helmet != null ? this.helmet.get() : null;
     }
 
-    @NotNull
+    @Nullable
     public Item getChestplate() {
         return this.chestplate.get();
     }
@@ -62,26 +61,26 @@ public class SuitSet extends RegistryEntry<SuitSet> {
     }
 
     public boolean isWearing(LivingEntity entity) {
-        if (!entity.getItemBySlot(EquipmentSlot.CHEST).is(this.getChestplate())) {
+        if (this.getChestplate() != null && !entity.getItemBySlot(EquipmentSlot.CHEST).is(this.getChestplate())) {
             return false;
         }
 
-        if (this.getMainHand() != null && !entity.getItemBySlot(EquipmentSlot.CHEST).is(this.getMainHand())) {
+        if (this.getMainHand() != null && !entity.getItemBySlot(EquipmentSlot.MAINHAND).is(this.getMainHand())) {
             return false;
         }
 
-        if (this.getOffHand() != null && !entity.getItemBySlot(EquipmentSlot.CHEST).is(this.getOffHand())) {
+        if (this.getOffHand() != null && !entity.getItemBySlot(EquipmentSlot.OFFHAND).is(this.getOffHand())) {
             return false;
         }
 
-        if (this.getHelmet() != null && !entity.getItemBySlot(EquipmentSlot.CHEST).is(this.getHelmet())) {
+        if (this.getHelmet() != null && !entity.getItemBySlot(EquipmentSlot.HEAD).is(this.getHelmet())) {
             return false;
         }
 
-        if (this.getLeggings() != null && !entity.getItemBySlot(EquipmentSlot.CHEST).is(this.getLeggings())) {
+        if (this.getLeggings() != null && !entity.getItemBySlot(EquipmentSlot.LEGS).is(this.getLeggings())) {
             return false;
         }
 
-        return this.getBoots() == null || entity.getItemBySlot(EquipmentSlot.CHEST).is(this.getBoots());
+        return this.getBoots() == null || entity.getItemBySlot(EquipmentSlot.FEET).is(this.getBoots());
     }
 }

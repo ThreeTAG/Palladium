@@ -11,18 +11,18 @@ import net.threetag.palladium.power.ability.AbilityEntry;
 
 public class AbilityKeyPressedMessage extends BaseC2SMessage {
 
-    private final ResourceLocation provider;
+    private final ResourceLocation power;
     private final String abilityKey;
     private final boolean pressed;
 
-    public AbilityKeyPressedMessage(ResourceLocation provider, String abilityKey, boolean pressed) {
-        this.provider = provider;
+    public AbilityKeyPressedMessage(ResourceLocation power, String abilityKey, boolean pressed) {
+        this.power = power;
         this.abilityKey = abilityKey;
         this.pressed = pressed;
     }
 
     public AbilityKeyPressedMessage(FriendlyByteBuf buf) {
-        this.provider = buf.readResourceLocation();
+        this.power = buf.readResourceLocation();
         this.abilityKey = buf.readUtf();
         this.pressed = buf.readBoolean();
     }
@@ -34,21 +34,23 @@ public class AbilityKeyPressedMessage extends BaseC2SMessage {
 
     @Override
     public void write(FriendlyByteBuf buf) {
-        buf.writeResourceLocation(this.provider);
+        buf.writeResourceLocation(this.power);
         buf.writeUtf(this.abilityKey);
         buf.writeBoolean(this.pressed);
     }
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
-        IPowerHolder holder = PowerManager.getPowerHandler(context.getPlayer()).getPowerHolder(this.provider);
+        context.queue(() -> {
+            IPowerHolder holder = PowerManager.getPowerHandler(context.getPlayer()).getPowerHolder(PowerManager.getInstance(context.getPlayer().level).getPower(this.power));
 
-        if (holder != null) {
-            AbilityEntry entry = holder.getAbilities().get(this.abilityKey);
+            if (holder != null) {
+                AbilityEntry entry = holder.getAbilities().get(this.abilityKey);
 
-            if (entry != null) {
-                entry.keyPressed(context.getPlayer(), this.pressed);
+                if (entry != null) {
+                    entry.keyPressed(context.getPlayer(), this.pressed);
+                }
             }
-        }
+        });
     }
 }

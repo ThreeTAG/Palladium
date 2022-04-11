@@ -11,10 +11,11 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ItemPowerManager extends SimpleJsonResourceReloadListener {
@@ -22,7 +23,7 @@ public class ItemPowerManager extends SimpleJsonResourceReloadListener {
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private static ItemPowerManager INSTANCE;
 
-    private Map<String, Map<Item, Power>> itemPowers = new HashMap<>();
+    private final Map<String, Map<Item, List<Power>>> itemPowers = new HashMap<>();
 
     public static void init() {
         ReloadListenerRegistry.register(PackType.SERVER_DATA, INSTANCE = new ItemPowerManager());
@@ -36,36 +37,56 @@ public class ItemPowerManager extends SimpleJsonResourceReloadListener {
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
         this.itemPowers.clear();
         object.forEach((id, json) -> {
-            String slot = GsonHelper.getAsString(json.getAsJsonObject(), "slot");
-            Map<Item, Power> map = this.itemPowers.computeIfAbsent(slot, s -> new HashMap<>());
-            JsonObject items = GsonHelper.getAsJsonObject(json.getAsJsonObject(), "items");
+            try {
+                JsonObject jsonObject = GsonHelper.convertToJsonObject(json, "$");
+                String slot = GsonHelper.getAsString(jsonObject, "slot");
 
-            for (String s : items.keySet()) {
-                ResourceLocation itemId = new ResourceLocation(s);
-                try {
-                    ResourceLocation powerId = GsonUtil.getAsResourceLocation(items, s);
-                    Power power = PowerManager.getInstance(null).getPower(powerId);
+                List<Power> powers = new ArrayList<>();
+                if (jsonObject.get("power").isJsonPrimitive()) {
+                    powers = List.of(PowerManager.getInstance(null).getPower(new ResourceLocation(jsonObject.get("power").getAsString())));
+                } else if (jsonObject.get("power").isJsonArray()) {
+                    for (JsonElement jsonElement : GsonHelper.getAsJsonArray(jsonObject, "power")) {
+                        powers.add(PowerManager.getInstance(null).getPower(new ResourceLocation(jsonElement.getAsString())));
+                    }
+                } else {
+                    throw new JsonSyntaxException("Expected power to be string or array of strings");
+                }
+
+                List<Item> items = new ArrayList<>();
+                if (jsonObject.get("item").isJsonPrimitive()) {
+                    ResourceLocation itemId = new ResourceLocation(jsonObject.get("item").getAsString());
 
                     if (!Registry.ITEM.containsKey(itemId)) {
                         throw new JsonParseException("Unknown item '" + itemId + "'");
                     }
 
-                    if (power == null) {
-                        throw new JsonParseException("Unknown power '" + powerId + "'");
-                    }
+                    items = List.of(Registry.ITEM.get(itemId));
+                } else if (jsonObject.get("item").isJsonArray()) {
+                    for (JsonElement jsonElement : GsonHelper.getAsJsonArray(jsonObject, "item")) {
+                        ResourceLocation itemId = new ResourceLocation(jsonElement.getAsString());
 
-                    Item item = Registry.ITEM.get(itemId);
-                    map.put(item, power);
-                } catch (Exception e) {
-                    Palladium.LOGGER.error("Parsing error loading power for item {}", id.toString() + "#" + itemId, e);
+                        if (!Registry.ITEM.containsKey(itemId)) {
+                            throw new JsonParseException("Unknown item '" + itemId + "'");
+                        }
+
+                        items.add(Registry.ITEM.get(itemId));
+                    }
+                } else {
+                    throw new JsonSyntaxException("Expected item to be string or array of strings");
                 }
+
+                for (Item item : items) {
+                    this.itemPowers.computeIfAbsent(slot, s -> new HashMap<>()).computeIfAbsent(item, item1 -> new ArrayList<>()).addAll(powers);
+                }
+            } catch (Exception exception) {
+                Palladium.LOGGER.error("Parsing error loading item powers {}", id, exception);
             }
         });
         Palladium.LOGGER.info("Loaded {} item powers", this.itemPowers.size());
     }
 
     @Nullable
-    public Power getPowerForItem(String slot, Item item) {
+    public List<Power> getPowerForItem(String slot, Item item) {
         return this.itemPowers.containsKey(slot) ? this.itemPowers.get(slot).get(item) : null;
     }
 

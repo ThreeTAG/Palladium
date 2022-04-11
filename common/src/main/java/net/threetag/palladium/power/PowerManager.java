@@ -19,11 +19,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.event.PalladiumEvents;
-import net.threetag.palladium.network.SetPowerMessage;
+import net.threetag.palladium.network.AddPowerMessage;
 import net.threetag.palladium.network.SyncPowersMessage;
-import net.threetag.palladium.power.holderfactory.PowerProviderFactory;
-import net.threetag.palladium.power.holderfactory.SuperpowerPowerProviderFactory;
-import net.threetag.palladium.power.provider.IPowerProvider;
+import net.threetag.palladium.power.provider.SuperpowerProvider;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -33,7 +31,6 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private static PowerManager INSTANCE;
-    private Map<ResourceLocation, IPowerProvider> providers = ImmutableMap.of();
     private Map<ResourceLocation, Power> byName = ImmutableMap.of();
 
     public static void init() {
@@ -43,16 +40,16 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
         PlayerEvent.PLAYER_JOIN.register(player -> {
             new SyncPowersMessage(getInstance(player.level).byName).sendTo(player);
-            getPowerHandler(player).getPowerHolders().forEach((provider, holder) -> new SetPowerMessage(player.getId(), provider, holder != null ? holder.getPower().getId() : null).sendTo(player));
+            getPowerHandler(player).getPowerHolders().forEach((provider, holder) -> new AddPowerMessage(player.getId(), holder.getPower().getId()).sendTo(player));
         });
 
         PalladiumEvents.START_TRACKING.register((tracker, target) -> {
             if (target instanceof LivingEntity livingEntity && tracker instanceof ServerPlayer serverPlayer) {
-                getPowerHandler(livingEntity).getPowerHolders().forEach((provider, holder) -> new SetPowerMessage(target.getId(), provider, holder != null ? holder.getPower().getId() : null).sendTo(serverPlayer));
+                getPowerHandler(livingEntity).getPowerHolders().forEach((provider, holder) -> new AddPowerMessage(target.getId(), holder.getPower().getId()).sendTo(serverPlayer));
             }
         });
 
-        PalladiumEvents.REGISTER_PROPERTY.register(handler -> handler.register(SuperpowerPowerProviderFactory.SUPERPOWER_ID, null));
+        PalladiumEvents.REGISTER_PROPERTY.register(handler -> handler.register(SuperpowerProvider.SUPERPOWER_ID, null));
     }
 
     public PowerManager() {
@@ -65,9 +62,6 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
-        // Providers
-        this.providers = generateProviders();
-
         // Powers
         this.byName.values().forEach(Power::invalidate);
         ImmutableMap.Builder<ResourceLocation, Power> builder = ImmutableMap.builder();
@@ -81,14 +75,6 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
         this.byName = builder.build();
         Palladium.LOGGER.info("Loaded {} powers", this.byName.size());
         syncPowersToAll(this.byName);
-    }
-
-    public static Map<ResourceLocation, IPowerProvider> generateProviders() {
-        ImmutableMap.Builder<ResourceLocation, IPowerProvider> providerBuilder = ImmutableMap.builder();
-        for (PowerProviderFactory factory : PowerProviderFactory.REGISTRY) {
-            factory.create(provider -> providerBuilder.put(provider.getKey(), provider));
-        }
-        return providerBuilder.build();
     }
 
     public static void syncPowersToAll(Map<ResourceLocation, Power> powers) {
@@ -106,10 +92,6 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
     public Collection<Power> getPowers() {
         return this.byName.values();
-    }
-
-    public Collection<IPowerProvider> getProviders() {
-        return this.providers.values();
     }
 
     @ExpectPlatform

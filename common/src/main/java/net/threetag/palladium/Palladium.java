@@ -17,12 +17,13 @@ import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.ItemPowerManager;
 import net.threetag.palladium.power.PowerManager;
+import net.threetag.palladium.power.SuitSetPowerManager;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEventHandler;
 import net.threetag.palladium.power.ability.condition.ConditionSerializer;
 import net.threetag.palladium.power.ability.condition.ConditionSerializers;
-import net.threetag.palladium.power.holderfactory.PowerProviderFactories;
+import net.threetag.palladium.power.provider.PowerProviders;
 import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.icon.IconSerializers;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
@@ -43,7 +44,7 @@ public class Palladium {
         PalladiumItems.ITEMS.register();
         Abilities.ABILITIES.register();
         ConditionSerializers.CONDITION_SERIALIZERS.register();
-        PowerProviderFactories.FACTORIES.register();
+        PowerProviders.PROVIDERS.register();
         IconSerializers.ICON_SERIALIZERS.register();
         PalladiumFeatures.FEATURES.register();
 
@@ -51,6 +52,7 @@ public class Palladium {
         EntityPropertyHandler.init();
         PowerManager.init();
         ItemPowerManager.init();
+        SuitSetPowerManager.init();
         AbilityEventHandler.init();
         AddonPackManager.init();
         Abilities.init();

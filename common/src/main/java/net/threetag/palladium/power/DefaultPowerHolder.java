@@ -1,7 +1,6 @@
 package net.threetag.palladium.power;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
@@ -14,14 +13,12 @@ public class DefaultPowerHolder implements IPowerHolder {
 
     public final LivingEntity entity;
     private final Power power;
-    private final ResourceLocation provider;
     private final Map<String, AbilityEntry> entryMap = new HashMap<>();
     private final Function<DefaultPowerHolder, Boolean> invalidChecker;
 
-    public DefaultPowerHolder(LivingEntity entity, Power power, ResourceLocation provider, Function<DefaultPowerHolder, Boolean> invalidChecker) {
+    public DefaultPowerHolder(LivingEntity entity, Power power, Function<DefaultPowerHolder, Boolean> invalidChecker) {
         this.entity = entity;
         this.power = power;
-        this.provider = provider;
         for (AbilityConfiguration ability : this.getPower().getAbilities()) {
             AbilityEntry entry = new AbilityEntry(ability, this);
             entry.id = ability.getId();
@@ -33,11 +30,6 @@ public class DefaultPowerHolder implements IPowerHolder {
     @Override
     public Power getPower() {
         return this.power;
-    }
-
-    @Override
-    public ResourceLocation getPowerProvider() {
-        return this.provider;
     }
 
     @Override
@@ -62,6 +54,6 @@ public class DefaultPowerHolder implements IPowerHolder {
 
     @Override
     public boolean isInvalid() {
-        return this.invalidChecker.apply(this);
+        return this.power.isInvalid() || this.invalidChecker.apply(this);
     }
 }

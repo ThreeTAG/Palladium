@@ -10,7 +10,15 @@ public interface IPowerHandler {
 
     void tick();
 
-    void setPowerHolder(ResourceLocation provider, IPowerHolder holder);
+    void setPowerHolder(Power power, IPowerHolder holder);
 
-    IPowerHolder getPowerHolder(ResourceLocation provider);
+    void addPower(Power power);
+
+    void removePowerHolder(Power power);
+
+    void removePowerHolder(ResourceLocation powerId);
+
+    IPowerHolder getPowerHolder(Power power);
+
+    boolean hasPower(Power power);
 }

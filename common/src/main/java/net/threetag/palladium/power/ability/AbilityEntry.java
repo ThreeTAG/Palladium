@@ -94,7 +94,7 @@ public class AbilityEntry {
             }
 
             if (sync || ticks == 0) {
-                new SyncAbilityStateMessage(entity.getId(), this.holder.getPowerProvider(), this.abilityConfiguration.getId(), this.unlocked, this.enabled).sendToLevel((ServerLevel) entity.getLevel());
+                new SyncAbilityStateMessage(entity.getId(), this.holder.getPower().getId(), this.abilityConfiguration.getId(), this.unlocked, this.enabled).sendToLevel((ServerLevel) entity.getLevel());
             }
         }
 

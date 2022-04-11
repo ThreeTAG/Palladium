@@ -1,6 +1,5 @@
 {
   "slot": "mainhand",
-  "items": {
-    "test:basic_item": "test:test_power"
-  }
+  "item": "test:basic_item",
+  "power": "test:test_power"
 }
