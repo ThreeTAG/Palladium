@@ -2,7 +2,7 @@ package net.threetag.palladium;
 
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;
-import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,13 +18,14 @@ import net.threetag.palladium.item.PalladiumItems;
 
 public class PalladiumClient {
 
+    @SuppressWarnings("unchecked")
     public static void init() {
         blockRenderTypes();
         colorHandlers();
         OverlayRegistry.registerOverlay("Ability Bar", new AbilityBarRenderer());
         PalladiumKeyMappings.init();
         PowersScreen.register();
-        RenderLayerRegistry.addToAll(renderLayerParent -> new PackRenderLayerRenderer((RenderLayerParent<LivingEntity, HumanoidModel<LivingEntity>>) renderLayerParent));
+        RenderLayerRegistry.addToAll(renderLayerParent -> new PackRenderLayerRenderer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));
     }
 
     public static void blockRenderTypes() {

@@ -87,8 +87,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "Abilities");
             this.add("key.palladium.switch_ability_list", "Switch Ability List");
-            for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
-                this.add("key.palladium.ability_" + i, "Ability " + (i + 1));
+            for (int i = 1; i <= PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
+                this.add("key.palladium.ability_" + i, "Ability " + i);
             }
 
             // Commands
@@ -168,8 +168,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "F\u00E4higkeiten");
             this.add("key.palladium.switch_ability_list", "F\u00E4higkeitenliste wechseln");
-            for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
-                this.add("key.palladium.ability_" + i, "F\u00E4higkeit " + (i + 1));
+            for (int i = 1; i <= PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
+                this.add("key.palladium.ability_" + i, "F\u00E4higkeit " + i);
             }
 
             // Commands
@@ -249,8 +249,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "F\u00E4hischgehden");
             this.add("key.palladium.switch_ability_list", "F\u00E4hischgehden wechseln");
-            for (int i = 0; i < PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
-                this.add("key.palladium.ability_" + i, "F\u00E4hischgehd " + (i + 1));
+            for (int i = 1; i <= PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
+                this.add("key.palladium.ability_" + i, "F\u00E4hischgehd " + i);
             }
 
             // Commands

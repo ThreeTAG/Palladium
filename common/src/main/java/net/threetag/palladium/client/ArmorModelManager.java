@@ -27,6 +27,10 @@ public class ArmorModelManager implements ResourceManagerReloadListener {
         HANDLERS.put(item, handler);
     }
 
+    public static void register(Item item, ModelLayerLocation modelLayerLocation) {
+        register(item, new Simple(modelLayerLocation));
+    }
+
     public static Handler get(Item item) {
         return HANDLERS.get(item);
     }

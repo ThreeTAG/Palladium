@@ -45,7 +45,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
     @Inject(at = @At("HEAD"), method = "renderArmorPiece", cancellable = true)
     private void renderArmorPiece(PoseStack poseStack, MultiBufferSource multiBufferSource, T livingEntity, EquipmentSlot equipmentSlot, int i, A humanoidModel, CallbackInfo callbackInfo) {
         ItemStack itemStack = livingEntity.getItemBySlot(equipmentSlot);
-        if (itemStack.getItem() instanceof ICustomArmorTexture rendering) {
+        if (itemStack.getItem() instanceof ICustomArmorTexture) {
             ArmorItem armorItem = (ArmorItem) itemStack.getItem();
             ArmorModelManager.Handler handler = ArmorModelManager.get(itemStack.getItem());
 
