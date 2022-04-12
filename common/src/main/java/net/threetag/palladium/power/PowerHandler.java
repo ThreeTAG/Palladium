@@ -4,11 +4,13 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.network.SetPowerMessage;
-import net.threetag.palladium.power.provider.IPowerProvider;
-import org.jetbrains.annotations.Nullable;
+import net.threetag.palladium.network.AddPowerMessage;
+import net.threetag.palladium.network.RemovePowerMessage;
+import net.threetag.palladium.power.provider.PowerProvider;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PowerHandler implements IPowerHandler {
@@ -27,51 +29,76 @@ public class PowerHandler implements IPowerHandler {
 
     @Override
     public void tick() {
-        for (IPowerProvider provider : PowerManager.getInstance(this.entity.level).getProviders()) {
-            IPowerHolder holder = this.powers.get(provider.getKey());
+        if (!this.entity.level.isClientSide) {
+            for (PowerProvider provider : PowerProvider.REGISTRY) {
+                provider.providePowers(this.entity, this);
+            }
 
-            if (holder != null) {
+            List<Power> toRemove = new ArrayList<>();
+            for (IPowerHolder holder : this.powers.values()) {
+                holder.tick();
+
                 if (holder.isInvalid()) {
-                    this.setPowerHolder(provider.getKey(), provider.createPower(this.entity, null));
-                }
-            } else {
-                holder = provider.createPower(this.entity, null);
-
-                if (holder != null) {
-                    this.setPowerHolder(provider.getKey(), holder);
+                    toRemove.add(holder.getPower());
                 }
             }
 
-            if (holder != null) {
+            for (Power power : toRemove) {
+                this.removePowerHolder(power);
+            }
+        } else {
+            for (IPowerHolder holder : this.powers.values()) {
                 holder.tick();
             }
         }
     }
 
     @Override
-    public void setPowerHolder(ResourceLocation provider, @Nullable IPowerHolder holder) {
-        if (this.powers.containsKey(provider)) {
-            this.powers.get(provider).lastTick();
-        }
-
-        if (holder != null) {
-            this.powers.put(provider, holder);
-            holder.firstTick();
+    public void setPowerHolder(Power power, IPowerHolder holder) {
+        if (this.hasPower(power)) {
+            this.powers.put(power.getId(), holder);
         } else {
-            this.powers.remove(provider);
-        }
+            this.removePowerHolder(power);
+            this.powers.put(power.getId(), holder);
+            holder.firstTick();
 
-        if (!this.entity.level.isClientSide) {
-            new SetPowerMessage(this.entity.getId(), provider, holder != null ? holder.getPower().getId() : null).sendToLevel((ServerLevel) this.entity.level);
+            if (!this.entity.level.isClientSide) {
+                new AddPowerMessage(this.entity.getId(), holder.getPower().getId()).sendToLevel((ServerLevel) this.entity.level);
+            }
         }
-    }
-
-    public void removePowerHolder(ResourceLocation provider) {
-        this.setPowerHolder(provider, null);
     }
 
     @Override
-    public IPowerHolder getPowerHolder(ResourceLocation provider) {
-        return this.powers.get(provider);
+    public void addPower(Power power) {
+        if (!hasPower(power)) {
+            this.setPowerHolder(power, new DefaultPowerHolder(this.entity, power, defaultPowerHolder -> false));
+        }
+    }
+
+    @Override
+    public void removePowerHolder(Power power) {
+        this.removePowerHolder(power.getId());
+    }
+
+    @Override
+    public void removePowerHolder(ResourceLocation powerId) {
+        if (this.powers.containsKey(powerId)) {
+            this.powers.get(powerId).lastTick();
+            this.powers.remove(powerId);
+
+            if (!this.entity.level.isClientSide) {
+                new RemovePowerMessage(this.entity.getId(), powerId).sendToLevel((ServerLevel) this.entity.level);
+            }
+        }
+    }
+
+    @Override
+    public IPowerHolder getPowerHolder(Power power) {
+        return this.powers.get(power.getId());
+    }
+
+    @Override
+    public boolean hasPower(Power power) {
+        return this.powers.containsKey(power.getId());
     }
 }

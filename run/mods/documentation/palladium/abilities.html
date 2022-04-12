@@ -39,12 +39,16 @@ ability.palladium.command</a>
 ability.palladium.render_layer</a>
 </li>
 <li>
+<a href="#palladium:healing">
+ability.palladium.healing</a>
+</li>
+<li>
 <a href="#palladium:attribute_modifier">
 ability.palladium.attribute_modifier</a>
 </li>
 <li>
-<a href="#palladium:healing">
-ability.palladium.healing</a>
+<a href="#palladium:invisibility">
+ability.palladium.invisibility</a>
 </li>
 <li>
 <a href="#palladium:slowfall">
@@ -53,10 +57,6 @@ ability.palladium.slowfall</a>
 <li>
 <a href="#palladium:damage_immunity">
 ability.palladium.damage_immunity</a>
-</li>
-<li>
-<a href="#palladium:invisibility">
-ability.palladium.invisibility</a>
 </li>
 </ul>
 </p>
@@ -121,6 +121,18 @@ LIGHT_GRAY</td>
 </tr>
 <tr>
 <td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
 commands</td>
 <td>
 String[]</td>
@@ -136,7 +148,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:command","icon":{"type":"palladium:item","item":"minecraft:command_block","count":1},"title":null,"bar_color":"light_gray","commands":["say Hello World"]}</pre>
+{"type":"palladium:command","icon":{"type":"palladium:item","item":"minecraft:command_block","count":1},"title":null,"bar_color":"light_gray","hidden":false,"commands":["say Hello World"]}</pre>
 </div>
 <hr>
 
@@ -199,6 +211,18 @@ LIGHT_GRAY</td>
 </tr>
 <tr>
 <td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
 render_layer</td>
 <td>
 ResourceLocation</td>
@@ -214,121 +238,7 @@ namespace:render_layer_id</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:render_layer","icon":{"type":"palladium:item","item":"minecraft:blaze_rod","count":1},"title":null,"bar_color":"light_gray","render_layer":"namespace:render_layer_id"}</pre>
-</div>
-<hr>
-
-<div id="palladium:attribute_modifier">
-<h2>
-ability.palladium.attribute_modifier</h2>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-icon</td>
-<td>
-IIcon</td>
-<td>
-Icon for the ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-ItemIcon{stack=1 iron_chestplate}</td>
-</tr>
-<tr>
-<td>
-title</td>
-<td>
-Component</td>
-<td>
-Allows you to set a custom title for this ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-bar_color</td>
-<td>
-AbilityColor</td>
-<td>
-Changes the color of the ability in the ability bar</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-LIGHT_GRAY</td>
-</tr>
-<tr>
-<td>
-attribute</td>
-<td>
-Attribute</td>
-<td>
-Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength", "forge:swim_speed", "forge:nametag_distance", "forge:entity_gravity", "forge:reach_distance"</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-minecraft:generic.armor</td>
-</tr>
-<tr>
-<td>
-amount</td>
-<td>
-Double</td>
-<td>
-The amount for the giving attribute modifier</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-1.0</td>
-</tr>
-<tr>
-<td>
-operation</td>
-<td>
-Integer</td>
-<td>
-The operation for the giving attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0</td>
-</tr>
-<tr>
-<td>
-uuid</td>
-<td>
-UUID</td>
-<td>
-Sets the unique identifier for this attribute modifier. If not specified it will generate a random one</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-498be4fb-af04-42f2-8948-e6ccdc0d99e1</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:attribute_modifier","icon":{"type":"palladium:item","item":"minecraft:iron_chestplate","count":1},"title":null,"bar_color":"light_gray","attribute":8,"amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
+{"type":"palladium:render_layer","icon":{"type":"palladium:item","item":"minecraft:blaze_rod","count":1},"title":null,"bar_color":"light_gray","hidden":false,"render_layer":"namespace:render_layer_id"}</pre>
 </div>
 <hr>
 
@@ -391,6 +301,18 @@ LIGHT_GRAY</td>
 </tr>
 <tr>
 <td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
 frequency</td>
 <td>
 Integer</td>
@@ -418,7 +340,211 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:healing","icon":{"type":"palladium:item","item":"minecraft:apple","count":1},"title":null,"bar_color":"light_gray","frequency":3.0}</pre>
+{"type":"palladium:healing","icon":{"type":"palladium:item","item":"minecraft:apple","count":1},"title":null,"bar_color":"light_gray","hidden":false,"frequency":3.0}</pre>
+</div>
+<hr>
+
+<div id="palladium:attribute_modifier">
+<h2>
+ability.palladium.attribute_modifier</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 iron_chestplate}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+attribute</td>
+<td>
+Attribute</td>
+<td>
+Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength"</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:generic.armor</td>
+</tr>
+<tr>
+<td>
+amount</td>
+<td>
+Double</td>
+<td>
+The amount for the giving attribute modifier</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1.0</td>
+</tr>
+<tr>
+<td>
+operation</td>
+<td>
+Integer</td>
+<td>
+The operation for the giving attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+uuid</td>
+<td>
+UUID</td>
+<td>
+Sets the unique identifier for this attribute modifier. If not specified it will generate a random one</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+498be4fb-af04-42f2-8948-e6ccdc0d99e1</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:attribute_modifier","icon":{"type":"palladium:item","item":"minecraft:iron_chestplate","count":1},"title":null,"bar_color":"light_gray","hidden":false,"attribute":8,"amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
+</div>
+<hr>
+
+<div id="palladium:invisibility">
+<h2>
+ability.palladium.invisibility</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+TexturedIcon{texture=palladium:textures/icon/invisibility.png, tint=null}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:invisibility","icon":{"type":"palladium:texture","texture":"palladium:textures/icon/invisibility.png"},"title":null,"bar_color":"light_gray","hidden":false}</pre>
 </div>
 <hr>
 
@@ -479,12 +605,24 @@ false</td>
 <td>
 LIGHT_GRAY</td>
 </tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:slowfall","icon":{"type":"palladium:item","item":"minecraft:feather","count":1},"title":null,"bar_color":"light_gray"}</pre>
+{"type":"palladium:slowfall","icon":{"type":"palladium:item","item":"minecraft:feather","count":1},"title":null,"bar_color":"light_gray","hidden":false}</pre>
 </div>
 <hr>
 
@@ -547,6 +685,18 @@ LIGHT_GRAY</td>
 </tr>
 <tr>
 <td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
 damage_sources</td>
 <td>
 String[]</td>
@@ -562,73 +712,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:damage_immunity","icon":{"type":"palladium:item","item":"minecraft:potion","count":1},"title":null,"bar_color":"light_gray","damage_sources":["lightningBolt","cactus"]}</pre>
-</div>
-<hr>
-
-<div id="palladium:invisibility">
-<h2>
-ability.palladium.invisibility</h2>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-icon</td>
-<td>
-IIcon</td>
-<td>
-Icon for the ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-TexturedIcon{texture=palladium:textures/icon/invisibility.png, tint=null}</td>
-</tr>
-<tr>
-<td>
-title</td>
-<td>
-Component</td>
-<td>
-Allows you to set a custom title for this ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-bar_color</td>
-<td>
-AbilityColor</td>
-<td>
-Changes the color of the ability in the ability bar</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-LIGHT_GRAY</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:invisibility","icon":{"type":"palladium:texture","texture":"palladium:textures/icon/invisibility.png"},"title":null,"bar_color":"light_gray"}</pre>
+{"type":"palladium:damage_immunity","icon":{"type":"palladium:item","item":"minecraft:potion","count":1},"title":null,"bar_color":"light_gray","hidden":false,"damage_sources":["lightningBolt","cactus"]}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

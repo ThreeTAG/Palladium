@@ -35,6 +35,7 @@
   "commands.superpower.remove.success.entity.single": "%s's superpower was removed",
   "commands.superpower.success.entity.multiple": "%s entities have gained the superpower %s",
   "commands.superpower.success.entity.single": "%s has gained the superpower %s",
+  "gui.palladium.powers": "Powers",
   "item.palladium.hammer": "Hammer",
   "item.palladium.lead_ingot": "Lead Ingot",
   "item.palladium.quartz_circuit": "Quartz Circuit",

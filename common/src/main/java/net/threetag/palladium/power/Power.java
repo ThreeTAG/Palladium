@@ -8,6 +8,7 @@ import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.IconSerializer;
+import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +20,14 @@ public class Power {
     private final Component name;
     private final IIcon icon;
     private final List<AbilityConfiguration> abilities = new ArrayList<>();
+    private final ResourceLocation background;
     private boolean invalid = false;
 
-    public Power(ResourceLocation id, Component name, IIcon icon) {
+    public Power(ResourceLocation id, Component name, IIcon icon, ResourceLocation background) {
         this.id = id;
         this.name = name;
         this.icon = icon;
+        this.background = background;
     }
 
     public void invalidate() {
@@ -56,9 +59,17 @@ public class Power {
         return abilities;
     }
 
+    public ResourceLocation getBackground() {
+        return background;
+    }
+
     public void toBuffer(FriendlyByteBuf buf) {
         buf.writeComponent(this.name);
         buf.writeNbt(IconSerializer.serializeNBT(this.icon));
+        buf.writeBoolean(this.background != null);
+        if (this.background != null) {
+            buf.writeResourceLocation(this.background);
+        }
         buf.writeInt(this.abilities.size());
         for (AbilityConfiguration configuration : this.abilities) {
             configuration.toBuffer(buf);
@@ -66,7 +77,7 @@ public class Power {
     }
 
     public static Power fromBuffer(ResourceLocation id, FriendlyByteBuf buf) {
-        Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())));
+        Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())), buf.readBoolean() ? buf.readResourceLocation() : null);
         int amount = buf.readInt();
 
         for (int i = 0; i < amount; i++) {
@@ -78,7 +89,8 @@ public class Power {
 
     public static Power fromJSON(ResourceLocation id, JsonObject json) {
         Component name = Component.Serializer.fromJson(json.get("name"));
-        Power power = new Power(id, name, IconSerializer.parseJSON(GsonHelper.getAsJsonObject(json, "icon")));
+        ResourceLocation background = GsonUtil.getAsResourceLocation(json, "background", null);
+        Power power = new Power(id, name, IconSerializer.parseJSON(GsonHelper.getAsJsonObject(json, "icon")), background);
 
         if (GsonHelper.isValidNode(json, "abilities")) {
             JsonObject abilities = GsonHelper.getAsJsonObject(json, "abilities");

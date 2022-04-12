@@ -35,6 +35,7 @@
   "commands.superpower.remove.success.entity.single": "%s's Superkraft wurde entfernt",
   "commands.superpower.success.entity.multiple": "%s Lebewesen haben die Superkraft %s erhalten",
   "commands.superpower.success.entity.single": "%s hat die Superkraft %s erhalten",
+  "gui.palladium.powers": "Kr\u00E4fte",
   "item.palladium.hammer": "Hammer",
   "item.palladium.lead_ingot": "Bleibarren",
   "item.palladium.quartz_circuit": "Quarzschaltkreis",

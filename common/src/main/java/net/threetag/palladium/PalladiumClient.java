@@ -13,6 +13,7 @@ import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerRendere
 import net.threetag.palladium.client.renderer.renderlayer.RenderLayerRegistry;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
 import net.threetag.palladium.client.screen.OverlayRegistry;
+import net.threetag.palladium.client.screen.power.PowersScreen;
 import net.threetag.palladium.item.PalladiumItems;
 
 public class PalladiumClient {
@@ -23,6 +24,7 @@ public class PalladiumClient {
         colorHandlers();
         OverlayRegistry.registerOverlay("Ability Bar", new AbilityBarRenderer());
         PalladiumKeyMappings.init();
+        PowersScreen.register();
         RenderLayerRegistry.addToAll(renderLayerParent -> new PackRenderLayerRenderer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));
     }
 

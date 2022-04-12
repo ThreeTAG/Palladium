@@ -26,6 +26,7 @@ public class AbilityConfiguration {
     private final List<Condition> unlockingConditions = new ArrayList<>();
     private final List<Condition> enablingConditions = new ArrayList<>();
     private boolean needsKey = false;
+    public List<String> dependencies = new ArrayList<>();
 
     public AbilityConfiguration(String id, Ability ability) {
         this.id = id;
@@ -57,11 +58,15 @@ public class AbilityConfiguration {
     }
 
     public List<Condition> getUnlockingConditions() {
-        return unlockingConditions;
+        return this.unlockingConditions;
     }
 
     public List<Condition> getEnablingConditions() {
-        return enablingConditions;
+        return this.enablingConditions;
+    }
+
+    public List<String> getDependencies() {
+        return this.dependencies;
     }
 
     public boolean needsKey() {
@@ -73,6 +78,10 @@ public class AbilityConfiguration {
         buf.writeResourceLocation(Ability.REGISTRY.getId(this.ability));
         this.propertyManager.toBuffer(buf);
         buf.writeBoolean(this.needsKey);
+        buf.writeInt(this.dependencies.size());
+        for (String s : this.dependencies) {
+            buf.writeUtf(s);
+        }
     }
 
     public static AbilityConfiguration fromBuffer(FriendlyByteBuf buf) {
@@ -81,6 +90,10 @@ public class AbilityConfiguration {
         AbilityConfiguration configuration = new AbilityConfiguration(id, Objects.requireNonNull(ability));
         configuration.propertyManager.fromBuffer(buf);
         configuration.needsKey = buf.readBoolean();
+        int keys = buf.readInt();
+        for (int i = 0; i < keys; i++) {
+            configuration.dependencies.add(buf.readUtf());
+        }
         return configuration;
     }
 
@@ -113,6 +126,7 @@ public class AbilityConfiguration {
                     }
 
                     configuration.getUnlockingConditions().add(condition);
+                    configuration.dependencies.addAll(condition.getDependentAbilities());
                 }
             }
 
@@ -131,6 +145,7 @@ public class AbilityConfiguration {
                     }
 
                     configuration.getEnablingConditions().add(condition);
+                    configuration.dependencies.addAll(condition.getDependentAbilities());
                 }
             }
 
