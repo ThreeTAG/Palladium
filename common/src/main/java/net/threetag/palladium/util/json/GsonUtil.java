@@ -79,6 +79,20 @@ public class GsonUtil {
         return json.has(memberName) ? getAsResourceLocation(json, memberName) : fallback;
     }
 
+    public static ModelLayerLocation convertToModelLayerLocation(JsonElement json, String memberName) {
+        if (json.isJsonPrimitive()) {
+            String[] s = json.getAsString().split("#", 2);
+
+            if (s.length == 1) {
+                return new ModelLayerLocation(new ResourceLocation(s[0]), "main");
+            } else {
+                return new ModelLayerLocation(new ResourceLocation(s[0]), s[1]);
+            }
+        } else {
+            throw new JsonSyntaxException("Expected " + memberName + " to be a model layer location, was " + GsonHelper.getType(json));
+        }
+    }
+
     public static ModelLayerLocation getAsModelLayerLocation(JsonObject json, String memberName) {
         if (json.has(memberName)) {
             String[] s = GsonHelper.getAsString(json, memberName).split("#", 2);
@@ -89,7 +103,7 @@ public class GsonUtil {
                 return new ModelLayerLocation(new ResourceLocation(s[0]), s[1]);
             }
         } else {
-            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a model location");
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a model layer location");
         }
     }
 
