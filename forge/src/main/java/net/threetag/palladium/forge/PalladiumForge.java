@@ -17,6 +17,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.forge.AddonPackType;
+import net.threetag.palladium.addonpack.parser.forge.AddonParserImpl;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.ArmorModelManager;
 import net.threetag.palladium.client.model.EntityModelManager;
@@ -32,7 +33,7 @@ public class PalladiumForge {
 
     public PalladiumForge() {
         AddonPackType.init();
-        EventBuses.registerModEventBus(Palladium.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+        EventBuses.registerModEventBus(Palladium.MOD_ID, AddonParserImpl.EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus());
         Palladium.init();
         PalladiumConfigImpl.init();
     }

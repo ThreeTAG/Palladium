@@ -10,13 +10,13 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.client.PalladiumKeyMappings;
-import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
@@ -24,23 +24,41 @@ import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityColor;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AbilityBarRenderer implements IIngameOverlay {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(Palladium.MOD_ID, "textures/gui/ability_bar.png");
-    public static AbilityList ABILITY_LIST = null;
+    public static List<AbilityList> ABILITY_LISTS = null;
+    public static int SELECTED = 0;
 
     public AbilityBarRenderer() {
-        ClientTickEvent.CLIENT_POST.register(instance -> updateCurrentList());
+        ClientTickEvent.CLIENT_POST.register(instance -> updateCurrentLists());
+    }
+
+    public static AbilityList getSelectedList() {
+        if (ABILITY_LISTS.isEmpty()) {
+            return null;
+        } else {
+            if(SELECTED >= ABILITY_LISTS.size() || SELECTED < 0) {
+                SELECTED = 0;
+            }
+            return ABILITY_LISTS.get(SELECTED);
+        }
     }
 
     @Override
     public void render(Gui gui, PoseStack poseStack, float partialTicks, int width, int height) {
+        if(ABILITY_LISTS.isEmpty()) {
+            return;
+        }
+
         Minecraft mc = Minecraft.getInstance();
         Position position = PalladiumConfig.getAbilityBarPosition();
+        AbilityList list = getSelectedList();
 
-        if (position == Position.HIDDEN || ABILITY_LIST == null) {
+        if (position == Position.HIDDEN || list == null) {
             return;
         }
 
@@ -58,13 +76,13 @@ public class AbilityBarRenderer implements IIngameOverlay {
 
             poseStack.pushPose();
             translateIndicatorBackground(poseStack, mc.getWindow(), position, indicatorWidth, indicatorHeight);
-            renderIndicator(ABILITY_LIST, mc, poseStack, position, TEXTURE, false);
+            renderIndicator(list, mc, poseStack, position, TEXTURE, ABILITY_LISTS.size() > 1);
             poseStack.popPose();
 
             poseStack.pushPose();
             translateAbilitiesBackground(poseStack, mc.getWindow(), position, indicatorHeight, 24, 112);
-            renderAbilitiesBackground(mc, poseStack, position, ABILITY_LIST, TEXTURE);
-            renderAbilitiesOverlay(mc, poseStack, position, ABILITY_LIST, TEXTURE);
+            renderAbilitiesBackground(mc, poseStack, position, list, TEXTURE);
+            renderAbilitiesOverlay(mc, poseStack, position, list, TEXTURE);
             poseStack.popPose();
         }
     }
@@ -88,6 +106,17 @@ public class AbilityBarRenderer implements IIngameOverlay {
 
         // Icon
         list.power.getIcon().draw(minecraft, poseStack, showKey ? (position.left ? 30 : 6) : (position.left ? 17 : 19), position.top ? 5 : 7);
+
+        // Button
+        if (showKey) {
+            FormattedText properties = minecraft.font.substrByWidth(PalladiumKeyMappings.SWITCH_ABILITY_LIST.getTranslatedKeyMessage(), 10);
+            int length = minecraft.font.width(properties) + 10;
+            if (properties instanceof BaseComponent)
+                minecraft.font.draw(poseStack, (Component) properties, (position.left ? 15 : 37) - length / 2F + 10, position.top ? 10 : 12, 0xffffffff);
+
+            RenderSystem.setShaderTexture(0, texture);
+            minecraft.gui.blit(poseStack, (position.left ? 15 : 37) - length / 2, position.top ? 9 : 11, 78, 56, 7, 9);
+        }
     }
 
     private static void translateAbilitiesBackground(PoseStack poseStack, Window window, Position position, int indicatorHeight, int abilitiesWidth, int abilitiesHeight) {
@@ -198,36 +227,99 @@ public class AbilityBarRenderer implements IIngameOverlay {
         RenderSystem.enableTexture();
     }
 
-    public static void updateCurrentList() {
+    public static void updateCurrentLists() {
         if (Minecraft.getInstance() != null && Minecraft.getInstance().player != null) {
-            Player player = Minecraft.getInstance().player;
-            IPowerHandler handler = PowerManager.getPowerHandler(player);
+            ABILITY_LISTS = getAbilityLists();
 
-            for (Map.Entry<ResourceLocation, IPowerHolder> entry : handler.getPowerHolders().entrySet()) {
-                AbilityList list = new AbilityList(entry.getKey(), entry.getValue().getPower());
+            if (SELECTED >= ABILITY_LISTS.size()) {
+                SELECTED = ABILITY_LISTS.size() - 1;
+            }
+        }
+    }
 
-                for (AbilityEntry abilityEntry : entry.getValue().getAbilities().values()) {
-                    list.addAbility(abilityEntry);
+    public static void scroll(boolean up) {
+        if (up)
+            SELECTED++;
+        else
+            SELECTED--;
+
+        if (SELECTED >= ABILITY_LISTS.size()) {
+            SELECTED = 0;
+        } else if (SELECTED < 0) {
+            SELECTED = ABILITY_LISTS.size() - 1;
+        }
+    }
+
+    public static List<AbilityList> getAbilityLists() {
+        List<AbilityList> lists = new ArrayList<>();
+
+        // TODO skins
+
+        for (IPowerHolder holder : PowerManager.getPowerHandler(Minecraft.getInstance().player).getPowerHolders().values()) {
+            List<AbilityList> containerList = new ArrayList<>();
+            List<AbilityList> remainingLists = new ArrayList<>();
+            List<AbilityEntry> remaining = new ArrayList<>();
+            for (AbilityEntry abilityEntry : holder.getAbilities().values()) {
+                int i = abilityEntry.getProperty(Ability.LIST_INDEX);
+
+                if (abilityEntry.getConfiguration().needsKey() && !abilityEntry.getProperty(Ability.HIDDEN)) {
+                    if (i >= 0) {
+                        int listIndex = Math.floorDiv(i, 5);
+                        int index = i % 5;
+
+                        while (!(containerList.size() - 1 >= listIndex)) {
+                            containerList.add(new AbilityList(holder.getPower()));
+                        }
+
+                        AbilityList abilityList = containerList.get(listIndex);
+                        abilityList.addAbility(index, abilityEntry);
+                    } else {
+                        remaining.add(abilityEntry);
+                    }
+                }
+            }
+
+            for (int i = 0; i < remaining.size(); i++) {
+                AbilityEntry abilityEntry = remaining.get(i);
+                int listIndex = Math.floorDiv(i, 5);
+                int index = i % 5;
+
+                while (!(remainingLists.size() - 1 >= listIndex)) {
+                    remainingLists.add(new AbilityList(holder.getPower()));
                 }
 
-                ABILITY_LIST = list;
-                return;
+                AbilityList abilityList = remainingLists.get(listIndex);
+                abilityList.addAbility(index, abilityEntry);
+            }
+
+            for (AbilityList list : containerList) {
+                if (!list.isEmpty()) {
+                    lists.add(list);
+                }
+            }
+
+            for (AbilityList list : remainingLists) {
+                if (!list.isEmpty()) {
+                    lists.add(list);
+                }
             }
         }
 
-        ABILITY_LIST = null;
+        return lists;
     }
 
     public static class AbilityList {
 
-        private final ResourceLocation provider;
         private final Power power;
         private final AbilityEntry[] abilities = new AbilityEntry[5];
         private ResourceLocation texture;
 
-        public AbilityList(ResourceLocation provider, Power power) {
-            this.provider = provider;
+        public AbilityList(Power power) {
             this.power = power;
+        }
+
+        public Power getPower() {
+            return power;
         }
 
         public AbilityList addAbility(int index, AbilityEntry ability) {
@@ -261,10 +353,6 @@ public class AbilityBarRenderer implements IIngameOverlay {
 
         public AbilityEntry[] getAbilities() {
             return abilities;
-        }
-
-        public ResourceLocation getProvider() {
-            return provider;
         }
     }
 
