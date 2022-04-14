@@ -14,6 +14,8 @@
   ],
   "mixins": [
     "ReloadableResourceManagerMixin",
+    "ScriptFileInfoMixin",
+    "ScriptManagerMixin",
     "VibrationListenerMixin"
   ],
   "injectors": {

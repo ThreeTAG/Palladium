@@ -43,29 +43,29 @@ allprojects {
 
     repositories {
         maven {
-            url = "https://maven.parchmentmc.net/"
+            url = 'https://maven.parchmentmc.net/'
             content {
-                includeGroup "org.parchmentmc.data"
+                includeGroup 'org.parchmentmc.data'
             }
         }
 
         maven {
-            url "https://www.cursemaven.com"
+            url = 'https://www.cursemaven.com'
             content {
-                includeGroup "curse.maven"
+                includeGroup 'curse.maven'
             }
         }
 
         maven {
-            url "https://maven.terraformersmc.com/releases/"
+            url = 'https://maven.terraformersmc.com/releases/'
         }
 
         maven {
-            url "https://maven.shedaniel.me"
+            url = 'https://maven.shedaniel.me'
         }
 
         maven {
-            url "https://dvs1.progwml6.com/files/maven/"
+            url = 'https://dvs1.progwml6.com/files/maven/'
         }
 
         maven {
@@ -74,17 +74,25 @@ allprojects {
         }
 
         maven {
-            url = "https://maven.theillusivec4.top/"
+            url = 'https://maven.theillusivec4.top/'
         }
 
         maven {
-            name = "TerraformersMC"
-            url = "https://maven.terraformersmc.com/"
+            name = 'TerraformersMC'
+            url = 'https://maven.terraformersmc.com/'
         }
 
         maven {
-            name = "Ladysnake Libs"
-            url = "https://ladysnake.jfrog.io/artifactory/mods"
+            name = 'Ladysnake Libs'
+            url = 'https://ladysnake.jfrog.io/artifactory/mods'
+        }
+
+        maven {
+            // saps.dev Maven (KubeJS and Rhino)
+            url = 'https://maven.saps.dev/minecraft'
+            content {
+                includeGroup 'dev.latvian.mods'
+            }
         }
     }
 

@@ -56,6 +56,9 @@ dependencies {
     modRuntimeOnly "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}"
     modCompileOnly "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}:api"
 
+    // KubeJS
+    modImplementation("dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}")
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
