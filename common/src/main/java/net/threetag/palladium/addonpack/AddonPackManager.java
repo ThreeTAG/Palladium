@@ -64,6 +64,10 @@ public class AddonPackManager {
         return getWrappedPackFinder(this.folderPackFinder);
     }
 
+    public PackRepository getPackList() {
+        return packList;
+    }
+
     @ExpectPlatform
     public static RepositorySource getWrappedPackFinder(RepositorySource folderPackFinder) {
         throw new AssertionError();
