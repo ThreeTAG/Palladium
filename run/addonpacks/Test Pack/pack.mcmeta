@@ -2,5 +2,16 @@
   "pack": {
     "description": "Palladium Test Pack",
     "pack_format": 6
+  },
+  "dependencies": {
+    "common": {
+      "palladium": ">=4.0.0"
+    },
+    "fabric": {
+      "trinkets": ">=3.3.0"
+    },
+    "forge": {
+      "curios": ">=5.0.7.0"
+    }
   }
 }
