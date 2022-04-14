@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.TransformedTexture;
 import net.threetag.palladium.client.dynamictexture.variable.ITextureVariable;
-import net.threetag.palladium.mixin.TextureManagerMixin;
+import net.threetag.palladium.mixin.client.TextureManagerMixin;
 
 import javax.annotation.Nullable;
 import java.util.List;

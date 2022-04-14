@@ -30,7 +30,7 @@ import java.util.List;
 public class AbilityBarRenderer implements IIngameOverlay {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(Palladium.MOD_ID, "textures/gui/ability_bar.png");
-    public static List<AbilityList> ABILITY_LISTS = null;
+    public static List<AbilityList> ABILITY_LISTS = new ArrayList<>();
     public static int SELECTED = 0;
 
     public AbilityBarRenderer() {

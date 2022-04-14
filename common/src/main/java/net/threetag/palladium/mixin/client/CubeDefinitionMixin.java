@@ -1,4 +1,4 @@
-package net.threetag.palladium.mixin;
+package net.threetag.palladium.mixin.client;
 
 import com.mojang.math.Vector3f;
 import net.minecraft.client.model.geom.builders.CubeDefinition;

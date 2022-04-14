@@ -1,4 +1,4 @@
-package net.threetag.palladium.mixin;
+package net.threetag.palladium.mixin.client;
 
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;

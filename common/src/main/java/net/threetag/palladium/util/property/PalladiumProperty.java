@@ -58,6 +58,10 @@ public abstract class PalladiumProperty<T> {
         return EntityPropertyHandler.getHandler(entity).get(this);
     }
 
+    public boolean isRegistered(Entity entity) {
+        return EntityPropertyHandler.getHandler(entity).isRegistered(this);
+    }
+
     public String getString(T value) {
         return value == null ? null : value.toString();
     }

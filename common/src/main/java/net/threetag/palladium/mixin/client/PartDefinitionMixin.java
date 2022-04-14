@@ -1,4 +1,4 @@
-package net.threetag.palladium.mixin;
+package net.threetag.palladium.mixin.client;
 
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDefinition;

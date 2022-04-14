@@ -15,7 +15,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.HTMLBuilder;
-import net.threetag.palladium.mixin.*;
+import net.threetag.palladium.mixin.client.*;
 import net.threetag.palladium.util.json.GsonUtil;
 
 import java.io.File;

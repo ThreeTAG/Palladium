@@ -12,6 +12,8 @@ import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.documentation.HTMLBuilder;
+import net.threetag.palladium.entity.FlightHandler;
+import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.network.PalladiumNetwork;
@@ -47,6 +49,7 @@ public class Palladium {
         PowerProviders.PROVIDERS.register();
         IconSerializers.ICON_SERIALIZERS.register();
         PalladiumFeatures.FEATURES.register();
+        PalladiumAttributes.ATTRIBUTES.register();
 
         PalladiumNetwork.init();
         EntityPropertyHandler.init();
@@ -56,17 +59,19 @@ public class Palladium {
         AbilityEventHandler.init();
         AddonPackManager.init();
         Abilities.init();
-        generateDocumentation();
+        PalladiumAttributes.init();
+        FlightHandler.init();
 
-        LifecycleEvent.SETUP.register(PalladiumFeatures::init);
+        LifecycleEvent.SETUP.register(() -> {
+            PalladiumFeatures.init();
+            Palladium.generateDocumentation();
+        });
 
         CommandRegistrationEvent.EVENT.register((dispatcher, selection) -> SuperpowerCommand.register(dispatcher));
 
         if (Platform.isDevelopmentEnvironment()) {
             PalladiumDebug.init();
         }
-
-        LifecycleEvent.SETUP.register(Palladium::generateDocumentation);
     }
 
     public static void generateDocumentation() {

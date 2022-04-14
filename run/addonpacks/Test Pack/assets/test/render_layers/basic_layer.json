@@ -1,5 +1,5 @@
 {
-  "model": "minecraft:player#inner_armor",
+  "model_layer": "minecraft:player#inner_armor",
   "texture": "test:textures/models/test_layer.png",
   "render_type": "glow"
 }

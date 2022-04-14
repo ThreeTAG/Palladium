@@ -3,14 +3,16 @@
   "package": "net.threetag.palladium.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "AbstractContainerScreenMixin",
-    "CubeDefinitionMixin",
-    "CubeDeformationMixin",
-    "EntityModelSetMixin",
-    "LayerDefinitionMixin",
-    "MaterialDefinitionMixin",
-    "PartDefinitionMixin",
-    "TextureManagerMixin"
+    "client.AbstractContainerScreenMixin",
+    "client.CubeDefinitionMixin",
+    "client.CubeDeformationMixin",
+    "client.EntityModelSetMixin",
+    "client.HumanoidModelMixin",
+    "client.LayerDefinitionMixin",
+    "client.MaterialDefinitionMixin",
+    "client.PartDefinitionMixin",
+    "client.PlayerRendererMixin",
+    "client.TextureManagerMixin"
   ],
   "mixins": [
     "ReloadableResourceManagerMixin",

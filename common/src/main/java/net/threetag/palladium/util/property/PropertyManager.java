@@ -100,6 +100,8 @@ public class PropertyManager {
                 } else {
                     this.values.put(property, property.fromNBT(nbt.get(property.getKey()), this.defaultProperties.get(property)));
                 }
+            } else {
+                this.values.put(property, property.fromNBT(nbt.get(property.getKey()), this.defaultProperties.get(property)));
             }
         }
     }
