@@ -39,8 +39,8 @@ ability.palladium.command</a>
 ability.palladium.render_layer</a>
 </li>
 <li>
-<a href="#palladium:attribute_modifier">
-ability.palladium.attribute_modifier</a>
+<a href="#palladium:damage_immunity">
+ability.palladium.damage_immunity</a>
 </li>
 <li>
 <a href="#palladium:healing">
@@ -51,8 +51,8 @@ ability.palladium.healing</a>
 ability.palladium.slowfall</a>
 </li>
 <li>
-<a href="#palladium:damage_immunity">
-ability.palladium.damage_immunity</a>
+<a href="#palladium:attribute_modifier">
+ability.palladium.attribute_modifier</a>
 </li>
 <li>
 <a href="#palladium:invisibility">
@@ -266,9 +266,9 @@ Example:</h3>
 </div>
 <hr>
 
-<div id="palladium:attribute_modifier">
+<div id="palladium:damage_immunity">
 <h2>
-ability.palladium.attribute_modifier</h2>
+ability.palladium.damage_immunity</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -297,7 +297,7 @@ Icon for the ability</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-ItemIcon{stack=1 iron_chestplate}</td>
+ItemIcon{stack=1 potion}</td>
 </tr>
 <tr>
 <td>
@@ -349,58 +349,22 @@ false</td>
 </tr>
 <tr>
 <td>
-attribute</td>
+damage_sources</td>
 <td>
-Attribute</td>
+String[]</td>
 <td>
-Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength", "forge:swim_speed", "forge:nametag_distance", "forge:entity_gravity", "forge:reach_distance", "palladium:flight_speed", "palladium:levitation_speed", "palladium:jetpack_flight_speed", "palladium:hovering"</td>
+Determines which damage sources have no effect on the entity</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-minecraft:generic.armor</td>
-</tr>
-<tr>
-<td>
-amount</td>
-<td>
-Double</td>
-<td>
-The amount for the giving attribute modifier</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-1.0</td>
-</tr>
-<tr>
-<td>
-operation</td>
-<td>
-Integer</td>
-<td>
-The operation for the giving attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0</td>
-</tr>
-<tr>
-<td>
-uuid</td>
-<td>
-UUID</td>
-<td>
-Sets the unique identifier for this attribute modifier. If not specified it will generate a random one</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-498be4fb-af04-42f2-8948-e6ccdc0d99e1</td>
+[lightningBolt, cactus]</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:attribute_modifier","icon":{"type":"palladium:item","item":"minecraft:iron_chestplate","count":1},"title":null,"bar_color":"light_gray","hidden":false,"list_index":-1,"attribute":8,"amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
+{"type":"palladium:damage_immunity","icon":{"type":"palladium:item","item":"minecraft:potion","count":1},"title":null,"bar_color":"light_gray","hidden":false,"list_index":-1,"damage_sources":["lightningBolt","cactus"]}</pre>
 </div>
 <hr>
 
@@ -608,9 +572,9 @@ Example:</h3>
 </div>
 <hr>
 
-<div id="palladium:damage_immunity">
+<div id="palladium:attribute_modifier">
 <h2>
-ability.palladium.damage_immunity</h2>
+ability.palladium.attribute_modifier</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -639,7 +603,7 @@ Icon for the ability</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-ItemIcon{stack=1 potion}</td>
+ItemIcon{stack=1 iron_chestplate}</td>
 </tr>
 <tr>
 <td>
@@ -691,22 +655,58 @@ false</td>
 </tr>
 <tr>
 <td>
-damage_sources</td>
+attribute</td>
 <td>
-String[]</td>
+Attribute</td>
 <td>
-Determines which damage sources have no effect on the entity</td>
+Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength"</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-[lightningBolt, cactus]</td>
+minecraft:generic.armor</td>
+</tr>
+<tr>
+<td>
+amount</td>
+<td>
+Double</td>
+<td>
+The amount for the giving attribute modifier</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1.0</td>
+</tr>
+<tr>
+<td>
+operation</td>
+<td>
+Integer</td>
+<td>
+The operation for the giving attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+uuid</td>
+<td>
+UUID</td>
+<td>
+Sets the unique identifier for this attribute modifier. If not specified it will generate a random one</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+498be4fb-af04-42f2-8948-e6ccdc0d99e1</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:damage_immunity","icon":{"type":"palladium:item","item":"minecraft:potion","count":1},"title":null,"bar_color":"light_gray","hidden":false,"list_index":-1,"damage_sources":["lightningBolt","cactus"]}</pre>
+{"type":"palladium:attribute_modifier","icon":{"type":"palladium:item","item":"minecraft:iron_chestplate","count":1},"title":null,"bar_color":"light_gray","hidden":false,"list_index":-1,"attribute":8,"amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
 </div>
 <hr>
 
