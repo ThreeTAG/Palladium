@@ -1,7 +1,9 @@
 package net.threetag.palladium.util.icon;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import dev.architectury.core.RegistryEntry;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
@@ -25,24 +27,40 @@ public abstract class IconSerializer<T extends IIcon> extends RegistryEntry<Icon
     public static final ResourceKey<Registry<IconSerializer<?>>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "icon_serializers"));
     public static final Registrar<IconSerializer<?>> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new IconSerializer<?>[0]).build();
 
-    public static IIcon parseJSON(JsonObject json) {
-        ResourceLocation id = new ResourceLocation(GsonHelper.getAsString(json, "type"));
+    public static IIcon parseJSON(JsonElement json) {
+        if (json.isJsonPrimitive()) {
+            ResourceLocation id = new ResourceLocation(json.getAsString());
 
-        if (!REGISTRY.contains(id)) {
-            throw new JsonParseException("Unknown icon type '" + id + "'");
+            if (!REGISTRY.contains(id)) {
+                throw new JsonParseException("Unknown item '" + json.getAsString() + "'");
+            }
+
+            return new ItemIcon(Registry.ITEM.get(id));
+        } else if (json.isJsonObject()) {
+            ResourceLocation id = new ResourceLocation(GsonHelper.getAsString(json.getAsJsonObject(), "type"));
+
+            if (!REGISTRY.contains(id)) {
+                throw new JsonParseException("Unknown icon type '" + id + "'");
+            }
+
+            IconSerializer<?> serializer = REGISTRY.get(id);
+            return Objects.requireNonNull(serializer).fromJSON(json.getAsJsonObject());
+        } else {
+            throw new JsonParseException("Icon must either be a string or an object");
         }
-
-        IconSerializer<?> serializer = REGISTRY.get(id);
-        return Objects.requireNonNull(serializer).fromJSON(json);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static JsonObject serializeJSON(IIcon icon) {
-        IconSerializer serializer = icon.getSerializer();
-        JsonObject json = serializer.toJSON(icon);
-        JsonObject json2 = new JsonObject();
-        json2.addProperty("type", Objects.requireNonNull(REGISTRY.getId(serializer)).toString());
-        return GsonUtil.merge(json2, json);
+    public static JsonElement serializeJSON(IIcon icon) {
+        if (icon instanceof ItemIcon itemIcon && itemIcon.stack.getCount() == 1) {
+            return new JsonPrimitive(Registry.ITEM.getKey(itemIcon.stack.getItem()).toString());
+        } else {
+            IconSerializer serializer = icon.getSerializer();
+            JsonObject json = serializer.toJSON(icon);
+            JsonObject json2 = new JsonObject();
+            json2.addProperty("type", Objects.requireNonNull(REGISTRY.getId(serializer)).toString());
+            return GsonUtil.merge(json2, json);
+        }
     }
 
     public static IIcon parseNBT(CompoundTag tag) {
