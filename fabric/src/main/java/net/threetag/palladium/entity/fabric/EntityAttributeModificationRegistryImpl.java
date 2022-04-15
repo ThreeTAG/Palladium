@@ -5,7 +5,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
-import net.threetag.palladium.Palladium;
 import net.threetag.palladium.mixin.fabric.AttributeSupplierBuilderMixin;
 import net.threetag.palladium.mixin.fabric.AttributeSupplierMixin;
 
@@ -19,7 +18,6 @@ public class EntityAttributeModificationRegistryImpl {
 
     public static void registerModification(Supplier<EntityType<? extends LivingEntity>> typeSupplier, Supplier<Attribute> attributeSupplier, Double value) {
         MODIFICATIONS.add(new Modification(typeSupplier, attributeSupplier, value));
-        Palladium.LOGGER.info("HALLO i registerd a modification :3");
     }
 
     public static Map<EntityType<? extends LivingEntity>, AttributeSupplier> getAttributesView() {

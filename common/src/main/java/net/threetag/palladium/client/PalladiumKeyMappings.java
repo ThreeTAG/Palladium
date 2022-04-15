@@ -24,23 +24,25 @@ public class PalladiumKeyMappings {
         }
 
         ClientRawInputEvent.KEY_PRESSED.register((client, keyCode, scanCode, action, modifiers) -> {
-            if (SWITCH_ABILITY_LIST.isDown()) {
-                AbilityBarRenderer.scroll(true);
-            }
+            if(client.player != null) {
+                if (SWITCH_ABILITY_LIST.isDown()) {
+                    AbilityBarRenderer.scroll(true);
+                }
 
-            AbilityBarRenderer.AbilityList list = AbilityBarRenderer.getSelectedList();
-            if (list != null && action != GLFW.GLFW_REPEAT) {
-                for (AbilityKeyMapping key : ABILITY_KEYS) {
-                    AbilityEntry entry = list.getAbilities()[key.index - 1];
+                AbilityBarRenderer.AbilityList list = AbilityBarRenderer.getSelectedList();
+                if (list != null && action != GLFW.GLFW_REPEAT) {
+                    for (AbilityKeyMapping key : ABILITY_KEYS) {
+                        AbilityEntry entry = list.getAbilities()[key.index - 1];
 
-                    if (key.matches(keyCode, scanCode) && entry != null) {
-                        new AbilityKeyPressedMessage(list.getPower().getId(), entry.id, action == GLFW.GLFW_PRESS).sendToServer();
+                        if (key.matches(keyCode, scanCode) && entry != null) {
+                            new AbilityKeyPressedMessage(list.getPower().getId(), entry.id, action == GLFW.GLFW_PRESS).sendToServer();
+                        }
                     }
                 }
-            }
 
-            if (FlightHandler.JUMP_KEY_DOWN.isRegistered(client.player) && client.options.keyJump.isDown() != FlightHandler.JUMP_KEY_DOWN.get(client.player)) {
-                new NotifyJumpKeyListenerMessage(client.options.keyJump.isDown()).sendToServer();
+                if (FlightHandler.JUMP_KEY_DOWN.isRegistered(client.player) && client.options.keyJump.isDown() != FlightHandler.JUMP_KEY_DOWN.get(client.player)) {
+                    new NotifyJumpKeyListenerMessage(client.options.keyJump.isDown()).sendToServer();
+                }
             }
 
             return EventResult.pass();
