@@ -80,7 +80,7 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
             float[] dimensions = GsonUtil.getFloatArray(cubeJson, 3, "dimensions");
             int[] textureOffset = GsonUtil.getIntArray(cubeJson, 2, "texture_offset", 0, 0);
             float[] textureScale = GsonUtil.getFloatArray(cubeJson, 2, "texture_scale", 1F, 1F);
-            float[] deformation = GsonUtil.getFloatArray(cubeJson, 3, "deformation", 1F, 1F, 1F);
+            float[] deformation = GsonUtil.getFloatArray(cubeJson, 3, "deformation", 0F, 0F, 0F);
 
             builder.mirror(GsonHelper.getAsBoolean(cubeJson, "mirror", false));
             builder.texOffs(textureOffset[0], textureOffset[1]);

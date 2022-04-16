@@ -63,7 +63,7 @@ public class PackRenderLayer implements IPackRenderLayer {
                 return m;
             });
         } else {
-            model = new SkinTypedValue<>(ModelLookup.get(new ResourceLocation("humanoid")));
+            model = new SkinTypedValue<>(ModelLookup.HUMANOID);
         }
 
         if (renderType == null) {

@@ -31,7 +31,7 @@ public abstract class IconSerializer<T extends IIcon> extends RegistryEntry<Icon
         if (json.isJsonPrimitive()) {
             ResourceLocation id = new ResourceLocation(json.getAsString());
 
-            if (!REGISTRY.contains(id)) {
+            if (!Registry.ITEM.containsKey(id)) {
                 throw new JsonParseException("Unknown item '" + json.getAsString() + "'");
             }
 

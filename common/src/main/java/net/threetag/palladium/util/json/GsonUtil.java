@@ -67,6 +67,14 @@ public class GsonUtil {
         return getFloatArray(jsonObject, fields, key);
     }
 
+    public static ResourceLocation convertToResourceLocation(JsonElement json, String memberName) {
+        if (json.isJsonPrimitive()) {
+            return new ResourceLocation(json.getAsString());
+        } else {
+            throw new JsonSyntaxException("Expected " + memberName + " to be a resource location, was " + GsonHelper.getType(json));
+        }
+    }
+
     public static ResourceLocation getAsResourceLocation(JsonObject json, String memberName) {
         if (json.has(memberName)) {
             return new ResourceLocation(GsonHelper.getAsString(json, memberName));
