@@ -265,9 +265,21 @@ true</td>
 <td>
 armor_model</td>
 <td>
+ResourceLocation</td>
+<td>
+Armor model type, defines the bones for the model layer. Ideally only use minecraft:humanoid for 1 layer or minecraft:player for 2 layers</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:humanoid</td>
+</tr>
+<tr>
+<td>
+armor_model_layer</td>
+<td>
 ModelLayerLocation</td>
 <td>
-Armor model, must have the body parts for a humanoid model.</td>
+Armor model layer, must have the body parts for a humanoid model (if not specified for another model type).</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -278,7 +290,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","armor_texture":"example:textures/models/armor/example_armor.png","armor_model":"minecraft:player#outer_armor"}</pre>
+{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","armor_texture":"example:textures/models/armor/example_armor.png","armor_model":"minecraft:humanoid","armor_model_layer":"minecraft:player#outer_armor"}</pre>
 </div>
 <hr>
 
