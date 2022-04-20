@@ -13,6 +13,7 @@ import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDefaultDocumentedConfigurable;
+import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 
@@ -84,5 +85,11 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
     @Override
     public ResourceLocation getId() {
         return REGISTRY.getId(this);
+    }
+
+    @Override
+    public void generateDocumentation(JsonDocumentationBuilder builder) {
+        IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
+        builder.setTitle(this.getId().toString());
     }
 }

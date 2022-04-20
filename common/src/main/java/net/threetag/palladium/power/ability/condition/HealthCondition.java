@@ -29,8 +29,8 @@ public class HealthCondition extends Condition {
 
     public static class Serializer extends ConditionSerializer {
 
-        public static final PalladiumProperty<Float> MIN_HEALTH = new FloatProperty("min_health");
-        public static final PalladiumProperty<Float> MAX_HEALTH = new FloatProperty("max_health");
+        public static final PalladiumProperty<Float> MIN_HEALTH = new FloatProperty("min_health").configurable("Minimum required amount of health");
+        public static final PalladiumProperty<Float> MAX_HEALTH = new FloatProperty("max_health").configurable("Maximum required amount of health");
 
         public Serializer() {
             this.withProperty(MIN_HEALTH, 0F);
