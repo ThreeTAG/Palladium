@@ -12,6 +12,7 @@ public class Abilities {
 
     public static final RegistrySupplier<Ability> COMMAND = ABILITIES.register("command", CommandAbility::new);
     public static final RegistrySupplier<Ability> RENDER_LAYER = ABILITIES.register("render_layer", RenderLayerAbility::new);
+    public static final RegistrySupplier<Ability> INTERPOLATED_INTEGER = ABILITIES.register("interpolated_integer", InterpolatedIntegerAbility::new);
     public static final RegistrySupplier<Ability> ATTRIBUTE_MODIFIER = ABILITIES.register("attribute_modifier", AttributeModifierAbility::new);
     public static final RegistrySupplier<Ability> HEALING = ABILITIES.register("healing", HealingAbility::new);
     public static final RegistrySupplier<Ability> SLOWFALL = ABILITIES.register("slowfall", SlowfallAbility::new);

@@ -10,6 +10,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.dynamictexture.transformer.AlphaMaskTextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.OverlayTextureTransformer;
+import net.threetag.palladium.client.dynamictexture.variable.AbilityIntegerPropertyVariable;
 import net.threetag.palladium.client.dynamictexture.variable.EntityTicksTextureVariable;
 import net.threetag.palladium.client.dynamictexture.variable.ITextureVariable;
 import net.threetag.palladium.client.dynamictexture.variable.SmallArmsTextureVariable;
@@ -32,6 +33,7 @@ public abstract class DynamicTexture {
         registerTransformer(new ResourceLocation(Palladium.MOD_ID, "overlay"), j -> new OverlayTextureTransformer(GsonHelper.getAsString(j, "overlay")));
 
         registerVariable(new ResourceLocation(Palladium.MOD_ID, "entity_ticks"), EntityTicksTextureVariable::new);
+        registerVariable(new ResourceLocation(Palladium.MOD_ID, "ability_integer_property"), AbilityIntegerPropertyVariable::new);
         registerVariable(new ResourceLocation(Palladium.MOD_ID, "small_arms"), j -> new SmallArmsTextureVariable(GsonHelper.getAsString(j, "normal_arms_value", null), GsonHelper.getAsString(j, "small_arms_value", null)));
     }
 

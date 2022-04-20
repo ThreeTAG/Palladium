@@ -76,6 +76,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Abilities
             this.addAbility(Abilities.COMMAND, "Command");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
+            this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolated Integer");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attribute Modifier");
             this.addAbility(Abilities.HEALING, "Healing");
             this.addAbility(Abilities.SLOWFALL, "Slowfall");
@@ -160,6 +161,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
+            this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolierte Zahl");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attributmodifikator");
             this.addAbility(Abilities.HEALING, "Heilung");
             this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
@@ -244,6 +246,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
+            this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolierte Zahl");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "\u00C4ttrib\u00FCtmodifikator");
             this.addAbility(Abilities.HEALING, "Helung");
             this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");

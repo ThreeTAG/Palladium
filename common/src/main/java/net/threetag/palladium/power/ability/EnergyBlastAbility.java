@@ -72,8 +72,8 @@ public class EnergyBlastAbility extends Ability {
     @Override
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         if (enabled) {
-            if (entity.level.isClientSide && entry.getOwnProperty(ANIMATION_TIMER) < 5) {
-                entry.setOwnProperty(ANIMATION_TIMER, entry.getOwnProperty(ANIMATION_TIMER) + 1);
+            if (entity.level.isClientSide && entry.getProperty(ANIMATION_TIMER) < 5) {
+                entry.setOwnProperty(ANIMATION_TIMER, entry.getProperty(ANIMATION_TIMER) + 1);
             }
 
             EnergyBlastOriginProperty.EnergyBlastOrigin origin = entry.getProperty(ORIGIN);
@@ -124,17 +124,17 @@ public class EnergyBlastAbility extends Ability {
                     entity.level.addParticle(new Random().nextBoolean() ? ParticleTypes.SMOKE : ParticleTypes.FLAME, hitResult.getLocation().x(), hitResult.getLocation().y(), hitResult.getLocation().z(), direction.x(), direction.y(), direction.z());
                 }
             }
-        } else if (entity.level.isClientSide && entry.getOwnProperty(ANIMATION_TIMER) > 0) {
-            entry.setOwnProperty(ANIMATION_TIMER, entry.getOwnProperty(ANIMATION_TIMER) - 1);
+        } else if (entity.level.isClientSide && entry.getProperty(ANIMATION_TIMER) > 0) {
+            entry.setOwnProperty(ANIMATION_TIMER, entry.getProperty(ANIMATION_TIMER) - 1);
         }
     }
 
     @Environment(EnvType.CLIENT)
     public static void animation(AbilityEffectsRenderLayer layer, AbilityEntry entry, PoseStack poseStack, MultiBufferSource buffer, int packedLight, LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        int timer = entry.getOwnProperty(ANIMATION_TIMER);
+        int timer = entry.getProperty(ANIMATION_TIMER);
 
         if (timer > 0) {
-            double distance = entry.getOwnProperty(DISTANCE) * (timer / 5F);
+            double distance = entry.getProperty(DISTANCE) * (timer / 5F);
             Color origColor = entry.getProperty(COLOR);
             Color color = new Color(origColor.getRed(), origColor.getGreen(), origColor.getBlue(), (int) (timer / 5F * 255F));
             var builder = buffer.getBuffer(PalladiumRenderTypes.LASER);

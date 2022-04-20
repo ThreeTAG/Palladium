@@ -39,10 +39,10 @@ public class EnergyBlastEffect extends EntityEffect {
             return;
         }
 
-        int timer = entry.getOwnProperty(EnergyBlastAbility.ANIMATION_TIMER);
+        int timer = entry.getProperty(EnergyBlastAbility.ANIMATION_TIMER);
 
         if (timer > 0) {
-            double distance = entry.getOwnProperty(EnergyBlastAbility.DISTANCE) * (timer / 5F);
+            double distance = entry.getProperty(EnergyBlastAbility.DISTANCE) * (timer / 5F);
             Color origColor = entry.getProperty(EnergyBlastAbility.COLOR);
             Color color = new Color(origColor.getRed(), origColor.getGreen(), origColor.getBlue(), (int) (timer / 5F * 255F));
             var builder = bufferSource.getBuffer(PalladiumRenderTypes.LASER);
@@ -56,7 +56,7 @@ public class EnergyBlastEffect extends EntityEffect {
     @Override
     public void tick(EffectEntity entity, Entity anchor) {
         AbilityEntry entry = this.getAbility(entity, anchor);
-        boolean isDonePlaying = entry == null || (entry.getOwnProperty(EnergyBlastAbility.ANIMATION_TIMER) <= 0F && !entry.isEnabled());
+        boolean isDonePlaying = entry == null || (entry.getProperty(EnergyBlastAbility.ANIMATION_TIMER) <= 0F && !entry.isEnabled());
         if (isDonePlaying != this.get(entity, IS_DONE_PLAYING)) {
             this.set(entity, IS_DONE_PLAYING, isDonePlaying);
         }

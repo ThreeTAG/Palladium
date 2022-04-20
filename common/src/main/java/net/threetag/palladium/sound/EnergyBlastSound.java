@@ -36,7 +36,7 @@ public class EnergyBlastSound extends AbstractTickableSoundInstance {
             return;
         }
 
-        this.volume = entry.getOwnProperty(EnergyBlastAbility.ANIMATION_TIMER) / 5F;
+        this.volume = entry.getProperty(EnergyBlastAbility.ANIMATION_TIMER) / 5F;
 
         if (!this.entity.isAlive() || (this.volume <= 0F && !entry.isEnabled())) {
             this.stop();

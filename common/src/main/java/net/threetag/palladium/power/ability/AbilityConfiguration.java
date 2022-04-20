@@ -57,6 +57,10 @@ public class AbilityConfiguration {
         return this.propertyManager.get(property);
     }
 
+    public PropertyManager getPropertyManager() {
+        return propertyManager;
+    }
+
     public List<Condition> getUnlockingConditions() {
         return this.unlockingConditions;
     }

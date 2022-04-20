@@ -44,12 +44,16 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
         this.withProperty(ICON, new ItemIcon(Items.BLAZE_ROD));
         this.withProperty(TITLE, null);
         this.withProperty(COLOR, AbilityColor.LIGHT_GRAY);
-        this.withProperty(HIDDEN, false);
+        this.withProperty(HIDDEN, this.isEffect());
         this.withProperty(LIST_INDEX, -1);
     }
 
     public void registerUniqueProperties(PropertyManager manager) {
 
+    }
+
+    public boolean isEffect() {
+        return false;
     }
 
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {

@@ -6,6 +6,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
+import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;
@@ -25,8 +26,12 @@ public class AbilityUnlockedCondition extends Condition {
 
     @Override
     public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
-        // TODO use power ID
-        AbilityEntry dependency = holder.getAbilities().get(this.abilityId);
+        AbilityEntry dependency;
+        if(this.power != null) {
+            dependency = Ability.getEntry(entity, this.power, this.abilityId);
+        } else {
+            dependency = holder.getAbilities().get(this.abilityId);
+        }
         return dependency != null && dependency.isUnlocked();
     }
 

@@ -3,6 +3,7 @@
   "ability.palladium.command": "Command",
   "ability.palladium.damage_immunity": "Damage Immunity",
   "ability.palladium.healing": "Healing",
+  "ability.palladium.interpolated_integer": "Interpolated Integer",
   "ability.palladium.invisibility": "Invisibility",
   "ability.palladium.render_layer": "Render Layer",
   "ability.palladium.slowfall": "Slowfall",

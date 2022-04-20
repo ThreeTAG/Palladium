@@ -157,12 +157,13 @@ public class AbilityEntry {
         }
     }
 
-    public <T> T getProperty(PalladiumProperty<T> property) {
-        return this.abilityConfiguration.get(property);
+    public PalladiumProperty<?> getEitherPropertyByKey(String key) {
+        PalladiumProperty<?> property = this.propertyManager.getPropertyByName(key);
+        return property != null ? property : this.abilityConfiguration.getPropertyManager().getPropertyByName(key);
     }
 
-    public <T> T getOwnProperty(PalladiumProperty<T> property) {
-        return this.propertyManager.get(property);
+    public <T> T getProperty(PalladiumProperty<T> property) {
+        return this.propertyManager.isRegistered(property) ? this.propertyManager.get(property) : this.abilityConfiguration.get(property);
     }
 
     public <T> AbilityEntry setOwnProperty(PalladiumProperty<T> property, T value) {
