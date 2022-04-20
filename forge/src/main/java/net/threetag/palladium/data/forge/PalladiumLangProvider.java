@@ -9,6 +9,7 @@ import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.Ability;
+import net.threetag.palladium.sound.PalladiumSoundEvents;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -101,6 +102,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Powers");
+
+            // Subtitles
+            this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Heat Vision");
         }
     }
 
@@ -182,6 +186,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
+
+            // Subtitles
+            this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
         }
     }
 
@@ -263,6 +270,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
+
+            // Subtitles
+            this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
         }
     }
 

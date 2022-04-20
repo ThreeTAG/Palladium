@@ -21,7 +21,6 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.network.AddPowerMessage;
 import net.threetag.palladium.network.SyncPowersMessage;
-import net.threetag.palladium.power.provider.SuperpowerProvider;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -48,8 +47,6 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
                 getPowerHandler(livingEntity).getPowerHolders().forEach((provider, holder) -> new AddPowerMessage(target.getId(), holder.getPower().getId()).sendTo(serverPlayer));
             }
         });
-
-        PalladiumEvents.REGISTER_PROPERTY.register(handler -> handler.register(SuperpowerProvider.SUPERPOWER_ID, null));
     }
 
     public PowerManager() {

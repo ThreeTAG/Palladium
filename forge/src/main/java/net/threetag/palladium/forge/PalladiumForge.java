@@ -66,6 +66,7 @@ public class PalladiumForge {
         e.getGenerator().addProvider(new PalladiumBlockModelProvider(e.getGenerator(), e.getExistingFileHelper()));
         e.getGenerator().addProvider(new PalladiumBlockStateProvider(e.getGenerator(), e.getExistingFileHelper()));
         e.getGenerator().addProvider(new PalladiumItemModelProvider(e.getGenerator(), e.getExistingFileHelper()));
+        e.getGenerator().addProvider(new PalladiumSoundDefinitionsProvider(e.getGenerator(), e.getExistingFileHelper()));
         e.getGenerator().addProvider(new PalladiumLangProvider.English(e.getGenerator()));
         e.getGenerator().addProvider(new PalladiumLangProvider.German(e.getGenerator()));
         e.getGenerator().addProvider(new PalladiumLangProvider.Saxon(e.getGenerator()));

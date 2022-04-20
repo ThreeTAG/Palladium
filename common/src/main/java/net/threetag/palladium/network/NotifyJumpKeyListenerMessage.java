@@ -4,7 +4,7 @@ import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
-import net.threetag.palladium.entity.FlightHandler;
+import net.threetag.palladium.util.property.PalladiumProperties;
 
 public class NotifyJumpKeyListenerMessage extends BaseC2SMessage {
 
@@ -30,6 +30,6 @@ public class NotifyJumpKeyListenerMessage extends BaseC2SMessage {
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
-        context.queue(() -> FlightHandler.JUMP_KEY_DOWN.set(context.getPlayer(), this.active));
+        context.queue(() -> PalladiumProperties.JUMP_KEY_DOWN.set(context.getPlayer(), this.active));
     }
 }

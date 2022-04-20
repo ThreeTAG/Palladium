@@ -19,6 +19,10 @@ public class EntityPropertyHandler extends PropertyManager implements PropertyMa
         PalladiumEvents.REGISTER_PROPERTY.invoker().register(this);
     }
 
+    public Entity getEntity() {
+        return entity;
+    }
+
     @ExpectPlatform
     public static EntityPropertyHandler getHandler(Entity entity) {
         throw new AssertionError();
@@ -27,7 +31,11 @@ public class EntityPropertyHandler extends PropertyManager implements PropertyMa
     @Override
     public <T> void onChanged(PalladiumProperty<T> property, T oldValue, T newValue) {
         if (!entity.level.isClientSide) {
-            new SyncPropertyMessage(this.entity.getId(), property, newValue).sendToLevel((ServerLevel) this.entity.level);
+            if (property.getSyncType() == SyncType.EVERYONE) {
+                new SyncPropertyMessage(this.entity.getId(), property, newValue).sendToLevel((ServerLevel) this.entity.level);
+            } else if (property.getSyncType() == SyncType.SELF && this.entity instanceof ServerPlayer serverPlayer) {
+                new SyncPropertyMessage(this.entity.getId(), property, newValue).sendTo(serverPlayer);
+            }
         }
     }
 

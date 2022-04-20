@@ -7,6 +7,7 @@
     "client.CubeDefinitionMixin",
     "client.CubeDeformationMixin",
     "client.EntityModelSetMixin",
+    "client.GameRendererMixin",
     "client.HumanoidModelMixin",
     "client.LayerDefinitionMixin",
     "client.MaterialDefinitionMixin",

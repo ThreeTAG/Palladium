@@ -1,12 +1,17 @@
 package net.threetag.palladium.power.ability;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.network.SyncAbilityEntryPropertyMessage;
 import net.threetag.palladium.network.SyncAbilityStateMessage;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.condition.Condition;
 import net.threetag.palladium.util.property.PalladiumProperty;
+import net.threetag.palladium.util.property.PropertyManager;
+import net.threetag.palladium.util.property.SyncType;
 
 public class AbilityEntry {
 
@@ -15,16 +20,36 @@ public class AbilityEntry {
     private boolean unlocked = true;
     private boolean enabled = true;
     public boolean keyPressed = false;
-    private int ticks = 0;
+    private int lifetime = 0;
+    private int enabledTicks = 0;
     public String id;
+    private final PropertyManager propertyManager = new PropertyManager().setListener(new PropertyManager.Listener() {
+        @Override
+        public <T> void onChanged(PalladiumProperty<T> property, T oldValue, T newValue) {
+            if (!holder.getEntity().level.isClientSide) {
+                CompoundTag tag = new CompoundTag();
+                tag.put(property.getKey(), property.toNBT(newValue));
+                if (property.getSyncType() == SyncType.EVERYONE) {
+                    new SyncAbilityEntryPropertyMessage(holder.getEntity().getId(), holder.getPower().getId(), abilityConfiguration.getId(), property.getKey(), tag).sendToLevel((ServerLevel) holder.getEntity().level);
+                } else if (property.getSyncType() == SyncType.SELF && holder.getEntity() instanceof ServerPlayer serverPlayer) {
+                    new SyncAbilityEntryPropertyMessage(holder.getEntity().getId(), holder.getPower().getId(), abilityConfiguration.getId(), property.getKey(), tag).sendTo(serverPlayer);
+                }
+            }
+        }
+    });
 
     public AbilityEntry(AbilityConfiguration abilityConfiguration, IPowerHolder holder) {
         this.abilityConfiguration = abilityConfiguration;
         this.holder = holder;
+        this.abilityConfiguration.getAbility().registerUniqueProperties(this.propertyManager);
     }
 
     public AbilityConfiguration getConfiguration() {
         return abilityConfiguration;
+    }
+
+    public PropertyManager getPropertyManager() {
+        return propertyManager;
     }
 
     public boolean isUnlocked() {
@@ -35,8 +60,8 @@ public class AbilityEntry {
         return enabled;
     }
 
-    public int getTicks() {
-        return ticks;
+    public int getEnabledTicks() {
+        return enabledTicks;
     }
 
     public void setClientState(LivingEntity entity, IPowerHolder powerHolder, boolean unlocked, boolean enabled) {
@@ -93,13 +118,19 @@ public class AbilityEntry {
                 }
             }
 
-            if (sync || ticks == 0) {
+            if (sync || lifetime == 0) {
                 new SyncAbilityStateMessage(entity.getId(), this.holder.getPower().getId(), this.abilityConfiguration.getId(), this.unlocked, this.enabled).sendToLevel((ServerLevel) entity.getLevel());
             }
         }
 
+        if (this.isEnabled()) {
+            this.enabledTicks++;
+        } else if (this.enabledTicks > 0) {
+            this.enabledTicks--;
+        }
+
+        this.lifetime++;
         this.abilityConfiguration.getAbility().tick(entity, this, powerHolder, this.isEnabled());
-        this.ticks++;
     }
 
     public void keyPressed(LivingEntity entity, boolean pressed) {
@@ -128,6 +159,15 @@ public class AbilityEntry {
 
     public <T> T getProperty(PalladiumProperty<T> property) {
         return this.abilityConfiguration.get(property);
+    }
+
+    public <T> T getOwnProperty(PalladiumProperty<T> property) {
+        return this.propertyManager.get(property);
+    }
+
+    public <T> AbilityEntry setOwnProperty(PalladiumProperty<T> property, T value) {
+        this.propertyManager.set(property, value);
+        return this;
     }
 
 }

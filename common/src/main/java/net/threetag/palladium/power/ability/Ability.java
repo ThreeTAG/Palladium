@@ -15,6 +15,7 @@ import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDefaultDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.power.IPowerHolder;
+import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
@@ -45,6 +46,10 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
         this.withProperty(COLOR, AbilityColor.LIGHT_GRAY);
         this.withProperty(HIDDEN, false);
         this.withProperty(LIST_INDEX, -1);
+    }
+
+    public void registerUniqueProperties(PropertyManager manager) {
+
     }
 
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
@@ -80,6 +85,22 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
         List<AbilityEntry> entries = new ArrayList<>();
         PowerManager.getPowerHandler(entity).getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.isEnabled() && entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll);
         return entries;
+    }
+
+    public static AbilityEntry getEntry(LivingEntity entity, ResourceLocation powerId, String abilityId) {
+        Power power = PowerManager.getInstance(entity.level).getPower(powerId);
+
+        if (power == null) {
+            return null;
+        }
+
+        IPowerHolder holder = PowerManager.getPowerHandler(entity).getPowerHolder(power);
+
+        if (holder == null) {
+            return null;
+        }
+
+        return holder.getAbilities().get(abilityId);
     }
 
     public static HTMLBuilder documentationBuilder() {

@@ -20,23 +20,21 @@ import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.sound.FlightSound;
 import net.threetag.palladium.util.PlayerUtil;
-import net.threetag.palladium.util.property.BooleanProperty;
-import net.threetag.palladium.util.property.PalladiumProperty;
+import net.threetag.palladium.util.property.PalladiumProperties;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 public class FlightHandler {
 
-    public static final PalladiumProperty<Boolean> JUMP_KEY_DOWN = new BooleanProperty("jump_key_down");
+    
     public static Object SOUND;
 
     public static void init() {
-        PalladiumEvents.REGISTER_PROPERTY.register(handler -> handler.register(JUMP_KEY_DOWN, false));
         PalladiumEvents.LIVING_UPDATE.register(FlightHandler::handleFlight);
     }
 
     private static void handleFlight(LivingEntity entity) {
-        if (!(entity instanceof Player) || entity.isOnGround() || PlayerUtil.isCreativeFlying(entity) || entity.isFallFlying() || !JUMP_KEY_DOWN.isRegistered(entity)) {
+        if (!(entity instanceof Player) || entity.isOnGround() || PlayerUtil.isCreativeFlying(entity) || entity.isFallFlying() || !PalladiumProperties.JUMP_KEY_DOWN.isRegistered(entity)) {
             stopSound(entity);
             return;
         }
@@ -93,7 +91,7 @@ public class FlightHandler {
             motionY = motion.y;
             f = 1 + (f - 1) / 3;
 
-            if (JUMP_KEY_DOWN.get(entity)) {
+            if (PalladiumProperties.JUMP_KEY_DOWN.get(entity)) {
                 motionY += (hovering ? 0.2F : 0.125F) * f;
             }
 
@@ -108,7 +106,7 @@ public class FlightHandler {
 
             entity.fallDistance = 0F;
         } else if (jetpackFlightSpeed > 0D) {
-            if (JUMP_KEY_DOWN.get(entity) && !hovering) {
+            if (PalladiumProperties.JUMP_KEY_DOWN.get(entity) && !hovering) {
                 Vec3 motion = entity.getDeltaMovement();
                 double y = motion.y;
 
@@ -196,7 +194,7 @@ public class FlightHandler {
             return hovering ? FlightType.LEVITATION_HOVERING : FlightType.LEVITATION;
         } else if (jetpackFlightSpeed > 0D) {
             AtomicReference<FlightType> result = new AtomicReference<>(FlightType.NONE);
-            if (JUMP_KEY_DOWN.get(playerEntity) && !hovering) {
+            if (PalladiumProperties.JUMP_KEY_DOWN.get(playerEntity) && !hovering) {
                 result.set(FlightType.JETPACK);
             }
 

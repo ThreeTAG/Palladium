@@ -5,10 +5,10 @@ import dev.architectury.event.events.client.ClientRawInputEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.client.KeyMapping;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
-import net.threetag.palladium.entity.FlightHandler;
 import net.threetag.palladium.network.AbilityKeyPressedMessage;
 import net.threetag.palladium.network.NotifyJumpKeyListenerMessage;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.util.property.PalladiumProperties;
 import org.lwjgl.glfw.GLFW;
 
 public class PalladiumKeyMappings {
@@ -40,7 +40,7 @@ public class PalladiumKeyMappings {
                     }
                 }
 
-                if (FlightHandler.JUMP_KEY_DOWN.isRegistered(client.player) && client.options.keyJump.isDown() != FlightHandler.JUMP_KEY_DOWN.get(client.player)) {
+                if (PalladiumProperties.JUMP_KEY_DOWN.isRegistered(client.player) && client.options.keyJump.isDown() != PalladiumProperties.JUMP_KEY_DOWN.get(client.player)) {
                     new NotifyJumpKeyListenerMessage(client.options.keyJump.isDown()).sendToServer();
                 }
             }

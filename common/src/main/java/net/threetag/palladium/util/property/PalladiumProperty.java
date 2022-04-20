@@ -13,6 +13,7 @@ public abstract class PalladiumProperty<T> {
 
     private final String key;
     private String description;
+    private SyncType syncType = SyncType.EVERYONE;
     public final TypeToken<T> typeToken = new TypeToken<T>(getClass()) {
     };
     private final Type type = typeToken.getType();
@@ -29,12 +30,21 @@ public abstract class PalladiumProperty<T> {
         return description;
     }
 
+    public SyncType getSyncType() {
+        return syncType;
+    }
+
     public Type getType() {
         return type;
     }
 
     public PalladiumProperty<T> configurable(String description) {
         this.description = description;
+        return this;
+    }
+
+    public PalladiumProperty<T> sync(SyncType syncType) {
+        this.syncType = syncType;
         return this;
     }
 

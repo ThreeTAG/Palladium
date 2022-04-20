@@ -47,10 +47,29 @@ public class PropertyManager {
         return this;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public PropertyManager setRaw(PalladiumProperty property, @Nullable Object value) {
+        if (!this.defaultProperties.containsKey(property)) {
+            throw new RuntimeException("Property " + property.getKey() + " was not registered!");
+        }
+        Object oldValue = this.values.get(property);
+        this.values.put(property, value);
+        if (this.listener != null) {
+            this.listener.onChanged(property, oldValue, value);
+        }
+        return this;
+    }
+
     @Nullable
     @SuppressWarnings("unchecked")
     public <T> T get(PalladiumProperty<T> property) {
         return (T) this.values.get(property);
+    }
+
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public <T> T getDefault(PalladiumProperty<T> property) {
+        return (T) this.defaultProperties.get(property);
     }
 
     public <T> Optional<T> optional(PalladiumProperty<T> property) {

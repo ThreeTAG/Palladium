@@ -31,7 +31,11 @@ Overview</h2>
 Palladium</h3>
 <ul>
 <li>
-<a href="#palladium:toggle">
+<a href="#palladium:not">
+</a>
+</li>
+<li>
+<a href="#palladium:or">
 </a>
 </li>
 <li>
@@ -39,19 +43,7 @@ Palladium</h3>
 </a>
 </li>
 <li>
-<a href="#palladium:not">
-</a>
-</li>
-<li>
 <a href="#palladium:ability_enabled">
-</a>
-</li>
-<li>
-<a href="#palladium:health">
-</a>
-</li>
-<li>
-<a href="#palladium:held">
 </a>
 </li>
 <li>
@@ -59,31 +51,19 @@ Palladium</h3>
 </a>
 </li>
 <li>
-<a href="#palladium:or">
+<a href="#palladium:toggle">
+</a>
+</li>
+<li>
+<a href="#palladium:held">
+</a>
+</li>
+<li>
+<a href="#palladium:health">
 </a>
 </li>
 </ul>
 </p>
-<hr>
-
-<div id="palladium:toggle">
-<h2>
-</h2>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:toggle"}</pre>
-</div>
-<hr>
-
-<div id="palladium:ability_unlocked">
-<h2>
-</h2>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:ability_unlocked"}</pre>
-</div>
 <hr>
 
 <div id="palladium:not">
@@ -128,6 +108,58 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:or">
+<h2>
+</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+conditions</td>
+<td>
+Condition[]</td>
+<td>
+Array of conditions that must be disabled</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0 conditions</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:or","conditions":[]}</pre>
+</div>
+<hr>
+
+<div id="palladium:ability_unlocked">
+<h2>
+</h2>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_unlocked"}</pre>
+</div>
+<hr>
+
 <div id="palladium:ability_enabled">
 <h2>
 </h2>
@@ -135,6 +167,36 @@ Example:</h3>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:ability_enabled"}</pre>
+</div>
+<hr>
+
+<div id="palladium:action">
+<h2>
+</h2>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:action"}</pre>
+</div>
+<hr>
+
+<div id="palladium:toggle">
+<h2>
+</h2>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:toggle"}</pre>
+</div>
+<hr>
+
+<div id="palladium:held">
+<h2>
+</h2>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:held"}</pre>
 </div>
 <hr>
 
@@ -189,68 +251,6 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:health","min_health":0.0,"max_health":3.4028235E38}</pre>
-</div>
-<hr>
-
-<div id="palladium:held">
-<h2>
-</h2>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:held"}</pre>
-</div>
-<hr>
-
-<div id="palladium:action">
-<h2>
-</h2>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:action"}</pre>
-</div>
-<hr>
-
-<div id="palladium:or">
-<h2>
-</h2>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-conditions</td>
-<td>
-Condition[]</td>
-<td>
-Array of conditions that must be disabled</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0 conditions</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:or","conditions":[]}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

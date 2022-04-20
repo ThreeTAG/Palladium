@@ -17,7 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
-import net.threetag.palladium.power.provider.SuperpowerProvider;
+import net.threetag.palladium.util.property.PalladiumProperties;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -71,7 +71,7 @@ public class SuperpowerCommand {
         while (iterator.hasNext()) {
             Entity entity = iterator.next();
             if (entity instanceof LivingEntity) {
-                SuperpowerProvider.SUPERPOWER_ID.set(entity, superpower.getId());
+                PalladiumProperties.SUPERPOWER_ID.set(entity, superpower.getId());
                 i++;
             } else {
                 commandSource.sendFailure(new TranslatableComponent("commands.superpower.error.noLivingEntity"));
@@ -95,7 +95,7 @@ public class SuperpowerCommand {
         while (iterator.hasNext()) {
             Entity entity = iterator.next();
             if (entity instanceof LivingEntity) {
-                SuperpowerProvider.SUPERPOWER_ID.set(entity, null);
+                PalladiumProperties.SUPERPOWER_ID.set(entity, null);
                 i++;
             } else {
                 commandSource.sendFailure(new TranslatableComponent("commands.superpower.error.noLivingEntity"));

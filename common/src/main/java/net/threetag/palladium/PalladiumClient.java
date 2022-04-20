@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerRenderer;
 import net.threetag.palladium.client.renderer.renderlayer.RenderLayerRegistry;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
@@ -26,6 +27,7 @@ public class PalladiumClient {
         PalladiumKeyMappings.init();
         PowersScreen.register();
         RenderLayerRegistry.addToAll(renderLayerParent -> new PackRenderLayerRenderer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));
+        RenderLayerRegistry.addToAll(renderLayerParent -> new AbilityEffectsRenderLayer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));
     }
 
     public static void blockRenderTypes() {
