@@ -14,10 +14,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
+import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiFunction;
 
 public class PackRenderLayer implements IPackRenderLayer {
@@ -26,6 +29,7 @@ public class PackRenderLayer implements IPackRenderLayer {
     private final SkinTypedValue<EntityModel<LivingEntity>> model;
     private final SkinTypedValue<DynamicTexture> texture;
     private final BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType;
+    private final List<Condition> conditions = new ArrayList<>();
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public PackRenderLayer(SkinTypedValue<ModelLookup.Model> model, SkinTypedValue<ModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType) {
@@ -38,7 +42,7 @@ public class PackRenderLayer implements IPackRenderLayer {
 
     @Override
     public void render(LivingEntity entity, AbilityEntry abilityEntry, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (this.modelLookup.get(entity).fitsEntity(entity, parentModel)) {
+        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions) && this.modelLookup.get(entity).fitsEntity(entity, parentModel)) {
             EntityModel<LivingEntity> entityModel = this.model.get(entity);
 
             if (entityModel instanceof HumanoidModel<LivingEntity> entityHumanoidModel && parentModel instanceof HumanoidModel<LivingEntity> parentHumanoid) {
@@ -53,6 +57,12 @@ public class PackRenderLayer implements IPackRenderLayer {
             VertexConsumer vertexConsumer = this.renderType.apply(bufferSource, this.texture.get(entity).getTexture(entity));
             entityModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
         }
+    }
+
+    @Override
+    public IPackRenderLayer addCondition(Condition condition) {
+        this.conditions.add(condition);
+        return this;
     }
 
     public static PackRenderLayer parse(JsonObject json) {
@@ -79,7 +89,7 @@ public class PackRenderLayer implements IPackRenderLayer {
             throw new JsonParseException("Unknown render type '" + new ResourceLocation(GsonHelper.getAsString(json, "render_type", "solid")) + "'");
         }
 
-        return new PackRenderLayer(model, location, SkinTypedValue.fromJSON(json.get("texture"), DynamicTexture::parse), renderType);
+        return IPackRenderLayer.parseConditions(new PackRenderLayer(model, location, SkinTypedValue.fromJSON(json.get("texture"), DynamicTexture::parse), renderType), json);
     }
 
 }

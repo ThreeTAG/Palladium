@@ -1,4 +1,4 @@
-package net.threetag.palladium.power.ability.condition;
+package net.threetag.palladium.condition;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -17,6 +17,7 @@ import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -51,11 +52,19 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
 
     public abstract Condition make(JsonObject json);
 
-    public static Condition fromJSON(JsonObject json) {
+    public ConditionContextType getContextType() {
+        return ConditionContextType.ALL;
+    }
+
+    public static Condition fromJSON(JsonObject json, ConditionContextType type) {
         ConditionSerializer conditionSerializer = ConditionSerializer.REGISTRY.get(new ResourceLocation(GsonHelper.getAsString(json, "type")));
 
         if (conditionSerializer == null) {
             throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' does not exist!");
+        }
+
+        if((type == ConditionContextType.ABILITIES && !conditionSerializer.getContextType().forAbilities()) || (type == ConditionContextType.RENDER_LAYERS && !conditionSerializer.getContextType().forRenderLayers())) {
+            throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' is not applicable for " + type.toString().toLowerCase(Locale.ROOT));
         }
 
         return conditionSerializer.make(json);
@@ -72,8 +81,8 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
     }
 
     public static HTMLBuilder documentationBuilder() {
-        return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "ability_conditions"), "Ability Conditions")
-                .add(HTMLBuilder.heading("Ability Conditions"))
+        return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "conditions"), "Conditions")
+                .add(HTMLBuilder.heading("Conditions"))
                 .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList()));
     }
 
@@ -91,5 +100,6 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
         builder.setTitle(this.getId().toString());
+        builder.setDescription("Applicable for: " + this.getContextType().toString().toLowerCase(Locale.ROOT));
     }
 }

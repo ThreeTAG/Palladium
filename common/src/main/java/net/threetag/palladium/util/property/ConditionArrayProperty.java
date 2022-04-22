@@ -4,8 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.threetag.palladium.power.ability.condition.Condition;
-import net.threetag.palladium.power.ability.condition.ConditionSerializer;
+import net.threetag.palladium.condition.Condition;
+import net.threetag.palladium.condition.ConditionSerializer;
 
 public class ConditionArrayProperty extends PalladiumProperty<Condition[]> {
 
