@@ -9,8 +9,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.threetag.palladium.power.ability.condition.Condition;
-import net.threetag.palladium.power.ability.condition.ConditionSerializer;
+import net.threetag.palladium.condition.Condition;
+import net.threetag.palladium.condition.ConditionSerializer;
+import net.threetag.palladium.condition.ConditionContextType;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 
@@ -120,7 +121,7 @@ public class AbilityConfiguration {
 
                 for (JsonElement jsonElement : unlocking) {
                     JsonObject c = jsonElement.getAsJsonObject();
-                    Condition condition = ConditionSerializer.fromJSON(c);
+                    Condition condition = ConditionSerializer.fromJSON(c, ConditionContextType.ABILITIES);
 
                     if (condition.needsKey()) {
                         if (withKey) {
@@ -139,7 +140,7 @@ public class AbilityConfiguration {
 
                 for (JsonElement jsonElement : enabling) {
                     JsonObject c = jsonElement.getAsJsonObject();
-                    Condition condition = ConditionSerializer.fromJSON(c);
+                    Condition condition = ConditionSerializer.fromJSON(c, ConditionContextType.ABILITIES);
 
                     if (condition.needsKey()) {
                         if (withKey) {

@@ -1,4 +1,4 @@
-package net.threetag.palladium.power.ability.condition;
+package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.world.entity.LivingEntity;

@@ -1,4 +1,4 @@
-package net.threetag.palladium.power.ability.condition;
+package net.threetag.palladium.condition;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;

@@ -8,7 +8,7 @@ import net.threetag.palladium.network.SyncAbilityEntryPropertyMessage;
 import net.threetag.palladium.network.SyncAbilityStateMessage;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.condition.Condition;
+import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 import net.threetag.palladium.util.property.SyncType;
