@@ -12,19 +12,24 @@ import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
+import java.util.Objects;
+
 public class SyncAbilityStateMessage extends BaseS2CMessage {
 
     private final int entityId;
     private final ResourceLocation power;
     private final String abilityKey;
     private final boolean unlocked, enabled;
+    private final int maxCooldown, cooldown;
 
-    public SyncAbilityStateMessage(int entityId, ResourceLocation power, String abilityKey, boolean unlocked, boolean enabled) {
+    public SyncAbilityStateMessage(int entityId, ResourceLocation power, String abilityKey, boolean unlocked, boolean enabled, int maxCooldown, int cooldown) {
         this.entityId = entityId;
         this.power = power;
         this.abilityKey = abilityKey;
         this.unlocked = unlocked;
         this.enabled = enabled;
+        this.maxCooldown = maxCooldown;
+        this.cooldown = cooldown;
     }
 
     public SyncAbilityStateMessage(FriendlyByteBuf buf) {
@@ -33,6 +38,8 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
         this.abilityKey = buf.readUtf();
         this.unlocked = buf.readBoolean();
         this.enabled = buf.readBoolean();
+        this.maxCooldown = buf.readInt();
+        this.cooldown = buf.readInt();
     }
 
     @Override
@@ -47,12 +54,14 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
         buf.writeUtf(this.abilityKey);
         buf.writeBoolean(this.unlocked);
         buf.writeBoolean(this.enabled);
+        buf.writeInt(this.maxCooldown);
+        buf.writeInt(this.cooldown);
     }
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
-            Entity entity = Minecraft.getInstance().level.getEntity(this.entityId);
+            Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityId);
 
             if (entity instanceof LivingEntity livingEntity) {
                 IPowerHolder powerHolder = PowerManager.getPowerHandler(livingEntity).getPowerHolder(PowerManager.getInstance(entity.level).getPower(this.power));
@@ -61,7 +70,7 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
                     AbilityEntry entry = powerHolder.getAbilities().get(this.abilityKey);
 
                     if (entry != null) {
-                        entry.setClientState(livingEntity, powerHolder, this.unlocked, this.enabled);
+                        entry.setClientState(livingEntity, powerHolder, this.unlocked, this.enabled, this.maxCooldown, this.cooldown);
                     }
                 }
             }

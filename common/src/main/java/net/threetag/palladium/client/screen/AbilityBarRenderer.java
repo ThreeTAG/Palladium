@@ -41,7 +41,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
         if (ABILITY_LISTS.isEmpty()) {
             return null;
         } else {
-            if(SELECTED >= ABILITY_LISTS.size() || SELECTED < 0) {
+            if (SELECTED >= ABILITY_LISTS.size() || SELECTED < 0) {
                 SELECTED = 0;
             }
             return ABILITY_LISTS.get(SELECTED);
@@ -50,7 +50,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
 
     @Override
     public void render(Gui gui, PoseStack poseStack, float partialTicks, int width, int height) {
-        if(ABILITY_LISTS.isEmpty()) {
+        if (ABILITY_LISTS.isEmpty()) {
             return;
         }
 
@@ -143,7 +143,17 @@ public class AbilityBarRenderer implements IIngameOverlay {
                 AbilityEntry entry = list.getAbilities()[i];
 
                 if (entry != null) {
-                    minecraft.gui.blit(poseStack, 3, i * 22 + 3, entry.isEnabled() ? 42 : 24, entry.isUnlocked() ? 56 : 74, 18, 18);
+                    if (entry.isEnabled()) {
+                        if(entry.cooldown == 0) {
+                            minecraft.gui.blit(poseStack, 3, i * 22 + 3, 42, 56, 18, 18);
+                        } else {
+                            int height = (int) (((float) entry.cooldown / (float) entry.maxCooldown) * 18);
+                            minecraft.gui.blit(poseStack, 3, i * 22 + 3, 24, 56, 18, 18);
+                            minecraft.gui.blit(poseStack, 3, i * 22 + 3 + (18 - height), 42, 74 - height, 18, height);
+                        }
+                    } else {
+                        minecraft.gui.blit(poseStack, 3, i * 22 + 3, 24, entry.isUnlocked() ? 56 : 74, 18, 18);
+                    }
 
                     if (!entry.isUnlocked()) {
                         minecraft.gui.blit(poseStack, 3, i * 22 + 3, 42, 74, 18, 18);

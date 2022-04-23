@@ -5,9 +5,17 @@
     "item": "minecraft:feather"
   },
   "abilities": {
-    "flight": {
+    "size": {
       "ability": "palladium:size",
-      "scale": 0.5
+      "scale": 0.5,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "ticks": 100
+          }
+        ]
+      }
     }
   }
 }

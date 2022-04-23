@@ -4,11 +4,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.network.SyncAbilityEntryPropertyMessage;
 import net.threetag.palladium.network.SyncAbilityStateMessage;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 import net.threetag.palladium.util.property.SyncType;
@@ -20,6 +20,8 @@ public class AbilityEntry {
     private boolean unlocked = true;
     private boolean enabled = true;
     public boolean keyPressed = false;
+    public int maxCooldown = 0;
+    public int cooldown = 0;
     private int lifetime = 0;
     private int enabledTicks = 0;
     public String id;
@@ -42,6 +44,8 @@ public class AbilityEntry {
         this.abilityConfiguration = abilityConfiguration;
         this.holder = holder;
         this.abilityConfiguration.getAbility().registerUniqueProperties(this.propertyManager);
+        this.abilityConfiguration.getUnlockingConditions().forEach(condition -> condition.registerProperties(this.propertyManager));
+        this.abilityConfiguration.getEnablingConditions().forEach(condition -> condition.registerProperties(this.propertyManager));
     }
 
     public AbilityConfiguration getConfiguration() {
@@ -64,8 +68,10 @@ public class AbilityEntry {
         return enabledTicks;
     }
 
-    public void setClientState(LivingEntity entity, IPowerHolder powerHolder, boolean unlocked, boolean enabled) {
+    public void setClientState(LivingEntity entity, IPowerHolder powerHolder, boolean unlocked, boolean enabled, int maxCooldown, int cooldown) {
         this.unlocked = unlocked;
+        this.maxCooldown = maxCooldown;
+        this.cooldown = cooldown;
 
         if (this.enabled != enabled) {
             this.enabled = enabled;
@@ -119,7 +125,7 @@ public class AbilityEntry {
             }
 
             if (sync || lifetime == 0) {
-                new SyncAbilityStateMessage(entity.getId(), this.holder.getPower().getId(), this.abilityConfiguration.getId(), this.unlocked, this.enabled).sendToLevel((ServerLevel) entity.getLevel());
+                this.syncState(entity);
             }
         }
 
@@ -129,8 +135,16 @@ public class AbilityEntry {
             this.enabledTicks--;
         }
 
+        if (this.cooldown > 0) {
+            this.cooldown--;
+        }
+
         this.lifetime++;
         this.abilityConfiguration.getAbility().tick(entity, this, powerHolder, this.isEnabled());
+    }
+
+    public void syncState(LivingEntity entity) {
+        new SyncAbilityStateMessage(entity.getId(), this.holder.getPower().getId(), this.abilityConfiguration.getId(), this.unlocked, this.enabled, this.maxCooldown, this.cooldown).sendToLevel((ServerLevel) entity.getLevel());
     }
 
     public void keyPressed(LivingEntity entity, boolean pressed) {

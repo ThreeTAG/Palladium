@@ -4,6 +4,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.util.property.PropertyManager;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -15,6 +16,10 @@ public abstract class Condition {
 
     public boolean needsKey() {
         return false;
+    }
+
+    public void registerProperties(PropertyManager manager) {
+
     }
 
     public void onKeyPressed(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
