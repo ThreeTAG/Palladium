@@ -82,6 +82,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(Abilities.SLOWFALL, "Slowfall");
             this.addAbility(Abilities.DAMAGE_IMMUNITY, "Damage Immunity");
             this.addAbility(Abilities.INVISIBILITY, "Invisibility");
+            this.addAbility(Abilities.SIZE, "Size");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -167,6 +168,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
             this.addAbility(Abilities.DAMAGE_IMMUNITY, "Schadensimmunit\u00E4t");
             this.addAbility(Abilities.INVISIBILITY, "Unsichtbarkeit");
+            this.addAbility(Abilities.SIZE, "Gr\u00F6\u00DFe");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
@@ -252,6 +254,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
             this.addAbility(Abilities.DAMAGE_IMMUNITY, "Schadensimmunit\u00E4t");
             this.addAbility(Abilities.INVISIBILITY, "Unsischtbarkeet");
+            this.addAbility(Abilities.SIZE, "Gr\u00F6\u00DFe");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");

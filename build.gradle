@@ -1,5 +1,5 @@
 plugins {
-    id "architectury-plugin" version "3.4.130"
+    id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "0.11.0-SNAPSHOT" apply false
     id "io.github.juuxel.loom-quiltflower" version '1.7.0' apply false
 }
@@ -93,6 +93,10 @@ allprojects {
             content {
                 includeGroup 'dev.latvian.mods'
             }
+        }
+
+        maven {
+            url = 'https://jitpack.io'
         }
     }
 

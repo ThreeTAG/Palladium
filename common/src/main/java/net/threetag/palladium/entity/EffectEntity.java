@@ -9,6 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.threetag.palladium.Palladium;
+import net.threetag.palladium.entity.effect.EnergyBlastEffect;
 import net.threetag.palladium.entity.effect.EntityEffect;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 
@@ -48,8 +50,7 @@ public class EffectEntity extends Entity implements EntitySpawnExtension {
                     this.discard();
             } else {
                 this.entityEffect.tick(this, anchor);
-                if (!this.level.isClientSide)
-                    this.moveTo(anchor.getX(), anchor.getY() + anchor.getMyRidingOffset() + anchor.getEyeHeight(), anchor.getZ(), anchor.getYRot(), anchor.getXRot());
+                this.moveTo(anchor.getX(), anchor.getY() + anchor.getMyRidingOffset() + anchor.getEyeHeight(), anchor.getZ(), anchor.getYRot(), anchor.getXRot());
             }
         } else if (!this.level.isClientSide) {
             this.discard();
@@ -60,14 +61,14 @@ public class EffectEntity extends Entity implements EntitySpawnExtension {
     public void saveAdditionalSpawnData(FriendlyByteBuf buf) {
         buf.writeResourceLocation(Objects.requireNonNull(EntityEffect.REGISTRY.getId(this.entityEffect)));
         buf.writeInt(this.anchorId);
-        buf.writeNbt(EntityPropertyHandler.getHandler(this).toNBT());
+        EntityPropertyHandler.getHandler(this).toBuffer(buf);
     }
 
     @Override
     public void loadAdditionalSpawnData(FriendlyByteBuf buf) {
         this.entityEffect = EntityEffect.REGISTRY.get(buf.readResourceLocation());
         this.anchorId = buf.readInt();
-        EntityPropertyHandler.getHandler(this).fromNBT(buf.readNbt());
+        EntityPropertyHandler.getHandler(this).fromBuffer(buf);
     }
 
     @Override

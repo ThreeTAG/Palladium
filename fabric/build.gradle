@@ -63,6 +63,11 @@ dependencies {
     // KubeJS
     modImplementation("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}")
 
+    // Pehkui
+    modApi("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {
+        exclude group: "net.fabricmc.fabric-api"
+    })
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 }

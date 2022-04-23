@@ -21,9 +21,6 @@ public class EffectEntityRenderer extends EntityRenderer<EffectEntity> {
         Entity anchor = entity.getAnchorEntity();
 
         if(anchor != null) {
-//            Vec3 oldPos = entity.getPosition(partialTicks);
-//            entity.moveTo(oldPos.x, oldPos.y + anchor.getMyRidingOffset() + anchor.getEyeHeight(), oldPos.z, anchor.getViewYRot(partialTicks), anchor.getViewXRot(partialTicks));
-
             double x = Mth.lerp(partialTicks, anchor.xOld, anchor.getX()) - Mth.lerp(partialTicks, entity.xOld, entity.getX());
             double y = Mth.lerp(partialTicks, anchor.yOld, anchor.getY()) - Mth.lerp(partialTicks, entity.yOld, entity.getY());
             double z = Mth.lerp(partialTicks, anchor.zOld, anchor.getZ()) - Mth.lerp(partialTicks, entity.zOld, entity.getZ());

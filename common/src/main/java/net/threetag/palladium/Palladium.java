@@ -12,6 +12,7 @@ import net.threetag.palladium.addonpack.parser.ToolTierParser;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.command.SuperpowerCommand;
+import net.threetag.palladium.compat.pehkui.PehkuiCompat;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.entity.FlightHandler;
 import net.threetag.palladium.entity.PalladiumAttributes;
@@ -75,6 +76,10 @@ public class Palladium {
         LifecycleEvent.SETUP.register(() -> {
             PalladiumFeatures.init();
             Palladium.generateDocumentation();
+
+            if(Platform.isModLoaded("pehkui")) {
+                PehkuiCompat.init();
+            }
         });
 
         CommandRegistrationEvent.EVENT.register((dispatcher, selection) -> SuperpowerCommand.register(dispatcher));

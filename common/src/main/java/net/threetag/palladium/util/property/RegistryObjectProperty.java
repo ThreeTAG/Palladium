@@ -33,7 +33,7 @@ public class RegistryObjectProperty<T> extends PalladiumProperty<T> {
 
     @Override
     public JsonElement toJSON(T value) {
-        return new JsonPrimitive(this.registry.getId(value));
+        return new JsonPrimitive(Objects.requireNonNull(this.registry.getKey(value)).toString());
     }
 
     @Override

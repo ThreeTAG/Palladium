@@ -29,7 +29,6 @@ import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLa
 import net.threetag.palladium.entity.effect.EnergyBlastEffect;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.sound.EnergyBlastSound;
-import net.threetag.palladium.sound.PalladiumSoundEvents;
 import net.threetag.palladium.util.EntityUtil;
 import net.threetag.palladium.util.property.*;
 
@@ -52,7 +51,7 @@ public class EnergyBlastAbility extends Ability {
         this.withProperty(COLOR, Color.RED);
         this.withProperty(DAMAGE, 1F);
         this.withProperty(MAX_DISTANCE, 30F);
-        this.withProperty(SOUND_EVENT, PalladiumSoundEvents.HEAT_VISION.get());
+        this.withProperty(SOUND_EVENT, null);
     }
 
     @Override
@@ -79,7 +78,6 @@ public class EnergyBlastAbility extends Ability {
             EnergyBlastOriginProperty.EnergyBlastOrigin origin = entry.getProperty(ORIGIN);
 
             if(origin == EnergyBlastOriginProperty.EnergyBlastOrigin.CHEST) {
-                entity.yBodyRotO = entity.yHeadRotO;
                 entity.yBodyRot = entity.yHeadRot;
             }
 

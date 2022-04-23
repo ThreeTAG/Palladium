@@ -14,6 +14,7 @@ import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLa
 import net.threetag.palladium.util.EntityUtil;
 import net.threetag.palladium.util.MathUtil;
 import net.threetag.palladium.util.RenderUtil;
+import net.threetag.palladium.util.SizeUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
@@ -55,11 +56,11 @@ public class EnergyBlastOriginProperty extends EnumPalladiumProperty<EnergyBlast
                 return entity.position().add(0, entity.getEyeHeight(), 0);
             } else if (this == FOREHEAD) {
                 Vec3 startVec = entity.position().add(0, entity.getEyeHeight(), 0);
-                Vec3 forehead = new Vec3(0, 2F / 16F * 0.9375F, 0)
+                Vec3 forehead = new Vec3(0, 2F / 16F * 0.9375F * SizeUtil.getInstance().getHeightScale(entity), 0)
                         .xRot((float) Math.toRadians(-entity.getXRot())).yRot((float) Math.toRadians(-entity.getYRot()));
                 return startVec.add(forehead);
             } else if (this == CHEST) {
-                return entity.position().add(0, 17F / 16F * 0.9375F, 0);
+                return entity.position().add(0, 17F / 16F * 0.9375F * SizeUtil.getInstance().getHeightScale(entity), 0);
             }
             return null;
         }
@@ -77,6 +78,7 @@ public class EnergyBlastOriginProperty extends EnumPalladiumProperty<EnergyBlast
                 float scale = 1F / 16F;
 
                 if (layer != null) {
+                    distance /= SizeUtil.getInstance().getWidthScale(entity, partialTicks);
                     ((HeadedModel) layer.getParentModel()).getHead().translateAndRotate(poseStack);
                     poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
                     poseStack.mulPose(Vector3f.XP.rotationDegrees(90));
@@ -103,6 +105,7 @@ public class EnergyBlastOriginProperty extends EnumPalladiumProperty<EnergyBlast
                 }
             } else if (this == CHEST) {
                 if (layer != null) {
+                    distance /= SizeUtil.getInstance().getWidthScale(entity, partialTicks);
                     ((HumanoidModel<LivingEntity>) layer.getParentModel()).body.translateAndRotate(poseStack);
                     poseStack.translate(0, 3F / 16F, 0);
                     poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
@@ -110,12 +113,11 @@ public class EnergyBlastOriginProperty extends EnumPalladiumProperty<EnergyBlast
                 } else {
                     float yaw = Mth.lerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
                     float pitch = entity.isCrouching() ? 0.5F : 0;
-                    poseStack.translate(0, 17F / 16F * 0.9375F, 0);
+                    poseStack.translate(0, 17F / 16F * 0.9375F * SizeUtil.getInstance().getHeightScale(entity, partialTicks), 0);
                     poseStack.mulPose(Vector3f.YN.rotationDegrees(yaw));
                     poseStack.mulPose(Vector3f.XP.rotation(pitch));
                     poseStack.mulPose(Vector3f.XP.rotationDegrees(90));
                 }
-
                 RenderUtil.drawGlowingBox(poseStack, vertexConsumer, (float) distance, 2F / 16F, color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, color.getAlpha() / 255F, 15728640);
             }
         }

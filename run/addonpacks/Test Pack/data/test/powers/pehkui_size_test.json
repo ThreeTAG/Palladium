@@ -1,0 +1,13 @@
+{
+  "name": "Flight Test",
+  "icon": {
+    "type": "palladium:item",
+    "item": "minecraft:feather"
+  },
+  "abilities": {
+    "flight": {
+      "ability": "palladium:size",
+      "scale": 0.5
+    }
+  }
+}

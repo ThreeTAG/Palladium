@@ -66,6 +66,10 @@ ability.palladium.invisibility</a>
 <a href="#palladium:energy_blast">
 ability.palladium.energy_blast</a>
 </li>
+<li>
+<a href="#palladium:size">
+ability.palladium.size</a>
+</li>
 </ul>
 </p>
 <hr>
@@ -168,7 +172,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:command","icon":"minecraft:command_block","title":null,"bar_color":"light_gray","hidden":false,"list_index":-1,"commands":["say Hello World"]}</pre>
+{"type":"palladium:command","icon":"minecraft:command_block","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"commands":["say Hello World"]}</pre>
 </div>
 <hr>
 
@@ -270,7 +274,7 @@ namespace:render_layer_id</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:render_layer","icon":"minecraft:blaze_rod","title":null,"bar_color":"light_gray","hidden":true,"list_index":-1,"render_layer":"namespace:render_layer_id"}</pre>
+{"type":"palladium:render_layer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"render_layer":"namespace:render_layer_id"}</pre>
 </div>
 <hr>
 
@@ -384,7 +388,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:interpolated_integer","icon":"minecraft:blaze_rod","title":null,"bar_color":"light_gray","hidden":true,"list_index":-1,"start_value":0,"max_value":20}</pre>
+{"type":"palladium:interpolated_integer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"start_value":0,"max_value":20}</pre>
 </div>
 <hr>
 
@@ -522,7 +526,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:attribute_modifier","icon":"minecraft:iron_chestplate","title":null,"bar_color":"light_gray","hidden":false,"list_index":-1,"attribute":8,"amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
+{"type":"palladium:attribute_modifier","icon":"minecraft:iron_chestplate","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"attribute":"minecraft:generic.armor","amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
 </div>
 <hr>
 
@@ -636,7 +640,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:healing","icon":"minecraft:apple","title":null,"bar_color":"light_gray","hidden":false,"list_index":-1,"frequency":3.0}</pre>
+{"type":"palladium:healing","icon":"minecraft:apple","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"frequency":3.0}</pre>
 </div>
 <hr>
 
@@ -726,7 +730,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:slowfall","icon":"minecraft:feather","title":null,"bar_color":"light_gray","hidden":false,"list_index":-1}</pre>
+{"type":"palladium:slowfall","icon":"minecraft:feather","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1}</pre>
 </div>
 <hr>
 
@@ -828,7 +832,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:damage_immunity","icon":"minecraft:potion","title":null,"bar_color":"light_gray","hidden":false,"list_index":-1,"damage_sources":["lightningBolt","cactus"]}</pre>
+{"type":"palladium:damage_immunity","icon":"minecraft:potion","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"damage_sources":["lightningBolt","cactus"]}</pre>
 </div>
 <hr>
 
@@ -918,7 +922,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:invisibility","icon":{"type":"palladium:texture","texture":"palladium:textures/icon/invisibility.png"},"title":null,"bar_color":"light_gray","hidden":false,"list_index":-1}</pre>
+{"type":"palladium:invisibility","icon":{"type":"palladium:texture","texture":"palladium:textures/icon/invisibility.png"},"title":"null","bar_color":"light_gray","hidden":false,"list_index":-1}</pre>
 </div>
 <hr>
 
@@ -1061,14 +1065,116 @@ The sound you want to have played. Can be null</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-palladium:entity.ability.heat_vision</td>
+/</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:energy_blast","icon":"minecraft:blaze_rod","title":null,"bar_color":"light_gray","hidden":false,"list_index":-1,"origin":"eyes","color":"#FF0000","damage":1.0,"max_distance":30.0,"sound_event":1203}</pre>
+{"type":"palladium:energy_blast","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"origin":"eyes","color":"#FF0000","damage":1.0,"max_distance":30.0,"sound_event":"null"}</pre>
+</div>
+<hr>
+
+<div id="palladium:size">
+<h2>
+ability.palladium.size</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+TexturedIcon{texture=palladium:textures/icon/size.png, tint=null}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+scale</td>
+<td>
+Float</td>
+<td>
+Determines the scale as a multiplier</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.1</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:size","icon":{"type":"palladium:texture","texture":"palladium:textures/icon/size.png"},"title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"scale":0.1}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {
