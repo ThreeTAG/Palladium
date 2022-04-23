@@ -121,6 +121,7 @@ public class AbilityConfiguration {
 
                 for (JsonElement jsonElement : unlocking) {
                     JsonObject c = jsonElement.getAsJsonObject();
+                    ConditionSerializer.CURRENT_CONTEXT = ConditionContextType.ABILITIES;
                     Condition condition = ConditionSerializer.fromJSON(c, ConditionContextType.ABILITIES);
 
                     if (condition.needsKey()) {
@@ -140,6 +141,7 @@ public class AbilityConfiguration {
 
                 for (JsonElement jsonElement : enabling) {
                     JsonObject c = jsonElement.getAsJsonObject();
+                    ConditionSerializer.CURRENT_CONTEXT = ConditionContextType.ABILITIES;
                     Condition condition = ConditionSerializer.fromJSON(c, ConditionContextType.ABILITIES);
 
                     if (condition.needsKey()) {

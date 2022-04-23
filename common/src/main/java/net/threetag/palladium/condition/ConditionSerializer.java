@@ -27,6 +27,7 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
     public static final Registrar<ConditionSerializer> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new ConditionSerializer[0]).build();
 
     final PropertyManager propertyManager = new PropertyManager();
+    public static ConditionContextType CURRENT_CONTEXT = ConditionContextType.ALL;
 
     public <T> ConditionSerializer withProperty(PalladiumProperty<T> data, T value) {
         this.propertyManager.register(data, value);

@@ -29,13 +29,19 @@ public abstract class IconSerializer<T extends IIcon> extends RegistryEntry<Icon
 
     public static IIcon parseJSON(JsonElement json) {
         if (json.isJsonPrimitive()) {
-            ResourceLocation id = new ResourceLocation(json.getAsString());
+            String input = json.getAsString();
 
-            if (!Registry.ITEM.containsKey(id)) {
-                throw new JsonParseException("Unknown item '" + json.getAsString() + "'");
+            if (input.endsWith(".png")) {
+                return new TexturedIcon(new ResourceLocation(input));
+            } else {
+                ResourceLocation id = new ResourceLocation(json.getAsString());
+
+                if (!Registry.ITEM.containsKey(id)) {
+                    throw new JsonParseException("Unknown item '" + json.getAsString() + "'");
+                }
+
+                return new ItemIcon(Registry.ITEM.get(id));
             }
-
-            return new ItemIcon(Registry.ITEM.get(id));
         } else if (json.isJsonObject()) {
             ResourceLocation id = new ResourceLocation(GsonHelper.getAsString(json.getAsJsonObject(), "type"));
 
@@ -54,6 +60,8 @@ public abstract class IconSerializer<T extends IIcon> extends RegistryEntry<Icon
     public static JsonElement serializeJSON(IIcon icon) {
         if (icon instanceof ItemIcon itemIcon && itemIcon.stack.getCount() == 1) {
             return new JsonPrimitive(Registry.ITEM.getKey(itemIcon.stack.getItem()).toString());
+        } else if (icon instanceof TexturedIcon texturedIcon && texturedIcon.tint == null) {
+            return new JsonPrimitive(texturedIcon.texture.toString());
         } else {
             IconSerializer serializer = icon.getSerializer();
             JsonObject json = serializer.toJSON(icon);

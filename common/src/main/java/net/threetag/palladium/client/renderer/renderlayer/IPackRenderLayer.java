@@ -24,6 +24,7 @@ public interface IPackRenderLayer {
         if (GsonHelper.isValidNode(json, "conditions")) {
             for (JsonElement jsonElement : GsonHelper.getAsJsonArray(json, "conditions")) {
                 JsonObject c = jsonElement.getAsJsonObject();
+                ConditionSerializer.CURRENT_CONTEXT = ConditionContextType.RENDER_LAYERS;
                 Condition condition = ConditionSerializer.fromJSON(c, ConditionContextType.RENDER_LAYERS);
                 layer.addCondition(condition);
             }
