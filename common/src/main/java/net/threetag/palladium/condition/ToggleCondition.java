@@ -5,22 +5,35 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.util.property.PropertyManager;
 
-public class ToggleCondition extends Condition {
+public class ToggleCondition extends KeyCondition {
 
-    @Override
-    public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
-        return entry.keyPressed;
+    public ToggleCondition(int cooldown) {
+        super(cooldown);
     }
 
     @Override
-    public boolean needsKey() {
-        return true;
+    public void init(LivingEntity entity, AbilityEntry entry, PropertyManager manager) {
+        entry.startCooldown(entity, this.cooldown);
+    }
+
+    @Override
+    public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
+        if (this.cooldown != 0 && entry.cooldown == 0) {
+            entry.keyPressed = false;
+        }
+        return entry.keyPressed;
     }
 
     @Override
     public void onKeyPressed(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
         entry.keyPressed = !entry.keyPressed;
+    }
+
+    @Override
+    public CooldownType getCooldownType() {
+        return CooldownType.DYNAMIC;
     }
 
     @Override
@@ -30,9 +43,13 @@ public class ToggleCondition extends Condition {
 
     public static class Serializer extends ConditionSerializer {
 
+        public Serializer() {
+            this.withProperty(HeldCondition.Serializer.COOLDOWN, 0);
+        }
+
         @Override
         public Condition make(JsonObject json) {
-            return new ToggleCondition();
+            return new ToggleCondition(this.getProperty(json, HeldCondition.Serializer.COOLDOWN));
         }
 
         @Override

@@ -11,29 +11,27 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class ActivationCondition extends Condition {
+public class ActivationCondition extends KeyCondition {
 
     public final int ticks;
 
-    public ActivationCondition(int ticks) {
+    public ActivationCondition(int ticks, int cooldown) {
+        super(cooldown);
         this.ticks = ticks;
     }
 
     @Override
     public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
-        return Objects.requireNonNull(entry).cooldown > 0;
-    }
-
-    @Override
-    public boolean needsKey() {
-        return true;
+        if (this.cooldown != 0 && Objects.requireNonNull(entry).activationTimer == 1) {
+            entry.startCooldown(entity, this.cooldown);
+        }
+        return Objects.requireNonNull(entry).activationTimer > 0;
     }
 
     @Override
     public void onKeyPressed(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
-        if (entry.cooldown <= 0) {
-            entry.maxCooldown = entry.cooldown = this.ticks;
-            entry.syncState(entity);
+        if (entry.cooldown <= 0 && entry.activationTimer == 0) {
+            entry.startActivationTimer(entity, this.ticks);
         }
     }
 
@@ -47,12 +45,13 @@ public class ActivationCondition extends Condition {
         public static final PalladiumProperty<Integer> TICKS = new IntegerProperty("ticks").configurable("The amount of ticks the ability will be active for");
 
         public Serializer() {
+            this.withProperty(ActionCondition.Serializer.COOLDOWN, 0);
             this.withProperty(TICKS, 60);
         }
 
         @Override
         public Condition make(JsonObject json) {
-            return new ActivationCondition(this.getProperty(json, TICKS));
+            return new ActivationCondition(this.getProperty(json, ActionCondition.Serializer.COOLDOWN), this.getProperty(json, TICKS));
         }
 
         @Override

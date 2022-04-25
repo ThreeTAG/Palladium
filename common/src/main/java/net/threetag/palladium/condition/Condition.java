@@ -18,7 +18,15 @@ public abstract class Condition {
         return false;
     }
 
-    public void registerProperties(PropertyManager manager) {
+    public boolean handlesCooldown() {
+        return false;
+    }
+
+    public CooldownType getCooldownType() {
+        return CooldownType.STATIC;
+    }
+
+    public void init(LivingEntity entity, AbilityEntry entry, PropertyManager manager) {
 
     }
 

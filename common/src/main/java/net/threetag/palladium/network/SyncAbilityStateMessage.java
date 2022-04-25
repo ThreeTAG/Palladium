@@ -21,8 +21,9 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
     private final String abilityKey;
     private final boolean unlocked, enabled;
     private final int maxCooldown, cooldown;
+    private final int maxActivationTimer, activationTimer;
 
-    public SyncAbilityStateMessage(int entityId, ResourceLocation power, String abilityKey, boolean unlocked, boolean enabled, int maxCooldown, int cooldown) {
+    public SyncAbilityStateMessage(int entityId, ResourceLocation power, String abilityKey, boolean unlocked, boolean enabled, int maxCooldown, int cooldown, int maxActivationTimer, int activationTimer) {
         this.entityId = entityId;
         this.power = power;
         this.abilityKey = abilityKey;
@@ -30,6 +31,8 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
         this.enabled = enabled;
         this.maxCooldown = maxCooldown;
         this.cooldown = cooldown;
+        this.maxActivationTimer = maxActivationTimer;
+        this.activationTimer = activationTimer;
     }
 
     public SyncAbilityStateMessage(FriendlyByteBuf buf) {
@@ -40,6 +43,8 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
         this.enabled = buf.readBoolean();
         this.maxCooldown = buf.readInt();
         this.cooldown = buf.readInt();
+        this.maxActivationTimer = buf.readInt();
+        this.activationTimer = buf.readInt();
     }
 
     @Override
@@ -56,6 +61,8 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
         buf.writeBoolean(this.enabled);
         buf.writeInt(this.maxCooldown);
         buf.writeInt(this.cooldown);
+        buf.writeInt(this.maxActivationTimer);
+        buf.writeInt(this.activationTimer);
     }
 
     @Override
@@ -70,7 +77,7 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
                     AbilityEntry entry = powerHolder.getAbilities().get(this.abilityKey);
 
                     if (entry != null) {
-                        entry.setClientState(livingEntity, powerHolder, this.unlocked, this.enabled, this.maxCooldown, this.cooldown);
+                        entry.setClientState(livingEntity, powerHolder, this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer);
                     }
                 }
             }

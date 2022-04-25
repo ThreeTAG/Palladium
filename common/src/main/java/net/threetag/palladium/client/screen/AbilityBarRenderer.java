@@ -143,16 +143,17 @@ public class AbilityBarRenderer implements IIngameOverlay {
                 AbilityEntry entry = list.getAbilities()[i];
 
                 if (entry != null) {
-                    if (entry.isEnabled()) {
-                        if(entry.cooldown == 0) {
-                            minecraft.gui.blit(poseStack, 3, i * 22 + 3, 42, 56, 18, 18);
-                        } else {
-                            int height = (int) (((float) entry.cooldown / (float) entry.maxCooldown) * 18);
-                            minecraft.gui.blit(poseStack, 3, i * 22 + 3, 24, 56, 18, 18);
-                            minecraft.gui.blit(poseStack, 3, i * 22 + 3 + (18 - height), 42, 74 - height, 18, height);
-                        }
+                    if (entry.isEnabled() && entry.activationTimer != 0 && entry.maxActivationTimer != 0) {
+                        int height = (int) ((float) entry.activationTimer / (float) entry.maxActivationTimer * 18);
+                        minecraft.gui.blit(poseStack, 3, i * 22 + 3, 24, 56, 18, 18);
+                        minecraft.gui.blit(poseStack, 3, i * 22 + 3 + (18 - height), 42, 74 - height, 18, height);
                     } else {
-                        minecraft.gui.blit(poseStack, 3, i * 22 + 3, 24, entry.isUnlocked() ? 56 : 74, 18, 18);
+                        minecraft.gui.blit(poseStack, 3, i * 22 + 3, entry.isEnabled() ? 42 : 24, entry.isUnlocked() ? 56 : 74, 18, 18);
+                    }
+
+                    if (entry.cooldown > 0) {
+                        int width = (int) ((float) entry.cooldown / (float) entry.maxCooldown * 18);
+                        minecraft.gui.blit(poseStack, 3, i * 22 + 3, 60, 74, width, 18);
                     }
 
                     if (!entry.isUnlocked()) {
@@ -212,7 +213,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
                     Component key = PalladiumKeyMappings.ABILITY_KEYS[i].getTranslatedKeyMessage();
                     poseStack.pushPose();
                     poseStack.translate(0, 0, minecraft.getItemRenderer().blitOffset + 200);
-                    GuiComponent.drawString(poseStack, minecraft.font, key, 5 + 19 - 2 - minecraft.font.width(key), 5 + i * 22 + 6 + 3, 0xffffff);
+                    GuiComponent.drawString(poseStack, minecraft.font, key, 5 + 19 - 2 - minecraft.font.width(key), 5 + i * 22 + 7, 0xffffff);
                     poseStack.popPose();
                 }
             }
