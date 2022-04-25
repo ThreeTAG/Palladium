@@ -31,8 +31,20 @@ Overview</h2>
 Palladium</h3>
 <ul>
 <li>
-<a href="#palladium:toggle">
-palladium:toggle</a>
+<a href="#palladium:health">
+palladium:health</a>
+</li>
+<li>
+<a href="#palladium:not">
+palladium:not</a>
+</li>
+<li>
+<a href="#palladium:held">
+palladium:held</a>
+</li>
+<li>
+<a href="#palladium:activation">
+palladium:activation</a>
 </li>
 <li>
 <a href="#palladium:ability_unlocked">
@@ -43,40 +55,128 @@ palladium:ability_unlocked</a>
 palladium:or</a>
 </li>
 <li>
-<a href="#palladium:not">
-palladium:not</a>
+<a href="#palladium:toggle">
+palladium:toggle</a>
 </li>
 <li>
-<a href="#palladium:health">
-palladium:health</a>
-</li>
-<li>
-<a href="#palladium:held">
-palladium:held</a>
-</li>
-<li>
-<a href="#palladium:ability_enabled">
-palladium:ability_enabled</a>
-</li>
-<li>
-<a href="#palladium:activation">
-palladium:activation</a>
+<a href="#palladium:objective_score">
+palladium:objective_score</a>
 </li>
 <li>
 <a href="#palladium:action">
 palladium:action</a>
 </li>
 <li>
-<a href="#palladium:objective_score">
-palladium:objective_score</a>
+<a href="#palladium:ability_enabled">
+palladium:ability_enabled</a>
 </li>
 </ul>
 </p>
 <hr>
 
-<div id="palladium:toggle">
+<div id="palladium:health">
 <h2>
-palladium:toggle</h2>
+palladium:health</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+min_health</td>
+<td>
+Float</td>
+<td>
+Minimum required amount of health</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.0</td>
+</tr>
+<tr>
+<td>
+max_health</td>
+<td>
+Float</td>
+<td>
+Maximum required amount of health</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+3.4028235E38</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:health","min_health":0.0,"max_health":3.4028235E38}</pre>
+</div>
+<hr>
+
+<div id="palladium:not">
+<h2>
+palladium:not</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+conditions</td>
+<td>
+Condition[]</td>
+<td>
+Array of conditions that must be disabled</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0 conditions</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:not","conditions":[]}</pre>
+</div>
+<hr>
+
+<div id="palladium:held">
+<h2>
+palladium:held</h2>
 <p>
 Applicable for: abilities</p>
 <h3>
@@ -114,7 +214,63 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:toggle","cooldown":0}</pre>
+{"type":"palladium:held","cooldown":0}</pre>
+</div>
+<hr>
+
+<div id="palladium:activation">
+<h2>
+palladium:activation</h2>
+<p>
+Applicable for: abilities</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+cooldown</td>
+<td>
+Integer</td>
+<td>
+Amount of ticks the ability wont be useable for after using it</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+ticks</td>
+<td>
+Integer</td>
+<td>
+The amount of ticks the ability will be active for</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+60</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:activation","cooldown":0,"ticks":60}</pre>
 </div>
 <hr>
 
@@ -218,109 +374,9 @@ Example:</h3>
 </div>
 <hr>
 
-<div id="palladium:not">
+<div id="palladium:toggle">
 <h2>
-palladium:not</h2>
-<p>
-Applicable for: all</p>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-conditions</td>
-<td>
-Condition[]</td>
-<td>
-Array of conditions that must be disabled</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0 conditions</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:not","conditions":[]}</pre>
-</div>
-<hr>
-
-<div id="palladium:health">
-<h2>
-palladium:health</h2>
-<p>
-Applicable for: all</p>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-min_health</td>
-<td>
-Float</td>
-<td>
-Minimum required amount of health</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0.0</td>
-</tr>
-<tr>
-<td>
-max_health</td>
-<td>
-Float</td>
-<td>
-Maximum required amount of health</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-3.4028235E38</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:health","min_health":0.0,"max_health":3.4028235E38}</pre>
-</div>
-<hr>
-
-<div id="palladium:held">
-<h2>
-palladium:held</h2>
+palladium:toggle</h2>
 <p>
 Applicable for: abilities</p>
 <h3>
@@ -358,163 +414,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:held","cooldown":0}</pre>
-</div>
-<hr>
-
-<div id="palladium:ability_enabled">
-<h2>
-palladium:ability_enabled</h2>
-<p>
-Applicable for: all</p>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-power</td>
-<td>
-ResourceLocation</td>
-<td>
-ID of the power where is the desired ability is located. Can be null IF used for abilities, then it will look into the current power</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-example:power_id</td>
-</tr>
-<tr>
-<td>
-ability</td>
-<td>
-String</td>
-<td>
-ID of the desired ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-ability_id</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:ability_enabled","power":"example:power_id","ability":"ability_id"}</pre>
-</div>
-<hr>
-
-<div id="palladium:activation">
-<h2>
-palladium:activation</h2>
-<p>
-Applicable for: abilities</p>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-cooldown</td>
-<td>
-Integer</td>
-<td>
-Amount of ticks the ability wont be useable for after using it</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0</td>
-</tr>
-<tr>
-<td>
-ticks</td>
-<td>
-Integer</td>
-<td>
-The amount of ticks the ability will be active for</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-60</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:activation","cooldown":0,"ticks":60}</pre>
-</div>
-<hr>
-
-<div id="palladium:action">
-<h2>
-palladium:action</h2>
-<p>
-Applicable for: abilities</p>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-cooldown</td>
-<td>
-Integer</td>
-<td>
-Amount of ticks the ability wont be useable for after using it</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:action","cooldown":0}</pre>
+{"type":"palladium:toggle","cooldown":0}</pre>
 </div>
 <hr>
 
@@ -583,6 +483,106 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:objective_score","objective":"objective_name","min_score":-2147483648,"max_score":2147483647}</pre>
+</div>
+<hr>
+
+<div id="palladium:action">
+<h2>
+palladium:action</h2>
+<p>
+Applicable for: abilities</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+cooldown</td>
+<td>
+Integer</td>
+<td>
+Amount of ticks the ability wont be useable for after using it</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:action","cooldown":0}</pre>
+</div>
+<hr>
+
+<div id="palladium:ability_enabled">
+<h2>
+palladium:ability_enabled</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+power</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the power where is the desired ability is located. Can be null IF used for abilities, then it will look into the current power</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+example:power_id</td>
+</tr>
+<tr>
+<td>
+ability</td>
+<td>
+String</td>
+<td>
+ID of the desired ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ability_id</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_enabled","power":"example:power_id","ability":"ability_id"}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

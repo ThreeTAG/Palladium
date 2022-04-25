@@ -24,7 +24,7 @@ public class PalladiumKeyMappings {
         }
 
         ClientRawInputEvent.KEY_PRESSED.register((client, keyCode, scanCode, action, modifiers) -> {
-            if(client.player != null) {
+            if(client.player != null && client.screen == null) {
                 if (SWITCH_ABILITY_LIST.isDown()) {
                     AbilityBarRenderer.scroll(true);
                 }
