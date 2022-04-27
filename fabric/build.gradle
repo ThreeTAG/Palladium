@@ -64,7 +64,7 @@ dependencies {
     modImplementation("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}")
 
     // Pehkui
-    modApi("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {
+    modImplementation("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {
         exclude group: "net.fabricmc.fabric-api"
     })
 

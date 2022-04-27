@@ -60,7 +60,7 @@ dependencies {
     modImplementation("dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}")
 
     // Pehkui
-    modApi("com.github.Virtuoel:Pehkui:${rootProject.pehkui_forge_version}")
+    modImplementation("com.github.Virtuoel:Pehkui:${rootProject.pehkui_forge_version}")
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
