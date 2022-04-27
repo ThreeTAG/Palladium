@@ -22,10 +22,13 @@
     },
     "command": {
       "ability": "palladium:command",
+      "first_tick_commands": "say Hello World",
+      "last_tick_commands": "say Bye World",
+      "commands": "say lol",
       "conditions": {
         "enabling": [
           {
-            "type": "palladium:action"
+            "type": "palladium:toggle"
           }
         ]
       }
