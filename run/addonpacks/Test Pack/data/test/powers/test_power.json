@@ -49,6 +49,17 @@
     "render_layer": {
       "ability": "palladium:render_layer",
       "render_layer": "test:basic_layer"
+    },
+    "projectile": {
+      "ability": "palladium:projectile",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 60
+          }
+        ]
+      }
     }
   }
 }
