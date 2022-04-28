@@ -6,7 +6,7 @@
   },
   "abilities": {
     "size": {
-      "ability": "palladium:size",
+      "type": "palladium:size",
       "scale": 0.5,
       "bar_color": "light_blue",
       "conditions": {

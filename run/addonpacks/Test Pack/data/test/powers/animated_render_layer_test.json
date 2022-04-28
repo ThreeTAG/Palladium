@@ -8,7 +8,7 @@
   },
   "abilities": {
     "render_layer": {
-      "ability": "palladium:render_layer",
+      "type": "palladium:render_layer",
       "render_layer": "test:cycling_texture_test"
     }
   }

@@ -3,7 +3,7 @@
   "icon": "palladium:redstone_flux_crystal",
   "abilities": {
     "heat_vision": {
-      "ability": "palladium:energy_blast",
+      "type": "palladium:energy_blast",
       "title": "Heat Vision",
       "origin": "eyes",
       "conditions": {
@@ -15,7 +15,7 @@
       }
     },
     "forehead_beam": {
-      "ability": "palladium:energy_blast",
+      "type": "palladium:energy_blast",
       "title": "Forehead Beam",
       "origin": "forehead",
       "color": "#ffe100",
@@ -28,7 +28,7 @@
       }
     },
     "chest_beam": {
-      "ability": "palladium:energy_blast",
+      "type": "palladium:energy_blast",
       "title": "Chest Beam",
       "origin": "chest",
       "color": "#34cfeb",

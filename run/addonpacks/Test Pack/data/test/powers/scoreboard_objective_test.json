@@ -3,7 +3,7 @@
   "icon": "minecraft:command_block",
   "abilities": {
     "command": {
-      "ability": "palladium:command",
+      "type": "palladium:command",
       "conditions": {
         "enabling": [
           {

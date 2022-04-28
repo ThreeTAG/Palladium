@@ -3,11 +3,11 @@
   "icon": "minecraft:iron_ingot",
   "abilities": {
     "render_layer": {
-      "ability": "palladium:render_layer",
+      "type": "palladium:render_layer",
       "render_layer": "test:interpolate_test"
     },
     "interpolate": {
-      "ability": "palladium:interpolated_integer",
+      "type": "palladium:interpolated_integer",
       "max_value": 16,
       "hidden": false,
       "icon": "minecraft:iron_ingot",
@@ -20,7 +20,7 @@
       }
     },
     "flight": {
-      "ability": "palladium:attribute_modifier",
+      "type": "palladium:attribute_modifier",
       "attribute": "palladium:jetpack_flight_speed",
       "value": 0.075,
       "conditions": {
@@ -33,7 +33,7 @@
       }
     },
     "hovering": {
-      "ability": "palladium:attribute_modifier",
+      "type": "palladium:attribute_modifier",
       "attribute": "palladium:hovering",
       "value": 1,
       "conditions": {

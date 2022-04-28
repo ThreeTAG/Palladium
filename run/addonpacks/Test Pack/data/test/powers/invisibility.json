@@ -7,7 +7,7 @@
   "background": "minecraft:textures/block/amethyst_block.png",
   "abilities": {
     "invisibility": {
-      "ability": "palladium:invisibility",
+      "type": "palladium:invisibility",
       "conditions": {
         "enabling": [
           {

@@ -3,7 +3,7 @@
   "icon": "minecraft:ice",
   "abilities": {
     "action": {
-      "ability": "palladium:command",
+      "type": "palladium:command",
       "title": "Action",
       "conditions": {
         "enabling": [
@@ -15,7 +15,7 @@
       }
     },
     "activation": {
-      "ability": "palladium:size",
+      "type": "palladium:size",
       "title": "Activation",
       "scale": 1.2,
       "conditions": {
@@ -29,7 +29,7 @@
       }
     },
     "toggle": {
-      "ability": "palladium:size",
+      "type": "palladium:size",
       "title": "Toggle",
       "scale": 1.2,
       "conditions": {
@@ -42,7 +42,7 @@
       }
     },
     "held": {
-      "ability": "palladium:size",
+      "type": "palladium:size",
       "title": "Held",
       "scale": 1.2,
       "conditions": {

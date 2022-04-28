@@ -6,12 +6,12 @@
   },
   "abilities": {
     "flight": {
-      "ability": "palladium:attribute_modifier",
+      "type": "palladium:attribute_modifier",
       "attribute": "palladium:jetpack_flight_speed",
       "value": 0.075
     },
     "hovering": {
-      "ability": "palladium:attribute_modifier",
+      "type": "palladium:attribute_modifier",
       "attribute": "palladium:hovering",
       "value": 1,
       "conditions": {
