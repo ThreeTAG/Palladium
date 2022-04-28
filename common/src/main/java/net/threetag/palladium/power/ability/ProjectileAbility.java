@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -16,6 +17,8 @@ import net.threetag.palladium.util.PlayerUtil;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.property.*;
 
+import java.util.Random;
+
 public class ProjectileAbility extends Ability {
 
     public static final PalladiumProperty<EntityType<?>> ENTITY_TYPE = new EntityTypeProperty("entity_type").configurable("Entity type ID for the projectile entity");
@@ -23,6 +26,7 @@ public class ProjectileAbility extends Ability {
     public static final PalladiumProperty<Float> INACCURACY = new FloatProperty("inaccuracy").configurable("Determines the inaccuracy when shooting the projectile");
     public static final PalladiumProperty<Float> VELOCITY = new FloatProperty("velocity").configurable("Determines the velocity when shooting the projectile");
     public static final PalladiumProperty<SoundEvent> THROW_SOUND = new SoundEventProperty("throw_sound_event").configurable("Sound event that plays when shooting the projectile (nullable)");
+    public static final PalladiumProperty<Boolean> SWING_ARM = new BooleanProperty("swing_arm").configurable("Whether or not an arm swing when shooting the projectile");
 
     public ProjectileAbility() {
         this.withProperty(ICON, new ItemIcon(Items.SNOWBALL));
@@ -31,6 +35,7 @@ public class ProjectileAbility extends Ability {
         this.withProperty(INACCURACY, 0F);
         this.withProperty(VELOCITY, 1.5F);
         this.withProperty(THROW_SOUND, SoundEvents.SNOWBALL_THROW);
+        this.withProperty(SWING_ARM, true);
     }
 
     @Override
@@ -59,6 +64,10 @@ public class ProjectileAbility extends Ability {
 
                 if (entry.getProperty(THROW_SOUND) != null) {
                     PlayerUtil.playSoundToAll(entity.level, entity.getX(), entity.getY() + entity.getBbHeight() / 2D, entity.getZ(), 50, entry.getProperty(THROW_SOUND), entity.getSoundSource());
+                }
+
+                if(entry.getProperty(SWING_ARM)) {
+                    entity.swing(new Random().nextBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND, true);
                 }
 
                 return !world.addWithUUID(projectile) ? null : projectile;
