@@ -38,7 +38,7 @@ public class ObjectiveScoreCondition extends Condition {
 
     @Override
     public ConditionSerializer getSerializer() {
-        return ConditionSerializers.HEALTH.get();
+        return ConditionSerializers.OBJECTIVE_SCORE.get();
     }
 
     public static class Serializer extends ConditionSerializer {

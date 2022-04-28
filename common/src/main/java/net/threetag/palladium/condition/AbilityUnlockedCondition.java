@@ -46,7 +46,7 @@ public class AbilityUnlockedCondition extends Condition {
     public static class Serializer extends ConditionSerializer {
 
         public Serializer() {
-            this.withProperty(AbilityEnabledCondition.Serializer.POWER, new ResourceLocation("example:power_id"));
+            this.withProperty(AbilityEnabledCondition.Serializer.POWER, null);
             this.withProperty(AbilityEnabledCondition.Serializer.ABILITY, "ability_id");
         }
 

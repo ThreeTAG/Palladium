@@ -45,7 +45,7 @@ public class AbilityEnabledCondition extends Condition {
         public static final PalladiumProperty<String> ABILITY = new StringProperty("ability").configurable("ID of the desired ability");
 
         public Serializer() {
-            this.withProperty(POWER, new ResourceLocation("example:power_id"));
+            this.withProperty(POWER, null);
             this.withProperty(ABILITY, "ability_id");
         }
 
