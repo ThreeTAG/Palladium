@@ -112,10 +112,9 @@ public class AbilityConfiguration {
     }
 
     public static AbilityConfiguration fromJSON(String id, JsonObject json) {
-        Ability ability = Ability.REGISTRY.get(new ResourceLocation(GsonHelper.getAsString(json, "type")));
+        Ability ability = Ability.REGISTRY.get(new ResourceLocation(GsonHelper.getAsString(json, "type", "placeholder")));
 
         if (ability == null) {
-
             if (GsonHelper.isValidNode(json, "ability")) {
                 ability = Ability.REGISTRY.get(new ResourceLocation(GsonHelper.getAsString(json, "ability")));
                 Palladium.LOGGER.warn("Usage of 'ability' in ability declarations is deprecated!");
