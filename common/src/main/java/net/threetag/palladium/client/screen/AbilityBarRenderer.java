@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
@@ -263,10 +264,15 @@ public class AbilityBarRenderer implements IIngameOverlay {
 
     public static List<AbilityList> getAbilityLists() {
         List<AbilityList> lists = new ArrayList<>();
+        IPowerHandler handler = PowerManager.getPowerHandler(Minecraft.getInstance().player).orElse(null);
+
+        if (handler == null) {
+            return lists;
+        }
 
         // TODO skins
 
-        for (IPowerHolder holder : PowerManager.getPowerHandler(Minecraft.getInstance().player).getPowerHolders().values()) {
+        for (IPowerHolder holder : handler.getPowerHolders().values()) {
             List<AbilityList> containerList = new ArrayList<>();
             List<AbilityList> remainingLists = new ArrayList<>();
             List<AbilityEntry> remaining = new ArrayList<>();

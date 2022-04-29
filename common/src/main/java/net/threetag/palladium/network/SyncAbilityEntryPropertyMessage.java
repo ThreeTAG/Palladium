@@ -9,6 +9,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
@@ -59,10 +60,11 @@ public class SyncAbilityEntryPropertyMessage extends BaseS2CMessage {
         context.queue(() -> {
             Entity entity = Minecraft.getInstance().level.getEntity(this.entityId);
             if (entity instanceof LivingEntity livingEntity) {
+                IPowerHandler handler = PowerManager.getPowerHandler(livingEntity).orElse(null);
                 Power power = PowerManager.getInstance(Minecraft.getInstance().level).getPower(this.powerId);
 
-                if (power != null) {
-                    IPowerHolder holder = PowerManager.getPowerHandler(livingEntity).getPowerHolder(power);
+                if (power != null && handler != null) {
+                    IPowerHolder holder = handler.getPowerHolder(power);
 
                     if (holder != null) {
                         AbilityEntry entry = holder.getAbilities().get(this.abilityId);

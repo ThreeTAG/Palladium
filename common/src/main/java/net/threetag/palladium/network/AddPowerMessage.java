@@ -39,7 +39,7 @@ public class AddPowerMessage extends BaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
             if (Minecraft.getInstance().level.getEntity(this.entityId) instanceof LivingEntity livingEntity) {
-                PowerManager.getPowerHandler(livingEntity).addPower(PowerManager.getInstance(Minecraft.getInstance().level).getPower(this.powerId));
+                PowerManager.getPowerHandler(livingEntity).ifPresent(handler -> handler.addPower(PowerManager.getInstance(Minecraft.getInstance().level).getPower(this.powerId)));
             }
         });
     }

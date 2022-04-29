@@ -14,6 +14,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDefaultDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
@@ -75,19 +76,19 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
 
     public static Collection<AbilityEntry> getEntries(LivingEntity entity) {
         List<AbilityEntry> entries = new ArrayList<>();
-        PowerManager.getPowerHandler(entity).getPowerHolders().values().stream().map(holder -> holder.getAbilities().values()).forEach(entries::addAll);
+        PowerManager.getPowerHandler(entity).ifPresent(handler -> handler.getPowerHolders().values().stream().map(holder -> holder.getAbilities().values()).forEach(entries::addAll));
         return entries;
     }
 
     public static Collection<AbilityEntry> getEntries(LivingEntity entity, Ability ability) {
         List<AbilityEntry> entries = new ArrayList<>();
-        PowerManager.getPowerHandler(entity).getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll);
+        PowerManager.getPowerHandler(entity).ifPresent(handler -> handler.getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll));
         return entries;
     }
 
     public static Collection<AbilityEntry> getEnabledEntries(LivingEntity entity, Ability ability) {
         List<AbilityEntry> entries = new ArrayList<>();
-        PowerManager.getPowerHandler(entity).getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.isEnabled() && entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll);
+        PowerManager.getPowerHandler(entity).ifPresent(handler -> handler.getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.isEnabled() && entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll));
         return entries;
     }
 
@@ -98,7 +99,13 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
             return null;
         }
 
-        IPowerHolder holder = PowerManager.getPowerHandler(entity).getPowerHolder(power);
+        IPowerHandler handler = PowerManager.getPowerHandler(entity).orElse(null);
+
+        if (handler == null) {
+            return null;
+        }
+
+        IPowerHolder holder = handler.getPowerHolder(power);
 
         if (holder == null) {
             return null;

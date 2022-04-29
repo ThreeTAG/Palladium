@@ -71,15 +71,17 @@ public class SyncAbilityStateMessage extends BaseS2CMessage {
             Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityId);
 
             if (entity instanceof LivingEntity livingEntity) {
-                IPowerHolder powerHolder = PowerManager.getPowerHandler(livingEntity).getPowerHolder(PowerManager.getInstance(entity.level).getPower(this.power));
+                PowerManager.getPowerHandler(livingEntity).ifPresent(handler -> {
+                    IPowerHolder powerHolder = handler.getPowerHolder(PowerManager.getInstance(entity.level).getPower(this.power));
 
-                if (powerHolder != null) {
-                    AbilityEntry entry = powerHolder.getAbilities().get(this.abilityKey);
+                    if (powerHolder != null) {
+                        AbilityEntry entry = powerHolder.getAbilities().get(this.abilityKey);
 
-                    if (entry != null) {
-                        entry.setClientState(livingEntity, powerHolder, this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer);
+                        if (entry != null) {
+                            entry.setClientState(livingEntity, powerHolder, this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer);
+                        }
                     }
-                }
+                });
             }
         });
     }

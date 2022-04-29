@@ -7,7 +7,9 @@ import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.util.property.*;
+import net.threetag.palladium.util.property.IntegerProperty;
+import net.threetag.palladium.util.property.PalladiumProperty;
+import net.threetag.palladium.util.property.StringProperty;
 import org.jetbrains.annotations.Nullable;
 
 public class AbilityIntegerPropertyCondition extends Condition {

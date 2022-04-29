@@ -5,6 +5,7 @@ import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityEntry;
@@ -42,7 +43,13 @@ public class AbilityKeyPressedMessage extends BaseC2SMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
-            IPowerHolder holder = PowerManager.getPowerHandler(context.getPlayer()).getPowerHolder(PowerManager.getInstance(context.getPlayer().level).getPower(this.power));
+            IPowerHandler handler = PowerManager.getPowerHandler(context.getPlayer()).orElse(null);
+
+            if(handler == null) {
+                return;
+            }
+
+            IPowerHolder holder = handler.getPowerHolder(PowerManager.getInstance(context.getPlayer().level).getPower(this.power));
 
             if (holder != null) {
                 AbilityEntry entry = holder.getAbilities().get(this.abilityKey);
