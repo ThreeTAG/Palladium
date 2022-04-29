@@ -1,11 +1,14 @@
 {
   "pack": {
+    "id": "test_pack",
     "description": "Palladium Test Pack",
-    "pack_format": 6
+    "pack_format": 8,
+    "version": "1.0.0"
   },
   "dependencies": {
     "common": {
-      "palladium": ">=4.0.0"
+      "minecraft": ">=1.18",
+      "palladium": ">=4.0.0-Pre3"
     },
     "fabric": {
       "trinkets": ">=3.3.0"

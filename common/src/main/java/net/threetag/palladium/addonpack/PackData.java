@@ -5,33 +5,25 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import dev.architectury.platform.Mod;
 import dev.architectury.platform.Platform;
-import net.fabricmc.loader.api.Version;
-import net.fabricmc.loader.api.VersionParsingException;
-import net.fabricmc.loader.api.metadata.version.VersionInterval;
-import net.fabricmc.loader.api.metadata.version.VersionPredicate;
-import net.fabricmc.loader.impl.util.version.VersionParser;
 import net.minecraft.util.GsonHelper;
+import net.threetag.palladium.addonpack.version.*;
 
 import java.util.*;
 
-public class PackData {
+public record PackData(String id, Version version, Map<String, List<Dependency>> dependencies) {
 
-    private final String id;
-    private final Version version;
-    private final Map<String, List<Dependency>> dependencies;
+    public List<Dependency> getDependenciesFor(String platform) {
+        List<Dependency> dependencies = new ArrayList<>();
 
-    public PackData(String id, Version version, Map<String, List<Dependency>> dependencies) {
-        this.id = id;
-        this.version = version;
-        this.dependencies = dependencies;
-    }
+        if (this.dependencies.containsKey("common")) {
+            dependencies.addAll(this.dependencies.get("common"));
+        }
 
-    public String getId() {
-        return id;
-    }
+        if (this.dependencies.containsKey(platform)) {
+            dependencies.addAll(this.dependencies.get(platform));
+        }
 
-    public Version getVersion() {
-        return version;
+        return dependencies;
     }
 
     public static PackData fromJSON(JsonObject json) throws VersionParsingException, JsonParseException {
@@ -114,7 +106,7 @@ public class PackData {
                     return false;
                 }
 
-                return this.matches(packData.getVersion());
+                return this.matches(packData.version());
             } else {
                 Optional<Mod> mod = Platform.getOptionalMod(this.id);
 
