@@ -3,8 +3,11 @@
   "ability.palladium.command": "Befehl",
   "ability.palladium.damage_immunity": "Schadensimmunit\u00E4t",
   "ability.palladium.healing": "Heilung",
+  "ability.palladium.interpolated_integer": "Interpolierte Zahl",
   "ability.palladium.invisibility": "Unsichtbarkeit",
+  "ability.palladium.projectile": "Projektil",
   "ability.palladium.render_layer": "Render Layer",
+  "ability.palladium.size": "Gr\u00F6\u00DFe",
   "ability.palladium.slowfall": "Langsamer Fall",
   "block.palladium.deepslate_lead_ore": "Tiefenschiefer-Bleierz",
   "block.palladium.deepslate_redstone_flux_crystal_geode": "Tiefenschiefer-Redstone-Flux-Kristallgeode",
@@ -57,5 +60,6 @@
   "key.palladium.ability_4": "F\u00E4higkeit 4",
   "key.palladium.ability_5": "F\u00E4higkeit 5",
   "key.palladium.categories.abilities": "F\u00E4higkeiten",
-  "key.palladium.switch_ability_list": "F\u00E4higkeitenliste wechseln"
+  "key.palladium.switch_ability_list": "F\u00E4higkeitenliste wechseln",
+  "subtitles.palladium.entity.ability.heat_vision": "Hitzeblick"
 }

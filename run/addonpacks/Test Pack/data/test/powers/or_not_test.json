@@ -9,7 +9,7 @@
   "background": "minecraft:textures/block/blue_concrete.png",
   "abilities": {
     "command": {
-      "ability": "palladium:command",
+      "type": "palladium:command",
       "commands": "tell @s Or Works!",
       "conditions": {
         "enabling": [

@@ -1,5 +1,6 @@
 package net.threetag.palladium.documentation;
 
+import com.google.gson.JsonPrimitive;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 
@@ -16,7 +17,7 @@ public interface IDefaultDocumentedConfigurable extends IDocumentedConfigurable 
             builder.addProperty(property.getKey(), property.typeToken.getRawType())
                     .description(property.getDescription())
                     .fallbackObject(property.getString(val))
-                    .exampleJson(property.toJSON(val));
+                    .exampleJson(val != null ? property.toJSON(val) : new JsonPrimitive("null"));
         });
     }
 }

@@ -1,0 +1,26 @@
+{
+  "name": "Flight Test",
+  "icon": {
+    "type": "palladium:item",
+    "item": "minecraft:feather"
+  },
+  "abilities": {
+    "flight": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:jetpack_flight_speed",
+      "value": 0.075
+    },
+    "hovering": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:hovering",
+      "value": 1,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle"
+          }
+        ]
+      }
+    }
+  }
+}

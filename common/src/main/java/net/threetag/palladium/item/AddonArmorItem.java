@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
@@ -24,7 +25,9 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.client.ArmorModelManager;
+import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +40,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
 
     private List<Component> tooltipLines;
     private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
-    private ResourceLocation armorTexture;
+    private SkinTypedValue<ResourceLocation> armorTexture;
 
     public AddonArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
         super(armorMaterial, equipmentSlot, properties);
@@ -51,7 +54,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
 
     @Override
     public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return this.armorTexture;
+        return entity instanceof LivingEntity livingEntity ? this.armorTexture.get(livingEntity) : null;
     }
 
     @Override
@@ -106,9 +109,23 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
 
             AddonArmorItem item = new AddonArmorItem(armorMaterial, slot, properties);
 
-            if(Platform.getEnvironment() == Env.CLIENT) {
-                item.armorTexture = GsonUtil.getAsResourceLocation(json, "armor_texture");
-                GsonUtil.ifHasKey(json, "armor_model", jsonElement -> ArmorModelManager.register(item, GsonUtil.getAsModelLayerLocation(json, "armor_model")));
+            if (Platform.getEnvironment() == Env.CLIENT) {
+                item.armorTexture = SkinTypedValue.fromJSON(json.get("armor_texture"), jsonElement -> GsonUtil.convertToResourceLocation(jsonElement, "armor_texture"));
+                GsonUtil.ifHasKey(json, "armor_model_layer", jsonElement -> {
+                    ArmorModelManager.register(item,
+                            json.has("armor_model") ? SkinTypedValue.fromJSON(json.get("armor_model"), jsonElement1 -> {
+                                ResourceLocation modelId = new ResourceLocation(jsonElement1.getAsString());
+                                ModelLookup.Model m = ModelLookup.get(modelId);
+
+                                if (m == null) {
+                                    throw new JsonParseException("Unknown model type '" + modelId + "'");
+                                }
+
+                                return m;
+                            }) : new SkinTypedValue<>(ModelLookup.HUMANOID),
+                            SkinTypedValue.fromJSON(jsonElement, jsonElement1 -> GsonUtil.convertToModelLayerLocation(jsonElement1, "armor_model_layer"))
+                    );
+                });
             }
 
             return item;
@@ -130,8 +147,12 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
                     .description("Armor texture (rendered on the player when wearing it).")
                     .required().exampleJson(new JsonPrimitive("example:textures/models/armor/example_armor.png"));
 
-            builder.addProperty("armor_model", ModelLayerLocation.class)
-                    .description("Armor model, must have the body parts for a humanoid model.")
+            builder.addProperty("armor_model", ResourceLocation.class)
+                    .description("Armor model type, defines the bones for the model layer. Ideally only use minecraft:humanoid for 1 layer or minecraft:player for 2 layers")
+                    .fallbackObject(new ResourceLocation("minecraft:humanoid")).exampleJson(new JsonPrimitive("minecraft:humanoid"));
+
+            builder.addProperty("armor_model_layer", ModelLayerLocation.class)
+                    .description("Armor model layer, must have the body parts for a humanoid model (if not specified for another model type).")
                     .fallbackObject(null).exampleJson(new JsonPrimitive("minecraft:player#outer_armor"));
         }
 

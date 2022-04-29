@@ -1,0 +1,58 @@
+{
+  "name": "Cooldown Test",
+  "icon": "minecraft:ice",
+  "abilities": {
+    "action": {
+      "type": "palladium:command",
+      "title": "Action",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 100
+          }
+        ]
+      }
+    },
+    "activation": {
+      "type": "palladium:size",
+      "title": "Activation",
+      "scale": 1.2,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "ticks": 100,
+            "cooldown": 200
+          }
+        ]
+      }
+    },
+    "toggle": {
+      "type": "palladium:size",
+      "title": "Toggle",
+      "scale": 1.2,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle",
+            "cooldown": 100
+          }
+        ]
+      }
+    },
+    "held": {
+      "type": "palladium:size",
+      "title": "Held",
+      "scale": 1.2,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:held",
+            "cooldown": 100
+          }
+        ]
+      }
+    }
+  }
+}

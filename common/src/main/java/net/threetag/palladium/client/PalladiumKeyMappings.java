@@ -6,7 +6,9 @@ import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.client.KeyMapping;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
 import net.threetag.palladium.network.AbilityKeyPressedMessage;
+import net.threetag.palladium.network.NotifyJumpKeyListenerMessage;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.util.property.PalladiumProperties;
 import org.lwjgl.glfw.GLFW;
 
 public class PalladiumKeyMappings {
@@ -18,24 +20,31 @@ public class PalladiumKeyMappings {
     public static void init() {
         KeyMappingRegistry.register(SWITCH_ABILITY_LIST);
         for (int i = 1; i <= ABILITY_KEYS.length; i++) {
-            KeyMappingRegistry.register(ABILITY_KEYS[i-1] = new AbilityKeyMapping("key.palladium.ability_" + i, i == 1 ? 86 : i == 2 ? 66 : i == 3 ? 78 : i == 4 ? 77 : i == 5 ? 44 : -1, CATEGORY, i));
+            KeyMappingRegistry.register(ABILITY_KEYS[i - 1] = new AbilityKeyMapping("key.palladium.ability_" + i, i == 1 ? 86 : i == 2 ? 66 : i == 3 ? 78 : i == 4 ? 77 : i == 5 ? 44 : -1, CATEGORY, i));
         }
 
         ClientRawInputEvent.KEY_PRESSED.register((client, keyCode, scanCode, action, modifiers) -> {
-            if (SWITCH_ABILITY_LIST.isDown()) {
-                AbilityBarRenderer.scroll(true);
-            }
+            if(client.player != null && client.screen == null) {
+                if (SWITCH_ABILITY_LIST.isDown()) {
+                    AbilityBarRenderer.scroll(true);
+                }
 
-            AbilityBarRenderer.AbilityList list = AbilityBarRenderer.getSelectedList();
-            if (list != null && action != GLFW.GLFW_REPEAT) {
-                for (AbilityKeyMapping key : ABILITY_KEYS) {
-                    AbilityEntry entry = list.getAbilities()[key.index];
+                AbilityBarRenderer.AbilityList list = AbilityBarRenderer.getSelectedList();
+                if (list != null && action != GLFW.GLFW_REPEAT) {
+                    for (AbilityKeyMapping key : ABILITY_KEYS) {
+                        AbilityEntry entry = list.getAbilities()[key.index - 1];
 
-                    if (key.matches(keyCode, scanCode) && entry != null) {
-                        new AbilityKeyPressedMessage(list.getPower().getId(), entry.id, action == GLFW.GLFW_PRESS).sendToServer();
+                        if (key.matches(keyCode, scanCode) && entry != null) {
+                            new AbilityKeyPressedMessage(list.getPower().getId(), entry.id, action == GLFW.GLFW_PRESS).sendToServer();
+                        }
                     }
                 }
+
+                if (PalladiumProperties.JUMP_KEY_DOWN.isRegistered(client.player) && client.options.keyJump.isDown() != PalladiumProperties.JUMP_KEY_DOWN.get(client.player)) {
+                    new NotifyJumpKeyListenerMessage(client.options.keyJump.isDown()).sendToServer();
+                }
             }
+
             return EventResult.pass();
         });
     }

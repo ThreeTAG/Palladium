@@ -8,7 +8,7 @@
   },
   "abilities": {
     "healing": {
-      "ability": "palladium:healing",
+      "type": "palladium:healing",
       "frequency": 100,
       "bar_color": "red",
       "conditions": {
@@ -21,17 +21,20 @@
       }
     },
     "command": {
-      "ability": "palladium:command",
+      "type": "palladium:command",
+      "first_tick_commands": "say Hello World",
+      "last_tick_commands": "say Bye World",
+      "commands": "say lol",
       "conditions": {
         "enabling": [
           {
-            "type": "palladium:action"
+            "type": "palladium:toggle"
           }
         ]
       }
     },
     "armor": {
-      "ability": "palladium:attribute_modifier",
+      "type": "palladium:attribute_modifier",
       "conditions": {
         "enabling": [
           {
@@ -41,11 +44,22 @@
       }
     },
     "damage_immunity": {
-      "ability": "palladium:damage_immunity"
+      "type": "palladium:damage_immunity"
     },
     "render_layer": {
-      "ability": "palladium:render_layer",
+      "type": "palladium:render_layer",
       "render_layer": "test:basic_layer"
+    },
+    "projectile": {
+      "type": "palladium:projectile",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 60
+          }
+        ]
+      }
     }
   }
 }

@@ -9,6 +9,7 @@ import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.Ability;
+import net.threetag.palladium.sound.PalladiumSoundEvents;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -75,11 +76,14 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Abilities
             this.addAbility(Abilities.COMMAND, "Command");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
+            this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolated Integer");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attribute Modifier");
             this.addAbility(Abilities.HEALING, "Healing");
             this.addAbility(Abilities.SLOWFALL, "Slowfall");
             this.addAbility(Abilities.DAMAGE_IMMUNITY, "Damage Immunity");
             this.addAbility(Abilities.INVISIBILITY, "Invisibility");
+            this.addAbility(Abilities.SIZE, "Size");
+            this.addAbility(Abilities.PROJECTILE, "Projectile");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -101,6 +105,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Powers");
+
+            // Subtitles
+            this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Heat Vision");
         }
     }
 
@@ -156,11 +163,14 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
+            this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolierte Zahl");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attributmodifikator");
             this.addAbility(Abilities.HEALING, "Heilung");
             this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
             this.addAbility(Abilities.DAMAGE_IMMUNITY, "Schadensimmunit\u00E4t");
             this.addAbility(Abilities.INVISIBILITY, "Unsichtbarkeit");
+            this.addAbility(Abilities.SIZE, "Gr\u00F6\u00DFe");
+            this.addAbility(Abilities.PROJECTILE, "Projektil");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
@@ -182,6 +192,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
+
+            // Subtitles
+            this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
         }
     }
 
@@ -237,11 +250,14 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
+            this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolierte Zahl");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "\u00C4ttrib\u00FCtmodifikator");
             this.addAbility(Abilities.HEALING, "Helung");
             this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
             this.addAbility(Abilities.DAMAGE_IMMUNITY, "Schadensimmunit\u00E4t");
             this.addAbility(Abilities.INVISIBILITY, "Unsischtbarkeet");
+            this.addAbility(Abilities.SIZE, "Gr\u00F6\u00DFe");
+            this.addAbility(Abilities.PROJECTILE, "Projektil");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");
@@ -263,6 +279,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
+
+            // Subtitles
+            this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
         }
     }
 

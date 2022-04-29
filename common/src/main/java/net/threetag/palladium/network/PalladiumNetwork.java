@@ -13,7 +13,9 @@ public class PalladiumNetwork {
     public static final MessageType REMOVE_POWER = NETWORK.registerS2C("remove_power", RemovePowerMessage::new);
     public static final MessageType SYNC_ABILITY_STATE = NETWORK.registerS2C("sync_ability_state", SyncAbilityStateMessage::new);
     public static final MessageType SYNC_PROPERTY = NETWORK.registerS2C("sync_property", SyncPropertyMessage::new);
+    public static final MessageType SYNC_ABILITY_ENTRY_PROPERTY = NETWORK.registerS2C("sync_ability_entry_property", SyncAbilityEntryPropertyMessage::new);
     public static final MessageType ABILITY_KEY_PRESSED = NETWORK.registerC2S("ability_key_pressed", AbilityKeyPressedMessage::new);
+    public static final MessageType NOTIFY_JUMP_KEY_LISTENER = NETWORK.registerC2S("notify_jump_key_listener", NotifyJumpKeyListenerMessage::new);
 
     public static void init() {
 

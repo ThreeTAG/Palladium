@@ -39,7 +39,7 @@ public class CompoundIcon implements IIcon {
             CompoundIcon compoundIcon = new CompoundIcon();
 
             for (JsonElement jsonElement : icons) {
-                IIcon icon = IconSerializer.parseJSON(jsonElement.getAsJsonObject());
+                IIcon icon = IconSerializer.parseJSON(jsonElement);
                 compoundIcon.icons.add(icon);
             }
 

@@ -47,7 +47,7 @@ public class SuitSet extends RegistryEntry<SuitSet> {
 
     @Nullable
     public Item getChestplate() {
-        return this.chestplate.get();
+        return this.chestplate != null ? this.chestplate.get() : null;
     }
 
     @Nullable

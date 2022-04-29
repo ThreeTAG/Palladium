@@ -1,6 +1,5 @@
 package net.threetag.palladium.network;
 
-import com.mojang.datafixers.util.Pair;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -12,29 +11,21 @@ import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperty;
 
-import java.util.List;
-
 public class SyncPropertyMessage extends BaseS2CMessage {
 
     private final int entityId;
     private final CompoundTag tag;
 
+    @SuppressWarnings({"rawtypes", "unchecked", "UnnecessaryLocalVariable"})
     public SyncPropertyMessage(int entityId, PalladiumProperty<?> property, Object value) {
-        this(entityId, List.of(Pair.of(property, value)));
-    }
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public SyncPropertyMessage(int entityId, List<Pair<PalladiumProperty<?>, Object>> propertyValues) {
         this.entityId = entityId;
         this.tag = new CompoundTag();
 
-        for (Pair<PalladiumProperty<?>, Object> property : propertyValues) {
-            if (property.getSecond() == null) {
-                this.tag.put(property.getFirst().getKey(), StringTag.valueOf("null"));
-            } else {
-                PalladiumProperty property1 = property.getFirst();
-                this.tag.put(property.getFirst().getKey(), property1.toNBT(property.getSecond()));
-            }
+        if (value == null) {
+            this.tag.put(property.getKey(), StringTag.valueOf("null"));
+        } else {
+            PalladiumProperty property1 = property;
+            this.tag.put(property.getKey(), property1.toNBT(value));
         }
     }
 
@@ -54,12 +45,17 @@ public class SyncPropertyMessage extends BaseS2CMessage {
         buf.writeNbt(this.tag);
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
             Entity entity = Minecraft.getInstance().level.getEntity(this.entityId);
             if (entity != null) {
-                EntityPropertyHandler.getHandler(entity).fromNBT(this.tag);
+                EntityPropertyHandler handler = EntityPropertyHandler.getHandler(entity);
+                for (String key : this.tag.getAllKeys()) {
+                    PalladiumProperty property = handler.getPropertyByName(key);
+                    handler.setRaw(property, property.fromNBT(this.tag.get(property.getKey()), handler.getDefault(property)));
+                }
             }
         });
     }

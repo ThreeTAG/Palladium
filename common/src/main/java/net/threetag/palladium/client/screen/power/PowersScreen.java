@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.screen.components.IconButton;
-import net.threetag.palladium.mixin.AbstractContainerScreenMixin;
+import net.threetag.palladium.mixin.client.AbstractContainerScreenMixin;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;

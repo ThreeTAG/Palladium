@@ -8,6 +8,9 @@
     "LivingEntityRendererMixin"
   ],
   "mixins": [
+    "AttributeSupplierBuilderMixin",
+    "AttributeSupplierMixin",
+    "DefaultAttributesMixin",
     "IEnergyStorageMixin",
     "LivingEntityMixin",
     "PackRepositoryMixin",

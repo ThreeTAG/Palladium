@@ -5,7 +5,6 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.network.SyncPropertyMessage;
 
@@ -19,6 +18,10 @@ public class EntityPropertyHandler extends PropertyManager implements PropertyMa
         PalladiumEvents.REGISTER_PROPERTY.invoker().register(this);
     }
 
+    public Entity getEntity() {
+        return entity;
+    }
+
     @ExpectPlatform
     public static EntityPropertyHandler getHandler(Entity entity) {
         throw new AssertionError();
@@ -27,7 +30,11 @@ public class EntityPropertyHandler extends PropertyManager implements PropertyMa
     @Override
     public <T> void onChanged(PalladiumProperty<T> property, T oldValue, T newValue) {
         if (!entity.level.isClientSide) {
-            new SyncPropertyMessage(this.entity.getId(), property, newValue).sendToLevel((ServerLevel) this.entity.level);
+            if (property.getSyncType() == SyncType.EVERYONE) {
+                new SyncPropertyMessage(this.entity.getId(), property, newValue).sendToLevel((ServerLevel) this.entity.level);
+            } else if (property.getSyncType() == SyncType.SELF && this.entity instanceof ServerPlayer serverPlayer) {
+                new SyncPropertyMessage(this.entity.getId(), property, newValue).sendTo(serverPlayer);
+            }
         }
     }
 
@@ -39,7 +46,7 @@ public class EntityPropertyHandler extends PropertyManager implements PropertyMa
         });
 
         PalladiumEvents.START_TRACKING.register((tracker, target) -> {
-            if (target instanceof LivingEntity && tracker instanceof ServerPlayer serverPlayer) {
+            if (tracker instanceof ServerPlayer serverPlayer) {
                 getHandler(target).values().forEach((palladiumProperty, o) -> new SyncPropertyMessage(target.getId(), palladiumProperty, o).sendTo(serverPlayer));
             }
         });

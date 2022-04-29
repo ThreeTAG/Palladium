@@ -1,0 +1,19 @@
+{
+  "name": "Scoreboard Objective Test",
+  "icon": "minecraft:command_block",
+  "abilities": {
+    "command": {
+      "type": "palladium:command",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:objective_score",
+            "objective": "test_objective",
+            "min_score": 5,
+            "max_score": 10
+          }
+        ]
+      }
+    }
+  }
+}

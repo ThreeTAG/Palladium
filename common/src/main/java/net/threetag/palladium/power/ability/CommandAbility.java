@@ -16,17 +16,39 @@ import java.util.UUID;
 
 public class CommandAbility extends Ability implements CommandSource {
 
+    public static final PalladiumProperty<String[]> FIRST_TICK_COMMANDS = new StringArrayProperty("first_tick_commands").configurable("Sets the commands which get executed when gaining/activating the ability");
+    public static final PalladiumProperty<String[]> LAST_TICK_COMMANDS = new StringArrayProperty("last_tick_commands").configurable("Sets the commands which get executed when losing/deactivating the ability");
     public static final PalladiumProperty<String[]> COMMANDS = new StringArrayProperty("commands").configurable("Sets the commands which get executed when using the ability");
 
     public CommandAbility() {
         this.withProperty(ICON, new ItemIcon(Blocks.COMMAND_BLOCK));
+        this.withProperty(FIRST_TICK_COMMANDS, new String[]{});
+        this.withProperty(LAST_TICK_COMMANDS, new String[]{});
         this.withProperty(COMMANDS, new String[]{"say Hello World"});
     }
 
     @Override
+    public void firstTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
+        if (entity.level.getServer() != null && entry.getProperty(FIRST_TICK_COMMANDS) != null) {
+            for (String command : Objects.requireNonNull(entry.getProperty(FIRST_TICK_COMMANDS))) {
+                entity.level.getServer().getCommands().performCommand(new CommandSourceStack(this, entity.position(), entity.getRotationVector(), entity.level instanceof ServerLevel ? (ServerLevel) entity.level : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(), entity), command);
+            }
+        }
+    }
+
+    @Override
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
-        if (enabled && entity.level.getServer() != null) {
-            for (String command : Objects.requireNonNull(this.propertyManager.get(COMMANDS))) {
+        if (enabled && entity.level.getServer() != null && entry.getProperty(COMMANDS) != null) {
+            for (String command : Objects.requireNonNull(entry.getProperty(COMMANDS))) {
+                entity.level.getServer().getCommands().performCommand(new CommandSourceStack(this, entity.position(), entity.getRotationVector(), entity.level instanceof ServerLevel ? (ServerLevel) entity.level : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(), entity), command);
+            }
+        }
+    }
+
+    @Override
+    public void lastTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
+        if (entity.level.getServer() != null && entry.getProperty(LAST_TICK_COMMANDS) != null) {
+            for (String command : Objects.requireNonNull(entry.getProperty(LAST_TICK_COMMANDS))) {
                 entity.level.getServer().getCommands().performCommand(new CommandSourceStack(this, entity.position(), entity.getRotationVector(), entity.level instanceof ServerLevel ? (ServerLevel) entity.level : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(), entity), command);
             }
         }

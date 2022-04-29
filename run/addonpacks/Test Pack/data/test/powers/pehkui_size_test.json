@@ -1,0 +1,22 @@
+{
+  "name": "Flight Test",
+  "icon": {
+    "type": "palladium:item",
+    "item": "minecraft:feather"
+  },
+  "abilities": {
+    "size": {
+      "type": "palladium:size",
+      "scale": 0.5,
+      "bar_color": "light_blue",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "ticks": 100
+          }
+        ]
+      }
+    }
+  }
+}

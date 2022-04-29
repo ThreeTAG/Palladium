@@ -6,7 +6,7 @@
   },
   "abilities": {
     "armor": {
-      "ability": "palladium:attribute_modifier",
+      "type": "palladium:attribute_modifier",
       "conditions": {
         "unlocking": [
           {
@@ -17,7 +17,7 @@
       }
     },
     "invisibility": {
-      "ability": "palladium:invisibility",
+      "type": "palladium:invisibility",
       "conditions": {
         "unlocking": [
           {

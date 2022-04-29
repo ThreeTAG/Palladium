@@ -11,4 +11,9 @@ public class RenderLayerAbility extends Ability {
     public RenderLayerAbility() {
         this.withProperty(RENDER_LAYER, new ResourceLocation("namespace", "render_layer_id"));
     }
+
+    @Override
+    public boolean isEffect() {
+        return true;
+    }
 }

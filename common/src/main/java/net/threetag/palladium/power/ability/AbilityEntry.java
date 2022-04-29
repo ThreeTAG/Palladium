@@ -1,12 +1,19 @@
 package net.threetag.palladium.power.ability;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.condition.Condition;
+import net.threetag.palladium.condition.CooldownType;
+import net.threetag.palladium.network.SyncAbilityEntryPropertyMessage;
 import net.threetag.palladium.network.SyncAbilityStateMessage;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.condition.Condition;
 import net.threetag.palladium.util.property.PalladiumProperty;
+import net.threetag.palladium.util.property.PropertyManager;
+import net.threetag.palladium.util.property.SyncType;
+import org.jetbrains.annotations.Nullable;
 
 public class AbilityEntry {
 
@@ -15,16 +22,48 @@ public class AbilityEntry {
     private boolean unlocked = true;
     private boolean enabled = true;
     public boolean keyPressed = false;
-    private int ticks = 0;
+    public int maxCooldown = 0, cooldown = 0;
+    public int maxActivationTimer = 0, activationTimer = 0;
+    private int lifetime = 0;
+    private int enabledTicks = 0;
     public String id;
+    private final PropertyManager propertyManager = new PropertyManager().setListener(new PropertyManager.Listener() {
+        @Override
+        public <T> void onChanged(PalladiumProperty<T> property, T oldValue, T newValue) {
+            syncProperty(property, holder.getEntity(), null);
+        }
+    });
 
     public AbilityEntry(AbilityConfiguration abilityConfiguration, IPowerHolder holder) {
         this.abilityConfiguration = abilityConfiguration;
         this.holder = holder;
+        this.abilityConfiguration.getAbility().registerUniqueProperties(this.propertyManager);
     }
 
     public AbilityConfiguration getConfiguration() {
         return abilityConfiguration;
+    }
+
+    public PropertyManager getPropertyManager() {
+        return propertyManager;
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes", "UnnecessaryLocalVariable"})
+    public void syncProperty(PalladiumProperty<?> property, LivingEntity entity, @Nullable SyncType syncType) {
+        if (!entity.level.isClientSide && this.propertyManager.isRegistered(property)) {
+            if (syncType == null) {
+                syncType = property.getSyncType();
+            }
+
+            CompoundTag tag = new CompoundTag();
+            PalladiumProperty property1 = property;
+            tag.put(property.getKey(), property1.toNBT(this.propertyManager.get(property)));
+            if (syncType == SyncType.EVERYONE) {
+                new SyncAbilityEntryPropertyMessage(entity.getId(), holder.getPower().getId(), abilityConfiguration.getId(), property.getKey(), tag).sendToLevel((ServerLevel) entity.level);
+            } else if (syncType == SyncType.SELF && entity instanceof ServerPlayer serverPlayer) {
+                new SyncAbilityEntryPropertyMessage(entity.getId(), holder.getPower().getId(), abilityConfiguration.getId(), property.getKey(), tag).sendTo(serverPlayer);
+            }
+        }
     }
 
     public boolean isUnlocked() {
@@ -35,12 +74,16 @@ public class AbilityEntry {
         return enabled;
     }
 
-    public int getTicks() {
-        return ticks;
+    public int getEnabledTicks() {
+        return enabledTicks;
     }
 
-    public void setClientState(LivingEntity entity, IPowerHolder powerHolder, boolean unlocked, boolean enabled) {
+    public void setClientState(LivingEntity entity, IPowerHolder powerHolder, boolean unlocked, boolean enabled, int maxCooldown, int cooldown, int maxActivationTimer, int activationTimer) {
         this.unlocked = unlocked;
+        this.maxCooldown = maxCooldown;
+        this.cooldown = cooldown;
+        this.maxActivationTimer = maxActivationTimer;
+        this.activationTimer = activationTimer;
 
         if (this.enabled != enabled) {
             this.enabled = enabled;
@@ -55,6 +98,11 @@ public class AbilityEntry {
 
     public void tick(LivingEntity entity, Power power, IPowerHolder powerHolder) {
         if (!entity.level.isClientSide) {
+            if (this.lifetime == 0) {
+                this.abilityConfiguration.getUnlockingConditions().forEach(condition -> condition.init(entity, this, this.propertyManager));
+                this.abilityConfiguration.getEnablingConditions().forEach(condition -> condition.init(entity, this, this.propertyManager));
+            }
+
             boolean unlocked = true;
             boolean sync = false;
 
@@ -93,13 +141,49 @@ public class AbilityEntry {
                 }
             }
 
-            if (sync || ticks == 0) {
-                new SyncAbilityStateMessage(entity.getId(), this.holder.getPower().getId(), this.abilityConfiguration.getId(), this.unlocked, this.enabled).sendToLevel((ServerLevel) entity.getLevel());
+            if (sync || lifetime == 0) {
+                this.syncState(entity);
             }
         }
 
+        if (this.isEnabled()) {
+            this.enabledTicks++;
+        } else if (this.enabledTicks > 0) {
+            this.enabledTicks--;
+        }
+
+        if (this.abilityConfiguration.getCooldownType() == CooldownType.STATIC) {
+            if (this.cooldown > 0) {
+                this.cooldown--;
+            }
+        } else if (this.abilityConfiguration.getCooldownType() == CooldownType.DYNAMIC) {
+            if (this.isEnabled() && this.cooldown > 0) {
+                this.cooldown--;
+            } else if (!this.isEnabled() && this.cooldown < this.maxCooldown) {
+                this.cooldown++;
+            }
+        }
+
+        if (this.activationTimer > 0) {
+            this.activationTimer--;
+        }
+
+        this.lifetime++;
         this.abilityConfiguration.getAbility().tick(entity, this, powerHolder, this.isEnabled());
-        this.ticks++;
+    }
+
+    public void syncState(LivingEntity entity) {
+        new SyncAbilityStateMessage(entity.getId(), this.holder.getPower().getId(), this.abilityConfiguration.getId(), this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer).sendToLevel((ServerLevel) entity.getLevel());
+    }
+
+    public void startCooldown(LivingEntity entity, int cooldown) {
+        this.maxCooldown = this.cooldown = cooldown;
+        this.syncState(entity);
+    }
+
+    public void startActivationTimer(LivingEntity entity, int activationTimer) {
+        this.maxActivationTimer = this.activationTimer = activationTimer;
+        this.syncState(entity);
     }
 
     public void keyPressed(LivingEntity entity, boolean pressed) {
@@ -126,8 +210,18 @@ public class AbilityEntry {
         }
     }
 
+    public PalladiumProperty<?> getEitherPropertyByKey(String key) {
+        PalladiumProperty<?> property = this.propertyManager.getPropertyByName(key);
+        return property != null ? property : this.abilityConfiguration.getPropertyManager().getPropertyByName(key);
+    }
+
     public <T> T getProperty(PalladiumProperty<T> property) {
-        return this.abilityConfiguration.get(property);
+        return this.propertyManager.isRegistered(property) ? this.propertyManager.get(property) : this.abilityConfiguration.get(property);
+    }
+
+    public <T> AbilityEntry setOwnProperty(PalladiumProperty<T> property, T value) {
+        this.propertyManager.set(property, value);
+        return this;
     }
 
 }

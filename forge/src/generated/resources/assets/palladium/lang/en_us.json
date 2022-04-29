@@ -3,8 +3,11 @@
   "ability.palladium.command": "Command",
   "ability.palladium.damage_immunity": "Damage Immunity",
   "ability.palladium.healing": "Healing",
+  "ability.palladium.interpolated_integer": "Interpolated Integer",
   "ability.palladium.invisibility": "Invisibility",
+  "ability.palladium.projectile": "Projectile",
   "ability.palladium.render_layer": "Render Layer",
+  "ability.palladium.size": "Size",
   "ability.palladium.slowfall": "Slowfall",
   "block.palladium.deepslate_lead_ore": "Deepslate Lead Ore",
   "block.palladium.deepslate_redstone_flux_crystal_geode": "Deepslate Redstone Flux Crystal Geode",
@@ -57,5 +60,6 @@
   "key.palladium.ability_4": "Ability 4",
   "key.palladium.ability_5": "Ability 5",
   "key.palladium.categories.abilities": "Abilities",
-  "key.palladium.switch_ability_list": "Switch Ability List"
+  "key.palladium.switch_ability_list": "Switch Ability List",
+  "subtitles.palladium.entity.ability.heat_vision": "Heat Vision"
 }

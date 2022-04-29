@@ -1,5 +1,6 @@
 package net.threetag.palladium.power;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
 import java.util.Map;
@@ -17,5 +18,7 @@ public interface IPowerHolder {
     void lastTick();
 
     boolean isInvalid();
+
+    LivingEntity getEntity();
 
 }

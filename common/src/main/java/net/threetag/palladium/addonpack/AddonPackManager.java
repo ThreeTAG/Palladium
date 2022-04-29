@@ -72,6 +72,10 @@ public class AddonPackManager {
         return PACKS.get(id);
     }
 
+    public PackRepository getPackList() {
+        return packList;
+    }
+
     @ExpectPlatform
     public static RepositorySource getWrappedPackFinder(RepositorySource folderPackFinder) {
         throw new AssertionError();

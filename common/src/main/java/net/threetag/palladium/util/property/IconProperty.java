@@ -17,7 +17,7 @@ public class IconProperty extends PalladiumProperty<IIcon> {
 
     @Override
     public IIcon fromJSON(JsonElement jsonElement) {
-        return IconSerializer.parseJSON(jsonElement.getAsJsonObject());
+        return IconSerializer.parseJSON(jsonElement);
     }
 
     @Override

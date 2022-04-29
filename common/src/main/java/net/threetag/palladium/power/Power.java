@@ -90,7 +90,7 @@ public class Power {
     public static Power fromJSON(ResourceLocation id, JsonObject json) {
         Component name = Component.Serializer.fromJson(json.get("name"));
         ResourceLocation background = GsonUtil.getAsResourceLocation(json, "background", null);
-        Power power = new Power(id, name, IconSerializer.parseJSON(GsonHelper.getAsJsonObject(json, "icon")), background);
+        Power power = new Power(id, name, IconSerializer.parseJSON(json.get("icon")), background);
 
         if (GsonHelper.isValidNode(json, "abilities")) {
             JsonObject abilities = GsonHelper.getAsJsonObject(json, "abilities");

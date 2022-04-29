@@ -1,0 +1,48 @@
+{
+  "name": "Interpolation Animation Test",
+  "icon": "minecraft:iron_ingot",
+  "abilities": {
+    "render_layer": {
+      "type": "palladium:render_layer",
+      "render_layer": "test:interpolate_test"
+    },
+    "interpolate": {
+      "type": "palladium:interpolated_integer",
+      "max_value": 16,
+      "hidden": false,
+      "icon": "minecraft:iron_ingot",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle"
+          }
+        ]
+      }
+    },
+    "flight": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:jetpack_flight_speed",
+      "value": 0.075,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_enabled",
+            "ability": "interpolate"
+          }
+        ]
+      }
+    },
+    "hovering": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:hovering",
+      "value": 1,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -13,9 +13,11 @@ import java.util.function.Function;
 public class ModelLookup {
 
     private static final Map<ResourceLocation, Model> MODELS = new HashMap<>();
+    public static final Model HUMANOID;
 
     static {
-        register(new ResourceLocation("humanoid"), new Model(modelPart -> new PlayerModel<>(modelPart, false), (en, model) -> model instanceof HumanoidModel));
+        HUMANOID = register(new ResourceLocation("humanoid"), new Model(HumanoidModel::new, (en, model) -> model instanceof HumanoidModel));
+        register(new ResourceLocation("player"), new Model(modelPart -> new PlayerModel<>(modelPart, false), (en, model) -> model instanceof HumanoidModel));
         register(new ResourceLocation("pig"), new Model(PigModel::new, (en, model) -> model instanceof PigModel));
         register(new ResourceLocation("wolf"), new Model(WolfModel::new, (en, model) -> model instanceof WolfModel));
         register(new ResourceLocation("cat"), new Model(CatModel::new, (en, model) -> model instanceof CatModel));
@@ -62,8 +64,9 @@ public class ModelLookup {
         register(new ResourceLocation("wither"), new Model(WitherBossModel::new, (en, model) -> model instanceof WitherBossModel));
     }
 
-    public static void register(ResourceLocation id, Model model) {
+    public static Model register(ResourceLocation id, Model model) {
         MODELS.put(id, model);
+        return model;
     }
 
     public static Model get(ResourceLocation id) {

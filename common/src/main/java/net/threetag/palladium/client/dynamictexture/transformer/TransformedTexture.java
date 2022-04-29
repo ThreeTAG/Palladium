@@ -2,6 +2,7 @@ package net.threetag.palladium.client.dynamictexture.transformer;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.TextureUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -23,24 +24,32 @@ public class TransformedTexture extends SimpleTexture {
     }
 
     @Override
-    public void load(ResourceManager manager) throws IOException {
-        releaseId();
-        InputStream textureStream = null;
+    public void load(ResourceManager manager) {
+        Minecraft.getInstance().execute(() -> {
+            releaseId();
+            InputStream textureStream = null;
 
-        try {
-            NativeImage image = NativeImage.read(textureStream = manager.getResource(location).getInputStream());
+            try {
+                NativeImage image = NativeImage.read(textureStream = manager.getResource(location).getInputStream());
 
-            for (ITextureTransformer transformer : this.transformers) {
-                image = transformer.transform(image, manager, this.stringConverter);
+                for (ITextureTransformer transformer : this.transformers) {
+                    image = transformer.transform(image, manager, this.stringConverter);
+                }
+
+                TextureUtil.prepareImage(this.getId(), image.getWidth(), image.getHeight());
+                image.upload(0, 0, 0, false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (textureStream != null) {
+                    try {
+                        textureStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-
-            TextureUtil.prepareImage(this.getId(), image.getWidth(), image.getHeight());
-            image.upload(0, 0, 0, false);
-        } finally {
-            if (textureStream != null) {
-                textureStream.close();
-            }
-        }
+        });
     }
 
 }

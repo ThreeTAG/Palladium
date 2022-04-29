@@ -4,5 +4,5 @@
   "armor_material": "test:dirt",
   "creative_mode_tab": "test:test_tab",
   "armor_texture": "test:textures/models/armor/dirt.png",
-  "armor_model": "test:player#thick_armor"
+  "armor_model_layer": "test:player#thick_armor"
 }

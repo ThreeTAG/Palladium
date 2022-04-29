@@ -33,6 +33,11 @@ public class DefaultPowerHolder implements IPowerHolder {
     }
 
     @Override
+    public LivingEntity getEntity() {
+        return this.entity;
+    }
+
+    @Override
     public Map<String, AbilityEntry> getAbilities() {
         return ImmutableMap.copyOf(this.entryMap);
     }
