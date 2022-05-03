@@ -25,7 +25,10 @@ public class TrinketsPowerProvider extends PowerProvider {
             AtomicReference<ItemStack> stack = new AtomicReference<>(ItemStack.EMPTY);
             TrinketsApi.getTrinketComponent(entity).ifPresent(trinketComponent -> {
                 if (trinketComponent.getInventory().containsKey(entry.getValue().getName())) {
-                    stack.set(trinketComponent.getInventory().get(entry.getValue().getName()).get(entry.getKey()).getItem(0));
+                    var v = trinketComponent.getInventory().get(entry.getValue().getName()).get(entry.getKey());
+                    if(v != null) {
+                        stack.set(v.getItem(0));
+                    }
                 }
             });
 

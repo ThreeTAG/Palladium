@@ -31,6 +31,10 @@ Overview</h2>
 Palladium</h3>
 <ul>
 <li>
+<a href="#palladium:compound">
+Compound Icon</a>
+</li>
+<li>
 <a href="#palladium:item">
 Item Icon</a>
 </li>
@@ -38,12 +42,52 @@ Item Icon</a>
 <a href="#palladium:texture">
 Textured Icon</a>
 </li>
-<li>
-<a href="#palladium:compound">
-Compound Icon</a>
-</li>
 </ul>
 </p>
+<hr>
+
+<div id="palladium:compound">
+<h2>
+Compound Icon</h2>
+<p>
+Let's you merge multiple icons into one.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icons</td>
+<td>
+IIcon[]</td>
+<td>
+Array of the icons you want to merge</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:compound","icons":["minecraft:apple","example:textures/icons/my_icon.png"]}</pre>
+</div>
 <hr>
 
 <div id="palladium:item">
@@ -143,50 +187,6 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:texture","texture":"example:textures/icons/my_icon.png","tint":[123,32,212]}</pre>
-</div>
-<hr>
-
-<div id="palladium:compound">
-<h2>
-Compound Icon</h2>
-<p>
-Let's you merge multiple icons into one.</p>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-icons</td>
-<td>
-IIcon[]</td>
-<td>
-Array of the icons you want to merge</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:compound","icons":["minecraft:apple","example:textures/icons/my_icon.png"]}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

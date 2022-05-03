@@ -38,9 +38,6 @@
     "minecraft": ">=1.18.1",
     "architectury": ">=3.3.7"
   },
-  "suggests": {
-    "flamingo": "*"
-  },
   "custom": {
     "cardinal-components": [
       "palladium:properties",
