@@ -12,9 +12,9 @@ import net.threetag.palladium.util.property.StringProperty;
 public class ObjectiveScoreCondition extends Condition {
 
     private final String objectiveName;
-    private final float min, max;
+    private final int min, max;
 
-    public ObjectiveScoreCondition(String objectiveName, float min, float max) {
+    public ObjectiveScoreCondition(String objectiveName, int min, int max) {
         this.objectiveName = objectiveName;
         this.min = min;
         this.max = max;
