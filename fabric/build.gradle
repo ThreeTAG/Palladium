@@ -68,6 +68,9 @@ dependencies {
         exclude group: "net.fabricmc.fabric-api"
     })
 
+    // Smooth Boot
+    modRuntimeOnly "curse.maven:smoothboot-415758:${rootProject.smoothboot_fabric_version}"
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 }
