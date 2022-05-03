@@ -25,7 +25,7 @@ public class PackTypeMixin {
 
     private static PackType addVariant(String internalName, String directory, com.mojang.bridge.game.PackType bridgeType) {
         ArrayList<PackType> types = new ArrayList<>(Arrays.asList($VALUES));
-        PackType addon = invokeInit(internalName, types.get(types.size() - 1).ordinal(), directory, bridgeType);
+        PackType addon = invokeInit(internalName, types.size(), directory, bridgeType);
         types.add(addon);
         $VALUES = types.toArray(new PackType[0]);
         return addon;
