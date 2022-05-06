@@ -2,7 +2,6 @@ package net.threetag.palladium.addonpack;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
-import net.minecraft.Util;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.FolderRepositorySource;
 import net.minecraft.server.packs.repository.PackRepository;
@@ -50,7 +49,7 @@ public class AddonPackManager {
         this.resourceManager.registerReloadListener(ITEM_PARSER = new ItemParser());
         this.resourceManager.registerReloadListener(new SuitSetParser());
 
-        this.beginLoading(Util.backgroundExecutor(), Runnable::run);
+//        this.beginLoading(Util.backgroundExecutor(), Runnable::run);
     }
 
     public File getLocation() {
