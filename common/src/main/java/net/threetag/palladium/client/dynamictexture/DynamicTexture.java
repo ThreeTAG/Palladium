@@ -10,10 +10,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.dynamictexture.transformer.AlphaMaskTextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.OverlayTextureTransformer;
-import net.threetag.palladium.client.dynamictexture.variable.AbilityIntegerPropertyVariable;
-import net.threetag.palladium.client.dynamictexture.variable.EntityTicksTextureVariable;
-import net.threetag.palladium.client.dynamictexture.variable.ITextureVariable;
-import net.threetag.palladium.client.dynamictexture.variable.SmallArmsTextureVariable;
+import net.threetag.palladium.client.dynamictexture.variable.*;
 import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.HashMap;
@@ -27,14 +24,17 @@ public abstract class DynamicTexture {
     private static final Map<ResourceLocation, Function<JsonObject, ITextureVariable>> VARIABLE_PARSERS = new HashMap<>();
 
     static {
-        registerType(new ResourceLocation(Palladium.MOD_ID, "default"), j -> new DefaultDynamicTexture(GsonHelper.getAsString(j, "base"), GsonHelper.getAsString(j, "output", "")));
+        registerType(Palladium.id("default"), j -> new DefaultDynamicTexture(GsonHelper.getAsString(j, "base"), GsonHelper.getAsString(j, "output", "")));
 
-        registerTransformer(new ResourceLocation(Palladium.MOD_ID, "alpha_mask"), j -> new AlphaMaskTextureTransformer(GsonHelper.getAsString(j, "mask")));
-        registerTransformer(new ResourceLocation(Palladium.MOD_ID, "overlay"), j -> new OverlayTextureTransformer(GsonHelper.getAsString(j, "overlay")));
+        registerTransformer(Palladium.id("alpha_mask"), j -> new AlphaMaskTextureTransformer(GsonHelper.getAsString(j, "mask")));
+        registerTransformer(Palladium.id("overlay"), j -> new OverlayTextureTransformer(GsonHelper.getAsString(j, "overlay")));
 
-        registerVariable(new ResourceLocation(Palladium.MOD_ID, "entity_ticks"), EntityTicksTextureVariable::new);
-        registerVariable(new ResourceLocation(Palladium.MOD_ID, "ability_integer_property"), AbilityIntegerPropertyVariable::new);
-        registerVariable(new ResourceLocation(Palladium.MOD_ID, "small_arms"), j -> new SmallArmsTextureVariable(GsonHelper.getAsString(j, "normal_arms_value", null), GsonHelper.getAsString(j, "small_arms_value", null)));
+        registerVariable(Palladium.id("entity_ticks"), EntityTicksTextureVariable::new);
+        registerVariable(Palladium.id("entity_health"), EntityHealthTextureVariable::new);
+        registerVariable(Palladium.id("ability_integer_property"), AbilityIntegerPropertyVariable::new);
+        registerVariable(Palladium.id("small_arms"), SmallArmsTextureVariable::new);
+        registerVariable(Palladium.id("crouching"), CrouchingTextureVariable::new);
+        registerVariable(Palladium.id("moon_phase"), MoonPhaseTextureVariable::new);
     }
 
     public abstract ResourceLocation getTexture(LivingEntity entity);

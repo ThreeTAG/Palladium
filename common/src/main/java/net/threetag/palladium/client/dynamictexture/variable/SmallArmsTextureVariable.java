@@ -1,19 +1,19 @@
 package net.threetag.palladium.client.dynamictexture.variable;
 
+import com.google.gson.JsonObject;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.util.PlayerUtil;
 
-public record SmallArmsTextureVariable(String normalName,
-                                       String smallArmsName) implements ITextureVariable {
+public class SmallArmsTextureVariable extends AbstractBooleanTextureVariable {
+
+    public SmallArmsTextureVariable(JsonObject json) {
+        super(json);
+    }
 
     @Override
-    public Object get(LivingEntity entity) {
-        boolean smallArms = entity instanceof Player player && PlayerUtil.hasSmallArms(player);
-        if (smallArms)
-            return smallArmsName != null ? smallArmsName : true;
-        else
-            return normalName != null ? normalName : true;
+    public boolean getBoolean(LivingEntity entity) {
+        return entity instanceof Player player && PlayerUtil.hasSmallArms(player);
     }
 
 }
