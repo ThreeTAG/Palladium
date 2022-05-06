@@ -12,15 +12,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class ModLoadedCondition extends Condition {
 
-    public final String modid;
+    public final boolean loaded;
 
-    public ModLoadedCondition(String modid) {
-        this.modid = modid;
+    public ModLoadedCondition(boolean loaded) {
+        this.loaded = loaded;
     }
 
     @Override
     public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
-        return Platform.isModLoaded(this.modid);
+        return this.loaded;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ModLoadedCondition extends Condition {
 
         @Override
         public Condition make(JsonObject json) {
-            return new ModLoadedCondition(this.getProperty(json, MOD_ID));
+            return new ModLoadedCondition(Platform.isModLoaded(this.getProperty(json, MOD_ID)));
         }
 
     }
