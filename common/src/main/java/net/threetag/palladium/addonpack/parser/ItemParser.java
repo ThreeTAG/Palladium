@@ -132,7 +132,7 @@ public class ItemParser extends AddonParser<Item> {
                 .description("Max damage for an item. Must be greater then or equal 0.")
                 .fallback(0);
         builder.addProperty("creative_mode_tab", ResourceLocation.class)
-                .description("ID of the creative mode tab the item is supposed to appear in. Possible values: " + Arrays.toString(PalladiumCreativeModeTabs.getTabs().toArray()))
+                .description("ID of the creative mode tab the item is supposed to appear in. Possible values: " + Arrays.toString(PalladiumCreativeModeTabs.getTabs().stream().sorted(Comparator.comparing(ResourceLocation::toString)).toArray()))
                 .fallback(null)
                 .exampleJson(new JsonPrimitive("minecraft:decorations"));
         builder.addProperty("rarity", String.class)
