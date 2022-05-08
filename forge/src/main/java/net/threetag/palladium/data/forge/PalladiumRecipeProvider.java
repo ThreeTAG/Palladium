@@ -4,15 +4,12 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCookingSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.item.PalladiumItems;
@@ -22,6 +19,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
+@SuppressWarnings("NullableProblems")
 public class PalladiumRecipeProvider extends RecipeProvider implements IConditionBuilder {
 
     private static final ImmutableList<ItemLike> LEAD_SMELTABLES = ImmutableList.of(PalladiumItems.RAW_LEAD.get(), PalladiumItems.LEAD_ORE.get(), PalladiumItems.DEEPSLATE_LEAD_ORE.get());
@@ -65,56 +63,31 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
         UpgradeRecipeBuilder.smithing(Ingredient.of(Items.LEATHER_BOOTS), Ingredient.of(PalladiumItemTags.INGOTS_VIBRANIUM), PalladiumItems.VIBRANIUM_WEAVE_BOOTS.get()).unlocks("has_vibranium", has(PalladiumItemTags.INGOTS_VIBRANIUM)).save(consumer, new ResourceLocation(Palladium.MOD_ID, "vibranium_weave_boots_smithing"));
     }
 
-    private static net.minecraft.advancements.critereon.InventoryChangeTrigger.TriggerInstance has(TagKey<Item> arg) {
-        return inventoryTrigger(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(arg).build());
-    }
-
-    private static void oreSmelting(Consumer<FinishedRecipe> finishedRecipeConsumer, List<ItemLike> ingredients, ItemLike result, float experience, int cookingTime, String group) {
+    public static void oreSmelting(Consumer<FinishedRecipe> finishedRecipeConsumer, List<ItemLike> ingredients, ItemLike result, float experience, int cookingTime, String group) {
         oreCooking(finishedRecipeConsumer, RecipeSerializer.SMELTING_RECIPE, ingredients, result, experience, cookingTime, group, "_from_smelting");
     }
 
-    private static void oreBlasting(Consumer<FinishedRecipe> finishedRecipeConsumer, List<ItemLike> ingredients, ItemLike result, float experience, int cookingTime, String group) {
+    public static void oreBlasting(Consumer<FinishedRecipe> finishedRecipeConsumer, List<ItemLike> ingredients, ItemLike result, float experience, int cookingTime, String group) {
         oreCooking(finishedRecipeConsumer, RecipeSerializer.BLASTING_RECIPE, ingredients, result, experience, cookingTime, group, "_from_blasting");
     }
 
-    private static void oreCooking(Consumer<FinishedRecipe> finishedRecipeConsumer, SimpleCookingSerializer<?> cookingSerializer, List<ItemLike> ingredients, ItemLike result, float experience, int cookingTime, String group, String recipeName) {
+    public static void oreCooking(Consumer<FinishedRecipe> finishedRecipeConsumer, SimpleCookingSerializer<?> cookingSerializer, List<ItemLike> ingredients, ItemLike result, float experience, int cookingTime, String group, String recipeName) {
         for (ItemLike itemlike : ingredients) {
             SimpleCookingRecipeBuilder.cooking(Ingredient.of(itemlike), result, experience, cookingTime, cookingSerializer).group(group).unlockedBy(getHasName(itemlike), has(itemlike)).save(finishedRecipeConsumer, new ResourceLocation(Palladium.MOD_ID, getItemName(result) + recipeName + "_" + getItemName(itemlike)));
         }
     }
 
-    private static void nineBlockStorageRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer, ItemLike unpacked, ItemLike packed) {
+    public static void nineBlockStorageRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer, ItemLike unpacked, ItemLike packed) {
         nineBlockStorageRecipes(finishedRecipeConsumer, unpacked, packed, getSimpleRecipeName(packed), null, getSimpleRecipeName(unpacked), null);
     }
 
-    private static void nineBlockStorageRecipesWithCustomPacking(Consumer<FinishedRecipe> finishedRecipeConsumer, ItemLike unpacked, ItemLike packed, String packingRecipeName, String packingRecipeGroup) {
-        nineBlockStorageRecipes(finishedRecipeConsumer, unpacked, packed, packingRecipeName, packingRecipeGroup, getSimpleRecipeName(unpacked), null);
-    }
-
-    private static void nineBlockStorageRecipesRecipesWithCustomUnpacking(Consumer<FinishedRecipe> finishedRecipeConsumer, ItemLike unpacked, ItemLike packed, String unpackingRecipeName, String unpackingRecipeGroup) {
-        nineBlockStorageRecipes(finishedRecipeConsumer, unpacked, packed, getSimpleRecipeName(packed), null, unpackingRecipeName, unpackingRecipeGroup);
-    }
-
-    private static void nineBlockStorageRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer, ItemLike unpacked, ItemLike packed, String packingRecipeName, @Nullable String packingRecipeGroup, String unpackingRecipeName, @Nullable String unpackingRecipeGroup) {
+    public static void nineBlockStorageRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer, ItemLike unpacked, ItemLike packed, String packingRecipeName, @Nullable String packingRecipeGroup, String unpackingRecipeName, @Nullable String unpackingRecipeGroup) {
         ShapelessRecipeBuilder.shapeless(unpacked, 9).requires(packed).group(unpackingRecipeGroup).unlockedBy(getHasName(packed), has(packed)).save(finishedRecipeConsumer, new ResourceLocation(Palladium.MOD_ID, unpackingRecipeName));
         ShapedRecipeBuilder.shaped(packed).define('#', unpacked).pattern("###").pattern("###").pattern("###").group(packingRecipeGroup).unlockedBy(getHasName(unpacked), has(unpacked)).save(finishedRecipeConsumer, new ResourceLocation(Palladium.MOD_ID, packingRecipeName));
     }
 
-    private static String getHasName(ItemLike itemLike) {
-        return "has_" + getItemName(itemLike);
-    }
-
-    private static String getItemName(ItemLike itemLike) {
-        return ForgeRegistries.ITEMS.getKey(itemLike.asItem()).getPath();
-    }
-
-    private static String getSimpleRecipeName(ItemLike itemLike) {
-        return getItemName(itemLike);
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private static ResourceLocation loaderDependentRecipeLocation(boolean forge, ItemLike item) {
-        return new ResourceLocation(item.asItem().getRegistryName().getNamespace(), (forge ? "forge/" : "fabric/") + item.asItem().getRegistryName().getPath());
+    public static void nineBlockStorageRecipesRecipesWithCustomUnpacking(Consumer<FinishedRecipe> finishedRecipeConsumer, ItemLike unpacked, ItemLike packed, String unpackingRecipeName, String unpackingRecipeGroup) {
+        nineBlockStorageRecipes(finishedRecipeConsumer, unpacked, packed, getSimpleRecipeName(packed), null, unpackingRecipeName, unpackingRecipeGroup);
     }
 
     @Override
