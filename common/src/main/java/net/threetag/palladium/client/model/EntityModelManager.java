@@ -144,6 +144,9 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
         AtomicBoolean result = new AtomicBoolean(true);
 
         ((EntityModelSetMixin) Minecraft.getInstance().getEntityModels()).getRoots().forEach((modelLayerLocation, layerDefinition) -> {
+            if(!modelLayerLocation.getModel().getNamespace().equalsIgnoreCase("minecraft")) {
+                return;
+            }
             File layerFolder = new File(file, modelLayerLocation.getModel().getNamespace() + "/" + modelLayerLocation.getLayer());
             File outputFile = new File(layerFolder, modelLayerLocation.getModel().getPath() + ".json");
 
