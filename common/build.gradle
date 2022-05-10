@@ -7,6 +7,10 @@ dependencies {
     })
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/palladium.accessWidener")
+}
+
 architectury {
     common()
 }

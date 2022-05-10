@@ -11,6 +11,8 @@ architectury {
 version = version + "-forge"
 
 loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+
     runConfigs.configureEach {
         if (name == "client" || name == "data")
             runDir = "../run"
@@ -21,6 +23,9 @@ loom {
     forge {
         mixinConfig "palladium-common.mixins.json"
         mixinConfig "palladium.mixins.json"
+
+        convertAccessWideners = true
+        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
         dataGen {
             mod "palladium"

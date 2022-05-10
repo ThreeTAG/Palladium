@@ -11,6 +11,8 @@ architectury {
 version = version + "-fabric"
 
 loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+
     runConfigs.configureEach {
         if (name == "client")
             runDir = "../run"
@@ -94,6 +96,7 @@ shadowJar {
 }
 
 remapJar {
+    injectAccessWidener = true
     input.set shadowJar.archiveFile
     dependsOn shadowJar
     classifier null

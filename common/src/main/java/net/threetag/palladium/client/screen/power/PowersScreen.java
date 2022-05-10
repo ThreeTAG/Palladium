@@ -9,6 +9,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -21,7 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.screen.components.IconButton;
-import net.threetag.palladium.mixin.client.AbstractContainerScreenMixin;
 import net.threetag.palladium.power.PowerHandler;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.util.icon.IIcon;
@@ -65,6 +65,7 @@ public class PowersScreen extends Screen {
         super(NarratorChatListener.NO_TITLE);
     }
 
+    @SuppressWarnings("rawtypes")
     public static void register() {
         ClientGuiEvent.INIT_POST.register((screen, access) -> {
 
@@ -72,10 +73,10 @@ public class PowersScreen extends Screen {
             int abilityButtonYPos = -1;
 
             if (screen instanceof InventoryScreen || screen.getClass().toString().equals("class top.theillusivec4.curios.client.gui.CuriosScreen")) {
-                abilityButtonXPos = ((AbstractContainerScreenMixin) screen).getLeftPos() + 134;
+                abilityButtonXPos = ((AbstractContainerScreen) screen).leftPos + 134;
                 abilityButtonYPos = screen.height / 2 - 23;
             } else if (screen instanceof CreativeModeInventoryScreen) {
-                abilityButtonXPos = ((AbstractContainerScreenMixin) screen).getLeftPos() + 148;
+                abilityButtonXPos = ((AbstractContainerScreen) screen).leftPos + 148;
                 abilityButtonYPos = screen.height / 2 - 50;
             }
 

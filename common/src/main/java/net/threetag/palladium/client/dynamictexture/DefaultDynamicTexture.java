@@ -8,7 +8,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.TransformedTexture;
 import net.threetag.palladium.client.dynamictexture.variable.ITextureVariable;
-import net.threetag.palladium.mixin.client.TextureManagerMixin;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -35,7 +34,7 @@ public class DefaultDynamicTexture extends DynamicTexture {
 
         ResourceLocation output = new ResourceLocation(replaceVariables(this.output, entity, this.textureVariableMap));
 
-        if (!((TextureManagerMixin) Minecraft.getInstance().getTextureManager()).getByPath().containsKey(output)) {
+        if (!Minecraft.getInstance().getTextureManager().byPath.containsKey(output)) {
             String s = replaceVariables(this.base, entity, this.textureVariableMap);
             ResourceLocation texture = new ResourceLocation(s);
             Minecraft.getInstance().getTextureManager().register(output, new TransformedTexture(texture, this.transformers, transformerPath -> replaceVariables(transformerPath, entity, this.textureVariableMap)));
