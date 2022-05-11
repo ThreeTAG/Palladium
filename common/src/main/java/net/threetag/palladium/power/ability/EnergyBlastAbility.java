@@ -64,8 +64,13 @@ public class EnergyBlastAbility extends Ability {
     public void firstTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         EnergyBlastEffect.start(entity, holder.getPower(), entry);
         if(Platform.getEnvironment() == Env.CLIENT && entry.getProperty(SOUND_EVENT) != null) {
-            Minecraft.getInstance().getSoundManager().play(new EnergyBlastSound(entry.getProperty(SOUND_EVENT), entity.getSoundSource(), entity, holder.getPower().getId(), entry.id));
+           this.startSound(entity, entry, holder);
         }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void startSound(LivingEntity entity, AbilityEntry entry, IPowerHolder holder) {
+        Minecraft.getInstance().getSoundManager().play(new EnergyBlastSound(entry.getProperty(SOUND_EVENT), entity.getSoundSource(), entity, holder.getPower().getId(), entry.id));
     }
 
     @Override

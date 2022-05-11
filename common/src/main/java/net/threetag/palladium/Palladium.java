@@ -3,6 +3,7 @@ package net.threetag.palladium;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
@@ -90,15 +91,17 @@ public class Palladium {
     }
 
     public static void generateDocumentation() {
-        Consumer<HTMLBuilder> consumer = HTMLBuilder::save;
-        consumer.accept(Ability.documentationBuilder());
-        consumer.accept(ConditionSerializer.documentationBuilder());
-        consumer.accept(CreativeModeTabParser.documentationBuilder());
-        consumer.accept(ArmorMaterialParser.documentationBuilder());
-        consumer.accept(ToolTierParser.documentationBuilder());
-        consumer.accept(ItemParser.documentationBuilder());
-        consumer.accept(IconSerializer.documentationBuilder());
-        PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
+        if(Platform.getEnvironment() == Env.CLIENT) {
+            Consumer<HTMLBuilder> consumer = HTMLBuilder::save;
+            consumer.accept(Ability.documentationBuilder());
+            consumer.accept(ConditionSerializer.documentationBuilder());
+            consumer.accept(CreativeModeTabParser.documentationBuilder());
+            consumer.accept(ArmorMaterialParser.documentationBuilder());
+            consumer.accept(ToolTierParser.documentationBuilder());
+            consumer.accept(ItemParser.documentationBuilder());
+            consumer.accept(IconSerializer.documentationBuilder());
+            PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
+        }
     }
 
     public static ResourceLocation id(String path) {
