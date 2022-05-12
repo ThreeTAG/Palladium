@@ -10,7 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.threetag.palladium.client.ArmorModelManager;
+import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.item.ICustomArmorTexture;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

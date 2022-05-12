@@ -26,6 +26,7 @@ import net.threetag.palladium.power.ability.AbilityColor;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AbilityBarRenderer implements IIngameOverlay {
@@ -58,6 +59,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
         Minecraft mc = Minecraft.getInstance();
         Position position = PalladiumConfig.getAbilityBarPosition();
         AbilityList list = getSelectedList();
+        boolean simple = list.simple && ABILITY_LISTS.size() <= 1;
 
         if (position == Position.HIDDEN || list == null) {
             return;
@@ -75,15 +77,17 @@ public class AbilityBarRenderer implements IIngameOverlay {
             int indicatorWidth = 52;
             int indicatorHeight = 28;
 
-            poseStack.pushPose();
-            translateIndicatorBackground(poseStack, mc.getWindow(), position, indicatorWidth, indicatorHeight);
-            renderIndicator(list, mc, poseStack, position, TEXTURE, ABILITY_LISTS.size() > 1);
-            poseStack.popPose();
+            if (!simple) {
+                poseStack.pushPose();
+                translateIndicatorBackground(poseStack, mc.getWindow(), position, indicatorWidth, indicatorHeight);
+                renderIndicator(list, mc, poseStack, position, TEXTURE, ABILITY_LISTS.size() > 1);
+                poseStack.popPose();
+            }
 
             poseStack.pushPose();
-            translateAbilitiesBackground(poseStack, mc.getWindow(), position, indicatorHeight, 24, 112);
-            renderAbilitiesBackground(mc, poseStack, position, list, TEXTURE);
-            renderAbilitiesOverlay(mc, poseStack, position, list, TEXTURE);
+            translateAbilitiesBackground(poseStack, mc.getWindow(), position, indicatorHeight, 24, 112, simple);
+            renderAbilitiesBackground(mc, poseStack, position, list, TEXTURE, simple);
+            renderAbilitiesOverlay(mc, poseStack, position, list, TEXTURE, simple);
             poseStack.popPose();
         }
     }
@@ -120,18 +124,29 @@ public class AbilityBarRenderer implements IIngameOverlay {
         }
     }
 
-    private static void translateAbilitiesBackground(PoseStack poseStack, Window window, Position position, int indicatorHeight, int abilitiesWidth, int abilitiesHeight) {
-        if (position.top) {
-            poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0, indicatorHeight - 1, 0);
+    private static void translateAbilitiesBackground(PoseStack poseStack, Window window, Position position, int indicatorHeight, int abilitiesWidth, int abilitiesHeight, boolean simple) {
+        if (!simple) {
+            if (position.top) {
+                poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0, indicatorHeight - 1, 0);
+            } else {
+                poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0, window.getGuiScaledHeight() - indicatorHeight - abilitiesHeight + 1, 0);
+            }
         } else {
-            poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0, window.getGuiScaledHeight() - indicatorHeight - abilitiesHeight + 1, 0);
+            if (position.top) {
+                poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0, 0, 0);
+            } else {
+                poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0, window.getGuiScaledHeight() - 24, 0);
+            }
         }
     }
 
-    private static void renderAbilitiesBackground(Minecraft minecraft, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture) {
+    private static void renderAbilitiesBackground(Minecraft minecraft, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture, boolean simple) {
         boolean showName = minecraft.screen instanceof ChatScreen;
 
         for (int i = 0; i < 5; i++) {
+            if(simple && i > 0) {
+                break;
+            }
             Lighting.setupFor3DItems();
             RenderSystem.enableBlend();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -182,15 +197,18 @@ public class AbilityBarRenderer implements IIngameOverlay {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.gui.blit(poseStack, 0, 0, 0, 56, 24, 112);
     }
 
-    private static void renderAbilitiesOverlay(Minecraft minecraft, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture) {
+    private static void renderAbilitiesOverlay(Minecraft minecraft, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture, boolean simple) {
         // Overlay
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.gui.blit(poseStack, 0, 0, 0, 56, 24, 112);
+        if (!simple) {
+            minecraft.gui.blit(poseStack, 0, 0, 0, 56, 24, 112);
+        } else {
+            minecraft.gui.blit(poseStack, 0, 0, 0, 168, 24, 24);
+        }
 
         // Colored Frames + Keys
         for (int i = 0; i < list.abilities.length; i++) {
@@ -250,10 +268,8 @@ public class AbilityBarRenderer implements IIngameOverlay {
     }
 
     public static void scroll(boolean up) {
-        if (up)
-            SELECTED++;
-        else
-            SELECTED--;
+        if (up) SELECTED++;
+        else SELECTED--;
 
         if (SELECTED >= ABILITY_LISTS.size()) {
             SELECTED = 0;
@@ -322,6 +338,10 @@ public class AbilityBarRenderer implements IIngameOverlay {
             }
         }
 
+        if (lists.size() <= 1) {
+            lists.forEach(AbilityList::simplify);
+        }
+
         return lists;
     }
 
@@ -330,6 +350,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
         private final Power power;
         private final AbilityEntry[] abilities = new AbilityEntry[5];
         private ResourceLocation texture;
+        public boolean simple = false;
 
         public AbilityList(Power power) {
             this.power = power;
@@ -371,15 +392,30 @@ public class AbilityBarRenderer implements IIngameOverlay {
         public AbilityEntry[] getAbilities() {
             return abilities;
         }
+
+        public void simplify() {
+            int abilities = 0;
+            AbilityEntry entry = null;
+
+            for (AbilityEntry ability : this.abilities) {
+                if (ability != null && ability.isUnlocked()) {
+                    abilities++;
+                    entry = ability;
+                }
+            }
+
+            this.simple = abilities == 1;
+
+            if (this.simple) {
+                Arrays.fill(this.abilities, null);
+                this.addAbility(0, entry);
+            }
+        }
     }
 
     public enum Position {
 
-        TOP_LEFT(true, true),
-        TOP_RIGHT(false, true),
-        BOTTOM_LEFT(true, false),
-        BOTTOM_RIGHT(false, false),
-        HIDDEN(false, false);
+        TOP_LEFT(true, true), TOP_RIGHT(false, true), BOTTOM_LEFT(true, false), BOTTOM_RIGHT(false, false), HIDDEN(false, false);
 
         private final boolean left, top;
 

@@ -16,7 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.ItemStack;
-import net.threetag.palladium.client.ArmorModelManager;
+import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.item.ICustomArmorTexture;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;

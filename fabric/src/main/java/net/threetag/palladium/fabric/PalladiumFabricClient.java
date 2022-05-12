@@ -5,7 +5,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.server.packs.PackType;
 import net.threetag.palladium.PalladiumClient;
-import net.threetag.palladium.client.ArmorModelManager;
+import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
