@@ -28,3 +28,4 @@ run/addonpacks/*
 !run/mods
 run/mods/*
 !run/mods/documentation
+.architectury-transformer/debug.log
