@@ -188,6 +188,10 @@ Hoe</a>
 <a href="#palladium:hammer">
 Hoe</a>
 </li>
+<li>
+<a href="#palladium:shield">
+Shield</a>
+</li>
 </ul>
 </p>
 <hr>
@@ -253,9 +257,9 @@ true</td>
 <td>
 armor_texture</td>
 <td>
-ResourceLocation</td>
+DynamicTexture</td>
 <td>
-Armor texture (rendered on the player when wearing it).</td>
+Armor texture (rendered on the player when wearing it). Can be a dynamic one like in render layers</td>
 <td style="background-color: lightgreen">
 true</td>
 <td>
@@ -687,6 +691,60 @@ true</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:hammer","tier":"minecraft:diamond","base_damage":-2,"attack_speed":-2.75}</pre>
+</div>
+<hr>
+
+<div id="palladium:shield">
+<h2>
+Shield</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+use_duration</td>
+<td>
+Integer</td>
+<td>
+Amount of ticks the shield can be actively held for</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+72000</td>
+</tr>
+<tr>
+<td>
+repair_ingredient</td>
+<td>
+Ingredient</td>
+<td>
+The ingredient needed to repair the shield in an anvil. Can be null for making it non-repairable</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:shield","use_duration":72000,"repair_ingredient":{"tag":"minecraft:wool"}}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {
