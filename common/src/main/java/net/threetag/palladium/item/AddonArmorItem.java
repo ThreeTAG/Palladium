@@ -25,6 +25,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.client.ArmorModelManager;
+import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.SkinTypedValue;
@@ -40,7 +41,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
 
     private List<Component> tooltipLines;
     private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
-    private SkinTypedValue<ResourceLocation> armorTexture;
+    private SkinTypedValue<DynamicTexture> armorTexture;
 
     public AddonArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
         super(armorMaterial, equipmentSlot, properties);
@@ -54,7 +55,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
 
     @Override
     public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return entity instanceof LivingEntity livingEntity ? this.armorTexture.get(livingEntity) : null;
+        return entity instanceof LivingEntity livingEntity ? this.armorTexture.get(livingEntity).getTexture(livingEntity) : null;
     }
 
     @Override
@@ -110,7 +111,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
             AddonArmorItem item = new AddonArmorItem(armorMaterial, slot, properties);
 
             if (Platform.getEnvironment() == Env.CLIENT) {
-                item.armorTexture = SkinTypedValue.fromJSON(json.get("armor_texture"), jsonElement -> GsonUtil.convertToResourceLocation(jsonElement, "armor_texture"));
+                item.armorTexture = SkinTypedValue.fromJSON(json.get("armor_texture"), DynamicTexture::parse);
                 GsonUtil.ifHasKey(json, "armor_model_layer", jsonElement -> {
                     ArmorModelManager.register(item,
                             json.has("armor_model") ? SkinTypedValue.fromJSON(json.get("armor_model"), jsonElement1 -> {
@@ -143,8 +144,8 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
                     .description("Armor material, which defines certain characteristics about the armor. Open armor_materials.html for seeing how to make custom ones. Possible values: " + Arrays.toString(ArmorMaterialParser.getIds().toArray(new ResourceLocation[0])))
                     .required().exampleJson(new JsonPrimitive("minecraft:diamond"));
 
-            builder.addProperty("armor_texture", ResourceLocation.class)
-                    .description("Armor texture (rendered on the player when wearing it).")
+            builder.addProperty("armor_texture", DynamicTexture.class)
+                    .description("Armor texture (rendered on the player when wearing it). Can be a dynamic one like in render layers")
                     .required().exampleJson(new JsonPrimitive("example:textures/models/armor/example_armor.png"));
 
             builder.addProperty("armor_model", ResourceLocation.class)
