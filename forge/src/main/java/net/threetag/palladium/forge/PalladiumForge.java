@@ -18,7 +18,7 @@ import net.threetag.palladium.PalladiumClient;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.forge.AddonPackType;
 import net.threetag.palladium.block.PalladiumBlocks;
-import net.threetag.palladium.client.ArmorModelManager;
+import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.model.EntityModelManager;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.data.forge.*;

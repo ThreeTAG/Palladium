@@ -1,4 +1,4 @@
-package net.threetag.palladium.client;
+package net.threetag.palladium.client.model;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
