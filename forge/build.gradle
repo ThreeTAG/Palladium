@@ -85,6 +85,8 @@ sourceSets.main.resources {
 
 shadowJar {
     exclude "fabric.mod.json"
+    exclude "palladium.accessWidener"
+    exclude "palladium.common.json"
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"

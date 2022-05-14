@@ -33,6 +33,7 @@
     "palladium.mixins.json",
     "palladium-common.mixins.json"
   ],
+  "accessWidener": "palladium.accessWidener",
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.18.1",
