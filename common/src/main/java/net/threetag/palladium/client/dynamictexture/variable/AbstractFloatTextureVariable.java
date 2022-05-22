@@ -51,7 +51,7 @@ public abstract class AbstractFloatTextureVariable implements ITextureVariable {
         MAX("max", Float::min),
         MODULO("modulo", (input, modulo) -> input % modulo),
         ROUND((input, obj) -> {
-            String mode = obj.toString();
+            String mode = obj.getAsString();
             if (mode.equalsIgnoreCase("to_int")) {
                 return input.intValue();
             } else if (mode.equalsIgnoreCase("ceil")) {

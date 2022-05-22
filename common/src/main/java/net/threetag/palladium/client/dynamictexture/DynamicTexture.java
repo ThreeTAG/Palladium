@@ -35,6 +35,7 @@ public abstract class DynamicTexture {
         registerVariable(Palladium.id("small_arms"), SmallArmsTextureVariable::new);
         registerVariable(Palladium.id("crouching"), CrouchingTextureVariable::new);
         registerVariable(Palladium.id("moon_phase"), MoonPhaseTextureVariable::new);
+        registerVariable(Palladium.id("cape"), CapeTextureVariable::new);
     }
 
     public abstract ResourceLocation getTexture(LivingEntity entity);
