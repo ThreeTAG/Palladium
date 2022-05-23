@@ -1,5 +1,6 @@
 package net.threetag.palladium.data.forge;
 
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -7,8 +8,6 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.item.PalladiumItems;
-
-import java.util.function.Supplier;
 
 public class PalladiumItemModelProvider extends ItemModelProvider {
 
@@ -62,20 +61,20 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.withExistingParent(PalladiumItems.VIBRANIUM_WEAVE_BOOTS.getId().getPath(), new ResourceLocation("item/generated")).texture("layer0", new ResourceLocation("item/leather_boots")).texture("layer1", new ResourceLocation(Palladium.MOD_ID, "item/vibranium_weave_boots_overlay"));
     }
 
-    public void defaultItem(Supplier<Item> item) {
+    public void defaultItem(RegistrySupplier<Item> item) {
         this.defaultItem(item, "item/generated");
     }
 
-    public void defaultItem(Supplier<Item> item, String parent) {
-        this.singleTexture(item.get().getRegistryName().getPath(), new ResourceLocation(parent), "layer0", new ResourceLocation(Palladium.MOD_ID, "item/" + item.get().getRegistryName().getPath()));
+    public void defaultItem(RegistrySupplier<Item> item, String parent) {
+        this.singleTexture(item.getId().getPath(), new ResourceLocation(parent), "layer0", new ResourceLocation(item.getId().getNamespace(), "item/" + item.getId().getPath()));
     }
 
-    public void defaultBlockItem(Supplier<Item> item) {
-        this.withExistingParent(item.get().getRegistryName().getPath(), new ResourceLocation(item.get().getRegistryName().getNamespace(), "block/" + item.get().getRegistryName().getPath()));
+    public void defaultBlockItem(RegistrySupplier<Item> item) {
+        this.withExistingParent(item.getId().getPath(), new ResourceLocation(item.getId().getNamespace(), "block/" + item.getId().getPath()));
     }
 
-    public void defaultBlockItem2d(Supplier<Item> item) {
-        this.singleTexture(item.get().getRegistryName().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(Palladium.MOD_ID, "block/" + item.get().getRegistryName().getPath()));
+    public void defaultBlockItem2d(RegistrySupplier<Item> item) {
+        this.singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(item.getId().getNamespace(), "block/" + item.getId().getPath()));
     }
 
     @Override
