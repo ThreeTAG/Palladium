@@ -49,7 +49,6 @@ configurations {
 
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
-    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
     modCompileOnly "mezz.jei:jei-${rootProject.jei_version}:api"
     modRuntimeOnly "mezz.jei:jei-${rootProject.jei_version}"
 

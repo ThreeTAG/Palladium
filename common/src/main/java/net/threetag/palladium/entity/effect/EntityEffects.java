@@ -1,14 +1,14 @@
 package net.threetag.palladium.entity.effect;
 
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.entity.EffectEntity;
 import net.threetag.palladium.event.PalladiumEvents;
+import net.threetag.palladium.registry.DeferredRegistry;
+import net.threetag.palladium.registry.RegistrySupplier;
 
 public class EntityEffects {
 
-    public static final DeferredRegister<EntityEffect> EFFECTS = DeferredRegister.create(Palladium.MOD_ID, EntityEffect.RESOURCE_KEY);
+    public static final DeferredRegistry<EntityEffect> EFFECTS = DeferredRegistry.create(Palladium.MOD_ID, EntityEffect.RESOURCE_KEY);
 
     public static final RegistrySupplier<EntityEffect> ENERGY_BLAST = EFFECTS.register("energy_blast", EnergyBlastEffect::new);
 

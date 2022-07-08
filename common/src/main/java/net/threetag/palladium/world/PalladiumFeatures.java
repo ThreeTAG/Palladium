@@ -1,8 +1,6 @@
 package net.threetag.palladium.world;
 
-import dev.architectury.registry.level.biome.BiomeModifications;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.FeatureUtils;
@@ -22,12 +20,14 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTes
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
+import net.threetag.palladium.registry.DeferredRegistry;
+import net.threetag.palladium.registry.RegistrySupplier;
 
 import java.util.List;
 
 public class PalladiumFeatures {
 
-    public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Palladium.MOD_ID, Registry.FEATURE_REGISTRY);
+    public static final DeferredRegistry<Feature<?>> FEATURES = DeferredRegistry.create(Palladium.MOD_ID, Registry.FEATURE_REGISTRY);
 
     public static final RegistrySupplier<UndergroundMeteoriteFeature> UNDERGROUND_METEORITE = FEATURES.register("underground_meteorite", () -> new UndergroundMeteoriteFeature(OreConfiguration.CODEC));
 

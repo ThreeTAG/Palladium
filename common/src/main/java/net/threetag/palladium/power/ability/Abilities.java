@@ -1,14 +1,14 @@
 package net.threetag.palladium.power.ability;
 
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.registry.DeferredRegistry;
+import net.threetag.palladium.registry.RegistrySupplier;
 import net.threetag.palladium.util.icon.TexturedIcon;
 
 public class Abilities {
 
-    public static final DeferredRegister<Ability> ABILITIES = DeferredRegister.create(Palladium.MOD_ID, Ability.RESOURCE_KEY);
+    public static final DeferredRegistry<Ability> ABILITIES = DeferredRegistry.create(Palladium.MOD_ID, Ability.RESOURCE_KEY);
 
     public static final RegistrySupplier<Ability> COMMAND = ABILITIES.register("command", CommandAbility::new);
     public static final RegistrySupplier<Ability> RENDER_LAYER = ABILITIES.register("render_layer", RenderLayerAbility::new);

@@ -1,7 +1,5 @@
 package net.threetag.palladium.block;
 
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.*;
@@ -9,11 +7,13 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.registry.DeferredRegistry;
+import net.threetag.palladium.registry.RegistrySupplier;
 import net.threetag.palladium.util.PalladiumBlockUtil;
 
 public class PalladiumBlocks {
 
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Palladium.MOD_ID, Registry.BLOCK_REGISTRY);
+    public static final DeferredRegistry<Block> BLOCKS = DeferredRegistry.create(Palladium.MOD_ID, Registry.BLOCK_REGISTRY);
 
     public static final RegistrySupplier<Block> LEAD_ORE = BLOCKS.register("lead_ore", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
     public static final RegistrySupplier<Block> DEEPSLATE_LEAD_ORE = BLOCKS.register("deepslate_lead_ore", () -> new OreBlock(BlockBehaviour.Properties.copy(LEAD_ORE.get()).color(MaterialColor.DEEPSLATE).strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE)));

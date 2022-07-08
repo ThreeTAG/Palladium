@@ -1,11 +1,11 @@
 package net.threetag.palladium.data.forge;
 
-import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.registry.RegistrySupplier;
 import net.threetag.palladium.sound.PalladiumSoundEvents;
 
 public class PalladiumSoundDefinitionsProvider extends SoundDefinitionsProvider {

@@ -1,6 +1,5 @@
 package net.threetag.palladium.data.forge;
 
-import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -8,6 +7,7 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.registry.RegistrySupplier;
 
 public class PalladiumItemModelProvider extends ItemModelProvider {
 

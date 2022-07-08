@@ -1,9 +1,5 @@
 package net.threetag.palladium;
 
-import dev.architectury.event.events.common.CommandRegistrationEvent;
-import dev.architectury.event.events.common.LifecycleEvent;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
@@ -14,6 +10,8 @@ import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.pehkui.PehkuiCompat;
+import net.threetag.palladium.condition.ConditionSerializer;
+import net.threetag.palladium.condition.ConditionSerializers;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.entity.FlightHandler;
 import net.threetag.palladium.entity.PalladiumAttributes;
@@ -28,10 +26,9 @@ import net.threetag.palladium.power.SuitSetPowerManager;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEventHandler;
-import net.threetag.palladium.condition.ConditionSerializer;
-import net.threetag.palladium.condition.ConditionSerializers;
 import net.threetag.palladium.power.provider.PowerProviders;
 import net.threetag.palladium.sound.PalladiumSoundEvents;
+import net.threetag.palladium.util.Platform;
 import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.icon.IconSerializers;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
@@ -85,13 +82,13 @@ public class Palladium {
 
         CommandRegistrationEvent.EVENT.register((dispatcher, selection) -> SuperpowerCommand.register(dispatcher));
 
-        if (Platform.isDevelopmentEnvironment()) {
+        if (!Platform.isProduction()) {
             PalladiumDebug.init();
         }
     }
 
     public static void generateDocumentation() {
-        if(Platform.getEnvironment() == Env.CLIENT) {
+        if(Platform.isClient()) {
             Consumer<HTMLBuilder> consumer = HTMLBuilder::save;
             consumer.accept(Ability.documentationBuilder());
             consumer.accept(ConditionSerializer.documentationBuilder());

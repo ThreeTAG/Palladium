@@ -1,6 +1,5 @@
 package net.threetag.palladium.data.forge;
 
-import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -11,6 +10,7 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
+import net.threetag.palladium.registry.RegistrySupplier;
 
 import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOLDER;
 
