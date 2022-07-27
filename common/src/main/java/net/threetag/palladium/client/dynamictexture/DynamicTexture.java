@@ -30,6 +30,7 @@ public abstract class DynamicTexture {
         registerTransformer(Palladium.id("overlay"), j -> new OverlayTextureTransformer(GsonHelper.getAsString(j, "overlay")));
 
         registerVariable(Palladium.id("entity_ticks"), EntityTicksTextureVariable::new);
+        registerVariable(Palladium.id("ability_ticks"), AbilityTicksTextureVariable::new);
         registerVariable(Palladium.id("entity_health"), EntityHealthTextureVariable::new);
         registerVariable(Palladium.id("ability_integer_property"), AbilityIntegerPropertyVariable::new);
         registerVariable(Palladium.id("small_arms"), SmallArmsTextureVariable::new);
