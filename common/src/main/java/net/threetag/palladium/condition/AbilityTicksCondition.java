@@ -43,7 +43,7 @@ public class AbilityTicksCondition extends Condition {
 
     @Override
     public ConditionSerializer getSerializer() {
-        return ConditionSerializers.ABILITY_TICKS_PROPERTY.get();
+        return ConditionSerializers.ABILITY_TICKS.get();
     }
 
     public static class Serializer extends ConditionSerializer {
