@@ -39,6 +39,10 @@ palladium:ability_enabled</a>
 palladium:ability_integer_property</a>
 </li>
 <li>
+<a href="#palladium:ability_ticks">
+palladium:ability_ticks</a>
+</li>
+<li>
 <a href="#palladium:ability_unlocked">
 palladium:ability_unlocked</a>
 </li>
@@ -223,7 +227,7 @@ min</td>
 <td>
 Integer</td>
 <td>
-Minimum required amount of health</td>
+Minimum required amount of the property value</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -235,7 +239,7 @@ max</td>
 <td>
 Integer</td>
 <td>
-Maximum required amount of health</td>
+Maximum required amount of the property value</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -247,6 +251,86 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:ability_integer_property","power":"null","ability":"ability_id","property":"value","min":0,"max":0}</pre>
+</div>
+<hr>
+
+<div id="palladium:ability_ticks">
+<h2>
+palladium:ability_ticks</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+power</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the power where is the desired ability is located. Can be null IF used for abilities, then it will look into the current power</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+ability</td>
+<td>
+String</td>
+<td>
+ID of the desired ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ability_id</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Minimum required amount of enabled ticks</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Maximum required amount of enabled ticks</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_ticks","power":"null","ability":"ability_id","min":0,"max":0}</pre>
 </div>
 <hr>
 

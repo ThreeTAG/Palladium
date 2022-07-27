@@ -1,0 +1,29 @@
+{
+  "name": "Ability Ticks Condition Test",
+  "icon": "minecraft:egg",
+  "abilities": {
+    "render_layer": {
+      "type": "palladium:render_layer",
+      "render_layer": "blank"
+    },
+    "switch_power": {
+      "type": "palladium:command",
+      "commands": [
+        "say Test!",
+        "superpower remove"
+      ],
+      "hidden": false,
+      "list_index": 0,
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "palladium:ability_ticks",
+            "ability": "render_layer",
+            "min": 217,
+            "max": 217
+          }
+        ]
+      }
+    }
+  }
+}
