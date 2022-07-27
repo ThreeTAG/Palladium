@@ -21,6 +21,17 @@ public class PalladiumDebug {
             }
             return EventResult.pass();
         });
+
+//        PalladiumEvents.MOVEMENT_INPUT_UPDATE.register((player, input) -> {
+//            input.right = false;
+//            input.left = false;
+//            input.up = false;
+//            input.down = false;
+//            input.shiftKeyDown = false;
+//            input.jumping = false;
+//            input.forwardImpulse = 0F;
+//            input.leftImpulse = 0F;
+//        });
     }
 
 }
