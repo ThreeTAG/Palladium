@@ -5,6 +5,7 @@
   "client": [
     "client.GameRendererMixin",
     "client.HumanoidModelMixin",
+    "client.LivingEntityRendererMixin",
     "client.PlayerRendererMixin"
   ],
   "mixins": [

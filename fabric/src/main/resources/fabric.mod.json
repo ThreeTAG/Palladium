@@ -42,7 +42,8 @@
   "custom": {
     "cardinal-components": [
       "palladium:properties",
-      "palladium:power_handler"
+      "palladium:power_handler",
+      "palladium:accessories"
     ]
   }
 }

@@ -4,6 +4,8 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.accessory.Accessories;
+import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.item.PalladiumItems;
@@ -105,6 +107,25 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Powers");
+            this.add("gui.palladium.accessories", "Accessories");
+
+            // Accessories
+            this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
+            this.addAccessory(Accessories.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
+            this.addAccessory(Accessories.HYPERION_ARM, "Hyperion Arm");
+
+            this.add("accessory_slot.hat", "Hat");
+            this.add("accessory_slot.head", "Head");
+            this.add("accessory_slot.face", "Face");
+            this.add("accessory_slot.chest", "Chest");
+            this.add("accessory_slot.back", "Back");
+            this.add("accessory_slot.main_arm", "Main Arm");
+            this.add("accessory_slot.off_arm", "Off Arm");
+            this.add("accessory_slot.main_hand", "Main Hand");
+            this.add("accessory_slot.off_hand", "Off Hand");
+            this.add("accessory_slot.right_leg", "Right Leg");
+            this.add("accessory_slot.left_leg", "Left Leg");
+            this.add("accessory_slot.special", "Special");
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Heat Vision");
@@ -192,6 +213,25 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
+            this.add("gui.palladium.accessories", "Zubeh\u00F6r");
+
+            // Accessories
+            this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
+            this.addAccessory(Accessories.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
+            this.addAccessory(Accessories.HYPERION_ARM, "Hyperion Arm");
+
+            this.add("accessory_slot.hat", "Hut");
+            this.add("accessory_slot.head", "Kopf");
+            this.add("accessory_slot.face", "Gesicht");
+            this.add("accessory_slot.chest", "Brust");
+            this.add("accessory_slot.back", "R\u00FCcken");
+            this.add("accessory_slot.main_arm", "Hauptarm");
+            this.add("accessory_slot.off_arm", "Zweitarm");
+            this.add("accessory_slot.main_hand", "Haupthand");
+            this.add("accessory_slot.off_hand", "Zweithand");
+            this.add("accessory_slot.right_leg", "Rechtes Bein");
+            this.add("accessory_slot.left_leg", "Linkes Bein");
+            this.add("accessory_slot.special", "Spezial");
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
@@ -279,6 +319,25 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
+            this.add("gui.palladium.accessories", "Zubeh\u00F6r");
+
+            // Accessories
+            this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
+            this.addAccessory(Accessories.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
+            this.addAccessory(Accessories.HYPERION_ARM, "Hyperion Arm");
+
+            this.add("accessory_slot.hat", "Hut");
+            this.add("accessory_slot.head", "Nischel");
+            this.add("accessory_slot.face", "Jesichd");
+            this.add("accessory_slot.chest", "Brust");
+            this.add("accessory_slot.back", "R\u00FCggen");
+            this.add("accessory_slot.main_arm", "Haupdarm");
+            this.add("accessory_slot.off_arm", "Zweitarm");
+            this.add("accessory_slot.main_hand", "Haupthand");
+            this.add("accessory_slot.off_hand", "Nebenhand");
+            this.add("accessory_slot.right_leg", "Reschdes Bein");
+            this.add("accessory_slot.left_leg", "Linges Bein");
+            this.add("accessory_slot.special", "Spezial");
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
@@ -292,6 +351,15 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
     public void add(Ability key, String name) {
         ResourceLocation id = Ability.REGISTRY.getId(key);
         add("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath(), name);
+    }
+
+    protected void addAccessory(Supplier<? extends Accessory> key, String name) {
+        add(key.get(), name);
+    }
+
+    public void add(Accessory key, String name) {
+        ResourceLocation id = Accessory.REGISTRY.getId(key);
+        add("accessory." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath(), name);
     }
 
     @Override

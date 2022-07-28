@@ -5,6 +5,7 @@ import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.accessory.Accessories;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.CreativeModeTabParser;
@@ -32,6 +33,7 @@ import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.condition.ConditionSerializers;
 import net.threetag.palladium.power.provider.PowerProviders;
 import net.threetag.palladium.sound.PalladiumSoundEvents;
+import net.threetag.palladium.util.SupporterHandler;
 import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.icon.IconSerializers;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
@@ -60,6 +62,7 @@ public class Palladium {
         EntityEffects.EFFECTS.register();
         PalladiumEntityTypes.ENTITIES.register();
         PalladiumSoundEvents.SOUNDS.register();
+        Accessories.ACCESSORIES.register();
 
         PalladiumNetwork.init();
         EntityPropertyHandler.init();
@@ -73,6 +76,7 @@ public class Palladium {
         PalladiumAttributes.init();
         FlightHandler.init();
         EntityEffects.init();
+        SupporterHandler.init();
 
         LifecycleEvent.SETUP.register(() -> {
             PalladiumFeatures.init();
