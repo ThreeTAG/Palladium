@@ -7,6 +7,8 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import dev.architectury.event.events.client.ClientGuiEvent;
+import dev.architectury.platform.Platform;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractSelectionList;
@@ -16,16 +18,20 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.SkinCustomizationScreen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.accessory.AccessorySlot;
+import net.threetag.palladium.client.screen.components.EditButton;
 import net.threetag.palladium.client.screen.components.FlatIconButton;
 import net.threetag.palladium.network.ToggleAccessoryMessage;
 import net.threetag.palladium.util.SupporterHandler;
@@ -46,10 +52,31 @@ public class AccessoryScreen extends OptionsSubScreen {
 
     public static void addButton() {
         ClientGuiEvent.INIT_POST.register((screen, access) -> {
-            if (screen instanceof SkinCustomizationScreen && Minecraft.getInstance().player != null && !Accessory.getAvailableAccessories(SupporterHandler.getPlayerData(Minecraft.getInstance().player.getGameProfile().getId())).isEmpty()) {
-                access.addRenderableWidget(new Button(screen.width / 2 - 100, screen.height / 6 + 24 * (12 >> 1), 200, 20, new TranslatableComponent("gui.palladium.accessories"), (button) -> {
-                    Minecraft.getInstance().setScreen(new AccessoryScreen(screen));
-                }));
+            Button button = null;
+            Component text = new TranslatableComponent("gui.palladium.accessories");
+
+            if (screen instanceof SkinCustomizationScreen) {
+                button = new Button(screen.width / 2 - 100, screen.height / 6 + 24 * (12 >> 1), 200, 20, text,
+                        b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen)));
+            }
+
+            if (screen instanceof InventoryScreen inv) {
+                button = new EditButton(inv.leftPos + 63, inv.topPos + 66, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen)), (b, poseStack, i, j) -> screen.renderTooltip(poseStack, text, i, j));
+            }
+
+            if (screen instanceof CreativeModeInventoryScreen inv) {
+                button = new EditButton(inv.leftPos + 93, inv.topPos + 37, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen)), (b, poseStack, i, j) -> screen.renderTooltip(poseStack, text, i, j)) {
+                    @Override
+                    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+                        this.visible = inv.getSelectedTab() == 11;
+                        super.render(poseStack, mouseX, mouseY, partialTick);
+                    }
+                };
+            }
+
+            if (button != null) {
+                button.active = Minecraft.getInstance().player != null && !Accessory.getAvailableAccessories(SupporterHandler.getPlayerData(Minecraft.getInstance().player.getGameProfile().getId())).isEmpty();
+                access.addRenderableWidget(button);
             }
         });
     }
@@ -292,7 +319,13 @@ public class AccessoryScreen extends OptionsSubScreen {
         @Override
         public void render(PoseStack poseStack, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTick) {
             Font fontRenderer = this.parent.font;
-            fontRenderer.drawShadow(poseStack, fontRenderer.split(this.accessory.getDisplayName(), width - 25).get(0), left, top + 4, isMouseOver ? 16777120 : 0xfefefe);
+            Component name = this.accessory.getDisplayName();
+
+            if (Platform.isDevelopmentEnvironment() && !SupporterHandler.getPlayerData(Minecraft.getInstance().player.getUUID()).getAccessories().contains(this.accessory)) {
+                name = name.copy().withStyle(ChatFormatting.STRIKETHROUGH);
+            }
+
+            fontRenderer.drawShadow(poseStack, fontRenderer.split(name, width - 25).get(0), left, top + 4, isMouseOver ? 16777120 : 0xfefefe);
             if (this.active) {
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderTexture(0, FlatIconButton.WIDGETS_LOCATION);

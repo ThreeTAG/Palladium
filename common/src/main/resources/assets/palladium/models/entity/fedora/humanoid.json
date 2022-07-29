@@ -1,0 +1,151 @@
+{
+    "texture_width": 64,
+    "texture_height": 32,
+    "mesh": {
+        "right_arm": {
+            "part_pose": {
+                "offset": [
+                    -5,
+                    2,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "left_leg": {
+            "part_pose": {
+                "offset": [
+                    1.9,
+                    12,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "jacket": {
+            "cubes": [],
+            "children": {}
+        },
+        "body": {
+            "cubes": [],
+            "children": {}
+        },
+        "head": {
+            "cubes": [
+                {
+                    "origin": [
+                        -6.5,
+                        -6,
+                        -6.5
+                    ],
+                    "dimensions": [
+                        13,
+                        1,
+                        13
+                    ],
+                    "texture_offset": [
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "origin": [
+                        -4.5,
+                        -9,
+                        -4.5
+                    ],
+                    "dimensions": [
+                        9,
+                        3,
+                        9
+                    ],
+                    "texture_offset": [
+                        0,
+                        14
+                    ]
+                }
+            ],
+            "children": {}
+        },
+        "left_sleeve": {
+            "part_pose": {
+                "offset": [
+                    5,
+                    2,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "right_sleeve": {
+            "part_pose": {
+                "offset": [
+                    -5,
+                    2,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "left_arm": {
+            "part_pose": {
+                "offset": [
+                    5,
+                    2,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "right_leg": {
+            "part_pose": {
+                "offset": [
+                    -1.9,
+                    12,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "cloak": {
+            "cubes": [],
+            "children": {}
+        },
+        "ear": {
+            "cubes": [],
+            "children": {}
+        },
+        "right_pants": {
+            "part_pose": {
+                "offset": [
+                    -1.9,
+                    12,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "hat": {
+            "cubes": [],
+            "children": {}
+        },
+        "left_pants": {
+            "part_pose": {
+                "offset": [
+                    1.9,
+                    12,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        }
+    }
+}

@@ -6,6 +6,7 @@ import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.accessory.Accessories;
+import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.CreativeModeTabParser;
@@ -77,6 +78,7 @@ public class Palladium {
         FlightHandler.init();
         EntityEffects.init();
         SupporterHandler.init();
+        Accessory.init();
 
         LifecycleEvent.SETUP.register(() -> {
             PalladiumFeatures.init();

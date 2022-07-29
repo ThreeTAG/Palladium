@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -78,27 +79,51 @@ public class AccessorySlot {
     }
 
     @Environment(EnvType.CLIENT)
-    public void setVisibility(PlayerModel<?> model, Player player, boolean visible) {
+    public void setVisibility(HumanoidModel<?> model, Player player, boolean visible) {
         if (this == HEAD) {
-            model.head.visible = model.jacket.visible = visible;
+            model.head.visible = model.hat.visible = visible;
+            if (model instanceof PlayerModel<?> playerModel) {
+                playerModel.hat.visible = visible;
+            }
         } else if (this == CHEST) {
-            model.body.visible = model.jacket.visible = visible;
+            model.body.visible = visible;
+            if (model instanceof PlayerModel<?> playerModel) {
+                playerModel.jacket.visible = visible;
+            }
         } else if (this == MAIN_ARM) {
             if (player.getMainArm() == HumanoidArm.RIGHT) {
-                model.rightArm.visible = model.rightSleeve.visible = visible;
+                model.rightArm.visible = visible;
+                if (model instanceof PlayerModel<?> playerModel) {
+                    playerModel.rightSleeve.visible = visible;
+                }
             } else {
-                model.leftArm.visible = model.leftSleeve.visible = visible;
+                model.leftArm.visible = visible;
+                if (model instanceof PlayerModel<?> playerModel) {
+                    playerModel.leftSleeve.visible = visible;
+                }
             }
         } else if (this == OFF_ARM) {
             if (player.getMainArm() == HumanoidArm.RIGHT) {
-                model.leftArm.visible = model.leftSleeve.visible = visible;
+                model.leftArm.visible = visible;
+                if (model instanceof PlayerModel<?> playerModel) {
+                    playerModel.leftSleeve.visible = visible;
+                }
             } else {
-                model.rightArm.visible = model.rightSleeve.visible = visible;
+                model.rightArm.visible = visible;
+                if (model instanceof PlayerModel<?> playerModel) {
+                    playerModel.rightSleeve.visible = visible;
+                }
             }
         } else if (this == RIGHT_LEG) {
-            model.rightLeg.visible = model.rightPants.visible = visible;
+            model.rightLeg.visible = visible;
+            if (model instanceof PlayerModel<?> playerModel) {
+                playerModel.rightPants.visible = visible;
+            }
         } else if (this == LEFT_LEG) {
-            model.leftLeg.visible = model.leftPants.visible = visible;
+            model.leftLeg.visible = visible;
+            if (model instanceof PlayerModel<?> playerModel) {
+                playerModel.leftPants.visible = visible;
+            }
         }
     }
 

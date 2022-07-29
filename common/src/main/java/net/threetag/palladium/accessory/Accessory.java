@@ -2,6 +2,7 @@ package net.threetag.palladium.accessory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.core.RegistryEntry;
+import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.registries.Registrar;
@@ -12,6 +13,7 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -22,9 +24,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.event.PalladiumEvents;
+import net.threetag.palladium.network.SyncAccessoriesMessage;
 import net.threetag.palladium.util.SupporterHandler;
 
 import javax.annotation.Nullable;
@@ -38,12 +45,27 @@ public abstract class Accessory extends RegistryEntry<Accessory> {
     public static final ResourceKey<Registry<Accessory>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "accessories"));
     public static final Registrar<Accessory> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new Accessory[0]).build();
 
+    public static void init() {
+        PlayerEvent.PLAYER_JOIN.register(player -> Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).sendTo(player)));
+
+        PalladiumEvents.START_TRACKING.register((tracker, target) -> {
+            if (target instanceof Player player && tracker instanceof ServerPlayer serverPlayer) {
+                Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).sendTo(serverPlayer));
+            }
+        });
+    }
+
     public boolean isAvailable(Player entity) {
         return Platform.isDevelopmentEnvironment() || SupporterHandler.getPlayerData(entity.getUUID()).hasAccessory(this);
     }
 
     public Component getDisplayName() {
         return new TranslatableComponent(Util.makeDescriptionId("accessory", REGISTRY.getId(this)));
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void onReload(EntityModelSet entityModelSet) {
+
     }
 
     @Environment(EnvType.CLIENT)
@@ -107,5 +129,15 @@ public abstract class Accessory extends RegistryEntry<Accessory> {
     @ExpectPlatform
     public static Optional<AccessoryPlayerData> getPlayerData(Player player) {
         throw new AssertionError();
+    }
+
+    public static class ReloadManager implements ResourceManagerReloadListener {
+
+        @Override
+        public void onResourceManagerReload(ResourceManager resourceManager) {
+            for (Accessory accessory : Accessory.REGISTRY) {
+                accessory.onReload(Minecraft.getInstance().getEntityModels());
+            }
+        }
     }
 }

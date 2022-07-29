@@ -19,6 +19,7 @@ public class PalladiumDebug {
                     player.displayClientMessage(new TextComponent("Energy: " + storage.getEnergyAmount() + "/" + storage.getEnergyCapacity()), true);
                 }
             }
+
             return EventResult.pass();
         });
 

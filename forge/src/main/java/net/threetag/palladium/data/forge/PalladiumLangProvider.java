@@ -111,8 +111,21 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
+            this.addAccessory(Accessories.HEROBRINE_EYES, "Herobrine Eyes");
+            this.addAccessory(Accessories.FACE_MASK, "Face Mask");
+            this.addAccessory(Accessories.GLASSES_3D, "3D Glasses");
+            this.addAccessory(Accessories.SUN_GLASSES, "Sun Glasses");
+            this.addAccessory(Accessories.HEART_GLASSES, "Heart Glasses");
+            this.addAccessory(Accessories.OWCA_FEDORA, "OWCA Fedora");
+            this.addAccessory(Accessories.ELTON_HAT, "Elton Hat");
+            this.addAccessory(Accessories.STRAWHAT, "Strawhat");
+            this.addAccessory(Accessories.FEZ, "Fez");
+            this.addAccessory(Accessories.SEA_PICKLE_HAT, "Sea Pickle Hat");
             this.addAccessory(Accessories.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
             this.addAccessory(Accessories.HYPERION_ARM, "Hyperion Arm");
+            this.addAccessory(Accessories.MECHANICAL_ARM, "Mechanical Arm");
+            this.addAccessory(Accessories.HAMMOND_CANE, "Hammond Cane");
+            this.addAccessory(Accessories.WOODEN_LEG, "Wooden Leg");
 
             this.add("accessory_slot.hat", "Hat");
             this.add("accessory_slot.head", "Head");
@@ -217,8 +230,21 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
+            this.addAccessory(Accessories.HEROBRINE_EYES, "Herobrineaugen");
+            this.addAccessory(Accessories.FACE_MASK, "Atemschutzmaske");
+            this.addAccessory(Accessories.GLASSES_3D, "3D-Brille");
+            this.addAccessory(Accessories.SUN_GLASSES, "Sonnenbrille");
+            this.addAccessory(Accessories.HEART_GLASSES, "Herzbrille");
+            this.addAccessory(Accessories.OWCA_FEDORA, "OWCA-Hut");
+            this.addAccessory(Accessories.ELTON_HAT, "Elton-Hut");
+            this.addAccessory(Accessories.STRAWHAT, "Strohhut");
+            this.addAccessory(Accessories.FEZ, "Fez");
+            this.addAccessory(Accessories.SEA_PICKLE_HAT, "Seegurkenhut");
             this.addAccessory(Accessories.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
             this.addAccessory(Accessories.HYPERION_ARM, "Hyperion Arm");
+            this.addAccessory(Accessories.MECHANICAL_ARM, "Mechanischer Arm");
+            this.addAccessory(Accessories.HAMMOND_CANE, "Hammonds Gehstock");
+            this.addAccessory(Accessories.WOODEN_LEG, "Holzbein");
 
             this.add("accessory_slot.hat", "Hut");
             this.add("accessory_slot.head", "Kopf");
@@ -323,8 +349,21 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
+            this.addAccessory(Accessories.HEROBRINE_EYES, "Herobrineaugen");
+            this.addAccessory(Accessories.FACE_MASK, "Atemschutzmaske");
+            this.addAccessory(Accessories.GLASSES_3D, "3D-Brille");
+            this.addAccessory(Accessories.SUN_GLASSES, "Sonnenbrille");
+            this.addAccessory(Accessories.HEART_GLASSES, "Herzbrille");
+            this.addAccessory(Accessories.OWCA_FEDORA, "OWCA-Hut");
+            this.addAccessory(Accessories.ELTON_HAT, "Elton-Hut");
+            this.addAccessory(Accessories.STRAWHAT, "Strohhut");
+            this.addAccessory(Accessories.FEZ, "Fez");
+            this.addAccessory(Accessories.SEA_PICKLE_HAT, "Seegurkenhut");
             this.addAccessory(Accessories.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
             this.addAccessory(Accessories.HYPERION_ARM, "Hyperion Arm");
+            this.addAccessory(Accessories.MECHANICAL_ARM, "Mechanischer Arm");
+            this.addAccessory(Accessories.HAMMOND_CANE, "Hammonds Gehstock");
+            this.addAccessory(Accessories.WOODEN_LEG, "Holzbehn");
 
             this.add("accessory_slot.hat", "Hut");
             this.add("accessory_slot.head", "Nischel");

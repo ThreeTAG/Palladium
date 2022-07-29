@@ -15,6 +15,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
+import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.forge.AddonPackType;
 import net.threetag.palladium.block.PalladiumBlocks;
@@ -51,6 +52,7 @@ public class PalladiumForge {
     public static void reloadRegisterClient(RegisterClientReloadListenersEvent e) {
         e.registerReloadListener(new PackRenderLayerManager());
         e.registerReloadListener(new ArmorModelManager());
+        e.registerReloadListener(new Accessory.ReloadManager());
     }
 
     @SubscribeEvent

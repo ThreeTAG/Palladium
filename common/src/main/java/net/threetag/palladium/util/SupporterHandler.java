@@ -1,5 +1,6 @@
 package net.threetag.palladium.util;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -173,6 +174,10 @@ public class SupporterHandler {
 
         public boolean hasAccessory(Accessory accessory) {
             return this.accessories.contains(accessory) || Platform.isDevelopmentEnvironment();
+        }
+
+        public List<Accessory> getAccessories() {
+            return ImmutableList.copyOf(this.accessories);
         }
 
         public boolean hasCloak() {
