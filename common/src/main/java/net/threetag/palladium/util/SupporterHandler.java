@@ -134,6 +134,10 @@ public class SupporterHandler {
             for (int i = 0; i < data.size(); i++) {
                 ResourceLocation id = new ResourceLocation(data.get(i).getAsString());
 
+                if(id.getNamespace().equalsIgnoreCase("threecore")) {
+                    id = Palladium.id(id.getPath());
+                }
+
                 if (Accessory.REGISTRY.contains(id)) {
                     this.accessories.add(Accessory.REGISTRY.get(id));
                 }
