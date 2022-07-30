@@ -40,6 +40,12 @@ public class Accessories {
     public static final RegistrySupplier<Accessory> FEZ = ACCESSORIES.register("fez",
             () -> new HumanoidModelOverlay(new ModelLayerLocation(Palladium.id("humanoid"), "fez"), "fez").slot(AccessorySlot.HAT));
 
+    public static final RegistrySupplier<Accessory> ANTENNA = ACCESSORIES.register("antenna",
+            () -> new HumanoidModelOverlay(new ModelLayerLocation(Palladium.id("humanoid"), "antenna"), "antenna").slot(AccessorySlot.HAT));
+
+    public static final RegistrySupplier<Accessory> KRUSTY_KRAB_HAT = ACCESSORIES.register("krusty_krab_hat",
+            () -> new HumanoidModelOverlay(new ModelLayerLocation(Palladium.id("humanoid"), "krusty_krab_hat"), "krusty_krab_hat").slot(AccessorySlot.HAT));
+
     public static final RegistrySupplier<Accessory> SEA_PICKLE_HAT = ACCESSORIES.register("sea_pickle_hat", SeaPickleHatAccessory::new);
 
     public static final RegistrySupplier<Accessory> WINTER_SOLDIER_ARM = ACCESSORIES.register("winter_soldier_arm",

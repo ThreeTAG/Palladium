@@ -120,6 +120,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAccessory(Accessories.ELTON_HAT, "Elton Hat");
             this.addAccessory(Accessories.STRAWHAT, "Strawhat");
             this.addAccessory(Accessories.FEZ, "Fez");
+            this.addAccessory(Accessories.ANTENNA, "Antenna");
+            this.addAccessory(Accessories.KRUSTY_KRAB_HAT, "Krusty Krab Hat");
             this.addAccessory(Accessories.SEA_PICKLE_HAT, "Sea Pickle Hat");
             this.addAccessory(Accessories.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
             this.addAccessory(Accessories.HYPERION_ARM, "Hyperion Arm");
@@ -239,6 +241,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAccessory(Accessories.ELTON_HAT, "Elton-Hut");
             this.addAccessory(Accessories.STRAWHAT, "Strohhut");
             this.addAccessory(Accessories.FEZ, "Fez");
+            this.addAccessory(Accessories.ANTENNA, "Antenne");
+            this.addAccessory(Accessories.KRUSTY_KRAB_HAT, "Krosse-Krabbe-Hut");
             this.addAccessory(Accessories.SEA_PICKLE_HAT, "Seegurkenhut");
             this.addAccessory(Accessories.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
             this.addAccessory(Accessories.HYPERION_ARM, "Hyperion Arm");
@@ -358,6 +362,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAccessory(Accessories.ELTON_HAT, "Elton-Hut");
             this.addAccessory(Accessories.STRAWHAT, "Strohhut");
             this.addAccessory(Accessories.FEZ, "Fez");
+            this.addAccessory(Accessories.ANTENNA, "Antenne");
+            this.addAccessory(Accessories.KRUSTY_KRAB_HAT, "Krosse-Krabbe-Hut");
             this.addAccessory(Accessories.SEA_PICKLE_HAT, "Seegurkenhut");
             this.addAccessory(Accessories.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
             this.addAccessory(Accessories.HYPERION_ARM, "Hyperion Arm");
