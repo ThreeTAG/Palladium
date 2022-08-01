@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -33,6 +34,10 @@ public class CuriosCompat {
 
     public static void registerCurioTrinket(Item item, CurioTrinket curioTrinket) {
         HANDLERS.put(item, curioTrinket);
+    }
+
+    public static void init() {
+        MinecraftForge.EVENT_BUS.register(new CuriosCompat());
     }
 
     @OnlyIn(Dist.CLIENT)

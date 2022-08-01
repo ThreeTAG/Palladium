@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -22,6 +23,7 @@ import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.model.EntityModelManager;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
+import net.threetag.palladium.compat.curios.forge.CuriosCompat;
 import net.threetag.palladium.data.forge.*;
 import net.threetag.palladium.mixin.ReloadableResourceManagerMixin;
 
@@ -36,6 +38,10 @@ public class PalladiumForge {
         EventBuses.registerModEventBus(Palladium.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         Palladium.init();
         PalladiumConfigImpl.init();
+
+        if (ModList.get().isLoaded("curios")) {
+            CuriosCompat.init();
+        }
     }
 
     @SubscribeEvent
