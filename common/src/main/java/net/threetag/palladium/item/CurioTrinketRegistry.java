@@ -9,6 +9,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.threetag.palladium.client.renderer.item.CurioTrinketRenderer;
 
 public class CurioTrinketRegistry {
 
@@ -25,6 +26,14 @@ public class CurioTrinketRegistry {
     @ExpectPlatform
     public static void registerCurioTrinket(Item item, CurioTrinket curioTrinket) {
         throw new AssertionError();
+    }
+
+    public static void registerCurioTrinket(Item item) {
+        if (item instanceof CurioTrinket curioTrinket) {
+            registerCurioTrinket(item, curioTrinket);
+        } else {
+            throw new RuntimeException("Tried to register item that isn't implementing CurioTrinket");
+        }
     }
 
     @ExpectPlatform

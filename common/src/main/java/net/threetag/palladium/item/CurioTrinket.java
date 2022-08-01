@@ -23,4 +23,8 @@ public interface CurioTrinket {
         return !EnchantmentHelper.hasBindingCurse(stack);
     }
 
+    default boolean canRightClickEquip() {
+        return false;
+    }
+
 }

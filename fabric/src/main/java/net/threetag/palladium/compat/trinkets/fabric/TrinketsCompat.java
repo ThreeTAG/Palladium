@@ -19,7 +19,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.threetag.palladium.item.CurioTrinket;
-import net.threetag.palladium.item.CurioTrinketRenderer;
+import net.threetag.palladium.client.renderer.item.CurioTrinketRenderer;
 import net.threetag.palladium.power.provider.PowerProvider;
 
 public class TrinketsCompat {

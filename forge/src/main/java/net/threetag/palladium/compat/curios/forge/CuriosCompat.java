@@ -16,7 +16,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.threetag.palladium.item.CurioTrinket;
-import net.threetag.palladium.item.CurioTrinketRenderer;
+import net.threetag.palladium.client.renderer.item.CurioTrinketRenderer;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
@@ -93,6 +93,11 @@ public class CuriosCompat {
         @Override
         public boolean canUnequip(SlotContext slotContext) {
             return this.curioTrinket.canUnequip(this.stack, slotContext.entity());
+        }
+
+        @Override
+        public boolean canEquipFromUse(SlotContext slotContext) {
+            return this.curioTrinket.canRightClickEquip();
         }
     }
 

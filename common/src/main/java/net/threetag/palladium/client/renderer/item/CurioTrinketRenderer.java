@@ -1,4 +1,4 @@
-package net.threetag.palladium.item;
+package net.threetag.palladium.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;

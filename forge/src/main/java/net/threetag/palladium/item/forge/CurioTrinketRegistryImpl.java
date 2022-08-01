@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.threetag.palladium.compat.curios.forge.CuriosCompat;
 import net.threetag.palladium.item.CurioTrinket;
-import net.threetag.palladium.item.CurioTrinketRenderer;
+import net.threetag.palladium.client.renderer.item.CurioTrinketRenderer;
 
 public class CurioTrinketRegistryImpl {
 

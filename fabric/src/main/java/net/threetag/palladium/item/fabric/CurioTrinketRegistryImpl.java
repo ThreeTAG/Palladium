@@ -8,7 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.compat.trinkets.fabric.TrinketsCompat;
 import net.threetag.palladium.item.CurioTrinket;
-import net.threetag.palladium.item.CurioTrinketRenderer;
+import net.threetag.palladium.client.renderer.item.CurioTrinketRenderer;
 
 public class CurioTrinketRegistryImpl {
 
