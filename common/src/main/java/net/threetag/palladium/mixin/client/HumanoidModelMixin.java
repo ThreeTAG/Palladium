@@ -3,6 +3,7 @@ package net.threetag.palladium.mixin.client;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.entity.FlightHandler;
+import net.threetag.palladium.event.PalladiumClientEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,6 +19,7 @@ public class HumanoidModelMixin {
 
         HumanoidModel<?> model = (HumanoidModel<?>) (Object) this;
         FlightHandler.animation(entity, model, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        PalladiumClientEvents.SETUP_HUMANOID_MODEL_ANIMATION.invoker().setupAnimation(model, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
 }
