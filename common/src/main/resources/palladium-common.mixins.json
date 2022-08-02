@@ -3,6 +3,7 @@
   "package": "net.threetag.palladium.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "client.AgeableListModelMixin",
     "client.GameRendererMixin",
     "client.HumanoidModelMixin",
     "client.LivingEntityRendererMixin",
