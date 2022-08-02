@@ -2,7 +2,7 @@ package net.threetag.palladium;
 
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.InteractionEvent;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.threetag.palladium.energy.IBlockEntityEnergyContainer;
 import net.threetag.palladium.energy.IEnergyStorage;
@@ -16,7 +16,7 @@ public class PalladiumDebug {
 
                 if (blockEntity instanceof IBlockEntityEnergyContainer energyContainer) {
                     IEnergyStorage storage = energyContainer.getEnergyStorage(face);
-                    player.displayClientMessage(new TextComponent("Energy: " + storage.getEnergyAmount() + "/" + storage.getEnergyCapacity()), true);
+                    player.displayClientMessage(Component.literal("Energy: " + storage.getEnergyAmount() + "/" + storage.getEnergyCapacity()), true);
                 }
             }
 

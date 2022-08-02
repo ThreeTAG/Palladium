@@ -31,7 +31,7 @@ public class SortedSpawnEggItem extends ArchitecturySpawnEggItem {
 
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
-        if (this.allowdedIn(category)) {
+        if (this.allowedIn(category)) {
             this.filler.fill(this, category, items);
         }
     }

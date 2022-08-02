@@ -36,8 +36,8 @@
   "accessWidener": "palladium.accessWidener",
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.18.2",
-    "architectury": ">=4.4.59"
+    "minecraft": ">=1.19.1",
+    "architectury": ">=6.0.35"
   },
   "custom": {
     "cardinal-components": [

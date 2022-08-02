@@ -4,16 +4,16 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 
 public class EditButton extends Button {
 
     public EditButton(int x, int y, OnPress onPress) {
-        super(x, y, 12, 12, TextComponent.EMPTY, onPress);
+        super(x, y, 12, 12, Component.empty(), onPress);
     }
 
     public EditButton(int x, int y, OnPress onPress, OnTooltip onTooltip) {
-        super(x, y, 12, 12, TextComponent.EMPTY, onPress, onTooltip);
+        super(x, y, 12, 12, Component.empty(), onPress, onTooltip);
     }
 
     @Override

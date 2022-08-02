@@ -1,0 +1,84 @@
+{
+  "mesh": {
+    "sign": {
+      "cubes": [
+        {
+          "origin": [
+            -12.0,
+            -14.0,
+            -1.0
+          ],
+          "dimensions": [
+            24.0,
+            12.0,
+            2.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "stick": {
+      "cubes": [
+        {
+          "origin": [
+            -1.0,
+            -2.0,
+            -1.0
+          ],
+          "dimensions": [
+            2.0,
+            14.0,
+            2.0
+          ],
+          "texture_offset": [
+            0.0,
+            14.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    }
+  },
+  "texture_width": 64,
+  "texture_height": 32
+}

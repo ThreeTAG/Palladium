@@ -6,9 +6,9 @@ import com.google.gson.GsonBuilder;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
@@ -68,7 +68,7 @@ public abstract class BlockLootTableProvider extends LootTableProvider {
     public abstract void addTables();
 
     @Override
-    public void run(HashCache cache) {
+    public void run(CachedOutput cache) {
         addTables();
 
         Map<ResourceLocation, LootTable> tables = new HashMap<>();
@@ -78,24 +78,24 @@ public abstract class BlockLootTableProvider extends LootTableProvider {
         writeTables(cache, tables);
     }
 
-    private void writeTables(HashCache cache, Map<ResourceLocation, LootTable> tables) {
+    private void writeTables(CachedOutput cache, Map<ResourceLocation, LootTable> tables) {
         Path outputFolder = this.generator.getOutputFolder();
         tables.forEach((key, lootTable) -> {
             Path path = outputFolder.resolve("data/" + key.getNamespace() + "/loot_tables/" + key.getPath() + ".json");
             try {
-                DataProvider.save(GSON, cache, LootTables.serialize(lootTable), path);
+                DataProvider.saveStable(cache, LootTables.serialize(lootTable), path);
             } catch (IOException e) {
                 Palladium.LOGGER.error("Couldn't write loot table {}", path, e);
             }
         });
     }
 
-    public static <T> T applyExplosionDecay(ItemLike pItem, FunctionUserBuilder<T> pFunction) {
-        return !EXPLOSION_RESISTANT.contains(pItem.asItem()) ? pFunction.apply(ApplyExplosionDecay.explosionDecay()) : pFunction.unwrap();
+    public static <T extends FunctionUserBuilder<T>> T applyExplosionDecay(ItemLike arg, FunctionUserBuilder<T> arg2) {
+        return !EXPLOSION_RESISTANT.contains(arg.asItem()) ? arg2.apply(ApplyExplosionDecay.explosionDecay()) : arg2.unwrap();
     }
 
-    public static <T> T applyExplosionCondition(ItemLike pItem, ConditionUserBuilder<T> pCondition) {
-        return !EXPLOSION_RESISTANT.contains(pItem.asItem()) ? pCondition.when(ExplosionCondition.survivesExplosion()) : pCondition.unwrap();
+    public static <T extends ConditionUserBuilder<T>> T applyExplosionCondition(ItemLike arg, ConditionUserBuilder<T> arg2) {
+        return !EXPLOSION_RESISTANT.contains(arg.asItem()) ? arg2.when(ExplosionCondition.survivesExplosion()) : arg2.unwrap();
     }
 
     public static LootTable.Builder createSingleItemTable(ItemLike p_124127_) {
@@ -299,7 +299,7 @@ public abstract class BlockLootTableProvider extends LootTableProvider {
 
     public void dropPottedContents(Block pFlowerPot) {
         this.add(pFlowerPot, (p_176061_) -> {
-            return createPotFlowerItemTable(((FlowerPotBlock)p_176061_).getContent());
+            return createPotFlowerItemTable(((FlowerPotBlock) p_176061_).getContent());
         });
     }
 

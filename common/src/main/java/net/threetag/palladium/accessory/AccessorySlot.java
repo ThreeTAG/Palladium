@@ -7,7 +7,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -67,7 +66,7 @@ public class AccessorySlot {
     }
 
     public Component getDisplayName() {
-        return new TranslatableComponent("accessory_slot." + this.name);
+        return Component.translatable("accessory_slot." + this.name);
     }
 
     public boolean allowsMultiple() {

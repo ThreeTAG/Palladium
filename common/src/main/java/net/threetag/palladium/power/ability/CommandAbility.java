@@ -1,9 +1,7 @@
 package net.threetag.palladium.power.ability;
 
 import net.minecraft.commands.CommandSource;
-import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.power.IPowerHolder;
@@ -12,7 +10,6 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.StringArrayProperty;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class CommandAbility extends Ability implements CommandSource {
 
@@ -31,7 +28,7 @@ public class CommandAbility extends Ability implements CommandSource {
     public void firstTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         if (entity.level.getServer() != null && entry.getProperty(FIRST_TICK_COMMANDS) != null) {
             for (String command : Objects.requireNonNull(entry.getProperty(FIRST_TICK_COMMANDS))) {
-                entity.level.getServer().getCommands().performCommand(new CommandSourceStack(this, entity.position(), entity.getRotationVector(), entity.level instanceof ServerLevel ? (ServerLevel) entity.level : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(), entity), command);
+//                entity.level.getServer().getCommands().performCommand(new CommandSourceStack(this, entity.position(), entity.getRotationVector(), entity.level instanceof ServerLevel ? (ServerLevel) entity.level : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(), entity), command);
             }
         }
     }
@@ -40,7 +37,7 @@ public class CommandAbility extends Ability implements CommandSource {
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         if (enabled && entity.level.getServer() != null && entry.getProperty(COMMANDS) != null) {
             for (String command : Objects.requireNonNull(entry.getProperty(COMMANDS))) {
-                entity.level.getServer().getCommands().performCommand(new CommandSourceStack(this, entity.position(), entity.getRotationVector(), entity.level instanceof ServerLevel ? (ServerLevel) entity.level : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(), entity), command);
+//                entity.level.getServer().getCommands().performCommand(new CommandSourceStack(this, entity.position(), entity.getRotationVector(), entity.level instanceof ServerLevel ? (ServerLevel) entity.level : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(), entity), command);
             }
         }
     }
@@ -49,13 +46,13 @@ public class CommandAbility extends Ability implements CommandSource {
     public void lastTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         if (entity.level.getServer() != null && entry.getProperty(LAST_TICK_COMMANDS) != null) {
             for (String command : Objects.requireNonNull(entry.getProperty(LAST_TICK_COMMANDS))) {
-                entity.level.getServer().getCommands().performCommand(new CommandSourceStack(this, entity.position(), entity.getRotationVector(), entity.level instanceof ServerLevel ? (ServerLevel) entity.level : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(), entity), command);
+//                entity.level.getServer().getCommands().performCommand(new CommandSourceStack(this, entity.position(), entity.getRotationVector(), entity.level instanceof ServerLevel ? (ServerLevel) entity.level : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(), entity), command);
             }
         }
     }
 
     @Override
-    public void sendMessage(Component component, UUID senderUUID) {
+    public void sendSystemMessage(Component component) {
 
     }
 

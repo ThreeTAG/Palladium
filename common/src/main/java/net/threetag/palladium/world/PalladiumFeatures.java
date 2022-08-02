@@ -9,7 +9,6 @@ import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -71,7 +70,8 @@ public class PalladiumFeatures {
         PLACED_FLUX_CRYSTAL_GEODE = register("flux_crystal_geode", FLUX_CRYSTAL_GEODE, commonOrePlacement(120, HeightRangePlacement.triangle(VerticalAnchor.absolute(-90), VerticalAnchor.absolute(90))));
         PLACED_UNDERGROUND_METEORITE = register("underground_meteorite", CONFIGURED_UNDERGROUND_METEORITE, RarityFilter.onAverageOnceEvery(24), InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(30)), BiomeFilter.biome());
 
-        BiomeModifications.addProperties(biomeContext -> biomeContext.getProperties().getCategory() != Biome.BiomeCategory.NETHER && biomeContext.getProperties().getCategory() != Biome.BiomeCategory.THEEND, (biomeContext, mutable) -> {
+        // TODO turn into json?
+        BiomeModifications.addProperties(biomeContext -> true, (biomeContext, mutable) -> {
             mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PLACED_ORE_LEAD_UPPER);
             mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PLACED_ORE_LEAD_MIDDLE);
             mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PLACED_ORE_LEAD_SMALL);

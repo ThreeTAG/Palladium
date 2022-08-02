@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -14,8 +13,6 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -51,9 +48,9 @@ public class PowersScreen extends Screen {
     public static final int BACKGROUND_TILE_HEIGHT = 16;
     public static final int BACKGROUND_TILE_COUNT_X = 14;
     public static final int BACKGROUND_TILE_COUNT_Y = 7;
-    private static final Component VERY_SAD_LABEL = new TranslatableComponent("advancements.sad_label");
-    private static final Component NO_ADVANCEMENTS_LABEL = new TranslatableComponent("advancements.empty");
-    private static final Component TITLE = new TranslatableComponent("gui.palladium.powers");
+    private static final Component VERY_SAD_LABEL = Component.translatable("advancements.sad_label");
+    private static final Component NO_ADVANCEMENTS_LABEL = Component.translatable("advancements.empty");
+    private static final Component TITLE = Component.translatable("gui.palladium.powers");
     private final List<PowerTab> tabs = new ArrayList<>();
     @Nullable
     private PowerTab selectedTab;
@@ -62,7 +59,7 @@ public class PowersScreen extends Screen {
     private static int maxPages;
 
     public PowersScreen() {
-        super(NarratorChatListener.NO_TITLE);
+        super(Component.empty());
     }
 
     @SuppressWarnings("rawtypes")
@@ -120,10 +117,10 @@ public class PowersScreen extends Screen {
         if (this.tabs.size() > PowerTabType.MAX_TABS) {
             int guiLeft = (this.width - WINDOW_WIDTH) / 2;
             int guiTop = (this.height - WINDOW_HEIGHT) / 2;
-            this.addRenderableWidget(new Button(guiLeft, guiTop - 50, 20, 20, new TextComponent("<"), (b) -> {
+            this.addRenderableWidget(new Button(guiLeft, guiTop - 50, 20, 20, Component.literal("<"), (b) -> {
                 tabPage = Math.max(tabPage - 1, 0);
             }));
-            this.addRenderableWidget(new Button(guiLeft + WINDOW_WIDTH - 20, guiTop - 50, 20, 20, new TextComponent(">"), (b) -> {
+            this.addRenderableWidget(new Button(guiLeft + WINDOW_WIDTH - 20, guiTop - 50, 20, 20, Component.literal(">"), (b) -> {
                 tabPage = Math.min(tabPage + 1, maxPages);
             }));
             maxPages = this.tabs.size() / PowerTabType.MAX_TABS;

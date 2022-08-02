@@ -139,7 +139,7 @@
             0.0,
             0.0
           ],
-          "mirror": false
+          "mirror": true
         }
       ],
       "part_pose": {
@@ -256,7 +256,7 @@
             0.0,
             0.0
           ],
-          "mirror": false
+          "mirror": true
         }
       ],
       "part_pose": {
@@ -373,7 +373,7 @@
             0.0,
             0.0
           ],
-          "mirror": false
+          "mirror": true
         }
       ],
       "part_pose": {
@@ -412,7 +412,7 @@
             0.0,
             0.0
           ],
-          "mirror": false
+          "mirror": true
         }
       ],
       "part_pose": {

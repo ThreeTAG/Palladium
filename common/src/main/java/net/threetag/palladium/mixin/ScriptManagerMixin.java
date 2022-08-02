@@ -42,7 +42,7 @@ public class ScriptManagerMixin {
 
             for (String namespace : packResources.getNamespaces(packType)) {
                 var scriptPack = new ScriptPack((ScriptManager) (Object) this, new ScriptPackInfo("addonpack_" + namespace, ""));
-                for (ResourceLocation scriptId : packResources.getResources(packType, namespace, "scripts", 10, str -> str.endsWith(".js"))) {
+                for (ResourceLocation scriptId : packResources.getResources(packType, namespace, "scripts", id -> id.getPath().endsWith(".js"))) {
                     scriptPack.info.scripts.add(new AddonPackScriptFileInfo(scriptPack.info, scriptId.getPath(), () -> {
                         try {
                             var packResources1 = pack.open();

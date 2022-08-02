@@ -25,8 +25,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.accessory.Accessory;
@@ -41,7 +39,7 @@ import java.util.Collection;
 public class AccessoryScreen extends OptionsSubScreen {
 
     public AccessoryScreen(Screen screen) {
-        super(screen, null, new TranslatableComponent("gui.palladium.accessories"));
+        super(screen, null, Component.translatable("gui.palladium.accessories"));
     }
 
     public AccessorySlot currentSlot;
@@ -53,7 +51,7 @@ public class AccessoryScreen extends OptionsSubScreen {
     public static void addButton() {
         ClientGuiEvent.INIT_POST.register((screen, access) -> {
             Button button = null;
-            Component text = new TranslatableComponent("gui.palladium.accessories");
+            Component text = Component.translatable("gui.palladium.accessories");
 
             if (screen instanceof SkinCustomizationScreen) {
                 button = new Button(screen.width / 2 - 100, screen.height / 6 + 24 * (12 >> 1), 200, 20, text,
@@ -90,7 +88,7 @@ public class AccessoryScreen extends OptionsSubScreen {
     protected void init() {
         super.init();
 
-        this.addRenderableWidget(new Button(30, this.height - 30, 100, 20, new TranslatableComponent("gui.done"), (button) -> this.onClose()));
+        this.addRenderableWidget(new Button(30, this.height - 30, 100, 20, Component.translatable("gui.done"), (button) -> this.onClose()));
         this.addRenderableWidget(this.rotationSlider = new RotationSlider(100 + (this.width - 150) / 2, this.height / 2 + this.height / 3 + 10, 100, 20, 0.5F));
 
         this.slotList = new AccessorySlotList(this.minecraft, this, 42, this.height, 20, this.height - 40, 36);
@@ -241,7 +239,7 @@ public class AccessoryScreen extends OptionsSubScreen {
             } else {
                 Font fontRenderer = this.parent.font;
                 String s = this.slot.getDisplayName().getString().substring(0, 1);
-                fontRenderer.drawShadow(poseStack, new TextComponent(s).getVisualOrderText(), left + 16 - fontRenderer.width(s) / 2F, top + 14, isMouseOver ? 16777120 : 0xfefefe);
+                fontRenderer.drawShadow(poseStack, Component.literal(s).getVisualOrderText(), left + 16 - fontRenderer.width(s) / 2F, top + 14, isMouseOver ? 16777120 : 0xfefefe);
             }
 
             if (isMouseOver) {
@@ -345,12 +343,12 @@ public class AccessoryScreen extends OptionsSubScreen {
     public class RotationSlider extends AbstractSliderButton {
 
         public RotationSlider(int x, int y, int width, int height, double value) {
-            super(x, y, width, height, TextComponent.EMPTY, value);
+            super(x, y, width, height, Component.empty(), value);
         }
 
         @Override
         protected void updateMessage() {
-            this.setMessage(TextComponent.EMPTY);
+            this.setMessage(Component.empty());
         }
 
         @Override

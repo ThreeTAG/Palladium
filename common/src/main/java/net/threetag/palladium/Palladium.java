@@ -89,7 +89,7 @@ public class Palladium {
             }
         });
 
-        CommandRegistrationEvent.EVENT.register((dispatcher, selection) -> SuperpowerCommand.register(dispatcher));
+        CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> SuperpowerCommand.register(dispatcher));
 
         if (Platform.isDevelopmentEnvironment()) {
             PalladiumDebug.init();

@@ -1,6 +1,7 @@
 package net.threetag.palladium.sound;
 
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -14,7 +15,7 @@ public class FlightSound extends AbstractTickableSoundInstance {
     public boolean stop;
 
     public FlightSound(LivingEntity entity, SoundEvent soundEvent, SoundSource category) {
-        super(soundEvent, category);
+        super(soundEvent, category, SoundInstance.createUnseededRandom());
         this.entity = entity;
         this.looping = true;
         this.delay = 0;

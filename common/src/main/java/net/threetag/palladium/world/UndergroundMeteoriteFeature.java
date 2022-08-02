@@ -2,14 +2,13 @@ package net.threetag.palladium.world;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.threetag.palladium.block.PalladiumBlocks;
-
-import java.util.Random;
 
 public class UndergroundMeteoriteFeature extends Feature<OreConfiguration> {
 
@@ -28,7 +27,7 @@ public class UndergroundMeteoriteFeature extends Feature<OreConfiguration> {
         int r = pContext.config().size + 2;
         BlockPos pos = pContext.origin();
         WorldGenLevel level = pContext.level();
-        Random rand = pContext.random();
+        RandomSource rand = pContext.random();
 
         for (int x = pos.getX() - r; x <= pos.getX() + r; x++) {
             for (int y = pos.getY() - r; y <= pos.getY() + r; y++) {

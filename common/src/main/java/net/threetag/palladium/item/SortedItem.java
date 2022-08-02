@@ -22,7 +22,7 @@ public class SortedItem extends Item {
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
         if (this.filler != null) {
-            if (this.allowdedIn(category)) {
+            if (this.allowedIn(category)) {
                 this.filler.fill(this, category, items);
             }
         } else {

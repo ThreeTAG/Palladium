@@ -1,7 +1,6 @@
 package net.threetag.palladium.accessory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.architectury.core.RegistryEntry;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
@@ -21,7 +20,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -40,7 +38,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class Accessory extends RegistryEntry<Accessory> {
+public abstract class Accessory {
 
     public static final ResourceKey<Registry<Accessory>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "accessories"));
     public static final Registrar<Accessory> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new Accessory[0]).build();
@@ -60,7 +58,7 @@ public abstract class Accessory extends RegistryEntry<Accessory> {
     }
 
     public Component getDisplayName() {
-        return new TranslatableComponent(Util.makeDescriptionId("accessory", REGISTRY.getId(this)));
+        return Component.translatable(Util.makeDescriptionId("accessory", REGISTRY.getId(this)));
     }
 
     @Environment(EnvType.CLIENT)

@@ -17,18 +17,18 @@ import net.threetag.palladium.event.PalladiumEvents;
 public class PalladiumForgeEventHandler {
 
     @SubscribeEvent
-    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent e) {
-        PalladiumEvents.LIVING_UPDATE.invoker().tick(e.getEntityLiving());
+    public static void onLivingUpdate(LivingEvent.LivingTickEvent e) {
+        PalladiumEvents.LIVING_UPDATE.invoker().tick(e.getEntity());
     }
 
     @SubscribeEvent
     public static void onStartTracking(PlayerEvent.StartTracking e) {
-        PalladiumEvents.START_TRACKING.invoker().startTracking(e.getPlayer(), e.getTarget());
+        PalladiumEvents.START_TRACKING.invoker().startTracking(e.getEntity(), e.getTarget());
     }
 
     @SubscribeEvent
     public static void onInputUpdate(MovementInputUpdateEvent e) {
-        PalladiumEvents.MOVEMENT_INPUT_UPDATE.invoker().update(e.getPlayer(), e.getInput());
+        PalladiumEvents.MOVEMENT_INPUT_UPDATE.invoker().update(e.getEntity(), e.getInput());
     }
 
     @Mod.EventBusSubscriber(modid = Palladium.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

@@ -11,7 +11,7 @@ public record OverlayTextureTransformer(String overlayLocation) implements IText
 
     @Override
     public NativeImage transform(NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
-        NativeImage overlay = NativeImage.read(manager.getResource(new ResourceLocation(stringConverter.apply(this.overlayLocation))).getInputStream());
+        NativeImage overlay = NativeImage.read(manager.getResource(new ResourceLocation(stringConverter.apply(this.overlayLocation))).get().open());
 
         for (int y = 0; y < overlay.getHeight(); ++y) {
             for (int x = 0; x < overlay.getWidth(); ++x) {

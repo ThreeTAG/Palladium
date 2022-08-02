@@ -15,7 +15,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.player.Player;
@@ -29,7 +29,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class SupporterHandler {
 
@@ -42,7 +45,7 @@ public class SupporterHandler {
             SupporterHandler.loadPlayerData(player.getUUID());
 
             if (CHECK && !SupporterHandler.getPlayerData(player.getUUID()).hasModAccess()) {
-                player.connection.disconnect(new TextComponent("You are not allowed to use this mod!"));
+                player.connection.disconnect(Component.literal("You are not allowed to use this mod!"));
             }
         });
 

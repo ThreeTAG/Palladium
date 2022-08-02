@@ -60,7 +60,7 @@ public class AbilityWidget extends GuiComponent {
         int k = i > 1 ? mc.font.width("  ") + mc.font.width("0") * j * 2 + mc.font.width("/") : 0;
         int l = 29 + mc.font.width(this.title) + k;
         // TODO description?
-        this.description = Language.getInstance().getVisualOrder(this.findOptimalLines(ComponentUtils.mergeStyles(new TextComponent(""), Style.EMPTY.withColor(FrameType.TASK.getChatColor())), l));
+        this.description = Language.getInstance().getVisualOrder(this.findOptimalLines(ComponentUtils.mergeStyles(Component.literal(""), Style.EMPTY.withColor(FrameType.TASK.getChatColor())), l));
 
         FormattedCharSequence formattedCharSequence;
         for (Iterator<FormattedCharSequence> var9 = this.description.iterator(); var9.hasNext(); l = Math.max(l, mc.font.width(formattedCharSequence))) {

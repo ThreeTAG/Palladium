@@ -1,11 +1,9 @@
 package net.threetag.palladium.power.ability;
 
-import dev.architectury.core.RegistryEntry;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,7 +23,7 @@ import net.threetag.palladium.util.property.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Ability extends RegistryEntry<Ability> implements IDefaultDocumentedConfigurable {
+public class Ability implements IDefaultDocumentedConfigurable {
 
     public static final ResourceKey<Registry<Ability>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "abilities"));
     public static final Registrar<Ability> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new Ability[0]).build();
@@ -154,6 +152,6 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
     @Override
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
-        builder.setTitle(new TranslatableComponent("ability." + this.getId().getNamespace() + "." + this.getId().getPath()).getString());
+        builder.setTitle(Component.translatable("ability." + this.getId().getNamespace() + "." + this.getId().getPath()).getString());
     }
 }

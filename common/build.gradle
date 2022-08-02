@@ -5,6 +5,8 @@ dependencies {
     modCompileOnly("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {
         exclude group: "net.fabricmc.fabric-api"
     })
+    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}"
+    modCompileOnlyApi "me.shedaniel:RoughlyEnoughItems-api:${rootProject.rei_version}"
 }
 
 loom {

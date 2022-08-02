@@ -32,7 +32,7 @@ public class RenderLayerRegistryImpl {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @SubscribeEvent
     public static void onEntityRendererRegister(EntityRenderersEvent.AddLayers e) {
-        for (EntityType entityType : ForgeRegistries.ENTITIES.getValues()) {
+        for (EntityType entityType : ForgeRegistries.ENTITY_TYPES.getValues()) {
             try {
                 for (Pair<Predicate<EntityType<?>>, Function<RenderLayerParent<?, ?>, RenderLayer<?, ?>>> pair : REGISTERED) {
                     if (pair.getFirst().test(entityType)) {

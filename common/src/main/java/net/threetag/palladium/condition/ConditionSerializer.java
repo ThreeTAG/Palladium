@@ -3,7 +3,6 @@ package net.threetag.palladium.condition;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import dev.architectury.core.RegistryEntry;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
 import net.minecraft.core.Registry;
@@ -22,7 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public abstract class ConditionSerializer extends RegistryEntry<ConditionSerializer> implements IDefaultDocumentedConfigurable {
+public abstract class ConditionSerializer implements IDefaultDocumentedConfigurable {
 
     public static final ResourceKey<Registry<ConditionSerializer>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "condition_serializers"));
     public static final Registrar<ConditionSerializer> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new ConditionSerializer[0]).build();

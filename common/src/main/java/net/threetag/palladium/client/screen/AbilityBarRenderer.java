@@ -10,7 +10,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
@@ -116,8 +115,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
         if (showKey) {
             FormattedText properties = minecraft.font.substrByWidth(PalladiumKeyMappings.SWITCH_ABILITY_LIST.getTranslatedKeyMessage(), 10);
             int length = minecraft.font.width(properties) + 10;
-            if (properties instanceof BaseComponent)
-                minecraft.font.draw(poseStack, (Component) properties, (position.left ? 15 : 37) - length / 2F + 10, position.top ? 10 : 12, 0xffffffff);
+            minecraft.font.draw(poseStack, Component.literal(properties.getString()), (position.left ? 15 : 37) - length / 2F + 10, position.top ? 10 : 12, 0xffffffff);
 
             RenderSystem.setShaderTexture(0, texture);
             minecraft.gui.blit(poseStack, (position.left ? 15 : 37) - length / 2, position.top ? 9 : 11, 78, 56, 7, 9);
@@ -144,7 +142,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
         boolean showName = minecraft.screen instanceof ChatScreen;
 
         for (int i = 0; i < 5; i++) {
-            if(simple && i > 0) {
+            if (simple && i > 0) {
                 break;
             }
             Lighting.setupFor3DItems();
