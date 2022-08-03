@@ -37,7 +37,7 @@ public class FlightAnimation extends Animation {
     }
 
     @Override
-    public void setupAnimation(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnimation(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float partialTicks) {
         float speed = (float) Mth.clamp(Math
                 .sqrt((entity.xo - entity.position().x) * (entity.xo - entity.position().x) + (entity.zo - entity.position().z) * (entity.zo
                         - entity.position().z)), 0F, 1F);

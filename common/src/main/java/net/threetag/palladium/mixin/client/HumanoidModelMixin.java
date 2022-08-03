@@ -22,11 +22,13 @@ public abstract class HumanoidModelMixin {
     @SuppressWarnings("ConstantConditions")
     @Inject(at = @At("RETURN"), method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V")
     public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
-        if (entity == null)
-            return;
-
         HumanoidModel<?> model = (HumanoidModel<?>) (Object) this;
         HumanoidAnimationsManager.pre(model, this.headParts(), this.bodyParts(), entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    }
+
+    @Inject(at = @At("RETURN"), method = "prepareMobModel(Lnet/minecraft/world/entity/LivingEntity;FFF)V")
+    public void prepareMobModel(LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTick, CallbackInfo ci) {
+        HumanoidAnimationsManager.PARTIAL_TICK = partialTick;
     }
 
 }

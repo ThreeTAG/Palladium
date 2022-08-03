@@ -22,11 +22,11 @@ public abstract class AgeableListModelMixin {
     public abstract Iterable<ModelPart> bodyParts();
 
     @SuppressWarnings({"rawtypes", "ConstantConditions"})
-    @Inject(at = @At("TAIL"), method = "renderToBuffer")
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha, CallbackInfo ci) {
+    @Inject(at = @At("RETURN"), method = "renderToBuffer")
+    public void renderToBufferPost(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha, CallbackInfo ci) {
         AgeableListModel model = (AgeableListModel) (Object) this;
 
-        if (model instanceof HumanoidModel<?> humanoidModel) {
+        if (model instanceof HumanoidModel<?>) {
             HumanoidAnimationsManager.post(this.headParts(), this.bodyParts());
         }
     }

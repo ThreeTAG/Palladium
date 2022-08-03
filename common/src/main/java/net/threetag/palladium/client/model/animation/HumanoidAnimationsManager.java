@@ -16,7 +16,8 @@ import java.util.*;
 public class HumanoidAnimationsManager {
 
     private static final List<Animation> ANIMATIONS = new LinkedList<>();
-    private static final Map<ModelPart, ModelPartState> CACHE = new HashMap<>();
+    public static final Map<ModelPart, ModelPartState> CACHE = new HashMap<>();
+    public static float PARTIAL_TICK = 0F;
 
     public static void registerAnimation(Animation animation) {
         ANIMATIONS.add(animation);
@@ -35,7 +36,7 @@ public class HumanoidAnimationsManager {
         if (model instanceof HumanoidModel<?> humanoidModel) {
             for (Animation animation : ANIMATIONS) {
                 if (animation.active(entity)) {
-                    animation.setupAnimation(humanoidModel, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+                    animation.setupAnimation(humanoidModel, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, PARTIAL_TICK);
                     return;
                 }
             }
@@ -69,7 +70,7 @@ public class HumanoidAnimationsManager {
         CACHE.clear();
     }
 
-    private static class ModelPartState {
+    public static class ModelPartState {
 
         public final float x;
         public final float y;
