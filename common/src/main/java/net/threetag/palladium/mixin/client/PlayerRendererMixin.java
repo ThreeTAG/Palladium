@@ -21,12 +21,12 @@ public class PlayerRendererMixin {
         HumanoidAnimationsManager.setupRotations(playerRenderer, player, poseStack, ageInTicks, rotationYaw, partialTicks);
     }
 
-    @Inject(at = @At("RETURN"), method = "renderHand")
+    @Inject(at = @At("HEAD"), method = "renderHand")
     public void renderHand(PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
 
         if (playerRenderer.getModel() instanceof AgeableListModelInvoker invoker) {
-            HumanoidAnimationsManager.post(invoker.invokeHeadParts(), invoker.invokeBodyParts());
+            HumanoidAnimationsManager.cacheOrResetModelParts(invoker.invokeHeadParts(), invoker.invokeBodyParts());
         }
     }
 

@@ -4,7 +4,6 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.AgeableListModelInvoker",
-    "client.AgeableListModelMixin",
     "client.GameRendererMixin",
     "client.HumanoidModelMixin",
     "client.LivingEntityRendererMixin",

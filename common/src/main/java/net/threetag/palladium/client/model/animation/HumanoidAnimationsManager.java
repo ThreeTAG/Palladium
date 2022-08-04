@@ -24,15 +24,31 @@ public class HumanoidAnimationsManager {
         ANIMATIONS.sort(Comparator.comparingInt(Animation::getPriority).reversed());
     }
 
-    public static void pre(AgeableListModel<?> model, Iterable<ModelPart> headParts, Iterable<ModelPart> bodyParts, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public static void cacheOrResetModelParts(Iterable<ModelPart> headParts, Iterable<ModelPart> bodyParts) {
         for (ModelPart bodyPart : headParts) {
-            CACHE.put(bodyPart, new ModelPartState(bodyPart));
+            cacheOrResetModelPart(bodyPart);
         }
 
         for (ModelPart bodyPart : bodyParts) {
-            CACHE.put(bodyPart, new ModelPartState(bodyPart));
+            cacheOrResetModelPart(bodyPart);
+        }
+    }
+
+    private static void cacheOrResetModelPart(ModelPart modelPart) {
+        ModelPartState state = CACHE.get(modelPart);
+
+        if (state != null) {
+            state.apply(modelPart);
+        } else {
+            CACHE.put(modelPart, new ModelPartState(modelPart));
         }
 
+        for (ModelPart value : modelPart.children.values()) {
+            cacheOrResetModelPart(value);
+        }
+    }
+
+    public static void pre(AgeableListModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         if (model instanceof HumanoidModel<?> humanoidModel) {
             for (Animation animation : ANIMATIONS) {
                 if (animation.active(entity)) {
@@ -50,24 +66,6 @@ public class HumanoidAnimationsManager {
                 return;
             }
         }
-    }
-
-    public static void post(Iterable<ModelPart> headParts, Iterable<ModelPart> bodyParts) {
-        for (ModelPart bodyPart : headParts) {
-            ModelPartState state = CACHE.get(bodyPart);
-            if (state != null) {
-                state.apply(bodyPart);
-            }
-        }
-
-        for (ModelPart bodyPart : bodyParts) {
-            ModelPartState state = CACHE.get(bodyPart);
-            if (state != null) {
-                state.apply(bodyPart);
-            }
-        }
-
-        CACHE.clear();
     }
 
     public static class ModelPartState {
