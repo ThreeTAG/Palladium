@@ -13,7 +13,6 @@ import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.model.animation.FlightAnimation;
 import net.threetag.palladium.client.model.animation.HumanoidAnimationsManager;
-import net.threetag.palladium.client.model.animation.TestAnimation;
 import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.AccessoryRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerRenderer;
@@ -40,7 +39,7 @@ public class PalladiumClient {
         RenderLayerRegistry.addToPlayer(renderLayerParent -> new AccessoryRenderLayer((RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>>) renderLayerParent));
 
         HumanoidAnimationsManager.registerAnimation(new FlightAnimation());
-        HumanoidAnimationsManager.registerAnimation(new TestAnimation());
+//        HumanoidAnimationsManager.registerAnimation(new TestAnimation());
     }
 
     public static void blockRenderTypes() {
