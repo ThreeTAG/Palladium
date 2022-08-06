@@ -31,7 +31,7 @@ public class PalladiumKeyMappings implements ClientRawInputEvent.KeyPressed, Cli
         var instance = new PalladiumKeyMappings();
 
         ClientRawInputEvent.KEY_PRESSED.register(instance);
-        ClientRawInputEvent.MOUSE_CLICKED_POST.register(instance);
+        ClientRawInputEvent.MOUSE_CLICKED_PRE.register(instance);
     }
 
     @Override
@@ -68,14 +68,19 @@ public class PalladiumKeyMappings implements ClientRawInputEvent.KeyPressed, Cli
     @Override
     public EventResult mouseClicked(Minecraft client, int button, int action, int mods) {
         AbilityBarRenderer.AbilityList list = AbilityBarRenderer.getSelectedList();
+        if (client.screen == null && client.player != null && client.hitResult != null && (action != GLFW.GLFW_PRESS || client.hitResult.getType() == HitResult.Type.MISS) && list != null) {
 
-        if (client.screen == null && client.hitResult != null && (action != GLFW.GLFW_PRESS || client.hitResult.getType() == HitResult.Type.MISS) && list != null) {
+            if (button == 0 && !client.player.getMainHandItem().isEmpty()) {
+                return EventResult.pass();
+            } else if(button == 1 && (!client.player.getMainHandItem().isEmpty() || !client.player.getOffhandItem().isEmpty())) {
+                return EventResult.pass();
+            }
+
             for (AbilityEntry ability : list.getAbilities()) {
-                if (ability != null) {
+                if (ability != null && ability.isUnlocked()) {
                     AbilityConfiguration.KeyType keyType = ability.getConfiguration().getKeyType();
                     if ((keyType == AbilityConfiguration.KeyType.LEFT_CLICK && button == 0) || (keyType == AbilityConfiguration.KeyType.RIGHT_CLICK && button == 1)) {
                         new AbilityKeyPressedMessage(list.getPower().getId(), ability.id, action == GLFW.GLFW_PRESS).sendToServer();
-                        return EventResult.interruptFalse();
                     }
                 }
             }

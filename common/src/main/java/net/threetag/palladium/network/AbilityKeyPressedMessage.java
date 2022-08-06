@@ -54,7 +54,7 @@ public class AbilityKeyPressedMessage extends BaseC2SMessage {
             if (holder != null) {
                 AbilityEntry entry = holder.getAbilities().get(this.abilityKey);
 
-                if (entry != null) {
+                if (entry != null && entry.isUnlocked()) {
                     entry.keyPressed(context.getPlayer(), this.pressed);
                 }
             }

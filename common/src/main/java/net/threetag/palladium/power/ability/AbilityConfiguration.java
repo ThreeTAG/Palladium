@@ -151,11 +151,7 @@ public class AbilityConfiguration {
                     Condition condition = ConditionSerializer.fromJSON(c, ConditionContextType.ABILITIES);
 
                     if (condition.needsKey()) {
-                        if (withKey) {
-                            throw new JsonParseException("Can't have two key binding conditions on one ability!");
-                        }
-                        withKey = true;
-                        configuration.keyType = condition.getKeyType();
+                        throw new JsonParseException("Can't have key binding conditions for unlocking!");
                     }
 
                     if (condition.handlesCooldown()) {
