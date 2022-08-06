@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
+import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.IntegerProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
@@ -12,8 +13,8 @@ import java.util.Objects;
 
 public class ActionCondition extends KeyCondition {
 
-    public ActionCondition(int cooldown) {
-        super(cooldown);
+    public ActionCondition(int cooldown, AbilityConfiguration.KeyType type) {
+        super(cooldown, type);
     }
 
     @Override
@@ -47,11 +48,12 @@ public class ActionCondition extends KeyCondition {
 
         public Serializer() {
             this.withProperty(COOLDOWN, 0);
+            this.withProperty(KeyCondition.KEY_TYPE, AbilityConfiguration.KeyType.KEY_BIND);
         }
 
         @Override
         public Condition make(JsonObject json) {
-            return new ActionCondition(this.getProperty(json, COOLDOWN));
+            return new ActionCondition(this.getProperty(json, COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE));
         }
 
         @Override
