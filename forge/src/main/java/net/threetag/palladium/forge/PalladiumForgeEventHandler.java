@@ -9,6 +9,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.renderer.entity.CustomProjectileRenderer;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.event.PalladiumClientEvents;
@@ -40,6 +41,7 @@ public class PalladiumForgeEventHandler {
         @SubscribeEvent
         public static void onEntityRendererRegister(EntityRenderersEvent.RegisterRenderers e) {
             e.registerEntityRenderer(PalladiumEntityTypes.EFFECT.get(), EffectEntityRenderer::new);
+            e.registerEntityRenderer(PalladiumEntityTypes.CUSTOM_PROJECTILE.get(), CustomProjectileRenderer::new);
         }
 
     }

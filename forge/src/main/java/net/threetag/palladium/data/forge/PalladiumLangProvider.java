@@ -5,6 +5,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessories;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.sound.PalladiumSoundEvents;
@@ -67,6 +68,10 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quartz Circuit");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibranium Circuit");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibranium Weave Boots");
+
+            // Entities
+            this.addEntityType(PalladiumEntityTypes.EFFECT, "Effect");
+            this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projectile");
 
             // Abilities
             this.addAbility(Abilities.COMMAND, "Command");
@@ -189,6 +194,10 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaltkreis");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumgewebeschuhe");
 
+            // Entities
+            this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
+            this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
+
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
@@ -309,6 +318,10 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaldkres");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaldkres");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumjewebelaadschn");
+
+            // Entities
+            this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
+            this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
 
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
