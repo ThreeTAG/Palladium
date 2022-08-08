@@ -37,6 +37,7 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
     public float gravity = 0.03F;
     public boolean dieOnBlockHit = true;
     public boolean dieOnEntityHit = true;
+    public int lifetime = -1;
     public EntityDimensions dimensions = new EntityDimensions(0.1F, 0.1F, false);
     public List<Appearance> appearances = new ArrayList<>();
 
@@ -111,6 +112,10 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
         for (Appearance appearance : this.appearances) {
             appearance.onTick(this);
         }
+
+        if(this.lifetime > 0 && this.tickCount >= this.lifetime && !this.level.isClientSide) {
+            this.discard();
+        }
     }
 
     @Override
@@ -121,6 +126,7 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
         compound.putBoolean("DieOnEntityHit", this.dieOnEntityHit);
         compound.putBoolean("DieOnBlockHit", this.dieOnBlockHit);
         compound.putFloat("Size", this.dimensions.width);
+        compound.putFloat("Lifetime", this.lifetime);
 
         ListTag appearanceList = new ListTag();
         for (Appearance appearance : this.appearances) {
@@ -139,6 +145,8 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
             this.damage = compound.getFloat("Damage");
         if (compound.contains("Gravity", 99))
             this.gravity = compound.getFloat("Gravity");
+        if (compound.contains("Lifetime", 99))
+            this.lifetime = compound.getInt("Lifetime");
         if (compound.contains("DieOnEntityHit"))
             this.dieOnEntityHit = compound.getBoolean("DieOnEntityHit");
         if (compound.contains("DieOnBlockHit"))
