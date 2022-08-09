@@ -67,6 +67,9 @@ dependencies {
     // Pehkui
     modCompileOnly("com.github.Virtuoel:Pehkui:${rootProject.pehkui_forge_version}")
 
+    // Smooth Boot
+//    modRuntimeOnly "curse.maven:smoothboot-633412:${rootProject.smoothboot_forge_version}"
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }

@@ -3,10 +3,12 @@ package net.threetag.palladium.network;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.client.screen.AccessoryScreen;
@@ -63,22 +65,25 @@ public class SyncAccessoriesMessage extends BaseS2CMessage {
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
-        context.queue(() -> {
-            Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityId);
+        context.queue(this::handle);
+    }
 
-            if (entity instanceof AbstractClientPlayer player) {
-                Accessory.getPlayerData(player).ifPresent(data -> {
-                    data.clear(player);
-                    this.accessories.forEach((slot, accessories) -> {
-                        for (Accessory accessory : accessories) {
-                            data.enable(slot, accessory, player);
-                        }
-                    });
-                    if (Minecraft.getInstance().screen instanceof AccessoryScreen) {
-                        ((AccessoryScreen) Minecraft.getInstance().screen).accessoryList.refreshList();
+    @Environment(EnvType.CLIENT)
+    public void handle() {
+        Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityId);
+
+        if (entity instanceof Player player) {
+            Accessory.getPlayerData(player).ifPresent(data -> {
+                data.clear(player);
+                this.accessories.forEach((slot, accessories) -> {
+                    for (Accessory accessory : accessories) {
+                        data.enable(slot, accessory, player);
                     }
                 });
-            }
-        });
+                if (Minecraft.getInstance().screen instanceof AccessoryScreen) {
+                    ((AccessoryScreen) Minecraft.getInstance().screen).accessoryList.refreshList();
+                }
+            });
+        }
     }
 }

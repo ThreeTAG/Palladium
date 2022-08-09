@@ -16,51 +16,52 @@ import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.util.PlayerUtil;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class HumanoidModelOverlay extends OverlayAccessory {
 
-    private final ModelLayerLocation modelLayer, modelLayerSlim;
+    private final Supplier<Object> modelLayer, modelLayerSlim;
     private Object model, modelSlim;
 
-    public HumanoidModelOverlay(ModelLayerLocation modelLayer, ResourceLocation texture, ResourceLocation textureSlim) {
+    public HumanoidModelOverlay(Supplier<Object> modelLayer, ResourceLocation texture, ResourceLocation textureSlim) {
         super(texture, textureSlim);
         this.modelLayer = this.modelLayerSlim = modelLayer;
     }
 
-    public HumanoidModelOverlay(ModelLayerLocation modelLayer, ModelLayerLocation modelLayerSlim, ResourceLocation texture, ResourceLocation textureSlim) {
-        super(texture, textureSlim);
-        this.modelLayer = modelLayer;
-        this.modelLayerSlim = modelLayerSlim;
-    }
-
-    public HumanoidModelOverlay(ModelLayerLocation modelLayer, ResourceLocation texture) {
-        super(texture);
-        this.modelLayer = this.modelLayerSlim = modelLayer;
-    }
-
-    public HumanoidModelOverlay(ModelLayerLocation modelLayer,ModelLayerLocation modelLayerSlim, ResourceLocation texture) {
-        super(texture);
-        this.modelLayer = modelLayer;
-        this.modelLayerSlim = modelLayerSlim;
-    }
-
-    public HumanoidModelOverlay(ModelLayerLocation modelLayer, String texture, String textureSlim) {
-        super(texture, textureSlim);
-        this.modelLayer = this.modelLayerSlim = modelLayer;
-    }
-
-    public HumanoidModelOverlay(ModelLayerLocation modelLayer,ModelLayerLocation modelLayerSlim, String texture, String textureSlim) {
+    public HumanoidModelOverlay(Supplier<Object> modelLayer, Supplier<Object> modelLayerSlim, ResourceLocation texture, ResourceLocation textureSlim) {
         super(texture, textureSlim);
         this.modelLayer = modelLayer;
         this.modelLayerSlim = modelLayerSlim;
     }
 
-    public HumanoidModelOverlay(ModelLayerLocation modelLayer, String texture) {
+    public HumanoidModelOverlay(Supplier<Object> modelLayer, ResourceLocation texture) {
         super(texture);
         this.modelLayer = this.modelLayerSlim = modelLayer;
     }
 
-    public HumanoidModelOverlay(ModelLayerLocation modelLayer, ModelLayerLocation modelLayerSlim, String texture) {
+    public HumanoidModelOverlay(Supplier<Object> modelLayer, Supplier<Object> modelLayerSlim, ResourceLocation texture) {
+        super(texture);
+        this.modelLayer = modelLayer;
+        this.modelLayerSlim = modelLayerSlim;
+    }
+
+    public HumanoidModelOverlay(Supplier<Object> modelLayer, String texture, String textureSlim) {
+        super(texture, textureSlim);
+        this.modelLayer = this.modelLayerSlim = modelLayer;
+    }
+
+    public HumanoidModelOverlay(Supplier<Object> modelLayer, Supplier<Object> modelLayerSlim, String texture, String textureSlim) {
+        super(texture, textureSlim);
+        this.modelLayer = modelLayer;
+        this.modelLayerSlim = modelLayerSlim;
+    }
+
+    public HumanoidModelOverlay(Supplier<Object> modelLayer, String texture) {
+        super(texture);
+        this.modelLayer = this.modelLayerSlim = modelLayer;
+    }
+
+    public HumanoidModelOverlay(Supplier<Object> modelLayer, Supplier<Object> modelLayerSlim, String texture) {
         super(texture);
         this.modelLayer = modelLayer;
         this.modelLayerSlim = modelLayerSlim;
@@ -69,15 +70,23 @@ public class HumanoidModelOverlay extends OverlayAccessory {
     @Environment(EnvType.CLIENT)
     @Override
     public void onReload(EntityModelSet entityModelSet) {
-        this.model = new HumanoidModel<>(entityModelSet.bakeLayer(this.modelLayer));
-        this.modelSlim = new HumanoidModel<>(entityModelSet.bakeLayer(this.modelLayerSlim));
+        Object loc = this.modelLayer.get();
+        Object locSlim = this.modelLayerSlim.get();
+
+        if(loc instanceof ModelLayerLocation loc1) {
+            this.model = new HumanoidModel<>(entityModelSet.bakeLayer(loc1));
+        }
+
+        if(locSlim instanceof ModelLayerLocation loc1) {
+            this.modelSlim = new HumanoidModel<>(entityModelSet.bakeLayer(loc1));
+        }
     }
 
     @SuppressWarnings("unchecked")
     @Environment(EnvType.CLIENT)
     @Override
     public void render(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderLayerParent, AccessorySlot slot, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if(this.getModel(player) instanceof HumanoidModel model) {
+        if (this.getModel(player) instanceof HumanoidModel model) {
             renderLayerParent.getModel().copyPropertiesTo(model);
             this.setVisibility(model, player, slot);
             ResourceLocation texture = PlayerUtil.hasSmallArms(player) ? this.textureSlim : this.texture;

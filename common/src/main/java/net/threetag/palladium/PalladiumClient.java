@@ -22,6 +22,7 @@ import net.threetag.palladium.client.screen.AccessoryScreen;
 import net.threetag.palladium.client.screen.OverlayRegistry;
 import net.threetag.palladium.client.screen.power.PowersScreen;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.util.SupporterHandler;
 
 public class PalladiumClient {
 
@@ -33,6 +34,7 @@ public class PalladiumClient {
         PalladiumKeyMappings.init();
         PowersScreen.register();
         AccessoryScreen.addButton();
+        SupporterHandler.clientInit();
 
         RenderLayerRegistry.addToAll(renderLayerParent -> new PackRenderLayerRenderer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));
         RenderLayerRegistry.addToAll(renderLayerParent -> new AbilityEffectsRenderLayer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));

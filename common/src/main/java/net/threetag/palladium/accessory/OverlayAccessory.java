@@ -67,6 +67,7 @@ public class OverlayAccessory extends DefaultAccessory {
         model.renderToBuffer(poseStack, buffer, packedLightIn, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
     }
 
+    @Environment(EnvType.CLIENT)
     public void setVisibility(HumanoidModel<?> model, AbstractClientPlayer player, AccessorySlot slot) {
         if(this.onlyRenderSlot) {
             model.setAllVisible(false);
