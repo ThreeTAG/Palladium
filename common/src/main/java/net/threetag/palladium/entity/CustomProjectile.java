@@ -38,6 +38,7 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
     public boolean dieOnBlockHit = true;
     public boolean dieOnEntityHit = true;
     public int lifetime = -1;
+    public int setEntityOnFireSeconds = 0;
     public EntityDimensions dimensions = new EntityDimensions(0.1F, 0.1F, false);
     public List<Appearance> appearances = new ArrayList<>();
 
@@ -78,12 +79,18 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        Entity entity = result.getEntity();
-        entity.hurt(DamageSource.thrown(this, this.getOwner()), this.damage);
+        if(!this.level.isClientSide) {
+            Entity entity = result.getEntity();
+            entity.hurt(DamageSource.thrown(this, this.getOwner()), this.damage);
 
-        if (this.dieOnEntityHit && !this.level.isClientSide) {
-            this.level.broadcastEntityEvent(this, (byte) 3);
-            this.discard();
+            if (this.setEntityOnFireSeconds > 0) {
+                entity.setSecondsOnFire(this.setEntityOnFireSeconds);
+            }
+
+            if (this.dieOnEntityHit) {
+                this.level.broadcastEntityEvent(this, (byte) 3);
+                this.discard();
+            }
         }
     }
 
@@ -113,7 +120,7 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
             appearance.onTick(this);
         }
 
-        if(this.lifetime > 0 && this.tickCount >= this.lifetime && !this.level.isClientSide) {
+        if (this.lifetime > 0 && this.tickCount >= this.lifetime && !this.level.isClientSide) {
             this.discard();
         }
     }
@@ -127,6 +134,7 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
         compound.putBoolean("DieOnBlockHit", this.dieOnBlockHit);
         compound.putFloat("Size", this.dimensions.width);
         compound.putFloat("Lifetime", this.lifetime);
+        compound.putFloat("SetEntityOnFireSeconds", this.setEntityOnFireSeconds);
 
         ListTag appearanceList = new ListTag();
         for (Appearance appearance : this.appearances) {
@@ -147,6 +155,8 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
             this.gravity = compound.getFloat("Gravity");
         if (compound.contains("Lifetime", 99))
             this.lifetime = compound.getInt("Lifetime");
+        if (compound.contains("SetEntityOnFireSeconds", 99))
+            this.setEntityOnFireSeconds = compound.getInt("SetEntityOnFireSeconds");
         if (compound.contains("DieOnEntityHit"))
             this.dieOnEntityHit = compound.getBoolean("DieOnEntityHit");
         if (compound.contains("DieOnBlockHit"))
@@ -204,17 +214,20 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
 
     }
 
+    @SuppressWarnings("unchecked")
     public static class ParticleAppearance extends Appearance {
 
         public final ParticleType type;
+        public final int amount;
         public final float spread;
         public final String options;
 
         public ParticleAppearance(CompoundTag tag) {
             super(tag);
-            this.type = Registry.PARTICLE_TYPE.get(new ResourceLocation(tag.getString("ParticleType")));
-            this.spread = tag.getFloat("Spread");
-            this.options = tag.getString("Options");
+            this.type = tag.contains("ParticleType") ? Registry.PARTICLE_TYPE.get(new ResourceLocation(tag.getString("ParticleType"))) : ParticleTypes.FLAME;
+            this.amount = tag.contains("Amount") ? tag.getInt("Amount") : 1;
+            this.spread = tag.contains("Spread") ? tag.getFloat("Spread") : 1;
+            this.options = tag.contains("Options") ? tag.getString("Options") : "";
         }
 
         @Override
@@ -225,34 +238,38 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
         @Override
         public void toNBT(CompoundTag nbt) {
             nbt.putString("ParticleType", Registry.PARTICLE_TYPE.getKey(this.type).toString());
+            nbt.putInt("Amount", this.amount);
             nbt.putFloat("Spread", this.spread);
             nbt.putString("Options", this.options);
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public void onTick(CustomProjectile projectile) {
             Random random = new Random();
-            float sX = (random.nextFloat() - 0.5F) * this.spread;
-            float sY = (random.nextFloat() - 0.5F) * this.spread;
-            float sZ = (random.nextFloat() - 0.5F) * this.spread;
+            for (int i = 0; i < this.amount; i++) {
+                float sX = (random.nextFloat() - 0.5F) * this.spread;
+                float sY = (random.nextFloat() - 0.5F) * this.spread;
+                float sZ = (random.nextFloat() - 0.5F) * this.spread;
 
-            try {
-                projectile.level.addParticle(this.type.getDeserializer().fromCommand(this.type, new StringReader(this.options)), projectile.getX(), projectile.getY(), projectile.getZ(), sX, sY, sZ);
-            } catch (CommandSyntaxException e) {
+                try {
+                    projectile.level.addParticle(this.type.getDeserializer().fromCommand(this.type, new StringReader(this.options)), projectile.getX(), projectile.getY(), projectile.getZ(), sX, sY, sZ);
+                } catch (CommandSyntaxException ignored) {
+                }
             }
         }
 
         @Override
         public void spawnParticlesOnHit(CustomProjectile projectile) {
-            Random random = new Random();
-            float sX = (random.nextFloat() - 0.5F) * this.spread * 2F;
-            float sY = (random.nextFloat() - 0.5F) * this.spread * 2F;
-            float sZ = (random.nextFloat() - 0.5F) * this.spread * 2F;
+            for (int i = 0; i < this.amount; i++) {
+                Random random = new Random();
+                float sX = (random.nextFloat() - 0.5F) * this.spread * 2F;
+                float sY = (random.nextFloat() - 0.5F) * this.spread * 2F;
+                float sZ = (random.nextFloat() - 0.5F) * this.spread * 2F;
 
-            try {
-                projectile.level.addParticle(this.type.getDeserializer().fromCommand(this.type, new StringReader(this.options)), projectile.getX(), projectile.getY(), projectile.getZ(), sX, sY, sZ);
-            } catch (CommandSyntaxException e) {
+                try {
+                    projectile.level.addParticle(this.type.getDeserializer().fromCommand(this.type, new StringReader(this.options)), projectile.getX(), projectile.getY(), projectile.getZ(), sX, sY, sZ);
+                } catch (CommandSyntaxException ignored) {
+                }
             }
         }
     }
@@ -266,7 +283,7 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
             var itemTag = tag.get("Item");
 
             if (itemTag instanceof CompoundTag compoundTag) {
-                this.item = ItemStack.of(tag.getCompound("Item"));
+                this.item = ItemStack.of(compoundTag);
             } else if (itemTag instanceof StringTag stringTag) {
                 this.item = new ItemStack(Registry.ITEM.get(new ResourceLocation(stringTag.getAsString())));
             } else {
@@ -301,7 +318,7 @@ public class CustomProjectile extends ThrowableProjectile implements EntitySpawn
 
         public LaserAppearance(CompoundTag tag) {
             super(tag);
-            this.thickness = tag.getFloat("Thickness");
+            this.thickness = tag.contains("Thickness") ? tag.getFloat("Thickness") : 0.05F;
             var colorTag = tag.get("Color");
 
             if (colorTag instanceof StringTag stringTag) {
