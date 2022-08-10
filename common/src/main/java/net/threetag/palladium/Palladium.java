@@ -84,7 +84,7 @@ public class Palladium {
             PalladiumFeatures.init();
             Palladium.generateDocumentation();
 
-            if(Platform.isModLoaded("pehkui")) {
+            if (Platform.isModLoaded("pehkui")) {
                 PehkuiCompat.init();
             }
         });
@@ -97,7 +97,7 @@ public class Palladium {
     }
 
     public static void generateDocumentation() {
-        if(Platform.getEnvironment() == Env.CLIENT) {
+        if (Platform.getEnvironment() == Env.CLIENT) {
             Consumer<HTMLBuilder> consumer = HTMLBuilder::save;
             consumer.accept(Ability.documentationBuilder());
             consumer.accept(ConditionSerializer.documentationBuilder());
