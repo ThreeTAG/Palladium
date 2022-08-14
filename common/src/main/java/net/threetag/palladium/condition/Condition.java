@@ -13,6 +13,13 @@ import java.util.List;
 
 public abstract class Condition {
 
+    private ConditionContextType contextType;
+
+    public Condition setContextType(ConditionContextType contextType) {
+        this.contextType = contextType;
+        return this;
+    }
+
     public abstract boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder);
 
     public boolean needsKey() {

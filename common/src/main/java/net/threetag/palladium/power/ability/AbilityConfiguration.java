@@ -203,6 +203,8 @@ public class AbilityConfiguration {
             configuration.cooldownType = cooldownType == null ? CooldownType.STATIC : cooldownType;
         }
 
+        ability.postParsing(configuration);
+
         return configuration;
     }
 

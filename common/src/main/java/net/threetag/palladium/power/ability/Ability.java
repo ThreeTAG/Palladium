@@ -156,4 +156,7 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
         builder.setTitle(new TranslatableComponent("ability." + this.getId().getNamespace() + "." + this.getId().getPath()).getString());
     }
+
+    public void postParsing(AbilityConfiguration configuration) {
+    }
 }

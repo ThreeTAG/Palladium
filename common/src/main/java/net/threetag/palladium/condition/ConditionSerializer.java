@@ -54,6 +54,10 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
 
     public abstract Condition make(JsonObject json);
 
+    public Condition make(JsonObject json, ConditionContextType type) {
+        return this.make(json);
+    }
+
     public ConditionContextType getContextType() {
         return ConditionContextType.ALL;
     }
@@ -65,11 +69,11 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
             throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' does not exist!");
         }
 
-        if((type == ConditionContextType.ABILITIES && !conditionSerializer.getContextType().forAbilities()) || (type == ConditionContextType.RENDER_LAYERS && !conditionSerializer.getContextType().forRenderLayers())) {
+        if ((type == ConditionContextType.ABILITIES && !conditionSerializer.getContextType().forAbilities()) || (type == ConditionContextType.RENDER_LAYERS && !conditionSerializer.getContextType().forRenderLayers())) {
             throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' is not applicable for " + type.toString().toLowerCase(Locale.ROOT));
         }
 
-        return conditionSerializer.make(json);
+        return conditionSerializer.make(json, type).setContextType(type);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
