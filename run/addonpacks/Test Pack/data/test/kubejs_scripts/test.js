@@ -43,7 +43,6 @@ onEvent('palladium.condition.scriptable', (event) => {
 
 // Add ability code for test:kubejs_test power
 onEvent('palladium.ability.scriptable', (event) => {
-  console.log("HALLO WELT");
   event.setTickHandler('test:scriptable_ability_test', (entity) => {
     entity.tell('Tick!');
   });
