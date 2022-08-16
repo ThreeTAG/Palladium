@@ -33,25 +33,3 @@ onEvent('item.right_click', (event) => {
     palladium.swingArm(event.player, event.getHand());
   }
 });
-
-// Add condition code for test:kubejs_test power
-onEvent('palladium.condition.scriptable', (event) => {
-  event.setHandler('test:scriptable_condition_test', (entity) => {
-    return entity.isCrouching();
-  });
-});
-
-// Add ability code for test:kubejs_test power
-onEvent('palladium.ability.scriptable', (event) => {
-  event.setTickHandler('test:scriptable_ability_test', (entity) => {
-    entity.tell('Tick!');
-  });
-
-  event.setFirstTickHandler('test:scriptable_ability_test', (entity) => {
-    entity.tell('First Tick!');
-  });
-
-  event.setLastTickHandler('test:scriptable_ability_test', (entity) => {
-    entity.tell('Last Tick!');
-  });
-});

@@ -2,7 +2,12 @@ package net.threetag.palladium.compat.kubejs;
 
 import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.entity.LivingEntityJS;
+import dev.latvian.mods.kubejs.item.ItemStackJS;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
+import net.threetag.palladium.util.icon.IIcon;
+import net.threetag.palladium.util.icon.ItemIcon;
+import net.threetag.palladium.util.icon.TexturedIcon;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperty;
 
@@ -11,6 +16,14 @@ public class PalladiumBinding {
 
     public static void swingArm(LivingEntityJS entity, InteractionHand hand) {
         entity.minecraftLivingEntity.swing(hand, true);
+    }
+
+    public static IIcon createItemIcon(ItemStackJS itemStackJS) {
+        return new ItemIcon(itemStackJS.getItemStack());
+    }
+
+    public static IIcon createTextureIcon(ResourceLocation path) {
+        return new TexturedIcon(path);
     }
 
     public static Object getProperty(EntityJS entity, CharSequence key) {

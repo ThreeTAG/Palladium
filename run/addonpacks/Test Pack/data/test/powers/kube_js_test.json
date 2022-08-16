@@ -3,13 +3,11 @@
   "icon": "minecraft:iron_ingot",
   "abilities": {
     "action": {
-      "type": "kubejs:scriptable",
-      "key": "test:scriptable_ability_test",
+      "type": "kubejs:testpack/test_ability",
       "conditions": {
         "unlocking": [
           {
-            "type": "kubejs:scriptable",
-            "key": "test:scriptable_condition_test"
+            "type": "kubejs:testpack/test_condition"
           }
         ],
         "enabling": [
