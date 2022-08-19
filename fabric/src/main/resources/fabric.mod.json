@@ -24,9 +24,6 @@
     ],
     "cardinal-components": [
       "net.threetag.palladium.components.fabric.PalladiumComponents"
-    ],
-    "modmenu": [
-      "net.threetag.palladium.compat.modmenu.fabric.ModMenuCompat"
     ]
   },
   "mixins": [
@@ -37,7 +34,9 @@
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.19.1",
-    "architectury": ">=6.0.35"
+    "architectury": ">=6.0.35",
+    "com_electronwill_night-config_core": "*",
+    "com_electronwill_night-config_toml": "*"
   },
   "custom": {
     "cardinal-components": [

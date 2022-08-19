@@ -57,7 +57,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        Position position = PalladiumConfig.getAbilityBarPosition();
+        Position position = PalladiumConfig.Client.ABILITY_BAR_POSITION.get();
         AbilityList list = getSelectedList();
         boolean simple = list.simple && ABILITY_LISTS.size() <= 1;
 

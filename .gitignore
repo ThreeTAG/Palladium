@@ -28,6 +28,11 @@ run/addonpacks/*
 !run/mods
 run/mods/*
 !run/mods/documentation
+
+!run/config
+run/config/*
+!run/config/fabric_loader_dependencies.json
+
 .architectury-transformer/*
 common/.architectury-transformer/*
 forge/.architectury-transformer/*
