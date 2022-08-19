@@ -7,6 +7,10 @@ dependencies {
     })
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/palladium.accessWidener")
+}
+
 architectury {
     common()
 }
@@ -20,6 +24,12 @@ publishing {
     }
 
     repositories {
-        // Add repositories to publish to here.
+        maven {
+            url 'https://repo.repsy.io/mvn/lucraft/threetag'
+            credentials {
+                username System.getenv('REPSY_USERNAME')
+                password System.getenv('REPSY_PASSWORD')
+            }
+        }
     }
 }

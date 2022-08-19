@@ -17,13 +17,14 @@ import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class ConditionSerializer extends RegistryEntry<ConditionSerializer> implements IDefaultDocumentedConfigurable {
 
-    public static final ResourceKey<Registry<ConditionSerializer>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "condition_serializers"));
+    public static final ResourceKey<Registry<ConditionSerializer>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "condition_serializer"));
     public static final Registrar<ConditionSerializer> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new ConditionSerializer[0]).build();
 
     final PropertyManager propertyManager = new PropertyManager();
@@ -53,6 +54,10 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
 
     public abstract Condition make(JsonObject json);
 
+    public Condition make(JsonObject json, ConditionContextType type) {
+        return this.make(json);
+    }
+
     public ConditionContextType getContextType() {
         return ConditionContextType.ALL;
     }
@@ -64,11 +69,11 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
             throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' does not exist!");
         }
 
-        if((type == ConditionContextType.ABILITIES && !conditionSerializer.getContextType().forAbilities()) || (type == ConditionContextType.RENDER_LAYERS && !conditionSerializer.getContextType().forRenderLayers())) {
+        if ((type == ConditionContextType.ABILITIES && !conditionSerializer.getContextType().forAbilities()) || (type == ConditionContextType.RENDER_LAYERS && !conditionSerializer.getContextType().forRenderLayers())) {
             throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' is not applicable for " + type.toString().toLowerCase(Locale.ROOT));
         }
 
-        return conditionSerializer.make(json);
+        return conditionSerializer.make(json, type).setContextType(type);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -84,7 +89,7 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
     public static HTMLBuilder documentationBuilder() {
         return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "conditions"), "Conditions")
                 .add(HTMLBuilder.heading("Conditions"))
-                .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList()));
+                .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
     }
 
     @Override

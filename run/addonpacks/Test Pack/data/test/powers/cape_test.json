@@ -1,0 +1,11 @@
+{
+  "name": "Cape Test",
+  "icon": "minecraft:leather",
+  "abilities": {
+    "action": {
+      "type": "palladium:render_layer",
+      "render_layer": "test:cape_test",
+      "title": "Cape"
+    }
+  }
+}

@@ -15,8 +15,8 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.HTMLBuilder;
-import net.threetag.palladium.mixin.client.*;
 import net.threetag.palladium.util.json.GsonUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,10 +34,10 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
+    protected void apply(Map<ResourceLocation, JsonElement> object, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profiler) {
         Map<ModelLayerLocation, LayerDefinition> jsonRoots = new HashMap<>();
         EntityModelSet entityModels = Minecraft.getInstance().getEntityModels();
-        var codeRoots = ((EntityModelSetMixin) entityModels).getRoots();
+        var codeRoots = entityModels.roots;
         var roots = new HashMap<>(codeRoots);
 
         object.forEach((id, jsonElement) -> {
@@ -51,7 +51,7 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
         });
 
         roots.putAll(jsonRoots);
-        ((EntityModelSetMixin) entityModels).setRoots(ImmutableMap.copyOf(roots));
+        entityModels.roots = ImmutableMap.copyOf(roots);
 
         dumpLayers();
     }
@@ -70,7 +70,7 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
         return LayerDefinition.create(meshDefinition, GsonHelper.getAsInt(json, "texture_width"), GsonHelper.getAsInt(json, "texture_height"));
     }
 
-    public static PartDefinition parseCubeListBuilder(String name, PartDefinition parent, JsonObject json) {
+    public static void parseCubeListBuilder(String name, PartDefinition parent, JsonObject json) {
         JsonArray cubes = GsonHelper.getAsJsonArray(json, "cubes");
         CubeListBuilder builder = CubeListBuilder.create();
 
@@ -122,7 +122,6 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
             }
         }
 
-        return partDefinition;
     }
 
     private static ModelLayerLocation mapPathToModelLayerLoc(ResourceLocation path) {
@@ -135,15 +134,18 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
         return new ModelLayerLocation(new ResourceLocation(path.getNamespace(), path.getPath().substring(idx + 1)), path.getPath().substring(0, idx));
     }
 
-    public static boolean dumpLayers() {
+    public static void dumpLayers() {
         File file = new File(HTMLBuilder.SUBFOLDER, "palladium/models");
 
         if (!file.exists() && !file.mkdirs())
-            return false;
+            return;
 
         AtomicBoolean result = new AtomicBoolean(true);
 
-        ((EntityModelSetMixin) Minecraft.getInstance().getEntityModels()).getRoots().forEach((modelLayerLocation, layerDefinition) -> {
+        Minecraft.getInstance().getEntityModels().roots.forEach((modelLayerLocation, layerDefinition) -> {
+            if(!modelLayerLocation.getModel().getNamespace().equalsIgnoreCase("minecraft")) {
+                return;
+            }
             File layerFolder = new File(file, modelLayerLocation.getModel().getNamespace() + "/" + modelLayerLocation.getLayer());
             File outputFile = new File(layerFolder, modelLayerLocation.getModel().getPath() + ".json");
 
@@ -154,15 +156,12 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
                 JsonObject json = new JsonObject();
 
                 JsonObject mesh = new JsonObject();
-                var root = ((LayerDefinitionMixin) layerDefinition).getMesh().getRoot();
-                ((PartDefinitionMixin) root).getChildren().forEach((s, partDefinition) -> {
-                    var part = (PartDefinitionMixin) partDefinition;
-                    mesh.add(s, serializePart(part));
-                });
+                var root = layerDefinition.mesh.getRoot();
+                root.children.forEach((s, partDefinition) -> mesh.add(s, serializePart(partDefinition)));
 
                 json.add("mesh", mesh);
-                json.addProperty("texture_width", ((MaterialDefinitionMixin) ((LayerDefinitionMixin) layerDefinition).getMaterial()).getXTexSize());
-                json.addProperty("texture_height", ((MaterialDefinitionMixin) ((LayerDefinitionMixin) layerDefinition).getMaterial()).getYTexSize());
+                json.addProperty("texture_width", layerDefinition.material.xTexSize);
+                json.addProperty("texture_height", layerDefinition.material.yTexSize);
 
                 Files.writeString(outputFile.toPath(), GSON.toJson(json));
             } catch (IOException e) {
@@ -171,33 +170,29 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
             }
         });
 
-        return result.get();
+        result.get();
     }
 
-    private static JsonObject serializePart(PartDefinitionMixin part) {
+    private static JsonObject serializePart(PartDefinition part) {
         JsonObject json = new JsonObject();
 
         JsonArray cubes = new JsonArray();
-        for (CubeDefinition cube : part.getCubes()) {
-            Object o = cube;
-            CubeDefinitionMixin c = (CubeDefinitionMixin) o;
+        for (CubeDefinition cube : part.cubes) {
             JsonObject cubeJson = new JsonObject();
-            cubeJson.add("origin", toJson(c.getOrigin()));
-            cubeJson.add("dimensions", toJson(c.getDimensions()));
-            cubeJson.add("texture_offset", toJson(c.getTexCoord()));
-            cubeJson.add("deformation", toJson(c.getGrow()));
-            cubeJson.addProperty("mirror", c.getMirror());
+            cubeJson.add("origin", toJson(cube.origin));
+            cubeJson.add("dimensions", toJson(cube.dimensions));
+            cubeJson.add("texture_offset", toJson(cube.texCoord));
+            cubeJson.add("deformation", toJson(cube.grow));
+            cubeJson.addProperty("mirror", cube.mirror);
             cubes.add(cubeJson);
         }
 
         JsonObject partPose = new JsonObject();
-        partPose.add("offset", toJson(new Vector3f(part.getPartPose().x, part.getPartPose().y, part.getPartPose().z)));
-        partPose.add("rotation", toJson(new Vector3f((float) Math.toDegrees(part.getPartPose().xRot), (float) Math.toDegrees(part.getPartPose().yRot), (float) Math.toDegrees(part.getPartPose().zRot))));
+        partPose.add("offset", toJson(new Vector3f(part.partPose.x, part.partPose.y, part.partPose.z)));
+        partPose.add("rotation", toJson(new Vector3f((float) Math.toDegrees(part.partPose.xRot), (float) Math.toDegrees(part.partPose.yRot), (float) Math.toDegrees(part.partPose.zRot))));
 
         JsonObject children = new JsonObject();
-        part.getChildren().forEach((s, partDefinition) -> {
-            children.add(s, serializePart((PartDefinitionMixin) partDefinition));
-        });
+        part.children.forEach((s, partDefinition) -> children.add(s, serializePart(partDefinition)));
 
         json.add("cubes", cubes);
         json.add("part_pose", partPose);
@@ -222,9 +217,9 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
 
     private static JsonArray toJson(CubeDeformation cubeDeformation) {
         JsonArray array = new JsonArray();
-        array.add(((CubeDeformationMixin) cubeDeformation).getGrowX());
-        array.add(((CubeDeformationMixin) cubeDeformation).getGrowY());
-        array.add(((CubeDeformationMixin) cubeDeformation).getGrowZ());
+        array.add(cubeDeformation.growX);
+        array.add(cubeDeformation.growY);
+        array.add(cubeDeformation.growZ);
         return array;
     }
 }

@@ -30,6 +30,7 @@ public class AbilityConfiguration {
     private final List<Condition> enablingConditions = new ArrayList<>();
     private CooldownType cooldownType = CooldownType.STATIC;
     private boolean needsKey = false;
+    private KeyType keyType = KeyType.KEY_BIND;
     public List<String> dependencies = new ArrayList<>();
 
     public AbilityConfiguration(String id, Ability ability) {
@@ -82,7 +83,11 @@ public class AbilityConfiguration {
     }
 
     public boolean needsKey() {
-        return needsKey;
+        return this.needsKey;
+    }
+
+    public KeyType getKeyType() {
+        return this.keyType;
     }
 
     public void toBuffer(FriendlyByteBuf buf) {
@@ -90,6 +95,7 @@ public class AbilityConfiguration {
         buf.writeResourceLocation(Objects.requireNonNull(Ability.REGISTRY.getId(this.ability)));
         this.propertyManager.toBuffer(buf);
         buf.writeBoolean(this.needsKey);
+        buf.writeInt(this.keyType.ordinal());
         buf.writeInt(this.cooldownType.ordinal());
         buf.writeInt(this.dependencies.size());
         for (String s : this.dependencies) {
@@ -103,6 +109,7 @@ public class AbilityConfiguration {
         AbilityConfiguration configuration = new AbilityConfiguration(id, Objects.requireNonNull(ability));
         configuration.propertyManager.fromBuffer(buf);
         configuration.needsKey = buf.readBoolean();
+        configuration.keyType = KeyType.values()[buf.readInt()];
         configuration.cooldownType = CooldownType.values()[buf.readInt()];
         int keys = buf.readInt();
         for (int i = 0; i < keys; i++) {
@@ -144,10 +151,7 @@ public class AbilityConfiguration {
                     Condition condition = ConditionSerializer.fromJSON(c, ConditionContextType.ABILITIES);
 
                     if (condition.needsKey()) {
-                        if (withKey) {
-                            throw new JsonParseException("Can't have two key binding conditions on one ability!");
-                        }
-                        withKey = true;
+                        throw new JsonParseException("Can't have key binding conditions for unlocking!");
                     }
 
                     if (condition.handlesCooldown()) {
@@ -176,6 +180,7 @@ public class AbilityConfiguration {
                             throw new JsonParseException("Can't have two key binding conditions on one ability!");
                         }
                         withKey = true;
+                        configuration.keyType = condition.getKeyType();
                     }
 
                     if (condition.handlesCooldown()) {
@@ -198,6 +203,17 @@ public class AbilityConfiguration {
             configuration.cooldownType = cooldownType == null ? CooldownType.STATIC : cooldownType;
         }
 
+        ability.postParsing(configuration);
+
         return configuration;
+    }
+
+    public enum KeyType {
+
+        KEY_BIND,
+        LEFT_CLICK,
+        RIGHT_CLICK,
+        SPACE_BAR;
+
     }
 }

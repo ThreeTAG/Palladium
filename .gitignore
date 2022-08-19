@@ -28,3 +28,7 @@ run/addonpacks/*
 !run/mods
 run/mods/*
 !run/mods/documentation
+.architectury-transformer/*
+common/.architectury-transformer/*
+forge/.architectury-transformer/*
+fabric/.architectury-transformer/*

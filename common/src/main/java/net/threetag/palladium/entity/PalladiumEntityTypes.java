@@ -15,6 +15,7 @@ public class PalladiumEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Palladium.MOD_ID, Registry.ENTITY_TYPE_REGISTRY);
 
     public static final RegistrySupplier<EntityType<EffectEntity>> EFFECT = register("effect", () -> EntityType.Builder.<EffectEntity>of(EffectEntity::new, MobCategory.MISC).sized(0.1F, 0.1F));
+    public static final RegistrySupplier<EntityType<CustomProjectile>> CUSTOM_PROJECTILE = register("custom_projectile", () -> EntityType.Builder.of(CustomProjectile::new, MobCategory.MISC).sized(0.1F, 0.1F));
 
     public static <T extends Entity> RegistrySupplier<EntityType<T>> register(String id, Supplier<EntityType.Builder<T>> builderSupplier) {
         return ENTITIES.register(id, () -> builderSupplier.get().build(Palladium.MOD_ID + ":" + id));

@@ -1,20 +1,17 @@
 package net.threetag.palladium.data.forge;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.data.LanguageProvider;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.accessory.Accessories;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.compat.kubejs.PalladiumKubeJSPlugin;
+import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.sound.PalladiumSoundEvents;
 
-import java.util.Objects;
-import java.util.function.Supplier;
-
-public abstract class PalladiumLangProvider extends LanguageProvider {
+public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
     public PalladiumLangProvider(DataGenerator gen, String modid, String locale) {
         super(gen, modid, locale);
@@ -73,6 +70,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibranium Circuit");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibranium Weave Boots");
 
+            // Entities
+            this.addEntityType(PalladiumEntityTypes.EFFECT, "Effect");
+            this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projectile");
+
             // Abilities
             this.addAbility(Abilities.COMMAND, "Command");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
@@ -84,6 +85,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(Abilities.INVISIBILITY, "Invisibility");
             this.addAbility(Abilities.SIZE, "Size");
             this.addAbility(Abilities.PROJECTILE, "Projectile");
+            this.addAbility(PalladiumKubeJSPlugin.SCRIPTABLE_ABILITY, "Scriptable");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -105,6 +107,40 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Powers");
+            this.add("gui.palladium.accessories", "Accessories");
+
+            // Accessories
+            this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
+            this.addAccessory(Accessories.HEROBRINE_EYES, "Herobrine Eyes");
+            this.addAccessory(Accessories.FACE_MASK, "Face Mask");
+            this.addAccessory(Accessories.GLASSES_3D, "3D Glasses");
+            this.addAccessory(Accessories.SUN_GLASSES, "Sun Glasses");
+            this.addAccessory(Accessories.HEART_GLASSES, "Heart Glasses");
+            this.addAccessory(Accessories.OWCA_FEDORA, "OWCA Fedora");
+            this.addAccessory(Accessories.ELTON_HAT, "Elton Hat");
+            this.addAccessory(Accessories.STRAWHAT, "Strawhat");
+            this.addAccessory(Accessories.FEZ, "Fez");
+            this.addAccessory(Accessories.ANTENNA, "Antenna");
+            this.addAccessory(Accessories.KRUSTY_KRAB_HAT, "Krusty Krab Hat");
+            this.addAccessory(Accessories.SEA_PICKLE_HAT, "Sea Pickle Hat");
+            this.addAccessory(Accessories.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
+            this.addAccessory(Accessories.HYPERION_ARM, "Hyperion Arm");
+            this.addAccessory(Accessories.MECHANICAL_ARM, "Mechanical Arm");
+            this.addAccessory(Accessories.HAMMOND_CANE, "Hammond Cane");
+            this.addAccessory(Accessories.WOODEN_LEG, "Wooden Leg");
+
+            this.add("accessory_slot.hat", "Hat");
+            this.add("accessory_slot.head", "Head");
+            this.add("accessory_slot.face", "Face");
+            this.add("accessory_slot.chest", "Chest");
+            this.add("accessory_slot.back", "Back");
+            this.add("accessory_slot.main_arm", "Main Arm");
+            this.add("accessory_slot.off_arm", "Off Arm");
+            this.add("accessory_slot.main_hand", "Main Hand");
+            this.add("accessory_slot.off_hand", "Off Hand");
+            this.add("accessory_slot.right_leg", "Right Leg");
+            this.add("accessory_slot.left_leg", "Left Leg");
+            this.add("accessory_slot.special", "Special");
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Heat Vision");
@@ -160,6 +196,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaltkreis");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumgewebeschuhe");
 
+            // Entities
+            this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
+            this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
+
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
@@ -171,6 +211,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(Abilities.INVISIBILITY, "Unsichtbarkeit");
             this.addAbility(Abilities.SIZE, "Gr\u00F6\u00DFe");
             this.addAbility(Abilities.PROJECTILE, "Projektil");
+            this.addAbility(PalladiumKubeJSPlugin.SCRIPTABLE_ABILITY, "Skriptfähig");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
@@ -192,6 +233,40 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
+            this.add("gui.palladium.accessories", "Zubeh\u00F6r");
+
+            // Accessories
+            this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
+            this.addAccessory(Accessories.HEROBRINE_EYES, "Herobrineaugen");
+            this.addAccessory(Accessories.FACE_MASK, "Atemschutzmaske");
+            this.addAccessory(Accessories.GLASSES_3D, "3D-Brille");
+            this.addAccessory(Accessories.SUN_GLASSES, "Sonnenbrille");
+            this.addAccessory(Accessories.HEART_GLASSES, "Herzbrille");
+            this.addAccessory(Accessories.OWCA_FEDORA, "OWCA-Hut");
+            this.addAccessory(Accessories.ELTON_HAT, "Elton-Hut");
+            this.addAccessory(Accessories.STRAWHAT, "Strohhut");
+            this.addAccessory(Accessories.FEZ, "Fez");
+            this.addAccessory(Accessories.ANTENNA, "Antenne");
+            this.addAccessory(Accessories.KRUSTY_KRAB_HAT, "Krosse-Krabbe-Hut");
+            this.addAccessory(Accessories.SEA_PICKLE_HAT, "Seegurkenhut");
+            this.addAccessory(Accessories.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
+            this.addAccessory(Accessories.HYPERION_ARM, "Hyperion Arm");
+            this.addAccessory(Accessories.MECHANICAL_ARM, "Mechanischer Arm");
+            this.addAccessory(Accessories.HAMMOND_CANE, "Hammonds Gehstock");
+            this.addAccessory(Accessories.WOODEN_LEG, "Holzbein");
+
+            this.add("accessory_slot.hat", "Hut");
+            this.add("accessory_slot.head", "Kopf");
+            this.add("accessory_slot.face", "Gesicht");
+            this.add("accessory_slot.chest", "Brust");
+            this.add("accessory_slot.back", "R\u00FCcken");
+            this.add("accessory_slot.main_arm", "Hauptarm");
+            this.add("accessory_slot.off_arm", "Zweitarm");
+            this.add("accessory_slot.main_hand", "Haupthand");
+            this.add("accessory_slot.off_hand", "Zweithand");
+            this.add("accessory_slot.right_leg", "Rechtes Bein");
+            this.add("accessory_slot.left_leg", "Linkes Bein");
+            this.add("accessory_slot.special", "Spezial");
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
@@ -247,6 +322,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaldkres");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumjewebelaadschn");
 
+            // Entities
+            this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
+            this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
+
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
@@ -258,6 +337,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(Abilities.INVISIBILITY, "Unsischtbarkeet");
             this.addAbility(Abilities.SIZE, "Gr\u00F6\u00DFe");
             this.addAbility(Abilities.PROJECTILE, "Projektil");
+            this.addAbility(PalladiumKubeJSPlugin.SCRIPTABLE_ABILITY, "Skriptfähig");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");
@@ -279,19 +359,44 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
+            this.add("gui.palladium.accessories", "Zubeh\u00F6r");
+
+            // Accessories
+            this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
+            this.addAccessory(Accessories.HEROBRINE_EYES, "Herobrineaugen");
+            this.addAccessory(Accessories.FACE_MASK, "Atemschutzmaske");
+            this.addAccessory(Accessories.GLASSES_3D, "3D-Brille");
+            this.addAccessory(Accessories.SUN_GLASSES, "Sonnenbrille");
+            this.addAccessory(Accessories.HEART_GLASSES, "Herzbrille");
+            this.addAccessory(Accessories.OWCA_FEDORA, "OWCA-Hut");
+            this.addAccessory(Accessories.ELTON_HAT, "Elton-Hut");
+            this.addAccessory(Accessories.STRAWHAT, "Strohhut");
+            this.addAccessory(Accessories.FEZ, "Fez");
+            this.addAccessory(Accessories.ANTENNA, "Antenne");
+            this.addAccessory(Accessories.KRUSTY_KRAB_HAT, "Krosse-Krabbe-Hut");
+            this.addAccessory(Accessories.SEA_PICKLE_HAT, "Seegurkenhut");
+            this.addAccessory(Accessories.WINTER_SOLDIER_ARM, "Winter Soldier Arm");
+            this.addAccessory(Accessories.HYPERION_ARM, "Hyperion Arm");
+            this.addAccessory(Accessories.MECHANICAL_ARM, "Mechanischer Arm");
+            this.addAccessory(Accessories.HAMMOND_CANE, "Hammonds Gehstock");
+            this.addAccessory(Accessories.WOODEN_LEG, "Holzbehn");
+
+            this.add("accessory_slot.hat", "Hut");
+            this.add("accessory_slot.head", "Nischel");
+            this.add("accessory_slot.face", "Jesichd");
+            this.add("accessory_slot.chest", "Brust");
+            this.add("accessory_slot.back", "R\u00FCggen");
+            this.add("accessory_slot.main_arm", "Haupdarm");
+            this.add("accessory_slot.off_arm", "Zweitarm");
+            this.add("accessory_slot.main_hand", "Haupthand");
+            this.add("accessory_slot.off_hand", "Nebenhand");
+            this.add("accessory_slot.right_leg", "Reschdes Bein");
+            this.add("accessory_slot.left_leg", "Linges Bein");
+            this.add("accessory_slot.special", "Spezial");
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
         }
-    }
-
-    public void addAbility(Supplier<? extends Ability> key, String name) {
-        add(key.get(), name);
-    }
-
-    public void add(Ability key, String name) {
-        ResourceLocation id = Ability.REGISTRY.getId(key);
-        add("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath(), name);
     }
 
     @Override

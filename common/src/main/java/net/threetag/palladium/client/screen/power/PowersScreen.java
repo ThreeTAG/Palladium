@@ -9,6 +9,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -21,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.screen.components.IconButton;
-import net.threetag.palladium.mixin.client.AbstractContainerScreenMixin;
+import net.threetag.palladium.power.PowerHandler;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
@@ -64,6 +65,7 @@ public class PowersScreen extends Screen {
         super(NarratorChatListener.NO_TITLE);
     }
 
+    @SuppressWarnings("rawtypes")
     public static void register() {
         ClientGuiEvent.INIT_POST.register((screen, access) -> {
 
@@ -71,10 +73,10 @@ public class PowersScreen extends Screen {
             int abilityButtonYPos = -1;
 
             if (screen instanceof InventoryScreen || screen.getClass().toString().equals("class top.theillusivec4.curios.client.gui.CuriosScreen")) {
-                abilityButtonXPos = ((AbstractContainerScreenMixin) screen).getLeftPos() + 134;
+                abilityButtonXPos = ((AbstractContainerScreen) screen).leftPos + 134;
                 abilityButtonYPos = screen.height / 2 - 23;
             } else if (screen instanceof CreativeModeInventoryScreen) {
-                abilityButtonXPos = ((AbstractContainerScreenMixin) screen).getLeftPos() + 148;
+                abilityButtonXPos = ((AbstractContainerScreen) screen).leftPos + 148;
                 abilityButtonYPos = screen.height / 2 - 50;
             }
 
@@ -86,7 +88,7 @@ public class PowersScreen extends Screen {
                     public IIcon getIcon() {
                         List<IIcon> icons = Lists.newArrayList();
                         Minecraft mc = Minecraft.getInstance();
-                        PowerManager.getPowerHandler(mc.player).getPowerHolders().values().forEach(holder -> icons.add(holder.getPower().getIcon()));
+                        PowerManager.getPowerHandler(mc.player).ifPresent(handler -> handler.getPowerHolders().values().forEach(holder -> icons.add(holder.getPower().getIcon())));
                         if (icons.size() <= 0) {
                             icons.add(new ItemIcon(Blocks.BARRIER));
                         }
@@ -94,11 +96,12 @@ public class PowersScreen extends Screen {
                         return icons.get(i);
                     }
 
+                    @SuppressWarnings("ConstantConditions")
                     @Override
                     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
                         this.setPosition(finalAbilityButtonXPos, finalAbilityButtonYPos);
                         this.visible = !(screen instanceof CreativeModeInventoryScreen) || ((CreativeModeInventoryScreen) screen).getSelectedTab() == CreativeModeTab.TAB_INVENTORY.getId();
-                        this.active = this.visible && PowerManager.getPowerHandler(Minecraft.getInstance().player).getPowerHolders().size() > 0;
+                        this.active = this.visible && PowerManager.getPowerHandler(Minecraft.getInstance().player).orElse(new PowerHandler(null)).getPowerHolders().size() > 0;
                         super.render(matrixStack, mouseX, mouseY, partialTicks);
                     }
                 });
@@ -112,7 +115,7 @@ public class PowersScreen extends Screen {
         this.selectedTab = null;
 
         AtomicInteger i = new AtomicInteger();
-        PowerManager.getPowerHandler(this.minecraft.player).getPowerHolders().values().forEach(holder -> this.tabs.add(PowerTab.create(this.minecraft, this, i.getAndIncrement(), holder)));
+        PowerManager.getPowerHandler(this.minecraft.player).ifPresent(handler -> handler.getPowerHolders().values().forEach(holder -> this.tabs.add(PowerTab.create(this.minecraft, this, i.getAndIncrement(), holder))));
 
         if (this.tabs.size() > PowerTabType.MAX_TABS) {
             int guiLeft = (this.width - WINDOW_WIDTH) / 2;

@@ -8,9 +8,13 @@ architectury {
     fabric()
 }
 
+var commonAW = project(":common").loom.accessWidenerPath
+var generatedResources = file("src/generated/resources")
 version = version + "-fabric"
 
 loom {
+    accessWidenerPath = commonAW
+
     runConfigs.configureEach {
         if (name == "client")
             runDir = "../run"
@@ -62,17 +66,27 @@ dependencies {
 
     // KubeJS
     modImplementation("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}")
+    modRuntimeOnly "curse.maven:probejs-585406:${rootProject.probejs_fabric_version}"
 
     // Pehkui
     modImplementation("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {
         exclude group: "net.fabricmc.fabric-api"
     })
 
+    // Smooth Boot
+    modRuntimeOnly "curse.maven:smoothboot-415758:${rootProject.smoothboot_fabric_version}"
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 }
 
+task copyAW(type: Copy) {
+    from commonAW
+    into generatedResources
+}
+
 processResources {
+    dependsOn copyAW
     inputs.property "version", rootProject.mod_version
 
     filesMatching("fabric.mod.json") {
@@ -82,6 +96,7 @@ processResources {
 
 sourceSets.main.resources {
     srcDir project(":forge").file("src/generated/resources").absolutePath
+    srcDir generatedResources
     exclude '**/data/palladium/**/forge/*'
 }
 
@@ -91,6 +106,7 @@ shadowJar {
 }
 
 remapJar {
+    injectAccessWidener = true
     input.set shadowJar.archiveFile
     dependsOn shadowJar
     classifier null
@@ -104,6 +120,7 @@ sourcesJar {
     def commonSources = project(":common").sourcesJar
     dependsOn commonSources
     from commonSources.archiveFile.map { zipTree(it) }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 components.java {
@@ -115,12 +132,18 @@ components.java {
 publishing {
     publications {
         mavenFabric(MavenPublication) {
-            artifactId = rootProject.archives_base_name + "-" + project.name
+            artifactId = rootProject.archives_base_name
             from components.java
         }
     }
 
     repositories {
-        // Add repositories to publish to here.
+        maven {
+            url 'https://repo.repsy.io/mvn/lucraft/threetag'
+            credentials {
+                username System.getenv('REPSY_USERNAME')
+                password System.getenv('REPSY_PASSWORD')
+            }
+        }
     }
 }

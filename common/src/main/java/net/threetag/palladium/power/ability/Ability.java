@@ -14,6 +14,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDefaultDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
@@ -21,15 +22,12 @@ import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.property.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Ability extends RegistryEntry<Ability> implements IDefaultDocumentedConfigurable {
 
-    public static final ResourceKey<Registry<Ability>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "abilities"));
+    public static final ResourceKey<Registry<Ability>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "ability"));
     public static final Registrar<Ability> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new Ability[0]).build();
 
     public static final PalladiumProperty<Component> TITLE = new ComponentProperty("title").configurable("Allows you to set a custom title for this ability");
@@ -75,19 +73,19 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
 
     public static Collection<AbilityEntry> getEntries(LivingEntity entity) {
         List<AbilityEntry> entries = new ArrayList<>();
-        PowerManager.getPowerHandler(entity).getPowerHolders().values().stream().map(holder -> holder.getAbilities().values()).forEach(entries::addAll);
+        PowerManager.getPowerHandler(entity).ifPresent(handler -> handler.getPowerHolders().values().stream().map(holder -> holder.getAbilities().values()).forEach(entries::addAll));
         return entries;
     }
 
     public static Collection<AbilityEntry> getEntries(LivingEntity entity, Ability ability) {
         List<AbilityEntry> entries = new ArrayList<>();
-        PowerManager.getPowerHandler(entity).getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll);
+        PowerManager.getPowerHandler(entity).ifPresent(handler -> handler.getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll));
         return entries;
     }
 
     public static Collection<AbilityEntry> getEnabledEntries(LivingEntity entity, Ability ability) {
         List<AbilityEntry> entries = new ArrayList<>();
-        PowerManager.getPowerHandler(entity).getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.isEnabled() && entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll);
+        PowerManager.getPowerHandler(entity).ifPresent(handler -> handler.getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.isEnabled() && entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll));
         return entries;
     }
 
@@ -98,7 +96,13 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
             return null;
         }
 
-        IPowerHolder holder = PowerManager.getPowerHandler(entity).getPowerHolder(power);
+        IPowerHandler handler = PowerManager.getPowerHandler(entity).orElse(null);
+
+        if (handler == null) {
+            return null;
+        }
+
+        IPowerHolder holder = handler.getPowerHolder(power);
 
         if (holder == null) {
             return null;
@@ -110,7 +114,7 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
     public static HTMLBuilder documentationBuilder() {
         return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "abilities"), "Abilities")
                 .add(HTMLBuilder.heading("Abilities"))
-                .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList()));
+                .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
     }
 
     public static List<AbilityEntry> findParentAbilities(LivingEntity entity, AbilityConfiguration ability, IPowerHolder powerHolder) {
@@ -151,5 +155,8 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
         builder.setTitle(new TranslatableComponent("ability." + this.getId().getNamespace() + "." + this.getId().getPath()).getString());
+    }
+
+    public void postParsing(AbilityConfiguration configuration) {
     }
 }

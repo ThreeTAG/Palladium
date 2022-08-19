@@ -1,18 +1,18 @@
 package net.threetag.palladium.client.dynamictexture.variable;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.entity.LivingEntity;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
 public abstract class AbstractIntegerTextureVariable implements ITextureVariable {
 
-    private List<Pair<Operation, Integer>> operations = Lists.newLinkedList();
+    private List<Pair<Operation, Integer>> operations = new LinkedList<>();
 
     public AbstractIntegerTextureVariable(List<Pair<Operation, Integer>> operations) {
         this.operations = operations;

@@ -5,7 +5,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +21,7 @@ import java.util.Random;
 public class ProjectileAbility extends Ability {
 
     public static final PalladiumProperty<EntityType<?>> ENTITY_TYPE = new EntityTypeProperty("entity_type").configurable("Entity type ID for the projectile entity");
-    public static final PalladiumProperty<CompoundTag> ENTITY_DATA = new CompoundTagProperty("entity_dataa").configurable("Entity NBT data");
+    public static final PalladiumProperty<CompoundTag> ENTITY_DATA = new CompoundTagProperty("entity_data").configurable("Entity NBT data");
     public static final PalladiumProperty<Float> INACCURACY = new FloatProperty("inaccuracy").configurable("Determines the inaccuracy when shooting the projectile");
     public static final PalladiumProperty<Float> VELOCITY = new FloatProperty("velocity").configurable("Determines the velocity when shooting the projectile");
     public static final PalladiumProperty<SoundEvent> THROW_SOUND = new SoundEventProperty("throw_sound_event").configurable("Sound event that plays when shooting the projectile (nullable)");
@@ -51,13 +50,9 @@ public class ProjectileAbility extends Ability {
                     return null;
 
                 projectile.moveTo(entity.getX(), entity.getY() + entity.getEyeHeight() - 0.1D, entity.getZ(), projectile.getYRot(), projectile.getXRot());
-                float pitchOffset = 0;
                 float velocity = entry.getProperty(VELOCITY);
                 float inaccuracy = entry.getProperty(INACCURACY);
-                float f = -Mth.sin(entity.getYRot() * ((float) Math.PI / 180F)) * Mth.cos(entity.getXRot() * ((float) Math.PI / 180F));
-                float f1 = -Mth.sin((entity.getXRot() + pitchOffset) * ((float) Math.PI / 180F));
-                float f2 = Mth.cos(entity.getYRot() * ((float) Math.PI / 180F)) * Mth.cos(entity.getXRot() * ((float) Math.PI / 180F));
-                projectile.shoot(f, f1, f2, velocity, inaccuracy);
+                projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, velocity, inaccuracy);
                 Vec3 vec3d = entity.getDeltaMovement();
                 projectile.setDeltaMovement(projectile.getDeltaMovement().add(vec3d.x, entity.isOnGround() ? 0.0D : vec3d.y, vec3d.z));
                 projectile.setOwner(entity);

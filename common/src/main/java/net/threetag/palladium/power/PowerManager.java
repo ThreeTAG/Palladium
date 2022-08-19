@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 public class PowerManager extends SimpleJsonResourceReloadListener {
 
@@ -35,16 +36,16 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
     public static void init() {
         ReloadListenerRegistry.register(PackType.SERVER_DATA, INSTANCE = new PowerManager());
 
-        PalladiumEvents.LIVING_UPDATE.register(entity -> PowerManager.getPowerHandler(entity).tick());
+        PalladiumEvents.LIVING_UPDATE.register(entity -> PowerManager.getPowerHandler(entity).ifPresent(IPowerHandler::tick));
 
         PlayerEvent.PLAYER_JOIN.register(player -> {
             new SyncPowersMessage(getInstance(player.level).byName).sendTo(player);
-            getPowerHandler(player).getPowerHolders().forEach((provider, holder) -> new AddPowerMessage(player.getId(), holder.getPower().getId()).sendTo(player));
+            getPowerHandler(player).ifPresent(handler -> handler.getPowerHolders().forEach((provider, holder) -> new AddPowerMessage(player.getId(), holder.getPower().getId()).sendTo(player)));
         });
 
         PalladiumEvents.START_TRACKING.register((tracker, target) -> {
             if (target instanceof LivingEntity livingEntity && tracker instanceof ServerPlayer serverPlayer) {
-                getPowerHandler(livingEntity).getPowerHolders().forEach((provider, holder) -> new AddPowerMessage(target.getId(), holder.getPower().getId()).sendTo(serverPlayer));
+                getPowerHandler(livingEntity).ifPresent(handler -> handler.getPowerHolders().forEach((provider, holder) -> new AddPowerMessage(target.getId(), holder.getPower().getId()).sendTo(serverPlayer)));
             }
         });
     }
@@ -92,7 +93,7 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
     }
 
     @ExpectPlatform
-    public static IPowerHandler getPowerHandler(LivingEntity entity) {
+    public static Optional<IPowerHandler> getPowerHandler(LivingEntity entity) {
         throw new AssertionError();
     }
 }

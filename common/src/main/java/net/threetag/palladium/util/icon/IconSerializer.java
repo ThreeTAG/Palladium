@@ -18,6 +18,7 @@ import net.threetag.palladium.documentation.IDocumentedConfigurable;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -93,7 +94,7 @@ public abstract class IconSerializer<T extends IIcon> extends RegistryEntry<Icon
     public static HTMLBuilder documentationBuilder() {
         return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "icons"), "Icons")
                 .add(HTMLBuilder.heading("Icons"))
-                .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList()));
+                .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
     }
 
     @NotNull

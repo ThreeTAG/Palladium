@@ -7,7 +7,9 @@ import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.util.property.*;
+import net.threetag.palladium.util.property.IntegerProperty;
+import net.threetag.palladium.util.property.PalladiumProperty;
+import net.threetag.palladium.util.property.StringProperty;
 import org.jetbrains.annotations.Nullable;
 
 public class AbilityIntegerPropertyCondition extends Condition {
@@ -57,8 +59,8 @@ public class AbilityIntegerPropertyCondition extends Condition {
     public static class Serializer extends ConditionSerializer {
 
         public static final PalladiumProperty<String> PROPERTY = new StringProperty("property").configurable("Name of the integer property in the ability. For interpolated_integer abilities it's 'value'");
-        public static final PalladiumProperty<Integer> MIN = new IntegerProperty("min").configurable("Minimum required amount of health");
-        public static final PalladiumProperty<Integer> MAX = new IntegerProperty("max").configurable("Maximum required amount of health");
+        public static final PalladiumProperty<Integer> MIN = new IntegerProperty("min").configurable("Minimum required amount of the property value");
+        public static final PalladiumProperty<Integer> MAX = new IntegerProperty("max").configurable("Maximum required amount of the property value");
 
         public Serializer() {
             this.withProperty(AbilityEnabledCondition.Serializer.POWER, null);

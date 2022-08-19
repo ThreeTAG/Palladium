@@ -14,10 +14,19 @@ public class SortedItem extends Item {
         this.filler = filler;
     }
 
+    public SortedItem(Properties properties) {
+        super(properties);
+        this.filler = null;
+    }
+
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
-        if (this.allowdedIn(category)) {
-            this.filler.fill(this, category, items);
+        if (this.filler != null) {
+            if (this.allowdedIn(category)) {
+                this.filler.fill(this, category, items);
+            }
+        } else {
+            super.fillItemCategory(category, items);
         }
     }
 }

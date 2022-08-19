@@ -1,0 +1,172 @@
+{
+    "texture_width": 8,
+    "texture_height": 8,
+    "mesh": {
+        "right_arm": {
+            "part_pose": {
+                "offset": [
+                    -5,
+                    2,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "left_leg": {
+            "part_pose": {
+                "offset": [
+                    1.9,
+                    12,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "jacket": {
+            "cubes": [],
+            "children": {}
+        },
+        "body": {
+            "cubes": [],
+            "children": {}
+        },
+        "head": {
+            "cubes": [
+                {
+                    "origin": [
+                        -1,
+                        -9,
+                        -1
+                    ],
+                    "dimensions": [
+                        2,
+                        1,
+                        2
+                    ],
+                    "texture_offset": [
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "origin": [
+                        -0.5,
+                        -13,
+                        -0.5
+                    ],
+                    "dimensions": [
+                        1,
+                        4,
+                        1
+                    ],
+                    "texture_offset": [
+                        0,
+                        3
+                    ]
+                },
+                {
+                    "origin": [
+                        -0.5,
+                        -14,
+                        -0.5
+                    ],
+                    "dimensions": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "texture_offset": [
+                        4,
+                        3
+                    ],
+                    "deformation": [
+                        0.2,
+                        0.2,
+                        0.2
+                    ]
+                }
+            ],
+            "children": {}
+        },
+        "left_sleeve": {
+            "part_pose": {
+                "offset": [
+                    5,
+                    2,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "right_sleeve": {
+            "part_pose": {
+                "offset": [
+                    -5,
+                    2,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "left_arm": {
+            "part_pose": {
+                "offset": [
+                    5,
+                    2,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "right_leg": {
+            "part_pose": {
+                "offset": [
+                    -1.9,
+                    12,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "cloak": {
+            "cubes": [],
+            "children": {}
+        },
+        "ear": {
+            "cubes": [],
+            "children": {}
+        },
+        "right_pants": {
+            "part_pose": {
+                "offset": [
+                    -1.9,
+                    12,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        },
+        "hat": {
+            "cubes": [],
+            "children": {}
+        },
+        "left_pants": {
+            "part_pose": {
+                "offset": [
+                    1.9,
+                    12,
+                    0
+                ]
+            },
+            "cubes": [],
+            "children": {}
+        }
+    }
+}

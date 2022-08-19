@@ -17,14 +17,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityColor;
+import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AbilityBarRenderer implements IIngameOverlay {
@@ -57,6 +60,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
         Minecraft mc = Minecraft.getInstance();
         Position position = PalladiumConfig.getAbilityBarPosition();
         AbilityList list = getSelectedList();
+        boolean simple = list.simple && ABILITY_LISTS.size() <= 1;
 
         if (position == Position.HIDDEN || list == null) {
             return;
@@ -74,15 +78,17 @@ public class AbilityBarRenderer implements IIngameOverlay {
             int indicatorWidth = 52;
             int indicatorHeight = 28;
 
-            poseStack.pushPose();
-            translateIndicatorBackground(poseStack, mc.getWindow(), position, indicatorWidth, indicatorHeight);
-            renderIndicator(list, mc, poseStack, position, TEXTURE, ABILITY_LISTS.size() > 1);
-            poseStack.popPose();
+            if (!simple) {
+                poseStack.pushPose();
+                translateIndicatorBackground(poseStack, mc.getWindow(), position, indicatorWidth, indicatorHeight);
+                renderIndicator(list, mc, poseStack, position, TEXTURE, ABILITY_LISTS.size() > 1);
+                poseStack.popPose();
+            }
 
             poseStack.pushPose();
-            translateAbilitiesBackground(poseStack, mc.getWindow(), position, indicatorHeight, 24, 112);
-            renderAbilitiesBackground(mc, poseStack, position, list, TEXTURE);
-            renderAbilitiesOverlay(mc, poseStack, position, list, TEXTURE);
+            translateAbilitiesBackground(poseStack, mc.getWindow(), position, indicatorHeight, 24, 112, simple);
+            renderAbilitiesBackground(mc, poseStack, position, list, TEXTURE, simple);
+            renderAbilitiesOverlay(mc, poseStack, position, list, TEXTURE, simple);
             poseStack.popPose();
         }
     }
@@ -119,18 +125,29 @@ public class AbilityBarRenderer implements IIngameOverlay {
         }
     }
 
-    private static void translateAbilitiesBackground(PoseStack poseStack, Window window, Position position, int indicatorHeight, int abilitiesWidth, int abilitiesHeight) {
-        if (position.top) {
-            poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0, indicatorHeight - 1, 0);
+    private static void translateAbilitiesBackground(PoseStack poseStack, Window window, Position position, int indicatorHeight, int abilitiesWidth, int abilitiesHeight, boolean simple) {
+        if (!simple) {
+            if (position.top) {
+                poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0, indicatorHeight - 1, 0);
+            } else {
+                poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0, window.getGuiScaledHeight() - indicatorHeight - abilitiesHeight + 1, 0);
+            }
         } else {
-            poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0, window.getGuiScaledHeight() - indicatorHeight - abilitiesHeight + 1, 0);
+            if (position.top) {
+                poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0, 0, 0);
+            } else {
+                poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth : 0, window.getGuiScaledHeight() - 24, 0);
+            }
         }
     }
 
-    private static void renderAbilitiesBackground(Minecraft minecraft, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture) {
+    private static void renderAbilitiesBackground(Minecraft minecraft, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture, boolean simple) {
         boolean showName = minecraft.screen instanceof ChatScreen;
 
         for (int i = 0; i < 5; i++) {
+            if (simple && i > 0) {
+                break;
+            }
             Lighting.setupFor3DItems();
             RenderSystem.enableBlend();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -181,15 +198,18 @@ public class AbilityBarRenderer implements IIngameOverlay {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.gui.blit(poseStack, 0, 0, 0, 56, 24, 112);
     }
 
-    private static void renderAbilitiesOverlay(Minecraft minecraft, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture) {
+    private static void renderAbilitiesOverlay(Minecraft minecraft, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture, boolean simple) {
         // Overlay
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.gui.blit(poseStack, 0, 0, 0, 56, 24, 112);
+        if (!simple) {
+            minecraft.gui.blit(poseStack, 0, 0, 0, 56, 24, 112);
+        } else {
+            minecraft.gui.blit(poseStack, 0, 0, 0, 168, 24, 24);
+        }
 
         // Colored Frames + Keys
         for (int i = 0; i < list.abilities.length; i++) {
@@ -210,10 +230,19 @@ public class AbilityBarRenderer implements IIngameOverlay {
                 minecraft.gui.blit(poseStack, 0, i * 22, color.getX(), color.getY(), 24, 24);
 
                 if (ability.getConfiguration().needsKey() && ability.isUnlocked()) {
-                    Component key = PalladiumKeyMappings.ABILITY_KEYS[i].getTranslatedKeyMessage();
+                    AbilityConfiguration.KeyType keyType = ability.getConfiguration().getKeyType();
                     poseStack.pushPose();
                     poseStack.translate(0, 0, minecraft.getItemRenderer().blitOffset + 200);
-                    GuiComponent.drawString(poseStack, minecraft.font, key, 5 + 19 - 2 - minecraft.font.width(key), 5 + i * 22 + 7, 0xffffff);
+                    if (keyType == AbilityConfiguration.KeyType.KEY_BIND) {
+                        Component key = PalladiumKeyMappings.ABILITY_KEYS[i].getTranslatedKeyMessage();
+                        GuiComponent.drawString(poseStack, minecraft.font, key, 5 + 19 - 2 - minecraft.font.width(key), 5 + i * 22 + 7, 0xffffff);
+                    } else if (keyType == AbilityConfiguration.KeyType.LEFT_CLICK) {
+                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 8, 24, 92, 5, 7);
+                    } else if (keyType == AbilityConfiguration.KeyType.RIGHT_CLICK) {
+                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 8, 29, 92, 5, 7);
+                    } else if (keyType == AbilityConfiguration.KeyType.SPACE_BAR) {
+                        minecraft.gui.blit(poseStack, 5 + 19 - 13, 5 + i * 22 + 10, 34, 92, 10, 5);
+                    }
                     poseStack.popPose();
                 }
             }
@@ -249,10 +278,8 @@ public class AbilityBarRenderer implements IIngameOverlay {
     }
 
     public static void scroll(boolean up) {
-        if (up)
-            SELECTED++;
-        else
-            SELECTED--;
+        if (up) SELECTED++;
+        else SELECTED--;
 
         if (SELECTED >= ABILITY_LISTS.size()) {
             SELECTED = 0;
@@ -263,10 +290,15 @@ public class AbilityBarRenderer implements IIngameOverlay {
 
     public static List<AbilityList> getAbilityLists() {
         List<AbilityList> lists = new ArrayList<>();
+        IPowerHandler handler = PowerManager.getPowerHandler(Minecraft.getInstance().player).orElse(null);
+
+        if (handler == null) {
+            return lists;
+        }
 
         // TODO skins
 
-        for (IPowerHolder holder : PowerManager.getPowerHandler(Minecraft.getInstance().player).getPowerHolders().values()) {
+        for (IPowerHolder holder : handler.getPowerHolders().values()) {
             List<AbilityList> containerList = new ArrayList<>();
             List<AbilityList> remainingLists = new ArrayList<>();
             List<AbilityEntry> remaining = new ArrayList<>();
@@ -316,6 +348,10 @@ public class AbilityBarRenderer implements IIngameOverlay {
             }
         }
 
+        if (lists.size() <= 1) {
+            lists.forEach(AbilityList::simplify);
+        }
+
         return lists;
     }
 
@@ -324,6 +360,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
         private final Power power;
         private final AbilityEntry[] abilities = new AbilityEntry[5];
         private ResourceLocation texture;
+        public boolean simple = false;
 
         public AbilityList(Power power) {
             this.power = power;
@@ -365,15 +402,30 @@ public class AbilityBarRenderer implements IIngameOverlay {
         public AbilityEntry[] getAbilities() {
             return abilities;
         }
+
+        public void simplify() {
+            int abilities = 0;
+            AbilityEntry entry = null;
+
+            for (AbilityEntry ability : this.abilities) {
+                if (ability != null && ability.isUnlocked()) {
+                    abilities++;
+                    entry = ability;
+                }
+            }
+
+            this.simple = abilities == 1;
+
+            if (this.simple) {
+                Arrays.fill(this.abilities, null);
+                this.addAbility(0, entry);
+            }
+        }
     }
 
     public enum Position {
 
-        TOP_LEFT(true, true),
-        TOP_RIGHT(false, true),
-        BOTTOM_LEFT(true, false),
-        BOTTOM_RIGHT(false, false),
-        HIDDEN(false, false);
+        TOP_LEFT(true, true), TOP_RIGHT(false, true), BOTTOM_LEFT(true, false), BOTTOM_RIGHT(false, false), HIDDEN(false, false);
 
         private final boolean left, top;
 

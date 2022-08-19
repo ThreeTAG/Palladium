@@ -39,7 +39,7 @@ public class RemovePowerMessage extends BaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
             if (Minecraft.getInstance().level.getEntity(this.entityId) instanceof LivingEntity livingEntity) {
-                PowerManager.getPowerHandler(livingEntity).removePowerHolder(this.powerId);
+                PowerManager.getPowerHandler(livingEntity).ifPresent(handler -> handler.removePowerHolder(this.powerId));
             }
         });
     }

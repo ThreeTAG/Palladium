@@ -4,6 +4,8 @@ import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.model.CapedHumanoidModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +64,8 @@ public class ModelLookup {
         register(new ResourceLocation("turtle"), new Model(TurtleModel::new, (en, model) -> model instanceof TurtleModel));
         register(new ResourceLocation("vex"), new Model(VexModel::new, (en, model) -> model instanceof VexModel));
         register(new ResourceLocation("wither"), new Model(WitherBossModel::new, (en, model) -> model instanceof WitherBossModel));
+
+        register(Palladium.id("caped_humanoid"), new Model(CapedHumanoidModel::new, (en, model) -> model instanceof HumanoidModel));
     }
 
     public static Model register(ResourceLocation id, Model model) {

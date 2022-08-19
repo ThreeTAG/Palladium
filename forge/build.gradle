@@ -11,6 +11,8 @@ architectury {
 version = version + "-forge"
 
 loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+
     runConfigs.configureEach {
         if (name == "client" || name == "data")
             runDir = "../run"
@@ -21,6 +23,9 @@ loom {
     forge {
         mixinConfig "palladium-common.mixins.json"
         mixinConfig "palladium.mixins.json"
+
+        convertAccessWideners = true
+        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
         dataGen {
             mod "palladium"
@@ -57,10 +62,14 @@ dependencies {
     modCompileOnly "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}:api"
 
     // KubeJS
-    modImplementation("dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}")
+    modImplementation "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
+    modRuntimeOnly "curse.maven:probejs-585406:${rootProject.probejs_forge_version}"
 
     // Pehkui
-    modImplementation("com.github.Virtuoel:Pehkui:${rootProject.pehkui_forge_version}")
+    modCompileOnly("com.github.Virtuoel:Pehkui:${rootProject.pehkui_forge_version}")
+
+    // Smooth Boot
+//    modRuntimeOnly "curse.maven:smoothboot-633412:${rootProject.smoothboot_forge_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
@@ -122,13 +131,19 @@ components.java {
 publishing {
     publications {
         mavenForge(MavenPublication) {
-            artifactId = rootProject.archives_base_name + "-" + project.name
+            artifactId = rootProject.archives_base_name
             from components.java
         }
     }
 
     repositories {
-        // Add repositories to publish to here.
+        maven {
+            url 'https://repo.repsy.io/mvn/lucraft/threetag'
+            credentials {
+                username System.getenv('REPSY_USERNAME')
+                password System.getenv('REPSY_PASSWORD')
+            }
+        }
     }
 }
 

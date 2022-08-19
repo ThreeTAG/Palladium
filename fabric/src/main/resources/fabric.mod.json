@@ -33,18 +33,17 @@
     "palladium.mixins.json",
     "palladium-common.mixins.json"
   ],
+  "accessWidener": "palladium.accessWidener",
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.18.1",
-    "architectury": ">=3.3.7"
-  },
-  "suggests": {
-    "flamingo": "*"
+    "minecraft": ">=1.18.2",
+    "architectury": ">=4.4.59"
   },
   "custom": {
     "cardinal-components": [
       "palladium:properties",
-      "palladium:power_handler"
+      "palladium:power_handler",
+      "palladium:accessories"
     ]
   }
 }

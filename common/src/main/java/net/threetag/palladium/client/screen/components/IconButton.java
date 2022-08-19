@@ -40,7 +40,7 @@ public class IconButton extends Button {
     public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
         if (this.renderBackground) {
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
             RenderSystem.enableBlend();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, FlatIconButton.WIDGETS_LOCATION);
@@ -57,10 +57,10 @@ public class IconButton extends Button {
         }
 
         this.getIcon().draw(minecraft, matrixStack, this.x + 2, this.y + 2);
+
         if (this.isHovered) {
             this.renderToolTip(matrixStack, mouseX, mouseY);
         }
-
     }
 
 }
