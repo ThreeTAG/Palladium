@@ -26,7 +26,7 @@ public class PlayerRendererMixin {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
 
         if (playerRenderer.getModel() instanceof AgeableListModelInvoker invoker) {
-            HumanoidAnimationsManager.cacheOrResetModelParts(invoker.invokeHeadParts(), invoker.invokeBodyParts());
+            HumanoidAnimationsManager.resetModelParts(invoker.invokeHeadParts(), invoker.invokeBodyParts());
         }
     }
 

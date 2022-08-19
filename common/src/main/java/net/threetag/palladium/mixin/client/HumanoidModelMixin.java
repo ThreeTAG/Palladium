@@ -29,7 +29,7 @@ public abstract class HumanoidModelMixin {
     @Inject(at = @At("HEAD"), method = "prepareMobModel(Lnet/minecraft/world/entity/LivingEntity;FFF)V")
     public void prepareMobModel(LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTick, CallbackInfo ci) {
         HumanoidAnimationsManager.PARTIAL_TICK = partialTick;
-        HumanoidAnimationsManager.cacheOrResetModelParts(this.headParts(), this.bodyParts());
+        HumanoidAnimationsManager.resetModelParts(this.headParts(), this.bodyParts());
     }
 
 }

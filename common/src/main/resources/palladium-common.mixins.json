@@ -1,6 +1,7 @@
 {
   "required": true,
   "package": "net.threetag.palladium.mixin",
+  "plugin": "net.threetag.palladium.PalladiumMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.AgeableListModelInvoker",

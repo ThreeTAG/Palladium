@@ -1,8 +1,8 @@
 {
   "entity.ability.heat_vision": {
-    "subtitle": "subtitles.palladium.entity.ability.heat_vision",
     "sounds": [
       "palladium:energy_blast"
-    ]
+    ],
+    "subtitle": "subtitles.palladium.entity.ability.heat_vision"
   }
 }

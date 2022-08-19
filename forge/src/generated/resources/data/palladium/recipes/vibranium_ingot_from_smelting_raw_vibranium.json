@@ -1,10 +1,10 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 600,
+  "experience": 1.0,
   "group": "vibranium_ingot",
   "ingredient": {
     "item": "palladium:raw_vibranium"
   },
-  "result": "palladium:vibranium_ingot",
-  "experience": 1.0,
-  "cookingtime": 600
+  "result": "palladium:vibranium_ingot"
 }

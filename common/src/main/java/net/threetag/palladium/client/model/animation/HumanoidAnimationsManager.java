@@ -16,7 +16,6 @@ import java.util.*;
 public class HumanoidAnimationsManager {
 
     private static final List<Animation> ANIMATIONS = new LinkedList<>();
-    public static final Map<ModelPart, ModelPartState> CACHE = new HashMap<>();
     public static float PARTIAL_TICK = 0F;
 
     public static void registerAnimation(Animation animation) {
@@ -24,27 +23,13 @@ public class HumanoidAnimationsManager {
         ANIMATIONS.sort(Comparator.comparingInt(Animation::getPriority).reversed());
     }
 
-    public static void cacheOrResetModelParts(Iterable<ModelPart> headParts, Iterable<ModelPart> bodyParts) {
+    public static void resetModelParts(Iterable<ModelPart> headParts, Iterable<ModelPart> bodyParts) {
         for (ModelPart bodyPart : headParts) {
-            cacheOrResetModelPart(bodyPart);
+            bodyPart.resetPose();
         }
 
         for (ModelPart bodyPart : bodyParts) {
-            cacheOrResetModelPart(bodyPart);
-        }
-    }
-
-    private static void cacheOrResetModelPart(ModelPart modelPart) {
-        ModelPartState state = CACHE.get(modelPart);
-
-        if (state != null) {
-            state.apply(modelPart);
-        } else {
-            CACHE.put(modelPart, new ModelPartState(modelPart));
-        }
-
-        for (ModelPart value : modelPart.children.values()) {
-            cacheOrResetModelPart(value);
+            bodyPart.resetPose();
         }
     }
 
@@ -65,37 +50,6 @@ public class HumanoidAnimationsManager {
                 animation.setupRotations(playerRenderer, player, poseStack, ageInTicks, rotationYaw, partialTicks);
                 return;
             }
-        }
-    }
-
-    public static class ModelPartState {
-
-        public final float x;
-        public final float y;
-        public final float z;
-        public final float xRot;
-        public final float yRot;
-        public final float zRot;
-        public final boolean visible;
-
-        public ModelPartState(ModelPart modelPart) {
-            this.x = modelPart.x;
-            this.y = modelPart.y;
-            this.z = modelPart.z;
-            this.xRot = modelPart.xRot;
-            this.yRot = modelPart.yRot;
-            this.zRot = modelPart.zRot;
-            this.visible = modelPart.visible;
-        }
-
-        public void apply(ModelPart modelPart) {
-            modelPart.x = this.x;
-            modelPart.y = this.y;
-            modelPart.z = this.z;
-            modelPart.xRot = this.xRot;
-            modelPart.yRot = this.yRot;
-            modelPart.zRot = this.zRot;
-            modelPart.visible = this.visible;
         }
     }
 
