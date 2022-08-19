@@ -1,7 +1,7 @@
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
-    modImplementation("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}")
+    modCompileOnly("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}")
     modCompileOnly("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {
         exclude group: "net.fabricmc.fabric-api"
     })
