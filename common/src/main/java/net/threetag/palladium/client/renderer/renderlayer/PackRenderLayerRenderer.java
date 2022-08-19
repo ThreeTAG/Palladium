@@ -19,7 +19,7 @@ public class PackRenderLayerRenderer extends RenderLayer<LivingEntity, EntityMod
 
     @Override
     public void render(PoseStack matrixStack, MultiBufferSource buffer, int packedLight, LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        for (AbilityEntry entry : Ability.getEntries(livingEntity, Abilities.RENDER_LAYER.get())) {
+        for (AbilityEntry entry : Ability.getEnabledEntries(livingEntity, Abilities.RENDER_LAYER.get())) {
             IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
 
             if (layer != null) {
