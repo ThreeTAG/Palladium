@@ -1,22 +1,17 @@
 package net.threetag.palladium.data.forge;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.data.LanguageProvider;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessories;
-import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.compat.kubejs.PalladiumKubeJSPlugin;
+import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.sound.PalladiumSoundEvents;
 
-import java.util.Objects;
-import java.util.function.Supplier;
-
-public abstract class PalladiumLangProvider extends LanguageProvider {
+public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
     public PalladiumLangProvider(DataGenerator gen, String modid, String locale) {
         super(gen, modid, locale);
@@ -75,6 +70,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibranium Circuit");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibranium Weave Boots");
 
+            // Entities
+            this.addEntityType(PalladiumEntityTypes.EFFECT, "Effect");
+            this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projectile");
+
             // Abilities
             this.addAbility(Abilities.COMMAND, "Command");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
@@ -86,6 +85,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(Abilities.INVISIBILITY, "Invisibility");
             this.addAbility(Abilities.SIZE, "Size");
             this.addAbility(Abilities.PROJECTILE, "Projectile");
+            this.addAbility(PalladiumKubeJSPlugin.SCRIPTABLE_ABILITY, "Scriptable");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -196,6 +196,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaltkreis");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumgewebeschuhe");
 
+            // Entities
+            this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
+            this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
+
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
@@ -207,6 +211,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(Abilities.INVISIBILITY, "Unsichtbarkeit");
             this.addAbility(Abilities.SIZE, "Gr\u00F6\u00DFe");
             this.addAbility(Abilities.PROJECTILE, "Projektil");
+            this.addAbility(PalladiumKubeJSPlugin.SCRIPTABLE_ABILITY, "Skriptfähig");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
@@ -317,6 +322,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaldkres");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumjewebelaadschn");
 
+            // Entities
+            this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
+            this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
+
             // Abilities
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
@@ -328,6 +337,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(Abilities.INVISIBILITY, "Unsischtbarkeet");
             this.addAbility(Abilities.SIZE, "Gr\u00F6\u00DFe");
             this.addAbility(Abilities.PROJECTILE, "Projektil");
+            this.addAbility(PalladiumKubeJSPlugin.SCRIPTABLE_ABILITY, "Skriptfähig");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");
@@ -387,24 +397,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
         }
-    }
-
-    public void addAbility(Supplier<? extends Ability> key, String name) {
-        add(key.get(), name);
-    }
-
-    public void add(Ability key, String name) {
-        ResourceLocation id = Ability.REGISTRY.getId(key);
-        add("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath(), name);
-    }
-
-    protected void addAccessory(Supplier<? extends Accessory> key, String name) {
-        add(key.get(), name);
-    }
-
-    public void add(Accessory key, String name) {
-        ResourceLocation id = Accessory.REGISTRY.getId(key);
-        add("accessory." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath(), name);
     }
 
     @Override

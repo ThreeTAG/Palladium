@@ -6,6 +6,8 @@ transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes 
 transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen leftPos I
 transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen topPos I
 
+accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
+
 accessible field net/minecraft/client/model/geom/builders/CubeDefinition comment Ljava/lang/String;
 accessible field net/minecraft/client/model/geom/builders/CubeDefinition origin Lcom/mojang/math/Vector3f;
 accessible field net/minecraft/client/model/geom/builders/CubeDefinition dimensions Lcom/mojang/math/Vector3f;

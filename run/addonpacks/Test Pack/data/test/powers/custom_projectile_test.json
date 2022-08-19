@@ -1,0 +1,67 @@
+{
+  "name": "Custom Projectile Test",
+  "icon": "minecraft:arrow",
+  "abilities": {
+    "test_1": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "title": "Appearance Combination",
+      "list_index": 0,
+      "velocity": 1.5,
+      "entity_data": {
+        "Damage": 10,
+        "Gravity": 0.03,
+        "Appearances": [
+
+          {
+            "Type": "item",
+            "Item": "minecraft:totem_of_undying"
+          },
+          {
+            "Type": "particles",
+            "ParticleType": "minecraft:flame",
+            "Spread": 2.5
+          }
+        ]
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "key_type": "left_click"
+          }
+        ]
+      }
+    },
+    "test_2": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "title": "Laser",
+      "list_index": 1,
+      "velocity": 1.5,
+      "entity_data": {
+        "Damage": 10,
+        "Gravity": 0.03,
+        "Size": 0.5,
+        "Lifetime": 1200,
+        "DieOnEntityHit": false,
+        "DieOnBlockHit": true,
+        "Appearances": [
+          {
+            "Type": "laser",
+            "Thickness": 0.1,
+            "Color": "#ffb100"
+          }
+        ]
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "key_type": "right_click"
+          }
+        ]
+      }
+    }
+  }
+}

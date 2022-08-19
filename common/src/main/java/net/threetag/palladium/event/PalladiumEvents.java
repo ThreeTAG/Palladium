@@ -4,7 +4,6 @@ import dev.architectury.event.Event;
 import dev.architectury.event.EventFactory;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
-import net.minecraft.client.player.Input;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +18,6 @@ public interface PalladiumEvents {
     Event<StartTracking> START_TRACKING = EventFactory.createLoop();
     Event<RegisterProperty> REGISTER_PROPERTY = EventFactory.createLoop();
     Event<GenerateDocumentation> GENERATE_DOCUMENTATION = EventFactory.createLoop();
-    Event<MovementInputUpdate> MOVEMENT_INPUT_UPDATE = EventFactory.createLoop();
 
     interface LivingUpdate extends TickEvent<LivingEntity> {
 
@@ -42,12 +40,6 @@ public interface PalladiumEvents {
     interface GenerateDocumentation {
 
         void generate(Consumer<HTMLBuilder> consumer);
-
-    }
-
-    interface MovementInputUpdate {
-
-        void update(Player player, Input input);
 
     }
 

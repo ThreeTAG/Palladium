@@ -22,6 +22,7 @@ import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityColor;
+import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
 import java.util.ArrayList;
@@ -227,10 +228,19 @@ public class AbilityBarRenderer implements IIngameOverlay {
                 minecraft.gui.blit(poseStack, 0, i * 22, color.getX(), color.getY(), 24, 24);
 
                 if (ability.getConfiguration().needsKey() && ability.isUnlocked()) {
-                    Component key = PalladiumKeyMappings.ABILITY_KEYS[i].getTranslatedKeyMessage();
+                    AbilityConfiguration.KeyType keyType = ability.getConfiguration().getKeyType();
                     poseStack.pushPose();
                     poseStack.translate(0, 0, minecraft.getItemRenderer().blitOffset + 200);
-                    GuiComponent.drawString(poseStack, minecraft.font, key, 5 + 19 - 2 - minecraft.font.width(key), 5 + i * 22 + 7, 0xffffff);
+                    if (keyType == AbilityConfiguration.KeyType.KEY_BIND) {
+                        Component key = PalladiumKeyMappings.ABILITY_KEYS[i].getTranslatedKeyMessage();
+                        GuiComponent.drawString(poseStack, minecraft.font, key, 5 + 19 - 2 - minecraft.font.width(key), 5 + i * 22 + 7, 0xffffff);
+                    } else if (keyType == AbilityConfiguration.KeyType.LEFT_CLICK) {
+                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 8, 24, 92, 5, 7);
+                    } else if (keyType == AbilityConfiguration.KeyType.RIGHT_CLICK) {
+                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 8, 29, 92, 5, 7);
+                    } else if (keyType == AbilityConfiguration.KeyType.SPACE_BAR) {
+                        minecraft.gui.blit(poseStack, 5 + 19 - 13, 5 + i * 22 + 10, 34, 92, 10, 5);
+                    }
                     poseStack.popPose();
                 }
             }

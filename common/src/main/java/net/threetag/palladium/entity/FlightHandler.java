@@ -1,15 +1,8 @@
 package net.threetag.palladium.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -204,48 +197,6 @@ public class FlightHandler {
             return result.get();
         } else {
             return FlightType.NONE;
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static void animation(LivingEntity entityIn, HumanoidModel<?> model, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entityIn instanceof Player && !entityIn.isOnGround()
-                && entityIn.getAttributeValue(PalladiumAttributes.LEVITATION_SPEED.get()) <= 0D
-                && entityIn.getAttributeValue(PalladiumAttributes.JETPACK_FLIGHT_SPEED.get()) > 0D) {
-            float speed = (float) Mth.clamp(Math
-                    .sqrt((entityIn.xo - entityIn.position().x) * (entityIn.xo - entityIn.position().x) + (entityIn.zo - entityIn.position().z) * (entityIn.zo
-                            - entityIn.position().z)), 0F, 1F);
-            double d1 = 1 - speed;
-
-            model.rightArm.xRot *= d1;
-            model.rightArm.yRot *= d1;
-            model.rightArm.zRot *= d1;
-            model.leftArm.xRot *= d1;
-            model.leftArm.yRot *= d1;
-            model.leftArm.zRot *= d1;
-            model.rightLeg.xRot *= d1;
-            model.rightLeg.yRot *= d1;
-            model.rightLeg.zRot *= d1;
-            model.leftLeg.xRot *= d1;
-            model.leftLeg.yRot *= d1;
-            model.leftLeg.zRot *= d1;
-
-            int type = (entityIn.isOnGround() || (entityIn instanceof Player && ((Player) entityIn).getAbilities().flying) ? 0 : entityIn.zza < 0 ? -1 : 1);
-            speed *= type;
-            model.head.xRot -= 0.52359877559829887307710723054658 * 2 * speed;
-            model.hat.xRot = model.head.xRot;
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static void setupRotations(AbstractClientPlayer player, PlayerRenderer playerRenderer, PoseStack matrixStack, float p_225621_3_, float p_225621_4_, float p_225621_5_) {
-        if (!player.isOnGround()
-                && player.getAttributeValue(PalladiumAttributes.LEVITATION_SPEED.get()) <= 0D
-                && player.getAttributeValue(PalladiumAttributes.JETPACK_FLIGHT_SPEED.get()) > 0D) {
-            float speed = (float) Mth.clamp(Math
-                    .sqrt((player.xo - player.position().x) * (player.xo - player.position().x) + (player.zo - player.position().z) * (player.zo
-                            - player.position().z)), 0F, 1F);
-            matrixStack.mulPose(Vector3f.XP.rotationDegrees(-60 * speed));
         }
     }
 

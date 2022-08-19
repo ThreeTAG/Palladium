@@ -68,6 +68,7 @@ dependencies {
 
     // KubeJS
     modCompileOnly "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
+//    modRuntimeOnly "curse.maven:probejs-585406:${rootProject.probejs_forge_version}"
 
     // Pehkui
     modCompileOnly "com.github.Virtuoel:Pehkui:${rootProject.pehkui_forge_version}"

@@ -11,6 +11,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.client.model.animation.FlightAnimation;
+import net.threetag.palladium.client.model.animation.HumanoidAnimationsManager;
 import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.AccessoryRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerRenderer;
@@ -20,6 +22,7 @@ import net.threetag.palladium.client.screen.AccessoryScreen;
 import net.threetag.palladium.client.screen.OverlayRegistry;
 import net.threetag.palladium.client.screen.power.PowersScreen;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.util.SupporterHandler;
 
 public class PalladiumClient {
 
@@ -31,9 +34,14 @@ public class PalladiumClient {
         PalladiumKeyMappings.init();
         PowersScreen.register();
         AccessoryScreen.addButton();
+        SupporterHandler.clientInit();
+
         RenderLayerRegistry.addToAll(renderLayerParent -> new PackRenderLayerRenderer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));
         RenderLayerRegistry.addToAll(renderLayerParent -> new AbilityEffectsRenderLayer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));
         RenderLayerRegistry.addToPlayer(renderLayerParent -> new AccessoryRenderLayer((RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>>) renderLayerParent));
+
+        HumanoidAnimationsManager.registerAnimation(new FlightAnimation());
+//        HumanoidAnimationsManager.registerAnimation(new TestAnimation());
     }
 
     public static void blockRenderTypes() {

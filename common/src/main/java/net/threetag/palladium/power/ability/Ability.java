@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 public class Ability implements IDefaultDocumentedConfigurable {
 
-    public static final ResourceKey<Registry<Ability>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "abilities"));
+    public static final ResourceKey<Registry<Ability>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "ability"));
     public static final Registrar<Ability> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new Ability[0]).build();
 
     public static final PalladiumProperty<Component> TITLE = new ComponentProperty("title").configurable("Allows you to set a custom title for this ability");
@@ -153,5 +153,8 @@ public class Ability implements IDefaultDocumentedConfigurable {
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
         builder.setTitle(Component.translatable("ability." + this.getId().getNamespace() + "." + this.getId().getPath()).getString());
+    }
+
+    public void postParsing(AbilityConfiguration configuration) {
     }
 }

@@ -1,4 +1,5 @@
 {
+  "ability.kubejs.scriptable": "Skriptf\u00E4hig",
   "ability.palladium.attribute_modifier": "\u00C4ttrib\u00FCtmodifikator",
   "ability.palladium.command": "Befehl",
   "ability.palladium.damage_immunity": "Schadensimmunit\u00E4t",
@@ -68,6 +69,8 @@
   "commands.superpower.remove.success.entity.single": "%s's Supperkraft wurd' entfernt",
   "commands.superpower.success.entity.multiple": "%s Lebewesen haben de Supperkraft %s erhalten",
   "commands.superpower.success.entity.single": "%s hat de Supperkraft %s erhalten",
+  "entity.palladium.custom_projectile": "Projektil",
+  "entity.palladium.effect": "Effekt",
   "gui.palladium.accessories": "Zubeh\u00F6r",
   "gui.palladium.powers": "Kr\u00E4fte",
   "item.palladium.hammer": "Hammer",
