@@ -15,6 +15,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.builder.AddonBuilder;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -49,7 +50,7 @@ public abstract class AddonParser<T> extends SimpleJsonResourceReloadListener {
                 throw new ReportedException(crashReport);
             }
         });
-        Palladium.LOGGER.info("Registered " + i.get() + " addonpack " + this.resourceKey.location().getPath());
+        AddonPackLog.info("Registered " + i.get() + " addonpack " + this.resourceKey.location().getPath());
     }
 
     public <R extends T> void register(AddonBuilder<? extends R> builder) {

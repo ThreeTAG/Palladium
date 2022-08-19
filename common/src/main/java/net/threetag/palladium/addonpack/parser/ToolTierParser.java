@@ -16,6 +16,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.item.SimpleToolTier;
@@ -60,7 +61,7 @@ public class ToolTierParser extends SimpleJsonResourceReloadListener {
             }
         });
 
-        Palladium.LOGGER.info("Registered " + i.get() + " addonpack tool tiers");
+        AddonPackLog.info("Registered " + i.get() + " addonpack tool tiers");
     }
 
     public static void registerToolTier(ResourceLocation id, Tier tier) {

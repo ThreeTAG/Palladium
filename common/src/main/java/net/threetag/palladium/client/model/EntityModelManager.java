@@ -14,6 +14,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +47,7 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
                 LayerDefinition layerDefinition = parseLayerDefinition(jsonElement.getAsJsonObject());
                 jsonRoots.put(layerLocation, layerDefinition);
             } catch (Exception e) {
-                Palladium.LOGGER.error("Error parsing entity model json " + id, e);
+                AddonPackLog.error("Error parsing entity model json " + id, e);
             }
         });
 
@@ -127,7 +128,7 @@ public class EntityModelManager extends SimpleJsonResourceReloadListener {
     private static ModelLayerLocation mapPathToModelLayerLoc(ResourceLocation path) {
         int idx = path.getPath().indexOf('/');
         if (idx == -1) {
-            Palladium.LOGGER.error("Entity model path of {} was invalid, must contain at least one folder", path);
+            AddonPackLog.error("Entity model path of {} was invalid, must contain at least one folder", path);
             return null;
         }
 

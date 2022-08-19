@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeableLeatherItem;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.model.animation.FlightAnimation;
@@ -35,6 +36,7 @@ public class PalladiumClient {
         PowersScreen.register();
         AccessoryScreen.addButton();
         SupporterHandler.clientInit();
+        AddonPackLog.setupButton();
 
         RenderLayerRegistry.addToAll(renderLayerParent -> new PackRenderLayerRenderer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));
         RenderLayerRegistry.addToAll(renderLayerParent -> new AbilityEffectsRenderLayer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));

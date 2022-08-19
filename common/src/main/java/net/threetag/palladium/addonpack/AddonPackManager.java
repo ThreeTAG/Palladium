@@ -8,6 +8,7 @@ import dev.architectury.injectables.targets.ArchitecturyTarget;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.Util;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.FolderRepositorySource;
@@ -17,14 +18,17 @@ import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Unit;
+import net.threetag.palladium.addonpack.log.AddonPackLogEntry;
 import net.threetag.palladium.addonpack.parser.*;
 import net.threetag.palladium.addonpack.version.VersionParsingException;
+import net.threetag.palladium.client.screen.AddonPackLogScreen;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.stream.Collectors;
 
 public class AddonPackManager {
 
@@ -128,7 +132,7 @@ public class AddonPackManager {
             }
         }
 
-        if(!dependencyConflicts.isEmpty()) {
+        if (!dependencyConflicts.isEmpty()) {
             List<String> test = new ArrayList<>();
             for (Map.Entry<PackData, List<PackData.Dependency>> entry : dependencyConflicts.entrySet()) {
                 for (PackData.Dependency dependency : entry.getValue()) {
@@ -136,12 +140,20 @@ public class AddonPackManager {
                 }
             }
 
-            if(Platform.getEnvironment() == Env.SERVER) {
+            if (Platform.getEnvironment() == Env.SERVER) {
                 throw new RuntimeException(Arrays.toString(test.toArray()));
             } else {
                 ClientGuiEvent.SET_SCREEN.register(screen -> {
-                    if(screen instanceof TitleScreen) {
-                        return CompoundEventResult.interruptTrue(null);
+                    if (screen instanceof TitleScreen) {
+                        Screen errors = new AddonPackLogScreen(dependencyConflicts.keySet().stream().map(packData -> {
+                            StringBuilder s = new StringBuilder("Addon Pack '" + packData.id() + "' requires ");
+                            for (PackData.Dependency dependency : dependencyConflicts.get(packData)) {
+                                s.append(dependency.getId()).append(" ").append(Arrays.toString(dependency.getVersionRequirements().toArray())).append("; ");
+                            }
+                            s = new StringBuilder(s.substring(0, s.length() - 2));
+                            return new AddonPackLogEntry(AddonPackLogEntry.Type.ERROR, s.toString());
+                        }).collect(Collectors.toList()), null);
+                        return CompoundEventResult.interruptTrue(errors);
                     }
 
                     return CompoundEventResult.pass();

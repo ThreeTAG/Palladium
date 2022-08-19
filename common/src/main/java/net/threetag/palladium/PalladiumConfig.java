@@ -10,4 +10,9 @@ public class PalladiumConfig {
         throw new AssertionError();
     }
 
+    @ExpectPlatform
+    public static boolean addonPackDevMode() {
+        throw new AssertionError();
+    }
+
 }

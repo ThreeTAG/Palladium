@@ -1,5 +1,4 @@
 {
-  "ability.kubejs.scriptable": "Skriptf\u00E4hig",
   "ability.palladium.attribute_modifier": "\u00C4ttrib\u00FCtmodifikator",
   "ability.palladium.command": "Befehl",
   "ability.palladium.damage_immunity": "Schadensimmunit\u00E4t",
@@ -72,6 +71,11 @@
   "entity.palladium.custom_projectile": "Projektil",
   "entity.palladium.effect": "Effekt",
   "gui.palladium.accessories": "Zubeh\u00F6r",
+  "gui.palladium.addon_pack_log": "Addon Pack Log",
+  "gui.palladium.addon_pack_log.search": "Suchen...",
+  "gui.palladium.addon_pack_log_entry": "Logeintrag",
+  "gui.palladium.addon_pack_log_entry.copy_to_clipboard": "Kopieren",
+  "gui.palladium.addon_pack_log_entry.upload_to_pastebin": "Auf Pastebin hochladen",
   "gui.palladium.powers": "Kr\u00E4fte",
   "item.palladium.hammer": "Hammer",
   "item.palladium.lead_ingot": "Blebarrn",

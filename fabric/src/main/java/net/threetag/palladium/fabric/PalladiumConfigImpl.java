@@ -13,7 +13,14 @@ public class PalladiumConfigImpl implements ConfigData {
     @ConfigEntry.Category("client")
     AbilityBarRenderer.Position abilityBarPosition = AbilityBarRenderer.Position.TOP_LEFT;
 
+    @ConfigEntry.Category("client")
+    boolean addonPackDevMode = false;
+
     public static AbilityBarRenderer.Position getAbilityBarPosition() {
         return AutoConfig.getConfigHolder(PalladiumConfigImpl.class).getConfig().abilityBarPosition;
+    }
+
+    public static boolean addonPackDevMode() {
+        return AutoConfig.getConfigHolder(PalladiumConfigImpl.class).getConfig().addonPackDevMode;
     }
 }
