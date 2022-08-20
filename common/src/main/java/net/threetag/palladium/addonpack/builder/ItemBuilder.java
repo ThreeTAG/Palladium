@@ -45,13 +45,19 @@ public class ItemBuilder extends AddonBuilder<Item> {
     protected Item create() {
         var properties = new Item.Properties();
 
-        Utils.ifNotNull(this.maxDamage, properties::durability);
-        Utils.ifNotNull(this.maxStackSize, properties::stacksTo);
+        if (this.maxDamage != null && this.maxDamage != 0) {
+            Utils.ifNotNull(this.maxDamage, properties::durability);
+        }
+
+        if (this.maxStackSize != null && this.maxStackSize != 64) {
+            Utils.ifNotNull(this.maxStackSize, properties::stacksTo);
+        }
+
         Utils.ifNotNull(this.rarity, properties::rarity);
         Utils.ifNotNull(this.rarity, properties::rarity);
         Utils.ifTrue(this.isFireResistant, properties::fireResistant);
 
-        if(this.creativeModeTab != null) {
+        if (this.creativeModeTab != null) {
             CreativeModeTab tab = PalladiumCreativeModeTabs.getTab(this.creativeModeTab);
             if (tab != null) {
                 properties.tab(tab);
