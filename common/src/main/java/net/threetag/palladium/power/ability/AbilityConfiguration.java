@@ -8,7 +8,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionContextType;
 import net.threetag.palladium.condition.ConditionSerializer;
@@ -123,7 +123,7 @@ public class AbilityConfiguration {
         if (ability == null) {
             if (GsonHelper.isValidNode(json, "ability")) {
                 ability = Ability.REGISTRY.get(new ResourceLocation(GsonHelper.getAsString(json, "ability")));
-                Palladium.LOGGER.warn("Usage of 'ability' in ability declarations is deprecated!");
+                AddonPackLog.warning("Usage of 'ability' in ability declarations is deprecated!");
 
                 if (ability == null) {
                     throw new JsonParseException("Ability '" + GsonHelper.getAsString(json, "ability") + "' does not exist!");

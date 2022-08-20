@@ -1,6 +1,20 @@
 {
   "pack": {
+    "id": "test_pack",
     "description": "Palladium Test Pack",
-    "pack_format": 6
+    "pack_format": 8,
+    "version": "1.0.0"
+  },
+  "dependencies": {
+    "common": {
+      "minecraft": ">=1.18",
+      "palladium": ">=4.0.0-Pre23"
+    },
+    "fabric": {
+      "trinkets": ">=3.3.0"
+    },
+    "forge": {
+      "curios": ">=5.0.7.0"
+    }
   }
 }

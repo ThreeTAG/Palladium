@@ -106,6 +106,11 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // GUI
             this.add("gui.palladium.powers", "Powers");
             this.add("gui.palladium.accessories", "Accessories");
+            this.add("gui.palladium.addon_pack_log", "Addon Pack Log");
+            this.add("gui.palladium.addon_pack_log.search", "Search...");
+            this.add("gui.palladium.addon_pack_log_entry", "Log Entry");
+            this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Copy to Clipboard");
+            this.add("gui.palladium.addon_pack_log_entry.upload_to_pastebin", "Upload to Pastebin");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
@@ -231,6 +236,11 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
             this.add("gui.palladium.accessories", "Zubeh\u00F6r");
+            this.add("gui.palladium.addon_pack_log", "Addon Pack Log");
+            this.add("gui.palladium.addon_pack_log.search", "Suchen...");
+            this.add("gui.palladium.addon_pack_log_entry", "Logeintrag");
+            this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Kopieren");
+            this.add("gui.palladium.addon_pack_log_entry.upload_to_pastebin", "Auf Pastebin hochladen");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
@@ -356,6 +366,11 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
             this.add("gui.palladium.accessories", "Zubeh\u00F6r");
+            this.add("gui.palladium.addon_pack_log", "Addon Pack Log");
+            this.add("gui.palladium.addon_pack_log.search", "Suchen...");
+            this.add("gui.palladium.addon_pack_log_entry", "Logeintrag");
+            this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Kopieren");
+            this.add("gui.palladium.addon_pack_log_entry.upload_to_pastebin", "Auf Pastebin hochladen");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");

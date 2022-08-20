@@ -17,7 +17,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.network.AddPowerMessage;
 import net.threetag.palladium.network.SyncPowersMessage;
@@ -67,11 +67,11 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
             try {
                 builder.put(id, Power.fromJSON(id, json.getAsJsonObject()));
             } catch (Exception e) {
-                Palladium.LOGGER.error("Parsing error loading power {}", id, e);
+                AddonPackLog.error("Parsing error loading power {}", id, e);
             }
         });
         this.byName = builder.build();
-        Palladium.LOGGER.info("Loaded {} powers", this.byName.size());
+        AddonPackLog.info("Loaded {} powers", this.byName.size());
         syncPowersToAll(this.byName);
     }
 

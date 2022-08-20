@@ -19,6 +19,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.item.SimpleArmorMaterial;
@@ -65,7 +66,7 @@ public class ArmorMaterialParser extends SimpleJsonResourceReloadListener {
             }
         });
 
-        Palladium.LOGGER.info("Registered " + i.get() + " addonpack armor materials");
+        AddonPackLog.info("Registered " + i.get() + " addonpack armor materials");
     }
 
     public static void registerArmorMaterial(ResourceLocation id, ArmorMaterial armorMaterial) {

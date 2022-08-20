@@ -15,6 +15,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
@@ -47,7 +48,7 @@ public class CreativeModeTabParser extends SimpleJsonResourceReloadListener {
             }
         });
 
-        Palladium.LOGGER.info("Registered " + i.get() + " addonpack creative mode tabs");
+        AddonPackLog.info("Registered " + i.get() + " addonpack creative mode tabs");
     }
 
     public static HTMLBuilder documentationBuilder() {
