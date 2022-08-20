@@ -22,10 +22,7 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
 
     @Override
     public void init() {
-        PalladiumEvents.REGISTER_PROPERTY.register(handler -> {
-            new RegisterPalladiumPropertyEventJS(handler.getEntity(), handler).post(ScriptType.CLIENT, PalladiumJSEvents.REGISTER_PROPERTIES);
-            new RegisterPalladiumPropertyEventJS(handler.getEntity(), handler).post(ScriptType.SERVER, PalladiumJSEvents.REGISTER_PROPERTIES);
-        });
+        PalladiumEvents.REGISTER_PROPERTY.register(handler -> new RegisterPalladiumPropertyEventJS(handler.getEntity(), handler).post(ScriptType.of(handler.getEntity().level), PalladiumJSEvents.REGISTER_PROPERTIES));
 
         ABILITY = RegistryObjectBuilderTypes.add(Ability.RESOURCE_KEY, Ability.class);
         ABILITY.addType("basic", AbilityBuilder.class, AbilityBuilder::new);
