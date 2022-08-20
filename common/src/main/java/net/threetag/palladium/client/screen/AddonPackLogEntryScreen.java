@@ -11,8 +11,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.threetag.palladium.addonpack.log.AddonPackLogEntry;
 
@@ -32,7 +31,7 @@ public class AddonPackLogEntryScreen extends Screen {
     private Panel panel;
 
     protected AddonPackLogEntryScreen(Screen parent, AddonPackLogEntry entry) {
-        super(new TranslatableComponent("gui.palladium.addon_pack_log_entry"));
+        super(Component.translatable("gui.palladium.addon_pack_log_entry"));
         this.parent = parent;
         this.entry = entry;
     }
@@ -43,11 +42,11 @@ public class AddonPackLogEntryScreen extends Screen {
 
         this.addWidget(this.panel = new Panel(this.minecraft, this.width, this.height - 64 - 48, 48, 0));
 
-        this.addRenderableWidget(new Button(this.width / 2 - 310, this.height - 64 + 32 - 10, 250, 20, new TranslatableComponent("gui.palladium.addon_pack_log_entry.copy_to_clipboard"), (button) -> {
+        this.addRenderableWidget(new Button(this.width / 2 - 310, this.height - 64 + 32 - 10, 250, 20, Component.translatable("gui.palladium.addon_pack_log_entry.copy_to_clipboard"), (button) -> {
             Objects.requireNonNull(this.minecraft).keyboardHandler.setClipboard(this.entry.getText() + "\n" + this.entry.getStacktrace());
         }));
 
-        this.addRenderableWidget(new Button(this.width / 2 - 50, this.height - 64 + 32 - 10, 250, 20, new TranslatableComponent("gui.palladium.addon_pack_log_entry.upload_to_pastebin"), (button) -> {
+        this.addRenderableWidget(new Button(this.width / 2 - 50, this.height - 64 + 32 - 10, 250, 20, Component.translatable("gui.palladium.addon_pack_log_entry.upload_to_pastebin"), (button) -> {
             try {
                 String url = this.uploadPastebin();
                 Objects.requireNonNull(this.minecraft).setScreen(new ConfirmLinkScreen((b) -> {
@@ -132,8 +131,8 @@ public class AddonPackLogEntryScreen extends Screen {
 
         public Panel(Minecraft client, int width, int height, int top, int left) {
             super(client, width, height, top, left);
-            this.lines1 = font.split(new TextComponent(AddonPackLogEntryScreen.this.entry.getText()), this.width - 25);
-            this.lines2 = font.split(new TextComponent(AddonPackLogEntryScreen.this.entry.getStacktrace()), this.width - 25);
+            this.lines1 = font.split(Component.literal(AddonPackLogEntryScreen.this.entry.getText()), this.width - 25);
+            this.lines2 = font.split(Component.literal(AddonPackLogEntryScreen.this.entry.getStacktrace()), this.width - 25);
         }
 
         @Override

@@ -11,7 +11,9 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.threetag.palladium.addonpack.log.AddonPackLogEntry;
@@ -34,7 +36,7 @@ public class AddonPackLogScreen extends Screen {
     public static boolean ERRORS_FILTER = true;
 
     public AddonPackLogScreen(List<AddonPackLogEntry> logs, @Nullable Screen parent) {
-        super(new TranslatableComponent("gui.palladium.addon_pack_log"));
+        super(Component.translatable("gui.palladium.addon_pack_log"));
         this.logs = logs;
         this.parent = parent;
     }
@@ -43,7 +45,7 @@ public class AddonPackLogScreen extends Screen {
     protected void init() {
         super.init();
 
-        this.addWidget(this.textFieldWidget = new EditBox(this.font, this.width / 2 - 310, this.height - 27, 620 - (this.parent != null ? 90 : 0), 17, new TranslatableComponent("gui.palladium.addon_pack_log.search")));
+        this.addWidget(this.textFieldWidget = new EditBox(this.font, this.width / 2 - 310, this.height - 27, 620 - (this.parent != null ? 90 : 0), 17, Component.translatable("gui.palladium.addon_pack_log.search")));
         this.textFieldWidget.setFocus(false);
         this.textFieldWidget.setCanLoseFocus(true);
         this.textFieldWidget.setResponder(search -> this.list.refreshList());
@@ -53,9 +55,9 @@ public class AddonPackLogScreen extends Screen {
         if (this.parent != null)
             this.addRenderableWidget(new Button(this.width / 2 + 310 - 70, this.height - 28, 75, 20, CommonComponents.GUI_CANCEL, (button) -> Objects.requireNonNull(this.minecraft).setScreen(this.parent)));
 
-        this.addRenderableWidget(new CheckboxButton(this.width / 2 - 310, this.height - 52, 70, 20, new TextComponent("INFO").withStyle(AddonPackLogEntry.Type.INFO.getColor()), INFO_FILTER, b -> INFO_FILTER = b));
-        this.addRenderableWidget(new CheckboxButton(this.width / 2 - 35, this.height - 52, 70, 20, new TextComponent("WARNING").withStyle(AddonPackLogEntry.Type.WARNING.getColor()), WARNINGS_FILTER, b -> WARNINGS_FILTER = b));
-        this.addRenderableWidget(new CheckboxButton(this.width / 2 + 310 - 50, this.height - 52, 70, 20, new TextComponent("ERROR").withStyle(AddonPackLogEntry.Type.ERROR.getColor()), ERRORS_FILTER, b -> ERRORS_FILTER = b));
+        this.addRenderableWidget(new CheckboxButton(this.width / 2 - 310, this.height - 52, 70, 20, Component.literal("INFO").withStyle(AddonPackLogEntry.Type.INFO.getColor()), INFO_FILTER, b -> INFO_FILTER = b));
+        this.addRenderableWidget(new CheckboxButton(this.width / 2 - 35, this.height - 52, 70, 20, Component.literal("WARNING").withStyle(AddonPackLogEntry.Type.WARNING.getColor()), WARNINGS_FILTER, b -> WARNINGS_FILTER = b));
+        this.addRenderableWidget(new CheckboxButton(this.width / 2 + 310 - 50, this.height - 52, 70, 20, Component.literal("ERROR").withStyle(AddonPackLogEntry.Type.ERROR.getColor()), ERRORS_FILTER, b -> ERRORS_FILTER = b));
     }
 
     @Override
@@ -132,9 +134,9 @@ public class AddonPackLogScreen extends Screen {
         public void render(PoseStack matrixStack, int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
             Gui.fill(matrixStack, left, top + 33, left + entryWidth, top + 34, -1601138544);
             Font fontRenderer = AddonPackLogScreen.this.font;
-            fontRenderer.drawShadow(matrixStack, new TextComponent(this.info.getType().toString()).withStyle(this.info.getType().getColor()), left, top + 12, isMouseOver ? 16777120 : 0xfefefe);
+            fontRenderer.drawShadow(matrixStack, Component.literal(this.info.getType().toString()).withStyle(this.info.getType().getColor()), left, top + 12, isMouseOver ? 16777120 : 0xfefefe);
 
-            MutableComponent msg = new TextComponent(this.info.getText()).withStyle(this.info.getType().getColor());
+            MutableComponent msg = Component.literal(this.info.getText()).withStyle(this.info.getType().getColor());
             List<FormattedCharSequence> lines = fontRenderer.split(msg, 560);
             int maxLines = Math.min(lines.size(), 3);
             for (int i = 0; i < lines.size(); i++) {
