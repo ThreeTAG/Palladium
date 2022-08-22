@@ -1,0 +1,17 @@
+{
+  "name": "Skin Change Test",
+  "icon": "minecraft:leather",
+  "abilities": {
+    "skin_change": {
+      "type": "palladium:skin_change",
+      "hidden": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle"
+          }
+        ]
+      }
+    }
+  }
+}
