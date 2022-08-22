@@ -3,8 +3,8 @@ package net.threetag.palladium.mixin.forge;
 import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityProvider;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.threetag.palladium.energy.IBlockEntityEnergyContainer;
 import net.threetag.palladium.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +19,7 @@ public abstract class CapabilityProviderMixin {
 
     @Inject(at = @At("HEAD"), method = "getCapability", remap = false, cancellable = true)
     public <T> void getCapability(@NotNull Capability<T> cap, @Nullable Direction side, CallbackInfoReturnable<LazyOptional<T>> ci) {
-        if (cap == CapabilityEnergy.ENERGY && this instanceof IBlockEntityEnergyContainer energy) {
+        if (cap == ForgeCapabilities.ENERGY && this instanceof IBlockEntityEnergyContainer energy) {
             IEnergyStorage energyStorage = energy.getEnergyStorage(side);
 
             if (energyStorage != null) {
