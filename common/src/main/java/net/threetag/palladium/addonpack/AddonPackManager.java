@@ -35,7 +35,7 @@ public class AddonPackManager {
     private static AddonPackManager INSTANCE;
     public static boolean IGNORE_INJECT = false;
     public static ItemParser ITEM_PARSER;
-    private static Map<String, PackData> PACKS = new HashMap<>();
+    private final Map<String, PackData> packs = new HashMap<>();
 
     public static AddonPackManager getInstance() {
         if (INSTANCE == null) {
@@ -45,7 +45,7 @@ public class AddonPackManager {
     }
 
     public static void init() {
-        getInstance();
+        getInstance().beginLoading(Util.backgroundExecutor(), Runnable::run);
     }
 
     private final ReloadableResourceManager resourceManager;
@@ -64,8 +64,6 @@ public class AddonPackManager {
         this.resourceManager.registerReloadListener(new ToolTierParser());
         this.resourceManager.registerReloadListener(ITEM_PARSER = new ItemParser());
         this.resourceManager.registerReloadListener(new SuitSetParser());
-
-        this.beginLoading(Util.backgroundExecutor(), Runnable::run);
     }
 
     public File getLocation() {
@@ -80,7 +78,7 @@ public class AddonPackManager {
     }
 
     public PackData getPackData(String id) {
-        return PACKS.get(id);
+        return packs.get(id);
     }
 
     public PackRepository getPackList() {
@@ -104,17 +102,17 @@ public class AddonPackManager {
         this.packList.setSelected(this.packList.getAvailableIds());
 
         // Read pack.mcmetas
-        PACKS.clear();
+        packs.clear();
         this.packList.getAvailablePacks().forEach(pack -> {
             try {
                 InputStream stream = pack.open().getRootResource("pack.mcmeta");
                 BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
                 JsonObject jsonobject = GsonHelper.parse(bufferedreader);
                 PackData packData = PackData.fromJSON(jsonobject);
-                if (PACKS.containsKey(packData.id())) {
+                if (packs.containsKey(packData.id())) {
                     throw new RuntimeException("Duplicate addonpack: " + packData.id());
                 }
-                PACKS.put(packData.id(), packData);
+                packs.put(packData.id(), packData);
                 bufferedreader.close();
                 stream.close();
             } catch (IOException | VersionParsingException e) {
@@ -124,7 +122,7 @@ public class AddonPackManager {
 
         // Check dependencies
         Map<PackData, List<PackData.Dependency>> dependencyConflicts = new HashMap<>();
-        for (PackData pack : PACKS.values()) {
+        for (PackData pack : packs.values()) {
             for (PackData.Dependency dependency : pack.getDependenciesFor(ArchitecturyTarget.getCurrentTarget())) {
                 if (!dependency.isValid()) {
                     dependencyConflicts.computeIfAbsent(pack, p -> new ArrayList<>()).add(dependency);
