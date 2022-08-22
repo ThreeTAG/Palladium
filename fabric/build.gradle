@@ -10,7 +10,6 @@ architectury {
 
 var commonAW = project(":common").loom.accessWidenerPath
 var generatedResources = file("src/generated/resources")
-version = version + "-fabric"
 
 loom {
     accessWidenerPath = commonAW
@@ -109,7 +108,7 @@ remapJar {
     injectAccessWidener = true
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier null
+    archiveClassifier = 'fabric'
 }
 
 jar {
