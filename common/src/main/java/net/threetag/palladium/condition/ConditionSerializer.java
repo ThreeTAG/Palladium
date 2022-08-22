@@ -105,7 +105,7 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
     @Override
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
-        builder.setTitle(this.getId().toString());
+        builder.setTitle(this.getId().getPath());
         builder.setDescription("Applicable for: " + this.getContextType().toString().toLowerCase(Locale.ROOT));
     }
 }

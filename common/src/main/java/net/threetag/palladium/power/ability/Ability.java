@@ -5,7 +5,6 @@ import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -154,7 +153,7 @@ public class Ability extends RegistryEntry<Ability> implements IDefaultDocumente
     @Override
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
-        builder.setTitle(new TranslatableComponent("ability." + this.getId().getNamespace() + "." + this.getId().getPath()).getString());
+        builder.setTitle(this.getId().getPath());
     }
 
     public void postParsing(AbilityConfiguration configuration) {
