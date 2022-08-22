@@ -6,11 +6,9 @@
       "type": "palladium:skin_change",
       "hidden": false,
       "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:toggle"
-          }
-        ]
+        "enabling": {
+          "type": "palladium:toggle"
+        }
       }
     }
   }

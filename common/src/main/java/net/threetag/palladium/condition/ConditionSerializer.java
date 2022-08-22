@@ -1,8 +1,6 @@
 package net.threetag.palladium.condition;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
 import dev.architectury.core.RegistryEntry;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
@@ -17,9 +15,7 @@ import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 
-import java.util.Comparator;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class ConditionSerializer extends RegistryEntry<ConditionSerializer> implements IDefaultDocumentedConfigurable {
@@ -60,6 +56,23 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
 
     public ConditionContextType getContextType() {
         return ConditionContextType.ALL;
+    }
+
+    public static List<Condition> listFromJSON(JsonElement jsonElement, ConditionContextType type) {
+        List<Condition> conditions = new ArrayList<>();
+
+        if(jsonElement.isJsonArray()) {
+            JsonArray array = jsonElement.getAsJsonArray();
+            for (JsonElement element : array) {
+                conditions.add(fromJSON(element.getAsJsonObject(), type));
+            }
+        } else if(jsonElement.isJsonObject()) {
+            conditions.add(fromJSON(jsonElement.getAsJsonObject(), type));
+        } else {
+            throw new JsonSyntaxException("Conditions list must either be an array of multiple conditions, or one condition json object");
+        }
+
+        return conditions;
     }
 
     public static Condition fromJSON(JsonObject json, ConditionContextType type) {

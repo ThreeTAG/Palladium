@@ -1,6 +1,5 @@
 package net.threetag.palladium.power.ability;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -138,18 +137,16 @@ public class AbilityConfiguration {
         configuration.propertyManager.fromJSON(json);
 
         if (GsonHelper.isValidNode(json, "conditions")) {
+            ConditionSerializer.CURRENT_CONTEXT = ConditionContextType.ABILITIES;
             JsonObject conditions = GsonHelper.getAsJsonObject(json, "conditions");
             boolean withKey = false;
             CooldownType cooldownType = null;
 
             if (GsonHelper.isValidNode(conditions, "unlocking")) {
-                JsonArray unlocking = GsonHelper.getAsJsonArray(conditions, "unlocking");
+                JsonElement condJson = conditions.get("unlocking");
+                var condList = ConditionSerializer.listFromJSON(condJson, ConditionContextType.ABILITIES);
 
-                for (JsonElement jsonElement : unlocking) {
-                    JsonObject c = jsonElement.getAsJsonObject();
-                    ConditionSerializer.CURRENT_CONTEXT = ConditionContextType.ABILITIES;
-                    Condition condition = ConditionSerializer.fromJSON(c, ConditionContextType.ABILITIES);
-
+                for (Condition condition : condList) {
                     if (condition.needsKey()) {
                         throw new JsonParseException("Can't have key binding conditions for unlocking!");
                     }
@@ -168,13 +165,10 @@ public class AbilityConfiguration {
             }
 
             if (GsonHelper.isValidNode(conditions, "enabling")) {
-                JsonArray enabling = GsonHelper.getAsJsonArray(conditions, "enabling");
+                JsonElement condJson = conditions.get("enabling");
+                var condList = ConditionSerializer.listFromJSON(condJson, ConditionContextType.ABILITIES);
 
-                for (JsonElement jsonElement : enabling) {
-                    JsonObject c = jsonElement.getAsJsonObject();
-                    ConditionSerializer.CURRENT_CONTEXT = ConditionContextType.ABILITIES;
-                    Condition condition = ConditionSerializer.fromJSON(c, ConditionContextType.ABILITIES);
-
+                for (Condition condition : condList) {
                     if (condition.needsKey()) {
                         if (withKey) {
                             throw new JsonParseException("Can't have two key binding conditions on one ability!");
