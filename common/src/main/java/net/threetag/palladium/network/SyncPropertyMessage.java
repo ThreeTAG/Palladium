@@ -54,7 +54,9 @@ public class SyncPropertyMessage extends BaseS2CMessage {
                 EntityPropertyHandler handler = EntityPropertyHandler.getHandler(entity);
                 for (String key : this.tag.getAllKeys()) {
                     PalladiumProperty property = handler.getPropertyByName(key);
-                    handler.setRaw(property, property.fromNBT(this.tag.get(property.getKey()), handler.getDefault(property)));
+                    if(property != null) {
+                        handler.setRaw(property, property.fromNBT(this.tag.get(property.getKey()), handler.getDefault(property)));
+                    }
                 }
             }
         });

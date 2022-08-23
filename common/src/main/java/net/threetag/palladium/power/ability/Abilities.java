@@ -22,6 +22,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> SIZE = ABILITIES.register("size", SizeAbility::new);
     public static final RegistrySupplier<Ability> PROJECTILE = ABILITIES.register("projectile", ProjectileAbility::new);
     public static final RegistrySupplier<Ability> SKIN_CHANGE = ABILITIES.register("skin_change", SkinChangeAbility::new);
+    public static final RegistrySupplier<Ability> AIM = ABILITIES.register("aim", AimAbility::new);
 
     public static void init() {
 

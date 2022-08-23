@@ -12,6 +12,7 @@ import net.minecraft.world.item.DyeableLeatherItem;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.client.model.animation.AimAnimation;
 import net.threetag.palladium.client.model.animation.FlightAnimation;
 import net.threetag.palladium.client.model.animation.HumanoidAnimationsManager;
 import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
@@ -43,6 +44,7 @@ public class PalladiumClient {
         RenderLayerRegistry.addToPlayer(renderLayerParent -> new AccessoryRenderLayer((RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>>) renderLayerParent));
 
         HumanoidAnimationsManager.registerAnimation(new FlightAnimation());
+        HumanoidAnimationsManager.registerAnimation(new AimAnimation());
 //        HumanoidAnimationsManager.registerAnimation(new TestAnimation());
     }
 
