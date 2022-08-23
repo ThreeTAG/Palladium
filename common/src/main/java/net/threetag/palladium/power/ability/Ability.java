@@ -152,7 +152,7 @@ public class Ability implements IDefaultDocumentedConfigurable {
     @Override
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
-        builder.setTitle(Component.translatable("ability." + this.getId().getNamespace() + "." + this.getId().getPath()).getString());
+        builder.setTitle(this.getId().getPath());
     }
 
     public void postParsing(AbilityConfiguration configuration) {

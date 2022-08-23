@@ -28,4 +28,9 @@ public class AnimationUtil {
         modelPart.zRot += (destination - modelPart.zRot) * progress;
     }
 
+    public static float smooth(float value) {
+        float sqt = value * value;
+        return sqt / (2F * (sqt - value) + 1F);
+    }
+
 }

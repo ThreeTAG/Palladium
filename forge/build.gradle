@@ -8,8 +8,6 @@ architectury {
     forge()
 }
 
-version = version + "-forge"
-
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 
@@ -102,7 +100,7 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier null
+    archiveClassifier = 'forge'
 }
 
 jar {

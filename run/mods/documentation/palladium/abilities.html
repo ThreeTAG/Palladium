@@ -31,56 +31,178 @@ Overview</h2>
 Palladium</h3>
 <ul>
 <li>
+<a href="#palladium:aim">
+aim</a>
+</li>
+<li>
 <a href="#palladium:attribute_modifier">
-ability.palladium.attribute_modifier</a>
+attribute_modifier</a>
 </li>
 <li>
 <a href="#palladium:command">
-ability.palladium.command</a>
+command</a>
 </li>
 <li>
 <a href="#palladium:damage_immunity">
-ability.palladium.damage_immunity</a>
+damage_immunity</a>
 </li>
 <li>
 <a href="#palladium:energy_blast">
-ability.palladium.energy_blast</a>
+energy_blast</a>
 </li>
 <li>
 <a href="#palladium:healing">
-ability.palladium.healing</a>
+healing</a>
 </li>
 <li>
 <a href="#palladium:interpolated_integer">
-ability.palladium.interpolated_integer</a>
+interpolated_integer</a>
 </li>
 <li>
 <a href="#palladium:invisibility">
-ability.palladium.invisibility</a>
+invisibility</a>
 </li>
 <li>
 <a href="#palladium:projectile">
-ability.palladium.projectile</a>
+projectile</a>
 </li>
 <li>
 <a href="#palladium:render_layer">
-ability.palladium.render_layer</a>
+render_layer</a>
 </li>
 <li>
 <a href="#palladium:size">
-ability.palladium.size</a>
+size</a>
+</li>
+<li>
+<a href="#palladium:skin_change">
+skin_change</a>
 </li>
 <li>
 <a href="#palladium:slowfall">
-ability.palladium.slowfall</a>
+slowfall</a>
 </li>
 </ul>
 </p>
 <hr>
 
+<div id="palladium:aim">
+<h2>
+aim</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+time</td>
+<td>
+Integer</td>
+<td>
+Determines how many ticks it takes until the arm is fully aimed</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+10</td>
+</tr>
+<tr>
+<td>
+arm</td>
+<td>
+ArmType</td>
+<td>
+Determines which arm(s) should point. Possible values: [main_arm, off_arm, right_arm, left_arm, both]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+MAIN_ARM</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:aim","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"time":10,"arm":"main_arm"}</pre>
+</div>
+<hr>
+
 <div id="palladium:attribute_modifier">
 <h2>
-ability.palladium.attribute_modifier</h2>
+attribute_modifier</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -218,7 +340,7 @@ Example:</h3>
 
 <div id="palladium:command">
 <h2>
-ability.palladium.command</h2>
+command</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -344,7 +466,7 @@ Example:</h3>
 
 <div id="palladium:damage_immunity">
 <h2>
-ability.palladium.damage_immunity</h2>
+damage_immunity</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -446,7 +568,7 @@ Example:</h3>
 
 <div id="palladium:energy_blast">
 <h2>
-ability.palladium.energy_blast</h2>
+energy_blast</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -596,7 +718,7 @@ Example:</h3>
 
 <div id="palladium:healing">
 <h2>
-ability.palladium.healing</h2>
+healing</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -710,7 +832,7 @@ Example:</h3>
 
 <div id="palladium:interpolated_integer">
 <h2>
-ability.palladium.interpolated_integer</h2>
+interpolated_integer</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -824,7 +946,7 @@ Example:</h3>
 
 <div id="palladium:invisibility">
 <h2>
-ability.palladium.invisibility</h2>
+invisibility</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -914,7 +1036,7 @@ Example:</h3>
 
 <div id="palladium:projectile">
 <h2>
-ability.palladium.projectile</h2>
+projectile</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -1076,7 +1198,7 @@ Example:</h3>
 
 <div id="palladium:render_layer">
 <h2>
-ability.palladium.render_layer</h2>
+render_layer</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -1178,7 +1300,7 @@ Example:</h3>
 
 <div id="palladium:size">
 <h2>
-ability.palladium.size</h2>
+size</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -1278,9 +1400,123 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:skin_change">
+<h2>
+skin_change</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+texture</td>
+<td>
+ResourceLocation</td>
+<td>
+Texture for the skin change</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:textures/entity/zombie/drowned.png</td>
+</tr>
+<tr>
+<td>
+priority</td>
+<td>
+Integer</td>
+<td>
+Priority for the skin (in case multiple skin changes are applied, the one with the highest priority will be used)</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+50</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:skin_change","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"texture":"minecraft:textures/entity/zombie/drowned.png","priority":50}</pre>
+</div>
+<hr>
+
 <div id="palladium:slowfall">
 <h2>
-ability.palladium.slowfall</h2>
+slowfall</h2>
 <h3>
 Settings:</h3>
 <table>

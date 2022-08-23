@@ -8,6 +8,7 @@
     "client.GameRendererMixin",
     "client.HumanoidModelMixin",
     "client.LivingEntityRendererMixin",
+    "client.PlayerInfoMixin",
     "client.PlayerRendererMixin"
   ],
   "mixins": [
