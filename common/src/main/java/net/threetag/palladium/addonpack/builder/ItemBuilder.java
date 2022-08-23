@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -35,6 +36,7 @@ public class ItemBuilder extends AddonBuilder<Item> {
     private Rarity rarity = null;
     private List<Component> tooltipLines = null;
     private Map<EquipmentSlot, Multimap<ResourceLocation, AttributeModifier>> attributeModifiers;
+    private FoodProperties foodProperties = null;
 
     public ItemBuilder(ResourceLocation id, JsonObject json) {
         super(id);
@@ -63,6 +65,8 @@ public class ItemBuilder extends AddonBuilder<Item> {
                 properties.tab(tab);
             }
         }
+
+        properties.food(this.foodProperties);
 
         IAddonItem item = this.typeSerializer != null ? this.typeSerializer.parse(this.json, properties) : new AddonItem(properties);
 
@@ -128,6 +132,11 @@ public class ItemBuilder extends AddonBuilder<Item> {
         }
 
         this.attributeModifiers.computeIfAbsent(slot, equipmentSlot -> ArrayListMultimap.create()).put(attributeId, modifier);
+        return this;
+    }
+
+    public ItemBuilder food(FoodProperties foodProperties) {
+        this.foodProperties = foodProperties;
         return this;
     }
 
