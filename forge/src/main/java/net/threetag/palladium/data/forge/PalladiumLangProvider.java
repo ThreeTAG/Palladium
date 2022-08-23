@@ -112,7 +112,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("gui.palladium.addon_pack_log.search", "Search...");
             this.add("gui.palladium.addon_pack_log_entry", "Log Entry");
             this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Copy to Clipboard");
-            this.add("gui.palladium.addon_pack_log_entry.upload_to_pastebin", "Upload to Pastebin");
+            this.add("gui.palladium.addon_pack_log_entry.upload_to_mclogs", "Upload to mclo.gs");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
@@ -244,7 +244,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("gui.palladium.addon_pack_log.search", "Suchen...");
             this.add("gui.palladium.addon_pack_log_entry", "Logeintrag");
             this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Kopieren");
-            this.add("gui.palladium.addon_pack_log_entry.upload_to_pastebin", "Auf Pastebin hochladen");
+            this.add("gui.palladium.addon_pack_log_entry.upload_to_mclogs", "Auf mclo.gs hochladen");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
@@ -376,7 +376,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("gui.palladium.addon_pack_log.search", "Suchen...");
             this.add("gui.palladium.addon_pack_log_entry", "Logeintrag");
             this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Kopieren");
-            this.add("gui.palladium.addon_pack_log_entry.upload_to_pastebin", "Auf Pastebin hochladen");
+            this.add("gui.palladium.addon_pack_log_entry.upload_to_mclogs", "Uff mclo.gs hochladen");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
