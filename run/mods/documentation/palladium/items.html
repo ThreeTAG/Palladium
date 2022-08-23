@@ -141,12 +141,24 @@ false</td>
 <td>
 /</td>
 </tr>
+<tr>
+<td>
+food</td>
+<td>
+FoodProperties</td>
+<td>
+Settings to make this item edible. The only required field in this json part is the mob_effect IF you add any effect</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"max_stack_size":64,"creative_mode_tab":"minecraft:decorations","rarity":"epic","is_fire_resistant":false,"tooltip":["Line 1",{"translate":"example.line2.translation_key","color":"#BCD42A","underlined":true}],"attribute_modifiers":{"all":[{"attribute":"minecraft:generic.max_health","amount":2,"operation":0,"uuid":"f98db25e-91cb-45ca-ba40-5526ff2cd180"}],"chest":[{"attribute":"minecraft:generic.movement_speed","amount":4,"operation":1,"uuid":"3a4df804-2be2-4002-a829-eaf29a629cac"}]}}</pre>
+{"max_stack_size":64,"creative_mode_tab":"minecraft:decorations","rarity":"epic","is_fire_resistant":false,"tooltip":["Line 1",{"translate":"example.line2.translation_key","color":"#BCD42A","underlined":true}],"attribute_modifiers":{"all":[{"attribute":"minecraft:generic.max_health","amount":2,"operation":0,"uuid":"f98db25e-91cb-45ca-ba40-5526ff2cd180"}],"chest":[{"attribute":"minecraft:generic.movement_speed","amount":4,"operation":1,"uuid":"3a4df804-2be2-4002-a829-eaf29a629cac"}]},"food":{"nutrition":5,"saturation_modifier":0.6,"meat":false,"can_always_eat":false,"fast":false,"effects":[{"mob_effect":"minecraft:strength","duration":40,"amplifier":1,"ambient":false,"visible":true,"show_icon":true,"probability":1.0}]}}</pre>
 </div>
 <hr>
 
