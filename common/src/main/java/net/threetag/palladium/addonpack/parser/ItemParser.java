@@ -79,7 +79,7 @@ public class ItemParser extends AddonParser<Item> {
                 boolean showIcon = GsonHelper.getAsBoolean(effect, "show_icon", true);
                 float probability = GsonHelper.getAsFloat(effect, "probability", 1F);
 
-                properties.effect(new MobEffectInstance(Objects.requireNonNull(Registry.MOB_EFFECT.get(mobEffect)), duration, amplifier, ambient, visible, showIcon, null), probability);
+                properties.effect(new MobEffectInstance(Objects.requireNonNull(Registry.MOB_EFFECT.get(mobEffect)), duration, amplifier, ambient, visible, showIcon), probability);
             });
 
             builder.food(properties.build());
