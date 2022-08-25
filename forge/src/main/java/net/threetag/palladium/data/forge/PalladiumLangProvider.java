@@ -74,6 +74,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projectile");
 
             // Abilities
+            this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Command");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
             this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolated Integer");
@@ -206,6 +207,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
 
             // Abilities
+            this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
             this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolierte Zahl");
@@ -338,6 +340,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
 
             // Abilities
+            this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
             this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolierte Zahl");

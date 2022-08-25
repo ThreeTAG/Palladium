@@ -29,6 +29,8 @@ public class PalladiumPropertyLookup {
         register("string_array", StringArrayProperty::new);
         register("suit_set", SuitSetProperty::new);
         register("uuid", UUIDProperty::new);
+        register("equipment_slot", EquipmentSlotProperty::new);
+        register("ingredient", IngredientProperty::new);
     }
 
     public static void register(String typeName, Function<String, PalladiumProperty<?>> function) {
