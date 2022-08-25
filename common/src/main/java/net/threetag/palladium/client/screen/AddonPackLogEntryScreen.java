@@ -1,5 +1,8 @@
 package net.threetag.palladium.client.screen;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
@@ -13,6 +16,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.addonpack.log.AddonPackLogEntry;
 
 import java.io.BufferedReader;
@@ -26,6 +30,7 @@ import java.util.Objects;
 
 public class AddonPackLogEntryScreen extends Screen {
 
+    private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     public final Screen parent;
     private final AddonPackLogEntry entry;
     private Panel panel;
@@ -46,7 +51,7 @@ public class AddonPackLogEntryScreen extends Screen {
             Objects.requireNonNull(this.minecraft).keyboardHandler.setClipboard(this.entry.getText() + "\n" + this.entry.getStacktrace());
         }));
 
-        this.addRenderableWidget(new Button(this.width / 2 - 50, this.height - 64 + 32 - 10, 250, 20, Component.translatable("gui.palladium.addon_pack_log_entry.upload_to_pastebin"), (button) -> {
+        this.addRenderableWidget(new Button(this.width / 2 - 50, this.height - 64 + 32 - 10, 250, 20, Component.translatable("gui.palladium.addon_pack_log_entry.upload_to_mclogs"), (button) -> {
             try {
                 String url = this.uploadPastebin();
                 Objects.requireNonNull(this.minecraft).setScreen(new ConfirmLinkScreen((b) -> {
@@ -83,9 +88,8 @@ public class AddonPackLogEntryScreen extends Screen {
 
         try {
             //Create connection
-            URL url = new URL("https://pastebin.com/api/api_post.php");
-            String key = "r-BiiqpblHeaAi2CZ8cxu7xG9OzRE2yL";
-            String urlParameters = "api_option=paste&api_paste_private=1&api_paste_name=" + "Palladium Addon Pack Log" + "&api_dev_key=" + key + "&api_paste_code=" + this.entry.getText() + "\n" + this.entry.getStacktrace();
+            URL url = new URL("https://api.mclo.gs/1/log");
+            String urlParameters = "content=" + this.entry.getText() + "\n" + this.entry.getStacktrace();
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
@@ -113,7 +117,9 @@ public class AddonPackLogEntryScreen extends Screen {
                 response.append(line);
             }
             rd.close();
-            return response.toString();
+
+            JsonObject jsonObject = GsonHelper.fromJson(GSON, response.toString(), JsonObject.class);
+            return GsonHelper.getAsString(Objects.requireNonNull(jsonObject), "url");
         } catch (Exception e) {
             e.printStackTrace();
             return null;

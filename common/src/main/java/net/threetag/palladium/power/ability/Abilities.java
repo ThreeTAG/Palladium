@@ -10,6 +10,7 @@ public class Abilities {
 
     public static final DeferredRegister<Ability> ABILITIES = DeferredRegister.create(Palladium.MOD_ID, Ability.RESOURCE_KEY);
 
+    public static final RegistrySupplier<Ability> DUMMY = ABILITIES.register("dummy", Ability::new);
     public static final RegistrySupplier<Ability> COMMAND = ABILITIES.register("command", CommandAbility::new);
     public static final RegistrySupplier<Ability> RENDER_LAYER = ABILITIES.register("render_layer", RenderLayerAbility::new);
     public static final RegistrySupplier<Ability> INTERPOLATED_INTEGER = ABILITIES.register("interpolated_integer", InterpolatedIntegerAbility::new);
