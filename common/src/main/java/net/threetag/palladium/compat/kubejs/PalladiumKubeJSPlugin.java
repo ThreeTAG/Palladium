@@ -7,10 +7,14 @@ import dev.latvian.mods.kubejs.player.PlayerDataJS;
 import dev.latvian.mods.kubejs.script.AttachDataEvent;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
 import dev.latvian.mods.kubejs.script.ScriptType;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.client.model.animation.AnimationUtil;
 import net.threetag.palladium.compat.kubejs.ability.AbilityBuilder;
 import net.threetag.palladium.compat.kubejs.condition.ConditionBuilder;
 import net.threetag.palladium.condition.ConditionSerializer;
+import net.threetag.palladium.event.PalladiumClientEvents;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.util.property.*;
@@ -31,9 +35,16 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
         CONDITION.addType("basic", ConditionBuilder.class, ConditionBuilder::new);
     }
 
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void clientInit() {
+        PalladiumClientEvents.REGISTER_ANIMATIONS.register(registry -> new RegisterAnimationsEventJS(registry).post(ScriptType.CLIENT, PalladiumJSEvents.REGISTER_ANIMATIONS));
+    }
+
     @Override
     public void addBindings(BindingsEvent event) {
         event.add("palladium", PalladiumBinding.class);
+        event.add("animationUtil", AnimationUtil.class);
     }
 
     @Override
