@@ -5,10 +5,10 @@ import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
 import dev.latvian.mods.kubejs.entity.LivingEntityJS;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import net.threetag.palladium.compat.kubejs.AbilityEntryJS;
 import net.threetag.palladium.compat.kubejs.PalladiumKubeJSPlugin;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.ability.Ability;
-import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
 
@@ -57,6 +57,6 @@ public class AbilityBuilder extends BuilderBase<Ability> {
 
     @FunctionalInterface
     public interface TickFunction {
-        void tick(LivingEntityJS entity, AbilityEntry entry, IPowerHolder holder, boolean enabled);
+        void tick(LivingEntityJS entity, AbilityEntryJS entry, IPowerHolder holder, boolean enabled);
     }
 }

@@ -5,11 +5,17 @@ import dev.latvian.mods.kubejs.entity.LivingEntityJS;
 import dev.latvian.mods.kubejs.item.ItemStackJS;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
+import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.icon.TexturedIcon;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperty;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class PalladiumBinding {
@@ -53,4 +59,22 @@ public class PalladiumBinding {
         return EntityPropertyHandler.getHandler(entity.minecraftEntity).getPropertyByName(key) != null;
     }
 
+    public static AbilityEntryJS getAbilityEntry(LivingEntityJS entity, ResourceLocation powerId, String abilityId) {
+        var entry = Ability.getEntry(entity.minecraftLivingEntity, powerId, abilityId);
+        return entry != null ? new AbilityEntryJS(entry) : null;
+    }
+
+    public static List<AbilityEntryJS> getAbilityEntries(LivingEntityJS entity) {
+        return Ability.getEntries(entity.minecraftLivingEntity).stream().map(AbilityEntryJS::new).collect(Collectors.toList());
+    }
+
+    public static List<AbilityEntryJS> getAbilityEntries(LivingEntityJS entity, ResourceLocation abilityId) {
+        Ability ability = Ability.REGISTRY.get(abilityId);
+        return ability != null ? Ability.getEntries(entity.minecraftLivingEntity, ability).stream().map(AbilityEntryJS::new).collect(Collectors.toList()) : new ArrayList<>();
+    }
+
+    public static Collection<AbilityEntryJS> getEnabledAbilityEntries(LivingEntityJS entity, ResourceLocation abilityId) {
+        Ability ability = Ability.REGISTRY.get(abilityId);
+        return ability != null ? Ability.getEnabledEntries(entity.minecraftLivingEntity, ability).stream().map(AbilityEntryJS::new).collect(Collectors.toList()) : new ArrayList<>();
+    }
 }
