@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.threetag.palladium.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +19,7 @@ public class EnergyHelperImpl {
         AtomicReference<Optional<IEnergyStorage>> optional = new AtomicReference<>(Optional.empty());
 
         if (blockEntity != null) {
-            blockEntity.getCapability(CapabilityEnergy.ENERGY, side).ifPresent(storage -> {
+            blockEntity.getCapability(ForgeCapabilities.ENERGY, side).ifPresent(storage -> {
                 optional.set(Optional.of(new Wrapper(storage)));
             });
         }
@@ -37,7 +37,7 @@ public class EnergyHelperImpl {
 
         AtomicLong result = new AtomicLong();
 
-        fromBE.getCapability(CapabilityEnergy.ENERGY, fromSide).ifPresent(fromStorage -> toBE.getCapability(CapabilityEnergy.ENERGY, toSide).ifPresent(toStorage -> {
+        fromBE.getCapability(ForgeCapabilities.ENERGY, fromSide).ifPresent(fromStorage -> toBE.getCapability(ForgeCapabilities.ENERGY, toSide).ifPresent(toStorage -> {
             int maxExtracted = fromStorage.extractEnergy((int) maxAmount, true);
             long accepted = toStorage.receiveEnergy(maxExtracted, false);
             result.set(fromStorage.extractEnergy((int) accepted, false));
