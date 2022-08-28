@@ -110,6 +110,7 @@ remapJar {
     injectAccessWidener = true
     input.set shadowJar.archiveFile
     dependsOn shadowJar
+    classifier null
     archiveClassifier = 'fabric'
 }
 
@@ -133,7 +134,7 @@ components.java {
 publishing {
     publications {
         mavenFabric(MavenPublication) {
-            artifactId = rootProject.archives_base_name
+            artifactId = rootProject.archives_base_name + "-fabric"
             from components.java
         }
     }

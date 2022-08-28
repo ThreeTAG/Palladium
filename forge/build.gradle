@@ -92,6 +92,7 @@ sourceSets.main.resources {
 
 shadowJar {
     exclude "fabric.mod.json"
+    exclude "palladium.common.json"
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
@@ -100,6 +101,7 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
+    classifier null
     archiveClassifier = 'forge'
 }
 
@@ -134,7 +136,7 @@ components.java {
 publishing {
     publications {
         mavenForge(MavenPublication) {
-            artifactId = rootProject.archives_base_name
+            artifactId = rootProject.archives_base_name + "-forge"
             from components.java
         }
     }
@@ -149,5 +151,3 @@ publishing {
         }
     }
 }
-
-rootProject.tasks.getByName("curseforgePublish").dependsOn tasks.getByName("curseforge")

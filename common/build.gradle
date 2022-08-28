@@ -1,3 +1,11 @@
+architectury {
+    common(rootProject.enabled_platforms.split(","))
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/palladium.accessWidener")
+}
+
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
@@ -18,14 +26,6 @@ dependencies {
 
     // Forge Config API Port
     modCompileOnlyApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
-}
-
-loom {
-    accessWidenerPath = file("src/main/resources/palladium.accessWidener")
-}
-
-architectury {
-    common()
 }
 
 publishing {

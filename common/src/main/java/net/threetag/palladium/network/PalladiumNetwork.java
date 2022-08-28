@@ -18,7 +18,6 @@ public class PalladiumNetwork {
     public static final MessageType NOTIFY_JUMP_KEY_LISTENER = NETWORK.registerC2S("notify_jump_key_listener", NotifyJumpKeyListenerMessage::new);
     public static final MessageType SYNC_ACCESSORIES = NETWORK.registerS2C("sync_accessories", SyncAccessoriesMessage::new);
     public static final MessageType TOGGLE_ACCESSORY = NETWORK.registerC2S("toggle_accessory", ToggleAccessoryMessage::new);
-
     public static void init() {
 
     }
