@@ -7,14 +7,16 @@ import net.minecraft.world.level.block.Block;
 
 public class PoiTypeUtil {
 
-    public static PoiType fromBlock(String name, Block block, int maxTickets, int validRange) {
-        PoiType type = new PoiType(PoiTypes.getBlockStates(block), maxTickets, validRange);
+    public static PoiType fromBlock(Block block, int maxTickets, int validRange) {
+        var states = PoiTypes.getBlockStates(block);
+        PoiType type = new PoiType(states, maxTickets, validRange);
         PoiTypes.registerBlockStates(Holder.direct(type));
+        PoiTypes.ALL_STATES.addAll(states);
         return type;
     }
 
-    public static PoiType fromBlock(String name, Block block) {
-        return fromBlock(name, block, 1, 1);
+    public static PoiType fromBlock(Block block) {
+        return fromBlock(block, 1, 1);
     }
 
 }
