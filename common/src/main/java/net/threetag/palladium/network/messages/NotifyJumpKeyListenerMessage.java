@@ -1,9 +1,12 @@
-package net.threetag.palladium.network;
+package net.threetag.palladium.network.messages;
 
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.threetag.palladium.network.MessageType;
+import net.threetag.palladium.network.NetworkManager;
+import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.util.property.PalladiumProperties;
 
 public class NotifyJumpKeyListenerMessage extends BaseC2SMessage {

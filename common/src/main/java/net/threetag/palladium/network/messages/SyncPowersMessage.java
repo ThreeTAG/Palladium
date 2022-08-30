@@ -1,17 +1,17 @@
-package net.threetag.palladium.network;
+package net.threetag.palladium.network.messages;
 
-import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
-import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.network.MessageS2C;
+import net.threetag.palladium.network.MessageType;
+import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.ClientPowerManager;
 import net.threetag.palladium.power.Power;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SyncPowersMessage extends BaseS2CMessage {
+public class SyncPowersMessage extends MessageS2C {
 
     private final Map<ResourceLocation, Power> powers;
 
@@ -35,7 +35,7 @@ public class SyncPowersMessage extends BaseS2CMessage {
     }
 
     @Override
-    public void write(FriendlyByteBuf buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(this.powers.size());
         this.powers.forEach((id, power) -> {
             buf.writeResourceLocation(id);
@@ -44,7 +44,7 @@ public class SyncPowersMessage extends BaseS2CMessage {
     }
 
     @Override
-    public void handle(NetworkManager.PacketContext context) {
-        context.queue(() -> ClientPowerManager.updatePowers(this.powers));
+    public void handle() {
+        ClientPowerManager.updatePowers(this.powers);
     }
 }

@@ -1,4 +1,4 @@
-package net.threetag.palladium.network;
+package net.threetag.palladium.network.messages;
 
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
@@ -8,6 +8,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.network.MessageType;
+import net.threetag.palladium.network.NetworkManager;
+import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperty;
 

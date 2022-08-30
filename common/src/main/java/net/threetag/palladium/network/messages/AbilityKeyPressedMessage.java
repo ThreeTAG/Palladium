@@ -1,10 +1,13 @@
-package net.threetag.palladium.network;
+package net.threetag.palladium.network.messages;
 
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.network.MessageType;
+import net.threetag.palladium.network.NetworkManager;
+import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.PowerManager;

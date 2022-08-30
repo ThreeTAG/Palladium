@@ -3,10 +3,11 @@ package net.threetag.palladium.network;
 import dev.architectury.networking.simple.MessageType;
 import dev.architectury.networking.simple.SimpleNetworkManager;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.network.messages.*;
 
 public class PalladiumNetwork {
 
-    public static final SimpleNetworkManager NETWORK = SimpleNetworkManager.create(Palladium.MOD_ID);
+    public static final NetworkManager NETWORK = NetworkManager.create(Palladium.MOD_ID);
 
     public static final MessageType SYNC_POWERS = NETWORK.registerS2C("sync_powers", SyncPowersMessage::new);
     public static final MessageType ADD_POWER = NETWORK.registerS2C("add_power", AddPowerMessage::new);
