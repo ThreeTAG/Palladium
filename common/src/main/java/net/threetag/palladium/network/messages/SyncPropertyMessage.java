@@ -1,20 +1,18 @@
 package net.threetag.palladium.network.messages;
 
-import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
-import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.network.MessageContext;
+import net.threetag.palladium.network.MessageS2C;
 import net.threetag.palladium.network.MessageType;
-import net.threetag.palladium.network.NetworkManager;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperty;
 
-public class SyncPropertyMessage extends BaseS2CMessage {
+public class SyncPropertyMessage extends MessageS2C {
 
     private final int entityId;
     private final CompoundTag tag;
@@ -43,23 +41,21 @@ public class SyncPropertyMessage extends BaseS2CMessage {
     }
 
     @Override
-    public void write(FriendlyByteBuf buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(this.entityId);
         buf.writeNbt(this.tag);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public void handle(NetworkManager.PacketContext context) {
-        context.queue(() -> {
-            Entity entity = Minecraft.getInstance().level.getEntity(this.entityId);
-            if (entity != null) {
-                EntityPropertyHandler handler = EntityPropertyHandler.getHandler(entity);
-                for (String key : this.tag.getAllKeys()) {
-                    PalladiumProperty property = handler.getPropertyByName(key);
-                    handler.setRaw(property, property.fromNBT(this.tag.get(property.getKey()), handler.getDefault(property)));
-                }
+    public void handle(MessageContext context) {
+        Entity entity = Minecraft.getInstance().level.getEntity(this.entityId);
+        if (entity != null) {
+            EntityPropertyHandler handler = EntityPropertyHandler.getHandler(entity);
+            for (String key : this.tag.getAllKeys()) {
+                PalladiumProperty property = handler.getPropertyByName(key);
+                handler.setRaw(property, property.fromNBT(this.tag.get(property.getKey()), handler.getDefault(property)));
             }
-        });
+        }
     }
 }

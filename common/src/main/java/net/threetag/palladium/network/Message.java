@@ -11,6 +11,6 @@ public abstract class Message {
 
     public abstract void toBytes(FriendlyByteBuf buf);
 
-    public abstract void handle();
+    public abstract void handle(MessageContext context);
 
 }

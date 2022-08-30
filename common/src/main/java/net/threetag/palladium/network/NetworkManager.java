@@ -2,8 +2,10 @@ package net.threetag.palladium.network;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -26,7 +28,7 @@ public abstract class NetworkManager {
     }
 
     public MessageType registerS2C(String id, MessageDecoder<MessageS2C> decoder) {
-        var msgType = new MessageType(id, this, decoder, true);
+        var msgType = new MessageType(id, this, decoder, false);
         this.toClient.put(id, msgType);
         return msgType;
     }
@@ -47,6 +49,11 @@ public abstract class NetworkManager {
                 this.sendToPlayer((ServerPlayer) player, message);
             }
         }
+    }
+
+    @ExpectPlatform
+    public static Packet<?> createAddEntityPacket(Entity entity) {
+        throw new AssertionError();
     }
 
     @FunctionalInterface

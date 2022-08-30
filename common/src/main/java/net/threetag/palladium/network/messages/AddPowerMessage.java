@@ -1,17 +1,15 @@
 package net.threetag.palladium.network.messages;
 
-import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
-import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.network.MessageContext;
+import net.threetag.palladium.network.MessageS2C;
 import net.threetag.palladium.network.MessageType;
-import net.threetag.palladium.network.NetworkManager;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.PowerManager;
 
-public class AddPowerMessage extends BaseS2CMessage {
+public class AddPowerMessage extends MessageS2C {
 
     private final int entityId;
     private final ResourceLocation powerId;
@@ -32,17 +30,15 @@ public class AddPowerMessage extends BaseS2CMessage {
     }
 
     @Override
-    public void write(FriendlyByteBuf buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(this.entityId);
         buf.writeResourceLocation(this.powerId);
     }
 
     @Override
-    public void handle(NetworkManager.PacketContext context) {
-        context.queue(() -> {
-            if (context.getPlayer().level.getEntity(this.entityId) instanceof LivingEntity livingEntity) {
-                PowerManager.getPowerHandler(livingEntity).ifPresent(handler -> handler.addPower(PowerManager.getInstance(context.getPlayer().level).getPower(this.powerId)));
-            }
-        });
+    public void handle(MessageContext context) {
+        if (context.getPlayer().level.getEntity(this.entityId) instanceof LivingEntity livingEntity) {
+            PowerManager.getPowerHandler(livingEntity).ifPresent(handler -> handler.addPower(PowerManager.getInstance(context.getPlayer().level).getPower(this.powerId)));
+        }
     }
 }

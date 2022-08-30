@@ -4,13 +4,12 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.network.MessageC2S;
-import net.threetag.palladium.network.MessageS2C;
-import net.threetag.palladium.network.MessageType;
-import net.threetag.palladium.network.NetworkManager;
+import net.threetag.palladium.network.*;
 
 public class NetworkManagerImpl extends NetworkManager {
 
@@ -29,7 +28,7 @@ public class NetworkManagerImpl extends NetworkManager {
 
             MessageType type = this.toClient.get(msgId);
             MessageS2C message = (MessageS2C) type.getDecoder().decode(buf);
-            client.execute(message::handle);
+            client.execute(() -> message.handle(() -> null));
         });
 
         ServerPlayNetworking.registerGlobalReceiver(channelName, (server, player, handler, buf, responseSender) -> {
@@ -41,7 +40,7 @@ public class NetworkManagerImpl extends NetworkManager {
 
             MessageType type = this.toServer.get(msgId);
             MessageC2S message = (MessageC2S) type.getDecoder().decode(buf);
-            server.execute(message::handle);
+            server.execute(() -> message.handle(() -> player));
         });
     }
 
@@ -69,5 +68,9 @@ public class NetworkManagerImpl extends NetworkManager {
         buf.writeUtf(message.getType().getId());
         message.toBytes(buf);
         ServerPlayNetworking.send(player, this.channelName, buf);
+    }
+
+    public static Packet<?> createAddEntityPacket(Entity entity) {
+        return SpawnEntityPacket.create(entity);
     }
 }

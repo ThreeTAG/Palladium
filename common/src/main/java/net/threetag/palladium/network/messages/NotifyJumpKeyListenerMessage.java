@@ -1,15 +1,13 @@
 package net.threetag.palladium.network.messages;
 
-import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseC2SMessage;
-import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.threetag.palladium.network.MessageC2S;
+import net.threetag.palladium.network.MessageContext;
 import net.threetag.palladium.network.MessageType;
-import net.threetag.palladium.network.NetworkManager;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.util.property.PalladiumProperties;
 
-public class NotifyJumpKeyListenerMessage extends BaseC2SMessage {
+public class NotifyJumpKeyListenerMessage extends MessageC2S {
 
     private final boolean active;
 
@@ -27,12 +25,12 @@ public class NotifyJumpKeyListenerMessage extends BaseC2SMessage {
     }
 
     @Override
-    public void write(FriendlyByteBuf buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeBoolean(this.active);
     }
 
     @Override
-    public void handle(NetworkManager.PacketContext context) {
-        context.queue(() -> PalladiumProperties.JUMP_KEY_DOWN.set(context.getPlayer(), this.active));
+    public void handle(MessageContext context) {
+        PalladiumProperties.JUMP_KEY_DOWN.set(context.getPlayer(), this.active);
     }
 }

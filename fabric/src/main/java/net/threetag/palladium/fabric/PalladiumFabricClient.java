@@ -9,6 +9,7 @@ import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
+import net.threetag.palladium.network.fabric.SpawnEntityPacket;
 
 public class PalladiumFabricClient implements ClientModInitializer {
 
@@ -18,6 +19,7 @@ public class PalladiumFabricClient implements ClientModInitializer {
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, new PackRenderLayerManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, new ArmorModelManager());
         EntityRendererRegistry.register(PalladiumEntityTypes.EFFECT.get(), EffectEntityRenderer::new);
+        SpawnEntityPacket.Client.register();
     }
 
 }

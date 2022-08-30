@@ -1,15 +1,13 @@
 package net.threetag.palladium.network.messages;
 
-import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
-import dev.architectury.networking.simple.MessageType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.network.MessageContext;
+import net.threetag.palladium.network.MessageS2C;
 import net.threetag.palladium.network.MessageType;
-import net.threetag.palladium.network.NetworkManager;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
@@ -18,7 +16,7 @@ import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.PalladiumProperty;
 
-public class SyncAbilityEntryPropertyMessage extends BaseS2CMessage {
+public class SyncAbilityEntryPropertyMessage extends MessageS2C {
 
     private final int entityId;
     private final ResourceLocation powerId;
@@ -48,7 +46,7 @@ public class SyncAbilityEntryPropertyMessage extends BaseS2CMessage {
     }
 
     @Override
-    public void write(FriendlyByteBuf buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(this.entityId);
         buf.writeResourceLocation(this.powerId);
         buf.writeUtf(this.abilityId);
@@ -58,29 +56,27 @@ public class SyncAbilityEntryPropertyMessage extends BaseS2CMessage {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public void handle(NetworkManager.PacketContext context) {
-        context.queue(() -> {
-            Entity entity = context.getPlayer().level.getEntity(this.entityId);
-            if (entity instanceof LivingEntity livingEntity) {
-                IPowerHandler handler = PowerManager.getPowerHandler(livingEntity).orElse(null);
-                Power power = PowerManager.getInstance(context.getPlayer().level).getPower(this.powerId);
+    public void handle(MessageContext context) {
+        Entity entity = context.getPlayer().level.getEntity(this.entityId);
+        if (entity instanceof LivingEntity livingEntity) {
+            IPowerHandler handler = PowerManager.getPowerHandler(livingEntity).orElse(null);
+            Power power = PowerManager.getInstance(context.getPlayer().level).getPower(this.powerId);
 
-                if (power != null && handler != null) {
-                    IPowerHolder holder = handler.getPowerHolder(power);
+            if (power != null && handler != null) {
+                IPowerHolder holder = handler.getPowerHolder(power);
 
-                    if (holder != null) {
-                        AbilityEntry entry = holder.getAbilities().get(this.abilityId);
+                if (holder != null) {
+                    AbilityEntry entry = holder.getAbilities().get(this.abilityId);
 
-                        if (entry != null) {
-                            PalladiumProperty property = entry.getPropertyManager().getPropertyByName(this.propertyKey);
+                    if (entry != null) {
+                        PalladiumProperty property = entry.getPropertyManager().getPropertyByName(this.propertyKey);
 
-                            if (property != null) {
-                                entry.getPropertyManager().setRaw(property, property.fromNBT(this.tag.get(property.getKey()), entry.getPropertyManager().getDefault(property)));
-                            }
+                        if (property != null) {
+                            entry.getPropertyManager().setRaw(property, property.fromNBT(this.tag.get(property.getKey()), entry.getPropertyManager().getDefault(property)));
                         }
                     }
                 }
             }
-        });
+        }
     }
 }

@@ -1,12 +1,11 @@
 package net.threetag.palladium.network.forge;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
+import net.minecraft.world.entity.Entity;
+import net.minecraftforge.network.*;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.network.MessageC2S;
@@ -34,12 +33,26 @@ public class NetworkManagerImpl extends NetworkManager {
 
     @Override
     public void sendToServer(MessageC2S message) {
+        if (!this.toServer.containsValue(message.getType())) {
+            Palladium.LOGGER.warn("Message type not registered: " + message.getType().getId());
+            return;
+        }
+
         this.channel.sendToServer(new ToServer(message));
     }
 
     @Override
     public void sendToPlayer(ServerPlayer player, MessageS2C message) {
+        if (!this.toClient.containsValue(message.getType())) {
+            Palladium.LOGGER.warn("Message type not registered: " + message.getType().getId());
+            return;
+        }
+
         this.channel.send(PacketDistributor.PLAYER.with(() -> player), new ToClient(message));
+    }
+
+    public static Packet<?> createAddEntityPacket(Entity entity) {
+        return NetworkHooks.getEntitySpawningPacket(entity);
     }
 
     public class ToServer {
@@ -67,7 +80,7 @@ public class NetworkManagerImpl extends NetworkManager {
         }
 
         public static void handle(ToServer msg, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(msg.message::handle);
+            ctx.get().enqueueWork(() -> msg.message.handle(() -> ctx.get().getSender()));
             ctx.get().setPacketHandled(true);
         }
 
@@ -98,7 +111,7 @@ public class NetworkManagerImpl extends NetworkManager {
         }
 
         public static void handle(ToClient msg, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(msg.message::handle);
+            ctx.get().enqueueWork(() -> msg.message.handle(() -> null));
             ctx.get().setPacketHandled(true);
         }
 

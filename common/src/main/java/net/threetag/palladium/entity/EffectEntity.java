@@ -1,7 +1,5 @@
 package net.threetag.palladium.entity;
 
-import dev.architectury.extensions.network.EntitySpawnExtension;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
@@ -9,14 +7,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.threetag.palladium.Palladium;
-import net.threetag.palladium.entity.effect.EnergyBlastEffect;
 import net.threetag.palladium.entity.effect.EntityEffect;
+import net.threetag.palladium.network.ExtendedEntitySpawnData;
+import net.threetag.palladium.network.NetworkManager;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 
 import java.util.Objects;
 
-public class EffectEntity extends Entity implements EntitySpawnExtension {
+public class EffectEntity extends Entity implements ExtendedEntitySpawnData {
 
     public int anchorId;
     public Entity anchor;
