@@ -2,6 +2,7 @@ accessWidener v2 named
 
 transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes getBlockStates (Lnet/minecraft/world/level/block/Block;)Ljava/util/Set;
 transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes registerBlockStates (Lnet/minecraft/core/Holder;)V
+transitive-accessible field net/minecraft/world/entity/ai/village/poi/PoiTypes ALL_STATES Ljava/util/Set;
 
 transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen leftPos I
 transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen topPos I
