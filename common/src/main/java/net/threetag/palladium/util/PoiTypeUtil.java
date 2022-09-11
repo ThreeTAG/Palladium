@@ -1,5 +1,6 @@
 package net.threetag.palladium.util;
 
+import dev.architectury.platform.Platform;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.ai.village.poi.PoiTypes;
@@ -11,7 +12,11 @@ public class PoiTypeUtil {
         var states = PoiTypes.getBlockStates(block);
         PoiType type = new PoiType(states, maxTickets, validRange);
         PoiTypes.registerBlockStates(Holder.direct(type));
-        PoiTypes.ALL_STATES.addAll(states);
+
+        if(Platform.isFabric()) {
+            PoiTypes.ALL_STATES.addAll(states);
+        }
+
         return type;
     }
 
