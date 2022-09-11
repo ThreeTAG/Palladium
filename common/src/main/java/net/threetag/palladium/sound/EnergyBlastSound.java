@@ -1,6 +1,7 @@
 package net.threetag.palladium.sound;
 
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -16,7 +17,7 @@ public class EnergyBlastSound extends AbstractTickableSoundInstance {
     private final String abilityId;
 
     public EnergyBlastSound(SoundEvent soundEvent, SoundSource soundSource, LivingEntity entity, ResourceLocation powerId, String abilityId) {
-        super(soundEvent, soundSource);
+        super(soundEvent, soundSource, SoundInstance.createUnseededRandom());
         this.looping = true;
         this.entity = entity;
         this.powerId = powerId;

@@ -1,13 +1,27 @@
 {
   "parent": "minecraft:block/block",
-  "textures": {
-    "particle": "palladium:block/solar_panel_top",
-    "top": "palladium:block/solar_panel_top",
-    "side": "palladium:block/solar_panel_side",
-    "bottom": "palladium:block/solar_panel_bottom"
-  },
   "elements": [
     {
+      "faces": {
+        "down": {
+          "texture": "#bottom"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "up": {
+          "texture": "#top"
+        },
+        "west": {
+          "texture": "#side"
+        }
+      },
       "from": [
         0,
         0,
@@ -17,27 +31,13 @@
         16,
         3,
         16
-      ],
-      "faces": {
-        "down": {
-          "texture": "#bottom"
-        },
-        "up": {
-          "texture": "#top"
-        },
-        "north": {
-          "texture": "#side"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "textures": {
+    "bottom": "palladium:block/solar_panel_bottom",
+    "particle": "palladium:block/solar_panel_top",
+    "side": "palladium:block/solar_panel_side",
+    "top": "palladium:block/solar_panel_top"
+  }
 }

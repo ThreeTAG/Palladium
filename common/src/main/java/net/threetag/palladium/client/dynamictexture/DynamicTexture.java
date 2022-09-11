@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.client.dynamictexture.transformer.AlphaMaskTextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.OverlayTextureTransformer;
@@ -30,6 +31,7 @@ public abstract class DynamicTexture {
         registerTransformer(Palladium.id("overlay"), j -> new OverlayTextureTransformer(GsonHelper.getAsString(j, "overlay")));
 
         registerVariable(Palladium.id("entity_ticks"), EntityTicksTextureVariable::new);
+        registerVariable(Palladium.id("ability_ticks"), AbilityTicksTextureVariable::new);
         registerVariable(Palladium.id("entity_health"), EntityHealthTextureVariable::new);
         registerVariable(Palladium.id("ability_integer_property"), AbilityIntegerPropertyVariable::new);
         registerVariable(Palladium.id("small_arms"), SmallArmsTextureVariable::new);
@@ -52,7 +54,7 @@ public abstract class DynamicTexture {
             ResourceLocation typeId = GsonUtil.getAsResourceLocation(json, "type", new ResourceLocation(Palladium.MOD_ID, "default"));
 
             if (!TYPE_PARSERS.containsKey(typeId)) {
-                Palladium.LOGGER.error("Unknown dynamic texture type '" + typeId + "'");
+                AddonPackLog.error("Unknown dynamic texture type '" + typeId + "'");
                 return null;
             }
 
@@ -67,7 +69,7 @@ public abstract class DynamicTexture {
                         ITextureTransformer transformer = TRANSFORMER_PARSERS.get(transformerId).apply(transformerJson);
                         texture.transform(transformer);
                     } else {
-                        Palladium.LOGGER.error("Unknown texture transformer '" + transformerId + "'");
+                        AddonPackLog.error("Unknown texture transformer '" + transformerId + "'");
                     }
                 }
             }
@@ -82,7 +84,7 @@ public abstract class DynamicTexture {
                         ITextureVariable variable = VARIABLE_PARSERS.get(variableId).apply(variableJson);
                         texture.addVariable(entry.getKey(), variable);
                     } else {
-                        Palladium.LOGGER.error("Unknown texture variable '" + variableId + "'");
+                        AddonPackLog.error("Unknown texture variable '" + variableId + "'");
                     }
                 }
             }

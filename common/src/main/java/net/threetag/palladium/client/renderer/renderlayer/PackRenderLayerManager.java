@@ -14,6 +14,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.AddonParser;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.util.json.GsonUtil;
@@ -52,7 +53,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
                 IPackRenderLayer layer = parseLayer(GsonHelper.convertToJsonObject(jsonElement, "$"));
                 builder.put(resourceLocation, layer);
             } catch (Exception e) {
-                Palladium.LOGGER.error("Parsing error loading render layer {}", resourceLocation, e);
+                AddonPackLog.error("Parsing error loading render layer {}", resourceLocation, e);
             }
         });
 

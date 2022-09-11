@@ -98,6 +98,11 @@ allprojects {
         }
 
         maven {
+            name = "Fuzs Mod Resources"
+            url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+        }
+
+        maven {
             url 'https://repo.repsy.io/mvn/lucraft/threetag'
         }
     }
@@ -106,5 +111,3 @@ allprojects {
         withSourcesJar()
     }
 }
-
-task curseforgePublish

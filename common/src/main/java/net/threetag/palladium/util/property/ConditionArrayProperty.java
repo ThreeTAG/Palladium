@@ -15,17 +15,8 @@ public class ConditionArrayProperty extends PalladiumProperty<Condition[]> {
 
     @Override
     public Condition[] fromJSON(JsonElement jsonElement) {
-        if (jsonElement.isJsonObject()) {
-            return new Condition[]{ConditionSerializer.fromJSON(jsonElement.getAsJsonObject(), ConditionSerializer.CURRENT_CONTEXT)};
-        } else {
-            JsonArray jsonArray = jsonElement.getAsJsonArray();
-            Condition[] conditions = new Condition[jsonArray.size()];
-
-            for (int i = 0; i < jsonArray.size(); i++) {
-                conditions[i] = ConditionSerializer.fromJSON(jsonArray.get(i).getAsJsonObject(), ConditionSerializer.CURRENT_CONTEXT);
-            }
-            return conditions;
-        }
+        var conditions = ConditionSerializer.listFromJSON(jsonElement, ConditionSerializer.CURRENT_CONTEXT);
+        return conditions.toArray(new Condition[0]);
     }
 
     @Override

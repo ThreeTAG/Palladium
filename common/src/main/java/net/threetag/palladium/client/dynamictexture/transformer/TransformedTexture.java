@@ -30,7 +30,7 @@ public class TransformedTexture extends SimpleTexture {
             InputStream textureStream = null;
 
             try {
-                NativeImage image = NativeImage.read(textureStream = manager.getResource(location).getInputStream());
+                NativeImage image = NativeImage.read(textureStream = manager.getResource(location).get().open());
 
                 for (ITextureTransformer transformer : this.transformers) {
                     image = transformer.transform(image, manager, this.stringConverter);

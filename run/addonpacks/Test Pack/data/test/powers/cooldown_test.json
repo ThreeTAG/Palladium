@@ -9,7 +9,8 @@
         "enabling": [
           {
             "type": "palladium:action",
-            "cooldown": 100
+            "cooldown": 100,
+            "key_type": "left_click"
           }
         ]
       }
@@ -36,7 +37,8 @@
         "enabling": [
           {
             "type": "palladium:toggle",
-            "cooldown": 100
+            "cooldown": 100,
+            "key_type": "space_bar"
           }
         ]
       }
@@ -49,7 +51,8 @@
         "enabling": [
           {
             "type": "palladium:held",
-            "cooldown": 100
+            "cooldown": 100,
+            "key_type": "right_click"
           }
         ]
       }

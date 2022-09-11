@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
-import dev.architectury.core.RegistryEntry;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
 import net.minecraft.core.Registry;
@@ -23,7 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public abstract class IconSerializer<T extends IIcon> extends RegistryEntry<IconSerializer<T>> implements IDocumentedConfigurable {
+public abstract class IconSerializer<T extends IIcon> implements IDocumentedConfigurable {
 
     public static final ResourceKey<Registry<IconSerializer<?>>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "icon_serializers"));
     public static final Registrar<IconSerializer<?>> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new IconSerializer<?>[0]).build();

@@ -5,11 +5,12 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.server.packs.PackType;
 import net.threetag.palladium.PalladiumClient;
+import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.client.model.ArmorModelManager;
+import net.threetag.palladium.client.renderer.entity.CustomProjectileRenderer;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
-import net.threetag.palladium.network.fabric.SpawnEntityPacket;
 
 public class PalladiumFabricClient implements ClientModInitializer {
 
@@ -18,8 +19,9 @@ public class PalladiumFabricClient implements ClientModInitializer {
         PalladiumClient.init();
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, new PackRenderLayerManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, new ArmorModelManager());
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, new Accessory.ReloadManager());
         EntityRendererRegistry.register(PalladiumEntityTypes.EFFECT.get(), EffectEntityRenderer::new);
-        SpawnEntityPacket.Client.register();
+        EntityRendererRegistry.register(PalladiumEntityTypes.CUSTOM_PROJECTILE.get(), CustomProjectileRenderer::new);
     }
 
 }

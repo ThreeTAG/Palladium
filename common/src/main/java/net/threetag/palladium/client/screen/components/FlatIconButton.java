@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.util.icon.IIcon;
@@ -17,7 +17,7 @@ public class FlatIconButton extends Button {
     private final IIcon icon;
 
     public FlatIconButton(int xPos, int yPos, IIcon icon, Button.OnPress handler) {
-        super(xPos, yPos, 20, 20, new TextComponent(""), handler);
+        super(xPos, yPos, 20, 20, Component.literal(""), handler);
         this.icon = icon;
     }
 

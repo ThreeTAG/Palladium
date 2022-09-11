@@ -11,7 +11,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,7 +32,7 @@ public class SuperpowerCommand {
     };
 
     public static final DynamicCommandExceptionType POWER_NOT_FOUND = new DynamicCommandExceptionType((object) -> {
-        return new TranslatableComponent("commands.superpower.error.powerNotFound", object);
+        return Component.translatable("commands.superpower.error.powerNotFound", object);
     });
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -74,14 +74,14 @@ public class SuperpowerCommand {
                 PalladiumProperties.SUPERPOWER_ID.set(entity, superpower.getId());
                 i++;
             } else {
-                commandSource.sendFailure(new TranslatableComponent("commands.superpower.error.noLivingEntity"));
+                commandSource.sendFailure(Component.translatable("commands.superpower.error.noLivingEntity"));
             }
         }
 
         if (i == 1) {
-            commandSource.sendSuccess(new TranslatableComponent("commands.superpower.success.entity.single", (entities.iterator().next()).getDisplayName(), superpower.getName()), true);
+            commandSource.sendSuccess(Component.translatable("commands.superpower.success.entity.single", (entities.iterator().next()).getDisplayName(), superpower.getName()), true);
         } else {
-            commandSource.sendSuccess(new TranslatableComponent("commands.superpower.success.entity.multiple", i, superpower.getName()), true);
+            commandSource.sendSuccess(Component.translatable("commands.superpower.success.entity.multiple", i, superpower.getName()), true);
         }
 
         return i;
@@ -98,15 +98,15 @@ public class SuperpowerCommand {
                 PalladiumProperties.SUPERPOWER_ID.set(entity, null);
                 i++;
             } else {
-                commandSource.sendFailure(new TranslatableComponent("commands.superpower.error.noLivingEntity"));
+                commandSource.sendFailure(Component.translatable("commands.superpower.error.noLivingEntity"));
             }
         }
 
         if (!no) {
             if (i == 1) {
-                commandSource.sendSuccess(new TranslatableComponent("commands.superpower.remove.success.entity.single", (entities.iterator().next()).getDisplayName()), true);
+                commandSource.sendSuccess(Component.translatable("commands.superpower.remove.success.entity.single", (entities.iterator().next()).getDisplayName()), true);
             } else {
-                commandSource.sendSuccess(new TranslatableComponent("commands.superpower.remove.success.entity.multiple", i), true);
+                commandSource.sendSuccess(Component.translatable("commands.superpower.remove.success.entity.multiple", i), true);
             }
         }
 

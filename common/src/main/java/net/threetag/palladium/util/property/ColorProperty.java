@@ -51,7 +51,7 @@ public class ColorProperty extends PalladiumProperty<Color> {
     @Override
     public Color fromNBT(Tag tag, Color defaultValue) {
         if (tag instanceof CompoundTag compoundTag) {
-            new Color(compoundTag.getInt("Red"), compoundTag.getInt("Green"), compoundTag.getInt("Blue"), compoundTag.getInt("Alpha"));
+            return new Color(compoundTag.getInt("Red"), compoundTag.getInt("Green"), compoundTag.getInt("Blue"), compoundTag.getInt("Alpha"));
         }
         return defaultValue;
     }

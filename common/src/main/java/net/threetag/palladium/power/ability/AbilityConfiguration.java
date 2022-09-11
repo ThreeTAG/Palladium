@@ -1,15 +1,13 @@
 package net.threetag.palladium.power.ability;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionContextType;
 import net.threetag.palladium.condition.ConditionSerializer;
@@ -30,6 +28,7 @@ public class AbilityConfiguration {
     private final List<Condition> enablingConditions = new ArrayList<>();
     private CooldownType cooldownType = CooldownType.STATIC;
     private boolean needsKey = false;
+    private KeyType keyType = KeyType.KEY_BIND;
     public List<String> dependencies = new ArrayList<>();
 
     public AbilityConfiguration(String id, Ability ability) {
@@ -49,7 +48,7 @@ public class AbilityConfiguration {
     public Component getDisplayName() {
         Component title = this.propertyManager.get(Ability.TITLE);
         ResourceLocation id = Ability.REGISTRY.getId(this.getAbility());
-        return title != null ? title : new TranslatableComponent("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath());
+        return title != null ? title : Component.translatable("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath());
     }
 
     public <T> AbilityConfiguration set(PalladiumProperty<T> data, T value) {
@@ -82,7 +81,11 @@ public class AbilityConfiguration {
     }
 
     public boolean needsKey() {
-        return needsKey;
+        return this.needsKey;
+    }
+
+    public KeyType getKeyType() {
+        return this.keyType;
     }
 
     public void toBuffer(FriendlyByteBuf buf) {
@@ -90,6 +93,7 @@ public class AbilityConfiguration {
         buf.writeResourceLocation(Objects.requireNonNull(Ability.REGISTRY.getId(this.ability)));
         this.propertyManager.toBuffer(buf);
         buf.writeBoolean(this.needsKey);
+        buf.writeInt(this.keyType.ordinal());
         buf.writeInt(this.cooldownType.ordinal());
         buf.writeInt(this.dependencies.size());
         for (String s : this.dependencies) {
@@ -103,6 +107,7 @@ public class AbilityConfiguration {
         AbilityConfiguration configuration = new AbilityConfiguration(id, Objects.requireNonNull(ability));
         configuration.propertyManager.fromBuffer(buf);
         configuration.needsKey = buf.readBoolean();
+        configuration.keyType = KeyType.values()[buf.readInt()];
         configuration.cooldownType = CooldownType.values()[buf.readInt()];
         int keys = buf.readInt();
         for (int i = 0; i < keys; i++) {
@@ -117,7 +122,7 @@ public class AbilityConfiguration {
         if (ability == null) {
             if (GsonHelper.isValidNode(json, "ability")) {
                 ability = Ability.REGISTRY.get(new ResourceLocation(GsonHelper.getAsString(json, "ability")));
-                Palladium.LOGGER.warn("Usage of 'ability' in ability declarations is deprecated!");
+                AddonPackLog.warning("Usage of 'ability' in ability declarations is deprecated!");
 
                 if (ability == null) {
                     throw new JsonParseException("Ability '" + GsonHelper.getAsString(json, "ability") + "' does not exist!");
@@ -131,23 +136,18 @@ public class AbilityConfiguration {
         configuration.propertyManager.fromJSON(json);
 
         if (GsonHelper.isValidNode(json, "conditions")) {
+            ConditionSerializer.CURRENT_CONTEXT = ConditionContextType.ABILITIES;
             JsonObject conditions = GsonHelper.getAsJsonObject(json, "conditions");
             boolean withKey = false;
             CooldownType cooldownType = null;
 
             if (GsonHelper.isValidNode(conditions, "unlocking")) {
-                JsonArray unlocking = GsonHelper.getAsJsonArray(conditions, "unlocking");
+                JsonElement condJson = conditions.get("unlocking");
+                var condList = ConditionSerializer.listFromJSON(condJson, ConditionContextType.ABILITIES);
 
-                for (JsonElement jsonElement : unlocking) {
-                    JsonObject c = jsonElement.getAsJsonObject();
-                    ConditionSerializer.CURRENT_CONTEXT = ConditionContextType.ABILITIES;
-                    Condition condition = ConditionSerializer.fromJSON(c, ConditionContextType.ABILITIES);
-
+                for (Condition condition : condList) {
                     if (condition.needsKey()) {
-                        if (withKey) {
-                            throw new JsonParseException("Can't have two key binding conditions on one ability!");
-                        }
-                        withKey = true;
+                        throw new JsonParseException("Can't have key binding conditions for unlocking!");
                     }
 
                     if (condition.handlesCooldown()) {
@@ -164,18 +164,16 @@ public class AbilityConfiguration {
             }
 
             if (GsonHelper.isValidNode(conditions, "enabling")) {
-                JsonArray enabling = GsonHelper.getAsJsonArray(conditions, "enabling");
+                JsonElement condJson = conditions.get("enabling");
+                var condList = ConditionSerializer.listFromJSON(condJson, ConditionContextType.ABILITIES);
 
-                for (JsonElement jsonElement : enabling) {
-                    JsonObject c = jsonElement.getAsJsonObject();
-                    ConditionSerializer.CURRENT_CONTEXT = ConditionContextType.ABILITIES;
-                    Condition condition = ConditionSerializer.fromJSON(c, ConditionContextType.ABILITIES);
-
+                for (Condition condition : condList) {
                     if (condition.needsKey()) {
                         if (withKey) {
                             throw new JsonParseException("Can't have two key binding conditions on one ability!");
                         }
                         withKey = true;
+                        configuration.keyType = condition.getKeyType();
                     }
 
                     if (condition.handlesCooldown()) {
@@ -198,6 +196,17 @@ public class AbilityConfiguration {
             configuration.cooldownType = cooldownType == null ? CooldownType.STATIC : cooldownType;
         }
 
+        ability.postParsing(configuration);
+
         return configuration;
+    }
+
+    public enum KeyType {
+
+        KEY_BIND,
+        LEFT_CLICK,
+        RIGHT_CLICK,
+        SPACE_BAR;
+
     }
 }

@@ -6,21 +6,27 @@ import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
+import net.threetag.palladium.PalladiumConfig;
+import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.forge.AddonPackType;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.model.EntityModelManager;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
+import net.threetag.palladium.compat.curios.forge.CuriosCompat;
 import net.threetag.palladium.data.forge.*;
 import net.threetag.palladium.mixin.ReloadableResourceManagerMixin;
 
@@ -34,7 +40,11 @@ public class PalladiumForge {
         AddonPackType.init();
         EventBuses.registerModEventBus(Palladium.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         Palladium.init();
-        PalladiumConfigImpl.init();
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PalladiumConfig.Client.generateConfig());
+
+        if (ModList.get().isLoaded("curios")) {
+            CuriosCompat.init();
+        }
     }
 
     @SubscribeEvent
@@ -51,6 +61,7 @@ public class PalladiumForge {
     public static void reloadRegisterClient(RegisterClientReloadListenersEvent e) {
         e.registerReloadListener(new PackRenderLayerManager());
         e.registerReloadListener(new ArmorModelManager());
+        e.registerReloadListener(new Accessory.ReloadManager());
     }
 
     @SubscribeEvent
@@ -58,17 +69,17 @@ public class PalladiumForge {
         Palladium.generateDocumentation();
 
         PalladiumBlockTagsProvider blockTagsProvider = new PalladiumBlockTagsProvider(e.getGenerator(), e.getExistingFileHelper());
-        e.getGenerator().addProvider(blockTagsProvider);
-        e.getGenerator().addProvider(new PalladiumItemTagsProvider(e.getGenerator(), blockTagsProvider, e.getExistingFileHelper()));
-        e.getGenerator().addProvider(new PalladiumRecipeProvider(e.getGenerator()));
-        e.getGenerator().addProvider(new PalladiumLootTableProvider(e.getGenerator()));
-        e.getGenerator().addProvider(new PalladiumBlockModelProvider(e.getGenerator(), e.getExistingFileHelper()));
-        e.getGenerator().addProvider(new PalladiumBlockStateProvider(e.getGenerator(), e.getExistingFileHelper()));
-        e.getGenerator().addProvider(new PalladiumItemModelProvider(e.getGenerator(), e.getExistingFileHelper()));
-        e.getGenerator().addProvider(new PalladiumSoundDefinitionsProvider(e.getGenerator(), e.getExistingFileHelper()));
-        e.getGenerator().addProvider(new PalladiumLangProvider.English(e.getGenerator()));
-        e.getGenerator().addProvider(new PalladiumLangProvider.German(e.getGenerator()));
-        e.getGenerator().addProvider(new PalladiumLangProvider.Saxon(e.getGenerator()));
+        e.getGenerator().addProvider(e.includeServer(), blockTagsProvider);
+        e.getGenerator().addProvider(e.includeServer(), new PalladiumItemTagsProvider(e.getGenerator(), blockTagsProvider, e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeServer(), new PalladiumRecipeProvider(e.getGenerator()));
+        e.getGenerator().addProvider(e.includeServer(), new PalladiumLootTableProvider(e.getGenerator()));
+
+        e.getGenerator().addProvider(e.includeClient(), new PalladiumBlockStateProvider(e.getGenerator(), e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeClient(), new PalladiumItemModelProvider(e.getGenerator(), e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeClient(), new PalladiumSoundDefinitionsProvider(e.getGenerator(), e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeClient(), new PalladiumLangProvider.English(e.getGenerator()));
+        e.getGenerator().addProvider(e.includeClient(), new PalladiumLangProvider.German(e.getGenerator()));
+        e.getGenerator().addProvider(e.includeClient(), new PalladiumLangProvider.Saxon(e.getGenerator()));
     }
 
     @SubscribeEvent

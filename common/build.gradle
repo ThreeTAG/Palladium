@@ -1,20 +1,33 @@
-dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    modApi "net.threetag:PalladiumCore:${rootProject.palladiumcore_version}"
-    modImplementation("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}", {
-        exclude group: "dev.architectury"
-    })
-    modCompileOnly("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {
-        exclude group: "net.fabricmc.fabric-api"
-    })
+architectury {
+    common(rootProject.enabled_platforms.split(","))
 }
 
 loom {
     accessWidenerPath = file("src/main/resources/palladium.accessWidener")
 }
 
-architectury {
-    common()
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    modApi "net.threetag:PalladiumCore:${rootProject.palladiumcore_version}"
+
+    // KubeJS
+    modCompileOnly("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}", {
+        exclude group: "dev.architectury"
+    })
+
+    // Pehkui
+    modCompileOnly("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {
+        exclude group: "net.fabricmc.fabric-api"
+    })
+
+    // JEI
+    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}"
+
+    // REI
+    modCompileOnlyApi "me.shedaniel:RoughlyEnoughItems-api:${rootProject.rei_version}"
+
+    // Forge Config API Port
+    modCompileOnlyApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
 }
 
 publishing {

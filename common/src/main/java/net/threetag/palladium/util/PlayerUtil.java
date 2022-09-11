@@ -40,7 +40,7 @@ public class PlayerUtil {
 
     public static void playSound(Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch) {
         if (player instanceof ServerPlayer) {
-            ((ServerPlayer) player).connection.send(new ClientboundCustomSoundPacket(Objects.requireNonNull(Registry.SOUND_EVENT.getKey(sound)), category, new Vec3(x, y, z), volume, pitch));
+            ((ServerPlayer) player).connection.send(new ClientboundCustomSoundPacket(Objects.requireNonNull(Registry.SOUND_EVENT.getKey(sound)), category, new Vec3(x, y, z), volume, pitch, player.getRandom().nextLong()));
         }
     }
 

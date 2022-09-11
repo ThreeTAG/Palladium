@@ -5,8 +5,11 @@ import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.threetag.palladium.Palladium;
@@ -42,6 +45,45 @@ public class ItemParser extends AddonParser<Item> {
                 .tooltipLines(GsonUtil.getAsComponentList(json, "tooltip", null));
 
         GsonUtil.ifHasKey(json, "attribute_modifiers", je -> parseAttributeModifiers(builder, je));
+
+        GsonUtil.ifHasObject(json, "food", foodJson -> {
+            FoodProperties.Builder properties = new FoodProperties.Builder();
+
+            GsonUtil.ifHasKey(foodJson, "nutrition", el -> properties.nutrition(GsonHelper.convertToInt(el, "$.food.nutrition")));
+            GsonUtil.ifHasKey(foodJson, "saturation_modifier", el -> properties.saturationMod(GsonHelper.convertToFloat(el, "$.food.saturation_modifier")));
+
+            if (GsonHelper.getAsBoolean(foodJson, "meat", false)) {
+                properties.meat();
+            }
+
+            if (GsonHelper.getAsBoolean(foodJson, "can_always_eat", false)) {
+                properties.alwaysEat();
+            }
+
+            if (GsonHelper.getAsBoolean(foodJson, "fast", false)) {
+                properties.fast();
+            }
+
+            GsonUtil.ifHasArray(foodJson, "effects", effectEl -> {
+                JsonObject effect = GsonHelper.convertToJsonObject(effectEl, "$.food.effects");
+                ResourceLocation mobEffect = GsonUtil.getAsResourceLocation(effect, "mob_effect");
+
+                if (!Registry.MOB_EFFECT.containsKey(mobEffect)) {
+                    throw new JsonParseException("Mob effect type '" + mobEffect.toString() + "' does not exist");
+                }
+
+                int duration = GsonHelper.getAsInt(effect, "duration", 0);
+                int amplifier = GsonHelper.getAsInt(effect, "amplifier", 0);
+                boolean ambient = GsonHelper.getAsBoolean(effect, "ambient", false);
+                boolean visible = GsonHelper.getAsBoolean(effect, "visible", true);
+                boolean showIcon = GsonHelper.getAsBoolean(effect, "show_icon", true);
+                float probability = GsonHelper.getAsFloat(effect, "probability", 1F);
+
+                properties.effect(new MobEffectInstance(Objects.requireNonNull(Registry.MOB_EFFECT.get(mobEffect)), duration, amplifier, ambient, visible, showIcon), probability);
+            });
+
+            builder.food(properties.build());
+        });
 
         return builder;
     }
@@ -165,6 +207,29 @@ public class ItemParser extends AddonParser<Item> {
                 .description("Attribute modifiers when having the item equipped. You first specify the slot (\"all\" for every slot, other options: " + Arrays.toString(Arrays.stream(EquipmentSlot.values()).map(EquipmentSlot::getName).toArray()) + "), then an array for different modifiers. Possible attributes: " + Arrays.toString(Registry.ATTRIBUTE.stream().map(attribute -> Objects.requireNonNull(Registry.ATTRIBUTE.getKey(attribute)).toString()).toArray()))
                 .fallback(null)
                 .exampleJson(attributeModifiers);
+
+        JsonObject foodExample = new JsonObject();
+        foodExample.addProperty("nutrition", 5);
+        foodExample.addProperty("saturation_modifier", 0.6F);
+        foodExample.addProperty("meat", false);
+        foodExample.addProperty("can_always_eat", false);
+        foodExample.addProperty("fast", false);
+        JsonArray effectsExample = new JsonArray();
+        JsonObject effectExample = new JsonObject();
+        effectExample.addProperty("mob_effect", Objects.requireNonNull(Registry.MOB_EFFECT.getKey(MobEffects.DAMAGE_BOOST)).toString());
+        effectExample.addProperty("duration", 40);
+        effectExample.addProperty("amplifier", 1);
+        effectExample.addProperty("ambient", false);
+        effectExample.addProperty("visible", true);
+        effectExample.addProperty("show_icon", true);
+        effectExample.addProperty("probability", 1F);
+        effectsExample.add(effectExample);
+        foodExample.add("effects", effectsExample);
+
+        builder.addProperty("food", FoodProperties.class)
+                .description("Settings to make this item edible. The only required field in this json part is the mob_effect IF you add any effect")
+                .fallback(null)
+                .exampleJson(foodExample);
 
         return builder;
     }

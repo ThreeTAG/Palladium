@@ -1,6 +1,5 @@
 package net.threetag.palladium.item;
 
-import dev.architectury.core.RegistryEntry;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
 import net.minecraft.core.Registry;
@@ -14,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public class SuitSet extends RegistryEntry<SuitSet> {
+public class SuitSet {
 
     public static final ResourceKey<Registry<SuitSet>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "suit_sets"));
     public static final Registrar<SuitSet> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new SuitSet[0]).build();

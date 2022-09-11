@@ -1,13 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "palladium:titanium_ingot_from_blasting_titanium_ore"
-    ]
-  },
   "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "palladium:titanium_ingot_from_blasting_titanium_ore"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
     "has_titanium_ore": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -16,13 +16,8 @@
             ]
           }
         ]
-      }
-    },
-    "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
-      "conditions": {
-        "recipe": "palladium:titanium_ingot_from_blasting_titanium_ore"
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
@@ -30,5 +25,10 @@
       "has_titanium_ore",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "palladium:titanium_ingot_from_blasting_titanium_ore"
+    ]
+  }
 }

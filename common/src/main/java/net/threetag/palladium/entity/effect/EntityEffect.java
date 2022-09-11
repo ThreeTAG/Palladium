@@ -1,7 +1,6 @@
 package net.threetag.palladium.entity.effect;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.architectury.core.RegistryEntry;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
 import net.fabricmc.api.EnvType;
@@ -20,7 +19,7 @@ import net.threetag.palladium.util.property.PropertyManager;
 
 import java.util.function.Predicate;
 
-public abstract class EntityEffect extends RegistryEntry<EntityEffect> {
+public abstract class EntityEffect {
 
     public static final ResourceKey<Registry<EntityEffect>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "entity_effects"));
     public static final Registrar<EntityEffect> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new EntityEffect[0]).build();

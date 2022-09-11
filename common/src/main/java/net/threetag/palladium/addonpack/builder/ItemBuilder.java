@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -35,6 +36,7 @@ public class ItemBuilder extends AddonBuilder<Item> {
     private Rarity rarity = null;
     private List<Component> tooltipLines = null;
     private Map<EquipmentSlot, Multimap<ResourceLocation, AttributeModifier>> attributeModifiers;
+    private FoodProperties foodProperties = null;
 
     public ItemBuilder(ResourceLocation id, JsonObject json) {
         super(id);
@@ -45,18 +47,26 @@ public class ItemBuilder extends AddonBuilder<Item> {
     protected Item create() {
         var properties = new Item.Properties();
 
-        Utils.ifNotNull(this.maxDamage, properties::durability);
-        Utils.ifNotNull(this.maxStackSize, properties::stacksTo);
+        if (this.maxDamage != null && this.maxDamage != 0) {
+            Utils.ifNotNull(this.maxDamage, properties::durability);
+        }
+
+        if (this.maxStackSize != null && this.maxStackSize != 64) {
+            Utils.ifNotNull(this.maxStackSize, properties::stacksTo);
+        }
+
         Utils.ifNotNull(this.rarity, properties::rarity);
         Utils.ifNotNull(this.rarity, properties::rarity);
         Utils.ifTrue(this.isFireResistant, properties::fireResistant);
 
-        if(this.creativeModeTab != null) {
+        if (this.creativeModeTab != null) {
             CreativeModeTab tab = PalladiumCreativeModeTabs.getTab(this.creativeModeTab);
             if (tab != null) {
                 properties.tab(tab);
             }
         }
+
+        properties.food(this.foodProperties);
 
         IAddonItem item = this.typeSerializer != null ? this.typeSerializer.parse(this.json, properties) : new AddonItem(properties);
 
@@ -122,6 +132,11 @@ public class ItemBuilder extends AddonBuilder<Item> {
         }
 
         this.attributeModifiers.computeIfAbsent(slot, equipmentSlot -> ArrayListMultimap.create()).put(attributeId, modifier);
+        return this;
+    }
+
+    public ItemBuilder food(FoodProperties foodProperties) {
+        this.foodProperties = foodProperties;
         return this;
     }
 

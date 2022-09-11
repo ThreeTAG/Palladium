@@ -284,6 +284,16 @@ public class GsonUtil {
         }
     }
 
+    public static void ifHasArray(JsonObject json, String memberName, Consumer<JsonElement> consumer) {
+        if (GsonHelper.isValidNode(json, memberName)) {
+            JsonArray array = GsonHelper.getAsJsonArray(json, memberName);
+
+            for (JsonElement jsonElement : array) {
+                consumer.accept(jsonElement);
+            }
+        }
+    }
+
     public static JsonObject merge(JsonObject json1, JsonObject json2) {
         JsonObject json = GsonHelper.parse(json1.toString()); // copy
 

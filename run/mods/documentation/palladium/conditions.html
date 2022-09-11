@@ -32,71 +32,79 @@ Palladium</h3>
 <ul>
 <li>
 <a href="#palladium:ability_enabled">
-palladium:ability_enabled</a>
+ability_enabled</a>
 </li>
 <li>
 <a href="#palladium:ability_integer_property">
-palladium:ability_integer_property</a>
+ability_integer_property</a>
+</li>
+<li>
+<a href="#palladium:ability_ticks">
+ability_ticks</a>
 </li>
 <li>
 <a href="#palladium:ability_unlocked">
-palladium:ability_unlocked</a>
+ability_unlocked</a>
 </li>
 <li>
 <a href="#palladium:action">
-palladium:action</a>
+action</a>
 </li>
 <li>
 <a href="#palladium:activation">
-palladium:activation</a>
+activation</a>
 </li>
 <li>
 <a href="#palladium:crouching">
-palladium:crouching</a>
+crouching</a>
 </li>
 <li>
 <a href="#palladium:has_power">
-palladium:has_power</a>
+has_power</a>
 </li>
 <li>
 <a href="#palladium:health">
-palladium:health</a>
+health</a>
 </li>
 <li>
 <a href="#palladium:held">
-palladium:held</a>
+held</a>
+</li>
+<li>
+<a href="#palladium:item_in_slot">
+item_in_slot</a>
 </li>
 <li>
 <a href="#palladium:mod_loaded">
-palladium:mod_loaded</a>
+mod_loaded</a>
 </li>
 <li>
 <a href="#palladium:moon_phase">
-palladium:moon_phase</a>
+moon_phase</a>
 </li>
 <li>
 <a href="#palladium:not">
-palladium:not</a>
+not</a>
 </li>
 <li>
 <a href="#palladium:objective_score">
-palladium:objective_score</a>
+objective_score</a>
 </li>
 <li>
 <a href="#palladium:or">
-palladium:or</a>
+or</a>
 </li>
 <li>
 <a href="#palladium:pose">
-palladium:pose</a>
+pose</a>
 </li>
 <li>
 <a href="#palladium:toggle">
-palladium:toggle</a>
+toggle</a>
 </li>
 <li>
 <a href="#palladium:wears_suit_set">
-palladium:wears_suit_set</a>
+wears_suit_set</a>
 </li>
 </ul>
 </p>
@@ -104,7 +112,7 @@ palladium:wears_suit_set</a>
 
 <div id="palladium:ability_enabled">
 <h2>
-palladium:ability_enabled</h2>
+ability_enabled</h2>
 <p>
 Applicable for: all</p>
 <h3>
@@ -160,7 +168,7 @@ Example:</h3>
 
 <div id="palladium:ability_integer_property">
 <h2>
-palladium:ability_integer_property</h2>
+ability_integer_property</h2>
 <p>
 Applicable for: all</p>
 <h3>
@@ -223,7 +231,7 @@ min</td>
 <td>
 Integer</td>
 <td>
-Minimum required amount of health</td>
+Minimum required amount of the property value</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -235,7 +243,7 @@ max</td>
 <td>
 Integer</td>
 <td>
-Maximum required amount of health</td>
+Maximum required amount of the property value</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -250,9 +258,89 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:ability_ticks">
+<h2>
+ability_ticks</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+power</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the power where is the desired ability is located. Can be null IF used for abilities, then it will look into the current power</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+ability</td>
+<td>
+String</td>
+<td>
+ID of the desired ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ability_id</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Minimum required amount of enabled ticks</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Maximum required amount of enabled ticks</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_ticks","power":"null","ability":"ability_id","min":0,"max":0}</pre>
+</div>
+<hr>
+
 <div id="palladium:ability_unlocked">
 <h2>
-palladium:ability_unlocked</h2>
+ability_unlocked</h2>
 <p>
 Applicable for: all</p>
 <h3>
@@ -308,7 +396,7 @@ Example:</h3>
 
 <div id="palladium:action">
 <h2>
-palladium:action</h2>
+action</h2>
 <p>
 Applicable for: abilities</p>
 <h3>
@@ -341,18 +429,30 @@ false</td>
 <td>
 0</td>
 </tr>
+<tr>
+<td>
+key_type</td>
+<td>
+KeyType</td>
+<td>
+The type of key that needs to be pressed. Possible values: [key_bind, left_click, right_click, space_bar]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+KEY_BIND</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:action","cooldown":0}</pre>
+{"type":"palladium:action","cooldown":0,"key_type":"key_bind"}</pre>
 </div>
 <hr>
 
 <div id="palladium:activation">
 <h2>
-palladium:activation</h2>
+activation</h2>
 <p>
 Applicable for: abilities</p>
 <h3>
@@ -397,18 +497,30 @@ false</td>
 <td>
 60</td>
 </tr>
+<tr>
+<td>
+key_type</td>
+<td>
+KeyType</td>
+<td>
+The type of key that needs to be pressed. Possible values: [key_bind, left_click, right_click, space_bar]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+KEY_BIND</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:activation","cooldown":0,"ticks":60}</pre>
+{"type":"palladium:activation","cooldown":0,"ticks":60,"key_type":"key_bind"}</pre>
 </div>
 <hr>
 
 <div id="palladium:crouching">
 <h2>
-palladium:crouching</h2>
+crouching</h2>
 <p>
 Applicable for: all</p>
 <h3>
@@ -420,7 +532,7 @@ Example:</h3>
 
 <div id="palladium:has_power">
 <h2>
-palladium:has_power</h2>
+has_power</h2>
 <p>
 Applicable for: all</p>
 <h3>
@@ -464,7 +576,7 @@ Example:</h3>
 
 <div id="palladium:health">
 <h2>
-palladium:health</h2>
+health</h2>
 <p>
 Applicable for: all</p>
 <h3>
@@ -520,7 +632,7 @@ Example:</h3>
 
 <div id="palladium:held">
 <h2>
-palladium:held</h2>
+held</h2>
 <p>
 Applicable for: abilities</p>
 <h3>
@@ -553,18 +665,86 @@ false</td>
 <td>
 0</td>
 </tr>
+<tr>
+<td>
+key_type</td>
+<td>
+KeyType</td>
+<td>
+The type of key that needs to be pressed. Possible values: [key_bind, left_click, right_click, space_bar]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+KEY_BIND</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:held","cooldown":0}</pre>
+{"type":"palladium:held","cooldown":0,"key_type":"key_bind"}</pre>
+</div>
+<hr>
+
+<div id="palladium:item_in_slot">
+<h2>
+item_in_slot</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+item</td>
+<td>
+Ingredient</td>
+<td>
+Item (defined as an ingredient) that must be in the given slot</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+net.minecraft.world.item.crafting.Ingredient@64f9ad2e</td>
+</tr>
+<tr>
+<td>
+slot</td>
+<td>
+EquipmentSlot</td>
+<td>
+Slot that must contain the item. Possible values: [mainhand, offhand, feet, legs, chest, head]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+CHEST</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:item_in_slot","item":{"item":"minecraft:leather_chestplate"},"slot":"chest"}</pre>
 </div>
 <hr>
 
 <div id="palladium:mod_loaded">
 <h2>
-palladium:mod_loaded</h2>
+mod_loaded</h2>
 <p>
 Applicable for: all</p>
 <h3>
@@ -608,7 +788,7 @@ Example:</h3>
 
 <div id="palladium:moon_phase">
 <h2>
-palladium:moon_phase</h2>
+moon_phase</h2>
 <p>
 Applicable for: all</p>
 <h3>
@@ -664,7 +844,7 @@ Example:</h3>
 
 <div id="palladium:not">
 <h2>
-palladium:not</h2>
+not</h2>
 <p>
 Applicable for: all</p>
 <h3>
@@ -708,7 +888,7 @@ Example:</h3>
 
 <div id="palladium:objective_score">
 <h2>
-palladium:objective_score</h2>
+objective_score</h2>
 <p>
 Applicable for: all</p>
 <h3>
@@ -776,7 +956,7 @@ Example:</h3>
 
 <div id="palladium:or">
 <h2>
-palladium:or</h2>
+or</h2>
 <p>
 Applicable for: all</p>
 <h3>
@@ -820,7 +1000,7 @@ Example:</h3>
 
 <div id="palladium:pose">
 <h2>
-palladium:pose</h2>
+pose</h2>
 <p>
 Applicable for: all</p>
 <h3>
@@ -847,7 +1027,7 @@ pose</td>
 <td>
 Pose</td>
 <td>
-Determines the pose the entity must be in. Possible values: [standing, fall_flying, sleeping, swimming, spin_attack, crouching, long_jumping, dying]</td>
+Determines the pose the entity must be in. Possible values: [standing, fall_flying, sleeping, swimming, spin_attack, crouching, long_jumping, dying, croaking, using_tongue, roaring, sniffing, emerging, digging]</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -864,7 +1044,7 @@ Example:</h3>
 
 <div id="palladium:toggle">
 <h2>
-palladium:toggle</h2>
+toggle</h2>
 <p>
 Applicable for: abilities</p>
 <h3>
@@ -897,18 +1077,30 @@ false</td>
 <td>
 0</td>
 </tr>
+<tr>
+<td>
+key_type</td>
+<td>
+KeyType</td>
+<td>
+The type of key that needs to be pressed. Possible values: [key_bind, left_click, right_click, space_bar]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+KEY_BIND</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:toggle","cooldown":0}</pre>
+{"type":"palladium:toggle","cooldown":0,"key_type":"key_bind"}</pre>
 </div>
 <hr>
 
 <div id="palladium:wears_suit_set">
 <h2>
-palladium:wears_suit_set</h2>
+wears_suit_set</h2>
 <p>
 Applicable for: all</p>
 <h3>

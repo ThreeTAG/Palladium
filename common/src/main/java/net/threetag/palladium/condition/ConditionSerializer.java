@@ -1,9 +1,6 @@
 package net.threetag.palladium.condition;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import dev.architectury.core.RegistryEntry;
+import com.google.gson.*;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.Registries;
 import net.minecraft.core.Registry;
@@ -17,14 +14,12 @@ import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 
-import java.util.Comparator;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class ConditionSerializer extends RegistryEntry<ConditionSerializer> implements IDefaultDocumentedConfigurable {
+public abstract class ConditionSerializer implements IDefaultDocumentedConfigurable {
 
-    public static final ResourceKey<Registry<ConditionSerializer>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "condition_serializers"));
+    public static final ResourceKey<Registry<ConditionSerializer>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "condition_serializer"));
     public static final Registrar<ConditionSerializer> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new ConditionSerializer[0]).build();
 
     final PropertyManager propertyManager = new PropertyManager();
@@ -54,8 +49,29 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
 
     public abstract Condition make(JsonObject json);
 
+    public Condition make(JsonObject json, ConditionContextType type) {
+        return this.make(json);
+    }
+
     public ConditionContextType getContextType() {
         return ConditionContextType.ALL;
+    }
+
+    public static List<Condition> listFromJSON(JsonElement jsonElement, ConditionContextType type) {
+        List<Condition> conditions = new ArrayList<>();
+
+        if(jsonElement.isJsonArray()) {
+            JsonArray array = jsonElement.getAsJsonArray();
+            for (JsonElement element : array) {
+                conditions.add(fromJSON(element.getAsJsonObject(), type));
+            }
+        } else if(jsonElement.isJsonObject()) {
+            conditions.add(fromJSON(jsonElement.getAsJsonObject(), type));
+        } else {
+            throw new JsonSyntaxException("Conditions list must either be an array of multiple conditions, or one condition json object");
+        }
+
+        return conditions;
     }
 
     public static Condition fromJSON(JsonObject json, ConditionContextType type) {
@@ -65,11 +81,11 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
             throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' does not exist!");
         }
 
-        if((type == ConditionContextType.ABILITIES && !conditionSerializer.getContextType().forAbilities()) || (type == ConditionContextType.RENDER_LAYERS && !conditionSerializer.getContextType().forRenderLayers())) {
+        if ((type == ConditionContextType.ABILITIES && !conditionSerializer.getContextType().forAbilities()) || (type == ConditionContextType.RENDER_LAYERS && !conditionSerializer.getContextType().forRenderLayers())) {
             throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' is not applicable for " + type.toString().toLowerCase(Locale.ROOT));
         }
 
-        return conditionSerializer.make(json);
+        return conditionSerializer.make(json, type).setContextType(type);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -101,7 +117,7 @@ public abstract class ConditionSerializer extends RegistryEntry<ConditionSeriali
     @Override
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
-        builder.setTitle(this.getId().toString());
+        builder.setTitle(this.getId().getPath());
         builder.setDescription("Applicable for: " + this.getContextType().toString().toLowerCase(Locale.ROOT));
     }
 }

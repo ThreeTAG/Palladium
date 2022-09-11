@@ -23,7 +23,7 @@ public class AbilityEventHandler {
 
     @SubscribeEvent
     public static void onLivingVisibility(LivingEvent.LivingVisibilityEvent e) {
-        if (!Ability.getEnabledEntries(e.getEntityLiving(), Abilities.INVISIBILITY.get()).isEmpty()) {
+        if (!Ability.getEnabledEntries(e.getEntity(), Abilities.INVISIBILITY.get()).isEmpty()) {
             e.modifyVisibility(0);
         }
     }

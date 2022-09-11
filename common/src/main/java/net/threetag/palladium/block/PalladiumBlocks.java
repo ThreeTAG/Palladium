@@ -15,12 +15,12 @@ public class PalladiumBlocks {
 
     public static final DeferredRegistry<Block> BLOCKS = DeferredRegistry.create(Palladium.MOD_ID, Registry.BLOCK_REGISTRY);
 
-    public static final RegistrySupplier<Block> LEAD_ORE = BLOCKS.register("lead_ore", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
-    public static final RegistrySupplier<Block> DEEPSLATE_LEAD_ORE = BLOCKS.register("deepslate_lead_ore", () -> new OreBlock(BlockBehaviour.Properties.copy(LEAD_ORE.get()).color(MaterialColor.DEEPSLATE).strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE)));
-    public static final RegistrySupplier<Block> SILVER_ORE = BLOCKS.register("silver_ore", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
-    public static final RegistrySupplier<Block> DEEPSLATE_SILVER_ORE = BLOCKS.register("deepslate_silver_ore", () -> new OreBlock(BlockBehaviour.Properties.copy(SILVER_ORE.get()).color(MaterialColor.DEEPSLATE).strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE)));
-    public static final RegistrySupplier<Block> TITANIUM_ORE = BLOCKS.register("titanium_ore", () -> new OreBlock(BlockBehaviour.Properties.copy(Blocks.BLACKSTONE).requiresCorrectToolForDrops()));
-    public static final RegistrySupplier<Block> VIBRANIUM_ORE = BLOCKS.register("vibranium_ore", () -> new OreBlock(BlockBehaviour.Properties.copy(Blocks.BLACKSTONE).requiresCorrectToolForDrops().lightLevel(value -> 4)));
+    public static final RegistrySupplier<Block> LEAD_ORE = BLOCKS.register("lead_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+    public static final RegistrySupplier<Block> DEEPSLATE_LEAD_ORE = BLOCKS.register("deepslate_lead_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(LEAD_ORE.get()).color(MaterialColor.DEEPSLATE).strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE)));
+    public static final RegistrySupplier<Block> SILVER_ORE = BLOCKS.register("silver_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+    public static final RegistrySupplier<Block> DEEPSLATE_SILVER_ORE = BLOCKS.register("deepslate_silver_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(SILVER_ORE.get()).color(MaterialColor.DEEPSLATE).strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE)));
+    public static final RegistrySupplier<Block> TITANIUM_ORE = BLOCKS.register("titanium_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.BLACKSTONE).requiresCorrectToolForDrops()));
+    public static final RegistrySupplier<Block> VIBRANIUM_ORE = BLOCKS.register("vibranium_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.BLACKSTONE).requiresCorrectToolForDrops().lightLevel(value -> 4)));
 
     public static final RegistrySupplier<Block> REDSTONE_FLUX_CRYSTAL_GEODE = BLOCKS.register("redstone_flux_crystal_geode", () -> new FluxCrystalGeodeBlock(BlockBehaviour.Properties.copy(Blocks.REDSTONE_ORE).lightLevel(value -> 9)));
     public static final RegistrySupplier<Block> DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE = BLOCKS.register("deepslate_redstone_flux_crystal_geode", () -> new FluxCrystalGeodeBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_REDSTONE_ORE).lightLevel(value -> 9)));

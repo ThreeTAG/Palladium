@@ -113,6 +113,11 @@ public class AbilityEntry {
                 }
             }
 
+            if (this.unlocked != unlocked) {
+                this.unlocked = unlocked;
+                sync = true;
+            }
+
             boolean enabled = this.unlocked;
 
             if (this.unlocked) {
@@ -122,11 +127,6 @@ public class AbilityEntry {
                         break;
                     }
                 }
-            }
-
-            if (this.unlocked != unlocked) {
-                this.unlocked = unlocked;
-                sync = true;
             }
 
             if (this.enabled != enabled) {

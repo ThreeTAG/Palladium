@@ -1,26 +1,26 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "IX",
-    "XB",
-    "CC"
-  ],
   "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
-    },
-    "X": {
-      "tag": "forge:dusts/redstone"
-    },
     "B": {
       "tag": "forge:storage_blocks/redstone"
     },
     "C": {
       "tag": "forge:ingots/gold"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "X": {
+      "tag": "forge:dusts/redstone"
     }
   },
+  "pattern": [
+    "IX",
+    "XB",
+    "CC"
+  ],
   "result": {
-    "item": "palladium:redstone_circuit",
-    "count": 3
+    "count": 3,
+    "item": "palladium:redstone_circuit"
   }
 }

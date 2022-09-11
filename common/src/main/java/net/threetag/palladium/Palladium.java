@@ -1,6 +1,8 @@
 package net.threetag.palladium;
 
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.accessory.Accessories;
+import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.CreativeModeTabParser;
@@ -28,8 +30,8 @@ import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEventHandler;
 import net.threetag.palladium.power.provider.PowerProviders;
 import net.threetag.palladium.sound.PalladiumSoundEvents;
-import net.threetag.palladium.util.Platform;
 import net.threetag.palladium.util.icon.IconSerializer;
+import net.threetag.palladium.util.SupporterHandler;
 import net.threetag.palladium.util.icon.IconSerializers;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperties;
@@ -57,6 +59,7 @@ public class Palladium {
         EntityEffects.EFFECTS.register();
         PalladiumEntityTypes.ENTITIES.register();
         PalladiumSoundEvents.SOUNDS.register();
+        Accessories.ACCESSORIES.register();
 
         PalladiumNetwork.init();
         EntityPropertyHandler.init();
@@ -70,17 +73,19 @@ public class Palladium {
         PalladiumAttributes.init();
         FlightHandler.init();
         EntityEffects.init();
+        SupporterHandler.init();
+        Accessory.init();
 
         LifecycleEvent.SETUP.register(() -> {
             PalladiumFeatures.init();
             Palladium.generateDocumentation();
 
-            if(Platform.isModLoaded("pehkui")) {
+            if (Platform.isModLoaded("pehkui")) {
                 PehkuiCompat.init();
             }
         });
 
-        CommandRegistrationEvent.EVENT.register((dispatcher, selection) -> SuperpowerCommand.register(dispatcher));
+        CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> SuperpowerCommand.register(dispatcher));
 
         if (!Platform.isProduction()) {
             PalladiumDebug.init();
@@ -88,7 +93,7 @@ public class Palladium {
     }
 
     public static void generateDocumentation() {
-        if(Platform.isClient()) {
+        if (Platform.isClient()) {
             Consumer<HTMLBuilder> consumer = HTMLBuilder::save;
             consumer.accept(Ability.documentationBuilder());
             consumer.accept(ConditionSerializer.documentationBuilder());

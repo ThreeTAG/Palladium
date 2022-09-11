@@ -4,13 +4,14 @@ transitive-accessible class net/minecraft/world/level/block/entity/BlockEntityTy
 
 transitive-accessible method net/minecraft/world/entity/npc/VillagerProfession <init> (Ljava/lang/String;Lnet/minecraft/world/entity/ai/village/poi/PoiType;Lcom/google/common/collect/ImmutableSet;Lcom/google/common/collect/ImmutableSet;Lnet/minecraft/sounds/SoundEvent;)V
 
-transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiType <init> (Ljava/lang/String;Ljava/util/Set;II)V
-transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiType <init> (Ljava/lang/String;Ljava/util/Set;ILjava/util/function/Predicate;I)V
-transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiType getBlockStates (Lnet/minecraft/world/level/block/Block;)Ljava/util/Set;
-transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiType registerBlockStates (Lnet/minecraft/world/entity/ai/village/poi/PoiType;)Lnet/minecraft/world/entity/ai/village/poi/PoiType;
+transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes getBlockStates (Lnet/minecraft/world/level/block/Block;)Ljava/util/Set;
+transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes registerBlockStates (Lnet/minecraft/core/Holder;)V
+transitive-accessible field net/minecraft/world/entity/ai/village/poi/PoiTypes ALL_STATES Ljava/util/Set;
 
 transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen leftPos I
 transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen topPos I
+
+accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
 
 accessible field net/minecraft/client/model/geom/builders/CubeDefinition comment Ljava/lang/String;
 accessible field net/minecraft/client/model/geom/builders/CubeDefinition origin Lcom/mojang/math/Vector3f;

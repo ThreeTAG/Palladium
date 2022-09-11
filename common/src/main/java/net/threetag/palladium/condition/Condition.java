@@ -3,6 +3,7 @@ package net.threetag.palladium.condition;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
+import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.PropertyManager;
 
@@ -12,10 +13,21 @@ import java.util.List;
 
 public abstract class Condition {
 
+    private ConditionContextType contextType;
+
+    public Condition setContextType(ConditionContextType contextType) {
+        this.contextType = contextType;
+        return this;
+    }
+
     public abstract boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder);
 
     public boolean needsKey() {
         return false;
+    }
+
+    public AbilityConfiguration.KeyType getKeyType() {
+        return AbilityConfiguration.KeyType.KEY_BIND;
     }
 
     public boolean handlesCooldown() {

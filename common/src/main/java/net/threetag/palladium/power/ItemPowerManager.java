@@ -10,7 +10,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
-import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -79,10 +79,10 @@ public class ItemPowerManager extends SimpleJsonResourceReloadListener {
                     this.itemPowers.computeIfAbsent(slot, s -> new HashMap<>()).computeIfAbsent(item, item1 -> new ArrayList<>()).addAll(powers);
                 }
             } catch (Exception exception) {
-                Palladium.LOGGER.error("Parsing error loading item powers {}", id, exception);
+                AddonPackLog.error("Parsing error loading item powers {}", id, exception);
             }
         });
-        Palladium.LOGGER.info("Loaded {} item powers", this.itemPowers.size());
+        AddonPackLog.info("Loaded {} item powers", this.itemPowers.size());
     }
 
     @Nullable

@@ -10,6 +10,7 @@ public class Abilities {
 
     public static final DeferredRegistry<Ability> ABILITIES = DeferredRegistry.create(Palladium.MOD_ID, Ability.RESOURCE_KEY);
 
+    public static final RegistrySupplier<Ability> DUMMY = ABILITIES.register("dummy", Ability::new);
     public static final RegistrySupplier<Ability> COMMAND = ABILITIES.register("command", CommandAbility::new);
     public static final RegistrySupplier<Ability> RENDER_LAYER = ABILITIES.register("render_layer", RenderLayerAbility::new);
     public static final RegistrySupplier<Ability> INTERPOLATED_INTEGER = ABILITIES.register("interpolated_integer", InterpolatedIntegerAbility::new);
@@ -21,6 +22,8 @@ public class Abilities {
     public static final RegistrySupplier<Ability> ENERGY_BLAST = ABILITIES.register("energy_blast", EnergyBlastAbility::new);
     public static final RegistrySupplier<Ability> SIZE = ABILITIES.register("size", SizeAbility::new);
     public static final RegistrySupplier<Ability> PROJECTILE = ABILITIES.register("projectile", ProjectileAbility::new);
+    public static final RegistrySupplier<Ability> SKIN_CHANGE = ABILITIES.register("skin_change", SkinChangeAbility::new);
+    public static final RegistrySupplier<Ability> AIM = ABILITIES.register("aim", AimAbility::new);
 
     public static void init() {
 

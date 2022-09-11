@@ -8,7 +8,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.item.SuitSet;
 import org.jetbrains.annotations.Nullable;
 
@@ -74,10 +74,10 @@ public class SuitSetPowerManager extends SimpleJsonResourceReloadListener {
                     this.suitSetPowers.computeIfAbsent(suitSet, suitSet1 -> new ArrayList<>()).addAll(powers);
                 }
             } catch (Exception exception) {
-                Palladium.LOGGER.error("Parsing error loading suit set powers {}", id, exception);
+                AddonPackLog.error("Parsing error loading suit set powers {}", id, exception);
             }
         });
-        Palladium.LOGGER.info("Loaded {} suit set powers", this.suitSetPowers.size());
+        AddonPackLog.info("Loaded {} suit set powers", this.suitSetPowers.size());
     }
 
     @Nullable

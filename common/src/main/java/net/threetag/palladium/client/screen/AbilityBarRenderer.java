@@ -10,7 +10,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +22,7 @@ import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityColor;
+import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        Position position = PalladiumConfig.getAbilityBarPosition();
+        Position position = PalladiumConfig.Client.ABILITY_BAR_POSITION.get();
         AbilityList list = getSelectedList();
         boolean simple = list.simple && ABILITY_LISTS.size() <= 1;
 
@@ -116,8 +116,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
         if (showKey) {
             FormattedText properties = minecraft.font.substrByWidth(PalladiumKeyMappings.SWITCH_ABILITY_LIST.getTranslatedKeyMessage(), 10);
             int length = minecraft.font.width(properties) + 10;
-            if (properties instanceof BaseComponent)
-                minecraft.font.draw(poseStack, (Component) properties, (position.left ? 15 : 37) - length / 2F + 10, position.top ? 10 : 12, 0xffffffff);
+            minecraft.font.draw(poseStack, Component.literal(properties.getString()), (position.left ? 15 : 37) - length / 2F + 10, position.top ? 10 : 12, 0xffffffff);
 
             RenderSystem.setShaderTexture(0, texture);
             minecraft.gui.blit(poseStack, (position.left ? 15 : 37) - length / 2, position.top ? 9 : 11, 78, 56, 7, 9);
@@ -144,7 +143,7 @@ public class AbilityBarRenderer implements IIngameOverlay {
         boolean showName = minecraft.screen instanceof ChatScreen;
 
         for (int i = 0; i < 5; i++) {
-            if(simple && i > 0) {
+            if (simple && i > 0) {
                 break;
             }
             Lighting.setupFor3DItems();
@@ -229,10 +228,19 @@ public class AbilityBarRenderer implements IIngameOverlay {
                 minecraft.gui.blit(poseStack, 0, i * 22, color.getX(), color.getY(), 24, 24);
 
                 if (ability.getConfiguration().needsKey() && ability.isUnlocked()) {
-                    Component key = PalladiumKeyMappings.ABILITY_KEYS[i].getTranslatedKeyMessage();
+                    AbilityConfiguration.KeyType keyType = ability.getConfiguration().getKeyType();
                     poseStack.pushPose();
                     poseStack.translate(0, 0, minecraft.getItemRenderer().blitOffset + 200);
-                    GuiComponent.drawString(poseStack, minecraft.font, key, 5 + 19 - 2 - minecraft.font.width(key), 5 + i * 22 + 7, 0xffffff);
+                    if (keyType == AbilityConfiguration.KeyType.KEY_BIND) {
+                        Component key = PalladiumKeyMappings.ABILITY_KEYS[i].getTranslatedKeyMessage();
+                        GuiComponent.drawString(poseStack, minecraft.font, key, 5 + 19 - 2 - minecraft.font.width(key), 5 + i * 22 + 7, 0xffffff);
+                    } else if (keyType == AbilityConfiguration.KeyType.LEFT_CLICK) {
+                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 8, 24, 92, 5, 7);
+                    } else if (keyType == AbilityConfiguration.KeyType.RIGHT_CLICK) {
+                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 8, 29, 92, 5, 7);
+                    } else if (keyType == AbilityConfiguration.KeyType.SPACE_BAR) {
+                        minecraft.gui.blit(poseStack, 5 + 19 - 13, 5 + i * 22 + 10, 34, 92, 10, 5);
+                    }
                     poseStack.popPose();
                 }
             }

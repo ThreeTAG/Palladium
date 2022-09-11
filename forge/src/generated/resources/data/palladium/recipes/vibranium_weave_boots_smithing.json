@@ -1,10 +1,10 @@
 {
   "type": "minecraft:smithing",
-  "base": {
-    "item": "minecraft:leather_boots"
-  },
   "addition": {
     "tag": "forge:ingots/vibranium"
+  },
+  "base": {
+    "item": "minecraft:leather_boots"
   },
   "result": {
     "item": "palladium:vibranium_weave_boots"

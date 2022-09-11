@@ -1,0 +1,21 @@
+{
+  "name": "KubeJS Test",
+  "icon": "minecraft:iron_ingot",
+  "abilities": {
+    "action": {
+      "type": "kubejs:testpack/test_ability",
+      "conditions": {
+        "unlocking": [
+          {
+            "type": "kubejs:testpack/test_condition"
+          }
+        ],
+        "enabling": [
+          {
+            "type": "palladium:action"
+          }
+        ]
+      }
+    }
+  }
+}

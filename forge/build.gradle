@@ -8,8 +8,6 @@ architectury {
     forge()
 }
 
-version = version + "-forge"
-
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 
@@ -53,8 +51,11 @@ dependencies {
     include "net.threetag:PalladiumCore-forge:${rootProject.palladiumcore_version}"
 
     // JEI
-    modCompileOnly "mezz.jei:jei-${rootProject.jei_version}:api"
-    modRuntimeOnly "mezz.jei:jei-${rootProject.jei_version}"
+    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
+//    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
+
+    // REI
+    modImplementation "me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}"
 
     // Configured & Catalogue
     modRuntimeOnly "curse.maven:configured-457570:${rootProject.configured_version}"
@@ -65,10 +66,14 @@ dependencies {
     modCompileOnly "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}:api"
 
     // KubeJS
-    modImplementation("dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}")
+    modCompileOnly "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
+//    modRuntimeOnly "curse.maven:probejs-585406:${rootProject.probejs_forge_version}"
 
     // Pehkui
-    modCompileOnly("com.github.Virtuoel:Pehkui:${rootProject.pehkui_forge_version}")
+    modCompileOnly "com.github.Virtuoel:Pehkui:${rootProject.pehkui_forge_version}"
+
+    // Smooth Boot (makes game crash for whatever reason)
+//    modRuntimeOnly "curse.maven:smoothboot-633412:${rootProject.smoothboot_forge_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
@@ -88,6 +93,7 @@ sourceSets.main.resources {
 
 shadowJar {
     exclude "fabric.mod.json"
+    exclude "palladium.common.json"
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
@@ -97,6 +103,7 @@ remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
     classifier null
+    archiveClassifier = 'forge'
 }
 
 jar {
@@ -130,7 +137,7 @@ components.java {
 publishing {
     publications {
         mavenForge(MavenPublication) {
-            artifactId = rootProject.archives_base_name
+            artifactId = rootProject.archives_base_name + "-forge"
             from components.java
         }
     }
@@ -145,5 +152,3 @@ publishing {
         }
     }
 }
-
-rootProject.tasks.getByName("curseforgePublish").dependsOn tasks.getByName("curseforge")

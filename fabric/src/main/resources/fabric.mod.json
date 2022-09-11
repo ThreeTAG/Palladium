@@ -24,9 +24,6 @@
     ],
     "cardinal-components": [
       "net.threetag.palladium.components.fabric.PalladiumComponents"
-    ],
-    "modmenu": [
-      "net.threetag.palladium.compat.modmenu.fabric.ModMenuCompat"
     ]
   },
   "mixins": [
@@ -36,13 +33,16 @@
   "accessWidener": "palladium.accessWidener",
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.18.2",
-    "architectury": ">=4.4.59"
+    "minecraft": ">=1.19.1",
+    "architectury": ">=6.0.35",
+    "com_electronwill_night-config_core": "*",
+    "com_electronwill_night-config_toml": "*"
   },
   "custom": {
     "cardinal-components": [
       "palladium:properties",
-      "palladium:power_handler"
+      "palladium:power_handler",
+      "palladium:accessories"
     ]
   }
 }
