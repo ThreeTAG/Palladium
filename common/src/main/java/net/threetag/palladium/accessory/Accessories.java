@@ -1,14 +1,14 @@
 package net.threetag.palladium.accessory;
 
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladiumcore.registry.DeferredRegister;
+import net.threetag.palladiumcore.registry.RegistrySupplier;
 
 public class Accessories {
 
-    public static final DeferredRegister<Accessory> ACCESSORIES = DeferredRegister.create(Palladium.MOD_ID, Accessory.RESOURCE_KEY);
+    public static final DeferredRegister<Accessory> ACCESSORIES = DeferredRegister.create(Palladium.MOD_ID, Accessory.REGISTRY);
 
     public static final RegistrySupplier<Accessory> LUCRAFT_ARC_REACTOR = ACCESSORIES.register("lucraft_arc_reactor",
             () -> new OverlayAccessory("lucraft_arc_reactor").glowing().slot(AccessorySlot.SPECIAL));

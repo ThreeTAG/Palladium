@@ -7,7 +7,7 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.item.PalladiumItems;
-import net.threetag.palladium.registry.RegistrySupplier;
+import net.threetag.palladiumcore.registry.RegistrySupplier;
 
 public class PalladiumItemModelProvider extends ItemModelProvider {
 

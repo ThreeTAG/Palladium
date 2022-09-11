@@ -1,4 +1,4 @@
-package net.threetag.palladium.network.messages;
+package net.threetag.palladium.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;

@@ -30,12 +30,13 @@ import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEventHandler;
 import net.threetag.palladium.power.provider.PowerProviders;
 import net.threetag.palladium.sound.PalladiumSoundEvents;
-import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.SupporterHandler;
+import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.icon.IconSerializers;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperties;
 import net.threetag.palladium.world.PalladiumFeatures;
+import net.threetag.palladiumcore.util.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

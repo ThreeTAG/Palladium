@@ -1,4 +1,4 @@
-package net.threetag.palladium.network.messages;
+package net.threetag.palladium.network;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,6 +12,9 @@ import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.PalladiumProperty;
+import net.threetag.palladiumcore.network.MessageContext;
+import net.threetag.palladiumcore.network.MessageS2C;
+import net.threetag.palladiumcore.network.MessageType;
 
 public class SyncAbilityEntryPropertyMessage extends MessageS2C {
 

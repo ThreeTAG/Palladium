@@ -3,9 +3,6 @@ package net.threetag.palladium.accessory;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import dev.architectury.platform.Platform;
-import dev.architectury.registry.registries.Registrar;
-import dev.architectury.registry.registries.Registries;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
@@ -18,9 +15,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -31,6 +26,8 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.network.SyncAccessoriesMessage;
 import net.threetag.palladium.util.SupporterHandler;
+import net.threetag.palladiumcore.registry.PalladiumRegistry;
+import net.threetag.palladiumcore.util.Platform;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -40,8 +37,7 @@ import java.util.Optional;
 
 public abstract class Accessory {
 
-    public static final ResourceKey<Registry<Accessory>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "accessories"));
-    public static final Registrar<Accessory> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new Accessory[0]).build();
+    public static final PalladiumRegistry<Accessory> REGISTRY = PalladiumRegistry.create(Accessory.class, Palladium.id("accessories"));
 
     public static void init() {
         PlayerEvent.PLAYER_JOIN.register(player -> Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).sendTo(player)));
@@ -54,11 +50,11 @@ public abstract class Accessory {
     }
 
     public boolean isAvailable(Player entity) {
-        return Platform.isDevelopmentEnvironment() || SupporterHandler.getPlayerData(entity.getUUID()).hasAccessory(this);
+        return !Platform.isProduction() || SupporterHandler.getPlayerData(entity.getUUID()).hasAccessory(this);
     }
 
     public Component getDisplayName() {
-        return Component.translatable(Util.makeDescriptionId("accessory", REGISTRY.getId(this)));
+        return Component.translatable(Util.makeDescriptionId("accessory", REGISTRY.getKey(this)));
     }
 
     @Environment(EnvType.CLIENT)
@@ -103,8 +99,8 @@ public abstract class Accessory {
     public static List<Accessory> getAvailableAccessories(SupporterHandler.PlayerData data) {
         List<Accessory> list = new ArrayList<>();
 
-        for (Accessory Accessory : Accessory.REGISTRY) {
-            if (Platform.isDevelopmentEnvironment() || data.hasAccessory(Accessory)) {
+        for (Accessory Accessory : Accessory.REGISTRY.getValues()) {
+            if (!Platform.isProduction() || data.hasAccessory(Accessory)) {
                 list.add(Accessory);
             }
         }
@@ -115,7 +111,7 @@ public abstract class Accessory {
     public static List<Accessory> getAvailableAccessories(SupporterHandler.PlayerData data, AccessorySlot slot) {
         List<Accessory> list = new ArrayList<>();
 
-        for (Accessory Accessory : Accessory.REGISTRY) {
+        for (Accessory Accessory : Accessory.REGISTRY.getValues()) {
             if (Accessory.getPossibleSlots().contains(slot) && data.hasAccessory(Accessory)) {
                 list.add(Accessory);
             }
@@ -133,7 +129,7 @@ public abstract class Accessory {
 
         @Override
         public void onResourceManagerReload(ResourceManager resourceManager) {
-            for (Accessory accessory : Accessory.REGISTRY) {
+            for (Accessory accessory : Accessory.REGISTRY.getValues()) {
                 accessory.onReload(Minecraft.getInstance().getEntityModels());
             }
         }

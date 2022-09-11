@@ -20,7 +20,7 @@ public abstract class ExtendedLangProvider extends LanguageProvider {
     }
 
     public void add(Ability key, String name) {
-        ResourceLocation id = Ability.REGISTRY.getId(key);
+        ResourceLocation id = Ability.REGISTRY.getKey(key);
         add("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath(), name);
     }
 
@@ -29,7 +29,7 @@ public abstract class ExtendedLangProvider extends LanguageProvider {
     }
 
     public void add(Accessory key, String name) {
-        ResourceLocation id = Accessory.REGISTRY.getId(key);
+        ResourceLocation id = Accessory.REGISTRY.getKey(key);
         add("accessory." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath(), name);
     }
 

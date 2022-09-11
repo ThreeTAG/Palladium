@@ -2,13 +2,13 @@ package net.threetag.palladium.power.ability;
 
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.registry.DeferredRegistry;
-import net.threetag.palladium.registry.RegistrySupplier;
 import net.threetag.palladium.util.icon.TexturedIcon;
+import net.threetag.palladiumcore.registry.DeferredRegister;
+import net.threetag.palladiumcore.registry.RegistrySupplier;
 
 public class Abilities {
 
-    public static final DeferredRegistry<Ability> ABILITIES = DeferredRegistry.create(Palladium.MOD_ID, Ability.RESOURCE_KEY);
+    public static final DeferredRegister<Ability> ABILITIES = DeferredRegister.create(Palladium.MOD_ID, Ability.REGISTRY);
 
     public static final RegistrySupplier<Ability> DUMMY = ABILITIES.register("dummy", Ability::new);
     public static final RegistrySupplier<Ability> COMMAND = ABILITIES.register("command", CommandAbility::new);

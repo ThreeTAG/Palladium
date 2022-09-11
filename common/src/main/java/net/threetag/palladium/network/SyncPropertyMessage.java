@@ -1,4 +1,4 @@
-package net.threetag.palladium.network.messages;
+package net.threetag.palladium.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -8,6 +8,9 @@ import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperty;
+import net.threetag.palladiumcore.network.MessageContext;
+import net.threetag.palladiumcore.network.MessageS2C;
+import net.threetag.palladiumcore.network.MessageType;
 
 public class SyncPropertyMessage extends MessageS2C {
 

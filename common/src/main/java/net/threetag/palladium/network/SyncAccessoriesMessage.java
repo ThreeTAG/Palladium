@@ -1,8 +1,6 @@
-package net.threetag.palladium.network.messages;
+package net.threetag.palladium.network;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
-import dev.architectury.networking.simple.MessageType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -13,10 +11,13 @@ import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.client.screen.AccessoryScreen;
 import net.threetag.palladium.network.PalladiumNetwork;
+import net.threetag.palladiumcore.network.MessageContext;
+import net.threetag.palladiumcore.network.MessageS2C;
+import net.threetag.palladiumcore.network.MessageType;
 
 import java.util.*;
 
-public class SyncAccessoriesMessage extends BaseS2CMessage {
+public class SyncAccessoriesMessage extends MessageS2C {
 
     public int entityId;
     public Map<AccessorySlot, Collection<Accessory>> accessories;
@@ -51,7 +52,7 @@ public class SyncAccessoriesMessage extends BaseS2CMessage {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public void write(FriendlyByteBuf buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(this.entityId);
         buf.writeInt(this.accessories.size());
 
@@ -65,8 +66,8 @@ public class SyncAccessoriesMessage extends BaseS2CMessage {
     }
 
     @Override
-    public void handle(NetworkManager.PacketContext context) {
-        context.queue(this::handle);
+    public void handle(MessageContext context) {
+        this.handle();
     }
 
     @Environment(EnvType.CLIENT)

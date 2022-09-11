@@ -19,8 +19,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.event.PalladiumEvents;
-import net.threetag.palladium.network.messages.AddPowerMessage;
-import net.threetag.palladium.network.messages.SyncPowersMessage;
+import net.threetag.palladium.network.AddPowerMessage;
+import net.threetag.palladium.network.SyncPowersMessage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;

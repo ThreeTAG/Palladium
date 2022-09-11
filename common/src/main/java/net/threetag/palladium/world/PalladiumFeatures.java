@@ -19,14 +19,14 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTes
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
-import net.threetag.palladium.registry.DeferredRegistry;
-import net.threetag.palladium.registry.RegistrySupplier;
+import net.threetag.palladiumcore.registry.DeferredRegister;
+import net.threetag.palladiumcore.registry.RegistrySupplier;
 
 import java.util.List;
 
 public class PalladiumFeatures {
 
-    public static final DeferredRegistry<Feature<?>> FEATURES = DeferredRegistry.create(Palladium.MOD_ID, Registry.FEATURE_REGISTRY);
+    public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Palladium.MOD_ID, Registry.FEATURE_REGISTRY);
 
     public static final RegistrySupplier<UndergroundMeteoriteFeature> UNDERGROUND_METEORITE = FEATURES.register("underground_meteorite", () -> new UndergroundMeteoriteFeature(OreConfiguration.CODEC));
 

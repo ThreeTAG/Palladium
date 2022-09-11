@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.network.messages.AddPowerMessage;
-import net.threetag.palladium.network.messages.RemovePowerMessage;
+import net.threetag.palladium.network.AddPowerMessage;
+import net.threetag.palladium.network.RemovePowerMessage;
 import net.threetag.palladium.power.provider.PowerProvider;
 
 import java.util.ArrayList;

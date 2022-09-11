@@ -1,10 +1,6 @@
 package net.threetag.palladium.condition;
 
 import com.google.gson.*;
-import dev.architectury.registry.registries.Registrar;
-import dev.architectury.registry.registries.Registries;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
@@ -13,14 +9,17 @@ import net.threetag.palladium.documentation.IDefaultDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
+import net.threetag.palladiumcore.registry.PalladiumRegistry;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public abstract class ConditionSerializer implements IDefaultDocumentedConfigurable {
 
-    public static final ResourceKey<Registry<ConditionSerializer>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "condition_serializer"));
-    public static final Registrar<ConditionSerializer> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new ConditionSerializer[0]).build();
+    public static final PalladiumRegistry<ConditionSerializer> REGISTRY = PalladiumRegistry.create(ConditionSerializer.class, Palladium.id("condition_serializer"));
 
     final PropertyManager propertyManager = new PropertyManager();
     public static ConditionContextType CURRENT_CONTEXT = ConditionContextType.ALL;
@@ -101,7 +100,7 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
     public static HTMLBuilder documentationBuilder() {
         return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "conditions"), "Conditions")
                 .add(HTMLBuilder.heading("Conditions"))
-                .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
+                .addDocumentationSettings(REGISTRY.getValues().stream().sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
     }
 
     @Override
@@ -111,7 +110,7 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
 
     @Override
     public ResourceLocation getId() {
-        return REGISTRY.getId(this);
+        return REGISTRY.getKey(this);
     }
 
     @Override

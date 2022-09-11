@@ -8,9 +8,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.entity.effect.EntityEffect;
-import net.threetag.palladium.network.ExtendedEntitySpawnData;
-import net.threetag.palladium.network.NetworkManager;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
+import net.threetag.palladiumcore.network.ExtendedEntitySpawnData;
+import net.threetag.palladiumcore.network.NetworkManager;
 
 import java.util.Objects;
 
@@ -57,7 +57,7 @@ public class EffectEntity extends Entity implements ExtendedEntitySpawnData {
 
     @Override
     public void saveAdditionalSpawnData(FriendlyByteBuf buf) {
-        buf.writeResourceLocation(Objects.requireNonNull(EntityEffect.REGISTRY.getId(this.entityEffect)));
+        buf.writeResourceLocation(Objects.requireNonNull(EntityEffect.REGISTRY.getKey(this.entityEffect)));
         buf.writeInt(this.anchorId);
         EntityPropertyHandler.getHandler(this).toBuffer(buf);
     }
@@ -102,7 +102,7 @@ public class EffectEntity extends Entity implements ExtendedEntitySpawnData {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
-        compound.putString("EntityEffect", Objects.requireNonNull(EntityEffect.REGISTRY.getId(this.entityEffect)).toString());
+        compound.putString("EntityEffect", Objects.requireNonNull(EntityEffect.REGISTRY.getKey(this.entityEffect)).toString());
         compound.putInt("AnchorId", this.anchorId);
     }
 

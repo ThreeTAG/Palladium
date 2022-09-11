@@ -1,4 +1,4 @@
-package net.threetag.palladium.network.messages;
+package net.threetag.palladium.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

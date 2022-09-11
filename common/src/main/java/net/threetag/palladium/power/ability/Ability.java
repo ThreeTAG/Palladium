@@ -1,10 +1,6 @@
 package net.threetag.palladium.power.ability;
 
-import dev.architectury.registry.registries.Registrar;
-import dev.architectury.registry.registries.Registries;
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Items;
@@ -19,14 +15,14 @@ import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.property.*;
+import net.threetag.palladiumcore.registry.PalladiumRegistry;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Ability implements IDefaultDocumentedConfigurable {
 
-    public static final ResourceKey<Registry<Ability>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "ability"));
-    public static final Registrar<Ability> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new Ability[0]).build();
+    public static final PalladiumRegistry<Ability> REGISTRY = PalladiumRegistry.create(Ability.class, Palladium.id("abilities"));
 
     public static final PalladiumProperty<Component> TITLE = new ComponentProperty("title").configurable("Allows you to set a custom title for this ability");
     public static final PalladiumProperty<IIcon> ICON = new IconProperty("icon").configurable("Icon for the ability");
@@ -112,7 +108,7 @@ public class Ability implements IDefaultDocumentedConfigurable {
     public static HTMLBuilder documentationBuilder() {
         return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "abilities"), "Abilities")
                 .add(HTMLBuilder.heading("Abilities"))
-                .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
+                .addDocumentationSettings(REGISTRY.getValues().stream().sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
     }
 
     public static List<AbilityEntry> findParentAbilities(LivingEntity entity, AbilityConfiguration ability, IPowerHolder powerHolder) {
@@ -146,7 +142,7 @@ public class Ability implements IDefaultDocumentedConfigurable {
 
     @Override
     public ResourceLocation getId() {
-        return REGISTRY.getId(this);
+        return REGISTRY.getKey(this);
     }
 
     @Override

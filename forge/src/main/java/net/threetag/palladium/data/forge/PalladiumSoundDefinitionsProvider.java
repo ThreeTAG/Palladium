@@ -5,8 +5,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.registry.RegistrySupplier;
 import net.threetag.palladium.sound.PalladiumSoundEvents;
+import net.threetag.palladiumcore.registry.RegistrySupplier;
 
 public class PalladiumSoundDefinitionsProvider extends SoundDefinitionsProvider {
 

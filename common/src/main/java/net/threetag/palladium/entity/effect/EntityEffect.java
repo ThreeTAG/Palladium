@@ -1,14 +1,9 @@
 package net.threetag.palladium.entity.effect;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.architectury.registry.registries.Registrar;
-import dev.architectury.registry.registries.Registries;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.entity.EffectEntity;
@@ -16,13 +11,13 @@ import net.threetag.palladium.util.property.BooleanProperty;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
+import net.threetag.palladiumcore.registry.PalladiumRegistry;
 
 import java.util.function.Predicate;
 
 public abstract class EntityEffect {
 
-    public static final ResourceKey<Registry<EntityEffect>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "entity_effects"));
-    public static final Registrar<EntityEffect> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new EntityEffect[0]).build();
+    public static final PalladiumRegistry<EntityEffect> REGISTRY = PalladiumRegistry.create(EntityEffect.class, Palladium.id("entity_effects"));
 
     public static final PalladiumProperty<Boolean> IS_DONE_PLAYING = new BooleanProperty("is_done_playing");
 

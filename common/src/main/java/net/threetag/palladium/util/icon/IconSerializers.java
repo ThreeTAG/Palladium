@@ -1,12 +1,12 @@
 package net.threetag.palladium.util.icon;
 
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.registry.DeferredRegistry;
-import net.threetag.palladium.registry.RegistrySupplier;
+import net.threetag.palladiumcore.registry.DeferredRegister;
+import net.threetag.palladiumcore.registry.RegistrySupplier;
 
 public class IconSerializers {
 
-    public static final DeferredRegistry<IconSerializer<?>> ICON_SERIALIZERS = DeferredRegistry.create(Palladium.MOD_ID, IconSerializer.RESOURCE_KEY);
+    public static final DeferredRegister<IconSerializer<?>> ICON_SERIALIZERS = DeferredRegister.create(Palladium.MOD_ID, IconSerializer.RESOURCE_KEY);
 
     public static final RegistrySupplier<IconSerializer<ItemIcon>> ITEM = ICON_SERIALIZERS.register("item", ItemIcon.Serializer::new);
     public static final RegistrySupplier<IconSerializer<TexturedIcon>> TEXTURE = ICON_SERIALIZERS.register("texture", TexturedIcon.Serializer::new);

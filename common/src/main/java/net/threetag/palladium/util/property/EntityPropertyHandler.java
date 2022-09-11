@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.event.PalladiumEvents;
-import net.threetag.palladium.network.messages.SyncPropertyMessage;
+import net.threetag.palladium.network.SyncPropertyMessage;
 
 public class EntityPropertyHandler extends PropertyManager implements PropertyManager.Listener {
 

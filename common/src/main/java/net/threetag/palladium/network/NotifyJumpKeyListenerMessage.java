@@ -1,8 +1,11 @@
-package net.threetag.palladium.network.messages;
+package net.threetag.palladium.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.util.property.PalladiumProperties;
+import net.threetag.palladiumcore.network.MessageC2S;
+import net.threetag.palladiumcore.network.MessageContext;
+import net.threetag.palladiumcore.network.MessageType;
 
 public class NotifyJumpKeyListenerMessage extends MessageC2S {
 

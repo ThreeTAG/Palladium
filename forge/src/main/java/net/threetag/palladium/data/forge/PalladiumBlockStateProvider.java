@@ -10,7 +10,7 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
-import net.threetag.palladium.registry.RegistrySupplier;
+import net.threetag.palladiumcore.registry.RegistrySupplier;
 
 import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOLDER;
 

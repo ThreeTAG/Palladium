@@ -8,9 +8,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
-import net.threetag.palladium.registry.DeferredRegistry;
-import net.threetag.palladium.registry.RegistrySupplier;
 import net.threetag.palladium.tags.PalladiumItemTags;
+import net.threetag.palladiumcore.registry.DeferredRegister;
+import net.threetag.palladiumcore.registry.RegistrySupplier;
 
 public class PalladiumItems {
 
@@ -18,7 +18,7 @@ public class PalladiumItems {
             new int[]{1, 2, 3, 2}, 12, () -> SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F,
             () -> Ingredient.of(PalladiumItemTags.INGOTS_VIBRANIUM));
 
-    public static final DeferredRegistry<Item> ITEMS = DeferredRegistry.create(Palladium.MOD_ID, Registry.ITEM_REGISTRY);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Palladium.MOD_ID, Registry.ITEM_REGISTRY);
     public static final CreativeModeTabFiller FILLER_AFTER_COPPER_ORE = new CreativeModeTabFiller(() -> Items.DEEPSLATE_COPPER_ORE);
     public static final CreativeModeTabFiller FILLER_AFTER_GOLD_ORE = new CreativeModeTabFiller(() -> Items.DEEPSLATE_GOLD_ORE);
     public static final CreativeModeTabFiller FILLER_AFTER_DEEPSLATE_REDSTONE_ORE = new CreativeModeTabFiller(() -> Items.DEEPSLATE_REDSTONE_ORE);

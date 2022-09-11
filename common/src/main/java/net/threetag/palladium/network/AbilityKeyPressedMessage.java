@@ -1,8 +1,7 @@
-package net.threetag.palladium.network.messages;
+package net.threetag.palladium.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.PowerManager;
