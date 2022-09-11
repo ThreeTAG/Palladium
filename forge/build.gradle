@@ -49,6 +49,10 @@ configurations {
 
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    modApi "net.threetag:PalladiumCore-forge:${rootProject.palladiumcore_version}"
+    include "net.threetag:PalladiumCore-forge:${rootProject.palladiumcore_version}"
+
+    // JEI
     modCompileOnly "mezz.jei:jei-${rootProject.jei_version}:api"
     modRuntimeOnly "mezz.jei:jei-${rootProject.jei_version}"
 

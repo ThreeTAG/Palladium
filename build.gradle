@@ -96,6 +96,10 @@ allprojects {
         maven {
             url = 'https://jitpack.io'
         }
+
+        maven {
+            url 'https://repo.repsy.io/mvn/lucraft/threetag'
+        }
     }
 
     java {
