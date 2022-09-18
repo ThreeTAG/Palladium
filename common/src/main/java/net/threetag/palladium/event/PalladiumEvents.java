@@ -1,37 +1,26 @@
 package net.threetag.palladium.event;
 
-import dev.architectury.event.Event;
-import dev.architectury.event.EventFactory;
-import dev.architectury.event.events.common.PlayerEvent;
-import dev.architectury.event.events.common.TickEvent;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
+import net.threetag.palladiumcore.event.Event;
 
 import java.util.function.Consumer;
 
 public interface PalladiumEvents {
 
-    Event<LivingUpdate> LIVING_UPDATE = EventFactory.createLoop();
-    Event<StartTracking> START_TRACKING = EventFactory.createLoop();
-    Event<RegisterProperty> REGISTER_PROPERTY = EventFactory.createLoop();
-    Event<GenerateDocumentation> GENERATE_DOCUMENTATION = EventFactory.createLoop();
+    Event<RegisterProperty> REGISTER_PROPERTY = new Event<>(RegisterProperty.class, listeners -> (h) -> {
+        for (RegisterProperty listener : listeners) {
+            listener.register(h);
+        }
+    });
 
-    interface LivingUpdate extends TickEvent<LivingEntity> {
+    Event<GenerateDocumentation> GENERATE_DOCUMENTATION = new Event<>(GenerateDocumentation.class, listeners -> (c) -> {
+        for (GenerateDocumentation listener : listeners) {
+            listener.generate(c);
+        }
+    });
 
-        void tick(LivingEntity entity);
-
-    }
-
-    interface StartTracking extends PlayerEvent {
-
-        void startTracking(Player tracker, Entity target);
-
-    }
-
-    interface RegisterProperty extends PlayerEvent {
+    interface RegisterProperty {
 
         void register(EntityPropertyHandler handler);
 

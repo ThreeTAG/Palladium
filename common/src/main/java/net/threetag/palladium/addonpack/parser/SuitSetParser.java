@@ -2,6 +2,7 @@ package net.threetag.palladium.addonpack.parser;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -14,7 +15,7 @@ import net.threetag.palladium.util.json.GsonUtil;
 public class SuitSetParser extends AddonParser<SuitSet> {
 
     public SuitSetParser() {
-        super(AddonParser.GSON, "suit_sets", SuitSet.RESOURCE_KEY);
+        super(AddonParser.GSON, "suit_sets", SuitSet.REGISTRY.getRegistryKey());
     }
 
     @Override
@@ -60,7 +61,7 @@ public class SuitSetParser extends AddonParser<SuitSet> {
                 else if (slot == EquipmentSlot.FEET)
                     builder.boots(itemBuilder);
 
-                AddonPackManager.ITEM_PARSER.register(itemBuilder);
+                AddonParser.register(Registry.ITEM_REGISTRY, itemBuilder);
             });
         }
 

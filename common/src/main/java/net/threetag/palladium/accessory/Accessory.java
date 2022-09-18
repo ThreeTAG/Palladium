@@ -1,7 +1,6 @@
 package net.threetag.palladium.accessory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -23,9 +22,9 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.network.SyncAccessoriesMessage;
 import net.threetag.palladium.util.SupporterHandler;
+import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.registry.PalladiumRegistry;
 import net.threetag.palladiumcore.util.Platform;
 
@@ -40,11 +39,11 @@ public abstract class Accessory {
     public static final PalladiumRegistry<Accessory> REGISTRY = PalladiumRegistry.create(Accessory.class, Palladium.id("accessories"));
 
     public static void init() {
-        PlayerEvent.PLAYER_JOIN.register(player -> Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).sendTo(player)));
+        PlayerEvents.JOIN.register(player -> Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).send((ServerPlayer) player)));
 
-        PalladiumEvents.START_TRACKING.register((tracker, target) -> {
+        PlayerEvents.START_TRACKING.register((tracker, target) -> {
             if (target instanceof Player player && tracker instanceof ServerPlayer serverPlayer) {
-                Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).sendTo(serverPlayer));
+                Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).send(serverPlayer));
             }
         });
     }

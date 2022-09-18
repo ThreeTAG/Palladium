@@ -1,11 +1,13 @@
 package net.threetag.palladium.network;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
@@ -15,6 +17,8 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladiumcore.network.MessageContext;
 import net.threetag.palladiumcore.network.MessageS2C;
 import net.threetag.palladiumcore.network.MessageType;
+
+import java.util.Objects;
 
 public class SyncAbilityEntryPropertyMessage extends MessageS2C {
 
@@ -54,13 +58,19 @@ public class SyncAbilityEntryPropertyMessage extends MessageS2C {
         buf.writeNbt(this.tag);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void handle(MessageContext context) {
-        Entity entity = context.getPlayer().level.getEntity(this.entityId);
+        this.handleClient();
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Environment(EnvType.CLIENT)
+    public void handleClient() {
+        var level = Objects.requireNonNull(Minecraft.getInstance().level);
+        Entity entity = level.getEntity(this.entityId);
         if (entity instanceof LivingEntity livingEntity) {
             IPowerHandler handler = PowerManager.getPowerHandler(livingEntity).orElse(null);
-            Power power = PowerManager.getInstance(context.getPlayer().level).getPower(this.powerId);
+            Power power = PowerManager.getInstance(level).getPower(this.powerId);
 
             if (power != null && handler != null) {
                 IPowerHolder holder = handler.getPowerHolder(power);

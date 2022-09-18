@@ -13,7 +13,7 @@ public class SuitSetPowerProvider extends PowerProvider {
 
     @Override
     public void providePowers(LivingEntity entity, IPowerHandler handler) {
-        for (SuitSet suitSet : SuitSet.REGISTRY) {
+        for (SuitSet suitSet : SuitSet.REGISTRY.getValues()) {
             if (suitSet.isWearing(entity)) {
                 List<Power> powers = SuitSetPowerManager.getInstance().getPowerForSuitSet(suitSet);
 

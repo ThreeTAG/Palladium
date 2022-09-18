@@ -7,7 +7,7 @@ import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.PalladiumProperty;
-import net.threetag.palladium.util.property.SuitSetProperty;
+import net.threetag.palladium.util.property.SuitSetPropertyPalladium;
 import org.jetbrains.annotations.Nullable;
 
 public class WearsSuitSetCondition extends Condition {
@@ -30,7 +30,7 @@ public class WearsSuitSetCondition extends Condition {
 
     public static class Serializer extends ConditionSerializer {
 
-        public static final PalladiumProperty<SuitSet> SUIT_SET = new SuitSetProperty("suit_set").configurable("ID of the suit set that must be worn");
+        public static final PalladiumProperty<SuitSet> SUIT_SET = new SuitSetPropertyPalladium("suit_set").configurable("ID of the suit set that must be worn");
 
         public Serializer() {
             this.withProperty(SUIT_SET, null);

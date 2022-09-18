@@ -9,7 +9,7 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 public record AbilityEntryJS(AbilityEntry abilityEntry) {
 
     public ResourceLocation getType() {
-        return Ability.REGISTRY.getId(this.abilityEntry.getConfiguration().getAbility());
+        return Ability.REGISTRY.getKey(this.abilityEntry.getConfiguration().getAbility());
     }
 
     public boolean isUnlocked() {

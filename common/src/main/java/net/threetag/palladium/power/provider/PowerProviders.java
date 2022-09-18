@@ -6,7 +6,7 @@ import net.threetag.palladiumcore.registry.RegistrySupplier;
 
 public class PowerProviders {
 
-    public static final DeferredRegister<PowerProvider> PROVIDERS = DeferredRegister.create(Palladium.MOD_ID, PowerProvider.RESOURCE_KEY);
+    public static final DeferredRegister<PowerProvider> PROVIDERS = DeferredRegister.create(Palladium.MOD_ID, PowerProvider.REGISTRY);
 
     public static final RegistrySupplier<PowerProvider> SUPERPOWER = PROVIDERS.register("superpower", SuperpowerProvider::new);
     public static final RegistrySupplier<PowerProvider> EQUIPMENT_SLOTS = PROVIDERS.register("equipment_slots", EquipmentSlotPowerProvider::new);

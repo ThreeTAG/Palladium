@@ -9,6 +9,7 @@ import dev.latvian.mods.kubejs.script.BindingsEvent;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.client.model.animation.AnimationUtil;
 import net.threetag.palladium.compat.kubejs.ability.AbilityBuilder;
@@ -24,14 +25,17 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
     public static RegistryObjectBuilderTypes<Ability> ABILITY;
     public static RegistryObjectBuilderTypes<ConditionSerializer> CONDITION;
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void init() {
         PalladiumEvents.REGISTER_PROPERTY.register(handler -> new RegisterPalladiumPropertyEventJS(handler.getEntity(), handler).post(ScriptType.of(handler.getEntity().level), PalladiumJSEvents.REGISTER_PROPERTIES));
 
-        ABILITY = RegistryObjectBuilderTypes.add(Ability.RESOURCE_KEY, Ability.class);
+        ResourceKey key = Ability.REGISTRY.getRegistryKey();
+        ABILITY = RegistryObjectBuilderTypes.add(key, Ability.class);
         ABILITY.addType("basic", AbilityBuilder.class, AbilityBuilder::new);
 
-        CONDITION = RegistryObjectBuilderTypes.add(ConditionSerializer.RESOURCE_KEY, ConditionSerializer.class);
+        key = ConditionSerializer.REGISTRY.getRegistryKey();
+        CONDITION = RegistryObjectBuilderTypes.add(key, ConditionSerializer.class);
         CONDITION.addType("basic", ConditionBuilder.class, ConditionBuilder::new);
     }
 

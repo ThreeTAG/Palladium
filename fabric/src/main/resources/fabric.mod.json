@@ -34,7 +34,7 @@
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.19.1",
-    "architectury": ">=6.0.35",
+    "palladiumcore": ">=1.19.2-1.0.6",
     "com_electronwill_night-config_core": "*",
     "com_electronwill_night-config_toml": "*"
   },

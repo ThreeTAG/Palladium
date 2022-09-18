@@ -5,8 +5,6 @@ import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -30,6 +28,7 @@ import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
+import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -110,7 +109,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
 
             AddonArmorItem item = new AddonArmorItem(armorMaterial, slot, properties);
 
-            if (Platform.getEnvironment() == Env.CLIENT) {
+            if (Platform.isClient()) {
                 item.armorTexture = SkinTypedValue.fromJSON(json.get("armor_texture"), DynamicTexture::parse);
                 GsonUtil.ifHasKey(json, "armor_model_layer", jsonElement -> {
                     ArmorModelManager.register(item,

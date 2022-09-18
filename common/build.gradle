@@ -11,9 +11,7 @@ dependencies {
     modApi "net.threetag:PalladiumCore:${rootProject.palladiumcore_version}"
 
     // KubeJS
-    modCompileOnly("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}", {
-        exclude group: "dev.architectury"
-    })
+    modCompileOnly "dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}"
 
     // Pehkui
     modCompileOnly("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {

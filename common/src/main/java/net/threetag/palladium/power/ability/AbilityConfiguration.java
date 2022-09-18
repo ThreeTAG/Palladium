@@ -47,7 +47,7 @@ public class AbilityConfiguration {
 
     public Component getDisplayName() {
         Component title = this.propertyManager.get(Ability.TITLE);
-        ResourceLocation id = Ability.REGISTRY.getId(this.getAbility());
+        ResourceLocation id = Ability.REGISTRY.getKey(this.getAbility());
         return title != null ? title : Component.translatable("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath());
     }
 
@@ -90,7 +90,7 @@ public class AbilityConfiguration {
 
     public void toBuffer(FriendlyByteBuf buf) {
         buf.writeUtf(this.id);
-        buf.writeResourceLocation(Objects.requireNonNull(Ability.REGISTRY.getId(this.ability)));
+        buf.writeResourceLocation(Objects.requireNonNull(Ability.REGISTRY.getKey(this.ability)));
         this.propertyManager.toBuffer(buf);
         buf.writeBoolean(this.needsKey);
         buf.writeInt(this.keyType.ordinal());

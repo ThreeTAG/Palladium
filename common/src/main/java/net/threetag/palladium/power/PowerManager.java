@@ -4,10 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import dev.architectury.registry.ReloadListenerRegistry;
-import dev.architectury.utils.GameInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,10 +14,14 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
-import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.network.AddPowerMessage;
 import net.threetag.palladium.network.SyncPowersMessage;
+import net.threetag.palladiumcore.event.LivingEntityEvents;
+import net.threetag.palladiumcore.event.PlayerEvents;
+import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
+import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -34,18 +35,20 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
     private Map<ResourceLocation, Power> byName = ImmutableMap.of();
 
     public static void init() {
-        ReloadListenerRegistry.register(PackType.SERVER_DATA, INSTANCE = new PowerManager());
+        ReloadListenerRegistry.register(PackType.SERVER_DATA, Palladium.id("powers"), INSTANCE = new PowerManager());
 
-        PalladiumEvents.LIVING_UPDATE.register(entity -> PowerManager.getPowerHandler(entity).ifPresent(IPowerHandler::tick));
+        LivingEntityEvents.TICK.register(entity -> PowerManager.getPowerHandler(entity).ifPresent(IPowerHandler::tick));
 
-        PlayerEvent.PLAYER_JOIN.register(player -> {
-            new SyncPowersMessage(getInstance(player.level).byName).sendTo(player);
-            getPowerHandler(player).ifPresent(handler -> handler.getPowerHolders().forEach((provider, holder) -> new AddPowerMessage(player.getId(), holder.getPower().getId()).sendTo(player)));
+        PlayerEvents.JOIN.register(player -> {
+            if (player instanceof ServerPlayer serverPlayer) {
+                new SyncPowersMessage(getInstance(player.level).byName).send(serverPlayer);
+                getPowerHandler(player).ifPresent(handler -> handler.getPowerHolders().forEach((provider, holder) -> new AddPowerMessage(player.getId(), holder.getPower().getId()).send(serverPlayer)));
+            }
         });
 
-        PalladiumEvents.START_TRACKING.register((tracker, target) -> {
+        PlayerEvents.START_TRACKING.register((tracker, target) -> {
             if (target instanceof LivingEntity livingEntity && tracker instanceof ServerPlayer serverPlayer) {
-                getPowerHandler(livingEntity).ifPresent(handler -> handler.getPowerHolders().forEach((provider, holder) -> new AddPowerMessage(target.getId(), holder.getPower().getId()).sendTo(serverPlayer)));
+                getPowerHandler(livingEntity).ifPresent(handler -> handler.getPowerHolders().forEach((provider, holder) -> new AddPowerMessage(target.getId(), holder.getPower().getId()).send(serverPlayer)));
             }
         });
     }
@@ -76,10 +79,10 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
     }
 
     public static void syncPowersToAll(Map<ResourceLocation, Power> powers) {
-        MinecraftServer server = GameInstance.getServer();
+        MinecraftServer server = Platform.getCurrentServer();
         if (server != null) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                new SyncPowersMessage(powers).sendTo(player);
+                new SyncPowersMessage(powers).send(player);
             }
         }
     }

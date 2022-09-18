@@ -4,7 +4,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.accessory.AccessorySlot;
-import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladiumcore.network.MessageC2S;
 import net.threetag.palladiumcore.network.MessageContext;
 import net.threetag.palladiumcore.network.MessageType;
@@ -35,7 +34,7 @@ public class ToggleAccessoryMessage extends MessageC2S {
     @Override
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeUtf(this.slot.getName());
-        buf.writeResourceLocation(Objects.requireNonNull(Accessory.REGISTRY.getId(this.accessory)));
+        buf.writeResourceLocation(Objects.requireNonNull(Accessory.REGISTRY.getKey(this.accessory)));
     }
 
     @Override

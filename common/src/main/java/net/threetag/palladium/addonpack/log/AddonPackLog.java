@@ -1,6 +1,5 @@
 package net.threetag.palladium.addonpack.log;
 
-import dev.architectury.event.events.client.ClientGuiEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -8,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.client.screen.AddonPackLogScreen;
+import net.threetag.palladiumcore.event.ScreenEvents;
 import org.apache.logging.log4j.message.FormattedMessage;
 import org.apache.logging.log4j.message.Message;
 
@@ -53,9 +53,9 @@ public class AddonPackLog {
     }
 
     public static void setupButton() {
-        ClientGuiEvent.INIT_POST.register((screen, access) -> {
+        ScreenEvents.INIT_POST.register((screen) -> {
             if (PalladiumConfig.Client.ADDON_PACK_DEV_MODE.get() && screen instanceof TitleScreen) {
-                access.addRenderableWidget(new Button(10, 10, 200, 20, Component.translatable("gui.palladium.addon_pack_log"), (p_213079_1_) -> {
+                screen.addRenderableWidget(new Button(10, 10, 200, 20, Component.translatable("gui.palladium.addon_pack_log"), (p_213079_1_) -> {
                     Minecraft.getInstance().setScreen(new AddonPackLogScreen(AddonPackLog.getEntries(), screen));
                 }));
             }

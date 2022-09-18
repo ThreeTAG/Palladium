@@ -1,15 +1,13 @@
 package net.threetag.palladium.accessory;
 
 import com.mojang.datafixers.util.Pair;
-import dev.architectury.platform.Platform;
-import net.fabricmc.api.EnvType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.network.SyncAccessoriesMessage;
+import net.threetag.palladiumcore.util.Platform;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -30,12 +28,12 @@ public class AccessoryPlayerData {
             }
 
             if (!player.level.isClientSide)
-                new SyncAccessoriesMessage(player.getId(), this.accessories).sendToLevel((ServerLevel) player.level);
+                new SyncAccessoriesMessage(player.getId(), this.accessories).sendToDimension(player.level);
         }
     }
 
     public boolean canEnable(Accessory accessory, Player player) {
-        return Platform.getEnv() == EnvType.CLIENT || accessory.isAvailable(player);
+        return Platform.isClient() || accessory.isAvailable(player);
     }
 
     public void disable(AccessorySlot slot, @Nullable Accessory accessory, Player player) {
@@ -47,7 +45,7 @@ public class AccessoryPlayerData {
                 this.accessories.put(slot, new ArrayList<>());
             }
             if (!player.level.isClientSide)
-                new SyncAccessoriesMessage(player.getId(), this.accessories).sendToLevel((ServerLevel) player.level);
+                new SyncAccessoriesMessage(player.getId(), this.accessories).sendToDimension(player.level);
         }
     }
 
@@ -72,7 +70,7 @@ public class AccessoryPlayerData {
             this.accessories.put(slot, new ArrayList<>());
         }
         if (!player.level.isClientSide)
-            new SyncAccessoriesMessage(player.getId(), this.accessories).sendToLevel((ServerLevel) player.level);
+            new SyncAccessoriesMessage(player.getId(), this.accessories).sendToDimension(player.level);
     }
 
     public Map<AccessorySlot, Collection<Accessory>> getSlots() {
@@ -84,7 +82,7 @@ public class AccessoryPlayerData {
         this.accessories.forEach((slot, list) -> {
             ListTag listNBT = new ListTag();
             for (Accessory accessory : list) {
-                listNBT.add(StringTag.valueOf(Accessory.REGISTRY.getId(accessory).toString()));
+                listNBT.add(StringTag.valueOf(Accessory.REGISTRY.getKey(accessory).toString()));
             }
             nbt.put(slot.getName(), listNBT);
         });

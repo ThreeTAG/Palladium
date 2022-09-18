@@ -7,20 +7,19 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.architectury.event.events.client.ClientPlayerEvent;
-import dev.architectury.event.events.common.PlayerEvent;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.GameInstance;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessory;
+import net.threetag.palladiumcore.event.PlayerEvents;
+import net.threetag.palladiumcore.util.Platform;
 
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
@@ -41,19 +40,19 @@ public class SupporterHandler {
     private static boolean CHECK = false;
 
     public static void init() {
-        PlayerEvent.PLAYER_JOIN.register(player -> {
+        PlayerEvents.JOIN.register(player -> {
             SupporterHandler.loadPlayerData(player.getUUID());
 
-            if (CHECK && !SupporterHandler.getPlayerData(player.getUUID()).hasModAccess()) {
-                player.connection.disconnect(Component.literal("You are not allowed to use this mod!"));
+            if (player instanceof ServerPlayer serverPlayer && CHECK && !SupporterHandler.getPlayerData(player.getUUID()).hasModAccess()) {
+                serverPlayer.connection.disconnect(Component.literal("You are not allowed to use this mod!"));
             }
         });
     }
 
     @Environment(EnvType.CLIENT)
     public static void clientInit() {
-        ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(player -> SupporterHandler.loadPlayerData(player.getUUID()));
-        ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(player -> {
+        PlayerEvents.CLIENT_JOIN.register(player -> SupporterHandler.loadPlayerData(player.getUUID()));
+        PlayerEvents.CLIENT_QUIT.register(player -> {
             if (player != null)
                 DATA.remove(player.getUUID());
         });
@@ -66,8 +65,8 @@ public class SupporterHandler {
             DATA.put(uuid, data);
             Palladium.LOGGER.info("Successfully read user's supporter data! (" + uuid + ")");
 
-            if (GameInstance.getServer() != null) {
-                Player player = GameInstance.getServer().getPlayerList().getPlayer(uuid);
+            if (Platform.getCurrentServer() != null) {
+                Player player = Platform.getCurrentServer().getPlayerList().getPlayer(uuid);
 
                 if (player != null) {
                     Accessory.getPlayerData(player).ifPresent(accessoryData -> accessoryData.validate(player));
@@ -140,11 +139,11 @@ public class SupporterHandler {
             for (int i = 0; i < data.size(); i++) {
                 ResourceLocation id = new ResourceLocation(data.get(i).getAsString());
 
-                if(id.getNamespace().equalsIgnoreCase("threecore")) {
+                if (id.getNamespace().equalsIgnoreCase("threecore")) {
                     id = Palladium.id(id.getPath());
                 }
 
-                if (Accessory.REGISTRY.contains(id)) {
+                if (Accessory.REGISTRY.containsKey(id)) {
                     this.accessories.add(Accessory.REGISTRY.get(id));
                 }
             }
@@ -153,7 +152,7 @@ public class SupporterHandler {
 
             if (GsonHelper.isValidNode(json, "cloak")) {
                 this.hasCloak = true;
-                if (Platform.getEnv() == EnvType.CLIENT) {
+                if (Platform.isClient()) {
                     loadCloakTexture(GsonHelper.getAsString(json, "cloak"));
                 }
             } else {
@@ -183,7 +182,7 @@ public class SupporterHandler {
         }
 
         public boolean hasAccessory(Accessory accessory) {
-            return this.accessories.contains(accessory) || Platform.isDevelopmentEnvironment();
+            return this.accessories.contains(accessory) || !Platform.isProduction();
         }
 
         public List<Accessory> getAccessories() {

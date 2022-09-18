@@ -1,13 +1,13 @@
 package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
-import dev.architectury.platform.Platform;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.StringProperty;
+import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.Nullable;
 
 public class ModLoadedCondition extends Condition {

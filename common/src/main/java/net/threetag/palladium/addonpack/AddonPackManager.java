@@ -1,14 +1,9 @@
 package net.threetag.palladium.addonpack;
 
 import com.google.gson.JsonObject;
-import dev.architectury.event.CompoundEventResult;
-import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.injectables.targets.ArchitecturyTarget;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.Util;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.FolderRepositorySource;
@@ -22,6 +17,9 @@ import net.threetag.palladium.addonpack.log.AddonPackLogEntry;
 import net.threetag.palladium.addonpack.parser.*;
 import net.threetag.palladium.addonpack.version.VersionParsingException;
 import net.threetag.palladium.client.screen.AddonPackLogScreen;
+import net.threetag.palladiumcore.event.EventResult;
+import net.threetag.palladiumcore.event.ScreenEvents;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -67,7 +65,7 @@ public class AddonPackManager {
     }
 
     public File getLocation() {
-        File folder = Platform.getGameFolder().resolve("addonpacks").toFile();
+        File folder = Platform.getFolder().resolve("addonpacks").toFile();
         if (!folder.exists() && !folder.mkdirs())
             throw new RuntimeException("Could not create addonpacks directory! Please create the directory yourself, or make sure the name is not taken by a file and you have permission to create directories.");
         return folder;
@@ -138,23 +136,22 @@ public class AddonPackManager {
                 }
             }
 
-            if (Platform.getEnvironment() == Env.SERVER) {
+            if (Platform.isServer()) {
                 throw new RuntimeException(Arrays.toString(test.toArray()));
             } else {
-                ClientGuiEvent.SET_SCREEN.register(screen -> {
-                    if (screen instanceof TitleScreen) {
-                        Screen errors = new AddonPackLogScreen(dependencyConflicts.keySet().stream().map(packData -> {
+                ScreenEvents.OPENING.register((currentScreen, newScreen) -> {
+                    if (newScreen.get() instanceof TitleScreen) {
+                        newScreen.set(new AddonPackLogScreen(dependencyConflicts.keySet().stream().map(packData -> {
                             StringBuilder s = new StringBuilder("Addon Pack '" + packData.id() + "' requires ");
                             for (PackData.Dependency dependency : dependencyConflicts.get(packData)) {
                                 s.append(dependency.getId()).append(" ").append(Arrays.toString(dependency.getVersionRequirements().toArray())).append("; ");
                             }
                             s = new StringBuilder(s.substring(0, s.length() - 2));
                             return new AddonPackLogEntry(AddonPackLogEntry.Type.ERROR, s.toString());
-                        }).collect(Collectors.toList()), null);
-                        return CompoundEventResult.interruptTrue(errors);
+                        }).collect(Collectors.toList()), null));
                     }
 
-                    return CompoundEventResult.pass();
+                    return EventResult.pass();
                 });
             }
 

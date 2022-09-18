@@ -3,10 +3,9 @@ package net.threetag.palladium.addonpack;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import dev.architectury.platform.Mod;
-import dev.architectury.platform.Platform;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.addonpack.version.*;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.util.*;
 
@@ -108,14 +107,14 @@ public record PackData(String id, Version version, Map<String, List<Dependency>>
 
                 return this.matches(packData.version());
             } else {
-                Optional<Mod> mod = Platform.getOptionalMod(this.id);
+                var mod = Platform.getMod(this.id);
 
-                if (mod.isEmpty()) {
+                if (mod == null) {
                     return false;
                 }
 
                 try {
-                    Version version = VersionParser.parseSemantic(mod.get().getVersion());
+                    Version version = VersionParser.parseSemantic(mod.version());
                     return this.matches(version);
                 } catch (VersionParsingException e) {
                     e.printStackTrace();

@@ -3,7 +3,6 @@ package net.threetag.palladium.addonpack.parser;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import dev.architectury.registry.CreativeTabRegistry;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
@@ -19,6 +18,7 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
+import net.threetag.palladiumcore.registry.CreativeModeTabRegistry;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -36,7 +36,7 @@ public class CreativeModeTabParser extends SimpleJsonResourceReloadListener {
             try {
                 JsonObject json = GsonHelper.convertToJsonObject(jsonElement, "$");
                 ResourceLocation icon = GsonUtil.getAsResourceLocation(json, "icon");
-                CreativeTabRegistry.create(id, () -> new ItemStack(Registry.ITEM.get(icon)));
+                CreativeModeTabRegistry.create(id, () -> new ItemStack(Registry.ITEM.get(icon)));
                 i.getAndIncrement();
             } catch (Exception e) {
                 CrashReport crashReport = CrashReport.forThrowable(e, "Error while parsing addonpack creative mode tab " + " '" + id + "'");

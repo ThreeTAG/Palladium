@@ -2,9 +2,9 @@ package net.threetag.palladium.util.property;
 
 import net.threetag.palladium.item.SuitSet;
 
-public class SuitSetProperty extends RegistrarObjectProperty<SuitSet> {
+public class SuitSetPropertyPalladium extends PalladiumRegistryObjectProperty<SuitSet> {
 
-    public SuitSetProperty(String key) {
+    public SuitSetPropertyPalladium(String key) {
         super(key, SuitSet.REGISTRY);
     }
 

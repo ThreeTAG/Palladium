@@ -1,6 +1,5 @@
 package net.threetag.palladium.network;
 
-import dev.architectury.networking.NetworkManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -10,7 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.client.screen.AccessoryScreen;
-import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladiumcore.network.MessageContext;
 import net.threetag.palladiumcore.network.MessageS2C;
 import net.threetag.palladiumcore.network.MessageType;
@@ -60,18 +58,18 @@ public class SyncAccessoriesMessage extends MessageS2C {
             buf.writeUtf(slot.getName());
             buf.writeInt(accessories.size());
             for (Accessory accessory : accessories) {
-                buf.writeResourceLocation(Accessory.REGISTRY.getId(accessory));
+                buf.writeResourceLocation(Accessory.REGISTRY.getKey(accessory));
             }
         });
     }
 
     @Override
     public void handle(MessageContext context) {
-        this.handle();
+        this.handleClient();
     }
 
     @Environment(EnvType.CLIENT)
-    public void handle() {
+    public void handleClient() {
         Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityId);
 
         if (entity instanceof Player player) {

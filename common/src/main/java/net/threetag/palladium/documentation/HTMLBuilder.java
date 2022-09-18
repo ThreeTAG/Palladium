@@ -2,11 +2,10 @@ package net.threetag.palladium.documentation;
 
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
-import dev.architectury.platform.Mod;
-import dev.architectury.platform.Platform;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.util.Utils;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -110,8 +109,8 @@ public class HTMLBuilder {
         Map<String, List<IDocumentedConfigurable>> sorted = new HashMap<>();
         // Sort abilities by mods
         for (IDocumentedConfigurable setting : settings) {
-            Mod mod = Platform.getOptionalMod(setting.getId().getNamespace()).orElse(null);
-            String modName = mod != null ? mod.getName() : setting.getId().getNamespace();
+            var mod = Platform.getMod(setting.getId().getNamespace());
+            String modName = mod != null ? mod.name() : setting.getId().getNamespace();
             List<IDocumentedConfigurable> modsList = sorted.containsKey(modName) ? sorted.get(modName) : new ArrayList<>();
             modsList.add(setting);
             sorted.put(modName, modsList);

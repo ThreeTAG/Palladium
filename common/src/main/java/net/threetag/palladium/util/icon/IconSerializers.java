@@ -4,9 +4,10 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
 
+@SuppressWarnings("rawtypes")
 public class IconSerializers {
 
-    public static final DeferredRegister<IconSerializer<?>> ICON_SERIALIZERS = DeferredRegister.create(Palladium.MOD_ID, IconSerializer.RESOURCE_KEY);
+    public static final DeferredRegister<IconSerializer> ICON_SERIALIZERS = DeferredRegister.create(Palladium.MOD_ID, IconSerializer.REGISTRY);
 
     public static final RegistrySupplier<IconSerializer<ItemIcon>> ITEM = ICON_SERIALIZERS.register("item", ItemIcon.Serializer::new);
     public static final RegistrySupplier<IconSerializer<TexturedIcon>> TEXTURE = ICON_SERIALIZERS.register("texture", TexturedIcon.Serializer::new);

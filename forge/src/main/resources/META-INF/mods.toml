@@ -30,8 +30,8 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.palladium]]
-modId = "architectury"
+modId = "palladiumcore"
 mandatory = true
-versionRange = "[6.0.35,)"
+versionRange = "[1.19.2-1.0.6,)"
 ordering = "AFTER"
 side = "BOTH"

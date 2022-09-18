@@ -6,8 +6,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import dev.architectury.event.events.client.ClientGuiEvent;
-import dev.architectury.platform.Platform;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -33,6 +31,8 @@ import net.threetag.palladium.client.screen.components.EditButton;
 import net.threetag.palladium.client.screen.components.FlatIconButton;
 import net.threetag.palladium.network.ToggleAccessoryMessage;
 import net.threetag.palladium.util.SupporterHandler;
+import net.threetag.palladiumcore.event.ScreenEvents;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.util.Collection;
 
@@ -49,7 +49,7 @@ public class AccessoryScreen extends OptionsSubScreen {
     public float rotation = 180F;
 
     public static void addButton() {
-        ClientGuiEvent.INIT_POST.register((screen, access) -> {
+        ScreenEvents.INIT_POST.register((screen) -> {
             Button button = null;
             Component text = Component.translatable("gui.palladium.accessories");
 
@@ -74,7 +74,7 @@ public class AccessoryScreen extends OptionsSubScreen {
 
             if (button != null) {
                 button.active = Minecraft.getInstance().player != null && !Accessory.getAvailableAccessories(SupporterHandler.getPlayerData(Minecraft.getInstance().player.getGameProfile().getId())).isEmpty();
-                access.addRenderableWidget(button);
+                screen.addRenderableWidget(button);
             }
         });
     }
@@ -278,7 +278,7 @@ public class AccessoryScreen extends OptionsSubScreen {
                         accessories.addAll(a.getSlots().get(parent.currentSlot));
                     }
                 });
-                for (Accessory accessory : Accessory.REGISTRY) {
+                for (Accessory accessory : Accessory.REGISTRY.getValues()) {
                     if (accessory.getPossibleSlots().contains(parent.currentSlot) && accessory.isAvailable(Minecraft.getInstance().player)) {
                         this.addEntry(new AccessoryListEntry(accessory, this.parent, accessories.contains(accessory)));
                     }
@@ -319,7 +319,7 @@ public class AccessoryScreen extends OptionsSubScreen {
             Font fontRenderer = this.parent.font;
             Component name = this.accessory.getDisplayName();
 
-            if (Platform.isDevelopmentEnvironment() && !SupporterHandler.getPlayerData(Minecraft.getInstance().player.getUUID()).getAccessories().contains(this.accessory)) {
+            if (!Platform.isProduction() && !SupporterHandler.getPlayerData(Minecraft.getInstance().player.getUUID()).getAccessories().contains(this.accessory)) {
                 name = name.copy().withStyle(ChatFormatting.STRIKETHROUGH);
             }
 
@@ -334,7 +334,7 @@ public class AccessoryScreen extends OptionsSubScreen {
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int type) {
-            new ToggleAccessoryMessage(this.parent.currentSlot, this.accessory).sendToServer();
+            new ToggleAccessoryMessage(this.parent.currentSlot, this.accessory).send();
             this.parent.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             return false;
         }

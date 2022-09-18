@@ -2,7 +2,6 @@ package net.threetag.palladium.power;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.network.AddPowerMessage;
 import net.threetag.palladium.network.RemovePowerMessage;
@@ -30,7 +29,7 @@ public class PowerHandler implements IPowerHandler {
     @Override
     public void tick() {
         if (!this.entity.level.isClientSide) {
-            for (PowerProvider provider : PowerProvider.REGISTRY) {
+            for (PowerProvider provider : PowerProvider.REGISTRY.getValues()) {
                 provider.providePowers(this.entity, this);
             }
 
@@ -63,7 +62,7 @@ public class PowerHandler implements IPowerHandler {
             holder.firstTick();
 
             if (!this.entity.level.isClientSide) {
-                new AddPowerMessage(this.entity.getId(), holder.getPower().getId()).sendToLevel((ServerLevel) this.entity.level);
+                new AddPowerMessage(this.entity.getId(), holder.getPower().getId()).sendToDimension(this.entity.level);
             }
         }
     }
@@ -87,7 +86,7 @@ public class PowerHandler implements IPowerHandler {
             this.powers.remove(powerId);
 
             if (!this.entity.level.isClientSide) {
-                new RemovePowerMessage(this.entity.getId(), powerId).sendToLevel((ServerLevel) this.entity.level);
+                new RemovePowerMessage(this.entity.getId(), powerId).sendToDimension(this.entity.level);
             }
         }
     }

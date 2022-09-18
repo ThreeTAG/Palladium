@@ -2,8 +2,6 @@ package net.threetag.palladium.entity;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.architectury.extensions.network.EntitySpawnExtension;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleType;
@@ -24,13 +22,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.threetag.palladiumcore.network.ExtendedEntitySpawnData;
+import net.threetag.palladiumcore.network.NetworkManager;
 
 import java.awt.*;
 import java.util.List;
 import java.util.*;
 import java.util.function.Function;
 
-public class CustomProjectile extends ThrowableProjectile implements EntitySpawnExtension {
+public class CustomProjectile extends ThrowableProjectile implements ExtendedEntitySpawnData {
 
     public static final Map<String, Function<CompoundTag, Appearance>> APPEARANCE_REGISTRY = new HashMap<>();
     public float damage = 3F;

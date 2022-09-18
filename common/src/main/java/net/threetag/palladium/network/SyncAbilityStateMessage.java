@@ -1,11 +1,12 @@
 package net.threetag.palladium.network;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityEntry;
@@ -68,6 +69,11 @@ public class SyncAbilityStateMessage extends MessageS2C {
 
     @Override
     public void handle(MessageContext context) {
+        this.handleClient();
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void handleClient() {
         Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityId);
 
         if (entity instanceof LivingEntity livingEntity) {

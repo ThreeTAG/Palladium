@@ -1,10 +1,11 @@
 package net.threetag.palladium.network;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladiumcore.network.MessageContext;
 import net.threetag.palladiumcore.network.MessageS2C;
@@ -38,7 +39,13 @@ public class RemovePowerMessage extends MessageS2C {
 
     @Override
     public void handle(MessageContext context) {
-        if (Minecraft.getInstance().level.getEntity(this.entityId) instanceof LivingEntity livingEntity) {
+        this.handleClient();
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void handleClient() {
+        var level = Minecraft.getInstance().level;
+        if (level != null && level.getEntity(this.entityId) instanceof LivingEntity livingEntity) {
             PowerManager.getPowerHandler(livingEntity).ifPresent(handler -> handler.removePowerHolder(this.powerId));
         }
     }

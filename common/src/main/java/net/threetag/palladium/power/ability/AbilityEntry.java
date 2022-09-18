@@ -1,7 +1,6 @@
 package net.threetag.palladium.power.ability;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.condition.Condition;
@@ -59,9 +58,9 @@ public class AbilityEntry {
             PalladiumProperty property1 = property;
             tag.put(property.getKey(), property1.toNBT(this.propertyManager.get(property)));
             if (syncType == SyncType.EVERYONE) {
-                new SyncAbilityEntryPropertyMessage(entity.getId(), holder.getPower().getId(), abilityConfiguration.getId(), property.getKey(), tag).sendToLevel((ServerLevel) entity.level);
+                new SyncAbilityEntryPropertyMessage(entity.getId(), holder.getPower().getId(), abilityConfiguration.getId(), property.getKey(), tag).sendToDimension(entity.level);
             } else if (syncType == SyncType.SELF && entity instanceof ServerPlayer serverPlayer) {
-                new SyncAbilityEntryPropertyMessage(entity.getId(), holder.getPower().getId(), abilityConfiguration.getId(), property.getKey(), tag).sendTo(serverPlayer);
+                new SyncAbilityEntryPropertyMessage(entity.getId(), holder.getPower().getId(), abilityConfiguration.getId(), property.getKey(), tag).send(serverPlayer);
             }
         }
     }
@@ -173,7 +172,7 @@ public class AbilityEntry {
     }
 
     public void syncState(LivingEntity entity) {
-        new SyncAbilityStateMessage(entity.getId(), this.holder.getPower().getId(), this.abilityConfiguration.getId(), this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer).sendToLevel((ServerLevel) entity.getLevel());
+        new SyncAbilityStateMessage(entity.getId(), this.holder.getPower().getId(), this.abilityConfiguration.getId(), this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer).sendToDimension(entity.getLevel());
     }
 
     public void startCooldown(LivingEntity entity, int cooldown) {

@@ -5,7 +5,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import dev.architectury.utils.GameInstance;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -18,6 +17,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.util.property.PalladiumProperties;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -27,7 +27,7 @@ import java.util.Objects;
 public class SuperpowerCommand {
 
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_POWERS = (context, builder) -> {
-        Collection<Power> powers = PowerManager.getInstance(Objects.requireNonNull(GameInstance.getServer()).overworld()).getPowers();
+        Collection<Power> powers = PowerManager.getInstance(Objects.requireNonNull(Platform.getCurrentServer()).overworld()).getPowers();
         return SharedSuggestionProvider.suggestResource(powers.stream().map(Power::getId), builder);
     };
 

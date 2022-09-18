@@ -3,7 +3,6 @@ package net.threetag.palladium.client.screen.power;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.architectury.event.events.client.ClientGuiEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
@@ -23,6 +22,7 @@ import net.threetag.palladium.power.PowerHandler;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
+import net.threetag.palladiumcore.event.ScreenEvents;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class PowersScreen extends Screen {
 
     @SuppressWarnings("rawtypes")
     public static void register() {
-        ClientGuiEvent.INIT_POST.register((screen, access) -> {
+        ScreenEvents.INIT_POST.register((screen) -> {
 
             int abilityButtonXPos = -1;
             int abilityButtonYPos = -1;
@@ -80,7 +80,7 @@ public class PowersScreen extends Screen {
             if (abilityButtonXPos > 0 && abilityButtonYPos > 0) {
                 int finalAbilityButtonXPos = abilityButtonXPos;
                 int finalAbilityButtonYPos = abilityButtonYPos;
-                access.addRenderableWidget(new IconButton(finalAbilityButtonXPos, finalAbilityButtonYPos, new ItemIcon(ItemStack.EMPTY), b -> Minecraft.getInstance().setScreen(new PowersScreen()), (button, matrixStack, mouseX, mouseY) -> screen.renderTooltip(matrixStack, TITLE, mouseX, mouseY)) {
+                screen.addRenderableWidget(new IconButton(finalAbilityButtonXPos, finalAbilityButtonYPos, new ItemIcon(ItemStack.EMPTY), b -> Minecraft.getInstance().setScreen(new PowersScreen()), (button, matrixStack, mouseX, mouseY) -> screen.renderTooltip(matrixStack, TITLE, mouseX, mouseY)) {
                     @Override
                     public IIcon getIcon() {
                         List<IIcon> icons = Lists.newArrayList();

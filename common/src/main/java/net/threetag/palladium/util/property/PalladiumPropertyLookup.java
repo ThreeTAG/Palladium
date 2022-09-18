@@ -27,7 +27,7 @@ public class PalladiumPropertyLookup {
         register("pose", PoseProperty::new);
         register("sound_event", SoundEventProperty::new);
         register("string_array", StringArrayProperty::new);
-        register("suit_set", SuitSetProperty::new);
+        register("suit_set", SuitSetPropertyPalladium::new);
         register("uuid", UUIDProperty::new);
         register("equipment_slot", EquipmentSlotProperty::new);
         register("ingredient", IngredientProperty::new);

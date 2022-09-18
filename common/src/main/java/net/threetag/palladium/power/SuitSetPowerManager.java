@@ -1,15 +1,16 @@
 package net.threetag.palladium.power;
 
 import com.google.gson.*;
-import dev.architectury.registry.ReloadListenerRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.item.SuitSet;
+import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -22,7 +23,7 @@ public class SuitSetPowerManager extends SimpleJsonResourceReloadListener {
     private final Map<SuitSet, List<Power>> suitSetPowers = new HashMap<>();
 
     public static void init() {
-        ReloadListenerRegistry.register(PackType.SERVER_DATA, INSTANCE = new SuitSetPowerManager());
+        ReloadListenerRegistry.register(PackType.SERVER_DATA, Palladium.id("suit_set_powers"), INSTANCE = new SuitSetPowerManager());
     }
 
     public SuitSetPowerManager() {
@@ -38,10 +39,22 @@ public class SuitSetPowerManager extends SimpleJsonResourceReloadListener {
 
                 List<Power> powers = new ArrayList<>();
                 if (jsonObject.get("power").isJsonPrimitive()) {
-                    powers = List.of(PowerManager.getInstance(null).getPower(new ResourceLocation(jsonObject.get("power").getAsString())));
+                    var power = PowerManager.getInstance(null).getPower(new ResourceLocation(jsonObject.get("power").getAsString()));
+
+                    if(power == null) {
+                        AddonPackLog.warning("Unknown power used for suit set '" + jsonObject.get("power").getAsString() + "'");
+                    } else {
+                        powers.add(power);
+                    }
                 } else if (jsonObject.get("power").isJsonArray()) {
                     for (JsonElement jsonElement : GsonHelper.getAsJsonArray(jsonObject, "power")) {
-                        powers.add(PowerManager.getInstance(null).getPower(new ResourceLocation(jsonElement.getAsString())));
+                        var power = PowerManager.getInstance(null).getPower(new ResourceLocation(jsonElement.getAsString()));
+
+                        if(power == null) {
+                            AddonPackLog.warning("Unknown power used for suit set '" + jsonElement.getAsString() + "'");
+                        } else {
+                            powers.add(power);
+                        }
                     }
                 } else {
                     throw new JsonSyntaxException("Expected power to be string or array of strings");
@@ -51,7 +64,7 @@ public class SuitSetPowerManager extends SimpleJsonResourceReloadListener {
                 if (jsonObject.get("suit_set").isJsonPrimitive()) {
                     ResourceLocation suitSetId = new ResourceLocation(jsonObject.get("suit_set").getAsString());
 
-                    if (!SuitSet.REGISTRY.contains(suitSetId)) {
+                    if (!SuitSet.REGISTRY.containsKey(suitSetId)) {
                         throw new JsonParseException("Unknown suit set '" + suitSetId + "'");
                     }
 
@@ -60,7 +73,7 @@ public class SuitSetPowerManager extends SimpleJsonResourceReloadListener {
                     for (JsonElement jsonElement : GsonHelper.getAsJsonArray(jsonObject, "suit_set")) {
                         ResourceLocation suitSetId = new ResourceLocation(jsonElement.getAsString());
 
-                        if (!SuitSet.REGISTRY.contains(suitSetId)) {
+                        if (!SuitSet.REGISTRY.containsKey(suitSetId)) {
                             throw new JsonParseException("Unknown suit set '" + suitSetId + "'");
                         }
 

@@ -1,10 +1,10 @@
 package net.threetag.palladium.util;
 
-import dev.architectury.platform.Platform;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.minecraft.world.level.block.Block;
+import net.threetag.palladiumcore.util.Platform;
 
 public class PoiTypeUtil {
 

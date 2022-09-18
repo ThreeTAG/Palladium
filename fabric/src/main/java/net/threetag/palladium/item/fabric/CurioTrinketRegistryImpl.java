@@ -1,14 +1,14 @@
 package net.threetag.palladium.item.fabric;
 
-import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.threetag.palladium.client.renderer.item.CurioTrinketRenderer;
 import net.threetag.palladium.compat.trinkets.fabric.TrinketsCompat;
 import net.threetag.palladium.item.CurioTrinket;
-import net.threetag.palladium.client.renderer.item.CurioTrinketRenderer;
+import net.threetag.palladiumcore.util.Platform;
 
 public class CurioTrinketRegistryImpl {
 

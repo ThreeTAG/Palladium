@@ -1,7 +1,6 @@
 package net.threetag.palladium.power;
 
 import com.google.gson.*;
-import dev.architectury.registry.ReloadListenerRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -10,7 +9,9 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
+import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class ItemPowerManager extends SimpleJsonResourceReloadListener {
     private final Map<String, Map<Item, List<Power>>> itemPowers = new HashMap<>();
 
     public static void init() {
-        ReloadListenerRegistry.register(PackType.SERVER_DATA, INSTANCE = new ItemPowerManager());
+        ReloadListenerRegistry.register(PackType.SERVER_DATA, Palladium.id("item_powers"), INSTANCE = new ItemPowerManager());
     }
 
     public ItemPowerManager() {
@@ -43,10 +44,22 @@ public class ItemPowerManager extends SimpleJsonResourceReloadListener {
 
                 List<Power> powers = new ArrayList<>();
                 if (jsonObject.get("power").isJsonPrimitive()) {
-                    powers = List.of(PowerManager.getInstance(null).getPower(new ResourceLocation(jsonObject.get("power").getAsString())));
+                    var power = PowerManager.getInstance(null).getPower(new ResourceLocation(jsonObject.get("power").getAsString()));
+
+                    if(power == null) {
+                        AddonPackLog.warning("Unknown power used for item '" + jsonObject.get("power").getAsString() + "'");
+                    } else {
+                        powers.add(power);
+                    }
                 } else if (jsonObject.get("power").isJsonArray()) {
                     for (JsonElement jsonElement : GsonHelper.getAsJsonArray(jsonObject, "power")) {
-                        powers.add(PowerManager.getInstance(null).getPower(new ResourceLocation(jsonElement.getAsString())));
+                        var power = PowerManager.getInstance(null).getPower(new ResourceLocation(jsonElement.getAsString()));
+
+                        if(power == null) {
+                            AddonPackLog.warning("Unknown power used for item '" + jsonElement.getAsString() + "'");
+                        } else {
+                            powers.add(power);
+                        }
                     }
                 } else {
                     throw new JsonSyntaxException("Expected power to be string or array of strings");

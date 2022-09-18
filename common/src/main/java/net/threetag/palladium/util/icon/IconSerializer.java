@@ -4,28 +4,25 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
-import dev.architectury.registry.registries.Registrar;
-import dev.architectury.registry.registries.Registries;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDocumentedConfigurable;
 import net.threetag.palladium.util.json.GsonUtil;
+import net.threetag.palladiumcore.registry.PalladiumRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("rawtypes")
 public abstract class IconSerializer<T extends IIcon> implements IDocumentedConfigurable {
 
-    public static final ResourceKey<Registry<IconSerializer<?>>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "icon_serializers"));
-    public static final Registrar<IconSerializer<?>> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new IconSerializer<?>[0]).build();
+    public static final PalladiumRegistry<IconSerializer> REGISTRY = PalladiumRegistry.create(IconSerializer.class, Palladium.id("icon_serializers"));
 
     public static IIcon parseJSON(JsonElement json) {
         if (json.isJsonPrimitive()) {
@@ -45,7 +42,7 @@ public abstract class IconSerializer<T extends IIcon> implements IDocumentedConf
         } else if (json.isJsonObject()) {
             ResourceLocation id = new ResourceLocation(GsonHelper.getAsString(json.getAsJsonObject(), "type"));
 
-            if (!REGISTRY.contains(id)) {
+            if (!REGISTRY.containsKey(id)) {
                 throw new JsonParseException("Unknown icon type '" + id + "'");
             }
 
@@ -66,7 +63,7 @@ public abstract class IconSerializer<T extends IIcon> implements IDocumentedConf
             IconSerializer serializer = icon.getSerializer();
             JsonObject json = serializer.toJSON(icon);
             JsonObject json2 = new JsonObject();
-            json2.addProperty("type", Objects.requireNonNull(REGISTRY.getId(serializer)).toString());
+            json2.addProperty("type", Objects.requireNonNull(REGISTRY.getKey(serializer)).toString());
             return GsonUtil.merge(json2, json);
         }
     }
@@ -74,7 +71,7 @@ public abstract class IconSerializer<T extends IIcon> implements IDocumentedConf
     public static IIcon parseNBT(CompoundTag tag) {
         ResourceLocation id = new ResourceLocation(tag.getString("Type"));
 
-        if (!REGISTRY.contains(id)) {
+        if (!REGISTRY.containsKey(id)) {
             return null;
         }
 
@@ -86,14 +83,14 @@ public abstract class IconSerializer<T extends IIcon> implements IDocumentedConf
     public static CompoundTag serializeNBT(IIcon icon) {
         IconSerializer serializer = icon.getSerializer();
         CompoundTag nbt = serializer.toNBT(icon);
-        nbt.putString("Type", Objects.requireNonNull(REGISTRY.getId(serializer)).toString());
+        nbt.putString("Type", Objects.requireNonNull(REGISTRY.getKey(serializer)).toString());
         return nbt;
     }
 
     public static HTMLBuilder documentationBuilder() {
         return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "icons"), "Icons")
                 .add(HTMLBuilder.heading("Icons"))
-                .addDocumentationSettings(REGISTRY.entrySet().stream().map(Map.Entry::getValue).sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
+                .addDocumentationSettings(REGISTRY.getValues().stream().sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
     }
 
     @NotNull
@@ -107,6 +104,6 @@ public abstract class IconSerializer<T extends IIcon> implements IDocumentedConf
 
     @Override
     public ResourceLocation getId() {
-        return REGISTRY.getId(this);
+        return REGISTRY.getKey(this);
     }
 }

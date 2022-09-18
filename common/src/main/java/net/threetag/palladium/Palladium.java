@@ -35,7 +35,8 @@ import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.icon.IconSerializers;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperties;
-import net.threetag.palladium.world.PalladiumFeatures;
+import net.threetag.palladiumcore.event.CommandEvents;
+import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.util.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,7 +56,7 @@ public class Palladium {
         ConditionSerializers.CONDITION_SERIALIZERS.register();
         PowerProviders.PROVIDERS.register();
         IconSerializers.ICON_SERIALIZERS.register();
-        PalladiumFeatures.FEATURES.register();
+//        PalladiumFeatures.FEATURES.register();
         PalladiumAttributes.ATTRIBUTES.register();
         EntityEffects.EFFECTS.register();
         PalladiumEntityTypes.ENTITIES.register();
@@ -77,8 +78,8 @@ public class Palladium {
         SupporterHandler.init();
         Accessory.init();
 
-        LifecycleEvent.SETUP.register(() -> {
-            PalladiumFeatures.init();
+        LifecycleEvents.SETUP.register(() -> {
+//            PalladiumFeatures.init();
             Palladium.generateDocumentation();
 
             if (Platform.isModLoaded("pehkui")) {
@@ -86,7 +87,7 @@ public class Palladium {
             }
         });
 
-        CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> SuperpowerCommand.register(dispatcher));
+        CommandEvents.REGISTER.register((dispatcher, selection) -> SuperpowerCommand.register(dispatcher));
 
         if (!Platform.isProduction()) {
             PalladiumDebug.init();

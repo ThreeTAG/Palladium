@@ -3,19 +3,19 @@ package net.threetag.palladium.util.property;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
-import dev.architectury.registry.registries.Registrar;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladiumcore.registry.PalladiumRegistry;
 
 import java.util.Objects;
 
-public class RegistrarObjectProperty<T> extends PalladiumProperty<T> {
+public class PalladiumRegistryObjectProperty<T> extends PalladiumProperty<T> {
 
-    private final Registrar<T> registry;
+    private final PalladiumRegistry<T> registry;
 
-    public RegistrarObjectProperty(String key, Registrar<T> registry) {
+    public PalladiumRegistryObjectProperty(String key, PalladiumRegistry<T> registry) {
         super(key);
         this.registry = registry;
     }
@@ -24,10 +24,10 @@ public class RegistrarObjectProperty<T> extends PalladiumProperty<T> {
     public T fromJSON(JsonElement jsonElement) {
         ResourceLocation id = new ResourceLocation(jsonElement.getAsString());
 
-        if (this.registry.contains(id)) {
+        if (this.registry.get(id) != null) {
             return this.registry.get(id);
         } else {
-            throw new JsonParseException("Unknown " + this.registry.key().toString() + " '" + id + "'");
+            throw new JsonParseException("Unknown " + this.registry.getRegistryKey().location().toString() + " '" + id + "'");
         }
     }
 
@@ -41,7 +41,7 @@ public class RegistrarObjectProperty<T> extends PalladiumProperty<T> {
         if (tag instanceof StringTag stringTag) {
             ResourceLocation id = new ResourceLocation(stringTag.getAsString());
 
-            if (this.registry.contains(id)) {
+            if (this.registry.get(id) != null) {
                 return this.registry.get(id);
             }
         }
@@ -61,7 +61,7 @@ public class RegistrarObjectProperty<T> extends PalladiumProperty<T> {
     @SuppressWarnings("unchecked")
     @Override
     public void toBuffer(FriendlyByteBuf buf, Object value) {
-        buf.writeResourceLocation(Objects.requireNonNull(this.registry.getId((T) value)));
+        buf.writeResourceLocation(Objects.requireNonNull(this.registry.getKey((T) value)));
     }
 
     @Override

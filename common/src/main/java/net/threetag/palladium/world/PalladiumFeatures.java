@@ -1,6 +1,5 @@
 package net.threetag.palladium.world;
 
-import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.FeatureUtils;
@@ -8,7 +7,6 @@ import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -71,13 +69,13 @@ public class PalladiumFeatures {
         PLACED_UNDERGROUND_METEORITE = register("underground_meteorite", CONFIGURED_UNDERGROUND_METEORITE, RarityFilter.onAverageOnceEvery(24), InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(30)), BiomeFilter.biome());
 
         // TODO turn into json?
-        BiomeModifications.addProperties(biomeContext -> true, (biomeContext, mutable) -> {
-            mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PLACED_ORE_LEAD_UPPER);
-            mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PLACED_ORE_LEAD_MIDDLE);
-            mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PLACED_ORE_LEAD_SMALL);
-            mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PLACED_FLUX_CRYSTAL_GEODE);
-            mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PLACED_UNDERGROUND_METEORITE);
-        });
+//        BiomeModifications.addProperties(biomeContext -> true, (biomeContext, mutable) -> {
+//            mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PLACED_ORE_LEAD_UPPER);
+//            mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PLACED_ORE_LEAD_MIDDLE);
+//            mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PLACED_ORE_LEAD_SMALL);
+//            mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PLACED_FLUX_CRYSTAL_GEODE);
+//            mutable.getGenerationProperties().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PLACED_UNDERGROUND_METEORITE);
+//        });
     }
 
     public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> register(String string, F feature, FC featureConfiguration) {

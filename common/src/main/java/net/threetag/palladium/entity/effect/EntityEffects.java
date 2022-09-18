@@ -15,7 +15,7 @@ public class EntityEffects {
     public static void init() {
         PalladiumEvents.REGISTER_PROPERTY.register(handler -> {
             if (handler.getEntity() instanceof EffectEntity) {
-                for (EntityEffect entityEffect : EntityEffect.REGISTRY) {
+                for (EntityEffect entityEffect : EntityEffect.REGISTRY.getValues()) {
                     entityEffect.registerProperties(handler);
                 }
             }

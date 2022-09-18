@@ -54,7 +54,7 @@ dependencies {
     modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}"
 
     // REI
-    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rootProject.rei_version}"
+//    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rootProject.rei_version}"
 
     // Trinkets
     modImplementation ("dev.emi:trinkets:${rootProject.trinkets_version}") {

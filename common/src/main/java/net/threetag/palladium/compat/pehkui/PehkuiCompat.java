@@ -4,12 +4,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.SizeAbility;
 import net.threetag.palladium.util.SizeUtil;
+import net.threetag.palladiumcore.event.LivingEntityEvents;
 import virtuoel.pehkui.api.*;
 
 import java.util.Collection;
@@ -22,7 +22,7 @@ public class PehkuiCompat extends SizeUtil {
     public static void init() {
         SizeUtil.setInstance(new PehkuiCompat());
         ScaleTypes.BASE.getDefaultBaseValueModifiers().add(ABILITY_MODIFIER);
-        PalladiumEvents.LIVING_UPDATE.register(entity -> {
+        LivingEntityEvents.TICK.register(entity -> {
             float scale = getAbilityMultiplier(entity);
 
             if (scale != ABILITY_SCALE.getScaleData(entity).getTargetScale()) {

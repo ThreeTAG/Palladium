@@ -1,7 +1,5 @@
 package net.threetag.palladium.entity;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvents;
@@ -10,20 +8,21 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.sound.FlightSound;
 import net.threetag.palladium.util.PlayerUtil;
 import net.threetag.palladium.util.property.PalladiumProperties;
+import net.threetag.palladiumcore.event.LivingEntityEvents;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 public class FlightHandler {
 
-    
+
     public static Object SOUND;
 
     public static void init() {
-        PalladiumEvents.LIVING_UPDATE.register(FlightHandler::handleFlight);
+        LivingEntityEvents.TICK.register(FlightHandler::handleFlight);
     }
 
     private static void handleFlight(LivingEntity entity) {
@@ -135,13 +134,13 @@ public class FlightHandler {
     }
 
     public static void startSound(LivingEntity entity) {
-        if (SOUND == null && Platform.getEnvironment() == Env.CLIENT)
+        if (SOUND == null && Platform.isClient())
             if (entity == Minecraft.getInstance().player)
                 Minecraft.getInstance().getSoundManager().play((SoundInstance) (SOUND = new FlightSound(entity, SoundEvents.ELYTRA_FLYING, SoundSource.PLAYERS)));
     }
 
     public static void stopSound(LivingEntity entity) {
-        if (SOUND != null && Platform.getEnvironment() == Env.CLIENT)
+        if (SOUND != null && Platform.isClient())
             if (entity == Minecraft.getInstance().player) {
                 ((FlightSound) SOUND).stop = true;
             }

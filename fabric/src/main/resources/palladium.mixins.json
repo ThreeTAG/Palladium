@@ -4,16 +4,14 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "HumanoidArmorLayerMixin",
-    "LivingEntityRendererMixin",
-    "LocalPlayerMixin"
+    "LivingEntityRendererMixin"
   ],
   "mixins": [
     "IEnergyStorageMixin",
     "LivingEntityMixin",
     "PackRepositoryMixin",
     "PackTypeMixin",
-    "ReloadableResourceManagerMixin",
-    "ServerEntityMixin"
+    "ReloadableResourceManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

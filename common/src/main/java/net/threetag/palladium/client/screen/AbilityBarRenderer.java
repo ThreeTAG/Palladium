@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import dev.architectury.event.events.client.ClientTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
@@ -24,19 +23,21 @@ import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityColor;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladiumcore.event.ClientTickEvents;
+import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AbilityBarRenderer implements IIngameOverlay {
+public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(Palladium.MOD_ID, "textures/gui/ability_bar.png");
     public static List<AbilityList> ABILITY_LISTS = new ArrayList<>();
     public static int SELECTED = 0;
 
     public AbilityBarRenderer() {
-        ClientTickEvent.CLIENT_POST.register(instance -> updateCurrentLists());
+        ClientTickEvents.CLIENT_POST.register(instance -> updateCurrentLists());
     }
 
     public static AbilityList getSelectedList() {

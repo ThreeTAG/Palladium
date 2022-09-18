@@ -1,8 +1,6 @@
 package net.threetag.palladium.compat.trinkets.fabric;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
 import dev.emi.trinkets.TrinketSlot;
 import dev.emi.trinkets.TrinketsMain;
 import dev.emi.trinkets.api.*;
@@ -18,13 +16,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.threetag.palladium.item.CurioTrinket;
 import net.threetag.palladium.client.renderer.item.CurioTrinketRenderer;
+import net.threetag.palladium.item.CurioTrinket;
 import net.threetag.palladium.power.provider.PowerProvider;
+import net.threetag.palladiumcore.registry.DeferredRegister;
+import net.threetag.palladiumcore.registry.RegistrySupplier;
 
 public class TrinketsCompat {
 
-    public static final DeferredRegister<PowerProvider> FACTORIES = DeferredRegister.create(TrinketsMain.MOD_ID, PowerProvider.RESOURCE_KEY);
+    public static final DeferredRegister<PowerProvider> FACTORIES = DeferredRegister.create(TrinketsMain.MOD_ID, PowerProvider.REGISTRY);
     public static final RegistrySupplier<PowerProvider> TRINKETS = FACTORIES.register("trinkets", TrinketsPowerProvider::new);
 
     public static void init() {

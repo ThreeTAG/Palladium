@@ -1,22 +1,17 @@
 package net.threetag.palladium.item;
 
-import dev.architectury.registry.registries.Registrar;
-import dev.architectury.registry.registries.Registries;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladiumcore.registry.PalladiumRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
 public class SuitSet {
 
-    public static final ResourceKey<Registry<SuitSet>> RESOURCE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(Palladium.MOD_ID, "suit_sets"));
-    public static final Registrar<SuitSet> REGISTRY = Registries.get(Palladium.MOD_ID).builder(RESOURCE_KEY.location(), new SuitSet[0]).build();
+    public static final PalladiumRegistry<SuitSet> REGISTRY = PalladiumRegistry.create(SuitSet.class, Palladium.id("suit_sets"));
 
     private final Supplier<Item> mainHand, offHand, helmet, chestplate, leggings, boots;
 

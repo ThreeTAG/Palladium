@@ -1,8 +1,9 @@
 package net.threetag.palladium.network;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.ClientPowerManager;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladiumcore.network.MessageContext;
@@ -46,6 +47,11 @@ public class SyncPowersMessage extends MessageS2C {
 
     @Override
     public void handle(MessageContext context) {
+        this.handleClient();
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void handleClient() {
         ClientPowerManager.updatePowers(this.powers);
     }
 }
