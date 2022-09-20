@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladiumcore.network.MessageContext;
 import net.threetag.palladiumcore.network.MessageS2C;
@@ -44,7 +45,7 @@ public class AddPowerMessage extends MessageS2C {
 
     @Environment(EnvType.CLIENT)
     public void handleClient() {
-        var level = Minecraft.getInstance().level;
+        Level level = Minecraft.getInstance().level;
         if (level != null && level.getEntity(this.entityId) instanceof LivingEntity livingEntity) {
             PowerManager.getPowerHandler(livingEntity).ifPresent(handler -> handler.addPower(PowerManager.getInstance(level).getPower(this.powerId)));
         }

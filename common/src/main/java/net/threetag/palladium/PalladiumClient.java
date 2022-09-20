@@ -1,10 +1,14 @@
 package net.threetag.palladium;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeableLeatherItem;
@@ -24,12 +28,14 @@ import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerRenderer;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
 import net.threetag.palladium.client.screen.AccessoryScreen;
+import net.threetag.palladium.client.screen.AddonPackLogScreen;
 import net.threetag.palladium.client.screen.power.PowersScreen;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.event.PalladiumClientEvents;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.util.SupporterHandler;
 import net.threetag.palladiumcore.event.LifecycleEvents;
+import net.threetag.palladiumcore.event.ScreenEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
 import net.threetag.palladiumcore.registry.client.ColorHandlerRegistry;
 import net.threetag.palladiumcore.registry.client.EntityRendererRegistry;
@@ -46,7 +52,7 @@ public class PalladiumClient {
         PowersScreen.register();
         AccessoryScreen.addButton();
         SupporterHandler.clientInit();
-        AddonPackLog.setupButton();
+        setupDevLogButton();
 
         // During Setup
         LifecycleEvents.SETUP.register(PalladiumClient::blockRenderTypes);
@@ -86,6 +92,17 @@ public class PalladiumClient {
 
     public static void colorHandlers() {
         ColorHandlerRegistry.registerItemColors((itemStack, i) -> i > 0 ? -1 : ((DyeableLeatherItem) itemStack.getItem()).getColor(itemStack), PalladiumItems.VIBRANIUM_WEAVE_BOOTS);
+    }
+
+    public static void setupDevLogButton() {
+        // TODO make button less ugly
+        ScreenEvents.INIT_POST.register((screen) -> {
+            if (PalladiumConfig.Client.ADDON_PACK_DEV_MODE.get() && screen instanceof TitleScreen) {
+                screen.addRenderableWidget(new Button(10, 10, 200, 20, Component.translatable("gui.palladium.addon_pack_log"), (p_213079_1_) -> {
+                    Minecraft.getInstance().setScreen(new AddonPackLogScreen(AddonPackLog.getEntries(), screen));
+                }));
+            }
+        });
     }
 
 }

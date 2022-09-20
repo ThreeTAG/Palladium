@@ -1,14 +1,11 @@
 package net.threetag.palladium.power;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 public class ClientPowerManager extends PowerManager {
 
     private static final Map<ResourceLocation, Power> POWERS = new HashMap<>();

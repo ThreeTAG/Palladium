@@ -7,10 +7,10 @@ import java.util.Arrays;
 
 public class AddonPackLogEntry {
 
-    private Type type;
+    private final Type type;
     private Message msg;
     private String msgString;
-    private String stacktrace;
+    private final String stacktrace;
 
     public AddonPackLogEntry(Type type, Message message) {
         this(type, message, null);
