@@ -153,7 +153,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
 
             builder.addProperty("armor_model_layer", ModelLayerLocation.class)
                     .description("Armor model layer, must have the body parts for a humanoid model (if not specified for another model type).")
-                    .fallbackObject(null).exampleJson(new JsonPrimitive("minecraft:player#outer_armor"));
+                    .fallbackObject(null).exampleJson(new JsonPrimitive("palladium:humanoid#suit"));
         }
 
         @Override

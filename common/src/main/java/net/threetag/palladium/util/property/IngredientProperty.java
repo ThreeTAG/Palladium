@@ -45,4 +45,9 @@ public class IngredientProperty extends PalladiumProperty<Ingredient> {
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         buf.writeUtf(((Ingredient)value).toJson().toString());
     }
+
+    @Override
+    public String getString(Ingredient value) {
+        return value.toJson().toString();
+    }
 }
