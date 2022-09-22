@@ -1,4 +1,4 @@
-onEvent('item.right_click', (event) => {
+ItemEvents.rightClicked((event) => {
 
   // Show player's SUPERPOWER [when rightclicking bread]
   if (event.getItem().getId() === 'minecraft:bread') {

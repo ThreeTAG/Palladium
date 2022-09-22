@@ -67,7 +67,7 @@ dependencies {
     }
 
     // KubeJS
-    modCompileOnlyApi "dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}"
+    modImplementation "dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}"
 //    modRuntimeOnly "curse.maven:probejs-585406:${rootProject.probejs_fabric_version}"
 
     // Pehkui

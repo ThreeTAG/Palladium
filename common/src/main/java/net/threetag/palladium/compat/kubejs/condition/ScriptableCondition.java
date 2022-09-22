@@ -1,6 +1,5 @@
 package net.threetag.palladium.compat.kubejs.condition;
 
-import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionSerializer;
@@ -21,7 +20,7 @@ public class ScriptableCondition extends Condition {
 
     @Override
     public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
-        return this.builder.test != null && this.builder.test.test(UtilsJS.getLevel(entity.level).getLivingEntity(entity));
+        return this.builder.test != null && this.builder.test.test(entity);
     }
 
     @Override

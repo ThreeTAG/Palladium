@@ -3,8 +3,8 @@ package net.threetag.palladium.compat.kubejs.condition;
 import com.google.gson.JsonObject;
 import dev.latvian.mods.kubejs.BuilderBase;
 import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
-import dev.latvian.mods.kubejs.entity.LivingEntityJS;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.compat.kubejs.PalladiumKubeJSPlugin;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionSerializer;
@@ -35,7 +35,7 @@ public class ConditionBuilder extends BuilderBase<ConditionSerializer> {
 
     @FunctionalInterface
     public interface TestFunction {
-        boolean test(LivingEntityJS entity);
+        boolean test(LivingEntity entity);
     }
 
     public static class Serializer extends ConditionSerializer {

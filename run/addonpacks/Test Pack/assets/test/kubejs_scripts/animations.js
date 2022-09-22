@@ -1,5 +1,5 @@
 // Register custom animations
-onEvent('palladium.animations.register', (event) => {
+PalladiumEvents.registerAnimations((event) => {
     event.register(
         'test/headbang',
         100,
@@ -7,6 +7,6 @@ onEvent('palladium.animations.register', (event) => {
             return entity.isCrouching();
         },
         (model, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks) => {
-            animationUtil.interpolateXRotTo(model.head, Math.sin(entity.getTicksExisted() + partialTicks), 1);
+            animationUtil.interpolateXRotTo(model.head, Math.sin(entity.tickCount + partialTicks), 1);
         });
 });

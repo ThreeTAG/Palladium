@@ -1,7 +1,7 @@
 package net.threetag.palladium.compat.kubejs;
 
-import dev.latvian.mods.kubejs.level.LevelJS;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
 
@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
 
 public class PowerManagerJS {
 
-    private final LevelJS parent;
+    private final Level parent;
 
-    public PowerManagerJS(LevelJS parent) {
+    public PowerManagerJS(Level parent) {
         this.parent = parent;
     }
 
     public Collection<ResourceLocation> getPowers() {
-        return PowerManager.getInstance(this.parent.minecraftLevel).getPowers().stream().map(Power::getId).collect(Collectors.toList());
+        return PowerManager.getInstance(this.parent).getPowers().stream().map(Power::getId).collect(Collectors.toList());
     }
 
 }

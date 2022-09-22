@@ -2,15 +2,14 @@ package net.threetag.palladium.compat.kubejs;
 
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
-import dev.latvian.mods.kubejs.level.LevelJS;
-import dev.latvian.mods.kubejs.player.PlayerDataJS;
-import dev.latvian.mods.kubejs.script.AttachDataEvent;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
-import dev.latvian.mods.kubejs.script.ScriptType;
+import dev.latvian.mods.kubejs.util.AttachedData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.threetag.palladium.client.model.animation.AnimationUtil;
 import net.threetag.palladium.compat.kubejs.ability.AbilityBuilder;
 import net.threetag.palladium.compat.kubejs.condition.ConditionBuilder;
@@ -28,7 +27,15 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void init() {
-        PalladiumEvents.REGISTER_PROPERTY.register(handler -> new RegisterPalladiumPropertyEventJS(handler.getEntity(), handler).post(ScriptType.of(handler.getEntity().level), PalladiumJSEvents.REGISTER_PROPERTIES));
+        PalladiumJSEvents.GROUP.register();
+
+        PalladiumEvents.REGISTER_PROPERTY.register(handler -> {
+            if(handler.getEntity().level.isClientSide) {
+                PalladiumJSEvents.CLIENT_REGISTER_PROPERTIES.post(new RegisterPalladiumPropertyEventJS(handler.getEntity(), handler));
+            } else {
+                PalladiumJSEvents.REGISTER_PROPERTIES.post(new RegisterPalladiumPropertyEventJS(handler.getEntity(), handler));
+            }
+        });
 
         ResourceKey key = Ability.REGISTRY.getRegistryKey();
         ABILITY = RegistryObjectBuilderTypes.add(key, Ability.class);
@@ -42,24 +49,23 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
     @Environment(EnvType.CLIENT)
     @Override
     public void clientInit() {
-        PalladiumClientEvents.REGISTER_ANIMATIONS.register(registry -> new RegisterAnimationsEventJS(registry).post(ScriptType.CLIENT, PalladiumJSEvents.REGISTER_ANIMATIONS));
+        PalladiumClientEvents.REGISTER_ANIMATIONS.register(registry -> PalladiumJSEvents.REGISTER_ANIMATIONS.post(new RegisterAnimationsEventJS(registry)));
     }
 
     @Override
-    public void addBindings(BindingsEvent event) {
+    public void registerBindings(BindingsEvent event) {
         event.add("palladium", PalladiumBinding.class);
         event.add("animationUtil", AnimationUtil.class);
     }
 
     @Override
-    public void attachPlayerData(AttachDataEvent<PlayerDataJS> event) {
-        event.add("powers", new PowerHandlerJS(event.parent()));
-        event.add("properties", new PalladiumPropertyHandlerJS(event.parent()));
+    public void attachPlayerData(AttachedData<Player> event) {
+        event.add("powers", new PowerHandlerJS(event.getParent()));
     }
 
     @Override
-    public void attachLevelData(AttachDataEvent<LevelJS> event) {
-        event.add("powers", new PowerManagerJS(event.parent()));
+    public void attachLevelData(AttachedData<Level> event) {
+        event.add("powers", new PowerManagerJS(event.getParent()));
     }
 
     public static Object fixValues(PalladiumProperty<?> property, Object value) {

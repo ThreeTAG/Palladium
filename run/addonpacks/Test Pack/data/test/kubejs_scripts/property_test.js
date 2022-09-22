@@ -3,7 +3,7 @@ const BROKEN_BLOCKS = 'broken_blocks';
 
 
 // Firstly, register the property in the entity
-onEvent('palladium.entity.register_properties', (event) => {
+PalladiumEvents.registerProperties((event) => {
     // Only register for players
     if (event.getEntityType() === "minecraft:player") {
         // Arguments: Key of the property, type of the property, default/starting value
@@ -13,7 +13,7 @@ onEvent('palladium.entity.register_properties', (event) => {
 
 
 // Event for breaking blocks
-onEvent('block.break', (event) => {
+BlockEvents.broken((event) => {
     // Check if entity has the property
     if (palladium.hasProperty(event.player, BROKEN_BLOCKS)) {
         const value = palladium.getProperty(event.player, BROKEN_BLOCKS) + 1;

@@ -1,10 +1,10 @@
 package net.threetag.palladium.compat.kubejs;
 
 import dev.latvian.mods.kubejs.level.LevelEventJS;
-import dev.latvian.mods.kubejs.level.LevelJS;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PalladiumPropertyLookup;
@@ -33,7 +33,7 @@ public class RegisterPalladiumPropertyEventJS extends LevelEventJS {
     }
 
     @Override
-    public LevelJS getLevel() {
-        return this.levelOf(this.entity);
+    public Level getLevel() {
+        return this.entity.level;
     }
 }

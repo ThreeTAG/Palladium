@@ -1,5 +1,5 @@
 // Add custom ability
-onEvent('palladium.ability.registry', (event) => {
+StartupEvents.registry('palladium:abilities', (event) => {
 
   // ID of the ability will be: 'kubejs:testpack/test_ability'
   event.create('testpack/test_ability')
@@ -31,7 +31,7 @@ onEvent('palladium.ability.registry', (event) => {
 
 
 // Add custom condition
-onEvent('palladium.condition_serializer.registry', (event) => {
+StartupEvents.registry('palladium:condition_serializer', (event) => {
 
   // ID of the condition will be: 'kubejs:testpack/test_condition'
   event.create('testpack/test_condition')

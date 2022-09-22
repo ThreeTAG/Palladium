@@ -1,9 +1,7 @@
 package net.threetag.palladium.compat.kubejs;
 
 import dev.latvian.mods.kubejs.KubeJS;
-import dev.latvian.mods.kubejs.entity.LivingEntityJS;
 import dev.latvian.mods.kubejs.event.EventJS;
-import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,13 +23,13 @@ public class RegisterAnimationsEventJS extends EventJS {
 
     public interface Active {
 
-        boolean active(LivingEntityJS entity);
+        boolean active(LivingEntity entity);
 
     }
 
     public interface Animate {
 
-        void setupAnimation(HumanoidModel<?> model, LivingEntityJS entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float partialTicks);
+        void setupAnimation(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float partialTicks);
 
     }
 
@@ -54,12 +52,12 @@ public class RegisterAnimationsEventJS extends EventJS {
 
         @Override
         public boolean active(LivingEntity entity) {
-            return this.active.active(UtilsJS.getLevel(entity.level).getLivingEntity(entity));
+            return this.active.active(entity);
         }
 
         @Override
         public void setupAnimation(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float partialTicks) {
-            this.animate.setupAnimation(model, UtilsJS.getLevel(entity.level).getLivingEntity(entity), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks);
+            this.animate.setupAnimation(model, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks);
         }
     }
 
