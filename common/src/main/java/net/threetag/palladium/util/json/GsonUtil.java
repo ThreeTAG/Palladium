@@ -1,6 +1,8 @@
 package net.threetag.palladium.util.json;
 
 import com.google.gson.*;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.*;
@@ -11,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -87,6 +90,7 @@ public class GsonUtil {
         return json.has(memberName) ? getAsResourceLocation(json, memberName) : fallback;
     }
 
+    @Environment(EnvType.CLIENT)
     public static ModelLayerLocation convertToModelLayerLocation(JsonElement json, String memberName) {
         if (json.isJsonPrimitive()) {
             String[] s = json.getAsString().split("#", 2);
@@ -101,6 +105,7 @@ public class GsonUtil {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     public static ModelLayerLocation getAsModelLayerLocation(JsonObject json, String memberName) {
         if (json.has(memberName)) {
             String[] s = GsonHelper.getAsString(json, memberName).split("#", 2);
@@ -115,6 +120,7 @@ public class GsonUtil {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     public static ModelLayerLocation getAsModelLayerLocation(JsonObject json, String memberName, @Nullable ModelLayerLocation fallback) {
         return json.has(memberName) ? getAsModelLayerLocation(json, memberName) : fallback;
     }
@@ -270,6 +276,33 @@ public class GsonUtil {
         } else {
             return getAsComponentList(json, memberName);
         }
+    }
+
+    public static Color getAsColor(JsonObject json, String memberName) {
+        if(json.has(memberName)) {
+            var jsonElement = json.get(memberName);
+
+            if (jsonElement.isJsonPrimitive()) {
+                return Color.decode(jsonElement.getAsString());
+            } else if (jsonElement.isJsonArray()) {
+                JsonArray array = jsonElement.getAsJsonArray();
+                if (array.size() == 3) {
+                    return new Color(array.get(0).getAsInt(), array.get(1).getAsInt(), array.get(2).getAsInt());
+                } else if (array.size() == 4) {
+                    return new Color(array.get(0).getAsInt(), array.get(1).getAsInt(), array.get(2).getAsInt(), array.get(3).getAsInt());
+                } else {
+                    throw new JsonParseException("Color array must either have 3 (RGB) or 4 (RGBA) integers");
+                }
+            } else {
+                throw new JsonParseException("Color must either be defined as RGB-string or array of integers");
+            }
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a color");
+        }
+    }
+
+    public static Color getAsColor(JsonObject json, String memberName, @javax.annotation.Nullable Color fallback) {
+        return json.has(memberName) ? getAsColor(json, memberName) : fallback;
     }
 
     public static void ifHasKey(JsonObject json, String memberName, Consumer<JsonElement> consumer) {
