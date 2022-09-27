@@ -36,6 +36,7 @@ public class ScriptManagerMixin {
 
     @Inject(at = @At("RETURN"), method = "loadFromDirectory", remap = false)
     public void loadFromDirectory(CallbackInfo ci) {
+        AddonPackManager.getInstance().getPackList().reload();
         AddonPackManager.getInstance().getPackList().setSelected(AddonPackManager.getInstance().getPackList().getAvailableIds());
         for (Pack pack : AddonPackManager.getInstance().getPackList().getAvailablePacks()) {
             var packType = this.type == ScriptType.CLIENT ? PackType.CLIENT_RESOURCES : (this.type == ScriptType.SERVER ? PackType.SERVER_DATA : AddonPackManager.getPackType());
