@@ -5,7 +5,14 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.client.model.animation.HumanoidAnimationsManager;
+import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
+import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
+import net.threetag.palladium.power.ability.Abilities;
+import net.threetag.palladium.power.ability.Ability;
+import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.RenderLayerAbility;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,11 +29,23 @@ public class PlayerRendererMixin {
     }
 
     @Inject(at = @At("HEAD"), method = "renderHand")
-    public void renderHand(PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
+    public void renderHandPre(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
 
         if (playerRenderer.getModel() instanceof AgeableListModelInvoker invoker) {
             HumanoidAnimationsManager.resetModelParts(invoker.invokeHeadParts(), invoker.invokeBodyParts());
+        }
+    }
+
+    @Inject(at = @At("RETURN"), method = "renderHand")
+    public void renderHandPost(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
+        PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
+
+        for (AbilityEntry entry : Ability.getEnabledEntries(player, Abilities.RENDER_LAYER.get())) {
+            IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
+            if (layer != null) {
+                layer.renderArm(rendererArm == playerRenderer.getModel().rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, player, playerRenderer, poseStack, buffer, combinedLight);
+            }
         }
     }
 

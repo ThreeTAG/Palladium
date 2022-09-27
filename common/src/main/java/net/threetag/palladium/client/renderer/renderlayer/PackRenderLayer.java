@@ -8,10 +8,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.condition.Condition;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class PackRenderLayer implements IPackRenderLayer {
 
     private final SkinTypedValue<ModelLookup.Model> modelLookup;
@@ -56,6 +60,30 @@ public class PackRenderLayer implements IPackRenderLayer {
             // TODO apply enchant glint when item is enchanted
             VertexConsumer vertexConsumer = this.renderType.apply(bufferSource, this.texture.get(entity).getTexture(entity));
             entityModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+        }
+    }
+
+    @Override
+    public void renderArm(HumanoidArm arm, AbstractClientPlayer player, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        if (IPackRenderLayer.conditionsFulfilled(player, this.conditions) && this.modelLookup.get(player).fitsEntity(player, playerRenderer.getModel())) {
+            EntityModel<LivingEntity> entityModel = this.model.get(player);
+
+            if (entityModel instanceof HumanoidModel humanoidModel) {
+                playerRenderer.getModel().copyPropertiesTo(humanoidModel);
+                VertexConsumer vertexConsumer = this.renderType.apply(bufferSource, this.texture.get(player).getTexture(player));
+
+                humanoidModel.attackTime = 0.0F;
+                humanoidModel.crouching = false;
+                humanoidModel.swimAmount = 0.0F;
+
+                if (arm == HumanoidArm.RIGHT) {
+                    humanoidModel.rightArm.xRot = 0.0F;
+                    humanoidModel.rightArm.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+                } else {
+                    humanoidModel.leftArm.xRot = 0.0F;
+                    humanoidModel.leftArm.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+                }
+            }
         }
     }
 

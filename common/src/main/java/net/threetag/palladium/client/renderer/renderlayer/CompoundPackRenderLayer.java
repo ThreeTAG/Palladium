@@ -5,8 +5,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.power.ability.AbilityEntry;
@@ -30,6 +33,15 @@ public final class CompoundPackRenderLayer implements IPackRenderLayer {
         if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions)) {
             for (IPackRenderLayer layer : this.layers) {
                 layer.render(entity, abilityEntry, poseStack, bufferSource, parentModel, packedLight, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+            }
+        }
+    }
+
+    @Override
+    public void renderArm(HumanoidArm arm, AbstractClientPlayer player, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        if (IPackRenderLayer.conditionsFulfilled(player, this.conditions)) {
+            for (IPackRenderLayer layer : this.layers) {
+                layer.renderArm(arm, player, playerRenderer, poseStack, bufferSource, packedLight);
             }
         }
     }

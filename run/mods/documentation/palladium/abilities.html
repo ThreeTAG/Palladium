@@ -913,7 +913,7 @@ false</td>
 </tr>
 <tr>
 <td>
-frequency</td>
+amount</td>
 <td>
 Float</td>
 <td>
@@ -928,7 +928,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:healing","icon":"minecraft:apple","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"frequency":3.0}</pre>
+{"type":"palladium:healing","icon":"minecraft:apple","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"frequency":20,"amount":3.0}</pre>
 </div>
 <hr>
 
@@ -1737,7 +1737,7 @@ Icon for the ability</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-ItemIcon{stack=1 vibranium_circuit}</td>
+ItemIcon{stack=1 air}</td>
 </tr>
 <tr>
 <td>
@@ -1792,7 +1792,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"kubejs:testpack/test_ability","icon":"palladium:vibranium_circuit","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1}</pre>
+{"type":"kubejs:testpack/test_ability","icon":{"type":"palladium:item","item":"minecraft:air","count":0},"title":"null","bar_color":"light_gray","hidden":false,"list_index":-1}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {
