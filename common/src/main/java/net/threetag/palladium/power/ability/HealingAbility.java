@@ -11,7 +11,7 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 public class HealingAbility extends Ability {
 
     public static final PalladiumProperty<Integer> FREQUENCY = new IntegerProperty("frequency").configurable("Sets the frequency of healing (in ticks)");
-    public static final PalladiumProperty<Float> AMOUNT = new FloatProperty("frequency").configurable("Sets the amount of hearts for each healing");
+    public static final PalladiumProperty<Float> AMOUNT = new FloatProperty("amount").configurable("Sets the amount of hearts for each healing");
 
     public HealingAbility() {
         this.withProperty(FREQUENCY, 20);
