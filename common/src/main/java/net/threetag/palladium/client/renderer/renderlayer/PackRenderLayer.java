@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.power.ability.AbilityEntry;
@@ -98,8 +99,15 @@ public class PackRenderLayer implements IPackRenderLayer {
         var renderType = PackRenderLayerManager.getRenderType(new ResourceLocation(GsonHelper.getAsString(json, "render_type", "solid")));
 
         SkinTypedValue<ModelLookup.Model> model;
-        if (GsonHelper.isValidNode(json, "model")) {
-            model = SkinTypedValue.fromJSON(json.get("model"), jsonElement -> {
+        String modelTypeKey = "model_type";
+
+        if(!json.has(modelTypeKey) && json.has("model")) {
+            AddonPackLog.warning("Deprecated use of 'model' in render layer. Please switch to 'model_type'!");
+            modelTypeKey = "model";
+        }
+
+        if (GsonHelper.isValidNode(json, modelTypeKey)) {
+            model = SkinTypedValue.fromJSON(json.get(modelTypeKey), jsonElement -> {
                 ResourceLocation modelId = new ResourceLocation(jsonElement.getAsString());
                 ModelLookup.Model m = ModelLookup.get(modelId);
 

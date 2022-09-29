@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.client.model.ArmorModelManager;
@@ -111,9 +112,18 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
 
             if (Platform.isClient()) {
                 item.armorTexture = SkinTypedValue.fromJSON(json.get("armor_texture"), DynamicTexture::parse);
+
+                String modelTypeKey = "armor_model_type";
+
+                if(!json.has(modelTypeKey) && json.has("armor_model")) {
+                    AddonPackLog.warning("Deprecated use of 'armor_model' in render layer. Please switch to 'armor_model_type'!");
+                    modelTypeKey = "armor_model";
+                }
+
+                String finalModelTypeKey = modelTypeKey;
                 GsonUtil.ifHasKey(json, "armor_model_layer", jsonElement -> {
                     ArmorModelManager.register(item,
-                            json.has("armor_model") ? SkinTypedValue.fromJSON(json.get("armor_model"), jsonElement1 -> {
+                            json.has(finalModelTypeKey) ? SkinTypedValue.fromJSON(json.get(finalModelTypeKey), jsonElement1 -> {
                                 ResourceLocation modelId = new ResourceLocation(jsonElement1.getAsString());
                                 ModelLookup.Model m = ModelLookup.get(modelId);
 
@@ -147,7 +157,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
                     .description("Armor texture (rendered on the player when wearing it). Can be a dynamic one like in render layers")
                     .required().exampleJson(new JsonPrimitive("example:textures/models/armor/example_armor.png"));
 
-            builder.addProperty("armor_model", ResourceLocation.class)
+            builder.addProperty("armor_model_type", ResourceLocation.class)
                     .description("Armor model type, defines the bones for the model layer. Ideally only use minecraft:humanoid for 1 layer or minecraft:player for 2 layers")
                     .fallbackObject(new ResourceLocation("minecraft:humanoid")).exampleJson(new JsonPrimitive("minecraft:humanoid"));
 
