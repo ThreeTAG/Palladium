@@ -1,13 +1,13 @@
 modLoader = "javafml"
-loaderVersion = "[42,)"
+loaderVersion = "[43,)"
 license = "All rights reserved"
-issueTrackerURL = "https://gitlab.com/threetag/latest/palladium/-/issues"
+issueTrackerURL = "https://github.com/ThreeTAG/Palladium/issues"
 
 [[mods]]
 modId = "palladium"
 version = "${version}"
 displayName = "Palladium"
-authors = "Lucraft, Nictogen"
+authors = "Lucraft"
 description = '''
 Core mod for all ThreeTAG mods.
 '''
@@ -18,14 +18,14 @@ displayURL = "https://www.curseforge.com/minecraft/mc-mods/palladium"
 [[dependencies.palladium]]
 modId = "forge"
 mandatory = true
-versionRange = "[42,)"
+versionRange = "[43,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.palladium]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.1,)"
+versionRange = "[1.19.2,)"
 ordering = "NONE"
 side = "BOTH"
 

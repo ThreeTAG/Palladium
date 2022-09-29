@@ -5,12 +5,11 @@
   "name": "Palladium",
   "description": "Core mod for all ThreeTAG mods.",
   "authors": [
-    "Lucraft",
-    "Nictogen"
+    "Lucraft"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/palladium",
-    "sources": "https://gitlab.com/threetag/latest/palladium"
+    "sources": "https://github.com/ThreeTAG/Palladium"
   },
   "license": "All rights reserved",
   "icon": "assets/palladium/icon.png",
@@ -30,10 +29,9 @@
     "palladium.mixins.json",
     "palladium-common.mixins.json"
   ],
-  "accessWidener": "palladium.accessWidener",
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.19.1",
+    "minecraft": ">=1.19.2",
     "palladiumcore": ">=1.19.2-1.0.6",
     "com_electronwill_night-config_core": "*",
     "com_electronwill_night-config_toml": "*"
