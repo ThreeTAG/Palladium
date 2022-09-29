@@ -32,8 +32,6 @@ allprojects {
     version = "${rootProject.minecraft_version}-${rootProject.mod_version}" as Object
     group = rootProject.maven_group
 
-    sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = 17
-
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
         options.release = 17

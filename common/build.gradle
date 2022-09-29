@@ -3,7 +3,7 @@ architectury {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/palladium.accessWidener")
+    accessWidenerPath = file("src/main/resources/palladium.accesswidener")
 }
 
 dependencies {
