@@ -1,7 +1,7 @@
 package net.threetag.palladium;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.PlayerModel;
@@ -29,11 +29,14 @@ import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerRendere
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
 import net.threetag.palladium.client.screen.AccessoryScreen;
 import net.threetag.palladium.client.screen.AddonPackLogScreen;
+import net.threetag.palladium.client.screen.components.IconButton;
 import net.threetag.palladium.client.screen.power.PowersScreen;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.event.PalladiumClientEvents;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.util.SupporterHandler;
+import net.threetag.palladium.util.icon.IIcon;
+import net.threetag.palladium.util.icon.TexturedIcon;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.event.ScreenEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
@@ -43,6 +46,8 @@ import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 import net.threetag.palladiumcore.registry.client.RenderTypeRegistry;
 
 public class PalladiumClient {
+
+    public static final IIcon ICON = new TexturedIcon(Palladium.id("textures/icon/palladium.png"));
 
     @SuppressWarnings("unchecked")
     public static void init() {
@@ -97,9 +102,11 @@ public class PalladiumClient {
     public static void setupDevLogButton() {
         // TODO make button less ugly
         ScreenEvents.INIT_POST.register((screen) -> {
-            if (PalladiumConfig.Client.ADDON_PACK_DEV_MODE.get() && screen instanceof TitleScreen) {
-                screen.addRenderableWidget(new Button(10, 10, 200, 20, Component.translatable("gui.palladium.addon_pack_log"), (p_213079_1_) -> {
+            if (PalladiumConfig.Client.ADDON_PACK_DEV_MODE.get() && (screen instanceof TitleScreen || screen instanceof PauseScreen)) {
+                screen.addRenderableWidget(new IconButton(screen.width - 30, 10, ICON, (p_213079_1_) -> {
                     Minecraft.getInstance().setScreen(new AddonPackLogScreen(AddonPackLog.getEntries(), screen));
+                }, (button, poseStack, i, j) -> {
+                    screen.renderTooltip(poseStack, Component.translatable("gui.palladium.addon_pack_log"), i, j);
                 }));
             }
         });
