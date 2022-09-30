@@ -11,9 +11,12 @@ authors = "Lucraft"
 description = '''
 Core mod for all ThreeTAG mods.
 '''
-logoFile = "palladium.png"
-itemIcon = "palladium:vibranium_circuit"
+logoFile = "palladium_banner.png"
+logoBlur = false
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/palladium"
+
+[modproperties.palladium]
+catalogueImageIcon = "palladium_icon.png"
 
 [[dependencies.palladium]]
 modId = "forge"

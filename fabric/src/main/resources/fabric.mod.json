@@ -12,7 +12,7 @@
     "sources": "https://github.com/ThreeTAG/Palladium"
   },
   "license": "All rights reserved",
-  "icon": "assets/palladium/icon.png",
+  "icon": "palladium_icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -41,6 +41,9 @@
       "palladium:properties",
       "palladium:power_handler",
       "palladium:accessories"
-    ]
+    ],
+    "catalogue": {
+      "banner": "palladium_banner.png"
+    }
   }
 }
