@@ -17,6 +17,10 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.threetag.palladium.item.CurioTrinket;
 import net.threetag.palladium.client.renderer.item.CurioTrinketRenderer;
+import net.threetag.palladium.power.provider.PowerProvider;
+import net.threetag.palladiumcore.registry.DeferredRegister;
+import net.threetag.palladiumcore.registry.RegistrySupplier;
+import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
@@ -30,6 +34,8 @@ import java.util.Map;
 
 public class CuriosCompat {
 
+    public static final DeferredRegister<PowerProvider> FACTORIES = DeferredRegister.create(CuriosApi.MODID, PowerProvider.REGISTRY);
+    public static final RegistrySupplier<PowerProvider> CURIOS = FACTORIES.register("curios", CuriosPowerProvider::new);
     private static final Map<Item, CurioTrinket> HANDLERS = new HashMap<>();
 
     public static void registerCurioTrinket(Item item, CurioTrinket curioTrinket) {
@@ -38,6 +44,7 @@ public class CuriosCompat {
 
     public static void init() {
         MinecraftForge.EVENT_BUS.register(new CuriosCompat());
+        FACTORIES.register();
     }
 
     @OnlyIn(Dist.CLIENT)

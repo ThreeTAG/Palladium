@@ -17,30 +17,30 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class TrinketsPowerProvider extends PowerProvider {
 
-    // TODO untested
-
     @Override
     public void providePowers(LivingEntity entity, IPowerHandler handler) {
         for (Map.Entry<String, SlotGroup> entry : TrinketsApi.getPlayerSlots().entrySet()) {
-            AtomicReference<ItemStack> stack = new AtomicReference<>(ItemStack.EMPTY);
             TrinketsApi.getTrinketComponent(entity).ifPresent(trinketComponent -> {
-                if (trinketComponent.getInventory().containsKey(entry.getValue().getName())) {
-                    var v = trinketComponent.getInventory().get(entry.getValue().getName()).get(entry.getKey());
-                    if(v != null) {
-                        stack.set(v.getItem(0));
-                    }
+                if (trinketComponent.getInventory().containsKey(entry.getKey())) {
+                    trinketComponent.getInventory().get(entry.getKey()).forEach((key, trinketInventory) -> {
+                        for (int i = 0; i < trinketInventory.getContainerSize(); i++) {
+                            ItemStack stack = trinketInventory.getItem(i);
+
+                            if(!stack.isEmpty()) {
+                                List<Power> powers = ItemPowerManager.getInstance().getPowerForItem("trinkets:" + entry.getKey() + "/" + key, stack.getItem());
+
+                                if(powers != null) {
+                                    for(Power power : powers) {
+                                        if (power != null && !handler.hasPower(power)) {
+                                            handler.setPowerHolder(power, new PowerHolder(entity, power, stack, Pair.of(entry.getKey(), key)));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
                 }
             });
-
-            List<Power> powers = ItemPowerManager.getInstance().getPowerForItem("trinkets:" + entry.getValue().getName() + "/" + entry.getKey(), stack.get().getItem());
-
-            if(powers != null) {
-                for(Power power : powers) {
-                    if (power != null && !handler.hasPower(power)) {
-                        handler.setPowerHolder(power, new PowerHolder(entity, power, stack.get(), Pair.of(entry.getValue().getName(), entry.getKey())));
-                    }
-                }
-            }
         }
     }
 
