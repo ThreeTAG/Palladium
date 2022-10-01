@@ -19,7 +19,7 @@ loom {
                 programArgs '--username', System.getenv('MC_USERNAME'), '--uuid', System.getenv('MC_UUID'), '--accessToken', System.getenv('MC_ACCESS_TOKEN')
             }
         } else if (name == "server")
-            runDir = "../run/server-fabric"
+            runDir = "../run/server-forge"
     }
 
     forge {
