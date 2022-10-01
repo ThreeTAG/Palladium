@@ -59,6 +59,14 @@ activation</a>
 crouching</a>
 </li>
 <li>
+<a href="#palladium:entity_type">
+entity_type</a>
+</li>
+<li>
+<a href="#palladium:entity_type_tag">
+entity_type_tag</a>
+</li>
+<li>
 <a href="#palladium:has_power">
 has_power</a>
 </li>
@@ -535,6 +543,94 @@ Applicable for: all</p>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:crouching"}</pre>
+</div>
+<hr>
+
+<div id="palladium:entity_type">
+<h2>
+entity_type</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+entity_type</td>
+<td>
+EntityType</td>
+<td>
+The entity type the entity must be of for the condition to be active</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:player</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:entity_type","entity_type":"minecraft:player"}</pre>
+</div>
+<hr>
+
+<div id="palladium:entity_type_tag">
+<h2>
+entity_type_tag</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+entity_type_tag</td>
+<td>
+ResourceLocation</td>
+<td>
+The tag the type of the entity must be in for the condition to be active</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:skeletons</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:entity_type_tag","entity_type_tag":"minecraft:skeletons"}</pre>
 </div>
 <hr>
 
