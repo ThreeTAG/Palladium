@@ -100,7 +100,6 @@ public class PalladiumClient {
     }
 
     public static void setupDevLogButton() {
-        // TODO make button less ugly
         ScreenEvents.INIT_POST.register((screen) -> {
             if (PalladiumConfig.Client.ADDON_PACK_DEV_MODE.get() && (screen instanceof TitleScreen || screen instanceof PauseScreen)) {
                 screen.addRenderableWidget(new IconButton(screen.width - 30, 10, ICON, (p_213079_1_) -> {

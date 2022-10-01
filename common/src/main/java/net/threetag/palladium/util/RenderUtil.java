@@ -7,6 +7,8 @@ import net.minecraft.world.phys.AABB;
 
 public class RenderUtil {
 
+    public static boolean REDIRECT_GET_BUFFER = false;
+
     public static void renderFilledBox(PoseStack stack, VertexConsumer vertexConsumer, AABB box, float red, float green, float blue, float alpha, int combinedLightIn) {
         Matrix4f matrix = stack.last().pose();
         vertexConsumer.vertex(matrix, (float) box.minX, (float) box.maxY, (float) box.minZ).color(red, green, blue, alpha).uv2(combinedLightIn).endVertex();

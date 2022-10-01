@@ -9,7 +9,8 @@
     "client.HumanoidModelMixin",
     "client.LivingEntityRendererMixin",
     "client.PlayerInfoMixin",
-    "client.PlayerRendererMixin"
+    "client.PlayerRendererMixin",
+    "client.RenderTypeMixin"
   ],
   "mixins": [
     "ReloadableResourceManagerMixin",

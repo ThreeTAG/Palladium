@@ -13,6 +13,7 @@ import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.RenderLayerAbility;
+import net.threetag.palladium.util.RenderUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,6 +31,7 @@ public class PlayerRendererMixin {
 
     @Inject(at = @At("HEAD"), method = "renderHand")
     public void renderHandPre(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
+        RenderUtil.REDIRECT_GET_BUFFER = true;
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
 
         if (playerRenderer.getModel() instanceof AgeableListModelInvoker invoker) {
@@ -47,6 +49,8 @@ public class PlayerRendererMixin {
                 layer.renderArm(rendererArm == playerRenderer.getModel().rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, player, playerRenderer, poseStack, buffer, combinedLight);
             }
         }
+
+        RenderUtil.REDIRECT_GET_BUFFER = false;
     }
 
 }
