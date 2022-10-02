@@ -27,6 +27,7 @@ import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
 
@@ -107,7 +108,7 @@ public class PackRenderLayer implements IPackRenderLayer {
 
     @Override
     public List<BodyPart> getHiddenBodyParts(LivingEntity entity) {
-        return hiddenBodyParts;
+        return IPackRenderLayer.conditionsFulfilled(entity, this.conditions) ? this.hiddenBodyParts : Collections.emptyList();
     }
 
     public static PackRenderLayer parse(JsonObject json) {
