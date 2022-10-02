@@ -7,6 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.PlayerModelPart;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
@@ -113,6 +115,32 @@ public enum BodyPart {
         return null;
     }
 
+    @Environment(EnvType.CLIENT)
+    public static void resetBodyParts(LivingEntity entity, HumanoidModel<?> model) {
+        if(entity instanceof Player player) {
+            if (player.isSpectator()) {
+                model.setAllVisible(false);
+                model.head.visible = true;
+                model.hat.visible = true;
+            } else {
+                model.setAllVisible(true);
+                model.hat.visible = player.isModelPartShown(PlayerModelPart.HAT);
+
+                if(model instanceof PlayerModel<?> playerModel) {
+                    playerModel.jacket.visible = player.isModelPartShown(PlayerModelPart.JACKET);
+                    playerModel.leftPants.visible = player.isModelPartShown(PlayerModelPart.LEFT_PANTS_LEG);
+                    playerModel.rightPants.visible = player.isModelPartShown(PlayerModelPart.RIGHT_PANTS_LEG);
+                    playerModel.leftSleeve.visible = player.isModelPartShown(PlayerModelPart.LEFT_SLEEVE);
+                    playerModel.rightSleeve.visible = player.isModelPartShown(PlayerModelPart.RIGHT_SLEEVE);
+                    playerModel.cloak.visible = player.isModelPartShown(PlayerModelPart.CAPE);
+                }
+            }
+        } else {
+            model.setAllVisible(true);
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
     public static List<BodyPart> getHiddenBodyParts(LivingEntity entity, boolean isFirstPerson) {
         List<BodyPart> bodyParts = new ArrayList<>();
 

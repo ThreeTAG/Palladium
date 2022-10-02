@@ -43,9 +43,7 @@ public class PlayerRendererMixin {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
 
         // Reset all, make them visible
-        for (BodyPart part : BodyPart.values()) {
-            part.setVisibility(playerRenderer.getModel(), true);
-        }
+        BodyPart.resetBodyParts(Minecraft.getInstance().player, playerRenderer.getModel());
 
         // Make them invisible if specified
         for (BodyPart part : BodyPart.getHiddenBodyParts(Minecraft.getInstance().player, true)) {

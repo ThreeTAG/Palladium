@@ -63,9 +63,7 @@ public class HumanoidAnimationsManager extends SimpleJsonResourceReloadListener 
         if (model instanceof HumanoidModel<?> humanoidModel) {
 
             // Reset all, make them visible
-            for (BodyPart part : BodyPart.values()) {
-                part.setVisibility(humanoidModel, true);
-            }
+            BodyPart.resetBodyParts(entity, humanoidModel);
 
             // Make them invisible if specified
             for (BodyPart part : BodyPart.getHiddenBodyParts(entity, false)) {
