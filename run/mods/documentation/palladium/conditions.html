@@ -71,6 +71,10 @@ entity_type_tag</a>
 has_power</a>
 </li>
 <li>
+<a href="#palladium:has_tag">
+has_tag</a>
+</li>
+<li>
 <a href="#palladium:health">
 health</a>
 </li>
@@ -675,6 +679,50 @@ example:power_id</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:has_power","power":"example:power_id"}</pre>
+</div>
+<hr>
+
+<div id="palladium:has_tag">
+<h2>
+has_tag</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+tag</td>
+<td>
+String</td>
+<td>
+The tag the entity must have. These tags are added to entities via /tag command</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+example_tag</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:has_tag","tag":"example_tag"}</pre>
 </div>
 <hr>
 
