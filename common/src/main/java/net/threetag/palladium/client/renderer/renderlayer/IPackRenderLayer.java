@@ -12,6 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionContextType;
 import net.threetag.palladium.condition.ConditionSerializer;
+import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
 import java.util.List;
@@ -25,6 +26,8 @@ public interface IPackRenderLayer {
     }
 
     IPackRenderLayer addCondition(Condition condition);
+
+    List<BodyPart> getHiddenBodyParts(LivingEntity entity);
 
     static <T extends IPackRenderLayer> T parseConditions(T layer, JsonObject json) {
         if (GsonHelper.isValidNode(json, "conditions")) {

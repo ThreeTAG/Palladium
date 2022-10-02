@@ -12,6 +12,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.condition.Condition;
+import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
 import java.util.ArrayList;
@@ -50,6 +51,23 @@ public final class CompoundPackRenderLayer implements IPackRenderLayer {
     public IPackRenderLayer addCondition(Condition condition) {
         this.conditions.add(condition);
         return this;
+    }
+
+    @Override
+    public List<BodyPart> getHiddenBodyParts(LivingEntity entity) {
+        List<BodyPart> bodyParts = new ArrayList<>();
+
+        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions)) {
+            for (IPackRenderLayer layer : this.layers) {
+                for (BodyPart hiddenBodyPart : layer.getHiddenBodyParts(entity)) {
+                    if (!bodyParts.contains(hiddenBodyPart)) {
+                        bodyParts.add(hiddenBodyPart);
+                    }
+                }
+            }
+        }
+
+        return bodyParts;
     }
 
     public static CompoundPackRenderLayer parse(JsonObject json) {

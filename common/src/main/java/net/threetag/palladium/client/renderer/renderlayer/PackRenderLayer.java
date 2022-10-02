@@ -105,7 +105,8 @@ public class PackRenderLayer implements IPackRenderLayer {
         return this;
     }
 
-    public List<BodyPart> getHiddenBodyParts() {
+    @Override
+    public List<BodyPart> getHiddenBodyParts(LivingEntity entity) {
         return hiddenBodyParts;
     }
 

@@ -10,7 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
-import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.power.ability.*;
 
@@ -117,7 +116,7 @@ public enum BodyPart {
 
     @Environment(EnvType.CLIENT)
     public static void resetBodyParts(LivingEntity entity, HumanoidModel<?> model) {
-        if(entity instanceof Player player) {
+        if (entity instanceof Player player) {
             if (player.isSpectator()) {
                 model.setAllVisible(false);
                 model.head.visible = true;
@@ -126,7 +125,7 @@ public enum BodyPart {
                 model.setAllVisible(true);
                 model.hat.visible = player.isModelPartShown(PlayerModelPart.HAT);
 
-                if(model instanceof PlayerModel<?> playerModel) {
+                if (model instanceof PlayerModel<?> playerModel) {
                     playerModel.jacket.visible = player.isModelPartShown(PlayerModelPart.JACKET);
                     playerModel.leftPants.visible = player.isModelPartShown(PlayerModelPart.LEFT_PANTS_LEG);
                     playerModel.rightPants.visible = player.isModelPartShown(PlayerModelPart.RIGHT_PANTS_LEG);
@@ -157,11 +156,9 @@ public enum BodyPart {
         for (AbilityEntry entry : Ability.getEnabledEntries(entity, Abilities.RENDER_LAYER.get())) {
             IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
 
-            if (layer instanceof PackRenderLayer renderLayer) {
-                for (BodyPart part : renderLayer.getHiddenBodyParts()) {
-                    if (!bodyParts.contains(part)) {
-                        bodyParts.add(part);
-                    }
+            for (BodyPart part : layer.getHiddenBodyParts(entity)) {
+                if (!bodyParts.contains(part)) {
+                    bodyParts.add(part);
                 }
             }
         }
