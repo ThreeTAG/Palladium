@@ -87,6 +87,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.PROJECTILE, "Projectile");
             this.addAbility(Abilities.SKIN_CHANGE, "Skin Change");
             this.addAbility(Abilities.AIM, "Aim");
+            this.addAbility(Abilities.HIDE_BODY_PARTS, "Hide Body Parts");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -220,6 +221,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.PROJECTILE, "Projektil");
             this.addAbility(Abilities.SKIN_CHANGE, "Skin \u00C4nderung");
             this.addAbility(Abilities.AIM, "Zielen");
+            this.addAbility(Abilities.HIDE_BODY_PARTS, "K\u00F6rperteile verstecken");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
@@ -353,6 +355,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.PROJECTILE, "Projektil");
             this.addAbility(Abilities.SKIN_CHANGE, "Skin \u00C4nderung");
             this.addAbility(Abilities.AIM, "Zielen");
+            this.addAbility(Abilities.HIDE_BODY_PARTS, "G\u00F6rperdeile versteggen");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");

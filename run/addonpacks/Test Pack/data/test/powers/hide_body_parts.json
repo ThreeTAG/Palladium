@@ -1,0 +1,34 @@
+{
+  "name": "Hide Body Parts",
+  "icon": "minecraft:glass_pane",
+  "background": "minecraft:textures/block/amethyst_block.png",
+  "abilities": {
+    "hide_cape": {
+      "type": "palladium:hide_body_parts",
+      "title": "Hide Cape",
+      "body_parts": "cape",
+      "hidden": false,
+      "list_index": 0,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
+    },
+    "hide_Arms": {
+      "type": "palladium:hide_body_parts",
+      "affects_first_person": false,
+      "list_index": 1,
+      "hidden": false,
+      "body_parts": [
+        "right_arm",
+        "left_arm"
+      ],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
+    }
+  }
+}

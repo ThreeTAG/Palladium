@@ -1,5 +1,6 @@
 accessWidener v2 named
 
+accessible field net/minecraft/client/model/PlayerModel cloak Lnet/minecraft/client/model/geom/ModelPart;
 accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
 
 accessible field net/minecraft/client/model/geom/builders/CubeDefinition comment Ljava/lang/String;

@@ -10,5 +10,8 @@
     },
     "base": "test:textures/models/animation_layer_#I.png"
   },
-  "render_type": "glow"
+  "render_type": "glow",
+  "hidden_body_parts": [
+    "head_overlay"
+  ]
 }

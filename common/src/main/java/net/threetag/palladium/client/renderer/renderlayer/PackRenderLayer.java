@@ -1,5 +1,7 @@
 package net.threetag.palladium.client.renderer.renderlayer;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -19,6 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.condition.Condition;
+import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
@@ -35,6 +38,7 @@ public class PackRenderLayer implements IPackRenderLayer {
     private final SkinTypedValue<DynamicTexture> texture;
     private final BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType;
     private final List<Condition> conditions = new ArrayList<>();
+    private final List<BodyPart> hiddenBodyParts = new ArrayList<>();
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public PackRenderLayer(SkinTypedValue<ModelLookup.Model> model, SkinTypedValue<ModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType) {
@@ -94,6 +98,17 @@ public class PackRenderLayer implements IPackRenderLayer {
         return this;
     }
 
+    public PackRenderLayer addHiddenBodyPart(BodyPart bodyPart) {
+        if (!this.hiddenBodyParts.contains(bodyPart)) {
+            this.hiddenBodyParts.add(bodyPart);
+        }
+        return this;
+    }
+
+    public List<BodyPart> getHiddenBodyParts() {
+        return hiddenBodyParts;
+    }
+
     public static PackRenderLayer parse(JsonObject json) {
         SkinTypedValue<ModelLayerLocation> location = SkinTypedValue.fromJSON(json.get("model_layer"), js -> GsonUtil.convertToModelLayerLocation(js, "model_layer"));
         var renderType = PackRenderLayerManager.getRenderType(new ResourceLocation(GsonHelper.getAsString(json, "render_type", "solid")));
@@ -101,7 +116,7 @@ public class PackRenderLayer implements IPackRenderLayer {
         SkinTypedValue<ModelLookup.Model> model;
         String modelTypeKey = "model_type";
 
-        if(!json.has(modelTypeKey) && json.has("model")) {
+        if (!json.has(modelTypeKey) && json.has("model")) {
             AddonPackLog.warning("Deprecated use of 'model' in render layer. Please switch to 'model_type'!");
             modelTypeKey = "model";
         }
@@ -125,7 +140,22 @@ public class PackRenderLayer implements IPackRenderLayer {
             throw new JsonParseException("Unknown render type '" + new ResourceLocation(GsonHelper.getAsString(json, "render_type", "solid")) + "'");
         }
 
-        return IPackRenderLayer.parseConditions(new PackRenderLayer(model, location, SkinTypedValue.fromJSON(json.get("texture"), DynamicTexture::parse), renderType), json);
+        var layer = new PackRenderLayer(model, location, SkinTypedValue.fromJSON(json.get("texture"), DynamicTexture::parse), renderType);
+
+        GsonUtil.ifHasKey(json, "hidden_body_parts", el -> {
+            if (el.isJsonPrimitive()) {
+                layer.addHiddenBodyPart(BodyPart.fromJson(el.getAsString()));
+            } else if (el.isJsonArray()) {
+                JsonArray jsonArray = el.getAsJsonArray();
+                for (JsonElement jsonElement : jsonArray) {
+                    layer.addHiddenBodyPart(BodyPart.fromJson(jsonElement.getAsString()));
+                }
+            } else {
+                throw new JsonParseException("hidden_body_parts setting must either be a string or an array");
+            }
+        });
+
+        return IPackRenderLayer.parseConditions(layer, json);
     }
 
 }

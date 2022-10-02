@@ -1,6 +1,7 @@
 package net.threetag.palladium.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -9,10 +10,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.client.model.animation.HumanoidAnimationsManager;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
-import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.Ability;
-import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.power.ability.RenderLayerAbility;
+import net.threetag.palladium.entity.BodyPart;
+import net.threetag.palladium.power.ability.*;
 import net.threetag.palladium.util.RenderUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,11 +30,26 @@ public class PlayerRendererMixin {
 
     @Inject(at = @At("HEAD"), method = "renderHand")
     public void renderHandPre(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
-        RenderUtil.REDIRECT_GET_BUFFER = true;
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
+        RenderUtil.REDIRECT_GET_BUFFER = true;
 
         if (playerRenderer.getModel() instanceof AgeableListModelInvoker invoker) {
             HumanoidAnimationsManager.resetModelParts(invoker.invokeHeadParts(), invoker.invokeBodyParts());
+        }
+    }
+
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/PlayerModel;setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", shift = At.Shift.AFTER), method = "renderHand")
+    public void renderHandPreRender(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
+        PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
+
+        // Reset all, make them visible
+        for (BodyPart part : BodyPart.values()) {
+            part.setVisibility(playerRenderer.getModel(), true);
+        }
+
+        // Make them invisible if specified
+        for (BodyPart part : BodyPart.getHiddenBodyParts(Minecraft.getInstance().player, true)) {
+            part.setVisibility(playerRenderer.getModel(), false);
         }
     }
 
