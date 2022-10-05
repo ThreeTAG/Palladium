@@ -156,11 +156,9 @@ public enum BodyPart {
         for (AbilityEntry entry : Ability.getEnabledEntries(entity, Abilities.RENDER_LAYER.get())) {
             IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
 
-            if(IPackRenderLayer.conditionsFulfilled(entity, layer.getConditions())) {
-                for (BodyPart part : layer.getHiddenBodyParts(entity)) {
-                    if (!bodyParts.contains(part)) {
-                        bodyParts.add(part);
-                    }
+            for (BodyPart part : layer.getHiddenBodyParts(entity)) {
+                if (!bodyParts.contains(part)) {
+                    bodyParts.add(part);
                 }
             }
         }
