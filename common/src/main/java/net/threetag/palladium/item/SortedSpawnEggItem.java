@@ -26,8 +26,12 @@ public class SortedSpawnEggItem extends PalladiumSpawnEggItem {
 
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
-        if (this.allowedIn(category)) {
-            this.filler.fill(this, category, items);
+        if (this.filler != null) {
+            if (this.allowedIn(category)) {
+                this.filler.fill(this, category, items);
+            }
+        } else {
+            super.fillItemCategory(category, items);
         }
     }
 
