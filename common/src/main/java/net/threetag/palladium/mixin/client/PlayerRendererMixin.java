@@ -1,7 +1,7 @@
 package net.threetag.palladium.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @SuppressWarnings("ConstantConditions")
 @Mixin(PlayerRenderer.class)
 public class PlayerRendererMixin {
+
+    private float cachedHandShrink = 0F;
 
     @Inject(at = @At("RETURN"), method = "setupRotations(Lnet/minecraft/client/player/AbstractClientPlayer;Lcom/mojang/blaze3d/vertex/PoseStack;FFF)V")
     public void setupRotations(AbstractClientPlayer player, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks, CallbackInfo ci) {
@@ -43,11 +45,21 @@ public class PlayerRendererMixin {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
 
         // Reset all, make them visible
-        BodyPart.resetBodyParts(Minecraft.getInstance().player, playerRenderer.getModel());
+        BodyPart.resetBodyParts(player, playerRenderer.getModel());
 
         // Make them invisible if specified
-        for (BodyPart part : BodyPart.getHiddenBodyParts(Minecraft.getInstance().player, true)) {
+        for (BodyPart part : BodyPart.getHiddenBodyParts(player, true)) {
             part.setVisibility(playerRenderer.getModel(), false);
+        }
+
+        // Shrink Overlay
+        float scale = ShrinkBodyOverlayAbility.getValue(player);
+
+        if (scale != 0F) {
+            float f = -0.1F * scale;
+            this.cachedHandShrink = f;
+            Vector3f vec = new Vector3f(f, f, f);
+            rendererArmwear.offsetScale(vec);
         }
     }
 
@@ -63,6 +75,14 @@ public class PlayerRendererMixin {
         }
 
         RenderUtil.REDIRECT_GET_BUFFER = false;
+
+        // Reset overlay shrink
+        if (this.cachedHandShrink != 0F) {
+            float f = -this.cachedHandShrink;
+            this.cachedHandShrink = 0F;
+            Vector3f vec = new Vector3f(f, f, f);
+            rendererArmwear.offsetScale(vec);
+        }
     }
 
 }
