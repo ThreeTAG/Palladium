@@ -5,4 +5,4 @@
 tasks:
   - init: ./gradlew build
 
-
+image: gitpod/workspace-java-17:latest
