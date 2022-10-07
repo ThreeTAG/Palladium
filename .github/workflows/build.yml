@@ -36,7 +36,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: build
-        path: build/libs
+        path: build/
     #- uses: Kir-Antipov/mc-publish@v3.2
       #with:
         # You don't need this section if you don't want to publish
