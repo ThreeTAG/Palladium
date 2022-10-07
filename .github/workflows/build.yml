@@ -37,3 +37,18 @@ jobs:
       with:
         name: build
         path: build/libs
+    #- uses: Kir-Antipov/mc-publish@v3.2
+      #with:
+        # You don't need this section if you don't want to publish
+        # your assets to Modrinth
+        #modrinth-id: AANobbMI
+        #modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+        # You don't need this section if you don't want to publish
+        # your assets to CurseForge
+        #curseforge-id: 394468
+        #curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+        # You don't need this section if you don't want to publish
+        # your assets to GitHub
+        #github-token: ${{ secrets.GITHUB_TOKEN }}
