@@ -6,6 +6,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
@@ -13,84 +14,70 @@ import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.power.ability.*;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public enum BodyPart {
 
-    HEAD("head"),
-    HEAD_OVERLAY("head_overlay"),
-    CHEST("chest"),
-    CHEST_OVERLAY("chest_overlay"),
-    RIGHT_ARM("right_arm"),
-    RIGHT_ARM_OVERLAY("right_arm_overlay"),
-    LEFT_ARM("left_arm"),
-    LEFT_ARM_OVERLAY("left_arm_overlay"),
-    RIGHT_LEG("right_leg"),
-    RIGHT_LEG_OVERLAY("right_leg_overlay"),
-    LEFT_LEG("left_leg"),
-    LEFT_LEG_OVERLAY("left_leg_overlay"),
-    CAPE("cape");
+    HEAD("head", false),
+    HEAD_OVERLAY("head_overlay", true),
+    CHEST("chest", false),
+    CHEST_OVERLAY("chest_overlay", true),
+    RIGHT_ARM("right_arm", false),
+    RIGHT_ARM_OVERLAY("right_arm_overlay", true),
+    LEFT_ARM("left_arm", false),
+    LEFT_ARM_OVERLAY("left_arm_overlay", true),
+    RIGHT_LEG("right_leg", false),
+    RIGHT_LEG_OVERLAY("right_leg_overlay", true),
+    LEFT_LEG("left_leg", false),
+    LEFT_LEG_OVERLAY("left_leg_overlay", true),
+    CAPE("cape", false);
 
     private final String name;
+    private final boolean overlay;
 
-    BodyPart(String name) {
+    BodyPart(String name, boolean overlay) {
         this.name = name;
+        this.overlay = overlay;
     }
 
     public String getName() {
         return this.name;
     }
 
+    public boolean isOverlay() {
+        return this.overlay;
+    }
+
+    @Nullable
     @Environment(EnvType.CLIENT)
-    public void setVisibility(HumanoidModel<?> model, boolean visible) {
+    public ModelPart getModelPart(HumanoidModel<?> model) {
         PlayerModel<?> playerModel = model instanceof PlayerModel<?> pl ? pl : null;
 
-        switch (this) {
-            case HEAD:
-                model.head.visible = visible;
-                return;
-            case HEAD_OVERLAY:
-                model.hat.visible = visible;
-                return;
-            case CHEST:
-                model.body.visible = visible;
-                return;
-            case CHEST_OVERLAY:
-                if (playerModel != null)
-                    playerModel.jacket.visible = visible;
-                return;
-            case RIGHT_ARM:
-                model.rightArm.visible = visible;
-                return;
-            case RIGHT_ARM_OVERLAY:
-                if (playerModel != null)
-                    playerModel.rightSleeve.visible = visible;
-                return;
-            case LEFT_ARM:
-                model.leftArm.visible = visible;
-                return;
-            case LEFT_ARM_OVERLAY:
-                if (playerModel != null)
-                    playerModel.leftSleeve.visible = visible;
-                return;
-            case RIGHT_LEG:
-                model.rightLeg.visible = visible;
-                return;
-            case RIGHT_LEG_OVERLAY:
-                if (playerModel != null)
-                    playerModel.rightPants.visible = visible;
-                return;
-            case LEFT_LEG:
-                model.leftLeg.visible = visible;
-                return;
-            case LEFT_LEG_OVERLAY:
-                if (playerModel != null)
-                    playerModel.leftPants.visible = visible;
-                return;
-            case CAPE:
-                if (playerModel != null)
-                    playerModel.cloak.visible = visible;
+        return switch (this) {
+            case HEAD -> model.head;
+            case HEAD_OVERLAY -> model.hat;
+            case CHEST -> model.body;
+            case CHEST_OVERLAY -> playerModel != null ? playerModel.jacket : null;
+            case RIGHT_ARM -> model.rightArm;
+            case RIGHT_ARM_OVERLAY -> playerModel != null ? playerModel.rightSleeve : null;
+            case LEFT_ARM -> model.leftArm;
+            case LEFT_ARM_OVERLAY -> playerModel != null ? playerModel.leftSleeve : null;
+            case RIGHT_LEG -> model.rightLeg;
+            case RIGHT_LEG_OVERLAY -> playerModel != null ? playerModel.rightPants : null;
+            case LEFT_LEG -> model.leftLeg;
+            case LEFT_LEG_OVERLAY -> playerModel != null ? playerModel.leftPants : null;
+            case CAPE -> playerModel != null ? playerModel.cloak : null;
+        };
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void setVisibility(HumanoidModel<?> model, boolean visible) {
+        ModelPart part = getModelPart(model);
+
+        if (part != null) {
+            part.visible = visible;
         }
     }
 
