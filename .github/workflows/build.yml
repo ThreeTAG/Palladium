@@ -29,19 +29,19 @@ jobs:
     - name: Make gradlew executable
       run: chmod +x ./gradlew
     - name: Build
-      uses: gradle/gradle-build-action@latest
+      uses: gradle/gradle-build-action@v2
       with:
         arguments: build
     - name: Build common
-      uses: gradle/gradle-build-action@latest
+      uses: gradle/gradle-build-action@v2
       with:
         arguments: common:build
     - name: Build forge
-      uses: gradle/gradle-build-action@latest
+      uses: gradle/gradle-build-action@v2
       with:
         arguments: forge:build
     - name: Build fabric
-      uses: gradle/gradle-build-action@latest
+      uses: gradle/gradle-build-action@v2
       with:
         arguments: fabric:build
     - name: Upload Artfiacts
