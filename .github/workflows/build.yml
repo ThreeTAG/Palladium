@@ -28,15 +28,31 @@ jobs:
         distribution: 'temurin'
     - name: Make gradlew executable
       run: chmod +x ./gradlew
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+    - name: Build
+      uses: gradle/gradle-build-action@latest
       with:
         arguments: build
+    - name: Build common
+      uses: gradle/gradle-build-action@latest
+      with:
+        arguments: common:build
+    - name: Build forge
+      uses: gradle/gradle-build-action@latest
+      with:
+        arguments: forge:build
+    - name: Build fabric
+      uses: gradle/gradle-build-action@latest
+      with:
+        arguments: fabric:build
     - name: Upload Artfiacts
       uses: actions/upload-artifact@v3
-      with:
+      with: 
         name: build
-        path: build/
+        path: |
+          build/
+          forge/build/
+          fabric/build/
+          common/build/
     #- uses: Kir-Antipov/mc-publish@v3.2
       #with:
         # You don't need this section if you don't want to publish
