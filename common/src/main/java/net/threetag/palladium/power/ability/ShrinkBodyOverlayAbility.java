@@ -1,6 +1,7 @@
 package net.threetag.palladium.power.ability;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.client.model.animation.AnimationUtil;
 
 public class ShrinkBodyOverlayAbility extends InterpolatedIntegerAbility {
 
@@ -14,7 +15,7 @@ public class ShrinkBodyOverlayAbility extends InterpolatedIntegerAbility {
             }
         }
 
-        return scale;
+        return AnimationUtil.smooth(scale);
     }
 
 }

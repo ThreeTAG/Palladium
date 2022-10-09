@@ -67,7 +67,7 @@ public abstract class Accessory {
 
     @Environment(EnvType.CLIENT)
     public boolean isVisible(AccessorySlot slot, AbstractClientPlayer player) {
-        return slot.getCorrespondingEquipmentSlot() == null || player.getItemBySlot(slot.getCorrespondingEquipmentSlot()).isEmpty();
+        return (slot.getCorrespondingEquipmentSlot() == null || player.getItemBySlot(slot.getCorrespondingEquipmentSlot()).isEmpty()) && !slot.wasHidden(player);
     }
 
     @Environment(EnvType.CLIENT)

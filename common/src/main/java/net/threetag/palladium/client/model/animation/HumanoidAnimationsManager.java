@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -16,7 +15,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.event.PalladiumClientEvents;
 
 import java.util.*;
@@ -49,7 +47,7 @@ public class HumanoidAnimationsManager extends SimpleJsonResourceReloadListener 
         animations.put(id, animation);
     }
 
-    public static void resetModelParts(Iterable<ModelPart> headParts, Iterable<ModelPart> bodyParts) {
+    public static void resetPoses(Iterable<ModelPart> headParts, Iterable<ModelPart> bodyParts) {
         for (ModelPart bodyPart : headParts) {
             bodyPart.resetPose();
         }
@@ -59,22 +57,11 @@ public class HumanoidAnimationsManager extends SimpleJsonResourceReloadListener 
         }
     }
 
-    public static void pre(AgeableListModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (model instanceof HumanoidModel<?> humanoidModel) {
-
-            // Reset all, make them visible
-            BodyPart.resetBodyParts(entity, humanoidModel);
-
-            // Make them invisible if specified
-            for (BodyPart part : BodyPart.getHiddenBodyParts(entity, false)) {
-                part.setVisibility(humanoidModel, false);
-            }
-
-            // Do animations
-            for (Animation animation : INSTANCE.animationsSorted) {
-                if (animation.active(entity)) {
-                    animation.setupAnimation(humanoidModel, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, PARTIAL_TICK);
-                }
+    public static void applyAnimations(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        // Do animations
+        for (Animation animation : INSTANCE.animationsSorted) {
+            if (animation.active(entity)) {
+                animation.setupAnimation(model, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, PARTIAL_TICK);
             }
         }
     }

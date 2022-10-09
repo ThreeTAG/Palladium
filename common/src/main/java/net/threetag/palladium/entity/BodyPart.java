@@ -3,13 +3,13 @@ package net.threetag.palladium.entity;
 import com.google.gson.JsonParseException;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
+import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.power.ability.*;
@@ -127,10 +127,34 @@ public enum BodyPart {
     }
 
     @Environment(EnvType.CLIENT)
+    public static void hideParts(HumanoidModel<?> model, LivingEntity entity) {
+        for (BodyPart part : getHiddenBodyParts(entity, false)) {
+            part.setVisibility(model, false);
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
     public static List<BodyPart> getHiddenBodyParts(LivingEntity entity, boolean isFirstPerson) {
+        return getHiddenBodyParts(entity, isFirstPerson, true);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static List<BodyPart> getHiddenBodyParts(LivingEntity entity, boolean isFirstPerson, boolean includeAccessories) {
         List<BodyPart> bodyParts = new ArrayList<>();
 
-        for (AbilityEntry bodyPartHide : Ability.getEnabledEntries(Minecraft.getInstance().player, Abilities.HIDE_BODY_PARTS.get())) {
+        if (includeAccessories && entity instanceof Player player) {
+            Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
+                if (!accessories.isEmpty()) {
+                    for (BodyPart part : slot.getHiddenBodyParts(player)) {
+                        if (!bodyParts.contains(part)) {
+                            bodyParts.add(part);
+                        }
+                    }
+                }
+            }));
+        }
+
+        for (AbilityEntry bodyPartHide : Ability.getEnabledEntries(entity, Abilities.HIDE_BODY_PARTS.get())) {
             if (isFirstPerson ? bodyPartHide.getProperty(HideBodyPartsAbility.AFFECTS_FIRST_PERSON) : true) {
                 for (BodyPart part : bodyPartHide.getProperty(HideBodyPartsAbility.BODY_PARTS)) {
                     if (!bodyParts.contains(part)) {

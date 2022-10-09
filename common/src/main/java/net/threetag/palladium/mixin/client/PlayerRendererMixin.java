@@ -36,7 +36,7 @@ public class PlayerRendererMixin {
         RenderUtil.REDIRECT_GET_BUFFER = true;
 
         if (playerRenderer.getModel() instanceof AgeableListModelInvoker invoker) {
-            HumanoidAnimationsManager.resetModelParts(invoker.invokeHeadParts(), invoker.invokeBodyParts());
+            HumanoidAnimationsManager.resetPoses(invoker.invokeHeadParts(), invoker.invokeBodyParts());
         }
     }
 
@@ -73,6 +73,9 @@ public class PlayerRendererMixin {
                 layer.renderArm(rendererArm == playerRenderer.getModel().rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, player, playerRenderer, poseStack, buffer, combinedLight);
             }
         }
+
+        // Reset all, make them visible
+        BodyPart.resetBodyParts(player, playerRenderer.getModel());
 
         RenderUtil.REDIRECT_GET_BUFFER = false;
 

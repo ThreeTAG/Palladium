@@ -71,13 +71,13 @@ public class OverlayAccessory extends DefaultAccessory {
     public void setVisibility(HumanoidModel<?> model, AbstractClientPlayer player, AccessorySlot slot) {
         if(this.onlyRenderSlot) {
             model.setAllVisible(false);
-            slot.setVisibility(model, player, true);
+            slot.getHiddenBodyParts(player).forEach(p -> p.setVisibility(model, true));
 
             if(this.handVisibilityFix) {
                 if(slot == AccessorySlot.MAIN_HAND) {
-                    AccessorySlot.MAIN_ARM.setVisibility(model, player, true);
+                    AccessorySlot.MAIN_ARM.getHiddenBodyParts(player).forEach(p -> p.setVisibility(model, true));
                 } else if(slot == AccessorySlot.OFF_HAND) {
-                    AccessorySlot.OFF_ARM.setVisibility(model, player, true);
+                    AccessorySlot.OFF_ARM.getHiddenBodyParts(player).forEach(p -> p.setVisibility(model, true));
                 }
             }
         } else {

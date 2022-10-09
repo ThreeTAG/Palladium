@@ -39,8 +39,10 @@ public class WoodenLegAccessory extends Accessory {
             renderLayerParent.getModel().copyPropertiesTo(shortened);
             woodLegs.setAllVisible(false);
             shortened.setAllVisible(false);
-            slot.setVisibility(woodLegs, player, true);
-            slot.setVisibility(shortened, player, true);
+            slot.getHiddenBodyParts(player).forEach(p -> {
+                p.setVisibility(woodLegs, true);
+                p.setVisibility(shortened, true);
+            });
 
             var buffer = bufferSource.getBuffer(Objects.requireNonNull(getRenderType(player, player.getSkinTextureLocation(), renderLayerParent.getModel())));
             shortened.renderToBuffer(poseStack, buffer, packedLightIn, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
