@@ -7,6 +7,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.entity.HumanoidArm;
+import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.client.model.animation.HumanoidAnimationsManager;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
@@ -66,6 +67,14 @@ public class PlayerRendererMixin {
     @Inject(at = @At("RETURN"), method = "renderHand")
     public void renderHandPost(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
+
+        Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
+            for (Accessory accessory : accessories) {
+                if (accessory.isVisible(slot, player, true)) {
+                    accessory.renderArm(rendererArm == playerRenderer.getModel().rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, player, playerRenderer, rendererArm, rendererArmwear, slot, poseStack, buffer, combinedLight);
+                }
+            }
+        }));
 
         for (AbilityEntry entry : Ability.getEnabledEntries(player, Abilities.RENDER_LAYER.get())) {
             IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));

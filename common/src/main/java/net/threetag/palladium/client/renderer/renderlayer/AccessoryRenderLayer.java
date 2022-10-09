@@ -21,8 +21,7 @@ public class AccessoryRenderLayer extends RenderLayer<AbstractClientPlayer, Play
     public void render(PoseStack poseStack, MultiBufferSource source, int packedLight, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
             for (Accessory accessory : accessories) {
-                // TODO check if body part wasnt hidden
-                if (accessory.isVisible(slot, player)) {
+                if (accessory.isVisible(slot, player, false)) {
                     accessory.render(this.renderLayerParent, slot, poseStack, source, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
                 }
             }

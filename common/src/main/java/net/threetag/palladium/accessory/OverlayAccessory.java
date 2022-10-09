@@ -5,12 +5,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.util.PlayerUtil;
 
@@ -65,6 +68,19 @@ public class OverlayAccessory extends DefaultAccessory {
         ResourceLocation texture = PlayerUtil.hasSmallArms(player) ? this.textureSlim : this.texture;
         var buffer = bufferSource.getBuffer(this.glowing ? RenderType.eyes(texture) : Objects.requireNonNull(getRenderType(player, texture, renderLayerParent.getModel())));
         model.renderToBuffer(poseStack, buffer, packedLightIn, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+    }
+
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void renderArm(HumanoidArm arm, AbstractClientPlayer player, PlayerRenderer playerRenderer, ModelPart armPart, ModelPart armWearPart, AccessorySlot slot, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        ResourceLocation texture = PlayerUtil.hasSmallArms(player) ? this.textureSlim : this.texture;
+        var buffer = bufferSource.getBuffer(this.glowing ? RenderType.eyes(texture) : Objects.requireNonNull(getRenderType(player, texture, playerRenderer.getModel())));
+        armPart.xRot = 0.0F;
+        armPart.visible = true;
+        armPart.render(poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
+        armWearPart.xRot = 0.0F;
+        armWearPart.visible = true;
+        armWearPart.render(poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
     }
 
     @Environment(EnvType.CLIENT)
