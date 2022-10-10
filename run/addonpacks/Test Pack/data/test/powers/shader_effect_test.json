@@ -1,0 +1,21 @@
+{
+  "name": "Shader",
+  "icon": {
+    "type": "palladium:item",
+    "item": "minecraft:gunpowder"
+  },
+  "background": "minecraft:textures/block/amethyst_block.png",
+  "abilities": {
+    "shader_effect": {
+      "type": "palladium:shader_effect",
+      "hidden": false,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle"
+          }
+        ]
+      }
+    }
+  }
+}
