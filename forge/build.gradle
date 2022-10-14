@@ -55,18 +55,18 @@ dependencies {
     include "net.threetag:PalladiumCore-forge:${rootProject.palladiumcore_version}"
 
     // JEI
-    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
+    modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
 //    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
 
     // REI
     modImplementation "me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}"
 
     // Configured & Catalogue
-    modRuntimeOnly "curse.maven:configured-457570:${rootProject.configured_version}"
-    modRuntimeOnly "curse.maven:catalogue-459701:${rootProject.catalogue_version}"
+    modLocalRuntime "curse.maven:configured-457570:${rootProject.configured_version}"
+    modLocalRuntime "curse.maven:catalogue-459701:${rootProject.catalogue_version}"
 
     // Curios
-    modRuntimeOnly "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}"
+    modLocalRuntime "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}"
     modCompileOnly "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}:api"
 
     // KubeJS
