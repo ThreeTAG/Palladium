@@ -41,7 +41,7 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "checkEntityPostEffect", at = @At("RETURN"))
     private void checkEntityPostEffect(Entity entity, CallbackInfo ci) {
-        if (this.postEffect == null) {
+        if (this.postEffect == null && this.minecraft.player != null) {
             var shader = ShaderEffectAbility.get(this.minecraft.player);
             if (shader != null) {
                 this.loadEffect(shader);
