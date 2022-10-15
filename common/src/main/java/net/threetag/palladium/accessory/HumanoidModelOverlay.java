@@ -99,6 +99,7 @@ public class HumanoidModelOverlay extends OverlayAccessory {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     @Override
     public void renderArm(HumanoidArm arm, AbstractClientPlayer player, PlayerRenderer playerRenderer, ModelPart armPart, ModelPart armWearPart, AccessorySlot slot, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         if (this.getModel(player) instanceof HumanoidModel model) {
