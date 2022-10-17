@@ -55,6 +55,10 @@ action</a>
 activation</a>
 </li>
 <li>
+<a href="#palladium:brightness_at_position">
+brightness_at_position</a>
+</li>
+<li>
 <a href="#palladium:crouching">
 crouching</a>
 </li>
@@ -535,6 +539,62 @@ KEY_BIND</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:activation","cooldown":0,"ticks":60,"key_type":"key_bind"}</pre>
+</div>
+<hr>
+
+<div id="palladium:brightness_at_position">
+<h2>
+brightness_at_position</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+min_brightness</td>
+<td>
+Integer</td>
+<td>
+Minimum required brightness at entity's position</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+max_brightness</td>
+<td>
+Integer</td>
+<td>
+Maximum required brightness at entity's position</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+16</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:brightness_at_position","min_brightness":0,"max_brightness":16}</pre>
 </div>
 <hr>
 

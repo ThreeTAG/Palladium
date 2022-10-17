@@ -9,11 +9,14 @@
     "invisibility": {
       "type": "palladium:invisibility",
       "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:toggle"
-          }
-        ]
+        "unlocking": {
+          "type": "palladium:brightness_at_position",
+          "min_brightness": 0,
+          "max_brightness": 5
+        },
+        "enabling": {
+          "type": "palladium:crouching"
+        }
       }
     }
   }
