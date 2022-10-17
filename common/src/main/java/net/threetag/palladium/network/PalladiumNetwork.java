@@ -9,8 +9,7 @@ public class PalladiumNetwork {
     public static final NetworkManager NETWORK = NetworkManager.create(Palladium.id("main_channel"));
 
     public static final MessageType SYNC_POWERS = NETWORK.registerS2C("sync_powers", SyncPowersMessage::new);
-    public static final MessageType ADD_POWER = NETWORK.registerS2C("add_power", AddPowerMessage::new);
-    public static final MessageType REMOVE_POWER = NETWORK.registerS2C("remove_power", RemovePowerMessage::new);
+    public static final MessageType UPDATE_POWERS = NETWORK.registerS2C("update_powers", UpdatePowersMessage::new);
     public static final MessageType SYNC_ABILITY_STATE = NETWORK.registerS2C("sync_ability_state", SyncAbilityStateMessage::new);
     public static final MessageType SYNC_PROPERTY = NETWORK.registerS2C("sync_property", SyncPropertyMessage::new);
     public static final MessageType SYNC_ABILITY_ENTRY_PROPERTY = NETWORK.registerS2C("sync_ability_entry_property", SyncAbilityEntryPropertyMessage::new);

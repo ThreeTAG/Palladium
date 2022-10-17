@@ -2,10 +2,7 @@ package net.threetag.palladium.compat.curios.forge;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.threetag.palladium.power.DefaultPowerHolder;
-import net.threetag.palladium.power.IPowerHandler;
-import net.threetag.palladium.power.ItemPowerManager;
-import net.threetag.palladium.power.Power;
+import net.threetag.palladium.power.*;
 import net.threetag.palladium.power.provider.PowerProvider;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.ISlotType;
@@ -16,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class CuriosPowerProvider extends PowerProvider {
 
     @Override
-    public void providePowers(LivingEntity entity, IPowerHandler handler) {
+    public void providePowers(LivingEntity entity, IPowerHandler handler, PowerCollector collector) {
         CuriosApi.getCuriosHelper().getCuriosHandler(entity).ifPresent(curios -> {
             for (ISlotType slotType : CuriosApi.getSlotHelper().getSlotTypes(entity)) {
                 curios.getStacksHandler(slotType.getIdentifier()).ifPresent(stacks -> {
@@ -28,9 +25,7 @@ public class CuriosPowerProvider extends PowerProvider {
 
                             if (powers != null) {
                                 for (Power power : powers) {
-                                    if (power != null && !handler.hasPower(power)) {
-                                        handler.setPowerHolder(power, new PowerHolder(entity, power, stack, slotType.getIdentifier()));
-                                    }
+                                    collector.addPower(power, () -> new Validator(stack, slotType.getIdentifier()));
                                 }
                             }
                         }
@@ -40,21 +35,12 @@ public class CuriosPowerProvider extends PowerProvider {
         });
     }
 
-    public static class PowerHolder extends DefaultPowerHolder {
-
-        public final ItemStack stack;
-        public final String slot;
-
-        public PowerHolder(LivingEntity entity, Power power, ItemStack stack, String slot) {
-            super(entity, power, null);
-            this.stack = stack;
-            this.slot = slot;
-        }
+    public record Validator(ItemStack stack, String slot) implements IPowerValidator {
 
         @Override
-        public boolean isInvalid() {
+        public boolean stillValid(LivingEntity entity, Power power) {
             AtomicBoolean available = new AtomicBoolean(false);
-            CuriosApi.getCuriosHelper().getCuriosHandler(this.entity).ifPresent(curios -> {
+            CuriosApi.getCuriosHelper().getCuriosHandler(entity).ifPresent(curios -> {
                 curios.getStacksHandler(this.slot).ifPresent(stacks -> {
                     for (int i = 0; i < stacks.getStacks().getSlots(); i++) {
                         ItemStack stack = stacks.getStacks().getStackInSlot(i);
@@ -65,8 +51,7 @@ public class CuriosPowerProvider extends PowerProvider {
                     }
                 });
             });
-
-            return this.getPower().isInvalid() || !available.get();
+            return available.get();
         }
     }
 }

@@ -7,16 +7,15 @@ import net.threetag.palladium.power.ability.AbilityEntry;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 public class DefaultPowerHolder implements IPowerHolder {
 
     public final LivingEntity entity;
     private final Power power;
     private final Map<String, AbilityEntry> entryMap = new HashMap<>();
-    private final Function<DefaultPowerHolder, Boolean> invalidChecker;
+    private IPowerValidator validator;
 
-    public DefaultPowerHolder(LivingEntity entity, Power power, Function<DefaultPowerHolder, Boolean> invalidChecker) {
+    public DefaultPowerHolder(LivingEntity entity, Power power, IPowerValidator validator) {
         this.entity = entity;
         this.power = power;
         for (AbilityConfiguration ability : this.getPower().getAbilities()) {
@@ -24,7 +23,7 @@ public class DefaultPowerHolder implements IPowerHolder {
             entry.id = ability.getId();
             this.entryMap.put(ability.getId(), entry);
         }
-        this.invalidChecker = invalidChecker;
+        this.validator = validator;
     }
 
     @Override
@@ -59,6 +58,11 @@ public class DefaultPowerHolder implements IPowerHolder {
 
     @Override
     public boolean isInvalid() {
-        return this.power.isInvalid() || this.invalidChecker.apply(this);
+        return this.power.isInvalid() || !this.validator.stillValid(this.entity, this.power);
+    }
+
+    @Override
+    public void switchValidator(IPowerValidator validator) {
+        this.validator = validator;
     }
 }
