@@ -53,7 +53,7 @@ public class ActivationCondition extends KeyCondition {
 
         @Override
         public Condition make(JsonObject json) {
-            return new ActivationCondition(this.getProperty(json, ActionCondition.Serializer.COOLDOWN), this.getProperty(json, TICKS), this.getProperty(json, KeyCondition.KEY_TYPE));
+            return new ActivationCondition(this.getProperty(json, TICKS), this.getProperty(json, ActionCondition.Serializer.COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE));
         }
 
         @Override
