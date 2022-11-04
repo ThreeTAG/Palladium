@@ -10,14 +10,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
-import net.threetag.palladium.network.UpdatePowersMessage;
 import net.threetag.palladium.network.SyncPowersMessage;
+import net.threetag.palladium.network.UpdatePowersMessage;
+import net.threetag.palladium.util.LegacySupportJsonReloadListener;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
 import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class PowerManager extends SimpleJsonResourceReloadListener {
+public class PowerManager extends LegacySupportJsonReloadListener {
 
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private static PowerManager INSTANCE;
@@ -56,7 +56,7 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
     }
 
     public PowerManager() {
-        super(GSON, "powers");
+        super(GSON, "palladium/powers", "powers");
     }
 
     public static PowerManager getInstance(@Nullable Level level) {
