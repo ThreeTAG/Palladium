@@ -68,6 +68,8 @@
   "block.palladium.titanium_ore": "Titaniumärds",
   "block.palladium.vibranium_block": "Vibraniumblogg",
   "block.palladium.vibranium_ore": "Vibraniumärds",
+  "commands.superpower.error.alreadyHasSuperpower": "%s had berehts dise Supperkraft",
+  "commands.superpower.error.doesntHaveSuperpower": "%s had dese Supperkraft nich",
   "commands.superpower.error.noLivingEntity": "Objekt ist nicht lebend",
   "commands.superpower.error.powerNotFound": "Et wurd' kene Kraft mit'm Namen '%1$s' jefunden",
   "commands.superpower.remove.success.entity.multiple": "De Supperkraft von %s Lebewesen wurd' entfernt",

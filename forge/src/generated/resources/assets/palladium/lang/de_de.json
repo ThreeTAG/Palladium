@@ -68,6 +68,8 @@
   "block.palladium.titanium_ore": "Titaniumerz",
   "block.palladium.vibranium_block": "Vibraniumblock",
   "block.palladium.vibranium_ore": "Vibraniumerz",
+  "commands.superpower.error.alreadyHasSuperpower": "%s hat bereits diese Superkraft",
+  "commands.superpower.error.doesntHaveSuperpower": "%s hat diese Superkraft nicht",
   "commands.superpower.error.noLivingEntity": "Objekt ist nicht lebend",
   "commands.superpower.error.powerNotFound": "Es wurde keine Kraft mit dem Namen '%1$s' gefunden",
   "commands.superpower.remove.success.entity.multiple": "Die Superkraft von %s Lebewesen wurde entfernt",

@@ -108,6 +108,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.success.entity.multiple", "%s entities have gained the superpower %s");
             this.add("commands.superpower.remove.success.entity.single", "%s's superpower was removed");
             this.add("commands.superpower.remove.success.entity.multiple", "The superpower of %s entities was removed");
+            this.add("commands.superpower.error.alreadyHasSuperpower", "%s already has that superpower");
+            this.add("commands.superpower.error.doesntHaveSuperpower", "%s does not have that superpower");
 
             // GUI
             this.add("gui.palladium.powers", "Powers");
@@ -244,6 +246,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.success.entity.multiple", "%s Lebewesen haben die Superkraft %s erhalten");
             this.add("commands.superpower.remove.success.entity.single", "%s's Superkraft wurde entfernt");
             this.add("commands.superpower.remove.success.entity.multiple", "Die Superkraft von %s Lebewesen wurde entfernt");
+            this.add("commands.superpower.error.alreadyHasSuperpower", "%s hat bereits diese Superkraft");
+            this.add("commands.superpower.error.doesntHaveSuperpower", "%s hat diese Superkraft nicht");
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
@@ -380,6 +384,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.success.entity.multiple", "%s Lebewesen haben de Supperkraft %s erhalten");
             this.add("commands.superpower.remove.success.entity.single", "%s's Supperkraft wurd' entfernt");
             this.add("commands.superpower.remove.success.entity.multiple", "De Supperkraft von %s Lebewesen wurd' entfernt");
+            this.add("commands.superpower.error.alreadyHasSuperpower", "%s had berehts dise Supperkraft");
+            this.add("commands.superpower.error.doesntHaveSuperpower", "%s had dese Supperkraft nich");
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
