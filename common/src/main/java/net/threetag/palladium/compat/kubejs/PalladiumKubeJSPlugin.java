@@ -3,6 +3,7 @@ package net.threetag.palladium.compat.kubejs;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
+import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.util.AttachedData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -30,7 +31,7 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
         PalladiumJSEvents.GROUP.register();
 
         PalladiumEvents.REGISTER_PROPERTY.register(handler -> {
-            if(handler.getEntity().level.isClientSide) {
+            if (handler.getEntity().level.isClientSide) {
                 PalladiumJSEvents.CLIENT_REGISTER_PROPERTIES.post(new RegisterPalladiumPropertyEventJS(handler.getEntity(), handler));
             } else {
                 PalladiumJSEvents.REGISTER_PROPERTIES.post(new RegisterPalladiumPropertyEventJS(handler.getEntity(), handler));
@@ -55,7 +56,9 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
     @Override
     public void registerBindings(BindingsEvent event) {
         event.add("palladium", PalladiumBinding.class);
-        event.add("animationUtil", AnimationUtil.class);
+        if (event.type == ScriptType.CLIENT) {
+            event.add("animationUtil", AnimationUtil.class);
+        }
     }
 
     @Override

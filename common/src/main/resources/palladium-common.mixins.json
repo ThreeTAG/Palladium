@@ -9,6 +9,7 @@
     "client.HumanoidModelMixin",
     "client.LivingEntityRendererMixin",
     "client.PlayerInfoMixin",
+    "client.PlayerModelMixin",
     "client.PlayerRendererMixin",
     "client.RenderTypeMixin"
   ],

@@ -4,16 +4,18 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.entity.BodyPart;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class AccessorySlot {
@@ -78,52 +80,25 @@ public class AccessorySlot {
     }
 
     @Environment(EnvType.CLIENT)
-    public void setVisibility(HumanoidModel<?> model, Player player, boolean visible) {
+    public boolean wasHidden(Player player, boolean isFirstPerson) {
+        return BodyPart.getHiddenBodyParts(player, isFirstPerson, false).stream().anyMatch(part -> this.getHiddenBodyParts(player).contains(part));
+    }
+
+    public Collection<BodyPart> getHiddenBodyParts(Player player) {
         if (this == HEAD) {
-            model.head.visible = model.hat.visible = visible;
-            if (model instanceof PlayerModel<?> playerModel) {
-                playerModel.hat.visible = visible;
-            }
+            return Arrays.asList(BodyPart.HEAD, BodyPart.HEAD_OVERLAY);
         } else if (this == CHEST) {
-            model.body.visible = visible;
-            if (model instanceof PlayerModel<?> playerModel) {
-                playerModel.jacket.visible = visible;
-            }
+            return Arrays.asList(BodyPart.CHEST, BodyPart.CHEST_OVERLAY);
         } else if (this == MAIN_ARM) {
-            if (player.getMainArm() == HumanoidArm.RIGHT) {
-                model.rightArm.visible = visible;
-                if (model instanceof PlayerModel<?> playerModel) {
-                    playerModel.rightSleeve.visible = visible;
-                }
-            } else {
-                model.leftArm.visible = visible;
-                if (model instanceof PlayerModel<?> playerModel) {
-                    playerModel.leftSleeve.visible = visible;
-                }
-            }
+            return player.getMainArm() == HumanoidArm.RIGHT ? Arrays.asList(BodyPart.RIGHT_ARM, BodyPart.RIGHT_ARM_OVERLAY) : Arrays.asList(BodyPart.LEFT_ARM, BodyPart.LEFT_ARM_OVERLAY);
         } else if (this == OFF_ARM) {
-            if (player.getMainArm() == HumanoidArm.RIGHT) {
-                model.leftArm.visible = visible;
-                if (model instanceof PlayerModel<?> playerModel) {
-                    playerModel.leftSleeve.visible = visible;
-                }
-            } else {
-                model.rightArm.visible = visible;
-                if (model instanceof PlayerModel<?> playerModel) {
-                    playerModel.rightSleeve.visible = visible;
-                }
-            }
+            return player.getMainArm() != HumanoidArm.RIGHT ? Arrays.asList(BodyPart.RIGHT_ARM, BodyPart.RIGHT_ARM_OVERLAY) : Arrays.asList(BodyPart.LEFT_ARM, BodyPart.LEFT_ARM_OVERLAY);
         } else if (this == RIGHT_LEG) {
-            model.rightLeg.visible = visible;
-            if (model instanceof PlayerModel<?> playerModel) {
-                playerModel.rightPants.visible = visible;
-            }
+            return Arrays.asList(BodyPart.RIGHT_LEG, BodyPart.RIGHT_LEG_OVERLAY);
         } else if (this == LEFT_LEG) {
-            model.leftLeg.visible = visible;
-            if (model instanceof PlayerModel<?> playerModel) {
-                playerModel.leftPants.visible = visible;
-            }
+            return Arrays.asList(BodyPart.LEFT_LEG, BodyPart.LEFT_LEG_OVERLAY);
         }
+        return Collections.emptyList();
     }
 
     public static AccessorySlot register(String name) {

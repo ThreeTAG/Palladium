@@ -1,13 +1,14 @@
 {
-  "name": "Invisibility",
+  "name": "Shader",
   "icon": {
     "type": "palladium:item",
-    "item": "minecraft:glass_pane"
+    "item": "minecraft:gunpowder"
   },
   "background": "minecraft:textures/block/amethyst_block.png",
   "abilities": {
-    "invisibility": {
-      "type": "palladium:invisibility",
+    "shader_effect": {
+      "type": "palladium:shader_effect",
+      "hidden": false,
       "conditions": {
         "enabling": [
           {

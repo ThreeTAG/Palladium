@@ -1,0 +1,23 @@
+{
+  "name": "Invisibility",
+  "icon": {
+    "type": "palladium:item",
+    "item": "minecraft:glass_pane"
+  },
+  "background": "minecraft:textures/block/amethyst_block.png",
+  "abilities": {
+    "invisibility": {
+      "type": "palladium:invisibility",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:brightness_at_position",
+          "min_brightness": 0,
+          "max_brightness": 5
+        },
+        "enabling": {
+          "type": "palladium:crouching"
+        }
+      }
+    }
+  }
+}

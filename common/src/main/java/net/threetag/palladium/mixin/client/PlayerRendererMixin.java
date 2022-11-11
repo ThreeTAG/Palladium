@@ -1,12 +1,13 @@
 package net.threetag.palladium.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.entity.HumanoidArm;
+import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.client.model.animation.HumanoidAnimationsManager;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
@@ -22,6 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerRenderer.class)
 public class PlayerRendererMixin {
 
+    private float cachedHandShrink = 0F;
+
     @Inject(at = @At("RETURN"), method = "setupRotations(Lnet/minecraft/client/player/AbstractClientPlayer;Lcom/mojang/blaze3d/vertex/PoseStack;FFF)V")
     public void setupRotations(AbstractClientPlayer player, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks, CallbackInfo ci) {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
@@ -34,7 +37,7 @@ public class PlayerRendererMixin {
         RenderUtil.REDIRECT_GET_BUFFER = true;
 
         if (playerRenderer.getModel() instanceof AgeableListModelInvoker invoker) {
-            HumanoidAnimationsManager.resetModelParts(invoker.invokeHeadParts(), invoker.invokeBodyParts());
+            HumanoidAnimationsManager.resetPoses(invoker.invokeHeadParts(), invoker.invokeBodyParts());
         }
     }
 
@@ -43,17 +46,35 @@ public class PlayerRendererMixin {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
 
         // Reset all, make them visible
-        BodyPart.resetBodyParts(Minecraft.getInstance().player, playerRenderer.getModel());
+        BodyPart.resetBodyParts(player, playerRenderer.getModel());
 
         // Make them invisible if specified
-        for (BodyPart part : BodyPart.getHiddenBodyParts(Minecraft.getInstance().player, true)) {
+        for (BodyPart part : BodyPart.getHiddenBodyParts(player, true)) {
             part.setVisibility(playerRenderer.getModel(), false);
+        }
+
+        // Shrink Overlay
+        float scale = ShrinkBodyOverlayAbility.getValue(player);
+
+        if (scale != 0F) {
+            float f = -0.1F * scale;
+            this.cachedHandShrink = f;
+            Vector3f vec = new Vector3f(f, f, f);
+            rendererArmwear.offsetScale(vec);
         }
     }
 
     @Inject(at = @At("RETURN"), method = "renderHand")
     public void renderHandPost(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
+
+        Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
+            for (Accessory accessory : accessories) {
+                if (accessory.isVisible(slot, player, true)) {
+                    accessory.renderArm(rendererArm == playerRenderer.getModel().rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, player, playerRenderer, rendererArm, rendererArmwear, slot, poseStack, buffer, combinedLight);
+                }
+            }
+        }));
 
         for (AbilityEntry entry : Ability.getEnabledEntries(player, Abilities.RENDER_LAYER.get())) {
             IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
@@ -62,7 +83,18 @@ public class PlayerRendererMixin {
             }
         }
 
+        // Reset all, make them visible
+        BodyPart.resetBodyParts(player, playerRenderer.getModel());
+
         RenderUtil.REDIRECT_GET_BUFFER = false;
+
+        // Reset overlay shrink
+        if (this.cachedHandShrink != 0F) {
+            float f = -this.cachedHandShrink;
+            this.cachedHandShrink = 0F;
+            Vector3f vec = new Vector3f(f, f, f);
+            rendererArmwear.offsetScale(vec);
+        }
     }
 
 }

@@ -29,3 +29,5 @@ accessible field net/minecraft/client/renderer/texture/TextureManager byPath Lja
 
 accessible field net/minecraft/client/model/geom/EntityModelSet roots Ljava/util/Map;
 mutable field net/minecraft/client/model/geom/EntityModelSet roots Ljava/util/Map;
+
+accessible method net/minecraft/client/renderer/GameRenderer loadEffect (Lnet/minecraft/resources/ResourceLocation;)V

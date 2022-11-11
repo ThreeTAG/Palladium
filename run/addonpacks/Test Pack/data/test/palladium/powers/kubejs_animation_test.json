@@ -1,0 +1,17 @@
+{
+  "name": "KubeJS Test",
+  "icon": "minecraft:iron_ingot",
+  "abilities": {
+    "toggle_animation": {
+      "type": "palladium:interpolated_integer",
+      "icon": "minecraft:iron_ingot",
+      "max_value": 16,
+      "hidden": false,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
+    }
+  }
+}

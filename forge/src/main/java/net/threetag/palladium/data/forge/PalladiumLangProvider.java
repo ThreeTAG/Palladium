@@ -78,6 +78,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.COMMAND, "Command");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
             this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolated Integer");
+            this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "Shrink Body Overlay");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attribute Modifier");
             this.addAbility(Abilities.HEALING, "Healing");
             this.addAbility(Abilities.SLOWFALL, "Slowfall");
@@ -88,6 +89,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SKIN_CHANGE, "Skin Change");
             this.addAbility(Abilities.AIM, "Aim");
             this.addAbility(Abilities.HIDE_BODY_PARTS, "Hide Body Parts");
+            this.addAbility(Abilities.SHADER_EFFECT, "Shader Effect");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -106,6 +108,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.success.entity.multiple", "%s entities have gained the superpower %s");
             this.add("commands.superpower.remove.success.entity.single", "%s's superpower was removed");
             this.add("commands.superpower.remove.success.entity.multiple", "The superpower of %s entities was removed");
+            this.add("commands.superpower.error.alreadyHasSuperpower", "%s already has that superpower");
+            this.add("commands.superpower.error.doesntHaveSuperpower", "%s does not have that superpower");
 
             // GUI
             this.add("gui.palladium.powers", "Powers");
@@ -212,6 +216,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
             this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolierte Zahl");
+            this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attributmodifikator");
             this.addAbility(Abilities.HEALING, "Heilung");
             this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
@@ -222,6 +227,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SKIN_CHANGE, "Skin \u00C4nderung");
             this.addAbility(Abilities.AIM, "Zielen");
             this.addAbility(Abilities.HIDE_BODY_PARTS, "K\u00F6rperteile verstecken");
+            this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
@@ -240,6 +246,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.success.entity.multiple", "%s Lebewesen haben die Superkraft %s erhalten");
             this.add("commands.superpower.remove.success.entity.single", "%s's Superkraft wurde entfernt");
             this.add("commands.superpower.remove.success.entity.multiple", "Die Superkraft von %s Lebewesen wurde entfernt");
+            this.add("commands.superpower.error.alreadyHasSuperpower", "%s hat bereits diese Superkraft");
+            this.add("commands.superpower.error.doesntHaveSuperpower", "%s hat diese Superkraft nicht");
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
@@ -346,6 +354,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
             this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolierte Zahl");
+            this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "\u00C4ttrib\u00FCtmodifikator");
             this.addAbility(Abilities.HEALING, "Helung");
             this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
@@ -356,6 +365,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SKIN_CHANGE, "Skin \u00C4nderung");
             this.addAbility(Abilities.AIM, "Zielen");
             this.addAbility(Abilities.HIDE_BODY_PARTS, "G\u00F6rperdeile versteggen");
+            this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");
@@ -374,6 +384,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.success.entity.multiple", "%s Lebewesen haben de Supperkraft %s erhalten");
             this.add("commands.superpower.remove.success.entity.single", "%s's Supperkraft wurd' entfernt");
             this.add("commands.superpower.remove.success.entity.multiple", "De Supperkraft von %s Lebewesen wurd' entfernt");
+            this.add("commands.superpower.error.alreadyHasSuperpower", "%s had berehts dise Supperkraft");
+            this.add("commands.superpower.error.doesntHaveSuperpower", "%s had dese Supperkraft nich");
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");

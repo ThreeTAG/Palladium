@@ -19,15 +19,15 @@ dependencies {
     })
 
     // JEI
-    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}"
+    modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}"
 
     // REI
-    modCompileOnlyApi ("me.shedaniel:RoughlyEnoughItems-api:${rootProject.rei_version}", {
+    modCompileOnly ("me.shedaniel:RoughlyEnoughItems-api:${rootProject.rei_version}", {
         exclude group: "dev.architectury"
     })
 
     // Forge Config API Port
-    modCompileOnlyApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
+    modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
 }
 
 publishing {

@@ -2,6 +2,7 @@ package net.threetag.palladium.power;
 
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.List;
 import java.util.Map;
 
 public interface IPowerHandler {
@@ -10,15 +11,10 @@ public interface IPowerHandler {
 
     void tick();
 
-    void setPowerHolder(Power power, IPowerHolder holder);
-
-    void addPower(Power power);
-
-    void removePowerHolder(Power power);
-
-    void removePowerHolder(ResourceLocation powerId);
-
     IPowerHolder getPowerHolder(Power power);
 
     boolean hasPower(Power power);
+
+    void removeAndAddPowers(List<Power> toRemove, List<Power> toAdd);
+
 }

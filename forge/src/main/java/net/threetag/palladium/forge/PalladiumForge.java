@@ -21,7 +21,7 @@ import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.forge.AddonPackType;
 import net.threetag.palladium.block.PalladiumBlocks;
-import net.threetag.palladium.client.model.EntityModelManager;
+import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.compat.curios.forge.CuriosCompat;
 import net.threetag.palladium.data.forge.*;
 import net.threetag.palladium.mixin.ReloadableResourceManagerMixin;
@@ -81,7 +81,7 @@ public class PalladiumForge {
         Minecraft mc = Minecraft.getInstance();
         List<PreparableReloadListener> listeners = ((ReloadableResourceManagerMixin) mc.getResourceManager()).getListeners();
         int idx = listeners.indexOf(mc.getEntityModels());
-        listeners.add(idx + 1, new EntityModelManager());
+        listeners.add(idx + 1, new ModelLayerManager());
     }
 
 }

@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.entity.BodyPart;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,17 +31,19 @@ public class WoodenLegAccessory extends Accessory {
         this.woodenLegModel = new PlayerModel<>(entityModelSet.bakeLayer(new ModelLayerLocation(Palladium.id("humanoid"), "wooden_legs")), false);
     }
 
-    @SuppressWarnings("unchecked")
     @Environment(EnvType.CLIENT)
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void render(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderLayerParent, AccessorySlot slot, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if(this.woodenLegModel instanceof HumanoidModel woodLegs && this.shortenedLegsModel instanceof PlayerModel shortened) {
+        if (this.woodenLegModel instanceof HumanoidModel woodLegs && this.shortenedLegsModel instanceof PlayerModel shortened) {
             renderLayerParent.getModel().copyPropertiesTo(woodLegs);
             renderLayerParent.getModel().copyPropertiesTo(shortened);
             woodLegs.setAllVisible(false);
             shortened.setAllVisible(false);
-            slot.setVisibility(woodLegs, player, true);
-            slot.setVisibility(shortened, player, true);
+            for (BodyPart p : slot.getHiddenBodyParts(player)) {
+                p.setVisibility(woodLegs, true);
+                p.setVisibility(shortened, true);
+            }
 
             var buffer = bufferSource.getBuffer(Objects.requireNonNull(getRenderType(player, player.getSkinTextureLocation(), renderLayerParent.getModel())));
             shortened.renderToBuffer(poseStack, buffer, packedLightIn, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);

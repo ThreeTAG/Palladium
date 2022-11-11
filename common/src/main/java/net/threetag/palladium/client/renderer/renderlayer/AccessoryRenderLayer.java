@@ -4,10 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.accessory.Accessory;
 
 public class AccessoryRenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
@@ -23,20 +21,10 @@ public class AccessoryRenderLayer extends RenderLayer<AbstractClientPlayer, Play
     public void render(PoseStack poseStack, MultiBufferSource source, int packedLight, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
             for (Accessory accessory : accessories) {
-                if (accessory.isVisible(slot, player)) {
+                if (accessory.isVisible(slot, player, false)) {
                     accessory.render(this.renderLayerParent, slot, poseStack, source, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
                 }
             }
         }));
-    }
-
-    public static void disableModelParts(LivingEntity livingEntity, LivingEntityRenderer livingEntityRenderer) {
-        if (livingEntity instanceof AbstractClientPlayer player) {
-            Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
-                if (!accessories.isEmpty()) {
-                    slot.setVisibility((PlayerModel<?>) livingEntityRenderer.getModel(), player, false);
-                }
-            }));
-        }
     }
 }

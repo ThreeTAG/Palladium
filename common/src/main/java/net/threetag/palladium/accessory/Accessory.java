@@ -14,6 +14,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -66,8 +67,12 @@ public abstract class Accessory {
     }
 
     @Environment(EnvType.CLIENT)
-    public boolean isVisible(AccessorySlot slot, AbstractClientPlayer player) {
-        return slot.getCorrespondingEquipmentSlot() == null || player.getItemBySlot(slot.getCorrespondingEquipmentSlot()).isEmpty();
+    public void renderArm(HumanoidArm arm, AbstractClientPlayer player, PlayerRenderer playerRenderer, ModelPart armPart, ModelPart armWearPart, AccessorySlot slot, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    }
+
+    @Environment(EnvType.CLIENT)
+    public boolean isVisible(AccessorySlot slot, AbstractClientPlayer player, boolean isFirstPerson) {
+        return (slot.getCorrespondingEquipmentSlot() == null || player.getItemBySlot(slot.getCorrespondingEquipmentSlot()).isEmpty()) && !slot.wasHidden(player, isFirstPerson);
     }
 
     @Environment(EnvType.CLIENT)

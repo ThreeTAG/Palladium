@@ -10,13 +10,13 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.AddonParser;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
+import net.threetag.palladium.util.LegacySupportJsonReloadListener;
 import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.HashMap;
@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
+public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
 
     private static PackRenderLayerManager INSTANCE;
     private static final Map<ResourceLocation, Function<JsonObject, IPackRenderLayer>> RENDER_LAYERS_PARSERS = new HashMap<>();
@@ -35,12 +35,12 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
         registerParser(new ResourceLocation(Palladium.MOD_ID, "default"), PackRenderLayer::parse);
         registerParser(new ResourceLocation(Palladium.MOD_ID, "compound"), CompoundPackRenderLayer::parse);
 
-        registerRenderType(new ResourceLocation("minecraft", "solid"), (source, texture) -> ItemRenderer.getArmorFoilBuffer(source, RenderType.armorCutoutNoCull(texture), false, false));
+        registerRenderType(new ResourceLocation("minecraft", "solid"), (source, texture) -> ItemRenderer.getArmorFoilBuffer(source, RenderType.entityTranslucent(texture), false, false));
         registerRenderType(new ResourceLocation("minecraft", "glow"), (source, texture) -> ItemRenderer.getArmorFoilBuffer(source, PalladiumRenderTypes.getGlowing(texture), false, false));
     }
 
     public PackRenderLayerManager() {
-        super(AddonParser.GSON, "render_layers");
+        super(AddonParser.GSON, "palladium/render_layers", "render_layers");
         INSTANCE = this;
     }
 

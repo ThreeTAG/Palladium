@@ -6,9 +6,7 @@ import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.util.property.PalladiumProperties;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
 
 public class PowerHandlerJS {
 
@@ -27,15 +25,41 @@ public class PowerHandlerJS {
         Power power = PowerManager.getInstance(Objects.requireNonNull(this.parent).level).getPower(id);
 
         if (power != null) {
-            PalladiumProperties.SUPERPOWER_ID.set(this.parent, id);
+            PalladiumProperties.SUPERPOWER_IDS.set(this.parent, Collections.singletonList(id));
             return true;
         } else {
             return false;
         }
     }
 
-    public ResourceLocation getSuperpower() {
-        return PalladiumProperties.SUPERPOWER_ID.get(this.parent);
+    public boolean addSuperpower(ResourceLocation id) {
+        Power power = PowerManager.getInstance(Objects.requireNonNull(this.parent).level).getPower(id);
+
+        if (power != null && !PalladiumProperties.SUPERPOWER_IDS.get(this.parent).contains(id)) {
+            List<ResourceLocation> powerIds = new ArrayList<>(PalladiumProperties.SUPERPOWER_IDS.get(this.parent));
+            powerIds.add(id);
+            PalladiumProperties.SUPERPOWER_IDS.set(this.parent, powerIds);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean removeSuperpower(ResourceLocation id) {
+        Power power = PowerManager.getInstance(Objects.requireNonNull(this.parent).level).getPower(id);
+
+        if (power != null && PalladiumProperties.SUPERPOWER_IDS.get(this.parent).contains(id)) {
+            List<ResourceLocation> powerIds = new ArrayList<>(PalladiumProperties.SUPERPOWER_IDS.get(this.parent));
+            powerIds.remove(id);
+            PalladiumProperties.SUPERPOWER_IDS.set(this.parent, powerIds);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public List<ResourceLocation> getSuperpower() {
+        return PalladiumProperties.SUPERPOWER_IDS.get(this.parent);
     }
 
 }

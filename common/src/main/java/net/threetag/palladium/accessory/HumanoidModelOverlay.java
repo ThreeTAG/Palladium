@@ -7,17 +7,21 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.util.PlayerUtil;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 
+@SuppressWarnings({"rawtypes", "PatternVariableHidesField"})
 public class HumanoidModelOverlay extends OverlayAccessory {
 
     private final Supplier<Object> modelLayer, modelLayerSlim;
@@ -73,11 +77,11 @@ public class HumanoidModelOverlay extends OverlayAccessory {
         Object loc = this.modelLayer.get();
         Object locSlim = this.modelLayerSlim.get();
 
-        if(loc instanceof ModelLayerLocation loc1) {
+        if (loc instanceof ModelLayerLocation loc1) {
             this.model = new HumanoidModel<>(entityModelSet.bakeLayer(loc1));
         }
 
-        if(locSlim instanceof ModelLayerLocation loc1) {
+        if (locSlim instanceof ModelLayerLocation loc1) {
             this.modelSlim = new HumanoidModel<>(entityModelSet.bakeLayer(loc1));
         }
     }
@@ -92,6 +96,18 @@ public class HumanoidModelOverlay extends OverlayAccessory {
             ResourceLocation texture = PlayerUtil.hasSmallArms(player) ? this.textureSlim : this.texture;
             var buffer = bufferSource.getBuffer(this.glowing ? RenderType.eyes(texture) : Objects.requireNonNull(getRenderType(player, texture, renderLayerParent.getModel())));
             model.renderToBuffer(poseStack, buffer, packedLightIn, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void renderArm(HumanoidArm arm, AbstractClientPlayer player, PlayerRenderer playerRenderer, ModelPart armPart, ModelPart armWearPart, AccessorySlot slot, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        if (this.getModel(player) instanceof HumanoidModel model) {
+            ResourceLocation texture = PlayerUtil.hasSmallArms(player) ? this.textureSlim : this.texture;
+            var buffer = bufferSource.getBuffer(this.glowing ? RenderType.eyes(texture) : Objects.requireNonNull(getRenderType(player, texture, playerRenderer.getModel())));
+            model.rightArm.copyFrom(armPart);
+            model.rightArm.visible = true;
+            model.rightArm.render(poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
         }
     }
 

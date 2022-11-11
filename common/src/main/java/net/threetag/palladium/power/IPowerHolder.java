@@ -19,6 +19,8 @@ public interface IPowerHolder {
 
     boolean isInvalid();
 
+    void switchValidator(IPowerValidator validator);
+
     LivingEntity getEntity();
 
 }
