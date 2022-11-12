@@ -94,11 +94,10 @@ public class AbilityWidget extends GuiComponent {
     public AbilityWidget updateRelatives(Collection<AbilityWidget> list) {
         this.parents.clear();
         this.children.clear();
+        List<AbilityEntry> parents = Ability.findParentAbilities(this.minecraft.player, this.abilityEntry.getConfiguration(), this.holder);
+        List<AbilityEntry> children = Ability.findChildrenAbilities(this.minecraft.player, this.abilityEntry.getConfiguration(), this.holder);
 
         for (AbilityWidget widget : list) {
-            List<AbilityEntry> parents = Ability.findParentAbilities(this.minecraft.player, this.abilityEntry.getConfiguration(), this.holder);
-            List<AbilityEntry> children = Ability.findChildrenAbilities(this.minecraft.player, this.abilityEntry.getConfiguration(), this.holder);
-
             if (!parents.isEmpty()) {
                 if (parents.contains(widget.abilityEntry)) {
                     this.parents.add(widget);
