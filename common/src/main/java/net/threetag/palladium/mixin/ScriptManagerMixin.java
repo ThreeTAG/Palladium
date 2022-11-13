@@ -1,6 +1,5 @@
 package net.threetag.palladium.mixin;
 
-import dev.latvian.mods.kubejs.CommonProperties;
 import dev.latvian.mods.kubejs.KubeJS;
 import dev.latvian.mods.kubejs.script.ScriptManager;
 import dev.latvian.mods.kubejs.script.ScriptPack;
@@ -30,16 +29,14 @@ public class ScriptManagerMixin {
     @Final
     public Map<String, ScriptPack> packs;
 
-    @Shadow(remap = false)
-    @Final
-    public ScriptType type;
+    @Shadow @Final public ScriptType scriptType;
 
     @Inject(at = @At("RETURN"), method = "loadFromDirectory", remap = false)
     public void loadFromDirectory(CallbackInfo ci) {
         AddonPackManager.getInstance().getPackList().reload();
         AddonPackManager.getInstance().getPackList().setSelected(AddonPackManager.getInstance().getPackList().getAvailableIds());
         for (Pack pack : AddonPackManager.getInstance().getPackList().getAvailablePacks()) {
-            var packType = this.type == ScriptType.CLIENT ? PackType.CLIENT_RESOURCES : (this.type == ScriptType.SERVER ? PackType.SERVER_DATA : AddonPackManager.getPackType());
+            var packType = this.scriptType == ScriptType.CLIENT ? PackType.CLIENT_RESOURCES : (this.scriptType == ScriptType.SERVER ? PackType.SERVER_DATA : AddonPackManager.getPackType());
             var packResources = pack.open();
 
             for (String namespace : packResources.getNamespaces(packType)) {
@@ -61,8 +58,7 @@ public class ScriptManagerMixin {
                 for (var fileInfo : scriptPack.info.scripts) {
                     var error = fileInfo.preload(null);
 
-                    var packMode = fileInfo.getPackMode();
-                    if (fileInfo.isIgnored() || (!packMode.equals("default") && !packMode.equals(CommonProperties.get().packMode))) {
+                    if (fileInfo.skipLoading()) {
                         continue;
                     }
 

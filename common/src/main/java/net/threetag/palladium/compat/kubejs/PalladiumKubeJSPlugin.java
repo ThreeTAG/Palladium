@@ -56,7 +56,7 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
     @Override
     public void registerBindings(BindingsEvent event) {
         event.add("palladium", PalladiumBinding.class);
-        if (event.type == ScriptType.CLIENT) {
+        if (event.getType() == ScriptType.CLIENT) {
             event.add("animationUtil", AnimationUtil.class);
         }
     }
