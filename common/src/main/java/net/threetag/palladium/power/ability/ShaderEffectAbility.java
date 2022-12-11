@@ -27,14 +27,14 @@ public class ShaderEffectAbility extends Ability {
 
     @Override
     public void firstTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
-        if (Platform.isClient()) {
+        if (enabled && Platform.isClient()) {
             this.applyShader(entity, entry.getProperty(SHADER));
         }
     }
 
     @Override
     public void lastTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
-        if (Platform.isClient()) {
+        if (enabled && Platform.isClient()) {
             this.removeShader(entity, entry.getProperty(SHADER));
         }
     }

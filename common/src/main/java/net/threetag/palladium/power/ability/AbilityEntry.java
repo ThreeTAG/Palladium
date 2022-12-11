@@ -18,8 +18,8 @@ public class AbilityEntry {
 
     private final AbilityConfiguration abilityConfiguration;
     private final IPowerHolder holder;
-    private boolean unlocked = true;
-    private boolean enabled = true;
+    private boolean unlocked = false;
+    private boolean enabled = false;
     public boolean keyPressed = false;
     public int maxCooldown = 0, cooldown = 0;
     public int maxActivationTimer = 0, activationTimer = 0;
@@ -129,14 +129,16 @@ public class AbilityEntry {
             }
 
             if (this.enabled != enabled) {
-                this.enabled = enabled;
-                sync = true;
-
-                if (this.enabled) {
+                if (!this.enabled) {
+                    this.enabled = true;
+                    sync = true;
                     this.abilityConfiguration.getAbility().firstTick(entity, this, powerHolder, this.isEnabled());
                 } else {
                     this.keyPressed = false;
                     this.abilityConfiguration.getAbility().lastTick(entity, this, powerHolder, this.isEnabled());
+                    this.enabled = false;
+                    sync = true;
+                    
                 }
             }
 

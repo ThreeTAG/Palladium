@@ -28,7 +28,7 @@ public class CommandAbility extends Ability implements CommandSource {
 
     @Override
     public void firstTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
-        if (entity.level.getServer() != null && entry.getProperty(FIRST_TICK_COMMANDS) != null && entity.level instanceof ServerLevel serverLevel) {
+        if (enabled && entity.level.getServer() != null && entry.getProperty(FIRST_TICK_COMMANDS) != null && entity.level instanceof ServerLevel serverLevel) {
             for (String command : Objects.requireNonNull(entry.getProperty(FIRST_TICK_COMMANDS))) {
                 entity.level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(this, entity.position(), entity.getRotationVector(), serverLevel, 4, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(), entity), command);
             }
@@ -46,7 +46,7 @@ public class CommandAbility extends Ability implements CommandSource {
 
     @Override
     public void lastTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
-        if (entity.level.getServer() != null && entry.getProperty(LAST_TICK_COMMANDS) != null && entity.level instanceof ServerLevel serverLevel) {
+        if (enabled && entity.level.getServer() != null && entry.getProperty(LAST_TICK_COMMANDS) != null && entity.level instanceof ServerLevel serverLevel) {
             for (String command : Objects.requireNonNull(entry.getProperty(LAST_TICK_COMMANDS))) {
                 entity.level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(this, entity.position(), entity.getRotationVector(), serverLevel, 4, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(), entity), command);
             }
