@@ -1,5 +1,6 @@
 package net.threetag.palladium.compat.kubejs;
 
+import dev.latvian.mods.kubejs.BuilderBase;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
@@ -22,10 +23,9 @@ import net.threetag.palladium.util.property.*;
 
 public class PalladiumKubeJSPlugin extends KubeJSPlugin {
 
-    public static RegistryObjectBuilderTypes<Ability> ABILITY;
-    public static RegistryObjectBuilderTypes<ConditionSerializer> CONDITION;
+    public static RegistryObjectBuilderTypes<Ability> ABILITY = add(Ability.REGISTRY.getRegistryKey(), Ability.class, AbilityBuilder.class, AbilityBuilder::new);
+    public static RegistryObjectBuilderTypes<ConditionSerializer> CONDITION = add(ConditionSerializer.REGISTRY.getRegistryKey(), ConditionSerializer.class, ConditionBuilder.class, ConditionBuilder::new);
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void init() {
         PalladiumJSEvents.GROUP.register();
@@ -37,14 +37,14 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
                 PalladiumJSEvents.REGISTER_PROPERTIES.post(new RegisterPalladiumPropertyEventJS(handler.getEntity(), handler));
             }
         });
+    }
 
-        ResourceKey key = Ability.REGISTRY.getRegistryKey();
-        ABILITY = RegistryObjectBuilderTypes.add(key, Ability.class);
-        ABILITY.addType("basic", AbilityBuilder.class, AbilityBuilder::new);
-
-        key = ConditionSerializer.REGISTRY.getRegistryKey();
-        CONDITION = RegistryObjectBuilderTypes.add(key, ConditionSerializer.class);
-        CONDITION.addType("basic", ConditionBuilder.class, ConditionBuilder::new);
+    @SuppressWarnings({"unchecked", "rawtypes", "UnnecessaryLocalVariable"})
+    public static <T> RegistryObjectBuilderTypes<T> add(ResourceKey<?> key, Class<T> clazz, Class<? extends BuilderBase<? extends T>> builderType, RegistryObjectBuilderTypes.BuilderFactory<T> factory) {
+        ResourceKey resourceKey = key;
+        RegistryObjectBuilderTypes type = RegistryObjectBuilderTypes.add(resourceKey, clazz);
+        type.addType("basic", builderType, factory);
+        return type;
     }
 
     @Environment(EnvType.CLIENT)

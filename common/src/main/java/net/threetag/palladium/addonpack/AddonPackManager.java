@@ -62,6 +62,7 @@ public class AddonPackManager {
         this.resourceManager.registerReloadListener(new ToolTierParser());
         this.resourceManager.registerReloadListener(ITEM_PARSER = new ItemParser());
         this.resourceManager.registerReloadListener(new SuitSetParser());
+        this.resourceManager.registerReloadListener(new ParticleTypeParser());
     }
 
     public File getLocation() {

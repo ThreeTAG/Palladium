@@ -70,7 +70,7 @@ dependencies {
     modCompileOnly "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}:api"
 
     // KubeJS
-    modImplementation "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
+    modCompileOnly "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
 //    modRuntimeOnly "curse.maven:probejs-585406:${rootProject.probejs_forge_version}"
 
     // Pehkui
