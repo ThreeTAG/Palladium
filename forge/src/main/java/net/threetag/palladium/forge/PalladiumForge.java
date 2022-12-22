@@ -15,6 +15,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
 import net.threetag.palladium.PalladiumConfig;
@@ -25,6 +26,7 @@ import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.compat.curios.forge.CuriosCompat;
 import net.threetag.palladium.data.forge.*;
 import net.threetag.palladium.mixin.ReloadableResourceManagerMixin;
+import net.threetag.palladiumcore.forge.PalladiumCoreForge;
 import net.threetag.palladiumcore.util.Platform;
 
 import java.util.List;
@@ -34,6 +36,12 @@ import java.util.List;
 public class PalladiumForge {
 
     public PalladiumForge() {
+        PalladiumCoreForge.registerModEventBus(Palladium.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+
+        if (Platform.isModLoaded("curios")) {
+            PalladiumCoreForge.registerModEventBus("curios", FMLJavaModLoadingContext.get().getModEventBus());
+        }
+
         AddonPackType.init();
         Palladium.init();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PalladiumConfig.Client.generateConfig());
@@ -42,7 +50,7 @@ public class PalladiumForge {
             CuriosCompat.init();
         }
 
-        if(Platform.isClient()) {
+        if (Platform.isClient()) {
             PalladiumClient.init();
         }
     }
