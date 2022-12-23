@@ -18,6 +18,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
+import net.threetag.palladium.power.SuperpowerUtil;
 import net.threetag.palladium.util.property.PalladiumProperties;
 import net.threetag.palladiumcore.util.Platform;
 
@@ -98,8 +99,8 @@ public class SuperpowerCommand {
 
         while (iterator.hasNext()) {
             Entity entity = iterator.next();
-            if (entity instanceof LivingEntity) {
-                PalladiumProperties.SUPERPOWER_IDS.set(entity, Collections.singletonList(power.getId()));
+            if (entity instanceof LivingEntity livingEntity) {
+                SuperpowerUtil.setSuperpower(livingEntity, power);
                 i++;
             } else {
                 commandSource.sendFailure(Component.translatable("commands.superpower.error.noLivingEntity"));
@@ -122,11 +123,8 @@ public class SuperpowerCommand {
 
         while (iterator.hasNext()) {
             Entity entity = iterator.next();
-            if (entity instanceof LivingEntity) {
-                if (!PalladiumProperties.SUPERPOWER_IDS.get(entity).contains(superpower.getId())) {
-                    List<ResourceLocation> powerIds = new ArrayList<>(PalladiumProperties.SUPERPOWER_IDS.get(entity));
-                    powerIds.add(superpower.getId());
-                    PalladiumProperties.SUPERPOWER_IDS.set(entity, powerIds);
+            if (entity instanceof LivingEntity livingEntity) {
+                if (SuperpowerUtil.addSuperpower(livingEntity, superpower)) {
                     i++;
                 } else if (entities.size() == 1) {
                     no = true;
@@ -155,11 +153,8 @@ public class SuperpowerCommand {
 
         while (iterator.hasNext()) {
             Entity entity = iterator.next();
-            if (entity instanceof LivingEntity) {
-                if (PalladiumProperties.SUPERPOWER_IDS.get(entity).contains(id)) {
-                    List<ResourceLocation> powerIds = new ArrayList<>(PalladiumProperties.SUPERPOWER_IDS.get(entity));
-                    powerIds.remove(id);
-                    PalladiumProperties.SUPERPOWER_IDS.set(entity, powerIds);
+            if (entity instanceof LivingEntity livingEntity) {
+                if (SuperpowerUtil.removeSuperpower(livingEntity, id)) {
                     i++;
                 } else if (entities.size() == 1) {
                     no = true;
@@ -187,8 +182,9 @@ public class SuperpowerCommand {
 
         while (iterator.hasNext()) {
             Entity entity = iterator.next();
-            if (entity instanceof LivingEntity) {
-                PalladiumProperties.SUPERPOWER_IDS.set(entity, new ArrayList<>());
+            if (entity instanceof LivingEntity livingEntity) {
+                SuperpowerUtil.removeAllSuperpowers(livingEntity);
+                i++;
             } else {
                 commandSource.sendFailure(Component.translatable("commands.superpower.error.noLivingEntity"));
             }
