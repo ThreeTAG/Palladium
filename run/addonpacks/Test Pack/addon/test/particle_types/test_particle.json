@@ -3,5 +3,6 @@
   "has_physics": false,
   "gravity": 0,
   "quad_size": 0.5,
-  "render_type": "translucent"
+  "render_type": "lit",
+  "brightness": 240
 }

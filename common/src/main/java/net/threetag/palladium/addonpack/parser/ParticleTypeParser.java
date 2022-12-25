@@ -47,6 +47,7 @@ public class ParticleTypeParser extends AddonParser<ParticleType<?>> {
             GsonUtil.ifHasKey(json, "has_physics", el -> builder.hasPhysics(GsonHelper.convertToBoolean(el, "has_physics")));
             GsonUtil.ifHasKey(json, "gravity", el -> builder.gravity(GsonHelper.convertToFloat(el, "gravity")));
             GsonUtil.ifHasKey(json, "quad_size", el -> builder.quadSize(GsonHelper.convertToFloat(el, "quad_size")));
+            GsonUtil.ifHasKey(json, "brightness", el -> builder.brightness(GsonHelper.convertToInt(el, "brightness")));
         }
 
         return builder;

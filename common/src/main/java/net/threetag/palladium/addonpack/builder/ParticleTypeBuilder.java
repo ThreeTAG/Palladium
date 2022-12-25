@@ -16,9 +16,9 @@ public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
     private RenderType renderType = RenderType.PARTICLE_SHEET_OPAQUE;
     private int lifetime = 100;
     private boolean hasPhysics = true;
-    private boolean stoppedByCollision = true;
     private float gravity = 0.02F;
     private float quadSize = 1F;
+    private int brightness = -1;
 
     public ParticleTypeBuilder(ResourceLocation id) {
         super(id);
@@ -26,8 +26,7 @@ public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
 
     @Override
     protected ParticleType<?> create() {
-        var type = new SimpleParticleType(this.overrideLimiter);
-        return type;
+        return new SimpleParticleType(this.overrideLimiter);
     }
 
     public ParticleTypeBuilder enableOverrideLimiter(boolean overrideLimiter) {
@@ -60,6 +59,11 @@ public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
         return this;
     }
 
+    public ParticleTypeBuilder brightness(int brightness) {
+        this.brightness = brightness;
+        return this;
+    }
+
     public static class Particle extends TextureSheetParticle {
 
         private final ParticleTypeBuilder builder;
@@ -71,6 +75,16 @@ public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
             this.hasPhysics = this.builder.hasPhysics;
             this.gravity = this.builder.gravity;
             this.quadSize = this.builder.quadSize;
+        }
+
+        @Override
+        public int getLightColor(float partialTick) {
+            if (this.builder.brightness < 0) {
+                return super.getLightColor(partialTick);
+            }
+            int i = super.getLightColor(partialTick);
+            int k = i >> 16 & 255;
+            return this.builder.brightness | k << 16;
         }
 
         @Override
