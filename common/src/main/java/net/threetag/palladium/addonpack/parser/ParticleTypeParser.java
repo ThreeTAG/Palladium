@@ -43,6 +43,17 @@ public class ParticleTypeParser extends AddonParser<ParticleType<?>> {
                 builder.renderType(renderType);
             });
 
+            GsonUtil.ifHasKey(json, "texture_type", el -> {
+                String textureTypeS = GsonHelper.convertToString(el, "texture_type");
+                ParticleTypeBuilder.TextureType textureType = ParticleTypeBuilder.TextureType.byName(textureTypeS);
+
+                if (textureType == null) {
+                    throw new JsonParseException("Unknown particle texture type '" + textureTypeS + "'");
+                }
+
+                builder.textureType(textureType);
+            });
+
             GsonUtil.ifHasKey(json, "lifetime", el -> builder.lifetime(GsonHelper.convertToInt(el, "lifetime")));
             GsonUtil.ifHasKey(json, "has_physics", el -> builder.hasPhysics(GsonHelper.convertToBoolean(el, "has_physics")));
             GsonUtil.ifHasKey(json, "gravity", el -> builder.gravity(GsonHelper.convertToFloat(el, "gravity")));

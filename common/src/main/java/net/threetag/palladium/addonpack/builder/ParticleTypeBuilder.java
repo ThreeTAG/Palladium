@@ -14,6 +14,7 @@ public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
 
     private boolean overrideLimiter = false;
     private RenderType renderType = RenderType.PARTICLE_SHEET_OPAQUE;
+    private TextureType textureType = TextureType.RANDOM;
     private int lifetime = 100;
     private boolean hasPhysics = true;
     private float gravity = 0.02F;
@@ -36,6 +37,11 @@ public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
 
     public ParticleTypeBuilder renderType(RenderType renderType) {
         this.renderType = renderType;
+        return this;
+    }
+
+    public ParticleTypeBuilder textureType(TextureType textureType) {
+        this.textureType = textureType;
         return this;
     }
 
@@ -67,14 +73,36 @@ public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
     public static class Particle extends TextureSheetParticle {
 
         private final ParticleTypeBuilder builder;
+        private final SpriteSet spriteSet;
 
-        protected Particle(ClientLevel clientLevel, double x, double y, double z, double xd, double yd, double zd, ParticleTypeBuilder builder) {
+        protected Particle(ClientLevel clientLevel, SpriteSet spriteSet, double x, double y, double z, double xd, double yd, double zd, ParticleTypeBuilder builder) {
             super(clientLevel, x, y, z, xd, yd, zd);
             this.builder = builder;
+            this.spriteSet = spriteSet;
             this.lifetime = this.builder.lifetime;
             this.hasPhysics = this.builder.hasPhysics;
             this.gravity = this.builder.gravity;
             this.quadSize = this.builder.quadSize;
+
+            if (this.gravity == 0F) {
+                this.xd = 0F;
+                this.yd = 0F;
+                this.zd = 0F;
+            }
+
+            if (this.builder.textureType == TextureType.RANDOM) {
+                this.pickSprite(this.spriteSet);
+            } else if (this.builder.textureType == TextureType.AGING) {
+                this.setSpriteFromAge(this.spriteSet);
+            }
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+            if (this.builder.textureType == TextureType.AGING) {
+                this.setSpriteFromAge(this.spriteSet);
+            }
         }
 
         @Override
@@ -123,9 +151,7 @@ public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
         @Nullable
         @Override
         public net.minecraft.client.particle.Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            var particle = new Particle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.builder);
-            particle.pickSprite(this.sprite);
-            return particle;
+            return new Particle(level, this.sprite, x, y, z, xSpeed, ySpeed, zSpeed, this.builder);
         }
     }
 
@@ -145,6 +171,28 @@ public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
 
         public static RenderType byName(String name) {
             for (RenderType value : values()) {
+                if (value.name.equalsIgnoreCase(name)) {
+                    return value;
+                }
+            }
+
+            return null;
+        }
+    }
+
+    public enum TextureType {
+
+        RANDOM("random"),
+        AGING("aging");
+
+        private final String name;
+
+        TextureType(String name) {
+            this.name = name;
+        }
+
+        public static TextureType byName(String name) {
+            for (TextureType value : values()) {
                 if (value.name.equalsIgnoreCase(name)) {
                     return value;
                 }
