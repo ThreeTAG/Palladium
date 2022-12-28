@@ -34,5 +34,6 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> ON_GROUND = CONDITION_SERIALIZERS.register("on_ground", OnGroundCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IN_WATER = CONDITION_SERIALIZERS.register("in_water", InWaterCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> UNDER_WATER = CONDITION_SERIALIZERS.register("under_water", UnderWaterCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> IS_MOVING = CONDITION_SERIALIZERS.register("is_moving", IsMovingCondition.Serializer::new);
 
 }
