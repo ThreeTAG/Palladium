@@ -26,21 +26,16 @@ public class PalladiumItemTagsProvider extends ItemTagsProvider {
         this.tag(PalladiumItemTags.VIBRATION_ABSORPTION_BOOTS).add(PalladiumItems.VIBRANIUM_WEAVE_BOOTS.get());
 
         this.multiLoaderTagMetal(PalladiumItemTags.ORES, PalladiumItemTags.Fabric.ORES, PalladiumItemTags.ORES_LEAD, PalladiumItemTags.Fabric.ORES_LEAD, LEAD_ORE.get(), DEEPSLATE_LEAD_ORE.get());
-        this.multiLoaderTagMetal(PalladiumItemTags.ORES, PalladiumItemTags.Fabric.ORES, PalladiumItemTags.ORES_SILVER, PalladiumItemTags.Fabric.ORES_SILVER, SILVER_ORE.get(), DEEPSLATE_SILVER_ORE.get());
         this.multiLoaderTagMetal(PalladiumItemTags.ORES, PalladiumItemTags.Fabric.ORES, PalladiumItemTags.ORES_TITANIUM, PalladiumItemTags.Fabric.ORES_TITANIUM, TITANIUM_ORE.get());
         this.multiLoaderTagMetal(PalladiumItemTags.ORES, PalladiumItemTags.Fabric.ORES, PalladiumItemTags.ORES_VIBRANIUM, PalladiumItemTags.Fabric.ORES_VIBRANIUM, VIBRANIUM_ORE.get());
 
         this.multiLoaderTagMetal(PalladiumItemTags.STORAGE_BLOCKS, PalladiumItemTags.Fabric.STORAGE_BLOCKS, PalladiumItemTags.STORAGE_BLOCKS_LEAD, PalladiumItemTags.Fabric.STORAGE_BLOCKS_LEAD, LEAD_BLOCK.get());
-        this.multiLoaderTagMetal(PalladiumItemTags.STORAGE_BLOCKS, PalladiumItemTags.Fabric.STORAGE_BLOCKS, PalladiumItemTags.STORAGE_BLOCKS_SILVER, PalladiumItemTags.Fabric.STORAGE_BLOCKS_SILVER, SILVER_BLOCK.get());
-        this.multiLoaderTagMetal(PalladiumItemTags.STORAGE_BLOCKS, PalladiumItemTags.Fabric.STORAGE_BLOCKS, PalladiumItemTags.STORAGE_BLOCKS_TITANIUM, PalladiumItemTags.Fabric.STORAGE_BLOCKS_TITANIUM, TITANIUM_BLOCK.get());
         this.multiLoaderTagMetal(PalladiumItemTags.STORAGE_BLOCKS, PalladiumItemTags.Fabric.STORAGE_BLOCKS, PalladiumItemTags.STORAGE_BLOCKS_VIBRANIUM, PalladiumItemTags.Fabric.STORAGE_BLOCKS_VIBRANIUM, VIBRANIUM_BLOCK.get());
 
         this.multiLoaderTagMetal(PalladiumItemTags.INGOTS, PalladiumItemTags.Fabric.INGOTS, PalladiumItemTags.INGOTS_IRON, PalladiumItemTags.Fabric.INGOTS_IRON, Items.IRON_INGOT);
         this.multiLoaderTagMetal(PalladiumItemTags.INGOTS, PalladiumItemTags.Fabric.INGOTS, PalladiumItemTags.INGOTS_GOLD, PalladiumItemTags.Fabric.INGOTS_GOLD, Items.GOLD_INGOT);
         this.multiLoaderTagMetal(PalladiumItemTags.INGOTS, PalladiumItemTags.Fabric.INGOTS, PalladiumItemTags.INGOTS_COPPER, PalladiumItemTags.Fabric.INGOTS_COPPER, Items.COPPER_INGOT);
         this.multiLoaderTagMetal(PalladiumItemTags.INGOTS, PalladiumItemTags.Fabric.INGOTS, PalladiumItemTags.INGOTS_LEAD, PalladiumItemTags.Fabric.INGOTS_LEAD, PalladiumItems.LEAD_INGOT.get());
-        this.multiLoaderTagMetal(PalladiumItemTags.INGOTS, PalladiumItemTags.Fabric.INGOTS, PalladiumItemTags.INGOTS_SILVER, PalladiumItemTags.Fabric.INGOTS_SILVER, PalladiumItems.SILVER_INGOT.get());
-        this.multiLoaderTagMetal(PalladiumItemTags.INGOTS, PalladiumItemTags.Fabric.INGOTS, PalladiumItemTags.INGOTS_TITANIUM, PalladiumItemTags.Fabric.INGOTS_TITANIUM, PalladiumItems.TITANIUM_INGOT.get());
         this.multiLoaderTagMetal(PalladiumItemTags.INGOTS, PalladiumItemTags.Fabric.INGOTS, PalladiumItemTags.INGOTS_VIBRANIUM, PalladiumItemTags.Fabric.INGOTS_VIBRANIUM, PalladiumItems.VIBRANIUM_INGOT.get());
 
         this.multiLoaderTag(PalladiumItemTags.WOODEN_STICKS, PalladiumItemTags.Fabric.WOODEN_STICKS, Items.STICK);

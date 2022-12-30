@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PalladiumCreativeModeTabs {
 
-    public static final CreativeModeTab TECHNOLOGY = CreativeModeTabRegistry.create(new ResourceLocation(Palladium.MOD_ID, "technology"), () -> new ItemStack(PalladiumItems.VIBRANIUM_INGOT.get()));
+    public static final CreativeModeTab TECHNOLOGY = CreativeModeTabRegistry.create(new ResourceLocation(Palladium.MOD_ID, "technology"), () -> new ItemStack(PalladiumItems.LEAD_CIRCUIT.get()));
 
     public static CreativeModeTab getTab(ResourceLocation name) {
         for (CreativeModeTab tab : CreativeModeTab.TABS) {

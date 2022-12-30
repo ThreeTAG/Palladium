@@ -1,22 +1,18 @@
-// 1.19.2	2022-08-20T00:11:36.5555732	Palladium Tags for minecraft:block
+// 1.19.2	2022-12-30T22:40:39.2837146	Palladium Tags for minecraft:block
 e985680acf4fb6fd336fa9b1fba33986f992ed7f data/c/tags/blocks/lead_ores.json
-5659939f58424901d00302ec026234d776e0bc0d data/c/tags/blocks/ores.json
-cd12245cb4f887a6674de738941b93992df8d267 data/c/tags/blocks/silver_ores.json
-5659939f58424901d00302ec026234d776e0bc0d data/c/tags/blocks/storage_blocks.json
-a4262e05c7eb0163f5a92e63d4582a9f63f331b0 data/c/tags/blocks/titanium_ores.json
+4b6207a57122378b6a5ab39dcc8496d2045ceac9 data/c/tags/blocks/ores.json
+75b299518bf27dcc7f0c3725bff2582d2aaa754d data/c/tags/blocks/storage_blocks.json
+501c9662c3012f8a4177b35ebc40a68ed1386566 data/c/tags/blocks/titanium_ores.json
 19fc9a65ee2aa02e18ed3f232990990708288a4b data/c/tags/blocks/vibranium_ores.json
 0004a48a81cb7be62ec68780c7aeb6078c5016fa data/forge/tags/blocks/needs_netherite_tool.json
-b52445f3b5fd8faecf0b39f747bcb3a9c5f1bdf0 data/forge/tags/blocks/ores.json
+f179e1adbb51b9c1f40f38e2813bd94d3919612f data/forge/tags/blocks/ores.json
 e758e5770904b53894edf17b3459741882259131 data/forge/tags/blocks/ores/lead.json
-2f80b5820391bda48d17f279ab3016f72cf4b12f data/forge/tags/blocks/ores/silver.json
 1b8932872743a9c1ad9a3b9a056d8b75477ed157 data/forge/tags/blocks/ores/titanium.json
 5a702a8dd614a3ff5a8964c5f430de498af7d345 data/forge/tags/blocks/ores/vibranium.json
-a218497e8dfab134a703c65fa35781d47fac9557 data/forge/tags/blocks/storage_blocks.json
+5dcb45e6cf3fcf3005e601086679526778ccca8c data/forge/tags/blocks/storage_blocks.json
 e758e5770904b53894edf17b3459741882259131 data/forge/tags/blocks/storage_blocks/lead.json
-2f80b5820391bda48d17f279ab3016f72cf4b12f data/forge/tags/blocks/storage_blocks/silver.json
-1b8932872743a9c1ad9a3b9a056d8b75477ed157 data/forge/tags/blocks/storage_blocks/titanium.json
 5a702a8dd614a3ff5a8964c5f430de498af7d345 data/forge/tags/blocks/storage_blocks/vibranium.json
-df14fcb6d71e9084b68ecdddbfae9ce77a1e1f8c data/minecraft/tags/blocks/beacon_base_blocks.json
-974301f37539e8ae77fa07f5fdfb4a9951bf7035 data/minecraft/tags/blocks/mineable/pickaxe.json
-96e253ce3fd1ff8c07f34f04751288855304e189 data/minecraft/tags/blocks/needs_diamond_tool.json
-55d84e2a0780e302b2dc357e5a004f737bea8f44 data/minecraft/tags/blocks/needs_iron_tool.json
+bf1c6d9ee522380b8b67b04fa4a01166d4dc5c75 data/minecraft/tags/blocks/beacon_base_blocks.json
+006cfefc33a3c32a336222c960d188896e30a2c1 data/minecraft/tags/blocks/mineable/pickaxe.json
+0747d72e666dd059d48e2a6184f8ee8b88806113 data/minecraft/tags/blocks/needs_diamond_tool.json
+e77048ce8a0e58516ff153efc6763aa6348e80f3 data/minecraft/tags/blocks/needs_iron_tool.json

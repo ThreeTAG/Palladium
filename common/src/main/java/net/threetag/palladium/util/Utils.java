@@ -29,4 +29,16 @@ public class Utils {
         return val != null ? val : def.get();
     }
 
+    public static String getFormattedNumber(long number) {
+        if (number >= 1_000_000_000) {
+            return number / 1_000_000_000 + "." + (number % 1_000_000_000 / 100_000_000) + (number % 100_000_000 / 10_000_000) + "G";
+        } else if (number >= 1_000_000) {
+            return number / 1_000_000 + "." + (number % 1_000_000 / 100_000) + (number % 100_000 / 10_000) + "M";
+        } else if (number >= 1000) {
+            return number / 1000 + "." + (number % 1000 / 100) + (number % 100 / 10) + "k";
+        } else {
+            return String.valueOf(number);
+        }
+    }
+
 }
