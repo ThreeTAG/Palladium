@@ -93,7 +93,7 @@ public class HammerItem extends DiggerItem implements IAddonItem {
 
         @Override
         public void generateDocumentation(JsonDocumentationBuilder builder) {
-            builder.setTitle("Hoe");
+            builder.setTitle("Hammer");
 
             builder.addProperty("tier", Tier.class)
                     .description("Tool tier, which defines certain characteristics about the tool. Open tool_tiers.html for seeing how to make custom ones. Possible values: " + Arrays.toString(ToolTierParser.getIds().toArray(new ResourceLocation[0])))

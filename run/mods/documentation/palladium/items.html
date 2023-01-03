@@ -198,11 +198,23 @@ Hoe</a>
 </li>
 <li>
 <a href="#palladium:hammer">
-Hoe</a>
+Hammer</a>
 </li>
 <li>
 <a href="#palladium:shield">
 Shield</a>
+</li>
+<li>
+<a href="#palladium:bow">
+Bow</a>
+</li>
+<li>
+<a href="#palladium:crossbow">
+Crossbow</a>
+</li>
+<li>
+<a href="#palladium:flux_capacitor">
+Flux Capacitor (Energy Containing Item)</a>
 </li>
 </ul>
 </p>
@@ -642,7 +654,7 @@ Example:</h3>
 
 <div id="palladium:hammer">
 <h2>
-Hoe</h2>
+Hammer</h2>
 <h3>
 Settings:</h3>
 <table>
@@ -757,6 +769,252 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:shield","use_duration":72000,"repair_ingredient":{"tag":"minecraft:wool"}}</pre>
+</div>
+<hr>
+
+<div id="palladium:bow">
+<h2>
+Bow</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+velocity</td>
+<td>
+Float</td>
+<td>
+Velocity multiplier for the shot projectile</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+3.0</td>
+</tr>
+<tr>
+<td>
+inaccuracy</td>
+<td>
+Float</td>
+<td>
+Inaccuracy for the shot projectile</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1.0</td>
+</tr>
+<tr>
+<td>
+use_duration</td>
+<td>
+Integer</td>
+<td>
+Amount of ticks the bow can be used for</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+72000</td>
+</tr>
+<tr>
+<td>
+projectiles</td>
+<td>
+ResourceLocation</td>
+<td>
+Item tag which contains all items that can be shot. By default all Minecraft arrows</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:arrows</td>
+</tr>
+<tr>
+<td>
+held_projectiles</td>
+<td>
+ResourceLocation</td>
+<td>
+Item tag which contains all items that can be shot by being in the off hand. Can be left out to fallback to the 'projectiles' option</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:bow","velocity":3.0,"inaccuracy":1.0,"use_duration":72000,"projectiles":"minecraft:arrows","held_projectiles":"minecraft:arrows"}</pre>
+</div>
+<hr>
+
+<div id="palladium:crossbow">
+<h2>
+Crossbow</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+velocity_multiplier</td>
+<td>
+Float</td>
+<td>
+Velocity multiplier for the shot projectile, works differently to the bow one.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1.0</td>
+</tr>
+<tr>
+<td>
+inaccuracy</td>
+<td>
+Float</td>
+<td>
+Inaccuracy for the shot projectile</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1.0</td>
+</tr>
+<tr>
+<td>
+use_duration</td>
+<td>
+Integer</td>
+<td>
+Amount of ticks the bow can be used for</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+72000</td>
+</tr>
+<tr>
+<td>
+projectiles</td>
+<td>
+ResourceLocation</td>
+<td>
+Item tag which contains all items that can be shot. By default all Minecraft arrows</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:arrows</td>
+</tr>
+<tr>
+<td>
+held_projectiles</td>
+<td>
+ResourceLocation</td>
+<td>
+Item tag which contains all items that can be shot by being in the off hand. Can be left out to fallback to the 'projectiles' option</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:crossbow","velocity_multiplier":1.0,"inaccuracy":1.0,"use_duration":72000,"projectiles":"minecraft:arrows","held_projectiles":"minecraft:arrows"}</pre>
+</div>
+<hr>
+
+<div id="palladium:flux_capacitor">
+<h2>
+Flux Capacitor (Energy Containing Item)</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+capacity</td>
+<td>
+Integer</td>
+<td>
+Max amount of energy the item can hold</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max_input</td>
+<td>
+Integer</td>
+<td>
+Maximum amount of energy the item can be inserted with during one insertion. Using 0 makes the item not accept any energy</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max_output</td>
+<td>
+Integer</td>
+<td>
+Maximum amount of energy the item can extract with during one withdrawal. Using 0 makes the item not extract any energy</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:flux_capacitor","capacity":500000,"max_input":1000,"max_output":1000}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

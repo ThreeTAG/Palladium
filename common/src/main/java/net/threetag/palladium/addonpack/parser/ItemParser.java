@@ -106,6 +106,9 @@ public class ItemParser extends AddonParser<Item> {
         registerTypeSerializer(new AddonHoeItem.Parser());
         registerTypeSerializer(new HammerItem.Parser());
         registerTypeSerializer(new AddonShieldItem.Parser());
+        registerTypeSerializer(new AddonBowItem.Parser());
+        registerTypeSerializer(new AddonCrossbowItem.Parser());
+        registerTypeSerializer(new FluxCapacitorItem.Parser());
     }
 
     public static Rarity getRarity(String name) {

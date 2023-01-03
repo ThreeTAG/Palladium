@@ -31,3 +31,7 @@ accessible field net/minecraft/client/model/geom/EntityModelSet roots Ljava/util
 mutable field net/minecraft/client/model/geom/EntityModelSet roots Ljava/util/Map;
 
 accessible method net/minecraft/client/renderer/GameRenderer loadEffect (Lnet/minecraft/resources/ResourceLocation;)V
+
+accessible method net/minecraft/world/item/CrossbowItem getShootingPower (Lnet/minecraft/world/item/ItemStack;)F
+accessible field net/minecraft/world/item/CrossbowItem startSoundPlayed Z
+accessible field net/minecraft/world/item/CrossbowItem midLoadSoundPlayed Z
