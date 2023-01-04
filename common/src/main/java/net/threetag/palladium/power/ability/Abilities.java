@@ -27,6 +27,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> AIM = ABILITIES.register("aim", AimAbility::new);
     public static final RegistrySupplier<Ability> HIDE_BODY_PARTS = ABILITIES.register("hide_body_parts", HideBodyPartsAbility::new);
     public static final RegistrySupplier<Ability> SHADER_EFFECT = ABILITIES.register("shader_effect", ShaderEffectAbility::new);
+    public static final RegistrySupplier<Ability> GUI_OVERLAY = ABILITIES.register("gui_overlay", GuiOverlayAbility::new);
 
     public static void init() {
 

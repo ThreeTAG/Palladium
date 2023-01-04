@@ -55,6 +55,10 @@ dummy</a>
 energy_blast</a>
 </li>
 <li>
+<a href="#palladium:gui_overlay">
+gui_overlay</a>
+</li>
+<li>
 <a href="#palladium:healing">
 healing</a>
 </li>
@@ -311,7 +315,7 @@ attribute</td>
 <td>
 Attribute</td>
 <td>
-Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength"</td>
+Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength", "forge:swim_speed", "forge:nametag_distance", "forge:entity_gravity", "forge:reach_distance", "forge:attack_range", "forge:step_height_addition", "palladium:flight_speed", "palladium:levitation_speed", "palladium:jetpack_flight_speed", "palladium:hovering"</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -827,6 +831,144 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:energy_blast","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"origin":"eyes","color":"#FF0000","damage":1.0,"max_distance":30.0,"sound_event":"null"}</pre>
+</div>
+<hr>
+
+<div id="palladium:gui_overlay">
+<h2>
+gui_overlay</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+texture</td>
+<td>
+ResourceLocation</td>
+<td>
+Texture path for the gui overlay</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:textures/gui/presets/isles.png</td>
+</tr>
+<tr>
+<td>
+texture_width</td>
+<td>
+Integer</td>
+<td>
+Width of the texture file</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+256</td>
+</tr>
+<tr>
+<td>
+texture_height</td>
+<td>
+Integer</td>
+<td>
+Width of the texture file</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+256</td>
+</tr>
+<tr>
+<td>
+alignment</td>
+<td>
+TextureAlignment</td>
+<td>
+Determines how the image is aligned on the screen. Possible values: [top_left, top_center, top_right, middle_left, center, middle_right, bottom_left, bottom_center, bottom_right, stretch]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+STRETCH</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:gui_overlay","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"texture":"minecraft:textures/gui/presets/isles.png","texture_width":256,"texture_height":256,"alignment":"stretch"}</pre>
 </div>
 <hr>
 

@@ -4,6 +4,7 @@
   "ability.palladium.command": "Befehl",
   "ability.palladium.damage_immunity": "Schadensimmunität",
   "ability.palladium.dummy": "Dummy",
+  "ability.palladium.gui_overlay": "GUI-Overlay",
   "ability.palladium.healing": "Heilung",
   "ability.palladium.hide_body_parts": "Körperteile verstecken",
   "ability.palladium.interpolated_integer": "Interpolierte Zahl",
