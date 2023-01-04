@@ -16,10 +16,21 @@ PalladiumEvents.registerProperties((event) => {
 BlockEvents.broken((event) => {
     // Check if entity has the property
     if (palladium.hasProperty(event.player, BROKEN_BLOCKS)) {
+
+        // Get value, add 1
         const value = palladium.getProperty(event.player, BROKEN_BLOCKS) + 1;
-        // Set it to previous value + 1
-        palladium.setProperty(event.player, BROKEN_BLOCKS, value);
-        // Tell the player!
-        event.player.tell('You have broken ' + value + ' blocks so far!');
+
+        // if broken blocks == 20
+        if (value === 20) {
+
+            // give the player 1 XP level because why not
+            event.player.giveExperienceLevels(1);
+
+            // Set to 0 again
+            palladium.setProperty(event.player, BROKEN_BLOCKS, 0);
+        } else {
+            // else: save the increased value
+            palladium.setProperty(event.player, BROKEN_BLOCKS, value);
+        }
     }
 });

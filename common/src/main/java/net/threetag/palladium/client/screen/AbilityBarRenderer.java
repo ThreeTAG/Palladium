@@ -52,15 +52,13 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
     }
 
     @Override
-    public void render(Gui gui, PoseStack poseStack, float partialTicks, int width, int height) {
+    public void render(Minecraft mc, Gui gui, PoseStack poseStack, float partialTicks, int width, int height) {
         if (ABILITY_LISTS.isEmpty()) {
             return;
         }
 
-        Minecraft mc = Minecraft.getInstance();
         Position position = PalladiumConfig.Client.ABILITY_BAR_POSITION.get();
         AbilityList list = getSelectedList();
-        boolean simple = list.simple && ABILITY_LISTS.size() <= 1;
 
         if (position == Position.HIDDEN || list == null) {
             return;
@@ -74,6 +72,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
             position = position.left ? Position.TOP_LEFT : Position.TOP_RIGHT;
         }
 
+        boolean simple = list.simple && ABILITY_LISTS.size() <= 1;
         if (mc.player != null) {
             int indicatorWidth = 52;
             int indicatorHeight = 28;

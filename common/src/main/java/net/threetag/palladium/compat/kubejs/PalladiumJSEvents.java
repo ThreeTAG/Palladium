@@ -11,5 +11,6 @@ public interface PalladiumJSEvents {
     EventHandler CLIENT_REGISTER_PROPERTIES = GROUP.client("registerPropertiesClientSided", () -> RegisterPalladiumPropertyEventJS.class);
 
     EventHandler REGISTER_ANIMATIONS = GROUP.client("registerAnimations", () -> RegisterAnimationsEventJS.class);
+    EventHandler REGISTER_GUI_OVERLAYS = GROUP.client("registerGuiOverlays", () -> RegisterGuiOverlaysEventJS.class);
 
 }

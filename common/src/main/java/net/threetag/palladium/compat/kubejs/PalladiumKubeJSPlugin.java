@@ -52,6 +52,7 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
     @Override
     public void clientInit() {
         PalladiumClientEvents.REGISTER_ANIMATIONS.register(registry -> PalladiumJSEvents.REGISTER_ANIMATIONS.post(new RegisterAnimationsEventJS(registry)));
+        PalladiumJSEvents.REGISTER_GUI_OVERLAYS.post(new RegisterGuiOverlaysEventJS());
     }
 
     @Override
@@ -60,6 +61,7 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
         event.add("superpowerUtil", SuperpowerUtil.class);
         if (event.getType() == ScriptType.CLIENT) {
             event.add("animationUtil", AnimationUtil.class);
+            event.add("guiUtil", GuiUtilJS.class);
         }
     }
 
