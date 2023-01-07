@@ -146,7 +146,14 @@ public class PackRenderLayer implements IPackRenderLayer {
 
         GsonUtil.ifHasKey(json, "hidden_body_parts", el -> {
             if (el.isJsonPrimitive()) {
-                layer.addHiddenBodyPart(BodyPart.fromJson(el.getAsString()));
+                var string = el.getAsString();
+                if(string.equalsIgnoreCase("all")) {
+                    for (BodyPart bodyPart : BodyPart.values()) {
+                        layer.addHiddenBodyPart(bodyPart);
+                    }
+                } else {
+                    layer.addHiddenBodyPart(BodyPart.fromJson(string));
+                }
             } else if (el.isJsonArray()) {
                 JsonArray jsonArray = el.getAsJsonArray();
                 for (JsonElement jsonElement : jsonArray) {
