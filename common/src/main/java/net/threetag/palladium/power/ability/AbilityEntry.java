@@ -49,6 +49,14 @@ public class AbilityEntry {
         return propertyManager;
     }
 
+    public IPowerHolder getHolder() {
+        return holder;
+    }
+
+    public AbilityReference getReference() {
+        return new AbilityReference(this.holder.getPower().getId(), this.id);
+    }
+
     @SuppressWarnings({"unchecked", "rawtypes", "UnnecessaryLocalVariable"})
     public void syncProperty(PalladiumProperty<?> property, LivingEntity entity, @Nullable SyncType syncType) {
         if (!entity.level.isClientSide && this.propertyManager.isRegistered(property)) {
@@ -60,9 +68,9 @@ public class AbilityEntry {
             PalladiumProperty property1 = property;
             tag.put(property.getKey(), property1.toNBT(this.propertyManager.get(property)));
             if (syncType == SyncType.EVERYONE) {
-                new SyncAbilityEntryPropertyMessage(entity.getId(), holder.getPower().getId(), abilityConfiguration.getId(), property.getKey(), tag).sendToDimension(entity.level);
+                new SyncAbilityEntryPropertyMessage(entity.getId(), new AbilityReference(holder.getPower().getId(), abilityConfiguration.getId()), property.getKey(), tag).sendToDimension(entity.level);
             } else if (syncType == SyncType.SELF && entity instanceof ServerPlayer serverPlayer) {
-                new SyncAbilityEntryPropertyMessage(entity.getId(), holder.getPower().getId(), abilityConfiguration.getId(), property.getKey(), tag).send(serverPlayer);
+                new SyncAbilityEntryPropertyMessage(entity.getId(), new AbilityReference(holder.getPower().getId(), abilityConfiguration.getId()), property.getKey(), tag).send(serverPlayer);
             }
         }
     }
@@ -176,7 +184,7 @@ public class AbilityEntry {
     }
 
     public void syncState(LivingEntity entity) {
-        new SyncAbilityStateMessage(entity.getId(), this.holder.getPower().getId(), this.abilityConfiguration.getId(), this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer).sendToDimension(entity.getLevel());
+        new SyncAbilityStateMessage(entity.getId(), this.getReference(), this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer).sendToDimension(entity.getLevel());
     }
 
     public void startCooldown(LivingEntity entity, int cooldown) {

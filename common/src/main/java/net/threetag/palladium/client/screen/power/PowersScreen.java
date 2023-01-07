@@ -159,7 +159,7 @@ public class PowersScreen extends Screen {
                 if (selectedTab != null) {
                     AbilityWidget entry = this.selectedTab.getAbilityHoveredOver((int) (mouseX - i - 9), (int) (mouseY - j - 18), i, j);
                     if (entry != null && entry.abilityEntry.getConfiguration().isBuyable()) {
-                        new RequestAbilityBuyScreenMessage(this.selectedTab.powerHolder.getPower().getId(), entry.abilityEntry.id).send();
+                        new RequestAbilityBuyScreenMessage(entry.abilityEntry.getReference()).send();
                     }
                 }
             }

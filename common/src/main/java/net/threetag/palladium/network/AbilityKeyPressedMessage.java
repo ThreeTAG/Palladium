@@ -6,25 +6,23 @@ import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.AbilityReference;
 import net.threetag.palladiumcore.network.MessageC2S;
 import net.threetag.palladiumcore.network.MessageContext;
 import net.threetag.palladiumcore.network.MessageType;
 
 public class AbilityKeyPressedMessage extends MessageC2S {
 
-    private final ResourceLocation power;
-    private final String abilityKey;
+    private final AbilityReference reference;
     private final boolean pressed;
 
-    public AbilityKeyPressedMessage(ResourceLocation power, String abilityKey, boolean pressed) {
-        this.power = power;
-        this.abilityKey = abilityKey;
+    public AbilityKeyPressedMessage(AbilityReference reference, boolean pressed) {
+        this.reference = reference;
         this.pressed = pressed;
     }
 
     public AbilityKeyPressedMessage(FriendlyByteBuf buf) {
-        this.power = buf.readResourceLocation();
-        this.abilityKey = buf.readUtf();
+        this.reference = AbilityReference.fromBuffer(buf);
         this.pressed = buf.readBoolean();
     }
 
@@ -35,27 +33,16 @@ public class AbilityKeyPressedMessage extends MessageC2S {
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeResourceLocation(this.power);
-        buf.writeUtf(this.abilityKey);
+        this.reference.toBuffer(buf);
         buf.writeBoolean(this.pressed);
     }
 
     @Override
     public void handle(MessageContext context) {
-        IPowerHandler handler = PowerManager.getPowerHandler(context.getPlayer()).orElse(null);
+        AbilityEntry entry = this.reference.getEntry(context.getPlayer());
 
-        if (handler == null) {
-            return;
-        }
-
-        IPowerHolder holder = handler.getPowerHolder(PowerManager.getInstance(context.getPlayer().level).getPower(this.power));
-
-        if (holder != null) {
-            AbilityEntry entry = holder.getAbilities().get(this.abilityKey);
-
-            if (entry != null && entry.isUnlocked()) {
-                entry.keyPressed(context.getPlayer(), this.pressed);
-            }
+        if (entry != null && entry.isUnlocked()) {
+            entry.keyPressed(context.getPlayer(), this.pressed);
         }
     }
 }

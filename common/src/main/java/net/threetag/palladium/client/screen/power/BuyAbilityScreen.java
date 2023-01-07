@@ -14,13 +14,13 @@ import net.threetag.palladium.client.screen.components.TextWithIconButton;
 import net.threetag.palladium.network.BuyAbilityUnlockMessage;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.AbilityReference;
 
 import java.util.List;
 
 public class BuyAbilityScreen extends Screen {
 
-    public final ResourceLocation powerId;
-    public final AbilityEntry ability;
+    public final AbilityReference reference;
     public final AbilityConfiguration.UnlockData unlockData;
     public final boolean available;
     public final PowersScreen parentScreen;
@@ -28,10 +28,9 @@ public class BuyAbilityScreen extends Screen {
     private static final int GUI_WIDTH = 202;
     private static final int GUI_HEIGHT = 60;
 
-    public BuyAbilityScreen(ResourceLocation powerId, AbilityEntry ability, AbilityConfiguration.UnlockData unlockData, boolean available, PowersScreen parentScreen) {
-        super(ability.getConfiguration().getDisplayName());
-        this.powerId = powerId;
-        this.ability = ability;
+    public BuyAbilityScreen(AbilityReference reference, AbilityConfiguration.UnlockData unlockData, boolean available, PowersScreen parentScreen) {
+        super(Component.empty());
+        this.reference = reference;
         this.unlockData = unlockData;
         this.available = available;
         this.parentScreen = parentScreen;
@@ -46,7 +45,7 @@ public class BuyAbilityScreen extends Screen {
         int guiTop = (this.height - GUI_HEIGHT) / 2;
         this.addRenderableWidget(new BackgroundlessButton(guiLeft + 193, guiTop + 3, 5, 5, Component.literal("x"), s -> parentScreen.closeOverlayScreen()));
         Button button = new TextWithIconButton(guiLeft + 23, guiTop + 33, 54, 20, Component.literal(this.unlockData.amount + "x "), null, this.unlockData.icon, s -> {
-            new BuyAbilityUnlockMessage(this.powerId, this.ability.id).send();
+            new BuyAbilityUnlockMessage(this.reference).send();
             this.minecraft.player.closeContainer();
             this.minecraft.player.playSound(SoundEvents.PLAYER_LEVELUP, 1F, 1F);
         }, (button1, poseStack, i, j) -> this.renderTooltip(poseStack, Component.literal(this.unlockData.amount + "x ").append(this.unlockData.description), i, j));

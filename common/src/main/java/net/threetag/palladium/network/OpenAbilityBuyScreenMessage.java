@@ -13,6 +13,7 @@ import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.AbilityReference;
 import net.threetag.palladiumcore.network.MessageContext;
 import net.threetag.palladiumcore.network.MessageS2C;
 import net.threetag.palladiumcore.network.MessageType;
@@ -22,21 +23,18 @@ import java.util.Objects;
 
 public class OpenAbilityBuyScreenMessage extends MessageS2C {
 
-    private final ResourceLocation powerId;
-    private final String abilityId;
+    private final AbilityReference reference;
     private final AbilityConfiguration.UnlockData unlockData;
     private final boolean available;
 
-    public OpenAbilityBuyScreenMessage(ResourceLocation powerId, String abilityId, AbilityConfiguration.UnlockData unlockData, boolean available) {
-        this.powerId = powerId;
-        this.abilityId = abilityId;
+    public OpenAbilityBuyScreenMessage(AbilityReference reference, AbilityConfiguration.UnlockData unlockData, boolean available) {
+        this.reference = reference;
         this.unlockData = unlockData;
         this.available = available;
     }
 
     public OpenAbilityBuyScreenMessage(FriendlyByteBuf buf) {
-        this.powerId = buf.readResourceLocation();
-        this.abilityId = buf.readUtf();
+        this.reference = AbilityReference.fromBuffer(buf);
         this.unlockData = new AbilityConfiguration.UnlockData(buf);
         this.available = buf.readBoolean();
     }
@@ -49,8 +47,7 @@ public class OpenAbilityBuyScreenMessage extends MessageS2C {
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeResourceLocation(this.powerId);
-        buf.writeUtf(this.abilityId);
+        this.reference.toBuffer(buf);
         this.unlockData.toBuffer(buf);
         buf.writeBoolean(this.available);
     }
@@ -63,21 +60,10 @@ public class OpenAbilityBuyScreenMessage extends MessageS2C {
     @Environment(EnvType.CLIENT)
     public void handleClient(MessageContext context) {
         if (Minecraft.getInstance().screen instanceof PowersScreen powersScreen) {
-            var level = Objects.requireNonNull(Minecraft.getInstance().level);
-            IPowerHandler handler = PowerManager.getPowerHandler(Minecraft.getInstance().player).orElse(null);
-            Power power = PowerManager.getInstance(level).getPower(this.powerId);
+            AbilityEntry entry = this.reference.getEntry(Minecraft.getInstance().player);
 
-            if (power != null && handler != null) {
-                IPowerHolder holder = handler.getPowerHolder(power);
-
-                if (holder != null) {
-                    AbilityEntry entry = holder.getAbilities().get(this.abilityId);
-
-                    if (entry != null) {
-                        powersScreen.openOverlayScreen(new BuyAbilityScreen(this.powerId, entry, this.unlockData, this.available, powersScreen));
-                    }
-                }
-
+            if (entry != null) {
+                powersScreen.openOverlayScreen(new BuyAbilityScreen(this.reference, this.unlockData, this.available, powersScreen));
             }
         }
     }
