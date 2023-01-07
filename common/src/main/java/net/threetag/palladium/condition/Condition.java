@@ -7,7 +7,7 @@ import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.PropertyManager;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,6 +18,10 @@ public abstract class Condition {
     public Condition setContextType(ConditionContextType contextType) {
         this.contextType = contextType;
         return this;
+    }
+
+    public ConditionContextType getContextType() {
+        return contextType;
     }
 
     public abstract boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder);
@@ -39,6 +43,10 @@ public abstract class Condition {
     }
 
     public void init(LivingEntity entity, AbilityEntry entry, PropertyManager manager) {
+
+    }
+
+    public void registerAbilityProperties(AbilityEntry entry, PropertyManager manager) {
 
     }
 

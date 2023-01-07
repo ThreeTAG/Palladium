@@ -1,0 +1,45 @@
+{
+  "name": "Unlock Test",
+  "icon": "minecraft:iron_ingot",
+  "abilities": {
+    "item": {
+      "type": "palladium:attribute_modifier",
+      "list_index": 0,
+      "title": "Unlocked with Item",
+      "uuid": "7bc6deaf-296f-4e46-a132-3d91fee86144",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:item_buyable",
+          "ingredient": {
+            "item": "minecraft:iron_ingot"
+          },
+          "amount": 5
+        }
+      }
+    },
+    "xp_level": {
+      "type": "palladium:attribute_modifier",
+      "list_index": 1,
+      "title": "Unlocked with XP",
+      "uuid": "9aafe9b8-d5e1-4571-b2a3-7fbbe5c1a3c2",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:experience_level_buyable",
+          "xp_level": 5
+        }
+      }
+    },
+    "score": {
+      "type": "palladium:attribute_modifier",
+      "list_index": 2,
+      "title": "Unlocked with Score",
+      "uuid": "da11a116-3841-4cdc-94f4-55c625b67468",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:scoreboard_score_buyable",
+          "objective": "test"
+        }
+      }
+    }
+  }
+}

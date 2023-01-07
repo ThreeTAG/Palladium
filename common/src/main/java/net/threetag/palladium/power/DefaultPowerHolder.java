@@ -1,6 +1,7 @@
 package net.threetag.palladium.power;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
@@ -34,6 +35,28 @@ public class DefaultPowerHolder implements IPowerHolder {
     @Override
     public LivingEntity getEntity() {
         return this.entity;
+    }
+
+    @Override
+    public void fromNBT(CompoundTag tag) {
+        for (Map.Entry<String, AbilityEntry> entry : this.entryMap.entrySet()) {
+            if (tag.contains(entry.getKey())) {
+                CompoundTag abData = tag.getCompound(entry.getKey());
+                entry.getValue().fromNBT(abData);
+            }
+        }
+    }
+
+    @Override
+    public CompoundTag toNBT() {
+        CompoundTag tag = new CompoundTag();
+
+        for (Map.Entry<String, AbilityEntry> entry : this.entryMap.entrySet()) {
+            CompoundTag abData = entry.getValue().toNBT();
+            tag.put(entry.getKey(), abData);
+        }
+
+        return tag;
     }
 
     @Override

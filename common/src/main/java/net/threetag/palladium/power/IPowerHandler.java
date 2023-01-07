@@ -1,5 +1,6 @@
 package net.threetag.palladium.power;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
@@ -16,5 +17,9 @@ public interface IPowerHandler {
     boolean hasPower(Power power);
 
     void removeAndAddPowers(List<Power> toRemove, List<Power> toAdd);
+
+    void fromNBT(CompoundTag nbt);
+
+    CompoundTag toNBT();
 
 }

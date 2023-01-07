@@ -8,12 +8,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
-import net.threetag.palladium.condition.Condition;
-import net.threetag.palladium.condition.ConditionContextType;
-import net.threetag.palladium.condition.ConditionSerializer;
-import net.threetag.palladium.condition.CooldownType;
+import net.threetag.palladium.condition.*;
+import net.threetag.palladium.util.icon.IIcon;
+import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,7 @@ public class AbilityConfiguration {
     private final PropertyManager propertyManager;
     private final List<Condition> unlockingConditions = new ArrayList<>();
     private final List<Condition> enablingConditions = new ArrayList<>();
+    private boolean buyable = false;
     private CooldownType cooldownType = CooldownType.STATIC;
     private boolean needsKey = false;
     private KeyType keyType = KeyType.KEY_BIND;
@@ -88,18 +89,35 @@ public class AbilityConfiguration {
         return this.keyType;
     }
 
+    public boolean isBuyable() {
+        return buyable;
+    }
+
+    @Nullable
+    public BuyableCondition findBuyCondition() {
+        for (Condition condition : this.getUnlockingConditions()) {
+            if (condition instanceof BuyableCondition buyableCondition) {
+                return buyableCondition;
+            }
+        }
+        return null;
+    }
+
     public void toBuffer(FriendlyByteBuf buf) {
         buf.writeUtf(this.id);
         buf.writeResourceLocation(Objects.requireNonNull(Ability.REGISTRY.getKey(this.ability)));
         this.propertyManager.toBuffer(buf);
         buf.writeBoolean(this.needsKey);
+        buf.writeBoolean(this.buyable);
         buf.writeInt(this.keyType.ordinal());
         buf.writeInt(this.cooldownType.ordinal());
         buf.writeInt(this.dependencies.size());
+
         for (String s : this.dependencies) {
             buf.writeUtf(s);
         }
     }
+
 
     public static AbilityConfiguration fromBuffer(FriendlyByteBuf buf) {
         String id = buf.readUtf();
@@ -107,12 +125,14 @@ public class AbilityConfiguration {
         AbilityConfiguration configuration = new AbilityConfiguration(id, Objects.requireNonNull(ability));
         configuration.propertyManager.fromBuffer(buf);
         configuration.needsKey = buf.readBoolean();
+        configuration.buyable = buf.readBoolean();
         configuration.keyType = KeyType.values()[buf.readInt()];
         configuration.cooldownType = CooldownType.values()[buf.readInt()];
         int keys = buf.readInt();
         for (int i = 0; i < keys; i++) {
             configuration.dependencies.add(buf.readUtf());
         }
+
         return configuration;
     }
 
@@ -146,6 +166,14 @@ public class AbilityConfiguration {
                 var condList = ConditionSerializer.listFromJSON(condJson, ConditionContextType.ABILITIES);
 
                 for (Condition condition : condList) {
+                    if (condition instanceof BuyableCondition buyableCondition) {
+                        if (configuration.buyable) {
+                            throw new JsonParseException("Can't have more than one buyable unlock condition!");
+                        } else {
+                            configuration.buyable = true;
+                        }
+                    }
+
                     if (condition.needsKey()) {
                         throw new JsonParseException("Can't have key binding conditions for unlocking!");
                     }
@@ -168,6 +196,10 @@ public class AbilityConfiguration {
                 var condList = ConditionSerializer.listFromJSON(condJson, ConditionContextType.ABILITIES);
 
                 for (Condition condition : condList) {
+                    if (condition instanceof BuyableCondition) {
+                        throw new JsonParseException("Can't have a buyable unlock condition for enabling!");
+                    }
+
                     if (condition.needsKey()) {
                         if (withKey) {
                             throw new JsonParseException("Can't have two key binding conditions on one ability!");
@@ -203,10 +235,32 @@ public class AbilityConfiguration {
 
     public enum KeyType {
 
-        KEY_BIND,
-        LEFT_CLICK,
-        RIGHT_CLICK,
-        SPACE_BAR;
+        KEY_BIND, LEFT_CLICK, RIGHT_CLICK, SPACE_BAR;
 
+    }
+
+    public static class UnlockData {
+
+        public final IIcon icon;
+        public final int amount;
+        public final Component description;
+
+        public UnlockData(IIcon icon, int amount, Component description) {
+            this.icon = icon;
+            this.amount = amount;
+            this.description = description;
+        }
+
+        public UnlockData(FriendlyByteBuf buf) {
+            this.icon = IconSerializer.parseNBT(Objects.requireNonNull(buf.readAnySizeNbt()));
+            this.amount = buf.readInt();
+            this.description = buf.readComponent();
+        }
+
+        public void toBuffer(FriendlyByteBuf buf) {
+            buf.writeNbt(IconSerializer.serializeNBT(this.icon));
+            buf.writeInt(this.amount);
+            buf.writeComponent(this.description);
+        }
     }
 }

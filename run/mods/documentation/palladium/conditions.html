@@ -71,6 +71,10 @@ entity_type</a>
 entity_type_tag</a>
 </li>
 <li>
+<a href="#palladium:experience_level_buyable">
+experience_level_buyable</a>
+</li>
+<li>
 <a href="#palladium:has_power">
 has_power</a>
 </li>
@@ -93,6 +97,10 @@ in_water</a>
 <li>
 <a href="#palladium:is_moving">
 is_moving</a>
+</li>
+<li>
+<a href="#palladium:item_buyable">
+item_buyable</a>
 </li>
 <li>
 <a href="#palladium:item_in_slot">
@@ -125,6 +133,10 @@ or</a>
 <li>
 <a href="#palladium:pose">
 pose</a>
+</li>
+<li>
+<a href="#palladium:scoreboard_score_buyable">
+scoreboard_score_buyable</a>
 </li>
 <li>
 <a href="#palladium:toggle">
@@ -714,6 +726,50 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:experience_level_buyable">
+<h2>
+experience_level_buyable</h2>
+<p>
+Applicable for: abilities</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+xp_level</td>
+<td>
+Integer</td>
+<td>
+Amount xp level that the player needs to spend</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+3</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:experience_level_buyable","xp_level":3}</pre>
+</div>
+<hr>
+
 <div id="palladium:has_power">
 <h2>
 has_power</h2>
@@ -935,6 +991,62 @@ Applicable for: all</p>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:is_moving"}</pre>
+</div>
+<hr>
+
+<div id="palladium:item_buyable">
+<h2>
+item_buyable</h2>
+<p>
+Applicable for: abilities</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+ingredient</td>
+<td>
+Ingredient</td>
+<td>
+Ingredient predicate for the item</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+{"item":"minecraft:iron_ingot"}</td>
+</tr>
+<tr>
+<td>
+amount</td>
+<td>
+Integer</td>
+<td>
+Amount of items that the player needs to spend</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+3</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:item_buyable","ingredient":{"item":"minecraft:iron_ingot"},"amount":3}</pre>
 </div>
 <hr>
 
@@ -1303,6 +1415,86 @@ CROUCHING</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:pose","pose":"crouching"}</pre>
+</div>
+<hr>
+
+<div id="palladium:scoreboard_score_buyable">
+<h2>
+scoreboard_score_buyable</h2>
+<p>
+Applicable for: abilities</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+objective</td>
+<td>
+String</td>
+<td>
+Name of the scoreboard objective</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+objective_name</td>
+</tr>
+<tr>
+<td>
+score</td>
+<td>
+Integer</td>
+<td>
+Required player score for the scoreboard objective</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+3</td>
+</tr>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon that will be displayed during buying</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 command_block}</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Name of the score that will be displayed during buying</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+literal{Scoreboard Score}</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:scoreboard_score_buyable","objective":"objective_name","score":3,"icon":"minecraft:command_block","description":{"text":"Scoreboard Score"}}</pre>
 </div>
 <hr>
 

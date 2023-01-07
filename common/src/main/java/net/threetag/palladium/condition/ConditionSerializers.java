@@ -35,5 +35,8 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> IN_WATER = CONDITION_SERIALIZERS.register("in_water", InWaterCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> UNDER_WATER = CONDITION_SERIALIZERS.register("under_water", UnderWaterCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IS_MOVING = CONDITION_SERIALIZERS.register("is_moving", IsMovingCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> ITEM_BUYABLE = CONDITION_SERIALIZERS.register("item_buyable", ItemBuyableCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> EXPERIENCE_LEVEL_BUYABLE = CONDITION_SERIALIZERS.register("experience_level_buyable", ExperienceLevelBuyableCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> SCOREBOARD_SCORE_BUYABLE = CONDITION_SERIALIZERS.register("scoreboard_score_buyable", ScoreboardScoreBuyableCondition.Serializer::new);
 
 }

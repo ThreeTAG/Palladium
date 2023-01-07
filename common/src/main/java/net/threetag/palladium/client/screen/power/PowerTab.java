@@ -15,6 +15,7 @@ import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.icon.IIcon;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class PowerTab extends GuiComponent {
     private final PowersScreen screen;
     private final PowerTabType type;
     private final int index;
-    private final IPowerHolder powerHolder;
+    public final IPowerHolder powerHolder;
     private final IIcon icon;
     private final Component title;
     private final List<AbilityWidget> entries = new ArrayList<>();
@@ -41,7 +42,7 @@ public class PowerTab extends GuiComponent {
     private int minY = 2147483647;
     private int maxX = -2147483648;
     private int maxY = -2147483648;
-    private float fade;
+    public float fade;
     private boolean centered;
 
     public PowerTab(Minecraft minecraft, PowersScreen powersScreen, PowerTabType tabType, int i, IPowerHolder powerHolder) {
@@ -214,9 +215,9 @@ public class PowerTab extends GuiComponent {
         fill(poseStack, 4680, 2260, -4680, -2260, -16777216);
         RenderSystem.colorMask(true, true, true, true);
         poseStack.translate(0.0D, 0.0D, -950.0D);
-        RenderSystem.depthFunc(518);
+        RenderSystem.depthFunc(GL11.GL_GEQUAL);
         fill(poseStack, PowersScreen.WINDOW_INSIDE_WIDTH, PowersScreen.WINDOW_INSIDE_HEIGHT, 0, 0, -16777216);
-        RenderSystem.depthFunc(515);
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
         ResourceLocation resourceLocation = this.powerHolder.getPower().getBackground();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         if (resourceLocation != null) {
@@ -244,39 +245,58 @@ public class PowerTab extends GuiComponent {
             widget.drawIcon(this.minecraft, poseStack, i + widget.getX() + 16, j + widget.getY() + 13);
         }
 
-        RenderSystem.depthFunc(518);
+        RenderSystem.depthFunc(GL11.GL_GEQUAL);
         poseStack.translate(0.0D, 0.0D, -950.0D);
         RenderSystem.colorMask(false, false, false, false);
         fill(poseStack, 4680, 2260, -4680, -2260, -16777216);
         RenderSystem.colorMask(true, true, true, true);
-        RenderSystem.depthFunc(515);
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
         poseStack.popPose();
     }
 
-    public void drawTooltips(PoseStack poseStack, int mouseX, int mouseY, int width, int height) {
+    public void drawTooltips(PoseStack poseStack, int mouseX, int mouseY, int width, int height, boolean overlayActive) {
         poseStack.pushPose();
         poseStack.translate(0.0D, 0.0D, -200.0D);
         fill(poseStack, 0, 0, PowersScreen.WINDOW_INSIDE_WIDTH, PowersScreen.WINDOW_INSIDE_HEIGHT, Mth.floor(this.fade * 255.0F) << 24);
-        boolean bl = false;
-        int i = Mth.floor(this.scrollX);
-        int j = Mth.floor(this.scrollY);
-        if (mouseX > 0 && mouseX < PowersScreen.WINDOW_INSIDE_WIDTH && mouseY > 0 && mouseY < PowersScreen.WINDOW_INSIDE_HEIGHT) {
+        boolean flag = false;
 
-            for (AbilityWidget widget : this.entries) {
-                if (widget.isMouseOver(i, j, mouseX, mouseY)) {
-                    bl = true;
-                    widget.drawHover(poseStack, i, j, this.fade, width, height);
-                    break;
+        if (!overlayActive) {
+            int i = Mth.floor(this.scrollX);
+            int j = Mth.floor(this.scrollY);
+            if (mouseX > 0 && mouseX < PowersScreen.WINDOW_INSIDE_WIDTH && mouseY > 0 && mouseY < PowersScreen.WINDOW_INSIDE_HEIGHT) {
+
+                for (AbilityWidget widget : this.entries) {
+                    if (widget.isMouseOver(i, j, mouseX, mouseY)) {
+                        flag = true;
+                        widget.drawHover(poseStack, i, j, this.fade, width, height);
+                        break;
+                    }
                 }
             }
         }
 
         poseStack.popPose();
-        if (bl) {
-            this.fade = Mth.clamp(this.fade + 0.02F, 0.0F, 0.3F);
-        } else {
-            this.fade = Mth.clamp(this.fade - 0.04F, 0.0F, 1.0F);
+
+        if (!overlayActive) {
+            if (flag) {
+                this.fade = Mth.clamp(this.fade + 0.02F, 0.0F, 0.3F);
+            } else {
+                this.fade = Mth.clamp(this.fade - 0.04F, 0.0F, 1.0F);
+            }
         }
+    }
+
+    public AbilityWidget getAbilityHoveredOver(int mouseX, int mouseY, int x, int y) {
+        int i = Mth.floor(this.scrollX);
+        int j = Mth.floor(this.scrollY);
+        if (mouseX > 0 && mouseX < PowersScreen.WINDOW_INSIDE_WIDTH && mouseY > 0 && mouseY < PowersScreen.WINDOW_INSIDE_HEIGHT) {
+            for (AbilityWidget entry : this.entries) {
+                if (entry.isMouseOver(i, j, mouseX, mouseY)) {
+                    return entry;
+                }
+            }
+        }
+        return null;
     }
 
     public boolean isMouseOver(int offsetX, int offsetY, double mouseX, double mouseY) {

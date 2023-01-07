@@ -12,4 +12,5 @@ public class IconSerializers {
     public static final RegistrySupplier<IconSerializer<ItemIcon>> ITEM = ICON_SERIALIZERS.register("item", ItemIcon.Serializer::new);
     public static final RegistrySupplier<IconSerializer<TexturedIcon>> TEXTURE = ICON_SERIALIZERS.register("texture", TexturedIcon.Serializer::new);
     public static final RegistrySupplier<IconSerializer<CompoundIcon>> COMPOUND = ICON_SERIALIZERS.register("compound", CompoundIcon.Serializer::new);
+    public static final RegistrySupplier<IconSerializer<ExperienceIcon>> EXPERIENCE = ICON_SERIALIZERS.register("experience", ExperienceIcon.Serializer::new);
 }

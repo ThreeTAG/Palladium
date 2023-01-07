@@ -110,6 +110,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Powers");
+            this.add("gui.palladium.powers.buy_ability", "Do you want to unlock this ability?");
+            this.add("gui.palladium.powers.buy_ability.experience_level", "Experience level");
+            this.add("gui.palladium.powers.buy_ability.experience_level_plural", "Experience level");
             this.add("gui.palladium.accessories", "Accessories");
             this.add("gui.palladium.addon_pack_log", "Addon Pack Log");
             this.add("gui.palladium.addon_pack_log.search", "Search...");
@@ -245,6 +248,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
+            this.add("gui.palladium.powers.buy_ability", "Möchtest du diese Fähigkeit freischalten?");
+            this.add("gui.palladium.powers.buy_ability.experience_level", "Erfahrungsstufe");
+            this.add("gui.palladium.powers.buy_ability.experience_level_plural", "Erfahrungsstufen");
             this.add("gui.palladium.accessories", "Zubeh\u00F6r");
             this.add("gui.palladium.addon_pack_log", "Addon Pack Log");
             this.add("gui.palladium.addon_pack_log.search", "Suchen...");
@@ -380,6 +386,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
+            this.add("gui.palladium.powers.buy_ability", "Möschtest'e disse Fähischgeht freischaltn?");
+            this.add("gui.palladium.powers.buy_ability.experience_level", "Erfahrungsschdufe");
+            this.add("gui.palladium.powers.buy_ability.experience_level_plural", "Erfahrungsschdufen");
             this.add("gui.palladium.accessories", "Zubeh\u00F6r");
             this.add("gui.palladium.addon_pack_log", "Addon Pack Log");
             this.add("gui.palladium.addon_pack_log.search", "Suchen...");

@@ -37,6 +37,8 @@ public class AbilityEntry {
         this.abilityConfiguration = abilityConfiguration;
         this.holder = holder;
         this.abilityConfiguration.getAbility().registerUniqueProperties(this.propertyManager);
+        this.abilityConfiguration.getUnlockingConditions().forEach(condition -> condition.registerAbilityProperties(this, this.propertyManager));
+        this.abilityConfiguration.getEnablingConditions().forEach(condition -> condition.registerAbilityProperties(this, this.propertyManager));
     }
 
     public AbilityConfiguration getConfiguration() {
@@ -138,7 +140,7 @@ public class AbilityEntry {
                     this.abilityConfiguration.getAbility().lastTick(entity, this, powerHolder, this.isEnabled());
                     this.enabled = false;
                     sync = true;
-                    
+
                 }
             }
 
@@ -223,6 +225,14 @@ public class AbilityEntry {
     public <T> AbilityEntry setOwnProperty(PalladiumProperty<T> property, T value) {
         this.propertyManager.set(property, value);
         return this;
+    }
+
+    public void fromNBT(CompoundTag tag) {
+        this.propertyManager.fromNBT(tag);
+    }
+
+    public CompoundTag toNBT() {
+        return this.propertyManager.toNBT(false);
     }
 
 }

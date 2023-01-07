@@ -18,7 +18,7 @@ public class EntityPropertyHandlerComponent extends EntityPropertyHandler implem
 
     @Override
     public void writeToNbt(CompoundTag tag) {
-        CompoundTag nbt = this.toNBT();
+        CompoundTag nbt = this.toNBT(true);
         for (String key : nbt.getAllKeys()) {
             tag.put(key, nbt.get(key));
         }

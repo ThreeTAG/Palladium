@@ -13,7 +13,7 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.util.LegacySupportJsonReloadListener;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

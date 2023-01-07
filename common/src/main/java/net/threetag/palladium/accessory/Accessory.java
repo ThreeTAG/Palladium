@@ -28,8 +28,8 @@ import net.threetag.palladium.util.SupporterHandler;
 import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.registry.PalladiumRegistry;
 import net.threetag.palladiumcore.util.Platform;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
