@@ -111,6 +111,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // GUI
             this.add("gui.palladium.powers", "Powers");
             this.add("gui.palladium.powers.buy_ability", "Do you want to unlock this ability?");
+            this.add("gui.palladium.powers.buy_ability.or", "or");
             this.add("gui.palladium.powers.buy_ability.experience_level", "Experience level");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "Experience level");
             this.add("gui.palladium.accessories", "Accessories");
@@ -249,6 +250,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
             this.add("gui.palladium.powers.buy_ability", "Möchtest du diese Fähigkeit freischalten?");
+            this.add("gui.palladium.powers.buy_ability.or", "oder");
             this.add("gui.palladium.powers.buy_ability.experience_level", "Erfahrungsstufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "Erfahrungsstufen");
             this.add("gui.palladium.accessories", "Zubeh\u00F6r");
@@ -387,6 +389,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
             this.add("gui.palladium.powers.buy_ability", "Möschtest'e disse Fähischgeht freischaltn?");
+            this.add("gui.palladium.powers.buy_ability.or", "oder");
             this.add("gui.palladium.powers.buy_ability.experience_level", "Erfahrungsschdufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "Erfahrungsschdufen");
             this.add("gui.palladium.accessories", "Zubeh\u00F6r");

@@ -13,7 +13,7 @@
         "unlocking": {
           "type": "palladium:item_buyable",
           "ingredient": {
-            "item": "minecraft:iron_ingot"
+            "tag": "minecraft:arrows"
           },
           "amount": 5
         }

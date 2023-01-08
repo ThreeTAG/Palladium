@@ -84,6 +84,7 @@
   "gui.palladium.powers.buy_ability": "Möchtest du diese Fähigkeit freischalten?",
   "gui.palladium.powers.buy_ability.experience_level": "Erfahrungsstufe",
   "gui.palladium.powers.buy_ability.experience_level_plural": "Erfahrungsstufen",
+  "gui.palladium.powers.buy_ability.or": "oder",
   "item.palladium.flux_capacitor.desc": "Energie: %s / %s RF",
   "item.palladium.hammer": "Hammer",
   "item.palladium.lead_circuit": "Bleischaltkreis",
