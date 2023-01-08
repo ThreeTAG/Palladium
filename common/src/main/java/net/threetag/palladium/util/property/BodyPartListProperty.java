@@ -23,7 +23,13 @@ public class BodyPartListProperty extends PalladiumProperty<List<BodyPart>> {
     @Override
     public List<BodyPart> fromJSON(JsonElement jsonElement) {
         if (jsonElement.isJsonPrimitive()) {
-            return Collections.singletonList(BodyPart.fromJson(jsonElement.getAsString()));
+            var name = jsonElement.getAsString();
+
+            if(name.equalsIgnoreCase("all")) {
+                return Arrays.asList(BodyPart.values());
+            } else {
+                return Collections.singletonList(BodyPart.fromJson(name));
+            }
         } else {
             JsonArray jsonArray = jsonElement.getAsJsonArray();
             List<BodyPart> list = new ArrayList<>();
