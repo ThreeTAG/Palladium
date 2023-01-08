@@ -4,6 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec2;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDefaultDocumentedConfigurable;
@@ -29,6 +30,8 @@ public class Ability implements IDefaultDocumentedConfigurable {
     public static final PalladiumProperty<AbilityColor> COLOR = new AbilityColorProperty("bar_color").configurable("Changes the color of the ability in the ability bar");
     public static final PalladiumProperty<Boolean> HIDDEN = new BooleanProperty("hidden").configurable("Determines if the ability is visible in the ability bar and powers screen");
     public static final PalladiumProperty<Integer> LIST_INDEX = new IntegerProperty("list_index").configurable("Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.");
+    public static final PalladiumProperty<Vec2> GUI_POSITION = new Vec2Property("gui_position").configurable("Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center");
+    public static final PalladiumProperty<Component> DESCRIPTION = new ComponentProperty("description").configurable("Description of the ability. Visible in ability menu");
 
     final PropertyManager propertyManager = new PropertyManager();
 
@@ -38,6 +41,8 @@ public class Ability implements IDefaultDocumentedConfigurable {
         this.withProperty(COLOR, AbilityColor.LIGHT_GRAY);
         this.withProperty(HIDDEN, this.isEffect());
         this.withProperty(LIST_INDEX, -1);
+        this.withProperty(GUI_POSITION, null);
+        this.withProperty(DESCRIPTION, null);
     }
 
     public void registerUniqueProperties(PropertyManager manager) {

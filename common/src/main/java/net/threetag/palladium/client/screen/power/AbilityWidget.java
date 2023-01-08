@@ -2,10 +2,9 @@ package net.threetag.palladium.client.screen.power;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.advancements.FrameType;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.StringSplitter;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.advancements.AdvancementWidgetType;
 import net.minecraft.client.renderer.GameRenderer;
@@ -20,8 +19,9 @@ import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 public class AbilityWidget extends GuiComponent {
 
@@ -50,6 +50,7 @@ public class AbilityWidget extends GuiComponent {
     private int x;
     private int y;
     public double gridX, gridY;
+    public boolean fixedPosition = false;
 
     public AbilityWidget(PowerTab tab, Minecraft mc, IPowerHolder holder, AbilityEntry abilityEntry) {
         this.tab = tab;
@@ -57,17 +58,15 @@ public class AbilityWidget extends GuiComponent {
         this.abilityEntry = abilityEntry;
         this.minecraft = mc;
         this.title = Language.getInstance().getVisualOrder(mc.font.substrByWidth(abilityEntry.getConfiguration().getDisplayName(), 163));
-        // TODO conditions?
-        int i = 0;
-        int j = String.valueOf(i).length();
-        int k = i > 1 ? mc.font.width("  ") + mc.font.width("0") * j * 2 + mc.font.width("/") : 0;
-        int l = 29 + mc.font.width(this.title) + k;
-        // TODO description?
-        this.description = Language.getInstance().getVisualOrder(this.findOptimalLines(ComponentUtils.mergeStyles(Component.literal(""), Style.EMPTY.withColor(FrameType.TASK.getChatColor())), l));
+        int l = 29 + mc.font.width(this.title);
+        var description = abilityEntry.getProperty(Ability.DESCRIPTION);
+        this.description = Language.getInstance()
+                .getVisualOrder(
+                        this.findOptimalLines(ComponentUtils.mergeStyles(description != null ? description.copy() : Component.empty(), Style.EMPTY.withColor(ChatFormatting.WHITE)), l)
+                );
 
-        FormattedCharSequence formattedCharSequence;
-        for (Iterator<FormattedCharSequence> var9 = this.description.iterator(); var9.hasNext(); l = Math.max(l, mc.font.width(formattedCharSequence))) {
-            formattedCharSequence = var9.next();
+        for (FormattedCharSequence formattedCharSequence : this.description) {
+            l = Math.max(l, minecraft.font.width(formattedCharSequence));
         }
 
         this.width = l + 3 + 5;
@@ -80,7 +79,7 @@ public class AbilityWidget extends GuiComponent {
         this.y = (int) (tab.getFreeYPos(x, y) * PowerTab.GRID_SIZE) - 13;
 
         for (AbilityWidget child : this.children) {
-            child.updatePosition(this.x + 1, y, tab);
+            child.updatePosition(this.gridX + 1, y, tab);
         }
 
         return this;
@@ -92,6 +91,11 @@ public class AbilityWidget extends GuiComponent {
         this.x = (int) (x * PowerTab.GRID_SIZE) - 16;
         this.y = (int) (y * PowerTab.GRID_SIZE) - 13;
         return this;
+    }
+
+    public AbilityWidget setPositionFixed(double x, double y) {
+        this.fixedPosition = true;
+        return this.setPosition(x, y);
     }
 
     public AbilityWidget updateRelatives(Collection<AbilityWidget> list) {
@@ -118,22 +122,17 @@ public class AbilityWidget extends GuiComponent {
     }
 
     private static float getMaxWidth(StringSplitter manager, List<FormattedText> text) {
-        Stream<FormattedText> var10000 = text.stream();
-        Objects.requireNonNull(manager);
-        return (float) var10000.mapToDouble(manager::stringWidth).max().orElse(0.0D);
+        return (float)text.stream().mapToDouble(manager::stringWidth).max().orElse(0.0);
     }
 
     private List<FormattedText> findOptimalLines(Component component, int maxWidth) {
         StringSplitter stringSplitter = this.minecraft.font.getSplitter();
         List<FormattedText> list = null;
-        float f = 3.4028235E38F;
-        int[] var6 = TEST_SPLIT_OFFSETS;
-        int var7 = var6.length;
+        float f = Float.MAX_VALUE;
 
-        for (int var8 = 0; var8 < var7; ++var8) {
-            int i = var6[var8];
+        for(int i : TEST_SPLIT_OFFSETS) {
             List<FormattedText> list2 = stringSplitter.splitLines(component, maxWidth - i, Style.EMPTY);
-            float g = Math.abs(getMaxWidth(stringSplitter, list2) - (float) maxWidth);
+            float g = Math.abs(getMaxWidth(stringSplitter, list2) - (float)maxWidth);
             if (g <= 10.0F) {
                 return list2;
             }
@@ -172,16 +171,11 @@ public class AbilityWidget extends GuiComponent {
 
     public void drawHover(PoseStack poseStack, int x, int y, float fade, int width, int height) {
         boolean bl = width + x + this.x + this.width + 26 >= this.tab.getScreen().width;
-        // TODO progress?
         String string = null;
         int i = string == null ? 0 : this.minecraft.font.width(string);
-        int var10000 = PowersScreen.WINDOW_INSIDE_HEIGHT - y - this.y - 26;
-        int var10002 = this.description.size();
-        Objects.requireNonNull(this.minecraft.font);
-        boolean bl2 = var10000 <= 6 + var10002 * 9;
-        // TODO progress?
-        float f = 0F;
-        int j = Mth.floor(f * (float) this.width);
+        boolean bl2 = 113 - y - this.y - 26 <= 6 + this.description.size() * 9;
+        float f = 0.0F;
+        int j = Mth.floor(f * (float)this.width);
         AdvancementWidgetType advancementWidgetType;
         AdvancementWidgetType advancementWidgetType2;
         AdvancementWidgetType advancementWidgetType3;
@@ -219,9 +213,7 @@ public class AbilityWidget extends GuiComponent {
             m = x + this.x;
         }
 
-        int var10001 = this.description.size();
-        Objects.requireNonNull(this.minecraft.font);
-        int n = 32 + var10001 * 9;
+        int n = 32 + this.description.size() * 9;
         if (!this.description.isEmpty()) {
             if (bl2) {
                 this.render9Sprite(poseStack, m, l + 26 - n, this.width, n, 10, 200, 26, 0, 52);
@@ -234,39 +226,24 @@ public class AbilityWidget extends GuiComponent {
         this.blit(poseStack, m + j, l, 200 - k, advancementWidgetType2.getIndex() * 26, k, 26);
         this.blit(poseStack, x + this.x + 3, y + this.y, 0, 128 + advancementWidgetType3.getIndex() * 26, 26, 26);
         if (bl) {
-            this.minecraft.font.drawShadow(poseStack, this.title, (float) (m + 5), (float) (y + this.y + 9), -1);
+            this.minecraft.font.drawShadow(poseStack, this.title, (float)(m + 5), (float)(y + this.y + 9), -1);
             if (string != null) {
-                this.minecraft.font.drawShadow(poseStack, string, (float) (x + this.x - i), (float) (y + this.y + 9), -1);
+                this.minecraft.font.drawShadow(poseStack, string, (float)(x + this.x - i), (float)(y + this.y + 9), -1);
             }
         } else {
-            this.minecraft.font.drawShadow(poseStack, this.title, (float) (x + this.x + 32), (float) (y + this.y + 9), -1);
+            this.minecraft.font.drawShadow(poseStack, this.title, (float)(x + this.x + 32), (float)(y + this.y + 9), -1);
             if (string != null) {
-                this.minecraft.font.drawShadow(poseStack, string, (float) (x + this.x + this.width - i - 5), (float) (y + this.y + 9), -1);
+                this.minecraft.font.drawShadow(poseStack, string, (float)(x + this.x + this.width - i - 5), (float)(y + this.y + 9), -1);
             }
         }
 
-        float var10003;
-        int o;
-        int var10004;
-        Font var21;
-        FormattedCharSequence var22;
         if (bl2) {
-            for (o = 0; o < this.description.size(); ++o) {
-                var21 = this.minecraft.font;
-                var22 = this.description.get(o);
-                var10003 = (float) (m + 5);
-                var10004 = l + 26 - n + 7;
-                Objects.requireNonNull(this.minecraft.font);
-                var21.draw(poseStack, var22, var10003, (float) (var10004 + o * 9), -5592406);
+            for(int o = 0; o < this.description.size(); ++o) {
+                this.minecraft.font.draw(poseStack, this.description.get(o), (float)(m + 5), (float)(l + 26 - n + 7 + o * 9), -5592406);
             }
         } else {
-            for (o = 0; o < this.description.size(); ++o) {
-                var21 = this.minecraft.font;
-                var22 = this.description.get(o);
-                var10003 = (float) (m + 5);
-                var10004 = y + this.y + 9 + 17;
-                Objects.requireNonNull(this.minecraft.font);
-                var21.draw(poseStack, var22, var10003, (float) (var10004 + o * 9), -5592406);
+            for(int o = 0; o < this.description.size(); ++o) {
+                this.minecraft.font.draw(poseStack, this.description.get(o), (float)(m + 5), (float)(y + this.y + 9 + 17 + o * 9), -5592406);
             }
         }
 
@@ -278,25 +255,54 @@ public class AbilityWidget extends GuiComponent {
         this.renderRepeating(poseStack, x + padding, y, width - padding - padding, padding, uOffset + padding, vOffset, uWidth - padding - padding, vHeight);
         this.blit(poseStack, x + width - padding, y, uOffset + uWidth - padding, vOffset, padding, padding);
         this.blit(poseStack, x, y + height - padding, uOffset, vOffset + vHeight - padding, padding, padding);
-        this.renderRepeating(poseStack, x + padding, y + height - padding, width - padding - padding, padding, uOffset + padding, vOffset + vHeight - padding, uWidth - padding - padding, vHeight);
+        this.renderRepeating(
+                poseStack,
+                x + padding,
+                y + height - padding,
+                width - padding - padding,
+                padding,
+                uOffset + padding,
+                vOffset + vHeight - padding,
+                uWidth - padding - padding,
+                vHeight
+        );
         this.blit(poseStack, x + width - padding, y + height - padding, uOffset + uWidth - padding, vOffset + vHeight - padding, padding, padding);
         this.renderRepeating(poseStack, x, y + padding, padding, height - padding - padding, uOffset, vOffset + padding, uWidth, vHeight - padding - padding);
-        this.renderRepeating(poseStack, x + padding, y + padding, width - padding - padding, height - padding - padding, uOffset + padding, vOffset + padding, uWidth - padding - padding, vHeight - padding - padding);
-        this.renderRepeating(poseStack, x + width - padding, y + padding, padding, height - padding - padding, uOffset + uWidth - padding, vOffset + padding, uWidth, vHeight - padding - padding);
+        this.renderRepeating(
+                poseStack,
+                x + padding,
+                y + padding,
+                width - padding - padding,
+                height - padding - padding,
+                uOffset + padding,
+                vOffset + padding,
+                uWidth - padding - padding,
+                vHeight - padding - padding
+        );
+        this.renderRepeating(
+                poseStack,
+                x + width - padding,
+                y + padding,
+                padding,
+                height - padding - padding,
+                uOffset + uWidth - padding,
+                vOffset + padding,
+                uWidth,
+                vHeight - padding - padding
+        );
     }
 
     protected void renderRepeating(PoseStack poseStack, int x, int y, int borderToU, int borderToV, int uOffset, int vOffset, int uWidth, int vHeight) {
-        for (int i = 0; i < borderToU; i += uWidth) {
+        for(int i = 0; i < borderToU; i += uWidth) {
             int j = x + i;
             int k = Math.min(uWidth, borderToU - i);
 
-            for (int l = 0; l < borderToV; l += vHeight) {
+            for(int l = 0; l < borderToV; l += vHeight) {
                 int m = y + l;
                 int n = Math.min(vHeight, borderToV - l);
                 this.blit(poseStack, j, m, uOffset, vOffset, k, n);
             }
         }
-
     }
 
     public boolean isMouseOver(int x, int y, int mouseX, int mouseY) {

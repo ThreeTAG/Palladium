@@ -62,7 +62,13 @@ public class PowerTab extends GuiComponent {
         // Create entry for each ability
         for (AbilityEntry ability : this.powerHolder.getAbilities().values()) {
             if (!ability.getProperty(Ability.HIDDEN)) {
-                this.entries.add(new AbilityWidget(this, this.minecraft, this.powerHolder, ability));
+                var widget = new AbilityWidget(this, this.minecraft, this.powerHolder, ability).setPosition(0, 0);
+                this.entries.add(widget);
+
+                var pos = ability.getProperty(Ability.GUI_POSITION);
+                if (pos != null) {
+                    widget.setPositionFixed(pos.x, pos.y);
+                }
             }
         }
 
@@ -75,10 +81,12 @@ public class PowerTab extends GuiComponent {
         // Locate and set first row
         int y = 0;
         for (AbilityWidget entry : this.entries) {
-            if (entry.parents.size() <= 0) {
-                entry.updatePosition(0, y, this);
+            if (entry.parents.isEmpty()) {
+                if(!entry.fixedPosition) {
+                    entry.updatePosition(0, y, this);
+                    y++;
+                }
                 root.add(entry);
-                y++;
             }
         }
 
@@ -87,9 +95,9 @@ public class PowerTab extends GuiComponent {
         // Set position for children
         for (int j = 0; j < root.size(); j++) {
             for (AbilityWidget entry : root) {
-                for (AbilityWidget children : entry.children) {
-                    if (entry.gridX == children.gridX) {
-                        children.setPosition(children.gridX + 1, getFreeYPos(children.gridX + 1, entry.gridY));
+                for (AbilityWidget child : entry.children) {
+                    if (!child.fixedPosition && entry.gridX == child.gridX) {
+                        child.setPosition(child.gridX + 1, getFreeYPos(child.gridX + 1, entry.gridY));
                     }
                 }
             }
@@ -100,7 +108,9 @@ public class PowerTab extends GuiComponent {
             List<AbilityWidget> entries = getEntriesAtX(x);
             for (int n = 0; n < entries.size(); n++) {
                 AbilityWidget entry = entries.get(n);
-                entry.setPosition(entry.gridX, (longest / 2D) - (entries.size() / 2D) + n);
+                if(!entry.fixedPosition) {
+                    entry.setPosition(entry.gridX, (longest / 2D) - (entries.size() / 2D) + n);
+                }
             }
         }
 
