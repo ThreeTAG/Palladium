@@ -87,6 +87,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.HIDE_BODY_PARTS, "Hide Body Parts");
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effect");
             this.addAbility(Abilities.GUI_OVERLAY, "Gui Overlay");
+            this.addAbility(Abilities.SHOW_BOTH_ARMS, "Show Both Arms");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -226,6 +227,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.HIDE_BODY_PARTS, "K\u00F6rperteile verstecken");
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(Abilities.GUI_OVERLAY, "GUI-Overlay");
+            this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeigen");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
@@ -365,6 +367,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.HIDE_BODY_PARTS, "G\u00F6rperdeile versteggen");
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(Abilities.GUI_OVERLAY, "GUI-Overlay");
+            this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeijen");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");
