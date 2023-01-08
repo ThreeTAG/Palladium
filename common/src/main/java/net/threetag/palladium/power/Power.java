@@ -21,13 +21,15 @@ public class Power {
     private final IIcon icon;
     private final List<AbilityConfiguration> abilities = new ArrayList<>();
     private final ResourceLocation background;
+    private boolean persistentData;
     private boolean invalid = false;
 
-    public Power(ResourceLocation id, Component name, IIcon icon, ResourceLocation background) {
+    public Power(ResourceLocation id, Component name, IIcon icon, ResourceLocation background, boolean persistentData) {
         this.id = id;
         this.name = name;
         this.icon = icon;
         this.background = background;
+        this.persistentData = persistentData;
     }
 
     public void invalidate() {
@@ -63,6 +65,10 @@ public class Power {
         return background;
     }
 
+    public boolean hasPersistentData() {
+        return this.persistentData;
+    }
+
     public void toBuffer(FriendlyByteBuf buf) {
         buf.writeComponent(this.name);
         buf.writeNbt(IconSerializer.serializeNBT(this.icon));
@@ -70,6 +76,7 @@ public class Power {
         if (this.background != null) {
             buf.writeResourceLocation(this.background);
         }
+        buf.writeBoolean(this.persistentData);
         buf.writeInt(this.abilities.size());
         for (AbilityConfiguration configuration : this.abilities) {
             configuration.toBuffer(buf);
@@ -77,7 +84,7 @@ public class Power {
     }
 
     public static Power fromBuffer(ResourceLocation id, FriendlyByteBuf buf) {
-        Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())), buf.readBoolean() ? buf.readResourceLocation() : null);
+        Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())), buf.readBoolean() ? buf.readResourceLocation() : null, buf.readBoolean());
         int amount = buf.readInt();
 
         for (int i = 0; i < amount; i++) {
@@ -90,7 +97,7 @@ public class Power {
     public static Power fromJSON(ResourceLocation id, JsonObject json) {
         Component name = Component.Serializer.fromJson(json.get("name"));
         ResourceLocation background = GsonUtil.getAsResourceLocation(json, "background", null);
-        Power power = new Power(id, name, IconSerializer.parseJSON(json.get("icon")), background);
+        Power power = new Power(id, name, IconSerializer.parseJSON(json.get("icon")), background, GsonHelper.getAsBoolean(json, "persistent_data", false));
 
         if (GsonHelper.isValidNode(json, "abilities")) {
             JsonObject abilities = GsonHelper.getAsJsonObject(json, "abilities");

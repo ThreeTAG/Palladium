@@ -95,12 +95,19 @@ public class PowerHandler implements IPowerHandler {
 
     public void removePowerHolder(ResourceLocation powerId) {
         if (this.powers.containsKey(powerId)) {
-            boolean updateTag = !this.powers.get(powerId).getPower().isInvalid();
-            this.powers.get(powerId).lastTick();
+            var holder = this.powers.get(powerId);
+            boolean isStillValid = !holder.getPower().isInvalid();
+            boolean hasPersistentData = holder.getPower().hasPersistentData();
+            holder.lastTick();
+
+            if (hasPersistentData) {
+                this.savePowerNbt(holder);
+            }
+
             this.powers.remove(powerId);
 
-            if(updateTag) {
-                this.toNBT();
+            if (isStillValid && !hasPersistentData) {
+                this.powerData.remove(powerId.toString());
             }
         }
     }
@@ -135,11 +142,27 @@ public class PowerHandler implements IPowerHandler {
 
     @Override
     public CompoundTag toNBT() {
-        CompoundTag tag = new CompoundTag();
-        for (Map.Entry<ResourceLocation, IPowerHolder> entry : this.powers.entrySet()) {
-            tag.put(entry.getKey().toString(), entry.getValue().toNBT());
+        for (IPowerHolder holder : this.powers.values()) {
+            this.savePowerNbt(holder);
         }
-        return this.powerData = tag;
+        this.cleanPowerData();
+        return this.powerData;
+    }
+
+    public void savePowerNbt(IPowerHolder holder) {
+        this.powerData.put(holder.getPower().getId().toString(), holder.toNBT());
+    }
+
+    public void cleanPowerData() {
+        List<String> toRemove = new ArrayList<>();
+        for (String key : this.powerData.getAllKeys()) {
+            if (PowerManager.getInstance(this.entity.level).getPower(new ResourceLocation(key)) == null) {
+                toRemove.add(key);
+            }
+        }
+        for (String key : toRemove) {
+            this.powerData.remove(key);
+        }
     }
 
 }

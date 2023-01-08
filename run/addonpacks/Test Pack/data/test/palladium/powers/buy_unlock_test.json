@@ -1,6 +1,7 @@
 {
   "name": "Unlock Test",
   "icon": "minecraft:iron_ingot",
+  "persistent_data": true,
   "abilities": {
     "item": {
       "type": "palladium:attribute_modifier",
