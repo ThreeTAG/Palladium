@@ -41,6 +41,14 @@ allprojects {
 
     repositories {
         maven {
+            // saps.dev Maven (KubeJS and Rhino)
+            url = 'https://maven.saps.dev/minecraft'
+            content {
+                includeGroup 'dev.latvian.mods'
+            }
+        }
+
+        maven {
             url 'https://repo.repsy.io/mvn/lucraft/threetag'
         }
 
@@ -87,14 +95,6 @@ allprojects {
         maven {
             name = 'Ladysnake Libs'
             url = 'https://ladysnake.jfrog.io/artifactory/mods'
-        }
-
-        maven {
-            // saps.dev Maven (KubeJS and Rhino)
-            url = 'https://maven.saps.dev/minecraft'
-            content {
-                includeGroup 'dev.latvian.mods'
-            }
         }
 
         maven {
