@@ -34,6 +34,7 @@ import net.threetag.palladium.client.screen.power.PowersScreen;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.event.PalladiumClientEvents;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.power.ability.GuiOverlayAbility;
 import net.threetag.palladium.util.SupporterHandler;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.TexturedIcon;
@@ -52,7 +53,6 @@ public class PalladiumClient {
     @SuppressWarnings("unchecked")
     public static void init() {
         colorHandlers();
-        OverlayRegistry.registerOverlay("palladium/ability_bar", new AbilityBarRenderer());
         PalladiumKeyMappings.init();
         PowersScreen.register();
         AccessoryScreen.addButton();
@@ -77,6 +77,10 @@ public class PalladiumClient {
             registry.accept(Palladium.id("aim"), new AimAnimation());
 //            registry.accept(Palladium.id("test"), new TestAnimation());
         });
+
+        // Overlay Renderer
+        OverlayRegistry.registerOverlay("palladium/ability_bar", new AbilityBarRenderer());
+        OverlayRegistry.registerOverlay("palladium/gui_overlay_abilities", new GuiOverlayAbility.Renderer());
 
         // Reload Listeners
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("pack_render_layers"), new PackRenderLayerManager());

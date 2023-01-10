@@ -15,7 +15,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.block.entity.SolarPanelBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class SolarPanelBlock extends BaseEntityBlock {
 

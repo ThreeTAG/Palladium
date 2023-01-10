@@ -21,8 +21,6 @@ public class PalladiumLootTableProvider extends BlockLootTableProvider {
     public void addTables() {
         this.add(PalladiumBlocks.LEAD_ORE.get(), (block) -> createOreDrop(block, PalladiumItems.RAW_LEAD.get()));
         this.add(PalladiumBlocks.DEEPSLATE_LEAD_ORE.get(), (block) -> createOreDrop(block, PalladiumItems.RAW_LEAD.get()));
-        this.add(PalladiumBlocks.SILVER_ORE.get(), (block) -> createOreDrop(block, PalladiumItems.RAW_SILVER.get()));
-        this.add(PalladiumBlocks.DEEPSLATE_SILVER_ORE.get(), (block) -> createOreDrop(block, PalladiumItems.RAW_SILVER.get()));
         this.add(PalladiumBlocks.TITANIUM_ORE.get(), (block) -> createOreDrop(block, PalladiumItems.RAW_TITANIUM.get()));
         this.add(PalladiumBlocks.VIBRANIUM_ORE.get(), (block) -> createOreDrop(block, PalladiumItems.RAW_VIBRANIUM.get()));
         this.add(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_GEODE.get(), (block) -> createSilkTouchDispatchTable(block, (LootItem.lootTableItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(4.0F))).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)).when(MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(ItemTags.CLUSTER_MAX_HARVESTABLES)))).otherwise(applyExplosionDecay(block, LootItem.lootTableItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2.0F)))))));
@@ -32,11 +30,8 @@ public class PalladiumLootTableProvider extends BlockLootTableProvider {
         this.dropWhenSilkTouch(PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD.get());
         this.dropWhenSilkTouch(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD.get());
         this.dropSelf(PalladiumBlocks.LEAD_BLOCK.get());
-        this.dropSelf(PalladiumBlocks.SILVER_BLOCK.get());
-        this.dropSelf(PalladiumBlocks.TITANIUM_BLOCK.get());
         this.dropSelf(PalladiumBlocks.VIBRANIUM_BLOCK.get());
         this.dropSelf(PalladiumBlocks.RAW_LEAD_BLOCK.get());
-        this.dropSelf(PalladiumBlocks.RAW_SILVER_BLOCK.get());
         this.dropSelf(PalladiumBlocks.RAW_TITANIUM_BLOCK.get());
         this.dropSelf(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get());
         this.dropSelf(PalladiumBlocks.HEART_SHAPED_HERB.get());

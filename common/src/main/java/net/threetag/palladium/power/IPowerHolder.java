@@ -1,5 +1,6 @@
 package net.threetag.palladium.power;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.AbilityEntry;
 
@@ -22,5 +23,9 @@ public interface IPowerHolder {
     void switchValidator(IPowerValidator validator);
 
     LivingEntity getEntity();
+
+    void fromNBT(CompoundTag tag);
+
+    CompoundTag toNBT();
 
 }

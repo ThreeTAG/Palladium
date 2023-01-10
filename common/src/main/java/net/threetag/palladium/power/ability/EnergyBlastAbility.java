@@ -61,9 +61,11 @@ public class EnergyBlastAbility extends Ability {
 
     @Override
     public void firstTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
-        EnergyBlastEffect.start(entity, holder.getPower(), entry);
-        if (Platform.isClient() && entry.getProperty(SOUND_EVENT) != null) {
-            this.startSound(entity, entry, holder);
+        if(enabled) {
+            EnergyBlastEffect.start(entity, holder.getPower(), entry);
+            if (Platform.isClient() && entry.getProperty(SOUND_EVENT) != null) {
+                this.startSound(entity, entry, holder);
+            }
         }
     }
 

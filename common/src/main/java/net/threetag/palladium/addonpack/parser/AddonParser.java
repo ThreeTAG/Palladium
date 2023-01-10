@@ -81,6 +81,7 @@ public abstract class AddonParser<T> extends SimpleJsonResourceReloadListener {
 
         for (AddonBuilder<T> addonBuilder : sorted.values()) {
             register(this.resourceKey, addonBuilder);
+            this.postRegister(addonBuilder);
         }
 
         AddonPackLog.info("Registered " + i.get() + " addonpack " + this.resourceKey.location().getPath());
@@ -98,6 +99,10 @@ public abstract class AddonParser<T> extends SimpleJsonResourceReloadListener {
     @ExpectPlatform
     public static <T> void register(ResourceKey<? extends Registry<T>> key, AddonBuilder<T> builder) {
         throw new AssertionError();
+    }
+
+    public void postRegister(AddonBuilder<T> addonBuilder) {
+
     }
 
     public abstract AddonBuilder<T> parse(ResourceLocation id, JsonElement jsonElement);

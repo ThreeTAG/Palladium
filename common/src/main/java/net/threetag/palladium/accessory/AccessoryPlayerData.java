@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.network.SyncAccessoriesMessage;
 import net.threetag.palladiumcore.util.Platform;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class AccessoryPlayerData {

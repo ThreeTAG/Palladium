@@ -1,0 +1,10 @@
+{
+  "name": "Show Both Arms",
+  "icon": "minecraft:leather",
+  "background": "minecraft:textures/block/coal_block.png",
+  "abilities": {
+    "show_both_arms": {
+      "type": "palladium:show_both_arms"
+    }
+  }
+}

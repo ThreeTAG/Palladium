@@ -18,8 +18,8 @@ public class AbilityEntry {
 
     private final AbilityConfiguration abilityConfiguration;
     private final IPowerHolder holder;
-    private boolean unlocked = true;
-    private boolean enabled = true;
+    private boolean unlocked = false;
+    private boolean enabled = false;
     public boolean keyPressed = false;
     public int maxCooldown = 0, cooldown = 0;
     public int maxActivationTimer = 0, activationTimer = 0;
@@ -37,6 +37,8 @@ public class AbilityEntry {
         this.abilityConfiguration = abilityConfiguration;
         this.holder = holder;
         this.abilityConfiguration.getAbility().registerUniqueProperties(this.propertyManager);
+        this.abilityConfiguration.getUnlockingConditions().forEach(condition -> condition.registerAbilityProperties(this, this.propertyManager));
+        this.abilityConfiguration.getEnablingConditions().forEach(condition -> condition.registerAbilityProperties(this, this.propertyManager));
     }
 
     public AbilityConfiguration getConfiguration() {
@@ -45,6 +47,14 @@ public class AbilityEntry {
 
     public PropertyManager getPropertyManager() {
         return propertyManager;
+    }
+
+    public IPowerHolder getHolder() {
+        return holder;
+    }
+
+    public AbilityReference getReference() {
+        return new AbilityReference(this.holder.getPower().getId(), this.id);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes", "UnnecessaryLocalVariable"})
@@ -58,9 +68,9 @@ public class AbilityEntry {
             PalladiumProperty property1 = property;
             tag.put(property.getKey(), property1.toNBT(this.propertyManager.get(property)));
             if (syncType == SyncType.EVERYONE) {
-                new SyncAbilityEntryPropertyMessage(entity.getId(), holder.getPower().getId(), abilityConfiguration.getId(), property.getKey(), tag).sendToDimension(entity.level);
+                new SyncAbilityEntryPropertyMessage(entity.getId(), new AbilityReference(holder.getPower().getId(), abilityConfiguration.getId()), property.getKey(), tag).sendToDimension(entity.level);
             } else if (syncType == SyncType.SELF && entity instanceof ServerPlayer serverPlayer) {
-                new SyncAbilityEntryPropertyMessage(entity.getId(), holder.getPower().getId(), abilityConfiguration.getId(), property.getKey(), tag).send(serverPlayer);
+                new SyncAbilityEntryPropertyMessage(entity.getId(), new AbilityReference(holder.getPower().getId(), abilityConfiguration.getId()), property.getKey(), tag).send(serverPlayer);
             }
         }
     }
@@ -129,14 +139,16 @@ public class AbilityEntry {
             }
 
             if (this.enabled != enabled) {
-                this.enabled = enabled;
-                sync = true;
-
-                if (this.enabled) {
+                if (!this.enabled) {
+                    this.enabled = true;
+                    sync = true;
                     this.abilityConfiguration.getAbility().firstTick(entity, this, powerHolder, this.isEnabled());
                 } else {
                     this.keyPressed = false;
                     this.abilityConfiguration.getAbility().lastTick(entity, this, powerHolder, this.isEnabled());
+                    this.enabled = false;
+                    sync = true;
+
                 }
             }
 
@@ -172,7 +184,7 @@ public class AbilityEntry {
     }
 
     public void syncState(LivingEntity entity) {
-        new SyncAbilityStateMessage(entity.getId(), this.holder.getPower().getId(), this.abilityConfiguration.getId(), this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer).sendToDimension(entity.getLevel());
+        new SyncAbilityStateMessage(entity.getId(), this.getReference(), this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer).sendToDimension(entity.getLevel());
     }
 
     public void startCooldown(LivingEntity entity, int cooldown) {
@@ -221,6 +233,14 @@ public class AbilityEntry {
     public <T> AbilityEntry setOwnProperty(PalladiumProperty<T> property, T value) {
         this.propertyManager.set(property, value);
         return this;
+    }
+
+    public void fromNBT(CompoundTag tag) {
+        this.propertyManager.fromNBT(tag);
+    }
+
+    public CompoundTag toNBT() {
+        return this.propertyManager.toNBT(false);
     }
 
 }

@@ -24,7 +24,35 @@ PalladiumEvents.registerAnimations((event) => {
             animationUtil.interpolateXRotTo(model.rightArm, model.head.xRot - halfPi, progress);
             animationUtil.interpolateYRotTo(model.rightArm, model.head.yRot, progress);
             animationUtil.interpolateZRotTo(model.rightArm, model.head.zRot, progress);
-        });
+        }
+    );
+
+    event.register(
+        // ID
+        'test/ability_test_2',
+
+        // Priority
+        10,
+
+        // is animation active?
+        (entity) => {
+            // only active if progress isnt 0
+            const progress = getAbility(entity, 0);
+            return progress > 0.0;
+        },
+
+        // animate
+        (model, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks) => {
+            // use the smooth function to smooth the progress out (interpolation)
+            const progress = animationUtil.smooth(getAbility(entity, partialTicks));
+
+            // arguments of those functions: <model part>, <desired rotation angle>, <progress>
+            const halfPi = 1.57079632679;
+            animationUtil.interpolateXRotTo(model.leftArm, model.head.xRot - halfPi, progress);
+            animationUtil.interpolateYRotTo(model.leftArm, model.head.yRot, progress);
+            animationUtil.interpolateZRotTo(model.leftArm, model.head.zRot, progress);
+        }
+    );
 });
 
 // Helper function to easily get the animation progress of the player (if the ability is existent)

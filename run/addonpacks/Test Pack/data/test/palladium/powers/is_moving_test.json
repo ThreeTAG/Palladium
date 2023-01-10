@@ -1,0 +1,21 @@
+{
+  "name": {
+    "text": "Is Moving Test"
+  },
+  "icon": "minecraft:feather",
+  "abilities": {
+    "command": {
+      "type": "palladium:command",
+      "commands": "tell @s You are moving!",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:is_moving"
+        }
+      }
+    },
+    "render_layer": {
+      "type": "palladium:render_layer",
+      "render_layer": "test:is_moving_test"
+    }
+  }
+}

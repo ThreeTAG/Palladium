@@ -33,7 +33,6 @@ public class PalladiumFeatures {
 
     public static Holder<ConfiguredFeature<OreConfiguration, ?>> ORE_LEAD;
     public static Holder<ConfiguredFeature<OreConfiguration, ?>> ORE_LEAD_SMALL;
-    public static Holder<ConfiguredFeature<OreConfiguration, ?>> ORE_SILVER;
     public static Holder<ConfiguredFeature<OreConfiguration, ?>> ORE_SILVER_BURIED;
     public static Holder<ConfiguredFeature<OreConfiguration, ?>> FLUX_CRYSTAL_GEODE;
     public static Holder<ConfiguredFeature<OreConfiguration, ?>> CONFIGURED_UNDERGROUND_METEORITE;
@@ -41,29 +40,22 @@ public class PalladiumFeatures {
     public static Holder<PlacedFeature> PLACED_ORE_LEAD_UPPER;
     public static Holder<PlacedFeature> PLACED_ORE_LEAD_MIDDLE;
     public static Holder<PlacedFeature> PLACED_ORE_LEAD_SMALL;
-    public static Holder<PlacedFeature> PLACED_ORE_SILVER_EXTRA;
-    public static Holder<PlacedFeature> PLACED_ORE_SILVER;
     public static Holder<PlacedFeature> PLACED_ORE_SILVER_LOWER;
     public static Holder<PlacedFeature> PLACED_FLUX_CRYSTAL_GEODE;
     public static Holder<PlacedFeature> PLACED_UNDERGROUND_METEORITE;
 
     public static void init() {
         List<OreConfiguration.TargetBlockState> leadTargets = List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, PalladiumBlocks.LEAD_ORE.get().defaultBlockState()), OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, PalladiumBlocks.DEEPSLATE_LEAD_ORE.get().defaultBlockState()));
-        List<OreConfiguration.TargetBlockState> silverTargets = List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, PalladiumBlocks.SILVER_ORE.get().defaultBlockState()), OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, PalladiumBlocks.DEEPSLATE_SILVER_ORE.get().defaultBlockState()));
         List<OreConfiguration.TargetBlockState> fluxCrystalTargets = List.of(OreConfiguration.target(REDSTONE_ORE_REPLACEABLES, PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_GEODE.get().defaultBlockState()), OreConfiguration.target(DEEPSLATE_REDSTONE_ORE_REPLACEABLES, PalladiumBlocks.DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE.get().defaultBlockState()));
 
         ORE_LEAD = register("ore_lead", Feature.ORE, new OreConfiguration(leadTargets, 9));
         ORE_LEAD_SMALL = register("ore_lead_small", Feature.ORE, new OreConfiguration(leadTargets, 4));
-        ORE_SILVER = register("ore_silver", Feature.ORE, new OreConfiguration(silverTargets, 9));
-        ORE_SILVER_BURIED = register("ore_silver_buried", Feature.ORE, new OreConfiguration(silverTargets, 9, 0.5F));
         FLUX_CRYSTAL_GEODE = register("flux_crystal_geode", Feature.ORE, new OreConfiguration(fluxCrystalTargets, 12));
         CONFIGURED_UNDERGROUND_METEORITE = register("underground_meteorite", UNDERGROUND_METEORITE.get(), new OreConfiguration(OreFeatures.NATURAL_STONE, Blocks.BLACKSTONE.defaultBlockState(), 3, 0.5F));
 
         PLACED_ORE_LEAD_UPPER = register("ore_lead_upper", ORE_LEAD, commonOrePlacement(90, HeightRangePlacement.triangle(VerticalAnchor.absolute(80), VerticalAnchor.absolute(384))));
         PLACED_ORE_LEAD_MIDDLE = register("ore_lead_middle", ORE_LEAD, commonOrePlacement(10, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56))));
         PLACED_ORE_LEAD_SMALL = register("ore_lead_small", ORE_LEAD_SMALL, commonOrePlacement(10, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72))));
-        PLACED_ORE_SILVER_EXTRA = register("ore_silver_extra", ORE_SILVER, commonOrePlacement(50, HeightRangePlacement.uniform(VerticalAnchor.absolute(32), VerticalAnchor.absolute(256))));
-        PLACED_ORE_SILVER = register("ore_silver", ORE_SILVER_BURIED, commonOrePlacement(4, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(32))));
         PLACED_ORE_SILVER_LOWER = register("ore_silver_lower", ORE_SILVER_BURIED, orePlacement(CountPlacement.of(UniformInt.of(0, 1)), HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(-48))));
         PLACED_FLUX_CRYSTAL_GEODE = register("flux_crystal_geode", FLUX_CRYSTAL_GEODE, commonOrePlacement(120, HeightRangePlacement.triangle(VerticalAnchor.absolute(-90), VerticalAnchor.absolute(90))));
         PLACED_UNDERGROUND_METEORITE = register("underground_meteorite", CONFIGURED_UNDERGROUND_METEORITE, RarityFilter.onAverageOnceEvery(24), InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(30)), BiomeFilter.biome());

@@ -12,13 +12,10 @@ public class PalladiumBlockTags {
     public static final TagKey<Block> STORAGE_BLOCKS = forgeTag("storage_blocks");
 
     public static final TagKey<Block> ORES_LEAD = forgeTag("ores/lead");
-    public static final TagKey<Block> ORES_SILVER = forgeTag("ores/silver");
     public static final TagKey<Block> ORES_TITANIUM = forgeTag("ores/titanium");
     public static final TagKey<Block> ORES_VIBRANIUM = forgeTag("ores/vibranium");
 
     public static final TagKey<Block> STORAGE_BLOCKS_LEAD = forgeTag("storage_blocks/lead");
-    public static final TagKey<Block> STORAGE_BLOCKS_SILVER = forgeTag("storage_blocks/silver");
-    public static final TagKey<Block> STORAGE_BLOCKS_TITANIUM = forgeTag("storage_blocks/titanium");
     public static final TagKey<Block> STORAGE_BLOCKS_VIBRANIUM = forgeTag("storage_blocks/vibranium");
 
     public static final TagKey<Block> MINEABLE_WITH_HAMNMER = tag("mineable/hammer");
@@ -45,13 +42,10 @@ public class PalladiumBlockTags {
         public static final TagKey<Block> STORAGE_BLOCKS = fabricTag("storage_blocks");
 
         public static final TagKey<Block> ORES_LEAD = fabricTag("lead_ores");
-        public static final TagKey<Block> ORES_SILVER = fabricTag("silver_ores");
         public static final TagKey<Block> ORES_TITANIUM = fabricTag("titanium_ores");
         public static final TagKey<Block> ORES_VIBRANIUM = fabricTag("vibranium_ores");
 
         public static final TagKey<Block> STORAGE_BLOCKS_LEAD = fabricTag("lead_ores");
-        public static final TagKey<Block> STORAGE_BLOCKS_SILVER = fabricTag("silver_ores");
-        public static final TagKey<Block> STORAGE_BLOCKS_TITANIUM = fabricTag("titanium_ores");
         public static final TagKey<Block> STORAGE_BLOCKS_VIBRANIUM = fabricTag("vibranium_ores");
 
     }

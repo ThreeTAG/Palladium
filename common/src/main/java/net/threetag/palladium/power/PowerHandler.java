@@ -1,9 +1,11 @@
 package net.threetag.palladium.power;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.network.UpdatePowersMessage;
 import net.threetag.palladium.power.provider.PowerProvider;
 
@@ -16,6 +18,7 @@ public class PowerHandler implements IPowerHandler {
 
     private final Map<ResourceLocation, IPowerHolder> powers = new HashMap<>();
     private final LivingEntity entity;
+    private CompoundTag powerData = new CompoundTag();
 
     public PowerHandler(LivingEntity entity) {
         this.entity = entity;
@@ -29,7 +32,6 @@ public class PowerHandler implements IPowerHandler {
     @Override
     public void tick() {
         if (!this.entity.level.isClientSide) {
-
             List<IPowerHolder> toRemove = new ArrayList<>();
             PowerCollector collector = new PowerCollector(this.entity, this, toRemove);
 
@@ -82,6 +84,7 @@ public class PowerHandler implements IPowerHandler {
         } else {
             this.removePowerHolder(power);
             this.powers.put(power.getId(), holder);
+            holder.fromNBT(this.powerData.getCompound(power.getId().toString()));
             holder.firstTick();
         }
     }
@@ -92,8 +95,20 @@ public class PowerHandler implements IPowerHandler {
 
     public void removePowerHolder(ResourceLocation powerId) {
         if (this.powers.containsKey(powerId)) {
-            this.powers.get(powerId).lastTick();
+            var holder = this.powers.get(powerId);
+            boolean isStillValid = !holder.getPower().isInvalid();
+            boolean hasPersistentData = holder.getPower().hasPersistentData();
+            holder.lastTick();
+
+            if (hasPersistentData) {
+                this.savePowerNbt(holder);
+            }
+
             this.powers.remove(powerId);
+
+            if (isStillValid && !hasPersistentData) {
+                this.powerData.remove(powerId.toString());
+            }
         }
     }
 
@@ -119,4 +134,35 @@ public class PowerHandler implements IPowerHandler {
             }
         }
     }
+
+    @Override
+    public void fromNBT(CompoundTag nbt) {
+        this.powerData = nbt;
+    }
+
+    @Override
+    public CompoundTag toNBT() {
+        for (IPowerHolder holder : this.powers.values()) {
+            this.savePowerNbt(holder);
+        }
+        this.cleanPowerData();
+        return this.powerData;
+    }
+
+    public void savePowerNbt(IPowerHolder holder) {
+        this.powerData.put(holder.getPower().getId().toString(), holder.toNBT());
+    }
+
+    public void cleanPowerData() {
+        List<String> toRemove = new ArrayList<>();
+        for (String key : this.powerData.getAllKeys()) {
+            if (PowerManager.getInstance(this.entity.level).getPower(new ResourceLocation(key)) == null) {
+                toRemove.add(key);
+            }
+        }
+        for (String key : toRemove) {
+            this.powerData.remove(key);
+        }
+    }
+
 }

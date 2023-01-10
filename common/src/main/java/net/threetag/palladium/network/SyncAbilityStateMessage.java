@@ -10,6 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.AbilityReference;
 import net.threetag.palladiumcore.network.MessageContext;
 import net.threetag.palladiumcore.network.MessageS2C;
 import net.threetag.palladiumcore.network.MessageType;
@@ -19,16 +20,14 @@ import java.util.Objects;
 public class SyncAbilityStateMessage extends MessageS2C {
 
     private final int entityId;
-    private final ResourceLocation power;
-    private final String abilityKey;
+    private final AbilityReference reference;
     private final boolean unlocked, enabled;
     private final int maxCooldown, cooldown;
     private final int maxActivationTimer, activationTimer;
 
-    public SyncAbilityStateMessage(int entityId, ResourceLocation power, String abilityKey, boolean unlocked, boolean enabled, int maxCooldown, int cooldown, int maxActivationTimer, int activationTimer) {
+    public SyncAbilityStateMessage(int entityId, AbilityReference reference, boolean unlocked, boolean enabled, int maxCooldown, int cooldown, int maxActivationTimer, int activationTimer) {
         this.entityId = entityId;
-        this.power = power;
-        this.abilityKey = abilityKey;
+        this.reference = reference;
         this.unlocked = unlocked;
         this.enabled = enabled;
         this.maxCooldown = maxCooldown;
@@ -39,8 +38,7 @@ public class SyncAbilityStateMessage extends MessageS2C {
 
     public SyncAbilityStateMessage(FriendlyByteBuf buf) {
         this.entityId = buf.readInt();
-        this.power = buf.readResourceLocation();
-        this.abilityKey = buf.readUtf();
+        this.reference = AbilityReference.fromBuffer(buf);
         this.unlocked = buf.readBoolean();
         this.enabled = buf.readBoolean();
         this.maxCooldown = buf.readInt();
@@ -57,8 +55,7 @@ public class SyncAbilityStateMessage extends MessageS2C {
     @Override
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(this.entityId);
-        buf.writeResourceLocation(this.power);
-        buf.writeUtf(this.abilityKey);
+        this.reference.toBuffer(buf);
         buf.writeBoolean(this.unlocked);
         buf.writeBoolean(this.enabled);
         buf.writeInt(this.maxCooldown);
@@ -77,17 +74,11 @@ public class SyncAbilityStateMessage extends MessageS2C {
         Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityId);
 
         if (entity instanceof LivingEntity livingEntity) {
-            PowerManager.getPowerHandler(livingEntity).ifPresent(handler -> {
-                IPowerHolder powerHolder = handler.getPowerHolder(PowerManager.getInstance(entity.level).getPower(this.power));
+            AbilityEntry entry = this.reference.getEntry(livingEntity);
 
-                if (powerHolder != null) {
-                    AbilityEntry entry = powerHolder.getAbilities().get(this.abilityKey);
-
-                    if (entry != null) {
-                        entry.setClientState(livingEntity, powerHolder, this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer);
-                    }
-                }
-            });
+            if (entry != null) {
+                entry.setClientState(livingEntity, entry.getHolder(), this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer);
+            }
         }
     }
 }

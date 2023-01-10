@@ -1,8 +1,10 @@
 package net.threetag.palladium.energy.fabric;
 
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
@@ -12,6 +14,11 @@ import team.reborn.energy.api.EnergyStorageUtil;
 import java.util.Optional;
 
 public class EnergyHelperImpl {
+
+    public static Optional<IEnergyStorage> getFromItemStack(ItemStack stack) {
+        var storage = EnergyStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack));
+        return storage == null ? Optional.empty() : Optional.of(new Wrapper(storage));
+    }
 
     public static Optional<IEnergyStorage> getFromBlockEntity(Level level, BlockPos pos, @Nullable Direction side) {
         EnergyStorage energyStorage = EnergyStorage.SIDED.find(level, pos, side);

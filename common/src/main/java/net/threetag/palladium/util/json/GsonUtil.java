@@ -301,7 +301,7 @@ public class GsonUtil {
         }
     }
 
-    public static Color getAsColor(JsonObject json, String memberName, @javax.annotation.Nullable Color fallback) {
+    public static Color getAsColor(JsonObject json, String memberName, @org.jetbrains.annotations.Nullable Color fallback) {
         return json.has(memberName) ? getAsColor(json, memberName) : fallback;
     }
 

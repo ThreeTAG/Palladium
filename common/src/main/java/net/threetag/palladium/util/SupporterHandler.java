@@ -21,7 +21,7 @@ import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.util.Platform;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

@@ -27,7 +27,7 @@ public class EntityPropertyProvider implements ICapabilitySerializable<CompoundT
 
     @Override
     public CompoundTag serializeNBT() {
-        return this.capability.toNBT();
+        return this.capability.toNBT(true);
     }
 
     @Override

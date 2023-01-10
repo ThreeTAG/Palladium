@@ -11,7 +11,9 @@
     "client.PlayerInfoMixin",
     "client.PlayerModelMixin",
     "client.PlayerRendererMixin",
-    "client.RenderTypeMixin"
+    "client.RenderTypeMixin",
+    "client.SplashManagerMixin",
+    "client.ItemInHandRendererMixin"
   ],
   "mixins": [
     "ReloadableResourceManagerMixin",

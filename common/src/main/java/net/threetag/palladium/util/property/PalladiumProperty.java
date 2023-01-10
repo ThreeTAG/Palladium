@@ -17,6 +17,7 @@ public abstract class PalladiumProperty<T> {
     public final TypeToken<T> typeToken = new TypeToken<T>(getClass()) {
     };
     private final Type type = typeToken.getType();
+    private boolean persistent = true;
 
     public PalladiumProperty(String key) {
         this.key = key;
@@ -36,6 +37,15 @@ public abstract class PalladiumProperty<T> {
 
     public Type getType() {
         return type;
+    }
+
+    public PalladiumProperty<T> disablePersistence() {
+        this.persistent = false;
+        return this;
+    }
+
+    public boolean isPersistent() {
+        return this.persistent;
     }
 
     public PalladiumProperty<T> configurable(String description) {

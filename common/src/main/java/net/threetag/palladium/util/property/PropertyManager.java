@@ -126,13 +126,15 @@ public class PropertyManager {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public CompoundTag toNBT() {
+    public CompoundTag toNBT(boolean toDisk) {
         CompoundTag nbt = new CompoundTag();
         for (PalladiumProperty property : this.values.keySet()) {
-            if (this.values.get(property) == null) {
-                nbt.put(property.getKey(), StringTag.valueOf("null"));
-            } else {
-                nbt.put(property.getKey(), property.toNBT(this.values.get(property)));
+            if(!toDisk || property.isPersistent()) {
+                if (this.values.get(property) == null) {
+                    nbt.put(property.getKey(), StringTag.valueOf("null"));
+                } else {
+                    nbt.put(property.getKey(), property.toNBT(this.values.get(property)));
+                }
             }
         }
         return nbt;

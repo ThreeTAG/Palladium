@@ -24,8 +24,6 @@ public class PalladiumBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         this.simpleBlock(PalladiumBlocks.LEAD_ORE.get());
         this.simpleBlock(PalladiumBlocks.DEEPSLATE_LEAD_ORE.get());
-        this.simpleBlock(PalladiumBlocks.SILVER_ORE.get());
-        this.simpleBlock(PalladiumBlocks.DEEPSLATE_SILVER_ORE.get());
         this.simpleBlock(PalladiumBlocks.TITANIUM_ORE.get());
         this.simpleBlock(PalladiumBlocks.VIBRANIUM_ORE.get());
         this.simpleBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_GEODE.get());
@@ -35,11 +33,8 @@ public class PalladiumBlockStateProvider extends BlockStateProvider {
         this.crystal(PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD);
         this.crystal(PalladiumBlocks.SMALL_REDSTONE_FLUX_CRYSTAL_BUD);
         this.simpleBlock(PalladiumBlocks.LEAD_BLOCK.get());
-        this.simpleBlock(PalladiumBlocks.SILVER_BLOCK.get());
-        this.simpleBlock(PalladiumBlocks.TITANIUM_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.VIBRANIUM_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.RAW_LEAD_BLOCK.get());
-        this.simpleBlock(PalladiumBlocks.RAW_SILVER_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.SOLAR_PANEL.get(), models()

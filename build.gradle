@@ -1,7 +1,7 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "0.12.0-SNAPSHOT" apply false
-    id 'io.github.juuxel.loom-quiltflower' version '1.7.1' apply false
+    id "dev.architectury.loom" version "1.0-SNAPSHOT" apply false
+    id 'io.github.juuxel.loom-quiltflower' version '1.7.2' apply false
 }
 
 architectury {
@@ -40,6 +40,10 @@ allprojects {
     }
 
     repositories {
+        maven {
+            url 'https://repo.repsy.io/mvn/lucraft/threetag'
+        }
+
         maven {
             url = 'https://maven.parchmentmc.net/'
             content {
@@ -104,10 +108,6 @@ allprojects {
         maven {
             name = "Fuzs Mod Resources"
             url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
-        }
-
-        maven {
-            url 'https://repo.repsy.io/mvn/lucraft/threetag'
         }
     }
 

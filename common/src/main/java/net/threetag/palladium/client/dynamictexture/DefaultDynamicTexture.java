@@ -9,7 +9,7 @@ import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransfor
 import net.threetag.palladium.client.dynamictexture.transformer.TransformedTexture;
 import net.threetag.palladium.client.dynamictexture.variable.ITextureVariable;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 

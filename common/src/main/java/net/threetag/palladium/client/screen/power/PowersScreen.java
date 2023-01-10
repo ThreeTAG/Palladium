@@ -13,17 +13,21 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.screen.components.IconButton;
+import net.threetag.palladium.condition.BuyableCondition;
+import net.threetag.palladium.network.RequestAbilityBuyScreenMessage;
 import net.threetag.palladium.power.PowerHandler;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladiumcore.event.ScreenEvents;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +61,7 @@ public class PowersScreen extends Screen {
     private boolean isScrolling;
     private static int tabPage;
     private static int maxPages;
+    public Screen overlayScreen = null;
 
     public PowersScreen() {
         super(Component.empty());
@@ -129,6 +134,10 @@ public class PowersScreen extends Screen {
         if (!this.tabs.isEmpty()) {
             this.selectedTab = tabs.get(0);
         }
+
+        if (this.overlayScreen != null) {
+            this.overlayScreen.init(this.minecraft, this.width, this.height);
+        }
     }
 
     @Override
@@ -137,10 +146,21 @@ public class PowersScreen extends Screen {
             int i = (this.width - WINDOW_WIDTH) / 2;
             int j = (this.height - WINDOW_HEIGHT) / 2;
 
-            for (PowerTab powerTab : this.tabs) {
-                if (powerTab.isMouseOver(i, j, mouseX, mouseY)) {
-                    this.selectedTab = powerTab;
-                    break;
+            if (this.isOverOverlayScreen(mouseX, mouseY)) {
+                return this.overlayScreen.mouseClicked(mouseX, mouseY, button);
+            } else {
+                for (PowerTab powerTab : this.tabs) {
+                    if (powerTab.isMouseOver(i, j, mouseX, mouseY)) {
+                        this.selectedTab = powerTab;
+                        break;
+                    }
+                }
+
+                if (selectedTab != null) {
+                    AbilityWidget entry = this.selectedTab.getAbilityHoveredOver((int) (mouseX - i - 9), (int) (mouseY - j - 18), i, j);
+                    if (entry != null && entry.abilityEntry.getConfiguration().isBuyable()) {
+                        new RequestAbilityBuyScreenMessage(entry.abilityEntry.getReference()).send();
+                    }
                 }
             }
         }
@@ -156,7 +176,7 @@ public class PowersScreen extends Screen {
 //            this.minecraft.mouseHandler.grabMouse();
 //            return true;
 //        } else {
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return this.overlayScreen == null ? super.keyPressed(keyCode, scanCode, modifiers) : this.overlayScreen.keyPressed(keyCode, scanCode, modifiers);
 //        }
     }
 
@@ -168,6 +188,11 @@ public class PowersScreen extends Screen {
         this.renderInside(poseStack, mouseX, mouseY, i, j);
         this.renderWindow(poseStack, i, j);
         this.renderTooltips(poseStack, mouseX, mouseY, i, j);
+
+        if (this.selectedTab != null && this.overlayScreen != null) {
+            this.overlayScreen.render(poseStack, mouseX, mouseY, partialTick);
+            this.selectedTab.fade = Mth.clamp(this.selectedTab.fade + 0.02F, 0, 0.5F);
+        }
     }
 
     @Override
@@ -187,8 +212,8 @@ public class PowersScreen extends Screen {
     }
 
     private void renderInside(PoseStack poseStack, int mouseX, int mouseY, int offsetX, int offsetY) {
-        PowerTab PowerTab = this.selectedTab;
-        if (PowerTab == null) {
+        PowerTab tab = this.selectedTab;
+        if (tab == null) {
             fill(poseStack, offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y, offsetX + WINDOW_INSIDE_X + WINDOW_INSIDE_WIDTH, offsetY + WINDOW_INSIDE_Y + WINDOW_INSIDE_HEIGHT, -16777216);
             int i = offsetX + WINDOW_INSIDE_X + 117;
             Font var10001 = this.font;
@@ -206,10 +231,10 @@ public class PowersScreen extends Screen {
             poseStack2.pushPose();
             poseStack2.translate(offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y, 0.0D);
             RenderSystem.applyModelViewMatrix();
-            PowerTab.drawContents(poseStack);
+            tab.drawContents(poseStack);
             poseStack2.popPose();
             RenderSystem.applyModelViewMatrix();
-            RenderSystem.depthFunc(515);
+            RenderSystem.depthFunc(GL11.GL_LEQUAL);
             RenderSystem.disableDepthTest();
         }
     }
@@ -242,15 +267,10 @@ public class PowersScreen extends Screen {
     private void renderTooltips(PoseStack poseStack, int mouseX, int mouseY, int offsetX, int offsetY) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.selectedTab != null) {
-            PoseStack poseStack2 = RenderSystem.getModelViewStack();
-            poseStack2.pushPose();
-            poseStack2.translate(offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y, 400.0D);
-            RenderSystem.applyModelViewMatrix();
-            RenderSystem.enableDepthTest();
-            this.selectedTab.drawTooltips(poseStack, mouseX - offsetX - WINDOW_INSIDE_X, mouseY - offsetY - WINDOW_INSIDE_Y, offsetX, offsetY);
-            RenderSystem.disableDepthTest();
-            poseStack2.popPose();
-            RenderSystem.applyModelViewMatrix();
+            poseStack.pushPose();
+            poseStack.translate(offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y, 400.0D);
+            this.selectedTab.drawTooltips(poseStack, mouseX - offsetX - WINDOW_INSIDE_X, mouseY - offsetY - WINDOW_INSIDE_Y, offsetX, offsetY, this.overlayScreen != null);
+            poseStack.popPose();
         }
 
         if (this.tabs.size() > 1) {
@@ -260,6 +280,20 @@ public class PowersScreen extends Screen {
                 }
             }
         }
+    }
+
+    public void closeOverlayScreen() {
+        this.overlayScreen = null;
+    }
+
+    public void openOverlayScreen(Screen screen) {
+        this.closeOverlayScreen();
+        this.overlayScreen = screen;
+        this.overlayScreen.init(this.minecraft, this.width, this.height);
+    }
+
+    public boolean isOverOverlayScreen(double mouseX, double mouseY) {
+        return overlayScreen != null;
     }
 
 }

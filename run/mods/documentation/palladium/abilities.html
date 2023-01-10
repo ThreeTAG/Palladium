@@ -55,6 +55,10 @@ dummy</a>
 energy_blast</a>
 </li>
 <li>
+<a href="#palladium:gui_overlay">
+gui_overlay</a>
+</li>
+<li>
 <a href="#palladium:healing">
 healing</a>
 </li>
@@ -81,6 +85,10 @@ render_layer</a>
 <li>
 <a href="#palladium:shader_effect">
 shader_effect</a>
+</li>
+<li>
+<a href="#palladium:show_both_arms">
+show_both_arms</a>
 </li>
 <li>
 <a href="#palladium:shrink_body_overlay">
@@ -193,6 +201,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 time</td>
 <td>
 Integer</td>
@@ -220,7 +252,7 @@ MAIN_ARM</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:aim","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"time":10,"arm":"main_arm"}</pre>
+{"type":"palladium:aim","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","time":10,"arm":"main_arm"}</pre>
 </div>
 <hr>
 
@@ -307,11 +339,35 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 attribute</td>
 <td>
 Attribute</td>
 <td>
-Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength"</td>
+Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength", "forge:swim_speed", "forge:nametag_distance", "forge:entity_gravity", "forge:reach_distance", "forge:attack_range", "forge:step_height_addition", "palladium:flight_speed", "palladium:levitation_speed", "palladium:jetpack_flight_speed", "palladium:hovering"</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -358,7 +414,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:attribute_modifier","icon":"minecraft:iron_chestplate","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"attribute":"minecraft:generic.armor","amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
+{"type":"palladium:attribute_modifier","icon":"minecraft:iron_chestplate","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","attribute":"minecraft:generic.armor","amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
 </div>
 <hr>
 
@@ -445,6 +501,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 first_tick_commands</td>
 <td>
 String[]</td>
@@ -484,7 +564,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:command","icon":"minecraft:command_block","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"first_tick_commands":[],"last_tick_commands":[],"commands":["say Hello World"]}</pre>
+{"type":"palladium:command","icon":"minecraft:command_block","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","first_tick_commands":[],"last_tick_commands":[],"commands":["say Hello World"]}</pre>
 </div>
 <hr>
 
@@ -571,6 +651,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 damage_sources</td>
 <td>
 String[]</td>
@@ -586,7 +690,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:damage_immunity","icon":"minecraft:potion","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"damage_sources":["lightningBolt","cactus"]}</pre>
+{"type":"palladium:damage_immunity","icon":"minecraft:potion","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","damage_sources":["lightningBolt","cactus"]}</pre>
 </div>
 <hr>
 
@@ -671,12 +775,36 @@ false</td>
 <td>
 -1</td>
 </tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:dummy","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1}</pre>
+{"type":"palladium:dummy","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -763,6 +891,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 origin</td>
 <td>
 EnergyBlastOrigin</td>
@@ -826,7 +978,169 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:energy_blast","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"origin":"eyes","color":"#FF0000","damage":1.0,"max_distance":30.0,"sound_event":"null"}</pre>
+{"type":"palladium:energy_blast","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","origin":"eyes","color":"#FF0000","damage":1.0,"max_distance":30.0,"sound_event":"null"}</pre>
+</div>
+<hr>
+
+<div id="palladium:gui_overlay">
+<h2>
+gui_overlay</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+texture</td>
+<td>
+ResourceLocation</td>
+<td>
+Texture path for the gui overlay</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:textures/gui/presets/isles.png</td>
+</tr>
+<tr>
+<td>
+texture_width</td>
+<td>
+Integer</td>
+<td>
+Width of the texture file</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+256</td>
+</tr>
+<tr>
+<td>
+texture_height</td>
+<td>
+Integer</td>
+<td>
+Width of the texture file</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+256</td>
+</tr>
+<tr>
+<td>
+alignment</td>
+<td>
+TextureAlignment</td>
+<td>
+Determines how the image is aligned on the screen. Possible values: [top_left, top_center, top_right, middle_left, center, middle_right, bottom_left, bottom_center, bottom_right, stretch]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+STRETCH</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:gui_overlay","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","texture":"minecraft:textures/gui/presets/isles.png","texture_width":256,"texture_height":256,"alignment":"stretch"}</pre>
 </div>
 <hr>
 
@@ -913,6 +1227,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 frequency</td>
 <td>
 Integer</td>
@@ -940,7 +1278,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:healing","icon":"minecraft:apple","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"frequency":20,"amount":3.0}</pre>
+{"type":"palladium:healing","icon":"minecraft:apple","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","frequency":20,"amount":3.0}</pre>
 </div>
 <hr>
 
@@ -1027,6 +1365,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 body_parts</td>
 <td>
 List</td>
@@ -1054,7 +1416,7 @@ true</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:hide_body_parts","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"body_parts":["right_arm","left_arm"],"affects_first_person":true}</pre>
+{"type":"palladium:hide_body_parts","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","body_parts":["right_arm","left_arm"],"affects_first_person":true}</pre>
 </div>
 <hr>
 
@@ -1141,6 +1503,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 start_value</td>
 <td>
 Integer</td>
@@ -1168,7 +1554,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:interpolated_integer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"start_value":0,"max_value":20}</pre>
+{"type":"palladium:interpolated_integer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","start_value":0,"max_value":20}</pre>
 </div>
 <hr>
 
@@ -1253,12 +1639,36 @@ false</td>
 <td>
 -1</td>
 </tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:invisibility","icon":"palladium:textures/icon/invisibility.png","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1}</pre>
+{"type":"palladium:invisibility","icon":"palladium:textures/icon/invisibility.png","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -1345,6 +1755,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 entity_type</td>
 <td>
 EntityType</td>
@@ -1420,7 +1854,7 @@ true</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:projectile","icon":"minecraft:snowball","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"entity_type":"minecraft:snowball","entity_data":"null","inaccuracy":0.0,"velocity":1.5,"throw_sound_event":"minecraft:entity.snowball.throw","swing_arm":true}</pre>
+{"type":"palladium:projectile","icon":"minecraft:snowball","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","entity_type":"minecraft:snowball","entity_data":"null","inaccuracy":0.0,"velocity":1.5,"throw_sound_event":"minecraft:entity.snowball.throw","swing_arm":true}</pre>
 </div>
 <hr>
 
@@ -1507,6 +1941,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 render_layer</td>
 <td>
 ResourceLocation</td>
@@ -1522,7 +1980,7 @@ namespace:render_layer_id</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:render_layer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"render_layer":"namespace:render_layer_id"}</pre>
+{"type":"palladium:render_layer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","render_layer":"namespace:render_layer_id"}</pre>
 </div>
 <hr>
 
@@ -1609,6 +2067,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 shader</td>
 <td>
 ResourceLocation</td>
@@ -1624,7 +2106,121 @@ minecraft:shaders/post/creeper.json</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:shader_effect","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"shader":"minecraft:shaders/post/creeper.json"}</pre>
+{"type":"palladium:shader_effect","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","shader":"minecraft:shaders/post/creeper.json"}</pre>
+</div>
+<hr>
+
+<div id="palladium:show_both_arms">
+<h2>
+show_both_arms</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:show_both_arms","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -1711,6 +2307,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 start_value</td>
 <td>
 Integer</td>
@@ -1738,7 +2358,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:shrink_body_overlay","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"start_value":0,"max_value":20}</pre>
+{"type":"palladium:shrink_body_overlay","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","start_value":0,"max_value":20}</pre>
 </div>
 <hr>
 
@@ -1825,6 +2445,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 scale</td>
 <td>
 Float</td>
@@ -1840,7 +2484,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:size","icon":"palladium:textures/icon/size.png","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"scale":0.1}</pre>
+{"type":"palladium:size","icon":"palladium:textures/icon/size.png","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","scale":0.1}</pre>
 </div>
 <hr>
 
@@ -1927,6 +2571,30 @@ false</td>
 </tr>
 <tr>
 <td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 texture</td>
 <td>
 ResourceLocation</td>
@@ -1954,7 +2622,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:skin_change","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"texture":"minecraft:textures/entity/zombie/drowned.png","priority":50}</pre>
+{"type":"palladium:skin_change","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","texture":"minecraft:textures/entity/zombie/drowned.png","priority":50}</pre>
 </div>
 <hr>
 
@@ -2039,12 +2707,36 @@ false</td>
 <td>
 -1</td>
 </tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:slowfall","icon":"minecraft:feather","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1}</pre>
+{"type":"palladium:slowfall","icon":"minecraft:feather","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -2129,12 +2821,36 @@ false</td>
 <td>
 -1</td>
 </tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"kubejs:testpack/test_ability","icon":"palladium:vibranium_circuit","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1}</pre>
+{"type":"kubejs:testpack/test_ability","icon":"palladium:vibranium_circuit","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

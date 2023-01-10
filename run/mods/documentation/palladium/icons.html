@@ -35,6 +35,14 @@ Palladium</h3>
 Compound Icon</a>
 </li>
 <li>
+<a href="#palladium:experience">
+Experience Icon</a>
+</li>
+<li>
+<a href="#palladium:ingredient">
+Ingredient Icon</a>
+</li>
+<li>
 <a href="#palladium:item">
 Item Icon</a>
 </li>
@@ -87,6 +95,106 @@ true</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:compound","icons":["minecraft:apple","example:textures/icons/my_icon.png"]}</pre>
+</div>
+<hr>
+
+<div id="palladium:experience">
+<h2>
+Experience Icon</h2>
+<p>
+Displays an experience amount as an icon.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+amount</td>
+<td>
+Integer</td>
+<td>
+Amount of experience points/level</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+level</td>
+<td>
+Boolean</td>
+<td>
+Determines if icon should display level or not</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:experience","amount":3,"level":true}</pre>
+</div>
+<hr>
+
+<div id="palladium:ingredient">
+<h2>
+Ingredient Icon</h2>
+<p>
+Circles through the items of an ingredient.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+ingredient</td>
+<td>
+Ingredient</td>
+<td>
+Ingredient for the item</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ingredient","ingredient":{"tag":"minecraft:arrows"}}</pre>
 </div>
 <hr>
 

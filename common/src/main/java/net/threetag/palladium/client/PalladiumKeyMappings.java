@@ -48,9 +48,9 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, InputEvents
 
                     if (entry != null) {
                         if (key.matches(keyCode, scanCode) && entry.getConfiguration().getKeyType() == AbilityConfiguration.KeyType.KEY_BIND) {
-                            new AbilityKeyPressedMessage(list.getPower().getId(), entry.id, action == GLFW.GLFW_PRESS).send();
+                            new AbilityKeyPressedMessage(entry.getReference(), action == GLFW.GLFW_PRESS).send();
                         } else if (entry.getConfiguration().getKeyType() == AbilityConfiguration.KeyType.SPACE_BAR && client.options.keyJump.matches(keyCode, scanCode)) {
-                            new AbilityKeyPressedMessage(list.getPower().getId(), entry.id, action == GLFW.GLFW_PRESS).send();
+                            new AbilityKeyPressedMessage(entry.getReference(), action == GLFW.GLFW_PRESS).send();
                             return;
                         }
                     }
@@ -78,7 +78,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, InputEvents
                 if (ability != null && ability.isUnlocked()) {
                     AbilityConfiguration.KeyType keyType = ability.getConfiguration().getKeyType();
                     if ((keyType == AbilityConfiguration.KeyType.LEFT_CLICK && button == 0) || (keyType == AbilityConfiguration.KeyType.RIGHT_CLICK && button == 1)) {
-                        new AbilityKeyPressedMessage(list.getPower().getId(), ability.id, action == GLFW.GLFW_PRESS).send();
+                        new AbilityKeyPressedMessage(ability.getReference(), action == GLFW.GLFW_PRESS).send();
                     }
                 }
             }

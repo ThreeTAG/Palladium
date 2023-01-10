@@ -13,12 +13,15 @@ public class PowerHandlerComponent extends PowerHandler implements ComponentV3 {
 
     @Override
     public void readFromNbt(CompoundTag tag) {
-
+        this.fromNBT(tag);
     }
 
     @Override
     public void writeToNbt(CompoundTag tag) {
-
+        CompoundTag nbt = this.toNBT();
+        for (String key : nbt.getAllKeys()) {
+            tag.put(key, nbt.get(key));
+        }
     }
 
 }
