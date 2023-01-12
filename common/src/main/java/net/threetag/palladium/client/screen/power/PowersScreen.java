@@ -19,10 +19,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.screen.components.IconButton;
-import net.threetag.palladium.condition.BuyableCondition;
 import net.threetag.palladium.network.RequestAbilityBuyScreenMessage;
 import net.threetag.palladium.power.PowerHandler;
 import net.threetag.palladium.power.PowerManager;
+import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladiumcore.event.ScreenEvents;
@@ -117,7 +117,11 @@ public class PowersScreen extends Screen {
         this.selectedTab = null;
 
         AtomicInteger i = new AtomicInteger();
-        PowerManager.getPowerHandler(this.minecraft.player).ifPresent(handler -> handler.getPowerHolders().values().forEach(holder -> this.tabs.add(PowerTab.create(this.minecraft, this, i.getAndIncrement(), holder))));
+        PowerManager.getPowerHandler(this.minecraft.player).ifPresent(handler -> handler.getPowerHolders().values().forEach(holder -> {
+            if (!holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN))) {
+                this.tabs.add(PowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
+            }
+        }));
 
         if (this.tabs.size() > PowerTabType.MAX_TABS) {
             int guiLeft = (this.width - WINDOW_WIDTH) / 2;
