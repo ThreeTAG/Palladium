@@ -59,6 +59,12 @@ public class PowerManager extends LegacySupportJsonReloadListener {
                 getPowerHandler(player).ifPresent(powers -> new UpdatePowersMessage(player.getId(), Collections.emptyList(), powers.getPowerHolders().values().stream().map(h -> h.getPower().getId()).collect(Collectors.toList())).sendToTrackingAndSelf(serverPlayer));
             }
         });
+
+        PlayerEvents.CHANGED_DIMENSION.register((player, destination) -> {
+            if(player instanceof ServerPlayer serverPlayer) {
+                getPowerHandler(player).ifPresent(powers -> new UpdatePowersMessage(player.getId(), Collections.emptyList(), powers.getPowerHolders().values().stream().map(h -> h.getPower().getId()).collect(Collectors.toList())).sendToTrackingAndSelf(serverPlayer));
+            }
+        });
     }
 
     public PowerManager() {

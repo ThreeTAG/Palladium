@@ -57,5 +57,11 @@ public class EntityPropertyHandler extends PropertyManager implements PropertyMa
                 getHandler(player).values().forEach((palladiumProperty, o) -> new SyncPropertyMessage(player.getId(), palladiumProperty, o).sendToTrackingAndSelf(serverPlayer));
             }
         });
+
+        PlayerEvents.CHANGED_DIMENSION.register((player, destination) -> {
+            if (player instanceof ServerPlayer serverPlayer) {
+                getHandler(player).values().forEach((palladiumProperty, o) -> new SyncPropertyMessage(player.getId(), palladiumProperty, o).sendToTrackingAndSelf(serverPlayer));
+            }
+        });
     }
 }

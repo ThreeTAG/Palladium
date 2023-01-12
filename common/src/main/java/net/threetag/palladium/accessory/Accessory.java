@@ -53,6 +53,12 @@ public abstract class Accessory {
                 Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).sendToTrackingAndSelf(serverPlayer));
             }
         });
+
+        PlayerEvents.CHANGED_DIMENSION.register((player, destination) -> {
+            if(player instanceof ServerPlayer serverPlayer) {
+                Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).sendToTrackingAndSelf(serverPlayer));
+            }
+        });
     }
 
     public boolean isAvailable(Player entity) {
