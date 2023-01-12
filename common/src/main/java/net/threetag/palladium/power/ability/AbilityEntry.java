@@ -100,7 +100,7 @@ public class AbilityEntry {
             if (this.enabled) {
                 this.abilityConfiguration.getAbility().firstTick(entity, this, powerHolder, this.isEnabled());
             } else {
-                this.abilityConfiguration.getAbility().lastTick(entity, this, powerHolder, this.isEnabled());
+                this.abilityConfiguration.getAbility().lastTick(entity, this, powerHolder, !this.isEnabled());
             }
         }
     }
