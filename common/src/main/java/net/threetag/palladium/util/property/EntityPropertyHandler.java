@@ -38,6 +38,7 @@ public class EntityPropertyHandler extends PropertyManager implements PropertyMa
     }
 
     public static void init() {
+        // TODO make use of DataSyncUtil
         PlayerEvents.JOIN.register(player -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 getHandler(player).values().forEach((palladiumProperty, o) -> {

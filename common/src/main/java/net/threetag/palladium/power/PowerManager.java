@@ -16,19 +16,15 @@ import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.network.SyncPowersMessage;
-import net.threetag.palladium.network.UpdatePowersMessage;
 import net.threetag.palladium.util.LegacySupportJsonReloadListener;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
-import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
 import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class PowerManager extends LegacySupportJsonReloadListener {
 
@@ -40,31 +36,6 @@ public class PowerManager extends LegacySupportJsonReloadListener {
         ReloadListenerRegistry.register(PackType.SERVER_DATA, Palladium.id("powers"), INSTANCE = new PowerManager());
 
         LivingEntityEvents.TICK.register(entity -> PowerManager.getPowerHandler(entity).ifPresent(IPowerHandler::tick));
-
-        PlayerEvents.JOIN.register(player -> {
-            if (player instanceof ServerPlayer serverPlayer) {
-                new SyncPowersMessage(getInstance(player.level).byName).send(serverPlayer);
-                getPowerHandler(player).ifPresent(handler -> new UpdatePowersMessage(player.getId(), Collections.emptyList(), handler.getPowerHolders().values().stream().map(h -> h.getPower().getId()).collect(Collectors.toList())).send(serverPlayer));
-            }
-        });
-
-        PlayerEvents.START_TRACKING.register((tracker, target) -> {
-            if (target instanceof LivingEntity livingEntity && tracker instanceof ServerPlayer serverPlayer) {
-                getPowerHandler(livingEntity).ifPresent(handler -> new UpdatePowersMessage(livingEntity.getId(), Collections.emptyList(), handler.getPowerHolders().values().stream().map(h -> h.getPower().getId()).collect(Collectors.toList())).send(serverPlayer));
-            }
-        });
-
-        PlayerEvents.RESPAWN.register((player, endConquered) -> {
-            if(player instanceof ServerPlayer serverPlayer) {
-                getPowerHandler(player).ifPresent(powers -> new UpdatePowersMessage(player.getId(), Collections.emptyList(), powers.getPowerHolders().values().stream().map(h -> h.getPower().getId()).collect(Collectors.toList())).sendToTrackingAndSelf(serverPlayer));
-            }
-        });
-
-        PlayerEvents.CHANGED_DIMENSION.register((player, destination) -> {
-            if(player instanceof ServerPlayer serverPlayer) {
-                getPowerHandler(player).ifPresent(powers -> new UpdatePowersMessage(player.getId(), Collections.emptyList(), powers.getPowerHolders().values().stream().map(h -> h.getPower().getId()).collect(Collectors.toList())).sendToTrackingAndSelf(serverPlayer));
-            }
-        });
     }
 
     public PowerManager() {

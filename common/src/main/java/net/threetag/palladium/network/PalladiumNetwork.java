@@ -1,8 +1,15 @@
 package net.threetag.palladium.network;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.accessory.Accessory;
+import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladiumcore.network.MessageType;
 import net.threetag.palladiumcore.network.NetworkManager;
+import net.threetag.palladiumcore.util.DataSyncUtil;
+
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class PalladiumNetwork {
 
@@ -22,6 +29,29 @@ public class PalladiumNetwork {
     public static final MessageType BUY_ABILITY_UNLOCK = NETWORK.registerC2S("buy_ability_unlock", BuyAbilityUnlockMessage::new);
 
     public static void init() {
+        // Powers
+        DataSyncUtil.registerMessage(entity -> {
+            if (entity instanceof ServerPlayer serverPlayer) {
+                var opt = PowerManager.getPowerHandler(serverPlayer);
 
+                if (opt.isPresent()) {
+                    var handler = opt.get();
+                    return new UpdatePowersMessage(serverPlayer.getId(), Collections.emptyList(), handler.getPowerHolders().values().stream().map(h -> h.getPower().getId()).collect(Collectors.toList()));
+                }
+            }
+            return null;
+        });
+
+        // Accessories
+        DataSyncUtil.registerMessage(entity -> {
+            if (entity instanceof ServerPlayer serverPlayer) {
+                var opt = Accessory.getPlayerData(serverPlayer);
+
+                if (opt.isPresent()) {
+                    return new SyncAccessoriesMessage(serverPlayer.getId(), opt.get().accessories);
+                }
+            }
+            return null;
+        });
     }
 }

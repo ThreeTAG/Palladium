@@ -17,15 +17,12 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.network.SyncAccessoriesMessage;
 import net.threetag.palladium.util.SupporterHandler;
-import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.registry.PalladiumRegistry;
 import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.Nullable;
@@ -38,28 +35,6 @@ import java.util.Optional;
 public abstract class Accessory {
 
     public static final PalladiumRegistry<Accessory> REGISTRY = PalladiumRegistry.create(Accessory.class, Palladium.id("accessories"));
-
-    public static void init() {
-        PlayerEvents.JOIN.register(player -> Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).send((ServerPlayer) player)));
-
-        PlayerEvents.START_TRACKING.register((tracker, target) -> {
-            if (target instanceof Player player && tracker instanceof ServerPlayer serverPlayer) {
-                Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).send(serverPlayer));
-            }
-        });
-
-        PlayerEvents.RESPAWN.register((player, endConquered) -> {
-            if(player instanceof ServerPlayer serverPlayer) {
-                Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).sendToTrackingAndSelf(serverPlayer));
-            }
-        });
-
-        PlayerEvents.CHANGED_DIMENSION.register((player, destination) -> {
-            if(player instanceof ServerPlayer serverPlayer) {
-                Accessory.getPlayerData(player).ifPresent(data -> new SyncAccessoriesMessage(player.getId(), data.accessories).sendToTrackingAndSelf(serverPlayer));
-            }
-        });
-    }
 
     public boolean isAvailable(Player entity) {
         return !Platform.isProduction() || SupporterHandler.getPlayerData(entity.getUUID()).hasAccessory(this);
