@@ -20,7 +20,7 @@ public class ScriptableAbility extends Ability {
 
 	    Palladium.LOGGER.info("ScriptableAbility constructor");
 
-		for (AbilityBuilder.DeserializePropertyInfo info : this.builder.propertyValues) {
+		for (AbilityBuilder.DeserializePropertyInfo info : this.builder.extraProperties) {
 			PalladiumProperty property = PalladiumPropertyLookup.get(info.type, info.key);
 
 			if (info.configureDesc != null && !info.configureDesc.isEmpty())

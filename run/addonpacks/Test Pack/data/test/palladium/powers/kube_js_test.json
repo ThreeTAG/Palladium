@@ -7,7 +7,8 @@
       "conditions": {
         "unlocking": [
           {
-            "type": "kubejs:testpack/test_condition"
+            "type": "kubejs:testpack/test_condition",
+		    "my_integer": 5
           }
         ],
         "enabling": [

@@ -20,13 +20,13 @@ import java.util.List;
 
 public class AbilityBuilder extends BuilderBase<Ability> {
 
-	class DeserializePropertyInfo {
-		String key;
-		String type;
-		Object defaultValue;
-		String configureDesc;
+	public static class DeserializePropertyInfo {
+		public String key;
+		public String type;
+		public Object defaultValue;
+		public String configureDesc;
 
-		DeserializePropertyInfo(String key, String type, Object defaultValue, String configureDesc) {
+		public DeserializePropertyInfo(String key, String type, Object defaultValue, String configureDesc) {
 			this.key = key;
 			this.type = type;
 			this.defaultValue = defaultValue;
@@ -37,7 +37,7 @@ public class AbilityBuilder extends BuilderBase<Ability> {
     public transient IIcon icon;
     public transient TickFunction firstTick, tick, lastTick;
 
-	public transient List<DeserializePropertyInfo> propertyValues;
+	public transient List<DeserializePropertyInfo> extraProperties;
 
     public AbilityBuilder(ResourceLocation id) {
         super(id);
@@ -45,7 +45,7 @@ public class AbilityBuilder extends BuilderBase<Ability> {
         this.firstTick = null;
         this.tick = null;
         this.lastTick = null;
-		this.propertyValues = new ArrayList<>();
+		this.extraProperties = new ArrayList<>();
     }
 
     @Override
@@ -68,9 +68,9 @@ public class AbilityBuilder extends BuilderBase<Ability> {
 		PalladiumProperty property = PalladiumPropertyLookup.get(type, key);
 
 		if (property != null)
-			this.propertyValues.add(new DeserializePropertyInfo(key, type, defaultValue, configureDesc));
+			this.extraProperties.add(new DeserializePropertyInfo(key, type, defaultValue, configureDesc));
 		else
-			Palladium.LOGGER.warn(String.format("Failed to register ability property \"%s\", type \"%s\" is not supported", key, type));
+			Palladium.LOGGER.error(String.format("Failed to register ability property \"%s\", type \"%s\" is not supported", key, type));
 		return this;
 	}
 

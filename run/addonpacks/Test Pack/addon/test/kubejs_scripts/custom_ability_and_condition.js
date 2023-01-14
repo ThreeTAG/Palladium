@@ -35,10 +35,11 @@ StartupEvents.registry('palladium:condition_serializer', (event) => {
 
   // ID of the condition will be: 'kubejs:testpack/test_condition'
   event.create('testpack/test_condition')
-
+    .addProperty("my_integer", "integer", 0, null)
     // Handler for the condition, in this case the condition will be fullfilled when the entity is crouching
-    .test((entity) => {
-      return entity.isCrouching();
+    .test((entity, extraProperties) => {
+        console.log(extraProperties.get("my_integer"))
+      return entity.isCrouching() && extraProperties.get("my_integer") == 4;
     });
 
 });
