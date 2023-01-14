@@ -8,8 +8,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.entity.EffectEntity;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.EnergyBlastAbility;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
@@ -66,7 +66,7 @@ public class EnergyBlastEffect extends EntityEffect {
         String abilityId = this.get(entity, ABILITY_ID);
 
         if (powerId != null && abilityId != null && anchor instanceof LivingEntity livingEntity) {
-            return Ability.getEntry(livingEntity, powerId, abilityId);
+            return AbilityUtil.getEntry(livingEntity, powerId, abilityId);
         }
         return null;
     }

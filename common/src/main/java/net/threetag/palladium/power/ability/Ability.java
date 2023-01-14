@@ -9,10 +9,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDefaultDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
-import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.property.*;
@@ -68,46 +65,6 @@ public class Ability implements IDefaultDocumentedConfigurable {
     public <T> Ability withProperty(PalladiumProperty<T> data, T value) {
         this.propertyManager.register(data, value);
         return this;
-    }
-
-    public static Collection<AbilityEntry> getEntries(LivingEntity entity) {
-        List<AbilityEntry> entries = new ArrayList<>();
-        PowerManager.getPowerHandler(entity).ifPresent(handler -> handler.getPowerHolders().values().stream().map(holder -> holder.getAbilities().values()).forEach(entries::addAll));
-        return entries;
-    }
-
-    public static Collection<AbilityEntry> getEntries(LivingEntity entity, Ability ability) {
-        List<AbilityEntry> entries = new ArrayList<>();
-        PowerManager.getPowerHandler(entity).ifPresent(handler -> handler.getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll));
-        return entries;
-    }
-
-    public static Collection<AbilityEntry> getEnabledEntries(LivingEntity entity, Ability ability) {
-        List<AbilityEntry> entries = new ArrayList<>();
-        PowerManager.getPowerHandler(entity).ifPresent(handler -> handler.getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(entry -> entry.isEnabled() && entry.getConfiguration().getAbility() == ability).collect(Collectors.toList())).forEach(entries::addAll));
-        return entries;
-    }
-
-    public static AbilityEntry getEntry(LivingEntity entity, ResourceLocation powerId, String abilityId) {
-        Power power = PowerManager.getInstance(entity.level).getPower(powerId);
-
-        if (power == null) {
-            return null;
-        }
-
-        IPowerHandler handler = PowerManager.getPowerHandler(entity).orElse(null);
-
-        if (handler == null) {
-            return null;
-        }
-
-        IPowerHolder holder = handler.getPowerHolder(power);
-
-        if (holder == null) {
-            return null;
-        }
-
-        return holder.getAbilities().get(abilityId);
     }
 
     public static HTMLBuilder documentationBuilder() {

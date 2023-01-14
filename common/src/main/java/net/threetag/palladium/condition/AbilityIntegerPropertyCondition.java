@@ -5,8 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.util.property.IntegerProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.StringProperty;
@@ -32,7 +32,7 @@ public class AbilityIntegerPropertyCondition extends Condition {
     public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
         AbilityEntry dependency = null;
         if (this.power != null) {
-            dependency = Ability.getEntry(entity, this.power, this.abilityId);
+            dependency = AbilityUtil.getEntry(entity, this.power, this.abilityId);
         } else if (holder != null) {
             dependency = holder.getAbilities().get(this.abilityId);
         }

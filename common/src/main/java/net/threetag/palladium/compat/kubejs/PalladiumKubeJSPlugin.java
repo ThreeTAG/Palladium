@@ -20,6 +20,7 @@ import net.threetag.palladium.event.PalladiumClientEvents;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.power.SuperpowerUtil;
 import net.threetag.palladium.power.ability.Ability;
+import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.util.property.*;
 
 public class PalladiumKubeJSPlugin extends KubeJSPlugin {
@@ -59,6 +60,7 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
     public void registerBindings(BindingsEvent event) {
         event.add("palladium", PalladiumBinding.class);
         event.add("superpowerUtil", SuperpowerUtil.class);
+        event.add("abilityUtil", AbilityUtil.class);
         if (event.getType() == ScriptType.CLIENT) {
             event.add("animationUtil", AnimationUtil.class);
             event.add("guiUtil", GuiUtilJS.class);

@@ -25,7 +25,10 @@ public abstract class HumanoidModelMixin {
     @Inject(at = @At("RETURN"), method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V")
     public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
         HumanoidModel<?> model = (HumanoidModel<?>) (Object) this;
-        HumanoidAnimationsManager.applyAnimations(model, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+
+        if(!HumanoidAnimationsManager.SKIP_ANIMATIONS) {
+            HumanoidAnimationsManager.applyAnimations(model, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        }
 
         if (!(model instanceof PlayerModel<?>)) {
             BodyPart.hideParts(model, entity);

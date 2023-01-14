@@ -8,7 +8,7 @@ StartupEvents.registry("palladium:abilities", event => {
         .firstTick((entity, entry, holder, enabled) => {
             if (enabled) {
                 // Tell player the configured number
-                entity.tell("Some important number: " + entry.getProperty("some_important_number"));
+                entity.tell("Some important number: " + entry.getPropertyByName("some_important_number"));
             }
         });
 });

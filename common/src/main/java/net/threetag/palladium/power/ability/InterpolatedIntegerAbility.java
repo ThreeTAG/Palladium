@@ -28,12 +28,12 @@ public class InterpolatedIntegerAbility extends Ability {
     @Override
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         int value = entry.getProperty(VALUE);
-        entry.setOwnProperty(PREV_VALUE, value);
+        entry.setUniqueProperty(PREV_VALUE, value);
 
         if (entry.isEnabled() && value < entry.getProperty(MAX_VALUE)) {
-            entry.setOwnProperty(VALUE, value + 1);
+            entry.setUniqueProperty(VALUE, value + 1);
         } else if (!entry.isEnabled() && value > entry.getProperty(START_VALUE)) {
-            entry.setOwnProperty(VALUE, value - 1);
+            entry.setUniqueProperty(VALUE, value - 1);
         }
     }
 

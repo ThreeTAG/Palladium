@@ -3,7 +3,7 @@ package net.threetag.palladium.mixin.fabric;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.Ability;
+import net.threetag.palladium.power.ability.AbilityUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,7 +17,7 @@ public class LivingEntityMixin {
 
     @Inject(at = @At("HEAD"), method = "getVisibilityPercent", cancellable = true)
     private void getVisibilityPercent(@Nullable Entity pLookingEntity, CallbackInfoReturnable<Double> ci) {
-        if (!Ability.getEnabledEntries((LivingEntity) (Object) this, Abilities.INVISIBILITY.get()).isEmpty()) {
+        if (!AbilityUtil.getEnabledEntries((LivingEntity) (Object) this, Abilities.INVISIBILITY.get()).isEmpty()) {
             ci.setReturnValue(0D);
         }
     }

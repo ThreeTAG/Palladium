@@ -59,7 +59,7 @@ public class ShaderEffectAbility extends Ability {
 
     @Environment(EnvType.CLIENT)
     public static ResourceLocation get(Player player) {
-        for (AbilityEntry entry : Ability.getEnabledEntries(player, Abilities.SHADER_EFFECT.get())) {
+        for (AbilityEntry entry : AbilityUtil.getEnabledEntries(player, Abilities.SHADER_EFFECT.get())) {
             return entry.getProperty(SHADER);
         }
         return null;

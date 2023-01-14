@@ -6,8 +6,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.EnergyBlastAbility;
 
 public class EnergyBlastSound extends AbstractTickableSoundInstance {
@@ -30,7 +30,7 @@ public class EnergyBlastSound extends AbstractTickableSoundInstance {
         this.y = (float) this.entity.getY();
         this.z = (float) this.entity.getZ();
 
-        AbilityEntry entry = Ability.getEntry(this.entity, this.powerId, this.abilityId);
+        AbilityEntry entry = AbilityUtil.getEntry(this.entity, this.powerId, this.abilityId);
 
         if (entry == null) {
             this.stop();

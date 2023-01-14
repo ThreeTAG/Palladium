@@ -34,6 +34,9 @@ public class PlayerRendererMixin {
     public void renderHandPre(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
         RenderUtil.REDIRECT_GET_BUFFER = true;
+        HumanoidAnimationsManager.SKIP_ANIMATIONS = true;
+
+        HumanoidAnimationsManager.applyFirstPersonAnimations(poseStack, player, rendererArm == playerRenderer.getModel().rightArm);
 
         if (playerRenderer.getModel() instanceof AgeableListModelInvoker invoker) {
             HumanoidAnimationsManager.resetPoses(invoker.invokeHeadParts(), invoker.invokeBodyParts());
@@ -43,6 +46,7 @@ public class PlayerRendererMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/PlayerModel;setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", shift = At.Shift.AFTER), method = "renderHand")
     public void renderHandPreRender(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
+        HumanoidAnimationsManager.SKIP_ANIMATIONS = false;
 
         // Reset all, make them visible
         BodyPart.resetBodyParts(player, playerRenderer.getModel());

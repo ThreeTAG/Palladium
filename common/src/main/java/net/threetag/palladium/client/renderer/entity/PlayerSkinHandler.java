@@ -5,10 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.Ability;
-import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.power.ability.SkinChangeAbility;
+import net.threetag.palladium.power.ability.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +45,7 @@ public class PlayerSkinHandler {
     static {
         // Abilities
         registerSkinProvider(30, (player, previousSkin, defaultSkin) -> {
-            var abilities = Ability.getEnabledEntries(player, Abilities.SKIN_CHANGE.get()).stream().filter(AbilityEntry::isEnabled).sorted((a1, a2) -> a2.getProperty(SkinChangeAbility.PRIORITY) - a1.getProperty(SkinChangeAbility.PRIORITY)).toList();
+            var abilities = AbilityUtil.getEnabledEntries(player, Abilities.SKIN_CHANGE.get()).stream().filter(AbilityEntry::isEnabled).sorted((a1, a2) -> a2.getProperty(SkinChangeAbility.PRIORITY) - a1.getProperty(SkinChangeAbility.PRIORITY)).toList();
 
             if (abilities.size() > 0) {
                 return abilities.get(0).getProperty(SkinChangeAbility.TEXTURE);

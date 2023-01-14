@@ -26,6 +26,8 @@ public class HumanoidAnimationsManager extends SimpleJsonResourceReloadListener 
     private final Map<ResourceLocation, Animation> animations = new LinkedHashMap<>();
     private final List<Animation> animationsSorted = new ArrayList<>();
     public static float PARTIAL_TICK = 0F;
+    public static float FIRST_PERSON_PARTIAL_TICK = 0F;
+    public static boolean SKIP_ANIMATIONS = false;
     public static final HumanoidAnimationsManager INSTANCE = new HumanoidAnimationsManager();
 
     public HumanoidAnimationsManager() {
@@ -58,10 +60,17 @@ public class HumanoidAnimationsManager extends SimpleJsonResourceReloadListener 
     }
 
     public static void applyAnimations(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        // Do animations
         for (Animation animation : INSTANCE.animationsSorted) {
             if (animation.active(entity)) {
                 animation.setupAnimation(model, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, PARTIAL_TICK);
+            }
+        }
+    }
+
+    public static void applyFirstPersonAnimations(PoseStack poseStack, AbstractClientPlayer player, boolean rightArm) {
+        for (Animation animation : INSTANCE.animationsSorted) {
+            if (animation.active(player)) {
+                animation.setupFirstPersonAnimation(poseStack, player, rightArm, FIRST_PERSON_PARTIAL_TICK);
             }
         }
     }

@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.Ability;
+import net.threetag.palladium.power.ability.AbilityUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -16,7 +16,7 @@ public class LivingEntityRendererMixin {
 
     @Inject(at = @At("HEAD"), method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", cancellable = true)
     public void render(LivingEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
-        if (!Ability.getEnabledEntries(pEntity, Abilities.INVISIBILITY.get()).isEmpty()) {
+        if (!AbilityUtil.getEnabledEntries(pEntity, Abilities.INVISIBILITY.get()).isEmpty()) {
             ci.cancel();
         }
     }

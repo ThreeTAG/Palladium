@@ -154,7 +154,7 @@ public enum BodyPart {
             }));
         }
 
-        for (AbilityEntry bodyPartHide : Ability.getEnabledEntries(entity, Abilities.HIDE_BODY_PARTS.get())) {
+        for (AbilityEntry bodyPartHide : AbilityUtil.getEnabledEntries(entity, Abilities.HIDE_BODY_PARTS.get())) {
             if (isFirstPerson ? bodyPartHide.getProperty(HideBodyPartsAbility.AFFECTS_FIRST_PERSON) : true) {
                 for (BodyPart part : bodyPartHide.getProperty(HideBodyPartsAbility.BODY_PARTS)) {
                     if (!bodyParts.contains(part)) {
@@ -164,7 +164,7 @@ public enum BodyPart {
             }
         }
 
-        for (AbilityEntry entry : Ability.getEnabledEntries(entity, Abilities.RENDER_LAYER.get())) {
+        for (AbilityEntry entry : AbilityUtil.getEnabledEntries(entity, Abilities.RENDER_LAYER.get())) {
             IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
 
             if(layer != null) {

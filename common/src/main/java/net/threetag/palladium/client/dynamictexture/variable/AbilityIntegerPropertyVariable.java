@@ -5,8 +5,8 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.util.json.GsonUtil;
 import net.threetag.palladium.util.property.IntegerProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
@@ -35,7 +35,7 @@ public class AbilityIntegerPropertyVariable extends AbstractIntegerTextureVariab
 
     @Override
     public int getNumber(LivingEntity entity) {
-        AbilityEntry entry = Ability.getEntry(entity, this.powerId, this.abilityId);
+        AbilityEntry entry = AbilityUtil.getEntry(entity, this.powerId, this.abilityId);
 
         if (entry == null) {
             return 0;

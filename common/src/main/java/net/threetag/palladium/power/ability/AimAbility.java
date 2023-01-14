@@ -27,11 +27,11 @@ public class AimAbility extends Ability {
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         if (entity.level.isClientSide) {
             int timer = entry.getProperty(TIMER);
-            entry.setOwnProperty(PREV_TIMER, timer);
+            entry.setUniqueProperty(PREV_TIMER, timer);
             if (enabled && timer < entry.getProperty(TIME)) {
-                entry.setOwnProperty(TIMER, timer + 1);
+                entry.setUniqueProperty(TIMER, timer + 1);
             } else if (!enabled && timer > 0) {
-                entry.setOwnProperty(TIMER, timer - 1);
+                entry.setUniqueProperty(TIMER, timer - 1);
             }
         }
     }
@@ -39,7 +39,7 @@ public class AimAbility extends Ability {
     public static float getTimer(LivingEntity entity, float partialTicks, boolean right) {
         float f = 0;
 
-        for (AbilityEntry entry : Ability.getEntries(entity, Abilities.AIM.get())) {
+        for (AbilityEntry entry : AbilityUtil.getEntries(entity, Abilities.AIM.get())) {
             var armType = entry.getProperty(ARM);
 
             if(armType.isRight(entity) && right) {

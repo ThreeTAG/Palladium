@@ -21,4 +21,7 @@ public abstract class Animation {
 
     public abstract void setupAnimation(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float partialTicks);
 
+    public void setupFirstPersonAnimation(PoseStack poseStack, AbstractClientPlayer player, boolean rightArm, float partialTicks) {
+
+    }
 }

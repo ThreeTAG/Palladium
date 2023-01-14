@@ -230,9 +230,26 @@ public class AbilityEntry {
         return this.propertyManager.isRegistered(property) ? this.propertyManager.get(property) : this.abilityConfiguration.get(property);
     }
 
-    public <T> AbilityEntry setOwnProperty(PalladiumProperty<T> property, T value) {
+    public Object getPropertyByName(String key) {
+        var property = getEitherPropertyByKey(key);
+        return property != null ? this.getProperty(property) : null;
+    }
+
+    public <T> AbilityEntry setUniqueProperty(PalladiumProperty<T> property, T value) {
         this.propertyManager.set(property, value);
         return this;
+    }
+
+    @SuppressWarnings("rawtypes")
+    public boolean setUniquePropertyByName(String key, Object value) {
+        PalladiumProperty property = this.getPropertyManager().getPropertyByName(key);
+
+        if (property != null) {
+            this.setUniqueProperty(property, value);
+            return true;
+        }
+
+        return false;
     }
 
     public void fromNBT(CompoundTag tag) {

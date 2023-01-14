@@ -19,10 +19,7 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.AddonParser;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.item.IAddonItem;
-import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.Ability;
-import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.power.ability.RenderLayerAbility;
+import net.threetag.palladium.power.ability.*;
 import net.threetag.palladium.util.LegacySupportJsonReloadListener;
 import net.threetag.palladium.util.json.GsonUtil;
 
@@ -44,7 +41,7 @@ public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
 
     static {
         registerProvider((entity, layers) -> {
-            for (AbilityEntry entry : Ability.getEnabledEntries(entity, Abilities.RENDER_LAYER.get())) {
+            for (AbilityEntry entry : AbilityUtil.getEnabledEntries(entity, Abilities.RENDER_LAYER.get())) {
                 IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
                 if (layer != null) {
                     layers.accept(IRenderLayerContext.ofAbility(entity, entry), layer);

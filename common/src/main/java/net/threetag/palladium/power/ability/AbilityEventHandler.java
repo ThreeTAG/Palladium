@@ -14,7 +14,7 @@ public class AbilityEventHandler implements LivingEntityEvents.Hurt {
 
     @Override
     public EventResult livingEntityHurt(LivingEntity entity, DamageSource damageSource, float amount) {
-        for(AbilityEntry entry : Ability.getEnabledEntries(entity, Abilities.DAMAGE_IMMUNITY.get())) {
+        for(AbilityEntry entry : AbilityUtil.getEnabledEntries(entity, Abilities.DAMAGE_IMMUNITY.get())) {
             if(DamageImmunityAbility.isImmuneAgainst(entry, damageSource)) {
                 return EventResult.cancel();
             }

@@ -78,7 +78,7 @@ public class EnergyBlastAbility extends Ability {
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         if (enabled) {
             if (entity.level.isClientSide && entry.getProperty(ANIMATION_TIMER) < 5) {
-                entry.setOwnProperty(ANIMATION_TIMER, entry.getProperty(ANIMATION_TIMER) + 1);
+                entry.setUniqueProperty(ANIMATION_TIMER, entry.getProperty(ANIMATION_TIMER) + 1);
             }
 
             EnergyBlastOriginProperty.EnergyBlastOrigin origin = entry.getProperty(ORIGIN);
@@ -90,7 +90,7 @@ public class EnergyBlastAbility extends Ability {
             Vec3 startVec = origin.getOriginVector(entity);
             Vec3 endVec = origin.getEndVector(entity, startVec, entry.getProperty(MAX_DISTANCE));
             HitResult hitResult = EntityUtil.rayTraceWithEntities(entity, startVec, endVec, entry.getProperty(MAX_DISTANCE), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, target -> !target.isInvulnerable());
-            entry.setOwnProperty(DISTANCE, hitResult.getLocation().distanceTo(startVec));
+            entry.setUniqueProperty(DISTANCE, hitResult.getLocation().distanceTo(startVec));
 
             if (entry.getEnabledTicks() >= 5) {
                 if (!entity.level.isClientSide()) {
@@ -129,7 +129,7 @@ public class EnergyBlastAbility extends Ability {
                 }
             }
         } else if (entity.level.isClientSide && entry.getProperty(ANIMATION_TIMER) > 0) {
-            entry.setOwnProperty(ANIMATION_TIMER, entry.getProperty(ANIMATION_TIMER) - 1);
+            entry.setUniqueProperty(ANIMATION_TIMER, entry.getProperty(ANIMATION_TIMER) - 1);
         }
     }
 
