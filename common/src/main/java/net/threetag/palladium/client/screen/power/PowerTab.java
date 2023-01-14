@@ -317,12 +317,12 @@ public class PowerTab extends GuiComponent {
     public static PowerTab create(Minecraft minecraft, PowersScreen screen, int tabIndex, IPowerHolder powerHolder) {
         PowerTabType[] var4 = PowerTabType.values();
 
-        for (PowerTabType advancementTabType : var4) {
-            if (tabIndex < advancementTabType.getMax()) {
-                return new PowerTab(minecraft, screen, advancementTabType, tabIndex, powerHolder);
+        for (PowerTabType tabType : var4) {
+            if (tabIndex < tabType.getMax()) {
+                return new PowerTab(minecraft, screen, tabType, tabIndex, powerHolder);
             }
 
-            tabIndex -= advancementTabType.getMax();
+            tabIndex -= tabType.getMax();
         }
 
         return null;
