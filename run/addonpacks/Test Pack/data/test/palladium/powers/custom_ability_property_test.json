@@ -5,7 +5,7 @@
 		"megumin": {
 			"type": "kubejs:testpack/test_ability_custom_prop",
 			"name": "Test Ability",
-			"selected_alien": 1,
+			"some_important_number": 1,
 			"conditions": {
 				"enabling": [
 					{
