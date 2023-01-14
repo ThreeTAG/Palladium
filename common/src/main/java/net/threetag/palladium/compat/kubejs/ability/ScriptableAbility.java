@@ -1,7 +1,6 @@
 package net.threetag.palladium.compat.kubejs.ability;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.Palladium;
 import net.threetag.palladium.compat.kubejs.AbilityEntryJS;
 import net.threetag.palladium.compat.kubejs.PalladiumKubeJSPlugin;
 import net.threetag.palladium.power.IPowerHolder;
@@ -17,8 +16,6 @@ public class ScriptableAbility extends Ability {
     public ScriptableAbility(AbilityBuilder builder) {
         this.withProperty(ICON, builder.icon);
         this.builder = builder;
-
-	    Palladium.LOGGER.info("ScriptableAbility constructor");
 
 		for (AbilityBuilder.DeserializePropertyInfo info : this.builder.extraProperties) {
 			PalladiumProperty property = PalladiumPropertyLookup.get(info.type, info.key);

@@ -1,7 +1,6 @@
 package net.threetag.palladium.compat.kubejs.condition;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.Palladium;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.power.IPowerHolder;
@@ -21,8 +20,6 @@ public class ScriptableCondition extends Condition {
         this.builder = builder;
         this.serializer = serializer;
 	    this.extraProperties = extraProperties;
-
-	    Palladium.LOGGER.info("ScriptableCondition constructor");
     }
 
     @Override

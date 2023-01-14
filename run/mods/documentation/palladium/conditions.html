@@ -158,6 +158,10 @@ KubeJS</h3>
 <a href="#kubejs:testpack/test_condition">
 testpack/test_condition</a>
 </li>
+<li>
+<a href="#kubejs:testpack/test_condition_with_property">
+testpack/test_condition_with_property</a>
+</li>
 </ul>
 </p>
 <hr>
@@ -1616,6 +1620,18 @@ testpack/test_condition</h2>
 <p>
 Applicable for: all</p>
 <h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"kubejs:testpack/test_condition"}</pre>
+</div>
+<hr>
+
+<div id="kubejs:testpack/test_condition_with_property">
+<h2>
+testpack/test_condition_with_property</h2>
+<p>
+Applicable for: all</p>
+<h3>
 Settings:</h3>
 <table>
 <thead>
@@ -1639,7 +1655,7 @@ my_integer</td>
 <td>
 Integer</td>
 <td>
-</td>
+This is a test integer, defined in a KubeJS script</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1650,7 +1666,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"kubejs:testpack/test_condition","my_integer":0}</pre>
+{"type":"kubejs:testpack/test_condition_with_property","my_integer":0}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

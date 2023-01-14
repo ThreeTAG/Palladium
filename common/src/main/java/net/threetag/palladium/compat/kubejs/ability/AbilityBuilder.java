@@ -5,7 +5,7 @@ import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Items;
-import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.compat.kubejs.AbilityEntryJS;
 import net.threetag.palladium.compat.kubejs.PalladiumKubeJSPlugin;
 import net.threetag.palladium.power.IPowerHolder;
@@ -20,24 +20,10 @@ import java.util.List;
 
 public class AbilityBuilder extends BuilderBase<Ability> {
 
-	public static class DeserializePropertyInfo {
-		public String key;
-		public String type;
-		public Object defaultValue;
-		public String configureDesc;
-
-		public DeserializePropertyInfo(String key, String type, Object defaultValue, String configureDesc) {
-			this.key = key;
-			this.type = type;
-			this.defaultValue = defaultValue;
-			this.configureDesc = configureDesc;
-		}
-	}
-
     public transient IIcon icon;
     public transient TickFunction firstTick, tick, lastTick;
 
-	public transient List<DeserializePropertyInfo> extraProperties;
+    public transient List<DeserializePropertyInfo> extraProperties;
 
     public AbilityBuilder(ResourceLocation id) {
         super(id);
@@ -45,7 +31,7 @@ public class AbilityBuilder extends BuilderBase<Ability> {
         this.firstTick = null;
         this.tick = null;
         this.lastTick = null;
-		this.extraProperties = new ArrayList<>();
+        this.extraProperties = new ArrayList<>();
     }
 
     @Override
@@ -63,16 +49,18 @@ public class AbilityBuilder extends BuilderBase<Ability> {
         return this;
     }
 
-	public AbilityBuilder addProperty(String key, String type, Object defaultValue, String configureDesc) {
-		Palladium.LOGGER.info("AbilityBuilder#addProperty");
-		PalladiumProperty property = PalladiumPropertyLookup.get(type, key);
+    @SuppressWarnings("rawtypes")
+    public AbilityBuilder addProperty(String key, String type, Object defaultValue, String configureDesc) {
+        PalladiumProperty property = PalladiumPropertyLookup.get(type, key);
 
-		if (property != null)
-			this.extraProperties.add(new DeserializePropertyInfo(key, type, defaultValue, configureDesc));
-		else
-			Palladium.LOGGER.error(String.format("Failed to register ability property \"%s\", type \"%s\" is not supported", key, type));
-		return this;
-	}
+        if (property != null) {
+            this.extraProperties.add(new DeserializePropertyInfo(key, type, defaultValue, configureDesc));
+        } else {
+            AddonPackLog.error("Failed to register ability property \"%s\", type \"%s\" is not supported", key, type);
+        }
+
+        return this;
+    }
 
     public AbilityBuilder firstTick(TickFunction firstTick) {
         this.firstTick = firstTick;
@@ -92,5 +80,20 @@ public class AbilityBuilder extends BuilderBase<Ability> {
     @FunctionalInterface
     public interface TickFunction {
         void tick(LivingEntity entity, AbilityEntryJS entry, IPowerHolder holder, boolean enabled);
+    }
+
+    public static class DeserializePropertyInfo {
+
+        public String key;
+        public String type;
+        public Object defaultValue;
+        public String configureDesc;
+
+        public DeserializePropertyInfo(String key, String type, Object defaultValue, String configureDesc) {
+            this.key = key;
+            this.type = type;
+            this.defaultValue = defaultValue;
+            this.configureDesc = configureDesc;
+        }
     }
 }

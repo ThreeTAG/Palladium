@@ -1,14 +1,14 @@
+StartupEvents.registry("palladium:abilities", event => {
 
-    StartupEvents.registry("palladium:abilities", event => {
-        event.create("testpack/test_ability_custom_prop")
-            .addProperty("some_important_number", "integer", 0, null)
-            .firstTick((entity, entry, holder, enabled) => {
-                // console.log prints out to the log text files
-                console.log("my custom property:" + entry.getProperty("some_important_number"))
+    event.create("testpack/test_ability_with_property")
 
-                // note that you cannot set property, as the property just added can never be changed.
-                let new_alien = entry.getProperty("some_important_number") + 1;
-                let result = entry.setProperty("some_important_number", new_alien)
-                console.log("setProperty result:" + result) // result always prints out as false, because the property CANNOT be changed
-            })
-    })
+        // Adding a configurable property for the condition that can be changed in the power json
+        .addProperty("some_important_number", "integer", 0, "This is a test integer, defined in a KubeJS script")
+
+        .firstTick((entity, entry, holder, enabled) => {
+            if (enabled) {
+                // Tell player the configured number
+                entity.tell("Some important number: " + entry.getProperty("some_important_number"));
+            }
+        });
+});
