@@ -52,7 +52,10 @@ public class PalladiumForge {
 
         if (Platform.isClient()) {
             PalladiumClient.init();
-            CuriosCompat.initClient();
+
+            if (ModList.get().isLoaded("curios")) {
+                CuriosCompat.initClient();
+            }
         }
     }
 

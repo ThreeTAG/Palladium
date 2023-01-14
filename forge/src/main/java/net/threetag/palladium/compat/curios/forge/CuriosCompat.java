@@ -54,6 +54,7 @@ public class CuriosCompat {
         FACTORIES.register();
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static void initClient() {
         PackRenderLayerManager.registerProvider((entity, layers) -> {
             CuriosApi.getCuriosHelper().getCuriosHandler(entity)
