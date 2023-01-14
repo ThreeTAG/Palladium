@@ -13,5 +13,17 @@
     "fabric": {
       "trinkets": ">=3.3.0"
     }
+  },
+  "custom": {
+    "curios": {
+      "belt": true,
+      "ring": {
+        "icon": "curios:slot/empty_ring_slot",
+        "priority": 50,
+        "size": 1,
+        "hide": false,
+        "cosmetic": true
+      }
+    }
   }
 }

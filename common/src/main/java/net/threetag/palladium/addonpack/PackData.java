@@ -9,7 +9,18 @@ import net.threetag.palladiumcore.util.Platform;
 
 import java.util.*;
 
-public record PackData(String id, Version version, Map<String, List<Dependency>> dependencies) {
+public final class PackData {
+
+    private final String id;
+    private final Version version;
+    private final Map<String, List<Dependency>> dependencies;
+    private JsonObject customData = new JsonObject();
+
+    public PackData(String id, Version version, Map<String, List<Dependency>> dependencies) {
+        this.id = id;
+        this.version = version;
+        this.dependencies = dependencies;
+    }
 
     public List<Dependency> getDependenciesFor(String platform) {
         List<Dependency> dependencies = new ArrayList<>();
@@ -59,8 +70,58 @@ public record PackData(String id, Version version, Map<String, List<Dependency>>
             }
         }
 
-        return new PackData(id, version, dependenciesMap);
+        var packData = new PackData(id, version, dependenciesMap);
+
+        if (GsonHelper.isValidNode(json, "custom")) {
+            packData.setCustomData(GsonHelper.getAsJsonObject(json, "custom"));
+        }
+
+        return packData;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public Version getVersion() {
+        return version;
+    }
+
+    public Map<String, List<Dependency>> getDependencies() {
+        return dependencies;
+    }
+
+    public JsonObject getCustomData() {
+        return customData;
+    }
+
+    public void setCustomData(JsonObject customData) {
+        this.customData = customData;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (PackData) obj;
+        return Objects.equals(this.id, that.id) &&
+                Objects.equals(this.version, that.version) &&
+                Objects.equals(this.dependencies, that.dependencies);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, version, dependencies);
+    }
+
+    @Override
+    public String toString() {
+        return "PackData[" +
+                "id=" + id + ", " +
+                "version=" + version + ", " +
+                "dependencies=" + dependencies + ']';
+    }
+
 
     public static class Dependency {
 
@@ -105,7 +166,7 @@ public record PackData(String id, Version version, Map<String, List<Dependency>>
                     return false;
                 }
 
-                return this.matches(packData.version());
+                return this.matches(packData.getVersion());
             } else {
                 var mod = Platform.getMod(this.id);
 
