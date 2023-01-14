@@ -42,6 +42,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
     private List<Component> tooltipLines;
     private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
     private SkinTypedValue<DynamicTexture> armorTexture;
+    private RenderLayerContainer renderLayerContainer = null;
 
     public AddonArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
         super(armorMaterial, equipmentSlot, properties);
@@ -90,6 +91,16 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
                 this.attributeModifiers.get(slot1).put(attribute, modifier);
             }
         }
+    }
+
+    @Override
+    public void setRenderLayerContainer(RenderLayerContainer container) {
+        this.renderLayerContainer = container;
+    }
+
+    @Override
+    public RenderLayerContainer getRenderLayerContainer() {
+        return this.renderLayerContainer;
     }
 
     public static class Parser implements ItemParser.ItemTypeSerializer {

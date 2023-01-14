@@ -10,6 +10,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,10 +18,16 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.threetag.palladium.client.renderer.item.CurioTrinketRenderer;
+import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
+import net.threetag.palladium.client.renderer.renderlayer.IRenderLayerContext;
+import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.item.CurioTrinket;
+import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.power.provider.PowerProvider;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
+
+import java.util.Map;
 
 public class TrinketsCompat {
 
@@ -29,6 +36,35 @@ public class TrinketsCompat {
 
     public static void init() {
         FACTORIES.register();
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void initClient() {
+        PackRenderLayerManager.registerProvider((entity, layers) -> {
+            for (Map.Entry<String, SlotGroup> entry : TrinketsApi.getPlayerSlots().entrySet()) {
+                TrinketsApi.getTrinketComponent(entity).ifPresent(trinketComponent -> {
+                    if (trinketComponent.getInventory().containsKey(entry.getKey())) {
+                        trinketComponent.getInventory().get(entry.getKey()).forEach((key, trinketInventory) -> {
+                            for (int i = 0; i < trinketInventory.getContainerSize(); i++) {
+                                ItemStack stack = trinketInventory.getItem(i);
+
+                                if (!stack.isEmpty() && stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
+                                    var container = addonItem.getRenderLayerContainer();
+
+                                    for (ResourceLocation id : container.get("trinkets:" + entry.getKey() + "/" + key)) {
+                                        IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
+
+                                        if (layer != null) {
+                                            layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     public static void registerCurioTrinket(Item item, CurioTrinket curioTrinket) {

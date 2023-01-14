@@ -18,6 +18,7 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.network.SyncPowersMessage;
 import net.threetag.palladium.util.LegacySupportJsonReloadListener;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
+import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
 import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.Nullable;
@@ -36,6 +37,12 @@ public class PowerManager extends LegacySupportJsonReloadListener {
         ReloadListenerRegistry.register(PackType.SERVER_DATA, Palladium.id("powers"), INSTANCE = new PowerManager());
 
         LivingEntityEvents.TICK.register(entity -> PowerManager.getPowerHandler(entity).ifPresent(IPowerHandler::tick));
+
+        PlayerEvents.JOIN.register(player -> {
+            if (player instanceof ServerPlayer serverPlayer) {
+                new SyncPowersMessage(getInstance(player.level).byName).send(serverPlayer);
+            }
+        });
     }
 
     public PowerManager() {

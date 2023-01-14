@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.GsonHelper;
@@ -13,7 +12,6 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.entity.BodyPart;
-import net.threetag.palladium.power.ability.AbilityEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,19 +28,19 @@ public final class CompoundPackRenderLayer implements IPackRenderLayer {
     }
 
     @Override
-    public void render(LivingEntity entity, AbilityEntry abilityEntry, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions)) {
+    public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (IPackRenderLayer.conditionsFulfilled(context.getEntity(), this.conditions)) {
             for (IPackRenderLayer layer : this.layers) {
-                layer.render(entity, abilityEntry, poseStack, bufferSource, parentModel, packedLight, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                layer.render(context, poseStack, bufferSource, parentModel, packedLight, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
             }
         }
     }
 
     @Override
-    public void renderArm(HumanoidArm arm, AbstractClientPlayer player, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        if (IPackRenderLayer.conditionsFulfilled(player, this.conditions)) {
+    public void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        if (IPackRenderLayer.conditionsFulfilled(context.getEntity(), this.conditions)) {
             for (IPackRenderLayer layer : this.layers) {
-                layer.renderArm(arm, player, playerRenderer, poseStack, bufferSource, packedLight);
+                layer.renderArm(context, arm, playerRenderer, poseStack, bufferSource, packedLight);
             }
         }
     }

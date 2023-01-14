@@ -12,26 +12,63 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.AddonParser;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
+import net.threetag.palladium.item.IAddonItem;
+import net.threetag.palladium.power.ability.Abilities;
+import net.threetag.palladium.power.ability.Ability;
+import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.RenderLayerAbility;
 import net.threetag.palladium.util.LegacySupportJsonReloadListener;
 import net.threetag.palladium.util.json.GsonUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
 
     private static PackRenderLayerManager INSTANCE;
+    private static final List<Provider> RENDER_LAYERS_PROVIDERS = new ArrayList<>();
     private static final Map<ResourceLocation, Function<JsonObject, IPackRenderLayer>> RENDER_LAYERS_PARSERS = new HashMap<>();
     private static final Map<ResourceLocation, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer>> RENDER_TYPES = new HashMap<>();
     private Map<ResourceLocation, IPackRenderLayer> renderLayers = new HashMap<>();
 
     static {
+        registerProvider((entity, layers) -> {
+            for (AbilityEntry entry : Ability.getEnabledEntries(entity, Abilities.RENDER_LAYER.get())) {
+                IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
+                if (layer != null) {
+                    layers.accept(IRenderLayerContext.ofAbility(entity, entry), layer);
+                }
+            }
+        });
+        registerProvider((entity, layers) -> {
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                var stack = entity.getItemBySlot(slot);
+
+                if (!stack.isEmpty() && stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
+                    var container = addonItem.getRenderLayerContainer();
+
+                    for (ResourceLocation id : container.get(slot.getName())) {
+                        IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
+
+                        if (layer != null) {
+                            layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                        }
+                    }
+                }
+            }
+        });
+
         registerParser(new ResourceLocation(Palladium.MOD_ID, "default"), PackRenderLayer::parse);
         registerParser(new ResourceLocation(Palladium.MOD_ID, "compound"), CompoundPackRenderLayer::parse);
 
@@ -78,6 +115,10 @@ public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
         return INSTANCE;
     }
 
+    public static void registerProvider(Provider provider) {
+        RENDER_LAYERS_PROVIDERS.add(provider);
+    }
+
     public static void registerParser(ResourceLocation id, Function<JsonObject, IPackRenderLayer> function) {
         RENDER_LAYERS_PARSERS.put(id, function);
     }
@@ -89,4 +130,17 @@ public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
     public static BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> getRenderType(ResourceLocation id) {
         return RENDER_TYPES.get(id);
     }
+
+    public static void forEachLayer(LivingEntity entity, BiConsumer<IRenderLayerContext, IPackRenderLayer> consumer) {
+        for (Provider provider : RENDER_LAYERS_PROVIDERS) {
+            provider.addRenderLayers(entity, consumer);
+        }
+    }
+
+    public interface Provider {
+
+        void addRenderLayers(LivingEntity entity, BiConsumer<IRenderLayerContext, IPackRenderLayer> layers);
+
+    }
+
 }

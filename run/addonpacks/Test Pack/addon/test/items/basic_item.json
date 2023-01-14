@@ -46,5 +46,12 @@
       "operation": 0,
       "uuid": "3a4df804-2be2-4002-a829-eaf29a629cac"
     }
+  },
+  "render_layers": {
+    "offhand": "test:cycling_texture_test",
+    "trinkets:head/hat": "test:cycling_texture_test",
+    "curios:head": [
+      "test:cycling_texture_test"
+    ]
   }
 }

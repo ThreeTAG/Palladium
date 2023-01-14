@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -22,7 +21,6 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.entity.BodyPart;
-import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
 
@@ -51,7 +49,8 @@ public class PackRenderLayer implements IPackRenderLayer {
     }
 
     @Override
-    public void render(LivingEntity entity, AbilityEntry abilityEntry, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        var entity = context.getEntity();
         if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions) && this.modelLookup.get(entity).fitsEntity(entity, parentModel)) {
             EntityModel<LivingEntity> entityModel = this.model.get(entity);
 
@@ -70,7 +69,8 @@ public class PackRenderLayer implements IPackRenderLayer {
     }
 
     @Override
-    public void renderArm(HumanoidArm arm, AbstractClientPlayer player, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        var player = context.getEntity();
         if (IPackRenderLayer.conditionsFulfilled(player, this.conditions) && this.modelLookup.get(player).fitsEntity(player, playerRenderer.getModel())) {
             EntityModel<LivingEntity> entityModel = this.model.get(player);
 
@@ -147,7 +147,7 @@ public class PackRenderLayer implements IPackRenderLayer {
         GsonUtil.ifHasKey(json, "hidden_body_parts", el -> {
             if (el.isJsonPrimitive()) {
                 var string = el.getAsString();
-                if(string.equalsIgnoreCase("all")) {
+                if (string.equalsIgnoreCase("all")) {
                     for (BodyPart bodyPart : BodyPart.values()) {
                         layer.addHiddenBodyPart(bodyPart);
                     }

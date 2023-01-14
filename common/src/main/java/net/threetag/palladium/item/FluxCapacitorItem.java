@@ -33,6 +33,7 @@ public class FluxCapacitorItem extends EnergyItem implements IAddonItem {
     private static final int BAR_COLOR = Mth.color(0.9F, 0.1F, 0F);
     private List<Component> tooltipLines;
     private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
+    private RenderLayerContainer renderLayerContainer = null;
 
     public FluxCapacitorItem(Properties properties, int capacity, int maxInput, int maxOutput) {
         super(properties, capacity, maxInput, maxOutput);
@@ -101,6 +102,16 @@ public class FluxCapacitorItem extends EnergyItem implements IAddonItem {
         } else {
             return super.getDefaultAttributeModifiers(slot);
         }
+    }
+
+    @Override
+    public void setRenderLayerContainer(RenderLayerContainer container) {
+        this.renderLayerContainer = container;
+    }
+
+    @Override
+    public RenderLayerContainer getRenderLayerContainer() {
+        return this.renderLayerContainer;
     }
 
     public static class Parser implements ItemParser.ItemTypeSerializer {

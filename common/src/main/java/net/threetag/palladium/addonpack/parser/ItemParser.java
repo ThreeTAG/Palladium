@@ -20,6 +20,7 @@ import net.threetag.palladium.documentation.IDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.item.*;
 import net.threetag.palladium.util.json.GsonUtil;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.util.*;
 
@@ -45,6 +46,19 @@ public class ItemParser extends AddonParser<Item> {
                 .tooltipLines(GsonUtil.getAsComponentList(json, "tooltip", null));
 
         GsonUtil.ifHasKey(json, "attribute_modifiers", je -> parseAttributeModifiers(builder, je));
+
+        if(Platform.isClient()) {
+            GsonUtil.ifHasObject(json, "render_layers", jsonObject -> {
+                IAddonItem.RenderLayerContainer container = new IAddonItem.RenderLayerContainer();
+                for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+                    String key = entry.getKey();
+                    GsonUtil.forEachInListOrPrimitive(entry.getValue(), idElement -> {
+                        container.addLayer(key, new ResourceLocation(idElement.getAsString()));
+                    });
+                }
+                builder.setRenderLayerContainer(container);
+            });
+        }
 
         GsonUtil.ifHasObject(json, "food", foodJson -> {
             FoodProperties.Builder properties = new FoodProperties.Builder();

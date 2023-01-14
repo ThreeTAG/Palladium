@@ -33,6 +33,7 @@ public class HammerItem extends DiggerItem implements IAddonItem {
 
     private List<Component> tooltipLines;
     private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
+    private RenderLayerContainer renderLayerContainer = null;
 
     public HammerItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
         super(attackDamage, attackSpeed, tier, PalladiumBlockTags.MINEABLE_WITH_HAMNMER, properties);
@@ -76,6 +77,16 @@ public class HammerItem extends DiggerItem implements IAddonItem {
                 this.attributeModifiers.get(slot1).put(attribute, modifier);
             }
         }
+    }
+
+    @Override
+    public void setRenderLayerContainer(RenderLayerContainer container) {
+        this.renderLayerContainer = container;
+    }
+
+    @Override
+    public RenderLayerContainer getRenderLayerContainer() {
+        return this.renderLayerContainer;
     }
 
     public static class Parser implements ItemParser.ItemTypeSerializer {

@@ -37,6 +37,7 @@ public class AddonBowItem extends BowItem implements IAddonItem {
 
     private List<Component> tooltipLines;
     private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
+    private RenderLayerContainer renderLayerContainer = null;
     private final float velocity, inaccuracy;
     private final int useDuration;
     private final Predicate<ItemStack> projectiles;
@@ -180,6 +181,16 @@ public class AddonBowItem extends BowItem implements IAddonItem {
                 this.attributeModifiers.get(slot1).put(attribute, modifier);
             }
         }
+    }
+
+    @Override
+    public void setRenderLayerContainer(RenderLayerContainer container) {
+        this.renderLayerContainer = container;
+    }
+
+    @Override
+    public RenderLayerContainer getRenderLayerContainer() {
+        return this.renderLayerContainer;
     }
 
     public static class Parser implements ItemParser.ItemTypeSerializer {

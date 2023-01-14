@@ -279,7 +279,7 @@ public class GsonUtil {
     }
 
     public static Color getAsColor(JsonObject json, String memberName) {
-        if(json.has(memberName)) {
+        if (json.has(memberName)) {
             var jsonElement = json.get(memberName);
 
             if (jsonElement.isJsonPrimitive()) {
@@ -401,6 +401,17 @@ public class GsonUtil {
         Item item = Registry.ITEM.get(id);
 
         return new ItemStack(item, GsonHelper.getAsInt(json, "count", 1));
+    }
+
+    public static void forEachInListOrPrimitive(JsonElement element, Consumer<JsonElement> consumer) {
+        if (element.isJsonPrimitive() || element.isJsonObject()) {
+            consumer.accept(element);
+        } else if (element.isJsonArray()) {
+            JsonArray array = element.getAsJsonArray();
+            for (JsonElement child : array) {
+                consumer.accept(child);
+            }
+        }
     }
 
 }

@@ -9,10 +9,9 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.client.model.animation.HumanoidAnimationsManager;
-import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.entity.BodyPart;
-import net.threetag.palladium.power.ability.*;
+import net.threetag.palladium.power.ability.ShrinkBodyOverlayAbility;
 import net.threetag.palladium.util.RenderUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -76,12 +75,9 @@ public class PlayerRendererMixin {
             }
         }));
 
-        for (AbilityEntry entry : Ability.getEnabledEntries(player, Abilities.RENDER_LAYER.get())) {
-            IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
-            if (layer != null) {
-                layer.renderArm(rendererArm == playerRenderer.getModel().rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, player, playerRenderer, poseStack, buffer, combinedLight);
-            }
-        }
+        PackRenderLayerManager.forEachLayer(player, (context, layer) -> {
+            layer.renderArm(context, rendererArm == playerRenderer.getModel().rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, playerRenderer, poseStack, buffer, combinedLight);
+        });
 
         // Reset all, make them visible
         BodyPart.resetBodyParts(player, playerRenderer.getModel());
