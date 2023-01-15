@@ -12,17 +12,17 @@ public class PoseStackUtil {
     }
 
     public PoseStackUtil rotateX(float degrees) {
-        this.poseStack.mulPose(Vector3f.XP.rotation(degrees));
+        this.poseStack.mulPose(Vector3f.XP.rotationDegrees(degrees));
         return this;
     }
 
     public PoseStackUtil rotateY(float degrees) {
-        this.poseStack.mulPose(Vector3f.YP.rotation(degrees));
+        this.poseStack.mulPose(Vector3f.YP.rotationDegrees(degrees));
         return this;
     }
 
     public PoseStackUtil rotateZ(float degrees) {
-        this.poseStack.mulPose(Vector3f.ZP.rotation(degrees));
+        this.poseStack.mulPose(Vector3f.ZP.rotationDegrees(degrees));
         return this;
     }
 
