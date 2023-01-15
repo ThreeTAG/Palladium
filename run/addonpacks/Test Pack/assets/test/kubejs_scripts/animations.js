@@ -16,9 +16,8 @@ PalladiumEvents.registerAnimations((event) => {
             animationUtil.interpolateZRotTo(model.rightArm, model.head.zRot, progress);
         }
     ).animateFirstPerson((poseStack, player, isRightArm, partialTicks) => {
-        poseStack.rotateX(90);
-        poseStack.rotateY(90);
-        poseStack.rotateZ(90);
+        const progress = animationUtil.smooth(getAbility(player, partialTicks));
+        poseStack.rotateX(progress * 10.0);
     });
 
     event.register(
