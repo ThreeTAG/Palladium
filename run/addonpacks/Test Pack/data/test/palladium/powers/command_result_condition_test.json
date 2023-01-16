@@ -28,7 +28,7 @@
       "conditions": {
         "enabling": [
           {
-            "type": "palladium:command",
+            "type": "palladium:command_result",
             "command": "execute if entity @e[type=minecraft:blaze,distance=..3]",
             "comparison": ">",
             "compare_to": 2
@@ -45,13 +45,13 @@
       "conditions": {
         "enabling": [
           {
-            "type": "palladium:command",
+            "type": "palladium:command_result",
             "command": "execute if entity @e[type=minecraft:blaze,distance=..3]",
             "comparison": "<=",
             "compare_to": 2
           },
           {
-            "type": "palladium:command",
+            "type": "palladium:command_result",
             "command": "execute if entity @e[type=minecraft:blaze,distance=..3]",
             "comparison": "!=",
             "compare_to": 0
@@ -72,7 +72,7 @@
             "key_type": "right_click"
           },
           {
-            "type": "palladium:command",
+            "type": "palladium:command_result",
             "command": "execute if block ~ ~-1 ~ minecraft:blue_ice",
             "comparison": "!=",
             "compare_to": 0,
@@ -81,7 +81,7 @@
         ],
         "unlocking": [
           {
-            "type": "palladium:command",
+            "type": "palladium:command_result",
             "command": "execute if block ~ ~2 ~ minecraft:packed_ice",
             "comparison": "!=",
             "compare_to": 0
