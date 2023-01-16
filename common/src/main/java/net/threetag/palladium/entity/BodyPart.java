@@ -10,11 +10,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.threetag.palladium.accessory.Accessory;
-import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
-import net.threetag.palladium.power.ability.*;
-
+import net.threetag.palladium.power.ability.Abilities;
+import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.power.ability.HideBodyPartsAbility;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,17 +166,13 @@ public enum BodyPart {
             }
         }
 
-        for (AbilityEntry entry : AbilityUtil.getEnabledEntries(entity, Abilities.RENDER_LAYER.get())) {
-            IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
-
-            if(layer != null) {
-                for (BodyPart part : layer.getHiddenBodyParts(entity)) {
-                    if (!bodyParts.contains(part)) {
-                        bodyParts.add(part);
-                    }
+        PackRenderLayerManager.forEachLayer(entity, (context, layer) -> {
+            for (BodyPart part : layer.getHiddenBodyParts(entity)) {
+                if (!bodyParts.contains(part)) {
+                    bodyParts.add(part);
                 }
             }
-        }
+        });
 
         return bodyParts;
     }
