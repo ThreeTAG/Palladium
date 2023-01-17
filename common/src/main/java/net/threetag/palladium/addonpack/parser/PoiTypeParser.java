@@ -22,7 +22,6 @@ public class PoiTypeParser extends AddonParser<PoiType> {
     @Override
     public AddonBuilder<PoiType> parse(ResourceLocation id, JsonElement jsonElement) {
         JsonObject json = GsonHelper.convertToJsonObject(jsonElement, "$");
-
         PoiTypeBuilder builder = new PoiTypeBuilder(id);
 
         builder.setBlockStates(GsonUtil.getAsResourceLocation(json, "block"));

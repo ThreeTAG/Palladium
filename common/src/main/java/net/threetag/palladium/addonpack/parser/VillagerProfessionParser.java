@@ -18,7 +18,7 @@ public class VillagerProfessionParser extends AddonParser<VillagerProfession> {
 
     @Override
     public AddonBuilder<VillagerProfession> parse(ResourceLocation id, JsonElement jsonElement) {
-        JsonObject json = GsonHelper.convertToJsonObject(jsonElement, "$");
+        JsonObject json = GsonHelper.convertToJsonObject(jsonElement, "top element");
         var builder = new VillagerProfessionBuilder(id);
 
         builder.poiType(GsonUtil.getAsResourceLocation(json, "poi_type"));
