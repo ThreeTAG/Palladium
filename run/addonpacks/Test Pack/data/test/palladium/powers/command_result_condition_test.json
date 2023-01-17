@@ -11,7 +11,7 @@
       "conditions": {
         "enabling": [
           {
-            "type": "palladium:command",
+            "type": "palladium:command_result",
             "command": "execute if entity @e[type=minecraft:blaze,distance=..3]",
             "comparison": "==",
             "compare_to": 2
