@@ -87,7 +87,7 @@ public class RegisterAnimationsEventJS extends EventJS {
             return this.active.active(entity);
         }
 
-        public AnimationImpl setupRotations(SetupRotations setupRotations) {
+        public AnimationImpl rotations(SetupRotations setupRotations) {
             this.setupRotations = setupRotations;
             return this;
         }
