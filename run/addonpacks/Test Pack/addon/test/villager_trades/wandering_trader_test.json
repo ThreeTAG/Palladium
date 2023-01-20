@@ -1,0 +1,16 @@
+{
+  "villager_profession": "minecraft:wandering_trader",
+  "rare": false,
+  "trades": [
+    {
+      "price": "minecraft:bread",
+      "price_2": {
+        "item": "minecraft:emerald",
+        "count": 8
+      },
+      "for_sale": "test:dirt_chestplate",
+      "xp": 5,
+      "max_trades": 2
+    }
+  ]
+}

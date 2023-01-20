@@ -34,6 +34,9 @@ public abstract class DynamicTexture {
         registerVariable(Palladium.id("ability_ticks"), AbilityTicksTextureVariable::new);
         registerVariable(Palladium.id("entity_health"), EntityHealthTextureVariable::new);
         registerVariable(Palladium.id("ability_integer_property"), AbilityIntegerPropertyVariable::new);
+        registerVariable(Palladium.id("ability_float_property"), AbilityFloatPropertyVariable::new);
+        registerVariable(Palladium.id("property_integer_property"), PropertyIntegerPropertyVariable::new);
+        registerVariable(Palladium.id("property_float_property"), PropertyFloatPropertyVariable::new);
         registerVariable(Palladium.id("small_arms"), SmallArmsTextureVariable::new);
         registerVariable(Palladium.id("crouching"), CrouchingTextureVariable::new);
         registerVariable(Palladium.id("moon_phase"), MoonPhaseTextureVariable::new);

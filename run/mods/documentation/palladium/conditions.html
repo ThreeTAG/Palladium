@@ -59,6 +59,10 @@ activation</a>
 brightness_at_position</a>
 </li>
 <li>
+<a href="#palladium:command_result">
+command_result</a>
+</li>
+<li>
 <a href="#palladium:crouching">
 crouching</a>
 </li>
@@ -627,6 +631,86 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:brightness_at_position","min_brightness":0,"max_brightness":16}</pre>
+</div>
+<hr>
+
+<div id="palladium:command_result">
+<h2>
+command_result</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+command</td>
+<td>
+String</td>
+<td>
+The command output to compare the 'compare_to' int with</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+execute if entity @s</td>
+</tr>
+<tr>
+<td>
+comparison</td>
+<td>
+String</td>
+<td>
+The comparison used between the 'command' and 'compare_to' fields, accepts >=, <=, >, <, !=, or == (note that the first number is from 'command' and the second from 'compare_to')</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+==</td>
+</tr>
+<tr>
+<td>
+compare_to</td>
+<td>
+Integer</td>
+<td>
+The number being compared to the output of 'command'</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1</td>
+</tr>
+<tr>
+<td>
+log</td>
+<td>
+Boolean</td>
+<td>
+If the command's output is sent to the entity or not (unless debugging, you probably want this false/unset)</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:command_result","command":"execute if entity @s","comparison":"==","compare_to":1,"log":false}</pre>
 </div>
 <hr>
 

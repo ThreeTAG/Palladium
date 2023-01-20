@@ -1,0 +1,19 @@
+{
+  "target": "minecraft:blocks/dirt",
+  "add_pools": {
+    "name": "add_diamond",
+    "bonus_rolls": 0,
+    "conditions": [
+      {
+        "condition": "minecraft:survives_explosion"
+      }
+    ],
+    "entries": [
+      {
+        "type": "minecraft:item",
+        "name": "minecraft:diamond"
+      }
+    ],
+    "rolls": 1
+  }
+}

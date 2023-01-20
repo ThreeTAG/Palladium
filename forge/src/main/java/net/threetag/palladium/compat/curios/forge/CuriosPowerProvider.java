@@ -1,6 +1,7 @@
 package net.threetag.palladium.compat.curios.forge;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.power.*;
 import net.threetag.palladium.power.provider.PowerProvider;
@@ -25,7 +26,7 @@ public class CuriosPowerProvider extends PowerProvider {
 
                             if (powers != null) {
                                 for (Power power : powers) {
-                                    collector.addPower(power, () -> new Validator(stack, slotType.getIdentifier()));
+                                    collector.addPower(power, () -> new Validator(stack.getItem(), slotType.getIdentifier()));
                                 }
                             }
                         }
@@ -35,7 +36,7 @@ public class CuriosPowerProvider extends PowerProvider {
         });
     }
 
-    public record Validator(ItemStack stack, String slot) implements IPowerValidator {
+    public record Validator(Item item, String slot) implements IPowerValidator {
 
         @Override
         public boolean stillValid(LivingEntity entity, Power power) {
@@ -45,7 +46,7 @@ public class CuriosPowerProvider extends PowerProvider {
                     for (int i = 0; i < stacks.getStacks().getSlots(); i++) {
                         ItemStack stack = stacks.getStacks().getStackInSlot(i);
 
-                        if (stack == this.stack) {
+                        if (stack.is(this.item)) {
                             available.set(true);
                         }
                     }

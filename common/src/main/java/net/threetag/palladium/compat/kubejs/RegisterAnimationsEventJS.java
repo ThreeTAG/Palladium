@@ -54,7 +54,7 @@ public class RegisterAnimationsEventJS extends EventJS {
 
     public interface SetupRotations {
 
-        void setupRotations(PlayerRenderer playerRenderer, AbstractClientPlayer player, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks);
+        void setupRotations(PlayerRenderer playerRenderer, AbstractClientPlayer player, PoseStackUtil poseStack, float ageInTicks, float rotationYaw, float partialTicks);
 
     }
 
@@ -87,7 +87,7 @@ public class RegisterAnimationsEventJS extends EventJS {
             return this.active.active(entity);
         }
 
-        public AnimationImpl setupRotations(SetupRotations setupRotations) {
+        public AnimationImpl rotations(SetupRotations setupRotations) {
             this.setupRotations = setupRotations;
             return this;
         }
@@ -105,7 +105,7 @@ public class RegisterAnimationsEventJS extends EventJS {
         @Override
         public void setupRotations(PlayerRenderer playerRenderer, AbstractClientPlayer player, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
             if (this.setupRotations != null) {
-                this.setupRotations.setupRotations(playerRenderer, player, poseStack, ageInTicks, rotationYaw, partialTicks);
+                this.setupRotations.setupRotations(playerRenderer, player, new PoseStackUtil(poseStack), ageInTicks, rotationYaw, partialTicks);
             }
         }
 

@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import dev.emi.trinkets.api.SlotGroup;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.power.*;
 import net.threetag.palladium.power.provider.PowerProvider;
@@ -40,7 +41,7 @@ public class TrinketsPowerProvider extends PowerProvider {
     }
 
 
-    public record Validator(ItemStack stack, Pair<String, String> slot) implements IPowerValidator {
+    public record Validator(Item item, Pair<String, String> slot) implements IPowerValidator {
 
         @Override
         public boolean stillValid(LivingEntity entity, Power power) {
@@ -50,7 +51,7 @@ public class TrinketsPowerProvider extends PowerProvider {
                     stack.set(trinketComponent.getInventory().get(this.slot.getFirst()).get(this.slot.getSecond()).getItem(0));
                 }
             });
-            return this.stack == stack.get();
+            return stack.get().is(this.item);
         }
     }
 
