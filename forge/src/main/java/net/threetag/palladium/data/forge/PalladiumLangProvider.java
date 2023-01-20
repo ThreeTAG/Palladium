@@ -5,6 +5,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessories;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.Abilities;
@@ -68,6 +69,13 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effect");
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projectile");
+
+            // Attributes
+            this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Flight Speed");
+            this.addAttribute(PalladiumAttributes.LEVITATION_SPEED, "Levitation Speed");
+            this.addAttribute(PalladiumAttributes.JETPACK_FLIGHT_SPEED, "Jetpack Flight Speed");
+            this.addAttribute(PalladiumAttributes.HOVERING, "Hovering");
+            this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Punch Damage");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
@@ -209,6 +217,13 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
 
+            // Attributes
+            this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Fluggeschwindigkeit");
+            this.addAttribute(PalladiumAttributes.LEVITATION_SPEED, "Schwebegeschwindigkeit");
+            this.addAttribute(PalladiumAttributes.JETPACK_FLIGHT_SPEED, "Jetpack-Fluggeschwindigkeit");
+            this.addAttribute(PalladiumAttributes.HOVERING, "Schweben");
+            this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Schlagkraft");
+
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Befehl");
@@ -348,6 +363,13 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
+
+            // Attributes
+            this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Flugjeschwindichket");
+            this.addAttribute(PalladiumAttributes.LEVITATION_SPEED, "Schwebejeschwindichket");
+            this.addAttribute(PalladiumAttributes.JETPACK_FLIGHT_SPEED, "Jetpack-Flugjeschwindichket");
+            this.addAttribute(PalladiumAttributes.HOVERING, "Schweben");
+            this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Schlachkraft");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
