@@ -73,7 +73,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Command");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
-            this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolated Integer");
+            this.addAbility(Abilities.ANIMATION_TIMER, "Animation Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "Shrink Body Overlay");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attribute Modifier");
             this.addAbility(Abilities.HEALING, "Healing");
@@ -88,6 +88,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effect");
             this.addAbility(Abilities.GUI_OVERLAY, "Gui Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Show Both Arms");
+            this.addAbility(Abilities.PLAYER_ANIMATION, "Player Animation");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -213,7 +214,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
-            this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolierte Zahl");
+            this.addAbility(Abilities.ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attributmodifikator");
             this.addAbility(Abilities.HEALING, "Heilung");
@@ -228,6 +229,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(Abilities.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeigen");
+            this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
@@ -353,7 +355,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
-            this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolierte Zahl");
+            this.addAbility(Abilities.ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "\u00C4ttrib\u00FCtmodifikator");
             this.addAbility(Abilities.HEALING, "Helung");
@@ -368,6 +370,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(Abilities.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeijen");
+            this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");

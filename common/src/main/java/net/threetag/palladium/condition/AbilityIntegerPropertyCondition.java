@@ -58,7 +58,7 @@ public class AbilityIntegerPropertyCondition extends Condition {
 
     public static class Serializer extends ConditionSerializer {
 
-        public static final PalladiumProperty<String> PROPERTY = new StringProperty("property").configurable("Name of the integer property in the ability. For interpolated_integer abilities it's 'value'");
+        public static final PalladiumProperty<String> PROPERTY = new StringProperty("property").configurable("Name of the integer property in the ability. For animation-timer abilities it's 'value'");
         public static final PalladiumProperty<Integer> MIN = new IntegerProperty("min").configurable("Minimum required amount of the property value");
         public static final PalladiumProperty<Integer> MAX = new IntegerProperty("max").configurable("Maximum required amount of the property value");
 
