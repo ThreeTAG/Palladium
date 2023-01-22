@@ -19,7 +19,7 @@ import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.model.animation.AimAnimation;
 import net.threetag.palladium.client.model.animation.FlightAnimation;
-import net.threetag.palladium.client.model.animation.HumanoidAnimationsManager;
+import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
 import net.threetag.palladium.client.renderer.entity.CustomProjectileRenderer;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
 import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
@@ -74,7 +74,7 @@ public class PalladiumClient {
         // Animations
         PalladiumClientEvents.REGISTER_ANIMATIONS.register(registry -> {
             registry.accept(Palladium.id("flight"), new FlightAnimation());
-            registry.accept(Palladium.id("aim"), new AimAnimation());
+            registry.accept(Palladium.id("aim"), new AimAnimation(100));
 //            registry.accept(Palladium.id("test"), new TestAnimation());
         });
 
@@ -86,7 +86,7 @@ public class PalladiumClient {
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("pack_render_layers"), new PackRenderLayerManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("armor_models"), new ArmorModelManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("accessory_renderers"), new Accessory.ReloadManager());
-        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("humanoid_animations"), HumanoidAnimationsManager.INSTANCE);
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("humanoid_animations"), PalladiumAnimationRegistry.INSTANCE);
     }
 
     public static void blockRenderTypes() {

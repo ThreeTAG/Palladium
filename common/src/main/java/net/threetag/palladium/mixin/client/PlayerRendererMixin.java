@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.accessory.Accessory;
-import net.threetag.palladium.client.model.animation.HumanoidAnimationsManager;
+import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.power.ability.ShrinkBodyOverlayAbility;
@@ -27,26 +27,26 @@ public class PlayerRendererMixin {
     @Inject(at = @At("RETURN"), method = "setupRotations(Lnet/minecraft/client/player/AbstractClientPlayer;Lcom/mojang/blaze3d/vertex/PoseStack;FFF)V")
     public void setupRotations(AbstractClientPlayer player, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks, CallbackInfo ci) {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
-        HumanoidAnimationsManager.setupRotations(playerRenderer, player, poseStack, ageInTicks, rotationYaw, partialTicks);
+        PalladiumAnimationRegistry.setupRotations(playerRenderer, player, poseStack, ageInTicks, rotationYaw, partialTicks);
     }
 
     @Inject(at = @At("HEAD"), method = "renderHand")
     public void renderHandPre(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
         RenderUtil.REDIRECT_GET_BUFFER = true;
-        HumanoidAnimationsManager.SKIP_ANIMATIONS = true;
+        PalladiumAnimationRegistry.SKIP_ANIMATIONS = true;
 
-        HumanoidAnimationsManager.applyFirstPersonAnimations(poseStack, player, rendererArm == playerRenderer.getModel().rightArm);
+        PalladiumAnimationRegistry.applyFirstPersonAnimations(poseStack, player, playerRenderer.getModel(), rendererArm == playerRenderer.getModel().rightArm);
 
         if (playerRenderer.getModel() instanceof AgeableListModelInvoker invoker) {
-            HumanoidAnimationsManager.resetPoses(invoker.invokeHeadParts(), invoker.invokeBodyParts());
+            PalladiumAnimationRegistry.resetPoses(invoker.invokeHeadParts(), invoker.invokeBodyParts());
         }
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/PlayerModel;setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", shift = At.Shift.AFTER), method = "renderHand")
     public void renderHandPreRender(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
-        HumanoidAnimationsManager.SKIP_ANIMATIONS = false;
+        PalladiumAnimationRegistry.SKIP_ANIMATIONS = false;
 
         // Reset all, make them visible
         BodyPart.resetBodyParts(player, playerRenderer.getModel());

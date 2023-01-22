@@ -1,0 +1,24 @@
+{
+  "name": "Player Animation Test",
+  "icon": "minecraft:command_block",
+  "abilities": {
+    "wave": {
+      "type": "palladium:player_animation",
+      "animation": "test:waving",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action"
+        }
+      }
+    },
+    "flip": {
+      "type": "palladium:player_animation",
+      "animation": "test:flip",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:action"
+        }
+      }
+    }
+  }
+}

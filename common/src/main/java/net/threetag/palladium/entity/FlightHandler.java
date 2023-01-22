@@ -78,6 +78,7 @@ public class FlightHandler {
 
             entity.setDeltaMovement(motion.x, motionY, motion.z);
             // default 0.075
+            System.out.println(levitationSpeed);
             moveFlying(entity, entity.xxa, entity.zza, (float) (levitationSpeed * f));
             motion = entity.getDeltaMovement();
             motionY = motion.y;
@@ -109,7 +110,7 @@ public class FlightHandler {
                 }
 
                 entity.setDeltaMovement(motion.x, y, motion.z);
-                moveFlying(entity, entity.xxa, entity.zza, 0.15F);
+                moveFlying(entity, entity.xxa, entity.zza, (float) jetpackFlightSpeed);
                 startSound(entity);
                 entity.fallDistance = 0F;
             }
@@ -166,7 +167,7 @@ public class FlightHandler {
         }
     }
 
-    public static FlightType getCurrentlyUsedFlightType(Player playerEntity) {
+    public static FlightType getCurrentFlightType(Player playerEntity) {
         if (playerEntity.isOnGround() || PlayerUtil.isCreativeFlying(playerEntity) || playerEntity.isFallFlying()) {
             return FlightType.NONE;
         }
@@ -205,6 +206,10 @@ public class FlightHandler {
 
         public boolean isNotNull() {
             return this != NONE;
+        }
+
+        public boolean isNull() {
+            return this == NONE;
         }
 
         public boolean isNormal() {

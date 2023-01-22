@@ -109,6 +109,12 @@ allprojects {
             name = "Fuzs Mod Resources"
             url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
         }
+
+        // Player Animator
+        maven {
+            name "KosmX's maven"
+            url 'https://maven.kosmx.dev/'
+        }
     }
 
     java {

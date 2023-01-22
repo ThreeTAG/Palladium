@@ -1,31 +1,22 @@
 package net.threetag.palladium;
 
+import net.minecraft.util.Mth;
+import net.threetag.palladium.entity.PalladiumPlayerExtension;
+import net.threetag.palladiumcore.registry.client.OverlayRegistry;
+
 public class PalladiumDebug {
 
     public static void init() {
-//        InteractionEvent.RIGHT_CLICK_BLOCK.register((player, hand, pos, face) -> {
-//            if (!player.level.isClientSide) {
-//                BlockEntity blockEntity = player.level.getBlockEntity(pos);
-//
-//                if (blockEntity instanceof IBlockEntityEnergyContainer energyContainer) {
-//                    IEnergyStorage storage = energyContainer.getEnergyStorage(face);
-//                    player.displayClientMessage(Component.literal("Energy: " + storage.getEnergyAmount() + "/" + storage.getEnergyCapacity()), true);
-//                }
-//            }
-//
-//            return EventResult.pass();
-//        });
+        OverlayRegistry.registerOverlay("palladium/debug", (minecraft, gui, mStack, partialTicks, width, height) -> {
+            if(minecraft.player instanceof PalladiumPlayerExtension extension) {
+                float flightAnimation = extension.palladium_getFlightAnimation(partialTicks);
+                float leaning = Mth.clamp(flightAnimation, 0, 20) / 20F;
 
-//        PalladiumEvents.MOVEMENT_INPUT_UPDATE.register((player, input) -> {
-//            input.right = false;
-//            input.left = false;
-//            input.up = false;
-//            input.down = false;
-//            input.shiftKeyDown = false;
-//            input.jumping = false;
-//            input.forwardImpulse = 0F;
-//            input.leftImpulse = 0F;
-//        });
+                minecraft.font.draw(mStack, "Flight: " + flightAnimation, 10, 40, 0xfefefe);
+                minecraft.font.draw(mStack, "Leaning: " + leaning, 10, 50, 0xfefefe);
+                minecraft.font.draw(mStack, "Speed: " + extension.palladium_getSpeed(partialTicks), 10, 60, 0xfefefe);
+            }
+        });
     }
 
 }

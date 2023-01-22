@@ -1,54 +1,57 @@
 package net.threetag.palladium.client.model.animation;
 
-import net.minecraft.client.Minecraft;
+import dev.kosmx.playerAnim.core.util.Ease;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.threetag.palladium.power.ability.AimAbility;
 
-public class AimAnimation extends Animation {
+public class AimAnimation extends PalladiumAnimation {
 
-    @Override
-    public int getPriority() {
-        return 15;
+
+    public AimAnimation(int priority) {
+        super(priority);
     }
 
     @Override
-    public boolean active(LivingEntity entity) {
-        return AimAbility.getTimer(entity, 0, true) > 0F || AimAbility.getTimer(entity, 0, false) > 0F;
-    }
+    public void animate(Builder builder, AbstractClientPlayer player, HumanoidModel<?> model, FirstPersonContext firstPersonContext, float partialTicks) {
+        var right = AimAbility.getTimer(player, partialTicks, true);
+        var left = AimAbility.getTimer(player, partialTicks, false);
 
-    @Override
-    public void setupAnimation(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float partialTicks) {
-        float right = AnimationUtil.smooth(AimAbility.getTimer(entity, partialTicks, true));
-        float left = AnimationUtil.smooth(AimAbility.getTimer(entity, partialTicks, false));
-
-        if(right > 0F) {
-            AnimationUtil.interpolateXRotTo(model.rightArm, (float) (model.head.xRot - Math.PI / 2F), right);
-            AnimationUtil.interpolateYRotTo(model.rightArm, model.head.yRot, right);
-            AnimationUtil.interpolateZRotTo(model.rightArm, model.head.zRot, right);
-
-            if(entity == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
-                AnimationUtil.interpolateXTo(model.rightArm, model.rightArm.x - 3.5F, right);
-                AnimationUtil.interpolateZTo(model.rightArm, model.rightArm.z + 1.5F, right);
-                AnimationUtil.interpolateYTo(model.rightArm, model.rightArm.y + 1.5F, right);
-                AnimationUtil.interpolateXRotTo(model.rightArm, (float) (model.rightArm.xRot - Math.toRadians(20)), right);
-                AnimationUtil.interpolateYRotTo(model.rightArm, (float) (model.rightArm.yRot - Math.toRadians(27)), right);
-                AnimationUtil.interpolateZRotTo(model.rightArm, (float) (model.rightArm.zRot - Math.toRadians(30)), right);
+        if (right > 0F) {
+            if (firstPersonContext.firstPerson()) {
+                builder.get(PlayerModelPart.RIGHT_ARM)
+                        .translateX(-3.5F / 16F)
+                        .translateY(1.5F / 16F)
+                        .translateZ(1.5F / 16F)
+                        .rotateX((float) -Math.toRadians(20))
+                        .rotateY((float) -Math.toRadians(27))
+                        .rotateZ((float) -Math.toRadians(30))
+                        .animate(Ease.INOUTSINE, right);
+            } else {
+                builder.get(PlayerModelPart.RIGHT_ARM)
+                        .rotateX((float) (model.head.xRot - Math.PI / 2F))
+                        .rotateY(model.head.yRot)
+                        .rotateZ(model.head.zRot)
+                        .animate(Ease.INOUTSINE, right);
             }
         }
 
-        if(left > 0F) {
-            AnimationUtil.interpolateXRotTo(model.leftArm, (float) (model.head.xRot - Math.PI / 2F), left);
-            AnimationUtil.interpolateYRotTo(model.leftArm, model.head.yRot, left);
-            AnimationUtil.interpolateZRotTo(model.leftArm, model.head.zRot, left);
-
-            if(entity == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
-                AnimationUtil.interpolateXTo(model.leftArm, model.leftArm.x + 3.5F, left);
-                AnimationUtil.interpolateZTo(model.leftArm, model.leftArm.z + 1.5F, left);
-                AnimationUtil.interpolateYTo(model.leftArm, model.leftArm.y + 1.5F, left);
-                AnimationUtil.interpolateXRotTo(model.leftArm, (float) (model.leftArm.xRot - Math.toRadians(20)), left);
-                AnimationUtil.interpolateYRotTo(model.leftArm, (float) (model.leftArm.yRot + Math.toRadians(27)), left);
-                AnimationUtil.interpolateZRotTo(model.leftArm, (float) (model.leftArm.zRot + Math.toRadians(30)), left);
+        if (left > 0) {
+            if (firstPersonContext.firstPerson()) {
+                builder.get(PlayerModelPart.LEFT_ARM)
+                        .translateX(3.5F / 16F)
+                        .translateY(1.5F / 16F)
+                        .translateZ(1.5F / 16F)
+                        .rotateX((float) -Math.toRadians(20))
+                        .rotateY((float) Math.toRadians(27))
+                        .rotateZ((float) Math.toRadians(30))
+                        .animate(Ease.INOUTSINE, left);
+            } else {
+                builder.get(PlayerModelPart.LEFT_ARM)
+                        .rotateX((float) (model.head.xRot - Math.PI / 2F))
+                        .rotateY(model.head.yRot)
+                        .rotateZ(model.head.zRot)
+                        .animate(Ease.INOUTSINE, left);
             }
         }
     }

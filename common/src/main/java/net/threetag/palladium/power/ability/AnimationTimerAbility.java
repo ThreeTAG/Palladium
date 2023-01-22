@@ -7,14 +7,14 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 import net.threetag.palladium.util.property.SyncType;
 
-public class InterpolatedIntegerAbility extends Ability {
+public class AnimationTimerAbility extends Ability {
 
     public static final PalladiumProperty<Integer> START_VALUE = new IntegerProperty("start_value").configurable("The value for the integer when the ability is disabled");
     public static final PalladiumProperty<Integer> MAX_VALUE = new IntegerProperty("max_value").configurable("The value for the integer when the ability is enabled");
     public static final PalladiumProperty<Integer> VALUE = new IntegerProperty("value").sync(SyncType.NONE);
     public static final PalladiumProperty<Integer> PREV_VALUE = new IntegerProperty("prev_value").sync(SyncType.NONE);
 
-    public InterpolatedIntegerAbility() {
+    public AnimationTimerAbility() {
         this.withProperty(START_VALUE, 0);
         this.withProperty(MAX_VALUE, 20);
     }

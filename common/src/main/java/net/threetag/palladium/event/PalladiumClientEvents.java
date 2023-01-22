@@ -1,7 +1,7 @@
 package net.threetag.palladium.event;
 
 import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.client.model.animation.Animation;
+import net.threetag.palladium.client.model.animation.PalladiumAnimation;
 import net.threetag.palladiumcore.event.Event;
 
 import java.util.function.BiConsumer;
@@ -16,7 +16,7 @@ public interface PalladiumClientEvents {
 
     interface RegisterAnimations {
 
-        void register(BiConsumer<ResourceLocation, Animation> registry);
+        void register(BiConsumer<ResourceLocation, PalladiumAnimation> registry);
 
     }
 

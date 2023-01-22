@@ -7,19 +7,50 @@
   "abilities": {
     "flight": {
       "type": "palladium:attribute_modifier",
+      "attribute": "palladium:flight_speed",
+      "title": "Flight",
+      "list_index": 0,
+      "amount": 0.7,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
+    },
+    "levitation": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:levitation_speed",
+      "title": "Levitation",
+      "list_index": 1,
+      "amount": 0.15,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
+    },
+    "jetpack": {
+      "type": "palladium:attribute_modifier",
       "attribute": "palladium:jetpack_flight_speed",
-      "value": 0.075
+      "title": "Jetpack Flight",
+      "list_index": 2,
+      "amount": 0.5,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
     },
     "hovering": {
       "type": "palladium:attribute_modifier",
       "attribute": "palladium:hovering",
-      "value": 1,
+      "amount": 1,
+      "title": "Hovering",
+      "list_index": 3,
       "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:toggle"
-          }
-        ]
+        "enabling": {
+          "type": "palladium:toggle"
+        }
       }
     }
   }
