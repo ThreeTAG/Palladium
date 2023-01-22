@@ -26,10 +26,3 @@ PalladiumEvents.registerAnimations((event) => {
 
     });
 });
-
-
-PalladiumEvents.registerAnimations((event) => {
-    event.register('test/ability_test', 10, (builder) => {
-        builder.get('right_arm');
-    });
-});
