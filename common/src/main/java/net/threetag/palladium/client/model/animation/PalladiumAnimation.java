@@ -264,7 +264,7 @@ public class PalladiumAnimation {
             if (this.zRot != null)
                 poseStack.mulPose(Vector3f.ZP.rotation(this.zRot * this.multiplier));
 
-            poseStack.scale(this.scaleX * this.multiplier, this.scaleY * this.multiplier, this.scaleZ * this.multiplier);
+            poseStack.scale(1 + (this.scaleX - 1) * this.multiplier, 1 + (this.scaleY - 1) * this.multiplier, 1 + (this.scaleZ - 1) * this.multiplier);
         }
 
     }
