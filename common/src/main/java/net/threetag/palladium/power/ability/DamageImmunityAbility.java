@@ -6,9 +6,20 @@ import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.StringArrayProperty;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class DamageImmunityAbility extends Ability {
 
-    public static final PalladiumProperty<String[]> DAMAGE_SOURCES = new StringArrayProperty("damage_sources").configurable("Determines which damage sources have no effect on the entity");
+    public static List<String> DAMAGE_SOURCE_IDS = new ArrayList<>();
+
+    static {
+        // Just to load the damage sources
+        DamageSource.badRespawnPointExplosion();
+    }
+
+    public static final PalladiumProperty<String[]> DAMAGE_SOURCES = new StringArrayProperty("damage_sources").configurable("Determines which damage sources have no effect on the entity. Common values: " + Arrays.toString(DAMAGE_SOURCE_IDS.toArray()));
 
     public DamageImmunityAbility() {
         this.withProperty(ICON, new ItemIcon(Items.POTION));
