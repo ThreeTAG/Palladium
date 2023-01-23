@@ -7,10 +7,12 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.condition.*;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.IconSerializer;
+import net.threetag.palladium.util.json.GsonUtil;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 import org.jetbrains.annotations.Nullable;
@@ -137,7 +139,14 @@ public class AbilityConfiguration {
     }
 
     public static AbilityConfiguration fromJSON(String id, JsonObject json) {
-        Ability ability = Ability.REGISTRY.get(new ResourceLocation(GsonHelper.getAsString(json, "type", "placeholder")));
+        var abilityId = GsonUtil.getAsResourceLocation(json, "type");
+
+        if(abilityId.equals(Palladium.id("interpolated_integer"))) {
+            abilityId = Abilities.ANIMATION_TIMER.getId();
+            AddonPackLog.warning("'interpolated_integer' ability found in power, please use 'animation_timer' instead!");
+        }
+
+        Ability ability = Ability.REGISTRY.get(abilityId);
 
         if (ability == null) {
             if (GsonHelper.isValidNode(json, "ability")) {

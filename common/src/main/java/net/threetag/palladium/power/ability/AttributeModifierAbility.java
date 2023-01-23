@@ -31,7 +31,7 @@ public class AttributeModifierAbility extends Ability {
 
     @Override
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
-        if(enabled) {
+        if (enabled) {
             Attribute attribute = entry.getProperty(ATTRIBUTE);
             AttributeInstance instance = entity.getAttribute(attribute);
 
@@ -45,9 +45,8 @@ public class AttributeModifierAbility extends Ability {
             // Remove modifier if amount or operation dont match
             if (modifier != null && (modifier.getAmount() != entry.getProperty(AMOUNT) || modifier.getOperation().toValue() != entry.getProperty(OPERATION))) {
                 instance.removeModifier(uuid);
+                modifier = null;
             }
-
-            modifier = instance.getModifier(uuid);
 
             if (modifier == null) {
                 modifier = new AttributeModifier(uuid, entry.getConfiguration().getDisplayName().getString(), entry.getProperty(AMOUNT), AttributeModifier.Operation.fromValue(entry.getProperty(OPERATION)));

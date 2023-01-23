@@ -4,18 +4,20 @@
   "plugin": "net.threetag.palladium.PalladiumMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "client.AgeableListModelInvoker",
-    "client.GameRendererMixin",
-    "client.HumanoidModelMixin",
-    "client.ItemInHandRendererMixin",
-    "client.LivingEntityRendererMixin",
     "client.PlayerInfoMixin",
     "client.PlayerModelMixin",
     "client.PlayerRendererMixin",
     "client.RenderTypeMixin",
-    "client.SplashManagerMixin"
+    "client.SplashManagerMixin",
+    "client.ItemInHandRendererMixin",
+    "client.LivingEntityRendererMixin",
+    "client.GameRendererMixin",
+    "client.HumanoidModelMixin",
+    "client.AgeableListModelInvoker",
+    "client.AbstractClientPlayerMixin"
   ],
   "mixins": [
+    "PlayerMixin",
     "ReloadableResourceManagerMixin",
     "ReloadableServerResourcesMixin",
     "ScriptFileInfoMixin",

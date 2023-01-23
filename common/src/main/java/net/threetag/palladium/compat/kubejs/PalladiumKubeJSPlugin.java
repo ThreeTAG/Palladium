@@ -1,11 +1,14 @@
 package net.threetag.palladium.compat.kubejs;
 
+import dev.kosmx.playerAnim.core.util.Ease;
+import dev.kosmx.playerAnim.core.util.Easing;
 import dev.latvian.mods.kubejs.BuilderBase;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.util.AttachedData;
+import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceKey;
@@ -13,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.client.model.animation.AnimationUtil;
+import net.threetag.palladium.client.model.animation.PalladiumAnimation;
 import net.threetag.palladium.compat.kubejs.ability.AbilityBuilder;
 import net.threetag.palladium.compat.kubejs.condition.ConditionBuilder;
 import net.threetag.palladium.condition.ConditionSerializer;
@@ -64,6 +68,14 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
         if (event.getType() == ScriptType.CLIENT) {
             event.add("animationUtil", AnimationUtil.class);
             event.add("guiUtil", GuiUtilJS.class);
+        }
+    }
+
+    @Override
+    public void registerTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
+        if (type == ScriptType.CLIENT) {
+            typeWrappers.registerSimple(Ease.class, o -> Easing.easeFromString(o.toString()));
+            typeWrappers.registerSimple(PalladiumAnimation.PlayerModelPart.class, o -> PalladiumAnimation.PlayerModelPart.fromName(o.toString()));
         }
     }
 

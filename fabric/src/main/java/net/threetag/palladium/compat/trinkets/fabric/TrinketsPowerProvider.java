@@ -29,7 +29,7 @@ public class TrinketsPowerProvider extends PowerProvider {
 
                                 if (powers != null) {
                                     for (Power power : powers) {
-                                        collector.addPower(power, () -> new Validator(stack, Pair.of(entry.getKey(), key)));
+                                        collector.addPower(power, () -> new Validator(stack.getItem(), Pair.of(entry.getKey(), key)));
                                     }
                                 }
                             }

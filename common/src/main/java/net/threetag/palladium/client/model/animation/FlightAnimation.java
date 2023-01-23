@@ -1,64 +1,114 @@
 package net.threetag.palladium.client.model.animation;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import dev.kosmx.playerAnim.core.util.Ease;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.threetag.palladium.entity.PalladiumAttributes;
+import net.threetag.palladium.entity.FlightHandler;
+import net.threetag.palladium.entity.PalladiumPlayerExtension;
 
 @Environment(EnvType.CLIENT)
-public class FlightAnimation extends Animation {
+public class FlightAnimation extends PalladiumAnimation {
 
-    @Override
-    public int getPriority() {
-        return 10;
+    public FlightAnimation() {
+        super(5);
     }
 
     @Override
-    public boolean active(LivingEntity entity) {
-        return entity instanceof Player && !entity.isOnGround()
-                && entity.getAttributeValue(PalladiumAttributes.LEVITATION_SPEED.get()) <= 0D
-                && entity.getAttributeValue(PalladiumAttributes.JETPACK_FLIGHT_SPEED.get()) > 0D;
-    }
+    public void animate(Builder builder, AbstractClientPlayer player, HumanoidModel<?> model, FirstPersonContext firstPersonContext, float partialTicks) {
+        boolean active = !player.isOnGround() && !firstPersonContext.firstPerson();
 
-    @Override
-    public void setupRotations(PlayerRenderer playerRenderer, AbstractClientPlayer player, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
-        // TODO interpolation
-        float speed = (float) Mth.clamp(Math
-                .sqrt((player.xo - player.position().x) * (player.xo - player.position().x) + (player.zo - player.position().z) * (player.zo
-                        - player.position().z)), 0F, 1F);
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(-60 * speed));
-    }
+        if (active && player instanceof PalladiumPlayerExtension extension) {
+            var flightType = FlightHandler.getCurrentFlightType(player);
 
-    @Override
-    public void setupAnimation(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float partialTicks) {
-        float speed = (float) Mth.clamp(Math
-                .sqrt((entity.xo - entity.position().x) * (entity.xo - entity.position().x) + (entity.zo - entity.position().z) * (entity.zo
-                        - entity.position().z)), 0F, 1F);
-        double d1 = 1 - speed;
+            if (flightType.isNormal()) {
+                float flightAnimation = extension.palladium_getFlightAnimation(partialTicks);
+                float leaning = Mth.clamp(flightAnimation, 0, 20) / 20F;
+                float powered = Mth.clamp(flightAnimation - 20, 0, 10) / 10F;
+                float anim1 = AnimationUtil.ease(Ease.INOUTSINE, leaning);
+                float anim2 = AnimationUtil.ease(Ease.INOUTSINE, powered);
 
-        model.rightArm.xRot *= d1;
-        model.rightArm.yRot *= d1;
-        model.rightArm.zRot *= d1;
-        model.leftArm.xRot *= d1;
-        model.leftArm.yRot *= d1;
-        model.leftArm.zRot *= d1;
-        model.rightLeg.xRot *= d1;
-        model.rightLeg.yRot *= d1;
-        model.rightLeg.zRot *= d1;
-        model.leftLeg.xRot *= d1;
-        model.leftLeg.yRot *= d1;
-        model.leftLeg.zRot *= d1;
+                var body = builder.get(PlayerModelPart.BODY)
+                        .rotateXDegrees(-90.0F - player.getXRot())
+                        .animate(Ease.INBACK, leaning);
 
-        int type = (entity.isOnGround() || (entity instanceof Player && ((Player) entity).getAbilities().flying) ? 0 : entity.zza < 0 ? -1 : 1);
-        speed *= type;
-        model.head.xRot -= 0.52359877559829887307710723054658 * 2 * speed;
-        model.hat.xRot = model.head.xRot;
+                builder.get(PlayerModelPart.HEAD)
+                        .rotateXDegrees(-90.0F)
+                        .animate(Ease.INBACK, leaning);
+
+//                Vec3 viewVector = player.getViewVector(partialTicks);
+//                Vec3 movement = player.getDeltaMovement();
+//                double vec1 = movement.horizontalDistanceSqr();
+//                double vec2 = viewVector.horizontalDistanceSqr();
+//                if (vec1 > 0.0 && vec2 > 0.0) {
+//                    double d2 = (movement.x * viewVector.x + movement.z * viewVector.z) / Math.sqrt(vec1 * vec2);
+//                    double d3 = movement.x * viewVector.z - movement.z * viewVector.x;
+//                    body.rotateY(Mth.clamp((float) (Math.signum(d3) * Math.acos(d2)), -90, 90));
+//                }
+
+                var rightArm = builder.get(PlayerModelPart.RIGHT_ARM)
+                        .rotateXDegrees(-180 * anim2)
+                        .rotateYDegrees(20 * anim1 - 20 * anim2)
+                        .rotateZDegrees(5 * anim1 - 17.5F * anim2);
+
+                var leftArm = builder.get(PlayerModelPart.LEFT_ARM)
+                        .rotateX(0)
+                        .rotateYDegrees(-20 * anim1 + 20 * anim2)
+                        .rotateZDegrees(-5 * anim1 - 5 * anim2);
+
+                var rightLeg = builder.get(PlayerModelPart.RIGHT_LEG)
+                        .rotateXDegrees(-17.5F * anim2)
+                        .rotateYDegrees(-5 * anim1)
+                        .rotateZDegrees(2 * anim1 + 3 * anim2);
+
+                if (anim2 > 0F) {
+                    rightLeg.translateY(9F * anim2)
+                            .translateZ(-2F * anim2);
+                }
+
+                var leftLeg = builder.get(PlayerModelPart.LEFT_LEG)
+                        .rotateX(0)
+                        .rotateYDegrees(5 * anim1)
+                        .rotateZDegrees(-2 * anim1 - 3 * anim2);
+
+            } else {
+                var prevMove = extension.palladium_getPrevMovementDelta();
+                var interpolated = prevMove.add(player.getDeltaMovement().subtract(prevMove).scale(partialTicks));
+                float speed = (float) Mth.clamp(Math.sqrt(interpolated.x * interpolated.x + interpolated.z * interpolated.z), 0F, 1F);
+
+                if (speed != 0F) {
+                    builder.get(PlayerModelPart.BODY)
+                            .rotateX(-1)
+                            .animate(Ease.INOUTQUINT, speed);
+
+                    builder.get(PlayerModelPart.RIGHT_ARM)
+                            .rotateX(0)
+                            .rotateZ((float) Math.toRadians(10))
+                            .animate(Ease.INOUTQUINT, speed);
+                    builder.get(PlayerModelPart.LEFT_ARM)
+                            .rotateX(0)
+                            .rotateZ((float) Math.toRadians(-10))
+                            .animate(Ease.INOUTQUINT, speed);
+
+                    builder.get(PlayerModelPart.RIGHT_LEG)
+                            .rotateX(0)
+                            .rotateZ((float) Math.toRadians(5))
+                            .animate(Ease.INOUTQUINT, speed);
+                    builder.get(PlayerModelPart.LEFT_LEG)
+                            .rotateX(0)
+                            .rotateZ((float) Math.toRadians(-5))
+                            .animate(Ease.INOUTQUINT, speed);
+
+                    int type = (player.isOnGround() || player.getAbilities().flying ? 0 : player.zza < 0 ? -1 : 1);
+                    speed *= type;
+                    builder.get(PlayerModelPart.HEAD)
+                            .rotateX((float) (model.head.xRot - 0.52359877559829887307710723054658 * 2))
+                            .animate(Ease.INOUTQUINT, speed);
+
+                }
+            }
+        }
     }
 }
