@@ -244,9 +244,9 @@ public class PalladiumAnimation {
             if (this.translationZ != null)
                 modelPart.z += (this.translationZ - modelPart.z) * this.multiplier;
 
-            modelPart.xScale += (this.scaleX - modelPart.xScale) * this.multiplier;
-            modelPart.yScale += (this.scaleY - modelPart.yScale) * this.multiplier;
-            modelPart.zScale += (this.scaleZ - modelPart.zScale) * this.multiplier;
+            modelPart.xScale *= 1 + (this.scaleX - 1) * this.multiplier;
+            modelPart.yScale *= 1 + (this.scaleY - 1) * this.multiplier;
+            modelPart.zScale *= 1 + (this.scaleZ - 1) * this.multiplier;
         }
 
         public void apply(PoseStack poseStack) {
@@ -264,7 +264,7 @@ public class PalladiumAnimation {
             if (this.zRot != null)
                 poseStack.mulPose(Vector3f.ZP.rotation(this.zRot * this.multiplier));
 
-            poseStack.scale(this.scaleX, this.scaleY, this.scaleZ);
+            poseStack.scale(this.scaleX * this.multiplier, this.scaleY * this.multiplier, this.scaleZ * this.multiplier);
         }
 
     }

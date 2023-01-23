@@ -38,16 +38,6 @@ public class FlightAnimation extends PalladiumAnimation {
                         .rotateXDegrees(-90.0F)
                         .animate(Ease.INBACK, leaning);
 
-//                Vec3 viewVector = player.getViewVector(partialTicks);
-//                Vec3 movement = player.getDeltaMovement();
-//                double vec1 = movement.horizontalDistanceSqr();
-//                double vec2 = viewVector.horizontalDistanceSqr();
-//                if (vec1 > 0.0 && vec2 > 0.0) {
-//                    double d2 = (movement.x * viewVector.x + movement.z * viewVector.z) / Math.sqrt(vec1 * vec2);
-//                    double d3 = movement.x * viewVector.z - movement.z * viewVector.x;
-//                    body.rotateY(Mth.clamp((float) (Math.signum(d3) * Math.acos(d2)), -90, 90));
-//                }
-
                 var rightArm = builder.get(PlayerModelPart.RIGHT_ARM)
                         .rotateXDegrees(-180 * anim2)
                         .rotateYDegrees(20 * anim1 - 20 * anim2)
@@ -73,7 +63,7 @@ public class FlightAnimation extends PalladiumAnimation {
                         .rotateYDegrees(5 * anim1)
                         .rotateZDegrees(-2 * anim1 - 3 * anim2);
 
-            } else {
+            } else if (flightType.isLevitation() || flightType.isJetpack()) {
                 var prevMove = extension.palladium_getPrevMovementDelta();
                 var interpolated = prevMove.add(player.getDeltaMovement().subtract(prevMove).scale(partialTicks));
                 float speed = (float) Mth.clamp(Math.sqrt(interpolated.x * interpolated.x + interpolated.z * interpolated.z), 0F, 1F);
