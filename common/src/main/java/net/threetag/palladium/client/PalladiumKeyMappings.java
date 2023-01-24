@@ -36,7 +36,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, InputEvents
 
     @Override
     public void keyPressed(Minecraft client, int keyCode, int scanCode, int action, int modifiers) {
-        if (client.player != null && client.screen == null) {
+        if (client.player != null && client.screen == null && !client.player.isSpectator()) {
             if (SWITCH_ABILITY_LIST.isDown()) {
                 AbilityBarRenderer.scroll(true);
             }
@@ -66,8 +66,8 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, InputEvents
     @Override
     public EventResult mouseClickedPre(Minecraft client, int button, int action, int mods) {
         AbilityBarRenderer.AbilityList list = AbilityBarRenderer.getSelectedList();
-        if (client.screen == null && client.player != null && client.hitResult != null && (action != GLFW.GLFW_PRESS || client.hitResult.getType() == HitResult.Type.MISS) && list != null) {
 
+        if (client.screen == null && client.player != null && !client.player.isSpectator() && client.hitResult != null && (action != GLFW.GLFW_PRESS || client.hitResult.getType() == HitResult.Type.MISS) && list != null) {
             if (button == 0 && !client.player.getMainHandItem().isEmpty()) {
                 return EventResult.pass();
             } else if (button == 1 && (!client.player.getMainHandItem().isEmpty() || !client.player.getOffhandItem().isEmpty())) {

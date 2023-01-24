@@ -122,6 +122,10 @@ public class AbilityEntry {
                 }
             }
 
+            if (entity.isSpectator()) {
+                unlocked = false;
+            }
+
             if (this.unlocked != unlocked) {
                 this.unlocked = unlocked;
                 sync = true;
@@ -136,6 +140,10 @@ public class AbilityEntry {
                         break;
                     }
                 }
+            }
+
+            if (entity.isSpectator()) {
+                enabled = false;
             }
 
             if (this.enabled != enabled) {
