@@ -99,6 +99,10 @@ held</a>
 in_water</a>
 </li>
 <li>
+<a href="#palladium:interval">
+interval</a>
+</li>
+<li>
 <a href="#palladium:is_moving">
 is_moving</a>
 </li>
@@ -1067,6 +1071,62 @@ Applicable for: all</p>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:in_water"}</pre>
+</div>
+<hr>
+
+<div id="palladium:interval">
+<h2>
+interval</h2>
+<p>
+Applicable for: abilities</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+active_ticks</td>
+<td>
+Integer</td>
+<td>
+Determines for how many ticks the condition will be active</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+20</td>
+</tr>
+<tr>
+<td>
+disabled_ticks</td>
+<td>
+Integer</td>
+<td>
+Determines for how many ticks the condition will be disabled</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+20</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:interval","active_ticks":20,"disabled_ticks":20}</pre>
 </div>
 <hr>
 
