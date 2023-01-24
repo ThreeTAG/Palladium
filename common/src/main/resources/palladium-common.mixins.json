@@ -18,6 +18,7 @@
   ],
   "mixins": [
     "DamageSourceMixin",
+    "LiquidBlockMixin",
     "PlayerMixin",
     "ReloadableResourceManagerMixin",
     "ReloadableServerResourcesMixin",

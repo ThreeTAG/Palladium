@@ -30,6 +30,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> GUI_OVERLAY = ABILITIES.register("gui_overlay", GuiOverlayAbility::new);
     public static final RegistrySupplier<Ability> SHOW_BOTH_ARMS = ABILITIES.register("show_both_arms", () -> new Ability().withProperty(Ability.HIDDEN, true));
     public static final RegistrySupplier<Ability> PLAYER_ANIMATION = ABILITIES.register("player_animation", PlayerAnimationAbility::new);
+    public static final RegistrySupplier<Ability> WATER_WALK = ABILITIES.register("water_walk", Ability::new);
 
     public static void init() {
 

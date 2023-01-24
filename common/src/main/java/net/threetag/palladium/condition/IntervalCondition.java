@@ -48,7 +48,7 @@ public class IntervalCondition extends Condition {
 
     @Override
     public ConditionSerializer getSerializer() {
-        return null;
+        return ConditionSerializers.INTERVAL.get();
     }
 
     public static class Serializer extends ConditionSerializer {
