@@ -44,7 +44,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, InputEvents
             AbilityBarRenderer.AbilityList list = AbilityBarRenderer.getSelectedList();
             if (list != null && action != GLFW.GLFW_REPEAT) {
                 for (AbilityKeyMapping key : ABILITY_KEYS) {
-                    AbilityEntry entry = list.getAbilities()[key.index - 1];
+                    AbilityEntry entry = list.getDisplayedAbilities()[key.index - 1];
 
                     if (entry != null) {
                         if (key.matches(keyCode, scanCode) && entry.getConfiguration().getKeyType() == AbilityConfiguration.KeyType.KEY_BIND) {
@@ -74,7 +74,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, InputEvents
                 return EventResult.pass();
             }
 
-            for (AbilityEntry ability : list.getAbilities()) {
+            for (AbilityEntry ability : list.getDisplayedAbilities()) {
                 if (ability != null && ability.isUnlocked()) {
                     AbilityConfiguration.KeyType keyType = ability.getConfiguration().getKeyType();
                     if ((keyType == AbilityConfiguration.KeyType.LEFT_CLICK && button == 0) || (keyType == AbilityConfiguration.KeyType.RIGHT_CLICK && button == 1)) {
