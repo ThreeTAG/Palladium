@@ -26,6 +26,7 @@ public abstract class DynamicTexture {
 
     static {
         registerType(Palladium.id("default"), j -> new DefaultDynamicTexture(GsonHelper.getAsString(j, "base"), GsonHelper.getAsString(j, "output", "")));
+        registerType(Palladium.id("entity"), j -> EntityDynamicTexture.INSTANCE);
 
         registerTransformer(Palladium.id("alpha_mask"), j -> new AlphaMaskTextureTransformer(GsonHelper.getAsString(j, "mask")));
         registerTransformer(Palladium.id("overlay"), j -> new OverlayTextureTransformer(GsonHelper.getAsString(j, "overlay")));
@@ -51,7 +52,12 @@ public abstract class DynamicTexture {
 
     public static DynamicTexture parse(JsonElement jsonElement) {
         if (jsonElement.isJsonPrimitive()) {
-            return new DefaultDynamicTexture(jsonElement.getAsString(), null);
+            var input = jsonElement.getAsString();
+            if (input.equalsIgnoreCase("#entity")) {
+                return EntityDynamicTexture.INSTANCE;
+            } else {
+                return new DefaultDynamicTexture(input, null);
+            }
         } else if (jsonElement.isJsonObject()) {
             JsonObject json = jsonElement.getAsJsonObject();
             ResourceLocation typeId = GsonUtil.getAsResourceLocation(json, "type", new ResourceLocation(Palladium.MOD_ID, "default"));

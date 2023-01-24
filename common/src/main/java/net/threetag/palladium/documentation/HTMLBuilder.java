@@ -28,7 +28,7 @@ public class HTMLBuilder {
     private boolean hasJson = false;
 
     public HTMLBuilder(ResourceLocation id, String title) {
-        this(id, title, "https://i.imgur.com/am80ox1.png");
+        this(id, title, "https://i.imgur.com/3sx4xJf.png");
     }
 
     public HTMLBuilder(ResourceLocation id, String title, String favicon) {
