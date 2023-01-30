@@ -1,0 +1,17 @@
+{
+  "name": "Punch Damage Test",
+  "icon": "minecraft:leather",
+  "abilities": {
+    "attribute": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:punch_damage",
+      "amount": 4,
+      "uuid": "984afae5-ca42-4108-8328-4c3d76d84680",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
+    }
+  }
+}
