@@ -79,6 +79,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, InputEvents
                     AbilityConfiguration.KeyType keyType = ability.getConfiguration().getKeyType();
                     if ((keyType == AbilityConfiguration.KeyType.LEFT_CLICK && button == 0) || (keyType == AbilityConfiguration.KeyType.RIGHT_CLICK && button == 1)) {
                         new AbilityKeyPressedMessage(ability.getReference(), action == GLFW.GLFW_PRESS).send();
+                        return EventResult.cancel();
                     }
                 }
             }
