@@ -18,6 +18,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.event.PalladiumClientEvents;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 @Environment(EnvType.CLIENT)
 public class PalladiumAnimationRegistry extends SimpleJsonResourceReloadListener {
@@ -59,45 +60,44 @@ public class PalladiumAnimationRegistry extends SimpleJsonResourceReloadListener
         }
     }
 
-    public static Map<PalladiumAnimation.PlayerModelPart, PalladiumAnimation.PartAnimationData> gather(AbstractClientPlayer player, HumanoidModel<?> model, PalladiumAnimation.FirstPersonContext firstPersonContext, float partialTicks) {
+    public static void forEach(AbstractClientPlayer player, HumanoidModel<?> model, PalladiumAnimation.FirstPersonContext firstPersonContext, float partialTicks, BiConsumer<PalladiumAnimation.PlayerModelPart, PalladiumAnimation.PartAnimationData> consumer) {
         Map<PalladiumAnimation.PlayerModelPart, PalladiumAnimation.PartAnimationData> gathered = new HashMap<>();
 
         for (PalladiumAnimation animation : INSTANCE.animationsSorted) {
             PalladiumAnimation.Builder builder = new PalladiumAnimation.Builder();
             animation.animate(builder, player, model, firstPersonContext, partialTicks);
             for (Map.Entry<PalladiumAnimation.PlayerModelPart, PalladiumAnimation.PartAnimationData> entry : builder.getAnimationData().entrySet()) {
-                if (!gathered.containsKey(entry.getKey())) {
-                    gathered.put(entry.getKey(), entry.getValue());
-                }
+                consumer.accept(entry.getKey(), entry.getValue());
             }
         }
-
-        return gathered;
     }
 
     public static void applyAnimations(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entity instanceof AbstractClientPlayer player) {
-            gather(player, model, PalladiumAnimation.FirstPersonContext.NONE, PARTIAL_TICK).forEach((part, data) -> {
+            forEach(player, model, PalladiumAnimation.FirstPersonContext.NONE, PARTIAL_TICK, (part, data) -> {
                 part.applyToModelPart(model, data);
             });
         }
     }
 
     public static void applyFirstPersonAnimations(PoseStack poseStack, AbstractClientPlayer player, HumanoidModel<?> model, boolean rightArm) {
-        var data = gather(player, model, rightArm ? PalladiumAnimation.FirstPersonContext.RIGHT_ARM : PalladiumAnimation.FirstPersonContext.LEFT_ARM, PARTIAL_TICK)
-                .get(rightArm ? PalladiumAnimation.PlayerModelPart.RIGHT_ARM : PalladiumAnimation.PlayerModelPart.LEFT_ARM);
+        forEach(player, model, rightArm ? PalladiumAnimation.FirstPersonContext.RIGHT_ARM : PalladiumAnimation.FirstPersonContext.LEFT_ARM, FIRST_PERSON_PARTIAL_TICK, (part, data) -> {
+            if (rightArm && part == PalladiumAnimation.PlayerModelPart.RIGHT_ARM) {
+                data.apply(poseStack);
+            }
 
-        if (data != null) {
-            data.apply(poseStack);
-        }
+            if (!rightArm && part == PalladiumAnimation.PlayerModelPart.LEFT_ARM) {
+                data.apply(poseStack);
+            }
+        });
     }
 
     public static void setupRotations(PlayerRenderer playerRenderer, AbstractClientPlayer player, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
-        var data = gather(player, playerRenderer.getModel(), PalladiumAnimation.FirstPersonContext.NONE, partialTicks).get(PalladiumAnimation.PlayerModelPart.BODY);
-
-        if (data != null) {
-            data.apply(poseStack);
-        }
+        forEach(player, playerRenderer.getModel(), PalladiumAnimation.FirstPersonContext.NONE, partialTicks, (part, data) -> {
+            if (part == PalladiumAnimation.PlayerModelPart.BODY) {
+                data.apply(poseStack);
+            }
+        });
     }
 
 }
