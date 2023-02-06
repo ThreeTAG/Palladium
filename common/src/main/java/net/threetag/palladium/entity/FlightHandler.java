@@ -22,7 +22,7 @@ public class FlightHandler {
     public static Object SOUND;
 
     public static void init() {
-        LivingEntityEvents.TICK.register(FlightHandler::handleFlight);
+//        LivingEntityEvents.TICK.register(FlightHandler::handleFlight);
     }
 
     private static void handleFlight(LivingEntity entity) {

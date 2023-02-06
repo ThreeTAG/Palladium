@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.HitResult;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
 import net.threetag.palladium.network.AbilityKeyPressedMessage;
-import net.threetag.palladium.network.NotifyJumpKeyListenerMessage;
+import net.threetag.palladium.network.NotifyMovementKeyListenerMessage;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.PalladiumProperties;
@@ -58,7 +58,23 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, InputEvents
             }
 
             if (PalladiumProperties.JUMP_KEY_DOWN.isRegistered(client.player) && client.options.keyJump.isDown() != PalladiumProperties.JUMP_KEY_DOWN.get(client.player)) {
-                new NotifyJumpKeyListenerMessage(client.options.keyJump.isDown()).send();
+                new NotifyMovementKeyListenerMessage(0, client.options.keyJump.isDown()).send();
+            }
+
+            if (PalladiumProperties.LEFT_KEY_DOWN.isRegistered(client.player) && client.options.keyLeft.isDown() != PalladiumProperties.LEFT_KEY_DOWN.get(client.player)) {
+                new NotifyMovementKeyListenerMessage(1, client.options.keyLeft.isDown()).send();
+            }
+
+            if (PalladiumProperties.RIGHT_KEY_DOWN.isRegistered(client.player) && client.options.keyRight.isDown() != PalladiumProperties.RIGHT_KEY_DOWN.get(client.player)) {
+                new NotifyMovementKeyListenerMessage(2, client.options.keyRight.isDown()).send();
+            }
+
+            if (PalladiumProperties.FORWARD_KEY_DOWN.isRegistered(client.player) && client.options.keyUp.isDown() != PalladiumProperties.FORWARD_KEY_DOWN.get(client.player)) {
+                new NotifyMovementKeyListenerMessage(3, client.options.keyUp.isDown()).send();
+            }
+
+            if (PalladiumProperties.BACKWARDS_KEY_DOWN.isRegistered(client.player) && client.options.keyDown.isDown() != PalladiumProperties.BACKWARDS_KEY_DOWN.get(client.player)) {
+                new NotifyMovementKeyListenerMessage(4, client.options.keyDown.isDown()).send();
             }
         }
     }

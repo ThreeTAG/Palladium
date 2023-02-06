@@ -18,7 +18,7 @@ import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.model.animation.AimAnimation;
-import net.threetag.palladium.client.model.animation.FlightAnimation;
+import net.threetag.palladium.client.model.animation.BasicFlightAnimation;
 import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
 import net.threetag.palladium.client.renderer.entity.CustomProjectileRenderer;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
@@ -73,7 +73,7 @@ public class PalladiumClient {
 
         // Animations
         PalladiumClientEvents.REGISTER_ANIMATIONS.register(registry -> {
-            registry.accept(Palladium.id("flight"), new FlightAnimation());
+            registry.accept(Palladium.id("flight"), new BasicFlightAnimation(5));
             registry.accept(Palladium.id("aim"), new AimAnimation(100));
 //            registry.accept(Palladium.id("test"), new TestAnimation());
         });

@@ -2,7 +2,6 @@ package net.threetag.palladium.network;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.power.PowerManager;
@@ -23,7 +22,7 @@ public class PalladiumNetwork {
     public static final MessageType SYNC_PROPERTY = NETWORK.registerS2C("sync_property", SyncPropertyMessage::new);
     public static final MessageType SYNC_ABILITY_ENTRY_PROPERTY = NETWORK.registerS2C("sync_ability_entry_property", SyncAbilityEntryPropertyMessage::new);
     public static final MessageType ABILITY_KEY_PRESSED = NETWORK.registerC2S("ability_key_pressed", AbilityKeyPressedMessage::new);
-    public static final MessageType NOTIFY_JUMP_KEY_LISTENER = NETWORK.registerC2S("notify_jump_key_listener", NotifyJumpKeyListenerMessage::new);
+    public static final MessageType NOTIFY_MOVEMENT_KEY_LISTENER = NETWORK.registerC2S("notify_jump_key_listener", NotifyMovementKeyListenerMessage::new);
     public static final MessageType SYNC_ACCESSORIES = NETWORK.registerS2C("sync_accessories", SyncAccessoriesMessage::new);
     public static final MessageType TOGGLE_ACCESSORY = NETWORK.registerC2S("toggle_accessory", ToggleAccessoryMessage::new);
     public static final MessageType REQUEST_ABILITY_BUY_SCREEN = NETWORK.registerC2S("request_ability_buy_screen", RequestAbilityBuyScreenMessage::new);

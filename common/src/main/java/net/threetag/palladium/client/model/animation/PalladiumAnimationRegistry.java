@@ -25,14 +25,14 @@ public class PalladiumAnimationRegistry extends SimpleJsonResourceReloadListener
 
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private final Map<ResourceLocation, PalladiumAnimation> animations = new LinkedHashMap<>();
-    private final List<PalladiumAnimation> animationsSorted = new ArrayList<>();
+    private final List<PalladiumAnimation> animationsSorted = new LinkedList<>();
     public static float PARTIAL_TICK = 0F;
     public static float FIRST_PERSON_PARTIAL_TICK = 0F;
     public static boolean SKIP_ANIMATIONS = false;
     public static final PalladiumAnimationRegistry INSTANCE = new PalladiumAnimationRegistry();
 
     public PalladiumAnimationRegistry() {
-        super(GSON, "models/animations");
+        super(GSON, "palladium/animations");
     }
 
     @Override
