@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.accessory.Accessory;
+import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.entity.BodyPart;
@@ -70,17 +71,20 @@ public class PlayerRendererMixin {
     @Inject(at = @At("RETURN"), method = "renderHand")
     public void renderHandPost(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
+        boolean rightArm = rendererArm == playerRenderer.getModel().rightArm;
 
         Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
             for (Accessory accessory : accessories) {
                 if (accessory.isVisible(slot, player, true)) {
-                    accessory.renderArm(rendererArm == playerRenderer.getModel().rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, player, playerRenderer, rendererArm, rendererArmwear, slot, poseStack, buffer, combinedLight);
+                    accessory.renderArm(rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, player, playerRenderer, rendererArm, rendererArmwear, slot, poseStack, buffer, combinedLight);
                 }
             }
         }));
 
+        ArmorModelManager.renderFirstPerson(player, poseStack, buffer, combinedLight, rendererArm, rightArm);
+
         PackRenderLayerManager.forEachLayer(player, (context, layer) -> {
-            layer.renderArm(context, rendererArm == playerRenderer.getModel().rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, playerRenderer, poseStack, buffer, combinedLight);
+            layer.renderArm(context, rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, playerRenderer, poseStack, buffer, combinedLight);
         });
 
         // Reset all, make them visible

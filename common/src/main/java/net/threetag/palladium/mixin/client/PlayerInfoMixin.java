@@ -3,6 +3,7 @@ package net.threetag.palladium.mixin.client;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.client.dynamictexture.EntityDynamicTexture;
 import net.threetag.palladium.client.renderer.entity.PlayerSkinHandler;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,8 +19,10 @@ public class PlayerInfoMixin {
 
     @Inject(at = @At("RETURN"), method = "getSkinLocation", cancellable = true)
     public void getSkinLocation(CallbackInfoReturnable<ResourceLocation> ci) {
-        var original = ci.getReturnValue();
-        ci.setReturnValue(PlayerSkinHandler.getCurrentSkin(this.profile, original));
+        if(!EntityDynamicTexture.IGNORE_SKIN_CHANGE) {
+            var original = ci.getReturnValue();
+            ci.setReturnValue(PlayerSkinHandler.getCurrentSkin(this.profile, original));
+        }
     }
 
 }

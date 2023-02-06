@@ -39,5 +39,7 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> EXPERIENCE_LEVEL_BUYABLE = CONDITION_SERIALIZERS.register("experience_level_buyable", ExperienceLevelBuyableCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> SCOREBOARD_SCORE_BUYABLE = CONDITION_SERIALIZERS.register("scoreboard_score_buyable", ScoreboardScoreBuyableCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> COMMAND_RESULT = CONDITION_SERIALIZERS.register("command_result", CommandResultCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> INTERVAL = CONDITION_SERIALIZERS.register("interval", IntervalCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> SPRINTING = CONDITION_SERIALIZERS.register("sprinting", SprintingCondition.Serializer::new);
 
 }

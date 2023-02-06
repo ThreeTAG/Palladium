@@ -1,0 +1,34 @@
+{
+  "name": "Shared Index Test",
+  "icon": "minecraft:glass_pane",
+  "background": "minecraft:textures/block/amethyst_block.png",
+  "abilities": {
+    "command_1": {
+      "type": "palladium:command",
+      "icon": "minecraft:bread",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:crouching"
+        },
+        "enabling": {
+          "type": "palladium:action"
+        }
+      }
+    },
+    "command_2": {
+      "type": "palladium:command",
+      "icon": "minecraft:apple",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:not",
+          "conditions": {
+            "type": "palladium:crouching"
+          }
+        },
+        "enabling": {
+          "type": "palladium:action"
+        }
+      }
+    }
+  }
+}

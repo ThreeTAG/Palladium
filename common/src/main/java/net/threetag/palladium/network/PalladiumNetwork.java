@@ -1,6 +1,8 @@
 package net.threetag.palladium.network;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.power.PowerManager;
@@ -31,14 +33,15 @@ public class PalladiumNetwork {
     public static void init() {
         // Powers
         DataSyncUtil.registerMessage(entity -> {
-            if (entity instanceof ServerPlayer serverPlayer) {
-                var opt = PowerManager.getPowerHandler(serverPlayer);
+            if (entity instanceof LivingEntity livingEntity) {
+                var opt = PowerManager.getPowerHandler(livingEntity);
 
                 if (opt.isPresent()) {
                     var handler = opt.get();
-                    return new UpdatePowersMessage(serverPlayer.getId(), Collections.emptyList(), handler.getPowerHolders().values().stream().map(h -> h.getPower().getId()).collect(Collectors.toList()));
+                    return new UpdatePowersMessage(livingEntity.getId(), Collections.emptyList(), handler.getPowerHolders().values().stream().map(h -> h.getPower().getId()).collect(Collectors.toList()));
                 }
             }
+
             return null;
         });
 

@@ -79,7 +79,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if(!this.level.isClientSide) {
+        if (!this.level.isClientSide) {
             Entity entity = result.getEntity();
             entity.hurt(DamageSource.thrown(this, this.getOwner()), this.damage);
 
@@ -237,7 +237,9 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
 
         @Override
         public void toNBT(CompoundTag nbt) {
-            nbt.putString("ParticleType", Registry.PARTICLE_TYPE.getKey(this.type).toString());
+            if (this.type != null) {
+                nbt.putString("ParticleType", Registry.PARTICLE_TYPE.getKey(this.type).toString());
+            }
             nbt.putInt("Amount", this.amount);
             nbt.putFloat("Spread", this.spread);
             nbt.putString("Options", this.options);
@@ -245,6 +247,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
 
         @Override
         public void onTick(CustomProjectile projectile) {
+            if (this.type == null) {
+                return;
+            }
+
             Random random = new Random();
             for (int i = 0; i < this.amount; i++) {
                 float sX = (random.nextFloat() - 0.5F) * this.spread;
@@ -260,6 +266,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
 
         @Override
         public void spawnParticlesOnHit(CustomProjectile projectile) {
+            if (this.type == null) {
+                return;
+            }
+
             for (int i = 0; i < this.amount; i++) {
                 Random random = new Random();
                 float sX = (random.nextFloat() - 0.5F) * this.spread * 2F;

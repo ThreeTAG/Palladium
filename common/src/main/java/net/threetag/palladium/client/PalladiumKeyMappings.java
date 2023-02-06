@@ -36,7 +36,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, InputEvents
 
     @Override
     public void keyPressed(Minecraft client, int keyCode, int scanCode, int action, int modifiers) {
-        if (client.player != null && client.screen == null) {
+        if (client.player != null && client.screen == null && !client.player.isSpectator()) {
             if (SWITCH_ABILITY_LIST.isDown()) {
                 AbilityBarRenderer.scroll(true);
             }
@@ -44,7 +44,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, InputEvents
             AbilityBarRenderer.AbilityList list = AbilityBarRenderer.getSelectedList();
             if (list != null && action != GLFW.GLFW_REPEAT) {
                 for (AbilityKeyMapping key : ABILITY_KEYS) {
-                    AbilityEntry entry = list.getAbilities()[key.index - 1];
+                    AbilityEntry entry = list.getDisplayedAbilities()[key.index - 1];
 
                     if (entry != null) {
                         if (key.matches(keyCode, scanCode) && entry.getConfiguration().getKeyType() == AbilityConfiguration.KeyType.KEY_BIND) {
@@ -66,19 +66,20 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, InputEvents
     @Override
     public EventResult mouseClickedPre(Minecraft client, int button, int action, int mods) {
         AbilityBarRenderer.AbilityList list = AbilityBarRenderer.getSelectedList();
-        if (client.screen == null && client.player != null && client.hitResult != null && (action != GLFW.GLFW_PRESS || client.hitResult.getType() == HitResult.Type.MISS) && list != null) {
 
+        if (client.screen == null && client.player != null && !client.player.isSpectator() && client.hitResult != null && (action != GLFW.GLFW_PRESS || client.hitResult.getType() == HitResult.Type.MISS) && list != null) {
             if (button == 0 && !client.player.getMainHandItem().isEmpty()) {
                 return EventResult.pass();
             } else if (button == 1 && (!client.player.getMainHandItem().isEmpty() || !client.player.getOffhandItem().isEmpty())) {
                 return EventResult.pass();
             }
 
-            for (AbilityEntry ability : list.getAbilities()) {
+            for (AbilityEntry ability : list.getDisplayedAbilities()) {
                 if (ability != null && ability.isUnlocked()) {
                     AbilityConfiguration.KeyType keyType = ability.getConfiguration().getKeyType();
                     if ((keyType == AbilityConfiguration.KeyType.LEFT_CLICK && button == 0) || (keyType == AbilityConfiguration.KeyType.RIGHT_CLICK && button == 1)) {
                         new AbilityKeyPressedMessage(ability.getReference(), action == GLFW.GLFW_PRESS).send();
+                        return EventResult.cancel();
                     }
                 }
             }

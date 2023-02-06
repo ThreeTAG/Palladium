@@ -48,7 +48,7 @@ public class PalladiumAttributes {
                     attackDmg.removeModifier(PUNCH_DAMAGE_MOD_UUID);
                 }
 
-                if (punchDmg > 0D) {
+                if ((currentMod == null && punchDmg > 0D) || (currentMod != null && currentMod.getAmount() != punchDmg)) {
                     attackDmg.addTransientModifier(new AttributeModifier(PUNCH_DAMAGE_MOD_UUID, "Punch Damage", punchDmg, AttributeModifier.Operation.ADDITION));
                 }
             }
