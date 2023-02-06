@@ -38,7 +38,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, InputEvents
     public void keyPressed(Minecraft client, int keyCode, int scanCode, int action, int modifiers) {
         if (client.player != null && client.screen == null && !client.player.isSpectator()) {
             if (SWITCH_ABILITY_LIST.isDown()) {
-                AbilityBarRenderer.scroll(true);
+                AbilityBarRenderer.scroll(!client.player.isCrouching());
             }
 
             AbilityBarRenderer.AbilityList list = AbilityBarRenderer.getSelectedList();
