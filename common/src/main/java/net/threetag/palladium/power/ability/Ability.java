@@ -73,7 +73,7 @@ public class Ability implements IDefaultDocumentedConfigurable {
                 .addDocumentationSettings(REGISTRY.getValues().stream().sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
     }
 
-    public static List<AbilityEntry> findParentAbilities(LivingEntity entity, AbilityConfiguration ability, IPowerHolder powerHolder) {
+    public static List<AbilityEntry> findParentsWithinHolder(AbilityConfiguration ability, IPowerHolder powerHolder) {
         List<AbilityEntry> list = new ArrayList<>();
         for (String key : ability.getDependencies()) {
             AbilityEntry parent = powerHolder.getAbilities().get(key);
@@ -85,7 +85,7 @@ public class Ability implements IDefaultDocumentedConfigurable {
         return list;
     }
 
-    public static List<AbilityEntry> findChildrenAbilities(LivingEntity entity, AbilityConfiguration ability, IPowerHolder powerHolder) {
+    public static List<AbilityEntry> findChildrenWithinHolder(AbilityConfiguration ability, IPowerHolder powerHolder) {
         List<AbilityEntry> list = new ArrayList<>();
         for (Map.Entry<String, AbilityEntry> entries : powerHolder.getAbilities().entrySet()) {
             for (String key : ability.getDependencies()) {
