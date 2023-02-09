@@ -14,6 +14,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
@@ -37,12 +38,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmorTexture {
+public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArmor {
 
     private List<Component> tooltipLines;
     private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
     private SkinTypedValue<DynamicTexture> armorTexture;
     private RenderLayerContainer renderLayerContainer = null;
+    private boolean hideSecondLayer = false;
 
     public AddonArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
         super(armorMaterial, equipmentSlot, properties);
@@ -52,6 +54,16 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
             multimap.putAll(super.getDefaultAttributeModifiers(slot));
             this.attributeModifiers.put(slot, multimap);
         }
+    }
+
+    public AddonArmorItem hideSecondLayer() {
+        this.hideSecondLayer = true;
+        return this;
+    }
+
+    @Override
+    public boolean hideSecondPlayerLayer(Player player, ItemStack stack, EquipmentSlot slot) {
+        return this.hideSecondLayer;
     }
 
     @Override
@@ -126,7 +138,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
 
                 String modelTypeKey = "armor_model_type";
 
-                if(!json.has(modelTypeKey) && json.has("armor_model")) {
+                if (!json.has(modelTypeKey) && json.has("armor_model")) {
                     AddonPackLog.warning("Deprecated use of 'armor_model' in render layer. Please switch to 'armor_model_type'!");
                     modelTypeKey = "armor_model";
                 }
@@ -147,6 +159,10 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
                             SkinTypedValue.fromJSON(jsonElement, jsonElement1 -> GsonUtil.convertToModelLayerLocation(jsonElement1, "armor_model_layer"))
                     );
                 });
+
+                if (GsonHelper.getAsBoolean(json, "hide_second_player_layer", false)) {
+                    item.hideSecondLayer();
+                }
             }
 
             return item;
@@ -175,6 +191,10 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ICustomArmo
             builder.addProperty("armor_model_layer", ModelLayerLocation.class)
                     .description("Armor model layer, must have the body parts for a humanoid model (if not specified for another model type).")
                     .fallbackObject(null).exampleJson(new JsonPrimitive("palladium:humanoid#suit"));
+
+            builder.addProperty("hide_second_player_layer", Boolean.class)
+                    .description("If enabled, the second player layer will be hidden when worn (only on the corresponding body part)")
+                    .fallback(false).exampleJson(new JsonPrimitive(true));
         }
 
         @Override

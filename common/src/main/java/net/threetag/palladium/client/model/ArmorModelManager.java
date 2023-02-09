@@ -20,7 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
-import net.threetag.palladium.item.ICustomArmorTexture;
+import net.threetag.palladium.item.ExtendedArmor;
 import net.threetag.palladium.util.SkinTypedValue;
 
 import java.util.HashMap;
@@ -53,7 +53,7 @@ public class ArmorModelManager implements ResourceManagerReloadListener {
 
     public static void renderFirstPerson(AbstractClientPlayer player, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, ModelPart rendererArm, boolean rightArm) {
         var stack = player.getItemBySlot(EquipmentSlot.CHEST);
-        if (!stack.isEmpty() && HANDLERS.containsKey(stack.getItem()) && stack.getItem() instanceof ICustomArmorTexture customArmorTexture) {
+        if (!stack.isEmpty() && HANDLERS.containsKey(stack.getItem()) && stack.getItem() instanceof ExtendedArmor customArmorTexture) {
             var handler = get(stack.getItem());
             var armorModel = handler.getArmorModel(stack, player, EquipmentSlot.CHEST);
             var vertex = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(customArmorTexture.getArmorTexture(stack, player, EquipmentSlot.CHEST, null)), false, stack.hasFoil());

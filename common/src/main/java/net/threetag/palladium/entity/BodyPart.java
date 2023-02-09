@@ -6,11 +6,13 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
+import net.threetag.palladium.item.ExtendedArmor;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityUtil;
@@ -144,16 +146,39 @@ public enum BodyPart {
     public static List<BodyPart> getHiddenBodyParts(LivingEntity entity, boolean isFirstPerson, boolean includeAccessories) {
         List<BodyPart> bodyParts = new ArrayList<>();
 
-        if (includeAccessories && entity instanceof Player player) {
-            Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
-                if (!accessories.isEmpty()) {
-                    for (BodyPart part : slot.getHiddenBodyParts(player)) {
-                        if (!bodyParts.contains(part)) {
-                            bodyParts.add(part);
+        if (entity instanceof Player player) {
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                if (slot.getType() == EquipmentSlot.Type.ARMOR) {
+                    var stack = player.getItemBySlot(slot);
+
+                    if (stack.getItem() instanceof ExtendedArmor extendedArmor) {
+                        if (extendedArmor.hideSecondPlayerLayer(player, stack, slot)) {
+                            if (slot == EquipmentSlot.HEAD) {
+                                bodyParts.add(BodyPart.HEAD_OVERLAY);
+                            } else if (slot == EquipmentSlot.CHEST) {
+                                bodyParts.add(BodyPart.CHEST_OVERLAY);
+                                bodyParts.add(BodyPart.RIGHT_ARM_OVERLAY);
+                                bodyParts.add(BodyPart.LEFT_ARM_OVERLAY);
+                            } else {
+                                bodyParts.add(BodyPart.RIGHT_LEG_OVERLAY);
+                                bodyParts.add(BodyPart.LEFT_LEG_OVERLAY);
+                            }
                         }
                     }
                 }
-            }));
+            }
+
+            if (includeAccessories) {
+                Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
+                    if (!accessories.isEmpty()) {
+                        for (BodyPart part : slot.getHiddenBodyParts(player)) {
+                            if (!bodyParts.contains(part)) {
+                                bodyParts.add(part);
+                            }
+                        }
+                    }
+                }));
+            }
         }
 
         for (AbilityEntry bodyPartHide : AbilityUtil.getEnabledEntries(entity, Abilities.HIDE_BODY_PARTS.get())) {

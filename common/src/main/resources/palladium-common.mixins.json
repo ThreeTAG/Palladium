@@ -10,7 +10,6 @@
     "client.HumanoidModelMixin",
     "client.ItemInHandRendererMixin",
     "client.LivingEntityRendererMixin",
-    "client.LocalPlayerMixin",
     "client.PlayerInfoMixin",
     "client.PlayerModelMixin",
     "client.PlayerRendererMixin",
