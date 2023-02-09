@@ -76,6 +76,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.JETPACK_FLIGHT_SPEED, "Jetpack Flight Speed");
             this.addAttribute(PalladiumAttributes.HOVERING, "Hovering");
             this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Punch Damage");
+            this.addAttribute(PalladiumAttributes.JUMP_POWER, "Jump Power");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
@@ -225,6 +226,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.JETPACK_FLIGHT_SPEED, "Jetpack-Fluggeschwindigkeit");
             this.addAttribute(PalladiumAttributes.HOVERING, "Schweben");
             this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Schlagkraft");
+            this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
@@ -374,6 +376,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.JETPACK_FLIGHT_SPEED, "Jetpack-Flugjeschwindichket");
             this.addAttribute(PalladiumAttributes.HOVERING, "Schweben");
             this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Schlachkraft");
+            this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
