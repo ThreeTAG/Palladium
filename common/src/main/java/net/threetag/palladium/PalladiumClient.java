@@ -17,9 +17,7 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.model.ArmorModelManager;
-import net.threetag.palladium.client.model.animation.AimAnimation;
-import net.threetag.palladium.client.model.animation.BasicFlightAnimation;
-import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
+import net.threetag.palladium.client.model.animation.*;
 import net.threetag.palladium.client.renderer.entity.CustomProjectileRenderer;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
 import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
@@ -73,9 +71,10 @@ public class PalladiumClient {
 
         // Animations
         PalladiumClientEvents.REGISTER_ANIMATIONS.register(registry -> {
-            registry.accept(Palladium.id("flight"), new BasicFlightAnimation(5));
+            registry.accept(Palladium.id("hovering"), new HoveringAnimation(-30));
+            registry.accept(Palladium.id("levitation"), new LevitationAnimation(-20));
+            registry.accept(Palladium.id("flight"), new FlightAnimation(-10));
             registry.accept(Palladium.id("aim"), new AimAnimation(100));
-//            registry.accept(Palladium.id("test"), new TestAnimation());
         });
 
         // Overlay Renderer

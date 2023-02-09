@@ -26,7 +26,6 @@ public class FlightSound extends AbstractTickableSoundInstance {
     public void tick() {
         if (this.stop) {
             this.stop();
-            FlightHandler.SOUND = null;
             return;
         }
         ++this.time;
@@ -55,7 +54,6 @@ public class FlightSound extends AbstractTickableSoundInstance {
             }
         } else {
             this.stop();
-            FlightHandler.SOUND = null;
         }
     }
 }

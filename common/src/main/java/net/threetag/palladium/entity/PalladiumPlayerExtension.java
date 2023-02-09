@@ -6,7 +6,13 @@ public interface PalladiumPlayerExtension {
 
     Vec3 palladium_getPrevMovementDelta();
 
+    FlightHandler.FlightType palladium_getFlightType();
+
+    void palladium_setFlightType(FlightHandler.FlightType flightType);
+
     float palladium_getFlightAnimation(float partialTicks);
+
+    float palladium_getHoveringAnimation(float partialTicks);
 
     float palladium_getSpeed(float partialTicks);
 

@@ -28,6 +28,7 @@ public class PalladiumNetwork {
     public static final MessageType REQUEST_ABILITY_BUY_SCREEN = NETWORK.registerC2S("request_ability_buy_screen", RequestAbilityBuyScreenMessage::new);
     public static final MessageType OPEN_ABILITY_BUY_SCREEN = NETWORK.registerS2C("open_ability_buy_screen", OpenAbilityBuyScreenMessage::new);
     public static final MessageType BUY_ABILITY_UNLOCK = NETWORK.registerC2S("buy_ability_unlock", BuyAbilityUnlockMessage::new);
+    public static final MessageType SET_FLYING_STATE = NETWORK.registerC2S("set_flying_state", SetFlyingStateMessage::new);
 
     public static void init() {
         // Powers
