@@ -7,10 +7,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.mixin.RangedAttributeAccessor;
+import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.EntityAttributeRegistry;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -37,6 +40,14 @@ public class PalladiumAttributes {
         EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, JUMP_POWER);
 
         punchDamageHandling();
+
+        if (!Platform.isModLoaded("attributefix")) {
+            LifecycleEvents.SETUP.register(() -> {
+                if (Attributes.ARMOR instanceof RangedAttributeAccessor accessor) {
+                    accessor.palladium_setMaxValue(1024);
+                }
+            });
+        }
     }
 
     private static void punchDamageHandling() {

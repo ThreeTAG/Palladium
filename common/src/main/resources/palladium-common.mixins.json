@@ -22,6 +22,7 @@
     "LiquidBlockMixin",
     "LivingEntityMixin",
     "PlayerMixin",
+    "RangedAttributeAccessor",
     "ReloadableResourceManagerMixin",
     "ReloadableServerResourcesMixin",
     "ScriptFileInfoMixin",
