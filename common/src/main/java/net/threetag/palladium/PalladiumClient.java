@@ -8,10 +8,12 @@ import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.Item;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.block.PalladiumBlocks;
@@ -31,8 +33,10 @@ import net.threetag.palladium.client.screen.AccessoryScreen;
 import net.threetag.palladium.client.screen.AddonPackLogScreen;
 import net.threetag.palladium.client.screen.components.IconButton;
 import net.threetag.palladium.client.screen.power.PowersScreen;
+import net.threetag.palladium.energy.EnergyHelper;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.event.PalladiumClientEvents;
+import net.threetag.palladium.item.EnergyItem;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.GuiOverlayAbility;
 import net.threetag.palladium.util.SupporterHandler;
@@ -41,10 +45,7 @@ import net.threetag.palladium.util.icon.TexturedIcon;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.event.ScreenEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
-import net.threetag.palladiumcore.registry.client.ColorHandlerRegistry;
-import net.threetag.palladiumcore.registry.client.EntityRendererRegistry;
-import net.threetag.palladiumcore.registry.client.OverlayRegistry;
-import net.threetag.palladiumcore.registry.client.RenderTypeRegistry;
+import net.threetag.palladiumcore.registry.client.*;
 
 public class PalladiumClient {
 
@@ -60,7 +61,21 @@ public class PalladiumClient {
         setupDevLogButton();
 
         // During Setup
-        LifecycleEvents.SETUP.register(PalladiumClient::blockRenderTypes);
+        LifecycleEvents.SETUP.register(() -> {
+            blockRenderTypes();
+
+            for (Item item : Registry.ITEM) {
+                if (item instanceof EnergyItem) {
+                    ItemPropertyRegistry.register(item, Palladium.id("energy"), (itemStack, clientLevel, livingEntity, i) -> {
+                        var storage = EnergyHelper.getFromItemStack(itemStack);
+                        return storage.map(energyStorage -> Math.round(13F * energyStorage.getEnergyAmount() / (float) energyStorage.getEnergyCapacity())).orElse(0);
+                    });
+                    ItemPropertyRegistry.register(item, Palladium.id("charged"), (itemStack, clientLevel, livingEntity, i) -> {
+                        return itemStack.getOrCreateTag().getInt("energy") > 0 ? 1F : 0F;
+                    });
+                }
+            }
+        });
 
         // Entity Renderers
         EntityRendererRegistry.register(PalladiumEntityTypes.EFFECT, EffectEntityRenderer::new);
