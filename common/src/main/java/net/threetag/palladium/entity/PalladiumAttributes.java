@@ -27,7 +27,7 @@ public class PalladiumAttributes {
     public static final RegistrySupplier<Attribute> JETPACK_FLIGHT_SPEED = ATTRIBUTES.register("jetpack_flight_speed", () -> new RangedAttribute(name("paldium.jetpack_flight_speed"), 0D, 0D, 32D).setSyncable(true));
     public static final RegistrySupplier<Attribute> HOVERING = ATTRIBUTES.register("hovering", () -> new RangedAttribute(name("hovering"), 0D, 0D, 1D).setSyncable(true));
     public static final RegistrySupplier<Attribute> PUNCH_DAMAGE = ATTRIBUTES.register("punch_damage", () -> new RangedAttribute(name("punch_damage"), 0.0, 0.0, 2048.0));
-    public static final RegistrySupplier<Attribute> JUMP_POWER = ATTRIBUTES.register("jump_power", () -> new RangedAttribute(name("jump_power"), 0.0, 0.0, 2048.0).setSyncable(true));
+    public static final RegistrySupplier<Attribute> JUMP_POWER = ATTRIBUTES.register("jump_power", () -> new RangedAttribute(name("jump_power"), 1.0, 0.0, 2048.0).setSyncable(true));
 
     public static final UUID PUNCH_DAMAGE_MOD_UUID = UUID.fromString("b587e52f-6985-40f4-988e-48e3a7d3fdcb");
 

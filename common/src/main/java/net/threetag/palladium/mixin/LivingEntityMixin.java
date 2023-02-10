@@ -21,8 +21,7 @@ public abstract class LivingEntityMixin {
     protected void getJumpPower(CallbackInfoReturnable<Float> cir) {
         if (this.getAttributes().hasAttribute(PalladiumAttributes.JUMP_POWER.get())) {
             var instance = this.getAttributes().getInstance(PalladiumAttributes.JUMP_POWER.get());
-            Objects.requireNonNull(instance).setBaseValue(cir.getReturnValue());
-            cir.setReturnValue((float) instance.getValue());
+            cir.setReturnValue((float) Objects.requireNonNull(instance).getValue() * cir.getReturnValue());
         }
     }
 
