@@ -5,6 +5,8 @@
   "abilities": {
     "item": {
       "type": "palladium:attribute_modifier",
+      "attribute": "palladium:jump_power",
+      "amount": 1,
       "list_index": 0,
       "title": "Unlocked with Item",
       "uuid": "7bc6deaf-296f-4e46-a132-3d91fee86144",
