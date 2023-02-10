@@ -79,6 +79,10 @@ entity_type_tag</a>
 experience_level_buyable</a>
 </li>
 <li>
+<a href="#palladium:float_property">
+float_property</a>
+</li>
+<li>
 <a href="#palladium:has_power">
 has_power</a>
 </li>
@@ -97,6 +101,10 @@ held</a>
 <li>
 <a href="#palladium:in_water">
 in_water</a>
+</li>
+<li>
+<a href="#palladium:integer_property">
+integer_property</a>
 </li>
 <li>
 <a href="#palladium:interval">
@@ -866,6 +874,74 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:float_property">
+<h2>
+float_property</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+property</td>
+<td>
+String</td>
+<td>
+Name of the float property in the entity</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+value</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Float</td>
+<td>
+Minimum required amount of the property value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.0</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Float</td>
+<td>
+Maximum required amount of the property value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:float_property","property":"value","min":0.0,"max":0.0}</pre>
+</div>
+<hr>
+
 <div id="palladium:has_power">
 <h2>
 has_power</h2>
@@ -1075,6 +1151,74 @@ Applicable for: all</p>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:in_water"}</pre>
+</div>
+<hr>
+
+<div id="palladium:integer_property">
+<h2>
+integer_property</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+property</td>
+<td>
+String</td>
+<td>
+Name of the integer property in the entity</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+value</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Minimum required amount of the property value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Maximum required amount of the property value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:integer_property","property":"value","min":0,"max":0}</pre>
 </div>
 <hr>
 

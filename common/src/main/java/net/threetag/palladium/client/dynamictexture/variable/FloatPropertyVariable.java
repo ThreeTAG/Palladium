@@ -11,16 +11,16 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 
 import java.util.List;
 
-public class PropertyFloatPropertyVariable extends AbstractFloatTextureVariable {
+public class FloatPropertyVariable extends AbstractFloatTextureVariable {
 
     private final String propertyKey;
 
-    public PropertyFloatPropertyVariable(String propertyKey, List<Pair<Operation, JsonPrimitive>> operations) {
+    public FloatPropertyVariable(String propertyKey, List<Pair<Operation, JsonPrimitive>> operations) {
         super(operations);
         this.propertyKey = propertyKey;
     }
 
-    public PropertyFloatPropertyVariable(JsonObject json) {
+    public FloatPropertyVariable(JsonObject json) {
         super(json);
         this.propertyKey = GsonHelper.getAsString(json, "property");
     }
