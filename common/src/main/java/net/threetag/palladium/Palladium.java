@@ -63,6 +63,7 @@ public class Palladium {
         Accessories.ACCESSORIES.register();
 
         PalladiumNetwork.init();
+        PalladiumEntityTypes.init();
         EntityPropertyHandler.init();
         PowerManager.init();
         ItemPowerManager.init();

@@ -56,6 +56,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Raw Vibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibranium Ingot");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone Flux Crystal");
+            this.addItem(PalladiumItems.SUIT_STAND, "Suit Stand");
             this.addItem(PalladiumItems.HAMMER, "Hammer");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Lead Circuit");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quartz Circuit");
@@ -69,6 +70,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effect");
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projectile");
+            this.addEntityType(PalladiumEntityTypes.SUIT_STAND, "Suit Stand");
 
             // Attributes
             this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Flight Speed");
@@ -206,6 +208,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarren");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
+            this.addItem(PalladiumItems.SUIT_STAND, "Anzugsständer");
             this.addItem(PalladiumItems.HAMMER, "Hammer");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Bleischaltkreis");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaltkreis");
@@ -219,6 +222,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
+            this.addEntityType(PalladiumEntityTypes.SUIT_STAND, "Anzugsständer");
 
             // Attributes
             this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Fluggeschwindigkeit");
@@ -356,6 +360,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarrn");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
+            this.addItem(PalladiumItems.SUIT_STAND, "Anzuchsschdändorr");
             this.addItem(PalladiumItems.HAMMER, "Hammer");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Redstoneschaldkres");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaldkres");
@@ -369,6 +374,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
+            this.addEntityType(PalladiumEntityTypes.SUIT_STAND, "Anzuchsschdändorr");
 
             // Attributes
             this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Flugjeschwindichket");

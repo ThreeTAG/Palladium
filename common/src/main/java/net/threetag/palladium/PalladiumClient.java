@@ -19,11 +19,14 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.model.ArmorModelManager;
+import net.threetag.palladium.client.model.SuitStandBasePlateModel;
+import net.threetag.palladium.client.model.SuitStandModel;
 import net.threetag.palladium.client.model.animation.AimAnimation;
 import net.threetag.palladium.client.model.animation.FlightAnimation;
 import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
 import net.threetag.palladium.client.renderer.entity.CustomProjectileRenderer;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
+import net.threetag.palladium.client.renderer.entity.SuitStandRenderer;
 import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.AccessoryRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
@@ -80,6 +83,9 @@ public class PalladiumClient {
         // Entity Renderers
         EntityRendererRegistry.register(PalladiumEntityTypes.EFFECT, EffectEntityRenderer::new);
         EntityRendererRegistry.register(PalladiumEntityTypes.CUSTOM_PROJECTILE, CustomProjectileRenderer::new);
+        EntityRendererRegistry.register(PalladiumEntityTypes.SUIT_STAND, SuitStandRenderer::new);
+        EntityRendererRegistry.registerModelLayer(SuitStandModel.MODEL_LAYER_LOCATION, SuitStandModel::createBodyLayer);
+        EntityRendererRegistry.registerModelLayer(SuitStandBasePlateModel.MODEL_LAYER_LOCATION, SuitStandBasePlateModel::createLayer);
 
         // Entity Render Layers
         EntityRendererRegistry.addRenderLayer((e) -> true, renderLayerParent -> new PackRenderLayerRenderer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));

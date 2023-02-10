@@ -17,6 +17,7 @@
     "client.SplashManagerMixin"
   ],
   "mixins": [
+    "ArmorStandMixin",
     "DamageSourceMixin",
     "LiquidBlockMixin",
     "LivingEntityMixin",
