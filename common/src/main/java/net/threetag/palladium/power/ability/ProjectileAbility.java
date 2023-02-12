@@ -18,8 +18,6 @@ import net.threetag.palladium.util.PlayerUtil;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.property.*;
 
-import java.util.Random;
-
 public class ProjectileAbility extends Ability {
 
     public static final PalladiumProperty<EntityType<?>> ENTITY_TYPE = new EntityTypeProperty("entity_type").configurable("Entity type ID for the projectile entity");
@@ -27,7 +25,7 @@ public class ProjectileAbility extends Ability {
     public static final PalladiumProperty<Float> INACCURACY = new FloatProperty("inaccuracy").configurable("Determines the inaccuracy when shooting the projectile");
     public static final PalladiumProperty<Float> VELOCITY = new FloatProperty("velocity").configurable("Determines the velocity when shooting the projectile");
     public static final PalladiumProperty<SoundEvent> THROW_SOUND = new SoundEventProperty("throw_sound_event").configurable("Sound event that plays when shooting the projectile (nullable)");
-    public static final PalladiumProperty<Boolean> SWING_ARM = new BooleanProperty("swing_arm").configurable("Whether or not an arm swing when shooting the projectile");
+    public static final PalladiumProperty<ArmTypeProperty.ArmType> SWINGING_ARM = new ArmTypeProperty("swinging_arm").configurable("Determines which arm(s) should swing upon shooting");
     public static final PalladiumProperty<Boolean> DAMAGE_FROM_PLAYER = new BooleanProperty("damage_from_player").configurable("If this is set to true and a custom projectile is used, the damage will automatically be set the player damage value");
 
     public ProjectileAbility() {
@@ -37,7 +35,7 @@ public class ProjectileAbility extends Ability {
         this.withProperty(INACCURACY, 0F);
         this.withProperty(VELOCITY, 1.5F);
         this.withProperty(THROW_SOUND, SoundEvents.SNOWBALL_THROW);
-        this.withProperty(SWING_ARM, true);
+        this.withProperty(SWINGING_ARM, ArmTypeProperty.ArmType.MAIN_ARM);
         this.withProperty(DAMAGE_FROM_PLAYER, false);
     }
 
@@ -65,8 +63,8 @@ public class ProjectileAbility extends Ability {
                     PlayerUtil.playSoundToAll(entity.level, entity.getX(), entity.getY() + entity.getBbHeight() / 2D, entity.getZ(), 50, entry.getProperty(THROW_SOUND), entity.getSoundSource());
                 }
 
-                if (entry.getProperty(SWING_ARM)) {
-                    entity.swing(new Random().nextBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND, true);
+                for (InteractionHand hand : entry.getProperty(SWINGING_ARM).getHand(entity)) {
+                    entity.swing(hand, true);
                 }
 
                 if (entry.getProperty(DAMAGE_FROM_PLAYER) && projectile instanceof CustomProjectile customProjectile) {
