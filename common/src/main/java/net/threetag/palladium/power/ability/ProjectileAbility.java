@@ -11,7 +11,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.entity.CustomProjectile;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.util.PlayerUtil;
@@ -55,8 +54,6 @@ public class ProjectileAbility extends Ability {
                 float velocity = entry.getProperty(VELOCITY);
                 float inaccuracy = entry.getProperty(INACCURACY);
                 projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, velocity, inaccuracy);
-                Vec3 vec3d = entity.getDeltaMovement();
-                projectile.setDeltaMovement(projectile.getDeltaMovement().add(vec3d.x, entity.isOnGround() ? 0.0D : vec3d.y, vec3d.z));
                 projectile.setOwner(entity);
 
                 if (entry.getProperty(THROW_SOUND) != null) {
