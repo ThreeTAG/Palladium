@@ -12,6 +12,7 @@
     "LivingEntityMixin",
     "PackRepositoryMixin",
     "PackTypeMixin",
+    "PlayerMixin",
     "ReloadableResourceManagerMixin"
   ],
   "injectors": {

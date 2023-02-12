@@ -49,6 +49,8 @@
   "accessory_slot.off_hand": "Nebenhand",
   "accessory_slot.right_leg": "Reschdes Bein",
   "accessory_slot.special": "Spezial",
+  "attribute.name.generic.palladium.destroy_speed": "Abbohjeschwindichket",
+  "attribute.name.generic.palladium.fall_resistance": "Fallwidorstand",
   "attribute.name.generic.palladium.flight_speed": "Flugjeschwindichket",
   "attribute.name.generic.palladium.hovering": "Schweben",
   "attribute.name.generic.palladium.jump_power": "Sprungkraft",

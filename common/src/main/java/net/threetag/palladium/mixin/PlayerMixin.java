@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@SuppressWarnings("DataFlowIssue")
 @Mixin(Player.class)
 public class PlayerMixin implements PalladiumPlayerExtension {
 
@@ -80,4 +81,5 @@ public class PlayerMixin implements PalladiumPlayerExtension {
     public float palladium_getSpeed(float partialTicks) {
         return Mth.lerp(partialTicks, this.prevSpeed, this.speed);
     }
+
 }

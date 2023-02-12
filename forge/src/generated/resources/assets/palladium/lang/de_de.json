@@ -49,6 +49,8 @@
   "accessory_slot.off_hand": "Zweithand",
   "accessory_slot.right_leg": "Rechtes Bein",
   "accessory_slot.special": "Spezial",
+  "attribute.name.generic.palladium.destroy_speed": "Abbaugeschwindigkeit",
+  "attribute.name.generic.palladium.fall_resistance": "Fallwiderstand",
   "attribute.name.generic.palladium.flight_speed": "Fluggeschwindigkeit",
   "attribute.name.generic.palladium.hovering": "Schweben",
   "attribute.name.generic.palladium.jump_power": "Sprungkraft",

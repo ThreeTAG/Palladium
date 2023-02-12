@@ -28,6 +28,8 @@ public class PalladiumAttributes {
     public static final RegistrySupplier<Attribute> HOVERING = ATTRIBUTES.register("hovering", () -> new RangedAttribute(name("hovering"), 0D, 0D, 1D).setSyncable(true));
     public static final RegistrySupplier<Attribute> PUNCH_DAMAGE = ATTRIBUTES.register("punch_damage", () -> new RangedAttribute(name("punch_damage"), 0.0, 0.0, 2048.0));
     public static final RegistrySupplier<Attribute> JUMP_POWER = ATTRIBUTES.register("jump_power", () -> new RangedAttribute(name("jump_power"), 1.0, 0.0, 2048.0).setSyncable(true));
+    public static final RegistrySupplier<Attribute> DESTROY_SPEED = ATTRIBUTES.register("destroy_speed", () -> new RangedAttribute(name("destroy_speed"), 1.0, 0.0, 2048.0).setSyncable(true));
+    public static final RegistrySupplier<Attribute> FALL_RESISTANCE = ATTRIBUTES.register("fall_resistance", () -> new RangedAttribute(name("fall_resistance"), 1.0, 0.0, 100D));
 
     public static final UUID PUNCH_DAMAGE_MOD_UUID = UUID.fromString("b587e52f-6985-40f4-988e-48e3a7d3fdcb");
 
@@ -38,6 +40,8 @@ public class PalladiumAttributes {
         EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, HOVERING);
         EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, PUNCH_DAMAGE);
         EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, JUMP_POWER);
+        EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, DESTROY_SPEED);
+        EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, FALL_RESISTANCE);
 
         punchDamageHandling();
 

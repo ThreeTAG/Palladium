@@ -49,6 +49,8 @@
   "accessory_slot.off_hand": "Off Hand",
   "accessory_slot.right_leg": "Right Leg",
   "accessory_slot.special": "Special",
+  "attribute.name.generic.palladium.destroy_speed": "Destroy Speed",
+  "attribute.name.generic.palladium.fall_resistance": "Fall Resistance",
   "attribute.name.generic.palladium.flight_speed": "Flight Speed",
   "attribute.name.generic.palladium.hovering": "Hovering",
   "attribute.name.generic.palladium.jump_power": "Jump Power",
