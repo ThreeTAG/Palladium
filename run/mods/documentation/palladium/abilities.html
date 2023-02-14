@@ -253,7 +253,7 @@ arm</td>
 <td>
 ArmType</td>
 <td>
-Determines which arm(s) should point. Possible values: [main_arm, off_arm, right_arm, left_arm, both]</td>
+Determines which arm(s) should point. Possible values: [none, main_arm, off_arm, right_arm, left_arm, both]</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1977,15 +1977,15 @@ minecraft:entity.snowball.throw</td>
 </tr>
 <tr>
 <td>
-swing_arm</td>
+swinging_arm</td>
 <td>
-Boolean</td>
+ArmType</td>
 <td>
-Whether or not an arm swing when shooting the projectile</td>
+Determines which arm(s) should swing upon shooting. Possible values: [none, main_arm, off_arm, right_arm, left_arm, both]</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-true</td>
+MAIN_ARM</td>
 </tr>
 <tr>
 <td>
@@ -2004,7 +2004,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:projectile","icon":"minecraft:snowball","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","entity_type":"minecraft:snowball","entity_data":"null","inaccuracy":0.0,"velocity":1.5,"throw_sound_event":"minecraft:entity.snowball.throw","swing_arm":true,"damage_from_player":false}</pre>
+{"type":"palladium:projectile","icon":"minecraft:snowball","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","entity_type":"minecraft:snowball","entity_data":"null","inaccuracy":0.0,"velocity":1.5,"throw_sound_event":"minecraft:entity.snowball.throw","swinging_arm":"main_arm","damage_from_player":false}</pre>
 </div>
 <hr>
 
@@ -2747,13 +2747,13 @@ false</td>
 <td>
 texture</td>
 <td>
-ResourceLocation</td>
+SkinTypedValue</td>
 <td>
 Texture for the skin change</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-minecraft:textures/entity/zombie/drowned.png</td>
+SkinTypedValue{normal=minecraft:textures/entity/zombie/drowned.png, slim=minecraft:textures/entity/zombie/drowned.png}</td>
 </tr>
 <tr>
 <td>
