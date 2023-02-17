@@ -1,4 +1,4 @@
-package net.threetag.palladium.item;
+package net.threetag.palladium.compat.curiostinkets;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
