@@ -12,6 +12,7 @@
   "ability.palladium.player_animation": "Player Animation",
   "ability.palladium.projectile": "Projectile",
   "ability.palladium.render_layer": "Render Layer",
+  "ability.palladium.restrict_slots": "Restrict Slots",
   "ability.palladium.shader_effect": "Shader Effect",
   "ability.palladium.show_both_arms": "Show Both Arms",
   "ability.palladium.shrink_body_overlay": "Shrink Body Overlay",

@@ -10,16 +10,17 @@
     "client.HumanoidModelMixin",
     "client.ItemInHandRendererMixin",
     "client.LivingEntityRendererMixin",
+    "client.MinecraftMixin",
     "client.PlayerInfoMixin",
     "client.PlayerModelMixin",
     "client.PlayerRendererMixin",
     "client.RenderTypeMixin",
-    "client.SplashManagerMixin",
-    "client.MinecraftMixin"
+    "client.SplashManagerMixin"
   ],
   "mixins": [
     "ArmorStandMixin",
     "DamageSourceMixin",
+    "AbstractContainerMenuMixin",
     "LiquidBlockMixin",
     "LivingEntityMixin",
     "PlayerMixin",

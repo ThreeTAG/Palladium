@@ -10,16 +10,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.threetag.palladium.client.renderer.item.CurioTrinketRenderer;
 import net.threetag.palladium.compat.curiostinkets.CurioTrinket;
 import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsSlotInv;
 import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsUtil;
+import net.threetag.palladium.power.ability.RestrictSlotsAbility;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
+import top.theillusivec4.curios.api.event.CurioEquipEvent;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
@@ -37,6 +40,15 @@ public class CuriosUtil extends CuriosTrinketsUtil {
         if (HANDLERS.containsKey(stack.getItem())) {
             Capability capability = new Capability(stack, HANDLERS.get(stack.getItem()));
             evt.addCapability(CuriosCapability.ID_ITEM, new CuriosCompat.Provider(capability));
+        }
+    }
+
+    @SubscribeEvent
+    public void onCurioEquip(CurioEquipEvent e) {
+        var key = "curios:" + e.getSlotContext().identifier();
+
+        if (RestrictSlotsAbility.isRestricted(e.getEntity(), key)) {
+            e.setResult(Event.Result.DENY);
         }
     }
 

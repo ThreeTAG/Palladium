@@ -43,7 +43,7 @@ public class AddonPackManager {
     }
 
     public static void init() {
-        getInstance().beginLoading(Util.bootstrapExecutor(), Runnable::run);
+        getInstance().beginLoading(Util.backgroundExecutor(), Runnable::run);
     }
 
     private final ReloadableResourceManager resourceManager;
@@ -173,10 +173,6 @@ public class AddonPackManager {
                         }
                     })
                     .thenApply((unit) -> this);
-
-            while(!future.isDone()) {
-
-            }
         }
     }
 

@@ -4,16 +4,19 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class PlayerSlot {
 
     private static final Map<EquipmentSlot, PlayerSlot> EQUIPMENT_SLOTS = new HashMap<>();
+
+    @NotNull
+    public static PlayerSlot get(EquipmentSlot slot) {
+        return Objects.requireNonNull(get(slot.getName()));
+    }
 
     @Nullable
     public static PlayerSlot get(String name) {
@@ -36,6 +39,10 @@ public abstract class PlayerSlot {
 
     public abstract List<ItemStack> getItems(LivingEntity entity);
 
+    public abstract void clear(LivingEntity entity);
+
+    public abstract Type getType();
+
     @Nullable
     public EquipmentSlot getEquipmentSlot() {
         return null;
@@ -55,8 +62,18 @@ public abstract class PlayerSlot {
         }
 
         @Override
+        public void clear(LivingEntity entity) {
+            entity.setItemSlot(this.slot, ItemStack.EMPTY);
+        }
+
+        @Override
         public @Nullable EquipmentSlot getEquipmentSlot() {
             return this.slot;
+        }
+
+        @Override
+        public Type getType() {
+            return Type.EQUIPMENT_SLOT;
         }
 
         @Override
@@ -81,9 +98,29 @@ public abstract class PlayerSlot {
         }
 
         @Override
+        public void clear(LivingEntity entity) {
+            var inv = CuriosTrinketsUtil.getInstance().getSlot(entity, this.slot);
+            for (int i = 0; i < inv.getSlots(); i++) {
+                inv.setStackInSlot(i, ItemStack.EMPTY);
+            }
+        }
+
+        @Override
+        public Type getType() {
+            return Type.CURIOS_TRINKET;
+        }
+
+        @Override
         public String toString() {
             return (this.curios ? "curios:" : "trinkets:") + this.slot;
         }
+    }
+
+    public enum Type {
+
+        EQUIPMENT_SLOT,
+        CURIOS_TRINKET
+
     }
 
 }

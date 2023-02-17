@@ -31,6 +31,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> SHOW_BOTH_ARMS = ABILITIES.register("show_both_arms", () -> new Ability().withProperty(Ability.HIDDEN, true));
     public static final RegistrySupplier<Ability> PLAYER_ANIMATION = ABILITIES.register("player_animation", PlayerAnimationAbility::new);
     public static final RegistrySupplier<Ability> WATER_WALK = ABILITIES.register("water_walk", Ability::new);
+    public static final RegistrySupplier<Ability> RESTRICT_SLOTS = ABILITIES.register("restrict_slots", RestrictSlotsAbility::new);
 
     public static void init() {
 
