@@ -5,17 +5,19 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.threetag.palladium.compat.curiostinkets.CurioTrinket;
+import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsUtil;
 
 public class CurioTrinketItem extends SortedItem implements CurioTrinket {
 
     public CurioTrinketItem(Properties properties, CreativeModeTabFiller filler) {
         super(properties, filler);
-        CurioTrinketRegistry.registerCurioTrinket(this);
+        CuriosTrinketsUtil.getInstance().registerCurioTrinket(this);
     }
 
     public CurioTrinketItem(Properties properties) {
         super(properties);
-        CurioTrinketRegistry.registerCurioTrinket(this);
+        CuriosTrinketsUtil.getInstance().registerCurioTrinket(this);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -23,7 +25,7 @@ public class CurioTrinketItem extends SortedItem implements CurioTrinket {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
 
-        if(this.canRightClickEquip() && CurioTrinketRegistry.equipItem(player, stack)) {
+        if (this.canRightClickEquip() && CuriosTrinketsUtil.getInstance().equipItem(player, stack)) {
             return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
         }
 
