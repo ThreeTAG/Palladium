@@ -40,6 +40,11 @@ public class HeldCondition extends KeyCondition {
     }
 
     @Override
+    public AbilityConfiguration.KeyPressType getKeyPressType() {
+        return AbilityConfiguration.KeyPressType.HOLD;
+    }
+
+    @Override
     public CooldownType getCooldownType() {
         return CooldownType.DYNAMIC;
     }

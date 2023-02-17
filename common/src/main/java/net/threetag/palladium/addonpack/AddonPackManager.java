@@ -43,7 +43,7 @@ public class AddonPackManager {
     }
 
     public static void init() {
-        getInstance().beginLoading(Util.backgroundExecutor(), Runnable::run);
+        getInstance().beginLoading(Util.bootstrapExecutor(), Runnable::run);
     }
 
     private final ReloadableResourceManager resourceManager;
@@ -164,7 +164,7 @@ public class AddonPackManager {
             }
 
         } else {
-            this.resourceManager
+            CompletableFuture<AddonPackManager> future = this.resourceManager
                     .createReload(backgroundExecutor, gameExecutor, CompletableFuture.completedFuture(Unit.INSTANCE), this.packList.openAllSelected())
                     .done().whenComplete((unit, throwable) -> {
                         if (throwable != null) {
@@ -173,6 +173,10 @@ public class AddonPackManager {
                         }
                     })
                     .thenApply((unit) -> this);
+
+            while(!future.isDone()) {
+
+            }
         }
     }
 

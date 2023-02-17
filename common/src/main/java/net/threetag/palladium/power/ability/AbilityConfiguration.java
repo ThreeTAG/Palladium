@@ -32,6 +32,7 @@ public class AbilityConfiguration {
     private CooldownType cooldownType = CooldownType.STATIC;
     private boolean needsKey = false;
     private KeyType keyType = KeyType.KEY_BIND;
+    private KeyPressType keyPressType = KeyPressType.ONCE;
     public List<String> dependencies = new ArrayList<>();
 
     public AbilityConfiguration(String id, Ability ability) {
@@ -91,6 +92,10 @@ public class AbilityConfiguration {
         return this.keyType;
     }
 
+    public KeyPressType getKeyPressType() {
+        return this.keyPressType;
+    }
+
     public boolean isBuyable() {
         return buyable;
     }
@@ -112,6 +117,7 @@ public class AbilityConfiguration {
         buf.writeBoolean(this.needsKey);
         buf.writeBoolean(this.buyable);
         buf.writeInt(this.keyType.ordinal());
+        buf.writeInt(this.keyPressType.ordinal());
         buf.writeInt(this.cooldownType.ordinal());
         buf.writeInt(this.dependencies.size());
 
@@ -129,6 +135,7 @@ public class AbilityConfiguration {
         configuration.needsKey = buf.readBoolean();
         configuration.buyable = buf.readBoolean();
         configuration.keyType = KeyType.values()[buf.readInt()];
+        configuration.keyPressType = KeyPressType.values()[buf.readInt()];
         configuration.cooldownType = CooldownType.values()[buf.readInt()];
         int keys = buf.readInt();
         for (int i = 0; i < keys; i++) {
@@ -215,6 +222,7 @@ public class AbilityConfiguration {
                         }
                         withKey = true;
                         configuration.keyType = condition.getKeyType();
+                        configuration.keyPressType = condition.getKeyPressType();
                     }
 
                     if (condition.handlesCooldown()) {
@@ -245,6 +253,12 @@ public class AbilityConfiguration {
     public enum KeyType {
 
         KEY_BIND, LEFT_CLICK, RIGHT_CLICK, SPACE_BAR;
+
+    }
+
+    public enum KeyPressType {
+
+        ONCE, HOLD
 
     }
 
