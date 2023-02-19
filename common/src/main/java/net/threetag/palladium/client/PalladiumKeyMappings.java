@@ -51,7 +51,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
                 for (AbilityKeyMapping key : ABILITY_KEYS) {
                     AbilityEntry entry = list.getDisplayedAbilities()[key.index - 1];
 
-                    if (entry != null) {
+                    if (entry != null && (action != GLFW.GLFW_PRESS || (!entry.getConfiguration().needsEmptyHand() || client.player.getMainHandItem().isEmpty()))) {
                         if (key.matches(keyCode, scanCode) && entry.getConfiguration().getKeyType() == AbilityConfiguration.KeyType.KEY_BIND) {
                             new AbilityKeyPressedMessage(entry.getReference(), action == GLFW.GLFW_PRESS).send();
                         } else if (entry.getConfiguration().getKeyType() == AbilityConfiguration.KeyType.SPACE_BAR && client.options.keyJump.matches(keyCode, scanCode)) {

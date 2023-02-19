@@ -23,7 +23,7 @@ public class MinecraftMixin {
         if (PalladiumKeyMappings.LEFT_CLICKED_ABILITY == null) {
             var entry = PalladiumKeyMappings.getPrioritisedKeyedAbility(AbilityConfiguration.KeyType.LEFT_CLICK);
 
-            if (entry != null && entry.isUnlocked()) {
+            if (entry != null && entry.isUnlocked() && (!entry.getConfiguration().needsEmptyHand() || this.player.getMainHandItem().isEmpty())) {
                 new AbilityKeyPressedMessage(entry.getReference(), true).send();
                 PalladiumKeyMappings.LEFT_CLICKED_ABILITY = entry;
 
@@ -39,7 +39,7 @@ public class MinecraftMixin {
         if (PalladiumKeyMappings.RIGHT_CLICKED_ABILITY == null) {
             var entry = PalladiumKeyMappings.getPrioritisedKeyedAbility(AbilityConfiguration.KeyType.RIGHT_CLICK);
 
-            if (entry != null && entry.isUnlocked()) {
+            if (entry != null && entry.isUnlocked() && (!entry.getConfiguration().needsEmptyHand() || this.player.getMainHandItem().isEmpty())) {
                 new AbilityKeyPressedMessage(entry.getReference(), true).send();
                 PalladiumKeyMappings.RIGHT_CLICKED_ABILITY = entry;
 

@@ -31,6 +31,7 @@ public class AbilityConfiguration {
     private boolean buyable = false;
     private CooldownType cooldownType = CooldownType.STATIC;
     private boolean needsKey = false;
+    private boolean needsEmptyHand = false;
     private KeyType keyType = KeyType.KEY_BIND;
     private KeyPressType keyPressType = KeyPressType.ONCE;
     public List<String> dependencies = new ArrayList<>();
@@ -88,6 +89,10 @@ public class AbilityConfiguration {
         return this.needsKey;
     }
 
+    public boolean needsEmptyHand() {
+        return this.needsEmptyHand;
+    }
+
     public KeyType getKeyType() {
         return this.keyType;
     }
@@ -115,6 +120,7 @@ public class AbilityConfiguration {
         buf.writeResourceLocation(Objects.requireNonNull(Ability.REGISTRY.getKey(this.ability)));
         this.propertyManager.toBuffer(buf);
         buf.writeBoolean(this.needsKey);
+        buf.writeBoolean(this.needsEmptyHand);
         buf.writeBoolean(this.buyable);
         buf.writeInt(this.keyType.ordinal());
         buf.writeInt(this.keyPressType.ordinal());
@@ -133,6 +139,7 @@ public class AbilityConfiguration {
         AbilityConfiguration configuration = new AbilityConfiguration(id, Objects.requireNonNull(ability));
         configuration.propertyManager.fromBuffer(buf);
         configuration.needsKey = buf.readBoolean();
+        configuration.needsEmptyHand = buf.readBoolean();
         configuration.buyable = buf.readBoolean();
         configuration.keyType = KeyType.values()[buf.readInt()];
         configuration.keyPressType = KeyPressType.values()[buf.readInt()];
@@ -148,7 +155,7 @@ public class AbilityConfiguration {
     public static AbilityConfiguration fromJSON(String id, JsonObject json) {
         var abilityId = GsonUtil.getAsResourceLocation(json, "type");
 
-        if(abilityId.equals(Palladium.id("interpolated_integer"))) {
+        if (abilityId.equals(Palladium.id("interpolated_integer"))) {
             abilityId = Abilities.ANIMATION_TIMER.getId();
             AddonPackLog.warning("'interpolated_integer' ability found in power, please use 'animation_timer' instead!");
         }
@@ -223,6 +230,10 @@ public class AbilityConfiguration {
                         withKey = true;
                         configuration.keyType = condition.getKeyType();
                         configuration.keyPressType = condition.getKeyPressType();
+
+                        if (condition instanceof KeyCondition key) {
+                            configuration.needsEmptyHand = key.needsEmptyHand();
+                        }
                     }
 
                     if (condition.handlesCooldown()) {
