@@ -13,6 +13,7 @@ import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Unit;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLogEntry;
 import net.threetag.palladium.addonpack.parser.*;
 import net.threetag.palladium.addonpack.version.VersionParsingException;
@@ -171,6 +172,7 @@ public class AddonPackManager {
                             this.resourceManager.close();
                             throwable.printStackTrace();
                         }
+                        Palladium.LOGGER.info("Finished addonpack initialisation!");
                     })
                     .thenApply((unit) -> this);
         }

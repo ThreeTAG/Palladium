@@ -62,6 +62,8 @@ public class Palladium {
         PalladiumSoundEvents.SOUNDS.register();
         Accessories.ACCESSORIES.register();
 
+        LOGGER.info("Starting addonpack initialisation...");
+        AddonPackManager.init();
         PalladiumNetwork.init();
         PalladiumEntityTypes.init();
         EntityPropertyHandler.init();
@@ -69,7 +71,6 @@ public class Palladium {
         ItemPowerManager.init();
         SuitSetPowerManager.init();
         AbilityEventHandler.init();
-        AddonPackManager.init();
         Abilities.init();
         PalladiumProperties.init();
         PalladiumAttributes.init();
