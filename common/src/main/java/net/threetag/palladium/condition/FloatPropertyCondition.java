@@ -34,7 +34,7 @@ public class FloatPropertyCondition extends Condition {
 
     @Override
     public ConditionSerializer getSerializer() {
-        return ConditionSerializers.INTEGER_PROPERTY.get();
+        return ConditionSerializers.FLOAT_PROPERTY.get();
     }
 
     public static class Serializer extends ConditionSerializer {
