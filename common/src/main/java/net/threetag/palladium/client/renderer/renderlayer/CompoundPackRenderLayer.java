@@ -21,6 +21,8 @@ public final class CompoundPackRenderLayer implements IPackRenderLayer {
 
     private final List<IPackRenderLayer> layers;
     private final List<Condition> conditions = new ArrayList<>();
+    private final List<Condition> thirdPersonConditions = new ArrayList<>();
+    private final List<Condition> firstPersonConditions = new ArrayList<>();
 
     public CompoundPackRenderLayer(
             List<IPackRenderLayer> layers) {
@@ -29,7 +31,7 @@ public final class CompoundPackRenderLayer implements IPackRenderLayer {
 
     @Override
     public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (IPackRenderLayer.conditionsFulfilled(context.getEntity(), this.conditions)) {
+        if (IPackRenderLayer.conditionsFulfilled(context.getEntity(), this.conditions, this.thirdPersonConditions)) {
             for (IPackRenderLayer layer : this.layers) {
                 layer.render(context, poseStack, bufferSource, parentModel, packedLight, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
             }
@@ -38,7 +40,7 @@ public final class CompoundPackRenderLayer implements IPackRenderLayer {
 
     @Override
     public void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        if (IPackRenderLayer.conditionsFulfilled(context.getEntity(), this.conditions)) {
+        if (IPackRenderLayer.conditionsFulfilled(context.getEntity(), this.conditions, this.firstPersonConditions)) {
             for (IPackRenderLayer layer : this.layers) {
                 layer.renderArm(context, arm, playerRenderer, poseStack, bufferSource, packedLight);
             }
@@ -46,8 +48,14 @@ public final class CompoundPackRenderLayer implements IPackRenderLayer {
     }
 
     @Override
-    public IPackRenderLayer addCondition(Condition condition) {
-        this.conditions.add(condition);
+    public IPackRenderLayer addCondition(Condition condition, ConditionContext context) {
+        if (context == ConditionContext.BOTH) {
+            this.conditions.add(condition);
+        } else if (context == ConditionContext.THIRD_PERSON) {
+            this.thirdPersonConditions.add(condition);
+        } else if (context == ConditionContext.FIRST_PERSON) {
+            this.firstPersonConditions.add(condition);
+        }
         return this;
     }
 
@@ -55,7 +63,7 @@ public final class CompoundPackRenderLayer implements IPackRenderLayer {
     public List<BodyPart> getHiddenBodyParts(LivingEntity entity) {
         List<BodyPart> bodyParts = new ArrayList<>();
 
-        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions)) {
+        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions)) {
             for (IPackRenderLayer layer : this.layers) {
                 for (BodyPart hiddenBodyPart : layer.getHiddenBodyParts(entity)) {
                     if (!bodyParts.contains(hiddenBodyPart)) {

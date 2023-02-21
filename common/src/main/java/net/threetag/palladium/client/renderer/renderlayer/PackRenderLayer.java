@@ -37,6 +37,8 @@ public class PackRenderLayer implements IPackRenderLayer {
     private final SkinTypedValue<DynamicTexture> texture;
     private final BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType;
     private final List<Condition> conditions = new ArrayList<>();
+    private final List<Condition> thirdPersonConditions = new ArrayList<>();
+    private final List<Condition> firstPersonConditions = new ArrayList<>();
     private final List<BodyPart> hiddenBodyParts = new ArrayList<>();
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -51,7 +53,7 @@ public class PackRenderLayer implements IPackRenderLayer {
     @Override
     public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         var entity = context.getEntity();
-        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions) && this.modelLookup.get(entity).fitsEntity(entity, parentModel)) {
+        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions) && this.modelLookup.get(entity).fitsEntity(entity, parentModel)) {
             EntityModel<LivingEntity> entityModel = this.model.get(entity);
 
             if (entityModel instanceof HumanoidModel<LivingEntity> entityHumanoidModel && parentModel instanceof HumanoidModel<LivingEntity> parentHumanoid) {
@@ -71,7 +73,7 @@ public class PackRenderLayer implements IPackRenderLayer {
     @Override
     public void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         var player = context.getEntity();
-        if (IPackRenderLayer.conditionsFulfilled(player, this.conditions) && this.modelLookup.get(player).fitsEntity(player, playerRenderer.getModel())) {
+        if (IPackRenderLayer.conditionsFulfilled(player, this.conditions, this.firstPersonConditions) && this.modelLookup.get(player).fitsEntity(player, playerRenderer.getModel())) {
             EntityModel<LivingEntity> entityModel = this.model.get(player);
 
             if (entityModel instanceof HumanoidModel humanoidModel) {
@@ -94,8 +96,14 @@ public class PackRenderLayer implements IPackRenderLayer {
     }
 
     @Override
-    public IPackRenderLayer addCondition(Condition condition) {
-        this.conditions.add(condition);
+    public IPackRenderLayer addCondition(Condition condition, ConditionContext context) {
+        if (context == ConditionContext.BOTH) {
+            this.conditions.add(condition);
+        } else if (context == ConditionContext.THIRD_PERSON) {
+            this.thirdPersonConditions.add(condition);
+        } else if (context == ConditionContext.FIRST_PERSON) {
+            this.firstPersonConditions.add(condition);
+        }
         return this;
     }
 
@@ -108,7 +116,7 @@ public class PackRenderLayer implements IPackRenderLayer {
 
     @Override
     public List<BodyPart> getHiddenBodyParts(LivingEntity entity) {
-        return IPackRenderLayer.conditionsFulfilled(entity, this.conditions) ? this.hiddenBodyParts : Collections.emptyList();
+        return IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions) ? this.hiddenBodyParts : Collections.emptyList();
     }
 
     public static PackRenderLayer parse(JsonObject json) {
