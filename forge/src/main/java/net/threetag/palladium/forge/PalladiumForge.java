@@ -45,6 +45,7 @@ public class PalladiumForge {
         AddonPackType.init();
         Palladium.init();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PalladiumConfig.Client.generateConfig());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, PalladiumConfig.Server.generateConfig());
 
         if (ModList.get().isLoaded("curios")) {
             CuriosCompat.init();

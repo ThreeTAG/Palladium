@@ -18,11 +18,12 @@
     "client.SplashManagerMixin"
   ],
   "mixins": [
+    "AbstractContainerMenuMixin",
     "ArmorStandMixin",
     "DamageSourceMixin",
-    "AbstractContainerMenuMixin",
     "LiquidBlockMixin",
     "LivingEntityMixin",
+    "OreFeatureMixin",
     "PlayerMixin",
     "RangedAttributeAccessor",
     "ReloadableResourceManagerMixin",
