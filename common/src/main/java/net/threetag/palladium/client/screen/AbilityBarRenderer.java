@@ -400,7 +400,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
 
         public boolean isFullyLocked() {
             for (AbilityEntry entry : this.getDisplayedAbilities()) {
-                if (entry.isUnlocked()) {
+                if (entry != null && entry.isUnlocked()) {
                     return false;
                 }
             }
