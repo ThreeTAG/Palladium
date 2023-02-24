@@ -14,8 +14,10 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
+import net.threetag.palladium.block.IAddonBlock;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.model.ArmorModelManager;
@@ -118,6 +120,24 @@ public class PalladiumClient {
                 PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD.get(),
                 PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD.get(),
                 PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER.get());
+
+        for (Block block : Registry.BLOCK) {
+            if (block instanceof IAddonBlock addonBlock) {
+                var type = addonBlock.getRenderType();
+
+                if (type != null) {
+                    if (type.equalsIgnoreCase("solid")) {
+                        RenderTypeRegistry.registerBlock(RenderType.solid(), block);
+                    } else if (type.equalsIgnoreCase("cutout_mipped")) {
+                        RenderTypeRegistry.registerBlock(RenderType.cutoutMipped(), block);
+                    } else if (type.equalsIgnoreCase("cutout")) {
+                        RenderTypeRegistry.registerBlock(RenderType.cutout(), block);
+                    } else if (type.equalsIgnoreCase("translucent")) {
+                        RenderTypeRegistry.registerBlock(RenderType.translucent(), block);
+                    }
+                }
+            }
+        }
     }
 
     public static void colorHandlers() {

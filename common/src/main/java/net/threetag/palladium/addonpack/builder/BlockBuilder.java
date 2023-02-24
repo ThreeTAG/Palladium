@@ -19,6 +19,7 @@ public class BlockBuilder extends AddonBuilder<Block> {
     private MaterialColor materialColor;
     private float destroyTime;
     private float explosionResistance;
+    private String renderType = null;
 
     public BlockBuilder(ResourceLocation id, JsonObject json) {
         super(id);
@@ -33,6 +34,8 @@ public class BlockBuilder extends AddonBuilder<Block> {
                 .strength(this.destroyTime, this.explosionResistance);
 
         IAddonBlock block = this.typeSerializer != null ? this.typeSerializer.parse(this.json, properties) : new AddonBlock(properties);
+
+        block.setRenderType(this.renderType);
 
         return (Block) block;
     }
@@ -59,6 +62,11 @@ public class BlockBuilder extends AddonBuilder<Block> {
 
     public BlockBuilder explosionResistance(float explosionResistance) {
         this.explosionResistance = explosionResistance;
+        return this;
+    }
+
+    public BlockBuilder renderType(String name) {
+        this.renderType = name;
         return this;
     }
 
