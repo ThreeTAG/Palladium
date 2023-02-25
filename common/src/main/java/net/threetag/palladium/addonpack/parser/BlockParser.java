@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.builder.AddonBuilder;
 import net.threetag.palladium.addonpack.builder.BlockBuilder;
 import net.threetag.palladium.block.AddonBlock;
@@ -28,6 +29,7 @@ public class BlockParser extends AddonParser<Block> {
 
     private static final Map<ResourceLocation, BlockTypeSerializer> TYPE_SERIALIZERS = new LinkedHashMap<>();
 
+
     public BlockParser() {
         super(GSON, "blocks", Registry.BLOCK_REGISTRY);
     }
@@ -39,17 +41,31 @@ public class BlockParser extends AddonParser<Block> {
                 .type(TYPE_SERIALIZERS.get(GsonUtil.getAsResourceLocation(json, "type", null)));
 
         var materialId = GsonUtil.getAsResourceLocation(json, "material");
+        var soundTypeId = GsonUtil.getAsResourceLocation(json, "sound_type");
         var material = BlockMaterialRegistry.get(materialId);
+        var soundType = BlockMaterialRegistry.getSoundType(soundTypeId);
 
         if (material == null) {
             throw new JsonParseException("Unknown block material '" + materialId + "'");
         }
 
-        builder.material(material);
+        if (soundType == null) {
+            throw new JsonParseException("Unknown block sound type '" + soundTypeId + "'");
+        }
+
+        builder.material(material).soundType(soundType);
         GsonUtil.ifHasKey(json, "material_color", el -> builder.materialColor(BlockMaterialRegistry.getColor(GsonUtil.convertToResourceLocation(el, "material_color"))));
         GsonUtil.ifHasKey(json, "destroy_time", el -> builder.destroyTime(GsonHelper.convertToFloat(el, "destroy_time")));
         GsonUtil.ifHasKey(json, "explosion_resistance", el -> builder.explosionResistance(GsonHelper.convertToFloat(el, "explosion_resistance")));
         builder.renderType(GsonHelper.getAsString(json, "render_type", null));
+
+        if (GsonHelper.getAsBoolean(json, "no_occlusion", false)) {
+            builder.noOcclusion();
+        }
+
+        if (GsonHelper.getAsBoolean(json, "register_item", true)) {
+            AddonPackManager.ITEM_PARSER.autoRegisteredBlockItems.put(id, GsonUtil.getAsResourceLocation(json, "creative_mode_tab", null));
+        }
 
         return builder;
     }
@@ -84,6 +100,9 @@ public class BlockParser extends AddonParser<Block> {
         builder.addProperty("material_color", ResourceLocation.class)
                 .description("Material color of the block. Determines the color displayed on maps. If not specified, it will use the default color of the material. Possible values: " + Arrays.toString(BlockMaterialRegistry.getAllColorIds().toArray()))
                 .fallback(null).exampleJson(new JsonPrimitive("minecraft:color_blue"));
+        builder.addProperty("sound_type", ResourceLocation.class)
+                .description("Place/break/step sound type of the block. Possible values: " + Arrays.toString(BlockMaterialRegistry.getAllSoundTypeIds().toArray()))
+                .fallback(new ResourceLocation("stone")).exampleJson(new JsonPrimitive("minecraft:stone"));
         builder.addProperty("destroy_time", Float.class)
                 .description("Value that determines how long a player needs to break this block. For reference: stone has 1.5, oak planks have 2.0, obsidian has 50. For insta-break blocks, leave it at 0")
                 .fallback(0F).exampleJson(new JsonPrimitive(1.5F));
@@ -93,6 +112,16 @@ public class BlockParser extends AddonParser<Block> {
         builder.addProperty("render_type", String.class)
                 .description("If your block has a non-cube model or transparent texture, you will NEED to change this. 'solid' is default. 'cutout_mipped' is usually used for leaves. 'cutout' is used for stuff like iron bars, glass, and more. 'translucent' is used for blocks where the background is blended with the alpha values of the texture (used in stained glass, they tint the background behind them). 'translucent' is the most performance-heavy, so use sparingly!")
                 .fallback("solid").exampleJson(new JsonPrimitive("solid"));
+        builder.addProperty("no_occlusion", Boolean.class)
+                .description("Necessary to enable if your block has transparency, like glass")
+                .fallback(false).exampleJson(new JsonPrimitive(false));
+
+        builder.addProperty("register_item", Boolean.class)
+                .description("If enabled, a corresponding item for your block will automatically be created. If you want to give the item some unique properties, turn this setting off and make a json for the item using the block_item type")
+                .fallback(true).exampleJson(new JsonPrimitive(true));
+        builder.addProperty("creative_mode_tab", ResourceLocation.class)
+                .description("If register_item is enabled, you can use this setting to set the creative mode tab of the block item")
+                .fallback(null).exampleJson(new JsonPrimitive("test:test_tab"));
 
         return builder;
     }

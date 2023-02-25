@@ -3,6 +3,7 @@ package net.threetag.palladium.addonpack.builder;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -17,8 +18,10 @@ public class BlockBuilder extends AddonBuilder<Block> {
     private BlockParser.BlockTypeSerializer typeSerializer = null;
     private Material material;
     private MaterialColor materialColor;
+    private SoundType soundType;
     private float destroyTime;
     private float explosionResistance;
+    private boolean noOcclusion = false;
     private String renderType = null;
 
     public BlockBuilder(ResourceLocation id, JsonObject json) {
@@ -32,6 +35,14 @@ public class BlockBuilder extends AddonBuilder<Block> {
         var materialColor = Utils.orElse(this.materialColor, material.getColor());
         var properties = BlockBehaviour.Properties.of(material, materialColor)
                 .strength(this.destroyTime, this.explosionResistance);
+
+        if (this.soundType != null) {
+            properties.sound(this.soundType);
+        }
+
+        if (this.noOcclusion) {
+            properties.noOcclusion();
+        }
 
         IAddonBlock block = this.typeSerializer != null ? this.typeSerializer.parse(this.json, properties) : new AddonBlock(properties);
 
@@ -55,6 +66,11 @@ public class BlockBuilder extends AddonBuilder<Block> {
         return this;
     }
 
+    public BlockBuilder soundType(SoundType soundType) {
+        this.soundType = soundType;
+        return this;
+    }
+
     public BlockBuilder destroyTime(float destroyTime) {
         this.destroyTime = destroyTime;
         return this;
@@ -67,6 +83,11 @@ public class BlockBuilder extends AddonBuilder<Block> {
 
     public BlockBuilder renderType(String name) {
         this.renderType = name;
+        return this;
+    }
+
+    public BlockBuilder noOcclusion() {
+        this.noOcclusion = true;
         return this;
     }
 

@@ -27,9 +27,21 @@ import java.util.*;
 public class ItemParser extends AddonParser<Item> {
 
     private static final Map<ResourceLocation, ItemTypeSerializer> TYPE_SERIALIZERS = new LinkedHashMap<>();
+    public final Map<ResourceLocation, ResourceLocation> autoRegisteredBlockItems = new HashMap<>();
 
     public ItemParser() {
         super(GSON, "items", Registry.ITEM_REGISTRY);
+    }
+
+    @Override
+    public void injectJsons(Map<ResourceLocation, JsonElement> map) {
+        for (ResourceLocation id : autoRegisteredBlockItems.keySet()) {
+            var json = new JsonObject();
+            json.addProperty("type", "palladium:block_item");
+            json.addProperty("block", id.toString());
+            json.addProperty("creative_mode_tab", autoRegisteredBlockItems.get(id).toString());
+            map.put(id, json);
+        }
     }
 
     @Override
@@ -47,7 +59,7 @@ public class ItemParser extends AddonParser<Item> {
 
         GsonUtil.ifHasKey(json, "attribute_modifiers", je -> parseAttributeModifiers(builder, je));
 
-        if(Platform.isClient()) {
+        if (Platform.isClient()) {
             GsonUtil.ifHasObject(json, "render_layers", jsonObject -> {
                 IAddonItem.RenderLayerContainer container = new IAddonItem.RenderLayerContainer();
                 for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
@@ -112,6 +124,7 @@ public class ItemParser extends AddonParser<Item> {
 
     static {
         registerTypeSerializer(new AddonItem.Parser());
+        registerTypeSerializer(new AddonBlockItem.Parser());
         registerTypeSerializer(new AddonArmorItem.Parser());
         registerTypeSerializer(new AddonSwordItem.Parser());
         registerTypeSerializer(new AddonPickaxeItem.Parser());

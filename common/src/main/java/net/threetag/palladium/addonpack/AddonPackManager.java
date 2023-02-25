@@ -61,6 +61,7 @@ public class AddonPackManager {
         this.resourceManager.registerReloadListener(new CreativeModeTabParser());
         this.resourceManager.registerReloadListener(new ArmorMaterialParser());
         this.resourceManager.registerReloadListener(new ToolTierParser());
+        this.resourceManager.registerReloadListener(new BlockParser());
         this.resourceManager.registerReloadListener(ITEM_PARSER = new ItemParser());
         this.resourceManager.registerReloadListener(new SuitSetParser());
         this.resourceManager.registerReloadListener(new ParticleTypeParser());

@@ -6,5 +6,7 @@
   "item.test.wooden_helmet": "Wooden Helmet",
   "item.test.wooden_chestplate": "Wooden Chestplate",
   "item.test.wooden_leggings": "Wooden Leggings",
-  "item.test.wooden_boots": "Wooden Boots"
+  "item.test.wooden_boots": "Wooden Boots",
+  "block.test.test_stone": "Test Stone",
+  "block.test.test_glass": "Test Glass"
 }

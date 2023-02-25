@@ -173,6 +173,10 @@ Palladium</h3>
 Default Item</a>
 </li>
 <li>
+<a href="#palladium:block_item">
+Block Item</a>
+</li>
+<li>
 <a href="#palladium:armor">
 Armor</a>
 </li>
@@ -237,6 +241,50 @@ Default Item Type, you don't need to specify that you want this one, leaving 'ty
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:default"}</pre>
+</div>
+<hr>
+
+<div id="palladium:block_item">
+<h2>
+Block Item</h2>
+<p>
+Item for a block, duh</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+block</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the block that this item is for</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:block_item","block":"test:test_block"}</pre>
 </div>
 <hr>
 
