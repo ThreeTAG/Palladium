@@ -1,6 +1,8 @@
 {
   "itemGroup.test.test_tab": "Test Tab",
   "item.test.basic_item": "Basic Item",
+  "item.test.dirt_chestplate": "Dirt Chestplate",
+  "item.test.gecko_test_chestplate": "Gecko Test Chestplate",
   "item.test.wooden_helmet": "Wooden Helmet",
   "item.test.wooden_chestplate": "Wooden Chestplate",
   "item.test.wooden_leggings": "Wooden Leggings",

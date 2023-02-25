@@ -31,6 +31,14 @@ public interface IPackRenderLayer {
 
     List<BodyPart> getHiddenBodyParts(LivingEntity entity);
 
+    default void onLoad() {
+
+    }
+
+    default void onUnload() {
+
+    }
+
     static <T extends IPackRenderLayer> T parseConditions(T layer, JsonObject json) {
         for (ConditionContext context : ConditionContext.values()) {
             if (GsonHelper.isValidNode(json, context.key)) {

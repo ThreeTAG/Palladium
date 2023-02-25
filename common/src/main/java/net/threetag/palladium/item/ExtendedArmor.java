@@ -12,7 +12,7 @@ public interface ExtendedArmor {
         return false;
     }
 
-    default ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+    default ResourceLocation getArmorTextureLocation(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         return null;
     }
 

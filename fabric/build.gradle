@@ -40,6 +40,9 @@ dependencies {
     // Player Animator
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_anim_version}")
 
+    // GeckoLib
+    modImplementation("software.bernie.geckolib:geckolib-fabric-1.19:${rootProject.geckolib_version}")
+
     // Forge Config API Port
     modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
     include "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"

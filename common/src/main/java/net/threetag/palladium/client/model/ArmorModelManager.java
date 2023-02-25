@@ -56,7 +56,7 @@ public class ArmorModelManager implements ResourceManagerReloadListener {
         if (!stack.isEmpty() && HANDLERS.containsKey(stack.getItem()) && stack.getItem() instanceof ExtendedArmor customArmorTexture) {
             var handler = get(stack.getItem());
             var armorModel = handler.getArmorModel(stack, player, EquipmentSlot.CHEST);
-            var vertex = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(customArmorTexture.getArmorTexture(stack, player, EquipmentSlot.CHEST, null)), false, stack.hasFoil());
+            var vertex = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(customArmorTexture.getArmorTextureLocation(stack, player, EquipmentSlot.CHEST, null)), false, stack.hasFoil());
             var arm = rightArm ? armorModel.rightArm : armorModel.leftArm;
             arm.copyFrom(rendererArm);
             arm.xRot = 0.0F;

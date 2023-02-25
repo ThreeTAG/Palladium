@@ -67,7 +67,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArm
     }
 
     @Override
-    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+    public ResourceLocation getArmorTextureLocation(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         return entity instanceof LivingEntity livingEntity ? this.armorTexture.get(livingEntity).getTexture(livingEntity) : null;
     }
 

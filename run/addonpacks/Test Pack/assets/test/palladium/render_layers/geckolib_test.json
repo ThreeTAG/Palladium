@@ -1,0 +1,15 @@
+{
+  "type": "geckolib3:default",
+  "model": "test:geo/gecko_model_test.geo.json",
+  "texture": "test:textures/models/gecko_model_test.png",
+  "animation": "test:animations/gecko_model_test.animation.json",
+  "animation_name": "animation.model.loop",
+  "bones": {
+    "head": "armorHead",
+    "body": "armorBody",
+    "right_arm": "armorRightArm",
+    "left_arm": "armorLeftArm",
+    "right_leg": "armorRightLeg",
+    "left_leg": "armorLeftLeg"
+  }
+}
