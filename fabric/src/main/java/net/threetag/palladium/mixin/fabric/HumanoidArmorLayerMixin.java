@@ -79,7 +79,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
     }
 
     private void renderModel(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, T livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, boolean bl, A humanoidModel, boolean bl2, float f, float g, float h, @Nullable String string) {
-        ResourceLocation texture = ((ExtendedArmor) itemStack.getItem()).getArmorTexture(itemStack, livingEntity, equipmentSlot, string);
+        ResourceLocation texture = ((ExtendedArmor) itemStack.getItem()).getArmorTextureLocation(itemStack, livingEntity, equipmentSlot, string);
         VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(multiBufferSource, RenderType.armorCutoutNoCull(texture), false, bl);
         humanoidModel.renderToBuffer(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY, f, g, h, 1.0F);
     }

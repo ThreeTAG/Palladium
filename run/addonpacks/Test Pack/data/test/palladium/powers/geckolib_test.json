@@ -1,0 +1,12 @@
+{
+  "name": {
+    "text": "GeckoLib Render Layer Test"
+  },
+  "icon": "minecraft:turtle_spawn_egg",
+  "abilities": {
+    "render_layer": {
+      "type": "palladium:render_layer",
+      "render_layer": "test:geckolib_test"
+    }
+  }
+}

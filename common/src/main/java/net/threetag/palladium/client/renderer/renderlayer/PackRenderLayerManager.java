@@ -83,6 +83,8 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
+        this.renderLayers.values().forEach(IPackRenderLayer::onUnload);
+
         ImmutableMap.Builder<ResourceLocation, IPackRenderLayer> builder = ImmutableMap.builder();
 
         object.forEach((resourceLocation, jsonElement) -> {
@@ -95,6 +97,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
         });
 
         this.renderLayers = builder.build();
+        this.renderLayers.values().forEach(IPackRenderLayer::onLoad);
     }
 
     public IPackRenderLayer getLayer(ResourceLocation id) {

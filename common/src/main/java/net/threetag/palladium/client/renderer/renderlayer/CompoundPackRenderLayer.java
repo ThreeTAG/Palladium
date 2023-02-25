@@ -10,19 +10,15 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.entity.BodyPart;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public final class CompoundPackRenderLayer implements IPackRenderLayer {
+public final class CompoundPackRenderLayer extends AbstractPackRenderLayer {
 
     private final List<IPackRenderLayer> layers;
-    private final List<Condition> conditions = new ArrayList<>();
-    private final List<Condition> thirdPersonConditions = new ArrayList<>();
-    private final List<Condition> firstPersonConditions = new ArrayList<>();
 
     public CompoundPackRenderLayer(
             List<IPackRenderLayer> layers) {
@@ -45,18 +41,6 @@ public final class CompoundPackRenderLayer implements IPackRenderLayer {
                 layer.renderArm(context, arm, playerRenderer, poseStack, bufferSource, packedLight);
             }
         }
-    }
-
-    @Override
-    public IPackRenderLayer addCondition(Condition condition, ConditionContext context) {
-        if (context == ConditionContext.BOTH) {
-            this.conditions.add(condition);
-        } else if (context == ConditionContext.THIRD_PERSON) {
-            this.thirdPersonConditions.add(condition);
-        } else if (context == ConditionContext.FIRST_PERSON) {
-            this.firstPersonConditions.add(condition);
-        }
-        return this;
     }
 
     @Override

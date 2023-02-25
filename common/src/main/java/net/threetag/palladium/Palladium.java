@@ -7,6 +7,7 @@ import net.threetag.palladium.addonpack.parser.*;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.command.SuperpowerCommand;
+import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.compat.pehkui.PehkuiCompat;
 import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.condition.ConditionSerializers;
@@ -63,6 +64,11 @@ public class Palladium {
         PalladiumEntityTypes.ENTITIES.register();
         PalladiumSoundEvents.SOUNDS.register();
         Accessories.ACCESSORIES.register();
+
+        // Init before addonpack stuff is loaded, so new item type is registered
+        if (Platform.isModLoaded("geckolib3")) {
+            GeckoLibCompat.init();
+        }
 
         LOGGER.info("Starting addonpack initialisation...");
         AddonPackManager.init();

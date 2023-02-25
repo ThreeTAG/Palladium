@@ -19,27 +19,19 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
-import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.function.BiFunction;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class PackRenderLayer implements IPackRenderLayer {
+public class PackRenderLayer extends AbstractPackRenderLayer {
 
     private final SkinTypedValue<ModelLookup.Model> modelLookup;
     private final SkinTypedValue<EntityModel<LivingEntity>> model;
     private final SkinTypedValue<DynamicTexture> texture;
     private final BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType;
-    private final List<Condition> conditions = new ArrayList<>();
-    private final List<Condition> thirdPersonConditions = new ArrayList<>();
-    private final List<Condition> firstPersonConditions = new ArrayList<>();
-    private final List<BodyPart> hiddenBodyParts = new ArrayList<>();
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public PackRenderLayer(SkinTypedValue<ModelLookup.Model> model, SkinTypedValue<ModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType) {
@@ -93,30 +85,6 @@ public class PackRenderLayer implements IPackRenderLayer {
                 }
             }
         }
-    }
-
-    @Override
-    public IPackRenderLayer addCondition(Condition condition, ConditionContext context) {
-        if (context == ConditionContext.BOTH) {
-            this.conditions.add(condition);
-        } else if (context == ConditionContext.THIRD_PERSON) {
-            this.thirdPersonConditions.add(condition);
-        } else if (context == ConditionContext.FIRST_PERSON) {
-            this.firstPersonConditions.add(condition);
-        }
-        return this;
-    }
-
-    public PackRenderLayer addHiddenBodyPart(BodyPart bodyPart) {
-        if (!this.hiddenBodyParts.contains(bodyPart)) {
-            this.hiddenBodyParts.add(bodyPart);
-        }
-        return this;
-    }
-
-    @Override
-    public List<BodyPart> getHiddenBodyParts(LivingEntity entity) {
-        return IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions) ? this.hiddenBodyParts : Collections.emptyList();
     }
 
     public static PackRenderLayer parse(JsonObject json) {
