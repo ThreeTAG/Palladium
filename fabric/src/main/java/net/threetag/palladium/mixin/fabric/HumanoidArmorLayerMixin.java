@@ -17,7 +17,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.client.model.ArmorModelManager;
-import net.threetag.palladium.item.ICustomArmorTexture;
+import net.threetag.palladium.item.ExtendedArmor;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -45,7 +45,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
     @Inject(at = @At("HEAD"), method = "renderArmorPiece", cancellable = true)
     private void renderArmorPiece(PoseStack poseStack, MultiBufferSource multiBufferSource, T livingEntity, EquipmentSlot equipmentSlot, int i, A humanoidModel, CallbackInfo callbackInfo) {
         ItemStack itemStack = livingEntity.getItemBySlot(equipmentSlot);
-        if (itemStack.getItem() instanceof ICustomArmorTexture) {
+        if (itemStack.getItem() instanceof ExtendedArmor) {
             ArmorItem armorItem = (ArmorItem) itemStack.getItem();
             ArmorModelManager.Handler handler = ArmorModelManager.get(itemStack.getItem());
 
@@ -79,7 +79,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
     }
 
     private void renderModel(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, T livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, boolean bl, A humanoidModel, boolean bl2, float f, float g, float h, @Nullable String string) {
-        ResourceLocation texture = ((ICustomArmorTexture) itemStack.getItem()).getArmorTexture(itemStack, livingEntity, equipmentSlot, string);
+        ResourceLocation texture = ((ExtendedArmor) itemStack.getItem()).getArmorTextureLocation(itemStack, livingEntity, equipmentSlot, string);
         VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(multiBufferSource, RenderType.armorCutoutNoCull(texture), false, bl);
         humanoidModel.renderToBuffer(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY, f, g, h, 1.0F);
     }

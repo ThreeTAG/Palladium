@@ -56,6 +56,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Raw Vibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibranium Ingot");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone Flux Crystal");
+            this.addItem(PalladiumItems.SUIT_STAND, "Suit Stand");
             this.addItem(PalladiumItems.HAMMER, "Hammer");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Lead Circuit");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quartz Circuit");
@@ -69,6 +70,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effect");
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projectile");
+            this.addEntityType(PalladiumEntityTypes.SUIT_STAND, "Suit Stand");
 
             // Attributes
             this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Flight Speed");
@@ -76,6 +78,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.JETPACK_FLIGHT_SPEED, "Jetpack Flight Speed");
             this.addAttribute(PalladiumAttributes.HOVERING, "Hovering");
             this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Punch Damage");
+            this.addAttribute(PalladiumAttributes.JUMP_POWER, "Jump Power");
+            this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Destroy Speed");
+            this.addAttribute(PalladiumAttributes.FALL_RESISTANCE, "Fall Resistance");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
@@ -98,6 +103,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Show Both Arms");
             this.addAbility(Abilities.PLAYER_ANIMATION, "Player Animation");
             this.addAbility(Abilities.WATER_WALK, "Water Walk");
+            this.addAbility(Abilities.RESTRICT_SLOTS, "Restrict Slots");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -205,6 +211,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarren");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
+            this.addItem(PalladiumItems.SUIT_STAND, "Anzugsständer");
             this.addItem(PalladiumItems.HAMMER, "Hammer");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Bleischaltkreis");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaltkreis");
@@ -218,6 +225,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
+            this.addEntityType(PalladiumEntityTypes.SUIT_STAND, "Anzugsständer");
 
             // Attributes
             this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Fluggeschwindigkeit");
@@ -225,6 +233,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.JETPACK_FLIGHT_SPEED, "Jetpack-Fluggeschwindigkeit");
             this.addAttribute(PalladiumAttributes.HOVERING, "Schweben");
             this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Schlagkraft");
+            this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
+            this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Abbaugeschwindigkeit");
+            this.addAttribute(PalladiumAttributes.FALL_RESISTANCE, "Fallwiderstand");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
@@ -247,6 +258,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeigen");
             this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
             this.addAbility(Abilities.WATER_WALK, "Auf Wasser Laufen");
+            this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
@@ -354,6 +366,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarrn");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
+            this.addItem(PalladiumItems.SUIT_STAND, "Anzuchsschdändorr");
             this.addItem(PalladiumItems.HAMMER, "Hammer");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Redstoneschaldkres");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaldkres");
@@ -367,6 +380,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
+            this.addEntityType(PalladiumEntityTypes.SUIT_STAND, "Anzuchsschdändorr");
 
             // Attributes
             this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Flugjeschwindichket");
@@ -374,6 +388,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.JETPACK_FLIGHT_SPEED, "Jetpack-Flugjeschwindichket");
             this.addAttribute(PalladiumAttributes.HOVERING, "Schweben");
             this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Schlachkraft");
+            this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
+            this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Abbohjeschwindichket");
+            this.addAttribute(PalladiumAttributes.FALL_RESISTANCE, "Fallwidorstand");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
@@ -396,6 +413,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeijen");
             this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
             this.addAbility(Abilities.WATER_WALK, "Uff Wasser Lofen");
+            this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");

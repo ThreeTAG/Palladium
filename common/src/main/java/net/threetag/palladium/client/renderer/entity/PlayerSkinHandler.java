@@ -48,7 +48,7 @@ public class PlayerSkinHandler {
             var abilities = AbilityUtil.getEnabledEntries(player, Abilities.SKIN_CHANGE.get()).stream().filter(AbilityEntry::isEnabled).sorted((a1, a2) -> a2.getProperty(SkinChangeAbility.PRIORITY) - a1.getProperty(SkinChangeAbility.PRIORITY)).toList();
 
             if (abilities.size() > 0) {
-                return abilities.get(0).getProperty(SkinChangeAbility.TEXTURE);
+                return abilities.get(0).getProperty(SkinChangeAbility.TEXTURE).get(player);
             }
 
             return previousSkin;

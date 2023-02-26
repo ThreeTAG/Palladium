@@ -35,3 +35,7 @@ accessible method net/minecraft/client/renderer/GameRenderer loadEffect (Lnet/mi
 accessible method net/minecraft/world/item/CrossbowItem getShootingPower (Lnet/minecraft/world/item/ItemStack;)F
 accessible field net/minecraft/world/item/CrossbowItem startSoundPlayed Z
 accessible field net/minecraft/world/item/CrossbowItem midLoadSoundPlayed Z
+
+accessible field net/minecraft/world/entity/decoration/ArmorStand DEFAULT_HEAD_POSE Lnet/minecraft/core/Rotations;
+accessible field net/minecraft/world/entity/decoration/ArmorStand DEFAULT_BODY_POSE Lnet/minecraft/core/Rotations;
+accessible method net/minecraft/world/entity/decoration/ArmorStand brokenByAnything (Lnet/minecraft/world/damagesource/DamageSource;)V

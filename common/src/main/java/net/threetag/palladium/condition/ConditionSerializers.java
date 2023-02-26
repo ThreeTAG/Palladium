@@ -41,5 +41,8 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> COMMAND_RESULT = CONDITION_SERIALIZERS.register("command_result", CommandResultCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> INTERVAL = CONDITION_SERIALIZERS.register("interval", IntervalCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> SPRINTING = CONDITION_SERIALIZERS.register("sprinting", SprintingCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> INTEGER_PROPERTY = CONDITION_SERIALIZERS.register("integer_property", IntegerPropertyCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> FLOAT_PROPERTY = CONDITION_SERIALIZERS.register("float_property", FloatPropertyCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> DIMENSION = CONDITION_SERIALIZERS.register("dimension", DimensionCondition.Serializer::new);
 
 }

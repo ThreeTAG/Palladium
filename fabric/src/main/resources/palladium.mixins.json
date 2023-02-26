@@ -12,7 +12,9 @@
     "LivingEntityMixin",
     "PackRepositoryMixin",
     "PackTypeMixin",
-    "ReloadableResourceManagerMixin"
+    "PlayerMixin",
+    "ReloadableResourceManagerMixin",
+    "TrinketsApiMixin"
   ],
   "injectors": {
     "defaultRequire": 1

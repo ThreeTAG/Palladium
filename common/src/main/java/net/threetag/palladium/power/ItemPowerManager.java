@@ -5,21 +5,21 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
-import net.threetag.palladium.util.LegacySupportJsonReloadListener;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemPowerManager extends LegacySupportJsonReloadListener {
+public class ItemPowerManager extends SimpleJsonResourceReloadListener {
 
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private static ItemPowerManager INSTANCE;
@@ -31,7 +31,7 @@ public class ItemPowerManager extends LegacySupportJsonReloadListener {
     }
 
     public ItemPowerManager() {
-        super(GSON, "palladium/item_powers", "item_powers");
+        super(GSON, "palladium/item_powers");
     }
 
     @Override

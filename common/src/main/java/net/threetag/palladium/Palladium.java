@@ -3,13 +3,11 @@ package net.threetag.palladium;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.accessory.Accessories;
 import net.threetag.palladium.addonpack.AddonPackManager;
-import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
-import net.threetag.palladium.addonpack.parser.CreativeModeTabParser;
-import net.threetag.palladium.addonpack.parser.ItemParser;
-import net.threetag.palladium.addonpack.parser.ToolTierParser;
+import net.threetag.palladium.addonpack.parser.*;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.command.SuperpowerCommand;
+import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.compat.pehkui.PehkuiCompat;
 import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.condition.ConditionSerializers;
@@ -34,6 +32,9 @@ import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.icon.IconSerializers;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperties;
+import net.threetag.palladium.world.PalladiumConfiguredFeatures;
+import net.threetag.palladium.world.PalladiumFeatures;
+import net.threetag.palladium.world.PalladiumPlacedFeatures;
 import net.threetag.palladiumcore.event.CommandEvents;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.util.Platform;
@@ -55,20 +56,29 @@ public class Palladium {
         ConditionSerializers.CONDITION_SERIALIZERS.register();
         PowerProviders.PROVIDERS.register();
         IconSerializers.ICON_SERIALIZERS.register();
-//        PalladiumFeatures.FEATURES.register();
+        PalladiumFeatures.FEATURES.register();
+        PalladiumConfiguredFeatures.CONFIGURED_FEATURES.register();
+        PalladiumPlacedFeatures.PLACED_FEATURES.register();
         PalladiumAttributes.ATTRIBUTES.register();
         EntityEffects.EFFECTS.register();
         PalladiumEntityTypes.ENTITIES.register();
         PalladiumSoundEvents.SOUNDS.register();
         Accessories.ACCESSORIES.register();
 
+        // Init before addonpack stuff is loaded, so new item type is registered
+        if (Platform.isModLoaded("geckolib3")) {
+            GeckoLibCompat.init();
+        }
+
+        LOGGER.info("Starting addonpack initialisation...");
+        AddonPackManager.init();
         PalladiumNetwork.init();
+        PalladiumEntityTypes.init();
         EntityPropertyHandler.init();
         PowerManager.init();
         ItemPowerManager.init();
         SuitSetPowerManager.init();
         AbilityEventHandler.init();
-        AddonPackManager.init();
         Abilities.init();
         PalladiumProperties.init();
         PalladiumAttributes.init();
@@ -77,7 +87,6 @@ public class Palladium {
         SupporterHandler.init();
 
         LifecycleEvents.SETUP.register(() -> {
-//            PalladiumFeatures.init();
             Palladium.generateDocumentation();
 
             if (Platform.isModLoaded("pehkui")) {
@@ -100,6 +109,7 @@ public class Palladium {
             consumer.accept(CreativeModeTabParser.documentationBuilder());
             consumer.accept(ArmorMaterialParser.documentationBuilder());
             consumer.accept(ToolTierParser.documentationBuilder());
+            consumer.accept(BlockParser.documentationBuilder());
             consumer.accept(ItemParser.documentationBuilder());
             consumer.accept(IconSerializer.documentationBuilder());
             PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);

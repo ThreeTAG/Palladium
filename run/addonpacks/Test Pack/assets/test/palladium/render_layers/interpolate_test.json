@@ -3,7 +3,7 @@
   "layers": [
     {
       "model_layer": "minecraft:player#main",
-      "model": "minecraft:player",
+      "model_type": "minecraft:player",
       "texture": {
         "base": "test:textures/models/iron_man_suit.png",
         "transformers": [
@@ -25,7 +25,7 @@
     },
     {
       "model_layer": "minecraft:player#main",
-      "model": "minecraft:player",
+      "model_type": "minecraft:player",
       "texture": "test:textures/models/iron_man_suit_reactor_lights.png",
       "render_type": "glow"
     }

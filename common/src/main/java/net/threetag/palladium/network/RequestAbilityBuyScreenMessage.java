@@ -7,6 +7,7 @@ import net.threetag.palladium.power.IPowerHandler;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
+import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityReference;
 import net.threetag.palladiumcore.network.MessageC2S;
@@ -45,6 +46,12 @@ public class RequestAbilityBuyScreenMessage extends MessageC2S {
             var buyableCondition = entry.getConfiguration().findBuyCondition();
 
             if (buyableCondition != null && !entry.getProperty(BuyableCondition.BOUGHT)) {
+                for (AbilityEntry parentEntry : Ability.findParentsWithinHolder(entry.getConfiguration(), entry.getHolder())) {
+                    if (!parentEntry.isUnlocked()) {
+                        return;
+                    }
+                }
+
                 new OpenAbilityBuyScreenMessage(this.reference, buyableCondition.createData(), buyableCondition.isAvailable(context.getPlayer())).send(context.getPlayer());
             }
         }

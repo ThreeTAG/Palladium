@@ -19,4 +19,16 @@ public class PalladiumConfig {
 
     }
 
+    public static class Server {
+
+        public static ForgeConfigSpec.BooleanValue REDSTONE_FLUX_CRYSTAL_GEODE_GENERATION;
+
+        public static ForgeConfigSpec generateConfig() {
+            ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+            REDSTONE_FLUX_CRYSTAL_GEODE_GENERATION = builder.define("worldGen.redstoneFluxCrystalGeneration", true);
+            return builder.build();
+        }
+
+    }
+
 }

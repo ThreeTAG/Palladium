@@ -12,9 +12,13 @@ import java.util.Set;
 public class PalladiumMixinPlugin implements IMixinConfigPlugin {
 
     private static final boolean HAS_KUBEJS;
+    private static final boolean HAS_TRINKETS;
+    private static final boolean HAS_CURIOS;
 
     static {
         HAS_KUBEJS = hasClass("dev.latvian.mods.kubejs.KubeJS");
+        HAS_TRINKETS = hasClass("dev.emi.trinkets.api.TrinketsApi");
+        HAS_CURIOS = hasClass("top.theillusivec4.curios.api.CuriosApi");
     }
 
     @Override
@@ -32,6 +36,10 @@ public class PalladiumMixinPlugin implements IMixinConfigPlugin {
         try {
             if (mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.ScriptFileInfoMixin") || mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.ScriptManagerMixin")) {
                 return HAS_KUBEJS;
+            }
+
+            if (mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.fabric.TrinketsApiMixin")) {
+                return HAS_TRINKETS;
             }
         } catch (Exception ignored) {
             return true;

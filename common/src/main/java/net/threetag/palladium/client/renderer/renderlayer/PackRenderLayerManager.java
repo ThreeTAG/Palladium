@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -19,8 +20,10 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.AddonParser;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.item.IAddonItem;
-import net.threetag.palladium.power.ability.*;
-import net.threetag.palladium.util.LegacySupportJsonReloadListener;
+import net.threetag.palladium.power.ability.Abilities;
+import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.power.ability.RenderLayerAbility;
 import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.ArrayList;
@@ -31,7 +34,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
+public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
 
     private static PackRenderLayerManager INSTANCE;
     private static final List<Provider> RENDER_LAYERS_PROVIDERS = new ArrayList<>();
@@ -74,12 +77,14 @@ public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
     }
 
     public PackRenderLayerManager() {
-        super(AddonParser.GSON, "palladium/render_layers", "render_layers");
+        super(AddonParser.GSON, "palladium/render_layers");
         INSTANCE = this;
     }
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
+        this.renderLayers.values().forEach(IPackRenderLayer::onUnload);
+
         ImmutableMap.Builder<ResourceLocation, IPackRenderLayer> builder = ImmutableMap.builder();
 
         object.forEach((resourceLocation, jsonElement) -> {
@@ -92,6 +97,7 @@ public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
         });
 
         this.renderLayers = builder.build();
+        this.renderLayers.values().forEach(IPackRenderLayer::onLoad);
     }
 
     public IPackRenderLayer getLayer(ResourceLocation id) {

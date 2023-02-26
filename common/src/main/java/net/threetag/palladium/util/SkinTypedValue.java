@@ -71,4 +71,16 @@ public class SkinTypedValue<T> {
             return new SkinTypedValue<>(parser.apply(jsonElement));
         }
     }
+
+    public JsonElement toJson(Function<T, JsonElement> serializer) {
+        if (this.normal == this.slim) {
+            return serializer.apply(this.normal);
+        } else {
+            var json = new JsonObject();
+            json.add("normal", serializer.apply(this.normal));
+            json.add("slim", serializer.apply(this.slim));
+            return json;
+        }
+    }
+
 }

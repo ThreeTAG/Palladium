@@ -12,6 +12,10 @@ import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionContextType;
 import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.entity.BodyPart;
+import net.threetag.palladium.power.IPowerHolder;
+import net.threetag.palladium.power.Power;
+import net.threetag.palladium.power.ability.AbilityEntry;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -23,28 +27,72 @@ public interface IPackRenderLayer {
 
     }
 
-    IPackRenderLayer addCondition(Condition condition);
+    IPackRenderLayer addCondition(Condition condition, ConditionContext context);
 
     List<BodyPart> getHiddenBodyParts(LivingEntity entity);
 
+    default void onLoad() {
+
+    }
+
+    default void onUnload() {
+
+    }
+
     static <T extends IPackRenderLayer> T parseConditions(T layer, JsonObject json) {
-        if (GsonHelper.isValidNode(json, "conditions")) {
-            ConditionSerializer.listFromJSON(json.get("conditions"), ConditionContextType.RENDER_LAYERS).forEach(layer::addCondition);
+        for (ConditionContext context : ConditionContext.values()) {
+            if (GsonHelper.isValidNode(json, context.key)) {
+                var el = json.get(context.key);
+
+                if (el.isJsonPrimitive()) {
+                    var result = el.getAsBoolean();
+                    layer.addCondition(new Condition() {
+                        @Override
+                        public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
+                            return result;
+                        }
+
+                        @Override
+                        public ConditionSerializer getSerializer() {
+                            return null;
+                        }
+                    }, context);
+                } else {
+                    ConditionSerializer.listFromJSON(el, ConditionContextType.RENDER_LAYERS).forEach(cond -> layer.addCondition(cond, context));
+                }
+            }
         }
+
         return layer;
     }
 
-    static boolean conditionsFulfilled(LivingEntity entity, List<Condition> conditions) {
-        if(conditions.isEmpty()) {
-            return true;
+    static boolean conditionsFulfilled(LivingEntity entity, List<Condition> bothConditions, List<Condition> specificConditions) {
+        for (Condition condition : bothConditions) {
+            if (!condition.active(entity, null, null, null)) {
+                return false;
+            }
         }
 
-        for (Condition condition : conditions) {
-            if(!condition.active(entity, null, null, null)) {
+        for (Condition condition : specificConditions) {
+            if (!condition.active(entity, null, null, null)) {
                 return false;
             }
         }
 
         return true;
     }
+
+    enum ConditionContext {
+
+        BOTH("conditions"),
+        FIRST_PERSON("first_person_conditions"),
+        THIRD_PERSON("third_person_conditions");
+
+        public final String key;
+
+        ConditionContext(String key) {
+            this.key = key;
+        }
+    }
+
 }

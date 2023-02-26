@@ -8,20 +8,27 @@ import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
+import net.threetag.palladium.block.IAddonBlock;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.model.ArmorModelManager;
+import net.threetag.palladium.client.model.SuitStandBasePlateModel;
+import net.threetag.palladium.client.model.SuitStandModel;
 import net.threetag.palladium.client.model.animation.AimAnimation;
 import net.threetag.palladium.client.model.animation.FlightAnimation;
 import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
 import net.threetag.palladium.client.renderer.entity.CustomProjectileRenderer;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
+import net.threetag.palladium.client.renderer.entity.SuitStandRenderer;
 import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.AccessoryRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
@@ -31,8 +38,10 @@ import net.threetag.palladium.client.screen.AccessoryScreen;
 import net.threetag.palladium.client.screen.AddonPackLogScreen;
 import net.threetag.palladium.client.screen.components.IconButton;
 import net.threetag.palladium.client.screen.power.PowersScreen;
+import net.threetag.palladium.energy.EnergyHelper;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.event.PalladiumClientEvents;
+import net.threetag.palladium.item.EnergyItem;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.GuiOverlayAbility;
 import net.threetag.palladium.util.SupporterHandler;
@@ -41,10 +50,7 @@ import net.threetag.palladium.util.icon.TexturedIcon;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.event.ScreenEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
-import net.threetag.palladiumcore.registry.client.ColorHandlerRegistry;
-import net.threetag.palladiumcore.registry.client.EntityRendererRegistry;
-import net.threetag.palladiumcore.registry.client.OverlayRegistry;
-import net.threetag.palladiumcore.registry.client.RenderTypeRegistry;
+import net.threetag.palladiumcore.registry.client.*;
 
 public class PalladiumClient {
 
@@ -60,11 +66,28 @@ public class PalladiumClient {
         setupDevLogButton();
 
         // During Setup
-        LifecycleEvents.SETUP.register(PalladiumClient::blockRenderTypes);
+        LifecycleEvents.SETUP.register(() -> {
+            blockRenderTypes();
+
+            for (Item item : Registry.ITEM) {
+                if (item instanceof EnergyItem) {
+                    ItemPropertyRegistry.register(item, Palladium.id("energy"), (itemStack, clientLevel, livingEntity, i) -> {
+                        var storage = EnergyHelper.getFromItemStack(itemStack);
+                        return storage.map(energyStorage -> Math.round(13F * energyStorage.getEnergyAmount() / (float) energyStorage.getEnergyCapacity())).orElse(0);
+                    });
+                    ItemPropertyRegistry.register(item, Palladium.id("charged"), (itemStack, clientLevel, livingEntity, i) -> {
+                        return itemStack.getOrCreateTag().getInt("energy") > 0 ? 1F : 0F;
+                    });
+                }
+            }
+        });
 
         // Entity Renderers
         EntityRendererRegistry.register(PalladiumEntityTypes.EFFECT, EffectEntityRenderer::new);
         EntityRendererRegistry.register(PalladiumEntityTypes.CUSTOM_PROJECTILE, CustomProjectileRenderer::new);
+        EntityRendererRegistry.register(PalladiumEntityTypes.SUIT_STAND, SuitStandRenderer::new);
+        EntityRendererRegistry.registerModelLayer(SuitStandModel.MODEL_LAYER_LOCATION, SuitStandModel::createBodyLayer);
+        EntityRendererRegistry.registerModelLayer(SuitStandBasePlateModel.MODEL_LAYER_LOCATION, SuitStandBasePlateModel::createLayer);
 
         // Entity Render Layers
         EntityRendererRegistry.addRenderLayer((e) -> true, renderLayerParent -> new PackRenderLayerRenderer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));
@@ -97,6 +120,24 @@ public class PalladiumClient {
                 PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD.get(),
                 PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD.get(),
                 PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER.get());
+
+        for (Block block : Registry.BLOCK) {
+            if (block instanceof IAddonBlock addonBlock) {
+                var type = addonBlock.getRenderType();
+
+                if (type != null) {
+                    if (type.equalsIgnoreCase("solid")) {
+                        RenderTypeRegistry.registerBlock(RenderType.solid(), block);
+                    } else if (type.equalsIgnoreCase("cutout_mipped")) {
+                        RenderTypeRegistry.registerBlock(RenderType.cutoutMipped(), block);
+                    } else if (type.equalsIgnoreCase("cutout")) {
+                        RenderTypeRegistry.registerBlock(RenderType.cutout(), block);
+                    } else if (type.equalsIgnoreCase("translucent")) {
+                        RenderTypeRegistry.registerBlock(RenderType.translucent(), block);
+                    }
+                }
+            }
+        }
     }
 
     public static void colorHandlers() {

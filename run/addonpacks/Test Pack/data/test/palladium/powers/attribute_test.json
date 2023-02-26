@@ -1,0 +1,27 @@
+{
+  "name": "Attribute Test",
+  "icon": "minecraft:iron_chestplate",
+  "abilities": {
+    "fall_resistance": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:fall_resistance",
+      "uuid": "6b05c4b8-1db2-4c29-8bac-aa2b059e33d0",
+      "amount": 100,
+      "operation": 0
+    },
+    "destroy_speed": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:destroy_speed",
+      "uuid": "6b05c4b8-1db2-4c29-8bac-aa2b059e33d0",
+      "amount": 3,
+      "operation": 0
+    },
+    "jump_power": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:jump_power",
+      "uuid": "6b05c4b8-1db2-4c29-8bac-aa2b059e33d0",
+      "amount": 2,
+      "operation": 0
+    }
+  }
+}

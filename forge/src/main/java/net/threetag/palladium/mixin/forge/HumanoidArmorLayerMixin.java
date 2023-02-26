@@ -11,7 +11,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.client.model.ArmorModelManager;
-import net.threetag.palladium.item.ICustomArmorTexture;
+import net.threetag.palladium.item.ExtendedArmor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,8 +32,12 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
 
     @Inject(at = @At("HEAD"), method = "getArmorResource", cancellable = true, remap = false)
     private void getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, @Nullable String type, CallbackInfoReturnable<ResourceLocation> callbackInfoReturnable) {
-        if (stack.getItem() instanceof ICustomArmorTexture customArmorTexture) {
-            callbackInfoReturnable.setReturnValue(customArmorTexture.getArmorTexture(stack, entity, slot, type));
+        if (stack.getItem() instanceof ExtendedArmor customArmorTexture) {
+            var texture = customArmorTexture.getArmorTextureLocation(stack, entity, slot, type);
+
+            if(texture != null) {
+                callbackInfoReturnable.setReturnValue(texture);
+            }
         }
     }
 
