@@ -78,6 +78,8 @@
         "Lifetime": 1200,
         "DieOnEntityHit": false,
         "DieOnBlockHit": true,
+        "CommandOnEntityHit": "say Entity was hit!",
+        "CommandOnBlockHit": "say Block was hit!",
         "Appearances": [
           {
             "Type": "renderLayer",

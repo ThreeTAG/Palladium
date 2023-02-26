@@ -40,6 +40,8 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     public boolean dieOnEntityHit = true;
     public int lifetime = -1;
     public int setEntityOnFireSeconds = 0;
+    public String commandOnEntityHit = null;
+    public String commandOnBlockHit = null;
     public EntityDimensions dimensions = new EntityDimensions(0.1F, 0.1F, false);
     public List<Appearance> appearances = new ArrayList<>();
 
@@ -82,6 +84,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     @Override
     protected void onHitEntity(EntityHitResult result) {
         if (!this.level.isClientSide) {
+            if (this.commandOnEntityHit != null && !this.commandOnEntityHit.isBlank()) {
+                this.level.getServer().getCommands().performPrefixedCommand(this.createCommandSourceStack().withMaximumPermission(this.level.getServer().getOperatorUserPermissionLevel()), this.commandOnEntityHit);
+            }
+
             Entity entity = result.getEntity();
             entity.hurt(DamageSource.thrown(this, this.getOwner()), this.damage);
 
@@ -99,9 +105,16 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     @Override
     protected void onHitBlock(BlockHitResult blockHitResult) {
         super.onHitBlock(blockHitResult);
-        if (this.dieOnBlockHit && !this.level.isClientSide) {
-            this.level.broadcastEntityEvent(this, (byte) 3);
-            this.discard();
+
+        if (!this.level.isClientSide) {
+            if (this.commandOnBlockHit != null && !this.commandOnBlockHit.isBlank()) {
+                this.level.getServer().getCommands().performPrefixedCommand(this.createCommandSourceStack().withMaximumPermission(this.level.getServer().getOperatorUserPermissionLevel()), this.commandOnBlockHit);
+            }
+
+            if (this.dieOnBlockHit) {
+                this.level.broadcastEntityEvent(this, (byte) 3);
+                this.discard();
+            }
         }
     }
 
@@ -137,6 +150,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
         compound.putFloat("Size", this.dimensions.width);
         compound.putFloat("Lifetime", this.lifetime);
         compound.putFloat("SetEntityOnFireSeconds", this.setEntityOnFireSeconds);
+        if (this.commandOnEntityHit != null)
+            compound.putString("CommandOnEntityHit", this.commandOnEntityHit);
+        if (this.commandOnBlockHit != null)
+            compound.putString("CommandOnBlockHit", this.commandOnBlockHit);
 
         ListTag appearanceList = new ListTag();
         for (Appearance appearance : this.appearances) {
@@ -165,6 +182,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
             this.dieOnBlockHit = compound.getBoolean("DieOnBlockHit");
         if (compound.contains("Size", 99))
             this.dimensions = new EntityDimensions(compound.getFloat("Size"), compound.getFloat("Size"), false);
+        if (compound.contains("CommandOnEntityHit"))
+            this.commandOnEntityHit = compound.getString("CommandOnEntityHit");
+        if (compound.contains("CommandOnBlockHit"))
+            this.commandOnBlockHit = compound.getString("CommandOnBlockHit");
 
         if (compound.contains("Appearances")) {
             this.appearances = new ArrayList<>();
