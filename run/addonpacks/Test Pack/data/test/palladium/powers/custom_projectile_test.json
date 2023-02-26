@@ -28,7 +28,8 @@
         "enabling": [
           {
             "type": "palladium:action",
-            "key_type": "left_click"
+            "key_type": "left_click",
+            "needs_empty_hand": true
           }
         ]
       }
@@ -58,7 +59,8 @@
         "enabling": [
           {
             "type": "palladium:action",
-            "key_type": "right_click"
+            "key_type": "right_click",
+            "needs_empty_hand": true
           }
         ]
       }
