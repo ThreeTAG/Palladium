@@ -175,7 +175,7 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer implements IAnimat
         layer.model.rightLegBone = GsonHelper.getAsString(bonesJson, "right_leg", layer.model.rightLegBone);
         layer.model.leftLegBone = GsonHelper.getAsString(bonesJson, "left_leg", layer.model.leftLegBone);
 
-        return layer;
+        return IPackRenderLayer.parseConditions(layer, json);
     }
 
     @Override
