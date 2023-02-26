@@ -6,6 +6,7 @@ import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.IRenderLayerContext;
@@ -31,28 +32,30 @@ public class TrinketsCompat {
     @Environment(EnvType.CLIENT)
     public static void initClient() {
         PackRenderLayerManager.registerProvider((entity, layers) -> {
-            for (Map.Entry<String, SlotGroup> entry : TrinketsApi.getPlayerSlots().entrySet()) {
-                TrinketsApi.getTrinketComponent(entity).ifPresent(trinketComponent -> {
-                    if (trinketComponent.getInventory().containsKey(entry.getKey())) {
-                        trinketComponent.getInventory().get(entry.getKey()).forEach((key, trinketInventory) -> {
-                            for (int i = 0; i < trinketInventory.getContainerSize(); i++) {
-                                ItemStack stack = trinketInventory.getItem(i);
+            if (entity instanceof LivingEntity livingEntity) {
+                for (Map.Entry<String, SlotGroup> entry : TrinketsApi.getPlayerSlots(entity.level).entrySet()) {
+                    TrinketsApi.getTrinketComponent(livingEntity).ifPresent(trinketComponent -> {
+                        if (trinketComponent.getInventory().containsKey(entry.getKey())) {
+                            trinketComponent.getInventory().get(entry.getKey()).forEach((key, trinketInventory) -> {
+                                for (int i = 0; i < trinketInventory.getContainerSize(); i++) {
+                                    ItemStack stack = trinketInventory.getItem(i);
 
-                                if (!stack.isEmpty() && stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
-                                    var container = addonItem.getRenderLayerContainer();
+                                    if (!stack.isEmpty() && stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
+                                        var container = addonItem.getRenderLayerContainer();
 
-                                    for (ResourceLocation id : container.get("trinkets:" + entry.getKey() + "/" + key)) {
-                                        IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
+                                        for (ResourceLocation id : container.get("trinkets:" + entry.getKey() + "/" + key)) {
+                                            IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
 
-                                        if (layer != null) {
-                                            layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                                            if (layer != null) {
+                                                layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        });
-                    }
-                });
+                            });
+                        }
+                    });
+                }
             }
         });
     }

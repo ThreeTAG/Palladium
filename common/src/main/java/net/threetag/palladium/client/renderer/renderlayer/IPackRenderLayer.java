@@ -6,6 +6,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.condition.Condition;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public interface IPackRenderLayer {
 
-    void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch);
+    void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch);
 
     default void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
 
@@ -66,16 +67,18 @@ public interface IPackRenderLayer {
         return layer;
     }
 
-    static boolean conditionsFulfilled(LivingEntity entity, List<Condition> bothConditions, List<Condition> specificConditions) {
-        for (Condition condition : bothConditions) {
-            if (!condition.active(entity, null, null, null)) {
-                return false;
+    static boolean conditionsFulfilled(Entity entity, List<Condition> bothConditions, List<Condition> specificConditions) {
+        if(entity instanceof LivingEntity livingEntity) {
+            for (Condition condition : bothConditions) {
+                if (!condition.active(livingEntity, null, null, null)) {
+                    return false;
+                }
             }
-        }
 
-        for (Condition condition : specificConditions) {
-            if (!condition.active(entity, null, null, null)) {
-                return false;
+            for (Condition condition : specificConditions) {
+                if (!condition.active(livingEntity, null, null, null)) {
+                    return false;
+                }
             }
         }
 

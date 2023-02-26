@@ -3,7 +3,7 @@ package net.threetag.palladium.client.dynamictexture.variable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +29,7 @@ public abstract class AbstractIntegerTextureVariable implements ITextureVariable
     }
 
     @Override
-    public Object get(LivingEntity entity) {
+    public Object get(Entity entity) {
         int i = this.getNumber(entity);
         for (Pair<Operation, Integer> pair : operations) {
             i = pair.getFirst().function.apply(i, pair.getSecond());
@@ -37,7 +37,7 @@ public abstract class AbstractIntegerTextureVariable implements ITextureVariable
         return i;
     }
 
-    public abstract int getNumber(LivingEntity entity);
+    public abstract int getNumber(Entity entity);
 
     public enum Operation {
 

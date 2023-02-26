@@ -13,10 +13,13 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
-import net.threetag.palladium.client.renderer.renderlayer.*;
+import net.threetag.palladium.client.renderer.renderlayer.AbstractPackRenderLayer;
+import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
+import net.threetag.palladium.client.renderer.renderlayer.IRenderLayerContext;
+import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -80,7 +83,7 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer implements IAnimat
     }
 
     @Override
-    public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         var entity = context.getEntity();
         if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions) && entity instanceof AbstractClientPlayer player) {
             HumanoidModel entityModel = this.model;
@@ -94,12 +97,11 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer implements IAnimat
             }
 
             parentModel.copyPropertiesTo(entityModel);
-            entityModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
-            entityModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            entityModel.prepareMobModel(player, limbSwing, limbSwingAmount, partialTicks);
+            entityModel.setupAnim(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
             // TODO apply enchant glint when item is enchanted
             if (entityModel instanceof GeckoRenderLayerModel gecko) {
-
                 gecko.renderModel(poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY);
             }
         }

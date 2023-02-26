@@ -64,6 +64,34 @@
           }
         ]
       }
+    },
+    "test_3": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "title": "Render Layer",
+      "list_index": 2,
+      "velocity": 1.5,
+      "entity_data": {
+        "Damage": 10,
+        "Gravity": 0.03,
+        "Size": 0.5,
+        "Lifetime": 1200,
+        "DieOnEntityHit": false,
+        "DieOnBlockHit": true,
+        "Appearances": [
+          {
+            "Type": "renderLayer",
+            "RenderLayer": "test:projectile"
+          }
+        ]
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action"
+          }
+        ]
+      }
     }
   }
 }

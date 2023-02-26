@@ -13,6 +13,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.Palladium;
@@ -43,26 +44,32 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
     private Map<ResourceLocation, IPackRenderLayer> renderLayers = new HashMap<>();
 
     static {
+        // Abilities
         registerProvider((entity, layers) -> {
-            for (AbilityEntry entry : AbilityUtil.getEnabledEntries(entity, Abilities.RENDER_LAYER.get())) {
-                IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
-                if (layer != null) {
-                    layers.accept(IRenderLayerContext.ofAbility(entity, entry), layer);
+            if (entity instanceof LivingEntity livingEntity) {
+                for (AbilityEntry entry : AbilityUtil.getEnabledEntries(livingEntity, Abilities.RENDER_LAYER.get())) {
+                    IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
+                    if (layer != null) {
+                        layers.accept(IRenderLayerContext.ofAbility(entity, entry), layer);
+                    }
                 }
             }
         });
+        // Armor
         registerProvider((entity, layers) -> {
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                var stack = entity.getItemBySlot(slot);
+            if (entity instanceof LivingEntity livingEntity) {
+                for (EquipmentSlot slot : EquipmentSlot.values()) {
+                    var stack = livingEntity.getItemBySlot(slot);
 
-                if (!stack.isEmpty() && stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
-                    var container = addonItem.getRenderLayerContainer();
+                    if (!stack.isEmpty() && stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
+                        var container = addonItem.getRenderLayerContainer();
 
-                    for (ResourceLocation id : container.get(slot.getName())) {
-                        IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
+                        for (ResourceLocation id : container.get(slot.getName())) {
+                            IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
 
-                        if (layer != null) {
-                            layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                            if (layer != null) {
+                                layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                            }
                         }
                     }
                 }
@@ -134,7 +141,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
         return RENDER_TYPES.get(id);
     }
 
-    public static void forEachLayer(LivingEntity entity, BiConsumer<IRenderLayerContext, IPackRenderLayer> consumer) {
+    public static void forEachLayer(Entity entity, BiConsumer<IRenderLayerContext, IPackRenderLayer> consumer) {
         for (Provider provider : RENDER_LAYERS_PROVIDERS) {
             provider.addRenderLayers(entity, consumer);
         }
@@ -142,7 +149,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
 
     public interface Provider {
 
-        void addRenderLayers(LivingEntity entity, BiConsumer<IRenderLayerContext, IPackRenderLayer> layers);
+        void addRenderLayers(Entity entity, BiConsumer<IRenderLayerContext, IPackRenderLayer> layers);
 
     }
 

@@ -1,7 +1,7 @@
 package net.threetag.palladium.client.dynamictexture.variable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 
 public class MoonPhaseTextureVariable extends AbstractIntegerTextureVariable{
 
@@ -10,7 +10,7 @@ public class MoonPhaseTextureVariable extends AbstractIntegerTextureVariable{
     }
 
     @Override
-    public int getNumber(LivingEntity entity) {
+    public int getNumber(Entity entity) {
         return entity.level.getMoonPhase();
     }
 }

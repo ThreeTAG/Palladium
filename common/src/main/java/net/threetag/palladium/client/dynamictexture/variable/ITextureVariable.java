@@ -1,12 +1,12 @@
 package net.threetag.palladium.client.dynamictexture.variable;
 
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 
 public interface ITextureVariable {
 
-    Object get(LivingEntity entity);
+    Object get(Entity entity);
 
-    default String replace(String base, String key, LivingEntity entity) {
+    default String replace(String base, String key, Entity entity) {
         return base.replaceAll("#" + key, get(entity).toString());
     }
 }

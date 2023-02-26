@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
@@ -90,7 +91,7 @@ public class PalladiumClient {
         EntityRendererRegistry.registerModelLayer(SuitStandBasePlateModel.MODEL_LAYER_LOCATION, SuitStandBasePlateModel::createLayer);
 
         // Entity Render Layers
-        EntityRendererRegistry.addRenderLayer((e) -> true, renderLayerParent -> new PackRenderLayerRenderer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));
+        EntityRendererRegistry.addRenderLayer((e) -> true, renderLayerParent -> new PackRenderLayerRenderer((RenderLayerParent<Entity, EntityModel<Entity>>) renderLayerParent));
         EntityRendererRegistry.addRenderLayer((e) -> true, renderLayerParent -> new AbilityEffectsRenderLayer((RenderLayerParent<LivingEntity, EntityModel<LivingEntity>>) renderLayerParent));
         EntityRendererRegistry.addRenderLayerToPlayer(renderLayerParent -> new AccessoryRenderLayer((RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>>) renderLayerParent));
 

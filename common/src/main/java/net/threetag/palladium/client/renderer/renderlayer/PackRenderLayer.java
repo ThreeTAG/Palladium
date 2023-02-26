@@ -15,8 +15,8 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.entity.BodyPart;
@@ -29,7 +29,7 @@ import java.util.function.BiFunction;
 public class PackRenderLayer extends AbstractPackRenderLayer {
 
     private final SkinTypedValue<ModelLookup.Model> modelLookup;
-    private final SkinTypedValue<EntityModel<LivingEntity>> model;
+    private final SkinTypedValue<EntityModel<Entity>> model;
     private final SkinTypedValue<DynamicTexture> texture;
     private final BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType;
 
@@ -43,16 +43,18 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
     }
 
     @Override
-    public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         var entity = context.getEntity();
         if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions) && this.modelLookup.get(entity).fitsEntity(entity, parentModel)) {
-            EntityModel<LivingEntity> entityModel = this.model.get(entity);
+            EntityModel<Entity> entityModel = this.model.get(entity);
 
-            if (entityModel instanceof HumanoidModel<LivingEntity> entityHumanoidModel && parentModel instanceof HumanoidModel<LivingEntity> parentHumanoid) {
+            if (entityModel instanceof HumanoidModel entityHumanoidModel && parentModel instanceof HumanoidModel parentHumanoid) {
                 parentHumanoid.copyPropertiesTo(entityHumanoidModel);
             }
 
-            parentModel.copyPropertiesTo(entityModel);
+            if (parentModel != null)
+                parentModel.copyPropertiesTo(entityModel);
+
             entityModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
             entityModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
@@ -66,7 +68,7 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
     public void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         var player = context.getEntity();
         if (IPackRenderLayer.conditionsFulfilled(player, this.conditions, this.firstPersonConditions) && this.modelLookup.get(player).fitsEntity(player, playerRenderer.getModel())) {
-            EntityModel<LivingEntity> entityModel = this.model.get(player);
+            EntityModel<Entity> entityModel = this.model.get(player);
 
             if (entityModel instanceof HumanoidModel humanoidModel) {
                 playerRenderer.getModel().copyPropertiesTo(humanoidModel);

@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.client.dynamictexture.transformer.AlphaMaskTextureTransformer;
@@ -44,7 +44,7 @@ public abstract class DynamicTexture {
         registerVariable(Palladium.id("cape"), CapeTextureVariable::new);
     }
 
-    public abstract ResourceLocation getTexture(LivingEntity entity);
+    public abstract ResourceLocation getTexture(Entity entity);
 
     public abstract DynamicTexture transform(ITextureTransformer textureTransformer);
 

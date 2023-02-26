@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -50,35 +51,37 @@ public class CuriosCompat {
     @OnlyIn(Dist.CLIENT)
     public static void initClient() {
         PackRenderLayerManager.registerProvider((entity, layers) -> {
-            CuriosApi.getCuriosHelper().getCuriosHandler(entity)
-                    .ifPresent(handler -> handler.getCurios().forEach((id, stacksHandler) -> {
-                        IDynamicStackHandler stackHandler = stacksHandler.getStacks();
-                        IDynamicStackHandler cosmeticStacksHandler = stacksHandler.getCosmeticStacks();
+            if(entity instanceof LivingEntity livingEntity) {
+                CuriosApi.getCuriosHelper().getCuriosHandler(livingEntity)
+                        .ifPresent(handler -> handler.getCurios().forEach((id, stacksHandler) -> {
+                            IDynamicStackHandler stackHandler = stacksHandler.getStacks();
+                            IDynamicStackHandler cosmeticStacksHandler = stacksHandler.getCosmeticStacks();
 
-                        for (int i = 0; i < stackHandler.getSlots(); i++) {
-                            ItemStack stack = cosmeticStacksHandler.getStackInSlot(i);
-                            boolean cosmetic = true;
-                            NonNullList<Boolean> renderStates = stacksHandler.getRenders();
-                            boolean renderable = renderStates.size() > i && renderStates.get(i);
+                            for (int i = 0; i < stackHandler.getSlots(); i++) {
+                                ItemStack stack = cosmeticStacksHandler.getStackInSlot(i);
+                                boolean cosmetic = true;
+                                NonNullList<Boolean> renderStates = stacksHandler.getRenders();
+                                boolean renderable = renderStates.size() > i && renderStates.get(i);
 
-                            if (stack.isEmpty() && renderable) {
-                                stack = stackHandler.getStackInSlot(i);
-                                cosmetic = false;
-                            }
+                                if (stack.isEmpty() && renderable) {
+                                    stack = stackHandler.getStackInSlot(i);
+                                    cosmetic = false;
+                                }
 
-                            if (!stack.isEmpty() && stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
-                                var container = addonItem.getRenderLayerContainer();
+                                if (!stack.isEmpty() && stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
+                                    var container = addonItem.getRenderLayerContainer();
 
-                                for (ResourceLocation layerId : container.get("curios:" + id)) {
-                                    IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(layerId);
+                                    for (ResourceLocation layerId : container.get("curios:" + id)) {
+                                        IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(layerId);
 
-                                    if (layer != null) {
-                                        layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                                        if (layer != null) {
+                                            layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                                        }
                                     }
                                 }
                             }
-                        }
-                    }));
+                        }));
+            }
         });
     }
 

@@ -3,7 +3,7 @@ package net.threetag.palladium.util;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Objects;
@@ -35,8 +35,8 @@ public class SkinTypedValue<T> {
         return slim ? this.getSlim() : this.getNormal();
     }
 
-    public T get(LivingEntity livingEntity) {
-        return this.get(livingEntity instanceof Player player && PlayerUtil.hasSmallArms(player));
+    public T get(Entity entity) {
+        return this.get(entity instanceof Player player && PlayerUtil.hasSmallArms(player));
     }
 
     @Override
