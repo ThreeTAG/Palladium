@@ -79,7 +79,7 @@ public class GeckoLibCompat {
 
             builder.addProperty("armor_model", ResourceLocation.class)
                     .description("Path to geckolib model file. Required bones: [armorHead, armorBody, armorRightArm, armorLeftArm, armorRightLeg, armorLeftLeg, armorRightBoot, armorLeftBoot]")
-                    .fallbackObject(null).exampleJson(new JsonPrimitive("palladium:geo/test_model.geo.json"));
+                    .required().exampleJson(new JsonPrimitive("palladium:geo/test_model.geo.json"));
 
             builder.addProperty("armor_animation", ResourceLocation.class)
                     .description("Path to geckolib model animation file.")
