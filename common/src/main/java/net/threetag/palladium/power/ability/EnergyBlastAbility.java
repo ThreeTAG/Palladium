@@ -89,7 +89,7 @@ public class EnergyBlastAbility extends Ability {
 
             Vec3 startVec = origin.getOriginVector(entity);
             Vec3 endVec = origin.getEndVector(entity, startVec, entry.getProperty(MAX_DISTANCE));
-            HitResult hitResult = EntityUtil.rayTraceWithEntities(entity, startVec, endVec, entry.getProperty(MAX_DISTANCE), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, target -> !target.isInvulnerable());
+            HitResult hitResult = EntityUtil.rayTraceWithEntities(entity, startVec, endVec, entry.getProperty(MAX_DISTANCE), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, target -> !target.isInvulnerable());
             entry.setUniqueProperty(DISTANCE, hitResult.getLocation().distanceTo(startVec));
 
             if (entry.getEnabledTicks() >= 5) {
