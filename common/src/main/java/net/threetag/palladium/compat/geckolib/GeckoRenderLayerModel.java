@@ -118,63 +118,87 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
 
     protected void fitToBiped() {
         if (this.headBone != null) {
-            IBone headBone = this.modelProvider.getBone(this.headBone);
+            try {
+                IBone headBone = this.modelProvider.getBone(this.headBone);
 
-            GeoUtils.copyRotations(this.head, headBone);
-            headBone.setPositionX(this.head.x);
-            headBone.setPositionY(-this.head.y);
-            headBone.setPositionZ(this.head.z);
-            headBone.setHidden(!this.head.visible);
+                GeoUtils.copyRotations(this.head, headBone);
+                headBone.setPositionX(this.head.x);
+                headBone.setPositionY(-this.head.y);
+                headBone.setPositionZ(this.head.z);
+                headBone.setHidden(!this.head.visible);
+            } catch (Exception ignored) {
+
+            }
         }
 
         if (this.bodyBone != null) {
-            IBone bodyBone = this.modelProvider.getBone(this.bodyBone);
+            try {
+                IBone bodyBone = this.modelProvider.getBone(this.bodyBone);
 
-            GeoUtils.copyRotations(this.body, bodyBone);
-            bodyBone.setPositionX(this.body.x);
-            bodyBone.setPositionY(-this.body.y);
-            bodyBone.setPositionZ(this.body.z);
-            bodyBone.setHidden(!this.body.visible);
+                GeoUtils.copyRotations(this.body, bodyBone);
+                bodyBone.setPositionX(this.body.x);
+                bodyBone.setPositionY(-this.body.y);
+                bodyBone.setPositionZ(this.body.z);
+                bodyBone.setHidden(!this.body.visible);
+            } catch (Exception ignored) {
+
+            }
         }
 
         if (this.rightArmBone != null) {
-            IBone rightArmBone = this.modelProvider.getBone(this.rightArmBone);
+            try {
+                IBone rightArmBone = this.modelProvider.getBone(this.rightArmBone);
 
-            GeoUtils.copyRotations(this.rightArm, rightArmBone);
-            rightArmBone.setPositionX(this.rightArm.x + 5);
-            rightArmBone.setPositionY(2 - this.rightArm.y);
-            rightArmBone.setPositionZ(this.rightArm.z);
-            rightArmBone.setHidden(!this.rightArm.visible);
+                GeoUtils.copyRotations(this.rightArm, rightArmBone);
+                rightArmBone.setPositionX(this.rightArm.x + 5);
+                rightArmBone.setPositionY(2 - this.rightArm.y);
+                rightArmBone.setPositionZ(this.rightArm.z);
+                rightArmBone.setHidden(!this.rightArm.visible);
+            } catch (Exception ignored) {
+
+            }
         }
 
         if (this.leftArmBone != null) {
-            IBone leftArmBone = this.modelProvider.getBone(this.leftArmBone);
+            try {
+                IBone leftArmBone = this.modelProvider.getBone(this.leftArmBone);
 
-            GeoUtils.copyRotations(this.leftArm, leftArmBone);
-            leftArmBone.setPositionX(this.leftArm.x - 5);
-            leftArmBone.setPositionY(2 - this.leftArm.y);
-            leftArmBone.setPositionZ(this.leftArm.z);
-            leftArmBone.setHidden(!this.leftArm.visible);
+                GeoUtils.copyRotations(this.leftArm, leftArmBone);
+                leftArmBone.setPositionX(this.leftArm.x - 5);
+                leftArmBone.setPositionY(2 - this.leftArm.y);
+                leftArmBone.setPositionZ(this.leftArm.z);
+                leftArmBone.setHidden(!this.leftArm.visible);
+            } catch (Exception ignored) {
+
+            }
         }
 
         if (this.rightLegBone != null) {
-            IBone rightLegBone = this.modelProvider.getBone(this.rightLegBone);
+            try {
+                IBone rightLegBone = this.modelProvider.getBone(this.rightLegBone);
 
-            GeoUtils.copyRotations(this.rightLeg, rightLegBone);
-            rightLegBone.setPositionX(this.rightLeg.x + 2);
-            rightLegBone.setPositionY(12 - this.rightLeg.y);
-            rightLegBone.setPositionZ(this.rightLeg.z);
-            rightLegBone.setHidden(!this.rightLeg.visible);
+                GeoUtils.copyRotations(this.rightLeg, rightLegBone);
+                rightLegBone.setPositionX(this.rightLeg.x + 2);
+                rightLegBone.setPositionY(12 - this.rightLeg.y);
+                rightLegBone.setPositionZ(this.rightLeg.z);
+                rightLegBone.setHidden(!this.rightLeg.visible);
+            } catch (Exception ignored) {
+
+            }
         }
 
         if (this.leftLegBone != null) {
-            IBone leftLegBone = this.modelProvider.getBone(this.leftLegBone);
+            try {
+                IBone leftLegBone = this.modelProvider.getBone(this.leftLegBone);
 
-            GeoUtils.copyRotations(this.leftLeg, leftLegBone);
-            leftLegBone.setPositionX(this.leftLeg.x - 2);
-            leftLegBone.setPositionY(12 - this.leftLeg.y);
-            leftLegBone.setPositionZ(this.leftLeg.z);
-            leftLegBone.setHidden(!this.leftLeg.visible);
+                GeoUtils.copyRotations(this.leftLeg, leftLegBone);
+                leftLegBone.setPositionX(this.leftLeg.x - 2);
+                leftLegBone.setPositionY(12 - this.leftLeg.y);
+                leftLegBone.setPositionZ(this.leftLeg.z);
+                leftLegBone.setHidden(!this.leftLeg.visible);
+            } catch (Exception ignored) {
+
+            }
         }
     }
 
