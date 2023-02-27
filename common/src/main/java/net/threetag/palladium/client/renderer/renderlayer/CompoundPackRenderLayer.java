@@ -8,19 +8,18 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.entity.BodyPart;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public final class CompoundPackRenderLayer implements IPackRenderLayer {
+public final class CompoundPackRenderLayer extends AbstractPackRenderLayer {
 
     private final List<IPackRenderLayer> layers;
-    private final List<Condition> conditions = new ArrayList<>();
 
     public CompoundPackRenderLayer(
             List<IPackRenderLayer> layers) {
@@ -28,8 +27,8 @@ public final class CompoundPackRenderLayer implements IPackRenderLayer {
     }
 
     @Override
-    public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (IPackRenderLayer.conditionsFulfilled(context.getEntity(), this.conditions)) {
+    public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (IPackRenderLayer.conditionsFulfilled(context.getEntity(), this.conditions, this.thirdPersonConditions)) {
             for (IPackRenderLayer layer : this.layers) {
                 layer.render(context, poseStack, bufferSource, parentModel, packedLight, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
             }
@@ -38,7 +37,7 @@ public final class CompoundPackRenderLayer implements IPackRenderLayer {
 
     @Override
     public void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        if (IPackRenderLayer.conditionsFulfilled(context.getEntity(), this.conditions)) {
+        if (IPackRenderLayer.conditionsFulfilled(context.getEntity(), this.conditions, this.firstPersonConditions)) {
             for (IPackRenderLayer layer : this.layers) {
                 layer.renderArm(context, arm, playerRenderer, poseStack, bufferSource, packedLight);
             }
@@ -46,16 +45,10 @@ public final class CompoundPackRenderLayer implements IPackRenderLayer {
     }
 
     @Override
-    public IPackRenderLayer addCondition(Condition condition) {
-        this.conditions.add(condition);
-        return this;
-    }
-
-    @Override
     public List<BodyPart> getHiddenBodyParts(LivingEntity entity) {
         List<BodyPart> bodyParts = new ArrayList<>();
 
-        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions)) {
+        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions)) {
             for (IPackRenderLayer layer : this.layers) {
                 for (BodyPart hiddenBodyPart : layer.getHiddenBodyParts(entity)) {
                     if (!bodyParts.contains(hiddenBodyPart)) {

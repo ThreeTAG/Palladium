@@ -1,7 +1,7 @@
 package net.threetag.palladium.client.dynamictexture.variable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 
 public class CrouchingTextureVariable extends AbstractBooleanTextureVariable {
 
@@ -10,7 +10,7 @@ public class CrouchingTextureVariable extends AbstractBooleanTextureVariable {
     }
 
     @Override
-    public boolean getBoolean(LivingEntity entity) {
+    public boolean getBoolean(Entity entity) {
         return entity.isCrouching();
     }
 

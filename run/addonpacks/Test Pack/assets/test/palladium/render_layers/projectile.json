@@ -1,0 +1,5 @@
+{
+  "model_type": "palladium:basic",
+  "model_layer": "test:player#thick_armor",
+  "texture": "test:textures/models/armor/dirt.png"
+}

@@ -119,7 +119,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
             minecraft.font.draw(poseStack, Component.literal(properties.getString()), (position.left ? 15 : 37) - length / 2F + 10, position.top ? 10 : 12, 0xffffffff);
 
             RenderSystem.setShaderTexture(0, texture);
-            minecraft.gui.blit(poseStack, (position.left ? 15 : 37) - length / 2, position.top ? 9 : 11, 78, 56, 7, 9);
+            minecraft.gui.blit(poseStack, (position.left ? 15 : 37) - length / 2, position.top ? 9 : 11, 78, minecraft.player.isCrouching() ? 64 : 56, 8, 8);
         }
     }
 
@@ -334,13 +334,13 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
             }
 
             for (AbilityList list : containerList) {
-                if (!list.isEmpty()) {
+                if (!list.isEmpty() && !list.isFullyLocked()) {
                     lists.add(list);
                 }
             }
 
             for (AbilityList list : remainingLists) {
-                if (!list.isEmpty()) {
+                if (!list.isEmpty() && !list.isFullyLocked()) {
                     lists.add(list);
                 }
             }
@@ -395,6 +395,16 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
                     return false;
                 }
             }
+            return true;
+        }
+
+        public boolean isFullyLocked() {
+            for (AbilityEntry entry : this.getDisplayedAbilities()) {
+                if (entry != null && entry.isUnlocked()) {
+                    return false;
+                }
+            }
+
             return true;
         }
 

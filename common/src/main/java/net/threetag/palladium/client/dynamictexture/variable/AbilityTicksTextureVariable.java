@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityUtil;
@@ -29,14 +30,17 @@ public class AbilityTicksTextureVariable extends AbstractIntegerTextureVariable 
     }
 
     @Override
-    public int getNumber(LivingEntity entity) {
-        AbilityEntry entry = AbilityUtil.getEntry(entity, this.powerId, this.abilityId);
+    public int getNumber(Entity entity) {
+        if (entity instanceof LivingEntity livingEntity) {
+            AbilityEntry entry = AbilityUtil.getEntry(livingEntity, this.powerId, this.abilityId);
 
-        if (entry == null) {
-            return 0;
+            if (entry == null) {
+                return 0;
+            }
+
+            return entry.getEnabledTicks();
         }
-
-        return entry.getEnabledTicks();
+        return 0;
     }
 
 }

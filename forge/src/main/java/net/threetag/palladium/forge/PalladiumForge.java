@@ -24,6 +24,7 @@ import net.threetag.palladium.addonpack.forge.AddonPackType;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.compat.curios.forge.CuriosCompat;
+import net.threetag.palladium.compat.geckolib.forge.GeckoLibCompatImpl;
 import net.threetag.palladium.data.forge.*;
 import net.threetag.palladium.mixin.ReloadableResourceManagerMixin;
 import net.threetag.palladiumcore.forge.PalladiumCoreForge;
@@ -45,6 +46,7 @@ public class PalladiumForge {
         AddonPackType.init();
         Palladium.init();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PalladiumConfig.Client.generateConfig());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, PalladiumConfig.Server.generateConfig());
 
         if (ModList.get().isLoaded("curios")) {
             CuriosCompat.init();
@@ -55,6 +57,10 @@ public class PalladiumForge {
 
             if (ModList.get().isLoaded("curios")) {
                 CuriosCompat.initClient();
+            }
+
+            if (Platform.isModLoaded("geckolib3")) {
+                GeckoLibCompatImpl.init();
             }
         }
     }

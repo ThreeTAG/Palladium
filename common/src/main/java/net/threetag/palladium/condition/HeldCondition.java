@@ -12,8 +12,8 @@ import net.threetag.palladium.util.property.PropertyManager;
 
 public class HeldCondition extends KeyCondition {
 
-    public HeldCondition(int cooldown, AbilityConfiguration.KeyType type) {
-        super(cooldown, type);
+    public HeldCondition(int cooldown, AbilityConfiguration.KeyType type, boolean needsEmptyHand) {
+        super(cooldown, type, needsEmptyHand);
     }
 
     @Override
@@ -40,6 +40,11 @@ public class HeldCondition extends KeyCondition {
     }
 
     @Override
+    public AbilityConfiguration.KeyPressType getKeyPressType() {
+        return AbilityConfiguration.KeyPressType.HOLD;
+    }
+
+    @Override
     public CooldownType getCooldownType() {
         return CooldownType.DYNAMIC;
     }
@@ -56,11 +61,12 @@ public class HeldCondition extends KeyCondition {
         public Serializer() {
             this.withProperty(COOLDOWN, 0);
             this.withProperty(KeyCondition.KEY_TYPE, AbilityConfiguration.KeyType.KEY_BIND);
+            this.withProperty(KeyCondition.NEEDS_EMPTY_HAND, false);
         }
 
         @Override
         public Condition make(JsonObject json) {
-            return new HeldCondition(this.getProperty(json, COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE));
+            return new HeldCondition(this.getProperty(json, COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND));
         }
 
         @Override

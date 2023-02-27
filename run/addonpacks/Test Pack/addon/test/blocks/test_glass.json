@@ -1,0 +1,9 @@
+{
+  "material": "glass",
+  "sound_type": "minecraft:glass",
+  "destroy_time": 0.3,
+  "explosion_resistance": 0.3,
+  "no_occlusion": true,
+  "render_type": "cutout",
+  "creative_mode_tab": "test:test_tab"
+}

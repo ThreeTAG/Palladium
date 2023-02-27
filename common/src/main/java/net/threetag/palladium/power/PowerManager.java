@@ -10,13 +10,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.network.SyncPowersMessage;
-import net.threetag.palladium.util.LegacySupportJsonReloadListener;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
 import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
@@ -26,8 +26,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
-public class PowerManager extends LegacySupportJsonReloadListener {
+public class PowerManager extends SimpleJsonResourceReloadListener {
 
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private static PowerManager INSTANCE;
@@ -46,7 +47,11 @@ public class PowerManager extends LegacySupportJsonReloadListener {
     }
 
     public PowerManager() {
-        super(GSON, "palladium/powers", "powers");
+        super(GSON, "palladium/powers");
+    }
+
+    public static PowerManager getInstance(boolean server) {
+        return !server ? ClientPowerManager.INSTANCE : INSTANCE;
     }
 
     public static PowerManager getInstance(@Nullable Level level) {
@@ -81,6 +86,10 @@ public class PowerManager extends LegacySupportJsonReloadListener {
 
     public Power getPower(ResourceLocation id) {
         return this.byName.get(id);
+    }
+
+    public Set<ResourceLocation> getIds() {
+        return this.byName.keySet();
     }
 
     public Collection<Power> getPowers() {

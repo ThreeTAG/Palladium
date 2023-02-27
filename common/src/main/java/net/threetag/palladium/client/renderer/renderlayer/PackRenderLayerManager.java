@@ -10,8 +10,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.Palladium;
@@ -19,8 +21,10 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.AddonParser;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.item.IAddonItem;
-import net.threetag.palladium.power.ability.*;
-import net.threetag.palladium.util.LegacySupportJsonReloadListener;
+import net.threetag.palladium.power.ability.Abilities;
+import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.power.ability.RenderLayerAbility;
 import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.ArrayList;
@@ -31,7 +35,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
+public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
 
     private static PackRenderLayerManager INSTANCE;
     private static final List<Provider> RENDER_LAYERS_PROVIDERS = new ArrayList<>();
@@ -40,26 +44,32 @@ public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
     private Map<ResourceLocation, IPackRenderLayer> renderLayers = new HashMap<>();
 
     static {
+        // Abilities
         registerProvider((entity, layers) -> {
-            for (AbilityEntry entry : AbilityUtil.getEnabledEntries(entity, Abilities.RENDER_LAYER.get())) {
-                IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
-                if (layer != null) {
-                    layers.accept(IRenderLayerContext.ofAbility(entity, entry), layer);
+            if (entity instanceof LivingEntity livingEntity) {
+                for (AbilityEntry entry : AbilityUtil.getEnabledEntries(livingEntity, Abilities.RENDER_LAYER.get())) {
+                    IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
+                    if (layer != null) {
+                        layers.accept(IRenderLayerContext.ofAbility(entity, entry), layer);
+                    }
                 }
             }
         });
+        // Armor
         registerProvider((entity, layers) -> {
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                var stack = entity.getItemBySlot(slot);
+            if (entity instanceof LivingEntity livingEntity) {
+                for (EquipmentSlot slot : EquipmentSlot.values()) {
+                    var stack = livingEntity.getItemBySlot(slot);
 
-                if (!stack.isEmpty() && stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
-                    var container = addonItem.getRenderLayerContainer();
+                    if (!stack.isEmpty() && stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
+                        var container = addonItem.getRenderLayerContainer();
 
-                    for (ResourceLocation id : container.get(slot.getName())) {
-                        IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
+                        for (ResourceLocation id : container.get(slot.getName())) {
+                            IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
 
-                        if (layer != null) {
-                            layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                            if (layer != null) {
+                                layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                            }
                         }
                     }
                 }
@@ -74,12 +84,14 @@ public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
     }
 
     public PackRenderLayerManager() {
-        super(AddonParser.GSON, "palladium/render_layers", "render_layers");
+        super(AddonParser.GSON, "palladium/render_layers");
         INSTANCE = this;
     }
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
+        this.renderLayers.values().forEach(IPackRenderLayer::onUnload);
+
         ImmutableMap.Builder<ResourceLocation, IPackRenderLayer> builder = ImmutableMap.builder();
 
         object.forEach((resourceLocation, jsonElement) -> {
@@ -92,6 +104,7 @@ public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
         });
 
         this.renderLayers = builder.build();
+        this.renderLayers.values().forEach(IPackRenderLayer::onLoad);
     }
 
     public IPackRenderLayer getLayer(ResourceLocation id) {
@@ -128,7 +141,7 @@ public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
         return RENDER_TYPES.get(id);
     }
 
-    public static void forEachLayer(LivingEntity entity, BiConsumer<IRenderLayerContext, IPackRenderLayer> consumer) {
+    public static void forEachLayer(Entity entity, BiConsumer<IRenderLayerContext, IPackRenderLayer> consumer) {
         for (Provider provider : RENDER_LAYERS_PROVIDERS) {
             provider.addRenderLayers(entity, consumer);
         }
@@ -136,7 +149,7 @@ public class PackRenderLayerManager extends LegacySupportJsonReloadListener {
 
     public interface Provider {
 
-        void addRenderLayers(LivingEntity entity, BiConsumer<IRenderLayerContext, IPackRenderLayer> layers);
+        void addRenderLayers(Entity entity, BiConsumer<IRenderLayerContext, IPackRenderLayer> layers);
 
     }
 

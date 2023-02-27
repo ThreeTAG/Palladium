@@ -42,10 +42,12 @@ public class AimAbility extends Ability {
         for (AbilityEntry entry : AbilityUtil.getEntries(entity, Abilities.AIM.get())) {
             var armType = entry.getProperty(ARM);
 
-            if(armType.isRight(entity) && right) {
-                f = Math.max(f, Mth.lerp(partialTicks, entry.getProperty(PREV_TIMER), entry.getProperty(TIMER)) / entry.getProperty(TIME));
-            } else if(armType.isLeft(entity) && !right) {
-                f = Math.max(f, Mth.lerp(partialTicks, entry.getProperty(PREV_TIMER), entry.getProperty(TIMER)) / entry.getProperty(TIME));
+            if(!armType.isNone()) {
+                if(armType.isRight(entity) && right) {
+                    f = Math.max(f, Mth.lerp(partialTicks, entry.getProperty(PREV_TIMER), entry.getProperty(TIMER)) / entry.getProperty(TIME));
+                } else if(armType.isLeft(entity) && !right) {
+                    f = Math.max(f, Mth.lerp(partialTicks, entry.getProperty(PREV_TIMER), entry.getProperty(TIMER)) / entry.getProperty(TIME));
+                }
             }
         }
 

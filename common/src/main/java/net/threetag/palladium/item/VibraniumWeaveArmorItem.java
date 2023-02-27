@@ -8,14 +8,14 @@ import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.Palladium;
 
-public class VibraniumWeaveArmorItem extends DyeableArmorItem implements ICustomArmorTexture {
+public class VibraniumWeaveArmorItem extends DyeableArmorItem implements ExtendedArmor {
 
     public VibraniumWeaveArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
         super(armorMaterial, equipmentSlot, properties);
     }
 
     @Override
-    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+    public ResourceLocation getArmorTextureLocation(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         String path = "textures/models/armor/vibranium_weave_layer_" + (slot == EquipmentSlot.LEGS ? 2 : 1);
         if (type != null) {
             path += "_" + type;

@@ -13,8 +13,8 @@ import java.util.Objects;
 
 public class ActionCondition extends KeyCondition {
 
-    public ActionCondition(int cooldown, AbilityConfiguration.KeyType type) {
-        super(cooldown, type);
+    public ActionCondition(int cooldown, AbilityConfiguration.KeyType type, boolean needsEmptyHand) {
+        super(cooldown, type, needsEmptyHand);
     }
 
     @Override
@@ -49,11 +49,12 @@ public class ActionCondition extends KeyCondition {
         public Serializer() {
             this.withProperty(COOLDOWN, 0);
             this.withProperty(KeyCondition.KEY_TYPE, AbilityConfiguration.KeyType.KEY_BIND);
+            this.withProperty(KeyCondition.NEEDS_EMPTY_HAND, false);
         }
 
         @Override
         public Condition make(JsonObject json) {
-            return new ActionCondition(this.getProperty(json, COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE));
+            return new ActionCondition(this.getProperty(json, COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND));
         }
 
         @Override

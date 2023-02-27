@@ -112,8 +112,13 @@ allprojects {
 
         // Player Animator
         maven {
-            name "KosmX's maven"
-            url 'https://maven.kosmx.dev/'
+            name = "KosmX's maven"
+            url = 'https://maven.kosmx.dev/'
+        }
+
+        maven {
+            name = 'Gecko Lib'
+            url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
         }
     }
 

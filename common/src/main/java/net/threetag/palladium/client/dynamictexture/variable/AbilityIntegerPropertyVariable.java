@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityUtil;
@@ -34,17 +35,19 @@ public class AbilityIntegerPropertyVariable extends AbstractIntegerTextureVariab
     }
 
     @Override
-    public int getNumber(LivingEntity entity) {
-        AbilityEntry entry = AbilityUtil.getEntry(entity, this.powerId, this.abilityId);
+    public int getNumber(Entity entity) {
+        if (entity instanceof LivingEntity livingEntity) {
+            AbilityEntry entry = AbilityUtil.getEntry(livingEntity, this.powerId, this.abilityId);
 
-        if (entry == null) {
-            return 0;
-        }
+            if (entry == null) {
+                return 0;
+            }
 
-        PalladiumProperty<?> property = entry.getEitherPropertyByKey(this.propertyKey);
+            PalladiumProperty<?> property = entry.getEitherPropertyByKey(this.propertyKey);
 
-        if (property instanceof IntegerProperty integerProperty) {
-            return entry.getProperty(integerProperty);
+            if (property instanceof IntegerProperty integerProperty) {
+                return entry.getProperty(integerProperty);
+            }
         }
 
         return 0;
