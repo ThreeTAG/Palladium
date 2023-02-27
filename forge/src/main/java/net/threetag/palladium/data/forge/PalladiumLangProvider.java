@@ -125,6 +125,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.error.alreadyHasSuperpower", "%s already has that superpower");
             this.add("commands.superpower.error.doesntHaveSuperpower", "%s does not have that superpower");
 
+            this.add("argument.entity.options.palladium.power.description", "Required power");
+
             // GUI
             this.add("gui.palladium.powers", "Powers");
             this.add("gui.palladium.powers.buy_ability", "Do you want to unlock this ability?");
@@ -280,6 +282,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.error.alreadyHasSuperpower", "%s hat bereits diese Superkraft");
             this.add("commands.superpower.error.doesntHaveSuperpower", "%s hat diese Superkraft nicht");
 
+            this.add("argument.entity.options.palladium.power.description", "Benötigte Kraft");
+
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
             this.add("gui.palladium.powers.buy_ability", "Möchtest du diese Fähigkeit freischalten?");
@@ -434,6 +438,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.remove.success.entity.multiple", "De Supperkraft von %s Lebewesen wurd' entfernt");
             this.add("commands.superpower.error.alreadyHasSuperpower", "%s had berehts dise Supperkraft");
             this.add("commands.superpower.error.doesntHaveSuperpower", "%s had dese Supperkraft nich");
+
+            this.add("argument.entity.options.palladium.power.description", "Benötichte Kraft");
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");

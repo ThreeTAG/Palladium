@@ -6,6 +6,7 @@ import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.parser.*;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
+import net.threetag.palladium.command.PalladiumEntitySelectorOptions;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.compat.pehkui.PehkuiCompat;
@@ -85,6 +86,7 @@ public class Palladium {
         FlightHandler.init();
         EntityEffects.init();
         SupporterHandler.init();
+        PalladiumEntitySelectorOptions.init();
 
         LifecycleEvents.SETUP.register(() -> {
             Palladium.generateDocumentation();

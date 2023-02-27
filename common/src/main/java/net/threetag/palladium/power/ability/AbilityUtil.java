@@ -147,4 +147,27 @@ public class AbilityUtil {
         return entry != null && entry.isEnabled();
     }
 
+    /**
+     * Checks if the entity has the given power
+     *
+     * @param entity  Entity having abilities
+     * @param powerId ID of the power that is being checked for
+     * @return True if the entity has the power
+     */
+    public static boolean hasPower(LivingEntity entity, ResourceLocation powerId) {
+        Power power = PowerManager.getInstance(entity.level).getPower(powerId);
+
+        if (power == null) {
+            return false;
+        }
+
+        IPowerHandler handler = PowerManager.getPowerHandler(entity).orElse(null);
+
+        if (handler == null) {
+            return false;
+        }
+
+        return handler.getPowerHolder(power) != null;
+    }
+
 }

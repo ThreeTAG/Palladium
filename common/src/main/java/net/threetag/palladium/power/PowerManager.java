@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class PowerManager extends SimpleJsonResourceReloadListener {
 
@@ -47,6 +48,10 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
     public PowerManager() {
         super(GSON, "palladium/powers");
+    }
+
+    public static PowerManager getInstance(boolean server) {
+        return !server ? ClientPowerManager.INSTANCE : INSTANCE;
     }
 
     public static PowerManager getInstance(@Nullable Level level) {
@@ -81,6 +86,10 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
     public Power getPower(ResourceLocation id) {
         return this.byName.get(id);
+    }
+
+    public Set<ResourceLocation> getIds() {
+        return this.byName.keySet();
     }
 
     public Collection<Power> getPowers() {

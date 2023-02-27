@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class ClientPowerManager extends PowerManager {
 
@@ -19,6 +20,11 @@ public class ClientPowerManager extends PowerManager {
     @Override
     public Collection<Power> getPowers() {
         return POWERS.values();
+    }
+
+    @Override
+    public Set<ResourceLocation> getIds() {
+        return POWERS.keySet();
     }
 
     public static void updatePowers(Map<ResourceLocation, Power> powers) {

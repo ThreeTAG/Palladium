@@ -21,6 +21,8 @@
     "AbstractContainerMenuMixin",
     "ArmorStandMixin",
     "DamageSourceMixin",
+    "EntitySelectorOptionsInvoker",
+    "EntitySelectorParserMixin",
     "LiquidBlockMixin",
     "LivingEntityMixin",
     "OreFeatureMixin",
