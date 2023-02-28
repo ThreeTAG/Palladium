@@ -15,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.client.renderer.renderlayer.AbstractPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
@@ -85,20 +86,20 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer implements IAnimat
     @Override
     public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         var entity = context.getEntity();
-        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions) && entity instanceof AbstractClientPlayer player) {
+        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions) && entity instanceof LivingEntity living) {
             HumanoidModel entityModel = this.model;
             entityModel.setAllVisible(true);
 
-            this.cachedTexture = this.texture.get(player).getTexture(player);
-            this.cachedModel = this.modelLocation.get(player);
+            this.cachedTexture = this.texture.get(living).getTexture(living);
+            this.cachedModel = this.modelLocation.get(living);
 
             if (parentModel instanceof HumanoidModel parentHumanoid) {
                 parentHumanoid.copyPropertiesTo(entityModel);
             }
 
             parentModel.copyPropertiesTo(entityModel);
-            entityModel.prepareMobModel(player, limbSwing, limbSwingAmount, partialTicks);
-            entityModel.setupAnim(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            entityModel.prepareMobModel(living, limbSwing, limbSwingAmount, partialTicks);
+            entityModel.setupAnim(living, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
             // TODO apply enchant glint when item is enchanted
             if (entityModel instanceof GeckoRenderLayerModel gecko) {
@@ -110,10 +111,10 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer implements IAnimat
     @Override
     public void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         var entity = context.getEntity();
-        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.firstPersonConditions) && entity instanceof AbstractClientPlayer player) {
+        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.firstPersonConditions) && entity instanceof AbstractClientPlayer living) {
             GeckoRenderLayerModel humanoidModel = this.model;
-            this.cachedTexture = this.texture.get(player).getTexture(player);
-            this.cachedModel = this.modelLocation.get(player);
+            this.cachedTexture = this.texture.get(living).getTexture(living);
+            this.cachedModel = this.modelLocation.get(living);
 
             playerRenderer.getModel().copyPropertiesTo(humanoidModel);
             humanoidModel.attackTime = 0.0F;
