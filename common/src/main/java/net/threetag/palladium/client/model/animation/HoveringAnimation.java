@@ -29,32 +29,32 @@ public class HoveringAnimation extends PalladiumAnimation {
                 return;
             }
 
-            // X and Y Rot: inverted!
-            // Y translation: in the other direction
-
             builder.get(PlayerModelPart.RIGHT_ARM)
-                    .setXRotDegrees(-2.5F - hover * 2.5F)
-                    .setYRotDegrees(10F)
-                    .setZRotDegrees(7.5F + hover * 2.5F)
+                    .resetXRot()
+                    .resetYRot()
+                    .resetZRot()
+                    .setYRotDegrees(7.5F)
+                    .setZRotDegrees(7.5F - hover * 2.5F)
                     .animate(Ease.OUTCIRC, anim);
+
             builder.get(PlayerModelPart.LEFT_ARM)
-                    .setXRotDegrees(5F + hover * 2.5F)
-                    .setYRotDegrees(-10F)
-                    .setZRotDegrees(-7.5F - hover * 2.5F)
+                    .resetXRot()
+                    .resetYRot()
+                    .resetZRot()
+                    .setYRotDegrees(-7.5F)
+                    .setZRotDegrees(-7.5F + hover * 2.5F)
                     .animate(Ease.OUTCIRC, anim);
 
             builder.get(PlayerModelPart.RIGHT_LEG)
-                    .setXRotDegrees(20F - (1F - hover) * 5F)
-                    .setYRotDegrees(15F)
-                    .setZRotDegrees(-5)
-                    .setX(-2.9F)
-                    .setY(11F)
-                    .setZ(-2F + (1F - hover) * 0.5F)
+                    .setXRotDegrees(2.5F - hover * 5F)
+                    .setYRotDegrees(7.5F)
+                    .setZRotDegrees(2.5F)
                     .animate(Ease.OUTCIRC, anim);
+
             builder.get(PlayerModelPart.LEFT_LEG)
-                    .setXRotDegrees(2.5F - (1F - hover) * 2F)
+                    .setXRotDegrees(-2.5F + hover * 5F)
                     .setYRotDegrees(-7.5F)
-                    .setZRotDegrees(0)
+                    .setZRotDegrees(-2.5F)
                     .animate(Ease.OUTCIRC, anim);
 
             this.addAttackAnimation(builder, player, model);

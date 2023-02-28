@@ -232,6 +232,11 @@ public class PalladiumAnimation {
             return this;
         }
 
+        @Deprecated
+        public PartAnimationData translateX(float amount) {
+            return this.setX(amount);
+        }
+
         public PartAnimationData setX(float amount) {
             this.operations.computeIfAbsent(PartOperationTarget.X, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, amount));
             return this;
@@ -247,8 +252,18 @@ public class PalladiumAnimation {
             return this;
         }
 
+        @Deprecated
+        public PartAnimationData translateY(float amount) {
+            return this.setY(amount);
+        }
+
         public PartAnimationData setY(float amount) {
             this.operations.computeIfAbsent(PartOperationTarget.Y, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, amount));
+            return this;
+        }
+
+        public PartAnimationData setY2(float amount) {
+            this.operations.computeIfAbsent(PartOperationTarget.Y2, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, amount));
             return this;
         }
 
@@ -260,6 +275,11 @@ public class PalladiumAnimation {
         public PartAnimationData moveZ(float amount) {
             this.operations.computeIfAbsent(PartOperationTarget.Z, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.ADD, amount));
             return this;
+        }
+
+        @Deprecated
+        public PartAnimationData translateZ(float amount) {
+            return this.setZ(amount);
         }
 
         public PartAnimationData setZ(float amount) {
@@ -319,7 +339,10 @@ public class PalladiumAnimation {
 
     public enum PartOperationTarget {
 
-        X_ROT(0, false), Y_ROT(0, false), Z_ROT(0, false), X(0, false), Y(0, false), Z(0, false), X_SCALE(1, true), Y_SCALE(1, true), Z_SCALE(1, true);
+        X_ROT(0, false), Y_ROT(0, false), Z_ROT(0, false),
+        X(0, false), Y(0, false), Z(0, false),
+        X2(0, false), Y2(0, false), Z2(0, false),
+        X_SCALE(1, true), Y_SCALE(1, true), Z_SCALE(1, true);
 
         private final float initial;
         private final boolean scale;
@@ -340,6 +363,7 @@ public class PalladiumAnimation {
                 case X_SCALE -> part.xScale;
                 case Y_SCALE -> part.yScale;
                 case Z_SCALE -> part.zScale;
+                default -> 0;
             };
         }
 
@@ -351,6 +375,9 @@ public class PalladiumAnimation {
                 case X -> result.x;
                 case Y -> result.y;
                 case Z -> result.z;
+                case X2 -> result.x2;
+                case Y2 -> result.y2;
+                case Z2 -> result.z2;
                 case X_SCALE -> result.xScale;
                 case Y_SCALE -> result.yScale;
                 case Z_SCALE -> result.zScale;
@@ -365,6 +392,7 @@ public class PalladiumAnimation {
                 case X -> pose.x;
                 case Y -> pose.y;
                 case Z -> pose.z;
+                case X2, Y2, Z2 -> 0;
                 default -> 1F;
             };
         }
@@ -391,6 +419,9 @@ public class PalladiumAnimation {
                 case X -> result.x = value;
                 case Y -> result.y = value;
                 case Z -> result.z = value;
+                case X2 -> result.x2 = value;
+                case Y2 -> result.y2 = value;
+                case Z2 -> result.z2 = value;
                 case X_SCALE -> result.xScale = value;
                 case Y_SCALE -> result.yScale = value;
                 case Z_SCALE -> result.zScale = value;
@@ -450,11 +481,13 @@ public class PalladiumAnimation {
     public static class PoseStackResult {
 
         private float x = 0, y = 0, z = 0;
+        private float x2 = 0, y2 = 0, z2 = 0;
         private float xRot = 0, yRot = 0, zRot = 0;
         private float xScale = 1F, yScale = 1F, zScale = 1F;
 
         public void apply(PoseStack poseStack) {
             poseStack.translate(this.x / 16.0F, this.y / 16.0F, this.z / 16.0F);
+
             if (this.zRot != 0.0F) {
                 poseStack.mulPose(Vector3f.ZP.rotation(this.zRot));
             }
@@ -466,6 +499,8 @@ public class PalladiumAnimation {
             if (this.xRot != 0.0F) {
                 poseStack.mulPose(Vector3f.XP.rotation(this.xRot));
             }
+
+            poseStack.translate(this.x2 / 16.0F, this.y2 / 16.0F, this.z2 / 16.0F);
 
             if (this.xScale != 1.0F || this.yScale != 1.0F || this.zScale != 1.0F) {
                 poseStack.scale(this.xScale, this.yScale, this.zScale);

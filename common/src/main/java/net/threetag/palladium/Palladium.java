@@ -13,7 +13,6 @@ import net.threetag.palladium.compat.pehkui.PehkuiCompat;
 import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.condition.ConditionSerializers;
 import net.threetag.palladium.documentation.HTMLBuilder;
-import net.threetag.palladium.entity.FlightHandler;
 import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.entity.effect.EntityEffects;
@@ -83,7 +82,6 @@ public class Palladium {
         Abilities.init();
         PalladiumProperties.init();
         PalladiumAttributes.init();
-        FlightHandler.init();
         EntityEffects.init();
         SupporterHandler.init();
         PalladiumEntitySelectorOptions.init();

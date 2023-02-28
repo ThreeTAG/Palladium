@@ -24,4 +24,21 @@ public class AnimationUtil {
         return 0F;
     }
 
+    public static float getAnimationTimerAbilityValue(LivingEntity entity, ResourceLocation powerId, String abilityKey, float partialTicks, float start, float end) {
+        var entry = AbilityUtil.getEntry(entity, powerId, abilityKey);
+
+        if (entry != null && entry.getConfiguration().getAbility() instanceof AnimationTimerAbility) {
+            var timer = Mth.lerp(partialTicks, entry.getProperty(AnimationTimerAbility.PREV_VALUE), entry.getProperty(AnimationTimerAbility.VALUE));
+            return getInbetweenProgress(timer, start, end);
+        }
+
+        return 0F;
+    }
+
+    public static float getInbetweenProgress(float progress, float startingPoint, float endPoint) {
+        float shiftedEnd = endPoint - startingPoint;
+        float shifted = Mth.clamp(progress - startingPoint, 0, shiftedEnd);
+        return shifted / shiftedEnd;
+    }
+
 }

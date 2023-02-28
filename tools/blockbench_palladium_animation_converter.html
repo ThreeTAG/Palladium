@@ -1,0 +1,303 @@
+<html>
+<head>
+    <title>BlockBench -> Palladium Animations</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <h2>Values</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Body Part</th>
+            <th>Export?</th>
+            <th>X</th>
+            <th>Y</th>
+            <th>Z</th>
+            <th>Size X</th>
+            <th>Size Y</th>
+            <th>Size Z</th>
+            <th>Rotation X</th>
+            <th>Rotation Y</th>
+            <th>Rotation Z</th>
+        </tr>
+        </thead>
+        <tbody id="inputs_table_body">
+
+        </tbody>
+    </table>
+
+    Use "x" in an input to reset the given property to the original state.
+</div>
+
+<hr>
+
+<hr>
+
+<div>
+    <h2>Options</h2>
+
+    <div>
+        <label for="export_option_power">Dependent power (optional)</label><br>
+        <input type="text" id="export_option_power" name="export_option_power"
+               placeholder="namespace:power_id" style="width: 300px">
+        <br>
+        <br>
+        <label for="export_option_ability">Dependent ability (optional, needs power in previous input)</label><br>
+        <input type="text" id="export_option_ability" name="export_option_ability"
+               placeholder="ability_key" style="width: 300px">
+        <br>
+        <input type="checkbox" id="export_option_animation_timer" name="export_option_animation_timer">
+        <label for="export_option_animation_timer">Is Animation Timer?</label><br>
+
+        <br>
+        <label for="export_option_easing"><a href="https://easings.net/" target="_blank">Easing Function (if animated)</a></label>
+        <select id="export_option_easing" name="export_option_easing">
+            <option value="Linear">Linear</option>
+            <option value="Constant">Constant</option>
+            <option value="InSine">InSine</option>
+            <option value="OutSine">OutSine</option>
+            <option value="InOutSine">InOutSine</option>
+            <option value="InCubic">InCubic</option>
+            <option value="OutCubic">OutCubic</option>
+            <option value="InOutCubic" selected>InOutCubic</option>
+            <option value="InQuad">InQuad</option>
+            <option value="OutQuad">OutQuad</option>
+            <option value="InOutQuad">InOutQuad</option>
+            <option value="InQuart">InQuart</option>
+            <option value="OutQuart">OutQuart</option>
+            <option value="InOutQuart">InOutQuart</option>
+            <option value="InQuint">InQuint</option>
+            <option value="OutQuint">OutQuint</option>
+            <option value="InOutQuint">InOutQuint</option>
+            <option value="InExpo">InExpo</option>
+            <option value="OutExpo">OutExpo</option>
+            <option value="InOutExpo">InOutExpo</option>
+            <option value="InCirc">InCirc</option>
+            <option value="OutCirc">OutCirc</option>
+            <option value="InOutCirc">InOutCirc</option>
+            <option value="InBack">InBack</option>
+            <option value="OutBack">OutBack</option>
+            <option value="InOutBack">InOutBack</option>
+            <option value="InElastic">InElastic</option>
+            <option value="OutElastic">OutElastic</option>
+            <option value="InOutElastic">InOutElastic</option>
+            <option value="InBounce">InBounce</option>
+            <option value="OutBounce">OutBounce</option>
+            <option value="InOutBounce">InOutBounce</option>
+        </select>
+    </div>
+
+    <br>
+
+    <div>
+        <input type="radio" id="export_type_java" name="export_type" value="Java">
+        <label for="export_type_java">Java</label><br>
+        <input type="radio" id="export_type_js" name="export_type" value="JavaScript" checked>
+        <label for="export_type_js">JavaScript / KubeJS</label>
+    </div>
+
+    <br>
+
+    <div>
+        <button id="export_button">
+            Export
+        </button>
+    </div>
+</div>
+
+<hr>
+
+<h2>Output</h2>
+<div id="output"></div>
+</body>
+
+<script>
+    $(window).ready(function () {
+        const model = {
+            head: {
+                pos: [-4, 24, -4],
+                mc_pos: [0, 0, 0],
+                size: [8, 8, 8],
+                rot: [0, 0, 0],
+            },
+            chest: {
+                pos: [-4, 12, -2],
+                mc_pos: [0, 0, 0],
+                size: [8, 12, 4],
+                rot: [0, 0, 0],
+            },
+            right_arm: {
+                pos: [4, 12, -2],
+                mc_pos: [-5, 2, 0],
+                size: [4, 12, 4],
+                rot: [0, 0, 0],
+            },
+            left_arm: {
+                pos: [-8, 12, -2],
+                mc_pos: [5, 2, 0],
+                size: [4, 12, 4],
+                rot: [0, 0, 0],
+            },
+            right_leg: {
+                pos: [-0.1, 0, -2],
+                mc_pos: [-1.9, 12, 0],
+                size: [4, 12, 4],
+                rot: [0, 0, 0],
+            },
+            left_leg: {
+                pos: [-3.9, 0, -2],
+                mc_pos: [1.9, 12, 0],
+                size: [4, 12, 4],
+                rot: [0, 0, 0],
+            }
+        }
+
+        const bodyParts = Object.keys(model);
+        const optionTypes = ["pos", "size", "rot"];
+        const optionAxis = ["x", "y", "z"];
+
+        for (let i = 0; i < bodyParts.length; i++) {
+            let part = bodyParts[i];
+
+            $('#inputs_table_body').append(`
+                <tr>
+                    <td><label for="${part}_enabled">${part}</label></td>
+                    <td><input type="checkbox" id="${part}_enabled" name="${part}_enabled"></td>
+                    <td><input type="text" id="${part}_pos_x" optionType="pos" optionAxis="x"></td>
+                    <td><input type="text" id="${part}_pos_y" optionType="pos" optionAxis="y"></td>
+                    <td><input type="text" id="${part}_pos_z" optionType="pos" optionAxis="z"></td>
+                    <td><input type="text" id="${part}_size_x" optionType="size" optionAxis="x"></td>
+                    <td><input type="text" id="${part}_size_y" optionType="size" optionAxis="y"></td>
+                    <td><input type="text" id="${part}_size_z" optionType="size" optionAxis="z"></td>
+                    <td><input type="text" id="${part}_rot_x" optionType="rot" optionAxis="x"></td>
+                    <td><input type="text" id="${part}_rot_y" optionType="rot" optionAxis="y"></td>
+                    <td><input type="text" id="${part}_rot_z" optionType="rot" optionAxis="z"></td>
+                </tr>
+            `);
+        }
+
+        $('#export_button').click(function () {
+            let result = "";
+            let suffix = "";
+            let intend = "";
+            let exportType = $('input[name="export_type"]:checked').val();
+            let isJava = exportType === "Java";
+            let valueSuffix = exportType === "Java" ? "F" : "";
+            let power = $("#export_option_power").val();
+            let ability = $("#export_option_ability").val();
+            let animationTimer = null;
+
+            if (power) {
+                let powerId = isJava ? `new ResourceLocation("${power}")` : `'${power}'`;
+                let entityObject = isJava ? "player" : "builder.getPlayer()";
+                let abilityInsert = isJava ? `"${ability}"` : `'${ability}'`;
+
+                if (ability) {
+                    if ($("#export_option_animation_timer").is(':checked')) {
+                        let animationUtil = isJava ? "AnimationUtil" : "animationUtil";
+                        let varType = isJava ? "float" : "let";
+                        result += `${varType} animation = ${animationUtil}.getAnimationTimerAbilityValue(${entityObject}, ${powerId}, ${abilityInsert});<br>`;
+                        result += `if (animation > 0F) {<br>`;
+                        animationTimer = "animation";
+                    } else {
+                        result += "if (" + (isJava ? "AbilityUtil" : "abilityUtil") + `.isEnabled(${entityObject}, ${powerId}, ${abilityInsert})) {<br>`
+                    }
+                } else {
+                    result += "if (" + (isJava ? "AbilityUtil" : "abilityUtil") + `.hasPower(${entityObject}, ${powerId})) {<br>`
+                }
+                suffix = "}";
+                intend = "&nbsp;&nbsp;&nbsp;&nbsp;";
+            }
+
+            for (let i = 0; i < bodyParts.length; i++) {
+                let part = bodyParts[i];
+                let enabled = $("#" + part + "_enabled").is(':checked');
+
+                if (enabled) {
+                    let partCode = intend + "builder.get(" + (isJava ? "PlayerModelPart." + part.toUpperCase() : "'" + part + "'") + ")";
+
+                    for (let j = 0; j < optionTypes.length; j++) {
+                        let type = optionTypes[j];
+
+                        for (let k = 0; k < optionAxis.length; k++) {
+                            let axis = optionAxis[k];
+                            let value = $(`#${part}_${type}_${axis}`).val();
+
+                            if (value) {
+                                let method = "";
+
+                                if (type === "pos") {
+                                    if (value === "x") {
+                                        method = "reset" + axis.toUpperCase() + "()"
+                                    } else {
+                                        let pos = model[part].pos;
+                                        let mc_pos = model[part].mc_pos;
+                                        let orig = pos[axis === "x" ? 0 : (axis === "y" ? 1 : 2)];
+                                        let mc_orig = mc_pos[axis === "x" ? 0 : (axis === "y" ? 1 : 2)];
+
+                                        if (axis === "x" || axis === "y") {
+                                            value = mc_orig - (parseFloat(value) - orig);
+                                        } else {
+                                            value = mc_orig + (parseFloat(value) - orig);
+                                        }
+
+                                        method = "set" + axis.toUpperCase() + "(" + value + valueSuffix + ")";
+                                    }
+                                }
+                                if (type === "size") {
+                                    if (value === "x") {
+                                        // nothing
+                                    } else {
+                                        let size = model[part].size;
+                                        let orig = size[axis === "x" ? 0 : (axis === "y" ? 1 : 2)];
+                                        value = parseFloat(value) / orig;
+
+                                        method = "scale" + axis.toUpperCase() + "(" + value + valueSuffix + ")";
+                                    }
+                                } else if (type === "rot") {
+                                    if (value === "x") {
+                                        method = "reset" + axis.toUpperCase() + "Rot()"
+                                    } else {
+                                        if (axis === "x" || axis === "y") {
+                                            value = -parseFloat(value);
+                                        }
+
+                                        method = "set" + axis.toUpperCase() + "RotDegrees" + "(" + value + valueSuffix + ")";
+                                    }
+                                }
+
+                                partCode += `<br>${intend}&nbsp;&nbsp;&nbsp;&nbsp;.${method}`
+                            }
+                        }
+                    }
+
+                    result += partCode;
+
+                    if (animationTimer) {
+                        let easing = $( "#export_option_easing" ).val();
+                        easing = isJava ? "Ease." + easing.toUpperCase() : `'${easing}'`;
+                        result += `<br>${intend}&nbsp;&nbsp;&nbsp;&nbsp;.animate(${easing}, ${animationTimer})`;
+                    }
+
+                    result += ";<br><br>";
+                }
+            }
+
+            if (suffix) {
+                result += suffix;
+            }
+
+            $("#output").html(result);
+        });
+    });
+</script>
+</html>

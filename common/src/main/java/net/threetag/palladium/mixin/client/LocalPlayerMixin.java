@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@SuppressWarnings("DataFlowIssue")
 @Mixin(LocalPlayer.class)
 public class LocalPlayerMixin {
 
@@ -18,19 +19,25 @@ public class LocalPlayerMixin {
 
         if (player instanceof PalladiumPlayerExtension extension) {
             if (player.getAbilities().flying) {
-                var flightType = FlightHandler.getAvailableFlightType(player);
+                if (extension.palladium_getFlightType().isNotNull()) {
+                    new SetFlyingStateMessage(false).send();
+                    extension.palladium_setFlightType(FlightHandler.FlightType.NONE);
+                } else {
+                    var flightType = FlightHandler.getAvailableFlightType(player);
 
-                if (flightType.isNull()) {
-                    return;
+                    if (flightType.isNull()) {
+                        return;
+                    }
+
+                    new SetFlyingStateMessage(true).send();
+                    extension.palladium_setFlightType(flightType);
                 }
-
-                new SetFlyingStateMessage(player.getAbilities().flying).send();
-                player.getAbilities().flying = false;
-
-                extension.palladium_setFlightType(flightType);
             } else {
+                new SetFlyingStateMessage(false).send();
                 extension.palladium_setFlightType(FlightHandler.FlightType.NONE);
             }
+
+            player.getAbilities().flying = false;
         }
     }
 }
