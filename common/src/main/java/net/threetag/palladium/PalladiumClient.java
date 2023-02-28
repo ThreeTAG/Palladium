@@ -24,9 +24,7 @@ import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.model.SuitStandBasePlateModel;
 import net.threetag.palladium.client.model.SuitStandModel;
-import net.threetag.palladium.client.model.animation.AimAnimation;
-import net.threetag.palladium.client.model.animation.FlightAnimation;
-import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
+import net.threetag.palladium.client.model.animation.*;
 import net.threetag.palladium.client.renderer.entity.CustomProjectileRenderer;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
 import net.threetag.palladium.client.renderer.entity.SuitStandRenderer;
@@ -97,9 +95,10 @@ public class PalladiumClient {
 
         // Animations
         PalladiumClientEvents.REGISTER_ANIMATIONS.register(registry -> {
-            registry.accept(Palladium.id("flight"), new FlightAnimation());
+            registry.accept(Palladium.id("hovering"), new HoveringAnimation(-30));
+            registry.accept(Palladium.id("levitation"), new LevitationAnimation(-20));
+            registry.accept(Palladium.id("flight"), new FlightAnimation(-10));
             registry.accept(Palladium.id("aim"), new AimAnimation(100));
-//            registry.accept(Palladium.id("test"), new TestAnimation());
         });
 
         // Overlay Renderer

@@ -15,7 +15,8 @@
     "client.PlayerModelMixin",
     "client.PlayerRendererMixin",
     "client.RenderTypeMixin",
-    "client.SplashManagerMixin"
+    "client.SplashManagerMixin",
+    "client.LocalPlayerMixin"
   ],
   "mixins": [
     "AbstractContainerMenuMixin",

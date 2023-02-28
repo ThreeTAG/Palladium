@@ -75,7 +75,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Attributes
             this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Flight Speed");
             this.addAttribute(PalladiumAttributes.LEVITATION_SPEED, "Levitation Speed");
-            this.addAttribute(PalladiumAttributes.JETPACK_FLIGHT_SPEED, "Jetpack Flight Speed");
+            this.addAttribute(PalladiumAttributes.FLIGHT_FLEXIBILITY, "Flight Flexibility");
             this.addAttribute(PalladiumAttributes.HOVERING, "Hovering");
             this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Punch Damage");
             this.addAttribute(PalladiumAttributes.JUMP_POWER, "Jump Power");
@@ -232,7 +232,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Attributes
             this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Fluggeschwindigkeit");
             this.addAttribute(PalladiumAttributes.LEVITATION_SPEED, "Schwebegeschwindigkeit");
-            this.addAttribute(PalladiumAttributes.JETPACK_FLIGHT_SPEED, "Jetpack-Fluggeschwindigkeit");
+            this.addAttribute(PalladiumAttributes.FLIGHT_FLEXIBILITY, "Flugflexibilität");
             this.addAttribute(PalladiumAttributes.HOVERING, "Schweben");
             this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Schlagkraft");
             this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
@@ -389,7 +389,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Attributes
             this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Flugjeschwindichket");
             this.addAttribute(PalladiumAttributes.LEVITATION_SPEED, "Schwebejeschwindichket");
-            this.addAttribute(PalladiumAttributes.JETPACK_FLIGHT_SPEED, "Jetpack-Flugjeschwindichket");
+            this.addAttribute(PalladiumAttributes.FLIGHT_FLEXIBILITY, "Flugflexibilität");
             this.addAttribute(PalladiumAttributes.HOVERING, "Schweben");
             this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Schlachkraft");
             this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");

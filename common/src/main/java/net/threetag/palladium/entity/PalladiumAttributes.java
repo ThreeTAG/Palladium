@@ -23,8 +23,8 @@ public class PalladiumAttributes {
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Palladium.MOD_ID, Registry.ATTRIBUTE_REGISTRY);
 
     public static final RegistrySupplier<Attribute> FLIGHT_SPEED = ATTRIBUTES.register("flight_speed", () -> new RangedAttribute(name("flight_speed"), 0D, 0D, 32D).setSyncable(true));
+    public static final RegistrySupplier<Attribute> FLIGHT_FLEXIBILITY = ATTRIBUTES.register("flight_flexibility", () -> new RangedAttribute(name("flight_flexibility"), 0D, 0D, 10D).setSyncable(true));
     public static final RegistrySupplier<Attribute> LEVITATION_SPEED = ATTRIBUTES.register("levitation_speed", () -> new RangedAttribute(name("levitation_speed"), 0D, 0D, 32D).setSyncable(true));
-    public static final RegistrySupplier<Attribute> JETPACK_FLIGHT_SPEED = ATTRIBUTES.register("jetpack_flight_speed", () -> new RangedAttribute(name("paldium.jetpack_flight_speed"), 0D, 0D, 32D).setSyncable(true));
     public static final RegistrySupplier<Attribute> HOVERING = ATTRIBUTES.register("hovering", () -> new RangedAttribute(name("hovering"), 0D, 0D, 1D).setSyncable(true));
     public static final RegistrySupplier<Attribute> PUNCH_DAMAGE = ATTRIBUTES.register("punch_damage", () -> new RangedAttribute(name("punch_damage"), 0.0, 0.0, 2048.0));
     public static final RegistrySupplier<Attribute> JUMP_POWER = ATTRIBUTES.register("jump_power", () -> new RangedAttribute(name("jump_power"), 1.0, 0.0, 2048.0).setSyncable(true));
@@ -35,8 +35,8 @@ public class PalladiumAttributes {
 
     public static void init() {
         EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, FLIGHT_SPEED);
+        EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, FLIGHT_FLEXIBILITY);
         EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, LEVITATION_SPEED);
-        EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, JETPACK_FLIGHT_SPEED);
         EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, HOVERING);
         EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, PUNCH_DAMAGE);
         EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, JUMP_POWER);

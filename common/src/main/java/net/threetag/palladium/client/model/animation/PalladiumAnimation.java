@@ -8,11 +8,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.HumanoidArm;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PalladiumAnimation {
 
@@ -32,6 +32,19 @@ public class PalladiumAnimation {
     public static class Builder {
 
         private final Map<PlayerModelPart, PartAnimationData> animationData = new HashMap<>();
+        private float limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch;
+
+        public Builder() {
+
+        }
+
+        public Builder(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+            this.limbSwing = limbSwing;
+            this.limbSwingAmount = limbSwingAmount;
+            this.ageInTicks = ageInTicks;
+            this.netHeadYaw = netHeadYaw;
+            this.headPitch = headPitch;
+        }
 
         public PartAnimationData get(PlayerModelPart modelPart) {
             if (modelPart == null) {
@@ -44,13 +57,31 @@ public class PalladiumAnimation {
         public Map<PlayerModelPart, PartAnimationData> getAnimationData() {
             return animationData;
         }
+
+        public float getLimbSwing() {
+            return limbSwing;
+        }
+
+        public float getLimbSwingAmount() {
+            return limbSwingAmount;
+        }
+
+        public float getAgeInTicks() {
+            return ageInTicks;
+        }
+
+        public float getNetHeadYaw() {
+            return netHeadYaw;
+        }
+
+        public float getHeadPitch() {
+            return headPitch;
+        }
     }
 
     public enum FirstPersonContext {
 
-        NONE,
-        RIGHT_ARM,
-        LEFT_ARM;
+        NONE, RIGHT_ARM, LEFT_ARM;
 
         public boolean firstPerson() {
             return this != NONE;
@@ -78,13 +109,7 @@ public class PalladiumAnimation {
 
     public enum PlayerModelPart {
 
-        HEAD("head"),
-        CHEST("chest"),
-        RIGHT_ARM("right_arm"),
-        LEFT_ARM("left_arm"),
-        RIGHT_LEG("right_leg"),
-        LEFT_LEG("left_leg"),
-        BODY("body");
+        HEAD("head"), CHEST("chest"), RIGHT_ARM("right_arm"), LEFT_ARM("left_arm"), RIGHT_LEG("right_leg"), LEFT_LEG("left_leg"), BODY("body");
 
         PlayerModelPart(String name) {
             this.name = name;
@@ -130,16 +155,38 @@ public class PalladiumAnimation {
 
     public static class PartAnimationData {
 
-        private Float xRot = null, yRot = null, zRot = null;
-        private Float translationX = null, translationY = null, translationZ = null;
-        private float scaleX = 1F, scaleY = 1F, scaleZ = 1F;
+        private final Map<PartOperationTarget, List<PartOperation>> operations = new LinkedHashMap<>();
         private float multiplier = 1F;
 
+        public PartAnimationData setXRot(float rot) {
+            this.operations.computeIfAbsent(PartOperationTarget.X_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, rot));
+            return this;
+        }
+
+        public PartAnimationData setXRotDegrees(float degrees) {
+            return this.setXRot((float) Math.toRadians(degrees));
+        }
+
+        public PartAnimationData setYRot(float rot) {
+            this.operations.computeIfAbsent(PartOperationTarget.Y_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, rot));
+            return this;
+        }
+
+        public PartAnimationData setYRotDegrees(float degrees) {
+            return this.setYRot((float) Math.toRadians(degrees));
+        }
+
+        public PartAnimationData setZRot(float rot) {
+            this.operations.computeIfAbsent(PartOperationTarget.Z_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, rot));
+            return this;
+        }
+
+        public PartAnimationData setZRotDegrees(float degrees) {
+            return this.setZRot((float) Math.toRadians(degrees));
+        }
+
         public PartAnimationData rotateX(float rot) {
-            if (this.xRot == null) {
-                this.xRot = 0F;
-            }
-            this.xRot += rot;
+            this.operations.computeIfAbsent(PartOperationTarget.X_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.ADD, rot));
             return this;
         }
 
@@ -148,10 +195,7 @@ public class PalladiumAnimation {
         }
 
         public PartAnimationData rotateY(float rot) {
-            if (this.yRot == null) {
-                this.yRot = 0F;
-            }
-            this.yRot += rot;
+            this.operations.computeIfAbsent(PartOperationTarget.Y_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.ADD, rot));
             return this;
         }
 
@@ -160,10 +204,7 @@ public class PalladiumAnimation {
         }
 
         public PartAnimationData rotateZ(float rot) {
-            if (this.zRot == null) {
-                this.zRot = 0F;
-            }
-            this.zRot += rot;
+            this.operations.computeIfAbsent(PartOperationTarget.Z_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.ADD, rot));
             return this;
         }
 
@@ -171,49 +212,98 @@ public class PalladiumAnimation {
             return this.rotateZ((float) Math.toRadians(degrees));
         }
 
+        public PartAnimationData resetXRot() {
+            this.operations.computeIfAbsent(PartOperationTarget.X_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.RESET, 0F));
+            return this;
+        }
+
+        public PartAnimationData resetYRot() {
+            this.operations.computeIfAbsent(PartOperationTarget.Y_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.RESET, 0F));
+            return this;
+        }
+
+        public PartAnimationData resetZRot() {
+            this.operations.computeIfAbsent(PartOperationTarget.Z_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.RESET, 0F));
+            return this;
+        }
+
+        public PartAnimationData moveX(float amount) {
+            this.operations.computeIfAbsent(PartOperationTarget.X, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.ADD, amount));
+            return this;
+        }
+
+        @Deprecated
         public PartAnimationData translateX(float amount) {
-            if (this.translationX == null) {
-                this.translationX = 0F;
-            }
-            this.translationX += amount;
+            return this.setX(amount);
+        }
+
+        public PartAnimationData setX(float amount) {
+            this.operations.computeIfAbsent(PartOperationTarget.X, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, amount));
             return this;
         }
 
+        public PartAnimationData resetX() {
+            this.operations.computeIfAbsent(PartOperationTarget.X, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.RESET, 0F));
+            return this;
+        }
+
+        public PartAnimationData moveY(float amount) {
+            this.operations.computeIfAbsent(PartOperationTarget.Y, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.ADD, amount));
+            return this;
+        }
+
+        @Deprecated
         public PartAnimationData translateY(float amount) {
-            if (this.translationY == null) {
-                this.translationY = 0F;
-            }
-            this.translationY += amount;
+            return this.setY(amount);
+        }
+
+        public PartAnimationData setY(float amount) {
+            this.operations.computeIfAbsent(PartOperationTarget.Y, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, amount));
             return this;
         }
 
+        public PartAnimationData setY2(float amount) {
+            this.operations.computeIfAbsent(PartOperationTarget.Y2, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, amount));
+            return this;
+        }
+
+        public PartAnimationData resetY() {
+            this.operations.computeIfAbsent(PartOperationTarget.Y, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.RESET, 0F));
+            return this;
+        }
+
+        public PartAnimationData moveZ(float amount) {
+            this.operations.computeIfAbsent(PartOperationTarget.Z, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.ADD, amount));
+            return this;
+        }
+
+        @Deprecated
         public PartAnimationData translateZ(float amount) {
-            if (this.translationZ == null) {
-                this.translationZ = 0F;
-            }
-            this.translationZ += amount;
+            return this.setZ(amount);
+        }
+
+        public PartAnimationData setZ(float amount) {
+            this.operations.computeIfAbsent(PartOperationTarget.Z, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, amount));
             return this;
         }
 
-        public PartAnimationData scale(float multiplier) {
-            this.scaleX *= multiplier;
-            this.scaleY *= multiplier;
-            this.scaleY *= multiplier;
+        public PartAnimationData resetZ() {
+            this.operations.computeIfAbsent(PartOperationTarget.Z, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.RESET, 0F));
             return this;
         }
 
-        public PartAnimationData scaleX(float multiplier) {
-            this.scaleX *= multiplier;
+        public PartAnimationData scaleX(float amount) {
+            this.operations.computeIfAbsent(PartOperationTarget.X_SCALE, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.ADD, amount));
             return this;
         }
 
-        public PartAnimationData scaleY(float multiplier) {
-            this.scaleY *= multiplier;
+        public PartAnimationData scaleY(float amount) {
+            this.operations.computeIfAbsent(PartOperationTarget.Y_SCALE, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.ADD, amount));
             return this;
         }
 
-        public PartAnimationData scaleZ(float multiplier) {
-            this.scaleZ *= multiplier;
+        public PartAnimationData scaleZ(float amount) {
+            this.operations.computeIfAbsent(PartOperationTarget.Z_SCALE, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.ADD, amount));
             return this;
         }
 
@@ -230,41 +320,191 @@ public class PalladiumAnimation {
         }
 
         public void apply(ModelPart modelPart) {
-            if (this.xRot != null)
-                modelPart.xRot += (this.xRot - modelPart.xRot) * this.multiplier;
-            if (this.yRot != null)
-                modelPart.yRot += (this.yRot - modelPart.yRot) * this.multiplier;
-            if (this.zRot != null)
-                modelPart.zRot += (this.zRot - modelPart.zRot) * this.multiplier;
-
-            if (this.translationX != null)
-                modelPart.x += (this.translationX - modelPart.x) * this.multiplier;
-            if (this.translationY != null)
-                modelPart.y += (this.translationY - modelPart.y) * this.multiplier;
-            if (this.translationZ != null)
-                modelPart.z += (this.translationZ - modelPart.z) * this.multiplier;
-
-            modelPart.xScale *= 1 + (this.scaleX - 1) * this.multiplier;
-            modelPart.yScale *= 1 + (this.scaleY - 1) * this.multiplier;
-            modelPart.zScale *= 1 + (this.scaleZ - 1) * this.multiplier;
+            for (Map.Entry<PartOperationTarget, List<PartOperation>> entry : this.operations.entrySet()) {
+                for (PartOperation operation : entry.getValue()) {
+                    operation.apply(modelPart, entry.getKey(), this.multiplier);
+                }
+            }
         }
 
+        public void apply(PoseStackResult result) {
+            for (Map.Entry<PartOperationTarget, List<PartOperation>> entry : this.operations.entrySet()) {
+                for (PartOperation operation : entry.getValue()) {
+                    operation.apply(result, entry.getKey(), this.multiplier);
+                }
+            }
+        }
+
+    }
+
+    public enum PartOperationTarget {
+
+        X_ROT(0, false), Y_ROT(0, false), Z_ROT(0, false),
+        X(0, false), Y(0, false), Z(0, false),
+        X2(0, false), Y2(0, false), Z2(0, false),
+        X_SCALE(1, true), Y_SCALE(1, true), Z_SCALE(1, true);
+
+        private final float initial;
+        private final boolean scale;
+
+        PartOperationTarget(float initial, boolean scale) {
+            this.initial = initial;
+            this.scale = scale;
+        }
+
+        public float get(ModelPart part) {
+            return switch (this) {
+                case X_ROT -> part.xRot;
+                case Y_ROT -> part.yRot;
+                case Z_ROT -> part.zRot;
+                case X -> part.x;
+                case Y -> part.y;
+                case Z -> part.z;
+                case X_SCALE -> part.xScale;
+                case Y_SCALE -> part.yScale;
+                case Z_SCALE -> part.zScale;
+                default -> 0;
+            };
+        }
+
+        public float get(PoseStackResult result) {
+            return switch (this) {
+                case X_ROT -> result.xRot;
+                case Y_ROT -> result.yRot;
+                case Z_ROT -> result.zRot;
+                case X -> result.x;
+                case Y -> result.y;
+                case Z -> result.z;
+                case X2 -> result.x2;
+                case Y2 -> result.y2;
+                case Z2 -> result.z2;
+                case X_SCALE -> result.xScale;
+                case Y_SCALE -> result.yScale;
+                case Z_SCALE -> result.zScale;
+            };
+        }
+
+        public float get(PartPose pose) {
+            return switch (this) {
+                case X_ROT -> pose.xRot;
+                case Y_ROT -> pose.yRot;
+                case Z_ROT -> pose.zRot;
+                case X -> pose.x;
+                case Y -> pose.y;
+                case Z -> pose.z;
+                case X2, Y2, Z2 -> 0;
+                default -> 1F;
+            };
+        }
+
+        public void set(ModelPart part, float value) {
+            switch (this) {
+                case X_ROT -> part.xRot = value;
+                case Y_ROT -> part.yRot = value;
+                case Z_ROT -> part.zRot = value;
+                case X -> part.x = value;
+                case Y -> part.y = value;
+                case Z -> part.z = value;
+                case X_SCALE -> part.xScale = value;
+                case Y_SCALE -> part.yScale = value;
+                case Z_SCALE -> part.zScale = value;
+            }
+        }
+
+        public void set(PoseStackResult result, float value) {
+            switch (this) {
+                case X_ROT -> result.xRot = value;
+                case Y_ROT -> result.yRot = value;
+                case Z_ROT -> result.zRot = value;
+                case X -> result.x = value;
+                case Y -> result.y = value;
+                case Z -> result.z = value;
+                case X2 -> result.x2 = value;
+                case Y2 -> result.y2 = value;
+                case Z2 -> result.z2 = value;
+                case X_SCALE -> result.xScale = value;
+                case Y_SCALE -> result.yScale = value;
+                case Z_SCALE -> result.zScale = value;
+            }
+        }
+    }
+
+    public enum PartOperationType {
+
+        ADD, ADD_INITIAL, SET, RESET;
+
+    }
+
+    public static class PartOperation {
+
+        private final PartOperationType type;
+        private final float value;
+
+        private PartOperation(PartOperationType type, float value) {
+            this.type = type;
+            this.value = value;
+        }
+
+        public void apply(ModelPart part, PartOperationTarget target, float multiplier) {
+            if (this.type == PartOperationType.SET) {
+                var current = target.get(part);
+                target.set(part, current + (this.value - current) * multiplier);
+            } else if (this.type == PartOperationType.ADD) {
+                if (target.scale) {
+                    target.set(part, target.get(part) * (1 + (this.value - 1) * multiplier));
+                } else {
+                    target.set(part, target.get(part) + this.value * multiplier);
+                }
+            } else {
+                var current = target.get(part);
+                target.set(part, current + (target.get(part.getInitialPose()) - current) * multiplier);
+            }
+        }
+
+        public void apply(PoseStackResult result, PartOperationTarget target, float multiplier) {
+            if (this.type == PartOperationType.SET) {
+                var current = target.get(result);
+                target.set(result, current + (this.value - current) * multiplier);
+            } else if (this.type == PartOperationType.ADD) {
+                if (target.scale) {
+                    target.set(result, target.get(result) * (1 + (this.value - 1) * multiplier));
+                } else {
+                    target.set(result, target.get(result) + this.value * multiplier);
+                }
+            } else {
+                var current = target.get(result);
+                target.set(result, current + (target.initial - current) * multiplier);
+            }
+        }
+    }
+
+    public static class PoseStackResult {
+
+        private float x = 0, y = 0, z = 0;
+        private float x2 = 0, y2 = 0, z2 = 0;
+        private float xRot = 0, yRot = 0, zRot = 0;
+        private float xScale = 1F, yScale = 1F, zScale = 1F;
+
         public void apply(PoseStack poseStack) {
-            if (this.translationX != null)
-                poseStack.translate(this.translationX * this.multiplier, 0, 0);
-            if (this.translationY != null)
-                poseStack.translate(0, this.translationY * this.multiplier, 0);
-            if (this.translationZ != null)
-                poseStack.translate(0, 0, this.translationZ * this.multiplier);
+            poseStack.translate(this.x / 16.0F, this.y / 16.0F, this.z / 16.0F);
 
-            if (this.xRot != null)
-                poseStack.mulPose(Vector3f.XP.rotation(this.xRot * this.multiplier));
-            if (this.yRot != null)
-                poseStack.mulPose(Vector3f.YP.rotation(this.yRot * this.multiplier));
-            if (this.zRot != null)
-                poseStack.mulPose(Vector3f.ZP.rotation(this.zRot * this.multiplier));
+            if (this.zRot != 0.0F) {
+                poseStack.mulPose(Vector3f.ZP.rotation(this.zRot));
+            }
 
-            poseStack.scale(1 + (this.scaleX - 1) * this.multiplier, 1 + (this.scaleY - 1) * this.multiplier, 1 + (this.scaleZ - 1) * this.multiplier);
+            if (this.yRot != 0.0F) {
+                poseStack.mulPose(Vector3f.YP.rotation(this.yRot));
+            }
+
+            if (this.xRot != 0.0F) {
+                poseStack.mulPose(Vector3f.XP.rotation(this.xRot));
+            }
+
+            poseStack.translate(this.x2 / 16.0F, this.y2 / 16.0F, this.z2 / 16.0F);
+
+            if (this.xScale != 1.0F || this.yScale != 1.0F || this.zScale != 1.0F) {
+                poseStack.scale(this.xScale, this.yScale, this.zScale);
+            }
         }
 
     }

@@ -20,18 +20,18 @@ public class AimAnimation extends PalladiumAnimation {
         if (right > 0F) {
             if (firstPersonContext.firstPerson()) {
                 builder.get(PlayerModelPart.RIGHT_ARM)
-                        .translateX(-3.5F / 16F)
-                        .translateY(1.5F / 16F)
-                        .translateZ(1.5F / 16F)
-                        .rotateX((float) -Math.toRadians(20))
-                        .rotateY((float) -Math.toRadians(27))
-                        .rotateZ((float) -Math.toRadians(30))
+                        .setX(-3.5F / 16F)
+                        .setY(1.5F / 16F)
+                        .setZ(1.5F / 16F)
+                        .setXRot((float) -Math.toRadians(20))
+                        .setYRot((float) -Math.toRadians(27))
+                        .setZRot((float) -Math.toRadians(30))
                         .animate(Ease.INOUTSINE, right);
             } else {
                 builder.get(PlayerModelPart.RIGHT_ARM)
-                        .rotateX((float) (model.head.xRot - Math.PI / 2F))
-                        .rotateY(model.head.yRot)
-                        .rotateZ(model.head.zRot)
+                        .setXRot((float) (model.head.xRot - Math.PI / 2F))
+                        .setYRot(model.head.yRot)
+                        .setZRot(model.head.zRot)
                         .animate(Ease.INOUTSINE, right);
             }
         }
@@ -39,18 +39,18 @@ public class AimAnimation extends PalladiumAnimation {
         if (left > 0) {
             if (firstPersonContext.firstPerson()) {
                 builder.get(PlayerModelPart.LEFT_ARM)
-                        .translateX(3.5F / 16F)
-                        .translateY(1.5F / 16F)
-                        .translateZ(1.5F / 16F)
-                        .rotateX((float) -Math.toRadians(20))
-                        .rotateY((float) Math.toRadians(27))
-                        .rotateZ((float) Math.toRadians(30))
+                        .setX(3.5F / 16F)
+                        .setY(1.5F / 16F)
+                        .setZ(1.5F / 16F)
+                        .setXRot((float) -Math.toRadians(20))
+                        .setYRot((float) Math.toRadians(27))
+                        .setZRot((float) Math.toRadians(30))
                         .animate(Ease.INOUTSINE, left);
             } else {
                 builder.get(PlayerModelPart.LEFT_ARM)
-                        .rotateX((float) (model.head.xRot - Math.PI / 2F))
-                        .rotateY(model.head.yRot)
-                        .rotateZ(model.head.zRot)
+                        .setXRot((float) (model.head.xRot - Math.PI / 2F))
+                        .setYRot(model.head.yRot)
+                        .setZRot(model.head.zRot)
                         .animate(Ease.INOUTSINE, left);
             }
         }
