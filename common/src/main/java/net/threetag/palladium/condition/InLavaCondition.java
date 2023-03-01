@@ -7,23 +7,23 @@ import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import org.jetbrains.annotations.Nullable;
 
-public class InWaterCondition extends Condition {
+public class InLavaCondition extends Condition {
 
     @Override
     public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
-        return entity.isInWater();
+        return entity.isInLava();
     }
 
     @Override
     public ConditionSerializer getSerializer() {
-        return ConditionSerializers.IN_WATER.get();
+        return ConditionSerializers.IN_LAVA.get();
     }
 
     public static class Serializer extends ConditionSerializer {
 
         @Override
         public Condition make(JsonObject json) {
-            return new InWaterCondition();
+            return new InLavaCondition();
         }
     }
 }

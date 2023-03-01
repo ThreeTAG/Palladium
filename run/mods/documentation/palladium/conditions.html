@@ -55,6 +55,10 @@ action</a>
 activation</a>
 </li>
 <li>
+<a href="#palladium:and">
+and</a>
+</li>
+<li>
 <a href="#palladium:brightness_at_position">
 brightness_at_position</a>
 </li>
@@ -103,6 +107,10 @@ health</a>
 held</a>
 </li>
 <li>
+<a href="#palladium:in_lava">
+in_lava</a>
+</li>
+<li>
 <a href="#palladium:in_water">
 in_water</a>
 </li>
@@ -115,8 +123,52 @@ integer_property</a>
 interval</a>
 </li>
 <li>
+<a href="#palladium:is_elytra_flying">
+is_elytra_flying</a>
+</li>
+<li>
+<a href="#palladium:is_fast_flying">
+is_fast_flying</a>
+</li>
+<li>
+<a href="#palladium:is_flying">
+is_flying</a>
+</li>
+<li>
+<a href="#palladium:is_in_rain">
+is_in_rain</a>
+</li>
+<li>
+<a href="#palladium:is_in_water_or_bubble">
+is_in_water_or_bubble</a>
+</li>
+<li>
+<a href="#palladium:is_in_water_or_rain">
+is_in_water_or_rain</a>
+</li>
+<li>
+<a href="#palladium:is_in_water_rain_or_bubble">
+is_in_water_rain_or_bubble</a>
+</li>
+<li>
+<a href="#palladium:is_levitating">
+is_levitating</a>
+</li>
+<li>
 <a href="#palladium:is_moving">
 is_moving</a>
+</li>
+<li>
+<a href="#palladium:is_on_fire">
+is_on_fire</a>
+</li>
+<li>
+<a href="#palladium:is_swimming">
+is_swimming</a>
+</li>
+<li>
+<a href="#palladium:is_under_water">
+is_under_water</a>
 </li>
 <li>
 <a href="#palladium:item_buyable">
@@ -619,6 +671,50 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:activation","cooldown":0,"ticks":60,"key_type":"key_bind","needs_empty_hand":false}</pre>
+</div>
+<hr>
+
+<div id="palladium:and">
+<h2>
+and</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+conditions</td>
+<td>
+Condition[]</td>
+<td>
+Array of conditions, all of which must be active</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0 conditions</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:and","conditions":[]}</pre>
 </div>
 <hr>
 
@@ -1226,6 +1322,18 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:in_lava">
+<h2>
+in_lava</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:in_lava"}</pre>
+</div>
+<hr>
+
 <div id="palladium:in_water">
 <h2>
 in_water</h2>
@@ -1362,6 +1470,102 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:is_elytra_flying">
+<h2>
+is_elytra_flying</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_elytra_flying"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_fast_flying">
+<h2>
+is_fast_flying</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_fast_flying"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_flying">
+<h2>
+is_flying</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_flying"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_in_rain">
+<h2>
+is_in_rain</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_in_rain"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_in_water_or_bubble">
+<h2>
+is_in_water_or_bubble</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_in_water_or_bubble"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_in_water_or_rain">
+<h2>
+is_in_water_or_rain</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_in_water_or_rain"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_in_water_rain_or_bubble">
+<h2>
+is_in_water_rain_or_bubble</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_in_water_rain_or_bubble"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_levitating">
+<h2>
+is_levitating</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_levitating"}</pre>
+</div>
+<hr>
+
 <div id="palladium:is_moving">
 <h2>
 is_moving</h2>
@@ -1371,6 +1575,42 @@ Applicable for: all</p>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:is_moving"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_on_fire">
+<h2>
+is_on_fire</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_on_fire"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_swimming">
+<h2>
+is_swimming</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_swimming"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_under_water">
+<h2>
+is_under_water</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_under_water"}</pre>
 </div>
 <hr>
 
@@ -1739,7 +1979,7 @@ conditions</td>
 <td>
 Condition[]</td>
 <td>
-Array of conditions that must be disabled</td>
+Array of conditions, at least one of which must be active</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
