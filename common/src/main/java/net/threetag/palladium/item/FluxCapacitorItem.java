@@ -6,6 +6,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.energy.EnergyHelper;
@@ -70,7 +72,7 @@ public class FluxCapacitorItem extends EnergyItem implements IAddonItem {
 
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
-        if (this.allowedIn(category)) {
+        if ((Registry.ITEM.getKey(this).getNamespace().equalsIgnoreCase(Palladium.MOD_ID) ? PalladiumConfig.Server.EXPERIMENTAL_FEATURES.get() : true) && this.allowedIn(category)) {
             items.add(this.getDefaultInstance());
             var filled = this.getDefaultInstance();
             filled.getOrCreateTag().putInt("energy", this.getEnergyCapacity(filled));

@@ -22,9 +22,12 @@ public class PalladiumConfig {
     public static class Server {
 
         public static ForgeConfigSpec.BooleanValue REDSTONE_FLUX_CRYSTAL_GEODE_GENERATION;
+        public static ForgeConfigSpec.BooleanValue EXPERIMENTAL_FEATURES;
 
         public static ForgeConfigSpec generateConfig() {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+            builder.comment("Enabled some hidden/planned content, that is currently not finished or unused");
+            EXPERIMENTAL_FEATURES = builder.define("general.experimentalFeatures", false);
             REDSTONE_FLUX_CRYSTAL_GEODE_GENERATION = builder.define("worldGen.redstoneFluxCrystalGeneration", true);
             return builder.build();
         }
