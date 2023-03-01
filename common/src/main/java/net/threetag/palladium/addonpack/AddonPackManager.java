@@ -3,6 +3,8 @@ package net.threetag.palladium.addonpack;
 import com.google.gson.JsonObject;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.injectables.targets.ArchitecturyTarget;
+import net.minecraft.CrashReport;
+import net.minecraft.ReportedException;
 import net.minecraft.Util;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.server.packs.PackType;
@@ -21,12 +23,12 @@ import net.threetag.palladium.client.screen.AddonPackLogScreen;
 import net.threetag.palladiumcore.event.EventResult;
 import net.threetag.palladiumcore.event.ScreenEvents;
 import net.threetag.palladiumcore.util.Platform;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 public class AddonPackManager {
@@ -34,7 +36,7 @@ public class AddonPackManager {
     private static AddonPackManager INSTANCE;
     public static boolean IGNORE_INJECT = false;
     public static ItemParser ITEM_PARSER;
-    private final Map<String, PackData> packs = new HashMap<>();
+    private static CompletableFuture<AddonPackManager> loaderFuture;
 
     public static AddonPackManager getInstance() {
         if (INSTANCE == null) {
@@ -44,12 +46,18 @@ public class AddonPackManager {
     }
 
     public static void init() {
-        getInstance().beginLoading(Util.backgroundExecutor(), Runnable::run);
+        loaderFuture = getInstance().beginLoading(Util.backgroundExecutor());
     }
 
+    public static void waitForLoading() {
+        getInstance().waitForLoading(loaderFuture);
+    }
+
+    private final Map<String, PackData> packs = new HashMap<>();
     private final ReloadableResourceManager resourceManager;
     private final RepositorySource folderPackFinder;
     private final PackRepository packList;
+    private QueueableExecutor mainThreadExecutor;
 
     private AddonPackManager() {
         IGNORE_INJECT = true;
@@ -104,7 +112,7 @@ public class AddonPackManager {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public void beginLoading(Executor backgroundExecutor, Executor gameExecutor) {
+    public CompletableFuture<AddonPackManager> beginLoading(Executor backgroundExecutor) {
         this.packList.reload();
         // Enable all packs
         this.packList.setSelected(this.packList.getAvailableIds());
@@ -166,16 +174,80 @@ public class AddonPackManager {
             }
 
         } else {
-            CompletableFuture<AddonPackManager> future = this.resourceManager
-                    .createReload(backgroundExecutor, gameExecutor, CompletableFuture.completedFuture(Unit.INSTANCE), this.packList.openAllSelected())
+            mainThreadExecutor = new QueueableExecutor();
+
+            return this.resourceManager
+                    .createReload(backgroundExecutor, mainThreadExecutor, CompletableFuture.completedFuture(Unit.INSTANCE), this.packList.openAllSelected())
                     .done().whenComplete((unit, throwable) -> {
                         if (throwable != null) {
                             this.resourceManager.close();
                             throwable.printStackTrace();
                         }
-                        Palladium.LOGGER.info("Finished addonpack initialisation!");
                     })
+                    .thenRun(mainThreadExecutor::finish)
                     .thenApply((unit) -> this);
+        }
+        return null;
+    }
+
+    private void finish() {
+        Palladium.LOGGER.info("Finished addonpack initialisation!");
+    }
+
+    public void waitForLoading(CompletableFuture<AddonPackManager> loaderFuture) {
+        try {
+            while (!loaderFuture.isDone()) {
+                mainThreadExecutor.runQueue();
+                mainThreadExecutor.waitForTasks();
+            }
+
+            mainThreadExecutor.runQueue();
+
+            loaderFuture.get().finish();
+        } catch (InterruptedException e) {
+            Palladium.LOGGER.error("Addonpack loader future interrupted!");
+        } catch (ExecutionException e) {
+            Throwable cause = e.getCause();
+            throw new ReportedException(CrashReport.forThrowable(cause, "Error loading addonpacks"));
+        }
+    }
+
+    public static class QueueableExecutor implements Executor {
+        private final Thread thread = Thread.currentThread();
+        private final ConcurrentLinkedQueue<Runnable> queue = new ConcurrentLinkedQueue<>();
+        private final Semaphore sem = new Semaphore(1);
+
+        public boolean isSameThread() {
+            return Thread.currentThread() == thread;
+        }
+
+        @Override
+        public void execute(@NotNull Runnable command) {
+            if (!this.isSameThread()) {
+                queue.add(command);
+                sem.release();
+            } else {
+                command.run();
+            }
+        }
+
+        public void runQueue() {
+            if (!isSameThread()) {
+                throw new IllegalStateException("This method must be called in the main thread.");
+            }
+
+            while (queue.size() > 0) {
+                var run = queue.poll();
+                if (run != null) run.run();
+            }
+        }
+
+        public void finish() {
+            sem.release();
+        }
+
+        public void waitForTasks() throws InterruptedException {
+            sem.acquire();
         }
     }
 

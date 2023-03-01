@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.NewRegistryEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
 import net.threetag.palladium.PalladiumConfig;
@@ -63,6 +64,11 @@ public class PalladiumForge {
                 GeckoLibCompatImpl.init();
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void newRegistry(NewRegistryEvent e) {
+        AddonPackManager.waitForLoading();
     }
 
     @SubscribeEvent

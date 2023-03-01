@@ -13,6 +13,7 @@ import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumConfig;
+import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.compat.trinkets.fabric.TrinketsCompat;
 import net.threetag.palladium.energy.IBlockEntityEnergyContainer;
@@ -39,6 +40,8 @@ public class PalladiumFabric implements ModInitializer {
         registerEnergyHandlers();
         registerEvents();
         registerPlacedFeatures();
+
+        AddonPackManager.waitForLoading();
     }
 
     private static void registerEnergyHandlers() {
