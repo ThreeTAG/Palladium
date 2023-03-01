@@ -1,6 +1,6 @@
 {
   "model_layer": "test:humanoid#cape",
-  "model": "palladium:caped_humanoid",
+  "model_type": "palladium:caped_humanoid",
   "texture": {
     "base": "test:textures/models/cape/#STAGE.png",
     "variables": {

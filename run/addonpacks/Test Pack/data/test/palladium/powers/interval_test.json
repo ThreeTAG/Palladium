@@ -1,0 +1,17 @@
+{
+  "name": "Interval Test",
+  "icon": "minecraft:clock",
+  "abilities": {
+    "command": {
+      "type": "palladium:command",
+      "conditions": {
+        "unlocking": {
+          "type": "palladium:interval"
+        },
+        "enabling": {
+          "type": "palladium:action"
+        }
+      }
+    }
+  }
+}

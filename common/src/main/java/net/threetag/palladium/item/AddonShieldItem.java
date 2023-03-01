@@ -30,6 +30,7 @@ public class AddonShieldItem extends ShieldItem implements IAddonItem {
 
     private List<Component> tooltipLines;
     private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
+    private RenderLayerContainer renderLayerContainer = null;
     public final int useDuration;
     public final Supplier<Ingredient> repairIngredient;
 
@@ -87,6 +88,16 @@ public class AddonShieldItem extends ShieldItem implements IAddonItem {
                 this.attributeModifiers.get(slot1).put(attribute, modifier);
             }
         }
+    }
+
+    @Override
+    public void setRenderLayerContainer(RenderLayerContainer container) {
+        this.renderLayerContainer = container;
+    }
+
+    @Override
+    public RenderLayerContainer getRenderLayerContainer() {
+        return this.renderLayerContainer;
     }
 
     public static class Parser implements ItemParser.ItemTypeSerializer {

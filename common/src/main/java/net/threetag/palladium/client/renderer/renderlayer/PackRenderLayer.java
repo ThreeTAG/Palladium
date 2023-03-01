@@ -10,36 +10,28 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
-import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.entity.BodyPart;
-import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.function.BiFunction;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class PackRenderLayer implements IPackRenderLayer {
+public class PackRenderLayer extends AbstractPackRenderLayer {
 
     private final SkinTypedValue<ModelLookup.Model> modelLookup;
-    private final SkinTypedValue<EntityModel<LivingEntity>> model;
+    private final SkinTypedValue<EntityModel<Entity>> model;
     private final SkinTypedValue<DynamicTexture> texture;
     private final BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType;
-    private final List<Condition> conditions = new ArrayList<>();
-    private final List<BodyPart> hiddenBodyParts = new ArrayList<>();
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public PackRenderLayer(SkinTypedValue<ModelLookup.Model> model, SkinTypedValue<ModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType) {
@@ -51,15 +43,18 @@ public class PackRenderLayer implements IPackRenderLayer {
     }
 
     @Override
-    public void render(LivingEntity entity, AbilityEntry abilityEntry, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions) && this.modelLookup.get(entity).fitsEntity(entity, parentModel)) {
-            EntityModel<LivingEntity> entityModel = this.model.get(entity);
+    public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        var entity = context.getEntity();
+        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions) && this.modelLookup.get(entity).fitsEntity(entity, parentModel)) {
+            EntityModel<Entity> entityModel = this.model.get(entity);
 
-            if (entityModel instanceof HumanoidModel<LivingEntity> entityHumanoidModel && parentModel instanceof HumanoidModel<LivingEntity> parentHumanoid) {
+            if (entityModel instanceof HumanoidModel entityHumanoidModel && parentModel instanceof HumanoidModel parentHumanoid) {
                 parentHumanoid.copyPropertiesTo(entityHumanoidModel);
             }
 
-            parentModel.copyPropertiesTo(entityModel);
+            if (parentModel != null)
+                parentModel.copyPropertiesTo(entityModel);
+
             entityModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
             entityModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
@@ -70,9 +65,10 @@ public class PackRenderLayer implements IPackRenderLayer {
     }
 
     @Override
-    public void renderArm(HumanoidArm arm, AbstractClientPlayer player, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        if (IPackRenderLayer.conditionsFulfilled(player, this.conditions) && this.modelLookup.get(player).fitsEntity(player, playerRenderer.getModel())) {
-            EntityModel<LivingEntity> entityModel = this.model.get(player);
+    public void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        var player = context.getEntity();
+        if (IPackRenderLayer.conditionsFulfilled(player, this.conditions, this.firstPersonConditions) && this.modelLookup.get(player).fitsEntity(player, playerRenderer.getModel())) {
+            EntityModel<Entity> entityModel = this.model.get(player);
 
             if (entityModel instanceof HumanoidModel humanoidModel) {
                 playerRenderer.getModel().copyPropertiesTo(humanoidModel);
@@ -91,24 +87,6 @@ public class PackRenderLayer implements IPackRenderLayer {
                 }
             }
         }
-    }
-
-    @Override
-    public IPackRenderLayer addCondition(Condition condition) {
-        this.conditions.add(condition);
-        return this;
-    }
-
-    public PackRenderLayer addHiddenBodyPart(BodyPart bodyPart) {
-        if (!this.hiddenBodyParts.contains(bodyPart)) {
-            this.hiddenBodyParts.add(bodyPart);
-        }
-        return this;
-    }
-
-    @Override
-    public List<BodyPart> getHiddenBodyParts(LivingEntity entity) {
-        return IPackRenderLayer.conditionsFulfilled(entity, this.conditions) ? this.hiddenBodyParts : Collections.emptyList();
     }
 
     public static PackRenderLayer parse(JsonObject json) {
@@ -147,7 +125,7 @@ public class PackRenderLayer implements IPackRenderLayer {
         GsonUtil.ifHasKey(json, "hidden_body_parts", el -> {
             if (el.isJsonPrimitive()) {
                 var string = el.getAsString();
-                if(string.equalsIgnoreCase("all")) {
+                if (string.equalsIgnoreCase("all")) {
                     for (BodyPart bodyPart : BodyPart.values()) {
                         layer.addHiddenBodyPart(bodyPart);
                     }

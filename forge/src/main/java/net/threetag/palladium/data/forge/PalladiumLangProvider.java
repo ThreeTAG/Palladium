@@ -5,6 +5,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessories;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.Abilities;
@@ -55,7 +56,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Raw Vibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibranium Ingot");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone Flux Crystal");
-            this.addItem(PalladiumItems.HAMMER, "Hammer");
+            this.addItem(PalladiumItems.SUIT_STAND, "Suit Stand");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Lead Circuit");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quartz Circuit");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibranium Circuit");
@@ -68,12 +69,23 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effect");
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projectile");
+            this.addEntityType(PalladiumEntityTypes.SUIT_STAND, "Suit Stand");
+
+            // Attributes
+            this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Flight Speed");
+            this.addAttribute(PalladiumAttributes.LEVITATION_SPEED, "Levitation Speed");
+            this.addAttribute(PalladiumAttributes.FLIGHT_FLEXIBILITY, "Flight Flexibility");
+            this.addAttribute(PalladiumAttributes.HOVERING, "Hovering");
+            this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Punch Damage");
+            this.addAttribute(PalladiumAttributes.JUMP_POWER, "Jump Power");
+            this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Destroy Speed");
+            this.addAttribute(PalladiumAttributes.FALL_RESISTANCE, "Fall Resistance");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Command");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
-            this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolated Integer");
+            this.addAbility(Abilities.ANIMATION_TIMER, "Animation Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "Shrink Body Overlay");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attribute Modifier");
             this.addAbility(Abilities.HEALING, "Healing");
@@ -88,6 +100,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effect");
             this.addAbility(Abilities.GUI_OVERLAY, "Gui Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Show Both Arms");
+            this.addAbility(Abilities.PLAYER_ANIMATION, "Player Animation");
+            this.addAbility(Abilities.WATER_WALK, "Water Walk");
+            this.addAbility(Abilities.RESTRICT_SLOTS, "Restrict Slots");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -108,6 +123,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.remove.success.entity.multiple", "The superpower of %s entities was removed");
             this.add("commands.superpower.error.alreadyHasSuperpower", "%s already has that superpower");
             this.add("commands.superpower.error.doesntHaveSuperpower", "%s does not have that superpower");
+
+            this.add("argument.entity.options.palladium.power.description", "Required power");
 
             // GUI
             this.add("gui.palladium.powers", "Powers");
@@ -195,7 +212,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarren");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
-            this.addItem(PalladiumItems.HAMMER, "Hammer");
+            this.addItem(PalladiumItems.SUIT_STAND, "Anzugsständer");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Bleischaltkreis");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaltkreis");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaltkreis");
@@ -208,12 +225,23 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
+            this.addEntityType(PalladiumEntityTypes.SUIT_STAND, "Anzugsständer");
+
+            // Attributes
+            this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Fluggeschwindigkeit");
+            this.addAttribute(PalladiumAttributes.LEVITATION_SPEED, "Schwebegeschwindigkeit");
+            this.addAttribute(PalladiumAttributes.FLIGHT_FLEXIBILITY, "Flugflexibilität");
+            this.addAttribute(PalladiumAttributes.HOVERING, "Schweben");
+            this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Schlagkraft");
+            this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
+            this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Abbaugeschwindigkeit");
+            this.addAttribute(PalladiumAttributes.FALL_RESISTANCE, "Fallwiderstand");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
-            this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolierte Zahl");
+            this.addAbility(Abilities.ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attributmodifikator");
             this.addAbility(Abilities.HEALING, "Heilung");
@@ -228,6 +256,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(Abilities.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeigen");
+            this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
+            this.addAbility(Abilities.WATER_WALK, "Auf Wasser Laufen");
+            this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
@@ -248,6 +279,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.remove.success.entity.multiple", "Die Superkraft von %s Lebewesen wurde entfernt");
             this.add("commands.superpower.error.alreadyHasSuperpower", "%s hat bereits diese Superkraft");
             this.add("commands.superpower.error.doesntHaveSuperpower", "%s hat diese Superkraft nicht");
+
+            this.add("argument.entity.options.palladium.power.description", "Benötigte Kraft");
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");
@@ -335,7 +368,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarrn");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
-            this.addItem(PalladiumItems.HAMMER, "Hammer");
+            this.addItem(PalladiumItems.SUIT_STAND, "Anzuchsschdändorr");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Redstoneschaldkres");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaldkres");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaldkres");
@@ -348,12 +381,23 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
             this.addEntityType(PalladiumEntityTypes.CUSTOM_PROJECTILE, "Projektil");
+            this.addEntityType(PalladiumEntityTypes.SUIT_STAND, "Anzuchsschdändorr");
+
+            // Attributes
+            this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Flugjeschwindichket");
+            this.addAttribute(PalladiumAttributes.LEVITATION_SPEED, "Schwebejeschwindichket");
+            this.addAttribute(PalladiumAttributes.FLIGHT_FLEXIBILITY, "Flugflexibilität");
+            this.addAttribute(PalladiumAttributes.HOVERING, "Schweben");
+            this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Schlachkraft");
+            this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
+            this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Abbohjeschwindichket");
+            this.addAttribute(PalladiumAttributes.FALL_RESISTANCE, "Fallwidorstand");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
-            this.addAbility(Abilities.INTERPOLATED_INTEGER, "Interpolierte Zahl");
+            this.addAbility(Abilities.ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "\u00C4ttrib\u00FCtmodifikator");
             this.addAbility(Abilities.HEALING, "Helung");
@@ -368,6 +412,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(Abilities.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeijen");
+            this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
+            this.addAbility(Abilities.WATER_WALK, "Uff Wasser Lofen");
+            this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");
@@ -388,6 +435,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.remove.success.entity.multiple", "De Supperkraft von %s Lebewesen wurd' entfernt");
             this.add("commands.superpower.error.alreadyHasSuperpower", "%s had berehts dise Supperkraft");
             this.add("commands.superpower.error.doesntHaveSuperpower", "%s had dese Supperkraft nich");
+
+            this.add("argument.entity.options.palladium.power.description", "Benötichte Kraft");
 
             // GUI
             this.add("gui.palladium.powers", "Kr\u00E4fte");

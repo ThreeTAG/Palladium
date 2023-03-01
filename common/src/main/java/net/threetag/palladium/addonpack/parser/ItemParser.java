@@ -20,15 +20,28 @@ import net.threetag.palladium.documentation.IDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.item.*;
 import net.threetag.palladium.util.json.GsonUtil;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.util.*;
 
 public class ItemParser extends AddonParser<Item> {
 
     private static final Map<ResourceLocation, ItemTypeSerializer> TYPE_SERIALIZERS = new LinkedHashMap<>();
+    public final Map<ResourceLocation, ResourceLocation> autoRegisteredBlockItems = new HashMap<>();
 
     public ItemParser() {
         super(GSON, "items", Registry.ITEM_REGISTRY);
+    }
+
+    @Override
+    public void injectJsons(Map<ResourceLocation, JsonElement> map) {
+        for (ResourceLocation id : autoRegisteredBlockItems.keySet()) {
+            var json = new JsonObject();
+            json.addProperty("type", "palladium:block_item");
+            json.addProperty("block", id.toString());
+            json.addProperty("creative_mode_tab", autoRegisteredBlockItems.get(id).toString());
+            map.put(id, json);
+        }
     }
 
     @Override
@@ -45,6 +58,19 @@ public class ItemParser extends AddonParser<Item> {
                 .tooltipLines(GsonUtil.getAsComponentList(json, "tooltip", null));
 
         GsonUtil.ifHasKey(json, "attribute_modifiers", je -> parseAttributeModifiers(builder, je));
+
+        if (Platform.isClient()) {
+            GsonUtil.ifHasObject(json, "render_layers", jsonObject -> {
+                IAddonItem.RenderLayerContainer container = new IAddonItem.RenderLayerContainer();
+                for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+                    String key = entry.getKey();
+                    GsonUtil.forEachInListOrPrimitive(entry.getValue(), idElement -> {
+                        container.addLayer(key, new ResourceLocation(idElement.getAsString()));
+                    });
+                }
+                builder.setRenderLayerContainer(container);
+            });
+        }
 
         GsonUtil.ifHasObject(json, "food", foodJson -> {
             FoodProperties.Builder properties = new FoodProperties.Builder();
@@ -98,13 +124,13 @@ public class ItemParser extends AddonParser<Item> {
 
     static {
         registerTypeSerializer(new AddonItem.Parser());
+        registerTypeSerializer(new AddonBlockItem.Parser());
         registerTypeSerializer(new AddonArmorItem.Parser());
         registerTypeSerializer(new AddonSwordItem.Parser());
         registerTypeSerializer(new AddonPickaxeItem.Parser());
         registerTypeSerializer(new AddonAxeItem.Parser());
         registerTypeSerializer(new AddonShovelItem.Parser());
         registerTypeSerializer(new AddonHoeItem.Parser());
-        registerTypeSerializer(new HammerItem.Parser());
         registerTypeSerializer(new AddonShieldItem.Parser());
         registerTypeSerializer(new AddonBowItem.Parser());
         registerTypeSerializer(new AddonCrossbowItem.Parser());

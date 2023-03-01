@@ -7,10 +7,12 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.condition.*;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.IconSerializer;
+import net.threetag.palladium.util.json.GsonUtil;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +31,9 @@ public class AbilityConfiguration {
     private boolean buyable = false;
     private CooldownType cooldownType = CooldownType.STATIC;
     private boolean needsKey = false;
+    private boolean needsEmptyHand = false;
     private KeyType keyType = KeyType.KEY_BIND;
+    private KeyPressType keyPressType = KeyPressType.ONCE;
     public List<String> dependencies = new ArrayList<>();
 
     public AbilityConfiguration(String id, Ability ability) {
@@ -85,8 +89,16 @@ public class AbilityConfiguration {
         return this.needsKey;
     }
 
+    public boolean needsEmptyHand() {
+        return this.needsEmptyHand;
+    }
+
     public KeyType getKeyType() {
         return this.keyType;
+    }
+
+    public KeyPressType getKeyPressType() {
+        return this.keyPressType;
     }
 
     public boolean isBuyable() {
@@ -108,8 +120,10 @@ public class AbilityConfiguration {
         buf.writeResourceLocation(Objects.requireNonNull(Ability.REGISTRY.getKey(this.ability)));
         this.propertyManager.toBuffer(buf);
         buf.writeBoolean(this.needsKey);
+        buf.writeBoolean(this.needsEmptyHand);
         buf.writeBoolean(this.buyable);
         buf.writeInt(this.keyType.ordinal());
+        buf.writeInt(this.keyPressType.ordinal());
         buf.writeInt(this.cooldownType.ordinal());
         buf.writeInt(this.dependencies.size());
 
@@ -125,8 +139,10 @@ public class AbilityConfiguration {
         AbilityConfiguration configuration = new AbilityConfiguration(id, Objects.requireNonNull(ability));
         configuration.propertyManager.fromBuffer(buf);
         configuration.needsKey = buf.readBoolean();
+        configuration.needsEmptyHand = buf.readBoolean();
         configuration.buyable = buf.readBoolean();
         configuration.keyType = KeyType.values()[buf.readInt()];
+        configuration.keyPressType = KeyPressType.values()[buf.readInt()];
         configuration.cooldownType = CooldownType.values()[buf.readInt()];
         int keys = buf.readInt();
         for (int i = 0; i < keys; i++) {
@@ -137,7 +153,14 @@ public class AbilityConfiguration {
     }
 
     public static AbilityConfiguration fromJSON(String id, JsonObject json) {
-        Ability ability = Ability.REGISTRY.get(new ResourceLocation(GsonHelper.getAsString(json, "type", "placeholder")));
+        var abilityId = GsonUtil.getAsResourceLocation(json, "type");
+
+        if (abilityId.equals(Palladium.id("interpolated_integer"))) {
+            abilityId = Abilities.ANIMATION_TIMER.getId();
+            AddonPackLog.warning("'interpolated_integer' ability found in power, please use 'animation_timer' instead!");
+        }
+
+        Ability ability = Ability.REGISTRY.get(abilityId);
 
         if (ability == null) {
             if (GsonHelper.isValidNode(json, "ability")) {
@@ -206,6 +229,11 @@ public class AbilityConfiguration {
                         }
                         withKey = true;
                         configuration.keyType = condition.getKeyType();
+                        configuration.keyPressType = condition.getKeyPressType();
+
+                        if (condition instanceof KeyCondition key) {
+                            configuration.needsEmptyHand = key.needsEmptyHand();
+                        }
                     }
 
                     if (condition.handlesCooldown()) {
@@ -236,6 +264,12 @@ public class AbilityConfiguration {
     public enum KeyType {
 
         KEY_BIND, LEFT_CLICK, RIGHT_CLICK, SPACE_BAR;
+
+    }
+
+    public enum KeyPressType {
+
+        ONCE, HOLD
 
     }
 

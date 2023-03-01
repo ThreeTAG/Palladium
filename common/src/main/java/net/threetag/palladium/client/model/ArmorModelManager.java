@@ -1,10 +1,18 @@
 package net.threetag.palladium.client.model;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -12,6 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
+import net.threetag.palladium.item.ExtendedArmor;
 import net.threetag.palladium.util.SkinTypedValue;
 
 import java.util.HashMap;
@@ -40,6 +49,26 @@ public class ArmorModelManager implements ResourceManagerReloadListener {
 
     public static Handler get(Item item) {
         return HANDLERS.get(item);
+    }
+
+    public static void renderFirstPerson(AbstractClientPlayer player, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, ModelPart rendererArm, boolean rightArm) {
+        var stack = player.getItemBySlot(EquipmentSlot.CHEST);
+        if (!stack.isEmpty() && HANDLERS.containsKey(stack.getItem()) && stack.getItem() instanceof ExtendedArmor customArmorTexture) {
+            var handler = get(stack.getItem());
+            var armorModel = handler.getArmorModel(stack, player, EquipmentSlot.CHEST);
+            var vertex = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(customArmorTexture.getArmorTextureLocation(stack, player, EquipmentSlot.CHEST, null)), false, stack.hasFoil());
+            var arm = rightArm ? armorModel.rightArm : armorModel.leftArm;
+            arm.copyFrom(rendererArm);
+            arm.xRot = 0.0F;
+            arm.render(poseStack, vertex, combinedLight, OverlayTexture.NO_OVERLAY);
+
+            if (armorModel instanceof PlayerModel<?> playerModel) {
+                arm = rightArm ? playerModel.rightSleeve : playerModel.leftSleeve;
+                arm.copyFrom(rendererArm);
+                arm.xRot = 0.0F;
+                arm.render(poseStack, vertex, combinedLight, OverlayTexture.NO_OVERLAY);
+            }
+        }
     }
 
     public interface Handler {

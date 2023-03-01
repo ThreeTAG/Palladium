@@ -16,8 +16,8 @@ public class ActivationCondition extends KeyCondition {
 
     public final int ticks;
 
-    public ActivationCondition(int ticks, int cooldown, AbilityConfiguration.KeyType type) {
-        super(cooldown, type);
+    public ActivationCondition(int ticks, int cooldown, AbilityConfiguration.KeyType type, boolean needsEmptyHand) {
+        super(cooldown, type, needsEmptyHand);
         this.ticks = ticks;
     }
 
@@ -49,11 +49,12 @@ public class ActivationCondition extends KeyCondition {
             this.withProperty(ActionCondition.Serializer.COOLDOWN, 0);
             this.withProperty(TICKS, 60);
             this.withProperty(KeyCondition.KEY_TYPE, AbilityConfiguration.KeyType.KEY_BIND);
+            this.withProperty(KeyCondition.NEEDS_EMPTY_HAND, false);
         }
 
         @Override
         public Condition make(JsonObject json) {
-            return new ActivationCondition(this.getProperty(json, TICKS), this.getProperty(json, ActionCondition.Serializer.COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE));
+            return new ActivationCondition(this.getProperty(json, TICKS), this.getProperty(json, ActionCondition.Serializer.COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND));
         }
 
         @Override

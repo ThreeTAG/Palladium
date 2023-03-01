@@ -4,12 +4,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.TransformedTexture;
 import net.threetag.palladium.client.dynamictexture.variable.ITextureVariable;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +27,7 @@ public class DefaultDynamicTexture extends DynamicTexture {
     }
 
     @Override
-    public ResourceLocation getTexture(LivingEntity entity) {
+    public ResourceLocation getTexture(Entity entity) {
         if (this.output == null || this.output.isEmpty() || this.transformers.isEmpty()) {
             return new ResourceLocation(replaceVariables(this.base, entity, this.textureVariableMap));
         }
@@ -55,7 +55,7 @@ public class DefaultDynamicTexture extends DynamicTexture {
         return this;
     }
 
-    public static String replaceVariables(String base, LivingEntity entity, Map<String, ITextureVariable> textureVariableMap) {
+    public static String replaceVariables(String base, Entity entity, Map<String, ITextureVariable> textureVariableMap) {
         for (Map.Entry<String, ITextureVariable> entry : textureVariableMap.entrySet()) {
             ITextureVariable variable = entry.getValue();
             base = variable.replace(base, entry.getKey(), entity);

@@ -9,13 +9,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.NewRegistryEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
 import net.threetag.palladium.PalladiumConfig;
@@ -24,6 +27,7 @@ import net.threetag.palladium.addonpack.forge.AddonPackType;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.compat.curios.forge.CuriosCompat;
+import net.threetag.palladium.compat.geckolib.forge.GeckoLibCompatImpl;
 import net.threetag.palladium.data.forge.*;
 import net.threetag.palladium.mixin.ReloadableResourceManagerMixin;
 import net.threetag.palladiumcore.forge.PalladiumCoreForge;
@@ -45,6 +49,7 @@ public class PalladiumForge {
         AddonPackType.init();
         Palladium.init();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PalladiumConfig.Client.generateConfig());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, PalladiumConfig.Server.generateConfig());
 
         if (ModList.get().isLoaded("curios")) {
             CuriosCompat.init();
@@ -52,8 +57,27 @@ public class PalladiumForge {
 
         if (Platform.isClient()) {
             PalladiumClient.init();
+
+            if (ModList.get().isLoaded("curios")) {
+                CuriosCompat.initClient();
+            }
+
+            if (Platform.isModLoaded("geckolib3")) {
+                GeckoLibCompatImpl.init();
+            }
         }
     }
+
+    @SubscribeEvent
+    public static void newRegistry(NewRegistryEvent e) {
+        AddonPackManager.waitForLoading();
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onConstructMod(FMLConstructModEvent event) {
+        event.enqueueWork(AddonPackManager::startLoading);
+    }
+
 
     @SubscribeEvent
     public static void setup(FMLCommonSetupEvent e) {

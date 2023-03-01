@@ -8,19 +8,23 @@ import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
+
 public class ScriptableCondition extends Condition {
 
     public final ConditionBuilder builder;
     public final ConditionSerializer serializer;
+	public final Map<String, Object> extraProperties;
 
-    public ScriptableCondition(ConditionBuilder builder, ConditionSerializer serializer) {
+    public ScriptableCondition(ConditionBuilder builder, ConditionSerializer serializer, Map<String, Object> extraProperties) {
         this.builder = builder;
         this.serializer = serializer;
+	    this.extraProperties = extraProperties;
     }
 
     @Override
     public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
-        return this.builder.test != null && this.builder.test.test(entity);
+        return this.builder.test != null && this.builder.test.test(entity, this.extraProperties);
     }
 
     @Override

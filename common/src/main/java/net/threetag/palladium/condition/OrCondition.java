@@ -33,7 +33,7 @@ public class OrCondition extends Condition {
 
     public static class Serializer extends ConditionSerializer {
 
-        public static final PalladiumProperty<Condition[]> CONDITIONS = new ConditionArrayProperty("conditions").configurable("Array of conditions that must be disabled");
+        public static final PalladiumProperty<Condition[]> CONDITIONS = new ConditionArrayProperty("conditions").configurable("Array of conditions, at least one of which must be active");
 
         public Serializer() {
             this.withProperty(CONDITIONS, new Condition[0]);

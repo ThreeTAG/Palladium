@@ -34,6 +34,10 @@ public abstract class Condition {
         return AbilityConfiguration.KeyType.KEY_BIND;
     }
 
+    public AbilityConfiguration.KeyPressType getKeyPressType() {
+        return AbilityConfiguration.KeyPressType.ONCE;
+    }
+
     public boolean handlesCooldown() {
         return false;
     }

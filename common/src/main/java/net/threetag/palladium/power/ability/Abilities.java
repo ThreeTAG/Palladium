@@ -13,7 +13,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> DUMMY = ABILITIES.register("dummy", Ability::new);
     public static final RegistrySupplier<Ability> COMMAND = ABILITIES.register("command", CommandAbility::new);
     public static final RegistrySupplier<Ability> RENDER_LAYER = ABILITIES.register("render_layer", RenderLayerAbility::new);
-    public static final RegistrySupplier<Ability> INTERPOLATED_INTEGER = ABILITIES.register("interpolated_integer", InterpolatedIntegerAbility::new);
+    public static final RegistrySupplier<Ability> ANIMATION_TIMER = ABILITIES.register("animation_timer", AnimationTimerAbility::new);
     public static final RegistrySupplier<Ability> SHRINK_BODY_OVERLAY = ABILITIES.register("shrink_body_overlay", ShrinkBodyOverlayAbility::new);
     public static final RegistrySupplier<Ability> ATTRIBUTE_MODIFIER = ABILITIES.register("attribute_modifier", AttributeModifierAbility::new);
     public static final RegistrySupplier<Ability> HEALING = ABILITIES.register("healing", HealingAbility::new);
@@ -29,6 +29,9 @@ public class Abilities {
     public static final RegistrySupplier<Ability> SHADER_EFFECT = ABILITIES.register("shader_effect", ShaderEffectAbility::new);
     public static final RegistrySupplier<Ability> GUI_OVERLAY = ABILITIES.register("gui_overlay", GuiOverlayAbility::new);
     public static final RegistrySupplier<Ability> SHOW_BOTH_ARMS = ABILITIES.register("show_both_arms", () -> new Ability().withProperty(Ability.HIDDEN, true));
+    public static final RegistrySupplier<Ability> PLAYER_ANIMATION = ABILITIES.register("player_animation", PlayerAnimationAbility::new);
+    public static final RegistrySupplier<Ability> WATER_WALK = ABILITIES.register("water_walk", Ability::new);
+    public static final RegistrySupplier<Ability> RESTRICT_SLOTS = ABILITIES.register("restrict_slots", RestrictSlotsAbility::new);
 
     public static void init() {
 

@@ -70,6 +70,18 @@ public class GsonUtil {
         return getFloatArray(jsonObject, fields, key);
     }
 
+    public static ItemStack getAsItemStack(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            return readItemStack(json.get(memberName));
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find an itemstack");
+        }
+    }
+
+    public static ItemStack getAsItemStack(JsonObject json, String memberName, @Nullable ItemStack fallback) {
+        return json.has(memberName) ? getAsItemStack(json, memberName) : fallback;
+    }
+
     public static ResourceLocation convertToResourceLocation(JsonElement json, String memberName) {
         if (json.isJsonPrimitive()) {
             return new ResourceLocation(json.getAsString());
@@ -279,7 +291,7 @@ public class GsonUtil {
     }
 
     public static Color getAsColor(JsonObject json, String memberName) {
-        if(json.has(memberName)) {
+        if (json.has(memberName)) {
             var jsonElement = json.get(memberName);
 
             if (jsonElement.isJsonPrimitive()) {
@@ -391,16 +403,40 @@ public class GsonUtil {
         return json;
     }
 
-    public static ItemStack readItemStack(JsonObject json) {
-        ResourceLocation id = new ResourceLocation(GsonHelper.getAsString(json, "item"));
+    public static ItemStack readItemStack(JsonElement jsonElement) {
+        if (jsonElement.isJsonPrimitive()) {
+            ResourceLocation id = new ResourceLocation(jsonElement.getAsString());
 
-        if (!Registry.ITEM.containsKey(id)) {
-            throw new JsonParseException("Unknown item '" + id + "'");
+            if (!Registry.ITEM.containsKey(id)) {
+                throw new JsonParseException("Unknown item '" + id + "'");
+            }
+
+            return new ItemStack(Registry.ITEM.get(id));
+        } else if (jsonElement.isJsonObject()) {
+            var json = jsonElement.getAsJsonObject();
+            ResourceLocation id = new ResourceLocation(GsonHelper.getAsString(json, "item"));
+
+            if (!Registry.ITEM.containsKey(id)) {
+                throw new JsonParseException("Unknown item '" + id + "'");
+            }
+
+            Item item = Registry.ITEM.get(id);
+
+            return new ItemStack(item, GsonHelper.getAsInt(json, "count", 1));
+        } else {
+            throw new JsonParseException("Item stack definition must either be a primitive or an object");
         }
+    }
 
-        Item item = Registry.ITEM.get(id);
-
-        return new ItemStack(item, GsonHelper.getAsInt(json, "count", 1));
+    public static void forEachInListOrPrimitive(JsonElement element, Consumer<JsonElement> consumer) {
+        if (element.isJsonPrimitive() || element.isJsonObject()) {
+            consumer.accept(element);
+        } else if (element.isJsonArray()) {
+            JsonArray array = element.getAsJsonArray();
+            for (JsonElement child : array) {
+                consumer.accept(child);
+            }
+        }
     }
 
 }

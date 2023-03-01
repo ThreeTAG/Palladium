@@ -2,19 +2,28 @@
   "name": "KubeJS Test",
   "icon": "minecraft:iron_ingot",
   "abilities": {
-    "action": {
+    "normal": {
       "type": "kubejs:testpack/test_ability",
       "conditions": {
-        "unlocking": [
-          {
-            "type": "kubejs:testpack/test_condition"
-          }
-        ],
-        "enabling": [
-          {
-            "type": "palladium:action"
-          }
-        ]
+        "unlocking": {
+          "type": "kubejs:testpack/test_condition"
+        },
+        "enabling": {
+          "type": "palladium:action"
+        }
+      }
+    },
+    "with_property": {
+      "type": "kubejs:testpack/test_ability_with_property",
+      "some_important_number": 42,
+      "conditions": {
+        "unlocking": {
+          "type": "kubejs:testpack/test_condition_with_property",
+          "my_integer": 4
+        },
+        "enabling": {
+          "type": "palladium:action"
+        }
       }
     }
   }

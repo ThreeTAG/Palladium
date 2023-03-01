@@ -40,7 +40,7 @@ public abstract class BuyableCondition extends Condition {
 
     public void buy(LivingEntity entity, AbilityEntry entry) {
         if (isAvailable(entity) && takeFromEntity(entity)) {
-            entry.setOwnProperty(BOUGHT, true);
+            entry.setUniqueProperty(BOUGHT, true);
         }
     }
 }

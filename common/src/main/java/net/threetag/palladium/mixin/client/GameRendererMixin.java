@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.Ability;
+import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.ShaderEffectAbility;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -34,7 +34,7 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "bobView", at = @At("HEAD"), cancellable = true)
     private void bobView(PoseStack matrixStack, float partialTicks, CallbackInfo ci) {
-        if (this.minecraft.getCameraEntity() instanceof LivingEntity livingEntity && !Ability.getEnabledEntries(livingEntity, Abilities.ENERGY_BLAST.get()).isEmpty()) {
+        if (this.minecraft.getCameraEntity() instanceof LivingEntity livingEntity && !AbilityUtil.getEnabledEntries(livingEntity, Abilities.ENERGY_BLAST.get()).isEmpty()) {
             ci.cancel();
         }
     }

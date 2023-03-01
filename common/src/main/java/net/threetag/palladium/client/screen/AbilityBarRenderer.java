@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import io.netty.util.collection.IntObjectHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
@@ -27,7 +28,6 @@ import net.threetag.palladiumcore.event.ClientTickEvents;
 import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
@@ -119,7 +119,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
             minecraft.font.draw(poseStack, Component.literal(properties.getString()), (position.left ? 15 : 37) - length / 2F + 10, position.top ? 10 : 12, 0xffffffff);
 
             RenderSystem.setShaderTexture(0, texture);
-            minecraft.gui.blit(poseStack, (position.left ? 15 : 37) - length / 2, position.top ? 9 : 11, 78, 56, 7, 9);
+            minecraft.gui.blit(poseStack, (position.left ? 15 : 37) - length / 2, position.top ? 9 : 11, 78, minecraft.player.isCrouching() ? 64 : 56, 8, 8);
         }
     }
 
@@ -155,7 +155,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
             minecraft.gui.blit(poseStack, 3, i * 22 + 3, 60, 56, 18, 18);
 
             if (list != null) {
-                AbilityEntry entry = list.getAbilities()[i];
+                AbilityEntry entry = list.getDisplayedAbilities()[i];
 
                 if (entry != null) {
                     if (entry.isEnabled() && entry.activationTimer != 0 && entry.maxActivationTimer != 0) {
@@ -210,8 +210,8 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
         }
 
         // Colored Frames + Keys
-        for (int i = 0; i < list.abilities.length; i++) {
-            AbilityEntry ability = list.abilities[i];
+        for (int i = 0; i < AbilityList.SIZE; i++) {
+            AbilityEntry ability = list.getDisplayedAbilities()[i];
 
             if (ability != null) {
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -334,13 +334,13 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
             }
 
             for (AbilityList list : containerList) {
-                if (!list.isEmpty()) {
+                if (!list.isEmpty() && !list.isFullyLocked()) {
                     lists.add(list);
                 }
             }
 
             for (AbilityList list : remainingLists) {
-                if (!list.isEmpty()) {
+                if (!list.isEmpty() && !list.isFullyLocked()) {
                     lists.add(list);
                 }
             }
@@ -355,8 +355,9 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
 
     public static class AbilityList {
 
+        private static final int SIZE = 5;
         private final Power power;
-        private final AbilityEntry[] abilities = new AbilityEntry[5];
+        private final IntObjectHashMap<List<AbilityEntry>> abilities = new IntObjectHashMap<>();
         private ResourceLocation texture;
         public boolean simple = false;
 
@@ -369,14 +370,14 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
         }
 
         public AbilityList addAbility(int index, AbilityEntry ability) {
-            this.abilities[index] = ability;
+            this.abilities.computeIfAbsent(index, integer -> new ArrayList<>()).add(ability);
             return this;
         }
 
         public boolean addAbility(AbilityEntry ability) {
-            for (int i = 0; i < this.abilities.length; i++) {
-                if (this.abilities[i] == null) {
-                    this.abilities[i] = ability;
+            for (int i = 0; i < SIZE; i++) {
+                if (this.abilities.get(i) == null || this.abilities.get(i).isEmpty()) {
+                    this.abilities.computeIfAbsent(i, integer -> new ArrayList<>()).add(ability);
                     return true;
                 }
             }
@@ -389,23 +390,49 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
         }
 
         public boolean isEmpty() {
-            for (AbilityEntry ability : this.abilities) {
-                if (ability != null) {
+            for (int i = 0; i < SIZE; i++) {
+                if (this.abilities.get(i) != null && !this.abilities.get(i).isEmpty()) {
                     return false;
                 }
             }
             return true;
         }
 
-        public AbilityEntry[] getAbilities() {
-            return abilities;
+        public boolean isFullyLocked() {
+            for (AbilityEntry entry : this.getDisplayedAbilities()) {
+                if (entry != null && entry.isUnlocked()) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public AbilityEntry[] getDisplayedAbilities() {
+            AbilityEntry[] entries = new AbilityEntry[SIZE];
+
+            for (int i = 0; i < SIZE; i++) {
+                if (this.abilities.get(i) != null) {
+                    for (AbilityEntry entry : this.abilities.get(i)) {
+                        var current = entries[i];
+
+                        if (current == null) {
+                            entries[i] = entry;
+                        } else if (!current.isUnlocked() && entry.isUnlocked()) {
+                            entries[i] = entry;
+                        }
+                    }
+                }
+            }
+
+            return entries;
         }
 
         public void simplify() {
             int abilities = 0;
             AbilityEntry entry = null;
 
-            for (AbilityEntry ability : this.abilities) {
+            for (AbilityEntry ability : this.getDisplayedAbilities()) {
                 if (ability != null && ability.isUnlocked()) {
                     abilities++;
                     entry = ability;
@@ -415,7 +442,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
             this.simple = abilities == 1;
 
             if (this.simple) {
-                Arrays.fill(this.abilities, null);
+                this.abilities.clear();
                 this.addAbility(0, entry);
             }
         }

@@ -11,6 +11,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
+import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
+import net.threetag.palladium.client.renderer.renderlayer.IRenderLayerContext;
+import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.entity.CustomProjectile;
 import net.threetag.palladium.util.RenderUtil;
 
@@ -43,6 +46,21 @@ public class CustomProjectileRenderer extends EntityRenderer<CustomProjectile> {
                 poseStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
                 var vertexConsumer = buffer.getBuffer(PalladiumRenderTypes.LASER);
                 RenderUtil.drawGlowingBox(poseStack, vertexConsumer, 0.5F, laser.thickness, laser.color.getRed() / 255F, laser.color.getGreen() / 255F, laser.color.getBlue() / 255F, 1F, 15728640);
+                poseStack.popPose();
+            } else if (appearance instanceof CustomProjectile.RenderLayerAppearance renderLayers) {
+                poseStack.pushPose();
+                poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
+                poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
+                poseStack.translate(-0.5F, entity.dimensions.height / 2F, 0);
+                poseStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+                poseStack.mulPose(Vector3f.XP.rotationDegrees(270.0F));
+                for (ResourceLocation id : renderLayers.renderLayers) {
+                    IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
+
+                    if (layer != null) {
+                        layer.render(IRenderLayerContext.ofEntity(entity), poseStack, buffer, null, packedLight, 0, 0, partialTicks, entity.tickCount, 0, 0);
+                    }
+                }
                 poseStack.popPose();
             }
         }

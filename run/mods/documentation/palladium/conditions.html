@@ -14,7 +14,7 @@ td.false{background-color:#FF6666AA;}
 td.other{background-color:#42A3FFAA;}
 td.error{color:#FF0000;}
 th,td.true,td.false,td.other{text-align:center;}pre{outline:1px solid #ccc;padding:5px;margin:5px;} .string{color:green;} .number{color:cornflowerblue;} .boolean{color:darkorange;} .null{color:orangered;} .key{color:purple;}hr { height: 5px; background-color: black }</style>
-<link rel="shortcut icon" type="image/x-icon" href="https://i.imgur.com/am80ox1.png">
+<link rel="shortcut icon" type="image/x-icon" href="https://i.imgur.com/3sx4xJf.png">
 
 <style>
 .json-block { background-color: lightgray; display: inline-block; border: 5px solid darkgray; padding: 10px }</style>
@@ -55,12 +55,24 @@ action</a>
 activation</a>
 </li>
 <li>
+<a href="#palladium:and">
+and</a>
+</li>
+<li>
 <a href="#palladium:brightness_at_position">
 brightness_at_position</a>
 </li>
 <li>
+<a href="#palladium:command_result">
+command_result</a>
+</li>
+<li>
 <a href="#palladium:crouching">
 crouching</a>
+</li>
+<li>
+<a href="#palladium:dimension">
+dimension</a>
 </li>
 <li>
 <a href="#palladium:entity_type">
@@ -73,6 +85,10 @@ entity_type_tag</a>
 <li>
 <a href="#palladium:experience_level_buyable">
 experience_level_buyable</a>
+</li>
+<li>
+<a href="#palladium:float_property">
+float_property</a>
 </li>
 <li>
 <a href="#palladium:has_power">
@@ -91,12 +107,68 @@ health</a>
 held</a>
 </li>
 <li>
+<a href="#palladium:in_lava">
+in_lava</a>
+</li>
+<li>
 <a href="#palladium:in_water">
 in_water</a>
 </li>
 <li>
+<a href="#palladium:integer_property">
+integer_property</a>
+</li>
+<li>
+<a href="#palladium:interval">
+interval</a>
+</li>
+<li>
+<a href="#palladium:is_elytra_flying">
+is_elytra_flying</a>
+</li>
+<li>
+<a href="#palladium:is_fast_flying">
+is_fast_flying</a>
+</li>
+<li>
+<a href="#palladium:is_flying">
+is_flying</a>
+</li>
+<li>
+<a href="#palladium:is_in_rain">
+is_in_rain</a>
+</li>
+<li>
+<a href="#palladium:is_in_water_or_bubble">
+is_in_water_or_bubble</a>
+</li>
+<li>
+<a href="#palladium:is_in_water_or_rain">
+is_in_water_or_rain</a>
+</li>
+<li>
+<a href="#palladium:is_in_water_rain_or_bubble">
+is_in_water_rain_or_bubble</a>
+</li>
+<li>
+<a href="#palladium:is_levitating">
+is_levitating</a>
+</li>
+<li>
 <a href="#palladium:is_moving">
 is_moving</a>
+</li>
+<li>
+<a href="#palladium:is_on_fire">
+is_on_fire</a>
+</li>
+<li>
+<a href="#palladium:is_swimming">
+is_swimming</a>
+</li>
+<li>
+<a href="#palladium:is_under_water">
+is_under_water</a>
 </li>
 <li>
 <a href="#palladium:item_buyable">
@@ -139,6 +211,10 @@ pose</a>
 scoreboard_score_buyable</a>
 </li>
 <li>
+<a href="#palladium:sprinting">
+sprinting</a>
+</li>
+<li>
 <a href="#palladium:toggle">
 toggle</a>
 </li>
@@ -157,6 +233,10 @@ KubeJS</h3>
 <li>
 <a href="#kubejs:testpack/test_condition">
 testpack/test_condition</a>
+</li>
+<li>
+<a href="#kubejs:testpack/test_condition_with_property">
+testpack/test_condition_with_property</a>
 </li>
 </ul>
 </p>
@@ -271,7 +351,7 @@ property</td>
 <td>
 String</td>
 <td>
-Name of the integer property in the ability. For interpolated_integer abilities it's 'value'</td>
+Name of the integer property in the ability. For animation-timer abilities it's 'value'</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -493,12 +573,24 @@ false</td>
 <td>
 KEY_BIND</td>
 </tr>
+<tr>
+<td>
+needs_empty_hand</td>
+<td>
+Boolean</td>
+<td>
+Whether or not the player needs to have an empty hand</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:action","cooldown":0,"key_type":"key_bind"}</pre>
+{"type":"palladium:action","cooldown":0,"key_type":"key_bind","needs_empty_hand":false}</pre>
 </div>
 <hr>
 
@@ -561,12 +653,68 @@ false</td>
 <td>
 KEY_BIND</td>
 </tr>
+<tr>
+<td>
+needs_empty_hand</td>
+<td>
+Boolean</td>
+<td>
+Whether or not the player needs to have an empty hand</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:activation","cooldown":0,"ticks":60,"key_type":"key_bind"}</pre>
+{"type":"palladium:activation","cooldown":0,"ticks":60,"key_type":"key_bind","needs_empty_hand":false}</pre>
+</div>
+<hr>
+
+<div id="palladium:and">
+<h2>
+and</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+conditions</td>
+<td>
+Condition[]</td>
+<td>
+Array of conditions, all of which must be active</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0 conditions</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:and","conditions":[]}</pre>
 </div>
 <hr>
 
@@ -626,6 +774,86 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:command_result">
+<h2>
+command_result</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+command</td>
+<td>
+String</td>
+<td>
+The command output to compare the 'compare_to' int with</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+execute if entity @s</td>
+</tr>
+<tr>
+<td>
+comparison</td>
+<td>
+String</td>
+<td>
+The comparison used between the 'command' and 'compare_to' fields, accepts >=, <=, >, <, !=, or == (note that the first number is from 'command' and the second from 'compare_to')</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+==</td>
+</tr>
+<tr>
+<td>
+compare_to</td>
+<td>
+Integer</td>
+<td>
+The number being compared to the output of 'command'</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1</td>
+</tr>
+<tr>
+<td>
+log</td>
+<td>
+Boolean</td>
+<td>
+If the command's output is sent to the entity or not (unless debugging, you probably want this false/unset)</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:command_result","command":"execute if entity @s","comparison":"==","compare_to":1,"log":false}</pre>
+</div>
+<hr>
+
 <div id="palladium:crouching">
 <h2>
 crouching</h2>
@@ -635,6 +863,50 @@ Applicable for: all</p>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:crouching"}</pre>
+</div>
+<hr>
+
+<div id="palladium:dimension">
+<h2>
+dimension</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+dimension</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the dimension the player must be in. Example values: minecraft:overworld, minecraft:nether, minecraft:the_end</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:overworld</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:dimension","dimension":"minecraft:overworld"}</pre>
 </div>
 <hr>
 
@@ -767,6 +1039,74 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:experience_level_buyable","xp_level":3}</pre>
+</div>
+<hr>
+
+<div id="palladium:float_property">
+<h2>
+float_property</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+property</td>
+<td>
+String</td>
+<td>
+Name of the float property in the entity</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+value</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Float</td>
+<td>
+Minimum required amount of the property value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.0</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Float</td>
+<td>
+Maximum required amount of the property value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:float_property","property":"value","min":0.0,"max":0.0}</pre>
 </div>
 <hr>
 
@@ -961,12 +1301,36 @@ false</td>
 <td>
 KEY_BIND</td>
 </tr>
+<tr>
+<td>
+needs_empty_hand</td>
+<td>
+Boolean</td>
+<td>
+Whether or not the player needs to have an empty hand</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:held","cooldown":0,"key_type":"key_bind"}</pre>
+{"type":"palladium:held","cooldown":0,"key_type":"key_bind","needs_empty_hand":false}</pre>
+</div>
+<hr>
+
+<div id="palladium:in_lava">
+<h2>
+in_lava</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:in_lava"}</pre>
 </div>
 <hr>
 
@@ -982,6 +1346,226 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:integer_property">
+<h2>
+integer_property</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+property</td>
+<td>
+String</td>
+<td>
+Name of the integer property in the entity</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+value</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Minimum required amount of the property value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Maximum required amount of the property value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:integer_property","property":"value","min":0,"max":0}</pre>
+</div>
+<hr>
+
+<div id="palladium:interval">
+<h2>
+interval</h2>
+<p>
+Applicable for: abilities</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+active_ticks</td>
+<td>
+Integer</td>
+<td>
+Determines for how many ticks the condition will be active</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+20</td>
+</tr>
+<tr>
+<td>
+disabled_ticks</td>
+<td>
+Integer</td>
+<td>
+Determines for how many ticks the condition will be disabled</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+20</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:interval","active_ticks":20,"disabled_ticks":20}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_elytra_flying">
+<h2>
+is_elytra_flying</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_elytra_flying"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_fast_flying">
+<h2>
+is_fast_flying</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_fast_flying"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_flying">
+<h2>
+is_flying</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_flying"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_in_rain">
+<h2>
+is_in_rain</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_in_rain"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_in_water_or_bubble">
+<h2>
+is_in_water_or_bubble</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_in_water_or_bubble"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_in_water_or_rain">
+<h2>
+is_in_water_or_rain</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_in_water_or_rain"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_in_water_rain_or_bubble">
+<h2>
+is_in_water_rain_or_bubble</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_in_water_rain_or_bubble"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_levitating">
+<h2>
+is_levitating</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_levitating"}</pre>
+</div>
+<hr>
+
 <div id="palladium:is_moving">
 <h2>
 is_moving</h2>
@@ -991,6 +1575,42 @@ Applicable for: all</p>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:is_moving"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_on_fire">
+<h2>
+is_on_fire</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_on_fire"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_swimming">
+<h2>
+is_swimming</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_swimming"}</pre>
+</div>
+<hr>
+
+<div id="palladium:is_under_water">
+<h2>
+is_under_water</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:is_under_water"}</pre>
 </div>
 <hr>
 
@@ -1089,13 +1709,13 @@ false</td>
 <td>
 slot</td>
 <td>
-EquipmentSlot</td>
+PlayerSlot</td>
 <td>
-Slot that must contain the item. Possible values: [mainhand, offhand, feet, legs, chest, head]</td>
+Slot that must contain the item. Example values: [mainhand, offhand, feet, legs, chest, head, curios:back, curios:necklace, trinkets:chest/back, trinkets:chest/necklace]</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-CHEST</td>
+chest</td>
 </tr>
 </tbody>
 </table>
@@ -1359,7 +1979,7 @@ conditions</td>
 <td>
 Condition[]</td>
 <td>
-Array of conditions that must be disabled</td>
+Array of conditions, at least one of which must be active</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1498,6 +2118,18 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:sprinting">
+<h2>
+sprinting</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:sprinting"}</pre>
+</div>
+<hr>
+
 <div id="palladium:toggle">
 <h2>
 toggle</h2>
@@ -1545,12 +2177,24 @@ false</td>
 <td>
 KEY_BIND</td>
 </tr>
+<tr>
+<td>
+needs_empty_hand</td>
+<td>
+Boolean</td>
+<td>
+Whether or not the player needs to have an empty hand</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:toggle","cooldown":0,"key_type":"key_bind"}</pre>
+{"type":"palladium:toggle","cooldown":0,"key_type":"key_bind","needs_empty_hand":false}</pre>
 </div>
 <hr>
 
@@ -1619,6 +2263,50 @@ Applicable for: all</p>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"kubejs:testpack/test_condition"}</pre>
+</div>
+<hr>
+
+<div id="kubejs:testpack/test_condition_with_property">
+<h2>
+testpack/test_condition_with_property</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+my_integer</td>
+<td>
+Integer</td>
+<td>
+This is a test integer, defined in a KubeJS script</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"kubejs:testpack/test_condition_with_property","my_integer":0}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

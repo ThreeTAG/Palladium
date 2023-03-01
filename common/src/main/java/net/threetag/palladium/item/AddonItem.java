@@ -25,6 +25,7 @@ public class AddonItem extends Item implements IAddonItem {
 
     private List<Component> tooltipLines;
     private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
+    private RenderLayerContainer renderLayerContainer = null;
 
     public AddonItem(Properties properties) {
         super(properties);
@@ -68,6 +69,16 @@ public class AddonItem extends Item implements IAddonItem {
                 this.attributeModifiers.get(slot1).put(attribute, modifier);
             }
         }
+    }
+
+    @Override
+    public void setRenderLayerContainer(RenderLayerContainer container) {
+        this.renderLayerContainer = container;
+    }
+
+    @Override
+    public RenderLayerContainer getRenderLayerContainer() {
+        return this.renderLayerContainer;
     }
 
     public static class Parser implements ItemParser.ItemTypeSerializer {

@@ -91,7 +91,7 @@ enum PowerTabType {
             case ABOVE:
                 return -this.height + 4;
             case BELOW:
-                return 136;
+                return 192;
             case LEFT:
             case RIGHT:
                 return this.height * index;

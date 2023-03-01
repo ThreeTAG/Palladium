@@ -5,26 +5,18 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.Ability;
-import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.power.ability.RenderLayerAbility;
+import net.minecraft.world.entity.Entity;
 
-public class PackRenderLayerRenderer extends RenderLayer<LivingEntity, EntityModel<LivingEntity>> {
+public class PackRenderLayerRenderer extends RenderLayer<Entity, EntityModel<Entity>> {
 
-    public PackRenderLayerRenderer(RenderLayerParent<LivingEntity, EntityModel<LivingEntity>> renderLayerParent) {
+    public PackRenderLayerRenderer(RenderLayerParent<Entity, EntityModel<Entity>> renderLayerParent) {
         super(renderLayerParent);
     }
 
     @Override
-    public void render(PoseStack matrixStack, MultiBufferSource buffer, int packedLight, LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        for (AbilityEntry entry : Ability.getEnabledEntries(livingEntity, Abilities.RENDER_LAYER.get())) {
-            IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
-
-            if (layer != null) {
-                layer.render(livingEntity, entry, matrixStack, buffer, this.getParentModel(), packedLight, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
-            }
-        }
+    public void render(PoseStack matrixStack, MultiBufferSource buffer, int packedLight, Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        PackRenderLayerManager.forEachLayer(entity, (context, layer) -> {
+            layer.render(context, matrixStack, buffer, this.getParentModel(), packedLight, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+        });
     }
 }

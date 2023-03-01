@@ -1,0 +1,93 @@
+{
+  "name": "Command Condition Test",
+  "icon": "minecraft:blaze_spawn_egg",
+  "abilities": {
+    "equal": {
+      "type": "palladium:command",
+      "commands": [
+        "say There are exactly two blazes within three blocks of me"
+      ],
+      "title": "==2",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:command_result",
+            "command": "execute if entity @e[type=minecraft:blaze,distance=..3]",
+            "comparison": "==",
+            "compare_to": 2
+          }
+        ]
+      }
+    },
+    "greater": {
+      "type": "palladium:command",
+      "commands": [
+        "say There are more than two blazes within three blocks of me"
+      ],
+      "title": ">2",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:command_result",
+            "command": "execute if entity @e[type=minecraft:blaze,distance=..3]",
+            "comparison": ">",
+            "compare_to": 2
+          }
+        ]
+      }
+    },
+    "less_or_equal_but_not_zero": {
+      "type": "palladium:command",
+      "commands": [
+        "say There are less than or equal to two (and also not zero) blazes within three blocks of me"
+      ],
+      "title": "<=2 & !=0",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:command_result",
+            "command": "execute if entity @e[type=minecraft:blaze,distance=..3]",
+            "comparison": "<=",
+            "compare_to": 2
+          },
+          {
+            "type": "palladium:command_result",
+            "command": "execute if entity @e[type=minecraft:blaze,distance=..3]",
+            "comparison": "!=",
+            "compare_to": 0
+          }
+        ]
+      }
+    },
+    "unlock": {
+      "type": "palladium:command",
+      "commands": [
+        "say The block above me is packed ice, below me is blue ice, and I've just right clicked"
+      ],
+      "title": "Unlock",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:activation",
+            "key_type": "right_click"
+          },
+          {
+            "type": "palladium:command_result",
+            "command": "execute if block ~ ~-1 ~ minecraft:blue_ice",
+            "comparison": "!=",
+            "compare_to": 0,
+            "output": true
+          }
+        ],
+        "unlocking": [
+          {
+            "type": "palladium:command_result",
+            "command": "execute if block ~ ~2 ~ minecraft:packed_ice",
+            "comparison": "!=",
+            "compare_to": 0
+          }
+        ]
+      }
+    }
+  }
+}

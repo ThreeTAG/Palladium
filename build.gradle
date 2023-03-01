@@ -41,6 +41,14 @@ allprojects {
 
     repositories {
         maven {
+            // saps.dev Maven (KubeJS and Rhino)
+            url = 'https://maven.saps.dev/minecraft'
+            content {
+                includeGroup 'dev.latvian.mods'
+            }
+        }
+
+        maven {
             url 'https://repo.repsy.io/mvn/lucraft/threetag'
         }
 
@@ -90,14 +98,6 @@ allprojects {
         }
 
         maven {
-            // saps.dev Maven (KubeJS and Rhino)
-            url = 'https://maven.saps.dev/minecraft'
-            content {
-                includeGroup 'dev.latvian.mods'
-            }
-        }
-
-        maven {
             url = 'https://maven.blamejared.com'
         }
 
@@ -108,6 +108,17 @@ allprojects {
         maven {
             name = "Fuzs Mod Resources"
             url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+        }
+
+        // Player Animator
+        maven {
+            name = "KosmX's maven"
+            url = 'https://maven.kosmx.dev/'
+        }
+
+        maven {
+            name = 'Gecko Lib'
+            url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
         }
     }
 

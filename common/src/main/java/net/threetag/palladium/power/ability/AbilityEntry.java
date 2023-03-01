@@ -100,7 +100,7 @@ public class AbilityEntry {
             if (this.enabled) {
                 this.abilityConfiguration.getAbility().firstTick(entity, this, powerHolder, this.isEnabled());
             } else {
-                this.abilityConfiguration.getAbility().lastTick(entity, this, powerHolder, this.isEnabled());
+                this.abilityConfiguration.getAbility().lastTick(entity, this, powerHolder, !this.isEnabled());
             }
         }
     }
@@ -122,6 +122,10 @@ public class AbilityEntry {
                 }
             }
 
+            if (entity.isSpectator()) {
+                unlocked = false;
+            }
+
             if (this.unlocked != unlocked) {
                 this.unlocked = unlocked;
                 sync = true;
@@ -136,6 +140,10 @@ public class AbilityEntry {
                         break;
                     }
                 }
+            }
+
+            if (entity.isSpectator()) {
+                enabled = false;
             }
 
             if (this.enabled != enabled) {
@@ -230,9 +238,26 @@ public class AbilityEntry {
         return this.propertyManager.isRegistered(property) ? this.propertyManager.get(property) : this.abilityConfiguration.get(property);
     }
 
-    public <T> AbilityEntry setOwnProperty(PalladiumProperty<T> property, T value) {
+    public Object getPropertyByName(String key) {
+        var property = getEitherPropertyByKey(key);
+        return property != null ? this.getProperty(property) : null;
+    }
+
+    public <T> AbilityEntry setUniqueProperty(PalladiumProperty<T> property, T value) {
         this.propertyManager.set(property, value);
         return this;
+    }
+
+    @SuppressWarnings("rawtypes")
+    public boolean setUniquePropertyByName(String key, Object value) {
+        PalladiumProperty property = this.getPropertyManager().getPropertyByName(key);
+
+        if (property != null) {
+            this.setUniqueProperty(property, value);
+            return true;
+        }
+
+        return false;
     }
 
     public void fromNBT(CompoundTag tag) {

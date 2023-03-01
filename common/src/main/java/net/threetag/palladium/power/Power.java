@@ -21,15 +21,17 @@ public class Power {
     private final IIcon icon;
     private final List<AbilityConfiguration> abilities = new ArrayList<>();
     private final ResourceLocation background;
-    private boolean persistentData;
+    private final boolean persistentData;
+    private final boolean hidden;
     private boolean invalid = false;
 
-    public Power(ResourceLocation id, Component name, IIcon icon, ResourceLocation background, boolean persistentData) {
+    public Power(ResourceLocation id, Component name, IIcon icon, ResourceLocation background, boolean persistentData, boolean hidden) {
         this.id = id;
         this.name = name;
         this.icon = icon;
         this.background = background;
         this.persistentData = persistentData;
+        this.hidden = hidden;
     }
 
     public void invalidate() {
@@ -69,6 +71,10 @@ public class Power {
         return this.persistentData;
     }
 
+    public boolean isHidden() {
+        return this.hidden;
+    }
+
     public void toBuffer(FriendlyByteBuf buf) {
         buf.writeComponent(this.name);
         buf.writeNbt(IconSerializer.serializeNBT(this.icon));
@@ -77,6 +83,7 @@ public class Power {
             buf.writeResourceLocation(this.background);
         }
         buf.writeBoolean(this.persistentData);
+        buf.writeBoolean(this.hidden);
         buf.writeInt(this.abilities.size());
         for (AbilityConfiguration configuration : this.abilities) {
             configuration.toBuffer(buf);
@@ -84,7 +91,7 @@ public class Power {
     }
 
     public static Power fromBuffer(ResourceLocation id, FriendlyByteBuf buf) {
-        Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())), buf.readBoolean() ? buf.readResourceLocation() : null, buf.readBoolean());
+        Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())), buf.readBoolean() ? buf.readResourceLocation() : null, buf.readBoolean(), buf.readBoolean());
         int amount = buf.readInt();
 
         for (int i = 0; i < amount; i++) {
@@ -97,7 +104,12 @@ public class Power {
     public static Power fromJSON(ResourceLocation id, JsonObject json) {
         Component name = Component.Serializer.fromJson(json.get("name"));
         ResourceLocation background = GsonUtil.getAsResourceLocation(json, "background", null);
-        Power power = new Power(id, name, IconSerializer.parseJSON(json.get("icon")), background, GsonHelper.getAsBoolean(json, "persistent_data", false));
+        Power power = new Power(id,
+                name,
+                IconSerializer.parseJSON(json.get("icon")),
+                background,
+                GsonHelper.getAsBoolean(json, "persistent_data", false),
+                GsonHelper.getAsBoolean(json, "hidden", false));
 
         if (GsonHelper.isValidNode(json, "abilities")) {
             JsonObject abilities = GsonHelper.getAsJsonObject(json, "abilities");

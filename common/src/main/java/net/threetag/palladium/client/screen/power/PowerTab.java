@@ -82,7 +82,7 @@ public class PowerTab extends GuiComponent {
         int y = 0;
         for (AbilityWidget entry : this.entries) {
             if (entry.parents.isEmpty()) {
-                if(!entry.fixedPosition) {
+                if (!entry.fixedPosition) {
                     entry.updatePosition(0, y, this);
                     y++;
                 }
@@ -108,7 +108,7 @@ public class PowerTab extends GuiComponent {
             List<AbilityWidget> entries = getEntriesAtX(x);
             for (int n = 0; n < entries.size(); n++) {
                 AbilityWidget entry = entries.get(n);
-                if(!entry.fixedPosition) {
+                if (!entry.fixedPosition) {
                     entry.setPosition(entry.gridX, (longest / 2D) - (entries.size() / 2D) + n);
                 }
             }
@@ -317,12 +317,12 @@ public class PowerTab extends GuiComponent {
     public static PowerTab create(Minecraft minecraft, PowersScreen screen, int tabIndex, IPowerHolder powerHolder) {
         PowerTabType[] var4 = PowerTabType.values();
 
-        for (PowerTabType advancementTabType : var4) {
-            if (tabIndex < advancementTabType.getMax()) {
-                return new PowerTab(minecraft, screen, advancementTabType, tabIndex, powerHolder);
+        for (PowerTabType tabType : var4) {
+            if (tabIndex < tabType.getMax()) {
+                return new PowerTab(minecraft, screen, tabType, tabIndex, powerHolder);
             }
 
-            tabIndex -= advancementTabType.getMax();
+            tabIndex -= tabType.getMax();
         }
 
         return null;
@@ -330,11 +330,11 @@ public class PowerTab extends GuiComponent {
 
     public void scroll(double dragX, double dragY) {
         if (this.maxX - this.minX > PowersScreen.WINDOW_INSIDE_WIDTH) {
-            this.scrollX = Mth.clamp(this.scrollX + dragX, -(this.maxX - PowersScreen.WINDOW_INSIDE_WIDTH), GRID_SIZE / 2D);
+            this.scrollX = Mth.clamp(this.scrollX + dragX, -(this.maxX - PowersScreen.WINDOW_INSIDE_WIDTH), -this.minX);
         }
 
         if (this.maxY - this.minY > PowersScreen.WINDOW_INSIDE_HEIGHT) {
-            this.scrollY = Mth.clamp(this.scrollY + dragY, -(this.maxY - PowersScreen.WINDOW_INSIDE_HEIGHT), GRID_SIZE / 2D);
+            this.scrollY = Mth.clamp(this.scrollY + dragY, -(this.maxY - PowersScreen.WINDOW_INSIDE_HEIGHT), -this.minY);
         }
 
     }

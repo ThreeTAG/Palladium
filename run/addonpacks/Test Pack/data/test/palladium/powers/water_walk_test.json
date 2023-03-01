@@ -1,0 +1,17 @@
+{
+  "name": "Water Walk Test",
+  "icon": "minecraft:water_bucket",
+  "abilities": {
+    "water_walk": {
+      "type": "palladium:water_walk",
+      "conditions": {
+        "unlocking_": {
+          "type": "palladium:sprinting"
+        },
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
+    }
+  }
+}

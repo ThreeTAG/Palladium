@@ -1,36 +1,44 @@
 package net.threetag.palladium.client.model.animation;
 
-import net.minecraft.client.model.geom.ModelPart;
+import dev.kosmx.playerAnim.core.util.Ease;
+import dev.kosmx.playerAnim.core.util.Easing;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.power.ability.AnimationTimerAbility;
 
 public class AnimationUtil {
 
-    public static void interpolateXTo(ModelPart modelPart, float destination, float progress) {
-        modelPart.x += (destination - modelPart.x) * progress;
+    public static float ease(Ease ease, float value) {
+        return Easing.easingFromEnum(ease, value);
     }
 
-    public static void interpolateYTo(ModelPart modelPart, float destination, float progress) {
-        modelPart.y += (destination - modelPart.y) * progress;
+    public static float getAnimationTimerAbilityValue(LivingEntity entity, ResourceLocation powerId, String abilityKey, float partialTicks) {
+        var entry = AbilityUtil.getEntry(entity, powerId, abilityKey);
+
+        if (entry != null && entry.getConfiguration().getAbility() instanceof AnimationTimerAbility) {
+            return Mth.lerp(partialTicks, entry.getProperty(AnimationTimerAbility.PREV_VALUE), entry.getProperty(AnimationTimerAbility.VALUE)) / (float) entry.getProperty(AnimationTimerAbility.MAX_VALUE);
+        }
+
+        return 0F;
     }
 
-    public static void interpolateZTo(ModelPart modelPart, float destination, float progress) {
-        modelPart.z += (destination - modelPart.z) * progress;
+    public static float getAnimationTimerAbilityValue(LivingEntity entity, ResourceLocation powerId, String abilityKey, float partialTicks, float start, float end) {
+        var entry = AbilityUtil.getEntry(entity, powerId, abilityKey);
+
+        if (entry != null && entry.getConfiguration().getAbility() instanceof AnimationTimerAbility) {
+            var timer = Mth.lerp(partialTicks, entry.getProperty(AnimationTimerAbility.PREV_VALUE), entry.getProperty(AnimationTimerAbility.VALUE));
+            return getInbetweenProgress(timer, start, end);
+        }
+
+        return 0F;
     }
 
-    public static void interpolateXRotTo(ModelPart modelPart, float destination, float progress) {
-        modelPart.xRot += (destination - modelPart.xRot) * progress;
-    }
-
-    public static void interpolateYRotTo(ModelPart modelPart, float destination, float progress) {
-        modelPart.yRot += (destination - modelPart.yRot) * progress;
-    }
-
-    public static void interpolateZRotTo(ModelPart modelPart, float destination, float progress) {
-        modelPart.zRot += (destination - modelPart.zRot) * progress;
-    }
-
-    public static float smooth(float value) {
-        float sqt = value * value;
-        return sqt / (2F * (sqt - value) + 1F);
+    public static float getInbetweenProgress(float progress, float startingPoint, float endPoint) {
+        float shiftedEnd = endPoint - startingPoint;
+        float shifted = Mth.clamp(progress - startingPoint, 0, shiftedEnd);
+        return shifted / shiftedEnd;
     }
 
 }

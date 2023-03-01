@@ -3,8 +3,9 @@ package net.threetag.palladium.client.renderer.renderlayer;
 import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.model.BasicModel;
 import net.threetag.palladium.client.model.CapedHumanoidModel;
 
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class ModelLookup {
     public static final Model HUMANOID;
 
     static {
+        register(Palladium.id("basic"), new Model(BasicModel::new, (en, model) -> true));
         HUMANOID = register(new ResourceLocation("humanoid"), new Model(HumanoidModel::new, (en, model) -> model instanceof HumanoidModel));
         register(new ResourceLocation("player"), new Model(modelPart -> new PlayerModel<>(modelPart, false), (en, model) -> model instanceof HumanoidModel));
         register(new ResourceLocation("pig"), new Model(PigModel::new, (en, model) -> model instanceof PigModel));
@@ -79,13 +81,13 @@ public class ModelLookup {
 
     public record Model(
             Function<ModelPart, EntityModel<?>> modelFunction,
-            BiPredicate<LivingEntity, EntityModel<?>> predicate) {
+            BiPredicate<Entity, EntityModel<?>> predicate) {
 
         public EntityModel<?> getModel(ModelPart modelPart) {
             return this.modelFunction.apply(modelPart);
         }
 
-        public boolean fitsEntity(LivingEntity entity, EntityModel<?> parentModel) {
+        public boolean fitsEntity(Entity entity, EntityModel<?> parentModel) {
             return this.predicate.test(entity, parentModel);
         }
     }

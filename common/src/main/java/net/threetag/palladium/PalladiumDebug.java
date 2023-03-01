@@ -3,28 +3,16 @@ package net.threetag.palladium;
 public class PalladiumDebug {
 
     public static void init() {
-//        InteractionEvent.RIGHT_CLICK_BLOCK.register((player, hand, pos, face) -> {
-//            if (!player.level.isClientSide) {
-//                BlockEntity blockEntity = player.level.getBlockEntity(pos);
+//        OverlayRegistry.registerOverlay("palladium/debug", (minecraft, gui, mStack, partialTicks, width, height) -> {
+//            if(minecraft.player instanceof PalladiumPlayerExtension extension) {
+//                float flightAnimation = extension.palladium_getFlightAnimation(partialTicks);
+//                float levitation = extension.palladium_getLevitationAnimation(partialTicks);
+//                float hovering = extension.palladium_getHoveringAnimation(partialTicks);
 //
-//                if (blockEntity instanceof IBlockEntityEnergyContainer energyContainer) {
-//                    IEnergyStorage storage = energyContainer.getEnergyStorage(face);
-//                    player.displayClientMessage(Component.literal("Energy: " + storage.getEnergyAmount() + "/" + storage.getEnergyCapacity()), true);
-//                }
+//                minecraft.font.draw(mStack, "Flight: " + flightAnimation, 10, 40, 0xfefefe);
+//                minecraft.font.draw(mStack, "Levitation: " + levitation, 10, 50, 0xfefefe);
+//                minecraft.font.draw(mStack, "Hovering: " + hovering, 10, 60, 0xfefefe);
 //            }
-//
-//            return EventResult.pass();
-//        });
-
-//        PalladiumEvents.MOVEMENT_INPUT_UPDATE.register((player, input) -> {
-//            input.right = false;
-//            input.left = false;
-//            input.up = false;
-//            input.down = false;
-//            input.shiftKeyDown = false;
-//            input.jumping = false;
-//            input.forwardImpulse = 0F;
-//            input.leftImpulse = 0F;
 //        });
     }
 

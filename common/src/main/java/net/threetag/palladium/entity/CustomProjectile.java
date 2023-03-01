@@ -9,6 +9,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
@@ -39,6 +40,8 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     public boolean dieOnEntityHit = true;
     public int lifetime = -1;
     public int setEntityOnFireSeconds = 0;
+    public String commandOnEntityHit = null;
+    public String commandOnBlockHit = null;
     public EntityDimensions dimensions = new EntityDimensions(0.1F, 0.1F, false);
     public List<Appearance> appearances = new ArrayList<>();
 
@@ -46,6 +49,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
         APPEARANCE_REGISTRY.put("item", ItemAppearance::new);
         APPEARANCE_REGISTRY.put("particles", ParticleAppearance::new);
         APPEARANCE_REGISTRY.put("laser", LaserAppearance::new);
+        APPEARANCE_REGISTRY.put("renderLayer", RenderLayerAppearance::new);
     }
 
     public CustomProjectile(EntityType<? extends ThrowableProjectile> entityType, Level level) {
@@ -79,7 +83,14 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if(!this.level.isClientSide) {
+        if (!this.level.isClientSide) {
+            if (this.commandOnEntityHit != null && !this.commandOnEntityHit.isBlank()) {
+                this.level.getServer().getCommands()
+                        .performPrefixedCommand(this.createCommandSourceStack()
+                                .withMaximumPermission(2)
+                                .withSuppressedOutput(), this.commandOnEntityHit);
+            }
+
             Entity entity = result.getEntity();
             entity.hurt(DamageSource.thrown(this, this.getOwner()), this.damage);
 
@@ -97,9 +108,19 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     @Override
     protected void onHitBlock(BlockHitResult blockHitResult) {
         super.onHitBlock(blockHitResult);
-        if (this.dieOnBlockHit && !this.level.isClientSide) {
-            this.level.broadcastEntityEvent(this, (byte) 3);
-            this.discard();
+
+        if (!this.level.isClientSide) {
+            if (this.commandOnBlockHit != null && !this.commandOnBlockHit.isBlank()) {
+                this.level.getServer().getCommands()
+                        .performPrefixedCommand(this.createCommandSourceStack()
+                                .withMaximumPermission(2)
+                                .withSuppressedOutput(), this.commandOnBlockHit);
+            }
+
+            if (this.dieOnBlockHit) {
+                this.level.broadcastEntityEvent(this, (byte) 3);
+                this.discard();
+            }
         }
     }
 
@@ -135,6 +156,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
         compound.putFloat("Size", this.dimensions.width);
         compound.putFloat("Lifetime", this.lifetime);
         compound.putFloat("SetEntityOnFireSeconds", this.setEntityOnFireSeconds);
+        if (this.commandOnEntityHit != null)
+            compound.putString("CommandOnEntityHit", this.commandOnEntityHit);
+        if (this.commandOnBlockHit != null)
+            compound.putString("CommandOnBlockHit", this.commandOnBlockHit);
 
         ListTag appearanceList = new ListTag();
         for (Appearance appearance : this.appearances) {
@@ -163,6 +188,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
             this.dieOnBlockHit = compound.getBoolean("DieOnBlockHit");
         if (compound.contains("Size", 99))
             this.dimensions = new EntityDimensions(compound.getFloat("Size"), compound.getFloat("Size"), false);
+        if (compound.contains("CommandOnEntityHit"))
+            this.commandOnEntityHit = compound.getString("CommandOnEntityHit");
+        if (compound.contains("CommandOnBlockHit"))
+            this.commandOnBlockHit = compound.getString("CommandOnBlockHit");
 
         if (compound.contains("Appearances")) {
             this.appearances = new ArrayList<>();
@@ -237,7 +266,9 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
 
         @Override
         public void toNBT(CompoundTag nbt) {
-            nbt.putString("ParticleType", Registry.PARTICLE_TYPE.getKey(this.type).toString());
+            if (this.type != null) {
+                nbt.putString("ParticleType", Registry.PARTICLE_TYPE.getKey(this.type).toString());
+            }
             nbt.putInt("Amount", this.amount);
             nbt.putFloat("Spread", this.spread);
             nbt.putString("Options", this.options);
@@ -245,6 +276,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
 
         @Override
         public void onTick(CustomProjectile projectile) {
+            if (this.type == null) {
+                return;
+            }
+
             Random random = new Random();
             for (int i = 0; i < this.amount; i++) {
                 float sX = (random.nextFloat() - 0.5F) * this.spread;
@@ -260,6 +295,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
 
         @Override
         public void spawnParticlesOnHit(CustomProjectile projectile) {
+            if (this.type == null) {
+                return;
+            }
+
             for (int i = 0; i < this.amount; i++) {
                 Random random = new Random();
                 float sX = (random.nextFloat() - 0.5F) * this.spread * 2F;
@@ -343,6 +382,46 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
             colorTag.putInt("Green", this.color.getGreen());
             colorTag.putInt("Blue", this.color.getBlue());
             nbt.put("Color", colorTag);
+        }
+    }
+
+    public static class RenderLayerAppearance extends Appearance {
+
+        public final List<ResourceLocation> renderLayers;
+
+        public RenderLayerAppearance(CompoundTag tag) {
+            super(tag);
+            this.renderLayers = new ArrayList<>();
+
+            var layerTag = tag.get("RenderLayer");
+
+            if (layerTag instanceof StringTag stringTag) {
+                this.renderLayers.add(new ResourceLocation(stringTag.getAsString()));
+            } else if (layerTag instanceof ListTag list) {
+                for (Tag t : list) {
+                    if (t instanceof StringTag stringTag) {
+                        this.renderLayers.add(new ResourceLocation(stringTag.getAsString()));
+                    }
+                }
+            }
+        }
+
+        @Override
+        public String getId() {
+            return "renderLayer";
+        }
+
+        @Override
+        public void toNBT(CompoundTag nbt) {
+            if (this.renderLayers.size() == 1) {
+                nbt.putString("RenderLayer", this.renderLayers.get(0).toString());
+            } else {
+                ListTag listTag = new ListTag();
+                for (ResourceLocation layer : this.renderLayers) {
+                    listTag.add(StringTag.valueOf(layer.toString()));
+                }
+                nbt.put("RenderLayer", listTag);
+            }
         }
     }
 

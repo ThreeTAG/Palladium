@@ -33,6 +33,7 @@ public abstract class AddonParser<T> extends SimpleJsonResourceReloadListener {
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
+        this.injectJsons(object);
         AtomicInteger i = new AtomicInteger();
         Map<ResourceLocation, AddonBuilder<T>> addonBuilders = new HashMap<>();
         Map<String, List<String>> loadingOrders = new HashMap<>();
@@ -102,6 +103,10 @@ public abstract class AddonParser<T> extends SimpleJsonResourceReloadListener {
     }
 
     public void postRegister(AddonBuilder<T> addonBuilder) {
+
+    }
+
+    public void injectJsons(Map<ResourceLocation, JsonElement> map) {
 
     }
 

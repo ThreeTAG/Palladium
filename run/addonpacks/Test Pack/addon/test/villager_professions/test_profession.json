@@ -1,0 +1,4 @@
+{
+  "poi_type": "test:redstone_lamp",
+  "sound_event": "minecraft:entity.villager.work_librarian"
+}

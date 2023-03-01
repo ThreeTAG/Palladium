@@ -36,7 +36,7 @@ public class GuiOverlayAbility extends Ability {
         @SuppressWarnings("SuspiciousNameCombination")
         @Override
         public void render(Minecraft minecraft, Gui gui, PoseStack mStack, float partialTicks, int width, int height) {
-            for (AbilityEntry entry : Ability.getEnabledEntries(minecraft.player, Abilities.GUI_OVERLAY.get())) {
+            for (AbilityEntry entry : AbilityUtil.getEnabledEntries(minecraft.player, Abilities.GUI_OVERLAY.get())) {
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 RenderSystem.setShaderTexture(0, entry.getProperty(TEXTURE));

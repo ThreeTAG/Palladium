@@ -32,6 +32,7 @@ public class AddonHoeItem extends HoeItem implements IAddonItem {
 
     private List<Component> tooltipLines;
     private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
+    private RenderLayerContainer renderLayerContainer = null;
 
     public AddonHoeItem(Tier tier, int baseDamage, float attackSpeed, Properties properties) {
         super(tier, baseDamage, attackSpeed, properties);
@@ -75,6 +76,16 @@ public class AddonHoeItem extends HoeItem implements IAddonItem {
                 this.attributeModifiers.get(slot1).put(attribute, modifier);
             }
         }
+    }
+
+    @Override
+    public void setRenderLayerContainer(RenderLayerContainer container) {
+        this.renderLayerContainer = container;
+    }
+
+    @Override
+    public RenderLayerContainer getRenderLayerContainer() {
+        return this.renderLayerContainer;
     }
 
     public static class Parser implements ItemParser.ItemTypeSerializer {

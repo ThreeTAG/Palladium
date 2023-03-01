@@ -1,0 +1,7 @@
+{
+  "material": "minecraft:stone",
+  "sound_type": "minecraft:stone",
+  "destroy_time": 2,
+  "explosion_resistance": 12,
+  "creative_mode_tab": "test:test_tab"
+}

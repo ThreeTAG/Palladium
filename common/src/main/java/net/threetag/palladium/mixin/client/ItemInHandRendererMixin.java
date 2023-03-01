@@ -8,8 +8,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
 import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.Ability;
+import net.threetag.palladium.power.ability.AbilityUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,7 +33,9 @@ public abstract class ItemInHandRendererMixin {
     private void renderArmWithItem(
             AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float swingProgress, ItemStack stack, float equippedProgress, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, CallbackInfo ci
     ) {
-        if (hand == InteractionHand.MAIN_HAND && !Ability.getEnabledEntries(player, Abilities.SHOW_BOTH_ARMS.get()).isEmpty() && this.offHandItem.isEmpty() && !player.isInvisible() && !this.mainHandItem.is(Items.FILLED_MAP)) {
+        PalladiumAnimationRegistry.FIRST_PERSON_PARTIAL_TICK = partialTicks;
+
+        if (hand == InteractionHand.MAIN_HAND && !AbilityUtil.getEnabledEntries(player, Abilities.SHOW_BOTH_ARMS.get()).isEmpty() && this.offHandItem.isEmpty() && !player.isInvisible() && !this.mainHandItem.is(Items.FILLED_MAP)) {
             HumanoidArm humanoidArm = player.getMainArm().getOpposite();
             matrixStack.pushPose();
             this.renderPlayerArm(matrixStack, buffer, combinedLight, 0, 0, humanoidArm);

@@ -46,7 +46,7 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.defaultItem(PalladiumItems.VIBRANIUM_INGOT);
         this.defaultItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL);
 
-        this.defaultItem(PalladiumItems.HAMMER, "item/handheld");
+        this.defaultItem(PalladiumItems.SUIT_STAND);
         this.defaultItem(PalladiumItems.LEAD_CIRCUIT);
         this.defaultItem(PalladiumItems.QUARTZ_CIRCUIT);
         this.defaultItem(PalladiumItems.VIBRANIUM_CIRCUIT);

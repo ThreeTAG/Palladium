@@ -4,7 +4,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.client.model.animation.HumanoidAnimationsManager;
+import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
 import net.threetag.palladium.entity.BodyPart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,7 +25,10 @@ public abstract class HumanoidModelMixin {
     @Inject(at = @At("RETURN"), method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V")
     public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
         HumanoidModel<?> model = (HumanoidModel<?>) (Object) this;
-        HumanoidAnimationsManager.applyAnimations(model, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+
+        if(!PalladiumAnimationRegistry.SKIP_ANIMATIONS) {
+            PalladiumAnimationRegistry.applyAnimations(model, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        }
 
         if (!(model instanceof PlayerModel<?>)) {
             BodyPart.hideParts(model, entity);
@@ -35,13 +38,13 @@ public abstract class HumanoidModelMixin {
     @Inject(at = @At("HEAD"), method = "prepareMobModel(Lnet/minecraft/world/entity/LivingEntity;FFF)V")
     public void prepareMobModel(LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTick, CallbackInfo ci) {
         HumanoidModel<?> model = (HumanoidModel<?>) (Object) this;
-        HumanoidAnimationsManager.PARTIAL_TICK = partialTick;
+        PalladiumAnimationRegistry.PARTIAL_TICK = partialTick;
 
         // Reset visibility
         BodyPart.resetBodyParts(entity, model);
 
         // Reset poses
-        HumanoidAnimationsManager.resetPoses(this.headParts(), this.bodyParts());
+        PalladiumAnimationRegistry.resetPoses(this.headParts(), this.bodyParts());
     }
 
 }

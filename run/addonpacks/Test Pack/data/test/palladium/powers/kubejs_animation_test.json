@@ -3,7 +3,7 @@
   "icon": "minecraft:iron_ingot",
   "abilities": {
     "toggle_animation": {
-      "type": "palladium:interpolated_integer",
+      "type": "palladium:animation_timer",
       "icon": "minecraft:iron_ingot",
       "max_value": 16,
       "hidden": false,

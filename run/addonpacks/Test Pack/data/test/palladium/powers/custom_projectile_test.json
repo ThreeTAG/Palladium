@@ -28,7 +28,8 @@
         "enabling": [
           {
             "type": "palladium:action",
-            "key_type": "left_click"
+            "key_type": "left_click",
+            "needs_empty_hand": true
           }
         ]
       }
@@ -58,7 +59,38 @@
         "enabling": [
           {
             "type": "palladium:action",
-            "key_type": "right_click"
+            "key_type": "right_click",
+            "needs_empty_hand": true
+          }
+        ]
+      }
+    },
+    "test_3": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "title": "Render Layer",
+      "list_index": 2,
+      "velocity": 1.5,
+      "entity_data": {
+        "Damage": 10,
+        "Gravity": 0.03,
+        "Size": 0.5,
+        "Lifetime": 1200,
+        "DieOnEntityHit": false,
+        "DieOnBlockHit": true,
+        "CommandOnEntityHit": "say Entity was hit!",
+        "CommandOnBlockHit": "say Block was hit!",
+        "Appearances": [
+          {
+            "Type": "renderLayer",
+            "RenderLayer": "test:projectile"
+          }
+        ]
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action"
           }
         ]
       }

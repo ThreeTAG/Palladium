@@ -10,7 +10,8 @@
           {
             "type": "palladium:action",
             "cooldown": 100,
-            "key_type": "left_click"
+            "key_type": "left_click",
+            "needs_empty_hand": true
           }
         ]
       }
@@ -52,7 +53,8 @@
           {
             "type": "palladium:held",
             "cooldown": 100,
-            "key_type": "right_click"
+            "key_type": "right_click",
+            "needs_empty_hand": false
           }
         ]
       }

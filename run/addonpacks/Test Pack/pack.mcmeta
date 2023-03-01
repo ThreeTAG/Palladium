@@ -8,10 +8,22 @@
   "dependencies": {
     "common": {
       "minecraft": ">=1.18",
-      "palladium": ">=4.0.0-Pre23"
+      "palladium": ">=4.0.0-Pre100"
     },
     "fabric": {
       "trinkets": ">=3.3.0"
+    }
+  },
+  "custom": {
+    "curios": {
+      "belt": true,
+      "ring": {
+        "icon": "curios:slot/empty_ring_slot",
+        "priority": 50,
+        "size": 1,
+        "hide": false,
+        "cosmetic": true
+      }
     }
   }
 }

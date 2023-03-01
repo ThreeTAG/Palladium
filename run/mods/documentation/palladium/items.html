@@ -14,7 +14,7 @@ td.false{background-color:#FF6666AA;}
 td.other{background-color:#42A3FFAA;}
 td.error{color:#FF0000;}
 th,td.true,td.false,td.other{text-align:center;}pre{outline:1px solid #ccc;padding:5px;margin:5px;} .string{color:green;} .number{color:cornflowerblue;} .boolean{color:darkorange;} .null{color:orangered;} .key{color:purple;}hr { height: 5px; background-color: black }</style>
-<link rel="shortcut icon" type="image/x-icon" href="https://i.imgur.com/am80ox1.png">
+<link rel="shortcut icon" type="image/x-icon" href="https://i.imgur.com/3sx4xJf.png">
 
 <style>
 .json-block { background-color: lightgray; display: inline-block; border: 5px solid darkgray; padding: 10px }</style>
@@ -87,7 +87,7 @@ creative_mode_tab</td>
 <td>
 ResourceLocation</td>
 <td>
-ID of the creative mode tab the item is supposed to appear in. Possible values: [kubejs:kubejs, minecraft:brewing, minecraft:building_blocks, minecraft:combat, minecraft:decorations, minecraft:food, minecraft:hotbar, minecraft:inventory, minecraft:misc, minecraft:redstone, minecraft:search, minecraft:tools, minecraft:transportation, palladium:technology, test:test_tab]</td>
+ID of the creative mode tab the item is supposed to appear in. Possible values: [kubejs:kubejs, minecraft:brewing, minecraft:building_blocks, minecraft:combat, minecraft:decorations, minecraft:food, minecraft:geckolib_examples, minecraft:hotbar, minecraft:inventory, minecraft:misc, minecraft:redstone, minecraft:search, minecraft:tools, minecraft:transportation, palladium:technology, test:test_tab]</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -135,7 +135,7 @@ attribute_modifiers</td>
 <td>
 AttributeModifier[]</td>
 <td>
-Attribute modifiers when having the item equipped. You first specify the slot ("all" for every slot, other options: [mainhand, offhand, feet, legs, chest, head]), then an array for different modifiers. Possible attributes: [minecraft:generic.max_health, minecraft:generic.follow_range, minecraft:generic.knockback_resistance, minecraft:generic.movement_speed, minecraft:generic.flying_speed, minecraft:generic.attack_damage, minecraft:generic.attack_knockback, minecraft:generic.attack_speed, minecraft:generic.armor, minecraft:generic.armor_toughness, minecraft:generic.luck, minecraft:zombie.spawn_reinforcements, minecraft:horse.jump_strength, forge:swim_speed, forge:nametag_distance, forge:entity_gravity, forge:reach_distance, forge:attack_range, forge:step_height_addition, palladium:flight_speed, palladium:levitation_speed, palladium:jetpack_flight_speed, palladium:hovering]</td>
+Attribute modifiers when having the item equipped. You first specify the slot ("all" for every slot, other options: [mainhand, offhand, feet, legs, chest, head]), then an array for different modifiers. Possible attributes: [minecraft:generic.max_health, minecraft:generic.follow_range, minecraft:generic.knockback_resistance, minecraft:generic.movement_speed, minecraft:generic.flying_speed, minecraft:generic.attack_damage, minecraft:generic.attack_knockback, minecraft:generic.attack_speed, minecraft:generic.armor, minecraft:generic.armor_toughness, minecraft:generic.luck, minecraft:zombie.spawn_reinforcements, minecraft:horse.jump_strength, forge:swim_speed, forge:nametag_distance, forge:entity_gravity, forge:reach_distance, forge:attack_range, forge:step_height_addition, palladium:flight_speed, palladium:flight_flexibility, palladium:levitation_speed, palladium:hovering, palladium:punch_damage, palladium:jump_power, palladium:destroy_speed, palladium:fall_resistance]</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -173,6 +173,10 @@ Palladium</h3>
 Default Item</a>
 </li>
 <li>
+<a href="#palladium:block_item">
+Block Item</a>
+</li>
+<li>
 <a href="#palladium:armor">
 Armor</a>
 </li>
@@ -197,10 +201,6 @@ Shovel</a>
 Hoe</a>
 </li>
 <li>
-<a href="#palladium:hammer">
-Hammer</a>
-</li>
-<li>
 <a href="#palladium:shield">
 Shield</a>
 </li>
@@ -217,6 +217,14 @@ Crossbow</a>
 Flux Capacitor (Energy Containing Item)</a>
 </li>
 </ul>
+<h3>
+GeckoLib</h3>
+<ul>
+<li>
+<a href="#geckolib3:armor">
+GeckoLib Armor</a>
+</li>
+</ul>
 </p>
 <hr>
 
@@ -229,6 +237,50 @@ Default Item Type, you don't need to specify that you want this one, leaving 'ty
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:default"}</pre>
+</div>
+<hr>
+
+<div id="palladium:block_item">
+<h2>
+Block Item</h2>
+<p>
+Item for a block, duh</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+block</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the block that this item is for</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:block_item","block":"test:test_block"}</pre>
 </div>
 <hr>
 
@@ -313,12 +365,24 @@ false</td>
 <td>
 /</td>
 </tr>
+<tr>
+<td>
+hide_second_player_layer</td>
+<td>
+Boolean</td>
+<td>
+If enabled, the second player layer will be hidden when worn (only on the corresponding body part)</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","armor_texture":"example:textures/models/armor/example_armor.png","armor_model_type":"minecraft:humanoid","armor_model_layer":"palladium:humanoid#suit"}</pre>
+{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","armor_texture":"example:textures/models/armor/example_armor.png","armor_model_type":"minecraft:humanoid","armor_model_layer":"palladium:humanoid#suit","hide_second_player_layer":true}</pre>
 </div>
 <hr>
 
@@ -652,72 +716,6 @@ Example:</h3>
 </div>
 <hr>
 
-<div id="palladium:hammer">
-<h2>
-Hammer</h2>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-tier</td>
-<td>
-Tier</td>
-<td>
-Tool tier, which defines certain characteristics about the tool. Open tool_tiers.html for seeing how to make custom ones. Possible values: [minecraft:diamond, minecraft:gold, minecraft:stone, minecraft:wood, minecraft:iron, minecraft:netherite]</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-base_damage</td>
-<td>
-Integer</td>
-<td>
-Base value for the damage. For reference: Palladium's hammer has 4</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-attack_speed</td>
-<td>
-Float</td>
-<td>
-Base value for the attack speed. For reference: Palladium's hammer has -2.75</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:hammer","tier":"minecraft:diamond","base_damage":-2,"attack_speed":-2.75}</pre>
-</div>
-<hr>
-
 <div id="palladium:shield">
 <h2>
 Shield</h2>
@@ -1015,6 +1013,120 @@ true</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:flux_capacitor","capacity":500000,"max_input":1000,"max_output":1000}</pre>
+</div>
+<hr>
+
+<div id="geckolib3:armor">
+<h2>
+GeckoLib Armor</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+slot</td>
+<td>
+EquipmentSlot</td>
+<td>
+The slot the item will fit in. Possible values: [feet, legs, chest, head]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+armor_material</td>
+<td>
+ArmorMaterial</td>
+<td>
+Armor material, which defines certain characteristics about the armor. Open armor_materials.html for seeing how to make custom ones. Possible values: [minecraft:diamond, test:wood, minecraft:gold, minecraft:leather, test:dirt, minecraft:turtle, minecraft:chainmail, minecraft:iron, minecraft:netherite]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+armor_texture</td>
+<td>
+ResourceLocation</td>
+<td>
+Armor texture (rendered on the player when wearing it). Simple texture file required</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+armor_model</td>
+<td>
+ResourceLocation</td>
+<td>
+Path to geckolib model file. Required bones: [armorHead, armorBody, armorRightArm, armorLeftArm, armorRightLeg, armorLeftLeg, armorRightBoot, armorLeftBoot]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+armor_animation</td>
+<td>
+ResourceLocation</td>
+<td>
+Path to geckolib model animation file.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+armor_animation_name</td>
+<td>
+String</td>
+<td>
+Name of the looping animation, in BlockBench it's the animation you create on the right.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+animation.armor.loop</td>
+</tr>
+<tr>
+<td>
+hide_second_player_layer</td>
+<td>
+Boolean</td>
+<td>
+If enabled, the second player layer will be hidden when worn (only on the corresponding body part)</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"geckolib3:armor","slot":"chest","armor_material":"minecraft:diamond","armor_texture":"example:textures/models/armor/example_armor.png","armor_model":"palladium:geo/test_model.geo.json","armor_animation":"palladium:animations/test_model.animation.json","armor_animation_name":"animation.armor.loop","hide_second_player_layer":true}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

@@ -6,10 +6,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.Ability;
-import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.power.ability.EnergyBlastAbility;
+import net.threetag.palladium.power.ability.*;
 
 public class AbilityEffectsRenderLayer extends RenderLayer<LivingEntity, EntityModel<LivingEntity>> {
 
@@ -19,7 +16,7 @@ public class AbilityEffectsRenderLayer extends RenderLayer<LivingEntity, EntityM
 
     @Override
     public void render(PoseStack matrixStack, MultiBufferSource buffer, int packedLight, LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        for (AbilityEntry entry : Ability.getEntries(livingEntity, Abilities.ENERGY_BLAST.get())) {
+        for (AbilityEntry entry : AbilityUtil.getEntries(livingEntity, Abilities.ENERGY_BLAST.get())) {
             EnergyBlastAbility.animation(this, entry, matrixStack, buffer, packedLight, livingEntity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         }
     }

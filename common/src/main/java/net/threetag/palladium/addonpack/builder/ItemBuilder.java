@@ -21,6 +21,7 @@ import net.threetag.palladium.item.PalladiumCreativeModeTabs;
 import net.threetag.palladium.util.Utils;
 
 import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ public class ItemBuilder extends AddonBuilder<Item> {
     private List<Component> tooltipLines = null;
     private Map<EquipmentSlot, Multimap<ResourceLocation, AttributeModifier>> attributeModifiers;
     private FoodProperties foodProperties = null;
+    private IAddonItem.RenderLayerContainer renderLayerContainer = null;
 
     public ItemBuilder(ResourceLocation id, JsonObject json) {
         super(id);
@@ -88,6 +90,8 @@ public class ItemBuilder extends AddonBuilder<Item> {
             }
         }
 
+        item.setRenderLayerContainer(this.renderLayerContainer);
+
         return (Item) item;
     }
 
@@ -132,6 +136,11 @@ public class ItemBuilder extends AddonBuilder<Item> {
         }
 
         this.attributeModifiers.computeIfAbsent(slot, equipmentSlot -> ArrayListMultimap.create()).put(attributeId, modifier);
+        return this;
+    }
+
+    public ItemBuilder setRenderLayerContainer(IAddonItem.RenderLayerContainer container) {
+        this.renderLayerContainer = container;
         return this;
     }
 

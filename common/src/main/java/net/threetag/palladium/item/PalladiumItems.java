@@ -51,7 +51,7 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> RAW_TITANIUM_BLOCK = ITEMS.register("raw_titanium_block", () -> new SortedBlockItem(PalladiumBlocks.RAW_TITANIUM_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_RAW_GOLD_BLOCK));
     public static final RegistrySupplier<Item> RAW_VIBRANIUM_BLOCK = ITEMS.register("raw_vibranium_block", () -> new SortedBlockItem(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS), FILLER_AFTER_RAW_GOLD_BLOCK));
 
-    public static final RegistrySupplier<Item> SOLAR_PANEL = ITEMS.register("solar_panel", () -> new BlockItem(PalladiumBlocks.SOLAR_PANEL.get(), new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY)));
+    public static final RegistrySupplier<Item> SOLAR_PANEL = ITEMS.register("solar_panel", () -> new ExperimentalBlockItem(PalladiumBlocks.SOLAR_PANEL.get(), new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY)));
     public static final RegistrySupplier<Item> HEART_SHAPED_HERB = ITEMS.register("heart_shaped_herb", () -> new SortedBlockItem(PalladiumBlocks.HEART_SHAPED_HERB.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS), FILLER_AFTER_WITHER_ROSE));
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -63,11 +63,10 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> VIBRANIUM_INGOT = ITEMS.register("vibranium_ingot", () -> new SortedItem(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS), FILLER_AFTER_NETHERITE));
     public static final RegistrySupplier<Item> REDSTONE_FLUX_CRYSTAL = ITEMS.register("redstone_flux_crystal", () -> new SortedItem(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS), FILLER_AFTER_REDSTONE));
 
-
-    public static final RegistrySupplier<Item> HAMMER = ITEMS.register("hammer", () -> new HammerItem(Tiers.IRON, 4, -2.75F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1).durability(16)));
-    public static final RegistrySupplier<Item> LEAD_CIRCUIT = ITEMS.register("lead_circuit", () -> new Item(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY)));
-    public static final RegistrySupplier<Item> QUARTZ_CIRCUIT = ITEMS.register("quartz_circuit", () -> new Item(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY)));
-    public static final RegistrySupplier<Item> VIBRANIUM_CIRCUIT = ITEMS.register("vibranium_circuit", () -> new Item(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY).rarity(Rarity.RARE)));
+    public static final RegistrySupplier<Item> SUIT_STAND = ITEMS.register("suit_stand", () -> new SuitStandItem(new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS).stacksTo(16)));
+    public static final RegistrySupplier<Item> LEAD_CIRCUIT = ITEMS.register("lead_circuit", () -> new ExperimentalItem(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY)));
+    public static final RegistrySupplier<Item> QUARTZ_CIRCUIT = ITEMS.register("quartz_circuit", () -> new ExperimentalItem(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY)));
+    public static final RegistrySupplier<Item> VIBRANIUM_CIRCUIT = ITEMS.register("vibranium_circuit", () -> new ExperimentalItem(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY).rarity(Rarity.RARE)));
 
     public static final RegistrySupplier<Item> LEAD_FLUX_CAPACITOR = ITEMS.register("lead_flux_capacitor", () -> new FluxCapacitorItem(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY), 500000, 1000, 1000));
     public static final RegistrySupplier<Item> QUARTZ_FLUX_CAPACITOR = ITEMS.register("quartz_flux_capacitor", () -> new FluxCapacitorItem(new Item.Properties().tab(PalladiumCreativeModeTabs.TECHNOLOGY), 1000000, 5000, 5000));

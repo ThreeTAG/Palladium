@@ -3,7 +3,7 @@ package net.threetag.palladium.client.dynamictexture.variable;
 import com.google.gson.JsonObject;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
 public class CapeTextureVariable extends AbstractFloatTextureVariable {
@@ -16,12 +16,12 @@ public class CapeTextureVariable extends AbstractFloatTextureVariable {
     }
 
     @Override
-    public float getNumber(LivingEntity entity) {
+    public float getNumber(Entity entity) {
         if (entity instanceof Player player) {
             double d0 = Mth.lerp(1F, player.xCloakO, player.xCloak) - Mth.lerp(1F, entity.xo, entity.getX());
             double d1 = Mth.lerp(1F, player.yCloakO, player.yCloak) - Mth.lerp(1F, entity.yo, entity.getY());
             double d2 = Mth.lerp(1F, player.zCloakO, player.zCloak) - Mth.lerp(1F, entity.zo, entity.getZ());
-            float f = entity.yBodyRotO + (entity.yBodyRot - entity.yBodyRotO);
+            float f = player.yBodyRotO + (player.yBodyRot - player.yBodyRotO);
             double d3 = Mth.sin(f * ((float) Math.PI / 180F));
             double d4 = -Mth.cos(f * ((float) Math.PI / 180F));
             float f1 = (float) d1 * 10.0F;
@@ -32,7 +32,7 @@ public class CapeTextureVariable extends AbstractFloatTextureVariable {
                 f2 = 0.0F;
             }
 
-            if(this.bobbing) {
+            if (this.bobbing) {
                 float f4 = Mth.lerp(1F, player.oBob, player.bob);
                 f1 = f1 + Mth.sin(Mth.lerp(1F, entity.walkDistO, entity.walkDist) * 6.0F) * 32.0F * f4;
             }

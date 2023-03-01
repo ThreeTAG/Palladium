@@ -21,10 +21,6 @@ public class InWaterCondition extends Condition {
 
     public static class Serializer extends ConditionSerializer {
 
-        public Serializer() {
-
-        }
-
         @Override
         public Condition make(JsonObject json) {
             return new InWaterCondition();
