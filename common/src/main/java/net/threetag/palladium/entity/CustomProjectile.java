@@ -85,7 +85,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     protected void onHitEntity(EntityHitResult result) {
         if (!this.level.isClientSide) {
             if (this.commandOnEntityHit != null && !this.commandOnEntityHit.isBlank()) {
-                this.level.getServer().getCommands().performPrefixedCommand(this.createCommandSourceStack().withMaximumPermission(this.level.getServer().getOperatorUserPermissionLevel()), this.commandOnEntityHit);
+                this.level.getServer().getCommands()
+                        .performPrefixedCommand(this.createCommandSourceStack()
+                                .withMaximumPermission(2)
+                                .withSuppressedOutput(), this.commandOnEntityHit);
             }
 
             Entity entity = result.getEntity();
@@ -108,7 +111,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
 
         if (!this.level.isClientSide) {
             if (this.commandOnBlockHit != null && !this.commandOnBlockHit.isBlank()) {
-                this.level.getServer().getCommands().performPrefixedCommand(this.createCommandSourceStack().withMaximumPermission(this.level.getServer().getOperatorUserPermissionLevel()), this.commandOnBlockHit);
+                this.level.getServer().getCommands()
+                        .performPrefixedCommand(this.createCommandSourceStack()
+                                .withMaximumPermission(2)
+                                .withSuppressedOutput(), this.commandOnBlockHit);
             }
 
             if (this.dieOnBlockHit) {

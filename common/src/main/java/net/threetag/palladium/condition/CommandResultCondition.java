@@ -32,7 +32,10 @@ public class CommandResultCondition extends Condition implements CommandSource {
     @Override
     public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
         if (entity.level instanceof ServerLevel serverLevel) {
-            var stack = new CommandSourceStack(this, entity.position(), entity.getRotationVector(), serverLevel, 4, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(), entity);
+            var stack = new CommandSourceStack(this, entity.position(), entity.getRotationVector(),
+                    serverLevel, 2, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(),
+                    entity)
+                    .withSuppressedOutput();
 
             if (!this.log) {
                 stack = stack.withSuppressedOutput();
