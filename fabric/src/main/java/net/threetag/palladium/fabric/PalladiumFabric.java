@@ -41,6 +41,7 @@ public class PalladiumFabric implements ModInitializer {
         registerEvents();
         registerPlacedFeatures();
 
+        AddonPackManager.startLoading();
         AddonPackManager.waitForLoading();
     }
 

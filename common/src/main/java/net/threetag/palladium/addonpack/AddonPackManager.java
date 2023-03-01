@@ -45,12 +45,14 @@ public class AddonPackManager {
         return INSTANCE;
     }
 
-    public static void init() {
+    public static void startLoading() {
+        Palladium.LOGGER.info("Starting addonpack initialisation...");
         loaderFuture = getInstance().beginLoading(Util.backgroundExecutor());
     }
 
     public static void waitForLoading() {
         getInstance().waitForLoading(loaderFuture);
+        loaderFuture = null;
     }
 
     private final Map<String, PackData> packs = new HashMap<>();
@@ -213,6 +215,7 @@ public class AddonPackManager {
     }
 
     public static class QueueableExecutor implements Executor {
+
         private final Thread thread = Thread.currentThread();
         private final ConcurrentLinkedQueue<Runnable> queue = new ConcurrentLinkedQueue<>();
         private final Semaphore sem = new Semaphore(1);

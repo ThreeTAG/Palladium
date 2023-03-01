@@ -2,7 +2,6 @@ package net.threetag.palladium;
 
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.accessory.Accessories;
-import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.parser.*;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
@@ -70,8 +69,6 @@ public class Palladium {
             GeckoLibCompat.init();
         }
 
-        LOGGER.info("Starting addonpack initialisation...");
-        AddonPackManager.init();
         PalladiumNetwork.init();
         PalladiumEntityTypes.init();
         EntityPropertyHandler.init();

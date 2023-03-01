@@ -9,12 +9,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.NewRegistryEvent;
 import net.threetag.palladium.Palladium;
@@ -70,6 +72,12 @@ public class PalladiumForge {
     public static void newRegistry(NewRegistryEvent e) {
         AddonPackManager.waitForLoading();
     }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onConstructMod(FMLConstructModEvent event) {
+        event.enqueueWork(AddonPackManager::startLoading);
+    }
+
 
     @SubscribeEvent
     public static void setup(FMLCommonSetupEvent e) {
