@@ -131,7 +131,6 @@ public class ItemParser extends AddonParser<Item> {
         registerTypeSerializer(new AddonAxeItem.Parser());
         registerTypeSerializer(new AddonShovelItem.Parser());
         registerTypeSerializer(new AddonHoeItem.Parser());
-        registerTypeSerializer(new HammerItem.Parser());
         registerTypeSerializer(new AddonShieldItem.Parser());
         registerTypeSerializer(new AddonBowItem.Parser());
         registerTypeSerializer(new AddonCrossbowItem.Parser());

@@ -48,8 +48,6 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
         nineBlockStorageRecipes(consumer, PalladiumItems.RAW_TITANIUM.get(), PalladiumItems.RAW_TITANIUM_BLOCK.get());
         nineBlockStorageRecipes(consumer, PalladiumItems.RAW_VIBRANIUM.get(), PalladiumItems.RAW_VIBRANIUM_BLOCK.get());
 
-        ShapedRecipeBuilder.shaped(PalladiumItems.HAMMER.get()).pattern("III").pattern("ISI").pattern(" S ").define('I', PalladiumItemTags.INGOTS_IRON).define('S', PalladiumItemTags.WOODEN_STICKS).unlockedBy("has_iron", has(PalladiumItemTags.INGOTS_IRON)).save(consumer);
-
         ShapelessRecipeBuilder.shapeless(Items.PURPLE_DYE).requires(PalladiumBlocks.HEART_SHAPED_HERB.get()).group("purple_dye").unlockedBy("has_flower", has(PalladiumBlocks.HEART_SHAPED_HERB.get())).save(consumer, new ResourceLocation(Palladium.MOD_ID, "purple_dye_from_heart_shaped_herb"));
 
         UpgradeRecipeBuilder.smithing(Ingredient.of(Items.LEATHER_BOOTS), Ingredient.of(PalladiumItemTags.INGOTS_VIBRANIUM), PalladiumItems.VIBRANIUM_WEAVE_BOOTS.get()).unlocks("has_vibranium", has(PalladiumItemTags.INGOTS_VIBRANIUM)).save(consumer, new ResourceLocation(Palladium.MOD_ID, "vibranium_weave_boots_smithing"));

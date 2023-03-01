@@ -1,4 +1,4 @@
-// 1.19.2	2023-02-11T00:17:25.3535147	Palladium Recipes
+// 1.19.2	2023-03-01T20:49:14.4739684	Palladium Recipes
 9e028e126f9a9ac4812fdf3646b3295c2748c20d data/palladium/advancements/recipes/building_blocks/lead_block.json
 7eb782f64bce5e2b2409bd5bc2de99f03ee636ea data/palladium/advancements/recipes/building_blocks/raw_lead_block.json
 4994ab0486182c711514e038ac06d6d65688b317 data/palladium/advancements/recipes/building_blocks/raw_titanium_block.json
@@ -22,8 +22,6 @@ f5c0aa6c5e588fedeba44c54e911ec4db2dc94ea data/palladium/advancements/recipes/mis
 b81839f55df16134619eec0c11dd5a762b13891e data/palladium/advancements/recipes/misc/vibranium_ingot_from_smelting_raw_vibranium.json
 25757961346ba2e353b72ea67e0a715ba63a3057 data/palladium/advancements/recipes/misc/vibranium_ingot_from_smelting_vibranium_ore.json
 42eccc098cb3079c4079b688bf51f9b620ae4b45 data/palladium/advancements/recipes/misc/vibranium_ingot_from_vibranium_block.json
-831a1bb434363adebce8a3cb3e678cb55ec5c7e1 data/palladium/advancements/recipes/tools/hammer.json
-71965102a21e68e261771e7441a805310aeb9e17 data/palladium/recipes/hammer.json
 b7193044ee9e96cbc28a27b698321034bbfff51b data/palladium/recipes/lead_block.json
 e653f91249caaf136f60516c638d34719a8bff56 data/palladium/recipes/lead_ingot_from_blasting_deepslate_lead_ore.json
 abe8a1bf2eff98e25b50764738b4e1a11364e49f data/palladium/recipes/lead_ingot_from_blasting_lead_ore.json

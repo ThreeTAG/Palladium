@@ -57,7 +57,6 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibranium Ingot");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone Flux Crystal");
             this.addItem(PalladiumItems.SUIT_STAND, "Suit Stand");
-            this.addItem(PalladiumItems.HAMMER, "Hammer");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Lead Circuit");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quartz Circuit");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibranium Circuit");
@@ -214,7 +213,6 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarren");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
             this.addItem(PalladiumItems.SUIT_STAND, "Anzugsständer");
-            this.addItem(PalladiumItems.HAMMER, "Hammer");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Bleischaltkreis");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaltkreis");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaltkreis");
@@ -371,7 +369,6 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarrn");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
             this.addItem(PalladiumItems.SUIT_STAND, "Anzuchsschdändorr");
-            this.addItem(PalladiumItems.HAMMER, "Hammer");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Redstoneschaldkres");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaldkres");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaldkres");

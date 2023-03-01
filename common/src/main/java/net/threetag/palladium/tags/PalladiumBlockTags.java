@@ -18,8 +18,6 @@ public class PalladiumBlockTags {
     public static final TagKey<Block> STORAGE_BLOCKS_LEAD = forgeTag("storage_blocks/lead");
     public static final TagKey<Block> STORAGE_BLOCKS_VIBRANIUM = forgeTag("storage_blocks/vibranium");
 
-    public static final TagKey<Block> MINEABLE_WITH_HAMNMER = tag("mineable/hammer");
-
     private static TagKey<Block> tag(String path) {
         return tag(Palladium.MOD_ID, path);
     }
