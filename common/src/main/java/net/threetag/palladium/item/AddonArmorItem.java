@@ -1,6 +1,5 @@
 package net.threetag.palladium.item;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -24,36 +23,29 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
-import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
+import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
 import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArmor {
 
     private List<Component> tooltipLines;
-    private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
     private SkinTypedValue<DynamicTexture> armorTexture;
     private RenderLayerContainer renderLayerContainer = null;
+    private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
     private boolean hideSecondLayer = false;
 
     public AddonArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
         super(armorMaterial, equipmentSlot, properties);
-
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            Multimap<Attribute, AttributeModifier> multimap = ArrayListMultimap.create();
-            multimap.putAll(super.getDefaultAttributeModifiers(slot));
-            this.attributeModifiers.put(slot, multimap);
-        }
     }
 
     public AddonArmorItem hideSecondLayer() {
@@ -81,28 +73,17 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArm
 
     @Override
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
-        var modifiers = this.attributeModifiers.get(slot);
-        if (modifiers != null) {
-            return modifiers;
-        } else {
-            return super.getDefaultAttributeModifiers(slot);
-        }
+        return this.attributeContainer.get(PlayerSlot.get(slot), super.getDefaultAttributeModifiers(slot));
+    }
+
+    @Override
+    public AddonAttributeContainer getAttributeContainer() {
+        return this.attributeContainer;
     }
 
     @Override
     public void setTooltip(List<Component> lines) {
         this.tooltipLines = lines;
-    }
-
-    @Override
-    public void addAttributeModifier(@Nullable EquipmentSlot slot, Attribute attribute, AttributeModifier modifier) {
-        if (slot != null) {
-            this.attributeModifiers.get(slot).put(attribute, modifier);
-        } else {
-            for (EquipmentSlot slot1 : EquipmentSlot.values()) {
-                this.attributeModifiers.get(slot1).put(attribute, modifier);
-            }
-        }
     }
 
     @Override

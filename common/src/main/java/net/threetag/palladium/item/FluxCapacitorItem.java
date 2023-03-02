@@ -23,19 +23,18 @@ import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.energy.EnergyHelper;
+import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.Utils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class FluxCapacitorItem extends EnergyItem implements IAddonItem {
 
     private static final int BAR_COLOR = Mth.color(0.9F, 0.1F, 0F);
     private List<Component> tooltipLines;
-    private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
     private RenderLayerContainer renderLayerContainer = null;
+    private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
 
     public FluxCapacitorItem(Properties properties, int capacity, int maxInput, int maxOutput) {
         super(properties, capacity, maxInput, maxOutput);
@@ -86,24 +85,13 @@ public class FluxCapacitorItem extends EnergyItem implements IAddonItem {
     }
 
     @Override
-    public void addAttributeModifier(@Nullable EquipmentSlot slot, Attribute attribute, AttributeModifier modifier) {
-        if (slot != null) {
-            this.attributeModifiers.get(slot).put(attribute, modifier);
-        } else {
-            for (EquipmentSlot slot1 : EquipmentSlot.values()) {
-                this.attributeModifiers.get(slot1).put(attribute, modifier);
-            }
-        }
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
+        return this.attributeContainer.get(PlayerSlot.get(slot), super.getDefaultAttributeModifiers(slot));
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
-        var modifiers = this.attributeModifiers.get(slot);
-        if (modifiers != null) {
-            return modifiers;
-        } else {
-            return super.getDefaultAttributeModifiers(slot);
-        }
+    public AddonAttributeContainer getAttributeContainer() {
+        return this.attributeContainer;
     }
 
     @Override

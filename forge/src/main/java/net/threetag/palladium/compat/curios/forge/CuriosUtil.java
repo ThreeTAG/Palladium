@@ -1,10 +1,14 @@
 package net.threetag.palladium.compat.curios.forge;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,6 +21,7 @@ import net.threetag.palladium.compat.curiostinkets.CurioTrinket;
 import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsSlotInv;
 import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsUtil;
 import net.threetag.palladium.power.ability.RestrictSlotsAbility;
+import net.threetag.palladium.util.PlayerSlot;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
@@ -28,6 +33,7 @@ import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class CuriosUtil extends CuriosTrinketsUtil {
 
@@ -146,6 +152,14 @@ public class CuriosUtil extends CuriosTrinketsUtil {
         @Override
         public boolean canEquipFromUse(SlotContext slotContext) {
             return this.curioTrinket.canRightClickEquip();
+        }
+
+        @Override
+        public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid) {
+            Multimap<Attribute, AttributeModifier> map = ArrayListMultimap.create();
+            map.putAll(ICurio.super.getAttributeModifiers(slotContext, uuid));
+            map.putAll(this.curioTrinket.getModifiers(PlayerSlot.get("curios:" + slotContext.identifier()), slotContext.entity()));
+            return map;
         }
     }
 
