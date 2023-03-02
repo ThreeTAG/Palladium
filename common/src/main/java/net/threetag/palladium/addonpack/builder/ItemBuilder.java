@@ -7,7 +7,7 @@ import com.google.gson.JsonParseException;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.food.FoodProperties;
@@ -15,11 +15,12 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.threetag.palladium.addonpack.parser.ItemParser;
+import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsUtil;
 import net.threetag.palladium.item.AddonItem;
 import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.item.PalladiumCreativeModeTabs;
+import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.Utils;
-
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -36,9 +37,11 @@ public class ItemBuilder extends AddonBuilder<Item> {
     private ResourceLocation creativeModeTab = null;
     private Rarity rarity = null;
     private List<Component> tooltipLines = null;
-    private Map<EquipmentSlot, Multimap<ResourceLocation, AttributeModifier>> attributeModifiers;
+    private Multimap<ResourceLocation, AttributeModifier> attributeModifiersAllSlots;
+    private Map<PlayerSlot, Multimap<ResourceLocation, AttributeModifier>> attributeModifiers;
     private FoodProperties foodProperties = null;
     private IAddonItem.RenderLayerContainer renderLayerContainer = null;
+    private boolean registerCurioTrinket = false;
 
     public ItemBuilder(ResourceLocation id, JsonObject json) {
         super(id);
@@ -75,13 +78,13 @@ public class ItemBuilder extends AddonBuilder<Item> {
         Utils.ifNotNull(this.tooltipLines, item::setTooltip);
 
         if (this.attributeModifiers != null) {
-            for (EquipmentSlot slot : this.attributeModifiers.keySet()) {
+            for (PlayerSlot slot : this.attributeModifiers.keySet()) {
                 for (ResourceLocation attributeId : this.attributeModifiers.get(slot).keySet()) {
                     Attribute attribute = Registry.ATTRIBUTE.get(attributeId);
 
                     if (attribute != null) {
                         for (AttributeModifier attributeModifier : this.attributeModifiers.get(slot).get(attributeId)) {
-                            item.addAttributeModifier(slot, attribute, attributeModifier);
+                            item.getAttributeContainer().add(slot, attribute, attributeModifier);
                         }
                     } else {
                         throw new JsonParseException("Unknown attribute '" + attributeId + "'");
@@ -90,7 +93,25 @@ public class ItemBuilder extends AddonBuilder<Item> {
             }
         }
 
+        if (this.attributeModifiersAllSlots != null) {
+            for (ResourceLocation attributeId : this.attributeModifiersAllSlots.keySet()) {
+                Attribute attribute = Registry.ATTRIBUTE.get(attributeId);
+
+                if (attribute != null) {
+                    for (AttributeModifier attributeModifier : this.attributeModifiersAllSlots.get(attributeId)) {
+                        item.getAttributeContainer().addForAllSlots(attribute, attributeModifier);
+                    }
+                } else {
+                    throw new JsonParseException("Unknown attribute '" + attributeId + "'");
+                }
+            }
+        }
+
         item.setRenderLayerContainer(this.renderLayerContainer);
+
+        if (this.registerCurioTrinket) {
+            CuriosTrinketsUtil.getInstance().registerCurioTrinket((Item) item, new CurioTrinket(item));
+        }
 
         return (Item) item;
     }
@@ -130,7 +151,17 @@ public class ItemBuilder extends AddonBuilder<Item> {
         return this;
     }
 
-    public ItemBuilder addAttributeModifier(@Nullable EquipmentSlot slot, ResourceLocation attributeId, AttributeModifier modifier) {
+    public ItemBuilder addAttributeModifier(@Nullable PlayerSlot slot, ResourceLocation attributeId, AttributeModifier modifier) {
+        this.registerCurioTrinket = true;
+
+        if (slot == null) {
+            if (this.attributeModifiersAllSlots == null) {
+                this.attributeModifiersAllSlots = ArrayListMultimap.create();
+            }
+            this.attributeModifiersAllSlots.put(attributeId, modifier);
+            return this;
+        }
+
         if (this.attributeModifiers == null) {
             this.attributeModifiers = new HashMap<>();
         }
@@ -147,6 +178,20 @@ public class ItemBuilder extends AddonBuilder<Item> {
     public ItemBuilder food(FoodProperties foodProperties) {
         this.foodProperties = foodProperties;
         return this;
+    }
+
+    public static class CurioTrinket implements net.threetag.palladium.compat.curiostinkets.CurioTrinket {
+
+        private final IAddonItem item;
+
+        public CurioTrinket(IAddonItem item) {
+            this.item = item;
+        }
+
+        @Override
+        public Multimap<Attribute, AttributeModifier> getModifiers(PlayerSlot slot, LivingEntity entity) {
+            return item.getAttributeContainer().get(slot, ArrayListMultimap.create());
+        }
     }
 
 }

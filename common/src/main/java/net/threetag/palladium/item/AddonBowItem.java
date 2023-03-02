@@ -24,20 +24,19 @@ import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.json.GsonUtil;
 import net.threetag.palladiumcore.registry.client.ItemPropertyRegistry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 
 public class AddonBowItem extends BowItem implements IAddonItem {
 
     private List<Component> tooltipLines;
-    private final Map<EquipmentSlot, Multimap<Attribute, AttributeModifier>> attributeModifiers = new HashMap<>();
     private RenderLayerContainer renderLayerContainer = null;
+    private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
     private final float velocity, inaccuracy;
     private final int useDuration;
     private final Predicate<ItemStack> projectiles;
@@ -159,28 +158,17 @@ public class AddonBowItem extends BowItem implements IAddonItem {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
-        var modifiers = this.attributeModifiers.get(slot);
-        if (modifiers != null) {
-            return modifiers;
-        } else {
-            return super.getDefaultAttributeModifiers(slot);
-        }
+        return this.attributeContainer.get(PlayerSlot.get(slot), super.getDefaultAttributeModifiers(slot));
+    }
+
+    @Override
+    public AddonAttributeContainer getAttributeContainer() {
+        return this.attributeContainer;
     }
 
     @Override
     public void setTooltip(List<Component> lines) {
         this.tooltipLines = lines;
-    }
-
-    @Override
-    public void addAttributeModifier(@Nullable EquipmentSlot slot, Attribute attribute, AttributeModifier modifier) {
-        if (slot != null) {
-            this.attributeModifiers.get(slot).put(attribute, modifier);
-        } else {
-            for (EquipmentSlot slot1 : EquipmentSlot.values()) {
-                this.attributeModifiers.get(slot1).put(attribute, modifier);
-            }
-        }
     }
 
     @Override

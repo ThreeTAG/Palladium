@@ -1,5 +1,7 @@
 package net.threetag.palladium.compat.trinkets.fabric;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import dev.emi.trinkets.TrinketSlot;
@@ -12,6 +14,8 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -20,6 +24,9 @@ import net.threetag.palladium.client.renderer.item.CurioTrinketRenderer;
 import net.threetag.palladium.compat.curiostinkets.CurioTrinket;
 import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsSlotInv;
 import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsUtil;
+import net.threetag.palladium.util.PlayerSlot;
+
+import java.util.UUID;
 
 public class TrinketsUtil extends CuriosTrinketsUtil {
 
@@ -54,6 +61,14 @@ public class TrinketsUtil extends CuriosTrinketsUtil {
             @Override
             public boolean canUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
                 return curioTrinket.canUnequip(stack, entity);
+            }
+
+            @Override
+            public Multimap<Attribute, AttributeModifier> getModifiers(ItemStack stack, SlotReference slot, LivingEntity entity, UUID uuid) {
+                Multimap<Attribute, AttributeModifier> map = ArrayListMultimap.create();
+                map.putAll(Trinket.super.getModifiers(stack, slot, entity, uuid));
+                map.putAll(curioTrinket.getModifiers(PlayerSlot.get("trinkets:" + slot.inventory().getSlotType().getGroup() + "/" + slot.inventory().getSlotType().getName()), entity));
+                return map;
             }
         });
     }

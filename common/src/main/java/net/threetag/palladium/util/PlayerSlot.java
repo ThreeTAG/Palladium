@@ -12,6 +12,7 @@ import java.util.*;
 public abstract class PlayerSlot {
 
     private static final Map<EquipmentSlot, PlayerSlot> EQUIPMENT_SLOTS = new HashMap<>();
+    private static final Map<String, PlayerSlot> SLOTS = new HashMap<>();
 
     @NotNull
     public static PlayerSlot get(EquipmentSlot slot) {
@@ -27,11 +28,11 @@ public abstract class PlayerSlot {
         }
 
         if (name.startsWith("curios:")) {
-            return new CurioTrinketSlot(true, name.substring("curios:".length()));
+            return SLOTS.computeIfAbsent(name, n -> new CurioTrinketSlot(true, name.substring("curios:".length())));
         }
 
         if (name.startsWith("trinkets:")) {
-            return new CurioTrinketSlot(false, name.substring("trinkets:".length()));
+            return SLOTS.computeIfAbsent(name, n -> new CurioTrinketSlot(false, name.substring("trinkets:".length())));
         }
 
         return null;
