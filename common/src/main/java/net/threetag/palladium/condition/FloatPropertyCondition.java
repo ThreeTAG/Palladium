@@ -58,7 +58,7 @@ public class FloatPropertyCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if the entity has a float property with a value between the given minimum and maximum";
         }
     }

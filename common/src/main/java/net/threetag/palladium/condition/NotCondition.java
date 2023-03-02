@@ -45,7 +45,7 @@ public class NotCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Returns true if all conditions are disabled.";
         }
     }

@@ -40,7 +40,7 @@ public class HasTagCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if the entity has a specific tag. These tags are added to entities via /tag command";
         }
     }

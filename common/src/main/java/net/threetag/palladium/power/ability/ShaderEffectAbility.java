@@ -65,4 +65,8 @@ public class ShaderEffectAbility extends Ability {
         return null;
     }
 
+    @Override
+    public String getDocumentationDescription() {
+        return "Allows you to apply a custom shader effect.";
+    }
 }

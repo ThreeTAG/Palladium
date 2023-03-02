@@ -16,4 +16,9 @@ public class RenderLayerAbility extends Ability {
     public boolean isEffect() {
         return true;
     }
+
+    @Override
+    public String getDocumentationDescription() {
+        return "Allows you to add a render layer to the entity.";
+    }
 }

@@ -29,11 +29,6 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
         return this;
     }
 
-    public <T> ConditionSerializer withDescription(PalladiumProperty<T> data, T value) {
-        this.propertyManager.register(data, value);
-        return this;
-    }
-
     public <T> T getProperty(JsonObject json, PalladiumProperty<T> data) {
         if (this.propertyManager.isRegistered(data)) {
             if (json.has(data.getKey())) {
@@ -119,7 +114,7 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
         return REGISTRY.getKey(this);
     }
 
-    public String getDescription() {
+    public String getDocumentationDescription() {
         return "";
     }
 
@@ -127,7 +122,7 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
         builder.setTitle(this.getId().getPath());
-        builder.setDescription(this.getDescription() + " " +
+        builder.setDescription(this.getDocumentationDescription() + " " +
                 "Applicable for: " + this.getContextType().toString().toLowerCase(Locale.ROOT));
     }
 }

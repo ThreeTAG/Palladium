@@ -45,7 +45,7 @@ public class DimensionCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if the player is in a specific dimension.";
         }
     }

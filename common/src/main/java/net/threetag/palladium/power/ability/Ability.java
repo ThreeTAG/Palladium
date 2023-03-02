@@ -107,10 +107,15 @@ public class Ability implements IDefaultDocumentedConfigurable {
         return REGISTRY.getKey(this);
     }
 
+    public String getDocumentationDescription() {
+        return "";
+    }
+
     @Override
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
         builder.setTitle(this.getId().getPath());
+        builder.setDescription(this.getDocumentationDescription());
     }
 
     public void postParsing(AbilityConfiguration configuration) {

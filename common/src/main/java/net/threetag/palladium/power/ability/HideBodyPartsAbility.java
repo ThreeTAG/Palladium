@@ -22,4 +22,9 @@ public class HideBodyPartsAbility extends Ability {
     public boolean isEffect() {
         return true;
     }
+
+    @Override
+    public String getDocumentationDescription() {
+        return "Allows you to hide an entity's body parts.";
+    }
 }

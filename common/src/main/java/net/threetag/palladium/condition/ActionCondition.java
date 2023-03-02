@@ -63,7 +63,7 @@ public class ActionCondition extends KeyCondition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "This condition is used to activate the power when a key is pressed or a mouse button is clicked.";
         }
     }

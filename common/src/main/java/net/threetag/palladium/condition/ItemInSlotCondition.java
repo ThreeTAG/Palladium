@@ -56,7 +56,7 @@ public class ItemInSlotCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if the given item is in the given slot.";
         }
     }

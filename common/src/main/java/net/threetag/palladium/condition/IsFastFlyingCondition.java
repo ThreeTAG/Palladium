@@ -31,7 +31,7 @@ public class IsFastFlyingCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if the entity is currently flying fast.";
         }
     }

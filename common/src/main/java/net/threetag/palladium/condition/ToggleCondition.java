@@ -61,7 +61,7 @@ public class ToggleCondition extends KeyCondition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Toggles the ability on and off after a key press or mouse click.";
         }
     }

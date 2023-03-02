@@ -42,7 +42,7 @@ public class ModLoadedCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if a mod is loaded.";
         }
     }

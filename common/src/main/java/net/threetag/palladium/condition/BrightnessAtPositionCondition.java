@@ -44,7 +44,7 @@ public class BrightnessAtPositionCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if the entity's brightness at it's position is within the given range.";
         }
     }

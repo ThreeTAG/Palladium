@@ -27,7 +27,7 @@ public class OnGroundCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if the entity is on the ground.";
         }
     }

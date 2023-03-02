@@ -28,4 +28,9 @@ public class HealingAbility extends Ability {
             }
         }
     }
+
+    @Override
+    public String getDocumentationDescription() {
+        return "Heals the entity.";
+    }
 }

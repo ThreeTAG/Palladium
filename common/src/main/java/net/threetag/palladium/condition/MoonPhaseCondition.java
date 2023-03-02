@@ -43,7 +43,7 @@ public class MoonPhaseCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if the moon phase is between the given values.";
         }
     }

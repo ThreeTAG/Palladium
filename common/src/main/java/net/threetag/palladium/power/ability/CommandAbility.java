@@ -78,4 +78,9 @@ public class CommandAbility extends Ability implements CommandSource {
     public boolean shouldInformAdmins() {
         return false;
     }
+
+    @Override
+    public String getDocumentationDescription() {
+        return "Executes commands.";
+    }
 }

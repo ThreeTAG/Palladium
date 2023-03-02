@@ -109,7 +109,7 @@ public class CommandResultCondition extends Condition implements CommandSource {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Executes a command and compares the output to a number";
         }
     }

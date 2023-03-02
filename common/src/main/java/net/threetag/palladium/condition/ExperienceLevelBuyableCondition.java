@@ -67,7 +67,7 @@ public class ExperienceLevelBuyableCondition extends BuyableCondition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "A condition that makes the ability buyable for a certain amount of xp levels.";
         }
     }

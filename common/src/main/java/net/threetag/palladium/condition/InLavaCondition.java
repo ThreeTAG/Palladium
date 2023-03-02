@@ -27,7 +27,7 @@ public class InLavaCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if the entity is in lava.";
         }
     }

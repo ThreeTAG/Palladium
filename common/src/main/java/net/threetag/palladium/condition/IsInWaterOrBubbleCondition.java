@@ -27,7 +27,7 @@ public class IsInWaterOrBubbleCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if the entity is in water or a bubble column.";
         }
     }

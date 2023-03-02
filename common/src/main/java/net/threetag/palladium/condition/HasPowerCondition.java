@@ -45,7 +45,7 @@ public class HasPowerCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if the entity has a power with the given ID.";
         }
     }

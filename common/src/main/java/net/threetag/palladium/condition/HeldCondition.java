@@ -75,7 +75,7 @@ public class HeldCondition extends KeyCondition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Allows the ability to be used while holding a key bind";
         }
     }

@@ -72,4 +72,9 @@ public class ProjectileAbility extends Ability {
             });
         }
     }
+
+    @Override
+    public String getDocumentationDescription() {
+        return "Allows you to shoot a projectile.";
+    }
 }

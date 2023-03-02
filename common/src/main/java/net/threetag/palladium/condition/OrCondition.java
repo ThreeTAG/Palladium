@@ -45,7 +45,7 @@ public class OrCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Returns true if at least one of the conditions is active.";
         }
     }

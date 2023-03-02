@@ -67,7 +67,7 @@ public class AbilityTicksCondition extends Condition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "Checks if the ability has been enabled for a certain amount of ticks";
         }
     }

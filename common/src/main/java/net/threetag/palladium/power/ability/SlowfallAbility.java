@@ -18,4 +18,9 @@ public class SlowfallAbility extends Ability {
             entity.fallDistance = 0F;
         }
     }
+
+    @Override
+    public String getDocumentationDescription() {
+        return "Makes the entity fall slower.";
+    }
 }

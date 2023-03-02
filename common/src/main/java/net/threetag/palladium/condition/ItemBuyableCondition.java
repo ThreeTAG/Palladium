@@ -109,7 +109,7 @@ public class ItemBuyableCondition extends BuyableCondition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "The player needs to spend a certain amount of items to unlock the ability.";
         }
     }

@@ -87,7 +87,7 @@ public class ScoreboardScoreBuyableCondition extends BuyableCondition {
         }
 
         @Override
-        public String getDescription() {
+        public String getDocumentationDescription() {
             return "A buyable condition that requires a certain score for a scoreboard objective.";
         }
     }
