@@ -25,5 +25,10 @@ public class IsInWaterOrBubbleCondition extends Condition {
         public Condition make(JsonObject json) {
             return new IsInWaterOrBubbleCondition();
         }
+
+        @Override
+        public String getDescription() {
+            return "Checks if the entity is in water or a bubble column.";
+        }
     }
 }

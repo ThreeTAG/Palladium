@@ -86,5 +86,9 @@ public class ScoreboardScoreBuyableCondition extends BuyableCondition {
             return new ScoreboardScoreBuyableCondition(getProperty(json, OBJECTIVE), getProperty(json, SCORE), getProperty(json, ICON), getProperty(json, DESCRIPTION));
         }
 
+        @Override
+        public String getDescription() {
+            return "A buyable condition that requires a certain score for a scoreboard objective.";
+        }
     }
 }

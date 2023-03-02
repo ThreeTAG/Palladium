@@ -79,5 +79,9 @@ public class AbilityIntegerPropertyCondition extends Condition {
                     this.getProperty(json, MAX));
         }
 
+        @Override
+        public String getDescription() {
+            return "Checks if the given ability has a certain integer property value.";
+        }
     }
 }

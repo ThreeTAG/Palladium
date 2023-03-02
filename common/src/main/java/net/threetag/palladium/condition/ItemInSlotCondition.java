@@ -54,5 +54,10 @@ public class ItemInSlotCondition extends Condition {
         public Condition make(JsonObject json) {
             return new ItemInSlotCondition(this.getProperty(json, ITEM), this.getProperty(json, SLOT));
         }
+
+        @Override
+        public String getDescription() {
+            return "Checks if the given item is in the given slot.";
+        }
     }
 }

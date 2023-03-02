@@ -71,5 +71,9 @@ public class IntervalCondition extends Condition {
             return new IntervalCondition(getProperty(json, ACTIVE_TICKS), getProperty(json, DISABLED_TICKS));
         }
 
+        @Override
+        public String getDescription() {
+            return "Allows you to set an amount of ticks the ability will be active and an amount of ticks the ability will be disabled. The ability will be active for the first amount of ticks and then disabled for the second amount of ticks and so on.";
+        }
     }
 }

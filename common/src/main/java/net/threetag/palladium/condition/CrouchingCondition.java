@@ -25,6 +25,11 @@ public class CrouchingCondition extends Condition {
         public Condition make(JsonObject json) {
             return new CrouchingCondition();
         }
+
+        @Override
+        public String getDescription() {
+            return "Checks if the entity is crouching.";
+        }
     }
 
 }

@@ -42,6 +42,9 @@ public class HealthCondition extends Condition {
             return new HealthCondition(getProperty(json, MIN_HEALTH), getProperty(json, MAX_HEALTH));
         }
 
+        @Override
+        public String getDescription() {
+            return "Checks if the entity has a certain amount of health";
+        }
     }
-
 }

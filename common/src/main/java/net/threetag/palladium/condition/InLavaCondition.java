@@ -25,5 +25,10 @@ public class InLavaCondition extends Condition {
         public Condition make(JsonObject json) {
             return new InLavaCondition();
         }
+
+        @Override
+        public String getDescription() {
+            return "Checks if the entity is in lava.";
+        }
     }
 }

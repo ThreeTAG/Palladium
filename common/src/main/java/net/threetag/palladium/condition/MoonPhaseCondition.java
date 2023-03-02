@@ -42,6 +42,10 @@ public class MoonPhaseCondition extends Condition {
             return new MoonPhaseCondition(this.getProperty(json, MIN), this.getProperty(json, MAX));
         }
 
+        @Override
+        public String getDescription() {
+            return "Checks if the moon phase is between the given values.";
+        }
     }
 
 }

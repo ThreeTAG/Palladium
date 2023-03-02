@@ -41,5 +41,9 @@ public class WearsSuitSetCondition extends Condition {
             return new WearsSuitSetCondition(this.getProperty(json, SUIT_SET));
         }
 
+        @Override
+        public String getDescription() {
+            return "Checks if the entity is wearing a specific suit set.";
+        }
     }
 }

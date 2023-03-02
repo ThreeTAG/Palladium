@@ -44,6 +44,9 @@ public class EntityTypeTagCondition extends Condition {
             return new EntityTypeTagCondition(TagKey.create(Registry.ENTITY_TYPE_REGISTRY, this.getProperty(json, ENTITY_TYPE)));
         }
 
+        @Override
+        public String getDescription() {
+            return "Checks if the entity is of a certain tag";
+        }
     }
-
 }

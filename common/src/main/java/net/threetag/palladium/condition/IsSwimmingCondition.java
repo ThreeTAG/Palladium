@@ -25,5 +25,10 @@ public class IsSwimmingCondition extends Condition {
         public Condition make(JsonObject json) {
             return new IsSwimmingCondition();
         }
+
+        @Override
+        public String getDescription() {
+            return "Checks if the entity is swimming.";
+        }
     }
 }

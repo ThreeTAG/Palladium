@@ -25,5 +25,10 @@ public class IsOnFireCondition extends Condition {
         public Condition make(JsonObject json) {
             return new IsOnFireCondition();
         }
+
+        @Override
+        public String getDescription() {
+            return "Checks if the entity is on fire.";
+        }
     }
 }

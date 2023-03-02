@@ -43,6 +43,10 @@ public class OrCondition extends Condition {
         public Condition make(JsonObject json) {
             return new OrCondition(this.getProperty(json, CONDITIONS));
         }
-    }
 
+        @Override
+        public String getDescription() {
+            return "Returns true if at least one of the conditions is active.";
+        }
+    }
 }

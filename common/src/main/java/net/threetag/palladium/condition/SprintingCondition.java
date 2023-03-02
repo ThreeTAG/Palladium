@@ -20,11 +20,14 @@ public class SprintingCondition extends Condition {
     }
 
     public static class Serializer extends ConditionSerializer {
-
         @Override
         public Condition make(JsonObject json) {
             return new SprintingCondition();
         }
-    }
 
+        @Override
+        public String getDescription() {
+            return "Checks if the entity is sprinting.";
+        }
+    }
 }

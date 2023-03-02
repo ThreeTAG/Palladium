@@ -20,7 +20,6 @@ public class UnderWaterCondition extends Condition {
     }
 
     public static class Serializer extends ConditionSerializer {
-
         public Serializer() {
 
         }
@@ -28,6 +27,11 @@ public class UnderWaterCondition extends Condition {
         @Override
         public Condition make(JsonObject json) {
             return new UnderWaterCondition();
+        }
+
+        @Override
+        public String getDescription() {
+            return "Checks if the entity is underwater.";
         }
     }
 }

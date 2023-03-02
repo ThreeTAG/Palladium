@@ -41,5 +41,9 @@ public class PoseCondition extends Condition {
             return new PoseCondition(this.getProperty(json, POSE));
         }
 
+        @Override
+        public String getDescription() {
+            return "Checks if the entity is in a specific pose.";
+        }
     }
 }

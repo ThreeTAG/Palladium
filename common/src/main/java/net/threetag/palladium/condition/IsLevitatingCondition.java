@@ -30,5 +30,10 @@ public class IsLevitatingCondition extends Condition {
         public Condition make(JsonObject json) {
             return new IsLevitatingCondition();
         }
+
+        @Override
+        public String getDescription() {
+            return "Checks if the entity is levitating.";
+        }
     }
 }

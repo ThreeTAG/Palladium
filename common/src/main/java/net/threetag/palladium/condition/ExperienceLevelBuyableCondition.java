@@ -66,5 +66,9 @@ public class ExperienceLevelBuyableCondition extends BuyableCondition {
             return new ExperienceLevelBuyableCondition(getProperty(json, XP_LEVEL));
         }
 
+        @Override
+        public String getDescription() {
+            return "A condition that makes the ability buyable for a certain amount of xp levels.";
+        }
     }
 }
