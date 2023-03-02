@@ -7,6 +7,9 @@ StartupEvents.registry('palladium:abilities', (event) => {
         // Preset icon, can also be changed individually in the power json
         .icon(palladium.createItemIcon('palladium:vibranium_circuit'))
 
+        // Documentation description
+        .documentationDescription('This is a test ability, defined in a KubeJS script.')
+
         // Handler for what happens during the FIRST tick of the ability being active
         .firstTick((entity, entry, holder, enabled) => {
             entity.tell('First Tick!');

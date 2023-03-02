@@ -14,6 +14,7 @@ public class ScriptableAbility extends Ability {
 
     public ScriptableAbility(AbilityBuilder builder) {
         this.withProperty(ICON, builder.icon);
+        this.withProperty(DOCS_DESCRIPTION, builder.documentationDescription);
         this.builder = builder;
 
 		for (AbilityBuilder.DeserializePropertyInfo info : this.builder.extraProperties) {
