@@ -205,8 +205,9 @@
                     if ($("#export_option_animation_timer").is(':checked')) {
                         let animationUtil = isJava ? "AnimationUtil" : "animationUtil";
                         let varType = isJava ? "float" : "let";
-                        result += `${varType} animation = ${animationUtil}.getAnimationTimerAbilityValue(${entityObject}, ${powerId}, ${abilityInsert});<br>`;
-                        result += `if (animation > 0F) {<br>`;
+                        let partialTicks = isJava ? "partialTicks" : "builder.getPartialTicks()";
+                        result += `${varType} animation = ${animationUtil}.getAnimationTimerAbilityValue(${entityObject}, ${powerId}, ${abilityInsert}, ${partialTicks});<br>`;
+                        result += `if (animation > 0) {<br>`;
                         animationTimer = "animation";
                     } else {
                         result += "if (" + (isJava ? "AbilityUtil" : "abilityUtil") + `.isEnabled(${entityObject}, ${powerId}, ${abilityInsert})) {<br>`
