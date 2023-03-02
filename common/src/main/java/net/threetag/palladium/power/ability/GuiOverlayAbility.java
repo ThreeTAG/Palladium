@@ -70,6 +70,6 @@ public class GuiOverlayAbility extends Ability {
 
     @Override
     public String getDocumentationDescription() {
-        return "Displays a gui overlay on the screen";
+        return "Displays a gui overlay on the screen.";
     }
 }

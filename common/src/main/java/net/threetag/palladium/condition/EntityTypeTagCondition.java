@@ -46,7 +46,7 @@ public class EntityTypeTagCondition extends Condition {
 
         @Override
         public String getDocumentationDescription() {
-            return "Checks if the entity is of a certain tag";
+            return "Checks if the entity is of a certain tag.";
         }
     }
 }

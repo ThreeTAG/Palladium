@@ -42,7 +42,7 @@ public class EntityTypeCondition extends Condition {
 
         @Override
         public String getDocumentationDescription() {
-            return "Checks if the entity is of a specific entity type";
+            return "Checks if the entity is of a specific entity type.";
         }
     }
 }

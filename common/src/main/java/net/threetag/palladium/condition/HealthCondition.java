@@ -44,7 +44,7 @@ public class HealthCondition extends Condition {
 
         @Override
         public String getDocumentationDescription() {
-            return "Checks if the entity has a certain amount of health";
+            return "Checks if the entity has a certain amount of health.";
         }
     }
 }

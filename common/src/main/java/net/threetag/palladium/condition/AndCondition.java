@@ -46,7 +46,7 @@ public class AndCondition extends Condition {
 
         @Override
         public String getDocumentationDescription() {
-            return "A condition that is active if all of the conditions in the array are active";
+            return "A condition that is active if all of the conditions in the array are active.";
         }
     }
 }

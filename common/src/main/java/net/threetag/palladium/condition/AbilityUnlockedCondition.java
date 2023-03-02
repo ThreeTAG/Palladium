@@ -57,7 +57,7 @@ public class AbilityUnlockedCondition extends Condition {
 
         @Override
         public String getDocumentationDescription() {
-            return "Checks if the ability is unlocked";
+            return "Checks if the ability is unlocked.";
         }
     }
 }
