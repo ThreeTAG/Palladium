@@ -1,6 +1,5 @@
 package net.threetag.palladium.item;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -25,14 +24,13 @@ import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AddonAxeItem extends AxeItem implements IAddonItem {
 
     private List<Component> tooltipLines;
     private RenderLayerContainer renderLayerContainer = null;
+    private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
 
     public AddonAxeItem(Tier tier, int baseDamage, float attackSpeed, Properties properties) {
         super(tier, baseDamage, attackSpeed, properties);

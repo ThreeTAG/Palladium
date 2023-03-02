@@ -1,6 +1,5 @@
 package net.threetag.palladium.item;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -24,8 +23,8 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
-import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
+import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.PlayerSlot;
@@ -35,15 +34,14 @@ import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArmor {
 
     private List<Component> tooltipLines;
     private SkinTypedValue<DynamicTexture> armorTexture;
     private RenderLayerContainer renderLayerContainer = null;
+    private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
     private boolean hideSecondLayer = false;
 
     public AddonArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
