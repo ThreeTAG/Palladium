@@ -45,6 +45,12 @@
       "amount": 4,
       "operation": 0,
       "uuid": "3a4df804-2be2-4002-a829-eaf29a629cac"
+    },
+    "curios:head": {
+      "attribute": "minecraft:generic.movement_speed",
+      "amount": 4,
+      "operation": 0,
+      "uuid": "3a4df804-2be2-4002-a829-eaf29a629cac"
     }
   },
   "render_layers": {
