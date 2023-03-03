@@ -148,6 +148,56 @@ public class AbilityUtil {
     }
 
     /**
+     * Checks if a specific ability entry of a certain type is unlocked
+     *
+     * @param entity  Entity having abilities
+     * @param ability Type of the ability that must be unlocked
+     * @return True if any ability of the type is unlocked
+     */
+    public static boolean isTypeUnlocked(LivingEntity entity, Ability ability) {
+        return getEntries(entity, ability).stream().anyMatch(AbilityEntry::isUnlocked);
+    }
+
+    /**
+     * Checks if a specific ability entry of a certain type is unlocked
+     *
+     * @param entity    Entity having abilities
+     * @param abilityId ID of the ability type that must be unlocked
+     * @return True if any ability of the type is unlocked
+     */
+    public static boolean isTypeUnlocked(LivingEntity entity, ResourceLocation abilityId) {
+        if (!Ability.REGISTRY.containsKey(abilityId)) {
+            return false;
+        }
+        return isTypeUnlocked(entity, Ability.REGISTRY.get(abilityId));
+    }
+
+    /**
+     * Checks if a specific ability entry of a certain type is enabled
+     *
+     * @param entity  Entity having abilities
+     * @param ability Type of the ability that must be enabled
+     * @return True if any ability of the type is enabled
+     */
+    public static boolean isTypeEnabled(LivingEntity entity, Ability ability) {
+        return getEntries(entity, ability).stream().anyMatch(AbilityEntry::isEnabled);
+    }
+
+    /**
+     * Checks if a specific ability entry of a certain type is enabled
+     *
+     * @param entity    Entity having abilities
+     * @param abilityId ID of the ability type that must be enabled
+     * @return True if any ability of the type is enabled
+     */
+    public static boolean isTypeEnabled(LivingEntity entity, ResourceLocation abilityId) {
+        if (!Ability.REGISTRY.containsKey(abilityId)) {
+            return false;
+        }
+        return isTypeEnabled(entity, Ability.REGISTRY.get(abilityId));
+    }
+
+    /**
      * Checks if the entity has the given power
      *
      * @param entity  Entity having abilities
