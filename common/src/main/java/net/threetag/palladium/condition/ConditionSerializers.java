@@ -14,7 +14,9 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> HAS_POWER = CONDITION_SERIALIZERS.register("has_power", HasPowerCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> WEARS_SUIT_SET = CONDITION_SERIALIZERS.register("wears_suit_set", WearsSuitSetCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ABILITY_UNLOCKED = CONDITION_SERIALIZERS.register("ability_unlocked", AbilityUnlockedCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> ABILITY_TYPE_UNLOCKED = CONDITION_SERIALIZERS.register("ability_type_unlocked", AbilityTypeUnlockedCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ABILITY_ENABLED = CONDITION_SERIALIZERS.register("ability_enabled", AbilityEnabledCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> ABILITY_TYPE_ENABLED = CONDITION_SERIALIZERS.register("ability_type_enabled", AbilityTypeEnabledCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ACTION = CONDITION_SERIALIZERS.register("action", ActionCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ACTIVATION = CONDITION_SERIALIZERS.register("activation", ActivationCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> TOGGLE = CONDITION_SERIALIZERS.register("toggle", ToggleCondition.Serializer::new);
