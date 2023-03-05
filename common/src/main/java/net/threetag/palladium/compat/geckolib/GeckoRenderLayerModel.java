@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
@@ -122,6 +123,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
                 IBone headBone = this.modelProvider.getBone(this.headBone);
 
                 GeoUtils.copyRotations(this.head, headBone);
+                copyScale(this.head, headBone);
                 headBone.setPositionX(this.head.x);
                 headBone.setPositionY(-this.head.y);
                 headBone.setPositionZ(this.head.z);
@@ -136,6 +138,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
                 IBone bodyBone = this.modelProvider.getBone(this.bodyBone);
 
                 GeoUtils.copyRotations(this.body, bodyBone);
+                copyScale(this.body, bodyBone);
                 bodyBone.setPositionX(this.body.x);
                 bodyBone.setPositionY(-this.body.y);
                 bodyBone.setPositionZ(this.body.z);
@@ -150,6 +153,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
                 IBone rightArmBone = this.modelProvider.getBone(this.rightArmBone);
 
                 GeoUtils.copyRotations(this.rightArm, rightArmBone);
+                copyScale(this.rightArm, rightArmBone);
                 rightArmBone.setPositionX(this.rightArm.x + 5);
                 rightArmBone.setPositionY(2 - this.rightArm.y);
                 rightArmBone.setPositionZ(this.rightArm.z);
@@ -164,6 +168,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
                 IBone leftArmBone = this.modelProvider.getBone(this.leftArmBone);
 
                 GeoUtils.copyRotations(this.leftArm, leftArmBone);
+                copyScale(this.leftArm, leftArmBone);
                 leftArmBone.setPositionX(this.leftArm.x - 5);
                 leftArmBone.setPositionY(2 - this.leftArm.y);
                 leftArmBone.setPositionZ(this.leftArm.z);
@@ -178,6 +183,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
                 IBone rightLegBone = this.modelProvider.getBone(this.rightLegBone);
 
                 GeoUtils.copyRotations(this.rightLeg, rightLegBone);
+                copyScale(this.rightLeg, rightLegBone);
                 rightLegBone.setPositionX(this.rightLeg.x + 2);
                 rightLegBone.setPositionY(12 - this.rightLeg.y);
                 rightLegBone.setPositionZ(this.rightLeg.z);
@@ -192,6 +198,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
                 IBone leftLegBone = this.modelProvider.getBone(this.leftLegBone);
 
                 GeoUtils.copyRotations(this.leftLeg, leftLegBone);
+                copyScale(this.leftLeg, leftLegBone);
                 leftLegBone.setPositionX(this.leftLeg.x - 2);
                 leftLegBone.setPositionY(12 - this.leftLeg.y);
                 leftLegBone.setPositionZ(this.leftLeg.z);
@@ -200,6 +207,12 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
 
             }
         }
+    }
+
+    public void copyScale(ModelPart part, IBone bone) {
+        bone.setScaleX(part.xScale);
+        bone.setScaleY(part.yScale);
+        bone.setScaleZ(part.zScale);
     }
 
     @Override
