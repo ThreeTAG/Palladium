@@ -32,6 +32,11 @@ public class PlaySoundAbility extends Ability {
     }
 
     @Override
+    public boolean isEffect() {
+        return true;
+    }
+
+    @Override
     public void firstTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         if (enabled) {
             System.out.println("HALLO FIRST TICK");
