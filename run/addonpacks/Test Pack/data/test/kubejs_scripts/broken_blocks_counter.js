@@ -15,7 +15,7 @@ PalladiumEvents.registerProperties((event) => {
 // Event for breaking blocks
 BlockEvents.broken((event) => {
     // Check if entity has the property
-    if (palladium.hasProperty(event.player, BROKEN_BLOCKS)) {
+    if (palladium.hasProperty(event.player, BROKEN_BLOCKS) && abilityUtil.hasPower(event.player, 'test:count_broken_blocks')) {
 
         // Get value, add 1
         const value = palladium.getProperty(event.player, BROKEN_BLOCKS) + 1;

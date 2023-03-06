@@ -26,6 +26,7 @@ import net.threetag.palladium.power.SuperpowerUtil;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.util.property.*;
+import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 
 public class PalladiumKubeJSPlugin extends KubeJSPlugin {
 
@@ -56,8 +57,12 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
     @Environment(EnvType.CLIENT)
     @Override
     public void clientInit() {
-        PalladiumClientEvents.REGISTER_ANIMATIONS.register(registry -> PalladiumJSEvents.REGISTER_ANIMATIONS.post(new RegisterAnimationsEventJS(registry)));
-        PalladiumJSEvents.REGISTER_GUI_OVERLAYS.post(new RegisterGuiOverlaysEventJS());
+        PalladiumClientEvents.REGISTER_ANIMATIONS.register(registry -> {
+            PalladiumJSEvents.REGISTER_ANIMATIONS.post(new RegisterAnimationsEventJS(registry));
+            PalladiumJSEvents.REGISTER_GUI_OVERLAYS.post(new RegisterGuiOverlaysEventJS());
+        });
+
+        OverlayRegistry.registerOverlay("palladium/kube_js_overlays", new RegisterGuiOverlaysEventJS.Overlay());
     }
 
     @Override
