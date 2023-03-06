@@ -9,6 +9,7 @@ import net.threetag.palladium.entity.FlightHandler;
 import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.entity.PalladiumPlayerExtension;
 import net.threetag.palladium.util.property.PalladiumProperties;
+import net.threetag.palladiumcore.util.Platform;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -181,9 +182,13 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
             }
         }
 
-        // Update hitbox
+        // Update hitbox & play sound
         if ((this.flightBoost > 1F && this.prevFlightBoost <= 1F) || (this.flightBoost <= 1F && this.prevFlightBoost > 1F)) {
             player.refreshDimensions();
+
+            if (this.flightBoost > 1F && this.prevFlightBoost <= 1F && Platform.isClient()) {
+                FlightHandler.startSound(player);
+            }
         }
     }
 
