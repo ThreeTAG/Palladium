@@ -3,11 +3,9 @@ package net.threetag.palladium.power.ability;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,10 +24,8 @@ import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
 import net.threetag.palladium.entity.effect.EnergyBlastEffect;
 import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.sound.EnergyBlastSound;
 import net.threetag.palladium.util.EntityUtil;
 import net.threetag.palladium.util.property.*;
-import net.threetag.palladiumcore.util.Platform;
 
 import java.awt.*;
 import java.util.Random;
@@ -40,7 +36,6 @@ public class EnergyBlastAbility extends Ability {
     public static final PalladiumProperty<Color> COLOR = new ColorProperty("color").configurable("Defines the color of the blast");
     public static final PalladiumProperty<Float> DAMAGE = new FloatProperty("damage").configurable("The damage dealt with aiming for entities (per tick)");
     public static final PalladiumProperty<Float> MAX_DISTANCE = new FloatProperty("max_distance").configurable("The maximum distance you can reach with your heat vision");
-    public static final PalladiumProperty<SoundEvent> SOUND_EVENT = new SoundEventProperty("sound_event").configurable("The sound you want to have played. Can be null");
 
     public static final PalladiumProperty<Integer> ANIMATION_TIMER = new IntegerProperty("animation_timer").sync(SyncType.NONE);
     public static final PalladiumProperty<Double> DISTANCE = new DoubleProperty("distance").sync(SyncType.NONE);
@@ -50,7 +45,6 @@ public class EnergyBlastAbility extends Ability {
         this.withProperty(COLOR, Color.RED);
         this.withProperty(DAMAGE, 1F);
         this.withProperty(MAX_DISTANCE, 30F);
-        this.withProperty(SOUND_EVENT, null);
     }
 
     @Override
@@ -63,15 +57,7 @@ public class EnergyBlastAbility extends Ability {
     public void firstTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         if(enabled) {
             EnergyBlastEffect.start(entity, holder.getPower(), entry);
-            if (Platform.isClient() && entry.getProperty(SOUND_EVENT) != null) {
-                this.startSound(entity, entry, holder);
-            }
         }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public void startSound(LivingEntity entity, AbilityEntry entry, IPowerHolder holder) {
-        Minecraft.getInstance().getSoundManager().play(new EnergyBlastSound(entry.getProperty(SOUND_EVENT), entity.getSoundSource(), entity, holder.getPower().getId(), entry.id));
     }
 
     @Override

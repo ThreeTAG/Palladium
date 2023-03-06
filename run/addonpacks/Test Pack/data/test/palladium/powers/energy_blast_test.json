@@ -7,11 +7,9 @@
       "title": "Heat Vision",
       "origin": "eyes",
       "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:held"
-          }
-        ]
+        "enabling": {
+          "type": "palladium:held"
+        }
       }
     },
     "forehead_beam": {
@@ -20,11 +18,9 @@
       "origin": "forehead",
       "color": "#ffe100",
       "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:held"
-          }
-        ]
+        "enabling": {
+          "type": "palladium:held"
+        }
       }
     },
     "chest_beam": {
@@ -33,11 +29,20 @@
       "origin": "chest",
       "color": "#34cfeb",
       "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:held"
-          }
-        ]
+        "enabling": {
+          "type": "palladium:held"
+        }
+      }
+    },
+    "looping_sound": {
+      "type": "palladium:play_sound",
+      "sound": "palladium:entity.ability.heat_vision",
+      "looping": true,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:ability_enabled",
+          "ability": "heat_vision"
+        }
       }
     }
   }

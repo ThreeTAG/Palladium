@@ -32,6 +32,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> PLAYER_ANIMATION = ABILITIES.register("player_animation", PlayerAnimationAbility::new);
     public static final RegistrySupplier<Ability> WATER_WALK = ABILITIES.register("water_walk", Ability::new);
     public static final RegistrySupplier<Ability> RESTRICT_SLOTS = ABILITIES.register("restrict_slots", RestrictSlotsAbility::new);
+    public static final RegistrySupplier<Ability> PLAY_SOUND = ABILITIES.register("play_sound", PlaySoundAbility::new);
 
     public static void init() {
 

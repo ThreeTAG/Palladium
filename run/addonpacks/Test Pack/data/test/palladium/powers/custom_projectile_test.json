@@ -94,6 +94,30 @@
           }
         ]
       }
+    },
+    "throwing_sound": {
+      "type": "palladium:play_sound",
+      "sound": "minecraft:entity.egg.throw",
+      "looping": false,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:or",
+          "conditions": [
+            {
+              "type": "palladium:ability_enabled",
+              "ability": "test_1"
+            },
+            {
+              "type": "palladium:ability_enabled",
+              "ability": "test_2"
+            },
+            {
+              "type": "palladium:ability_enabled",
+              "ability": "test_3"
+            }
+          ]
+        }
+      }
     }
   }
 }

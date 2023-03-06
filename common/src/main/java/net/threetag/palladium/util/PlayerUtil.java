@@ -8,6 +8,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.protocol.game.ClientboundCustomSoundPacket;
 import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -46,11 +47,32 @@ public class PlayerUtil {
         }
     }
 
+    public static void playSound(Player player, double x, double y, double z, ResourceLocation sound, SoundSource category) {
+        playSound(player, x, y, z, sound, category, 1F, 1F);
+    }
+
+    public static void playSound(Player player, double x, double y, double z, ResourceLocation sound, SoundSource category, float volume, float pitch) {
+        if (player instanceof ServerPlayer) {
+            ((ServerPlayer) player).connection.send(new ClientboundCustomSoundPacket(sound, category, new Vec3(x, y, z), volume, pitch, player.getRandom().nextLong()));
+        }
+    }
+
     public static void playSoundToAll(Level world, double x, double y, double z, double range, SoundEvent sound, SoundSource category) {
         playSoundToAll(world, x, y, z, range, sound, category, 1, 1);
     }
 
     public static void playSoundToAll(Level world, double x, double y, double z, double range, SoundEvent sound, SoundSource category, float volume, float pitch) {
+        AABB a = new AABB(new BlockPos(x - range, y - range, z - range), new BlockPos(x + range, y + range, z + range));
+        for (Player players : world.getEntitiesOfClass(Player.class, a)) {
+            playSound(players, x, y, z, sound, category, volume, pitch);
+        }
+    }
+
+    public static void playSoundToAll(Level world, double x, double y, double z, double range, ResourceLocation sound, SoundSource category) {
+        playSoundToAll(world, x, y, z, range, sound, category, 1, 1);
+    }
+
+    public static void playSoundToAll(Level world, double x, double y, double z, double range, ResourceLocation sound, SoundSource category, float volume, float pitch) {
         AABB a = new AABB(new BlockPos(x - range, y - range, z - range), new BlockPos(x + range, y + range, z + range));
         for (Player players : world.getEntitiesOfClass(Player.class, a)) {
             playSound(players, x, y, z, sound, category, volume, pitch);

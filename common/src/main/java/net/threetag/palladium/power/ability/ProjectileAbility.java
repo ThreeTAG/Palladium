@@ -3,8 +3,6 @@ package net.threetag.palladium.power.ability;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,7 +11,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Items;
 import net.threetag.palladium.entity.CustomProjectile;
 import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.util.PlayerUtil;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.property.*;
 
@@ -23,7 +20,6 @@ public class ProjectileAbility extends Ability {
     public static final PalladiumProperty<CompoundTag> ENTITY_DATA = new CompoundTagProperty("entity_data").configurable("Entity NBT data");
     public static final PalladiumProperty<Float> INACCURACY = new FloatProperty("inaccuracy").configurable("Determines the inaccuracy when shooting the projectile");
     public static final PalladiumProperty<Float> VELOCITY = new FloatProperty("velocity").configurable("Determines the velocity when shooting the projectile");
-    public static final PalladiumProperty<SoundEvent> THROW_SOUND = new SoundEventProperty("throw_sound_event").configurable("Sound event that plays when shooting the projectile (nullable)");
     public static final PalladiumProperty<ArmTypeProperty.ArmType> SWINGING_ARM = new ArmTypeProperty("swinging_arm").configurable("Determines which arm(s) should swing upon shooting");
     public static final PalladiumProperty<Boolean> DAMAGE_FROM_PLAYER = new BooleanProperty("damage_from_player").configurable("If this is set to true and a custom projectile is used, the damage will automatically be set the player damage value");
 
@@ -33,7 +29,6 @@ public class ProjectileAbility extends Ability {
         this.withProperty(ENTITY_DATA, null);
         this.withProperty(INACCURACY, 0F);
         this.withProperty(VELOCITY, 1.5F);
-        this.withProperty(THROW_SOUND, SoundEvents.SNOWBALL_THROW);
         this.withProperty(SWINGING_ARM, ArmTypeProperty.ArmType.MAIN_ARM);
         this.withProperty(DAMAGE_FROM_PLAYER, false);
     }
@@ -55,10 +50,6 @@ public class ProjectileAbility extends Ability {
                 float inaccuracy = entry.getProperty(INACCURACY);
                 projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, velocity, inaccuracy);
                 projectile.setOwner(entity);
-
-                if (entry.getProperty(THROW_SOUND) != null) {
-                    PlayerUtil.playSoundToAll(entity.level, entity.getX(), entity.getY() + entity.getBbHeight() / 2D, entity.getZ(), 50, entry.getProperty(THROW_SOUND), entity.getSoundSource());
-                }
 
                 for (InteractionHand hand : entry.getProperty(SWINGING_ARM).getHand(entity)) {
                     entity.swing(hand, true);

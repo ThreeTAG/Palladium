@@ -103,6 +103,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.PLAYER_ANIMATION, "Player Animation");
             this.addAbility(Abilities.WATER_WALK, "Water Walk");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Restrict Slots");
+            this.addAbility(Abilities.PLAY_SOUND, "Sound");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -259,6 +260,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
             this.addAbility(Abilities.WATER_WALK, "Auf Wasser Laufen");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
+            this.addAbility(Abilities.PLAY_SOUND, "Sound");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
@@ -415,6 +417,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
             this.addAbility(Abilities.WATER_WALK, "Uff Wasser Lofen");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
+            this.addAbility(Abilities.PLAY_SOUND, "Sound");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");
