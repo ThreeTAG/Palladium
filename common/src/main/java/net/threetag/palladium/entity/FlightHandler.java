@@ -19,6 +19,14 @@ public class FlightHandler {
         return FlightType.NONE;
     }
 
+    public static FlightAnimationType getAnimationType(LivingEntity entity) {
+        if (entity.getAttributes().hasAttribute(PalladiumAttributes.HEROIC_FLIGHT_TYPE.get()) && entity.getAttributeValue(PalladiumAttributes.HEROIC_FLIGHT_TYPE.get()) > 0D) {
+            return FlightAnimationType.HEROIC;
+        }
+
+        return FlightAnimationType.NORMAL;
+    }
+
     public enum FlightType {
 
         NONE(() -> null), NORMAL(PalladiumAttributes.FLIGHT_SPEED), LEVITATION(PalladiumAttributes.LEVITATION_SPEED);
@@ -48,6 +56,13 @@ public class FlightHandler {
         public boolean isLevitation() {
             return this == LEVITATION;
         }
+
+    }
+
+    public enum FlightAnimationType {
+
+        NORMAL,
+        HEROIC
 
     }
 

@@ -75,6 +75,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Flight Speed");
             this.addAttribute(PalladiumAttributes.LEVITATION_SPEED, "Levitation Speed");
             this.addAttribute(PalladiumAttributes.FLIGHT_FLEXIBILITY, "Flight Flexibility");
+            this.addAttribute(PalladiumAttributes.HEROIC_FLIGHT_TYPE, "Heroic Flight");
             this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Punch Damage");
             this.addAttribute(PalladiumAttributes.JUMP_POWER, "Jump Power");
             this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Destroy Speed");
@@ -230,6 +231,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Fluggeschwindigkeit");
             this.addAttribute(PalladiumAttributes.LEVITATION_SPEED, "Schwebegeschwindigkeit");
             this.addAttribute(PalladiumAttributes.FLIGHT_FLEXIBILITY, "Flugflexibilität");
+            this.addAttribute(PalladiumAttributes.HEROIC_FLIGHT_TYPE, "Heroischer Flug");
             this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Schlagkraft");
             this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
             this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Abbaugeschwindigkeit");
@@ -385,6 +387,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.FLIGHT_SPEED, "Flugjeschwindichket");
             this.addAttribute(PalladiumAttributes.LEVITATION_SPEED, "Schwebejeschwindichket");
             this.addAttribute(PalladiumAttributes.FLIGHT_FLEXIBILITY, "Flugflexibilität");
+            this.addAttribute(PalladiumAttributes.HEROIC_FLIGHT_TYPE, "Heroischer Flug");
             this.addAttribute(PalladiumAttributes.PUNCH_DAMAGE, "Schlachkraft");
             this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
             this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Abbohjeschwindichket");

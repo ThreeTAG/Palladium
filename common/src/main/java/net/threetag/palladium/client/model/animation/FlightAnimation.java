@@ -10,8 +10,10 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.threetag.palladium.entity.FlightHandler;
 import net.threetag.palladium.entity.PalladiumPlayerExtension;
 import net.threetag.palladiumcore.event.ViewportEvents;
 
@@ -74,6 +76,8 @@ public class FlightAnimation extends PalladiumAnimation implements ViewportEvent
                     .animate(Ease.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.RIGHT_LEG)
+                    .resetX()
+                    .resetY()
                     .setZ(-1F)
                     .setXRotDegrees(5F)
                     .setYRotDegrees(2.5F)
@@ -81,11 +85,27 @@ public class FlightAnimation extends PalladiumAnimation implements ViewportEvent
                     .animate(Ease.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.LEFT_LEG)
+                    .resetX()
+                    .resetY()
                     .setZ(-1F)
                     .setXRotDegrees(5F)
                     .setYRotDegrees(-2.5F)
                     .setZRotDegrees(-2.5F)
                     .animate(Ease.INOUTCUBIC, anim);
+
+            if(FlightHandler.getAnimationType(player) == FlightHandler.FlightAnimationType.HEROIC) {
+                if(player.getMainArm() == HumanoidArm.RIGHT) {
+                    builder.get(PlayerModelPart.RIGHT_ARM)
+                            .setXRotDegrees(-180F)
+                            .setYRotDegrees(0F)
+                            .setZRotDegrees(-15F);
+                } else {
+                    builder.get(PlayerModelPart.LEFT_ARM)
+                            .setXRotDegrees(-180F)
+                            .setYRotDegrees(0F)
+                            .setZRotDegrees(15F);
+                }
+            }
         }
     }
 

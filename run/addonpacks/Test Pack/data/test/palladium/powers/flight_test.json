@@ -15,6 +15,12 @@
       "title": "Flight",
       "list_index": 0,
       "amount": 5
+    },
+    "heroic_flight_type": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:heroic_flight_type",
+      "hidden": true,
+      "amount": 1
     }
   }
 }

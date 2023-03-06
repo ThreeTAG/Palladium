@@ -2,22 +2,26 @@ package net.threetag.palladium.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.entity.BodyPart;
+import net.threetag.palladium.entity.PalladiumPlayerExtension;
 import net.threetag.palladium.power.ability.ShrinkBodyOverlayAbility;
 import net.threetag.palladium.util.RenderUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("ConstantConditions")
 @Mixin(PlayerRenderer.class)
@@ -98,6 +102,35 @@ public class PlayerRendererMixin {
             this.cachedHandShrink = 0F;
             Vector3f vec = new Vector3f(f, f, f);
             rendererArmwear.offsetScale(vec);
+        }
+    }
+
+    @Inject(at = @At("RETURN"), method = "setModelProperties")
+    private void setModelProperties(AbstractClientPlayer clientPlayer, CallbackInfo ci) {
+        PlayerRenderer renderer = (PlayerRenderer) (Object) this;
+        PlayerModel<AbstractClientPlayer> playerModel = renderer.getModel();
+
+        if (playerModel.crouching && clientPlayer instanceof PalladiumPlayerExtension extension) {
+            var hover = extension.palladium_getHoveringAnimation(0);
+            var levitation = extension.palladium_getLevitationAnimation(0);
+            var flight = extension.palladium_getFlightAnimation(0);
+
+            if (hover > 0F || levitation > 0F || flight > 0F) {
+                playerModel.crouching = false;
+            }
+        }
+    }
+
+    @Inject(at = @At("HEAD"), method = "getRenderOffset(Lnet/minecraft/client/player/AbstractClientPlayer;F)Lnet/minecraft/world/phys/Vec3;", cancellable = true)
+    public void getRenderOffset(AbstractClientPlayer entity, float partialTicks, CallbackInfoReturnable<Vec3> cir) {
+        if (entity instanceof PalladiumPlayerExtension extension) {
+            var hover = extension.palladium_getHoveringAnimation(0);
+            var levitation = extension.palladium_getLevitationAnimation(0);
+            var flight = extension.palladium_getFlightAnimation(0);
+
+            if (hover > 0F || levitation > 0F || flight > 0F) {
+                cir.setReturnValue(Vec3.ZERO);
+            }
         }
     }
 

@@ -46,12 +46,18 @@ public class LevitationAnimation extends PalladiumAnimation {
                     .animate(Ease.INOUTCUBIC, anim);;
 
             builder.get(PlayerModelPart.RIGHT_LEG)
+                    .resetX()
+                    .resetY()
+                    .resetZ()
                     .setXRotDegrees(10F)
                     .setYRotDegrees(0F)
                     .setZRotDegrees(2.5F)
                     .animate(Ease.INOUTCUBIC, anim);;
 
             builder.get(PlayerModelPart.LEFT_LEG)
+                    .resetX()
+                    .resetY()
+                    .resetZ()
                     .setXRotDegrees(5F)
                     .setYRotDegrees(0F)
                     .setZRotDegrees(-2.5F)
