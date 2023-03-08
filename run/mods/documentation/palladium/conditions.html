@@ -254,7 +254,7 @@ testpack/test_condition_with_property</a>
 <h2>
 ability_enabled</h2>
 <p>
-Applicable for: all</p>
+Checks if the ability is enabled. If the power is not null, it will look for the ability in the specified power. If the power is null, it will look for the ability in the current power. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -310,7 +310,7 @@ Example:</h3>
 <h2>
 ability_integer_property</h2>
 <p>
-Applicable for: all</p>
+Checks if the given ability has a certain integer property value. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -402,7 +402,7 @@ Example:</h3>
 <h2>
 ability_ticks</h2>
 <p>
-Applicable for: all</p>
+Checks if the ability has been enabled for a certain amount of ticks. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -570,7 +570,7 @@ Example:</h3>
 <h2>
 ability_unlocked</h2>
 <p>
-Applicable for: all</p>
+Checks if the ability is unlocked. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -626,7 +626,7 @@ Example:</h3>
 <h2>
 action</h2>
 <p>
-Applicable for: abilities</p>
+This condition is used to activate the power when a key is pressed or a mouse button is clicked. Applicable for: abilities</p>
 <h3>
 Settings:</h3>
 <table>
@@ -694,7 +694,7 @@ Example:</h3>
 <h2>
 activation</h2>
 <p>
-Applicable for: abilities</p>
+This condition is used to activate the power when a key is pressed or a mouse button is clicked for a certain amount of ticks. Applicable for: abilities</p>
 <h3>
 Settings:</h3>
 <table>
@@ -774,7 +774,7 @@ Example:</h3>
 <h2>
 and</h2>
 <p>
-Applicable for: all</p>
+A condition that is active if all of the conditions in the array are active. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -818,7 +818,7 @@ Example:</h3>
 <h2>
 brightness_at_position</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity's brightness at it's position is within the given range. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -874,7 +874,7 @@ Example:</h3>
 <h2>
 command_result</h2>
 <p>
-Applicable for: all</p>
+Executes a command and compares the output to a number. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -954,7 +954,7 @@ Example:</h3>
 <h2>
 crouching</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is crouching. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -966,7 +966,7 @@ Example:</h3>
 <h2>
 dimension</h2>
 <p>
-Applicable for: all</p>
+Checks if the player is in a specific dimension. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1010,7 +1010,7 @@ Example:</h3>
 <h2>
 entity_type</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is of a specific entity type. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1054,7 +1054,7 @@ Example:</h3>
 <h2>
 entity_type_tag</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is of a certain tag. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1098,7 +1098,7 @@ Example:</h3>
 <h2>
 experience_level_buyable</h2>
 <p>
-Applicable for: abilities</p>
+A condition that makes the ability buyable for a certain amount of xp levels. Applicable for: abilities</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1142,7 +1142,7 @@ Example:</h3>
 <h2>
 float_property</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity has a float property with a value between the given minimum and maximum. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1210,7 +1210,7 @@ Example:</h3>
 <h2>
 has_power</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity has a power with the given ID. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1254,7 +1254,7 @@ Example:</h3>
 <h2>
 has_tag</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity has a specific tag. These tags are added to entities via /tag command. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1279,7 +1279,7 @@ tag</td>
 <td>
 String</td>
 <td>
-The tag the entity must have. These tags are added to entities via /tag command</td>
+The tag the entity must have.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1298,7 +1298,7 @@ Example:</h3>
 <h2>
 health</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity has a certain amount of health. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1354,7 +1354,7 @@ Example:</h3>
 <h2>
 held</h2>
 <p>
-Applicable for: abilities</p>
+Allows the ability to be used while holding a key bind. Applicable for: abilities</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1422,7 +1422,7 @@ Example:</h3>
 <h2>
 in_lava</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is in lava. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1434,7 +1434,7 @@ Example:</h3>
 <h2>
 in_water</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is in water. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1446,7 +1446,7 @@ Example:</h3>
 <h2>
 integer_property</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity has a certain amount of a certain integer property. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1514,7 +1514,7 @@ Example:</h3>
 <h2>
 interval</h2>
 <p>
-Applicable for: abilities</p>
+Allows you to set an amount of ticks the ability will be active and an amount of ticks the ability will be disabled. The ability will be active for the first amount of ticks and then disabled for the second amount of ticks and so on. Applicable for: abilities</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1570,7 +1570,7 @@ Example:</h3>
 <h2>
 is_elytra_flying</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is currently flying with an elytra. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1582,7 +1582,7 @@ Example:</h3>
 <h2>
 is_fast_flying</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is currently flying fast. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1594,7 +1594,7 @@ Example:</h3>
 <h2>
 is_flying</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is flying. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1606,7 +1606,7 @@ Example:</h3>
 <h2>
 is_in_rain</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is in rain. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1618,7 +1618,7 @@ Example:</h3>
 <h2>
 is_in_water_or_bubble</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is in water or a bubble column. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1630,7 +1630,7 @@ Example:</h3>
 <h2>
 is_in_water_or_rain</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is in water or rain. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1642,7 +1642,7 @@ Example:</h3>
 <h2>
 is_in_water_rain_or_bubble</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is in water, rain or a bubble column. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1654,7 +1654,7 @@ Example:</h3>
 <h2>
 is_levitating</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is levitating. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1666,7 +1666,7 @@ Example:</h3>
 <h2>
 is_moving</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is moving. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1678,7 +1678,7 @@ Example:</h3>
 <h2>
 is_on_fire</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is on fire. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1690,7 +1690,7 @@ Example:</h3>
 <h2>
 is_swimming</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is swimming. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1702,7 +1702,7 @@ Example:</h3>
 <h2>
 is_under_water</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is under water. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -1714,7 +1714,7 @@ Example:</h3>
 <h2>
 item_buyable</h2>
 <p>
-Applicable for: abilities</p>
+The player needs to spend a certain amount of items to unlock the ability. Applicable for: abilities</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1770,7 +1770,7 @@ Example:</h3>
 <h2>
 item_in_slot</h2>
 <p>
-Applicable for: all</p>
+Checks if the given item is in the given slot. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1826,7 +1826,7 @@ Example:</h3>
 <h2>
 mod_loaded</h2>
 <p>
-Applicable for: all</p>
+Checks if a mod is loaded. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1870,7 +1870,7 @@ Example:</h3>
 <h2>
 moon_phase</h2>
 <p>
-Applicable for: all</p>
+Checks if the moon phase is between the given values. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1926,7 +1926,7 @@ Example:</h3>
 <h2>
 not</h2>
 <p>
-Applicable for: all</p>
+Returns true if all conditions are disabled. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1970,7 +1970,7 @@ Example:</h3>
 <h2>
 objective_score</h2>
 <p>
-Applicable for: all</p>
+Checks if the player has a score in a specific objective. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -2038,7 +2038,7 @@ Example:</h3>
 <h2>
 on_ground</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is on the ground. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -2050,7 +2050,7 @@ Example:</h3>
 <h2>
 or</h2>
 <p>
-Applicable for: all</p>
+Returns true if at least one of the conditions is active. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -2094,7 +2094,7 @@ Example:</h3>
 <h2>
 pose</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is in a specific pose. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -2138,7 +2138,7 @@ Example:</h3>
 <h2>
 scoreboard_score_buyable</h2>
 <p>
-Applicable for: abilities</p>
+A buyable condition that requires a certain score for a scoreboard objective. Applicable for: abilities</p>
 <h3>
 Settings:</h3>
 <table>
@@ -2218,7 +2218,7 @@ Example:</h3>
 <h2>
 sprinting</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is sprinting. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -2230,7 +2230,7 @@ Example:</h3>
 <h2>
 toggle</h2>
 <p>
-Applicable for: abilities</p>
+Toggles the ability on and off after a key press or mouse click. Applicable for: abilities</p>
 <h3>
 Settings:</h3>
 <table>
@@ -2298,7 +2298,7 @@ Example:</h3>
 <h2>
 under_water</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is underwater. Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -2310,7 +2310,7 @@ Example:</h3>
 <h2>
 wears_suit_set</h2>
 <p>
-Applicable for: all</p>
+Checks if the entity is wearing a specific suit set. Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -2354,7 +2354,7 @@ Example:</h3>
 <h2>
 testpack/test_condition</h2>
 <p>
-Applicable for: all</p>
+ Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -2366,7 +2366,7 @@ Example:</h3>
 <h2>
 testpack/test_condition_with_property</h2>
 <p>
-Applicable for: all</p>
+ Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>

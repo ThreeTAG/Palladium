@@ -38,4 +38,9 @@ public class DamageImmunityAbility extends Ability {
         }
         return false;
     }
+
+    @Override
+    public String getDocumentationDescription() {
+        return "Makes the entity immune against certain damage sources.";
+    }
 }

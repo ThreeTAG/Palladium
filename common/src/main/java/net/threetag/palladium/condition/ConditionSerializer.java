@@ -46,6 +46,7 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
         }
     }
 
+
     public abstract Condition make(JsonObject json);
 
     public Condition make(JsonObject json, ConditionContextType type) {
@@ -113,10 +114,15 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
         return REGISTRY.getKey(this);
     }
 
+    public String getDocumentationDescription() {
+        return "";
+    }
+
     @Override
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
         builder.setTitle(this.getId().getPath());
-        builder.setDescription("Applicable for: " + this.getContextType().toString().toLowerCase(Locale.ROOT));
+        builder.setDescription(this.getDocumentationDescription() + " " +
+                "Applicable for: " + this.getContextType().toString().toLowerCase(Locale.ROOT));
     }
 }

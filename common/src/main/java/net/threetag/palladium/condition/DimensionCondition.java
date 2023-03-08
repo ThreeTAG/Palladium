@@ -44,6 +44,9 @@ public class DimensionCondition extends Condition {
             return new DimensionCondition(ResourceKey.create(Registry.DIMENSION_REGISTRY, this.getProperty(json, DIMENSION)));
         }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the player is in a specific dimension.";
+        }
     }
-
 }

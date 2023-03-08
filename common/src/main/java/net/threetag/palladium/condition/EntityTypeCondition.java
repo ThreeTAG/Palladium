@@ -40,6 +40,9 @@ public class EntityTypeCondition extends Condition {
             return new EntityTypeCondition(this.getProperty(json, ENTITY_TYPE));
         }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the entity is of a specific entity type.";
+        }
     }
-
 }

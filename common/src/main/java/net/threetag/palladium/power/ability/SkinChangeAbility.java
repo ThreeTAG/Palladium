@@ -20,4 +20,9 @@ public class SkinChangeAbility extends Ability {
     public boolean isEffect() {
         return true;
     }
+
+    @Override
+    public String getDocumentationDescription() {
+        return "Allows you to change a player's skin.";
+    }
 }

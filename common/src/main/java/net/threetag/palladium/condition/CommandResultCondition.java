@@ -107,5 +107,10 @@ public class CommandResultCondition extends Condition implements CommandSource {
         public Condition make(JsonObject json) {
             return new CommandResultCondition(this.getProperty(json, COMMAND), this.getProperty(json, COMPARISON), this.getProperty(json, COMPARE_TO), this.getProperty(json, LOG));
         }
+
+        @Override
+        public String getDocumentationDescription() {
+            return "Executes a command and compares the output to a number.";
+        }
     }
 }

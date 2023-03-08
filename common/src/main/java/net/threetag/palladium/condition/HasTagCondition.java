@@ -28,7 +28,7 @@ public class HasTagCondition extends Condition {
 
     public static class Serializer extends ConditionSerializer {
 
-        public static final PalladiumProperty<String> TAG = new StringProperty("tag").configurable("The tag the entity must have. These tags are added to entities via /tag command");
+        public static final PalladiumProperty<String> TAG = new StringProperty("tag").configurable("The tag the entity must have.");
 
         public Serializer() {
             this.withProperty(TAG, "example_tag");
@@ -39,6 +39,9 @@ public class HasTagCondition extends Condition {
             return new HasTagCondition(this.getProperty(json, TAG));
         }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the entity has a specific tag. These tags are added to entities via /tag command.";
+        }
     }
-
 }

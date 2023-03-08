@@ -25,6 +25,7 @@ public class AbilityBuilder extends BuilderBase<Ability> {
 
     public transient List<DeserializePropertyInfo> extraProperties;
     public transient List<DeserializePropertyInfo> uniqueProperties; // disregards the configureDesc property
+    public transient String documentationDescription;
 
     public AbilityBuilder(ResourceLocation id) {
         super(id);
@@ -32,6 +33,7 @@ public class AbilityBuilder extends BuilderBase<Ability> {
         this.firstTick = null;
         this.tick = null;
         this.lastTick = null;
+        this.documentationDescription = null;
         this.extraProperties = new ArrayList<>();
         this.uniqueProperties = new ArrayList<>();
     }
@@ -48,6 +50,11 @@ public class AbilityBuilder extends BuilderBase<Ability> {
 
     public AbilityBuilder icon(IIcon icon) {
         this.icon = icon;
+        return this;
+    }
+
+    public AbilityBuilder documentationDescription(String documentationDescription) {
+        this.documentationDescription = documentationDescription;
         return this;
     }
 
@@ -90,6 +97,11 @@ public class AbilityBuilder extends BuilderBase<Ability> {
     public AbilityBuilder lastTick(TickFunction lastTick) {
         this.lastTick = lastTick;
         return this;
+    }
+
+    public String getDocumentationDescription(String description) {
+        this.documentationDescription = description;
+        return this.documentationDescription;
     }
 
     @FunctionalInterface

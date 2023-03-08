@@ -29,5 +29,10 @@ public class IsFlyingCondition extends Condition {
         public Condition make(JsonObject json) {
             return new IsFlyingCondition();
         }
+
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the entity is flying.";
+        }
     }
 }

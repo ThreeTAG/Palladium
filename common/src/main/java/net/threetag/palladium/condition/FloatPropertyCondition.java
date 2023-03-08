@@ -57,5 +57,9 @@ public class FloatPropertyCondition extends Condition {
                     this.getProperty(json, MAX));
         }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the entity has a float property with a value between the given minimum and maximum.";
+        }
     }
 }

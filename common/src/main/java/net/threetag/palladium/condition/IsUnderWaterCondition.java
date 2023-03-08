@@ -25,5 +25,10 @@ public class IsUnderWaterCondition extends Condition {
         public Condition make(JsonObject json) {
             return new IsUnderWaterCondition();
         }
+
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the entity is under water.";
+        }
     }
 }

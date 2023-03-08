@@ -134,4 +134,9 @@ public class EnergyBlastAbility extends Ability {
             poseStack.popPose();
         }
     }
+
+    @Override
+    public String getDocumentationDescription() {
+        return "Shoots a laser from your eyes or chest that can set entities on fire and smelt blocks.";
+    }
 }

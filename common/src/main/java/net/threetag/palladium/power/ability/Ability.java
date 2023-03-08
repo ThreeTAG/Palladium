@@ -24,12 +24,15 @@ public class Ability implements IDefaultDocumentedConfigurable {
 
     public static final PalladiumProperty<Component> TITLE = new ComponentProperty("title").configurable("Allows you to set a custom title for this ability");
     public static final PalladiumProperty<IIcon> ICON = new IconProperty("icon").configurable("Icon for the ability");
+    public static final PalladiumProperty<Component> DESCRIPTION = new ComponentProperty("description").configurable("Description of the ability. Visible in ability menu");
     public static final PalladiumProperty<AbilityColor> COLOR = new AbilityColorProperty("bar_color").configurable("Changes the color of the ability in the ability bar");
     public static final PalladiumProperty<Boolean> HIDDEN = new BooleanProperty("hidden").configurable("Determines if the ability is visible in the ability bar and powers screen");
     public static final PalladiumProperty<Integer> LIST_INDEX = new IntegerProperty("list_index").configurable("Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.");
     public static final PalladiumProperty<Vec2> GUI_POSITION = new Vec2Property("gui_position").configurable("Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center");
-    public static final PalladiumProperty<Component> DESCRIPTION = new ComponentProperty("description").configurable("Description of the ability. Visible in ability menu");
 
+    public static final PalladiumProperty<String> DOCS_DESCRIPTION = new StringProperty(
+            "documentationDescription").configurable("Description of the ability. Visible in the " +
+            "documentation.");
     final PropertyManager propertyManager = new PropertyManager();
 
     public Ability() {
@@ -40,6 +43,7 @@ public class Ability implements IDefaultDocumentedConfigurable {
         this.withProperty(LIST_INDEX, -1);
         this.withProperty(GUI_POSITION, null);
         this.withProperty(DESCRIPTION, null);
+        this.withProperty(DOCS_DESCRIPTION, null);
     }
 
     public void registerUniqueProperties(PropertyManager manager) {
@@ -107,10 +111,22 @@ public class Ability implements IDefaultDocumentedConfigurable {
         return REGISTRY.getKey(this);
     }
 
+    public String getDocumentationDescription() {
+        return "";
+    }
+
     @Override
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
         builder.setTitle(this.getId().getPath());
+
+        if (this.getDocumentationDescription() == "" && this.getPropertyManager().get(DOCS_DESCRIPTION) == null) {
+
+        } else if (this.getPropertyManager().get(DOCS_DESCRIPTION) != null) {
+            builder.setDescription(this.getPropertyManager().get(DOCS_DESCRIPTION));
+        } else if (this.getDocumentationDescription() != "") {
+            builder.setDescription(this.getDocumentationDescription());
+        }
     }
 
     public void postParsing(AbilityConfiguration configuration) {

@@ -58,6 +58,9 @@ public class ObjectiveScoreCondition extends Condition {
             return new ObjectiveScoreCondition(this.getProperty(json, OBJECTIVE), this.getProperty(json, MIN), this.getProperty(json, MAX));
         }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the player has a score in a specific objective.";
+        }
     }
-
 }

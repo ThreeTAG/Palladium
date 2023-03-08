@@ -13,4 +13,9 @@ public class SizeAbility extends Ability {
         this.withProperty(SCALE, 0.1F);
         this.withProperty(ICON, new TexturedIcon(Palladium.id("textures/icon/size.png")));
     }
+
+    @Override
+    public String getDocumentationDescription() {
+        return "This ability allows an entity to change it's size.";
+    }
 }

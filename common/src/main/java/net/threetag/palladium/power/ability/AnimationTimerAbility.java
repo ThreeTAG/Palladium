@@ -41,4 +41,8 @@ public class AnimationTimerAbility extends Ability {
     public boolean isEffect() {
         return true;
     }
+
+    public String getDocumentationDescription() {
+        return "This ability is used to create a timer that can be used for animations. It is not meant to be used directly.";
+    }
 }

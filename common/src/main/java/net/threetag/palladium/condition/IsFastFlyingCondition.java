@@ -29,5 +29,10 @@ public class IsFastFlyingCondition extends Condition {
         public Condition make(JsonObject json) {
             return new IsFastFlyingCondition();
         }
+
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the entity is currently flying fast.";
+        }
     }
 }

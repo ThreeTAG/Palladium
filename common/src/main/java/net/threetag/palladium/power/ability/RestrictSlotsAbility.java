@@ -69,4 +69,8 @@ public class RestrictSlotsAbility extends Ability {
         return false;
     }
 
+    @Override
+    public String getDocumentationDescription() {
+        return "Let's you restrict the slots that can be used by the player. It will drop the items if disabled while the player has items in the restricted slots.";
+    }
 }
