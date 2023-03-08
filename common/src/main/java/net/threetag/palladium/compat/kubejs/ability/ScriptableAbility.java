@@ -8,23 +8,28 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PalladiumPropertyLookup;
 import net.threetag.palladium.util.property.PropertyManager;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ScriptableAbility extends Ability {
 
     public AbilityBuilder builder;
 
     public ScriptableAbility(AbilityBuilder builder) {
         this.withProperty(ICON, builder.icon);
-        this.withProperty(DOCS_DESCRIPTION, builder.documentationDescription);
         this.builder = builder;
 
-		for (AbilityBuilder.DeserializePropertyInfo info : this.builder.extraProperties) {
-			PalladiumProperty property = PalladiumPropertyLookup.get(info.type, info.key);
+        for (AbilityBuilder.DeserializePropertyInfo info : this.builder.extraProperties) {
+            PalladiumProperty property = PalladiumPropertyLookup.get(info.type, info.key);
 
-			if (info.configureDesc != null && !info.configureDesc.isEmpty())
-				property.configurable(info.configureDesc);
+            if (info.configureDesc != null && !info.configureDesc.isEmpty() && property != null) {
+                property.configurable(info.configureDesc);
+                this.withProperty(property, PalladiumProperty.fixValues(property, info.defaultValue));
+            }
+        }
+    }
 
-			this.withProperty(property, PalladiumProperty.fixValues(property, info.defaultValue));
-		}
+    @Override
+    public String getDocumentationDescription() {
+        return this.builder.documentationDescription;
     }
 
     @Override

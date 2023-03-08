@@ -29,10 +29,6 @@ public class Ability implements IDefaultDocumentedConfigurable {
     public static final PalladiumProperty<Boolean> HIDDEN = new BooleanProperty("hidden").configurable("Determines if the ability is visible in the ability bar and powers screen");
     public static final PalladiumProperty<Integer> LIST_INDEX = new IntegerProperty("list_index").configurable("Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.");
     public static final PalladiumProperty<Vec2> GUI_POSITION = new Vec2Property("gui_position").configurable("Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center");
-
-    public static final PalladiumProperty<String> DOCS_DESCRIPTION = new StringProperty(
-            "documentationDescription").configurable("Description of the ability. Visible in the " +
-            "documentation.");
     final PropertyManager propertyManager = new PropertyManager();
 
     public Ability() {
@@ -43,7 +39,6 @@ public class Ability implements IDefaultDocumentedConfigurable {
         this.withProperty(LIST_INDEX, -1);
         this.withProperty(GUI_POSITION, null);
         this.withProperty(DESCRIPTION, null);
-        this.withProperty(DOCS_DESCRIPTION, null);
     }
 
     public void registerUniqueProperties(PropertyManager manager) {
@@ -112,7 +107,7 @@ public class Ability implements IDefaultDocumentedConfigurable {
     }
 
     public String getDocumentationDescription() {
-        return "";
+        return null;
     }
 
     @Override
@@ -120,12 +115,9 @@ public class Ability implements IDefaultDocumentedConfigurable {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
         builder.setTitle(this.getId().getPath());
 
-        if (this.getDocumentationDescription() == "" && this.getPropertyManager().get(DOCS_DESCRIPTION) == null) {
-
-        } else if (this.getPropertyManager().get(DOCS_DESCRIPTION) != null) {
-            builder.setDescription(this.getPropertyManager().get(DOCS_DESCRIPTION));
-        } else if (this.getDocumentationDescription() != "") {
-            builder.setDescription(this.getDocumentationDescription());
+        var desc = this.getDocumentationDescription();
+        if (desc != null && !desc.isEmpty()) {
+            builder.setDescription(desc);
         }
     }
 

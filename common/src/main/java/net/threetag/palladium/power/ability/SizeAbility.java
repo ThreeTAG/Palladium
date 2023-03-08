@@ -16,6 +16,6 @@ public class SizeAbility extends Ability {
 
     @Override
     public String getDocumentationDescription() {
-        return "This ability allows an entity to change it's size.";
+        return "This ability allows an entity to change it's size using Pehkui.";
     }
 }

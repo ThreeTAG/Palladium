@@ -247,18 +247,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 time</td>
 <td>
 Integer</td>
@@ -286,7 +274,7 @@ MAIN_ARM</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:aim","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","time":10,"arm":"main_arm"}</pre>
+{"type":"palladium:aim","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","time":10,"arm":"main_arm"}</pre>
 </div>
 <hr>
 
@@ -399,18 +387,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 start_value</td>
 <td>
 Integer</td>
@@ -438,7 +414,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:animation_timer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","start_value":0,"max_value":20}</pre>
+{"type":"palladium:animation_timer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","start_value":0,"max_value":20}</pre>
 </div>
 <hr>
 
@@ -446,7 +422,7 @@ Example:</h3>
 <h2>
 attribute_modifier</h2>
 <p>
-Modifies an attribute.</p>
+Adds an attribute modifier to the entity while the ability is enabled.</p>
 <h3>
 Settings:</h3>
 <table>
@@ -551,18 +527,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 attribute</td>
 <td>
 Attribute</td>
@@ -614,7 +578,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:attribute_modifier","icon":"minecraft:iron_chestplate","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","attribute":"minecraft:generic.armor","amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
+{"type":"palladium:attribute_modifier","icon":"minecraft:iron_chestplate","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","attribute":"minecraft:generic.armor","amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
 </div>
 <hr>
 
@@ -727,18 +691,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 first_tick_commands</td>
 <td>
 String[]</td>
@@ -778,7 +730,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:command","icon":"minecraft:command_block","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","first_tick_commands":[],"last_tick_commands":[],"commands":["say Hello World"]}</pre>
+{"type":"palladium:command","icon":"minecraft:command_block","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","first_tick_commands":[],"last_tick_commands":[],"commands":["say Hello World"]}</pre>
 </div>
 <hr>
 
@@ -891,18 +843,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 damage_sources</td>
 <td>
 String[]</td>
@@ -918,7 +858,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:damage_immunity","icon":"minecraft:potion","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","damage_sources":["lightningBolt","cactus"]}</pre>
+{"type":"palladium:damage_immunity","icon":"minecraft:potion","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","damage_sources":["lightningBolt","cactus"]}</pre>
 </div>
 <hr>
 
@@ -1027,24 +967,12 @@ false</td>
 <td>
 /</td>
 </tr>
-<tr>
-<td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:dummy","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null"}</pre>
+{"type":"palladium:dummy","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -1150,18 +1078,6 @@ description</td>
 Component</td>
 <td>
 Description of the ability. Visible in ability menu</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1333,18 +1249,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 texture</td>
 <td>
 ResourceLocation</td>
@@ -1396,7 +1300,7 @@ STRETCH</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:gui_overlay","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","texture":"minecraft:textures/gui/presets/isles.png","texture_width":256,"texture_height":256,"alignment":"stretch"}</pre>
+{"type":"palladium:gui_overlay","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","texture":"minecraft:textures/gui/presets/isles.png","texture_width":256,"texture_height":256,"alignment":"stretch"}</pre>
 </div>
 <hr>
 
@@ -1509,18 +1413,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 frequency</td>
 <td>
 Integer</td>
@@ -1548,7 +1440,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:healing","icon":"minecraft:apple","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","frequency":20,"amount":3.0}</pre>
+{"type":"palladium:healing","icon":"minecraft:apple","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","frequency":20,"amount":3.0}</pre>
 </div>
 <hr>
 
@@ -1661,18 +1553,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 body_parts</td>
 <td>
 List</td>
@@ -1700,7 +1580,7 @@ true</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:hide_body_parts","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","body_parts":["right_arm","left_arm"],"affects_first_person":true}</pre>
+{"type":"palladium:hide_body_parts","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","body_parts":["right_arm","left_arm"],"affects_first_person":true}</pre>
 </div>
 <hr>
 
@@ -1809,30 +1689,20 @@ false</td>
 <td>
 /</td>
 </tr>
-<tr>
-<td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:invisibility","icon":"palladium:textures/icon/invisibility.png","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null"}</pre>
+{"type":"palladium:invisibility","icon":"palladium:textures/icon/invisibility.png","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
 <div id="palladium:play_sound">
 <h2>
 play_sound</h2>
+<p>
+Plays a sound when being enabled.</p>
 <h3>
 Settings:</h3>
 <table>
@@ -2113,18 +1983,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 animation</td>
 <td>
 ResourceLocation</td>
@@ -2140,7 +1998,7 @@ example:animation</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:player_animation","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","animation":"example:animation"}</pre>
+{"type":"palladium:player_animation","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","animation":"example:animation"}</pre>
 </div>
 <hr>
 
@@ -2246,18 +2104,6 @@ description</td>
 Component</td>
 <td>
 Description of the ability. Visible in ability menu</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2453,18 +2299,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 render_layer</td>
 <td>
 ResourceLocation</td>
@@ -2480,7 +2314,7 @@ namespace:render_layer_id</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:render_layer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","render_layer":"namespace:render_layer_id"}</pre>
+{"type":"palladium:render_layer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","render_layer":"namespace:render_layer_id"}</pre>
 </div>
 <hr>
 
@@ -2593,18 +2427,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 slots</td>
 <td>
 List</td>
@@ -2620,7 +2442,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:restrict_slots","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","slots":["chest"]}</pre>
+{"type":"palladium:restrict_slots","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","slots":["chest"]}</pre>
 </div>
 <hr>
 
@@ -2733,18 +2555,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 shader</td>
 <td>
 ResourceLocation</td>
@@ -2760,7 +2570,7 @@ minecraft:shaders/post/creeper.json</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:shader_effect","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","shader":"minecraft:shaders/post/creeper.json"}</pre>
+{"type":"palladium:shader_effect","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","shader":"minecraft:shaders/post/creeper.json"}</pre>
 </div>
 <hr>
 
@@ -2869,24 +2679,12 @@ false</td>
 <td>
 /</td>
 </tr>
-<tr>
-<td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:show_both_arms","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null"}</pre>
+{"type":"palladium:show_both_arms","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -2999,18 +2797,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 start_value</td>
 <td>
 Integer</td>
@@ -3038,7 +2824,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:shrink_body_overlay","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","start_value":0,"max_value":20}</pre>
+{"type":"palladium:shrink_body_overlay","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","start_value":0,"max_value":20}</pre>
 </div>
 <hr>
 
@@ -3046,7 +2832,7 @@ Example:</h3>
 <h2>
 size</h2>
 <p>
-This ability allows an entity to change it's size.</p>
+This ability allows an entity to change it's size using Pehkui.</p>
 <h3>
 Settings:</h3>
 <table>
@@ -3151,18 +2937,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 scale</td>
 <td>
 Float</td>
@@ -3178,7 +2952,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:size","icon":"palladium:textures/icon/size.png","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","scale":0.1}</pre>
+{"type":"palladium:size","icon":"palladium:textures/icon/size.png","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","scale":0.1}</pre>
 </div>
 <hr>
 
@@ -3291,18 +3065,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
 texture</td>
 <td>
 SkinTypedValue</td>
@@ -3330,7 +3092,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:skin_change","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null","texture":"minecraft:textures/entity/zombie/drowned.png","priority":50}</pre>
+{"type":"palladium:skin_change","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","texture":"minecraft:textures/entity/zombie/drowned.png","priority":50}</pre>
 </div>
 <hr>
 
@@ -3441,24 +3203,12 @@ false</td>
 <td>
 /</td>
 </tr>
-<tr>
-<td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:slowfall","icon":"minecraft:feather","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null"}</pre>
+{"type":"palladium:slowfall","icon":"minecraft:feather","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -3567,30 +3317,20 @@ false</td>
 <td>
 /</td>
 </tr>
-<tr>
-<td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:water_walk","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null"}</pre>
+{"type":"palladium:water_walk","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
 <div id="kubejs:testpack/test_ability">
 <h2>
 testpack/test_ability</h2>
+<p>
+This is a test ability, defined in a KubeJS script.</p>
 <h3>
 Settings:</h3>
 <table>
@@ -3619,7 +3359,7 @@ Icon for the ability</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-ItemIcon{stack=1 air}</td>
+ItemIcon{stack=1 vibranium_circuit}</td>
 </tr>
 <tr>
 <td>
@@ -3693,24 +3433,12 @@ false</td>
 <td>
 /</td>
 </tr>
-<tr>
-<td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"kubejs:testpack/test_ability","icon":{"type":"palladium:item","item":"minecraft:air","count":0},"title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"null"}</pre>
+{"type":"kubejs:testpack/test_ability","icon":"palladium:vibranium_circuit","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -3823,18 +3551,6 @@ false</td>
 </tr>
 <tr>
 <td>
-documentationDescription</td>
-<td>
-String</td>
-<td>
-Description of the ability. Visible in the documentation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-This is a test ability, defined in a KubeJS script.</td>
-</tr>
-<tr>
-<td>
 some_important_number</td>
 <td>
 Integer</td>
@@ -3850,7 +3566,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"kubejs:testpack/test_ability_with_property","icon":"minecraft:barrier","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","documentationDescription":"This is a test ability, defined in a KubeJS script.","some_important_number":0}</pre>
+{"type":"kubejs:testpack/test_ability_with_property","icon":"minecraft:barrier","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","some_important_number":0}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

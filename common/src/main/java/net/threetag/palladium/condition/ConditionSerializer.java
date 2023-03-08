@@ -122,7 +122,12 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
     public void generateDocumentation(JsonDocumentationBuilder builder) {
         IDefaultDocumentedConfigurable.super.generateDocumentation(builder);
         builder.setTitle(this.getId().getPath());
-        builder.setDescription(this.getDocumentationDescription() + " " +
-                "Applicable for: " + this.getContextType().toString().toLowerCase(Locale.ROOT));
+
+        var desc = this.getDocumentationDescription();
+        if (desc != null && !desc.isEmpty()) {
+            builder.setDescription(desc + "<br><br>" + "Applicable for: " + this.getContextType().toString().toLowerCase(Locale.ROOT));
+        } else {
+            builder.setDescription("Applicable for: " + this.getContextType().toString().toLowerCase(Locale.ROOT));
+        }
     }
 }

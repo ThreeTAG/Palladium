@@ -69,11 +69,10 @@ public class ConditionBuilder extends BuilderBase<ConditionSerializer> {
             for (AbilityBuilder.DeserializePropertyInfo info : this.builder.extraProperties) {
                 PalladiumProperty property = PalladiumPropertyLookup.get(info.type, info.key);
 
-                if (info.configureDesc != null && !info.configureDesc.isEmpty()) {
-                    Objects.requireNonNull(property).configurable(info.configureDesc);
+                if (info.configureDesc != null && !info.configureDesc.isEmpty() && property != null) {
+                    property.configurable(info.configureDesc);
+                    this.withProperty(property, PalladiumProperty.fixValues(property, info.defaultValue));
                 }
-
-                this.withProperty(property, PalladiumProperty.fixValues(property, info.defaultValue));
             }
         }
 

@@ -75,6 +75,6 @@ public class AttributeModifierAbility extends Ability {
 
     @Override
     public String getDocumentationDescription() {
-        return "Modifies an attribute.";
+        return "Adds an attribute modifier to the entity while the ability is enabled.";
     }
 }
