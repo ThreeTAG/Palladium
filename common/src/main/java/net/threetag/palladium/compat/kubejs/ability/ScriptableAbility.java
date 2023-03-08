@@ -7,6 +7,7 @@ import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PalladiumPropertyLookup;
+import net.threetag.palladium.util.property.PropertyManager;
 
 public class ScriptableAbility extends Ability {
 
@@ -24,6 +25,17 @@ public class ScriptableAbility extends Ability {
 
 			this.withProperty(property, PalladiumKubeJSPlugin.fixValues(property, info.defaultValue));
 		}
+    }
+
+    @Override
+    public void registerUniqueProperties(PropertyManager manager) {
+        super.registerUniqueProperties(manager);
+
+        for (AbilityBuilder.DeserializePropertyInfo info : this.builder.uniqueProperties) {
+            PalladiumProperty property = PalladiumPropertyLookup.get(info.type, info.key);
+
+            manager.register(property, PalladiumKubeJSPlugin.fixValues(property, info.defaultValue));
+        }
     }
 
     @Override
