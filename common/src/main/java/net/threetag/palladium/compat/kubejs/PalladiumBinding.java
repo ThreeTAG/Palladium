@@ -43,7 +43,7 @@ public class PalladiumBinding {
         PalladiumProperty property = handler.getPropertyByName(key.toString());
 
         if (property != null) {
-            handler.set(property, PalladiumKubeJSPlugin.fixValues(property, value));
+            handler.set(property, PalladiumProperty.fixValues(property, value));
             return true;
         }
 

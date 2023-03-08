@@ -3,7 +3,6 @@ package net.threetag.palladium.power.ability;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.compat.kubejs.PalladiumKubeJSPlugin;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.CooldownType;
 import net.threetag.palladium.network.SyncAbilityEntryPropertyMessage;
@@ -249,12 +248,12 @@ public class AbilityEntry {
         return this;
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean setUniquePropertyByName(String key, Object value) {
         PalladiumProperty property = this.getPropertyManager().getPropertyByName(key);
 
         if (property != null) {
-            this.setUniqueProperty(property, PalladiumKubeJSPlugin.fixValues(property, value));
+            this.setUniqueProperty(property, PalladiumProperty.fixValues(property, value));
             return true;
         }
 

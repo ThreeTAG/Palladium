@@ -28,7 +28,7 @@ public class RegisterPalladiumPropertyEventJS extends LevelEventJS {
         PalladiumProperty property = PalladiumPropertyLookup.get(type, key);
 
         if (property != null) {
-            this.handler.register(property, PalladiumKubeJSPlugin.fixValues(property, defaultValue));
+            this.handler.register(property, PalladiumProperty.fixValues(property, defaultValue));
         }
     }
 
