@@ -248,12 +248,12 @@ public class AbilityEntry {
         return this;
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean setUniquePropertyByName(String key, Object value) {
         PalladiumProperty property = this.getPropertyManager().getPropertyByName(key);
 
         if (property != null) {
-            this.setUniqueProperty(property, value);
+            this.setUniqueProperty(property, PalladiumProperty.fixValues(property, value));
             return true;
         }
 

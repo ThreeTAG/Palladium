@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.entity.FlightHandler;
+import net.threetag.palladium.entity.PalladiumPlayerExtension;
 
 public class FlightSound extends AbstractTickableSoundInstance {
 
@@ -19,7 +20,7 @@ public class FlightSound extends AbstractTickableSoundInstance {
         this.entity = entity;
         this.looping = true;
         this.delay = 0;
-        this.volume = 0.1F;
+        this.volume = 0F;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class FlightSound extends AbstractTickableSoundInstance {
             return;
         }
         ++this.time;
-        if (this.entity.isAlive()) {
+        if (this.entity.isAlive() && this.entity instanceof PalladiumPlayerExtension extension && extension.palladium_getFlightAnimation(1F) > 1F) {
             this.x = (float) this.entity.getX();
             this.y = (float) this.entity.getY();
             this.z = (float) this.entity.getZ();
@@ -52,8 +53,15 @@ public class FlightSound extends AbstractTickableSoundInstance {
             } else {
                 this.pitch = 1.0F;
             }
+
         } else {
             this.stop();
+            FlightHandler.CACHED_SOUND = null;
         }
+    }
+
+    @Override
+    public boolean canStartSilent() {
+        return true;
     }
 }

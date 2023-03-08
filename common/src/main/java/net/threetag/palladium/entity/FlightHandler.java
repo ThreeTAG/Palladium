@@ -1,11 +1,20 @@
 package net.threetag.palladium.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.player.Player;
+import net.threetag.palladium.sound.FlightSound;
 
 import java.util.function.Supplier;
 
 public class FlightHandler {
+
+    public static Object CACHED_SOUND = null;
 
     public static FlightType getAvailableFlightType(LivingEntity entity) {
         if (entity.getAttributes().hasAttribute(PalladiumAttributes.FLIGHT_SPEED.get()) && entity.getAttributeValue(PalladiumAttributes.FLIGHT_SPEED.get()) > 0D) {
@@ -17,6 +26,25 @@ public class FlightHandler {
         }
 
         return FlightType.NONE;
+    }
+
+    public static FlightAnimationType getAnimationType(LivingEntity entity) {
+        if (entity.getAttributes().hasAttribute(PalladiumAttributes.HEROIC_FLIGHT_TYPE.get()) && entity.getAttributeValue(PalladiumAttributes.HEROIC_FLIGHT_TYPE.get()) > 0D) {
+            return FlightAnimationType.HEROIC;
+        }
+
+        return FlightAnimationType.NORMAL;
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void startSound(Player player) {
+        if (player == Minecraft.getInstance().player) {
+            if(CACHED_SOUND instanceof FlightSound sound) {
+                sound.stop = true;
+            }
+
+            Minecraft.getInstance().getSoundManager().play((SoundInstance) (CACHED_SOUND = new FlightSound(player, SoundEvents.ELYTRA_FLYING, player.getSoundSource())));
+        }
     }
 
     public enum FlightType {
@@ -48,6 +76,13 @@ public class FlightHandler {
         public boolean isLevitation() {
             return this == LEVITATION;
         }
+
+    }
+
+    public enum FlightAnimationType {
+
+        NORMAL,
+        HEROIC
 
     }
 

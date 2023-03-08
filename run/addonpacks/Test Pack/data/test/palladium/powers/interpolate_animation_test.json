@@ -19,19 +19,6 @@
         ]
       }
     },
-    "flight": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "palladium:jetpack_flight_speed",
-      "value": 0.075,
-      "conditions": {
-        "unlocking": [
-          {
-            "type": "palladium:ability_enabled",
-            "ability": "interpolate"
-          }
-        ]
-      }
-    },
     "hovering": {
       "type": "palladium:attribute_modifier",
       "attribute": "palladium:hovering",

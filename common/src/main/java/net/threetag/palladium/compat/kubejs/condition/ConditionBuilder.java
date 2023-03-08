@@ -73,7 +73,7 @@ public class ConditionBuilder extends BuilderBase<ConditionSerializer> {
                     Objects.requireNonNull(property).configurable(info.configureDesc);
                 }
 
-                this.withProperty(property, PalladiumKubeJSPlugin.fixValues(property, info.defaultValue));
+                this.withProperty(property, PalladiumProperty.fixValues(property, info.defaultValue));
             }
         }
 

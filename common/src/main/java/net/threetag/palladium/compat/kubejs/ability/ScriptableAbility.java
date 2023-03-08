@@ -1,12 +1,12 @@
 package net.threetag.palladium.compat.kubejs.ability;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.compat.kubejs.PalladiumKubeJSPlugin;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PalladiumPropertyLookup;
+import net.threetag.palladium.util.property.PropertyManager;
 
 public class ScriptableAbility extends Ability {
 
@@ -23,8 +23,19 @@ public class ScriptableAbility extends Ability {
 			if (info.configureDesc != null && !info.configureDesc.isEmpty())
 				property.configurable(info.configureDesc);
 
-			this.withProperty(property, PalladiumKubeJSPlugin.fixValues(property, info.defaultValue));
+			this.withProperty(property, PalladiumProperty.fixValues(property, info.defaultValue));
 		}
+    }
+
+    @Override
+    public void registerUniqueProperties(PropertyManager manager) {
+        super.registerUniqueProperties(manager);
+
+        for (AbilityBuilder.DeserializePropertyInfo info : this.builder.uniqueProperties) {
+            PalladiumProperty property = PalladiumPropertyLookup.get(info.type, info.key);
+
+            manager.register(property, PalladiumProperty.fixValues(property, info.defaultValue));
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import net.threetag.palladium.entity.FlightHandler;
 import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.entity.PalladiumPlayerExtension;
 import net.threetag.palladium.util.property.PalladiumProperties;
+import net.threetag.palladiumcore.util.Platform;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,6 +38,9 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
 
     @Unique
     private float prevFlightBoost = 0F;
+
+    @Unique
+    private int verticalHover = 0;
 
     @Unique
     private float levitation = 0F;
@@ -142,9 +146,26 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
             this.flightVector = this.flightVector.add(diff);
             player.setDeltaMovement(this.flightVector);
             player.fallDistance = 0F;
+            this.verticalHover = 0;
         } else if (this.flightType.isNotNull()) {
+            // Hovering mid-air
             this.didFlew = false;
-            player.setDeltaMovement(new Vec3(player.getDeltaMovement().x, Math.sin(player.tickCount / 10F) / 100F, player.getDeltaMovement().z));
+
+            if (PalladiumProperties.JUMP_KEY_DOWN.get(player)) {
+                if (this.verticalHover < 20) {
+                    this.verticalHover = Mth.clamp(this.verticalHover + 1, -20, 20);
+                }
+            } else {
+                if (player.isCrouching()) {
+                    if (this.verticalHover > -20) {
+                        this.verticalHover = Mth.clamp(this.verticalHover - 1, -20, 20);
+                    }
+                } else if (this.verticalHover != 0) {
+                    this.verticalHover = Mth.clamp(this.verticalHover + (this.verticalHover > 0 ? -1 : 1), -20, 20);
+                }
+            }
+
+            player.setDeltaMovement(new Vec3(player.getDeltaMovement().x, this.verticalHover == 0D ? Math.sin(player.tickCount / 10F) / 100F : verticalHover / 60D, player.getDeltaMovement().z));
             player.fallDistance = 0F;
             this.flightVector = Vec3.ZERO;
 
@@ -152,29 +173,52 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
                 this.hovering = Math.min(1F, this.hovering + 0.1F);
             }
         } else {
+            // Reset everything
             this.didFlew = false;
+            this.verticalHover = 0;
             this.flightVector = Vec3.ZERO;
             if (this.hovering > 0F) {
                 this.hovering = Math.max(0F, this.hovering - 0.1F);
             }
         }
 
+        // Update hitbox & play sound
         if ((this.flightBoost > 1F && this.prevFlightBoost <= 1F) || (this.flightBoost <= 1F && this.prevFlightBoost > 1F)) {
             player.refreshDimensions();
+
+            if (this.flightBoost > 1F && this.prevFlightBoost <= 1F && Platform.isClient()) {
+                FlightHandler.startSound(player);
+            }
         }
     }
 
     @Inject(method = "getDimensions", at = @At("HEAD"), cancellable = true)
     private void getDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> cir) {
-        if (this.flightBoost > 1F) {
-            cir.setReturnValue(EntityDimensions.scalable(0.6F, 0.6F));
+        var hover = this.palladium_getHoveringAnimation(0);
+        var levitation = this.palladium_getLevitationAnimation(0);
+        var flight = this.palladium_getFlightAnimation(0);
+
+        if (hover > 0F || levitation > 0F || flight > 0F) {
+            if (this.flightBoost > 1F) {
+                cir.setReturnValue(EntityDimensions.scalable(0.6F, 0.6F));
+            } else {
+                cir.setReturnValue(EntityDimensions.scalable(0.6F, 1.8F));
+            }
         }
     }
 
     @Inject(method = "getStandingEyeHeight", at = @At("HEAD"), cancellable = true)
     private void getStandingEyeHeight(Pose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
-        if (this.flightBoost > 1F) {
-            cir.setReturnValue(0.4F);
+        var hover = this.palladium_getHoveringAnimation(0);
+        var levitation = this.palladium_getLevitationAnimation(0);
+        var flight = this.palladium_getFlightAnimation(0);
+
+        if (hover > 0F || levitation > 0F || flight > 0F) {
+            if (this.flightBoost > 1F) {
+                cir.setReturnValue(0.4F);
+            } else {
+                cir.setReturnValue(1.62F);
+            }
         }
     }
 
@@ -196,6 +240,10 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
 
         if (attribute != null) {
             this.flightSpeed = (float) player.getAttributeValue(attribute);
+        }
+
+        if (player.isSprinting()) {
+            this.flightBoost = 1F;
         }
     }
 

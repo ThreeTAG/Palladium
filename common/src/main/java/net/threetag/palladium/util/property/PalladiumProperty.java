@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonElement;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 import java.lang.reflect.Type;
@@ -84,5 +85,19 @@ public abstract class PalladiumProperty<T> {
 
     public String getString(T value) {
         return value == null ? null : value.toString();
+    }
+
+    public static Object fixValues(PalladiumProperty<?> property, Object value) {
+        if (property instanceof IntegerProperty && value instanceof Number number) {
+            value = number.intValue();
+        } else if (property instanceof FloatProperty && value instanceof Number number) {
+            value = number.floatValue();
+        } else if (property instanceof DoubleProperty && value instanceof Number number) {
+            value = number.doubleValue();
+        } else if (property instanceof ResourceLocationProperty && value instanceof String string) {
+            value = new ResourceLocation(string);
+        }
+
+        return value;
     }
 }

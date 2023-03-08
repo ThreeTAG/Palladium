@@ -43,6 +43,14 @@ ability_integer_property</a>
 ability_ticks</a>
 </li>
 <li>
+<a href="#palladium:ability_type_enabled">
+ability_type_enabled</a>
+</li>
+<li>
+<a href="#palladium:ability_type_unlocked">
+ability_type_unlocked</a>
+</li>
+<li>
 <a href="#palladium:ability_unlocked">
 ability_unlocked</a>
 </li>
@@ -467,6 +475,94 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:ability_ticks","power":"null","ability":"ability_id","min":0,"max":0}</pre>
+</div>
+<hr>
+
+<div id="palladium:ability_type_enabled">
+<h2>
+ability_type_enabled</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+ability_type</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the ability type to look for. If one ability can be found which is enabled, the condition will be true</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+palladium:dummy</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_type_enabled","ability_type":"palladium:dummy"}</pre>
+</div>
+<hr>
+
+<div id="palladium:ability_type_unlocked">
+<h2>
+ability_type_unlocked</h2>
+<p>
+Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+ability_type</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the ability type to look for. If one ability can be found which is unlocked, the condition will be true</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+palladium:dummy</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_type_unlocked","ability_type":"palladium:dummy"}</pre>
 </div>
 <hr>
 
