@@ -25,5 +25,10 @@ public class IsInRainCondition extends Condition {
         public Condition make(JsonObject json) {
             return new IsInRainCondition();
         }
+
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the entity is in rain.";
+        }
     }
 }

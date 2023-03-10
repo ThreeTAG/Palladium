@@ -73,4 +73,8 @@ public class AttributeModifierAbility extends Ability {
         return stringBuilder.substring(2);
     }
 
+    @Override
+    public String getDocumentationDescription() {
+        return "Adds an attribute modifier to the entity while the ability is enabled.";
+    }
 }

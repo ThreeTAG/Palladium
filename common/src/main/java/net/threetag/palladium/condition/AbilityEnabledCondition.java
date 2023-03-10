@@ -40,9 +40,13 @@ public class AbilityEnabledCondition extends Condition {
     }
 
     public static class Serializer extends ConditionSerializer {
-
         public static final PalladiumProperty<ResourceLocation> POWER = new ResourceLocationProperty("power").configurable("ID of the power where is the desired ability is located. Can be null IF used for abilities, then it will look into the current power");
         public static final PalladiumProperty<String> ABILITY = new StringProperty("ability").configurable("ID of the desired ability");
+
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the ability is enabled. If the power is not null, it will look for the ability in the specified power. If the power is null, it will look for the ability in the current power.";
+        }
 
         public Serializer() {
             this.withProperty(POWER, null);

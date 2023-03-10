@@ -19,4 +19,8 @@ public class ShrinkBodyOverlayAbility extends AnimationTimerAbility {
         return AnimationUtil.ease(Ease.INOUTSINE, scale);
     }
 
+    @Override
+    public String getDocumentationDescription() {
+        return "Allows you to shrink the body overlay.";
+    }
 }

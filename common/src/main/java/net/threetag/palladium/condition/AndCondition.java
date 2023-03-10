@@ -43,6 +43,10 @@ public class AndCondition extends Condition {
         public Condition make(JsonObject json) {
             return new AndCondition(this.getProperty(json, CONDITIONS));
         }
-    }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "A condition that is active if all of the conditions in the array are active.";
+        }
+    }
 }

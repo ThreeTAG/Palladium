@@ -25,5 +25,10 @@ public class IsElytraFlyingCondition extends Condition {
         public Condition make(JsonObject json) {
             return new IsElytraFlyingCondition();
         }
+
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the entity is currently flying with an elytra.";
+        }
     }
 }

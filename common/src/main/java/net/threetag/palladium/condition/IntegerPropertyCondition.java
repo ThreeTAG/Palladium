@@ -60,5 +60,9 @@ public class IntegerPropertyCondition extends Condition {
                     this.getProperty(json, MAX));
         }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the entity has a certain amount of a certain integer property.";
+        }
     }
 }

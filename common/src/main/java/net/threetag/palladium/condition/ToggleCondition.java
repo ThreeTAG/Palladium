@@ -59,6 +59,10 @@ public class ToggleCondition extends KeyCondition {
         public ConditionContextType getContextType() {
             return ConditionContextType.ABILITIES;
         }
-    }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Toggles the ability on and off after a key press or mouse click.";
+        }
+    }
 }

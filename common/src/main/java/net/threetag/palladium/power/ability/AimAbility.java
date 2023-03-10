@@ -53,4 +53,9 @@ public class AimAbility extends Ability {
 
         return f;
     }
+
+    @Override
+    public String getDocumentationDescription() {
+        return "Allows the player to aim their arms.";
+    }
 }

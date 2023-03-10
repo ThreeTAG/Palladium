@@ -61,5 +61,10 @@ public class ActivationCondition extends KeyCondition {
         public ConditionContextType getContextType() {
             return ConditionContextType.ABILITIES;
         }
+
+        @Override
+        public String getDocumentationDescription() {
+            return "This condition is used to activate the power when a key is pressed or a mouse button is clicked for a certain amount of ticks.";
+        }
     }
 }

@@ -12,7 +12,6 @@ import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.client.model.animation.AnimationUtil;
@@ -25,7 +24,6 @@ import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.power.SuperpowerUtil;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityUtil;
-import net.threetag.palladium.util.property.*;
 import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 
 public class PalladiumKubeJSPlugin extends KubeJSPlugin {
@@ -92,20 +90,6 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
     @Override
     public void attachLevelData(AttachedData<Level> event) {
         event.add("powers", new PowerManagerJS(event.getParent()));
-    }
-
-    public static Object fixValues(PalladiumProperty<?> property, Object value) {
-        if (property instanceof IntegerProperty && value instanceof Number number) {
-            value = number.intValue();
-        } else if (property instanceof FloatProperty && value instanceof Number number) {
-            value = number.floatValue();
-        } else if (property instanceof DoubleProperty && value instanceof Number number) {
-            value = number.doubleValue();
-        } else if (property instanceof ResourceLocationProperty && value instanceof String string) {
-            value = new ResourceLocation(string);
-        }
-
-        return value;
     }
 
 }

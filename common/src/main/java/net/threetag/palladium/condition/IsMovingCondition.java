@@ -29,6 +29,9 @@ public class IsMovingCondition extends Condition {
             return new IsMovingCondition();
         }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the entity is moving.";
+        }
     }
-
 }

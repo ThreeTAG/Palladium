@@ -66,5 +66,9 @@ public class AbilityTicksCondition extends Condition {
                     this.getProperty(json, MAX));
         }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the ability has been enabled for a certain amount of ticks.";
+        }
     }
 }

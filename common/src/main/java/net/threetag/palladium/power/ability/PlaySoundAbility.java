@@ -32,6 +32,11 @@ public class PlaySoundAbility extends Ability {
     }
 
     @Override
+    public String getDocumentationDescription() {
+        return "Plays a sound when being enabled.";
+    }
+
+    @Override
     public boolean isEffect() {
         return true;
     }

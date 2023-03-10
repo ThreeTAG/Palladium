@@ -41,5 +41,9 @@ public class ModLoadedCondition extends Condition {
             return new ModLoadedCondition(Platform.isModLoaded(this.getProperty(json, MOD_ID)));
         }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if a mod is loaded.";
+        }
     }
 }

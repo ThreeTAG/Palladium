@@ -38,6 +38,11 @@ public class AbilityTypeUnlockedCondition extends Condition {
         }
 
         @Override
+        public String getDocumentationDescription() {
+            return "Checks if an ability of a certain type is unlocked.";
+        }
+
+        @Override
         public Condition make(JsonObject json) {
             return new AbilityTypeUnlockedCondition(this.getProperty(json, ABILITY_TYPE));
         }

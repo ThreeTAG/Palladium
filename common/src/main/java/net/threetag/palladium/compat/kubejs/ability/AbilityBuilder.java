@@ -24,6 +24,8 @@ public class AbilityBuilder extends BuilderBase<Ability> {
     public transient TickFunction firstTick, tick, lastTick;
 
     public transient List<DeserializePropertyInfo> extraProperties;
+    public transient List<DeserializePropertyInfo> uniqueProperties; // disregards the configureDesc property
+    public transient String documentationDescription;
 
     public AbilityBuilder(ResourceLocation id) {
         super(id);
@@ -31,7 +33,9 @@ public class AbilityBuilder extends BuilderBase<Ability> {
         this.firstTick = null;
         this.tick = null;
         this.lastTick = null;
+        this.documentationDescription = null;
         this.extraProperties = new ArrayList<>();
+        this.uniqueProperties = new ArrayList<>();
     }
 
     @Override
@@ -49,6 +53,11 @@ public class AbilityBuilder extends BuilderBase<Ability> {
         return this;
     }
 
+    public AbilityBuilder documentationDescription(String documentationDescription) {
+        this.documentationDescription = documentationDescription;
+        return this;
+    }
+
     @SuppressWarnings("rawtypes")
     public AbilityBuilder addProperty(String key, String type, Object defaultValue, String configureDesc) {
         PalladiumProperty property = PalladiumPropertyLookup.get(type, key);
@@ -57,6 +66,19 @@ public class AbilityBuilder extends BuilderBase<Ability> {
             this.extraProperties.add(new DeserializePropertyInfo(key, type, defaultValue, configureDesc));
         } else {
             AddonPackLog.error("Failed to register ability property \"%s\", type \"%s\" is not supported", key, type);
+        }
+
+        return this;
+    }
+
+    @SuppressWarnings({"rawtypes"})
+    public AbilityBuilder addUniqueProperty(String key, String type, Object defaultValue) {
+        PalladiumProperty property = PalladiumPropertyLookup.get(type, key);
+
+        if (property != null) {
+            this.uniqueProperties.add(new DeserializePropertyInfo(key, type, defaultValue, null));
+        } else {
+            AddonPackLog.error("Failed to register ability unique property \"%s\", type \"%s\" is not supported", key, type);
         }
 
         return this;
@@ -75,6 +97,11 @@ public class AbilityBuilder extends BuilderBase<Ability> {
     public AbilityBuilder lastTick(TickFunction lastTick) {
         this.lastTick = lastTick;
         return this;
+    }
+
+    public String getDocumentationDescription(String description) {
+        this.documentationDescription = description;
+        return this.documentationDescription;
     }
 
     @FunctionalInterface

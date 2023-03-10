@@ -25,6 +25,10 @@ public class OnGroundCondition extends Condition {
         public Condition make(JsonObject json) {
             return new OnGroundCondition();
         }
-    }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the entity is on the ground.";
+        }
+    }
 }

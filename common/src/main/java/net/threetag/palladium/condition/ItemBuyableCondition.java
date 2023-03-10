@@ -108,5 +108,9 @@ public class ItemBuyableCondition extends BuyableCondition {
             return new ItemBuyableCondition(getProperty(json, INGREDIENT), getProperty(json, AMOUNT));
         }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "The player needs to spend a certain amount of items to unlock the ability.";
+        }
     }
 }

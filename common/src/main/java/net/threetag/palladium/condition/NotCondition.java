@@ -43,6 +43,10 @@ public class NotCondition extends Condition {
         public Condition make(JsonObject json) {
             return new NotCondition(this.getProperty(json, CONDITIONS));
         }
-    }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Returns true if all conditions are disabled.";
+        }
+    }
 }

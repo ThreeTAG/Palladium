@@ -55,5 +55,9 @@ public class AbilityUnlockedCondition extends Condition {
             return new AbilityUnlockedCondition(this.getProperty(json, AbilityEnabledCondition.Serializer.POWER), this.getProperty(json, AbilityEnabledCondition.Serializer.ABILITY));
         }
 
+        @Override
+        public String getDocumentationDescription() {
+            return "Checks if the ability is unlocked.";
+        }
     }
 }
