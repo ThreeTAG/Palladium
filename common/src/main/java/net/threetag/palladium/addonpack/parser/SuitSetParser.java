@@ -40,8 +40,8 @@ public class SuitSetParser extends AddonParser<SuitSet> {
                         json.addProperty("slot", slot.getName());
                     }
 
-                    if (!GsonHelper.isValidNode(json, "armor_model")) {
-                        json.addProperty("armor_model", slot == EquipmentSlot.LEGS ? "minecraft:player#inner_armor" : "minecraft:player#outer_armor");
+                    if (!GsonHelper.isValidNode(json, "armor_model_layer")) {
+                        json.addProperty("armor_model_layer", slot == EquipmentSlot.LEGS ? "minecraft:player#inner_armor" : "minecraft:player#outer_armor");
                     }
                 }
 
