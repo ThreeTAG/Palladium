@@ -1,5 +1,7 @@
 package net.threetag.palladium.compat.geckolib.fabric;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,7 +24,8 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class GeckoLibCompatImpl {
 
-    public static void init() {
+    @Environment(EnvType.CLIENT)
+    public static void initClient() {
         for (Item item : Registry.ITEM) {
             if (item instanceof ArmorItemImpl) {
                 GeoArmorRenderer.registerArmorRenderer(GeckoArmorRenderer.INSTANCE, item);

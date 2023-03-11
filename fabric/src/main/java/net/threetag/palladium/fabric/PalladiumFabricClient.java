@@ -17,7 +17,7 @@ public class PalladiumFabricClient implements ClientModInitializer {
         }
 
         if (Platform.isModLoaded("geckolib3")) {
-            GeckoLibCompatImpl.init();
+            GeckoLibCompatImpl.initClient();
         }
     }
 

@@ -37,6 +37,7 @@ import net.threetag.palladium.client.screen.AccessoryScreen;
 import net.threetag.palladium.client.screen.AddonPackLogScreen;
 import net.threetag.palladium.client.screen.components.IconButton;
 import net.threetag.palladium.client.screen.power.PowersScreen;
+import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.energy.EnergyHelper;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.event.PalladiumClientEvents;
@@ -50,6 +51,7 @@ import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.event.ScreenEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
 import net.threetag.palladiumcore.registry.client.*;
+import net.threetag.palladiumcore.util.Platform;
 
 public class PalladiumClient {
 
@@ -110,6 +112,11 @@ public class PalladiumClient {
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("armor_models"), new ArmorModelManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("accessory_renderers"), new Accessory.ReloadManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("humanoid_animations"), PalladiumAnimationRegistry.INSTANCE);
+
+        // Gecko
+        if (Platform.isModLoaded("geckolib3")) {
+            GeckoLibCompat.initClient();
+        }
     }
 
     public static void blockRenderTypes() {
