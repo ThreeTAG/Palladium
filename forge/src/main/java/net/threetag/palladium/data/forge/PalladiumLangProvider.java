@@ -118,10 +118,14 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Commands
             this.add("commands.superpower.error.powerNotFound", "No power was found by the name '%1$s'");
             this.add("commands.superpower.error.noLivingEntity", "This entity is not a living entity");
+            this.add("commands.superpower.error.noSuperpowers", "%s has no superpowers");
+            this.add("commands.superpower.query.success", "%s has the following superpowers: %s");
             this.add("commands.superpower.success.entity.single", "%s has gained the superpower %s");
             this.add("commands.superpower.success.entity.multiple", "%s entities have gained the superpower %s");
-            this.add("commands.superpower.remove.success.entity.single", "%s's superpower was removed");
-            this.add("commands.superpower.remove.success.entity.multiple", "The superpower of %s entities was removed");
+            this.add("commands.superpower.remove.success.entity.single", "%s's superpower(s) was removed");
+            this.add("commands.superpower.remove.success.entity.multiple", "The superpower(s) of %s entities was removed");
+            this.add("commands.superpower.replace.success.entity.single", "%s's superpower(s) have been replaced");
+            this.add("commands.superpower.replace.success.entity.multiple", "The superpower(s) of %s entities have been replaced");
             this.add("commands.superpower.error.alreadyHasSuperpower", "%s already has that superpower");
             this.add("commands.superpower.error.doesntHaveSuperpower", "%s does not have that superpower");
 
@@ -275,10 +279,14 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Commands
             this.add("commands.superpower.error.powerNotFound", "Es wurde keine Kraft mit dem Namen '%1$s' gefunden");
             this.add("commands.superpower.error.noLivingEntity", "Objekt ist nicht lebend");
+            this.add("commands.superpower.error.noSuperpowers", "%s hat keine Superkräfte");
+            this.add("commands.superpower.query.success", "%s hat die folgenden Superkräfte: %s");
             this.add("commands.superpower.success.entity.single", "%s hat die Superkraft %s erhalten");
             this.add("commands.superpower.success.entity.multiple", "%s Lebewesen haben die Superkraft %s erhalten");
-            this.add("commands.superpower.remove.success.entity.single", "%s's Superkraft wurde entfernt");
-            this.add("commands.superpower.remove.success.entity.multiple", "Die Superkraft von %s Lebewesen wurde entfernt");
+            this.add("commands.superpower.remove.success.entity.single", "%s's Superkraft/-kräfte wurde entfernt");
+            this.add("commands.superpower.remove.success.entity.multiple", "Die Superkraft/-kräfte von %s Lebewesen wurde entfernt");
+            this.add("commands.superpower.replace.success.entity.single", "%s's Superkraft/-kräfte wurden ausgetauscht");
+            this.add("commands.superpower.replace.success.entity.multiple", "Die Superkraft/-kräfte von %s Lebewesen wurden ausgetauscht");
             this.add("commands.superpower.error.alreadyHasSuperpower", "%s hat bereits diese Superkraft");
             this.add("commands.superpower.error.doesntHaveSuperpower", "%s hat diese Superkraft nicht");
 
@@ -432,10 +440,14 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Commands
             this.add("commands.superpower.error.powerNotFound", "Et wurd' kene Kraft mit'm Namen '%1$s' jefunden");
             this.add("commands.superpower.error.noLivingEntity", "Objekt ist nicht lebend");
+            this.add("commands.superpower.error.noSuperpowers", "%s hat kene Supperkräfte");
+            this.add("commands.superpower.query.success", "%s hat de foljend'n Supperkräfte: %s");
             this.add("commands.superpower.success.entity.single", "%s hat de Supperkraft %s erhalten");
             this.add("commands.superpower.success.entity.multiple", "%s Lebewesen haben de Supperkraft %s erhalten");
-            this.add("commands.superpower.remove.success.entity.single", "%s's Supperkraft wurd' entfernt");
-            this.add("commands.superpower.remove.success.entity.multiple", "De Supperkraft von %s Lebewesen wurd' entfernt");
+            this.add("commands.superpower.remove.success.entity.single", "%s's Supperkraft/-kräfte wurd' entfernt");
+            this.add("commands.superpower.remove.success.entity.multiple", "De Supperkraft/-kräfte von %s Lebewesen wurd' entfernt");
+            this.add("commands.superpower.replace.success.entity.single", "%s's Supperkraft/-kräfte wurd'n ausjetoscht");
+            this.add("commands.superpower.replace.success.entity.multiple", "De Supperkraft/-kräfte von %s Lebewesen wurd'n ausjetoscht");
             this.add("commands.superpower.error.alreadyHasSuperpower", "%s had berehts dise Supperkraft");
             this.add("commands.superpower.error.doesntHaveSuperpower", "%s had dese Supperkraft nich");
 
