@@ -129,6 +129,11 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.error.alreadyHasSuperpower", "%s already has that superpower");
             this.add("commands.superpower.error.doesntHaveSuperpower", "%s does not have that superpower");
 
+            this.add("commands.ability.error.notUnlockable", "The %s ability of the %s power is not unlockable");
+            this.add("commands.ability.error.doesntHavePower", "%s does not have that power");
+            this.add("commands.ability.locking.success", "The %s abilities of the %s power have been locked for %s entities");
+            this.add("commands.ability.unlocking.success", "The %s abilities of the %s power have been unlocked for %s entities");
+
             this.add("argument.entity.options.palladium.power.description", "Required power");
 
             // GUI

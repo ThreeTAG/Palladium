@@ -32,8 +32,8 @@ public class SuperpowerCommand {
         return SharedSuggestionProvider.suggestResource(powers.stream().map(Power::getId), builder);
     };
 
-    private static final SuggestionProvider<CommandSourceStack> SUGGEST_OWN_POWERS = (context, builder) -> {
-        List<String> superpowers = Lists.newArrayList();
+    private static final SuggestionProvider<CommandSourceStack> SUGGEST_OWN_POWERS_ALL = (context, builder) -> {
+        List<ResourceLocation> superpowers = Lists.newArrayList();
         Collection<? extends Entity> entities;
         try {
             context.getArgument("entities", EntitySelector.class);
@@ -43,18 +43,18 @@ public class SuperpowerCommand {
         }
         for (Entity entity : entities) {
             for (ResourceLocation id : PalladiumProperties.SUPERPOWER_IDS.get(entity)) {
-                var allId = id.getNamespace() + ":all";
+                var allId = new ResourceLocation(id.getNamespace(), "all");
                 if (!superpowers.contains(allId)) {
                     superpowers.add(allId);
                 }
 
-                if (!superpowers.contains(id.toString())) {
-                    superpowers.add(id.toString());
+                if (!superpowers.contains(id)) {
+                    superpowers.add(id);
                 }
             }
         }
 
-        return SharedSuggestionProvider.suggest(superpowers, builder);
+        return SharedSuggestionProvider.suggestResource(superpowers, builder);
     };
 
     public static final DynamicCommandExceptionType POWER_NOT_FOUND = new DynamicCommandExceptionType((object) -> {
@@ -88,7 +88,7 @@ public class SuperpowerCommand {
                                 }))))
 
                 .then(Commands.literal("remove")
-                        .then(Commands.argument("power", ResourceLocationArgument.id()).suggests(SUGGEST_OWN_POWERS).executes(c -> {
+                        .then(Commands.argument("power", ResourceLocationArgument.id()).suggests(SUGGEST_OWN_POWERS_ALL).executes(c -> {
                                     return removeSuperpower(c.getSource(), Collections.singleton(c.getSource().getPlayerOrException()), ResourceLocationArgument.getId(c, "power").toString());
                                 })
                                 .then(Commands.argument("entities", EntityArgument.entities()).executes(c -> {
@@ -108,26 +108,26 @@ public class SuperpowerCommand {
                                 }))))
 
                 .then(Commands.literal("replace")
-                        .then(Commands.argument("replaced_power", ResourceLocationArgument.id()).suggests(SUGGEST_OWN_POWERS)
+                        .then(Commands.argument("replaced_power", ResourceLocationArgument.id()).suggests(SUGGEST_OWN_POWERS_ALL)
                                 .then(Commands.argument("replacing_power", ResourceLocationArgument.id()).suggests(SUGGEST_POWERS).executes(c -> {
-                                            return replaceSuperpower(c.getSource(), Collections.singleton(c.getSource().getPlayerOrException()), ResourceLocationArgument.getId(c, "replaced_power").toString(), ResourceLocationArgument.getId(c, "replacing_power"));
+                                            return replaceSuperpower(c.getSource(), Collections.singleton(c.getSource().getPlayerOrException()), ResourceLocationArgument.getId(c, "replaced_power").toString(), getSuperpower(c, "replacing_power"));
                                         })
                                         .then(Commands.argument("entities", EntityArgument.entities()).executes(c -> {
-                                            return replaceSuperpower(c.getSource(), EntityArgument.getEntities(c, "entities"), ResourceLocationArgument.getId(c, "replaced_power").toString(), ResourceLocationArgument.getId(c, "replacing_power"));
+                                            return replaceSuperpower(c.getSource(), EntityArgument.getEntities(c, "entities"), ResourceLocationArgument.getId(c, "replaced_power").toString(), getSuperpower(c, "replacing_power"));
                                         }))))
                         .then(Commands.literal("*")
                                 .then(Commands.argument("replacing_power", ResourceLocationArgument.id()).suggests(SUGGEST_POWERS).executes(c -> {
-                                            return replaceSuperpower(c.getSource(), Collections.singleton(c.getSource().getPlayerOrException()), "all", ResourceLocationArgument.getId(c, "replacing_power"));
+                                            return replaceSuperpower(c.getSource(), Collections.singleton(c.getSource().getPlayerOrException()), "all", getSuperpower(c, "replacing_power"));
                                         })
                                         .then(Commands.argument("entities", EntityArgument.entities()).executes(c -> {
-                                            return replaceSuperpower(c.getSource(), EntityArgument.getEntities(c, "entities"), "all", ResourceLocationArgument.getId(c, "replacing_power"));
+                                            return replaceSuperpower(c.getSource(), EntityArgument.getEntities(c, "entities"), "all", getSuperpower(c, "replacing_power"));
                                         }))))
                         .then(Commands.literal("all")
                                 .then(Commands.argument("replacing_power", ResourceLocationArgument.id()).suggests(SUGGEST_POWERS).executes(c -> {
-                                            return replaceSuperpower(c.getSource(), Collections.singleton(c.getSource().getPlayerOrException()), "all", ResourceLocationArgument.getId(c, "replacing_power"));
+                                            return replaceSuperpower(c.getSource(), Collections.singleton(c.getSource().getPlayerOrException()), "all", getSuperpower(c, "replacing_power"));
                                         })
                                         .then(Commands.argument("entities", EntityArgument.entities()).executes(c -> {
-                                            return replaceSuperpower(c.getSource(), EntityArgument.getEntities(c, "entities"), "all", ResourceLocationArgument.getId(c, "replacing_power"));
+                                            return replaceSuperpower(c.getSource(), EntityArgument.getEntities(c, "entities"), "all", getSuperpower(c, "replacing_power"));
                                         }))))));
     }
 
@@ -140,7 +140,7 @@ public class SuperpowerCommand {
                 i++;
             }
 
-            if(i == 0) {
+            if (i == 0) {
                 source.sendFailure(Component.translatable("commands.superpower.error.noSuperpowers", livingEntity.getDisplayName()));
             } else {
                 source.sendSuccess(Component.translatable("commands.superpower.query.success", livingEntity.getDisplayName(), result.substring(0, result.length() - 3)), true);
@@ -249,7 +249,7 @@ public class SuperpowerCommand {
         return i;
     }
 
-    public static int replaceSuperpower(CommandSourceStack commandSource, Collection<? extends Entity> entities, String replacedFilter, ResourceLocation replacingId) {
+    public static int replaceSuperpower(CommandSourceStack commandSource, Collection<? extends Entity> entities, String replacedFilter, Power replacingPower) {
         Iterator<? extends Entity> iterator = entities.iterator();
         int i = 0;
         boolean no = false;
@@ -259,7 +259,7 @@ public class SuperpowerCommand {
             Entity entity = iterator.next();
 
             if (entity instanceof LivingEntity livingEntity) {
-                if (SuperpowerUtil.removeSuperpowersByIds(livingEntity, predicate) > 0 && SuperpowerUtil.addSuperpower(livingEntity, replacingId)) {
+                if (SuperpowerUtil.removeSuperpowersByIds(livingEntity, predicate) > 0 && SuperpowerUtil.addSuperpower(livingEntity, replacingPower)) {
                     i++;
                 } else if (entities.size() == 1) {
                     no = true;
