@@ -52,7 +52,6 @@ public class AbilitySound extends AbstractTickableSoundLocationInstance {
                 this.stop();
             }
         } else if (!ability.isEnabled()) {
-            System.out.println("HALLO START STOPPING SOUND");
             this.wasStopped = true;
         } else {
             if (this.volume < this.maxVolume) {

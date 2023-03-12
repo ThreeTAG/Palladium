@@ -5,7 +5,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.network.UpdatePowersMessage;
 import net.threetag.palladium.power.provider.PowerProvider;
 
@@ -66,15 +65,27 @@ public class PowerHandler implements IPowerHandler {
                     msg.sendToTracking(this.entity);
                 }
             }
-
-            // Tick
-            for (IPowerHolder holder : this.powers.values()) {
-                holder.tick();
-            }
         } else {
-            for (IPowerHolder holder : this.powers.values()) {
-                holder.tick();
-            }
+//            List<Power> toRemove = new ArrayList<>();
+//            List<Power> toAdd = new ArrayList<>();
+//            for (IPowerHolder holder : this.powers.values()) {
+//                if(holder.getPower().isInvalid()) {
+//                    var newPower = PowerManager.getInstance(this.entity.level).getPower(holder.getPower().getId());
+//                    toRemove.add(holder.getPower());
+//                    if(newPower != null) {
+//                        toAdd.add(newPower);
+//                    }
+//                }
+//            }
+//
+//            if(!toRemove.isEmpty() || !toAdd.isEmpty()) {
+//                this.removeAndAddPowers(toRemove, toAdd);
+//            }
+        }
+
+        // Tick
+        for (IPowerHolder holder : this.powers.values()) {
+            holder.tick();
         }
     }
 

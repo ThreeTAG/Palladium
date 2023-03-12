@@ -192,7 +192,11 @@ public class AbilityEntry {
     }
 
     public void syncState(LivingEntity entity) {
-        new SyncAbilityStateMessage(entity.getId(), this.getReference(), this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer).sendToDimension(entity.getLevel());
+        getSyncStateMessage(entity).sendToDimension(entity.getLevel());
+    }
+
+    public SyncAbilityStateMessage getSyncStateMessage(LivingEntity entity) {
+        return new SyncAbilityStateMessage(entity.getId(), this.getReference(), this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer);
     }
 
     public void startCooldown(LivingEntity entity, int cooldown) {

@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.network.SyncPowersMessage;
+import net.threetag.palladiumcore.event.Event;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
 import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
@@ -32,14 +33,14 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private static PowerManager INSTANCE;
-    private Map<ResourceLocation, Power> byName = ImmutableMap.of();
+    public Map<ResourceLocation, Power> byName = ImmutableMap.of();
 
     public static void init() {
         ReloadListenerRegistry.register(PackType.SERVER_DATA, Palladium.id("powers"), INSTANCE = new PowerManager());
 
         LivingEntityEvents.TICK.register(entity -> PowerManager.getPowerHandler(entity).ifPresent(IPowerHandler::tick));
 
-        PlayerEvents.JOIN.register(player -> {
+        PlayerEvents.JOIN.register(Event.Priority.HIGHEST, player -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 new SyncPowersMessage(getInstance(player.level).byName).send(serverPlayer);
             }
@@ -60,8 +61,6 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
-        // Powers
-        this.byName.values().forEach(Power::invalidate);
         ImmutableMap.Builder<ResourceLocation, Power> builder = ImmutableMap.builder();
         object.forEach((id, json) -> {
             try {
@@ -70,9 +69,10 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
                 AddonPackLog.error("Parsing error loading power {}", id, e);
             }
         });
+        this.byName.values().forEach(Power::invalidate);
         this.byName = builder.build();
-        AddonPackLog.info("Loaded {} powers", this.byName.size());
         syncPowersToAll(this.byName);
+        AddonPackLog.info("Loaded {} powers", this.byName.size());
     }
 
     public static void syncPowersToAll(Map<ResourceLocation, Power> powers) {
