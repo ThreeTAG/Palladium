@@ -30,6 +30,7 @@ public class Ability implements IDefaultDocumentedConfigurable {
     public static final PalladiumProperty<Integer> LIST_INDEX = new IntegerProperty("list_index").configurable("Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.");
     public static final PalladiumProperty<Vec2> GUI_POSITION = new Vec2Property("gui_position").configurable("Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center");
     final PropertyManager propertyManager = new PropertyManager();
+    private String documentationDescription;
 
     public Ability() {
         this.withProperty(ICON, new ItemIcon(Items.BLAZE_ROD));
@@ -106,8 +107,13 @@ public class Ability implements IDefaultDocumentedConfigurable {
         return REGISTRY.getKey(this);
     }
 
+    public Ability setDocumentationDescription(String documentationDescription) {
+        this.documentationDescription = documentationDescription;
+        return this;
+    }
+
     public String getDocumentationDescription() {
-        return null;
+        return this.documentationDescription;
     }
 
     @Override

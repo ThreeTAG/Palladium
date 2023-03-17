@@ -12,14 +12,29 @@ PalladiumEvents.registerAnimations((event) => {
             // if first person
             if (builder.isFirstPerson()) {
                 builder.get('right_arm')
-                    .rotateX(10)
+                    .setXRotDegrees(10)
                     .animate('InOutElastic', progress);
             } else {
                 // third person animations
                 builder.get('right_arm')
-                    .rotateX(builder.getModel().head.xRot - halfPi)
-                    .rotateY(builder.getModel().head.yRot)
-                    .rotateZ(builder.getModel().head.zRot)
+                    .setXRot(builder.getModel().head.xRot - halfPi)
+                    .setYRot(builder.getModel().head.yRot)
+                    .setZRot(builder.getModel().head.zRot)
+                    .animate('InOutElastic', progress);
+
+                builder.get('right_leg')
+                    .setX(-7.9)
+                    .setY(12)
+                    .setZ(-5)
+                    .setXRot(builder.getModel().head.xRot - halfPi)
+                    .setYRot(builder.getModel().head.yRot)
+                    .setZRot(builder.getModel().head.zRot)
+                    .scaleX(1.5)
+                    .scaleY(1.5)
+                    .scaleZ(1.5)
+                    .animate('InOutElastic', progress);
+
+                builder.get('chest')
                     .animate('InOutElastic', progress);
             }
         }

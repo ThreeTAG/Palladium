@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -24,8 +26,12 @@ import java.util.Arrays;
 public class GeckoLibCompat {
 
     public static void init() {
-        PackRenderLayerManager.registerParser(new ResourceLocation(GeckoLib.ModID, "default"), GeckoRenderLayer::parse);
         ItemParser.registerTypeSerializer(new ArmorParser());
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void initClient() {
+        PackRenderLayerManager.registerParser(new ResourceLocation(GeckoLib.ModID, "default"), GeckoRenderLayer::parse);
     }
 
     @ExpectPlatform

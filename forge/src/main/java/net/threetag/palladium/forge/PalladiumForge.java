@@ -63,7 +63,7 @@ public class PalladiumForge {
             }
 
             if (Platform.isModLoaded("geckolib3")) {
-                GeckoLibCompatImpl.init();
+                GeckoLibCompatImpl.initClient();
             }
         }
     }

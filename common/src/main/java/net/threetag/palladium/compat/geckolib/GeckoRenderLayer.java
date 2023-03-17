@@ -93,13 +93,13 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer implements IAnimat
             this.cachedTexture = this.texture.get(living).getTexture(living);
             this.cachedModel = this.modelLocation.get(living);
 
-            if (parentModel instanceof HumanoidModel parentHumanoid) {
-                parentHumanoid.copyPropertiesTo(entityModel);
-            }
-
             parentModel.copyPropertiesTo(entityModel);
             entityModel.prepareMobModel(living, limbSwing, limbSwingAmount, partialTicks);
             entityModel.setupAnim(living, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+
+            if (parentModel instanceof HumanoidModel parentHumanoid) {
+                IPackRenderLayer.copyModelProperties(entity, parentHumanoid, entityModel);
+            }
 
             // TODO apply enchant glint when item is enchanted
             if (entityModel instanceof GeckoRenderLayerModel gecko) {

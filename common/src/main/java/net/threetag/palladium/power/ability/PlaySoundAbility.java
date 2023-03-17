@@ -44,11 +44,9 @@ public class PlaySoundAbility extends Ability {
     @Override
     public void firstTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         if (enabled) {
-            System.out.println("HALLO FIRST TICK");
             if (entry.getProperty(LOOPING)) {
                 if (Platform.isClient()) {
                     this.startSound(entity, entry);
-                    System.out.println("START SOUND");
                 }
             } else if (!entity.level.isClientSide) {
                 if(entry.getProperty(PLAY_SELF)) {

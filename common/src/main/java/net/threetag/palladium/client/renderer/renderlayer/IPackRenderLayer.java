@@ -3,12 +3,14 @@ package net.threetag.palladium.client.renderer.renderlayer;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionContextType;
 import net.threetag.palladium.condition.ConditionSerializer;
@@ -83,6 +85,33 @@ public interface IPackRenderLayer {
         }
 
         return true;
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    static void copyModelProperties(Entity entity, HumanoidModel parent, HumanoidModel child) {
+        parent.copyPropertiesTo(child);
+
+        if(entity instanceof ArmorStand armorStand) {
+            child.head.xRot = 0.017453292F * armorStand.getHeadPose().getX();
+            child.head.yRot = 0.017453292F * armorStand.getHeadPose().getY();
+            child.head.zRot = 0.017453292F * armorStand.getHeadPose().getZ();
+            child.body.xRot = 0.017453292F * armorStand.getBodyPose().getX();
+            child.body.yRot = 0.017453292F * armorStand.getBodyPose().getY();
+            child.body.zRot = 0.017453292F * armorStand.getBodyPose().getZ();
+            child.leftArm.xRot = 0.017453292F * armorStand.getLeftArmPose().getX();
+            child.leftArm.yRot = 0.017453292F * armorStand.getLeftArmPose().getY();
+            child.leftArm.zRot = 0.017453292F * armorStand.getLeftArmPose().getZ();
+            child.rightArm.xRot = 0.017453292F * armorStand.getRightArmPose().getX();
+            child.rightArm.yRot = 0.017453292F * armorStand.getRightArmPose().getY();
+            child.rightArm.zRot = 0.017453292F * armorStand.getRightArmPose().getZ();
+            child.leftLeg.xRot = 0.017453292F * armorStand.getLeftLegPose().getX();
+            child.leftLeg.yRot = 0.017453292F * armorStand.getLeftLegPose().getY();
+            child.leftLeg.zRot = 0.017453292F * armorStand.getLeftLegPose().getZ();
+            child.rightLeg.xRot = 0.017453292F * armorStand.getRightLegPose().getX();
+            child.rightLeg.yRot = 0.017453292F * armorStand.getRightLegPose().getY();
+            child.rightLeg.zRot = 0.017453292F * armorStand.getRightLegPose().getZ();
+            child.hat.copyFrom(child.head);
+        }
     }
 
     enum ConditionContext {

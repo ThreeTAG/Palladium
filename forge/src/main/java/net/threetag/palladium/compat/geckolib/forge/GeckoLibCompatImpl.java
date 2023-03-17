@@ -9,6 +9,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.threetag.palladium.compat.geckolib.GeckoArmorRenderer;
@@ -34,10 +36,12 @@ import java.util.List;
 
 public class GeckoLibCompatImpl {
 
-    public static void init() {
+    @OnlyIn(Dist.CLIENT)
+    public static void initClient() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(GeckoLibCompatImpl::registerRenderers);
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static void registerRenderers(final EntityRenderersEvent.AddLayers event) {
         GeoArmorRenderer.registerArmorRenderer(ArmorItemImpl.class, () -> GeckoArmorRenderer.INSTANCE);
     }

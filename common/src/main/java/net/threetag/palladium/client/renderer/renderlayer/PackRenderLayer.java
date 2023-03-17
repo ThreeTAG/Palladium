@@ -48,15 +48,12 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
         if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions) && this.modelLookup.get(entity).fitsEntity(entity, parentModel)) {
             EntityModel<Entity> entityModel = this.model.get(entity);
 
-            if (entityModel instanceof HumanoidModel entityHumanoidModel && parentModel instanceof HumanoidModel parentHumanoid) {
-                parentHumanoid.copyPropertiesTo(entityHumanoidModel);
-            }
-
-            if (parentModel != null)
-                parentModel.copyPropertiesTo(entityModel);
-
             entityModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
             entityModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+
+            if (entityModel instanceof HumanoidModel entityHumanoidModel && parentModel instanceof HumanoidModel parentHumanoid) {
+                IPackRenderLayer.copyModelProperties(entity, parentHumanoid, entityHumanoidModel);
+            }
 
             // TODO apply enchant glint when item is enchanted
             VertexConsumer vertexConsumer = this.renderType.apply(bufferSource, this.texture.get(entity).getTexture(entity));

@@ -5,12 +5,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.power.PowerManager;
+import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladiumcore.network.MessageType;
 import net.threetag.palladiumcore.network.NetworkManager;
 import net.threetag.palladiumcore.util.DataSyncUtil;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class PalladiumNetwork {
 
@@ -32,29 +33,27 @@ public class PalladiumNetwork {
 
     public static void init() {
         // Powers
-        DataSyncUtil.registerMessage(entity -> {
+        DataSyncUtil.registerEntitySync((entity, consumer) -> {
             if (entity instanceof LivingEntity livingEntity) {
                 var opt = PowerManager.getPowerHandler(livingEntity);
 
                 if (opt.isPresent()) {
                     var handler = opt.get();
-                    return new UpdatePowersMessage(livingEntity.getId(), Collections.emptyList(), handler.getPowerHolders().values().stream().map(h -> h.getPower().getId()).collect(Collectors.toList()));
+                    consumer.accept(new UpdatePowersMessage(livingEntity.getId(), Collections.emptyList(), handler.getPowerHolders().values().stream().map(h -> h.getPower().getId()).toList()));
+
+                    for (AbilityEntry entry : AbilityUtil.getEntries(livingEntity)) {
+                        consumer.accept(entry.getSyncStateMessage(livingEntity));
+                    }
                 }
             }
-
-            return null;
         });
 
         // Accessories
-        DataSyncUtil.registerMessage(entity -> {
+        DataSyncUtil.registerEntitySync((entity, consumer) -> {
             if (entity instanceof ServerPlayer serverPlayer) {
                 var opt = Accessory.getPlayerData(serverPlayer);
-
-                if (opt.isPresent()) {
-                    return new SyncAccessoriesMessage(serverPlayer.getId(), opt.get().accessories);
-                }
+                opt.ifPresent(accessoryPlayerData -> consumer.accept(new SyncAccessoriesMessage(serverPlayer.getId(), accessoryPlayerData.accessories)));
             }
-            return null;
         });
     }
 }

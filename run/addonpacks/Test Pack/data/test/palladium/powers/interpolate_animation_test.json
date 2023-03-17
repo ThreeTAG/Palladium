@@ -18,18 +18,6 @@
           }
         ]
       }
-    },
-    "hovering": {
-      "type": "palladium:attribute_modifier",
-      "attribute": "palladium:hovering",
-      "value": 1,
-      "conditions": {
-        "enabling": [
-          {
-            "type": "palladium:toggle"
-          }
-        ]
-      }
     }
   }
 }

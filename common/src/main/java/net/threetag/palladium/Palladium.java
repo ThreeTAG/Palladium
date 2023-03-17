@@ -5,6 +5,7 @@ import net.threetag.palladium.accessory.Accessories;
 import net.threetag.palladium.addonpack.parser.*;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
+import net.threetag.palladium.command.AbilityCommand;
 import net.threetag.palladium.command.PalladiumEntitySelectorOptions;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
@@ -91,7 +92,10 @@ public class Palladium {
             }
         });
 
-        CommandEvents.REGISTER.register((dispatcher, selection) -> SuperpowerCommand.register(dispatcher));
+        CommandEvents.REGISTER.register((dispatcher, selection) -> {
+            SuperpowerCommand.register(dispatcher);
+            AbilityCommand.register(dispatcher);
+        });
 
         if (!Platform.isProduction()) {
             PalladiumDebug.init();

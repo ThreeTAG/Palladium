@@ -4,13 +4,39 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.util.property.PalladiumProperties;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class SuperpowerUtil {
+
+    /**
+     * Returns the superpowers the entity currently has
+     *
+     * @param entity {@link LivingEntity} which has superpowers
+     * @return {@link Collection} of superpowers of the entity
+     */
+    public static Collection<Power> getSuperpowers(LivingEntity entity) {
+        List<Power> powers = new ArrayList<>();
+        for (ResourceLocation id : PalladiumProperties.SUPERPOWER_IDS.get(entity)) {
+            var power = PowerManager.getInstance(entity.level).getPower(id);
+
+            if (power != null) {
+                powers.add(power);
+            }
+        }
+        return powers;
+    }
+
+    /**
+     * Returns the IDs of the superpowers the entity currently has
+     *
+     * @param entity {@link LivingEntity} which has superpowers
+     * @return {@link Collection} of {@link ResourceLocation}s for the superpowers of the entity
+     */
+    public static Collection<ResourceLocation> getSuperpowerIds(LivingEntity entity) {
+        return PalladiumProperties.SUPERPOWER_IDS.get(entity);
+    }
 
     /**
      * Sets the entity's superpowers to just the given one
@@ -154,6 +180,58 @@ public class SuperpowerUtil {
      */
     public static boolean removeSuperpower(LivingEntity entity, Power power) {
         return removeSuperpower(entity, power.getId());
+    }
+
+    /**
+     * Removes all superpowers matching the predicate from the entity
+     *
+     * @param entity The {@link LivingEntity} having the superpowers removed
+     * @param predicate {@link Predicate} to test which powers are set to be removed
+     * @return Amount of powers which have been removed
+     */
+    public static int removeSuperpowers(LivingEntity entity, Predicate<Power> predicate) {
+        List<Power> toRemove = new ArrayList<>();
+
+        for (Power superpower : getSuperpowers(entity)) {
+            if (predicate.test(superpower)) {
+                toRemove.add(superpower);
+            }
+        }
+
+        int i = 0;
+        for (Power power : toRemove) {
+            if (removeSuperpower(entity, power)) {
+                i++;
+            }
+        }
+
+        return i;
+    }
+
+    /**
+     * Removes all superpowers matching the predicate from the entity, using the IDs
+     *
+     * @param entity The {@link LivingEntity} having the superpowers removed
+     * @param predicate {@link Predicate} to test which powers are set to be removed
+     * @return Amount of powers which have been removed
+     */
+    public static int removeSuperpowersByIds(LivingEntity entity, Predicate<ResourceLocation> predicate) {
+        List<ResourceLocation> toRemove = new ArrayList<>();
+
+        for (ResourceLocation superpower : getSuperpowerIds(entity)) {
+            if (predicate.test(superpower)) {
+                toRemove.add(superpower);
+            }
+        }
+
+        int i = 0;
+        for (ResourceLocation power : toRemove) {
+            if (removeSuperpower(entity, power)) {
+                i++;
+            }
+        }
+
+        return i;
     }
 
     /**
