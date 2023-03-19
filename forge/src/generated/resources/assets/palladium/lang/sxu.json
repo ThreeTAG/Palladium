@@ -52,6 +52,7 @@
   "accessory_slot.right_leg": "Reschdes Bein",
   "accessory_slot.special": "Spezial",
   "argument.entity.options.palladium.power.description": "Benötichte Kraft",
+  "attribute.name.forge.swim_speed": "Schwimmjeschwindigkeit",
   "attribute.name.generic.palladium.destroy_speed": "Abbohjeschwindichket",
   "attribute.name.generic.palladium.fall_resistance": "Fallwidorstand",
   "attribute.name.generic.palladium.flight_flexibility": "Flugflexibilität",

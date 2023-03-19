@@ -1,0 +1,13 @@
+{
+  "name": "Swim Speed Test",
+  "icon": "minecraft:sponge",
+  "abilities": {
+    "swim_speed": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "forge:swim_speed",
+      "uuid": "6b05c4b8-1db2-4c29-8bac-aa2b059e33d0",
+      "amount": 2,
+      "operation": 0
+    }
+  }
+}

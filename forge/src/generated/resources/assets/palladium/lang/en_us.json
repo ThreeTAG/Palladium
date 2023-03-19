@@ -52,6 +52,7 @@
   "accessory_slot.right_leg": "Right Leg",
   "accessory_slot.special": "Special",
   "argument.entity.options.palladium.power.description": "Required power",
+  "attribute.name.forge.swim_speed": "Swim Speed",
   "attribute.name.generic.palladium.destroy_speed": "Destroy Speed",
   "attribute.name.generic.palladium.fall_resistance": "Fall Resistance",
   "attribute.name.generic.palladium.flight_flexibility": "Flight Flexibility",

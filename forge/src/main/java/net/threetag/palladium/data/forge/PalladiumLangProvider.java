@@ -80,6 +80,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.JUMP_POWER, "Jump Power");
             this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Destroy Speed");
             this.addAttribute(PalladiumAttributes.FALL_RESISTANCE, "Fall Resistance");
+            this.add("attribute.name.forge.swim_speed", "Swim Speed");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
@@ -246,6 +247,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
             this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Abbaugeschwindigkeit");
             this.addAttribute(PalladiumAttributes.FALL_RESISTANCE, "Fallwiderstand");
+            this.add("attribute.name.forge.swim_speed", "Schwimmgeschwindigkeit");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");
@@ -407,6 +409,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
             this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Abbohjeschwindichket");
             this.addAttribute(PalladiumAttributes.FALL_RESISTANCE, "Fallwidorstand");
+            this.add("attribute.name.forge.swim_speed", "Schwimmjeschwindigkeit");
 
             // Abilities
             this.addAbility(Abilities.DUMMY, "Dummy");

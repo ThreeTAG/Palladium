@@ -6,8 +6,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -17,11 +15,9 @@ import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.network.SyncPowersMessage;
-import net.threetag.palladiumcore.event.Event;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
-import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
-import net.threetag.palladiumcore.util.Platform;
+import net.threetag.palladiumcore.util.DataSyncUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -40,11 +36,7 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
         LivingEntityEvents.TICK.register(entity -> PowerManager.getPowerHandler(entity).ifPresent(IPowerHandler::tick));
 
-        PlayerEvents.JOIN.register(Event.Priority.HIGHEST, player -> {
-            if (player instanceof ServerPlayer serverPlayer) {
-                new SyncPowersMessage(getInstance(player.level).byName).send(serverPlayer);
-            }
-        });
+        DataSyncUtil.registerDataSync(consumer -> consumer.accept(new SyncPowersMessage(getInstance(true).byName)));
     }
 
     public PowerManager() {
@@ -71,17 +63,7 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
         });
         this.byName.values().forEach(Power::invalidate);
         this.byName = builder.build();
-        syncPowersToAll(this.byName);
         AddonPackLog.info("Loaded {} powers", this.byName.size());
-    }
-
-    public static void syncPowersToAll(Map<ResourceLocation, Power> powers) {
-        MinecraftServer server = Platform.getCurrentServer();
-        if (server != null) {
-            for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                new SyncPowersMessage(powers).send(player);
-            }
-        }
     }
 
     public Power getPower(ResourceLocation id) {
