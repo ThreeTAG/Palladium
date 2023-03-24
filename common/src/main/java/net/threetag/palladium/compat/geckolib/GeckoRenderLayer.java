@@ -13,80 +13,113 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.client.renderer.renderlayer.AbstractPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.IRenderLayerContext;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
+import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimatableModel;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.core.molang.MolangParser;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib3.resource.GeckoLibCache;
+import software.bernie.geckolib3.util.MolangUtils;
 
+import java.util.List;
 import java.util.function.BiFunction;
 
 @SuppressWarnings({"unchecked", "rawtypes", "ConstantValue"})
-public class GeckoRenderLayer extends AbstractPackRenderLayer implements IAnimatable, AnimationController.ModelFetcher<GeckoRenderLayer> {
+public class GeckoRenderLayer extends AbstractPackRenderLayer {
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this, true);
     private final SkinTypedValue<DynamicTexture> texture;
     private final SkinTypedValue<ResourceLocation> modelLocation;
-    private final ResourceLocation animationLocation;
-    private final String animationName;
-    private ResourceLocation cachedTexture;
-    private ResourceLocation cachedModel;
+    public final ResourceLocation animationLocation;
+    public final List<ParsedAnimationController<GeckoLayerState>> animationControllers;
+    public ResourceLocation cachedTexture;
+    public ResourceLocation cachedModel;
     public final BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType;
     private final GeckoRenderLayerModel model;
 
-    public GeckoRenderLayer(SkinTypedValue<DynamicTexture> texture, SkinTypedValue<ResourceLocation> modelLocation, ResourceLocation animationLocation, String animationName, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType) {
+    public GeckoRenderLayer(SkinTypedValue<DynamicTexture> texture, SkinTypedValue<ResourceLocation> modelLocation, ResourceLocation animationLocation, List<ParsedAnimationController<GeckoLayerState>> animationControllers, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType) {
         this.texture = texture;
         this.renderType = renderType;
         this.modelLocation = modelLocation;
         this.animationLocation = animationLocation;
-        this.animationName = animationName;
+        this.animationControllers = animationControllers;
         this.model = new GeckoRenderLayerModel(this);
-    }
-
-    public AnimatedGeoModel<GeckoRenderLayer> getGeoModel() {
-        return new AnimatedGeoModel<>() {
-
-            @Override
-            public ResourceLocation getAnimationResource(GeckoRenderLayer animatable) {
-                return animatable.animationLocation;
-            }
-
-            @Override
-            public ResourceLocation getModelResource(GeckoRenderLayer object) {
-                return object.cachedModel;
-            }
-
-            @Override
-            public ResourceLocation getTextureResource(GeckoRenderLayer object) {
-                return object.cachedTexture;
-            }
-        };
     }
 
     public GeckoRenderLayerModel getModel() {
         return model;
     }
 
+    @Nullable
+    public GeckoLayerState getState(LivingEntity entity) {
+        if (entity instanceof PalladiumLivingEntityExtension extension) {
+            return extension.palladium_getRenderLayerStates().getOrCreate(this) instanceof GeckoLayerState state ? state : null;
+        }
+        return null;
+    }
+
+    public AnimatedGeoModel<GeckoLayerState> getGeoModel() {
+        return new AnimatedGeoModel<>() {
+
+            @Override
+            public ResourceLocation getAnimationResource(GeckoLayerState animatable) {
+                return animatable.layer.animationLocation;
+            }
+
+            @Override
+            public ResourceLocation getModelResource(GeckoLayerState object) {
+                return object.layer.cachedModel;
+            }
+
+            @Override
+            public ResourceLocation getTextureResource(GeckoLayerState object) {
+                return object.layer.cachedTexture;
+            }
+
+            @Override
+            public void setMolangQueries(IAnimatable animatable, double seekTime) {
+                super.setMolangQueries(animatable, seekTime);
+                MolangParser parser = GeckoLibCache.getInstance().parser;
+                Minecraft mc = Minecraft.getInstance();
+                var entity = model.entityLiving;
+
+                if (entity != null) {
+                    parser.setValue("query.distance_from_camera", () -> mc.gameRenderer.getMainCamera().getPosition().distanceTo(entity.position()));
+                    parser.setValue("query.is_on_ground", () -> MolangUtils.booleanToFloat(entity.isOnGround()));
+                    parser.setValue("query.is_in_water", () -> MolangUtils.booleanToFloat(entity.isInWater()));
+                    parser.setValue("query.is_in_water_or_rain", () -> MolangUtils.booleanToFloat(entity.isInWaterRainOrBubble()));
+
+                    parser.setValue("query.health", entity::getHealth);
+                    parser.setValue("query.max_health", entity::getMaxHealth);
+                    parser.setValue("query.is_on_fire", () -> MolangUtils.booleanToFloat(entity.isOnFire()));
+                    parser.setValue("query.ground_speed", () -> {
+                        Vec3 velocity = entity.getDeltaMovement();
+
+                        return Mth.sqrt((float) ((velocity.x * velocity.x) + (velocity.z * velocity.z)));
+                    });
+                    parser.setValue("query.yaw_speed", () -> entity.getViewYRot((float) seekTime - entity.getViewYRot((float) seekTime - 0.1f)));
+                }
+            }
+        };
+    }
+
     @Override
     public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         var entity = context.getEntity();
+
         if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions) && entity instanceof LivingEntity living) {
+            this.model.setRenderedEntity(living);
             HumanoidModel entityModel = this.model;
             entityModel.setAllVisible(true);
 
@@ -112,6 +145,7 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer implements IAnimat
     public void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         var entity = context.getEntity();
         if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.firstPersonConditions) && entity instanceof AbstractClientPlayer living) {
+            this.model.setRenderedEntity(living);
             GeckoRenderLayerModel humanoidModel = this.model;
             this.cachedTexture = this.texture.get(living).getTexture(living);
             this.cachedModel = this.modelLocation.get(living);
@@ -126,33 +160,6 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer implements IAnimat
         }
     }
 
-    @Override
-    public void registerControllers(AnimationData data) {
-        if (this.animationLocation != null) {
-            data.addAnimationController(new AnimationController<>(this, "controller", 20, this::predicate));
-        }
-    }
-
-    private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(this.animationName, ILoopType.EDefaultLoopTypes.LOOP));
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
-    @Override
-    public void onLoad() {
-        AnimationController.addModelFetcher(this);
-    }
-
-    @Override
-    public void onUnload() {
-        AnimationController.removeModelFetcher(this);
-    }
-
     public static GeckoRenderLayer parse(JsonObject json) {
         SkinTypedValue<ResourceLocation> modelLocation = SkinTypedValue.fromJSON(json.get("model"), js -> GsonUtil.convertToResourceLocation(js, "model"));
         var texture = SkinTypedValue.fromJSON(json.get("texture"), DynamicTexture::parse);
@@ -165,8 +172,8 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer implements IAnimat
         var layer = new GeckoRenderLayer(
                 texture,
                 modelLocation,
-                GsonUtil.getAsResourceLocation(json, "animation", null),
-                GsonHelper.getAsString(json, "animation_name", "animation.render_layer.loop"),
+                GsonUtil.getAsResourceLocation(json, "animation_file", null),
+                ParsedAnimationController.getAsList(json, "animation_controllers"),
                 renderType
         );
 
@@ -181,11 +188,4 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer implements IAnimat
         return IPackRenderLayer.parseConditions(layer, json);
     }
 
-    @Override
-    public IAnimatableModel<GeckoRenderLayer> apply(IAnimatable animatable) {
-        if (animatable instanceof GeckoRenderLayer layer) {
-            return layer.getGeoModel();
-        }
-        return null;
-    }
 }

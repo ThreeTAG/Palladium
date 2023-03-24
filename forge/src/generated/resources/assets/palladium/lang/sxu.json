@@ -1,4 +1,6 @@
 {
+  "ability.geckolib3.armor_animation": "Gecko Armor Animation",
+  "ability.geckolib3.render_layer_animation": "Gecko Render Layer Animation",
   "ability.palladium.aim": "Zielen",
   "ability.palladium.animation_timer": "Animations-Timer",
   "ability.palladium.attribute_modifier": "Ättribütmodifikator",

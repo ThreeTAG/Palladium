@@ -9,9 +9,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimatableModel;
-import software.bernie.geckolib3.core.controller.AnimationController;
+import net.minecraft.world.entity.LivingEntity;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.core.util.Color;
@@ -25,11 +23,13 @@ import software.bernie.geckolib3.util.GeoUtils;
 import java.util.List;
 import java.util.Objects;
 
-public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> implements IGeoRenderer<GeckoRenderLayer>, AnimationController.ModelFetcher<GeckoRenderLayer> {
+public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> implements IGeoRenderer<GeckoLayerState> {
 
     protected MultiBufferSource rtb;
     private final GeckoRenderLayer renderLayer;
-    protected final AnimatedGeoModel<GeckoRenderLayer> modelProvider;
+    private GeckoLayerState state;
+    protected final AnimatedGeoModel<GeckoLayerState> modelProvider;
+    public LivingEntity entityLiving;
 
     public String headBone = "armorHead";
     public String bodyBone = "armorBody";
@@ -44,6 +44,11 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         this.modelProvider = renderLayer.getGeoModel();
     }
 
+    public void setRenderedEntity(LivingEntity entityLiving) {
+        this.entityLiving = entityLiving;
+        this.state = this.renderLayer.getState(entityLiving);
+    }
+
     @Override
     public MultiBufferSource getCurrentRTB() {
         return this.rtb;
@@ -54,9 +59,9 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
     }
 
     public void renderModel(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelResource(this.renderLayer));
+        GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelResource(this.state));
         var partialTick = Minecraft.getInstance().getFrameTime();
-        AnimationEvent<GeckoRenderLayer> animationEvent = new AnimationEvent<>(this.renderLayer, 0, 0,
+        AnimationEvent<GeckoLayerState> animationEvent = new AnimationEvent<>(this.state, 0, 0,
                 partialTick, false,
                 List.of());
 
@@ -64,15 +69,15 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         poseStack.translate(0, 24 / 16F, 0);
         poseStack.scale(-1, -1, 1);
 
-        this.modelProvider.setCustomAnimations(this.renderLayer, getInstanceId(this.renderLayer), animationEvent); // TODO change to setCustomAnimations in 1.20+
+        this.modelProvider.setCustomAnimations(this.state, getInstanceId(this.state), animationEvent);
         setCurrentModelRenderCycle(EModelRenderCycle.INITIAL);
         fitToBiped();
-        RenderSystem.setShaderTexture(0, getTextureLocation(this.renderLayer));
+        RenderSystem.setShaderTexture(0, getTextureLocation(this.state));
 
-        var buffer = this.renderLayer.renderType.apply(bufferSource, getTextureLocation(this.renderLayer));
-        Color renderColor = getRenderColor(this.renderLayer, partialTick, poseStack, null, buffer, packedLight);
+        var buffer = this.renderLayer.renderType.apply(bufferSource, getTextureLocation(this.state));
+        Color renderColor = getRenderColor(this.state, partialTick, poseStack, null, buffer, packedLight);
 
-        render(model, this.renderLayer, partialTick, null, poseStack, null, buffer, packedLight,
+        render(model, this.state, partialTick, null, poseStack, null, buffer, packedLight,
                 packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
                 renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
 
@@ -81,10 +86,10 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
 
     public void renderArm(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay,
                           float partialTick, boolean rightArm) {
-        GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelResource(this.renderLayer));
+        GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelResource(this.state));
 
         model.getBone(rightArm ? this.rightArmBone : this.leftArmBone).ifPresent(bone -> {
-            AnimationEvent<GeckoRenderLayer> animationEvent = new AnimationEvent<>(this.renderLayer, 0, 0,
+            AnimationEvent<GeckoLayerState> animationEvent = new AnimationEvent<>(this.state, 0, 0,
                     partialTick, false,
                     List.of());
 
@@ -92,20 +97,20 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
             poseStack.translate(0, 24 / 16F, 0);
             poseStack.scale(-1, -1, 1);
 
-            this.modelProvider.setCustomAnimations(this.renderLayer, getInstanceId(this.renderLayer), animationEvent); // TODO change to setCustomAnimations in 1.20+
+            this.modelProvider.setCustomAnimations(this.state, getInstanceId(this.state), animationEvent);
             setCurrentModelRenderCycle(EModelRenderCycle.INITIAL);
             fitToBiped();
-            RenderSystem.setShaderTexture(0, getTextureLocation(this.renderLayer));
+            RenderSystem.setShaderTexture(0, getTextureLocation(this.state));
 
-            var buffer1 = this.renderLayer.renderType.apply(bufferSource, getTextureLocation(this.renderLayer));
-            Color renderColor = getRenderColor(this.renderLayer, 0, poseStack, null, buffer1, packedLight);
+            var buffer1 = this.renderLayer.renderType.apply(bufferSource, getTextureLocation(this.state));
+            Color renderColor = getRenderColor(this.state, 0, poseStack, null, buffer1, packedLight);
 
             setCurrentRTB(bufferSource);
-            renderEarly(this.renderLayer, poseStack, partialTick, bufferSource, buffer1, packedLight,
+            renderEarly(this.state, poseStack, partialTick, bufferSource, buffer1, packedLight,
                     packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
                     renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
 
-            renderLate(this.renderLayer, poseStack, partialTick, bufferSource, buffer1, packedLight,
+            renderLate(this.state, poseStack, partialTick, bufferSource, buffer1, packedLight,
                     packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
                     renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
             this.renderRecursively(bone,
@@ -209,29 +214,24 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         }
     }
 
-    public void copyScale(ModelPart part, IBone bone) {
+    public static void copyScale(ModelPart part, IBone bone) {
         bone.setScaleX(part.xScale);
         bone.setScaleY(part.yScale);
         bone.setScaleZ(part.zScale);
     }
 
     @Override
-    public GeoModelProvider<GeckoRenderLayer> getGeoModelProvider() {
+    public GeoModelProvider<GeckoLayerState> getGeoModelProvider() {
         return this.modelProvider;
     }
 
     @Override
-    public ResourceLocation getTextureLocation(GeckoRenderLayer animatable) {
-        return this.modelProvider.getTextureResource(this.renderLayer);
+    public ResourceLocation getTextureLocation(GeckoLayerState animatable) {
+        return this.modelProvider.getTextureResource(this.state);
     }
 
     @Override
-    public IAnimatableModel<GeckoRenderLayer> apply(IAnimatable animatable) {
-        return animatable instanceof GeckoRenderLayer layer ? layer.getGeoModel() : null;
-    }
-
-    @Override
-    public int getInstanceId(GeckoRenderLayer animatable) {
+    public int getInstanceId(GeckoLayerState animatable) {
         return Objects.hash(animatable);
     }
 }

@@ -14,11 +14,13 @@ public class PalladiumMixinPlugin implements IMixinConfigPlugin {
     private static final boolean HAS_KUBEJS;
     private static final boolean HAS_TRINKETS;
     private static final boolean HAS_CURIOS;
+    private static final boolean HAS_GECKO;
 
     static {
         HAS_KUBEJS = hasClass("dev.latvian.mods.kubejs.KubeJS");
         HAS_TRINKETS = hasClass("dev.emi.trinkets.api.TrinketsApi");
         HAS_CURIOS = hasClass("top.theillusivec4.curios.api.CuriosApi");
+        HAS_GECKO = hasClass("software.bernie.geckolib3.renderers.geo.GeoArmorRenderer");
     }
 
     @Override
@@ -40,6 +42,10 @@ public class PalladiumMixinPlugin implements IMixinConfigPlugin {
 
             if (mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.fabric.TrinketsApiMixin")) {
                 return HAS_TRINKETS;
+            }
+
+            if (mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.client.GeoArmorRendererMixin") || mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.client.GeoArmorRendererInvoker")) {
+                return HAS_GECKO;
             }
         } catch (Exception ignored) {
             return true;

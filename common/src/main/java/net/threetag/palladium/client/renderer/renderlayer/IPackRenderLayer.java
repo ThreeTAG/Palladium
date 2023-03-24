@@ -42,6 +42,10 @@ public interface IPackRenderLayer {
 
     }
 
+    default boolean isOrContains(IPackRenderLayer layer) {
+        return this == layer;
+    }
+
     static <T extends IPackRenderLayer> T parseConditions(T layer, JsonObject json) {
         for (ConditionContext context : ConditionContext.values()) {
             if (GsonHelper.isValidNode(json, context.key)) {

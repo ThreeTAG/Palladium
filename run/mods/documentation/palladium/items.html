@@ -1087,7 +1087,7 @@ true</td>
 </tr>
 <tr>
 <td>
-armor_animation</td>
+armor_animation_file</td>
 <td>
 ResourceLocation</td>
 <td>
@@ -1099,15 +1099,15 @@ false</td>
 </tr>
 <tr>
 <td>
-armor_animation_name</td>
+armor_animation_controllers</td>
 <td>
-String</td>
+List</td>
 <td>
-Name of the looping animation, in BlockBench it's the animation you create on the right.</td>
+Names of controllers for the animation. Leave it empty to just have one main one. Add multiple to play multiple animations at the same time.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-animation.armor.loop</td>
+main</td>
 </tr>
 <tr>
 <td>
@@ -1126,7 +1126,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"geckolib3:armor","slot":"chest","armor_material":"minecraft:diamond","armor_texture":"example:textures/models/armor/example_armor.png","armor_model":"palladium:geo/test_model.geo.json","armor_animation":"palladium:animations/test_model.animation.json","armor_animation_name":"animation.armor.loop","hide_second_player_layer":true}</pre>
+{"type":"geckolib3:armor","slot":"chest","armor_material":"minecraft:diamond","armor_texture":"example:textures/models/armor/example_armor.png","armor_model":"palladium:geo/test_model.geo.json","armor_animation_file":"palladium:animations/test_model.animation.json","armor_animation_controllers":["main",{"name":"second_controller","initial_animation":"animation_name","transition_ticks":1}],"hide_second_player_layer":true}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

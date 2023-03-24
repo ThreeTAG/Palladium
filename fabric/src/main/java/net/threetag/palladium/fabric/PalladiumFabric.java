@@ -15,6 +15,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
+import net.threetag.palladium.compat.geckolib.fabric.GeckoLibCompatImpl;
 import net.threetag.palladium.compat.trinkets.fabric.TrinketsCompat;
 import net.threetag.palladium.energy.IBlockEntityEnergyContainer;
 import net.threetag.palladium.entity.fabric.ForgeAttributes;
@@ -37,6 +38,10 @@ public class PalladiumFabric implements ModInitializer {
 
         if (Platform.isModLoaded("trinkets")) {
             TrinketsCompat.init();
+        }
+
+        if (Platform.isModLoaded("geckolib3")) {
+            GeckoLibCompatImpl.init();
         }
 
         registerEnergyHandlers();

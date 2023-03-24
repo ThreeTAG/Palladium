@@ -5,34 +5,6 @@
 			"loop": true,
 			"animation_length": 0.66667,
 			"bones": {
-				"armorLeftArm": {
-					"position": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"0.3333": {
-							"vector": [0, -2, 0],
-							"easing": "easeInExpo"
-						},
-						"0.6667": {
-							"vector": [0, 0, 0],
-							"easing": "easeInExpo"
-						}
-					},
-					"scale": {
-						"0.0": {
-							"vector": [1, 1, 1]
-						},
-						"0.3333": {
-							"vector": [1, 1.8, 1],
-							"easing": "easeInExpo"
-						},
-						"0.6667": {
-							"vector": [1, 1, 1],
-							"easing": "easeInExpo"
-						}
-					}
-				},
 				"antenna": {
 					"position": {
 						"0.0": {
@@ -114,6 +86,39 @@
 						},
 						"0.6667": {
 							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		},
+		"animation.model.extend_arm": {
+			"animation_length": 0.66667,
+			"bones": {
+				"armNested": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.3333": {
+							"vector": [0, -2, 0],
+							"easing": "easeInExpo"
+						},
+						"0.6667": {
+							"vector": [0, 0, 0],
+							"easing": "easeInExpo"
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.3333": {
+							"vector": [1, 1.8, 1],
+							"easing": "easeInExpo"
+						},
+						"0.6667": {
+							"vector": [1, 1, 1],
+							"easing": "easeInExpo"
 						}
 					}
 				}

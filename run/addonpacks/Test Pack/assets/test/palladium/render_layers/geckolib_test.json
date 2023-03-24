@@ -2,8 +2,14 @@
   "type": "geckolib3:default",
   "model": "test:geo/gecko_model_test.geo.json",
   "texture": "test:textures/models/gecko_model_test.png",
-  "animation": "test:animations/gecko_model_test.animation.json",
-  "animation_name": "animation.model.loop",
+  "animation_file": "test:animations/gecko_model_test.animation.json",
+  "animation_controllers": [
+    {
+      "name": "looping",
+      "initial_animation": "animation.model.loop"
+    },
+    "extend_arm"
+  ],
   "bones": {
     "head": "armorHead",
     "body": "armorBody",

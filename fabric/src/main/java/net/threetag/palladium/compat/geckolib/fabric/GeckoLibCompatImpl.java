@@ -5,24 +5,31 @@ import net.fabricmc.api.Environment;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
-import net.threetag.palladium.compat.geckolib.GeckoArmorRenderer;
-import net.threetag.palladium.compat.geckolib.PackGeckoArmorItem;
+import net.threetag.palladium.compat.geckolib.*;
 import net.threetag.palladium.item.AddonArmorItem;
+import net.threetag.palladium.power.ability.Ability;
+import net.threetag.palladiumcore.registry.DeferredRegister;
+import software.bernie.geckolib3.GeckoLib;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.List;
+
+@SuppressWarnings("ALL")
 public class GeckoLibCompatImpl {
+
+    public static void init() {
+        DeferredRegister<Ability> deferredRegister = DeferredRegister.create(GeckoLib.ModID, Ability.REGISTRY);
+        deferredRegister.register("render_layer_animation", RenderLayerAnimationAbility::new);
+        deferredRegister.register("armor_animation", ArmorAnimationAbility::new);
+    }
 
     @Environment(EnvType.CLIENT)
     public static void initClient() {
@@ -43,10 +50,14 @@ public class GeckoLibCompatImpl {
         return item;
     }
 
+    public static GeoArmorRenderer getArmorRenderer(Class<? extends ArmorItem> clazz, LivingEntity wearer) {
+        return GeoArmorRenderer.getRenderer(clazz);
+    }
+
     public static class ArmorItemImpl extends AddonArmorItem implements IAnimatable, PackGeckoArmorItem {
 
-        private ResourceLocation texture, model, animation;
-        private String animationName = "animation.armor.loop";
+        private ResourceLocation texture, model, animationLocation;
+        public List<ParsedAnimationController<IAnimatable>> animationControllers;
         private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
         public ArmorItemImpl(ArmorMaterial materialIn, EquipmentSlot equipmentSlot, Item.Properties builder) {
@@ -55,14 +66,12 @@ public class GeckoLibCompatImpl {
 
         @Override
         public void registerControllers(AnimationData data) {
-            if(this.animation != null) {
-                data.addAnimationController(new AnimationController<>(this, "controller", 20, this::predicate));
+            if (this.animationLocation != null) {
+                for (ParsedAnimationController<IAnimatable> parsed : this.animationControllers) {
+                    var controller = parsed.createController(this);
+                    data.addAnimationController(controller);
+                }
             }
-        }
-
-        private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(this.animationName, ILoopType.EDefaultLoopTypes.LOOP));
-            return PlayState.CONTINUE;
         }
 
         @Override
@@ -71,11 +80,11 @@ public class GeckoLibCompatImpl {
         }
 
         @Override
-        public PackGeckoArmorItem setGeckoLocations(ResourceLocation modelLocation, ResourceLocation textureLocation, ResourceLocation animationLocation, String animationName) {
+        public PackGeckoArmorItem setGeckoLocations(ResourceLocation modelLocation, ResourceLocation textureLocation, ResourceLocation animationLocation, List<ParsedAnimationController<IAnimatable>> animationControllers) {
             this.model = modelLocation;
             this.texture = textureLocation;
-            this.animation = animationLocation;
-            this.animationName = animationName;
+            this.animationLocation = animationLocation;
+            this.animationControllers = animationControllers;
             return this;
         }
 
@@ -91,7 +100,7 @@ public class GeckoLibCompatImpl {
 
         @Override
         public ResourceLocation getGeckoAnimationLocation() {
-            return this.animation;
+            return this.animationLocation;
         }
     }
 

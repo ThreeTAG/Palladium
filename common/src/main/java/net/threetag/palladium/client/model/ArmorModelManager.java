@@ -20,8 +20,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
+import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.item.ExtendedArmor;
 import net.threetag.palladium.util.SkinTypedValue;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,6 +70,10 @@ public class ArmorModelManager implements ResourceManagerReloadListener {
                 arm.xRot = 0.0F;
                 arm.render(poseStack, vertex, combinedLight, OverlayTexture.NO_OVERLAY);
             }
+        }
+
+        if(Platform.isModLoaded("geckolib3")) {
+            GeckoLibCompat.renderFirstPerson(player, stack, poseStack, buffer, combinedLight, rendererArm, rightArm);
         }
     }
 

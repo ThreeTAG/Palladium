@@ -58,4 +58,5 @@ public class LocalPlayerMixin {
         LocalPlayer player = (LocalPlayer) (Object) this;
         player.getAbilities().mayfly = this.cachedMayFly;
     }
+
 }

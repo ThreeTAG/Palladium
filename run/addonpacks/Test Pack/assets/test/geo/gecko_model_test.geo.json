@@ -53,11 +53,7 @@
 				},
 				{
 					"name": "armorLeftArm",
-					"pivot": [5, 22, 0],
-					"cubes": [
-						{"origin": [4, 12, -2], "size": [4, 12, 4], "inflate": 0.5, "uv": [32, 48]},
-						{"origin": [4, 12, -2], "size": [4, 12, 4], "inflate": 0.75, "uv": [48, 48]}
-					]
+					"pivot": [5, 22, 0]
 				},
 				{
 					"name": "wingLeft",
@@ -65,6 +61,15 @@
 					"pivot": [5, 22, 0],
 					"cubes": [
 						{"origin": [7, 18, 0], "size": [4, 11, 0], "uv": [56, 26]}
+					]
+				},
+				{
+					"name": "armNested",
+					"parent": "armorLeftArm",
+					"pivot": [5, 22, 0],
+					"cubes": [
+						{"origin": [4, 12, -2], "size": [4, 12, 4], "inflate": 0.5, "uv": [32, 48]},
+						{"origin": [4, 12, -2], "size": [4, 12, 4], "inflate": 0.75, "uv": [48, 48]}
 					]
 				},
 				{

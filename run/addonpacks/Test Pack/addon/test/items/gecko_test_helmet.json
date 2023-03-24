@@ -5,7 +5,10 @@
   "creative_mode_tab": "test:test_tab",
   "armor_texture": "test:textures/models/gecko_model_test.png",
   "armor_model": "test:geo/gecko_model_test.geo.json",
-  "armor_animation": "test:animations/gecko_model_test.animation.json",
-  "armor_animation_name": "animation.model.loop",
+  "armor_animation_file": "test:animations/gecko_model_test.animation.json",
+  "armor_animation_controllers": {
+    "name": "looping",
+    "initial_animation": "animation.model.loop"
+  },
   "hide_second_player_layer": true
 }

@@ -77,6 +77,21 @@ public final class CompoundPackRenderLayer extends AbstractPackRenderLayer {
     }
 
     @Override
+    public boolean isOrContains(IPackRenderLayer layer) {
+        if (super.isOrContains(layer)) {
+            return true;
+        }
+
+        for (IPackRenderLayer child : this.layers) {
+            if (child.isOrContains(layer)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;

@@ -1,17 +1,13 @@
 {
   "name": {
-    "text": "GeckoLib Render Layer Test"
+    "text": "GeckoLib Armor Animation Test"
   },
   "icon": "minecraft:turtle_spawn_egg",
   "abilities": {
-    "render_layer": {
-      "type": "palladium:render_layer",
-      "render_layer": "test:geckolib_test"
-    },
     "animation_extend_arm": {
-      "type": "geckolib3:render_layer_animation",
+      "type": "geckolib3:armor_animation",
       "hidden": false,
-      "render_layer": "test:geckolib_test",
+      "item": "test:gecko_test_chestplate",
       "controller": "extend_arm",
       "animation": "animation.model.extend_arm",
       "conditions": {

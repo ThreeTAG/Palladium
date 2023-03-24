@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -13,19 +14,16 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.threetag.palladium.compat.geckolib.GeckoArmorRenderer;
-import net.threetag.palladium.compat.geckolib.PackGeckoArmorItem;
+import net.minecraftforge.registries.RegisterEvent;
+import net.threetag.palladium.compat.geckolib.*;
 import net.threetag.palladium.item.AddonAttributeContainer;
 import net.threetag.palladium.item.ExtendedArmor;
 import net.threetag.palladium.item.IAddonItem;
+import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.util.PlayerSlot;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.GeckoLib;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.item.GeoArmorItem;
@@ -34,11 +32,18 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 
+@SuppressWarnings("rawtypes")
 public class GeckoLibCompatImpl {
 
     @OnlyIn(Dist.CLIENT)
     public static void initClient() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(GeckoLibCompatImpl::registerRenderers);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(GeckoLibCompatImpl::registerAbility);
+    }
+
+    public static void registerAbility(RegisterEvent e) {
+        e.register(Ability.REGISTRY.getRegistryKey(), new ResourceLocation(GeckoLib.ModID, "render_layer_animation"), RenderLayerAnimationAbility::new);
+        e.register(Ability.REGISTRY.getRegistryKey(), new ResourceLocation(GeckoLib.ModID, "armor_animation"), ArmorAnimationAbility::new);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -56,14 +61,18 @@ public class GeckoLibCompatImpl {
         return item;
     }
 
+    public static GeoArmorRenderer getArmorRenderer(Class<? extends ArmorItem> clazz, LivingEntity wearer) {
+        return GeoArmorRenderer.getRenderer(clazz, wearer);
+    }
+
     public static class ArmorItemImpl extends GeoArmorItem implements IAnimatable, IAddonItem, ExtendedArmor, PackGeckoArmorItem {
 
         private List<Component> tooltipLines;
         private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
         private RenderLayerContainer renderLayerContainer = null;
         private boolean hideSecondLayer = false;
-        private ResourceLocation texture, model, animation;
-        private String animationName = "animation.armor.loop";
+        private ResourceLocation texture, model, animationLocation;
+        public List<ParsedAnimationController<IAnimatable>> animationControllers;
         private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
         public ArmorItemImpl(ArmorMaterial materialIn, EquipmentSlot equipmentSlot, Properties builder) {
@@ -72,14 +81,12 @@ public class GeckoLibCompatImpl {
 
         @Override
         public void registerControllers(AnimationData data) {
-            if(this.animation != null) {
-                data.addAnimationController(new AnimationController<>(this, "controller", 20, this::predicate));
+            if (this.animationLocation != null) {
+                for (ParsedAnimationController<IAnimatable> parsed : this.animationControllers) {
+                    var controller = parsed.createController(this);
+                    data.addAnimationController(controller);
+                }
             }
-        }
-
-        private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(this.animationName, ILoopType.EDefaultLoopTypes.LOOP));
-            return PlayState.CONTINUE;
         }
 
         @Override
@@ -131,11 +138,11 @@ public class GeckoLibCompatImpl {
         }
 
         @Override
-        public PackGeckoArmorItem setGeckoLocations(ResourceLocation modelLocation, ResourceLocation textureLocation, ResourceLocation animationLocation, String animationName) {
+        public PackGeckoArmorItem setGeckoLocations(ResourceLocation modelLocation, ResourceLocation textureLocation, ResourceLocation animationLocation, List<ParsedAnimationController<IAnimatable>> animationControllers) {
             this.model = modelLocation;
             this.texture = textureLocation;
-            this.animation = animationLocation;
-            this.animationName = animationName;
+            this.animationLocation = animationLocation;
+            this.animationControllers = animationControllers;
             return this;
         }
 
@@ -151,7 +158,7 @@ public class GeckoLibCompatImpl {
 
         @Override
         public ResourceLocation getGeckoAnimationLocation() {
-            return this.animation;
+            return this.animationLocation;
         }
     }
 
