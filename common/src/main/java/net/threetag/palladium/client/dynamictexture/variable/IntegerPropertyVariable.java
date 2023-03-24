@@ -9,6 +9,7 @@ import net.threetag.palladium.util.property.IntegerProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class IntegerPropertyVariable extends AbstractIntegerTextureVariable {
 
@@ -26,12 +27,14 @@ public class IntegerPropertyVariable extends AbstractIntegerTextureVariable {
 
     @Override
     public int getNumber(Entity entity) {
-        var handler = EntityPropertyHandler.getHandler(entity);
-        PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
+        AtomicInteger result = new AtomicInteger(0);
+        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> {
+            PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
 
-        if (property instanceof IntegerProperty integerProperty) {
-            return handler.get(integerProperty);
-        }
+            if (property instanceof IntegerProperty integerProperty) {
+                result.set(handler.get(integerProperty));
+            }
+        });
 
         return 0;
     }

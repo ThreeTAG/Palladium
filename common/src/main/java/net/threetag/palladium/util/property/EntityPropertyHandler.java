@@ -7,6 +7,8 @@ import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.network.SyncPropertyMessage;
 import net.threetag.palladiumcore.event.PlayerEvents;
 
+import java.util.Optional;
+
 public class EntityPropertyHandler extends PropertyManager implements PropertyManager.Listener {
 
     final Entity entity;
@@ -22,7 +24,7 @@ public class EntityPropertyHandler extends PropertyManager implements PropertyMa
     }
 
     @ExpectPlatform
-    public static EntityPropertyHandler getHandler(Entity entity) {
+    public static Optional<EntityPropertyHandler> getHandler(Entity entity) {
         throw new AssertionError();
     }
 
@@ -41,27 +43,35 @@ public class EntityPropertyHandler extends PropertyManager implements PropertyMa
         // TODO make use of DataSyncUtil
         PlayerEvents.JOIN.register(player -> {
             if (player instanceof ServerPlayer serverPlayer) {
-                getHandler(player).values().forEach((palladiumProperty, o) -> {
-                    new SyncPropertyMessage(player.getId(), palladiumProperty, o).send(serverPlayer);
+                getHandler(player).ifPresent(handler -> {
+                    handler.values().forEach((palladiumProperty, o) -> {
+                        new SyncPropertyMessage(player.getId(), palladiumProperty, o).send(serverPlayer);
+                    });
                 });
             }
         });
 
         PlayerEvents.START_TRACKING.register((tracker, target) -> {
             if (tracker instanceof ServerPlayer serverPlayer) {
-                getHandler(target).values().forEach((palladiumProperty, o) -> new SyncPropertyMessage(target.getId(), palladiumProperty, o).send(serverPlayer));
+                getHandler(target).ifPresent(handler -> {
+                    handler.values().forEach((palladiumProperty, o) -> new SyncPropertyMessage(target.getId(), palladiumProperty, o).send(serverPlayer));
+                });
             }
         });
 
         PlayerEvents.RESPAWN.register((player, endConquered) -> {
             if (player instanceof ServerPlayer serverPlayer) {
-                getHandler(player).values().forEach((palladiumProperty, o) -> new SyncPropertyMessage(player.getId(), palladiumProperty, o).sendToTrackingAndSelf(serverPlayer));
+                getHandler(player).ifPresent(handler -> {
+                    handler.values().forEach((palladiumProperty, o) -> new SyncPropertyMessage(player.getId(), palladiumProperty, o).sendToTrackingAndSelf(serverPlayer));
+                });
             }
         });
 
         PlayerEvents.CHANGED_DIMENSION.register((player, destination) -> {
             if (player instanceof ServerPlayer serverPlayer) {
-                getHandler(player).values().forEach((palladiumProperty, o) -> new SyncPropertyMessage(player.getId(), palladiumProperty, o).sendToTrackingAndSelf(serverPlayer));
+                getHandler(player).ifPresent(handler -> {
+                    handler.values().forEach((palladiumProperty, o) -> new SyncPropertyMessage(player.getId(), palladiumProperty, o).sendToTrackingAndSelf(serverPlayer));
+                });
             }
         });
     }

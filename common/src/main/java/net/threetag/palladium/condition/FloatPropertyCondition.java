@@ -8,6 +8,8 @@ import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.*;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class FloatPropertyCondition extends Condition {
 
     private final String propertyKey;
@@ -21,15 +23,17 @@ public class FloatPropertyCondition extends Condition {
 
     @Override
     public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
-        var handler = EntityPropertyHandler.getHandler(entity);
-        PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
+        AtomicBoolean result = new AtomicBoolean(false);
 
-        if (property instanceof FloatProperty floatProperty) {
-            float value = handler.get(floatProperty);
-            return value >= this.min && value <= this.max;
-        }
+        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> {
+            PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
+            if (property instanceof FloatProperty floatProperty) {
+                float value = handler.get(floatProperty);
+                result.set(value >= this.min && value <= this.max);
+            }
+        });
 
-        return false;
+        return result.get();
     }
 
     @Override

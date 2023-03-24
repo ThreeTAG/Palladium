@@ -8,7 +8,6 @@ import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.entity.EffectEntity;
 import net.threetag.palladium.util.property.BooleanProperty;
-import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 import net.threetag.palladiumcore.registry.PalladiumRegistry;
@@ -35,11 +34,11 @@ public abstract class EntityEffect {
     }
 
     public <T> T get(EffectEntity entity, PalladiumProperty<T> property) {
-        return EntityPropertyHandler.getHandler(entity).get(property);
+        return property.get(entity);
     }
 
     public <T> void set(EffectEntity entity, PalladiumProperty<T> property, T value) {
-        EntityPropertyHandler.getHandler(entity).set(property, value);
+        property.set(entity, value);
     }
 
     public static void start(Entity anchor, EntityEffect entityEffect) {

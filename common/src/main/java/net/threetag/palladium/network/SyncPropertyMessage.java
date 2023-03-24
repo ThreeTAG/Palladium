@@ -59,13 +59,14 @@ public class SyncPropertyMessage extends MessageS2C {
     public void handleClient() {
         Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityId);
         if (entity != null) {
-            EntityPropertyHandler handler = EntityPropertyHandler.getHandler(entity);
-            for (String key : this.tag.getAllKeys()) {
-                PalladiumProperty property = handler.getPropertyByName(key);
-                if (property != null) {
-                    handler.setRaw(property, property.fromNBT(this.tag.get(property.getKey()), handler.getDefault(property)));
+            EntityPropertyHandler.getHandler(entity).ifPresent(handler -> {
+                for (String key : this.tag.getAllKeys()) {
+                    PalladiumProperty property = handler.getPropertyByName(key);
+                    if (property != null) {
+                        handler.setRaw(property, property.fromNBT(this.tag.get(property.getKey()), handler.getDefault(property)));
+                    }
                 }
-            }
+            });
         }
     }
 }

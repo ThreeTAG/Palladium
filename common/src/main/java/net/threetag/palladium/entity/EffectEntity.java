@@ -59,14 +59,14 @@ public class EffectEntity extends Entity implements ExtendedEntitySpawnData {
     public void saveAdditionalSpawnData(FriendlyByteBuf buf) {
         buf.writeResourceLocation(Objects.requireNonNull(EntityEffect.REGISTRY.getKey(this.entityEffect)));
         buf.writeInt(this.anchorId);
-        EntityPropertyHandler.getHandler(this).toBuffer(buf);
+        EntityPropertyHandler.getHandler(this).ifPresent(handler -> handler.toBuffer(buf));
     }
 
     @Override
     public void loadAdditionalSpawnData(FriendlyByteBuf buf) {
         this.entityEffect = EntityEffect.REGISTRY.get(buf.readResourceLocation());
         this.anchorId = buf.readInt();
-        EntityPropertyHandler.getHandler(this).fromBuffer(buf);
+        EntityPropertyHandler.getHandler(this).ifPresent(handler -> handler.fromBuffer(buf));
     }
 
     @Override

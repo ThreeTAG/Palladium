@@ -57,9 +57,11 @@ public class PalladiumCapabilities {
         var newPower = PowerManager.getPowerHandler(e.getEntity()).orElse(null);
         newPower.fromNBT(oldPower.toNBT());
 
-        var oldProperties = EntityPropertyHandler.getHandler(e.getOriginal());
-        var newProperties = EntityPropertyHandler.getHandler(e.getEntity());
-        newProperties.fromNBT(oldProperties.toNBT(true));
+        EntityPropertyHandler.getHandler(e.getEntity()).ifPresent(newProperties -> {
+            EntityPropertyHandler.getHandler(e.getOriginal()).ifPresent(oldProperties -> {
+                newProperties.fromNBT(oldProperties.toNBT(true));
+            });
+        });
 
         var oldAccessories = Accessory.getPlayerData(e.getOriginal()).orElse(null);
         var newAccessories = Accessory.getPlayerData(e.getEntity()).orElse(null);

@@ -4,10 +4,12 @@ import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.capability.forge.PalladiumCapabilities;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 
+import java.util.Optional;
+
 public class EntityPropertyHandlerImpl {
 
-    public static EntityPropertyHandler getHandler(Entity entity) {
-        return entity.getCapability(PalladiumCapabilities.ENTITY_PROPERTIES).orElseThrow(() -> new RuntimeException("Entity does not have property capability!"));
+    public static Optional<EntityPropertyHandler> getHandler(Entity entity) {
+        return entity.getCapability(PalladiumCapabilities.ENTITY_PROPERTIES).resolve();
     }
 
 }

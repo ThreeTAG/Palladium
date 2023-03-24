@@ -1,6 +1,5 @@
 package net.threetag.palladium.compat.kubejs;
 
-import dev.latvian.mods.kubejs.core.EntityKJS;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -11,6 +10,9 @@ import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.icon.TexturedIcon;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperty;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class PalladiumBinding {
@@ -27,30 +29,38 @@ public class PalladiumBinding {
         return new TexturedIcon(path);
     }
 
-    public static Object getProperty(EntityKJS entity, CharSequence key) {
-        var handler = EntityPropertyHandler.getHandler(entity.kjs$self());
-        PalladiumProperty property = handler.getPropertyByName(key.toString());
+    public static Object getProperty(Entity entity, CharSequence key) {
+        AtomicReference result = new AtomicReference();
+        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> {
+            PalladiumProperty property = handler.getPropertyByName(key.toString());
 
-        if (property != null) {
-            return handler.get(property);
-        } else {
-            return null;
-        }
+            if (property != null) {
+                result.set(handler.get(property));
+            }
+        });
+
+        return result.get();
     }
 
     public static boolean setProperty(Entity entity, CharSequence key, Object value) {
-        var handler = EntityPropertyHandler.getHandler(entity);
-        PalladiumProperty property = handler.getPropertyByName(key.toString());
+        AtomicBoolean result = new AtomicBoolean(false);
+        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> {
+            PalladiumProperty property = handler.getPropertyByName(key.toString());
 
-        if (property != null) {
-            handler.set(property, PalladiumProperty.fixValues(property, value));
-            return true;
-        }
+            if (property != null) {
+                handler.set(property, PalladiumProperty.fixValues(property, value));
+                result.set(true);
+            }
+        });
 
-        return false;
+        return result.get();
     }
 
     public static boolean hasProperty(Entity entity, String key) {
-        return EntityPropertyHandler.getHandler(entity).getPropertyByName(key) != null;
+        AtomicBoolean result = new AtomicBoolean(false);
+        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> {
+            result.set(handler.getPropertyByName(key) != null);
+        });
+        return result.get();
     }
 }

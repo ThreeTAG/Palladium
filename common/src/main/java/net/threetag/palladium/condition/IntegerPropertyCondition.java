@@ -5,11 +5,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.util.property.EntityPropertyHandler;
-import net.threetag.palladium.util.property.IntegerProperty;
-import net.threetag.palladium.util.property.PalladiumProperty;
-import net.threetag.palladium.util.property.StringProperty;
+import net.threetag.palladium.util.property.*;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class IntegerPropertyCondition extends Condition {
 
@@ -24,15 +23,17 @@ public class IntegerPropertyCondition extends Condition {
 
     @Override
     public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
-        var handler = EntityPropertyHandler.getHandler(entity);
-        PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
+        AtomicBoolean result = new AtomicBoolean(false);
 
-        if (property instanceof IntegerProperty integerProperty) {
-            int value = handler.get(integerProperty);
-            return value >= this.min && value <= this.max;
-        }
+        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> {
+            PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
+            if (property instanceof IntegerProperty integerProperty) {
+                int value = handler.get(integerProperty);
+                result.set(value >= this.min && value <= this.max);
+            }
+        });
 
-        return false;
+        return result.get();
     }
 
     @Override

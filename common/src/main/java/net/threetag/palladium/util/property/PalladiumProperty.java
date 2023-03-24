@@ -8,6 +8,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 import java.lang.reflect.Type;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 @SuppressWarnings("UnstableApiUsage")
 public abstract class PalladiumProperty<T> {
@@ -72,15 +74,19 @@ public abstract class PalladiumProperty<T> {
     public abstract void toBuffer(FriendlyByteBuf buf, Object value);
 
     public void set(Entity entity, T value) {
-        EntityPropertyHandler.getHandler(entity).set(this, value);
+        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> handler.set(this, value));
     }
 
     public T get(Entity entity) {
-        return EntityPropertyHandler.getHandler(entity).get(this);
+        AtomicReference<T> result = new AtomicReference<>();
+        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> result.set(handler.get(this)));
+        return result.get();
     }
 
     public boolean isRegistered(Entity entity) {
-        return EntityPropertyHandler.getHandler(entity).isRegistered(this);
+        AtomicBoolean result = new AtomicBoolean(false);
+        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> result.set(handler.isRegistered(this)));
+        return result.get();
     }
 
     public String getString(T value) {

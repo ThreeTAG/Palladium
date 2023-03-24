@@ -10,6 +10,7 @@ import net.threetag.palladium.util.property.FloatProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FloatPropertyVariable extends AbstractFloatTextureVariable {
 
@@ -27,12 +28,14 @@ public class FloatPropertyVariable extends AbstractFloatTextureVariable {
 
     @Override
     public float getNumber(Entity entity) {
-        var handler = EntityPropertyHandler.getHandler(entity);
-        PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
+        AtomicReference<Float> result = new AtomicReference<>(0F);
+        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> {
+            PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
 
-        if (property instanceof FloatProperty floatProperty) {
-            return handler.get(floatProperty);
-        }
+            if (property instanceof FloatProperty floatProperty) {
+                result.set(handler.get(floatProperty));
+            }
+        });
 
         return 0F;
     }
