@@ -27,7 +27,7 @@ public class RestrictSlotsAbility extends Ability {
             for (PlayerSlot slot : entry.getProperty(SLOTS)) {
                 for (ItemStack item : slot.getItems(entity)) {
                     if (!item.isEmpty()) {
-                        this.drop(entity, item);
+                        this.drop(entity, item, slot);
                     }
                 }
                 slot.clear(entity);
@@ -35,10 +35,14 @@ public class RestrictSlotsAbility extends Ability {
         }
     }
 
-    public void drop(LivingEntity entity, ItemStack stack) {
+    public void drop(LivingEntity entity, ItemStack stack, PlayerSlot slot) {
         if (entity instanceof Player player) {
-            if (!player.getInventory().add(stack)) {
+            if(slot.getEquipmentSlot() == EquipmentSlot.MAINHAND) {
                 player.drop(stack, true);
+            } else {
+                if (!player.getInventory().add(stack)) {
+                    player.drop(stack, true);
+                }
             }
         } else {
             entity.spawnAtLocation(stack);
