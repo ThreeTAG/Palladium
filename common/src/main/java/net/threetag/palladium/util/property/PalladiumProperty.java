@@ -77,8 +77,20 @@ public abstract class PalladiumProperty<T> {
         EntityPropertyHandler.getHandler(entity).ifPresent(handler -> handler.set(this, value));
     }
 
+    @SuppressWarnings("unchecked")
     public T get(Entity entity) {
         AtomicReference<T> result = new AtomicReference<>();
+
+        if(this instanceof BooleanProperty) {
+            result.set((T) Boolean.valueOf(false));
+        } else if(this instanceof IntegerProperty) {
+            result.set((T) Integer.valueOf(0));
+        } else if(this instanceof FloatProperty) {
+            result.set((T) Float.valueOf(0F));
+        } else if(this instanceof DoubleProperty) {
+            result.set((T) Double.valueOf(0D));
+        }
+
         EntityPropertyHandler.getHandler(entity).ifPresent(handler -> result.set(handler.get(this)));
         return result.get();
     }
