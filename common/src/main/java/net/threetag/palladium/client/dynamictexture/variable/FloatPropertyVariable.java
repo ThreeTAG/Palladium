@@ -37,6 +37,6 @@ public class FloatPropertyVariable extends AbstractFloatTextureVariable {
             }
         });
 
-        return 0F;
+        return result.get();
     }
 }

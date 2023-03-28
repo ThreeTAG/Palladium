@@ -36,6 +36,6 @@ public class IntegerPropertyVariable extends AbstractIntegerTextureVariable {
             }
         });
 
-        return 0;
+        return result.get();
     }
 }
