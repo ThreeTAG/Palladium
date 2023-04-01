@@ -7,7 +7,7 @@ import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 @Mixin(GeoArmorRenderer.class)
 public interface GeoArmorRendererInvoker {
 
-    @Invoker("fitToBiped")
+    @Invoker(value = "fitToBiped", remap = false)
     void invokeFitToBiped();
 
 }

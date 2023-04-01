@@ -8,7 +8,6 @@
     "client.AgeableListModelInvoker",
     "client.GameRendererMixin",
     "client.GeoArmorRendererInvoker",
-    "client.GeoArmorRendererMixin",
     "client.HumanoidModelMixin",
     "client.ItemInHandRendererMixin",
     "client.LivingEntityRendererMixin",

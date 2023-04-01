@@ -8,9 +8,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -39,7 +37,6 @@ import java.util.List;
 public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArmor {
 
     private List<Component> tooltipLines;
-    private SkinTypedValue<DynamicTexture> armorTexture;
     private RenderLayerContainer renderLayerContainer = null;
     private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
     private boolean hideSecondLayer = false;
@@ -56,11 +53,6 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArm
     @Override
     public boolean hideSecondPlayerLayer(Player player, ItemStack stack, EquipmentSlot slot) {
         return this.hideSecondLayer;
-    }
-
-    @Override
-    public ResourceLocation getArmorTextureLocation(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return entity instanceof LivingEntity livingEntity ? this.armorTexture.get(livingEntity).getTexture(livingEntity) : null;
     }
 
     @Override
@@ -115,8 +107,6 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArm
             AddonArmorItem item = new AddonArmorItem(armorMaterial, slot, properties);
 
             if (Platform.isClient()) {
-                item.armorTexture = SkinTypedValue.fromJSON(json.get("armor_texture"), DynamicTexture::parse);
-
                 String modelTypeKey = "armor_model_type";
 
                 if (!json.has(modelTypeKey) && json.has("armor_model")) {
@@ -137,7 +127,8 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArm
 
                                 return m;
                             }) : new SkinTypedValue<>(ModelLookup.HUMANOID),
-                            SkinTypedValue.fromJSON(jsonElement, jsonElement1 -> GsonUtil.convertToModelLayerLocation(jsonElement1, "armor_model_layer"))
+                            SkinTypedValue.fromJSON(jsonElement, jsonElement1 -> GsonUtil.convertToModelLayerLocation(jsonElement1, "armor_model_layer")),
+                            SkinTypedValue.fromJSON(json.get("armor_texture"), DynamicTexture::parse)
                     );
                 });
 

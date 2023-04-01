@@ -21,6 +21,10 @@ public class DefaultDynamicTexture extends DynamicTexture {
     private final Map<String, ITextureVariable> textureVariableMap = Maps.newHashMap();
     private final List<ITextureTransformer> transformers = Lists.newLinkedList();
 
+    public DefaultDynamicTexture(ResourceLocation texture) {
+        this(texture.toString(), null);
+    }
+
     public DefaultDynamicTexture(String base, @Nullable String output) {
         this.base = base;
         this.output = output;

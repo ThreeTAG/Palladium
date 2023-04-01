@@ -7,8 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
@@ -17,6 +17,8 @@ import net.threetag.palladium.util.property.ResourceLocationProperty;
 import net.threetag.palladium.util.property.StringProperty;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.util.GeckoLibUtil;
+
+import java.util.Objects;
 
 @SuppressWarnings("unchecked")
 public class ArmorAnimationAbility extends Ability {
@@ -64,19 +66,21 @@ public class ArmorAnimationAbility extends Ability {
         if (item instanceof PackGeckoArmorItem gecko) {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (slot.getType() == EquipmentSlot.Type.ARMOR) {
-                    if (entity.getItemBySlot(slot).is(item)) {
-                        var renderer = GeckoLibCompat.getArmorRenderer(((ArmorItem)item).getClass(), entity);
-
-                        if(renderer != null) {
-                            var controller = GeckoLibUtil.getControllerForID(gecko.getFactory(), renderer.getInstanceId((ArmorItem) item), entry.getProperty(CONTROLLER));
-                            if (controller != null) {
-                                controller.markNeedsReload();
-                                controller.setAnimation(new AnimationBuilder().addAnimation(entry.getProperty(ANIMATION)));
-                            }
+                    var stack = entity.getItemBySlot(slot);
+                    if (stack.is(item)) {
+                        var controller = GeckoLibUtil.getControllerForID(gecko.getFactory(), getInstanceId(slot, stack, entity), entry.getProperty(CONTROLLER));
+                        if (controller != null) {
+                            controller.markNeedsReload();
+                            controller.setAnimation(new AnimationBuilder().addAnimation(entry.getProperty(ANIMATION)));
                         }
                     }
                 }
             }
         }
+    }
+
+    public int getInstanceId(EquipmentSlot slot, ItemStack stack, LivingEntity entity) {
+        return Objects.hash(slot, stack.getItem(), stack.getCount(),
+                stack.hasTag() ? stack.getTag().toString() : 1, entity.getUUID().toString());
     }
 }

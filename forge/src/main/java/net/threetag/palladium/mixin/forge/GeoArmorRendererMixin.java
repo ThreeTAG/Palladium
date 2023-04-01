@@ -1,4 +1,4 @@
-package net.threetag.palladium.mixin.client;
+package net.threetag.palladium.mixin.forge;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.threetag.palladium.compat.geckolib.GeckoRenderLayerModel;

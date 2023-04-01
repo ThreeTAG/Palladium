@@ -12,13 +12,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.item.ExtendedArmor;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import org.jetbrains.annotations.Nullable;
 
 @Mixin(HumanoidArmorLayer.class)
 public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends RenderLayer<T, M> {
@@ -31,12 +30,23 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
     }
 
     @Inject(at = @At("HEAD"), method = "getArmorResource", cancellable = true, remap = false)
-    private void getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, @Nullable String type, CallbackInfoReturnable<ResourceLocation> callbackInfoReturnable) {
-        if (stack.getItem() instanceof ExtendedArmor customArmorTexture) {
-            var texture = customArmorTexture.getArmorTextureLocation(stack, entity, slot, type);
+    private void getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, @Nullable String type, CallbackInfoReturnable<ResourceLocation> cir) {
+        ArmorModelManager.Handler handler = ArmorModelManager.get(stack.getItem());
 
-            if(texture != null) {
-                callbackInfoReturnable.setReturnValue(texture);
+        if (handler != null && entity instanceof LivingEntity livingEntity) {
+            var texture = handler.getTexture(stack, livingEntity, slot, type);
+
+            if (texture != null) {
+                cir.setReturnValue(texture);
+                return;
+            }
+        }
+
+        if (stack.getItem() instanceof ExtendedArmor extendedArmor) {
+            var texture = extendedArmor.getArmorTextureLocation(stack, entity, slot, type);
+
+            if (texture != null) {
+                cir.setReturnValue(texture);
             }
         }
     }
