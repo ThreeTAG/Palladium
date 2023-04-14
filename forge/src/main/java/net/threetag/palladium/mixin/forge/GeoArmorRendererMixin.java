@@ -1,7 +1,7 @@
 package net.threetag.palladium.mixin.forge;
 
 import net.minecraft.client.model.HumanoidModel;
-import net.threetag.palladium.compat.geckolib.GeckoRenderLayerModel;
+import net.threetag.palladium.compat.geckolib.renderlayer.GeckoRenderLayerModel;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

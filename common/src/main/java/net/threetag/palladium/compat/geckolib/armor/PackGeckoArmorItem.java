@@ -1,6 +1,7 @@
-package net.threetag.palladium.compat.geckolib;
+package net.threetag.palladium.compat.geckolib.armor;
 
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
 import software.bernie.geckolib3.core.IAnimatable;
 
 import java.util.List;

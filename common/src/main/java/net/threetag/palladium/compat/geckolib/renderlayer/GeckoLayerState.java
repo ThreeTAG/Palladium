@@ -1,6 +1,7 @@
-package net.threetag.palladium.compat.geckolib;
+package net.threetag.palladium.compat.geckolib.renderlayer;
 
 import net.threetag.palladium.client.renderer.renderlayer.RenderLayerStates;
+import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimatableModel;

@@ -1,4 +1,4 @@
-package net.threetag.palladium.compat.geckolib;
+package net.threetag.palladium.compat.geckolib.playeranimator;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
