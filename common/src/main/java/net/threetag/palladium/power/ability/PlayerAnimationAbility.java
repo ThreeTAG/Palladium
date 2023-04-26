@@ -35,4 +35,9 @@ public class PlayerAnimationAbility extends Ability {
     public String getDocumentationDescription() {
         return "Allows you to play a custom player animation.";
     }
+
+    @Override
+    public boolean isExperimental() {
+        return true;
+    }
 }

@@ -50,6 +50,10 @@ public class Ability implements IDefaultDocumentedConfigurable {
         return false;
     }
 
+    public boolean isExperimental() {
+        return false;
+    }
+
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
 
     }
@@ -70,7 +74,7 @@ public class Ability implements IDefaultDocumentedConfigurable {
     public static HTMLBuilder documentationBuilder() {
         return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "abilities"), "Abilities")
                 .add(HTMLBuilder.heading("Abilities"))
-                .addDocumentationSettings(REGISTRY.getValues().stream().sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
+                .addDocumentationSettings(REGISTRY.getValues().stream().filter(ab -> !ab.isExperimental()).sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
     }
 
     public static List<AbilityEntry> findParentsWithinHolder(AbilityConfiguration ability, IPowerHolder powerHolder) {
