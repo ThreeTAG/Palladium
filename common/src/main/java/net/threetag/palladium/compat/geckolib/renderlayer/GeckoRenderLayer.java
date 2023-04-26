@@ -128,8 +128,6 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
             this.cachedModel = this.modelLocation.get(living);
 
             parentModel.copyPropertiesTo(entityModel);
-            entityModel.prepareMobModel(living, limbSwing, limbSwingAmount, partialTicks);
-            entityModel.setupAnim(living, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
             if (parentModel instanceof HumanoidModel parentHumanoid) {
                 IPackRenderLayer.copyModelProperties(entity, parentHumanoid, entityModel);

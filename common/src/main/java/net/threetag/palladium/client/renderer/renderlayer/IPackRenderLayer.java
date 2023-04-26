@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.threetag.palladium.client.renderer.entity.HumanoidRendererModifications;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionContextType;
 import net.threetag.palladium.condition.ConditionSerializer;
@@ -74,7 +75,7 @@ public interface IPackRenderLayer {
     }
 
     static boolean conditionsFulfilled(Entity entity, List<Condition> bothConditions, List<Condition> specificConditions) {
-        if(entity instanceof LivingEntity livingEntity) {
+        if (entity instanceof LivingEntity livingEntity) {
             for (Condition condition : bothConditions) {
                 if (!condition.active(livingEntity, null, null, null)) {
                     return false;
@@ -95,7 +96,7 @@ public interface IPackRenderLayer {
     static void copyModelProperties(Entity entity, HumanoidModel parent, HumanoidModel child) {
         parent.copyPropertiesTo(child);
 
-        if(entity instanceof ArmorStand armorStand) {
+        if (entity instanceof ArmorStand armorStand) {
             child.head.xRot = 0.017453292F * armorStand.getHeadPose().getX();
             child.head.yRot = 0.017453292F * armorStand.getHeadPose().getY();
             child.head.zRot = 0.017453292F * armorStand.getHeadPose().getZ();
@@ -116,6 +117,9 @@ public interface IPackRenderLayer {
             child.rightLeg.zRot = 0.017453292F * armorStand.getRightLegPose().getZ();
             child.hat.copyFrom(child.head);
         }
+
+        child.setAllVisible(true);
+        HumanoidRendererModifications.applyRemovedBodyParts(child);
     }
 
     enum ConditionContext {

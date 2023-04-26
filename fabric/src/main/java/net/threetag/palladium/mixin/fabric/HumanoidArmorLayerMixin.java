@@ -13,6 +13,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.client.model.ArmorModelManager;
+import net.threetag.palladium.client.renderer.entity.HumanoidRendererModifications;
 import net.threetag.palladium.item.ExtendedArmor;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -101,6 +102,12 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
                 callbackInfo.cancel();
             }
         }
+    }
+
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/layers/HumanoidArmorLayer;setPartVisibility(Lnet/minecraft/client/model/HumanoidModel;Lnet/minecraft/world/entity/EquipmentSlot;)V", shift = At.Shift.AFTER),
+            method = "renderArmorPiece")
+    private void renderArmorPieceCopyModelProperties(PoseStack poseStack, MultiBufferSource buffer, T livingEntity, EquipmentSlot slot, int i, A model, CallbackInfo ci) {
+        HumanoidRendererModifications.applyRemovedBodyParts(model);
     }
 
     private ResourceLocation getTexture(ItemStack stack, LivingEntity entity, EquipmentSlot slot, String type, @Nullable ArmorModelManager.Handler handler) {

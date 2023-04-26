@@ -97,7 +97,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.PROJECTILE, "Projectile");
             this.addAbility(Abilities.SKIN_CHANGE, "Skin Change");
             this.addAbility(Abilities.AIM, "Aim");
-            this.addAbility(Abilities.HIDE_BODY_PARTS, "Hide Body Parts");
+            this.addAbility(Abilities.HIDE_BODY_PART, "Hide Body Part");
+            this.addAbility(Abilities.REMOVE_BODY_PART, "Remove Body Part");
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effect");
             this.addAbility(Abilities.GUI_OVERLAY, "Gui Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Show Both Arms");
@@ -266,7 +267,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.PROJECTILE, "Projektil");
             this.addAbility(Abilities.SKIN_CHANGE, "Skin \u00C4nderung");
             this.addAbility(Abilities.AIM, "Zielen");
-            this.addAbility(Abilities.HIDE_BODY_PARTS, "K\u00F6rperteile verstecken");
+            this.addAbility(Abilities.HIDE_BODY_PART, "K\u00F6rperteile verstecken");
+            this.addAbility(Abilities.REMOVE_BODY_PART, "K\u00F6rperteile entfernen");
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(Abilities.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeigen");
@@ -430,7 +432,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.PROJECTILE, "Projektil");
             this.addAbility(Abilities.SKIN_CHANGE, "Skin \u00C4nderung");
             this.addAbility(Abilities.AIM, "Zielen");
-            this.addAbility(Abilities.HIDE_BODY_PARTS, "G\u00F6rperdeile versteggen");
+            this.addAbility(Abilities.HIDE_BODY_PART, "G\u00F6rperdeile versteggen");
+            this.addAbility(Abilities.REMOVE_BODY_PART, "G\u00F6rperdeile entfernen");
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(Abilities.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeijen");

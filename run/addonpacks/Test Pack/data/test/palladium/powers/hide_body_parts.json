@@ -4,7 +4,7 @@
   "background": "minecraft:textures/block/amethyst_block.png",
   "abilities": {
     "hide_cape": {
-      "type": "palladium:hide_body_parts",
+      "type": "palladium:hide_body_part",
       "title": "Hide Cape",
       "body_parts": "cape",
       "hidden": false,
@@ -15,10 +15,25 @@
         }
       }
     },
-    "hide_Arms": {
-      "type": "palladium:hide_body_parts",
+    "hide_arms": {
+      "type": "palladium:hide_body_part",
       "affects_first_person": false,
       "list_index": 1,
+      "hidden": false,
+      "body_parts": [
+        "right_arm",
+        "left_arm"
+      ],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
+    },
+    "remove_arms": {
+      "type": "palladium:remove_body_part",
+      "affects_first_person": false,
+      "list_index": 2,
       "hidden": false,
       "body_parts": [
         "right_arm",

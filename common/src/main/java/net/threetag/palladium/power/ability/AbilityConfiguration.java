@@ -160,6 +160,11 @@ public class AbilityConfiguration {
             AddonPackLog.warning("'interpolated_integer' ability found in power, please use 'animation_timer' instead!");
         }
 
+        if (abilityId.equals(Palladium.id("hide_body_parts"))) {
+            abilityId = Abilities.REMOVE_BODY_PART.getId();
+            AddonPackLog.warning("'hide_body_parts' ability found in power, please use 'remove_body_part' instead!");
+        }
+
         Ability ability = Ability.REGISTRY.get(abilityId);
 
         if (ability == null) {

@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -26,8 +27,6 @@ public class PalladiumAnimationRegistry extends SimpleJsonResourceReloadListener
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private final Map<ResourceLocation, PalladiumAnimation> animations = new LinkedHashMap<>();
     private final List<PalladiumAnimation> animationsSorted = new LinkedList<>();
-    public static float PARTIAL_TICK = 0F;
-    public static float FIRST_PERSON_PARTIAL_TICK = 0F;
     public static boolean SKIP_ANIMATIONS = false;
     public static final PalladiumAnimationRegistry INSTANCE = new PalladiumAnimationRegistry();
 
@@ -86,7 +85,7 @@ public class PalladiumAnimationRegistry extends SimpleJsonResourceReloadListener
 
     public static void applyAnimations(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entity instanceof AbstractClientPlayer player) {
-            forEach(player, model, PalladiumAnimation.FirstPersonContext.NONE, PARTIAL_TICK, (part, data) -> {
+            forEach(player, model, PalladiumAnimation.FirstPersonContext.NONE, Minecraft.getInstance().getFrameTime(), (part, data) -> {
                 part.applyToModelPart(model, data);
             }, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         }
@@ -94,7 +93,7 @@ public class PalladiumAnimationRegistry extends SimpleJsonResourceReloadListener
 
     public static void applyFirstPersonAnimations(PoseStack poseStack, AbstractClientPlayer player, HumanoidModel<?> model, boolean rightArm) {
         PalladiumAnimation.PoseStackResult result = new PalladiumAnimation.PoseStackResult();
-        forEach(player, model, rightArm ? PalladiumAnimation.FirstPersonContext.RIGHT_ARM : PalladiumAnimation.FirstPersonContext.LEFT_ARM, FIRST_PERSON_PARTIAL_TICK, (part, data) -> {
+        forEach(player, model, rightArm ? PalladiumAnimation.FirstPersonContext.RIGHT_ARM : PalladiumAnimation.FirstPersonContext.LEFT_ARM, Minecraft.getInstance().getFrameTime(), (part, data) -> {
             if (rightArm && part == PalladiumAnimation.PlayerModelPart.RIGHT_ARM) {
                 data.apply(result);
             }
@@ -106,7 +105,7 @@ public class PalladiumAnimationRegistry extends SimpleJsonResourceReloadListener
         result.apply(poseStack);
     }
 
-    public static void setupRotations(PlayerRenderer playerRenderer, AbstractClientPlayer player, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+    public static void setupRotations(PlayerRenderer playerRenderer, AbstractClientPlayer player, PoseStack poseStack, float partialTicks) {
         PalladiumAnimation.PoseStackResult result = new PalladiumAnimation.PoseStackResult();
         forEach(player, playerRenderer.getModel(), PalladiumAnimation.FirstPersonContext.NONE, partialTicks, (part, data) -> {
             if (part == PalladiumAnimation.PlayerModelPart.BODY) {

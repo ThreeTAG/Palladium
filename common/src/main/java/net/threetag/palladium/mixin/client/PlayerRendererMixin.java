@@ -28,12 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PlayerRendererMixin {
 
     private float cachedHandShrink = 0F;
-
-    @Inject(at = @At("RETURN"), method = "setupRotations(Lnet/minecraft/client/player/AbstractClientPlayer;Lcom/mojang/blaze3d/vertex/PoseStack;FFF)V")
-    public void setupRotations(AbstractClientPlayer player, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks, CallbackInfo ci) {
-        PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
-        PalladiumAnimationRegistry.setupRotations(playerRenderer, player, poseStack, ageInTicks, rotationYaw, partialTicks);
-    }
+    private BodyPart.ModifiedBodyPartResult cachedHideResult = null;
 
     @Inject(at = @At("HEAD"), method = "renderHand")
     public void renderHandPre(PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, ModelPart rendererArm, ModelPart rendererArmwear, CallbackInfo ci) {
@@ -57,8 +52,16 @@ public class PlayerRendererMixin {
         BodyPart.resetBodyParts(player, playerRenderer.getModel());
 
         // Make them invisible if specified
-        for (BodyPart part : BodyPart.getHiddenBodyParts(player, true)) {
-            part.setVisibility(playerRenderer.getModel(), false);
+        this.cachedHideResult = BodyPart.getModifiedBodyParts(player, true);
+        var bodyPart = rendererArm == playerRenderer.getModel().rightArm ? BodyPart.RIGHT_ARM : BodyPart.LEFT_ARM;
+        var bodyPartOverlay = rendererArm == playerRenderer.getModel().rightArm ? BodyPart.RIGHT_ARM_OVERLAY : BodyPart.LEFT_ARM_OVERLAY;
+
+        if(this.cachedHideResult.isHiddenOrRemoved(bodyPart)) {
+            rendererArm.visible = false;
+        }
+
+        if(this.cachedHideResult.isHiddenOrRemoved(bodyPartOverlay)) {
+            rendererArmwear.visible = false;
         }
 
         // Shrink Overlay
@@ -77,6 +80,12 @@ public class PlayerRendererMixin {
         PlayerRenderer playerRenderer = (PlayerRenderer) (Object) this;
         boolean rightArm = rendererArm == playerRenderer.getModel().rightArm;
 
+        // Visibilities
+        BodyPart.resetBodyParts(player, playerRenderer.getModel());
+        BodyPart.hideRemovedParts(playerRenderer.getModel(), player, this.cachedHideResult);
+        this.cachedHideResult = null;
+
+        // Render accessories
         Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
             for (Accessory accessory : accessories) {
                 if (accessory.isVisible(slot, player, true)) {
@@ -85,14 +94,12 @@ public class PlayerRendererMixin {
             }
         }));
 
+        // Armor model stuff
         ArmorModelManager.renderFirstPerson(player, poseStack, buffer, combinedLight, rendererArm, rightArm);
 
         PackRenderLayerManager.forEachLayer(player, (context, layer) -> {
             layer.renderArm(context, rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, playerRenderer, poseStack, buffer, combinedLight);
         });
-
-        // Reset all, make them visible
-        BodyPart.resetBodyParts(player, playerRenderer.getModel());
 
         RenderUtil.REDIRECT_GET_BUFFER = false;
 

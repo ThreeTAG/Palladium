@@ -13,14 +13,11 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.item.ExtendedArmor;
-import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.power.ability.AbilityUtil;
-import net.threetag.palladium.power.ability.HideBodyPartsAbility;
+import net.threetag.palladium.power.ability.*;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum BodyPart {
 
@@ -106,6 +103,24 @@ public enum BodyPart {
     }
 
     @Environment(EnvType.CLIENT)
+    public static void hideHiddenOrRemovedParts(HumanoidModel<?> model, LivingEntity entity, ModifiedBodyPartResult result) {
+        for (BodyPart part : values()) {
+            if (result.isHiddenOrRemoved(part)) {
+                part.setVisibility(model, false);
+            }
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void hideRemovedParts(HumanoidModel<?> model, LivingEntity entity, ModifiedBodyPartResult result) {
+        for (BodyPart part : values()) {
+            if (result.isRemoved(part)) {
+                part.setVisibility(model, false);
+            }
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
     public static void resetBodyParts(LivingEntity entity, HumanoidModel<?> model) {
         if (entity instanceof Player player) {
             if (player.isSpectator()) {
@@ -131,20 +146,13 @@ public enum BodyPart {
     }
 
     @Environment(EnvType.CLIENT)
-    public static void hideParts(HumanoidModel<?> model, LivingEntity entity) {
-        for (BodyPart part : getHiddenBodyParts(entity, false)) {
-            part.setVisibility(model, false);
-        }
+    public static ModifiedBodyPartResult getModifiedBodyParts(LivingEntity entity, boolean isFirstPerson) {
+        return getModifiedBodyParts(entity, isFirstPerson, true);
     }
 
     @Environment(EnvType.CLIENT)
-    public static List<BodyPart> getHiddenBodyParts(LivingEntity entity, boolean isFirstPerson) {
-        return getHiddenBodyParts(entity, isFirstPerson, true);
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static List<BodyPart> getHiddenBodyParts(LivingEntity entity, boolean isFirstPerson, boolean includeAccessories) {
-        List<BodyPart> bodyParts = new ArrayList<>();
+    public static ModifiedBodyPartResult getModifiedBodyParts(LivingEntity entity, boolean isFirstPerson, boolean includeAccessories) {
+        ModifiedBodyPartResult result = new ModifiedBodyPartResult();
 
         if (entity instanceof Player player) {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
@@ -154,14 +162,14 @@ public enum BodyPart {
                     if (stack.getItem() instanceof ExtendedArmor extendedArmor) {
                         if (extendedArmor.hideSecondPlayerLayer(player, stack, slot)) {
                             if (slot == EquipmentSlot.HEAD) {
-                                bodyParts.add(BodyPart.HEAD_OVERLAY);
+                                result.remove(BodyPart.HEAD_OVERLAY);
                             } else if (slot == EquipmentSlot.CHEST) {
-                                bodyParts.add(BodyPart.CHEST_OVERLAY);
-                                bodyParts.add(BodyPart.RIGHT_ARM_OVERLAY);
-                                bodyParts.add(BodyPart.LEFT_ARM_OVERLAY);
+                                result.remove(BodyPart.CHEST_OVERLAY);
+                                result.remove(BodyPart.RIGHT_ARM_OVERLAY);
+                                result.remove(BodyPart.LEFT_ARM_OVERLAY);
                             } else {
-                                bodyParts.add(BodyPart.RIGHT_LEG_OVERLAY);
-                                bodyParts.add(BodyPart.LEFT_LEG_OVERLAY);
+                                result.remove(BodyPart.RIGHT_LEG_OVERLAY);
+                                result.remove(BodyPart.LEFT_LEG_OVERLAY);
                             }
                         }
                     }
@@ -172,34 +180,73 @@ public enum BodyPart {
                 Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
                     if (!accessories.isEmpty()) {
                         for (BodyPart part : slot.getHiddenBodyParts(player)) {
-                            if (!bodyParts.contains(part)) {
-                                bodyParts.add(part);
-                            }
+                            result.hide(part);
                         }
                     }
                 }));
             }
         }
 
-        for (AbilityEntry bodyPartHide : AbilityUtil.getEnabledEntries(entity, Abilities.HIDE_BODY_PARTS.get())) {
-            if (isFirstPerson ? bodyPartHide.getProperty(HideBodyPartsAbility.AFFECTS_FIRST_PERSON) : true) {
-                for (BodyPart part : bodyPartHide.getProperty(HideBodyPartsAbility.BODY_PARTS)) {
-                    if (!bodyParts.contains(part)) {
-                        bodyParts.add(part);
-                    }
+        for (AbilityEntry bodyPartHide : AbilityUtil.getEnabledEntries(entity, Abilities.HIDE_BODY_PART.get())) {
+            if (isFirstPerson ? bodyPartHide.getProperty(HideBodyPartAbility.AFFECTS_FIRST_PERSON) : true) {
+                for (BodyPart part : bodyPartHide.getProperty(HideBodyPartAbility.BODY_PARTS)) {
+                    result.hide(part);
+                }
+            }
+        }
+
+        for (AbilityEntry bodyPartHide : AbilityUtil.getEnabledEntries(entity, Abilities.REMOVE_BODY_PART.get())) {
+            if (isFirstPerson ? bodyPartHide.getProperty(RemoveBodyPartAbility.AFFECTS_FIRST_PERSON) : true) {
+                for (BodyPart part : bodyPartHide.getProperty(RemoveBodyPartAbility.BODY_PARTS)) {
+                    result.remove(part);
                 }
             }
         }
 
         PackRenderLayerManager.forEachLayer(entity, (context, layer) -> {
             for (BodyPart part : layer.getHiddenBodyParts(entity)) {
-                if (!bodyParts.contains(part)) {
-                    bodyParts.add(part);
-                }
+                result.hide(part);
             }
         });
 
-        return bodyParts;
+        return result;
+    }
+
+    public static class ModifiedBodyPartResult {
+
+        private final Map<BodyPart, Integer> states = new HashMap<>();
+
+        public ModifiedBodyPartResult hide(BodyPart part) {
+            return this.set(part, false);
+        }
+
+        public ModifiedBodyPartResult remove(BodyPart part) {
+            return this.set(part, true);
+        }
+
+        public ModifiedBodyPartResult set(BodyPart part, boolean remove) {
+            int mod = remove ? 2 : 1;
+            if (!this.states.containsKey(part)) {
+                this.states.put(part, mod);
+            } else {
+                this.states.put(part, Math.max(this.states.get(part), mod));
+            }
+
+            return this;
+        }
+
+        public boolean isHiddenOrRemoved(BodyPart bodyPart) {
+            return this.states.containsKey(bodyPart);
+        }
+
+        public boolean isHidden(BodyPart bodyPart) {
+            return this.states.containsKey(bodyPart) && this.states.get(bodyPart) == 1;
+        }
+
+        public boolean isRemoved(BodyPart bodyPart) {
+            return this.states.containsKey(bodyPart) && this.states.get(bodyPart) == 2;
+        }
+
     }
 
 }

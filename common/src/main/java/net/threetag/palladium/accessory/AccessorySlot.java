@@ -81,7 +81,8 @@ public class AccessorySlot {
 
     @Environment(EnvType.CLIENT)
     public boolean wasHidden(Player player, boolean isFirstPerson) {
-        return BodyPart.getHiddenBodyParts(player, isFirstPerson, false).stream().anyMatch(part -> this.getHiddenBodyParts(player).contains(part));
+        var result = BodyPart.getModifiedBodyParts(player, isFirstPerson, false);
+        return this.getHiddenBodyParts(player).stream().anyMatch(result::isHiddenOrRemoved);
     }
 
     public Collection<BodyPart> getHiddenBodyParts(Player player) {

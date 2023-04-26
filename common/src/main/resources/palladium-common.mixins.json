@@ -8,13 +8,11 @@
     "client.AgeableListModelInvoker",
     "client.GameRendererMixin",
     "client.GeoArmorRendererInvoker",
-    "client.HumanoidModelMixin",
     "client.ItemInHandRendererMixin",
     "client.LivingEntityRendererMixin",
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
     "client.PlayerInfoMixin",
-    "client.PlayerModelMixin",
     "client.PlayerRendererMixin",
     "client.RenderTypeMixin",
     "client.SplashManagerMixin"

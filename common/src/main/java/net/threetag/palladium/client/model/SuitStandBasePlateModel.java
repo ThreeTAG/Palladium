@@ -33,12 +33,12 @@ public class SuitStandBasePlateModel extends HumanoidModel<SuitStand> {
     }
 
     @Override
-    protected Iterable<ModelPart> headParts() {
+    public Iterable<ModelPart> headParts() {
         return Collections.emptyList();
     }
 
     @Override
-    protected Iterable<ModelPart> bodyParts() {
+    public Iterable<ModelPart> bodyParts() {
         return ImmutableList.of(this.basePlate);
     }
 

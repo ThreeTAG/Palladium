@@ -67,8 +67,8 @@ gui_overlay</a>
 healing</a>
 </li>
 <li>
-<a href="#palladium:hide_body_parts">
-hide_body_parts</a>
+<a href="#palladium:hide_body_part">
+hide_body_part</a>
 </li>
 <li>
 <a href="#palladium:invisibility">
@@ -85,6 +85,10 @@ player_animation</a>
 <li>
 <a href="#palladium:projectile">
 projectile</a>
+</li>
+<li>
+<a href="#palladium:remove_body_part">
+remove_body_part</a>
 </li>
 <li>
 <a href="#palladium:render_layer">
@@ -1458,9 +1462,9 @@ Example:</h3>
 </div>
 <hr>
 
-<div id="palladium:hide_body_parts">
+<div id="palladium:hide_body_part">
 <h2>
-hide_body_parts</h2>
+hide_body_part</h2>
 <p>
 Allows you to hide an entity's body parts.</p>
 <h3>
@@ -1571,7 +1575,7 @@ body_parts</td>
 <td>
 List</td>
 <td>
-Determines which body parts should vanish. Available parts: [head, head_overlay, chest, chest_overlay, right_arm, right_arm_overlay, left_arm, left_arm_overlay, right_leg, right_leg_overlay, left_leg, left_leg_overlay, cape]</td>
+Determines which body parts should be invisible. Overlaying parts will be still visible. Available parts: [head, head_overlay, chest, chest_overlay, right_arm, right_arm_overlay, left_arm, left_arm_overlay, right_leg, right_leg_overlay, left_leg, left_leg_overlay, cape]</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1594,7 +1598,7 @@ true</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:hide_body_parts","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","body_parts":["right_arm","left_arm"],"affects_first_person":true}</pre>
+{"type":"palladium:hide_body_part","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","body_parts":["right_arm","left_arm"],"affects_first_person":true}</pre>
 </div>
 <hr>
 
@@ -2203,6 +2207,146 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:projectile","icon":"minecraft:snowball","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","entity_type":"minecraft:snowball","entity_data":"null","inaccuracy":0.0,"velocity":1.5,"swinging_arm":"main_arm","damage_from_player":false}</pre>
+</div>
+<hr>
+
+<div id="palladium:remove_body_part">
+<h2>
+remove_body_part</h2>
+<p>
+Allows you to remove an entity's body parts.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+body_parts</td>
+<td>
+List</td>
+<td>
+Determines which body parts should be completely removed. Available parts: [head, head_overlay, chest, chest_overlay, right_arm, right_arm_overlay, left_arm, left_arm_overlay, right_leg, right_leg_overlay, left_leg, left_leg_overlay, cape]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+[right_arm, left_arm]</td>
+</tr>
+<tr>
+<td>
+affects_first_person</td>
+<td>
+Boolean</td>
+<td>
+Determines if your first person arm should disappear aswell (if it's disabled)</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:remove_body_part","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","body_parts":["right_arm","left_arm"],"affects_first_person":true}</pre>
 </div>
 <hr>
 
