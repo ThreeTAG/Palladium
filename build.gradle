@@ -123,6 +123,11 @@ allprojects {
             name = 'Gecko Lib'
             url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
         }
+
+        // Condensed Creative
+        maven {
+            url = 'https://maven.wispforest.io'
+        }
     }
 
     java {

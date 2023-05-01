@@ -1,5 +1,6 @@
 package net.threetag.palladium.item;
 
+import net.minecraft.Util;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -14,6 +15,8 @@ public class SuitSet {
     public static final PalladiumRegistry<SuitSet> REGISTRY = PalladiumRegistry.create(SuitSet.class, Palladium.id("suit_sets"));
 
     private final Supplier<Item> mainHand, offHand, helmet, chestplate, leggings, boots;
+    @Nullable
+    private String descriptionId;
 
     public SuitSet(@Nullable Supplier<Item> mainHand, @Nullable Supplier<Item> offHand, @Nullable Supplier<Item> helmet, @Nullable Supplier<Item> chestplate, @Nullable Supplier<Item> leggings, @Nullable Supplier<Item> boots) {
         this.mainHand = mainHand;
@@ -22,6 +25,18 @@ public class SuitSet {
         this.chestplate = chestplate;
         this.leggings = leggings;
         this.boots = boots;
+    }
+
+    public String getDescriptionId() {
+        return this.getOrCreateDescriptionId();
+    }
+
+    protected String getOrCreateDescriptionId() {
+        if (this.descriptionId == null) {
+            this.descriptionId = Util.makeDescriptionId("suitset", REGISTRY.getKey(this));
+        }
+
+        return this.descriptionId;
     }
 
     @Nullable

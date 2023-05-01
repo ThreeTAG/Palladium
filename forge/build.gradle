@@ -89,6 +89,9 @@ dependencies {
     // Smooth Boot (makes game crash for whatever reason)
 //    modRuntimeOnly "curse.maven:smoothboot-633412:${rootProject.smoothboot_forge_version}"
 
+    // Condensed Creative
+    modCompileOnly "io.wispforest:condensed_creative-forge:${rootProject.condensed_creative_version}"
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }

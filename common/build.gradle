@@ -34,6 +34,9 @@ dependencies {
 
     // Forge Config API Port
     modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
+
+    // Condensed Creative
+    modCompileOnly "io.wispforest:condensed_creative:${rootProject.condensed_creative_version}"
 }
 
 publishing {

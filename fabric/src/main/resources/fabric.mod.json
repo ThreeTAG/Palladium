@@ -23,6 +23,9 @@
     ],
     "cardinal-components": [
       "net.threetag.palladium.components.fabric.PalladiumComponents"
+    ],
+    "condensed_creative": [
+      "net.threetag.palladium.compat.condensedcreative.CondensedCreativeCompat"
     ]
   },
   "mixins": [
