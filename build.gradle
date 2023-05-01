@@ -40,6 +40,7 @@ allprojects {
     }
 
     repositories {
+        // KubeJS / Rhino
         maven {
             // saps.dev Maven (KubeJS and Rhino)
             url = 'https://maven.saps.dev/minecraft'
@@ -48,10 +49,12 @@ allprojects {
             }
         }
 
+        // ThreeTAG
         maven {
             url 'https://repo.repsy.io/mvn/lucraft/threetag'
         }
 
+        // Parchment
         maven {
             url = 'https://maven.parchmentmc.net/'
             content {
@@ -59,6 +62,7 @@ allprojects {
             }
         }
 
+        // CurseMaven
         maven {
             url = 'https://www.cursemaven.com'
             content {
@@ -66,45 +70,43 @@ allprojects {
             }
         }
 
+        // Trinkets
         maven {
             url = 'https://maven.terraformersmc.com/releases/'
         }
 
+        // Architectury / REI
         maven {
             url = 'https://maven.shedaniel.me'
         }
 
+        // JEI
         maven {
             url = 'https://dvs1.progwml6.com/files/maven/'
         }
 
+        // Cardinal Components
         maven {
             name = 'Ladysnake Mods'
             url = 'https://ladysnake.jfrog.io/artifactory/mods'
         }
 
+        // Curios
         maven {
             url = 'https://maven.theillusivec4.top/'
         }
 
-        maven {
-            name = 'TerraformersMC'
-            url = 'https://maven.terraformersmc.com/'
-        }
-
-        maven {
-            name = 'Ladysnake Libs'
-            url = 'https://ladysnake.jfrog.io/artifactory/mods'
-        }
-
+        // Ingredient Extension API
         maven {
             url = 'https://maven.blamejared.com'
         }
 
+        // JitPack
         maven {
             url = 'https://jitpack.io'
         }
 
+        // ForgeConfigAPI Port
         maven {
             name = "Fuzs Mod Resources"
             url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
@@ -116,6 +118,7 @@ allprojects {
             url = 'https://maven.kosmx.dev/'
         }
 
+        // GeckoLib
         maven {
             name = 'Gecko Lib'
             url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
