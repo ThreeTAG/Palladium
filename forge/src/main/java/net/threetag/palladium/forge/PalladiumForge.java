@@ -104,7 +104,9 @@ public class PalladiumForge {
 
     @SubscribeEvent
     public static void packFinder(AddPackFindersEvent e) {
-        e.addRepositorySource(AddonPackManager.getInstance().getWrappedPackFinder());
+        if (e.getPackType() != AddonPackManager.getPackType()) {
+            e.addRepositorySource(AddonPackManager.getInstance().getWrappedPackFinder());
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

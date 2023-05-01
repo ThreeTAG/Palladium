@@ -10,9 +10,10 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
 import net.threetag.palladium.entity.BodyPart;
+import net.threetag.palladium.mixin.client.AgeableListModelInvoker;
 import net.threetag.palladium.power.ability.ShrinkBodyOverlayAbility;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"rawtypes"})
 public class HumanoidRendererModifications {
 
     private static float CACHED_SHRINK = 0F;
@@ -21,7 +22,9 @@ public class HumanoidRendererModifications {
 
     public static void preSetup(LivingEntityRenderer renderer, LivingEntity entity, HumanoidModel model, PoseStack poseStack, float partialTicks) {
         // reset poses
-        PalladiumAnimationRegistry.resetPoses(model.headParts(), model.bodyParts());
+        if(model instanceof AgeableListModelInvoker invoker) {
+            PalladiumAnimationRegistry.resetPoses(invoker.invokeHeadParts(), invoker.invokeBodyParts());
+        }
 
         // rotate player model
         if (renderer instanceof PlayerRenderer playerRenderer && entity instanceof AbstractClientPlayer player) {
