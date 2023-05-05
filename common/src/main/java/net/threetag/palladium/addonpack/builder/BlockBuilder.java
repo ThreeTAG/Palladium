@@ -22,6 +22,7 @@ public class BlockBuilder extends AddonBuilder<Block> {
     private float destroyTime;
     private float explosionResistance;
     private boolean noOcclusion = false;
+    private boolean requiresCorrectToolForDrops = false;
     private String renderType = null;
 
     public BlockBuilder(ResourceLocation id, JsonObject json) {
@@ -42,6 +43,10 @@ public class BlockBuilder extends AddonBuilder<Block> {
 
         if (this.noOcclusion) {
             properties.noOcclusion();
+        }
+
+        if (this.requiresCorrectToolForDrops) {
+            properties.requiresCorrectToolForDrops();
         }
 
         IAddonBlock block = this.typeSerializer != null ? this.typeSerializer.parse(this.json, properties) : new AddonBlock(properties);
@@ -88,6 +93,11 @@ public class BlockBuilder extends AddonBuilder<Block> {
 
     public BlockBuilder noOcclusion() {
         this.noOcclusion = true;
+        return this;
+    }
+
+    public BlockBuilder requiresCorrectToolForDrops() {
+        this.requiresCorrectToolForDrops = true;
         return this;
     }
 

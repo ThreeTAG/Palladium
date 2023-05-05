@@ -63,6 +63,10 @@ public class BlockParser extends AddonParser<Block> {
             builder.noOcclusion();
         }
 
+        if (GsonHelper.getAsBoolean(json, "requires_correct_tool_for_drops", false)) {
+            builder.requiresCorrectToolForDrops();
+        }
+
         if (GsonHelper.getAsBoolean(json, "register_item", true)) {
             AddonPackManager.ITEM_PARSER.autoRegisteredBlockItems.put(id, GsonUtil.getAsResourceLocation(json, "creative_mode_tab", null));
         }
@@ -114,6 +118,9 @@ public class BlockParser extends AddonParser<Block> {
                 .fallback("solid").exampleJson(new JsonPrimitive("solid"));
         builder.addProperty("no_occlusion", Boolean.class)
                 .description("Necessary to enable if your block has transparency, like glass")
+                .fallback(false).exampleJson(new JsonPrimitive(false));
+        builder.addProperty("requires_correct_tool_for_drops", Boolean.class)
+                .description("Enable this if your block can only be mined with the correct tool. Requires the tags to be set up!")
                 .fallback(false).exampleJson(new JsonPrimitive(false));
 
         builder.addProperty("register_item", Boolean.class)

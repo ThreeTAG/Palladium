@@ -143,6 +143,18 @@ false</td>
 </tr>
 <tr>
 <td>
+requires_correct_tool_for_drops</td>
+<td>
+Boolean</td>
+<td>
+Enable this if your block can only be mined with the correct tool. Requires the tags to be set up!</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
 register_item</td>
 <td>
 Boolean</td>
@@ -170,7 +182,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"material":"minecraft:stone","material_color":"minecraft:color_blue","sound_type":"minecraft:stone","destroy_time":1.5,"explosion_resistance":1.5,"render_type":"solid","no_occlusion":false,"register_item":true,"creative_mode_tab":"test:test_tab"}</pre>
+{"material":"minecraft:stone","material_color":"minecraft:color_blue","sound_type":"minecraft:stone","destroy_time":1.5,"explosion_resistance":1.5,"render_type":"solid","no_occlusion":false,"requires_correct_tool_for_drops":false,"register_item":true,"creative_mode_tab":"test:test_tab"}</pre>
 </div>
 <hr>
 
