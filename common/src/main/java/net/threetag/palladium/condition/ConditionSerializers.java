@@ -49,9 +49,12 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> IS_ON_FIRE = CONDITION_SERIALIZERS.register("is_on_fire", IsOnFireCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IS_SWIMMING = CONDITION_SERIALIZERS.register("is_swimming", IsSwimmingCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IS_ELYTRA_FLYING = CONDITION_SERIALIZERS.register("is_elytra_flying", IsElytraFlyingCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> IS_HOVERING = CONDITION_SERIALIZERS.register("is_hovering", IsHoveringCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IS_FLYING = CONDITION_SERIALIZERS.register("is_flying", IsFlyingCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IS_LEVITATING = CONDITION_SERIALIZERS.register("is_levitating", IsLevitatingCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IS_FAST_FLYING = CONDITION_SERIALIZERS.register("is_fast_flying", IsFastFlyingCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> IS_HOVERING_OR_FLYING = CONDITION_SERIALIZERS.register("is_hovering_or_flying", IsHoveringOrFlyingCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> IS_HOVERING_OR_LEVITATING = CONDITION_SERIALIZERS.register("is_hovering_or_levitating", IsHoveringOrLevitatingCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IN_WATER = CONDITION_SERIALIZERS.register("in_water", InWaterCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IN_LAVA = CONDITION_SERIALIZERS.register("in_lava", InLavaCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IS_UNDER_WATER = CONDITION_SERIALIZERS.register("is_under_water", IsUnderWaterCondition.Serializer::new);
