@@ -8,7 +8,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.mixin.EntitySelectorOptionsInvoker;
-import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladiumcore.util.Platform;
 
@@ -41,15 +40,7 @@ public class PalladiumEntitySelectorOptions {
             suggestIdentifiersIgnoringNamespace(Palladium.MOD_ID, powers.getIds(), builder);
             return builder.buildFuture();
         });
-        int i = parser.getReader().getCursor();
-        ResourceLocation id = ResourceLocation.read(parser.getReader());
-        Power power = powers.getPower(id);
-        if (power != null) {
-            return id;
-        } else {
-            parser.getReader().setCursor(i);
-            throw SuperpowerCommand.POWER_NOT_FOUND.createWithContext(parser.getReader(), id.toString());
-        }
+        return ResourceLocation.read(parser.getReader());
     }
 
     public static CompletableFuture<Suggestions> suggestIdentifiersIgnoringNamespace(String namespace, Iterable<ResourceLocation> candidates, SuggestionsBuilder builder) {
