@@ -131,6 +131,9 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
 
             if (parentModel instanceof HumanoidModel parentHumanoid) {
                 IPackRenderLayer.copyModelProperties(entity, parentHumanoid, entityModel);
+            } else if (entity instanceof LivingEntity livingEntity) {
+                entityModel.prepareMobModel(livingEntity, limbSwing, limbSwingAmount, partialTicks);
+                entityModel.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             }
 
             // TODO apply enchant glint when item is enchanted
