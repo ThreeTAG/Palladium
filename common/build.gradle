@@ -11,7 +11,7 @@ dependencies {
     modApi "net.threetag:PalladiumCore:${rootProject.palladiumcore_version}"
 
     // Player Animator
-    modImplementation("dev.kosmx.player-anim:player-animation-lib:${rootProject.player_anim_version}")
+    modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_anim_version}")
 
     // GeckoLib
     modImplementation("software.bernie.geckolib:geckolib-forge-1.19:${rootProject.geckolib_version}")

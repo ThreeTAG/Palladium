@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
+import net.threetag.palladium.client.model.ExtraAnimatedModel;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
@@ -50,6 +51,10 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
 
             if (entityModel instanceof HumanoidModel entityHumanoidModel && parentModel instanceof HumanoidModel parentHumanoid) {
                 IPackRenderLayer.copyModelProperties(entity, parentHumanoid, entityHumanoidModel);
+            }
+
+            if (entityModel instanceof ExtraAnimatedModel extra) {
+                extra.extraAnimations(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks);
             }
 
             // TODO apply enchant glint when item is enchanted

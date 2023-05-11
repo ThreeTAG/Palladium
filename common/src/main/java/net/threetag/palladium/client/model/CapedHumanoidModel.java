@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.function.Function;
 
-public class CapedHumanoidModel<T extends LivingEntity> extends HumanoidModel<T> {
+public class CapedHumanoidModel<T extends LivingEntity> extends HumanoidModel<T> implements ExtraAnimatedModel<T> {
 
     public final ModelPart cape;
 
@@ -27,7 +27,11 @@ public class CapedHumanoidModel<T extends LivingEntity> extends HumanoidModel<T>
     @Override
     public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
         super.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
+        this.extraAnimations(entity, limbSwing, limbSwingAmount, 0, 0, 0, partialTicks);
+    }
 
+    @Override
+    public void extraAnimations(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float partialTicks) {
         if (entity instanceof Player player) {
             double d0 = Mth.lerp(partialTicks, player.xCloakO, player.xCloak) - Mth.lerp(partialTicks, entity.xo, entity.getX());
             double d1 = Mth.lerp(partialTicks, player.yCloakO, player.yCloak) - Mth.lerp(partialTicks, entity.yo, entity.getY());
@@ -50,5 +54,4 @@ public class CapedHumanoidModel<T extends LivingEntity> extends HumanoidModel<T>
             this.cape.xRot = (float) Math.toRadians(rotation + 10F);
         }
     }
-
 }
