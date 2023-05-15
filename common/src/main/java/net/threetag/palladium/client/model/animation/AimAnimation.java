@@ -1,9 +1,9 @@
 package net.threetag.palladium.client.model.animation;
 
-import dev.kosmx.playerAnim.core.util.Ease;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.threetag.palladium.power.ability.AimAbility;
+import net.threetag.palladium.util.Easing;
 
 public class AimAnimation extends PalladiumAnimation {
 
@@ -26,13 +26,13 @@ public class AimAnimation extends PalladiumAnimation {
                         .setXRot((float) -Math.toRadians(20))
                         .setYRot((float) -Math.toRadians(27))
                         .setZRot((float) -Math.toRadians(30))
-                        .animate(Ease.INOUTSINE, right);
+                        .animate(Easing.INOUTSINE, right);
             } else {
                 builder.get(PlayerModelPart.RIGHT_ARM)
                         .setXRot((float) (model.head.xRot - Math.PI / 2F))
                         .setYRot(model.head.yRot)
                         .setZRot(model.head.zRot)
-                        .animate(Ease.INOUTSINE, right);
+                        .animate(Easing.INOUTSINE, right);
             }
         }
 
@@ -45,13 +45,13 @@ public class AimAnimation extends PalladiumAnimation {
                         .setXRot((float) -Math.toRadians(20))
                         .setYRot((float) Math.toRadians(27))
                         .setZRot((float) Math.toRadians(30))
-                        .animate(Ease.INOUTSINE, left);
+                        .animate(Easing.INOUTSINE, left);
             } else {
                 builder.get(PlayerModelPart.LEFT_ARM)
                         .setXRot((float) (model.head.xRot - Math.PI / 2F))
                         .setYRot(model.head.yRot)
                         .setZRot(model.head.zRot)
-                        .animate(Ease.INOUTSINE, left);
+                        .animate(Easing.INOUTSINE, left);
             }
         }
     }

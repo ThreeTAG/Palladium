@@ -1,7 +1,5 @@
 package net.threetag.palladium.compat.kubejs;
 
-import dev.kosmx.playerAnim.core.util.Ease;
-import dev.kosmx.playerAnim.core.util.Easing;
 import dev.latvian.mods.kubejs.BuilderBase;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
@@ -24,6 +22,7 @@ import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.power.SuperpowerUtil;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.util.Easing;
 import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 
 public class PalladiumKubeJSPlugin extends KubeJSPlugin {
@@ -77,7 +76,7 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
     @Override
     public void registerTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
         if (type == ScriptType.CLIENT) {
-            typeWrappers.registerSimple(Ease.class, o -> Easing.easeFromString(o.toString()));
+            typeWrappers.registerSimple(Easing.class, o -> Easing.fromString(o.toString()));
             typeWrappers.registerSimple(PalladiumAnimation.PlayerModelPart.class, o -> PalladiumAnimation.PlayerModelPart.fromName(o.toString()));
         }
     }

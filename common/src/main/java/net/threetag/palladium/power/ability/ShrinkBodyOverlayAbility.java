@@ -1,8 +1,7 @@
 package net.threetag.palladium.power.ability;
 
-import dev.kosmx.playerAnim.core.util.Ease;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.client.model.animation.AnimationUtil;
+import net.threetag.palladium.util.Easing;
 
 public class ShrinkBodyOverlayAbility extends AnimationTimerAbility {
 
@@ -16,7 +15,7 @@ public class ShrinkBodyOverlayAbility extends AnimationTimerAbility {
             }
         }
 
-        return AnimationUtil.ease(Ease.INOUTSINE, scale);
+        return Easing.INOUTSINE.apply(scale);
     }
 
     @Override

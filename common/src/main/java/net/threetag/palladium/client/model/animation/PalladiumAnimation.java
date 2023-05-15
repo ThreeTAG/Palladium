@@ -2,8 +2,6 @@ package net.threetag.palladium.client.model.animation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import dev.kosmx.playerAnim.core.util.Ease;
-import dev.kosmx.playerAnim.core.util.Easing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -11,6 +9,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.HumanoidArm;
+import net.threetag.palladium.util.Easing;
 
 import java.util.*;
 
@@ -315,8 +314,8 @@ public class PalladiumAnimation {
         /**
          * <a href="https://easings.net/#">All available easings</a>
          */
-        public PartAnimationData animate(Ease ease, float animationProgress) {
-            return this.multiplier(Easing.easingFromEnum(ease, animationProgress));
+        public PartAnimationData animate(Easing ease, float animationProgress) {
+            return this.multiplier(ease.apply(animationProgress));
         }
 
         public void apply(ModelPart modelPart) {

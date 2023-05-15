@@ -1,6 +1,5 @@
 package net.threetag.palladium.client.model.animation;
 
-import dev.kosmx.playerAnim.core.util.Ease;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
@@ -10,6 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.entity.FlightHandler;
 import net.threetag.palladium.entity.PalladiumPlayerExtension;
+import net.threetag.palladium.util.Easing;
 
 @Environment(EnvType.CLIENT)
 public class HoveringAnimation extends PalladiumAnimation {
@@ -50,7 +50,7 @@ public class HoveringAnimation extends PalladiumAnimation {
                 .resetZRot()
                 .setYRotDegrees(7.5F)
                 .setZRotDegrees(7.5F - hover * 2.5F)
-                .animate(Ease.OUTCIRC, animationProgress);
+                .animate(Easing.OUTCIRC, animationProgress);
 
         builder.get(PlayerModelPart.LEFT_ARM)
                 .resetXRot()
@@ -58,19 +58,19 @@ public class HoveringAnimation extends PalladiumAnimation {
                 .resetZRot()
                 .setYRotDegrees(-7.5F)
                 .setZRotDegrees(-7.5F + hover * 2.5F)
-                .animate(Ease.OUTCIRC, animationProgress);
+                .animate(Easing.OUTCIRC, animationProgress);
 
         builder.get(PlayerModelPart.RIGHT_LEG)
                 .setXRotDegrees(2.5F - hover * 5F)
                 .setYRotDegrees(7.5F)
                 .setZRotDegrees(2.5F)
-                .animate(Ease.OUTCIRC, animationProgress);
+                .animate(Easing.OUTCIRC, animationProgress);
 
         builder.get(PlayerModelPart.LEFT_LEG)
                 .setXRotDegrees(-2.5F + hover * 5F)
                 .setYRotDegrees(-7.5F)
                 .setZRotDegrees(-2.5F)
-                .animate(Ease.OUTCIRC, animationProgress);
+                .animate(Easing.OUTCIRC, animationProgress);
     }
 
     public void animateHeroic(Builder builder, AbstractClientPlayer player, float animationProgress, float partialTicks) {
@@ -83,7 +83,7 @@ public class HoveringAnimation extends PalladiumAnimation {
                 .setXRotDegrees(-2.5F)
                 .setYRotDegrees(10F)
                 .setZRotDegrees(7.5F - hover * 2.5F)
-                .animate(Ease.OUTCIRC, animationProgress);
+                .animate(Easing.OUTCIRC, animationProgress);
 
         builder.get(PlayerModelPart.LEFT_ARM)
                 .resetXRot()
@@ -92,7 +92,7 @@ public class HoveringAnimation extends PalladiumAnimation {
                 .setXRotDegrees(5F)
                 .setYRotDegrees(-10F)
                 .setZRotDegrees(-7.5F + hover * 2.5F)
-                .animate(Ease.OUTCIRC, animationProgress);
+                .animate(Easing.OUTCIRC, animationProgress);
 
         builder.get(PlayerModelPart.RIGHT_LEG)
                 .setX(-2.9F)
@@ -101,13 +101,13 @@ public class HoveringAnimation extends PalladiumAnimation {
                 .setXRotDegrees(20F - hover * 5F)
                 .setYRotDegrees(15F)
                 .setZRotDegrees(-5F)
-                .animate(Ease.OUTCIRC, animationProgress);
+                .animate(Easing.OUTCIRC, animationProgress);
 
         builder.get(PlayerModelPart.LEFT_LEG)
                 .setXRotDegrees(2.5F + hover * 5F)
                 .setYRotDegrees(0F)
                 .setZRotDegrees(-2F)
-                .animate(Ease.OUTCIRC, animationProgress);
+                .animate(Easing.OUTCIRC, animationProgress);
     }
 
     protected void addAttackAnimation(Builder builder, AbstractClientPlayer player, HumanoidModel<?> model) {

@@ -14,21 +14,14 @@ loom {
     runConfigs.configureEach {
         if (name == "client") {
             runDir = "../run"
+
+            if(System.getenv('MC_USERNAME') && System.getenv('MC_UUID') && System.getenv('MC_ACCESS_TOKEN')) {
+                programArgs '--username', System.getenv('MC_USERNAME'), '--uuid', System.getenv('MC_UUID'), '--accessToken', System.getenv('MC_ACCESS_TOKEN')
+            }
         } else if (name == "server") {
             runDir = "../run/server-forge"
         } else if (name == "data") {
             programArgs '--existing', project(":common").file("src/main/resources/").absolutePath
-        }
-    }
-
-    if (System.getenv('MC_USERNAME') && System.getenv('MC_UUID') && System.getenv('MC_ACCESS_TOKEN')) {
-        runs {
-            create("clientOnline") {
-                inherit getByName("client")
-                runDir = "../run"
-                name("Client: " + System.getenv('MC_USERNAME'))
-                programArgs '--username', System.getenv('MC_USERNAME'), '--uuid', System.getenv('MC_UUID'), '--accessToken', System.getenv('MC_ACCESS_TOKEN')
-            }
         }
     }
 

@@ -1,17 +1,16 @@
 package net.threetag.palladium.client.model.animation;
 
-import dev.kosmx.playerAnim.core.util.Ease;
-import dev.kosmx.playerAnim.core.util.Easing;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.AnimationTimerAbility;
+import net.threetag.palladium.util.Easing;
 
 public class AnimationUtil {
 
-    public static float ease(Ease ease, float value) {
-        return Easing.easingFromEnum(ease, value);
+    public static float ease(Easing ease, float value) {
+        return ease.apply(value);
     }
 
     public static float getAnimationTimerAbilityValue(LivingEntity entity, ResourceLocation powerId, String abilityKey, float partialTicks) {

@@ -1,7 +1,5 @@
 package net.threetag.palladium.client.model.animation;
 
-import dev.kosmx.playerAnim.core.util.Ease;
-import dev.kosmx.playerAnim.core.util.Easing;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
@@ -15,6 +13,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.entity.FlightHandler;
 import net.threetag.palladium.entity.PalladiumPlayerExtension;
+import net.threetag.palladium.util.Easing;
 import net.threetag.palladiumcore.event.ViewportEvents;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -50,30 +49,30 @@ public class FlightAnimation extends PalladiumAnimation implements ViewportEvent
                     .setXRotDegrees(-90.0F - player.getXRot())
                     .setY(0.2F * 16F)
                     .setY2(-1.8F / 2F * 16F)
-                    .animate(Ease.INBACK, anim);
+                    .animate(Easing.INBACK, anim);
 
             builder.get(PlayerModelPart.HEAD)
                     .setXRotDegrees(-90.0F)
                     .setYRotDegrees((float) tilt)
-                    .animate(Ease.INBACK, anim);
+                    .animate(Easing.INBACK, anim);
 
             builder.get(PlayerModelPart.CHEST)
                     .setXRotDegrees(-5F)
                     .setYRotDegrees(0F)
                     .setZRotDegrees(0F)
-                    .animate(Ease.INOUTCUBIC, anim);
+                    .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.RIGHT_ARM)
                     .setXRotDegrees(0F)
                     .setYRotDegrees(17.5F)
                     .setZRotDegrees(5F)
-                    .animate(Ease.INOUTCUBIC, anim);
+                    .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.LEFT_ARM)
                     .setXRotDegrees(0F)
                     .setYRotDegrees(-17.5F)
                     .setZRotDegrees(-5F)
-                    .animate(Ease.INOUTCUBIC, anim);
+                    .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.RIGHT_LEG)
                     .resetX()
@@ -82,7 +81,7 @@ public class FlightAnimation extends PalladiumAnimation implements ViewportEvent
                     .setXRotDegrees(5F)
                     .setYRotDegrees(2.5F)
                     .setZRotDegrees(2.5F)
-                    .animate(Ease.INOUTCUBIC, anim);
+                    .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.LEFT_LEG)
                     .resetX()
@@ -91,10 +90,10 @@ public class FlightAnimation extends PalladiumAnimation implements ViewportEvent
                     .setXRotDegrees(5F)
                     .setYRotDegrees(-2.5F)
                     .setZRotDegrees(-2.5F)
-                    .animate(Ease.INOUTCUBIC, anim);
+                    .animate(Easing.INOUTCUBIC, anim);
 
-            if(FlightHandler.getAnimationType(player) == FlightHandler.FlightAnimationType.HEROIC) {
-                if(player.getMainArm() == HumanoidArm.RIGHT) {
+            if (FlightHandler.getAnimationType(player) == FlightHandler.FlightAnimationType.HEROIC) {
+                if (player.getMainArm() == HumanoidArm.RIGHT) {
                     builder.get(PlayerModelPart.RIGHT_ARM)
                             .setXRotDegrees(-180F)
                             .setYRotDegrees(0F)
@@ -132,7 +131,7 @@ public class FlightAnimation extends PalladiumAnimation implements ViewportEvent
             var vec2 = FlightAnimation.to2D(extension.palladium_getLookAngle((float) partialTick));
             var tilt = Mth.clamp(FlightAnimation.angleBetweenVector(vec1, vec2), -0.5F, 0.5F) * 30F * extension.palladium_getHorizontalSpeed((float) partialTick);
 
-            roll.set((float) tilt * Easing.easingFromEnum(Ease.INOUTCUBIC, anim));
+            roll.set((float) tilt * Easing.INOUTCUBIC.apply(anim));
         }
     }
 }
