@@ -72,7 +72,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
         ItemStack itemStack = livingEntity.getItemBySlot(equipmentSlot);
         this.cachedStack = itemStack;
 
-        if (!itemStack.isEmpty()) {
+        if (!itemStack.isEmpty() && itemStack.getItem() instanceof ArmorItem) {
             ArmorItem armorItem = (ArmorItem) itemStack.getItem();
             ArmorModelManager.Handler handler = ArmorModelManager.get(itemStack.getItem());
 
