@@ -14,19 +14,12 @@ loom {
     runConfigs.configureEach {
         if (name == "client") {
             runDir = "../run"
-        } else if (name == "server")
-            runDir = "../run/server-fabric"
-    }
 
-    if (System.getenv('MC_USERNAME') && System.getenv('MC_UUID') && System.getenv('MC_ACCESS_TOKEN')) {
-        runs {
-            clientOnline {
-                inherit client
-                runDir = "../run"
-                configName = "Client: " + System.getenv('MC_USERNAME')
+            if (System.getenv('MC_USERNAME') && System.getenv('MC_UUID') && System.getenv('MC_ACCESS_TOKEN')) {
                 programArgs '--username', System.getenv('MC_USERNAME'), '--uuid', System.getenv('MC_UUID'), '--accessToken', System.getenv('MC_ACCESS_TOKEN')
             }
-        }
+        } else if (name == "server")
+            runDir = "../run/server-fabric"
     }
 }
 
@@ -51,6 +44,8 @@ dependencies {
     modImplementation("software.bernie.geckolib:geckolib-fabric-1.19:${rootProject.geckolib_version}")
 
     // Forge Config API Port
+    implementation 'com.electronwill.night-config:core:3.6.5'
+    implementation 'com.electronwill.night-config:toml:3.6.5'
     modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
     include "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
 
