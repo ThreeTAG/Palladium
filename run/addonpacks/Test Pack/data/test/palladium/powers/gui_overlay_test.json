@@ -5,7 +5,6 @@
     "top_left": {
       "type": "palladium:gui_overlay",
       "title": "Top Left",
-      "alignment": "top_left",
       "hidden": false,
       "conditions": {
         "enabling": {
@@ -17,6 +16,8 @@
       "type": "palladium:gui_overlay",
       "title": "Center",
       "alignment": "center",
+      "translate": [0, 0, -30],
+      "rotate": [0, 0, 45],
       "hidden": false,
       "conditions": {
         "enabling": {
@@ -50,6 +51,7 @@
       "type": "palladium:gui_overlay",
       "title": "Stretched",
       "alignment": "stretch",
+      "translate": [0, 0, 10],
       "hidden": false,
       "conditions": {
         "enabling": {

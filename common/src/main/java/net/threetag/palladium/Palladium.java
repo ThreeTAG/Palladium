@@ -30,7 +30,6 @@ import net.threetag.palladium.sound.PalladiumSoundEvents;
 import net.threetag.palladium.util.SupporterHandler;
 import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.icon.IconSerializers;
-import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperties;
 import net.threetag.palladium.world.PalladiumConfiguredFeatures;
 import net.threetag.palladium.world.PalladiumFeatures;
@@ -72,7 +71,6 @@ public class Palladium {
 
         PalladiumNetwork.init();
         PalladiumEntityTypes.init();
-        EntityPropertyHandler.init();
         PowerManager.init();
         ItemPowerManager.init();
         SuitSetPowerManager.init();
