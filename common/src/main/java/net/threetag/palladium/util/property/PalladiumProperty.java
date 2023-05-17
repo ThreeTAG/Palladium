@@ -37,7 +37,6 @@ public abstract class PalladiumProperty<T> {
     public SyncType getSyncType() {
         return this.syncType;
     }
-    }
 
     public Type getType() {
         return this.type;
