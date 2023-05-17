@@ -17,4 +17,9 @@ public class EquipmentSlotProperty extends EnumPalladiumProperty<EquipmentSlot> 
     public String getNameFromEnum(EquipmentSlot value) {
         return value.getName();
     }
+
+    @Override
+    public String getPropertyType() {
+        return "equipment_slot";
+    }
 }

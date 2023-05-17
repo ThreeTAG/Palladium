@@ -50,4 +50,9 @@ public class IngredientProperty extends PalladiumProperty<Ingredient> {
     public String getString(Ingredient value) {
         return value.toJson().toString();
     }
+
+    @Override
+    public String getPropertyType() {
+        return "ingredient";
+    }
 }

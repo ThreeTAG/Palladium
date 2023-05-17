@@ -44,4 +44,9 @@ public class StringProperty extends PalladiumProperty<String> {
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         buf.writeUtf((String) value);
     }
+
+    @Override
+    public String getPropertyType() {
+        return "string";
+    }
 }

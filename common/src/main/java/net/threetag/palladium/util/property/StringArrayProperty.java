@@ -81,4 +81,9 @@ public class StringArrayProperty extends PalladiumProperty<String[]> {
     public String getString(String[] value) {
         return value == null ? null : Arrays.toString(value);
     }
+
+    @Override
+    public String getPropertyType() {
+        return "string_array";
+    }
 }

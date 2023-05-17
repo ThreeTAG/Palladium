@@ -44,4 +44,9 @@ public class DoubleProperty extends PalladiumProperty<Double> {
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         buf.writeDouble((Double) value);
     }
+
+    @Override
+    public String getPropertyType() {
+        return "double";
+    }
 }

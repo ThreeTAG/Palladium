@@ -27,19 +27,20 @@ public abstract class PalladiumProperty<T> {
     }
 
     public String getKey() {
-        return key;
+        return this.key;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public SyncType getSyncType() {
-        return syncType;
+        return this.syncType;
+    }
     }
 
     public Type getType() {
-        return type;
+        return this.type;
     }
 
     public PalladiumProperty<T> disablePersistence() {
@@ -117,5 +118,9 @@ public abstract class PalladiumProperty<T> {
         }
 
         return value;
+    }
+
+    public String getPropertyType() {
+        return null;
     }
 }

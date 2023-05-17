@@ -44,4 +44,9 @@ public class FloatProperty extends PalladiumProperty<Float> {
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         buf.writeFloat((Float) value);
     }
+
+    @Override
+    public String getPropertyType() {
+        return "float";
+    }
 }

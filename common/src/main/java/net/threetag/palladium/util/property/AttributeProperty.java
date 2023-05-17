@@ -8,4 +8,9 @@ public class AttributeProperty extends RegistryObjectProperty<Attribute> {
     public AttributeProperty(String key) {
         super(key, Registry.ATTRIBUTE);
     }
+
+    @Override
+    public String getPropertyType() {
+        return "attribute";
+    }
 }

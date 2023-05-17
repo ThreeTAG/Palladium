@@ -44,4 +44,9 @@ public class BooleanProperty extends PalladiumProperty<Boolean> {
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         buf.writeBoolean((Boolean) value);
     }
+
+    @Override
+    public String getPropertyType() {
+        return "boolean";
+    }
 }

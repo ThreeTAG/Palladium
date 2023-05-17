@@ -7,6 +7,7 @@ import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladiumcore.network.MessageType;
 import net.threetag.palladiumcore.network.NetworkManager;
 import net.threetag.palladiumcore.util.DataSyncUtil;
@@ -54,6 +55,15 @@ public class PalladiumNetwork {
                 var opt = Accessory.getPlayerData(serverPlayer);
                 opt.ifPresent(accessoryPlayerData -> consumer.accept(new SyncAccessoriesMessage(serverPlayer.getId(), accessoryPlayerData.accessories)));
             }
+        });
+
+        // Properties
+        DataSyncUtil.registerEntitySync((entity, consumer) -> {
+            EntityPropertyHandler.getHandler(entity).ifPresent(properties -> {
+                properties.values().forEach((palladiumProperty, o) -> {
+                    consumer.accept(new SyncPropertyMessage(entity.getId(), palladiumProperty, o));
+                });
+            });
         });
     }
 }

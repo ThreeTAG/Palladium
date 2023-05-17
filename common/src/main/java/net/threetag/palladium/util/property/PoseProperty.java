@@ -19,4 +19,9 @@ public class PoseProperty extends EnumPalladiumProperty<Pose> {
     public String getNameFromEnum(Pose value) {
         return value.name().toLowerCase(Locale.ROOT);
     }
+
+    @Override
+    public String getPropertyType() {
+        return "pose";
+    }
 }

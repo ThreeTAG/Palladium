@@ -8,4 +8,9 @@ public class SuitSetPropertyPalladium extends PalladiumRegistryObjectProperty<Su
         super(key, SuitSet.REGISTRY);
     }
 
+    @Override
+    public String getPropertyType() {
+        return "suit_set";
+    }
+
 }

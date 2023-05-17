@@ -45,4 +45,9 @@ public class ResourceLocationProperty extends PalladiumProperty<ResourceLocation
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         buf.writeResourceLocation((ResourceLocation) value);
     }
+
+    @Override
+    public String getPropertyType() {
+        return "resource_location";
+    }
 }

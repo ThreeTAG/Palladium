@@ -53,4 +53,9 @@ public class CompoundTagProperty extends PalladiumProperty<CompoundTag> {
     public String getString(CompoundTag value) {
         return value == null ? null : this.toJSON(value).toString();
     }
+
+    @Override
+    public String getPropertyType() {
+        return "compound_tag";
+    }
 }

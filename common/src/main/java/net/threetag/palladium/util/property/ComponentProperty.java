@@ -44,4 +44,9 @@ public class ComponentProperty extends PalladiumProperty<Component> {
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         buf.writeComponent((Component) value);
     }
+
+    @Override
+    public String getPropertyType() {
+        return "component";
+    }
 }

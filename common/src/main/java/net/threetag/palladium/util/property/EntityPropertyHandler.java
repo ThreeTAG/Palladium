@@ -5,7 +5,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.network.SyncPropertyMessage;
-import net.threetag.palladiumcore.event.PlayerEvents;
 
 import java.util.Optional;
 
@@ -37,42 +36,5 @@ public class EntityPropertyHandler extends PropertyManager implements PropertyMa
                 new SyncPropertyMessage(this.entity.getId(), property, newValue).send(serverPlayer);
             }
         }
-    }
-
-    public static void init() {
-        // TODO make use of DataSyncUtil
-        PlayerEvents.JOIN.register(player -> {
-            if (player instanceof ServerPlayer serverPlayer) {
-                getHandler(player).ifPresent(handler -> {
-                    handler.values().forEach((palladiumProperty, o) -> {
-                        new SyncPropertyMessage(player.getId(), palladiumProperty, o).send(serverPlayer);
-                    });
-                });
-            }
-        });
-
-        PlayerEvents.START_TRACKING.register((tracker, target) -> {
-            if (tracker instanceof ServerPlayer serverPlayer) {
-                getHandler(target).ifPresent(handler -> {
-                    handler.values().forEach((palladiumProperty, o) -> new SyncPropertyMessage(target.getId(), palladiumProperty, o).send(serverPlayer));
-                });
-            }
-        });
-
-        PlayerEvents.RESPAWN.register((player, endConquered) -> {
-            if (player instanceof ServerPlayer serverPlayer) {
-                getHandler(player).ifPresent(handler -> {
-                    handler.values().forEach((palladiumProperty, o) -> new SyncPropertyMessage(player.getId(), palladiumProperty, o).sendToTrackingAndSelf(serverPlayer));
-                });
-            }
-        });
-
-        PlayerEvents.CHANGED_DIMENSION.register((player, destination) -> {
-            if (player instanceof ServerPlayer serverPlayer) {
-                getHandler(player).ifPresent(handler -> {
-                    handler.values().forEach((palladiumProperty, o) -> new SyncPropertyMessage(player.getId(), palladiumProperty, o).sendToTrackingAndSelf(serverPlayer));
-                });
-            }
-        });
     }
 }

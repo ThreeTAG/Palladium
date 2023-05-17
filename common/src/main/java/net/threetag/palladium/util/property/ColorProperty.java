@@ -79,4 +79,9 @@ public class ColorProperty extends PalladiumProperty<Color> {
         buf.writeInt(color.getBlue());
         buf.writeInt(color.getAlpha());
     }
+
+    @Override
+    public String getPropertyType() {
+        return "color";
+    }
 }

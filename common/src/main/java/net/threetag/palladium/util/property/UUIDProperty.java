@@ -43,4 +43,9 @@ public class UUIDProperty extends PalladiumProperty<UUID> {
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         buf.writeUUID((UUID) value);
     }
+
+    @Override
+    public String getPropertyType() {
+        return "uuid";
+    }
 }

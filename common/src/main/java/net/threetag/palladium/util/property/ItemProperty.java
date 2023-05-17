@@ -8,4 +8,9 @@ public class ItemProperty extends RegistryObjectProperty<Item> {
     public ItemProperty(String key) {
         super(key, Registry.ITEM);
     }
+
+    @Override
+    public String getPropertyType() {
+        return "item";
+    }
 }

@@ -47,4 +47,9 @@ public class IconProperty extends PalladiumProperty<IIcon> {
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         buf.writeNbt(IconSerializer.serializeNBT((IIcon) value));
     }
+
+    @Override
+    public String getPropertyType() {
+        return "icon";
+    }
 }

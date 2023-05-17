@@ -44,4 +44,9 @@ public class IntegerProperty extends PalladiumProperty<Integer> {
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         buf.writeInt((Integer) value);
     }
+
+    @Override
+    public String getPropertyType() {
+        return "integer";
+    }
 }
