@@ -26,6 +26,15 @@ public class AnimationTimerAbility extends Ability {
     }
 
     @Override
+    public void firstTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
+        if (enabled) {
+            var start = entry.getProperty(START_VALUE);
+            entry.setUniqueProperty(VALUE, start);
+            entry.setUniqueProperty(PREV_VALUE, start);
+        }
+    }
+
+    @Override
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         int value = entry.getProperty(VALUE);
         entry.setUniqueProperty(PREV_VALUE, value);

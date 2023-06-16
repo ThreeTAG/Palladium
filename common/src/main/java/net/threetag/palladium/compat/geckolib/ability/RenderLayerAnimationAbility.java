@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.client.renderer.renderlayer.CompoundPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.compat.geckolib.renderlayer.GeckoLayerState;
@@ -15,6 +16,9 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.ResourceLocationProperty;
 import net.threetag.palladium.util.property.StringProperty;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+
+import java.util.Collections;
+import java.util.List;
 
 public class RenderLayerAnimationAbility extends Ability {
 
@@ -44,12 +48,22 @@ public class RenderLayerAnimationAbility extends Ability {
     public void playAnimation(PalladiumLivingEntityExtension entity, AbilityEntry entry) {
         IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RENDER_LAYER));
         if (layer != null) {
-            var state = entity.palladium_getRenderLayerStates().get(layer);
-            if (state instanceof GeckoLayerState gecko) {
-                var controller = gecko.getController(entry.getProperty(CONTROLLER));
-                if (controller != null) {
-                    controller.markNeedsReload();
-                    controller.setAnimation(new AnimationBuilder().addAnimation(entry.getProperty(ANIMATION)));
+            List<IPackRenderLayer> layers;
+
+            if (layer instanceof CompoundPackRenderLayer com) {
+                layers = com.layers();
+            } else {
+                layers = Collections.singletonList(layer);
+            }
+
+            for (IPackRenderLayer renderLayer : layers) {
+                var state = entity.palladium_getRenderLayerStates().get(renderLayer);
+                if (state instanceof GeckoLayerState gecko) {
+                    var controller = gecko.getController(entry.getProperty(CONTROLLER));
+                    if (controller != null) {
+                        controller.markNeedsReload();
+                        controller.setAnimation(new AnimationBuilder().addAnimation(entry.getProperty(ANIMATION)));
+                    }
                 }
             }
         }

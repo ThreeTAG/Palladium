@@ -21,6 +21,10 @@ public class RenderLayerStates {
         List<IPackRenderLayer> layers = new ArrayList<>();
         PackRenderLayerManager.forEachLayer(entity, (context, layer) -> {
             layers.add(layer);
+
+            if (layer instanceof CompoundPackRenderLayer com) {
+                layers.addAll(com.layers());
+            }
         });
 
         // Remove inactive layers
