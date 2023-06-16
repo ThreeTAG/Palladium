@@ -1,7 +1,6 @@
 package net.threetag.palladium.mixin;
 
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -14,8 +13,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(Player.class)
@@ -192,34 +191,36 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
         }
     }
 
-    @Inject(method = "getDimensions", at = @At("HEAD"), cancellable = true)
-    private void getDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> cir) {
+    @ModifyVariable(method = "getDimensions", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+    private Pose getDimensions(Pose pose) {
         var hover = this.palladium_getHoveringAnimation(0);
         var levitation = this.palladium_getLevitationAnimation(0);
         var flight = this.palladium_getFlightAnimation(0);
 
         if (hover > 0F || levitation > 0F || flight > 0F) {
             if (this.flightBoost > 1F) {
-                cir.setReturnValue(EntityDimensions.scalable(0.6F, 0.6F));
+                return Pose.FALL_FLYING;
             } else {
-                cir.setReturnValue(EntityDimensions.scalable(0.6F, 1.8F));
+                return Pose.STANDING;
             }
         }
+        return pose;
     }
 
-    @Inject(method = "getStandingEyeHeight", at = @At("HEAD"), cancellable = true)
-    private void getStandingEyeHeight(Pose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
+    @ModifyVariable(method = "getStandingEyeHeight", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+    private Pose getStandingEyeHeight(Pose pose) {
         var hover = this.palladium_getHoveringAnimation(0);
         var levitation = this.palladium_getLevitationAnimation(0);
         var flight = this.palladium_getFlightAnimation(0);
 
         if (hover > 0F || levitation > 0F || flight > 0F) {
             if (this.flightBoost > 1F) {
-                cir.setReturnValue(0.4F);
+                return Pose.FALL_FLYING;
             } else {
-                cir.setReturnValue(1.62F);
+                return Pose.STANDING;
             }
         }
+        return pose;
     }
 
     @Override

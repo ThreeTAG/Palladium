@@ -38,6 +38,14 @@ public class SizeUtil {
         return 1F;
     }
 
+    public float getEyeHeightScale(Entity entity) {
+        return 1F;
+    }
+
+    public float getEyeHeightScale(Entity entity, float delta) {
+        return 1F;
+    }
+
     public Collection<ResourceLocation> getScaleTypeIds() {
         return Collections.emptyList();
     }

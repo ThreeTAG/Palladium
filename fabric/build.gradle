@@ -80,7 +80,7 @@ dependencies {
 //    modRuntimeOnly "curse.maven:probejs-585406:${rootProject.probejs_fabric_version}"
 
     // Pehkui
-    modImplementation("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {
+    modCompileOnly("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {
         exclude group: "net.fabricmc.fabric-api"
     })
 
