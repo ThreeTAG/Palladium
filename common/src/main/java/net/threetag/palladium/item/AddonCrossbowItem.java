@@ -14,14 +14,16 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.json.GsonUtil;
-import net.threetag.palladiumcore.registry.client.ItemPropertyRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -45,44 +47,6 @@ public class AddonCrossbowItem extends CrossbowItem implements IAddonItem {
         this.useDuration = useDuration;
         this.projectiles = projectiles;
         this.heldProjectiles = heldProjectiles;
-
-        ItemPropertyRegistry.register(
-                this,
-                new ResourceLocation("pull"),
-                (itemStack, clientLevel, livingEntity, i) -> {
-                    if (livingEntity == null) {
-                        return 0.0F;
-                    } else {
-                        return CrossbowItem.isCharged(itemStack)
-                                ? 0.0F
-                                : (float) (itemStack.getUseDuration() - livingEntity.getUseItemRemainingTicks()) / (float) CrossbowItem.getChargeDuration(itemStack);
-                    }
-                }
-        );
-        ItemPropertyRegistry.register(
-                this,
-                new ResourceLocation("pulling"),
-                (itemStack, clientLevel, livingEntity, i) -> livingEntity != null
-                        && livingEntity.isUsingItem()
-                        && livingEntity.getUseItem() == itemStack
-                        && !CrossbowItem.isCharged(itemStack)
-                        ? 1.0F
-                        : 0.0F
-        );
-        ItemPropertyRegistry.register(
-                this,
-                new ResourceLocation("charged"),
-                (itemStack, clientLevel, livingEntity, i) -> livingEntity != null && CrossbowItem.isCharged(itemStack) ? 1.0F : 0.0F
-        );
-        ItemPropertyRegistry.register(
-                this,
-                new ResourceLocation("firework"),
-                (itemStack, clientLevel, livingEntity, i) -> livingEntity != null
-                        && CrossbowItem.isCharged(itemStack)
-                        && CrossbowItem.containsChargedProjectile(itemStack, Items.FIREWORK_ROCKET)
-                        ? 1.0F
-                        : 0.0F
-        );
     }
 
     @Override

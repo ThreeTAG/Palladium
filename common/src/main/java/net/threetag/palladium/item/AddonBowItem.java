@@ -50,20 +50,6 @@ public class AddonBowItem extends BowItem implements IAddonItem {
         this.useDuration = useDuration;
         this.projectiles = projectiles;
         this.heldProjectiles = heldProjectiles;
-
-        ItemPropertyRegistry.register(this, new ResourceLocation("pull"), (itemStack, clientLevel, livingEntity, i) -> {
-            if (livingEntity == null) {
-                return 0.0F;
-            } else {
-                return livingEntity.getUseItem() != itemStack ? 0.0F : (float) (itemStack.getUseDuration() - livingEntity.getUseItemRemainingTicks()) / 20.0F;
-            }
-        });
-
-        ItemPropertyRegistry.register(
-                this,
-                new ResourceLocation("pulling"),
-                (itemStack, clientLevel, livingEntity, i) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack ? 1.0F : 0.0F
-        );
     }
 
     @Override

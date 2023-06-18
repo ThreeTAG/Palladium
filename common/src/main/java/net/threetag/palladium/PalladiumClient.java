@@ -10,11 +10,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
@@ -41,6 +44,8 @@ import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.energy.EnergyHelper;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.event.PalladiumClientEvents;
+import net.threetag.palladium.item.AddonBowItem;
+import net.threetag.palladium.item.AddonCrossbowItem;
 import net.threetag.palladium.item.EnergyItem;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.GuiOverlayAbility;
@@ -79,6 +84,62 @@ public class PalladiumClient {
                     ItemPropertyRegistry.register(item, Palladium.id("charged"), (itemStack, clientLevel, livingEntity, i) -> {
                         return itemStack.getOrCreateTag().getInt("energy") > 0 ? 1F : 0F;
                     });
+                }
+
+                if (item instanceof AddonBowItem) {
+                    ItemPropertyRegistry.register(item, new ResourceLocation("pull"), (itemStack, clientLevel, livingEntity, i) -> {
+                        if (livingEntity == null) {
+                            return 0.0F;
+                        } else {
+                            return livingEntity.getUseItem() != itemStack ? 0.0F : (float) (itemStack.getUseDuration() - livingEntity.getUseItemRemainingTicks()) / 20.0F;
+                        }
+                    });
+
+                    ItemPropertyRegistry.register(
+                            item,
+                            new ResourceLocation("pulling"),
+                            (itemStack, clientLevel, livingEntity, i) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack ? 1.0F : 0.0F
+                    );
+                }
+
+                if (item instanceof AddonCrossbowItem) {
+                    ItemPropertyRegistry.register(
+                            item,
+                            new ResourceLocation("pull"),
+                            (itemStack, clientLevel, livingEntity, i) -> {
+                                if (livingEntity == null) {
+                                    return 0.0F;
+                                } else {
+                                    return CrossbowItem.isCharged(itemStack)
+                                            ? 0.0F
+                                            : (float) (itemStack.getUseDuration() - livingEntity.getUseItemRemainingTicks()) / (float) CrossbowItem.getChargeDuration(itemStack);
+                                }
+                            }
+                    );
+                    ItemPropertyRegistry.register(
+                            item,
+                            new ResourceLocation("pulling"),
+                            (itemStack, clientLevel, livingEntity, i) -> livingEntity != null
+                                    && livingEntity.isUsingItem()
+                                    && livingEntity.getUseItem() == itemStack
+                                    && !CrossbowItem.isCharged(itemStack)
+                                    ? 1.0F
+                                    : 0.0F
+                    );
+                    ItemPropertyRegistry.register(
+                            item,
+                            new ResourceLocation("charged"),
+                            (itemStack, clientLevel, livingEntity, i) -> livingEntity != null && CrossbowItem.isCharged(itemStack) ? 1.0F : 0.0F
+                    );
+                    ItemPropertyRegistry.register(
+                            item,
+                            new ResourceLocation("firework"),
+                            (itemStack, clientLevel, livingEntity, i) -> livingEntity != null
+                                    && CrossbowItem.isCharged(itemStack)
+                                    && CrossbowItem.containsChargedProjectile(itemStack, Items.FIREWORK_ROCKET)
+                                    ? 1.0F
+                                    : 0.0F
+                    );
                 }
             }
         });
