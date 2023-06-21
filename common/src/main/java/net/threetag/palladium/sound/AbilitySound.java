@@ -26,9 +26,9 @@ public class AbilitySound extends AbstractTickableSoundLocationInstance {
 
     @Override
     public void tick() {
-        this.x = this.entity.position().x();
-        this.y = this.entity.position().y();
-        this.z = this.entity.position().z();
+        this.x = this.entity.getX();
+        this.y = this.entity.getEyeY();
+        this.z = this.entity.getZ();
 
         if (this.wasStopped) {
             if (this.volume > 0F) {
