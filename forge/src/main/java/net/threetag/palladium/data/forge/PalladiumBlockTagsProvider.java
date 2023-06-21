@@ -5,6 +5,7 @@ import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.threetag.palladium.Palladium;
@@ -21,6 +22,8 @@ public class PalladiumBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags() {
+        this.tag(PalladiumBlockTags.PREVENTS_INTANGIBILITY).add(Blocks.BEDROCK);
+
         this.tag(BlockTags.BEACON_BASE_BLOCKS).add(LEAD_BLOCK.get(), VIBRANIUM_BLOCK.get());
 
         this.multiLoaderTagMetal(PalladiumBlockTags.ORES, PalladiumBlockTags.Fabric.ORES, PalladiumBlockTags.ORES_LEAD, PalladiumBlockTags.Fabric.ORES_LEAD, LEAD_ORE.get(), DEEPSLATE_LEAD_ORE.get());

@@ -35,6 +35,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> RESTRICT_SLOTS = ABILITIES.register("restrict_slots", RestrictSlotsAbility::new);
     public static final RegistrySupplier<Ability> PLAY_SOUND = ABILITIES.register("play_sound", PlaySoundAbility::new);
     public static final RegistrySupplier<Ability> VIBRATE = ABILITIES.register("vibrate", VibrateAbility::new);
+    public static final RegistrySupplier<Ability> INTANGIBILITY = ABILITIES.register("intangibility", IntangibilityAbility::new);
 
     public static void init() {
 

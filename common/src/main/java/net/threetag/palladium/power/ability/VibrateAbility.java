@@ -40,4 +40,10 @@ public class VibrateAbility extends Ability implements AnimationTimer {
     public boolean isEffect() {
         return true;
     }
+
+    @Override
+    public String getDocumentationDescription() {
+        return "Adds a vibration effect to the player.";
+    }
+
 }

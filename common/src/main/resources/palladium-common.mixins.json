@@ -8,6 +8,7 @@
     "client.AgeableListModelInvoker",
     "client.GameRendererMixin",
     "client.GeoArmorRendererInvoker",
+    "client.IGeoRendererMixin",
     "client.ItemInHandRendererMixin",
     "client.LivingEntityRendererMixin",
     "client.LocalPlayerMixin",
@@ -17,13 +18,14 @@
     "client.PlayerRendererMixin",
     "client.RenderTypeMixin",
     "client.SplashManagerMixin",
-    "client.TextureManagerMixin",
-    "client.IGeoRendererMixin"
+    "client.TextureManagerMixin"
   ],
   "mixins": [
     "AbstractContainerMenuMixin",
     "ArmorStandMixin",
+    "BlockStateBaseMixin",
     "DamageSourceMixin",
+    "EntityMixin",
     "EntitySelectorOptionsInvoker",
     "EntitySelectorParserMixin",
     "LiquidBlockMixin",

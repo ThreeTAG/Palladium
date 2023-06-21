@@ -71,6 +71,10 @@ healing</a>
 hide_body_part</a>
 </li>
 <li>
+<a href="#palladium:intangibility">
+intangibility</a>
+</li>
+<li>
 <a href="#palladium:invisibility">
 invisibility</a>
 </li>
@@ -1635,6 +1639,158 @@ true</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:hide_body_part","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","body_parts":["right_arm","left_arm"],"affects_first_person":true}</pre>
+</div>
+<hr>
+
+<div id="palladium:intangibility">
+<h2>
+intangibility</h2>
+<p>
+Makes the player go through blocks.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar and powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+vertical</td>
+<td>
+Boolean</td>
+<td>
+Makes the player vertically intangible aswell</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+whitelist</td>
+<td>
+TagKey</td>
+<td>
+Tag which includes the block the player can phase through. Leave null for all blocks.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+blacklist</td>
+<td>
+TagKey</td>
+<td>
+Tag which includes the block the player can phase through. Leave null for all blocks.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+palladium:prevents_intangibility</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:intangibility","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","vertical":false,"whitelist":"null","blacklist":"palladium:prevents_intangibility"}</pre>
 </div>
 <hr>
 
@@ -3285,6 +3441,8 @@ Example:</h3>
 <div id="palladium:vibrate">
 <h2>
 vibrate</h2>
+<p>
+Adds a vibration effect to the player.</p>
 <h3>
 Settings:</h3>
 <table>
@@ -3349,7 +3507,7 @@ Determines if the ability is visible in the ability bar and powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-false</td>
+true</td>
 </tr>
 <tr>
 <td>
@@ -3392,7 +3550,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:vibrate","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
+{"type":"palladium:vibrate","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 

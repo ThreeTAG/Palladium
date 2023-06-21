@@ -8,6 +8,8 @@ import net.threetag.palladium.Palladium;
 
 public class PalladiumBlockTags {
 
+    public static final TagKey<Block> PREVENTS_INTANGIBILITY = tag("prevents_intangibility");
+
     public static final TagKey<Block> ORES = forgeTag("ores");
     public static final TagKey<Block> STORAGE_BLOCKS = forgeTag("storage_blocks");
 

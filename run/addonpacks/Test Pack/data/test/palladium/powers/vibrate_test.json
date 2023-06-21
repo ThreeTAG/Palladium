@@ -5,9 +5,22 @@
     "vibrate": {
       "type": "palladium:vibrate",
       "list_index": 0,
+      "hidden": false,
       "conditions": {
         "enabling": {
-          "type": "palladium:held"
+          "type": "palladium:toggle"
+        }
+      }
+    },
+    "intangibility": {
+      "type": "palladium:intangibility",
+      "hidden": true,
+      "vertical": false,
+      "whitelist": "minecraft:beacon_base_blocks",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:ability_enabled",
+          "ability": "vibrate"
         }
       }
     }
