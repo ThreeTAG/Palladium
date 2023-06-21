@@ -31,6 +31,21 @@ public class PalladiumRenderTypes extends RenderType {
             .setLayeringState(VIEW_OFFSET_Z_LAYERING)
             .createCompositeState(true));
 
+    public static final Function<ResourceLocation, RenderType> ARMOR_CUTOUT_NO_CULL_TRANSPARENCY = Util.memoize(
+            resourceLocation -> {
+                CompositeState compositeState = CompositeState.builder()
+                        .setShaderState(RENDERTYPE_ARMOR_CUTOUT_NO_CULL_SHADER)
+                        .setTextureState(new TextureStateShard(resourceLocation, false, false))
+                        .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                        .setCullState(NO_CULL)
+                        .setLightmapState(LIGHTMAP)
+                        .setOverlayState(OVERLAY)
+                        .setLayeringState(VIEW_OFFSET_Z_LAYERING)
+                        .createCompositeState(true);
+                return create("armor_cutout_no_cull_transparency", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, compositeState);
+            }
+    );
+
     public static RenderType getGlowing(ResourceLocation texture) {
         return GLOWING.apply(texture);
     }
