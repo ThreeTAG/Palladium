@@ -1,0 +1,15 @@
+{
+  "name": "Vibrate Test",
+  "icon": "minecraft:sculk_sensor",
+  "abilities": {
+    "vibrate": {
+      "type": "palladium:vibrate",
+      "list_index": 0,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:held"
+        }
+      }
+    }
+  }
+}

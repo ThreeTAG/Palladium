@@ -32,6 +32,11 @@ mutable field net/minecraft/client/model/geom/EntityModelSet roots Ljava/util/Ma
 
 accessible method net/minecraft/client/renderer/GameRenderer loadEffect (Lnet/minecraft/resources/ResourceLocation;)V
 
+accessible field net/minecraft/client/renderer/entity/LivingEntityRenderer layers Ljava/util/List;
+accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer getRenderType (Lnet/minecraft/world/entity/LivingEntity;ZZZ)Lnet/minecraft/client/renderer/RenderType;
+accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer getWhiteOverlayProgress (Lnet/minecraft/world/entity/LivingEntity;F)F
+accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer isBodyVisible (Lnet/minecraft/world/entity/LivingEntity;)Z
+
 accessible method net/minecraft/world/item/CrossbowItem getShootingPower (Lnet/minecraft/world/item/ItemStack;)F
 accessible field net/minecraft/world/item/CrossbowItem startSoundPlayed Z
 accessible field net/minecraft/world/item/CrossbowItem midLoadSoundPlayed Z

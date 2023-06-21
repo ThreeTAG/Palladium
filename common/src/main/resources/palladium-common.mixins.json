@@ -12,11 +12,13 @@
     "client.LivingEntityRendererMixin",
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
+    "client.ModelPartMixin",
     "client.PlayerInfoMixin",
     "client.PlayerRendererMixin",
     "client.RenderTypeMixin",
     "client.SplashManagerMixin",
-    "client.TextureManagerMixin"
+    "client.TextureManagerMixin",
+    "client.IGeoRendererMixin"
   ],
   "mixins": [
     "AbstractContainerMenuMixin",

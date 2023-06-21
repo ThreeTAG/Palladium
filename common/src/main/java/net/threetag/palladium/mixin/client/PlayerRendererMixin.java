@@ -2,6 +2,7 @@ package net.threetag.palladium.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -15,7 +16,9 @@ import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.entity.PalladiumPlayerExtension;
-import net.threetag.palladium.power.ability.ShrinkBodyOverlayAbility;
+import net.threetag.palladium.power.ability.Abilities;
+import net.threetag.palladium.power.ability.AnimationTimer;
+import net.threetag.palladium.util.Easing;
 import net.threetag.palladium.util.RenderUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -65,7 +68,7 @@ public class PlayerRendererMixin {
         }
 
         // Shrink Overlay
-        float scale = ShrinkBodyOverlayAbility.getValue(player);
+        float scale = AnimationTimer.getValue(player, Abilities.SHRINK_BODY_OVERLAY.get(), Minecraft.getInstance().getFrameTime(), Easing.INOUTSINE);
 
         if (scale != 0F) {
             float f = -0.1F * scale;

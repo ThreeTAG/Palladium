@@ -46,7 +46,9 @@ public class PalladiumMixinPlugin implements IMixinConfigPlugin {
 
             if (mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.forge.GeoArmorRendererMixin")
                     || mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.fabric.GeoArmorRendererMixin")
-                    || mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.client.GeoArmorRendererInvoker")) {
+                    || mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.client.GeoArmorRendererInvoker")
+                    || mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.client.IGeoRendererMixin")
+            ) {
                 return HAS_GECKO;
             }
         } catch (Exception ignored) {

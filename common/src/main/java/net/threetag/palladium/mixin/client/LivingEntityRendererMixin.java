@@ -36,7 +36,7 @@ public abstract class LivingEntityRendererMixin {
             method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V")
     private void preRender(LivingEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
         if ((Object) this instanceof LivingEntityRenderer renderer && renderer.getModel() instanceof HumanoidModel model) {
-            HumanoidRendererModifications.preRender(renderer, pEntity, model, pMatrixStack);
+            HumanoidRendererModifications.preRender(renderer, pEntity, model, pMatrixStack, pPartialTicks);
         }
     }
 
@@ -47,6 +47,16 @@ public abstract class LivingEntityRendererMixin {
     private void preLayers(LivingEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
         if ((Object) this instanceof LivingEntityRenderer renderer && renderer.getModel() instanceof HumanoidModel model) {
             HumanoidRendererModifications.preLayers(renderer, pEntity, model, pMatrixStack);
+        }
+    }
+
+    @Inject(at = @At(
+            value = "INVOKE",
+            target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose()V"),
+            method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V")
+    private void postLayers(LivingEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
+        if ((Object) this instanceof LivingEntityRenderer renderer && renderer.getModel() instanceof HumanoidModel model) {
+            HumanoidRendererModifications.postLayers(renderer, pEntity, model, pMatrixStack, pBuffer, pPackedLight, pPartialTicks);
         }
     }
 

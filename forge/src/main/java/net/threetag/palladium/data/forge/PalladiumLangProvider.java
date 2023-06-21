@@ -106,6 +106,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.WATER_WALK, "Water Walk");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Restrict Slots");
             this.addAbility(Abilities.PLAY_SOUND, "Sound");
+            this.addAbility(Abilities.VIBRATE, "Vibrate");
             this.add("ability.geckolib3.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib3.armor_animation", "Gecko Armor Animation");
 
@@ -276,6 +277,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.WATER_WALK, "Auf Wasser Laufen");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(Abilities.PLAY_SOUND, "Sound");
+            this.addAbility(Abilities.VIBRATE, "Vibrieren");
             this.add("ability.geckolib3.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib3.armor_animation", "Gecko Armor Animation");
 
@@ -441,6 +443,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.WATER_WALK, "Uff Wasser Lofen");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(Abilities.PLAY_SOUND, "Sound");
+            this.addAbility(Abilities.VIBRATE, "Vibrieren");
             this.add("ability.geckolib3.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib3.armor_animation", "Gecko Armor Animation");
 

@@ -57,7 +57,7 @@ public class SuitStandRenderer extends LivingEntityRenderer<SuitStand, SuitStand
     }
 
     @Nullable
-    protected RenderType getRenderType(SuitStand livingEntity, boolean bodyVisible, boolean translucent, boolean glowing) {
+    public RenderType getRenderType(SuitStand livingEntity, boolean bodyVisible, boolean translucent, boolean glowing) {
         if (!livingEntity.isMarker()) {
             return super.getRenderType(livingEntity, bodyVisible, translucent, glowing);
         } else {
