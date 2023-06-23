@@ -106,6 +106,11 @@ public class HumanoidRendererModifications {
                     renderer.getModel().renderToBuffer(poseStack, vertexConsumer, packedLight, m, 1.0F, 1.0F, 1.0F, bl2 ? 0.15F : 1.0F);
                 }
 
+                poseStack.popPose();
+                poseStack.pushPose();
+
+                poseStack.translate((rand.nextFloat() - 0.5F) / 7 * vibrate, 0, (rand.nextFloat() - 0.5F) / 7 * vibrate);
+
                 if (!entity.isSpectator()) {
                     for (Object layer : renderer.layers) {
                         if (layer instanceof RenderLayer renderLayer) {
