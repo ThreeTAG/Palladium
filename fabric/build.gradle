@@ -41,13 +41,13 @@ dependencies {
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_anim_version}")
 
     // GeckoLib
-    modImplementation("software.bernie.geckolib:geckolib-fabric-1.19:${rootProject.geckolib_version}")
+    modImplementation("software.bernie.geckolib:geckolib-fabric-1.20:${rootProject.geckolib_version}")
 
     // Forge Config API Port
     implementation 'com.electronwill.night-config:core:3.6.5'
     implementation 'com.electronwill.night-config:toml:3.6.5'
-    modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
-    include "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
+    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
+    include "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
 
     // Cardinal Components
     modApi "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_version}"
@@ -76,16 +76,12 @@ dependencies {
     }
 
     // KubeJS
-    modImplementation "dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}"
-//    modRuntimeOnly "curse.maven:probejs-585406:${rootProject.probejs_fabric_version}"
+//    modImplementation "dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}"
 
     // Pehkui
     modCompileOnly("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {
         exclude group: "net.fabricmc.fabric-api"
     })
-
-    // Smooth Boot
-    modLocalRuntime "curse.maven:smoothboot-415758:${rootProject.smoothboot_fabric_version}"
 
     // Condensed Creative
     modImplementation "io.wispforest:condensed_creative-fabric:${rootProject.condensed_creative_version}"

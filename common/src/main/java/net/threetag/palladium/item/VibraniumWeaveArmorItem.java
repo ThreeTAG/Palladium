@@ -3,6 +3,7 @@ package net.threetag.palladium.item;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.ItemStack;
@@ -10,8 +11,8 @@ import net.threetag.palladium.Palladium;
 
 public class VibraniumWeaveArmorItem extends DyeableArmorItem implements ExtendedArmor {
 
-    public VibraniumWeaveArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
-        super(armorMaterial, equipmentSlot, properties);
+    public VibraniumWeaveArmorItem(ArmorMaterial armorMaterial, ArmorItem.Type type, Properties properties) {
+        super(armorMaterial, type, properties);
     }
 
     @Override

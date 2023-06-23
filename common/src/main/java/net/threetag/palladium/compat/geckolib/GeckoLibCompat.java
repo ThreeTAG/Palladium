@@ -30,8 +30,7 @@ import net.threetag.palladium.compat.geckolib.renderlayer.GeckoRenderLayer;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.util.json.GsonUtil;
-import software.bernie.geckolib3.GeckoLib;
-import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 import java.util.Arrays;
 import java.util.List;

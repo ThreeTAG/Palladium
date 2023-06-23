@@ -14,10 +14,10 @@ dependencies {
     modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_anim_version}")
 
     // GeckoLib
-    modImplementation("software.bernie.geckolib:geckolib-forge-1.19:${rootProject.geckolib_version}")
+    modImplementation("software.bernie.geckolib:geckolib-forge-1.20:${rootProject.geckolib_version}")
 
     // KubeJS
-    modCompileOnly "dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}"
+//    modCompileOnly "dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}"
 
     // Pehkui
     modCompileOnly("com.github.Virtuoel:Pehkui:${rootProject.pehkui_fabric_version}", {
@@ -33,7 +33,7 @@ dependencies {
     })
 
     // Forge Config API Port
-    modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
+    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-common:${rootProject.forge_config_api_port_version}"
 
     // Condensed Creative
     modCompileOnly "io.wispforest:condensed_creative:${rootProject.condensed_creative_version}"

@@ -4,8 +4,8 @@ accessible field net/minecraft/client/model/PlayerModel cloak Lnet/minecraft/cli
 accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
 
 accessible field net/minecraft/client/model/geom/builders/CubeDefinition comment Ljava/lang/String;
-accessible field net/minecraft/client/model/geom/builders/CubeDefinition origin Lcom/mojang/math/Vector3f;
-accessible field net/minecraft/client/model/geom/builders/CubeDefinition dimensions Lcom/mojang/math/Vector3f;
+accessible field net/minecraft/client/model/geom/builders/CubeDefinition origin Lorg/joml/Vector3f;
+accessible field net/minecraft/client/model/geom/builders/CubeDefinition dimensions Lorg/joml/Vector3f;
 accessible field net/minecraft/client/model/geom/builders/CubeDefinition grow Lnet/minecraft/client/model/geom/builders/CubeDeformation;
 accessible field net/minecraft/client/model/geom/builders/CubeDefinition mirror Z
 accessible field net/minecraft/client/model/geom/builders/CubeDefinition texCoord Lnet/minecraft/client/model/geom/builders/UVPair;
@@ -46,3 +46,5 @@ accessible field net/minecraft/world/entity/decoration/ArmorStand DEFAULT_BODY_P
 accessible method net/minecraft/world/entity/decoration/ArmorStand brokenByAnything (Lnet/minecraft/world/damagesource/DamageSource;)V
 
 accessible method net/minecraft/world/entity/Entity isInRain ()Z
+
+transitive-accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry

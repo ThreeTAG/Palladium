@@ -17,6 +17,7 @@ import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.entity.effect.EntityEffects;
 import net.threetag.palladium.event.PalladiumEvents;
+import net.threetag.palladium.item.PalladiumCreativeModeTabs;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.ItemPowerManager;
@@ -50,6 +51,7 @@ public class Palladium {
     public static void init() {
         PalladiumBlocks.BLOCKS.register();
         PalladiumBlockEntityTypes.BLOCK_ENTITIES.register();
+        PalladiumCreativeModeTabs.TABS.register();
         PalladiumItems.ITEMS.register();
         Abilities.ABILITIES.register();
         ConditionSerializers.CONDITION_SERIALIZERS.register();
@@ -65,10 +67,11 @@ public class Palladium {
         Accessories.ACCESSORIES.register();
 
         // Init before addonpack stuff is loaded, so new item type is registered
-        if (Platform.isModLoaded("geckolib3")) {
+        if (Platform.isModLoaded("geckolib")) {
             GeckoLibCompat.init();
         }
 
+        PalladiumItems.init();
         PalladiumNetwork.init();
         PalladiumEntityTypes.init();
         PowerManager.init();

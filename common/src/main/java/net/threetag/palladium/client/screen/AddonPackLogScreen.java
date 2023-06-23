@@ -1,9 +1,7 @@
 package net.threetag.palladium.client.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
@@ -17,8 +15,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.threetag.palladium.addonpack.log.AddonPackLogEntry;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -46,14 +44,15 @@ public class AddonPackLogScreen extends Screen {
         super.init();
 
         this.addWidget(this.textFieldWidget = new EditBox(this.font, this.width / 2 - 310, this.height - 27, 620 - (this.parent != null ? 90 : 0), 17, Component.translatable("gui.palladium.addon_pack_log.search")));
-        this.textFieldWidget.setFocus(false);
+        this.textFieldWidget.setFocused(false);
         this.textFieldWidget.setCanLoseFocus(true);
         this.textFieldWidget.setResponder(search -> this.list.refreshList());
 
         this.addWidget(this.list = new DevLogList(this.minecraft, this.width, this.height, 48, this.height - 64, 36));
 
         if (this.parent != null)
-            this.addRenderableWidget(new Button(this.width / 2 + 310 - 70, this.height - 28, 75, 20, CommonComponents.GUI_CANCEL, (button) -> Objects.requireNonNull(this.minecraft).setScreen(this.parent)));
+            this.addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, (button) -> Objects.requireNonNull(this.minecraft).setScreen(this.parent))
+                    .bounds(this.width / 2 + 310 - 70, this.height - 28, 75, 20).build());
 
         this.addRenderableWidget(new CheckboxButton(this.width / 2 - 310, this.height - 52, 70, 20, Component.literal("INFO").withStyle(AddonPackLogEntry.Type.INFO.getColor()), INFO_FILTER, b -> INFO_FILTER = b));
         this.addRenderableWidget(new CheckboxButton(this.width / 2 - 35, this.height - 52, 70, 20, Component.literal("WARNING").withStyle(AddonPackLogEntry.Type.WARNING.getColor()), WARNINGS_FILTER, b -> WARNINGS_FILTER = b));
@@ -61,17 +60,17 @@ public class AddonPackLogScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(poseStack);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(guiGraphics);
 
         if (this.list != null)
-            this.list.render(poseStack, mouseX, mouseY, partialTicks);
+            this.list.render(guiGraphics, mouseX, mouseY, partialTicks);
         if (this.textFieldWidget != null)
-            this.textFieldWidget.render(poseStack, mouseX, mouseY, partialTicks);
+            this.textFieldWidget.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-        drawCenteredString(poseStack, this.font, this.title, this.width / 2, 20, 16777215);
+        guiGraphics.drawCenteredString(font, this.title, this.width / 2, 20, 16777215);
 
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
     @Override
@@ -131,22 +130,21 @@ public class AddonPackLogScreen extends Screen {
         }
 
         @Override
-        public void render(PoseStack matrixStack, int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
-            Gui.fill(matrixStack, left, top + 33, left + entryWidth, top + 34, -1601138544);
-            Font fontRenderer = AddonPackLogScreen.this.font;
-            fontRenderer.drawShadow(matrixStack, Component.literal(this.info.getType().toString()).withStyle(this.info.getType().getColor()), left, top + 12, isMouseOver ? 16777120 : 0xfefefe);
+        public void render(GuiGraphics guiGraphics, int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
+            guiGraphics.fill(left, top + 33, left + entryWidth, top + 34, -1601138544);
+            guiGraphics.drawString(font, Component.literal(this.info.getType().toString()).withStyle(this.info.getType().getColor()), left, top + 12, isMouseOver ? 16777120 : 0xfefefe, true);
 
             MutableComponent msg = Component.literal(this.info.getText()).withStyle(this.info.getType().getColor());
-            List<FormattedCharSequence> lines = fontRenderer.split(msg, 560);
+            List<FormattedCharSequence> lines = font.split(msg, 560);
             int maxLines = Math.min(lines.size(), 3);
             for (int i = 0; i < lines.size(); i++) {
                 FormattedCharSequence processor = lines.get(i);
                 if (i < 3) {
-                    fontRenderer.drawShadow(matrixStack, processor, left + 50, top + 2 + (10 - (maxLines - 1) * 10F / 2F) + i * 10, isMouseOver ? 16777120 : 0xfefefe);
+                    guiGraphics.drawString(font, processor, left + 50, (int) (top + 2 + (10 - (maxLines - 1) * 10F / 2F) + i * 10), isMouseOver ? 16777120 : 0xfefefe, true);
                 }
             }
             if (lines.size() > 3) {
-                fontRenderer.drawShadow(matrixStack, "[...]", left + 602, top + 2 + (maxLines - 1) * 10, isMouseOver ? 16777120 : 0xfefefe);
+                guiGraphics.drawString(font, "[...]", left + 602, top + 2 + (maxLines - 1) * 10, isMouseOver ? 16777120 : 0xfefefe, true);
             }
         }
 

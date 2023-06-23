@@ -1,6 +1,7 @@
 package net.threetag.palladium;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.EntityModel;
@@ -8,7 +9,7 @@ import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -75,7 +76,7 @@ public class PalladiumClient {
         LifecycleEvents.SETUP.register(() -> {
             blockRenderTypes();
 
-            for (Item item : Registry.ITEM) {
+            for (Item item : BuiltInRegistries.ITEM) {
                 if (item instanceof EnergyItem) {
                     ItemPropertyRegistry.register(item, Palladium.id("energy"), (itemStack, clientLevel, livingEntity, i) -> {
                         var storage = EnergyHelper.getFromItemStack(itemStack);
@@ -189,7 +190,7 @@ public class PalladiumClient {
                 PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD.get(),
                 PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER.get());
 
-        for (Block block : Registry.BLOCK) {
+        for (Block block : BuiltInRegistries.BLOCK) {
             if (block instanceof IAddonBlock addonBlock) {
                 var type = addonBlock.getRenderType();
 
@@ -215,11 +216,10 @@ public class PalladiumClient {
     public static void setupDevLogButton() {
         ScreenEvents.INIT_POST.register((screen) -> {
             if (PalladiumConfig.Client.ADDON_PACK_DEV_MODE.get() && (screen instanceof TitleScreen || screen instanceof PauseScreen)) {
-                screen.addRenderableWidget(new IconButton(screen.width - 30, 10, ICON, (p_213079_1_) -> {
-                    Minecraft.getInstance().setScreen(new AddonPackLogScreen(AddonPackLog.getEntries(), screen));
-                }, (button, poseStack, i, j) -> {
-                    screen.renderTooltip(poseStack, Component.translatable("gui.palladium.addon_pack_log"), i, j);
-                }));
+                screen.addRenderableWidget(IconButton.builder(ICON, button ->
+                                Minecraft.getInstance().setScreen(new AddonPackLogScreen(AddonPackLog.getEntries(), screen)))
+                        .pos(screen.width - 30, 10)
+                        .tooltip(Tooltip.create(Component.translatable("gui.palladium.addon_pack_log"))).build());
             }
         });
     }

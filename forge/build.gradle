@@ -55,7 +55,7 @@ dependencies {
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-forge:${rootProject.player_anim_version}")
 
     // GeckoLib
-    modImplementation("software.bernie.geckolib:geckolib-forge-1.19:${rootProject.geckolib_version}")
+    modImplementation("software.bernie.geckolib:geckolib-forge-1.20:${rootProject.geckolib_version}")
 
     // JEI
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
@@ -65,7 +65,7 @@ dependencies {
     modImplementation "me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}"
 
     // Configured & Catalogue
-    modLocalRuntime "curse.maven:configured-457570:${rootProject.configured_version}"
+//    modLocalRuntime "curse.maven:configured-457570:${rootProject.configured_version}"
     modLocalRuntime "curse.maven:catalogue-459701:${rootProject.catalogue_version}"
 
     // Curios
@@ -73,14 +73,10 @@ dependencies {
     modCompileOnly "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}:api"
 
     // KubeJS
-    modImplementation "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
-//    modRuntimeOnly "curse.maven:probejs-585406:${rootProject.probejs_forge_version}"
+//    modImplementation "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
 
     // Pehkui
     modCompileOnly "com.github.Virtuoel:Pehkui:${rootProject.pehkui_forge_version}"
-
-    // Smooth Boot (makes game crash for whatever reason)
-//    modRuntimeOnly "curse.maven:smoothboot-633412:${rootProject.smoothboot_forge_version}"
 
     // Condensed Creative
     modCompileOnly "io.wispforest:condensed_creative-forge:${rootProject.condensed_creative_version}"

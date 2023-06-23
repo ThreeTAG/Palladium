@@ -1,25 +1,28 @@
 package net.threetag.palladium.client.screen.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.threetag.palladium.util.icon.IIcon;
+import org.jetbrains.annotations.Nullable;
 
 public class IconButton extends Button {
 
     private final IIcon icon;
     private boolean renderBackground = true;
 
-    public IconButton(int xIn, int yIn, IIcon icon, Button.OnPress onPressIn) {
-        this(xIn, yIn, icon, onPressIn, NO_TOOLTIP);
+    protected IconButton(int x, int y, IIcon icon, Button.OnPress onPress, CreateNarration createNarration) {
+        super(x, y, 20, 20, Component.empty(), onPress, createNarration);
+        this.icon = icon;
     }
 
-    public IconButton(int x, int y, IIcon icon, Button.OnPress onPress, Button.OnTooltip tooltip) {
-        super(x, y, 20, 20, Component.empty(), onPress, tooltip);
-        this.icon = icon;
+    public static Builder builder(IIcon icon, OnPress onPress) {
+        return new Builder(icon, onPress);
     }
 
     public IconButton disableBackgroundRendering() {
@@ -27,23 +30,17 @@ public class IconButton extends Button {
         return this;
     }
 
-    public void setPosition(int xIn, int yIn) {
-        this.x = xIn;
-        this.y = yIn;
-    }
-
     public IIcon getIcon() {
         return this.icon;
     }
 
     @Override
-    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
         if (this.renderBackground) {
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
+            guiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
             RenderSystem.enableBlend();
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, FlatIconButton.WIDGETS_LOCATION);
+            RenderSystem.enableDepthTest();
 
             int i = 60;
             if (!this.active) {
@@ -52,14 +49,56 @@ public class IconButton extends Button {
                 i += 20;
             }
 
-            RenderSystem.enableDepthTest();
-            blit(matrixStack, this.x, this.y, (float) 0, (float) i, this.width, this.height, 256, 256);
+            guiGraphics.blit(FlatIconButton.WIDGETS_LOCATION, this.getX(), this.getY(), (float) 0, (float) i, this.width, this.height, 256, 256);
+            guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
 
-        this.getIcon().draw(minecraft, matrixStack, this.x + 2, this.y + 2);
+        this.getIcon().draw(minecraft, guiGraphics, this.getX() + 2, this.getY() + 2);
+    }
 
-        if (this.isHovered) {
-            this.renderToolTip(matrixStack, mouseX, mouseY);
+    @Environment(EnvType.CLIENT)
+    public static class Builder {
+
+        private final IIcon icon;
+        private final OnPress onPress;
+        @Nullable
+        private Tooltip tooltip;
+        private int x;
+        private int y;
+        private CreateNarration createNarration;
+        private boolean disableBackground = false;
+
+        public Builder(IIcon icon, OnPress onPress) {
+            this.createNarration = Button.DEFAULT_NARRATION;
+            this.icon = icon;
+            this.onPress = onPress;
+        }
+
+        public Builder pos(int x, int y) {
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+
+        public Builder tooltip(@Nullable Tooltip tooltip) {
+            this.tooltip = tooltip;
+            return this;
+        }
+
+        public Builder createNarration(CreateNarration createNarration) {
+            this.createNarration = createNarration;
+            return this;
+        }
+
+        public Builder disableBackgroundRendering() {
+            this.disableBackground = true;
+            return this;
+        }
+
+        public Button build() {
+            IconButton button = new IconButton(this.x, this.y, this.icon, this.onPress, this.createNarration);
+            button.setTooltip(this.tooltip);
+            return this.disableBackground ? button.disableBackgroundRendering() : button;
         }
     }
 
