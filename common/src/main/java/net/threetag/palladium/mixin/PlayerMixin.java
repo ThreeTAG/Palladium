@@ -246,6 +246,8 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
         if (player.isSprinting()) {
             this.flightBoost = 1F;
         }
+
+        player.refreshDimensions();
     }
 
     @Override
