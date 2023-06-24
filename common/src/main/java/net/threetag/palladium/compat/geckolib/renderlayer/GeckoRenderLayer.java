@@ -3,7 +3,6 @@ package net.threetag.palladium.compat.geckolib.renderlayer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -19,10 +18,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
-import net.threetag.palladium.client.renderer.renderlayer.AbstractPackRenderLayer;
-import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
-import net.threetag.palladium.client.renderer.renderlayer.IRenderLayerContext;
-import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
+import net.threetag.palladium.client.renderer.renderlayer.*;
 import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
 import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
 import net.threetag.palladium.util.SkinTypedValue;
@@ -35,7 +31,6 @@ import software.bernie.geckolib3.resource.GeckoLibCache;
 import software.bernie.geckolib3.util.MolangUtils;
 
 import java.util.List;
-import java.util.function.BiFunction;
 
 @SuppressWarnings({"unchecked", "rawtypes", "ConstantValue"})
 public class GeckoRenderLayer extends AbstractPackRenderLayer {
@@ -46,10 +41,10 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
     public final List<ParsedAnimationController<GeckoLayerState>> animationControllers;
     public ResourceLocation cachedTexture;
     public ResourceLocation cachedModel;
-    public final BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType;
+    public final RenderTypeFunction renderType;
     private final GeckoRenderLayerModel model;
 
-    public GeckoRenderLayer(SkinTypedValue<DynamicTexture> texture, SkinTypedValue<ResourceLocation> modelLocation, ResourceLocation animationLocation, List<ParsedAnimationController<GeckoLayerState>> animationControllers, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType) {
+    public GeckoRenderLayer(SkinTypedValue<DynamicTexture> texture, SkinTypedValue<ResourceLocation> modelLocation, ResourceLocation animationLocation, List<ParsedAnimationController<GeckoLayerState>> animationControllers, RenderTypeFunction renderType) {
         this.texture = texture;
         this.renderType = renderType;
         this.modelLocation = modelLocation;
@@ -136,9 +131,8 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
                 entityModel.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             }
 
-            // TODO apply enchant glint when item is enchanted
             if (entityModel instanceof GeckoRenderLayerModel gecko) {
-                gecko.renderModel(poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY);
+                gecko.renderModel(context, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY);
             }
         }
     }
@@ -158,7 +152,7 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
             humanoidModel.swimAmount = 0.0F;
             humanoidModel.rightArm.xRot = 0.0F;
             humanoidModel.leftArm.xRot = 0.0F;
-            humanoidModel.renderArm(poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY, Minecraft.getInstance().getFrameTime(), arm == HumanoidArm.RIGHT);
+            humanoidModel.renderArm(context, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY, Minecraft.getInstance().getFrameTime(), arm == HumanoidArm.RIGHT);
         }
     }
 

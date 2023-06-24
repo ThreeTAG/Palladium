@@ -4,8 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
@@ -40,7 +37,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
     private static PackRenderLayerManager INSTANCE;
     private static final List<Provider> RENDER_LAYERS_PROVIDERS = new ArrayList<>();
     private static final Map<ResourceLocation, Function<JsonObject, IPackRenderLayer>> RENDER_LAYERS_PARSERS = new HashMap<>();
-    private static final Map<ResourceLocation, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer>> RENDER_TYPES = new HashMap<>();
+    private static final Map<ResourceLocation, RenderTypeFunction> RENDER_TYPES = new HashMap<>();
     static Function<IPackRenderLayer, RenderLayerStates.State> STATE_FUNCTION = null;
     private Map<ResourceLocation, IPackRenderLayer> renderLayers = new HashMap<>();
 
@@ -80,8 +77,8 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
         registerParser(new ResourceLocation(Palladium.MOD_ID, "default"), PackRenderLayer::parse);
         registerParser(new ResourceLocation(Palladium.MOD_ID, "compound"), CompoundPackRenderLayer::parse);
 
-        registerRenderType(new ResourceLocation("minecraft", "solid"), (source, texture) -> ItemRenderer.getArmorFoilBuffer(source, RenderType.entityTranslucent(texture), false, false));
-        registerRenderType(new ResourceLocation("minecraft", "glow"), (source, texture) -> ItemRenderer.getArmorFoilBuffer(source, PalladiumRenderTypes.getGlowing(texture), false, false));
+        registerRenderType(new ResourceLocation("minecraft", "solid"), (source, texture, glint) -> ItemRenderer.getArmorFoilBuffer(source, RenderType.entityTranslucent(texture), false, glint));
+        registerRenderType(new ResourceLocation("minecraft", "glow"), (source, texture, glint) -> ItemRenderer.getArmorFoilBuffer(source, PalladiumRenderTypes.getGlowing(texture), false, glint));
     }
 
     public PackRenderLayerManager() {
@@ -134,11 +131,11 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
         RENDER_LAYERS_PARSERS.put(id, function);
     }
 
-    public static void registerRenderType(ResourceLocation id, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> function) {
+    public static void registerRenderType(ResourceLocation id, RenderTypeFunction function) {
         RENDER_TYPES.put(id, function);
     }
 
-    public static BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> getRenderType(ResourceLocation id) {
+    public static RenderTypeFunction getRenderType(ResourceLocation id) {
         return RENDER_TYPES.get(id);
     }
 

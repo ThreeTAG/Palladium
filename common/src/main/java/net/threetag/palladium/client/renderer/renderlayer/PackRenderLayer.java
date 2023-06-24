@@ -24,18 +24,16 @@ import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
 
-import java.util.function.BiFunction;
-
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class PackRenderLayer extends AbstractPackRenderLayer {
 
     private final SkinTypedValue<ModelLookup.Model> modelLookup;
     private final SkinTypedValue<EntityModel<Entity>> model;
     private final SkinTypedValue<DynamicTexture> texture;
-    private final BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType;
+    private final RenderTypeFunction renderType;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public PackRenderLayer(SkinTypedValue<ModelLookup.Model> model, SkinTypedValue<ModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture, BiFunction<MultiBufferSource, ResourceLocation, VertexConsumer> renderType) {
+    public PackRenderLayer(SkinTypedValue<ModelLookup.Model> model, SkinTypedValue<ModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture, RenderTypeFunction renderType) {
         this.modelLookup = model;
         this.model = new SkinTypedValue(model.getNormal().getModel(Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation.getNormal())),
                 model.getSlim().getModel(Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation.getSlim())));
@@ -57,8 +55,8 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
                 extra.extraAnimations(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks);
             }
 
-            // TODO apply enchant glint when item is enchanted
-            VertexConsumer vertexConsumer = this.renderType.apply(bufferSource, this.texture.get(entity).getTexture(entity));
+            VertexConsumer vertexConsumer = this.renderType.createVertexConsumer(bufferSource, this.texture.get(entity).getTexture(entity), context.getItem().hasFoil());
+
             entityModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
         }
     }
@@ -71,7 +69,7 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
 
             if (entityModel instanceof HumanoidModel humanoidModel) {
                 playerRenderer.getModel().copyPropertiesTo(humanoidModel);
-                VertexConsumer vertexConsumer = this.renderType.apply(bufferSource, this.texture.get(player).getTexture(player));
+                VertexConsumer vertexConsumer = this.renderType.createVertexConsumer(bufferSource, this.texture.get(player).getTexture(player), context.getItem().hasFoil());
 
                 humanoidModel.attackTime = 0.0F;
                 humanoidModel.crouching = false;
