@@ -5,6 +5,9 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.threetag.palladium.client.model.animation.FlightAnimation;
+import net.threetag.palladium.entity.PalladiumPlayerExtension;
+import net.threetag.palladium.util.Easing;
 
 public class CapeTextureVariable extends AbstractFloatTextureVariable {
 
@@ -38,7 +41,43 @@ public class CapeTextureVariable extends AbstractFloatTextureVariable {
             }
 
             float rotation = 6.0F + f2 / 2.0F + f1;
-            return Mth.clamp(rotation + 10F, 0F, 90F);
+            float val = Mth.clamp(rotation + 10F, 0F, 90F);
+
+            if (player instanceof PalladiumPlayerExtension extension) {
+                float hoveringAnimation = extension.palladium_getHoveringAnimation(1F) - extension.palladium_getLevitationAnimation(1F);
+
+                if (hoveringAnimation > 0F) {
+                    val += (20F - val) * hoveringAnimation;
+                }
+
+                float prevFlightAnimation = extension.palladium_getFlightAnimation(0F);
+                float flightAnimation = extension.palladium_getFlightAnimation(1F);
+
+                if (flightAnimation <= 1F) {
+                    return val;
+                }
+
+                flightAnimation = (flightAnimation - 1F) / 2F;
+                prevFlightAnimation = (prevFlightAnimation - 1F) / 2F;
+                float dest = 10;
+
+                if (prevFlightAnimation > flightAnimation) {
+                    dest = (1F - Mth.clamp(flightAnimation * 4F - 3F, 0F, 1F)) * 70F;
+                    flightAnimation = Mth.clamp(flightAnimation * 3, 0F, 1F);
+                }
+
+                var vec1 = FlightAnimation.to2D(extension.palladium_getFlightVector(1F));
+                var vec2 = FlightAnimation.to2D(extension.palladium_getLookAngle(1F));
+                var tilt = Mth.clamp(FlightAnimation.angleBetweenVector(vec1, vec2), -0.5F, 0.5F) * 90F * extension.palladium_getHorizontalSpeed(1F);
+
+                if (tilt != 0F) {
+                    dest = Mth.abs((float) tilt);
+                }
+
+                val += (dest - val) * Easing.INOUTCIRC.apply(flightAnimation);
+            }
+
+            return val;
         }
 
         return 0F;
