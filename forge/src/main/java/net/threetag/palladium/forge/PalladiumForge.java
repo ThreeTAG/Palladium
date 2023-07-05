@@ -55,6 +55,10 @@ public class PalladiumForge {
             CuriosCompat.init();
         }
 
+        if (Platform.isModLoaded("geckolib3")) {
+            GeckoLibCompatImpl.init();
+        }
+
         if (Platform.isClient()) {
             PalladiumClient.init();
 
