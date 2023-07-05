@@ -51,10 +51,13 @@ import java.util.List;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class GeckoLibCompatImpl {
 
+    public static void init() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(GeckoLibCompatImpl::registerAbility);
+    }
+
     @OnlyIn(Dist.CLIENT)
     public static void initClient() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(GeckoLibCompatImpl::registerRenderers);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(GeckoLibCompatImpl::registerAbility);
     }
 
     public static void registerAbility(RegisterEvent e) {
