@@ -37,12 +37,8 @@ public class RestrictSlotsAbility extends Ability {
 
     public void drop(LivingEntity entity, ItemStack stack, PlayerSlot slot) {
         if (entity instanceof Player player) {
-            if(slot.getEquipmentSlot() == EquipmentSlot.MAINHAND) {
+            if (!player.getInventory().add(stack)) {
                 player.drop(stack, true);
-            } else {
-                if (!player.getInventory().add(stack)) {
-                    player.drop(stack, true);
-                }
             }
         } else {
             entity.spawnAtLocation(stack);
