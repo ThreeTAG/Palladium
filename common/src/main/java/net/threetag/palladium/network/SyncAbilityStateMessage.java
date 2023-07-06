@@ -4,11 +4,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.PowerManager;
+import net.threetag.palladium.client.screen.power.PowersScreen;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityReference;
 import net.threetag.palladiumcore.network.MessageContext;
@@ -78,6 +76,10 @@ public class SyncAbilityStateMessage extends MessageS2C {
 
             if (entry != null) {
                 entry.setClientState(livingEntity, entry.getHolder(), this.unlocked, this.enabled, this.maxCooldown, this.cooldown, this.maxActivationTimer, this.activationTimer);
+
+                if (Minecraft.getInstance().screen instanceof PowersScreen powers && powers.selectedTab != null) {
+                    powers.selectedTab.populate();
+                }
             }
         }
     }

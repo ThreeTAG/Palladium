@@ -53,10 +53,12 @@ public class PowerTab extends GuiComponent {
         this.powerHolder = powerHolder;
         this.icon = powerHolder.getPower().getIcon();
         this.title = powerHolder.getPower().getName();
-        this.init();
+        this.populate();
     }
 
-    public void init() {
+    public void populate() {
+        this.entries.clear();
+        this.connections.clear();
         List<AbilityWidget> root = new LinkedList<>();
 
         // Create entry for each ability
