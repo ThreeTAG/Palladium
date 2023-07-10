@@ -21,7 +21,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 @Environment(EnvType.CLIENT)
 public class PowerTab extends GuiComponent {
@@ -129,17 +128,9 @@ public class PowerTab extends GuiComponent {
                 int startY = toCoord(entry.gridY, 1D / (entry.children.size() + 1) * (entry.children.indexOf(child) + 1));
                 int endX = toCoord(child.gridX);
                 int endY = toCoord(child.gridY, 1D / (child.parents.size() + 1) * (child.parents.indexOf(entry) + 1));
-                if (entry.children.size() == 1) {
-                    connection.addLine(new ConnectionLine(startX, startY, endX, startY));
-                    connection.addLine(new ConnectionLine(endX, startY, endX, endY));
-                } else {
-                    int midX = (startX + endX) / 2;
-                    connection.addLine(new ConnectionLine(startX, startY, midX, startY));
-                    connection.addLine(new ConnectionLine(midX, startY, midX, endY));
-                    connection.addLine(new ConnectionLine(midX, endY, endX, endY));
-                }
-                Random random = new Random();
-                connection.color = new Color(random.nextFloat(), random.nextFloat(), random.nextFloat());
+                connection.addLine(new ConnectionLine(startX, startY, endX, startY));
+                connection.addLine(new ConnectionLine(endX, startY, endX, endY));
+                connection.color = child.abilityEntry.isUnlocked() ? this.powerHolder.getPower().getPrimaryColor() : this.powerHolder.getPower().getSecondaryColor();
                 this.connections.add(connection);
             }
         }
@@ -250,6 +241,10 @@ public class PowerTab extends GuiComponent {
         }
 
         for (Connection connection : this.connections) {
+            connection.drawOutlines(this, poseStack, i, j);
+        }
+
+        for (Connection connection : this.connections) {
             connection.draw(this, poseStack, i, j);
         }
 
@@ -347,7 +342,6 @@ public class PowerTab extends GuiComponent {
 
     public static class Connection {
 
-        // TODO make gray when locked
         public Color color = Color.WHITE;
         public List<ConnectionLine> lines = new LinkedList<>();
 
@@ -364,10 +358,13 @@ public class PowerTab extends GuiComponent {
             return this;
         }
 
-        public void draw(PowerTab gui, PoseStack stack, int x, int y) {
+        public void drawOutlines(PowerTab gui, PoseStack stack, int x, int y) {
             for (ConnectionLine lines : this.lines) {
                 lines.draw(gui, stack, x, y, true, Color.BLACK);
             }
+        }
+
+        public void draw(PowerTab gui, PoseStack stack, int x, int y) {
             for (ConnectionLine lines : this.lines) {
                 lines.draw(gui, stack, x, y, false, this.color);
             }

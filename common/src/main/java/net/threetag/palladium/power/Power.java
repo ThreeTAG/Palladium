@@ -10,6 +10,7 @@ import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.json.GsonUtil;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,15 +22,18 @@ public class Power {
     private final IIcon icon;
     private final List<AbilityConfiguration> abilities = new ArrayList<>();
     private final ResourceLocation background;
+    private final Color primaryColor, secondaryColor;
     private final boolean persistentData;
     private final boolean hidden;
     private boolean invalid = false;
 
-    public Power(ResourceLocation id, Component name, IIcon icon, ResourceLocation background, boolean persistentData, boolean hidden) {
+    public Power(ResourceLocation id, Component name, IIcon icon, ResourceLocation background, Color primaryColor, Color secondaryColor, boolean persistentData, boolean hidden) {
         this.id = id;
         this.name = name;
         this.icon = icon;
         this.background = background;
+        this.primaryColor = primaryColor;
+        this.secondaryColor = secondaryColor;
         this.persistentData = persistentData;
         this.hidden = hidden;
     }
@@ -67,6 +71,14 @@ public class Power {
         return background;
     }
 
+    public Color getPrimaryColor() {
+        return primaryColor;
+    }
+
+    public Color getSecondaryColor() {
+        return secondaryColor;
+    }
+
     public boolean hasPersistentData() {
         return this.persistentData;
     }
@@ -82,6 +94,8 @@ public class Power {
         if (this.background != null) {
             buf.writeResourceLocation(this.background);
         }
+        buf.writeInt(this.primaryColor.getRGB());
+        buf.writeInt(this.secondaryColor.getRGB());
         buf.writeBoolean(this.persistentData);
         buf.writeBoolean(this.hidden);
         buf.writeInt(this.abilities.size());
@@ -91,7 +105,7 @@ public class Power {
     }
 
     public static Power fromBuffer(ResourceLocation id, FriendlyByteBuf buf) {
-        Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())), buf.readBoolean() ? buf.readResourceLocation() : null, buf.readBoolean(), buf.readBoolean());
+        Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())), buf.readBoolean() ? buf.readResourceLocation() : null, new Color(buf.readInt()), new Color(buf.readInt()), buf.readBoolean(), buf.readBoolean());
         int amount = buf.readInt();
 
         for (int i = 0; i < amount; i++) {
@@ -108,6 +122,8 @@ public class Power {
                 name,
                 IconSerializer.parseJSON(json.get("icon")),
                 background,
+                GsonUtil.getAsColor(json, "primary_color", new Color(210, 112, 49)),
+                GsonUtil.getAsColor(json, "secondary_color", new Color(126, 97, 86)),
                 GsonHelper.getAsBoolean(json, "persistent_data", false),
                 GsonHelper.getAsBoolean(json, "hidden", false));
 
