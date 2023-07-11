@@ -14,6 +14,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> COMMAND = ABILITIES.register("command", CommandAbility::new);
     public static final RegistrySupplier<Ability> RENDER_LAYER = ABILITIES.register("render_layer", RenderLayerAbility::new);
     public static final RegistrySupplier<Ability> ANIMATION_TIMER = ABILITIES.register("animation_timer", AnimationTimerAbility::new);
+    public static final RegistrySupplier<Ability> REPEATING_ANIMATION_TIMER = ABILITIES.register("repeating_animation_timer", RepeatingAnimationTimerAbility::new);
     public static final RegistrySupplier<Ability> SHRINK_BODY_OVERLAY = ABILITIES.register("shrink_body_overlay", ShrinkBodyOverlayAbility::new);
     public static final RegistrySupplier<Ability> ATTRIBUTE_MODIFIER = ABILITIES.register("attribute_modifier", AttributeModifierAbility::new);
     public static final RegistrySupplier<Ability> HEALING = ABILITIES.register("healing", HealingAbility::new);

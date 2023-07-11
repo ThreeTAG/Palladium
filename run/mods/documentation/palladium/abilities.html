@@ -95,6 +95,10 @@ remove_body_part</a>
 render_layer</a>
 </li>
 <li>
+<a href="#palladium:repeating_animation_timer">
+repeating_animation_timer</a>
+</li>
+<li>
 <a href="#palladium:restrict_slots">
 restrict_slots</a>
 </li>
@@ -223,7 +227,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -302,7 +306,7 @@ Example:</h3>
 <h2>
 animation_timer</h2>
 <p>
-This ability is used to create a timer that can be used for animations. It is not meant to be used directly.</p>
+This ability is used to create a timer that can be used for animations. It is not meant to be used directly. <a href="https://media.discordapp.net/attachments/954053032570683402/1120044643342635118/image.png">Click here to see how this animation works exactly.</a></p>
 <h3>
 Settings:</h3>
 <table>
@@ -363,7 +367,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -503,7 +507,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -667,7 +671,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -819,7 +823,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -947,7 +951,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1063,7 +1067,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1227,7 +1231,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1427,7 +1431,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1567,7 +1571,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1707,7 +1711,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1859,7 +1863,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1975,7 +1979,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2151,7 +2155,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2339,7 +2343,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2479,7 +2483,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2539,6 +2543,146 @@ namespace:render_layer_id</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:render_layer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","render_layer":"namespace:render_layer_id"}</pre>
+</div>
+<hr>
+
+<div id="palladium:repeating_animation_timer">
+<h2>
+repeating_animation_timer</h2>
+<p>
+This ability is used to create a timer that can be used for animations. It is not meant to be used directly. <a href="https://cdn.discordapp.com/attachments/954053032570683402/1120045044150325318/image.png">Click here to see how this animation works exactly.</a></p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+start_value</td>
+<td>
+Integer</td>
+<td>
+The value for the integer when the ability is disabled</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+max_value</td>
+<td>
+Integer</td>
+<td>
+The value for the integer when the ability is enabled</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+20</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:repeating_animation_timer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","start_value":0,"max_value":20}</pre>
 </div>
 <hr>
 
@@ -2607,7 +2751,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2735,7 +2879,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2863,7 +3007,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2979,7 +3123,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3119,7 +3263,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3247,7 +3391,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3387,7 +3531,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3503,7 +3647,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3619,7 +3763,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3733,7 +3877,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3883,7 +4027,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -4035,7 +4179,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -4151,7 +4295,7 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>

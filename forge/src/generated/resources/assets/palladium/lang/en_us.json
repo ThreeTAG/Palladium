@@ -17,6 +17,7 @@
   "ability.palladium.projectile": "Projectile",
   "ability.palladium.remove_body_part": "Remove Body Part",
   "ability.palladium.render_layer": "Render Layer",
+  "ability.palladium.repeating_animation_timer": "Animation Timer",
   "ability.palladium.restrict_slots": "Restrict Slots",
   "ability.palladium.shader_effect": "Shader Effect",
   "ability.palladium.show_both_arms": "Show Both Arms",

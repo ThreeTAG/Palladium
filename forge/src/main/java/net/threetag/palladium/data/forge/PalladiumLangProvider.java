@@ -87,6 +87,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.COMMAND, "Command");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
             this.addAbility(Abilities.ANIMATION_TIMER, "Animation Timer");
+            this.addAbility(Abilities.REPEATING_ANIMATION_TIMER, "Animation Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "Shrink Body Overlay");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attribute Modifier");
             this.addAbility(Abilities.HEALING, "Healing");
@@ -259,6 +260,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
             this.addAbility(Abilities.ANIMATION_TIMER, "Animations-Timer");
+            this.addAbility(Abilities.REPEATING_ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attributmodifikator");
             this.addAbility(Abilities.HEALING, "Heilung");
@@ -426,6 +428,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
             this.addAbility(Abilities.ANIMATION_TIMER, "Animations-Timer");
+            this.addAbility(Abilities.REPEATING_ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "\u00C4ttrib\u00FCtmodifikator");
             this.addAbility(Abilities.HEALING, "Helung");

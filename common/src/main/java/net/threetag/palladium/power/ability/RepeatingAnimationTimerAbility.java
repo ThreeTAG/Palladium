@@ -8,14 +8,14 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 import net.threetag.palladium.util.property.SyncType;
 
-public class AnimationTimerAbility extends Ability implements AnimationTimer {
+public class RepeatingAnimationTimerAbility extends Ability implements AnimationTimer {
 
     public static final PalladiumProperty<Integer> START_VALUE = new IntegerProperty("start_value").configurable("The value for the integer when the ability is disabled");
     public static final PalladiumProperty<Integer> MAX_VALUE = new IntegerProperty("max_value").configurable("The value for the integer when the ability is enabled");
     public static final PalladiumProperty<Integer> VALUE = new IntegerProperty("value").sync(SyncType.NONE).disablePersistence();
     public static final PalladiumProperty<Integer> PREV_VALUE = new IntegerProperty("prev_value").sync(SyncType.NONE).disablePersistence();
 
-    public AnimationTimerAbility() {
+    public RepeatingAnimationTimerAbility() {
         this.withProperty(START_VALUE, 0);
         this.withProperty(MAX_VALUE, 20);
     }
@@ -38,12 +38,23 @@ public class AnimationTimerAbility extends Ability implements AnimationTimer {
     @Override
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         int value = entry.getProperty(VALUE);
-        entry.setUniqueProperty(PREV_VALUE, value);
+        int prevValue = entry.getProperty(PREV_VALUE);
+        int startVal = entry.getProperty(START_VALUE);
+        int maxVal = entry.getProperty(MAX_VALUE);
 
-        if (entry.isEnabled() && value < entry.getProperty(MAX_VALUE)) {
-            entry.setUniqueProperty(VALUE, value + 1);
-        } else if (!entry.isEnabled() && value > entry.getProperty(START_VALUE)) {
-            entry.setUniqueProperty(VALUE, value - 1);
+        if (entry.isEnabled()) {
+            entry.setUniqueProperty(PREV_VALUE, value);
+
+            if (value < maxVal) {
+                entry.setUniqueProperty(VALUE, value + 1);
+            } else {
+                entry.setUniqueProperty(VALUE, startVal);
+                entry.setUniqueProperty(PREV_VALUE, startVal);
+            }
+
+        } else if (value != startVal || prevValue != startVal) {
+            entry.setUniqueProperty(VALUE, startVal);
+            entry.setUniqueProperty(PREV_VALUE, startVal);
         }
     }
 
@@ -53,7 +64,7 @@ public class AnimationTimerAbility extends Ability implements AnimationTimer {
     }
 
     public String getDocumentationDescription() {
-        return "This ability is used to create a timer that can be used for animations. It is not meant to be used directly. <a href=\"https://media.discordapp.net/attachments/954053032570683402/1120044643342635118/image.png\">Click here to see how this animation works exactly.</a>";
+        return "This ability is used to create a timer that can be used for animations. It is not meant to be used directly. <a href=\"https://cdn.discordapp.com/attachments/954053032570683402/1120045044150325318/image.png\">Click here to see how this animation works exactly.</a>";
     }
 
     @Override
