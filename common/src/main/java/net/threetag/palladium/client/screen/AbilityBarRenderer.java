@@ -303,7 +303,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
             for (AbilityEntry abilityEntry : holder.getAbilities().values()) {
                 int i = abilityEntry.getProperty(Ability.LIST_INDEX);
 
-                if (abilityEntry.getConfiguration().needsKey() && !abilityEntry.getProperty(Ability.HIDDEN)) {
+                if (abilityEntry.getConfiguration().needsKey()) {
                     if (i >= 0) {
                         int listIndex = Math.floorDiv(i, 5);
                         int index = i % 5;

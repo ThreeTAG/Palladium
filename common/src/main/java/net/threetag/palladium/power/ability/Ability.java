@@ -26,7 +26,7 @@ public class Ability implements IDefaultDocumentedConfigurable {
     public static final PalladiumProperty<IIcon> ICON = new IconProperty("icon").configurable("Icon for the ability");
     public static final PalladiumProperty<Component> DESCRIPTION = new ComponentProperty("description").configurable("Description of the ability. Visible in ability menu");
     public static final PalladiumProperty<AbilityColor> COLOR = new AbilityColorProperty("bar_color").configurable("Changes the color of the ability in the ability bar");
-    public static final PalladiumProperty<Boolean> HIDDEN = new BooleanProperty("hidden").configurable("Determines if the ability is visible in the ability bar and powers screen");
+    public static final PalladiumProperty<Boolean> HIDDEN = new BooleanProperty("hidden").configurable("Determines if the ability is visible in the powers screen");
     public static final PalladiumProperty<Integer> LIST_INDEX = new IntegerProperty("list_index").configurable("Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.");
     public static final PalladiumProperty<Vec2> GUI_POSITION = new Vec2Property("gui_position").configurable("Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center");
     final PropertyManager propertyManager = new PropertyManager();
