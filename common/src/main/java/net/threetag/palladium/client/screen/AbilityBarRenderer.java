@@ -74,20 +74,21 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
 
         boolean simple = list.simple && ABILITY_LISTS.size() <= 1;
         if (mc.player != null) {
+            var texture = list.texture != null ? list.texture : TEXTURE;
             int indicatorWidth = 52;
             int indicatorHeight = 28;
 
             if (!simple) {
                 poseStack.pushPose();
                 translateIndicatorBackground(poseStack, mc.getWindow(), position, indicatorWidth, indicatorHeight);
-                renderIndicator(list, mc, poseStack, position, TEXTURE, ABILITY_LISTS.size() > 1);
+                renderIndicator(list, mc, poseStack, position, texture, ABILITY_LISTS.size() > 1);
                 poseStack.popPose();
             }
 
             poseStack.pushPose();
             translateAbilitiesBackground(poseStack, mc.getWindow(), position, indicatorHeight, 24, 112, simple);
-            renderAbilitiesBackground(mc, poseStack, position, list, TEXTURE, simple);
-            renderAbilitiesOverlay(mc, poseStack, position, list, TEXTURE, simple);
+            renderAbilitiesBackground(mc, poseStack, position, list, texture, simple);
+            renderAbilitiesOverlay(mc, poseStack, position, list, texture, simple);
             poseStack.popPose();
         }
     }
@@ -294,8 +295,6 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
             return lists;
         }
 
-        // TODO skins
-
         for (IPowerHolder holder : handler.getPowerHolders().values()) {
             List<AbilityList> containerList = new ArrayList<>();
             List<AbilityList> remainingLists = new ArrayList<>();
@@ -363,6 +362,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
 
         public AbilityList(Power power) {
             this.power = power;
+            this.texture = power.getAbilityBarTexture();
         }
 
         public Power getPower() {
@@ -382,11 +382,6 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
                 }
             }
             return false;
-        }
-
-        public AbilityList setTexture(ResourceLocation texture) {
-            this.texture = texture;
-            return this;
         }
 
         public boolean isEmpty() {
