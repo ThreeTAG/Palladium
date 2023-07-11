@@ -18,8 +18,8 @@ public class MinecraftMixin {
     @Shadow
     public LocalPlayer player;
 
-    @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)
-    private void startAttack(CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;hasMissTime()Z"), cancellable = true)
+    private void startAttackStartAbility(CallbackInfoReturnable<Boolean> cir) {
         if (PalladiumKeyMappings.LEFT_CLICKED_ABILITY == null) {
             var entry = PalladiumKeyMappings.getPrioritisedKeyedAbility(AbilityConfiguration.KeyType.LEFT_CLICK);
 
@@ -34,8 +34,15 @@ public class MinecraftMixin {
         }
     }
 
-    @Inject(method = "startUseItem", at = @At("HEAD"), cancellable = true)
-    private void startUseItem(CallbackInfo ci) {
+    @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)
+    private void startAttackStopAbility(CallbackInfoReturnable<Boolean> cir) {
+        if (PalladiumKeyMappings.LEFT_CLICKED_ABILITY != null) {
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(method = "startUseItem", at = @At("TAIL"), cancellable = true)
+    private void startUseItemStartAbility(CallbackInfo ci) {
         if (PalladiumKeyMappings.RIGHT_CLICKED_ABILITY == null) {
             var entry = PalladiumKeyMappings.getPrioritisedKeyedAbility(AbilityConfiguration.KeyType.RIGHT_CLICK);
 
@@ -46,6 +53,13 @@ public class MinecraftMixin {
                 ci.cancel();
             }
         } else {
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "startUseItem", at = @At("HEAD"), cancellable = true)
+    private void startUseItemStopAbility(CallbackInfo ci) {
+        if (PalladiumKeyMappings.RIGHT_CLICKED_ABILITY != null) {
             ci.cancel();
         }
     }
