@@ -57,7 +57,7 @@ public class PowersScreen extends Screen {
     private static final Component TITLE = Component.translatable("gui.palladium.powers");
     private final List<PowerTab> tabs = new ArrayList<>();
     @Nullable
-    private PowerTab selectedTab;
+    public PowerTab selectedTab;
     private boolean isScrolling;
     private static int tabPage;
     private static int maxPages;
@@ -142,6 +142,11 @@ public class PowersScreen extends Screen {
         if (this.overlayScreen != null) {
             this.overlayScreen.init(this.minecraft, this.width, this.height);
         }
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
     }
 
     @Override
