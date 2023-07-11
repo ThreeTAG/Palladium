@@ -100,6 +100,7 @@ public class Power {
         if (this.background != null) {
             buf.writeResourceLocation(this.background);
         }
+        buf.writeBoolean(this.abilityBar != null);
         if (this.abilityBar != null) {
             buf.writeResourceLocation(this.abilityBar);
         }
