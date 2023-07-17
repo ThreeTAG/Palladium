@@ -53,7 +53,6 @@ public abstract class LivingEntityMixin implements PalladiumLivingEntityExtensio
         if (entity.level.isClientSide) {
             this.palladium$renderLayerStates.tick(entity);
         }
-        this.palladium$powerHandler.tick();
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))

@@ -50,8 +50,8 @@ dependencies {
     include "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
 
     // Cardinal Components
-    modLocalRuntime "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_version}"
-    modLocalRuntime "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_components_version}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_version}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_components_version}"
 
     // Mod Menu
     modImplementation "com.terraformersmc:modmenu:${rootProject.modmenu_version}"
