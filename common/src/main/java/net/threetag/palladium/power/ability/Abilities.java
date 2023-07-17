@@ -30,7 +30,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> REMOVE_BODY_PART = ABILITIES.register("remove_body_part", RemoveBodyPartAbility::new);
     public static final RegistrySupplier<Ability> SHADER_EFFECT = ABILITIES.register("shader_effect", ShaderEffectAbility::new);
     public static final RegistrySupplier<Ability> GUI_OVERLAY = ABILITIES.register("gui_overlay", GuiOverlayAbility::new);
-    public static final RegistrySupplier<Ability> SHOW_BOTH_ARMS = ABILITIES.register("show_both_arms", () -> new Ability().withProperty(Ability.HIDDEN, true).setDocumentationDescription("Enables the rendering of your off-hand."));
+    public static final RegistrySupplier<Ability> SHOW_BOTH_ARMS = ABILITIES.register("show_both_arms", () -> new Ability().withProperty(Ability.HIDDEN_IN_GUI, true).setDocumentationDescription("Enables the rendering of your off-hand."));
     public static final RegistrySupplier<Ability> PLAYER_ANIMATION = ABILITIES.register("player_animation", PlayerAnimationAbility::new);
     public static final RegistrySupplier<Ability> WATER_WALK = ABILITIES.register("water_walk", () -> new Ability().setDocumentationDescription("Allows the player to walk on water."));
     public static final RegistrySupplier<Ability> RESTRICT_SLOTS = ABILITIES.register("restrict_slots", RestrictSlotsAbility::new);

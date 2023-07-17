@@ -62,7 +62,7 @@ public class PowerTab extends GuiComponent {
 
         // Create entry for each ability
         for (AbilityEntry ability : this.powerHolder.getAbilities().values()) {
-            if (!ability.getProperty(Ability.HIDDEN)) {
+            if (!ability.getProperty(Ability.HIDDEN_IN_GUI)) {
                 var widget = new AbilityWidget(this, this.minecraft, this.powerHolder, ability).setPosition(0, 0);
                 this.entries.add(widget);
 

@@ -90,7 +90,7 @@ public class PowersScreen extends Screen {
                     public IIcon getIcon() {
                         List<IIcon> icons = Lists.newArrayList();
                         Minecraft mc = Minecraft.getInstance();
-                        PowerManager.getPowerHandler(mc.player).ifPresent(handler -> handler.getPowerHolders().values().stream().filter(holder -> !holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN))).forEach(holder -> icons.add(holder.getPower().getIcon())));
+                        PowerManager.getPowerHandler(mc.player).ifPresent(handler -> handler.getPowerHolders().values().stream().filter(holder -> !holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN_IN_GUI))).forEach(holder -> icons.add(holder.getPower().getIcon())));
                         if (icons.size() <= 0) {
                             icons.add(new ItemIcon(Blocks.BARRIER));
                         }
@@ -118,7 +118,7 @@ public class PowersScreen extends Screen {
 
         AtomicInteger i = new AtomicInteger();
         PowerManager.getPowerHandler(this.minecraft.player).ifPresent(handler -> handler.getPowerHolders().values().forEach(holder -> {
-            if (!holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN))) {
+            if (!holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN_IN_GUI))) {
                 this.tabs.add(PowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
             }
         }));
