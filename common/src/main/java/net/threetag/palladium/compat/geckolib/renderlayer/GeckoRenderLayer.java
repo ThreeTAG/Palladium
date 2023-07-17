@@ -60,7 +60,7 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
     @Nullable
     public GeckoLayerState getState(LivingEntity entity) {
         if (entity instanceof PalladiumLivingEntityExtension extension) {
-            return extension.palladium_getRenderLayerStates().getOrCreate(this) instanceof GeckoLayerState state ? state : null;
+            return extension.palladium$getRenderLayerStates().getOrCreate(this) instanceof GeckoLayerState state ? state : null;
         }
         return null;
     }

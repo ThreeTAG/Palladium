@@ -19,7 +19,8 @@ public class LevitationAnimation extends PalladiumAnimation {
         boolean active = !firstPersonContext.firstPerson();
 
         if (active && player instanceof PalladiumPlayerExtension extension) {
-            float anim = extension.palladium_getLevitationAnimation(partialTicks);
+            var flight = extension.palladium$getFlightHandler();
+            float anim = flight.getLevitationAnimation(partialTicks);
 
             if (anim <= 0F) {
                 return;

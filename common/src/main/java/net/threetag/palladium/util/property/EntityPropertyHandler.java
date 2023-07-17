@@ -1,8 +1,8 @@
 package net.threetag.palladium.util.property;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.entity.PalladiumEntityExtension;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.network.SyncPropertyMessage;
 
@@ -22,9 +22,12 @@ public class EntityPropertyHandler extends PropertyManager implements PropertyMa
         return entity;
     }
 
-    @ExpectPlatform
     public static Optional<EntityPropertyHandler> getHandler(Entity entity) {
-        throw new AssertionError();
+        if (entity instanceof PalladiumEntityExtension ext) {
+            return Optional.of(ext.palladium$getPropertyHandler());
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

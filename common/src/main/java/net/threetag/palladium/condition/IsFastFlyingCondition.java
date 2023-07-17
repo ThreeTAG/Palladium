@@ -13,7 +13,7 @@ public class IsFastFlyingCondition extends Condition {
     @Override
     public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
         if (entity instanceof PalladiumPlayerExtension extension) {
-            return extension.palladium_getFlightAnimation(1F) > 1F;
+            return extension.palladium$getFlightHandler().getFlightAnimation(1F) > 1F;
         }
         return false;
     }

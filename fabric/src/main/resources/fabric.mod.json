@@ -40,11 +40,6 @@
     "com_electronwill_night-config_toml": "*"
   },
   "custom": {
-    "cardinal-components": [
-      "palladium:properties",
-      "palladium:power_handler",
-      "palladium:accessories"
-    ],
     "catalogue": {
       "banner": "palladium_banner.png"
     }

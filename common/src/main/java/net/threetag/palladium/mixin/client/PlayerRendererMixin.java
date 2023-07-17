@@ -121,9 +121,10 @@ public class PlayerRendererMixin {
         PlayerModel<AbstractClientPlayer> playerModel = renderer.getModel();
 
         if (playerModel.crouching && clientPlayer instanceof PalladiumPlayerExtension extension) {
-            var hover = extension.palladium_getHoveringAnimation(0);
-            var levitation = extension.palladium_getLevitationAnimation(0);
-            var flight = extension.palladium_getFlightAnimation(0);
+            var flightHandler = extension.palladium$getFlightHandler();
+            var hover = flightHandler.getHoveringAnimation(0);
+            var levitation = flightHandler.getLevitationAnimation(0);
+            var flight = flightHandler.getFlightAnimation(0);
 
             if (hover > 0F || levitation > 0F || flight > 0F) {
                 playerModel.crouching = false;
@@ -134,9 +135,10 @@ public class PlayerRendererMixin {
     @Inject(at = @At("HEAD"), method = "getRenderOffset(Lnet/minecraft/client/player/AbstractClientPlayer;F)Lnet/minecraft/world/phys/Vec3;", cancellable = true)
     public void getRenderOffset(AbstractClientPlayer entity, float partialTicks, CallbackInfoReturnable<Vec3> cir) {
         if (entity instanceof PalladiumPlayerExtension extension) {
-            var hover = extension.palladium_getHoveringAnimation(0);
-            var levitation = extension.palladium_getLevitationAnimation(0);
-            var flight = extension.palladium_getFlightAnimation(0);
+            var flightHandler = extension.palladium$getFlightHandler();
+            var hover = flightHandler.getHoveringAnimation(0);
+            var levitation = flightHandler.getLevitationAnimation(0);
+            var flight = flightHandler.getFlightAnimation(0);
 
             if (hover > 0F || levitation > 0F || flight > 0F) {
                 cir.setReturnValue(Vec3.ZERO);

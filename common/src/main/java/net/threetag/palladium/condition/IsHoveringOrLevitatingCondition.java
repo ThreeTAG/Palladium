@@ -13,8 +13,8 @@ public class IsHoveringOrLevitatingCondition extends Condition {
     @Override
     public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
         if (entity instanceof PalladiumPlayerExtension extension) {
-            float flight = extension.palladium_getFlightAnimation(1F);
-            return extension.palladium_getHoveringAnimation(1F) > 0F || (flight > 0F && flight <= 1F);
+            float flight = extension.palladium$getFlightHandler().getFlightAnimation(1F);
+            return extension.palladium$getFlightHandler().getHoveringAnimation(1F) > 0F || (flight > 0F && flight <= 1F);
         }
         return false;
     }

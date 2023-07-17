@@ -55,13 +55,14 @@ public class CapedHumanoidModel<T extends LivingEntity> extends HumanoidModel<T>
             this.cape.xRot = (float) Math.toRadians(rotation + 10F);
 
             if (player instanceof PalladiumPlayerExtension extension) {
-                float hoveringAnimation = extension.palladium_getHoveringAnimation(partialTicks) - extension.palladium_getLevitationAnimation(partialTicks);
+                var flight = extension.palladium$getFlightHandler();
+                float hoveringAnimation = flight.getHoveringAnimation(partialTicks) - flight.getLevitationAnimation(partialTicks);
 
                 if (hoveringAnimation > 0F) {
                     this.cape.xRot += (Math.toRadians(20F + Mth.sin((player.tickCount + partialTicks) / 20F) * 5F) - this.cape.xRot) * hoveringAnimation;
                 }
 
-                float flightAnimation = extension.palladium_getFlightAnimation(partialTicks);
+                float flightAnimation = flight.getFlightAnimation(partialTicks);
 
                 if (flightAnimation <= 1F) {
                     return;

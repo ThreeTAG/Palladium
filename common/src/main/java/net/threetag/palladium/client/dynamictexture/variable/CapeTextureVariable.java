@@ -44,14 +44,15 @@ public class CapeTextureVariable extends AbstractFloatTextureVariable {
             float val = Mth.clamp(rotation + 10F, 0F, 90F);
 
             if (player instanceof PalladiumPlayerExtension extension) {
-                float hoveringAnimation = extension.palladium_getHoveringAnimation(1F) - extension.palladium_getLevitationAnimation(1F);
+                var flight = extension.palladium$getFlightHandler();
+                float hoveringAnimation = flight.getHoveringAnimation(1F) - flight.getLevitationAnimation(1F);
 
                 if (hoveringAnimation > 0F) {
                     val += (20F - val) * hoveringAnimation;
                 }
 
-                float prevFlightAnimation = extension.palladium_getFlightAnimation(0F);
-                float flightAnimation = extension.palladium_getFlightAnimation(1F);
+                float prevFlightAnimation = flight.getFlightAnimation(0F);
+                float flightAnimation = flight.getFlightAnimation(1F);
 
                 if (flightAnimation <= 1F) {
                     return val;
@@ -66,9 +67,9 @@ public class CapeTextureVariable extends AbstractFloatTextureVariable {
                     flightAnimation = Mth.clamp(flightAnimation * 3, 0F, 1F);
                 }
 
-                var vec1 = FlightAnimation.to2D(extension.palladium_getFlightVector(1F));
-                var vec2 = FlightAnimation.to2D(extension.palladium_getLookAngle(1F));
-                var tilt = Mth.clamp(FlightAnimation.angleBetweenVector(vec1, vec2), -0.5F, 0.5F) * 90F * extension.palladium_getHorizontalSpeed(1F);
+                var vec1 = FlightAnimation.to2D(flight.getFlightVector(1F));
+                var vec2 = FlightAnimation.to2D(flight.getLookAngle(1F));
+                var tilt = Mth.clamp(FlightAnimation.angleBetweenVector(vec1, vec2), -0.5F, 0.5F) * 90F * flight.getHorizontalSpeed(1F);
 
                 if (tilt != 0F) {
                     dest = Mth.abs((float) tilt);

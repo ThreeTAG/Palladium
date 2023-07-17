@@ -30,7 +30,7 @@ public class FlightSound extends AbstractTickableSoundInstance {
             return;
         }
         ++this.time;
-        if (this.entity.isAlive() && this.entity instanceof PalladiumPlayerExtension extension && extension.palladium_getFlightAnimation(1F) > 1F) {
+        if (this.entity.isAlive() && this.entity instanceof PalladiumPlayerExtension extension && extension.palladium$getFlightHandler().getFlightAnimation(1F) > 1F) {
             this.x = (float) this.entity.getX();
             this.y = (float) this.entity.getY();
             this.z = (float) this.entity.getZ();

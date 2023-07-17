@@ -1,7 +1,6 @@
 package net.threetag.palladium.accessory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
@@ -22,6 +21,7 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.entity.PalladiumPlayerExtension;
 import net.threetag.palladium.util.SupporterHandler;
 import net.threetag.palladiumcore.registry.PalladiumRegistry;
 import net.threetag.palladiumcore.util.Platform;
@@ -111,9 +111,12 @@ public abstract class Accessory {
         return list;
     }
 
-    @ExpectPlatform
     public static Optional<AccessoryPlayerData> getPlayerData(Player player) {
-        throw new AssertionError();
+        if (player instanceof PalladiumPlayerExtension ext) {
+            return Optional.of(ext.palladium$getAccessories());
+        } else {
+            return Optional.empty();
+        }
     }
 
     public static class ReloadManager implements ResourceManagerReloadListener {
