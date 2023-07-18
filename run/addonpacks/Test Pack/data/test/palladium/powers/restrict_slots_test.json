@@ -7,6 +7,7 @@
       "type": "palladium:restrict_slots",
       "slots": [
         "chest",
+        "mainhand",
         "trinkets:head/hat",
         "curios:head"
       ],

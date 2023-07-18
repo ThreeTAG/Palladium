@@ -28,6 +28,7 @@
     "EntityMixin",
     "EntitySelectorOptionsInvoker",
     "EntitySelectorParserMixin",
+    "InventoryMixin",
     "LiquidBlockMixin",
     "LivingEntityMixin",
     "OreFeatureMixin",
