@@ -8,6 +8,7 @@ import net.threetag.palladiumcore.registry.CreativeModeTabRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class PalladiumCreativeModeTabs {
 
@@ -34,10 +35,10 @@ public class PalladiumCreativeModeTabs {
 
         for (CreativeModeTab tab : CreativeModeTab.TABS) {
             if (tab.getRecipeFolderName().contains(".")) {
-                String[] s = tab.getRecipeFolderName().split("\\.", 2);
+                String[] s = tab.getRecipeFolderName().toLowerCase(Locale.ROOT).replace(" ", "_").split("\\.", 2);
                 tabs.add(new ResourceLocation(s[0], s[1]));
             } else {
-                tabs.add(new ResourceLocation(tab.getRecipeFolderName()));
+                tabs.add(new ResourceLocation(tab.getRecipeFolderName().toLowerCase(Locale.ROOT).replace(" ", "_")));
             }
         }
 
