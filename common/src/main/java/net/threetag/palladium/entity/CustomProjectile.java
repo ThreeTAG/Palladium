@@ -14,12 +14,10 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -40,6 +38,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     public boolean dieOnEntityHit = true;
     public int lifetime = -1;
     public int setEntityOnFireSeconds = 0;
+    public float explosionRadius = 0F;
+    public boolean explosionCausesFire = false;
+    public Explosion.BlockInteraction explosionBlockInteraction = Explosion.BlockInteraction.NONE;
+    public float knockbackStrength = 0F;
     public String commandOnEntityHit = null;
     public String commandOnBlockHit = null;
     public EntityDimensions dimensions = new EntityDimensions(0.1F, 0.1F, false);
@@ -98,6 +100,14 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
                 entity.setSecondsOnFire(this.setEntityOnFireSeconds);
             }
 
+            if (this.explosionRadius > 0F) {
+                this.level.explode(this, this.getX(), this.getEyeY(), this.getZ(), this.explosionRadius, this.explosionCausesFire, this.explosionBlockInteraction);
+            }
+
+            if(this.knockbackStrength > 0F && entity instanceof LivingEntity living) {
+                living.knockback(this.knockbackStrength, -this.getDeltaMovement().x, -this.getDeltaMovement().z);
+            }
+
             if (this.dieOnEntityHit) {
                 this.level.broadcastEntityEvent(this, (byte) 3);
                 this.discard();
@@ -115,6 +125,10 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
                         .performPrefixedCommand(this.createCommandSourceStack()
                                 .withMaximumPermission(2)
                                 .withSuppressedOutput(), this.commandOnBlockHit);
+            }
+
+            if (this.explosionRadius > 0F) {
+                this.level.explode(this, this.getX(), this.getEyeY(), this.getZ(), this.explosionRadius, this.explosionCausesFire, this.explosionBlockInteraction);
             }
 
             if (this.dieOnBlockHit) {
@@ -156,6 +170,11 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
         compound.putFloat("Size", this.dimensions.width);
         compound.putFloat("Lifetime", this.lifetime);
         compound.putFloat("SetEntityOnFireSeconds", this.setEntityOnFireSeconds);
+        compound.putFloat("ExplosionRadius", this.explosionRadius);
+        compound.putBoolean("ExplosionCausesFire", this.explosionCausesFire);
+        compound.putString("ExplosionBlockInteraction", this.explosionBlockInteraction.toString().toLowerCase(Locale.ROOT));
+        compound.putFloat("KnockbackStrength", this.knockbackStrength);
+
         if (this.commandOnEntityHit != null)
             compound.putString("CommandOnEntityHit", this.commandOnEntityHit);
         if (this.commandOnBlockHit != null)
@@ -174,20 +193,30 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        if (compound.contains("Damage", 99))
+        if (compound.contains("Damage", Tag.TAG_ANY_NUMERIC))
             this.damage = compound.getFloat("Damage");
-        if (compound.contains("Gravity", 99))
+        if (compound.contains("Gravity", Tag.TAG_ANY_NUMERIC))
             this.gravity = compound.getFloat("Gravity");
-        if (compound.contains("Lifetime", 99))
+        if (compound.contains("Lifetime", Tag.TAG_ANY_NUMERIC))
             this.lifetime = compound.getInt("Lifetime");
-        if (compound.contains("SetEntityOnFireSeconds", 99))
+        if (compound.contains("SetEntityOnFireSeconds", Tag.TAG_ANY_NUMERIC))
             this.setEntityOnFireSeconds = compound.getInt("SetEntityOnFireSeconds");
         if (compound.contains("DieOnEntityHit"))
             this.dieOnEntityHit = compound.getBoolean("DieOnEntityHit");
         if (compound.contains("DieOnBlockHit"))
             this.dieOnBlockHit = compound.getBoolean("DieOnBlockHit");
-        if (compound.contains("Size", 99))
+        if (compound.contains("Size", Tag.TAG_ANY_NUMERIC))
             this.dimensions = new EntityDimensions(compound.getFloat("Size"), compound.getFloat("Size"), false);
+        if(compound.contains("ExplosionRadius", Tag.TAG_ANY_NUMERIC))
+            this.explosionRadius = compound.getFloat("ExplosionRadius");
+        if(compound.contains("ExplosionCausesFire"))
+            this.dieOnBlockHit = compound.getBoolean("ExplosionCausesFire");
+        if(compound.contains("ExplosionBlockInteraction")) {
+            var type = compound.getString("ExplosionBlockInteraction");
+            this.explosionBlockInteraction = type.equalsIgnoreCase("break") ? Explosion.BlockInteraction.BREAK : (type.equalsIgnoreCase("destroy") ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE);
+        }
+        if (compound.contains("KnockbackStrength", Tag.TAG_ANY_NUMERIC))
+            this.knockbackStrength = compound.getFloat("KnockbackStrength");
         if (compound.contains("CommandOnEntityHit"))
             this.commandOnEntityHit = compound.getString("CommandOnEntityHit");
         if (compound.contains("CommandOnBlockHit"))
