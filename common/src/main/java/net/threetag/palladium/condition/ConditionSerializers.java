@@ -62,5 +62,7 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> IS_IN_WATER_OR_RAIN = CONDITION_SERIALIZERS.register("is_in_water_or_rain", IsInWaterOrRainCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IS_IN_WATER_RAIN_OR_BUBBLE = CONDITION_SERIALIZERS.register("is_in_water_rain_or_bubble", IsInWaterRainOrBubbleCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IS_IN_WATER_OR_BUBBLE = CONDITION_SERIALIZERS.register("is_in_water_or_bubble", IsInWaterOrBubbleCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> DAY = CONDITION_SERIALIZERS.register("day", DayCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> NIGHT = CONDITION_SERIALIZERS.register("night", NightCondition.Serializer::new);
 
 }
