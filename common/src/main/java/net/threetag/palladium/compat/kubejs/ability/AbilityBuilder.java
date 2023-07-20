@@ -1,7 +1,7 @@
 package net.threetag.palladium.compat.kubejs.ability;
 
-import dev.latvian.mods.kubejs.BuilderBase;
-import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.registry.BuilderBase;
+import dev.latvian.mods.kubejs.registry.RegistryInfo;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Items;
@@ -39,7 +39,7 @@ public class AbilityBuilder extends BuilderBase<Ability> {
     }
 
     @Override
-    public RegistryObjectBuilderTypes<? super Ability> getRegistryType() {
+    public RegistryInfo getRegistryType() {
         return PalladiumKubeJSPlugin.ABILITY;
     }
 
