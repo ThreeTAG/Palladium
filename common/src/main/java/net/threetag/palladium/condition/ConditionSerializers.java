@@ -17,6 +17,7 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> ABILITY_TYPE_UNLOCKED = CONDITION_SERIALIZERS.register("ability_type_unlocked", AbilityTypeUnlockedCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ABILITY_ENABLED = CONDITION_SERIALIZERS.register("ability_enabled", AbilityEnabledCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ABILITY_TYPE_ENABLED = CONDITION_SERIALIZERS.register("ability_type_enabled", AbilityTypeEnabledCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> ABILITY_ON_COOLDOWN = CONDITION_SERIALIZERS.register("ability_on_cooldown", AbilityOnCooldownCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ACTION = CONDITION_SERIALIZERS.register("action", ActionCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ACTIVATION = CONDITION_SERIALIZERS.register("activation", ActivationCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> TOGGLE = CONDITION_SERIALIZERS.register("toggle", ToggleCondition.Serializer::new);
@@ -31,6 +32,7 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> MOON_PHASE = CONDITION_SERIALIZERS.register("moon_phase", MoonPhaseCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> MOD_LOADED = CONDITION_SERIALIZERS.register("mod_loaded", ModLoadedCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ITEM_IN_SLOT = CONDITION_SERIALIZERS.register("item_in_slot", ItemInSlotCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> EMPTY_SLOT = CONDITION_SERIALIZERS.register("empty_slot", EmptySlotCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ENTITY_TYPE = CONDITION_SERIALIZERS.register("entity_type", EntityTypeCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ENTITY_TYPE_TAG = CONDITION_SERIALIZERS.register("entity_type_tag", EntityTypeTagCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> BRIGHTNESS_AT_POSITION = CONDITION_SERIALIZERS.register("brightness_at_position", BrightnessAtPositionCondition.Serializer::new);
