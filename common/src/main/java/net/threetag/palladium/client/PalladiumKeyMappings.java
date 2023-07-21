@@ -12,12 +12,17 @@ import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.util.property.PalladiumProperties;
 import net.threetag.palladiumcore.event.ClientTickEvents;
+import net.threetag.palladiumcore.event.EventResult;
 import net.threetag.palladiumcore.event.InputEvents;
 import net.threetag.palladiumcore.registry.client.KeyMappingRegistry;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+
 @Environment(EnvType.CLIENT)
-public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickEvents.ClientTick {
+public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickEvents.ClientTick, InputEvents.MouseScrolling {
 
     public static final String CATEGORY = "key.palladium.categories.abilities";
     public static final KeyMapping SWITCH_ABILITY_LIST = new KeyMapping("key.palladium.switch_ability_list", 88, CATEGORY);
@@ -33,6 +38,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
         var instance = new PalladiumKeyMappings();
 
         InputEvents.KEY_PRESSED.register(instance);
+        InputEvents.MOUSE_SCROLLING.register(instance);
         ClientTickEvents.CLIENT_POST.register(instance);
     }
 
@@ -83,6 +89,52 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
                 new NotifyMovementKeyListenerMessage(4, client.options.keyDown.isDown()).send();
             }
         }
+    }
+
+    @Override
+    public EventResult mouseScrolling(Minecraft client, double scrollDelta, boolean leftDown, boolean middleDown, boolean rightDown, double mouseX, double mouseY) {
+        var player = client.player;
+
+        if (Objects.requireNonNull(player).isCrouching()) {
+            return EventResult.pass();
+        }
+
+        // Disable active toggle abilities
+        List<AbilityEntry> activeToggles = AbilityUtil.getEntries(player).stream()
+                .filter(e -> e.getConfiguration().getKeyPressType() == AbilityConfiguration.KeyPressType.TOGGLE
+                        && e.getConfiguration().getKeyType().toString().toLowerCase(Locale.ROOT).startsWith("scroll")
+                        && e.isEnabled())
+                .toList();
+
+        for (AbilityEntry active : activeToggles) {
+            if ((active.getConfiguration().getKeyType() == AbilityConfiguration.KeyType.SCROLL_UP && scrollDelta < 0D)
+                    || (active.getConfiguration().getKeyType() == AbilityConfiguration.KeyType.SCROLL_DOWN && scrollDelta > 0D)
+                    || (active.getConfiguration().getKeyType() == AbilityConfiguration.KeyType.SCROLL_EITHER && scrollDelta != 0D)) {
+                new AbilityKeyPressedMessage(active.getReference(), true).send();
+                return EventResult.cancel();
+            }
+        }
+
+        AbilityEntry entry = null;
+
+        if (scrollDelta > 0D) {
+            entry = PalladiumKeyMappings.getPrioritisedKeyedAbility(AbilityConfiguration.KeyType.SCROLL_UP);
+        } else if (scrollDelta < 0D) {
+            entry = PalladiumKeyMappings.getPrioritisedKeyedAbility(AbilityConfiguration.KeyType.SCROLL_DOWN);
+        }
+
+        if (entry == null) {
+            entry = PalladiumKeyMappings.getPrioritisedKeyedAbility(AbilityConfiguration.KeyType.SCROLL_EITHER);
+        }
+
+        if (entry != null && entry.isUnlocked() && (!entry.getConfiguration().needsEmptyHand() || player.getMainHandItem().isEmpty())) {
+            if(entry.getConfiguration().getKeyPressType() != AbilityConfiguration.KeyPressType.ONCE || (!entry.isEnabled() && !entry.isOnCooldown())) {
+                new AbilityKeyPressedMessage(entry.getReference(), true).send();
+                return EventResult.cancel();
+            }
+        }
+
+        return EventResult.pass();
     }
 
     @Override

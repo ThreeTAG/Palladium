@@ -60,13 +60,13 @@ public class HeldCondition extends KeyCondition {
 
         public Serializer() {
             this.withProperty(COOLDOWN, 0);
-            this.withProperty(KeyCondition.KEY_TYPE, AbilityConfiguration.KeyType.KEY_BIND);
+            this.withProperty(KeyCondition.KEY_TYPE_WITHOUT_SCROLLING, AbilityConfiguration.KeyType.KEY_BIND);
             this.withProperty(KeyCondition.NEEDS_EMPTY_HAND, false);
         }
 
         @Override
         public Condition make(JsonObject json) {
-            return new HeldCondition(this.getProperty(json, COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND));
+            return new HeldCondition(this.getProperty(json, COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE_WITHOUT_SCROLLING), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND));
         }
 
         @Override

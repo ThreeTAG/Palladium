@@ -4,6 +4,7 @@
   "abilities": {
     "action": {
       "type": "palladium:command",
+      "list_index": 0,
       "title": "Action",
       "conditions": {
         "enabling": [
@@ -18,6 +19,7 @@
     },
     "activation": {
       "type": "palladium:size",
+      "list_index": 1,
       "title": "Activation",
       "scale": 1.2,
       "conditions": {
@@ -32,6 +34,7 @@
     },
     "toggle": {
       "type": "palladium:size",
+      "list_index": 2,
       "title": "Toggle",
       "scale": 1.2,
       "conditions": {
@@ -46,6 +49,7 @@
     },
     "held": {
       "type": "palladium:size",
+      "list_index": 3,
       "title": "Held",
       "scale": 1.2,
       "conditions": {

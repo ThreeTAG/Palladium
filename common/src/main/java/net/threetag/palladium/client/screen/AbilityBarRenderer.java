@@ -241,7 +241,14 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
                         minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 8, 29, 92, 5, 7);
                     } else if (keyType == AbilityConfiguration.KeyType.SPACE_BAR) {
                         minecraft.gui.blit(poseStack, 5 + 19 - 13, 5 + i * 22 + 10, 34, 92, 10, 5);
+                    } else if (keyType == AbilityConfiguration.KeyType.SCROLL_UP) {
+                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 4, 24, 99, 5, 11);
+                    } else if (keyType == AbilityConfiguration.KeyType.SCROLL_DOWN) {
+                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 4, 29, 99, 5, 11);
+                    } else if (keyType == AbilityConfiguration.KeyType.SCROLL_EITHER) {
+                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 2, 34, 99, 5, 13);
                     }
+
                     poseStack.popPose();
                 }
             }

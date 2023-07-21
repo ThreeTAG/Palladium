@@ -83,6 +83,10 @@ public class AbilityEntry {
         return enabled;
     }
 
+    public boolean isOnCooldown() {
+        return this.cooldown > 0;
+    }
+
     public int getEnabledTicks() {
         return enabledTicks;
     }

@@ -268,13 +268,13 @@ public class AbilityConfiguration {
 
     public enum KeyType {
 
-        KEY_BIND, LEFT_CLICK, RIGHT_CLICK, SPACE_BAR;
+        KEY_BIND, LEFT_CLICK, RIGHT_CLICK, SPACE_BAR, SCROLL_UP, SCROLL_DOWN, SCROLL_EITHER;
 
     }
 
     public enum KeyPressType {
 
-        ONCE, HOLD
+        ONCE, TOGGLE, HOLD
 
     }
 

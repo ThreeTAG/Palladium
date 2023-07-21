@@ -7,7 +7,8 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 
 public abstract class KeyCondition extends Condition {
 
-    public static final PalladiumProperty<AbilityConfiguration.KeyType> KEY_TYPE = new KeyTypeProperty("key_type").configurable("The type of key that needs to be pressed");
+    public static final PalladiumProperty<AbilityConfiguration.KeyType> KEY_TYPE_WITHOUT_SCROLLING = new KeyTypeProperty("key_type", KeyTypeProperty.WITHOUT_SCROLLING).configurable("The type of key that needs to be pressed");
+    public static final PalladiumProperty<AbilityConfiguration.KeyType> KEY_TYPE_WITH_SCROLLING = new KeyTypeProperty("key_type", KeyTypeProperty.ALL).configurable("The type of key that needs to be pressed");
     public static final PalladiumProperty<Boolean> NEEDS_EMPTY_HAND = new BooleanProperty("needs_empty_hand").configurable("Whether or not the player needs to have an empty hand");
 
     public final int cooldown;

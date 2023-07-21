@@ -38,6 +38,11 @@ public class ToggleCondition extends KeyCondition {
     }
 
     @Override
+    public AbilityConfiguration.KeyPressType getKeyPressType() {
+        return AbilityConfiguration.KeyPressType.TOGGLE;
+    }
+
+    @Override
     public ConditionSerializer getSerializer() {
         return ConditionSerializers.TOGGLE.get();
     }
@@ -46,13 +51,13 @@ public class ToggleCondition extends KeyCondition {
 
         public Serializer() {
             this.withProperty(HeldCondition.Serializer.COOLDOWN, 0);
-            this.withProperty(KeyCondition.KEY_TYPE, AbilityConfiguration.KeyType.KEY_BIND);
+            this.withProperty(KeyCondition.KEY_TYPE_WITH_SCROLLING, AbilityConfiguration.KeyType.KEY_BIND);
             this.withProperty(KeyCondition.NEEDS_EMPTY_HAND, false);
         }
 
         @Override
         public Condition make(JsonObject json) {
-            return new ToggleCondition(this.getProperty(json, HeldCondition.Serializer.COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND));
+            return new ToggleCondition(this.getProperty(json, HeldCondition.Serializer.COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE_WITH_SCROLLING), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND));
         }
 
         @Override
