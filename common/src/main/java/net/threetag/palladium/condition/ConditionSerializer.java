@@ -4,6 +4,7 @@ import com.google.gson.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDefaultDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
@@ -60,12 +61,12 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
     public static List<Condition> listFromJSON(JsonElement jsonElement, ConditionContextType type) {
         List<Condition> conditions = new ArrayList<>();
 
-        if(jsonElement.isJsonArray()) {
+        if (jsonElement.isJsonArray()) {
             JsonArray array = jsonElement.getAsJsonArray();
             for (JsonElement element : array) {
                 conditions.add(fromJSON(element.getAsJsonObject(), type));
             }
-        } else if(jsonElement.isJsonObject()) {
+        } else if (jsonElement.isJsonObject()) {
             conditions.add(fromJSON(jsonElement.getAsJsonObject(), type));
         } else {
             throw new JsonSyntaxException("Conditions list must either be an array of multiple conditions, or one condition json object");
@@ -75,7 +76,13 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
     }
 
     public static Condition fromJSON(JsonObject json, ConditionContextType type) {
-        ConditionSerializer conditionSerializer = ConditionSerializer.REGISTRY.get(new ResourceLocation(GsonHelper.getAsString(json, "type")));
+        var id = new ResourceLocation(GsonHelper.getAsString(json, "type"));
+        ConditionSerializer conditionSerializer = ConditionSerializer.REGISTRY.get(id);
+
+        if (conditionSerializer == null && id.equals(Palladium.id("under_water"))) {
+            conditionSerializer = ConditionSerializers.IS_UNDER_WATER.get();
+            AddonPackLog.warning("'under_water' condition found, please use 'is_under_water' instead!");
+        }
 
         if (conditionSerializer == null) {
             throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' does not exist!");
