@@ -48,6 +48,7 @@ import net.threetag.palladium.item.AddonBowItem;
 import net.threetag.palladium.item.AddonCrossbowItem;
 import net.threetag.palladium.item.EnergyItem;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.power.ability.AbilityClientEventHandler;
 import net.threetag.palladium.power.ability.GuiOverlayAbility;
 import net.threetag.palladium.util.SupporterHandler;
 import net.threetag.palladium.util.icon.IIcon;
@@ -70,6 +71,7 @@ public class PalladiumClient {
         AccessoryScreen.addButton();
         SupporterHandler.clientInit();
         setupDevLogButton();
+        AbilityClientEventHandler.init();
 
         // During Setup
         LifecycleEvents.SETUP.register(() -> {

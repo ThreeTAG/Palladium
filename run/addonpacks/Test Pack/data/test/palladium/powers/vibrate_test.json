@@ -6,6 +6,7 @@
       "type": "palladium:vibrate",
       "list_index": 0,
       "hidden": false,
+      "hidden_in_bar": false,
       "conditions": {
         "enabling": {
           "type": "palladium:toggle"
