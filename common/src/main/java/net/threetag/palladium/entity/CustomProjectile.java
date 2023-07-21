@@ -36,7 +36,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     public float gravity = 0.03F;
     public boolean dieOnBlockHit = true;
     public boolean dieOnEntityHit = true;
-    public boolean preventDamageToShooter = false;
+    public boolean preventShooterInteraction = false;
     public int lifetime = -1;
     public int setEntityOnFireSeconds = 0;
     public float explosionRadius = 0F;
@@ -87,34 +87,36 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     @Override
     protected void onHitEntity(EntityHitResult result) {
         if (!this.level.isClientSide) {
-            if (this.commandOnEntityHit != null && !this.commandOnEntityHit.isBlank()) {
-                this.level.getServer().getCommands()
-                        .performPrefixedCommand(this.createCommandSourceStack()
-                                .withMaximumPermission(2)
-                                .withSuppressedOutput(), this.commandOnEntityHit);
-            }
-
             Entity entity = result.getEntity();
 
-            if (this.damage > 0F && (entity != this.getOwner() || !this.preventDamageToShooter)) {
-                entity.hurt(DamageSource.thrown(this, this.getOwner()), this.damage);
-            }
+            if(entity != this.getOwner() || !this.preventShooterInteraction) {
+                if (this.commandOnEntityHit != null && !this.commandOnEntityHit.isBlank()) {
+                    this.level.getServer().getCommands()
+                            .performPrefixedCommand(this.createCommandSourceStack()
+                                    .withMaximumPermission(2)
+                                    .withSuppressedOutput(), this.commandOnEntityHit);
+                }
 
-            if (this.setEntityOnFireSeconds > 0) {
-                entity.setSecondsOnFire(this.setEntityOnFireSeconds);
-            }
+                if (this.damage > 0F) {
+                    entity.hurt(DamageSource.thrown(this, this.getOwner()), this.damage);
+                }
 
-            if (this.explosionRadius > 0F) {
-                this.level.explode(this, this.getX(), this.getEyeY(), this.getZ(), this.explosionRadius, this.explosionCausesFire, this.explosionBlockInteraction);
-            }
+                if (this.setEntityOnFireSeconds > 0) {
+                    entity.setSecondsOnFire(this.setEntityOnFireSeconds);
+                }
 
-            if (this.knockbackStrength > 0F && entity instanceof LivingEntity living) {
-                living.knockback(this.knockbackStrength, -this.getDeltaMovement().x, -this.getDeltaMovement().z);
-            }
+                if (this.explosionRadius > 0F) {
+                    this.level.explode(this, this.getX(), this.getEyeY(), this.getZ(), this.explosionRadius, this.explosionCausesFire, this.explosionBlockInteraction);
+                }
 
-            if (this.dieOnEntityHit) {
-                this.level.broadcastEntityEvent(this, (byte) 3);
-                this.discard();
+                if (this.knockbackStrength > 0F && entity instanceof LivingEntity living) {
+                    living.knockback(this.knockbackStrength, -this.getDeltaMovement().x, -this.getDeltaMovement().z);
+                }
+
+                if (this.dieOnEntityHit) {
+                    this.level.broadcastEntityEvent(this, (byte) 3);
+                    this.discard();
+                }
             }
         }
     }
@@ -171,7 +173,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
         compound.putFloat("Gravity", this.gravity);
         compound.putBoolean("DieOnEntityHit", this.dieOnEntityHit);
         compound.putBoolean("DieOnBlockHit", this.dieOnBlockHit);
-        compound.putBoolean("PreventDamageToShooter", this.preventDamageToShooter);
+        compound.putBoolean("PreventShooterInteraction", this.preventShooterInteraction);
         compound.putFloat("Size", this.dimensions.width);
         compound.putFloat("Lifetime", this.lifetime);
         compound.putFloat("SetEntityOnFireSeconds", this.setEntityOnFireSeconds);
@@ -210,8 +212,8 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
             this.dieOnEntityHit = compound.getBoolean("DieOnEntityHit");
         if (compound.contains("DieOnBlockHit"))
             this.dieOnBlockHit = compound.getBoolean("DieOnBlockHit");
-        if (compound.contains("PreventDamageToShooter"))
-            this.preventDamageToShooter = compound.getBoolean("PreventDamageToShooter");
+        if (compound.contains("PreventShooterInteraction"))
+            this.preventShooterInteraction = compound.getBoolean("PreventShooterInteraction");
         if (compound.contains("Size", Tag.TAG_ANY_NUMERIC))
             this.dimensions = new EntityDimensions(compound.getFloat("Size"), compound.getFloat("Size"), false);
         if (compound.contains("ExplosionRadius", Tag.TAG_ANY_NUMERIC))
