@@ -244,6 +244,8 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
                 }
             }
         }
+
+        this.refreshDimensions();
     }
 
     @Override

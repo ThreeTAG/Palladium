@@ -91,6 +91,10 @@ public class FlightHandler {
 
         // Apply flight boost
         if (flightBoost > 0F) {
+            if (this.flightType.isNotNull()) {
+                this.flightSpeed = (float) this.player.getAttributeValue(this.flightType.getAttribute());
+            }
+
             if (this.hovering < 1F) {
                 this.hovering = Math.min(1F, this.hovering + 0.1F);
             }
@@ -209,7 +213,7 @@ public class FlightHandler {
     public float getHorizontalSpeed(float partialTicks) {
         return Mth.lerp(partialTicks, this.prevHorizontalSpeed, this.horizontalSpeed);
     }
-    
+
     public static FlightType getAvailableFlightType(LivingEntity entity) {
         if (entity.getAttributes().hasAttribute(PalladiumAttributes.FLIGHT_SPEED.get()) && entity.getAttributeValue(PalladiumAttributes.FLIGHT_SPEED.get()) > 0D) {
             return FlightType.NORMAL;
@@ -233,7 +237,7 @@ public class FlightHandler {
     @Environment(EnvType.CLIENT)
     public static void startSound(Player player) {
         if (player == Minecraft.getInstance().player) {
-            if(CACHED_SOUND instanceof FlightSound sound) {
+            if (CACHED_SOUND instanceof FlightSound sound) {
                 sound.stop = true;
             }
 
