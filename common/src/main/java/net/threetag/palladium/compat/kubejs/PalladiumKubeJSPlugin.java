@@ -22,6 +22,7 @@ import net.threetag.palladium.power.SuperpowerUtil;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.util.Easing;
+import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 
 public class PalladiumKubeJSPlugin extends KubeJSPlugin {
@@ -72,6 +73,7 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
         if (type == ScriptType.CLIENT) {
             typeWrappers.registerSimple(Easing.class, o -> Easing.fromString(o.toString()));
             typeWrappers.registerSimple(PalladiumAnimation.PlayerModelPart.class, o -> PalladiumAnimation.PlayerModelPart.fromName(o.toString()));
+            typeWrappers.registerSimple(PlayerSlot.class, o -> PlayerSlot.get(o.toString()));
         }
     }
 

@@ -5,11 +5,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.icon.TexturedIcon;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperty;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -62,5 +64,18 @@ public class PalladiumBinding {
             result.set(handler.getPropertyByName(key) != null);
         });
         return result.get();
+    }
+
+    public static void setItemInSlot(LivingEntity entity, @Nullable PlayerSlot slot, ItemStack stack) {
+        if (slot != null) {
+            slot.setItem(entity, stack);
+        }
+    }
+
+    public static ItemStack getItemInSlot(LivingEntity entity, @Nullable PlayerSlot slot) {
+        if (slot != null) {
+            return slot.getItems(entity).stream().findFirst().orElse(ItemStack.EMPTY);
+        }
+        return ItemStack.EMPTY;
     }
 }
