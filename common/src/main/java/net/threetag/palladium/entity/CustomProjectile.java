@@ -219,7 +219,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
         if (compound.contains("ExplosionRadius", Tag.TAG_ANY_NUMERIC))
             this.explosionRadius = compound.getFloat("ExplosionRadius");
         if (compound.contains("ExplosionCausesFire"))
-            this.dieOnBlockHit = compound.getBoolean("ExplosionCausesFire");
+            this.explosionCausesFire = compound.getBoolean("ExplosionCausesFire");
         if (compound.contains("ExplosionBlockInteraction")) {
             var type = compound.getString("ExplosionBlockInteraction");
             this.explosionBlockInteraction = type.equalsIgnoreCase("break") ? Explosion.BlockInteraction.BREAK : (type.equalsIgnoreCase("destroy") ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE);
