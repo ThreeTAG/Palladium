@@ -5,7 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.util.property.*;
 
-public class AimAbility extends Ability {
+public class AimAbility extends Ability implements AnimationTimer {
 
     public static final PalladiumProperty<Integer> TIME = new IntegerProperty("time").configurable("Determines how many ticks it takes until the arm is fully aimed");
     public static final PalladiumProperty<ArmTypeProperty.ArmType> ARM = new ArmTypeProperty("arm").configurable("Determines which arm(s) should point");
@@ -42,10 +42,10 @@ public class AimAbility extends Ability {
         for (AbilityEntry entry : AbilityUtil.getEntries(entity, Abilities.AIM.get())) {
             var armType = entry.getProperty(ARM);
 
-            if(!armType.isNone()) {
-                if(armType.isRight(entity) && right) {
+            if (!armType.isNone()) {
+                if (armType.isRight(entity) && right) {
                     f = Math.max(f, Mth.lerp(partialTicks, entry.getProperty(PREV_TIMER), entry.getProperty(TIMER)) / entry.getProperty(TIME));
-                } else if(armType.isLeft(entity) && !right) {
+                } else if (armType.isLeft(entity) && !right) {
                     f = Math.max(f, Mth.lerp(partialTicks, entry.getProperty(PREV_TIMER), entry.getProperty(TIMER)) / entry.getProperty(TIME));
                 }
             }
@@ -57,5 +57,10 @@ public class AimAbility extends Ability {
     @Override
     public String getDocumentationDescription() {
         return "Allows the player to aim their arms.";
+    }
+
+    @Override
+    public float getAnimationValue(AbilityEntry entry, float partialTick) {
+        return Mth.lerp(partialTick, entry.getProperty(PREV_TIMER), entry.getProperty(TIMER)) / entry.getProperty(TIME);
     }
 }

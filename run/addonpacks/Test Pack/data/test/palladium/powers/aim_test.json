@@ -10,7 +10,8 @@
       "time": 5,
       "conditions": {
         "enabling": {
-          "type": "palladium:held"
+          "type": "palladium:held",
+          "key_type": "right_click"
         }
       }
     },
@@ -22,7 +23,8 @@
       "time": 5,
       "conditions": {
         "enabling": {
-          "type": "palladium:held"
+          "type": "palladium:held",
+          "key_type": "left_click"
         }
       }
     },
