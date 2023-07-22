@@ -33,6 +33,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> SHOW_BOTH_ARMS = ABILITIES.register("show_both_arms", () -> new Ability().withProperty(Ability.HIDDEN_IN_GUI, true).setDocumentationDescription("Enables the rendering of your off-hand."));
     public static final RegistrySupplier<Ability> PLAYER_ANIMATION = ABILITIES.register("player_animation", PlayerAnimationAbility::new);
     public static final RegistrySupplier<Ability> WATER_WALK = ABILITIES.register("water_walk", () -> new Ability().setDocumentationDescription("Allows the player to walk on water."));
+    public static final RegistrySupplier<Ability> FLUID_WALKING = ABILITIES.register("fluid_walking", FluidWalkingAbility::new);
     public static final RegistrySupplier<Ability> RESTRICT_SLOTS = ABILITIES.register("restrict_slots", RestrictSlotsAbility::new);
     public static final RegistrySupplier<Ability> PLAY_SOUND = ABILITIES.register("play_sound", PlaySoundAbility::new);
     public static final RegistrySupplier<Ability> VIBRATE = ABILITIES.register("vibrate", VibrateAbility::new);

@@ -105,6 +105,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Show Both Arms");
             this.addAbility(Abilities.PLAYER_ANIMATION, "Player Animation");
             this.addAbility(Abilities.WATER_WALK, "Water Walk");
+            this.addAbility(Abilities.FLUID_WALKING, "Fluid Walking");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Restrict Slots");
             this.addAbility(Abilities.PLAY_SOUND, "Sound");
             this.addAbility(Abilities.VIBRATE, "Vibrate");
@@ -279,6 +280,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeigen");
             this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
             this.addAbility(Abilities.WATER_WALK, "Auf Wasser Laufen");
+            this.addAbility(Abilities.FLUID_WALKING, "Auf Flüssigkeit Laufen");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(Abilities.PLAY_SOUND, "Sound");
             this.addAbility(Abilities.VIBRATE, "Vibrieren");
@@ -448,6 +450,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeijen");
             this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
             this.addAbility(Abilities.WATER_WALK, "Uff Wasser Lofen");
+            this.addAbility(Abilities.FLUID_WALKING, "Uff Flüssichkeht Lofen");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(Abilities.PLAY_SOUND, "Sound");
             this.addAbility(Abilities.VIBRATE, "Vibrieren");
