@@ -41,6 +41,11 @@ public class ActivationCondition extends KeyCondition {
         return ConditionSerializers.ACTIVATION.get();
     }
 
+    @Override
+    public AbilityConfiguration.KeyPressType getKeyPressType() {
+        return AbilityConfiguration.KeyPressType.ACTIVATION;
+    }
+
     public static class Serializer extends ConditionSerializer {
 
         public static final PalladiumProperty<Integer> TICKS = new IntegerProperty("ticks").configurable("The amount of ticks the ability will be active for");

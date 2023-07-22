@@ -128,7 +128,19 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
         }
 
         if (entry != null && entry.isUnlocked() && (!entry.getConfiguration().needsEmptyHand() || player.getMainHandItem().isEmpty())) {
-            if(entry.getConfiguration().getKeyPressType() != AbilityConfiguration.KeyPressType.ONCE || (!entry.isEnabled() && !entry.isOnCooldown())) {
+            var pressType = entry.getConfiguration().getKeyPressType();
+
+            if (pressType == AbilityConfiguration.KeyPressType.ACTION) {
+                if (!entry.isOnCooldown()) {
+                    new AbilityKeyPressedMessage(entry.getReference(), true).send();
+                    return EventResult.cancel();
+                }
+            } else if (pressType == AbilityConfiguration.KeyPressType.ACTIVATION) {
+                if (!entry.isOnCooldown() && !entry.isEnabled()) {
+                    new AbilityKeyPressedMessage(entry.getReference(), true).send();
+                    return EventResult.cancel();
+                }
+            } else if (pressType == AbilityConfiguration.KeyPressType.TOGGLE) {
                 new AbilityKeyPressedMessage(entry.getReference(), true).send();
                 return EventResult.cancel();
             }

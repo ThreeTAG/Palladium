@@ -35,7 +35,7 @@ public abstract class Condition {
     }
 
     public AbilityConfiguration.KeyPressType getKeyPressType() {
-        return AbilityConfiguration.KeyPressType.ONCE;
+        return AbilityConfiguration.KeyPressType.ACTION;
     }
 
     public boolean handlesCooldown() {

@@ -33,7 +33,7 @@ public class AbilityConfiguration {
     private boolean needsKey = false;
     private boolean needsEmptyHand = false;
     private KeyType keyType = KeyType.KEY_BIND;
-    private KeyPressType keyPressType = KeyPressType.ONCE;
+    private KeyPressType keyPressType = KeyPressType.ACTION;
     public List<String> dependencies = new ArrayList<>();
 
     public AbilityConfiguration(String id, Ability ability) {
@@ -274,7 +274,7 @@ public class AbilityConfiguration {
 
     public enum KeyPressType {
 
-        ONCE, TOGGLE, HOLD
+        ACTION, ACTIVATION, TOGGLE, HOLD
 
     }
 
