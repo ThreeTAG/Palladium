@@ -56,7 +56,7 @@ public class HumanoidRendererModifications {
         float scale = AnimationTimer.getValue(entity, Abilities.SHRINK_BODY_OVERLAY.get(), partialTick, Easing.INOUTSINE);
 
         if (scale != 0F) {
-            float f = -0.1F * scale;
+            float f = -0.11F * scale;
             CACHED_SHRINK = f;
             Vector3f vec = new Vector3f(f, f, f);
             for (BodyPart value : BodyPart.values()) {

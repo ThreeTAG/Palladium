@@ -71,7 +71,7 @@ public class PlayerRendererMixin {
         float scale = AnimationTimer.getValue(player, Abilities.SHRINK_BODY_OVERLAY.get(), Minecraft.getInstance().getFrameTime(), Easing.INOUTSINE);
 
         if (scale != 0F) {
-            float f = -0.1F * scale;
+            float f = -0.11F * scale;
             this.cachedHandShrink = f;
             Vector3f vec = new Vector3f(f, f, f);
             rendererArmwear.offsetScale(vec);
