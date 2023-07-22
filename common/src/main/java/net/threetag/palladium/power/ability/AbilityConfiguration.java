@@ -32,6 +32,7 @@ public class AbilityConfiguration {
     private CooldownType cooldownType = CooldownType.STATIC;
     private boolean needsKey = false;
     private boolean needsEmptyHand = false;
+    private boolean allowScrollWhenCrouching = true;
     private KeyType keyType = KeyType.KEY_BIND;
     private KeyPressType keyPressType = KeyPressType.ACTION;
     public List<String> dependencies = new ArrayList<>();
@@ -93,6 +94,10 @@ public class AbilityConfiguration {
         return this.needsEmptyHand;
     }
 
+    public boolean allowScrollWhenCrouching() {
+        return this.allowScrollWhenCrouching;
+    }
+
     public KeyType getKeyType() {
         return this.keyType;
     }
@@ -121,6 +126,7 @@ public class AbilityConfiguration {
         this.propertyManager.toBuffer(buf);
         buf.writeBoolean(this.needsKey);
         buf.writeBoolean(this.needsEmptyHand);
+        buf.writeBoolean(this.allowScrollWhenCrouching);
         buf.writeBoolean(this.buyable);
         buf.writeInt(this.keyType.ordinal());
         buf.writeInt(this.keyPressType.ordinal());
@@ -140,6 +146,7 @@ public class AbilityConfiguration {
         configuration.propertyManager.fromBuffer(buf);
         configuration.needsKey = buf.readBoolean();
         configuration.needsEmptyHand = buf.readBoolean();
+        configuration.allowScrollWhenCrouching = buf.readBoolean();
         configuration.buyable = buf.readBoolean();
         configuration.keyType = KeyType.values()[buf.readInt()];
         configuration.keyPressType = KeyPressType.values()[buf.readInt()];
@@ -238,6 +245,7 @@ public class AbilityConfiguration {
 
                         if (condition instanceof KeyCondition key) {
                             configuration.needsEmptyHand = key.needsEmptyHand();
+                            configuration.allowScrollWhenCrouching = key.allowScrollingWhenCrouching();
                         }
                     }
 

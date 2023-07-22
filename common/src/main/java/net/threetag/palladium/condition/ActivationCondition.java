@@ -16,8 +16,8 @@ public class ActivationCondition extends KeyCondition {
 
     public final int ticks;
 
-    public ActivationCondition(int ticks, int cooldown, AbilityConfiguration.KeyType type, boolean needsEmptyHand) {
-        super(cooldown, type, needsEmptyHand);
+    public ActivationCondition(int ticks, int cooldown, AbilityConfiguration.KeyType type, boolean needsEmptyHand, boolean allowScrollingWhenCrouching) {
+        super(cooldown, type, needsEmptyHand, allowScrollingWhenCrouching);
         this.ticks = ticks;
     }
 
@@ -55,11 +55,12 @@ public class ActivationCondition extends KeyCondition {
             this.withProperty(TICKS, 60);
             this.withProperty(KeyCondition.KEY_TYPE_WITH_SCROLLING, AbilityConfiguration.KeyType.KEY_BIND);
             this.withProperty(KeyCondition.NEEDS_EMPTY_HAND, false);
+            this.withProperty(KeyCondition.ALLOW_SCROLLING_DURING_CROUCHING, true);
         }
 
         @Override
         public Condition make(JsonObject json) {
-            return new ActivationCondition(this.getProperty(json, TICKS), this.getProperty(json, ActionCondition.Serializer.COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE_WITH_SCROLLING), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND));
+            return new ActivationCondition(this.getProperty(json, TICKS), this.getProperty(json, ActionCondition.Serializer.COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE_WITH_SCROLLING), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND), this.getProperty(json, KeyCondition.ALLOW_SCROLLING_DURING_CROUCHING));
         }
 
         @Override

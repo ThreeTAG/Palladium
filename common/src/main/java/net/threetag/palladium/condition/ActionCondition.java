@@ -13,8 +13,8 @@ import java.util.Objects;
 
 public class ActionCondition extends KeyCondition {
 
-    public ActionCondition(int cooldown, AbilityConfiguration.KeyType type, boolean needsEmptyHand) {
-        super(cooldown, type, needsEmptyHand);
+    public ActionCondition(int cooldown, AbilityConfiguration.KeyType type, boolean needsEmptyHand, boolean allowScrollingWhenCrouching) {
+        super(cooldown, type, needsEmptyHand, allowScrollingWhenCrouching);
     }
 
     @Override
@@ -50,11 +50,12 @@ public class ActionCondition extends KeyCondition {
             this.withProperty(COOLDOWN, 0);
             this.withProperty(KeyCondition.KEY_TYPE_WITH_SCROLLING, AbilityConfiguration.KeyType.KEY_BIND);
             this.withProperty(KeyCondition.NEEDS_EMPTY_HAND, false);
+            this.withProperty(KeyCondition.ALLOW_SCROLLING_DURING_CROUCHING, true);
         }
 
         @Override
         public Condition make(JsonObject json) {
-            return new ActionCondition(this.getProperty(json, COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE_WITH_SCROLLING), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND));
+            return new ActionCondition(this.getProperty(json, COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE_WITH_SCROLLING), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND), this.getProperty(json, KeyCondition.ALLOW_SCROLLING_DURING_CROUCHING));
         }
 
         @Override

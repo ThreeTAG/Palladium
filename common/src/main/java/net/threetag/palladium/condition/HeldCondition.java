@@ -13,7 +13,7 @@ import net.threetag.palladium.util.property.PropertyManager;
 public class HeldCondition extends KeyCondition {
 
     public HeldCondition(int cooldown, AbilityConfiguration.KeyType type, boolean needsEmptyHand) {
-        super(cooldown, type, needsEmptyHand);
+        super(cooldown, type, needsEmptyHand, true);
     }
 
     @Override

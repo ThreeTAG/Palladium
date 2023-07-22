@@ -93,11 +93,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
 
     @Override
     public EventResult mouseScrolling(Minecraft client, double scrollDelta, boolean leftDown, boolean middleDown, boolean rightDown, double mouseX, double mouseY) {
-        var player = client.player;
-
-        if (Objects.requireNonNull(player).isCrouching()) {
-            return EventResult.pass();
-        }
+        var player = Objects.requireNonNull(client.player);
 
         // Disable active toggle abilities
         List<AbilityEntry> activeToggles = AbilityUtil.getEntries(player).stream()
@@ -173,7 +169,9 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
             for (AbilityEntry ability : list.getDisplayedAbilities()) {
                 if (ability != null && ability.isUnlocked()) {
                     if (ability.getConfiguration().getKeyType() == keyType) {
-                        return ability;
+                        if(!ability.getConfiguration().getKeyType().toString().toLowerCase(Locale.ROOT).startsWith("scroll") || (!ability.getConfiguration().allowScrollWhenCrouching() || !Objects.requireNonNull(Minecraft.getInstance().player).isCrouching())) {
+                            return ability;
+                        }
                     }
                 }
             }
@@ -182,7 +180,9 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
         for (AbilityEntry entry : AbilityUtil.getEntries(Minecraft.getInstance().player)) {
             if (entry != null && entry.isUnlocked()) {
                 if (entry.getConfiguration().getKeyType() == keyType) {
-                    return entry;
+                    if(!entry.getConfiguration().getKeyType().toString().toLowerCase(Locale.ROOT).startsWith("scroll") || (!entry.getConfiguration().allowScrollWhenCrouching() || !Objects.requireNonNull(Minecraft.getInstance().player).isCrouching())) {
+                        return entry;
+                    }
                 }
             }
         }
