@@ -28,7 +28,7 @@ public class AbilityOnCooldownCondition extends Condition {
         } else if (holder != null) {
             dependency = holder.getAbilities().get(this.abilityId);
         }
-        return dependency != null && dependency.cooldown > 0;
+        return dependency != null && dependency.isOnCooldown();
     }
 
     @Override

@@ -84,7 +84,7 @@ public class AbilityEntry {
     }
 
     public boolean isOnCooldown() {
-        return this.cooldown > 0;
+        return this.getConfiguration().getCooldownType() == CooldownType.STATIC ? this.cooldown > 0 : this.cooldown < this.maxCooldown;
     }
 
     public int getEnabledTicks() {
