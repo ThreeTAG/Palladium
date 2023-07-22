@@ -2,18 +2,14 @@ package net.threetag.palladium.mixin;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.FluidState;
 import net.threetag.palladium.client.renderer.renderlayer.RenderLayerStates;
 import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
 import net.threetag.palladium.power.PowerHandler;
-import net.threetag.palladium.power.ability.Abilities;
-import net.threetag.palladium.power.ability.AbilityUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -72,13 +68,6 @@ public abstract class LivingEntityMixin implements PalladiumLivingEntityExtensio
         CompoundTag palladiumTag = compound.contains("Palladium") ? compound.getCompound("Palladium") : new CompoundTag();
         palladiumTag.put("Powers", this.palladium$powerHandler.toNBT());
         compound.put("Palladium", palladiumTag);
-    }
-
-    @Inject(method = "canStandOnFluid", at = @At("HEAD"), cancellable = true)
-    public void canStandOnFluid(FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
-        if (fluidState.is(FluidTags.WATER) && AbilityUtil.isTypeEnabled((LivingEntity) (Object) this, Abilities.WATER_WALK.get())) {
-            cir.setReturnValue(true);
-        }
     }
 
     @Override
