@@ -24,10 +24,25 @@ public class MinecraftMixin {
             var entry = PalladiumKeyMappings.getPrioritisedKeyedAbility(AbilityConfiguration.KeyType.LEFT_CLICK);
 
             if (entry != null && entry.isUnlocked() && (!entry.getConfiguration().needsEmptyHand() || this.player.getMainHandItem().isEmpty())) {
-                new AbilityKeyPressedMessage(entry.getReference(), true).send();
-                PalladiumKeyMappings.LEFT_CLICKED_ABILITY = entry;
+                var pressType = entry.getConfiguration().getKeyPressType();
 
-                cir.setReturnValue(false);
+                if (pressType == AbilityConfiguration.KeyPressType.ACTION) {
+                    if (!entry.isOnCooldown()) {
+                        new AbilityKeyPressedMessage(entry.getReference(), true).send();
+                        PalladiumKeyMappings.LEFT_CLICKED_ABILITY = entry;
+                        cir.setReturnValue(false);
+                    }
+                } else if (pressType == AbilityConfiguration.KeyPressType.ACTIVATION) {
+                    if (!entry.isOnCooldown() && !entry.isEnabled()) {
+                        new AbilityKeyPressedMessage(entry.getReference(), true).send();
+                        PalladiumKeyMappings.LEFT_CLICKED_ABILITY = entry;
+                        cir.setReturnValue(false);
+                    }
+                } else {
+                    new AbilityKeyPressedMessage(entry.getReference(), true).send();
+                    PalladiumKeyMappings.LEFT_CLICKED_ABILITY = entry;
+                    cir.setReturnValue(false);
+                }
             }
         } else {
             cir.setReturnValue(false);
@@ -47,11 +62,27 @@ public class MinecraftMixin {
             var entry = PalladiumKeyMappings.getPrioritisedKeyedAbility(AbilityConfiguration.KeyType.RIGHT_CLICK);
 
             if (entry != null && entry.isUnlocked() && (!entry.getConfiguration().needsEmptyHand() || this.player.getMainHandItem().isEmpty())) {
-                new AbilityKeyPressedMessage(entry.getReference(), true).send();
-                PalladiumKeyMappings.RIGHT_CLICKED_ABILITY = entry;
+                var pressType = entry.getConfiguration().getKeyPressType();
 
-                ci.cancel();
+                if (pressType == AbilityConfiguration.KeyPressType.ACTION) {
+                    if (!entry.isOnCooldown()) {
+                        new AbilityKeyPressedMessage(entry.getReference(), true).send();
+                        PalladiumKeyMappings.RIGHT_CLICKED_ABILITY = entry;
+                        ci.cancel();
+                    }
+                } else if (pressType == AbilityConfiguration.KeyPressType.ACTIVATION) {
+                    if (!entry.isOnCooldown() && !entry.isEnabled()) {
+                        new AbilityKeyPressedMessage(entry.getReference(), true).send();
+                        PalladiumKeyMappings.RIGHT_CLICKED_ABILITY = entry;
+                        ci.cancel();
+                    }
+                } else {
+                    new AbilityKeyPressedMessage(entry.getReference(), true).send();
+                    PalladiumKeyMappings.RIGHT_CLICKED_ABILITY = entry;
+                    ci.cancel();
+                }
             }
+
         } else {
             ci.cancel();
         }
