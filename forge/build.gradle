@@ -105,14 +105,13 @@ shadowJar {
     exclude "architectury.common.json"
 
     configurations = [project.configurations.shadowCommon]
-    classifier "dev-shadow"
+    archiveClassifier = "dev-shadow"
 }
 
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier null
-    archiveClassifier = 'forge'
+    archiveClassifier = "forge"
 }
 
 jar {
@@ -128,7 +127,7 @@ jar {
         ])
     }
 
-    classifier "dev"
+    archiveClassifier = "dev"
 }
 
 sourcesJar {
