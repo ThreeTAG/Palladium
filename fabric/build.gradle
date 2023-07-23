@@ -85,10 +85,16 @@ dependencies {
     modLocalRuntime "curse.maven:smoothboot-415758:${rootProject.smoothboot_fabric_version}"
 
     // Condensed Creative
-    modImplementation "io.wispforest:condensed_creative-fabric:${rootProject.condensed_creative_version}"
+    modCompileOnly "io.wispforest:condensed_creative-fabric:${rootProject.condensed_creative_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    }
 }
 
 processResources {

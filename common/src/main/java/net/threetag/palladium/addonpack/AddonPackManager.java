@@ -65,7 +65,9 @@ public class AddonPackManager {
         IGNORE_INJECT = true;
         this.resourceManager = new ReloadableResourceManager(getPackType());
         this.folderPackFinder = new FolderRepositorySource(getLocation(), PackSource.DEFAULT);
-        this.packList = new PackRepository(getPackType(), this.folderPackFinder);
+        var modSource = getModRepositorySource();
+        RepositorySource[] sources = modSource == null ? new RepositorySource[]{this.folderPackFinder} : new RepositorySource[]{this.folderPackFinder, modSource};
+        this.packList = new PackRepository(getPackType(), sources);
         IGNORE_INJECT = false;
 
         this.resourceManager.registerReloadListener(new CreativeModeTabParser());
@@ -113,6 +115,11 @@ public class AddonPackManager {
         throw new AssertionError();
     }
 
+    @ExpectPlatform
+    public static RepositorySource getModRepositorySource() {
+        throw new AssertionError();
+    }
+
     @SuppressWarnings("ConstantConditions")
     public CompletableFuture<AddonPackManager> beginLoading(Executor backgroundExecutor) {
         this.packList.reload();
@@ -127,9 +134,25 @@ public class AddonPackManager {
                 BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
                 JsonObject jsonobject = GsonHelper.parse(bufferedreader);
                 PackData packData = PackData.fromJSON(jsonobject);
+
+                if (packData == null && !(Platform.isForge() ? pack.getId().startsWith("mod:") : pack.getId().equalsIgnoreCase("Fabric Mods"))) {
+                    bufferedreader.close();
+                    stream.close();
+                    throw new RuntimeException("Addonpack " + pack.getId() + " is missing key details in pack.mcmeta (\"id\" & \"version\" in \"packs\"-section)");
+                }
+
+                if (packData == null) {
+                    bufferedreader.close();
+                    stream.close();
+                    return;
+                }
+
                 if (packs.containsKey(packData.getId())) {
+                    bufferedreader.close();
+                    stream.close();
                     throw new RuntimeException("Duplicate addonpack: " + packData.getId());
                 }
+
                 packs.put(packData.getId(), packData);
                 bufferedreader.close();
                 stream.close();

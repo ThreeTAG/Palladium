@@ -15,4 +15,8 @@ public class AddonPackManagerImpl {
         return AddonPackType.ADDON;
     }
 
+    public static RepositorySource getModRepositorySource() {
+        return null;
+    }
+
 }
