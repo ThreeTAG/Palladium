@@ -1,11 +1,14 @@
 package net.threetag.palladium.mixin.fabric;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,6 +16,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.client.model.ArmorModelManager;
+import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.client.renderer.entity.HumanoidRendererModifications;
 import net.threetag.palladium.item.ExtendedArmor;
 import org.jetbrains.annotations.Nullable;
@@ -47,6 +51,9 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
 
     @Shadow
     protected abstract void renderModel(PoseStack poseStack, MultiBufferSource buffer, int i, ArmorItem armorItem, boolean bl, A model, boolean bl2, float f, float g, float h, @Nullable String string);
+
+    @Shadow
+    protected abstract ResourceLocation getArmorLocation(ArmorItem armorItem, boolean bl, @Nullable String string);
 
     public HumanoidArmorLayerMixin(RenderLayerParent<T, M> renderLayerParent) {
         super(renderLayerParent);
@@ -110,6 +117,17 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
         HumanoidRendererModifications.applyRemovedBodyParts(model);
     }
 
+
+    @Inject(method = "renderModel", at = @At("HEAD"), cancellable = true)
+    private void renderModel(PoseStack poseStack, MultiBufferSource buffer, int i, ArmorItem armorItem, boolean bl, A model, boolean bl2, float f, float g, float h, @Nullable String string, CallbackInfo ci) {
+        if (armorItem instanceof ExtendedArmor) {
+            VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(buffer, PalladiumRenderTypes.ARMOR_CUTOUT_NO_CULL_TRANSPARENCY.apply(this.getArmorLocation(armorItem, bl2, string)), false, bl);
+            model.renderToBuffer(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY, f, g, h, 1.0F);
+            ci.cancel();
+        }
+    }
+
+    @Unique
     private ResourceLocation getTexture(ItemStack stack, LivingEntity entity, EquipmentSlot slot, String type, @Nullable ArmorModelManager.Handler handler) {
         if (handler != null) {
             var texture = handler.getTexture(stack, entity, slot, type);
