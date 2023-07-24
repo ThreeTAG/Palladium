@@ -24,6 +24,7 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.block.IAddonBlock;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.client.dynamictexture.DynamicTextureManager;
 import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.model.SuitStandBasePlateModel;
 import net.threetag.palladium.client.model.SuitStandModel;
@@ -171,6 +172,7 @@ public class PalladiumClient {
         OverlayRegistry.registerOverlay("palladium/gui_overlay_abilities", new GuiOverlayAbility.Renderer());
 
         // Reload Listeners
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("dynamic_textures"), new DynamicTextureManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("pack_render_layers"), new PackRenderLayerManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("armor_models"), new ArmorModelManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("accessory_renderers"), new Accessory.ReloadManager());

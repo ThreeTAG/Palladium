@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
@@ -100,6 +101,26 @@ public class GsonUtil {
 
     public static ResourceLocation getAsResourceLocation(JsonObject json, String memberName, @Nullable ResourceLocation fallback) {
         return json.has(memberName) ? getAsResourceLocation(json, memberName) : fallback;
+    }
+
+    public static TextureReference convertToTextureReference(JsonElement json, String memberName) {
+        if (json.isJsonPrimitive()) {
+            return TextureReference.parse(json.getAsString());
+        } else {
+            throw new JsonSyntaxException("Expected " + memberName + " to be a texture reference, was " + GsonHelper.getType(json));
+        }
+    }
+
+    public static TextureReference getAsTextureReference(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            return TextureReference.parse(GsonHelper.getAsString(json, memberName));
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a texture referenc");
+        }
+    }
+
+    public static TextureReference getAsTextureReference(JsonObject json, String memberName, @Nullable TextureReference fallback) {
+        return json.has(memberName) ? getAsTextureReference(json, memberName) : fallback;
     }
 
     @Environment(EnvType.CLIENT)

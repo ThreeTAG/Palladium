@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
@@ -24,21 +25,29 @@ public class TexturedIcon implements IIcon {
 
     public static final ResourceLocation LOCK = new ResourceLocation(Palladium.MOD_ID, "textures/icons/lock.png");
 
-    public final ResourceLocation texture;
+    public final TextureReference texture;
     public final Color tint;
+
+    public TexturedIcon(TextureReference texture) {
+        this(texture, null);
+    }
+
+    public TexturedIcon(TextureReference texture, Color tint) {
+        this.texture = texture;
+        this.tint = tint;
+    }
 
     public TexturedIcon(ResourceLocation texture) {
         this(texture, null);
     }
 
     public TexturedIcon(ResourceLocation texture, Color tint) {
-        this.texture = texture;
-        this.tint = tint;
+        this(TextureReference.normal(texture), tint);
     }
 
     @Override
     public void draw(Minecraft mc, PoseStack stack, int x, int y, int w, int h) {
-        RenderSystem.setShaderTexture(0, this.texture);
+        RenderSystem.setShaderTexture(0, this.texture.getTexture(mc.player));
         RenderSystem.enableTexture();
         RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
@@ -75,7 +84,7 @@ public class TexturedIcon implements IIcon {
 
         @Override
         public @NotNull TexturedIcon fromJSON(JsonObject json) {
-            ResourceLocation texture = new ResourceLocation(GsonHelper.getAsString(json, "texture"));
+            TextureReference texture = TextureReference.parse(GsonHelper.getAsString(json, "texture"));
             Color tint = null;
             if (GsonHelper.isValidNode(json, "tint")) {
                 int[] color = GsonUtil.getIntArray(json, 3, "tint", 255, 255, 255);
@@ -86,7 +95,7 @@ public class TexturedIcon implements IIcon {
 
         @Override
         public TexturedIcon fromNBT(CompoundTag nbt) {
-            ResourceLocation texture = new ResourceLocation(nbt.getString("Texture"));
+            TextureReference texture = TextureReference.parse(nbt.getString("Texture"));
             Color tint = null;
             if (nbt.contains("ColorRed") && nbt.contains("ColorGreen") && nbt.contains("ColorBlue")) {
                 tint = new Color(nbt.getInt("ColorRed"), nbt.getInt("ColorGreen"), nbt.getInt("ColorBlue"));
@@ -125,8 +134,8 @@ public class TexturedIcon implements IIcon {
             builder.setTitle("Textured Icon");
             builder.setDescription("Uses a texture to render as an icon.");
 
-            builder.addProperty("texture", ResourceLocation.class)
-                    .description("Path to the texture file.")
+            builder.addProperty("texture", TextureReference.class)
+                    .description("Path to the texture file or dynamic texture json file.")
                     .required().exampleJson(new JsonPrimitive("example:textures/icons/my_icon.png"));
 
             JsonArray tint = new JsonArray();

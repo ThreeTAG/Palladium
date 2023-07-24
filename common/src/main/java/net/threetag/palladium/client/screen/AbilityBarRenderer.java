@@ -364,12 +364,12 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
         private static final int SIZE = 5;
         private final Power power;
         private final IntObjectHashMap<List<AbilityEntry>> abilities = new IntObjectHashMap<>();
-        private ResourceLocation texture;
+        private final ResourceLocation texture;
         public boolean simple = false;
 
         public AbilityList(Power power) {
             this.power = power;
-            this.texture = power.getAbilityBarTexture();
+            this.texture = power.getAbilityBarTexture().getTexture(Minecraft.getInstance().player);
         }
 
         public Power getPower() {

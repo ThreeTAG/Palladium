@@ -21,6 +21,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public class PowerTab extends GuiComponent {
@@ -221,13 +222,9 @@ public class PowerTab extends GuiComponent {
         RenderSystem.depthFunc(GL11.GL_GEQUAL);
         fill(poseStack, PowersScreen.WINDOW_INSIDE_WIDTH, PowersScreen.WINDOW_INSIDE_HEIGHT, 0, 0, -16777216);
         RenderSystem.depthFunc(GL11.GL_LEQUAL);
-        ResourceLocation resourceLocation = this.powerHolder.getPower().getBackground();
+        ResourceLocation resourceLocation = this.powerHolder.getPower().getBackground().getTexture(this.minecraft.player);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        if (resourceLocation != null) {
-            RenderSystem.setShaderTexture(0, resourceLocation);
-        } else {
-            RenderSystem.setShaderTexture(0, new ResourceLocation("textures/block/red_wool.png"));
-        }
+        RenderSystem.setShaderTexture(0, Objects.requireNonNullElseGet(resourceLocation, () -> new ResourceLocation("textures/block/red_wool.png")));
 
         int i = Mth.floor(this.scrollX);
         int j = Mth.floor(this.scrollY);

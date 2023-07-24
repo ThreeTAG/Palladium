@@ -3,6 +3,7 @@ package net.threetag.palladium.client.dynamictexture;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
@@ -55,6 +56,14 @@ public abstract class DynamicTexture {
             var input = jsonElement.getAsString();
             if (input.equalsIgnoreCase("#entity")) {
                 return new EntityDynamicTexture(false);
+            } else if (input.startsWith("#")) {
+                var dyn = DynamicTextureManager.INSTANCE.get(new ResourceLocation(input.substring(1)));
+
+                if(dyn == null) {
+                    throw new JsonParseException("Dynamic texture '" + new ResourceLocation(input.substring(1)) + "' can not be found");
+                }
+
+                return dyn;
             } else {
                 return new DefaultDynamicTexture(input, null);
             }
@@ -63,8 +72,7 @@ public abstract class DynamicTexture {
             ResourceLocation typeId = GsonUtil.getAsResourceLocation(json, "type", new ResourceLocation(Palladium.MOD_ID, "default"));
 
             if (!TYPE_PARSERS.containsKey(typeId)) {
-                AddonPackLog.error("Unknown dynamic texture type '" + typeId + "'");
-                return null;
+                throw new JsonParseException("Unknown dynamic texture type '" + typeId + "'");
             }
 
             DynamicTexture texture = TYPE_PARSERS.get(typeId).apply(json);
@@ -101,7 +109,7 @@ public abstract class DynamicTexture {
             return texture;
         }
 
-        return null;
+        throw new JsonParseException("Dynamic texture must either be a primitive or object");
     }
 
     public static void registerType(ResourceLocation id, Function<JsonObject, DynamicTexture> function) {
