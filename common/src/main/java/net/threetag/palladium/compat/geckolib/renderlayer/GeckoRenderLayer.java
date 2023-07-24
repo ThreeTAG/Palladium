@@ -88,7 +88,7 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
                 super.setMolangQueries(animatable, seekTime);
                 MolangParser parser = GeckoLibCache.getInstance().parser;
                 Minecraft mc = Minecraft.getInstance();
-                var entity = model.entityLiving;
+                var entity = GeckoRenderLayerModel.RENDERED_ENTITY;
 
                 if (entity != null) {
                     parser.setValue("query.distance_from_camera", () -> mc.gameRenderer.getMainCamera().getPosition().distanceTo(entity.position()));

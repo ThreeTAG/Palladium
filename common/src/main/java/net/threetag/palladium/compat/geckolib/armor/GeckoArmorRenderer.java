@@ -2,6 +2,7 @@ package net.threetag.palladium.compat.geckolib.armor;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
+import net.threetag.palladium.compat.geckolib.renderlayer.GeckoRenderLayerModel;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
@@ -19,7 +20,7 @@ public class GeckoArmorRenderer<T extends ArmorItem & PackGeckoArmorItem> extend
 
             @Override
             public ResourceLocation getTextureResource(T object) {
-                return object.getGeckoTextureLocation();
+                return object.getGeckoTextureLocation().getTexture(GeckoRenderLayerModel.RENDERED_ENTITY);
             }
 
             @Override

@@ -20,8 +20,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.threetag.palladium.client.dynamictexture.DefaultDynamicTexture;
-import net.threetag.palladium.client.dynamictexture.DynamicTexture;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.util.SkinTypedValue;
@@ -43,12 +42,12 @@ public class ArmorModelManager implements ResourceManagerReloadListener {
         HANDLERS.put(item, handler);
     }
 
-    public static void register(Item item, SkinTypedValue<ModelLookup.Model> modelLookup, SkinTypedValue<ModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture) {
+    public static void register(Item item, SkinTypedValue<ModelLookup.Model> modelLookup, SkinTypedValue<ModelLayerLocation> modelLayerLocation, SkinTypedValue<TextureReference> texture) {
         register(item, new Simple(modelLookup, modelLayerLocation, texture));
     }
 
     public static void register(Item item, ModelLayerLocation modelLayerLocation, ResourceLocation texture) {
-        register(item, new Simple(new SkinTypedValue<>(ModelLookup.HUMANOID), new SkinTypedValue<>(modelLayerLocation), new SkinTypedValue<>(new DefaultDynamicTexture(texture))));
+        register(item, new Simple(new SkinTypedValue<>(ModelLookup.HUMANOID), new SkinTypedValue<>(modelLayerLocation), new SkinTypedValue<>(TextureReference.normal(texture))));
     }
 
     public static Handler get(Item item) {
@@ -94,10 +93,10 @@ public class ArmorModelManager implements ResourceManagerReloadListener {
 
         private final SkinTypedValue<ModelLayerLocation> modelLayerLocation;
         private final SkinTypedValue<ModelLookup.Model> modelType;
-        private final SkinTypedValue<DynamicTexture> texture;
+        private final SkinTypedValue<TextureReference> texture;
         private SkinTypedValue<EntityModel<LivingEntity>> model;
 
-        public Simple(SkinTypedValue<ModelLookup.Model> modelType, SkinTypedValue<ModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture) {
+        public Simple(SkinTypedValue<ModelLookup.Model> modelType, SkinTypedValue<ModelLayerLocation> modelLayerLocation, SkinTypedValue<TextureReference> texture) {
             this.modelLayerLocation = modelLayerLocation;
             this.modelType = modelType;
             this.texture = texture;

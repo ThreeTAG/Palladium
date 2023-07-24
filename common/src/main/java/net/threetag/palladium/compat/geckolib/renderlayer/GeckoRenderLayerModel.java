@@ -30,7 +30,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
     private final GeckoRenderLayer renderLayer;
     private GeckoLayerState state;
     protected final AnimatedGeoModel<GeckoLayerState> modelProvider;
-    public LivingEntity entityLiving;
+    public static LivingEntity RENDERED_ENTITY;
 
     public String headBone = "armorHead";
     public String bodyBone = "armorBody";
@@ -46,7 +46,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
     }
 
     public void setRenderedEntity(LivingEntity entityLiving) {
-        this.entityLiving = entityLiving;
+        RENDERED_ENTITY = entityLiving;
         this.state = this.renderLayer.getState(entityLiving);
     }
 

@@ -22,6 +22,7 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
@@ -128,7 +129,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArm
                                 return m;
                             }) : new SkinTypedValue<>(ModelLookup.HUMANOID),
                             SkinTypedValue.fromJSON(jsonElement, jsonElement1 -> GsonUtil.convertToModelLayerLocation(jsonElement1, "armor_model_layer")),
-                            SkinTypedValue.fromJSON(json.get("armor_texture"), DynamicTexture::parse)
+                            SkinTypedValue.fromJSON(json.get("armor_texture"), je -> TextureReference.parse(je.getAsString()))
                     );
                 });
 

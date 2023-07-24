@@ -85,7 +85,7 @@ public class GeckoLibCompat {
 
             if (item instanceof PackGeckoArmorItem armor) {
                 armor.setGeckoLocations(GsonUtil.getAsResourceLocation(json, "armor_model"),
-                        GsonUtil.getAsResourceLocation(json, "armor_texture"),
+                        GsonUtil.getAsTextureReference(json, "armor_texture"),
                         GsonUtil.getAsResourceLocation(json, "armor_animation_file", null),
                         ParsedAnimationController.getAsList(json, "armor_animation_controllers"));
             }
