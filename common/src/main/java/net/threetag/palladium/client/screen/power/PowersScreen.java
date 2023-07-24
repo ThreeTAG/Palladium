@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -122,6 +123,8 @@ public class PowersScreen extends Screen {
                 this.tabs.add(PowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
             }
         }));
+
+        this.tabs.sort(Comparator.comparingInt(o -> PowerManager.getInstance(false).getPowers().stream().toList().indexOf(o.powerHolder.getPower())));
 
         if (this.tabs.size() > PowerTabType.MAX_TABS) {
             int guiLeft = (this.width - WINDOW_WIDTH) / 2;
