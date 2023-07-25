@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 
 public class MobBottleItem extends Item {
 
-    public static final CreativeModeTabFiller FILLER = new CreativeModeTabFiller(() -> Items.AXOLOTL_BUCKET);
+    public static final CreativeModeTabFiller FILLER = new CreativeModeTabFiller(() -> Items.TADPOLE_BUCKET);
     private final Supplier<? extends EntityType<?>> entityTypeSupplier;
     private CreativeModeTabFiller filler = FILLER;
 
