@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDocumentedConfigurable;
 import net.threetag.palladium.util.json.GsonUtil;
@@ -30,6 +31,8 @@ public abstract class IconSerializer<T extends IIcon> implements IDocumentedConf
 
             if (input.endsWith(".png")) {
                 return new TexturedIcon(new ResourceLocation(input));
+            } else if(input.startsWith("#")) {
+                return new TexturedIcon(TextureReference.parse(input));
             } else {
                 ResourceLocation id = new ResourceLocation(json.getAsString());
 
