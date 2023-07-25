@@ -369,7 +369,8 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
 
         public AbilityList(Power power) {
             this.power = power;
-            this.texture = power.getAbilityBarTexture().getTexture(Minecraft.getInstance().player);
+            var powerTex = power.getAbilityBarTexture();
+            this.texture = powerTex != null ? powerTex.getTexture(Minecraft.getInstance().player) : null;
         }
 
         public Power getPower() {

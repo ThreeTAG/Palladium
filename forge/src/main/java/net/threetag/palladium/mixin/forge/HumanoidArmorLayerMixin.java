@@ -86,7 +86,8 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
         HumanoidRendererModifications.applyRemovedBodyParts(model);
     }
 
-    @Inject(method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IZLnet/minecraft/client/model/Model;FFFLnet/minecraft/resources/ResourceLocation;)V", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IZLnet/minecraft/client/model/Model;FFFLnet/minecraft/resources/ResourceLocation;)V",
+            at = @At("HEAD"), cancellable = true, remap = false)
     private void renderModel(PoseStack arg, MultiBufferSource arg2, int i, boolean bl, Model arg3, float f, float g, float h, ResourceLocation armorResource, CallbackInfo ci) {
         if (this.palladium$cachedItem.getItem() instanceof ExtendedArmor) {
             VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(arg2, PalladiumRenderTypes.ARMOR_CUTOUT_NO_CULL_TRANSPARENCY.apply(armorResource), false, bl);
