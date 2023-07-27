@@ -272,8 +272,8 @@ public class AbilityEntry {
         this.propertyManager.fromNBT(tag);
     }
 
-    public CompoundTag toNBT() {
-        return this.propertyManager.toNBT(false);
+    public CompoundTag toNBT(boolean toDisk) {
+        return this.propertyManager.toNBT(toDisk);
     }
 
 }

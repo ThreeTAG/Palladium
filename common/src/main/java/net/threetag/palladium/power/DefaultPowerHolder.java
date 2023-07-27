@@ -48,11 +48,11 @@ public class DefaultPowerHolder implements IPowerHolder {
     }
 
     @Override
-    public CompoundTag toNBT() {
+    public CompoundTag toNBT(boolean toDisk) {
         CompoundTag tag = new CompoundTag();
 
         for (Map.Entry<String, AbilityEntry> entry : this.entryMap.entrySet()) {
-            CompoundTag abData = entry.getValue().toNBT();
+            CompoundTag abData = entry.getValue().toNBT(toDisk);
             tag.put(entry.getKey(), abData);
         }
 
