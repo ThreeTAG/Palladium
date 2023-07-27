@@ -8,6 +8,8 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.CompoundTag;
@@ -46,6 +48,7 @@ public class TexturedIcon implements IIcon {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void draw(Minecraft mc, PoseStack stack, int x, int y, int w, int h) {
         RenderSystem.setShaderTexture(0, this.texture.getTexture(mc.player));
         RenderSystem.enableTexture();
