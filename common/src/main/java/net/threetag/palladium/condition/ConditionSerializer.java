@@ -23,7 +23,7 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
     public static final PalladiumRegistry<ConditionSerializer> REGISTRY = PalladiumRegistry.create(ConditionSerializer.class, Palladium.id("condition_serializer"));
 
     final PropertyManager propertyManager = new PropertyManager();
-    public static ConditionContextType CURRENT_CONTEXT = ConditionContextType.ALL;
+    public static ConditionEnvironment CURRENT_CONTEXT = ConditionEnvironment.ALL;
 
     public <T> ConditionSerializer withProperty(PalladiumProperty<T> data, T value) {
         this.propertyManager.register(data, value);
@@ -50,15 +50,15 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
 
     public abstract Condition make(JsonObject json);
 
-    public Condition make(JsonObject json, ConditionContextType type) {
+    public Condition make(JsonObject json, ConditionEnvironment type) {
         return this.make(json);
     }
 
-    public ConditionContextType getContextType() {
-        return ConditionContextType.ALL;
+    public ConditionEnvironment getContextEnvironment() {
+        return ConditionEnvironment.ALL;
     }
 
-    public static List<Condition> listFromJSON(JsonElement jsonElement, ConditionContextType type) {
+    public static List<Condition> listFromJSON(JsonElement jsonElement, ConditionEnvironment type) {
         List<Condition> conditions = new ArrayList<>();
 
         if (jsonElement.isJsonArray()) {
@@ -75,7 +75,7 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
         return conditions;
     }
 
-    public static Condition fromJSON(JsonObject json, ConditionContextType type) {
+    public static Condition fromJSON(JsonObject json, ConditionEnvironment type) {
         var id = new ResourceLocation(GsonHelper.getAsString(json, "type"));
         ConditionSerializer conditionSerializer = ConditionSerializer.REGISTRY.get(id);
 
@@ -88,11 +88,11 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
             throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' does not exist!");
         }
 
-        if ((type == ConditionContextType.ABILITIES && !conditionSerializer.getContextType().forAbilities()) || (type == ConditionContextType.RENDER_LAYERS && !conditionSerializer.getContextType().forRenderLayers())) {
+        if ((type == ConditionEnvironment.DATA && !conditionSerializer.getContextEnvironment().forAbilities()) || (type == ConditionEnvironment.ASSETS && !conditionSerializer.getContextEnvironment().forRenderLayers())) {
             throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' is not applicable for " + type.toString().toLowerCase(Locale.ROOT));
         }
 
-        return conditionSerializer.make(json, type).setContextType(type);
+        return conditionSerializer.make(json, type).setEnvironment(type);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -132,9 +132,9 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
 
         var desc = this.getDocumentationDescription();
         if (desc != null && !desc.isEmpty()) {
-            builder.setDescription(desc + "<br><br>" + "Applicable for: " + this.getContextType().toString().toLowerCase(Locale.ROOT));
+            builder.setDescription(desc + "<br><br>" + "Applicable for: " + this.getContextEnvironment().toString().toLowerCase(Locale.ROOT));
         } else {
-            builder.setDescription("Applicable for: " + this.getContextType().toString().toLowerCase(Locale.ROOT));
+            builder.setDescription("Applicable for: " + this.getContextEnvironment().toString().toLowerCase(Locale.ROOT));
         }
     }
 }

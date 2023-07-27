@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
-import net.threetag.palladium.item.ExtendedArmor;
 import net.threetag.palladium.power.ability.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -159,20 +158,20 @@ public enum BodyPart {
                 if (slot.getType() == EquipmentSlot.Type.ARMOR) {
                     var stack = player.getItemBySlot(slot);
 
-                    if (stack.getItem() instanceof ExtendedArmor extendedArmor) {
-                        if (extendedArmor.hideSecondPlayerLayer(player, stack, slot)) {
-                            if (slot == EquipmentSlot.HEAD) {
-                                result.remove(BodyPart.HEAD_OVERLAY);
-                            } else if (slot == EquipmentSlot.CHEST) {
-                                result.remove(BodyPart.CHEST_OVERLAY);
-                                result.remove(BodyPart.RIGHT_ARM_OVERLAY);
-                                result.remove(BodyPart.LEFT_ARM_OVERLAY);
-                            } else {
-                                result.remove(BodyPart.RIGHT_LEG_OVERLAY);
-                                result.remove(BodyPart.LEFT_LEG_OVERLAY);
-                            }
-                        }
-                    }
+//                    if (stack.getItem() instanceof ArmorWithRenderer armorWithRenderer) {
+//                        if (armorWithRenderer.hideSecondPlayerLayer(player, stack, slot)) {
+//                            if (slot == EquipmentSlot.HEAD) {
+//                                result.remove(BodyPart.HEAD_OVERLAY);
+//                            } else if (slot == EquipmentSlot.CHEST) {
+//                                result.remove(BodyPart.CHEST_OVERLAY);
+//                                result.remove(BodyPart.RIGHT_ARM_OVERLAY);
+//                                result.remove(BodyPart.LEFT_ARM_OVERLAY);
+//                            } else {
+//                                result.remove(BodyPart.RIGHT_LEG_OVERLAY);
+//                                result.remove(BodyPart.LEFT_LEG_OVERLAY);
+//                            }
+//                        }
+//                    }
                 }
             }
 

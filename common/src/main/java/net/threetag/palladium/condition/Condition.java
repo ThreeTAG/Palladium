@@ -1,30 +1,30 @@
 package net.threetag.palladium.condition;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.condition.context.ConditionContext;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.PropertyManager;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
 public abstract class Condition {
 
-    private ConditionContextType contextType;
+    private ConditionEnvironment environment;
 
-    public Condition setContextType(ConditionContextType contextType) {
-        this.contextType = contextType;
+    public Condition setEnvironment(ConditionEnvironment environment) {
+        this.environment = environment;
         return this;
     }
 
-    public ConditionContextType getContextType() {
-        return contextType;
+    public ConditionEnvironment getEnvironment() {
+        return environment;
     }
 
-    public abstract boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder);
+    public abstract boolean active(ConditionContext context);
 
     public boolean needsKey() {
         return false;

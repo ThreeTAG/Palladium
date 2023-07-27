@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
@@ -21,7 +22,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public class PowerTab extends GuiComponent {
@@ -222,9 +222,14 @@ public class PowerTab extends GuiComponent {
         RenderSystem.depthFunc(GL11.GL_GEQUAL);
         fill(poseStack, PowersScreen.WINDOW_INSIDE_WIDTH, PowersScreen.WINDOW_INSIDE_HEIGHT, 0, 0, -16777216);
         RenderSystem.depthFunc(GL11.GL_LEQUAL);
-        ResourceLocation resourceLocation = this.powerHolder.getPower().getBackground().getTexture(this.minecraft.player);
+        TextureReference backgroundTexture = this.powerHolder.getPower().getBackground();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, Objects.requireNonNullElseGet(resourceLocation, () -> new ResourceLocation("textures/block/red_wool.png")));
+
+        if(backgroundTexture != null) {
+            RenderSystem.setShaderTexture(0, backgroundTexture.getTexture(minecraft.player));
+        } else {
+            RenderSystem.setShaderTexture(0, new ResourceLocation("textures/block/red_wool.png"));
+        }
 
         int i = Mth.floor(this.scrollX);
         int j = Mth.floor(this.scrollY);

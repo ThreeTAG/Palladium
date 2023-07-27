@@ -14,7 +14,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,7 +28,6 @@ import net.threetag.palladium.compat.geckolib.armor.GeckoArmorRenderer;
 import net.threetag.palladium.compat.geckolib.armor.PackGeckoArmorItem;
 import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
 import net.threetag.palladium.item.AddonAttributeContainer;
-import net.threetag.palladium.item.ExtendedArmor;
 import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.mixin.client.GeoArmorRendererInvoker;
 import net.threetag.palladium.power.ability.Ability;
@@ -73,11 +71,6 @@ public class GeckoLibCompatImpl {
 
     public static ArmorItem createArmorItem(ArmorMaterial armorMaterial, EquipmentSlot slot, Item.Properties properties, boolean hideSecondLayer) {
         var item = new ArmorItemImpl(armorMaterial, slot, properties);
-
-        if (hideSecondLayer) {
-            item.hideSecondLayer();
-        }
-
         return item;
     }
 
@@ -143,7 +136,7 @@ public class GeckoLibCompatImpl {
         return GeoArmorRenderer.getRenderer(clazz, entity);
     }
 
-    public static class ArmorItemImpl extends GeoArmorItem implements IAnimatable, IAddonItem, ExtendedArmor, PackGeckoArmorItem {
+    public static class ArmorItemImpl extends GeoArmorItem implements IAnimatable, IAddonItem, PackGeckoArmorItem {
 
         private List<Component> tooltipLines;
         private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
@@ -171,16 +164,6 @@ public class GeckoLibCompatImpl {
         @Override
         public AnimationFactory getFactory() {
             return this.factory;
-        }
-
-        public ArmorItemImpl hideSecondLayer() {
-            this.hideSecondLayer = true;
-            return this;
-        }
-
-        @Override
-        public boolean hideSecondPlayerLayer(Player player, ItemStack stack, EquipmentSlot slot) {
-            return this.hideSecondLayer;
         }
 
         @Override

@@ -329,60 +329,12 @@ true</td>
 <td>
 /</td>
 </tr>
-<tr>
-<td>
-armor_texture</td>
-<td>
-DynamicTexture</td>
-<td>
-Armor texture (rendered on the player when wearing it). Can be a dynamic one like in render layers</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-armor_model_type</td>
-<td>
-ResourceLocation</td>
-<td>
-Armor model type, defines the bones for the model layer. Ideally only use minecraft:humanoid for 1 layer or minecraft:player for 2 layers</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-minecraft:humanoid</td>
-</tr>
-<tr>
-<td>
-armor_model_layer</td>
-<td>
-ModelLayerLocation</td>
-<td>
-Armor model layer, must have the body parts for a humanoid model (if not specified for another model type).</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-hide_second_player_layer</td>
-<td>
-Boolean</td>
-<td>
-If enabled, the second player layer will be hidden when worn (only on the corresponding body part)</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-false</td>
-</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","armor_texture":"example:textures/models/armor/example_armor.png","armor_model_type":"minecraft:humanoid","armor_model_layer":"palladium:humanoid#suit","hide_second_player_layer":true}</pre>
+{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond"}</pre>
 </div>
 <hr>
 

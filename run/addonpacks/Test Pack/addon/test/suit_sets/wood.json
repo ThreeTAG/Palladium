@@ -4,9 +4,6 @@
   ],
   "armor_material": "test:wood",
   "creative_mode_tab": "combat",
-  "armor_texture": "test:textures/models/armor/wood_layer_1.png",
-  "armor_model_type": "minecraft:humanoid",
-  "armor_model_layer": "palladium:humanoid#suit",
   "chest": {
     "item_name": "wooden_chestplate",
     "tooltip": [

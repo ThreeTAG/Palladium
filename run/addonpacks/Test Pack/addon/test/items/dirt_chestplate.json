@@ -2,8 +2,5 @@
   "type": "palladium:armor",
   "slot": "chest",
   "armor_material": "test:dirt",
-  "creative_mode_tab": "test:test_tab",
-  "armor_texture": "test:textures/models/armor/dirt.png",
-  "armor_model_layer": "test:player#thick_armor",
-  "hide_second_player_layer": true
+  "creative_mode_tab": "test:test_tab"
 }

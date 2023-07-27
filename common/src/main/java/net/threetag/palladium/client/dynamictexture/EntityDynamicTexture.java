@@ -30,11 +30,11 @@ public class EntityDynamicTexture extends DynamicTexture {
 
     @Override
     public DynamicTexture transform(ITextureTransformer textureTransformer) {
-        return this;
+        throw new IllegalStateException("Cant transform entity textures");
     }
 
     @Override
     public DynamicTexture addVariable(String name, ITextureVariable variable) {
-        return this;
+        throw new IllegalStateException("Cant add variables to entity textures");
     }
 }

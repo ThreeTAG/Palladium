@@ -1,12 +1,9 @@
 package net.threetag.palladium.compat.kubejs.condition;
 
-import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionSerializer;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.AbilityEntry;
-import org.jetbrains.annotations.Nullable;
+import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.condition.context.ConditionContextType;
 
 import java.util.Map;
 
@@ -23,8 +20,8 @@ public class ScriptableCondition extends Condition {
     }
 
     @Override
-    public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
-        return this.builder.test != null && this.builder.test.test(entity, this.extraProperties);
+    public boolean active(ConditionContext context) {
+        return this.builder.test != null && this.builder.test.test(context.get(ConditionContextType.ENTITY), this.extraProperties);
     }
 
     @Override

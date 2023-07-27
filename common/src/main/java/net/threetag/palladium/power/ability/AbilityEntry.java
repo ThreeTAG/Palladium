@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.CooldownType;
+import net.threetag.palladium.condition.context.ConditionContext;
 import net.threetag.palladium.network.SyncAbilityEntryPropertyMessage;
 import net.threetag.palladium.network.SyncAbilityStateMessage;
 import net.threetag.palladium.power.IPowerHolder;
@@ -120,7 +121,7 @@ public class AbilityEntry {
             boolean sync = false;
 
             for (Condition unlockingCondition : this.abilityConfiguration.getUnlockingConditions()) {
-                if (!unlockingCondition.active(entity, this, power, powerHolder)) {
+                if (!unlockingCondition.active(ConditionContext.forAbility(entity, this, power, powerHolder))) {
                     unlocked = false;
                     break;
                 }
@@ -139,7 +140,7 @@ public class AbilityEntry {
 
             if (this.unlocked) {
                 for (Condition enablingCondition : this.abilityConfiguration.getEnablingConditions()) {
-                    if (!enablingCondition.active(entity, this, power, powerHolder)) {
+                    if (!enablingCondition.active(ConditionContext.forAbility(entity, this, power, powerHolder))) {
                         enabled = false;
                         break;
                     }

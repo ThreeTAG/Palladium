@@ -6,10 +6,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.condition.context.ConditionContextType;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.ResourceLocationProperty;
 
@@ -22,7 +20,13 @@ public class EntityTypeTagCondition extends Condition {
     }
 
     @Override
-    public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
+    public boolean active(ConditionContext context) {
+        var entity = context.get(ConditionContextType.ENTITY);
+
+        if (entity == null) {
+            return false;
+        }
+
         return entity.getType().is(this.tag);
     }
 

@@ -25,13 +25,13 @@ import net.threetag.palladium.block.IAddonBlock;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.dynamictexture.DynamicTextureManager;
-import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.model.SuitStandBasePlateModel;
 import net.threetag.palladium.client.model.SuitStandModel;
 import net.threetag.palladium.client.model.animation.*;
 import net.threetag.palladium.client.renderer.entity.CustomProjectileRenderer;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
 import net.threetag.palladium.client.renderer.entity.SuitStandRenderer;
+import net.threetag.palladium.client.renderer.item.armor.ArmorRendererManager;
 import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.AccessoryRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
@@ -174,7 +174,7 @@ public class PalladiumClient {
         // Reload Listeners
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("dynamic_textures"), new DynamicTextureManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("pack_render_layers"), new PackRenderLayerManager());
-        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("armor_models"), new ArmorModelManager());
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("armor_renderers"), new ArmorRendererManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("accessory_renderers"), new Accessory.ReloadManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("humanoid_animations"), PalladiumAnimationRegistry.INSTANCE);
 

@@ -62,11 +62,6 @@ public class GeckoLibCompatImpl {
 
     public static ArmorItem createArmorItem(ArmorMaterial armorMaterial, EquipmentSlot slot, Item.Properties properties, boolean hideSecondLayer) {
         var item = new ArmorItemImpl(armorMaterial, slot, properties);
-
-        if (hideSecondLayer) {
-            item.hideSecondLayer();
-        }
-
         return item;
     }
 

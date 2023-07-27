@@ -191,14 +191,14 @@ public class AbilityConfiguration {
         configuration.propertyManager.fromJSON(json);
 
         if (GsonHelper.isValidNode(json, "conditions")) {
-            ConditionSerializer.CURRENT_CONTEXT = ConditionContextType.ABILITIES;
+            ConditionSerializer.CURRENT_CONTEXT = ConditionEnvironment.DATA;
             JsonObject conditions = GsonHelper.getAsJsonObject(json, "conditions");
             boolean withKey = false;
             CooldownType cooldownType = null;
 
             if (GsonHelper.isValidNode(conditions, "unlocking")) {
                 JsonElement condJson = conditions.get("unlocking");
-                var condList = ConditionSerializer.listFromJSON(condJson, ConditionContextType.ABILITIES);
+                var condList = ConditionSerializer.listFromJSON(condJson, ConditionEnvironment.DATA);
 
                 for (Condition condition : condList) {
                     if (condition instanceof BuyableCondition buyableCondition) {
@@ -228,7 +228,7 @@ public class AbilityConfiguration {
 
             if (GsonHelper.isValidNode(conditions, "enabling")) {
                 JsonElement condJson = conditions.get("enabling");
-                var condList = ConditionSerializer.listFromJSON(condJson, ConditionContextType.ABILITIES);
+                var condList = ConditionSerializer.listFromJSON(condJson, ConditionEnvironment.DATA);
 
                 for (Condition condition : condList) {
                     if (condition instanceof BuyableCondition) {

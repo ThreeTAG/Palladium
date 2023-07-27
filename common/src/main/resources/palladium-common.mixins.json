@@ -20,7 +20,8 @@
     "client.RenderTypeMixin",
     "client.ScreenEffectRendererMixin",
     "client.SplashManagerMixin",
-    "client.TextureManagerMixin"
+    "client.TextureManagerMixin",
+    "client.HumanoidArmorLayerMixin"
   ],
   "mixins": [
     "AbstractContainerMenuMixin",

@@ -2,9 +2,8 @@ package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
+import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.condition.context.ConditionContextType;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.util.property.IntegerProperty;
@@ -26,7 +25,14 @@ public class AbilityTicksCondition extends Condition {
     }
 
     @Override
-    public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
+    public boolean active(ConditionContext context) {
+        var entity = context.get(ConditionContextType.ENTITY);
+        var holder = context.get(ConditionContextType.POWER_HOLDER);
+
+        if (entity == null) {
+            return false;
+        }
+
         AbilityEntry dependency = null;
         if (this.power != null) {
             dependency = AbilityUtil.getEntry(entity, this.power, this.abilityId);

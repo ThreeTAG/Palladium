@@ -1,15 +1,19 @@
 package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.condition.context.ConditionContextType;
 
 public class IsMovingCondition extends Condition {
 
     @Override
-    public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
+    public boolean active(ConditionContext context) {
+        var entity = context.get(ConditionContextType.ENTITY);
+
+        if (entity == null) {
+            return false;
+        }
+
         if(entity.level.isClientSide) {
             return entity.xo != entity.getX() || entity.yo != entity.getY() || entity.zo != entity.getZ();
         } else {

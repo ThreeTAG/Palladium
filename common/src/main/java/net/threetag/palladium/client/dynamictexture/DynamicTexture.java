@@ -26,6 +26,7 @@ public abstract class DynamicTexture {
     private static final Map<ResourceLocation, Function<JsonObject, ITextureVariable>> VARIABLE_PARSERS = new HashMap<>();
 
     static {
+        registerType(Palladium.id("simple"), j -> new SimpleDynamicTexture(GsonUtil.getAsResourceLocation(j, "texture")));
         registerType(Palladium.id("default"), j -> new DefaultDynamicTexture(GsonHelper.getAsString(j, "base"), GsonHelper.getAsString(j, "output", "")));
         registerType(Palladium.id("entity"), j -> new EntityDynamicTexture(GsonHelper.getAsBoolean(j, "ignore_skin_change", false)));
 
@@ -60,13 +61,13 @@ public abstract class DynamicTexture {
             } else if (input.startsWith("#")) {
                 var dyn = DynamicTextureManager.INSTANCE.get(new ResourceLocation(input.substring(1)));
 
-                if(dyn == null) {
+                if (dyn == null) {
                     throw new JsonParseException("Dynamic texture '" + new ResourceLocation(input.substring(1)) + "' can not be found");
                 }
 
                 return dyn;
             } else {
-                return new DefaultDynamicTexture(input, null);
+                return new SimpleDynamicTexture(new ResourceLocation(input));
             }
         } else if (jsonElement.isJsonObject()) {
             JsonObject json = jsonElement.getAsJsonObject();

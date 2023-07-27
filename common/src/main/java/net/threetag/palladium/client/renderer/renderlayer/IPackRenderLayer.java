@@ -13,13 +13,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.threetag.palladium.client.renderer.entity.HumanoidRendererModifications;
 import net.threetag.palladium.condition.Condition;
-import net.threetag.palladium.condition.ConditionContextType;
+import net.threetag.palladium.condition.ConditionEnvironment;
 import net.threetag.palladium.condition.ConditionSerializer;
+import net.threetag.palladium.condition.context.ConditionContext;
 import net.threetag.palladium.entity.BodyPart;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.AbilityEntry;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -31,7 +28,7 @@ public interface IPackRenderLayer {
 
     }
 
-    IPackRenderLayer addCondition(Condition condition, ConditionContext context);
+    IPackRenderLayer addCondition(Condition condition, PerspectiveConditionContext context);
 
     List<BodyPart> getHiddenBodyParts(LivingEntity entity);
 
@@ -48,7 +45,7 @@ public interface IPackRenderLayer {
     }
 
     static <T extends IPackRenderLayer> T parseConditions(T layer, JsonObject json) {
-        for (ConditionContext context : ConditionContext.values()) {
+        for (PerspectiveConditionContext context : PerspectiveConditionContext.values()) {
             if (GsonHelper.isValidNode(json, context.key)) {
                 var el = json.get(context.key);
 
@@ -56,7 +53,7 @@ public interface IPackRenderLayer {
                     var result = el.getAsBoolean();
                     layer.addCondition(new Condition() {
                         @Override
-                        public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
+                        public boolean active(ConditionContext context1) {
                             return result;
                         }
 
@@ -66,7 +63,7 @@ public interface IPackRenderLayer {
                         }
                     }, context);
                 } else {
-                    ConditionSerializer.listFromJSON(el, ConditionContextType.RENDER_LAYERS).forEach(cond -> layer.addCondition(cond, context));
+                    ConditionSerializer.listFromJSON(el, ConditionEnvironment.ASSETS).forEach(cond -> layer.addCondition(cond, context));
                 }
             }
         }
@@ -77,13 +74,13 @@ public interface IPackRenderLayer {
     static boolean conditionsFulfilled(Entity entity, List<Condition> bothConditions, List<Condition> specificConditions) {
         if (entity instanceof LivingEntity livingEntity) {
             for (Condition condition : bothConditions) {
-                if (!condition.active(livingEntity, null, null, null)) {
+                if (!condition.active(ConditionContext.forEntity(livingEntity))) {
                     return false;
                 }
             }
 
             for (Condition condition : specificConditions) {
-                if (!condition.active(livingEntity, null, null, null)) {
+                if (!condition.active(ConditionContext.forEntity(livingEntity))) {
                     return false;
                 }
             }
@@ -122,7 +119,7 @@ public interface IPackRenderLayer {
         HumanoidRendererModifications.applyRemovedBodyParts(child);
     }
 
-    enum ConditionContext {
+    enum PerspectiveConditionContext {
 
         BOTH("conditions"),
         FIRST_PERSON("first_person_conditions"),
@@ -130,7 +127,7 @@ public interface IPackRenderLayer {
 
         public final String key;
 
-        ConditionContext(String key) {
+        PerspectiveConditionContext(String key) {
             this.key = key;
         }
     }

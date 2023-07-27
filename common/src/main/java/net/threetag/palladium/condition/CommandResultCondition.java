@@ -5,16 +5,13 @@ import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.condition.context.ConditionContextType;
 import net.threetag.palladium.util.property.BooleanProperty;
 import net.threetag.palladium.util.property.IntegerProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.StringProperty;
-import org.jetbrains.annotations.Nullable;
 
 public class CommandResultCondition extends Condition implements CommandSource {
 
@@ -30,7 +27,13 @@ public class CommandResultCondition extends Condition implements CommandSource {
     }
 
     @Override
-    public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
+    public boolean active(ConditionContext context) {
+        var entity = context.get(ConditionContextType.ENTITY);
+
+        if (entity == null) {
+            return false;
+        }
+
         if (entity.level instanceof ServerLevel serverLevel) {
             var stack = new CommandSourceStack(this, entity.position(), entity.getRotationVector(),
                     serverLevel, 2, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(),
@@ -58,8 +61,8 @@ public class CommandResultCondition extends Condition implements CommandSource {
     }
 
     @Override
-    public ConditionContextType getContextType() {
-        return ConditionContextType.ABILITIES;
+    public ConditionEnvironment getEnvironment() {
+        return ConditionEnvironment.DATA;
     }
 
     @Override

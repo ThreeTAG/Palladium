@@ -2,6 +2,8 @@ package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.condition.context.ConditionContextType;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
@@ -18,7 +20,14 @@ public class ActionCondition extends KeyCondition {
     }
 
     @Override
-    public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
+    public boolean active(ConditionContext context) {
+        var entity = context.get(ConditionContextType.ENTITY);
+        var entry = context.get(ConditionContextType.ABILITY);
+
+        if (entity == null || entry == null) {
+            return false;
+        }
+
         if (Objects.requireNonNull(entry).keyPressed) {
             entry.keyPressed = false;
             return true;
@@ -59,8 +68,8 @@ public class ActionCondition extends KeyCondition {
         }
 
         @Override
-        public ConditionContextType getContextType() {
-            return ConditionContextType.ABILITIES;
+        public ConditionEnvironment getContextEnvironment() {
+            return ConditionEnvironment.DATA;
         }
 
         @Override

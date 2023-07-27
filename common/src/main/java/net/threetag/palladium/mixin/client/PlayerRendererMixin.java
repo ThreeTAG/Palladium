@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.accessory.Accessory;
-import net.threetag.palladium.client.model.ArmorModelManager;
 import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
+import net.threetag.palladium.client.renderer.item.armor.ArmorRendererManager;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.entity.PalladiumPlayerExtension;
@@ -98,7 +98,7 @@ public class PlayerRendererMixin {
         }));
 
         // Armor model stuff
-        ArmorModelManager.renderFirstPerson(player, poseStack, buffer, combinedLight, rendererArm, rightArm);
+        ArmorRendererManager.renderFirstPerson(player, poseStack, buffer, combinedLight, rendererArm, rightArm);
 
         PackRenderLayerManager.forEachLayer(player, (context, layer) -> {
             layer.renderArm(context, rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, playerRenderer, poseStack, buffer, combinedLight);

@@ -2,15 +2,12 @@ package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.condition.context.ConditionContextType;
 import net.threetag.palladium.power.IPowerHandler;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerManager;
-import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.ResourceLocationProperty;
-import org.jetbrains.annotations.Nullable;
 
 public class HasPowerCondition extends Condition {
 
@@ -21,7 +18,13 @@ public class HasPowerCondition extends Condition {
     }
 
     @Override
-    public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
+    public boolean active(ConditionContext context) {
+        var entity = context.get(ConditionContextType.ENTITY);
+
+        if (entity == null) {
+            return false;
+        }
+
         IPowerHandler handler = PowerManager.getPowerHandler(entity).orElse(null);
         return handler != null && handler.getPowerHolders().containsKey(this.powerId);
     }

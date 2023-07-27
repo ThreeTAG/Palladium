@@ -16,12 +16,12 @@ public abstract class AbstractPackRenderLayer implements IPackRenderLayer {
     protected final List<BodyPart> hiddenBodyParts = new ArrayList<>();
 
     @Override
-    public IPackRenderLayer addCondition(Condition condition, ConditionContext context) {
-        if (context == ConditionContext.BOTH) {
+    public IPackRenderLayer addCondition(Condition condition, PerspectiveConditionContext context) {
+        if (context == PerspectiveConditionContext.BOTH) {
             this.conditions.add(condition);
-        } else if (context == ConditionContext.THIRD_PERSON) {
+        } else if (context == PerspectiveConditionContext.THIRD_PERSON) {
             this.thirdPersonConditions.add(condition);
-        } else if (context == ConditionContext.FIRST_PERSON) {
+        } else if (context == PerspectiveConditionContext.FIRST_PERSON) {
             this.firstPersonConditions.add(condition);
         }
         return this;

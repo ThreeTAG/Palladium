@@ -1,12 +1,10 @@
 package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
+import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.condition.context.ConditionContextType;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.*;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -30,7 +28,14 @@ public class IntervalCondition extends Condition {
     }
 
     @Override
-    public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
+    public boolean active(ConditionContext context) {
+        var entity = context.get(ConditionContextType.ENTITY);
+        var entry = context.get(ConditionContextType.ABILITY);
+
+        if (entity == null || entry == null) {
+            return false;
+        }
+
         var active = Objects.requireNonNull(entry).getProperty(ACTIVE);
         var ticks = entry.getProperty(TICKS);
 
@@ -62,8 +67,8 @@ public class IntervalCondition extends Condition {
         }
 
         @Override
-        public ConditionContextType getContextType() {
-            return ConditionContextType.ABILITIES;
+        public ConditionEnvironment getContextEnvironment() {
+            return ConditionEnvironment.DATA;
         }
 
         @Override

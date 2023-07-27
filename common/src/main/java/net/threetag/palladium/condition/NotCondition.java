@@ -1,10 +1,7 @@
 package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.condition.context.ConditionContext;
 import net.threetag.palladium.util.property.ConditionArrayProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
 
@@ -17,9 +14,9 @@ public class NotCondition extends Condition {
     }
 
     @Override
-    public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
+    public boolean active(ConditionContext context) {
         for (Condition condition : this.conditions) {
-            if (condition.active(entity, entry, power, holder)) {
+            if (condition.active(context)) {
                 return false;
             }
         }
