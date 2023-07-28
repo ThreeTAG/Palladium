@@ -7,6 +7,7 @@ import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionEnvironment;
 import net.threetag.palladium.condition.ConditionSerializer;
+import net.threetag.palladium.item.Openable;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.context.DataContextType;
 import org.jetbrains.annotations.Nullable;
@@ -24,8 +25,12 @@ public class ArmorRendererConditions {
     public String getTexture(DataContext context) {
         String key = BASE_TEXTURE;
 
-        if (context.has(DataContextType.ITEM)) {
-            // todo openable items
+        if (context.has(DataContextType.ITEM) && context.getItem().getItem() instanceof Openable openable && openable.isOpen(context.getItem())) {
+            if (openable.getOpeningTime(context.getItem()) <= 0) {
+                key = OPENED_TEXTURE;
+            } else {
+                key = OPENED_TEXTURE + "_" + openable.getOpeningProgress(context.getItem());
+            }
         }
 
         for (ConditionedTextureKey condition : this.conditions) {

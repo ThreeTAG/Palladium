@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
 import net.threetag.palladium.network.AbilityKeyPressedMessage;
 import net.threetag.palladium.network.NotifyMovementKeyListenerMessage;
+import net.threetag.palladium.network.ToggleOpenableEquipmentMessage;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityUtil;
@@ -25,15 +26,17 @@ import java.util.Objects;
 public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickEvents.ClientTick, InputEvents.MouseScrolling {
 
     public static final String CATEGORY = "key.palladium.categories.abilities";
+    public static final KeyMapping OPEN_EQUIPMENT = new KeyMapping("key.palladium.open_equipment", GLFW.GLFW_KEY_SLASH, "key.categories.gameplay");
     public static final KeyMapping SWITCH_ABILITY_LIST = new KeyMapping("key.palladium.switch_ability_list", 88, CATEGORY);
     public static AbilityKeyMapping[] ABILITY_KEYS = new AbilityKeyMapping[5];
     public static AbilityEntry LEFT_CLICKED_ABILITY = null;
     public static AbilityEntry RIGHT_CLICKED_ABILITY = null;
 
     public static void init() {
+        KeyMappingRegistry.register(OPEN_EQUIPMENT);
         KeyMappingRegistry.register(SWITCH_ABILITY_LIST);
         for (int i = 1; i <= ABILITY_KEYS.length; i++) {
-            KeyMappingRegistry.register(ABILITY_KEYS[i - 1] = new AbilityKeyMapping("key.palladium.ability_" + i, i == 1 ? 86 : i == 2 ? 66 : i == 3 ? 78 : i == 4 ? 77 : i == 5 ? 44 : -1, CATEGORY, i));
+            KeyMappingRegistry.register(ABILITY_KEYS[i - 1] = new AbilityKeyMapping("key.palladium.ability_" + i, i == 1 ? GLFW.GLFW_KEY_V : i == 2 ? GLFW.GLFW_KEY_B : i == 3 ? GLFW.GLFW_KEY_N : i == 4 ? GLFW.GLFW_KEY_M : i == 5 ? GLFW.GLFW_KEY_COMMA : -1, CATEGORY, i));
         }
         var instance = new PalladiumKeyMappings();
 
@@ -46,9 +49,16 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
     public void keyPressed(Minecraft client, int keyCode, int scanCode, int action, int modifiers) {
         if (client.player != null && client.screen == null && !client.player.isSpectator()) {
 
+            // Open Equipment
+            if(OPEN_EQUIPMENT.isDown()) {
+                new ToggleOpenableEquipmentMessage().send();
+                return;
+            }
+
             // Scroll ability list
             if (SWITCH_ABILITY_LIST.isDown()) {
                 AbilityBarRenderer.scroll(!client.player.isCrouching());
+                return;
             }
 
             // Ability keys
