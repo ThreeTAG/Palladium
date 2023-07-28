@@ -7,8 +7,8 @@ import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionEnvironment;
 import net.threetag.palladium.condition.ConditionSerializer;
-import net.threetag.palladium.condition.context.ConditionContext;
-import net.threetag.palladium.condition.context.ConditionContextType;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
@@ -21,10 +21,10 @@ public class ArmorRendererConditions {
 
     public final List<ConditionedTextureKey> conditions = new LinkedList<>();
 
-    public String getTexture(ConditionContext context) {
+    public String getTexture(DataContext context) {
         String key = BASE_TEXTURE;
 
-        if (context.has(ConditionContextType.ITEM)) {
+        if (context.has(DataContextType.ITEM)) {
             // todo openable items
         }
 
@@ -37,10 +37,10 @@ public class ArmorRendererConditions {
         return key;
     }
 
-    public String getModelLayer(ConditionContext context) {
+    public String getModelLayer(DataContext context) {
         String key = BASE_TEXTURE;
 
-        if (context.has(ConditionContextType.ITEM)) {
+        if (context.has(DataContextType.ITEM)) {
             // todo openable items
         }
 
@@ -71,7 +71,7 @@ public class ArmorRendererConditions {
 
     private record ConditionedTextureKey(String textureKey, String modelKey, List<Condition> conditions) {
 
-        public boolean isActive(ConditionContext context) {
+        public boolean isActive(DataContext context) {
             for (Condition condition : this.conditions) {
                 if (!condition.active(context)) {
                     return false;

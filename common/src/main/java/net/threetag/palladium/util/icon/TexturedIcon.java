@@ -18,6 +18,7 @@ import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,8 +50,8 @@ public class TexturedIcon implements IIcon {
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void draw(Minecraft mc, PoseStack stack, int x, int y, int w, int h) {
-        RenderSystem.setShaderTexture(0, this.texture.getTexture(mc.player));
+    public void draw(Minecraft mc, DataContext context, PoseStack stack, int x, int y, int w, int h) {
+        RenderSystem.setShaderTexture(0, this.texture.getTexture(context));
         RenderSystem.enableTexture();
         RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);

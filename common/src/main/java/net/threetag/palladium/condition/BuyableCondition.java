@@ -1,8 +1,8 @@
 package net.threetag.palladium.condition;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.condition.context.ConditionContext;
-import net.threetag.palladium.condition.context.ConditionContextType;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.BooleanProperty;
@@ -19,8 +19,8 @@ public abstract class BuyableCondition extends Condition {
     }
 
     @Override
-    public boolean active(ConditionContext context) {
-        var entry = context.get(ConditionContextType.ABILITY);
+    public boolean active(DataContext context) {
+        var entry = context.get(DataContextType.ABILITY);
         return entry != null && entry.getProperty(BOUGHT);
     }
 

@@ -2,7 +2,7 @@ package net.threetag.palladium.client.dynamictexture.variable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.util.context.DataContext;
 
 public abstract class AbstractBooleanTextureVariable implements ITextureVariable {
 
@@ -14,10 +14,10 @@ public abstract class AbstractBooleanTextureVariable implements ITextureVariable
         this.falseValue = GsonHelper.getAsString(json, "false_value", "false");
     }
 
-    public abstract boolean getBoolean(Entity entity);
+    public abstract boolean getBoolean(DataContext context);
 
     @Override
-    public Object get(Entity entity) {
-        return this.getBoolean(entity) ? this.trueValue : this.falseValue;
+    public Object get(DataContext context) {
+        return this.getBoolean(context) ? this.trueValue : this.falseValue;
     }
 }

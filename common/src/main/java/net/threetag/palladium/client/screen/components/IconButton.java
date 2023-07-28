@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.icon.IIcon;
 
 public class IconButton extends Button {
@@ -56,7 +57,7 @@ public class IconButton extends Button {
             blit(matrixStack, this.x, this.y, (float) 0, (float) i, this.width, this.height, 256, 256);
         }
 
-        this.getIcon().draw(minecraft, matrixStack, this.x + 2, this.y + 2);
+        this.getIcon().draw(minecraft, DataContext.forEntity(minecraft.player), matrixStack, this.x + 2, this.y + 2);
 
         if (this.isHovered) {
             this.renderToolTip(matrixStack, mouseX, mouseY);

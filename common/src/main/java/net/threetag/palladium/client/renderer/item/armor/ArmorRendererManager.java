@@ -23,7 +23,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
-import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.item.ArmorWithRenderer;
 import net.threetag.palladiumcore.util.Platform;
 
@@ -77,9 +77,9 @@ public class ArmorRendererManager extends SimpleJsonResourceReloadListener {
     public static void renderFirstPerson(AbstractClientPlayer player, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, ModelPart rendererArm, boolean rightArm) {
         var stack = player.getItemBySlot(EquipmentSlot.CHEST);
         if (!stack.isEmpty() && stack.getItem() instanceof ArmorWithRenderer item && item.getCachedArmorRenderer() instanceof ArmorRendererData renderer) {
-            var context = ConditionContext.forArmorInSlot(player, EquipmentSlot.CHEST);
+            var context = DataContext.forArmorInSlot(player, EquipmentSlot.CHEST);
             var armorModel = renderer.getModel(player, context);
-            var vertex = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(renderer.getTexture(player, context)), false, stack.hasFoil());
+            var vertex = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(renderer.getTexture(context)), false, stack.hasFoil());
             var arm = rightArm ? armorModel.rightArm : armorModel.leftArm;
             arm.copyFrom(rendererArm);
             arm.xRot = 0.0F;

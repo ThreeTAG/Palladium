@@ -23,6 +23,7 @@ import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.RenderLayerAbility;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
                 for (AbilityEntry entry : AbilityUtil.getEnabledEntries(livingEntity, Abilities.RENDER_LAYER.get())) {
                     IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
                     if (layer != null) {
-                        layers.accept(IRenderLayerContext.ofAbility(entity, entry), layer);
+                        layers.accept(DataContext.forAbility(livingEntity, entry), layer);
                     }
                 }
             }
@@ -66,7 +67,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
                             IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
 
                             if (layer != null) {
-                                layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                                layers.accept(DataContext.forArmorInSlot(livingEntity, slot), layer);
                             }
                         }
                     }
@@ -139,7 +140,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
         return RENDER_TYPES.get(id);
     }
 
-    public static void forEachLayer(Entity entity, BiConsumer<IRenderLayerContext, IPackRenderLayer> consumer) {
+    public static void forEachLayer(Entity entity, BiConsumer<DataContext, IPackRenderLayer> consumer) {
         for (Provider provider : RENDER_LAYERS_PROVIDERS) {
             provider.addRenderLayers(entity, consumer);
         }
@@ -151,7 +152,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
 
     public interface Provider {
 
-        void addRenderLayers(Entity entity, BiConsumer<IRenderLayerContext, IPackRenderLayer> layers);
+        void addRenderLayers(Entity entity, BiConsumer<DataContext, IPackRenderLayer> layers);
 
     }
 

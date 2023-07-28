@@ -22,6 +22,7 @@ import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.client.model.ExtraAnimatedModel;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.util.SkinTypedValue;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
@@ -42,7 +43,7 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
     }
 
     @Override
-    public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         var entity = context.getEntity();
         if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions) && this.modelLookup.get(entity).fitsEntity(entity, parentModel)) {
             EntityModel<Entity> entityModel = this.model.get(entity);
@@ -55,21 +56,21 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
                 extra.extraAnimations(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks);
             }
 
-            VertexConsumer vertexConsumer = this.renderType.createVertexConsumer(bufferSource, this.texture.get(entity).getTexture(entity), context.getItem().hasFoil());
+            VertexConsumer vertexConsumer = this.renderType.createVertexConsumer(bufferSource, this.texture.get(entity).getTexture(context), context.getItem().hasFoil());
 
             entityModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
         }
     }
 
     @Override
-    public void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void renderArm(DataContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         var player = context.getEntity();
         if (IPackRenderLayer.conditionsFulfilled(player, this.conditions, this.firstPersonConditions) && this.modelLookup.get(player).fitsEntity(player, playerRenderer.getModel())) {
             EntityModel<Entity> entityModel = this.model.get(player);
 
             if (entityModel instanceof HumanoidModel humanoidModel) {
                 playerRenderer.getModel().copyPropertiesTo(humanoidModel);
-                VertexConsumer vertexConsumer = this.renderType.createVertexConsumer(bufferSource, this.texture.get(player).getTexture(player), context.getItem().hasFoil());
+                VertexConsumer vertexConsumer = this.renderType.createVertexConsumer(bufferSource, this.texture.get(player).getTexture(context), context.getItem().hasFoil());
 
                 humanoidModel.attackTime = 0.0F;
                 humanoidModel.crouching = false;

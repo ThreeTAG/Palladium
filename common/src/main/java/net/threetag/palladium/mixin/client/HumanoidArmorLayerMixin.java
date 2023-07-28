@@ -14,7 +14,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.client.renderer.item.armor.ArmorRendererData;
-import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.item.ArmorWithRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -45,9 +45,9 @@ public abstract class HumanoidArmorLayerMixin {
                 ArmorItem armorItem = (ArmorItem) item.getItem();
 
                 if (armorItem.getSlot() == slot) {
-                    var context = ConditionContext.forArmorInSlot(livingEntity, slot);
+                    var context = DataContext.forArmorInSlot(livingEntity, slot);
                     var overriddenModel = renderer.getModel(livingEntity, context);
-                    var armorTexture = renderer.getTexture(livingEntity, context);
+                    var armorTexture = renderer.getTexture(context);
 
                     if (overriddenModel != null) {
                         model = overriddenModel;
@@ -58,7 +58,7 @@ public abstract class HumanoidArmorLayerMixin {
                     boolean innerModel = this.usesInnerModel(slot);
                     boolean foil = item.hasFoil();
                     if (armorItem instanceof DyeableArmorItem) {
-                        var overlayTexture = renderer.getTexture(livingEntity, "overlay");
+                        var overlayTexture = renderer.getTexture(context, "overlay");
                         int j = ((DyeableArmorItem) armorItem).getColor(item);
                         float f = (float) (j >> 16 & 255) / 255.0F;
                         float g = (float) (j >> 8 & 255) / 255.0F;

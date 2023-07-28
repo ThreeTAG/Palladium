@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.dynamictexture.TextureReference;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.*;
 import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 
@@ -51,7 +52,7 @@ public class GuiOverlayAbility extends Ability {
             for (AbilityEntry entry : entries) {
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                RenderSystem.setShaderTexture(0, entry.getProperty(TEXTURE).getTexture(minecraft.player));
+                RenderSystem.setShaderTexture(0, entry.getProperty(TEXTURE).getTexture(DataContext.forAbility(minecraft.player, entry)));
 
                 var textureWidth = entry.getProperty(TEXTURE_WIDTH);
                 var textureHeight = entry.getProperty(TEXTURE_HEIGHT);

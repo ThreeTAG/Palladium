@@ -8,15 +8,17 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
+import org.jetbrains.annotations.NotNull;
 
 public record ExperienceIcon(int amount, boolean level) implements IIcon {
 
     private static final TexturedIcon BACKGROUND_ICON = new TexturedIcon(Palladium.id("textures/icon/experience.png"));
 
     @Override
-    public void draw(Minecraft mc, PoseStack stack, int x, int y, int width, int height) {
-        BACKGROUND_ICON.draw(mc, stack, x, y, width, height);
+    public void draw(Minecraft mc, DataContext context, PoseStack stack, int x, int y, int width, int height) {
+        BACKGROUND_ICON.draw(mc, context, stack, x, y, width, height);
 
         stack.pushPose();
         stack.translate(x, y, 0);
@@ -51,7 +53,7 @@ public record ExperienceIcon(int amount, boolean level) implements IIcon {
     public static class Serializer extends IconSerializer<ExperienceIcon> {
 
         @Override
-        public ExperienceIcon fromJSON(JsonObject json) {
+        public @NotNull ExperienceIcon fromJSON(JsonObject json) {
             return new ExperienceIcon(GsonUtil.getAsIntMin(json, "amount", 0), GsonHelper.getAsBoolean(json, "level", true));
         }
 

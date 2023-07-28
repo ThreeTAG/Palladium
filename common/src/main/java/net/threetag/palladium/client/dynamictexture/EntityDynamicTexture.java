@@ -2,9 +2,9 @@ package net.threetag.palladium.client.dynamictexture;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransformer;
 import net.threetag.palladium.client.dynamictexture.variable.ITextureVariable;
+import net.threetag.palladium.util.context.DataContext;
 
 public class EntityDynamicTexture extends DynamicTexture {
 
@@ -17,14 +17,14 @@ public class EntityDynamicTexture extends DynamicTexture {
     }
 
     @Override
-    public ResourceLocation getTexture(Entity entity) {
+    public ResourceLocation getTexture(DataContext context) {
         if (this.ignoreSkinChange) {
             IGNORE_SKIN_CHANGE = true;
-            var texture = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity).getTextureLocation(entity);
+            var texture = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(context.getEntity()).getTextureLocation(context.getEntity());
             IGNORE_SKIN_CHANGE = false;
             return texture;
         } else {
-            return Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity).getTextureLocation(entity);
+            return Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(context.getEntity()).getTextureLocation(context.getEntity());
         }
     }
 

@@ -1,7 +1,7 @@
 package net.threetag.palladium.client.dynamictexture.variable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.util.context.DataContext;
 
 public class CrouchingTextureVariable extends AbstractBooleanTextureVariable {
 
@@ -10,8 +10,9 @@ public class CrouchingTextureVariable extends AbstractBooleanTextureVariable {
     }
 
     @Override
-    public boolean getBoolean(Entity entity) {
-        return entity.isCrouching();
+    public boolean getBoolean(DataContext context) {
+        var entity = context.getEntity();
+        return entity != null && entity.isCrouching();
     }
 
 }

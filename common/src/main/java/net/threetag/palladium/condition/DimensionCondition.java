@@ -5,8 +5,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import net.threetag.palladium.condition.context.ConditionContext;
-import net.threetag.palladium.condition.context.ConditionContextType;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.ResourceLocationProperty;
 
@@ -19,8 +19,8 @@ public class DimensionCondition extends Condition {
     }
 
     @Override
-    public boolean active(ConditionContext context) {
-        var level = context.get(ConditionContextType.LEVEL);
+    public boolean active(DataContext context) {
+        var level = context.get(DataContextType.LEVEL);
         return level != null && level.dimension().equals(this.dimension);
     }
 

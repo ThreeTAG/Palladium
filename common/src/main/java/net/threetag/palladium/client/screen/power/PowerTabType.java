@@ -5,6 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.icon.IIcon;
 
 @Environment(EnvType.CLIENT)
@@ -48,7 +49,7 @@ enum PowerTabType {
         abstractGui.blit(poseStack, offsetX + this.getX(index), offsetY + this.getY(index), i, j, this.width, this.height);
     }
 
-    public void drawIcon(PoseStack poseStack, int offsetX, int offsetY, int index, IIcon icon) {
+    public void drawIcon(PoseStack poseStack, DataContext context, int offsetX, int offsetY, int index, IIcon icon) {
         int i = offsetX + this.getX(index);
         int j = offsetY + this.getY(index);
         switch(this) {
@@ -69,7 +70,7 @@ enum PowerTabType {
                 j += 5;
         }
 
-        icon.draw(Minecraft.getInstance(), poseStack, i, j);
+        icon.draw(Minecraft.getInstance(), context, poseStack, i, j);
     }
 
     public int getX(int index) {

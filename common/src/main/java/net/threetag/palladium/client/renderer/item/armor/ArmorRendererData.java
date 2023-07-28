@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
-import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,18 +39,18 @@ public class ArmorRendererData {
     }
 
     @NotNull
-    public ResourceLocation getTexture(LivingEntity entity, ConditionContext context) {
+    public ResourceLocation getTexture(DataContext context) {
         String key = this.conditions.getTexture(context);
-        return this.textures.get(key, entity);
+        return this.textures.get(key, context);
     }
 
     @NotNull
-    public ResourceLocation getTexture(LivingEntity entity, String key) {
-        return this.textures.get(key, entity);
+    public ResourceLocation getTexture(DataContext context, String key) {
+        return this.textures.get(key, context);
     }
 
     @Nullable
-    public HumanoidModel<?> getModel(LivingEntity entity, ConditionContext context) {
+    public HumanoidModel<?> getModel(LivingEntity entity, DataContext context) {
         String key = this.conditions.getModelLayer(context);
         return this.models.get(key, entity, !this.conditions.conditions.isEmpty());
     }

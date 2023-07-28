@@ -2,8 +2,8 @@ package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.condition.context.ConditionContext;
-import net.threetag.palladium.condition.context.ConditionContextType;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
@@ -23,16 +23,16 @@ public class ActivationCondition extends KeyCondition {
     }
 
     @Override
-    public boolean active(ConditionContext context) {
-        var entity = context.get(ConditionContextType.ENTITY);
-        var entry = context.get(ConditionContextType.ABILITY);
+    public boolean active(DataContext context) {
+        var entity = context.getLivingEntity();
+        var entry = context.getAbility();
 
         if (entity == null || entry == null) {
             return false;
         }
 
         if (this.cooldown != 0 && Objects.requireNonNull(entry).activationTimer == 1) {
-            entry.startCooldown(entity, this.cooldown);
+            entry.startCooldown(context.getLivingEntity(), this.cooldown);
         }
         return Objects.requireNonNull(entry).activationTimer > 0;
     }

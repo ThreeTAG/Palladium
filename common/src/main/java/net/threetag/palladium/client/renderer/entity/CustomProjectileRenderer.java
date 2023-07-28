@@ -12,10 +12,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
-import net.threetag.palladium.client.renderer.renderlayer.IRenderLayerContext;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.entity.CustomProjectile;
 import net.threetag.palladium.util.RenderUtil;
+import net.threetag.palladium.util.context.DataContext;
 
 public class CustomProjectileRenderer extends EntityRenderer<CustomProjectile> {
 
@@ -58,7 +58,7 @@ public class CustomProjectileRenderer extends EntityRenderer<CustomProjectile> {
                     IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
 
                     if (layer != null) {
-                        layer.render(IRenderLayerContext.ofEntity(entity), poseStack, buffer, null, packedLight, 0, 0, partialTicks, entity.tickCount, 0, 0);
+                        layer.render(DataContext.forEntity(entity), poseStack, buffer, null, packedLight, 0, 0, partialTicks, entity.tickCount, 0, 0);
                     }
                 }
                 poseStack.popPose();

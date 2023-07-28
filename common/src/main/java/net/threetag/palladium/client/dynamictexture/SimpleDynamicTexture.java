@@ -1,9 +1,9 @@
 package net.threetag.palladium.client.dynamictexture;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransformer;
 import net.threetag.palladium.client.dynamictexture.variable.ITextureVariable;
+import net.threetag.palladium.util.context.DataContext;
 
 public class SimpleDynamicTexture extends DynamicTexture {
 
@@ -14,7 +14,7 @@ public class SimpleDynamicTexture extends DynamicTexture {
     }
 
     @Override
-    public ResourceLocation getTexture(Entity entity) {
+    public ResourceLocation getTexture(DataContext context) {
         return this.texture;
     }
 

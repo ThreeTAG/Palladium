@@ -5,10 +5,10 @@ import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import net.threetag.palladium.util.property.FloatProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
@@ -36,8 +36,9 @@ public class AbilityFloatPropertyVariable extends AbstractFloatTextureVariable {
     }
 
     @Override
-    public float getNumber(Entity entity) {
-        if (entity instanceof LivingEntity livingEntity) {
+    public float getNumber(DataContext context) {
+        var livingEntity = context.getLivingEntity();
+        if (livingEntity != null) {
             AbilityEntry entry = AbilityUtil.getEntry(livingEntity, this.powerId, this.abilityId);
 
             if (entry == null) {

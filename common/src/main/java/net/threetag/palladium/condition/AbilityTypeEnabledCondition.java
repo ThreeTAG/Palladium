@@ -3,8 +3,8 @@ package net.threetag.palladium.condition;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.condition.context.ConditionContext;
-import net.threetag.palladium.condition.context.ConditionContextType;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.ResourceLocationProperty;
@@ -18,8 +18,8 @@ public class AbilityTypeEnabledCondition extends Condition {
     }
 
     @Override
-    public boolean active(ConditionContext context) {
-        var entity = context.get(ConditionContextType.ENTITY);
+    public boolean active(DataContext context) {
+        var entity = context.getLivingEntity();
 
         if (entity == null) {
             return false;

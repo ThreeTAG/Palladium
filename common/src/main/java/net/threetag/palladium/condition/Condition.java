@@ -1,7 +1,7 @@
 package net.threetag.palladium.condition;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
@@ -24,7 +24,7 @@ public abstract class Condition {
         return environment;
     }
 
-    public abstract boolean active(ConditionContext context);
+    public abstract boolean active(DataContext context);
 
     public boolean needsKey() {
         return false;

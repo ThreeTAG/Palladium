@@ -9,11 +9,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
-import net.threetag.palladium.client.renderer.renderlayer.IRenderLayerContext;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsUtil;
 import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.power.provider.PowerProvider;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
 
@@ -47,7 +47,7 @@ public class TrinketsCompat {
                                             IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
 
                                             if (layer != null) {
-                                                layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                                                layers.accept(DataContext.forItem(livingEntity, stack), layer);
                                             }
                                         }
                                     }

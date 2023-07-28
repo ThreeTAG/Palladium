@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.FloatProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
@@ -27,9 +27,9 @@ public class FloatPropertyVariable extends AbstractFloatTextureVariable {
     }
 
     @Override
-    public float getNumber(Entity entity) {
+    public float getNumber(DataContext context) {
         AtomicReference<Float> result = new AtomicReference<>(0F);
-        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> {
+        EntityPropertyHandler.getHandler(context.getEntity()).ifPresent(handler -> {
             PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
 
             if (property instanceof FloatProperty floatProperty) {

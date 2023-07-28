@@ -1,14 +1,14 @@
 package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
-import net.threetag.palladium.condition.context.ConditionContext;
-import net.threetag.palladium.condition.context.ConditionContextType;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 
 public class DayCondition extends Condition {
 
     @Override
-    public boolean active(ConditionContext context) {
-        var level = context.get(ConditionContextType.LEVEL);
+    public boolean active(DataContext context) {
+        var level = context.get(DataContextType.LEVEL);
         return level != null && level.isDay();
     }
 

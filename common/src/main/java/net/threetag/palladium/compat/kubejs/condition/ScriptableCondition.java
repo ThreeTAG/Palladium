@@ -2,8 +2,8 @@ package net.threetag.palladium.compat.kubejs.condition;
 
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionSerializer;
-import net.threetag.palladium.condition.context.ConditionContext;
-import net.threetag.palladium.condition.context.ConditionContextType;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 
 import java.util.Map;
 
@@ -20,8 +20,8 @@ public class ScriptableCondition extends Condition {
     }
 
     @Override
-    public boolean active(ConditionContext context) {
-        return this.builder.test != null && this.builder.test.test(context.get(ConditionContextType.ENTITY), this.extraProperties);
+    public boolean active(DataContext context) {
+        return this.builder.test != null && this.builder.test.test(context.getLivingEntity(), this.extraProperties);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
-import net.threetag.palladium.condition.context.ConditionContext;
-import net.threetag.palladium.condition.context.ConditionContextType;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.property.*;
 
@@ -28,9 +28,9 @@ public class IntervalCondition extends Condition {
     }
 
     @Override
-    public boolean active(ConditionContext context) {
-        var entity = context.get(ConditionContextType.ENTITY);
-        var entry = context.get(ConditionContextType.ABILITY);
+    public boolean active(DataContext context) {
+        var entity = context.get(DataContextType.ENTITY);
+        var entry = context.get(DataContextType.ABILITY);
 
         if (entity == null || entry == null) {
             return false;

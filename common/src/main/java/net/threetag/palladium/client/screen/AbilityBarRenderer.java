@@ -24,6 +24,7 @@ import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityColor;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladiumcore.event.ClientTickEvents;
 import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 
@@ -111,7 +112,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
         minecraft.gui.blit(poseStack, 0, 0, position.left ? 52 : 0, position.top ? 28 : 0, 52, 28);
 
         // Icon
-        list.power.getIcon().draw(minecraft, poseStack, showKey ? (position.left ? 30 : 6) : (position.left ? 17 : 19), position.top ? 5 : 7);
+        list.power.getIcon().draw(minecraft, DataContext.forPower(minecraft.player, list.getPowerHolder()), poseStack, showKey ? (position.left ? 30 : 6) : (position.left ? 17 : 19), position.top ? 5 : 7);
 
         // Button
         if (showKey) {
@@ -175,7 +176,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
                     if (!entry.isUnlocked()) {
                         minecraft.gui.blit(poseStack, 3, i * 22 + 3, 42, 74, 18, 18);
                     } else {
-                        entry.getProperty(Ability.ICON).draw(minecraft, poseStack, 4, 4 + i * 22);
+                        entry.getProperty(Ability.ICON).draw(minecraft, DataContext.forAbility(minecraft.player, entry), poseStack, 4, 4 + i * 22);
                     }
 
                     // Ability Name
@@ -315,7 +316,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
                         int index = i % 5;
 
                         while (!(containerList.size() - 1 >= listIndex)) {
-                            containerList.add(new AbilityList(holder.getPower()));
+                            containerList.add(new AbilityList(holder));
                         }
 
                         AbilityList abilityList = containerList.get(listIndex);
@@ -332,7 +333,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
                 int index = i % 5;
 
                 while (!(remainingLists.size() - 1 >= listIndex)) {
-                    remainingLists.add(new AbilityList(holder.getPower()));
+                    remainingLists.add(new AbilityList(holder));
                 }
 
                 AbilityList abilityList = remainingLists.get(listIndex);
@@ -362,15 +363,21 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
     public static class AbilityList {
 
         private static final int SIZE = 5;
+        private final IPowerHolder powerHolder;
         private final Power power;
         private final IntObjectHashMap<List<AbilityEntry>> abilities = new IntObjectHashMap<>();
         private final ResourceLocation texture;
         public boolean simple = false;
 
-        public AbilityList(Power power) {
-            this.power = power;
-            var powerTex = power.getAbilityBarTexture();
-            this.texture = powerTex != null ? powerTex.getTexture(Minecraft.getInstance().player) : null;
+        public AbilityList(IPowerHolder powerHolder) {
+            this.powerHolder = powerHolder;
+            this.power = powerHolder.getPower();
+            var powerTex = this.power.getAbilityBarTexture();
+            this.texture = powerTex != null ? powerTex.getTexture(DataContext.forPower(Minecraft.getInstance().player, this.powerHolder)) : null;
+        }
+
+        public IPowerHolder getPowerHolder() {
+            return powerHolder;
         }
 
         public Power getPower() {

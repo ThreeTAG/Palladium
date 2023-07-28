@@ -4,7 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.util.context.DataContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -21,10 +21,10 @@ public class TextureReference {
 
     @Nullable
     @Environment(EnvType.CLIENT)
-    public ResourceLocation getTexture(Entity entity) {
+    public ResourceLocation getTexture(DataContext context) {
         if (this.dynamic) {
             var dyn = DynamicTextureManager.INSTANCE.get(this.path);
-            return dyn != null ? dyn.getTexture(entity) : null;
+            return dyn != null ? dyn.getTexture(context) : null;
         } else {
             return this.path;
         }

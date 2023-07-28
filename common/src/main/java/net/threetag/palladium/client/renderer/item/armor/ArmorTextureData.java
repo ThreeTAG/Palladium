@@ -4,9 +4,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.util.SkinTypedValue;
+import net.threetag.palladium.util.context.DataContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -22,14 +22,14 @@ public class ArmorTextureData {
     }
 
     @NotNull
-    public ResourceLocation get(String key, LivingEntity entity) {
+    public ResourceLocation get(String key, DataContext context) {
         var data = this.textureByKey.get(key);
 
         if (data == null) {
             throw new IllegalStateException("Unknown texture key for armor: #" + key);
         }
 
-        return data.get(entity).getTexture(entity);
+        return data.get(context.getEntity()).getTexture(context);
     }
 
     public static ArmorTextureData fromJson(JsonElement json) {

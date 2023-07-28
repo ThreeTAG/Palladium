@@ -6,8 +6,8 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
-import net.threetag.palladium.condition.context.ConditionContext;
-import net.threetag.palladium.condition.context.ConditionContextType;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.util.property.BooleanProperty;
 import net.threetag.palladium.util.property.IntegerProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
@@ -27,8 +27,8 @@ public class CommandResultCondition extends Condition implements CommandSource {
     }
 
     @Override
-    public boolean active(ConditionContext context) {
-        var entity = context.get(ConditionContextType.ENTITY);
+    public boolean active(DataContext context) {
+        var entity = context.get(DataContextType.ENTITY);
 
         if (entity == null) {
             return false;

@@ -15,16 +15,16 @@ import net.threetag.palladium.client.renderer.entity.HumanoidRendererModificatio
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionEnvironment;
 import net.threetag.palladium.condition.ConditionSerializer;
-import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.entity.BodyPart;
 
 import java.util.List;
 
 public interface IPackRenderLayer {
 
-    void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch);
+    void render(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch);
 
-    default void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    default void renderArm(DataContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
 
     }
 
@@ -53,7 +53,7 @@ public interface IPackRenderLayer {
                     var result = el.getAsBoolean();
                     layer.addCondition(new Condition() {
                         @Override
-                        public boolean active(ConditionContext context1) {
+                        public boolean active(DataContext context1) {
                             return result;
                         }
 
@@ -74,13 +74,13 @@ public interface IPackRenderLayer {
     static boolean conditionsFulfilled(Entity entity, List<Condition> bothConditions, List<Condition> specificConditions) {
         if (entity instanceof LivingEntity livingEntity) {
             for (Condition condition : bothConditions) {
-                if (!condition.active(ConditionContext.forEntity(livingEntity))) {
+                if (!condition.active(DataContext.forEntity(livingEntity))) {
                     return false;
                 }
             }
 
             for (Condition condition : specificConditions) {
-                if (!condition.active(ConditionContext.forEntity(livingEntity))) {
+                if (!condition.active(DataContext.forEntity(livingEntity))) {
                     return false;
                 }
             }

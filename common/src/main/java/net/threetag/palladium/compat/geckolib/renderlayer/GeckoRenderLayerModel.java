@@ -10,7 +10,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.client.renderer.renderlayer.IRenderLayerContext;
+import net.threetag.palladium.util.context.DataContext;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.core.util.Color;
@@ -59,7 +59,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         this.rtb = rtb;
     }
 
-    public void renderModel(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void renderModel(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelResource(this.state));
         var partialTick = Minecraft.getInstance().getFrameTime();
         AnimationEvent<GeckoLayerState> animationEvent = new AnimationEvent<>(this.state, 0, 0,
@@ -85,7 +85,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         poseStack.popPose();
     }
 
-    public void renderArm(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay,
+    public void renderArm(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay,
                           float partialTick, boolean rightArm) {
         GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelResource(this.state));
 

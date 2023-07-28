@@ -14,6 +14,7 @@ import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.icon.IIcon;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
@@ -202,7 +203,7 @@ public class PowerTab extends GuiComponent {
     }
 
     public void drawIcon(PoseStack poseStack, int offsetX, int offsetY) {
-        this.type.drawIcon(poseStack, offsetX, offsetY, this.index, this.icon);
+        this.type.drawIcon(poseStack, DataContext.forPower(this.minecraft.player, this.powerHolder), offsetX, offsetY, this.index, this.icon);
     }
 
     public void drawContents(PoseStack poseStack) {
@@ -226,7 +227,7 @@ public class PowerTab extends GuiComponent {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
         if(backgroundTexture != null) {
-            RenderSystem.setShaderTexture(0, backgroundTexture.getTexture(minecraft.player));
+            RenderSystem.setShaderTexture(0, backgroundTexture.getTexture(DataContext.forPower(minecraft.player, this.powerHolder)));
         } else {
             RenderSystem.setShaderTexture(0, new ResourceLocation("textures/block/red_wool.png"));
         }

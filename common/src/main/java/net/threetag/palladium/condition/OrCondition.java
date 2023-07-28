@@ -1,7 +1,7 @@
 package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
-import net.threetag.palladium.condition.context.ConditionContext;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.ConditionArrayProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
 
@@ -14,7 +14,7 @@ public class OrCondition extends Condition {
     }
 
     @Override
-    public boolean active(ConditionContext context) {
+    public boolean active(DataContext context) {
         for (Condition condition : this.conditions) {
             if (condition.active(context)) {
                 return true;

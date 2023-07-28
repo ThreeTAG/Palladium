@@ -3,7 +3,7 @@ package net.threetag.palladium.client.dynamictexture.variable;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.IntegerProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
@@ -26,9 +26,9 @@ public class IntegerPropertyVariable extends AbstractIntegerTextureVariable {
     }
 
     @Override
-    public int getNumber(Entity entity) {
+    public int getNumber(DataContext context) {
         AtomicInteger result = new AtomicInteger(0);
-        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> {
+        EntityPropertyHandler.getHandler(context.getEntity()).ifPresent(handler -> {
             PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
 
             if (property instanceof IntegerProperty integerProperty) {

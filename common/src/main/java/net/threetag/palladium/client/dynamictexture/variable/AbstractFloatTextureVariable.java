@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.util.context.DataContext;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,19 +31,19 @@ public abstract class AbstractFloatTextureVariable implements ITextureVariable {
     }
 
     @Override
-    public Object get(Entity entity) {
-        Number f = this.getNumber(entity);
+    public Object get(DataContext context) {
+        Number f = this.getNumber(context);
         for (Pair<Operation, JsonPrimitive> pair : operations) {
             f = pair.getFirst().function.apply(f.floatValue(), pair.getSecond());
         }
         return f;
     }
 
-    public abstract float getNumber(Entity entity);
+    public abstract float getNumber(DataContext context);
 
     public enum Operation {
 
-        ADD("add", (input, addition) -> input + addition),
+        ADD("add", Float::sum),
         SUBTRACT("subtract", (input, subtract) -> input - subtract),
         MULTIPLY("multiply", (input, multiply) -> input * multiply),
         DIVIDE("divide", (input, multiply) -> input / multiply),

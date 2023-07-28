@@ -5,8 +5,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.threetag.palladium.condition.context.ConditionContext;
-import net.threetag.palladium.condition.context.ConditionContextType;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.property.IngredientProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
@@ -23,8 +23,8 @@ public class ItemInSlotCondition extends Condition {
     }
 
     @Override
-    public boolean active(ConditionContext context) {
-        var entity = context.get(ConditionContextType.ENTITY);
+    public boolean active(DataContext context) {
+        var entity = context.getLivingEntity();
 
         if (entity == null) {
             return false;

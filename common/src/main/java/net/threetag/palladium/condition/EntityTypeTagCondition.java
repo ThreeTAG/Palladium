@@ -6,8 +6,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.threetag.palladium.condition.context.ConditionContext;
-import net.threetag.palladium.condition.context.ConditionContextType;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.ResourceLocationProperty;
 
@@ -20,8 +20,8 @@ public class EntityTypeTagCondition extends Condition {
     }
 
     @Override
-    public boolean active(ConditionContext context) {
-        var entity = context.get(ConditionContextType.ENTITY);
+    public boolean active(DataContext context) {
+        var entity = context.get(DataContextType.ENTITY);
 
         if (entity == null) {
             return false;

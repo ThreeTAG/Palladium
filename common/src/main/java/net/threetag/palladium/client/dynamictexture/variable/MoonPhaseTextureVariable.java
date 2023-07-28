@@ -1,16 +1,17 @@
 package net.threetag.palladium.client.dynamictexture.variable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.util.context.DataContext;
 
-public class MoonPhaseTextureVariable extends AbstractIntegerTextureVariable{
+public class MoonPhaseTextureVariable extends AbstractIntegerTextureVariable {
 
     public MoonPhaseTextureVariable(JsonObject json) {
         super(json);
     }
 
     @Override
-    public int getNumber(Entity entity) {
-        return entity.level.getMoonPhase();
+    public int getNumber(DataContext context) {
+        var level = context.getLevel();
+        return level != null ? level.getMoonPhase() : 0;
     }
 }

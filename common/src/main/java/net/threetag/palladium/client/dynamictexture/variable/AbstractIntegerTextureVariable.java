@@ -3,7 +3,7 @@ package net.threetag.palladium.client.dynamictexture.variable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.util.context.DataContext;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,15 +29,15 @@ public abstract class AbstractIntegerTextureVariable implements ITextureVariable
     }
 
     @Override
-    public Object get(Entity entity) {
-        int i = this.getNumber(entity);
+    public Object get(DataContext context) {
+        int i = this.getNumber(context);
         for (Pair<Operation, Integer> pair : operations) {
             i = pair.getFirst().function.apply(i, pair.getSecond());
         }
         return i;
     }
 
-    public abstract int getNumber(Entity entity);
+    public abstract int getNumber(DataContext context);
 
     public enum Operation {
 

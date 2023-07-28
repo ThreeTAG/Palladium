@@ -3,11 +3,11 @@ package net.threetag.palladium.client.dynamictexture.variable;
 import com.google.gson.JsonObject;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.client.model.animation.FlightAnimation;
 import net.threetag.palladium.entity.PalladiumPlayerExtension;
 import net.threetag.palladium.util.Easing;
+import net.threetag.palladium.util.context.DataContext;
 
 public class CapeTextureVariable extends AbstractFloatTextureVariable {
 
@@ -19,11 +19,12 @@ public class CapeTextureVariable extends AbstractFloatTextureVariable {
     }
 
     @Override
-    public float getNumber(Entity entity) {
-        if (entity instanceof Player player) {
-            double d0 = Mth.lerp(1F, player.xCloakO, player.xCloak) - Mth.lerp(1F, entity.xo, entity.getX());
-            double d1 = Mth.lerp(1F, player.yCloakO, player.yCloak) - Mth.lerp(1F, entity.yo, entity.getY());
-            double d2 = Mth.lerp(1F, player.zCloakO, player.zCloak) - Mth.lerp(1F, entity.zo, entity.getZ());
+    public float getNumber(DataContext context) {
+        var player = context.getPlayer();
+        if (player != null) {
+            double d0 = Mth.lerp(1F, player.xCloakO, player.xCloak) - Mth.lerp(1F, player.xo, player.getX());
+            double d1 = Mth.lerp(1F, player.yCloakO, player.yCloak) - Mth.lerp(1F, player.yo, player.getY());
+            double d2 = Mth.lerp(1F, player.zCloakO, player.zCloak) - Mth.lerp(1F, player.zo, player.getZ());
             float f = player.yBodyRotO + (player.yBodyRot - player.yBodyRotO);
             double d3 = Mth.sin(f * ((float) Math.PI / 180F));
             double d4 = -Mth.cos(f * ((float) Math.PI / 180F));
@@ -37,7 +38,7 @@ public class CapeTextureVariable extends AbstractFloatTextureVariable {
 
             if (this.bobbing) {
                 float f4 = Mth.lerp(1F, player.oBob, player.bob);
-                f1 = f1 + Mth.sin(Mth.lerp(1F, entity.walkDistO, entity.walkDist) * 6.0F) * 32.0F * f4;
+                f1 = f1 + Mth.sin(Mth.lerp(1F, player.walkDistO, player.walkDist) * 6.0F) * 32.0F * f4;
             }
 
             float rotation = 6.0F + f2 / 2.0F + f1;

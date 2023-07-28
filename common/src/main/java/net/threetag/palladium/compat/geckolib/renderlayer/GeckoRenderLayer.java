@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -22,6 +21,7 @@ import net.threetag.palladium.client.renderer.renderlayer.*;
 import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
 import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
 import net.threetag.palladium.util.SkinTypedValue;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -111,24 +111,24 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
     }
 
     @Override
-    public void render(IRenderLayerContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        var entity = context.getEntity();
+    public void render(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        var living = context.getLivingEntity();
 
-        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.thirdPersonConditions) && entity instanceof LivingEntity living) {
+        if (living != null && IPackRenderLayer.conditionsFulfilled(living, this.conditions, this.thirdPersonConditions)) {
             this.model.setRenderedEntity(living);
             HumanoidModel entityModel = this.model;
             entityModel.setAllVisible(true);
 
-            this.cachedTexture = this.texture.get(living).getTexture(living);
+            this.cachedTexture = this.texture.get(living).getTexture(context);
             this.cachedModel = this.modelLocation.get(living);
 
             parentModel.copyPropertiesTo(entityModel);
 
             if (parentModel instanceof HumanoidModel parentHumanoid) {
-                IPackRenderLayer.copyModelProperties(entity, parentHumanoid, entityModel);
-            } else if (entity instanceof LivingEntity livingEntity) {
-                entityModel.prepareMobModel(livingEntity, limbSwing, limbSwingAmount, partialTicks);
-                entityModel.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+                IPackRenderLayer.copyModelProperties(living, parentHumanoid, entityModel);
+            } else {
+                entityModel.prepareMobModel(living, limbSwing, limbSwingAmount, partialTicks);
+                entityModel.setupAnim(living, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             }
 
             if (entityModel instanceof GeckoRenderLayerModel gecko) {
@@ -138,12 +138,12 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
     }
 
     @Override
-    public void renderArm(IRenderLayerContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        var entity = context.getEntity();
-        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.firstPersonConditions) && entity instanceof AbstractClientPlayer living) {
+    public void renderArm(DataContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        var living = context.getLivingEntity();
+        if (living != null && IPackRenderLayer.conditionsFulfilled(living, this.conditions, this.firstPersonConditions)) {
             this.model.setRenderedEntity(living);
             GeckoRenderLayerModel humanoidModel = this.model;
-            this.cachedTexture = this.texture.get(living).getTexture(living);
+            this.cachedTexture = this.texture.get(living).getTexture(context);
             this.cachedModel = this.modelLocation.get(living);
 
             playerRenderer.getModel().copyPropertiesTo(humanoidModel);

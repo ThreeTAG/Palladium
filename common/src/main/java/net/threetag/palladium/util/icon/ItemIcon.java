@@ -11,7 +11,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.GuiUtil;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemIcon implements IIcon {
 
@@ -26,7 +28,7 @@ public class ItemIcon implements IIcon {
     }
 
     @Override
-    public void draw(Minecraft mc, PoseStack stack, int x, int y, int width, int height) {
+    public void draw(Minecraft mc, DataContext context, PoseStack stack, int x, int y, int width, int height) {
         stack.pushPose();
         stack.translate(x + width / 2D, y + height / 2D, 100);
 
@@ -52,7 +54,7 @@ public class ItemIcon implements IIcon {
     public static class Serializer extends IconSerializer<ItemIcon> {
 
         @Override
-        public ItemIcon fromJSON(JsonObject json) {
+        public @NotNull ItemIcon fromJSON(JsonObject json) {
             return new ItemIcon(GsonUtil.readItemStack(json));
         }
 
