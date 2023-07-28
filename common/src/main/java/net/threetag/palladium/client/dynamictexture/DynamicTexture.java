@@ -49,6 +49,7 @@ public abstract class DynamicTexture {
         registerVariable(new IntegerPropertyVariable.Serializer());
         registerVariable(new FloatPropertyVariable.Serializer());
         registerVariable(new CapeTextureVariable.Serializer());
+        registerVariable(new AbilityIdTextureVariable.Serializer());
     }
 
     public abstract ResourceLocation getTexture(DataContext context);
