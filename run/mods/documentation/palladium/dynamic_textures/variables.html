@@ -1,0 +1,1468 @@
+<html>
+<head>
+<title>
+Dynamic Texture Variables</title>
+<style>
+table{font-family:arial, sans-serif;border-collapse:collapse;}
+td,th{border:1px solid #666666;text-align:left;padding:8px;min-width:45px;}
+th{background-color:#CCCCCC;}
+p{margin:0;}
+tr:nth-child(even){background-color:#D8D8D8;}
+tr:nth-child(odd){background-color:#EEEEEE;}
+td.true{background-color:#72FF85AA;}
+td.false{background-color:#FF6666AA;}
+td.other{background-color:#42A3FFAA;}
+td.error{color:#FF0000;}
+th,td.true,td.false,td.other{text-align:center;}pre{outline:1px solid #ccc;padding:5px;margin:5px;} .string{color:green;} .number{color:cornflowerblue;} .boolean{color:darkorange;} .null{color:orangered;} .key{color:purple;}hr { height: 5px; background-color: black }</style>
+<link rel="shortcut icon" type="image/x-icon" href="https://i.imgur.com/3sx4xJf.png">
+
+<style>
+.json-block { background-color: lightgray; display: inline-block; border: 5px solid darkgray; padding: 10px }</style>
+</head>
+<body>
+<h1>
+Dynamic Texture Variables</h1>
+<hr>
+
+<p>
+<h2>
+Overview</h2>
+<h3>
+Palladium</h3>
+<ul>
+<li>
+<a href="#palladium:ability_float_property">
+Ability Float-Property</a>
+</li>
+<li>
+<a href="#palladium:ability_integer_property">
+Ability Integer-Property</a>
+</li>
+<li>
+<a href="#palladium:ability_ticks">
+Ability Ticks</a>
+</li>
+<li>
+<a href="#palladium:cape">
+Cape</a>
+</li>
+<li>
+<a href="#palladium:condition">
+Condition</a>
+</li>
+<li>
+<a href="#palladium:crouching">
+Crouching</a>
+</li>
+<li>
+<a href="#palladium:entity_health">
+Entity Health</a>
+</li>
+<li>
+<a href="#palladium:entity_ticks">
+Entity Ticks</a>
+</li>
+<li>
+<a href="#palladium:float_property">
+Float Property</a>
+</li>
+<li>
+<a href="#palladium:integer_property">
+Integer Property</a>
+</li>
+<li>
+<a href="#palladium:moon_phase">
+Moon Phase</a>
+</li>
+<li>
+<a href="#palladium:small_arms">
+Small Arms</a>
+</li>
+</ul>
+</p>
+<hr>
+
+<div id="palladium:ability_float_property">
+<h2>
+Ability Float-Property</h2>
+<p>
+Returns the value of a float property of an ability (e.g. the 'value' of an animation timer). The math operations can be arranged in any order and are fully optional!</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+power</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the power the ability is in.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+ability</td>
+<td>
+String</td>
+<td>
+Key of the ability that is being looked for.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+property</td>
+<td>
+String</td>
+<td>
+Name of the property you want the value from. It's 'value' for animation timer ablities.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+add</td>
+<td>
+Float</td>
+<td>
+This value will be added on top of the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+subtract</td>
+<td>
+Float</td>
+<td>
+This value will be subtracted from the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+multiply</td>
+<td>
+Float</td>
+<td>
+This value will be subtracted with the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+divide</td>
+<td>
+Float</td>
+<td>
+This value will be divided to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Float</td>
+<td>
+Using this value will set a minimum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Float</td>
+<td>
+Using this value will set a maximum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+modulo</td>
+<td>
+Float</td>
+<td>
+Using this value will apply a modulo operation to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_float_property","power":"example:power_id","ability":"ability_key","property":"value","add":5.2,"subtract":3.1,"multiply":2.5,"divide":7.5,"min":5.5,"max":123.4,"modulo":5.0}</pre>
+</div>
+<hr>
+
+<div id="palladium:ability_integer_property">
+<h2>
+Ability Integer-Property</h2>
+<p>
+Returns the value of an integer property of an ability (e.g. the 'value' of an animation timer). The math operations can be arranged in any order and are fully optional!</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+power</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the power the ability is in.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+ability</td>
+<td>
+String</td>
+<td>
+Key of the ability that is being looked for.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+property</td>
+<td>
+String</td>
+<td>
+Name of the property you want the value from. It's 'value' for animation timer ablities.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+add</td>
+<td>
+Integer</td>
+<td>
+This value will be added on top of the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+subtract</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted from the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+multiply</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted with the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+divide</td>
+<td>
+Integer</td>
+<td>
+This value will be divided to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a minimum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a maximum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+modulo</td>
+<td>
+Integer</td>
+<td>
+Using this value will apply a modulo operation to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_integer_property","power":"example:power_id","ability":"ability_key","property":"value","add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
+</div>
+<hr>
+
+<div id="palladium:ability_ticks">
+<h2>
+Ability Ticks</h2>
+<p>
+Returns the tick count of an ability being enabled. The math operations can be arranged in any order and are fully optional!</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+power</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the power the ability is in.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+ability</td>
+<td>
+String</td>
+<td>
+Key of the ability that is being looked for.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+add</td>
+<td>
+Integer</td>
+<td>
+This value will be added on top of the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+subtract</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted from the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+multiply</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted with the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+divide</td>
+<td>
+Integer</td>
+<td>
+This value will be divided to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a minimum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a maximum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+modulo</td>
+<td>
+Integer</td>
+<td>
+Using this value will apply a modulo operation to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_ticks","power":"example:power_id","ability":"ability_key","add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
+</div>
+<hr>
+
+<div id="palladium:cape">
+<h2>
+Cape</h2>
+<p>
+Returns the tilt of the player's cape.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+bobbing</td>
+<td>
+Boolean</td>
+<td>
+Determines of bobbing should be taken into account when doing the calculation</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+add</td>
+<td>
+Float</td>
+<td>
+This value will be added on top of the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+subtract</td>
+<td>
+Float</td>
+<td>
+This value will be subtracted from the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+multiply</td>
+<td>
+Float</td>
+<td>
+This value will be subtracted with the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+divide</td>
+<td>
+Float</td>
+<td>
+This value will be divided to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Float</td>
+<td>
+Using this value will set a minimum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Float</td>
+<td>
+Using this value will set a maximum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+modulo</td>
+<td>
+Float</td>
+<td>
+Using this value will apply a modulo operation to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:cape","bobbing":true,"add":5.2,"subtract":3.1,"multiply":2.5,"divide":7.5,"min":5.5,"max":123.4,"modulo":5.0}</pre>
+</div>
+<hr>
+
+<div id="palladium:condition">
+<h2>
+Condition</h2>
+<p>
+Checks a list of conditions (or a single one) and returns a true/false value appropriately.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+conditions</td>
+<td>
+Condition[]</td>
+<td>
+Array of conditions that will be checked</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+true_value</td>
+<td>
+Boolean</td>
+<td>
+If the variable turns out to be true, this value will be inserted into the texture path</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+false_value</td>
+<td>
+Boolean</td>
+<td>
+If the variable turns out to be false, this value will be inserted into the texture path</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:condition","conditions":[{"type":"palladium:crouching"}],"true_value":"true","false_value":"false"}</pre>
+</div>
+<hr>
+
+<div id="palladium:crouching">
+<h2>
+Crouching</h2>
+<p>
+Returns a true/false value depending on whether the player is crouching.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+true_value</td>
+<td>
+Boolean</td>
+<td>
+If the variable turns out to be true, this value will be inserted into the texture path</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+false_value</td>
+<td>
+Boolean</td>
+<td>
+If the variable turns out to be false, this value will be inserted into the texture path</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:crouching","true_value":"true","false_value":"false"}</pre>
+</div>
+<hr>
+
+<div id="palladium:entity_health">
+<h2>
+Entity Health</h2>
+<p>
+Returns the health of the entity. The math operations can be arranged in any order and are fully optional!</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+add</td>
+<td>
+Float</td>
+<td>
+This value will be added on top of the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+subtract</td>
+<td>
+Float</td>
+<td>
+This value will be subtracted from the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+multiply</td>
+<td>
+Float</td>
+<td>
+This value will be subtracted with the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+divide</td>
+<td>
+Float</td>
+<td>
+This value will be divided to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Float</td>
+<td>
+Using this value will set a minimum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Float</td>
+<td>
+Using this value will set a maximum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+modulo</td>
+<td>
+Float</td>
+<td>
+Using this value will apply a modulo operation to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:entity_health","add":5.2,"subtract":3.1,"multiply":2.5,"divide":7.5,"min":5.5,"max":123.4,"modulo":5.0}</pre>
+</div>
+<hr>
+
+<div id="palladium:entity_ticks">
+<h2>
+Entity Ticks</h2>
+<p>
+Returns the tick count of the entity. The math operations can be arranged in any order and are fully optional!</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+add</td>
+<td>
+Integer</td>
+<td>
+This value will be added on top of the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+subtract</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted from the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+multiply</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted with the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+divide</td>
+<td>
+Integer</td>
+<td>
+This value will be divided to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a minimum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a maximum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+modulo</td>
+<td>
+Integer</td>
+<td>
+Using this value will apply a modulo operation to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:entity_ticks","add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
+</div>
+<hr>
+
+<div id="palladium:float_property">
+<h2>
+Float Property</h2>
+<p>
+Returns the value of a float property within the player. The math operations can be arranged in any order and are fully optional!</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+property</td>
+<td>
+String</td>
+<td>
+Name of the property you want the value from.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+add</td>
+<td>
+Float</td>
+<td>
+This value will be added on top of the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+subtract</td>
+<td>
+Float</td>
+<td>
+This value will be subtracted from the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+multiply</td>
+<td>
+Float</td>
+<td>
+This value will be subtracted with the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+divide</td>
+<td>
+Float</td>
+<td>
+This value will be divided to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Float</td>
+<td>
+Using this value will set a minimum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Float</td>
+<td>
+Using this value will set a maximum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+modulo</td>
+<td>
+Float</td>
+<td>
+Using this value will apply a modulo operation to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:float_property","property":"example_property","add":5.2,"subtract":3.1,"multiply":2.5,"divide":7.5,"min":5.5,"max":123.4,"modulo":5.0}</pre>
+</div>
+<hr>
+
+<div id="palladium:integer_property">
+<h2>
+Integer Property</h2>
+<p>
+Returns the value of an integer property within the player. The math operations can be arranged in any order and are fully optional!</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+property</td>
+<td>
+String</td>
+<td>
+Name of the property you want the value from.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+add</td>
+<td>
+Integer</td>
+<td>
+This value will be added on top of the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+subtract</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted from the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+multiply</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted with the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+divide</td>
+<td>
+Integer</td>
+<td>
+This value will be divided to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a minimum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a maximum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+modulo</td>
+<td>
+Integer</td>
+<td>
+Using this value will apply a modulo operation to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:integer_property","property":"example_property","add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
+</div>
+<hr>
+
+<div id="palladium:moon_phase">
+<h2>
+Moon Phase</h2>
+<p>
+Returns the current moon phase, an integer from 0 to 7. The math operations can be arranged in any order and are fully optional!</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+add</td>
+<td>
+Integer</td>
+<td>
+This value will be added on top of the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+subtract</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted from the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+multiply</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted with the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+divide</td>
+<td>
+Integer</td>
+<td>
+This value will be divided to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a minimum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a maximum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+modulo</td>
+<td>
+Integer</td>
+<td>
+Using this value will apply a modulo operation to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:moon_phase","add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
+</div>
+<hr>
+
+<div id="palladium:small_arms">
+<h2>
+Small Arms</h2>
+<p>
+Returns a true/false value depending on whether the player has small arms.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+true_value</td>
+<td>
+Boolean</td>
+<td>
+If the variable turns out to be true, this value will be inserted into the texture path</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+false_value</td>
+<td>
+Boolean</td>
+<td>
+If the variable turns out to be false, this value will be inserted into the texture path</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:small_arms","true_value":"true","false_value":"false"}</pre>
+</div>
+<script>
+function syntaxHighlight(json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+
+    const elements = document.getElementsByClassName("json-snippet");
+    const amount = elements.length;
+    for (let i = 0; i < amount; i++) {
+        const element = elements[0];
+        const div = document.createElement("pre");
+        div.innerHTML = syntaxHighlight(JSON.stringify(JSON.parse(element.innerText), undefined, 4));
+        element.parentNode.replaceChild(div, element);
+    }</script>
+</body>
+</html>

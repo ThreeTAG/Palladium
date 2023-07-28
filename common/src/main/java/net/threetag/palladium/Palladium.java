@@ -6,6 +6,7 @@ import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.addonpack.parser.*;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
+import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.command.AbilityCommand;
 import net.threetag.palladium.command.PalladiumEntitySelectorOptions;
 import net.threetag.palladium.command.SuperpowerCommand;
@@ -135,6 +136,7 @@ public class Palladium {
             consumer.accept(BlockParser.documentationBuilder());
             consumer.accept(ItemParser.documentationBuilder());
             consumer.accept(IconSerializer.documentationBuilder());
+            consumer.accept(DynamicTexture.variableDocumentationBuilder());
             PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
         }
     }

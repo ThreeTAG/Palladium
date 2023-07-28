@@ -1,21 +1,28 @@
 package net.threetag.palladium.client.dynamictexture.variable;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.model.animation.FlightAnimation;
+import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.entity.PalladiumPlayerExtension;
 import net.threetag.palladium.util.Easing;
 import net.threetag.palladium.util.context.DataContext;
+
+import java.util.List;
 
 public class CapeTextureVariable extends AbstractFloatTextureVariable {
 
     public final boolean bobbing;
 
-    public CapeTextureVariable(JsonObject json) {
-        super(json);
-        this.bobbing = GsonHelper.getAsBoolean(json, "bobbing", true);
+    public CapeTextureVariable(boolean bobbing, List<Pair<Operation, JsonPrimitive>> operations) {
+        super(operations);
+        this.bobbing = bobbing;
     }
 
     @Override
@@ -83,5 +90,36 @@ public class CapeTextureVariable extends AbstractFloatTextureVariable {
         }
 
         return 0F;
+    }
+
+    public static class Serializer implements ITextureVariableSerializer {
+
+        @Override
+        public ITextureVariable parse(JsonObject json) {
+            return new CapeTextureVariable(
+                    GsonHelper.getAsBoolean(json, "bobbing", true),
+                    AbstractFloatTextureVariable.parseOperations(json));
+        }
+
+        @Override
+        public String getDocumentationDescription() {
+            return "Returns the tilt of the player's cape.";
+        }
+
+        @Override
+        public void addDocumentationFields(JsonDocumentationBuilder builder) {
+            builder.setTitle("Cape");
+            
+            builder.addProperty("bobbing", Boolean.class)
+                    .description("Determines of bobbing should be taken into account when doing the calculation")
+                    .fallback(true).exampleJson(new JsonPrimitive(true));
+
+            AbstractFloatTextureVariable.addDocumentationFields(builder);
+        }
+
+        @Override
+        public ResourceLocation getId() {
+            return Palladium.id("cape");
+        }
     }
 }

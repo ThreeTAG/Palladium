@@ -12,18 +12,22 @@ import net.threetag.palladium.client.dynamictexture.transformer.AlphaMaskTexture
 import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.OverlayTextureTransformer;
 import net.threetag.palladium.client.dynamictexture.variable.*;
+import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public abstract class DynamicTexture {
 
     private static final Map<ResourceLocation, Function<JsonObject, DynamicTexture>> TYPE_PARSERS = new HashMap<>();
     private static final Map<ResourceLocation, Function<JsonObject, ITextureTransformer>> TRANSFORMER_PARSERS = new HashMap<>();
-    private static final Map<ResourceLocation, Function<JsonObject, ITextureVariable>> VARIABLE_PARSERS = new HashMap<>();
+    private static final Map<ResourceLocation, ITextureVariableSerializer> VARIABLE_PARSERS = new HashMap<>();
 
     static {
         registerType(Palladium.id("simple"), j -> new SimpleDynamicTexture(GsonUtil.getAsResourceLocation(j, "texture")));
@@ -33,18 +37,18 @@ public abstract class DynamicTexture {
         registerTransformer(Palladium.id("alpha_mask"), j -> new AlphaMaskTextureTransformer(GsonHelper.getAsString(j, "mask")));
         registerTransformer(Palladium.id("overlay"), j -> new OverlayTextureTransformer(GsonHelper.getAsString(j, "overlay")));
 
-        registerVariable(Palladium.id("condition"), ConditionTextureVariable::new);
-        registerVariable(Palladium.id("entity_ticks"), EntityTicksTextureVariable::new);
-        registerVariable(Palladium.id("ability_ticks"), AbilityTicksTextureVariable::new);
-        registerVariable(Palladium.id("entity_health"), EntityHealthTextureVariable::new);
-        registerVariable(Palladium.id("ability_integer_property"), AbilityIntegerPropertyVariable::new);
-        registerVariable(Palladium.id("ability_float_property"), AbilityFloatPropertyVariable::new);
-        registerVariable(Palladium.id("integer_property"), IntegerPropertyVariable::new);
-        registerVariable(Palladium.id("float_property"), FloatPropertyVariable::new);
-        registerVariable(Palladium.id("small_arms"), SmallArmsTextureVariable::new);
-        registerVariable(Palladium.id("crouching"), CrouchingTextureVariable::new);
-        registerVariable(Palladium.id("moon_phase"), MoonPhaseTextureVariable::new);
-        registerVariable(Palladium.id("cape"), CapeTextureVariable::new);
+        registerVariable(new ConditionTextureVariable.Serializer());
+        registerVariable(new CrouchingTextureVariable.Serializer());
+        registerVariable(new SmallArmsTextureVariable.Serializer());
+        registerVariable(new AbilityTicksTextureVariable.Serializer());
+        registerVariable(new EntityTicksTextureVariable.Serializer());
+        registerVariable(new AbilityIntegerPropertyVariable.Serializer());
+        registerVariable(new AbilityFloatPropertyVariable.Serializer());
+        registerVariable(new EntityHealthTextureVariable.Serializer());
+        registerVariable(new MoonPhaseTextureVariable.Serializer());
+        registerVariable(new IntegerPropertyVariable.Serializer());
+        registerVariable(new FloatPropertyVariable.Serializer());
+        registerVariable(new CapeTextureVariable.Serializer());
     }
 
     public abstract ResourceLocation getTexture(DataContext context);
@@ -100,7 +104,7 @@ public abstract class DynamicTexture {
                     JsonObject variableJson = entry.getValue().getAsJsonObject();
                     ResourceLocation variableId = GsonUtil.getAsResourceLocation(variableJson, "type");
                     if (VARIABLE_PARSERS.containsKey(variableId)) {
-                        ITextureVariable variable = VARIABLE_PARSERS.get(variableId).apply(variableJson);
+                        ITextureVariable variable = VARIABLE_PARSERS.get(variableId).parse(variableJson);
                         texture.addVariable(entry.getKey(), variable);
                     } else {
                         AddonPackLog.error("Unknown texture variable '" + variableId + "'");
@@ -122,8 +126,14 @@ public abstract class DynamicTexture {
         TRANSFORMER_PARSERS.put(id, function);
     }
 
-    public static void registerVariable(ResourceLocation id, Function<JsonObject, ITextureVariable> function) {
-        VARIABLE_PARSERS.put(id, function);
+    public static void registerVariable(ITextureVariableSerializer serializer) {
+        VARIABLE_PARSERS.put(serializer.getId(), serializer);
+    }
+
+    public static HTMLBuilder variableDocumentationBuilder() {
+        return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "dynamic_textures/variables"), "Dynamic Texture Variables")
+                .add(HTMLBuilder.heading("Dynamic Texture Variables"))
+                .addDocumentationSettings(VARIABLE_PARSERS.values().stream().sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
     }
 }
 
