@@ -63,7 +63,7 @@ public class AbilityWidget extends GuiComponent {
         var description = abilityEntry.getProperty(Ability.DESCRIPTION);
         this.description = Language.getInstance()
                 .getVisualOrder(
-                        this.findOptimalLines(ComponentUtils.mergeStyles(description != null ? description.copy() : Component.empty(), Style.EMPTY.withColor(ChatFormatting.WHITE)), l)
+                        this.findOptimalLines(ComponentUtils.mergeStyles(description != null ? description.get(this.abilityEntry.isUnlocked()).copy() : Component.empty(), Style.EMPTY.withColor(ChatFormatting.WHITE)), l)
                 );
 
         for (FormattedCharSequence formattedCharSequence : this.description) {

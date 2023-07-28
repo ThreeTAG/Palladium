@@ -24,7 +24,7 @@ public class Ability implements IDefaultDocumentedConfigurable {
 
     public static final PalladiumProperty<Component> TITLE = new ComponentProperty("title").configurable("Allows you to set a custom title for this ability");
     public static final PalladiumProperty<IIcon> ICON = new IconProperty("icon").configurable("Icon for the ability");
-    public static final PalladiumProperty<Component> DESCRIPTION = new ComponentProperty("description").configurable("Description of the ability. Visible in ability menu");
+    public static final PalladiumProperty<AbilityDescription> DESCRIPTION = new AbilityDescriptionProperty("description").configurable("Description of the ability. Visible in ability menu");
     public static final PalladiumProperty<AbilityColor> COLOR = new AbilityColorProperty("bar_color").configurable("Changes the color of the ability in the ability bar");
     public static final PalladiumProperty<Boolean> HIDDEN_IN_GUI = new BooleanProperty("hidden").sync(SyncType.SELF).configurable("Determines if the ability is visible in the powers screen");
     public static final PalladiumProperty<Boolean> HIDDEN_IN_BAR = new BooleanProperty("hidden_in_bar").sync(SyncType.SELF).configurable("Determines if the ability is visible in the ability bar on your screen");
