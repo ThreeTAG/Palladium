@@ -30,6 +30,10 @@ public class ArmorRendererConditions {
                 key = OPENED_TEXTURE;
             } else {
                 key = OPENED_TEXTURE + "_" + openable.getOpeningProgress(context.getItem());
+
+                if (!textures.has(key)) {
+                    key = OPENED_TEXTURE;
+                }
             }
         }
 
@@ -54,6 +58,10 @@ public class ArmorRendererConditions {
                 key = OPENED_TEXTURE;
             } else {
                 key = OPENED_TEXTURE + "_" + openable.getOpeningProgress(context.getItem());
+
+                if (!models.has(key)) {
+                    key = OPENED_TEXTURE;
+                }
             }
         }
 
