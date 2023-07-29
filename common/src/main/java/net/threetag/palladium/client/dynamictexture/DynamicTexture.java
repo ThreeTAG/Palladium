@@ -16,7 +16,6 @@ import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +49,7 @@ public abstract class DynamicTexture {
         registerVariable(new FloatPropertyVariable.Serializer());
         registerVariable(new CapeTextureVariable.Serializer());
         registerVariable(new AbilityIdTextureVariable.Serializer());
+        registerVariable(new OpenableEquipmentProgressVariable.Serializer());
     }
 
     public abstract ResourceLocation getTexture(DataContext context);

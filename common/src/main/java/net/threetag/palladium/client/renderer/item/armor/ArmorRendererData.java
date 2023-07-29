@@ -3,9 +3,11 @@ package net.threetag.palladium.client.renderer.item.armor;
 import com.google.gson.JsonObject;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
@@ -40,8 +42,13 @@ public class ArmorRendererData {
 
     @NotNull
     public ResourceLocation getTexture(DataContext context) {
-        String key = this.conditions.getTexture(context);
-        return this.textures.get(key, context);
+        try {
+            String key = this.conditions.getTexture(context, this.textures);
+            return this.textures.get(key, context);
+        } catch (Exception e) {
+            Palladium.LOGGER.error("Error while rendering armor: " + e.getMessage());
+            return TextureManager.INTENTIONAL_MISSING_TEXTURE;
+        }
     }
 
     @NotNull

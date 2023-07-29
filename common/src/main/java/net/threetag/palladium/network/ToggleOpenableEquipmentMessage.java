@@ -42,7 +42,7 @@ public class ToggleOpenableEquipmentMessage extends MessageC2S {
             var stack = context.getPlayer().getItemBySlot(slot);
 
             if (!stack.isEmpty() && stack.getItem() instanceof Openable openable) {
-                openable.setOpen(context.getPlayer(), stack, slot, !opened);
+                openable.setOpen(context.getPlayer(), stack, !opened);
             }
         }
     }

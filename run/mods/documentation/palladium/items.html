@@ -329,12 +329,36 @@ true</td>
 <td>
 /</td>
 </tr>
+<tr>
+<td>
+openable</td>
+<td>
+Boolean</td>
+<td>
+Marks the armor piece as openable.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+opening_time</td>
+<td>
+Integer</td>
+<td>
+Determines the time the item needs for it to be fully opened. Leave at 0 for instant. Needs 'openable' to be enabled to take effect.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond"}</pre>
+{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","openable":false,"opening_time":10}</pre>
 </div>
 <hr>
 

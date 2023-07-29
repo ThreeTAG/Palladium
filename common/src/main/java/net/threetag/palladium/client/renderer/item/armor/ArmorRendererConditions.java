@@ -22,14 +22,18 @@ public class ArmorRendererConditions {
 
     public final List<ConditionedTextureKey> conditions = new LinkedList<>();
 
-    public String getTexture(DataContext context) {
+    public String getTexture(DataContext context, ArmorTextureData textures) {
         String key = BASE_TEXTURE;
 
-        if (context.has(DataContextType.ITEM) && context.getItem().getItem() instanceof Openable openable && openable.isOpen(context.getItem())) {
+        if (context.has(DataContextType.ITEM) && context.getItem().getItem() instanceof Openable openable && openable.getOpeningProgress(context.getItem()) > 0) {
             if (openable.getOpeningTime(context.getItem()) <= 0) {
                 key = OPENED_TEXTURE;
             } else {
                 key = OPENED_TEXTURE + "_" + openable.getOpeningProgress(context.getItem());
+
+                if (!textures.has(key)) {
+                    key = OPENED_TEXTURE;
+                }
             }
         }
 

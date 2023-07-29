@@ -14,8 +14,7 @@
     "item_name": "wooden_leggings",
     "tooltip": [
       "Leggings"
-    ],
-    "armor_texture": "test:textures/models/armor/wood_layer_2.png"
+    ]
   },
   "feet": {
     "item_name": "wooden_boots",
@@ -25,6 +24,8 @@
   },
   "head": {
     "item_name": "wooden_helmet",
+    "openable": true,
+    "opening_time": 6,
     "tooltip": [
       "Helmet"
     ]

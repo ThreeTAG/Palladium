@@ -32,6 +32,10 @@ public class ArmorTextureData {
         return data.get(context.getEntity()).getTexture(context);
     }
 
+    public boolean has(String key) {
+        return this.textureByKey.containsKey(key);
+    }
+
     public static ArmorTextureData fromJson(JsonElement json) {
         var data = new ArmorTextureData();
 

@@ -7,9 +7,12 @@ import com.google.gson.JsonPrimitive;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
@@ -21,20 +24,30 @@ import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.json.GsonUtil;
+import net.threetag.palladiumcore.item.IPalladiumItem;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRenderer {
+public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRenderer, Openable, IPalladiumItem {
 
     private List<Component> tooltipLines;
     private RenderLayerContainer renderLayerContainer = null;
     private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
     private Object renderer;
+    private boolean openable = false;
+    private int openingTime = 0;
 
     public AddonArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
         super(armorMaterial, equipmentSlot, properties);
+    }
+
+    public AddonArmorItem enableOpenable(boolean openable, int openingTime) {
+        this.openable = openable;
+        this.openingTime = openingTime;
+        return this;
     }
 
     @Override
@@ -56,7 +69,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
+    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
         return this.attributeContainer.get(PlayerSlot.get(slot), super.getDefaultAttributeModifiers(slot));
     }
 
@@ -80,6 +93,30 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
         return this.renderLayerContainer;
     }
 
+    @Override
+    public boolean canBeOpened(LivingEntity entity, ItemStack stack) {
+        return this.openable;
+    }
+
+    @Override
+    public int getOpeningTime(ItemStack stack) {
+        return this.openingTime;
+    }
+
+    @Override
+    public void armorTick(ItemStack stack, Level level, Player player) {
+        if (this.openable) {
+            Openable.onTick(player, stack);
+        }
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        if (this.openable && entity instanceof LivingEntity living) {
+            Openable.onTick(living, stack);
+        }
+    }
+
     public static class Parser implements ItemParser.ItemTypeSerializer {
 
         @Override
@@ -96,7 +133,11 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
                 throw new JsonParseException("The given slot type must be for an armor item");
             }
 
-            return new AddonArmorItem(armorMaterial, slot, properties);
+            var item = new AddonArmorItem(armorMaterial, slot, properties);
+
+            item.enableOpenable(GsonHelper.getAsBoolean(json, "openable", false), GsonUtil.getAsIntMin(json, "opening_time", 0, 0));
+
+            return item;
         }
 
         @Override
@@ -110,6 +151,14 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
             builder.addProperty("armor_material", ArmorMaterial.class)
                     .description("Armor material, which defines certain characteristics about the armor. Open armor_materials.html for seeing how to make custom ones. Possible values: " + Arrays.toString(ArmorMaterialParser.getIds().toArray(new ResourceLocation[0])))
                     .required().exampleJson(new JsonPrimitive("minecraft:diamond"));
+
+            builder.addProperty("openable", Boolean.class)
+                    .description("Marks the armor piece as openable.")
+                    .fallback(false).exampleJson(new JsonPrimitive(false));
+
+            builder.addProperty("opening_time", Integer.class)
+                    .description("Determines the time the item needs for it to be fully opened. Leave at 0 for instant. Needs 'openable' to be enabled to take effect.")
+                    .fallback(0).exampleJson(new JsonPrimitive(10));
         }
 
         @Override
