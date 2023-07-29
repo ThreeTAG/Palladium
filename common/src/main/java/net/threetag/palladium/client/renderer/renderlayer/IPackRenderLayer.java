@@ -12,9 +12,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.threetag.palladium.client.renderer.entity.HumanoidRendererModifications;
-import net.threetag.palladium.condition.Condition;
-import net.threetag.palladium.condition.ConditionEnvironment;
-import net.threetag.palladium.condition.ConditionSerializer;
+import net.threetag.palladium.condition.*;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.entity.BodyPart;
 
@@ -51,17 +49,7 @@ public interface IPackRenderLayer {
 
                 if (el.isJsonPrimitive()) {
                     var result = el.getAsBoolean();
-                    layer.addCondition(new Condition() {
-                        @Override
-                        public boolean active(DataContext context1) {
-                            return result;
-                        }
-
-                        @Override
-                        public ConditionSerializer getSerializer() {
-                            return null;
-                        }
-                    }, context);
+                    layer.addCondition(result ? new TrueCondition() : new FalseCondition(), context);
                 } else {
                     ConditionSerializer.listFromJSON(el, ConditionEnvironment.ASSETS).forEach(cond -> layer.addCondition(cond, context));
                 }

@@ -18,6 +18,8 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.AddonParser;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
+import net.threetag.palladium.client.renderer.item.armor.ArmorRendererData;
+import net.threetag.palladium.item.ArmorWithRenderer;
 import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.AbilityEntry;
@@ -60,14 +62,24 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
                     var stack = livingEntity.getItemBySlot(slot);
 
-                    if (!stack.isEmpty() && stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
-                        var container = addonItem.getRenderLayerContainer();
+                    if (!stack.isEmpty()) {
+                        var context = DataContext.forArmorInSlot(livingEntity, slot);
 
-                        for (ResourceLocation id : container.get(slot.getName())) {
-                            IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
+                        if(stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
+                            var container = addonItem.getRenderLayerContainer();
 
-                            if (layer != null) {
-                                layers.accept(DataContext.forArmorInSlot(livingEntity, slot), layer);
+                            for (ResourceLocation id : container.get(slot.getName())) {
+                                IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(id);
+
+                                if (layer != null) {
+                                    layers.accept(context, layer);
+                                }
+                            }
+                        }
+
+                        if(stack.getItem() instanceof ArmorWithRenderer armorWithRenderer && armorWithRenderer.getCachedArmorRenderer() instanceof ArmorRendererData renderer) {
+                            for (IPackRenderLayer layer : renderer.getRenderLayers()) {
+                                layers.accept(context, layer);
                             }
                         }
                     }

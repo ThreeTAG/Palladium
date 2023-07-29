@@ -1,5 +1,6 @@
 package net.threetag.palladium.client.renderer.item.armor;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -8,7 +9,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
+import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
+import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionEnvironment;
 import net.threetag.palladium.condition.ConditionSerializer;
@@ -18,6 +22,8 @@ import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ArmorRendererData {
@@ -27,6 +33,7 @@ public class ArmorRendererData {
     private final ArmorModelData models;
     private final ArmorRendererConditions conditions;
     private final List<Condition> hideSecondLayer;
+    private final List<IPackRenderLayer> renderLayers;
 
     public ArmorRendererData(ModelLookup.Model modelType, ArmorTextureData textures, ArmorModelData models, ArmorRendererConditions conditions) {
         this.modelType = modelType;
@@ -34,14 +41,16 @@ public class ArmorRendererData {
         this.models = models;
         this.conditions = conditions;
         this.hideSecondLayer = List.of(new FalseCondition());
+        this.renderLayers = Collections.emptyList();
     }
 
-    public ArmorRendererData(ModelLookup.Model modelType, ArmorTextureData textures, ArmorModelData models, ArmorRendererConditions conditions, List<Condition> hideSecondLayer) {
+    public ArmorRendererData(ModelLookup.Model modelType, ArmorTextureData textures, ArmorModelData models, ArmorRendererConditions conditions, List<Condition> hideSecondLayer, List<IPackRenderLayer> renderLayers) {
         this.modelType = modelType;
         this.textures = textures;
         this.models = models;
         this.conditions = conditions;
         this.hideSecondLayer = hideSecondLayer;
+        this.renderLayers = renderLayers;
     }
 
     public static ArmorRendererData fromJson(JsonObject json) {
@@ -50,7 +59,33 @@ public class ArmorRendererData {
         var modelLayers = ArmorModelData.fromJson(json.get("model_layers"));
         var conditions = ArmorRendererConditions.fromJson(json.has("conditions") ? GsonHelper.getAsJsonArray(json, "conditions") : null);
         List<Condition> hideSecondLayer = json.has("hide_second_layer") ? ConditionSerializer.listFromJSON(json.get("hide_second_layer"), ConditionEnvironment.ASSETS) : List.of(new FalseCondition());
-        return new ArmorRendererData(modelType, textures, modelLayers, conditions, hideSecondLayer);
+        List<IPackRenderLayer> renderLayers = json.has("render_layers") ? parseRenderLayers(json.get("render_layers")) : Collections.emptyList();
+        return new ArmorRendererData(modelType, textures, modelLayers, conditions, hideSecondLayer, renderLayers);
+    }
+
+    public static List<IPackRenderLayer> parseRenderLayers(JsonElement jsonElement) {
+        List<IPackRenderLayer> layers = new ArrayList<>();
+
+        if(jsonElement.isJsonPrimitive()) {
+            var layerId = GsonUtil.convertToResourceLocation(jsonElement, "render_layers");
+            var layer = PackRenderLayerManager.getInstance().getLayer(layerId);
+
+            if(layer != null) {
+                layers.add(layer);
+            } else {
+                AddonPackLog.warning("Unknown render layer '" + layerId + "'");
+            }
+        } else if(jsonElement.isJsonArray()) {
+            var array = GsonHelper.convertToJsonArray(jsonElement, "render_layers");
+
+            for (JsonElement element : array) {
+                layers.addAll(parseRenderLayers(element));
+            }
+        } else if(jsonElement.isJsonObject()) {
+            layers.add(PackRenderLayerManager.parseLayer(jsonElement.getAsJsonObject()));
+        }
+
+        return layers;
     }
 
     public void buildModels(EntityModelSet modelSet) {
@@ -85,6 +120,10 @@ public class ArmorRendererData {
 
     public ArmorModelData getModels() {
         return models;
+    }
+
+    public List<IPackRenderLayer> getRenderLayers() {
+        return renderLayers;
     }
 
     public boolean hidesSecondPlayerLayer(DataContext context) {
