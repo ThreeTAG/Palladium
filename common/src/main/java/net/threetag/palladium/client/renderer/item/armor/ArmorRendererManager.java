@@ -69,7 +69,7 @@ public class ArmorRendererManager extends SimpleJsonResourceReloadListener {
         });
         this.byName = builder.build();
         EXTENDED_ARMOR_ITEMS.forEach(i -> {
-            var renderer = this.byName.get(Registry.ITEM.getKey((Item) i));
+            var renderer = this.byName.get(i.getArmorRendererFile());
             var legacyRenderer = LEGACY_SUPPORT.get(i);
 
             if (renderer == null && legacyRenderer == null) {

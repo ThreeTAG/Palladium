@@ -45,6 +45,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
     private List<Component> tooltipLines;
     private RenderLayerContainer renderLayerContainer = null;
     private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
+    protected ResourceLocation rendererFile;
     private Object renderer;
     private boolean openable = false;
     private int openingTime = 0;
@@ -52,6 +53,11 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
 
     public AddonArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
         super(armorMaterial, equipmentSlot, properties);
+    }
+
+    public AddonArmorItem setRenderer(ResourceLocation renderer) {
+        this.rendererFile = renderer;
+        return this;
     }
 
     public AddonArmorItem enableOpenable(boolean openable, int openingTime, ResourceLocation openedSound, ResourceLocation closedSound, ResourceLocation toggleSound) {
@@ -71,6 +77,11 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
     @Override
     public Object getCachedArmorRenderer() {
         return this.renderer;
+    }
+
+    @Override
+    public ResourceLocation getArmorRendererFile() {
+        return this.rendererFile != null ? this.rendererFile : ArmorWithRenderer.super.getArmorRendererFile();
     }
 
     @Override
@@ -169,6 +180,8 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
 
             var item = new AddonArmorItem(armorMaterial, slot, properties);
 
+            item.rendererFile = GsonUtil.getAsResourceLocation(json, "armor_renderer", null);
+
             item.enableOpenable(
                     GsonHelper.getAsBoolean(json, "openable", false),
                     GsonUtil.getAsIntMin(json, "opening_time", 0, 0),
@@ -177,7 +190,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
                     GsonUtil.getAsResourceLocation(json, "opening_toggle_sound", null)
             );
 
-            if(Platform.isClient()) {
+            if (Platform.isClient()) {
                 this.clientLegacySupport(item, json);
             }
 
@@ -186,12 +199,12 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
 
         @Environment(EnvType.CLIENT)
         private void clientLegacySupport(AddonArmorItem item, JsonObject json) {
-            if(json.has("armor_model_layer") || json.has("armor_texture")) {
-                Palladium.LOGGER.warn("Deprecated use of armor model layers and/or textures in item json file found, please switch to an seperate armor renderer file!");
+            if (json.has("armor_model_layer") && json.has("armor_texture")) {
+                Palladium.LOGGER.warn("Deprecated use of armor model layers and/or textures in item json file found, please switch to an separate armor renderer file!");
 
                 ModelLookup.Model m = ModelLookup.HUMANOID;
 
-                if(json.has("armor_model_type")) {
+                if (json.has("armor_model_type")) {
                     var modelTypeId = GsonUtil.getAsResourceLocation(json, "armor_model_type");
                     m = ModelLookup.get(modelTypeId);
 
@@ -221,6 +234,10 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
             builder.addProperty("armor_material", ArmorMaterial.class)
                     .description("Armor material, which defines certain characteristics about the armor. Open armor_materials.html for seeing how to make custom ones. Possible values: " + Arrays.toString(ArmorMaterialParser.getIds().toArray(new ResourceLocation[0])))
                     .required().exampleJson(new JsonPrimitive("minecraft:diamond"));
+
+            builder.addProperty("armor_renderer", ResourceLocation.class)
+                    .description("Location of the armor renderer file. Doesn't need to be specified, it will automatically look for one in a path corresponding to the item's ID: A 'test:item' will look for the armor renderer file at 'assets/test/palladium/armor_renderers/item.json'.")
+                    .fallback(null).exampleJson(new JsonPrimitive("test:item_renderer"));
 
             builder.addProperty("openable", Boolean.class)
                     .description("Marks the armor piece as openable.")

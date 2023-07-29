@@ -331,6 +331,18 @@ true</td>
 </tr>
 <tr>
 <td>
+armor_renderer</td>
+<td>
+ResourceLocation</td>
+<td>
+Location of the armor renderer file. Doesn't need to be specified, it will automatically look for one in a path corresponding to the item's ID: A 'test:item' will look for the armor renderer file at 'assets/test/palladium/armor_renderers/item.json'.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 openable</td>
 <td>
 Boolean</td>
@@ -394,7 +406,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","openable":false,"opening_time":10,"opened_sound":"minecraft:item.armor.equip_leather","closed_sound":"minecraft:item.armor.equip_leather","opening_toggle_sound":"minecraft:item.armor.equip_leather"}</pre>
+{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","armor_renderer":"test:item_renderer","openable":false,"opening_time":10,"opened_sound":"minecraft:item.armor.equip_leather","closed_sound":"minecraft:item.armor.equip_leather","opening_toggle_sound":"minecraft:item.armor.equip_leather"}</pre>
 </div>
 <hr>
 
