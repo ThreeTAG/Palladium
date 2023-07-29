@@ -1,5 +1,5 @@
 {
-  "textures:alternative_way_example": {
+  "textures": {
     "default": "test:textures/models/armor/wood_helmet_0.png",
     "open": {
       "base": "test:textures/models/armor/wood_helmet_#X.png",
@@ -10,7 +10,7 @@
       }
     }
   },
-  "textures": {
+  "textures:alternative_way_example": {
     "default": "test:textures/models/armor/wood_helmet_0.png",
     "open_0": "test:textures/models/armor/wood_helmet_0.png",
     "open_1": "test:textures/models/armor/wood_helmet_1.png",
