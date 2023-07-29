@@ -27,14 +27,13 @@ import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.item.ArmorWithRenderer;
 import net.threetag.palladiumcore.util.Platform;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ArmorRendererManager extends SimpleJsonResourceReloadListener {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static final List<ArmorWithRenderer> EXTENDED_ARMOR_ITEMS = new ArrayList<>();
+    public static final Map<ArmorWithRenderer, ArmorRendererData> LEGACY_SUPPORT = new HashMap<>();
     private static boolean LOOK_FOR_ITEMS = false;
     public static ArmorRendererManager INSTANCE;
 
@@ -69,7 +68,16 @@ public class ArmorRendererManager extends SimpleJsonResourceReloadListener {
             }
         });
         this.byName = builder.build();
-        EXTENDED_ARMOR_ITEMS.forEach(i -> i.setCachedArmorRenderer(this.byName.get(Registry.ITEM.getKey((Item) i))));
+        EXTENDED_ARMOR_ITEMS.forEach(i -> {
+            var renderer = this.byName.get(Registry.ITEM.getKey((Item) i));
+            var legacyRenderer = LEGACY_SUPPORT.get(i);
+
+            if (renderer == null && legacyRenderer == null) {
+                i.setCachedArmorRenderer(null);
+            } else if (renderer != null && legacyRenderer == null) {
+                i.setCachedArmorRenderer(renderer);
+            } else i.setCachedArmorRenderer(Objects.requireNonNullElse(renderer, legacyRenderer));
+        });
 
         AddonPackLog.info("Loaded {} armor renderers", this.byName.size());
     }

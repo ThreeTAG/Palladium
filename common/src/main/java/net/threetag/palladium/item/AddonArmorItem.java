@@ -4,6 +4,8 @@ import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
@@ -22,11 +24,16 @@ import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
+import net.threetag.palladium.client.dynamictexture.DynamicTexture;
+import net.threetag.palladium.client.renderer.item.armor.*;
+import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.PlayerUtil;
+import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
 import net.threetag.palladiumcore.item.IPalladiumItem;
+import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -170,7 +177,37 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
                     GsonUtil.getAsResourceLocation(json, "opening_toggle_sound", null)
             );
 
+            if(Platform.isClient()) {
+                this.clientLegacySupport(item, json);
+            }
+
             return item;
+        }
+
+        @Environment(EnvType.CLIENT)
+        private void clientLegacySupport(AddonArmorItem item, JsonObject json) {
+            if(json.has("armor_model_layer") || json.has("armor_texture")) {
+                Palladium.LOGGER.warn("Deprecated use of armor model layers and/or textures in item json file found, please switch to an seperate armor renderer file!");
+
+                ModelLookup.Model m = ModelLookup.HUMANOID;
+
+                if(json.has("armor_model_type")) {
+                    var modelTypeId = GsonUtil.getAsResourceLocation(json, "armor_model_type");
+                    m = ModelLookup.get(modelTypeId);
+
+                    if (m == null) {
+                        throw new JsonParseException("Unknown model type '" + modelTypeId + "'");
+                    }
+                }
+
+                var textures = new ArmorTextureData();
+                textures.add("default", SkinTypedValue.fromJSON(json.get("armor_texture"), DynamicTexture::parse));
+
+                var models = new ArmorModelData();
+                models.add("default", SkinTypedValue.fromJSON(json.get("armor_model_layer"), j -> GsonUtil.convertToModelLayerLocation(j, "armor_model_layer")));
+
+                ArmorRendererManager.LEGACY_SUPPORT.put(item, new ArmorRendererData(m, textures, models, new ArmorRendererConditions()));
+            }
         }
 
         @Override

@@ -41,6 +41,10 @@ public class ArmorModelData {
         return data.get(entity);
     }
 
+    public boolean has(String key) {
+        return this.modelByKey.containsKey(key);
+    }
+
     public void buildModels(ModelLookup.Model modelType, EntityModelSet modelSet) {
         this.modelByKey.forEach((key, layer) -> {
             HumanoidModel<?> normal = (HumanoidModel<?>) modelType.getModel(modelSet.bakeLayer(layer.getNormal()));

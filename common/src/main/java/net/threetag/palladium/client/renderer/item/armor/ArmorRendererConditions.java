@@ -30,11 +30,11 @@ public class ArmorRendererConditions {
                 key = OPENED_TEXTURE;
             } else {
                 key = OPENED_TEXTURE + "_" + openable.getOpeningProgress(context.getItem());
-
-                if (!textures.has(key)) {
-                    key = OPENED_TEXTURE;
-                }
             }
+        }
+
+        if (!textures.has(key)) {
+            key = BASE_TEXTURE;
         }
 
         for (ConditionedTextureKey condition : this.conditions) {
@@ -46,11 +46,19 @@ public class ArmorRendererConditions {
         return key;
     }
 
-    public String getModelLayer(DataContext context) {
+    public String getModelLayer(DataContext context, ArmorModelData models) {
         String key = BASE_TEXTURE;
 
-        if (context.has(DataContextType.ITEM)) {
-            // todo openable items
+        if (context.has(DataContextType.ITEM) && context.getItem().getItem() instanceof Openable openable && openable.getOpeningProgress(context.getItem()) > 0) {
+            if (openable.getOpeningTime(context.getItem()) <= 0) {
+                key = OPENED_TEXTURE;
+            } else {
+                key = OPENED_TEXTURE + "_" + openable.getOpeningProgress(context.getItem());
+            }
+        }
+
+        if (!models.has(key)) {
+            key = BASE_TEXTURE;
         }
 
         for (ConditionedTextureKey condition : this.conditions) {

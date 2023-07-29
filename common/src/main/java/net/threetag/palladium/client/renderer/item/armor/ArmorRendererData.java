@@ -58,7 +58,7 @@ public class ArmorRendererData {
 
     @Nullable
     public HumanoidModel<?> getModel(LivingEntity entity, DataContext context) {
-        String key = this.conditions.getModelLayer(context);
+        String key = this.conditions.getModelLayer(context, this.models);
         return this.models.get(key, entity, !this.conditions.conditions.isEmpty());
     }
 
