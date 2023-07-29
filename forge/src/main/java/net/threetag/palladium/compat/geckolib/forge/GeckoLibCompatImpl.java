@@ -27,6 +27,7 @@ import net.threetag.palladium.compat.geckolib.ability.RenderLayerAnimationAbilit
 import net.threetag.palladium.compat.geckolib.armor.GeckoArmorRenderer;
 import net.threetag.palladium.compat.geckolib.armor.PackGeckoArmorItem;
 import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
+import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.item.AddonAttributeContainer;
 import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.mixin.client.GeoArmorRendererInvoker;
@@ -71,6 +72,7 @@ public class GeckoLibCompatImpl {
 
     public static ArmorItem createArmorItem(ArmorMaterial armorMaterial, EquipmentSlot slot, Item.Properties properties, boolean hideSecondLayer) {
         var item = new ArmorItemImpl(armorMaterial, slot, properties);
+        BodyPart.HIDES_LAYER.add(item);
         return item;
     }
 

@@ -8,14 +8,12 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDefaultDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 import net.threetag.palladiumcore.registry.PalladiumRegistry;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class ConditionSerializer implements IDefaultDocumentedConfigurable {
@@ -61,38 +59,54 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
     public static List<Condition> listFromJSON(JsonElement jsonElement, ConditionEnvironment type) {
         List<Condition> conditions = new ArrayList<>();
 
-        if (jsonElement.isJsonArray()) {
+        if (jsonElement.isJsonPrimitive()) {
+            conditions.add(fromJSON(jsonElement, type));
+        } else if (jsonElement.isJsonArray()) {
             JsonArray array = jsonElement.getAsJsonArray();
             for (JsonElement element : array) {
                 conditions.add(fromJSON(element.getAsJsonObject(), type));
             }
         } else if (jsonElement.isJsonObject()) {
             conditions.add(fromJSON(jsonElement.getAsJsonObject(), type));
-        } else {
-            throw new JsonSyntaxException("Conditions list must either be an array of multiple conditions, or one condition json object");
         }
 
         return conditions;
     }
 
-    public static Condition fromJSON(JsonObject json, ConditionEnvironment type) {
-        var id = new ResourceLocation(GsonHelper.getAsString(json, "type"));
-        ConditionSerializer conditionSerializer = ConditionSerializer.REGISTRY.get(id);
+    public static Condition fromJSON(JsonElement jsonElement, ConditionEnvironment type) {
+        if (jsonElement.isJsonPrimitive()) {
+            boolean result = GsonHelper.convertToBoolean(jsonElement, "conditions");
+            return result ? new TrueCondition() : new FalseCondition();
+        } else {
+            var json = GsonHelper.convertToJsonObject(jsonElement, "conditions");
+            var id = new ResourceLocation(GsonHelper.getAsString(json, "type"));
+            ConditionSerializer conditionSerializer = ConditionSerializer.REGISTRY.get(id);
 
-        if (conditionSerializer == null && id.equals(Palladium.id("under_water"))) {
-            conditionSerializer = ConditionSerializers.IS_UNDER_WATER.get();
-            AddonPackLog.warning("'under_water' condition found, please use 'is_under_water' instead!");
+            if (conditionSerializer == null && id.equals(Palladium.id("under_water"))) {
+                conditionSerializer = ConditionSerializers.IS_UNDER_WATER.get();
+                AddonPackLog.warning("'under_water' condition found, please use 'is_under_water' instead!");
+            }
+
+            if (conditionSerializer == null) {
+                throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' does not exist!");
+            }
+
+            if ((type == ConditionEnvironment.DATA && !conditionSerializer.getContextEnvironment().forAbilities()) || (type == ConditionEnvironment.ASSETS && !conditionSerializer.getContextEnvironment().forRenderLayers())) {
+                throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' is not applicable for " + type.toString().toLowerCase(Locale.ROOT));
+            }
+
+            return conditionSerializer.make(json, type).setEnvironment(type);
+        }
+    }
+
+    public static boolean checkConditions(Collection<Condition> conditions, DataContext context) {
+        for (Condition condition : conditions) {
+            if (!condition.active(context)) {
+                return false;
+            }
         }
 
-        if (conditionSerializer == null) {
-            throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' does not exist!");
-        }
-
-        if ((type == ConditionEnvironment.DATA && !conditionSerializer.getContextEnvironment().forAbilities()) || (type == ConditionEnvironment.ASSETS && !conditionSerializer.getContextEnvironment().forRenderLayers())) {
-            throw new JsonParseException("Condition Serializer '" + GsonHelper.getAsString(json, "type") + "' is not applicable for " + type.toString().toLowerCase(Locale.ROOT));
-        }
-
-        return conditionSerializer.make(json, type).setEnvironment(type);
+        return true;
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

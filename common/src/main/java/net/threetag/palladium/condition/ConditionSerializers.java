@@ -8,6 +8,8 @@ public class ConditionSerializers {
 
     public static final DeferredRegister<ConditionSerializer> CONDITION_SERIALIZERS = DeferredRegister.create(Palladium.MOD_ID, ConditionSerializer.REGISTRY);
 
+    public static final RegistrySupplier<ConditionSerializer> TRUE = CONDITION_SERIALIZERS.register("true", TrueCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> FALSE = CONDITION_SERIALIZERS.register("false", FalseCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> NOT = CONDITION_SERIALIZERS.register("not", NotCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> OR = CONDITION_SERIALIZERS.register("or", OrCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> AND = CONDITION_SERIALIZERS.register("and", AndCondition.Serializer::new);
