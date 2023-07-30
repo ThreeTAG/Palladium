@@ -64,12 +64,7 @@ public class ObjectiveScoreCondition extends Condition {
 
         @Override
         public String getDocumentationDescription() {
-            return "Checks if the player has a score in a specific objective.";
-        }
-
-        @Override
-        public ConditionEnvironment getContextEnvironment() {
-            return ConditionEnvironment.DATA;
+            return "Checks if the player has a score in a specific objective. IF YOU USE THIS, MAKE A 'tracked_score.json' AND PUT THE OBJECTIVE NAME IN IT, MORE ON THE WIKI!";
         }
     }
 }

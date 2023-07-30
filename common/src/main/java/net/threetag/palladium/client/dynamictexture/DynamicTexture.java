@@ -50,6 +50,7 @@ public abstract class DynamicTexture {
         registerVariable(new CapeTextureVariable.Serializer());
         registerVariable(new AbilityIdTextureVariable.Serializer());
         registerVariable(new OpenableEquipmentProgressVariable.Serializer());
+        registerVariable(new ObjectiveScoreTextureVariable.Serializer());
     }
 
     public abstract ResourceLocation getTexture(DataContext context);

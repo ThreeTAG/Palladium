@@ -79,6 +79,10 @@ Integer Property</a>
 Moon Phase</a>
 </li>
 <li>
+<a href="#palladium:objective_score">
+Objective Score</a>
+</li>
+<li>
 <a href="#palladium:openable_equipment_progress">
 Openable Equipment Timer</a>
 </li>
@@ -1399,6 +1403,134 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:moon_phase","add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
+</div>
+<hr>
+
+<div id="palladium:objective_score">
+<h2>
+Objective Score</h2>
+<p>
+Returns the value of a score of an entity in the scoreboard for the given objective. IF YOU USE THIS, MAKE A 'tracked_score.json' AND PUT THE OBJECTIVE NAME IN IT, MORE ON THE WIKI!</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+objective</td>
+<td>
+String</td>
+<td>
+Name of the objective.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+add</td>
+<td>
+Integer</td>
+<td>
+This value will be added on top of the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+subtract</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted from the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+multiply</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted with the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+divide</td>
+<td>
+Integer</td>
+<td>
+This value will be divided to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a minimum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a maximum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+modulo</td>
+<td>
+Integer</td>
+<td>
+Using this value will apply a modulo operation to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:objective_score","objective":"objective_name","add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
 </div>
 <hr>
 

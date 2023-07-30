@@ -8,6 +8,7 @@
     "client.AgeableListModelInvoker",
     "client.GameRendererMixin",
     "client.GeoArmorRendererInvoker",
+    "client.HumanoidArmorLayerMixin",
     "client.IGeoRendererMixin",
     "client.ItemInHandRendererMixin",
     "client.LevelRendererMixin",
@@ -20,8 +21,7 @@
     "client.RenderTypeMixin",
     "client.ScreenEffectRendererMixin",
     "client.SplashManagerMixin",
-    "client.TextureManagerMixin",
-    "client.HumanoidArmorLayerMixin"
+    "client.TextureManagerMixin"
   ],
   "mixins": [
     "AbstractContainerMenuMixin",
@@ -41,6 +41,7 @@
     "ReloadableServerResourcesMixin",
     "ScriptFileInfoMixin",
     "ScriptManagerMixin",
+    "ServerScoreboardMixin",
     "VibrationListenerMixin"
   ],
   "injectors": {

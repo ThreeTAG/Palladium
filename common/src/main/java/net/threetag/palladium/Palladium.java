@@ -37,6 +37,7 @@ import net.threetag.palladium.util.property.PalladiumProperties;
 import net.threetag.palladium.world.PalladiumConfiguredFeatures;
 import net.threetag.palladium.world.PalladiumFeatures;
 import net.threetag.palladium.world.PalladiumPlacedFeatures;
+import net.threetag.palladium.world.TrackedScoresManager;
 import net.threetag.palladiumcore.event.CommandEvents;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.event.PlayerEvents;
@@ -85,6 +86,7 @@ public class Palladium {
         EntityEffects.init();
         SupporterHandler.init();
         PalladiumEntitySelectorOptions.init();
+        TrackedScoresManager.init();
 
         LifecycleEvents.SETUP.register(() -> {
             Palladium.generateDocumentation();
