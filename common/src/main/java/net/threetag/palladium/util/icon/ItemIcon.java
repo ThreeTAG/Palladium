@@ -8,6 +8,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.GuiUtil;
@@ -37,7 +38,19 @@ public class ItemIcon implements IIcon {
             stack.scale(s / 16F, s / 16F, s / 16F);
         }
 
-        GuiUtil.drawItem(stack, this.stack, 0, true, null);
+        var item = this.stack;
+
+        if (item.isEmpty()) {
+            var contextItem = context.getItem();
+
+            if(!contextItem.isEmpty()) {
+                item = contextItem;
+            } else {
+                item = new ItemStack(Items.BARRIER);
+            }
+        }
+
+        GuiUtil.drawItem(stack, item, 0, true, null);
         stack.popPose();
     }
 
@@ -55,7 +68,7 @@ public class ItemIcon implements IIcon {
 
         @Override
         public @NotNull ItemIcon fromJSON(JsonObject json) {
-            return new ItemIcon(GsonUtil.readItemStack(json));
+            return new ItemIcon(json.has("item") ? GsonUtil.readItemStack(json) : ItemStack.EMPTY);
         }
 
         @Override
@@ -82,8 +95,8 @@ public class ItemIcon implements IIcon {
             builder.setDescription("Uses an item as an icon.");
 
             builder.addProperty("item", ResourceLocation.class)
-                    .description("ID of the item that's supposed to be displayed")
-                    .required().exampleJson(new JsonPrimitive("minecraft:apple"));
+                    .description("ID of the item that's supposed to be displayed. If you leave it out, it will display the item from the current context (if given).")
+                    .fallback(new ResourceLocation("minecraft:air")).exampleJson(new JsonPrimitive("minecraft:apple"));
         }
     }
 
