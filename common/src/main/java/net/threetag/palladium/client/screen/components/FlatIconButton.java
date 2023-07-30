@@ -34,7 +34,7 @@ public class FlatIconButton extends Button {
         RenderSystem.enableDepthTest();
         this.blit(matrixStack, this.x, this.y, 0, i, 20, this.height);
         this.renderBg(matrixStack, minecraft, x, y);
-        this.icon.draw(minecraft, DataContext.forEntity(minecraft.player), matrixStack, this.x + 2, this.y + 2);
+        this.icon.draw(minecraft, minecraft.player != null ? DataContext.forEntity(minecraft.player) : DataContext.create(), matrixStack, this.x + 2, this.y + 2);
 
         if (this.isHovered) {
             this.renderToolTip(matrixStack, x, y);

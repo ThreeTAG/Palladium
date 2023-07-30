@@ -57,7 +57,7 @@ public class IconButton extends Button {
             blit(matrixStack, this.x, this.y, (float) 0, (float) i, this.width, this.height, 256, 256);
         }
 
-        this.getIcon().draw(minecraft, DataContext.forEntity(minecraft.player), matrixStack, this.x + 2, this.y + 2);
+        this.getIcon().draw(minecraft, minecraft.player != null ? DataContext.forEntity(minecraft.player) : DataContext.create(), matrixStack, this.x + 2, this.y + 2);
 
         if (this.isHovered) {
             this.renderToolTip(matrixStack, mouseX, mouseY);
