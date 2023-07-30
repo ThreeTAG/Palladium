@@ -1,11 +1,11 @@
 {
   "textures": {
-    "default": {
+    "default": "test:textures/models/armor/wood_helmet_0.png",
+    "open": {
       "base": "test:textures/models/armor/wood_helmet_#X.png",
       "variables": {
         "X": {
-          "type": "palladium:objective_score",
-          "objective": "test"
+          "type": "palladium:openable_equipment_progress"
         }
       }
     }
