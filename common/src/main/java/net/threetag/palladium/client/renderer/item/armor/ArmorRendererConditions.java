@@ -25,10 +25,12 @@ public class ArmorRendererConditions {
     public String getTexture(DataContext context, ArmorTextureData textures) {
         String key = BASE_TEXTURE;
 
-        if (context.has(DataContextType.ITEM) && context.getItem().getItem() instanceof Openable openable && openable.getOpeningProgress(context.getItem()) > 0) {
-            if (openable.getOpeningTime(context.getItem()) <= 0) {
+        var stack = context.getItem();
+        if (!stack.isEmpty() && stack.getItem() instanceof Openable openable) {
+            var max = openable.getOpeningTime(stack);
+            if (max <= 0 && openable.isOpen(stack)) {
                 key = OPENED_TEXTURE;
-            } else {
+            } else if (max > 0) {
                 key = OPENED_TEXTURE + "_" + openable.getOpeningProgress(context.getItem());
 
                 if (!textures.has(key)) {
