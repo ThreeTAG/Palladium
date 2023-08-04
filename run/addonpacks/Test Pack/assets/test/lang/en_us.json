@@ -10,5 +10,7 @@
   "item.test.wooden_boots": "Wooden Boots",
   "block.test.test_stone": "Test Stone",
   "block.test.test_glass": "Test Glass",
-  "suitset.test.wood": "Wooden Armor"
+  "suitset.test.wood": "Wooden Armor",
+  "accessory.test.test": "Test Accessory",
+  "accessory_slot.test.test": "Test Slot"
 }

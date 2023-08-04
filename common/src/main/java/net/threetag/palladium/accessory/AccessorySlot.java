@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -35,12 +36,12 @@ public class AccessorySlot {
     public static final AccessorySlot LEFT_LEG = register("left_leg").setIcon(Palladium.id("textures/gui/accessory_slots/left_leg.png"));
     public static final AccessorySlot SPECIAL = register("special").setIcon(Palladium.id("textures/gui/accessory_slots/special.png")).allowMultiple();
 
-    private final String name;
+    private final ResourceLocation name;
     private boolean multiple = false;
     private EquipmentSlot equipmentSlot;
     private ResourceLocation icon;
 
-    public AccessorySlot(String name) {
+    private AccessorySlot(ResourceLocation name) {
         this.name = name;
     }
 
@@ -63,12 +64,16 @@ public class AccessorySlot {
         return this.equipmentSlot;
     }
 
-    public String getName() {
+    public ResourceLocation getName() {
         return name;
     }
 
+    public String getTranslationKey() {
+        return Util.makeDescriptionId("accessory_slot", this.name);
+    }
+
     public Component getDisplayName() {
-        return Component.translatable("accessory_slot." + this.name);
+        return Component.translatable(this.getTranslationKey());
     }
 
     public boolean allowsMultiple() {
@@ -102,14 +107,20 @@ public class AccessorySlot {
         return Collections.emptyList();
     }
 
-    public static AccessorySlot register(String name) {
+    public static AccessorySlot register(ResourceLocation name) {
         AccessorySlot slot = new AccessorySlot(name);
         SLOTS.add(slot);
         return slot;
     }
 
+    private static AccessorySlot register(String name) {
+        AccessorySlot slot = new AccessorySlot(Palladium.id(name));
+        SLOTS.add(slot);
+        return slot;
+    }
+
     @Nullable
-    public static AccessorySlot getSlotByName(String name) {
+    public static AccessorySlot getSlotByName(ResourceLocation name) {
         for (AccessorySlot slot : SLOTS) {
             if (slot.getName().equals(name)) {
                 return slot;

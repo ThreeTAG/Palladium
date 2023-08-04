@@ -84,7 +84,7 @@ public class AccessoryPlayerData {
             for (Accessory accessory : list) {
                 listNBT.add(StringTag.valueOf(Accessory.REGISTRY.getKey(accessory).toString()));
             }
-            nbt.put(slot.getName(), listNBT);
+            nbt.put(slot.getName().toString(), listNBT);
         });
         return nbt;
     }
@@ -92,7 +92,7 @@ public class AccessoryPlayerData {
     public void fromNBT(CompoundTag nbt) {
         this.accessories = new HashMap<>();
         for (AccessorySlot slot : AccessorySlot.getSlots()) {
-            ListTag listNBT = nbt.getList(slot.getName(), 8);
+            ListTag listNBT = nbt.getList(slot.getName().toString(), 8);
             List<Accessory> accessories = new ArrayList<>();
             for (int i = 0; i < listNBT.size(); i++) {
                 Accessory accessory = Accessory.REGISTRY.get(new ResourceLocation(listNBT.getString(i)));

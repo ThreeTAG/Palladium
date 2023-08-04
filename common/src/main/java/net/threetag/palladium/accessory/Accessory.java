@@ -35,13 +35,23 @@ import java.util.Optional;
 public abstract class Accessory {
 
     public static final PalladiumRegistry<Accessory> REGISTRY = PalladiumRegistry.create(Accessory.class, Palladium.id("accessories"));
+    private boolean exclusive = false;
 
     public boolean isAvailable(Player entity) {
-        return !Platform.isProduction() || SupporterHandler.getPlayerData(entity.getUUID()).hasAccessory(this);
+        return this.isAvailable(SupporterHandler.getPlayerData(entity.getUUID()));
+    }
+
+    public boolean isAvailable(SupporterHandler.PlayerData data) {
+        return !this.exclusive || !Platform.isProduction() || data.hasAccessory(this);
     }
 
     public Component getDisplayName() {
         return Component.translatable(Util.makeDescriptionId("accessory", REGISTRY.getKey(this)));
+    }
+
+    public Accessory setExclusive() {
+        this.exclusive = true;
+        return this;
     }
 
     @Environment(EnvType.CLIENT)
@@ -90,9 +100,9 @@ public abstract class Accessory {
     public static List<Accessory> getAvailableAccessories(SupporterHandler.PlayerData data) {
         List<Accessory> list = new ArrayList<>();
 
-        for (Accessory Accessory : Accessory.REGISTRY.getValues()) {
-            if (!Platform.isProduction() || data.hasAccessory(Accessory)) {
-                list.add(Accessory);
+        for (Accessory accessory : Accessory.REGISTRY.getValues()) {
+            if (accessory.isAvailable(data)) {
+                list.add(accessory);
             }
         }
 
@@ -102,9 +112,9 @@ public abstract class Accessory {
     public static List<Accessory> getAvailableAccessories(SupporterHandler.PlayerData data, AccessorySlot slot) {
         List<Accessory> list = new ArrayList<>();
 
-        for (Accessory Accessory : Accessory.REGISTRY.getValues()) {
-            if (Accessory.getPossibleSlots().contains(slot) && data.hasAccessory(Accessory)) {
-                list.add(Accessory);
+        for (Accessory accessory : Accessory.REGISTRY.getValues()) {
+            if (accessory.getPossibleSlots().contains(slot) && accessory.isAvailable(data)) {
+                list.add(accessory);
             }
         }
 

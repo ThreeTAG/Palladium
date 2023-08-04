@@ -1,5 +1,11 @@
 package net.threetag.palladium.accessory;
 
+import com.google.gson.JsonObject;
+import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.parser.AccessoryParser;
+import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,5 +23,25 @@ public class DefaultAccessory extends Accessory {
     @Override
     public Collection<AccessorySlot> getPossibleSlots() {
         return this.slots;
+    }
+
+    public static class Serializer implements AccessoryParser.TypeSerializer {
+
+        @Override
+        public DefaultAccessory parse(JsonObject json) {
+            return new DefaultAccessory();
+        }
+
+        @Override
+        public void generateDocumentation(JsonDocumentationBuilder builder) {
+            builder.setTitle("Dummy");
+            builder.setDescription("Does nothing.");
+            AccessoryParser.addSlotDocumentation(builder);
+        }
+
+        @Override
+        public ResourceLocation getId() {
+            return Palladium.id("dummy");
+        }
     }
 }

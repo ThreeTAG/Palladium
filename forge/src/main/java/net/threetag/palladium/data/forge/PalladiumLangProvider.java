@@ -3,6 +3,7 @@ package net.threetag.palladium.data.forge;
 import net.minecraft.data.DataGenerator;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessories;
+import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.entity.PalladiumAttributes;
@@ -179,18 +180,18 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAccessory(Accessories.HAMMOND_CANE, "Hammond Cane");
             this.addAccessory(Accessories.WOODEN_LEG, "Wooden Leg");
 
-            this.add("accessory_slot.hat", "Hat");
-            this.add("accessory_slot.head", "Head");
-            this.add("accessory_slot.face", "Face");
-            this.add("accessory_slot.chest", "Chest");
-            this.add("accessory_slot.back", "Back");
-            this.add("accessory_slot.main_arm", "Main Arm");
-            this.add("accessory_slot.off_arm", "Off Arm");
-            this.add("accessory_slot.main_hand", "Main Hand");
-            this.add("accessory_slot.off_hand", "Off Hand");
-            this.add("accessory_slot.right_leg", "Right Leg");
-            this.add("accessory_slot.left_leg", "Left Leg");
-            this.add("accessory_slot.special", "Special");
+            this.add(AccessorySlot.HAT, "Hat");
+            this.add(AccessorySlot.HEAD, "Head");
+            this.add(AccessorySlot.FACE, "Face");
+            this.add(AccessorySlot.CHEST, "Chest");
+            this.add(AccessorySlot.BACK, "Back");
+            this.add(AccessorySlot.MAIN_ARM, "Main Arm");
+            this.add(AccessorySlot.OFF_ARM, "Off Arm");
+            this.add(AccessorySlot.MAIN_HAND, "Main Hand");
+            this.add(AccessorySlot.OFF_HAND, "Off Hand");
+            this.add(AccessorySlot.RIGHT_LEG, "Right Leg");
+            this.add(AccessorySlot.LEFT_LEG, "Left Leg");
+            this.add(AccessorySlot.SPECIAL, "Special");
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Heat Vision");
@@ -350,18 +351,18 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAccessory(Accessories.HAMMOND_CANE, "Hammonds Gehstock");
             this.addAccessory(Accessories.WOODEN_LEG, "Holzbein");
 
-            this.add("accessory_slot.hat", "Hut");
-            this.add("accessory_slot.head", "Kopf");
-            this.add("accessory_slot.face", "Gesicht");
-            this.add("accessory_slot.chest", "Brust");
-            this.add("accessory_slot.back", "R\u00FCcken");
-            this.add("accessory_slot.main_arm", "Hauptarm");
-            this.add("accessory_slot.off_arm", "Zweitarm");
-            this.add("accessory_slot.main_hand", "Haupthand");
-            this.add("accessory_slot.off_hand", "Zweithand");
-            this.add("accessory_slot.right_leg", "Rechtes Bein");
-            this.add("accessory_slot.left_leg", "Linkes Bein");
-            this.add("accessory_slot.special", "Spezial");
+            this.add(AccessorySlot.HAT, "Hut");
+            this.add(AccessorySlot.HEAD, "Kopf");
+            this.add(AccessorySlot.FACE, "Gesicht");
+            this.add(AccessorySlot.CHEST, "Brust");
+            this.add(AccessorySlot.BACK, "Rücken");
+            this.add(AccessorySlot.MAIN_ARM, "Hauptarm");
+            this.add(AccessorySlot.OFF_ARM, "Zweitarm");
+            this.add(AccessorySlot.MAIN_HAND, "Haupthand");
+            this.add(AccessorySlot.OFF_HAND, "Zweithand");
+            this.add(AccessorySlot.RIGHT_LEG, "Rechtes Bein");
+            this.add(AccessorySlot.LEFT_LEG, "Linkes Bein");
+            this.add(AccessorySlot.SPECIAL, "Spezial");
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
@@ -521,18 +522,18 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAccessory(Accessories.HAMMOND_CANE, "Hammonds Gehstock");
             this.addAccessory(Accessories.WOODEN_LEG, "Holzbehn");
 
-            this.add("accessory_slot.hat", "Hut");
-            this.add("accessory_slot.head", "Nischel");
-            this.add("accessory_slot.face", "Jesichd");
-            this.add("accessory_slot.chest", "Brust");
-            this.add("accessory_slot.back", "R\u00FCggen");
-            this.add("accessory_slot.main_arm", "Haupdarm");
-            this.add("accessory_slot.off_arm", "Zweitarm");
-            this.add("accessory_slot.main_hand", "Haupthand");
-            this.add("accessory_slot.off_hand", "Nebenhand");
-            this.add("accessory_slot.right_leg", "Reschdes Bein");
-            this.add("accessory_slot.left_leg", "Linges Bein");
-            this.add("accessory_slot.special", "Spezial");
+            this.add(AccessorySlot.HAT, "Hut");
+            this.add(AccessorySlot.HEAD, "Nischel");
+            this.add(AccessorySlot.FACE, "Gusche");
+            this.add(AccessorySlot.CHEST, "Brust");
+            this.add(AccessorySlot.BACK, "Rüggen");
+            this.add(AccessorySlot.MAIN_ARM, "Haupdarm");
+            this.add(AccessorySlot.OFF_ARM, "Zwehtarm");
+            this.add(AccessorySlot.MAIN_HAND, "Haupthand");
+            this.add(AccessorySlot.OFF_HAND, "Zwehthand");
+            this.add(AccessorySlot.RIGHT_LEG, "Reschdes Behn");
+            this.add(AccessorySlot.LEFT_LEG, "Linges Behn");
+            this.add(AccessorySlot.SPECIAL, "Spezial");
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");

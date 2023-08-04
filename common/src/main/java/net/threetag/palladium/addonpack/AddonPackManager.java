@@ -80,6 +80,8 @@ public class AddonPackManager {
         this.resourceManager.registerReloadListener(new PoiTypeParser());
         this.resourceManager.registerReloadListener(new VillagerProfessionParser());
         this.resourceManager.registerReloadListener(new VillagerTradeParser());
+        this.resourceManager.registerReloadListener(new AccessorySlotParser());
+        this.resourceManager.registerReloadListener(new AccessoryParser());
     }
 
     public File getLocation() {

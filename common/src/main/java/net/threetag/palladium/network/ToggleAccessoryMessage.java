@@ -22,7 +22,7 @@ public class ToggleAccessoryMessage extends MessageC2S {
     }
 
     public ToggleAccessoryMessage(FriendlyByteBuf buf) {
-        this.slot = AccessorySlot.getSlotByName(buf.readUtf());
+        this.slot = AccessorySlot.getSlotByName(buf.readResourceLocation());
         this.accessory = Accessory.REGISTRY.get(buf.readResourceLocation());
     }
 
@@ -33,7 +33,7 @@ public class ToggleAccessoryMessage extends MessageC2S {
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeUtf(this.slot.getName());
+        buf.writeResourceLocation(this.slot.getName());
         buf.writeResourceLocation(Objects.requireNonNull(Accessory.REGISTRY.getKey(this.accessory)));
     }
 

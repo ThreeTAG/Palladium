@@ -139,6 +139,8 @@ public class Palladium {
             consumer.accept(ItemParser.documentationBuilder());
             consumer.accept(IconSerializer.documentationBuilder());
             consumer.accept(DynamicTexture.variableDocumentationBuilder());
+            consumer.accept(AccessoryParser.documentationBuilder());
+            consumer.accept(AccessorySlotParser.documentationBuilder());
             PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
         }
     }

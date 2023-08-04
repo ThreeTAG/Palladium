@@ -8,6 +8,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.threetag.palladium.accessory.Accessory;
+import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.power.ability.Ability;
 
 import java.util.Objects;
@@ -35,6 +36,10 @@ public abstract class ExtendedLangProvider extends LanguageProvider {
     public void add(Accessory key, String name) {
         ResourceLocation id = Accessory.REGISTRY.getKey(key);
         add("accessory." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath(), name);
+    }
+
+    protected void add(AccessorySlot slot, String name) {
+        add(slot.getTranslationKey(), name);
     }
 
     public void addBannerPatternDesc(Supplier<BannerPattern> bannerPattern, DyeColor color, String name) {
