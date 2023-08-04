@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.TransformedTexture;
 import net.threetag.palladium.client.dynamictexture.variable.ITextureVariable;
@@ -18,7 +17,7 @@ public class DefaultDynamicTexture extends DynamicTexture {
 
     private final String base;
     @Nullable
-    private final String output;
+    private String output;
     private final Map<String, ITextureVariable> textureVariableMap = Maps.newHashMap();
     private final List<ITextureTransformer> transformers = Lists.newLinkedList();
 
@@ -33,8 +32,16 @@ public class DefaultDynamicTexture extends DynamicTexture {
 
     @Override
     public ResourceLocation getTexture(DataContext context) {
-        if (this.output == null || this.output.isEmpty() || this.transformers.isEmpty()) {
+        if (this.transformers.isEmpty()) {
             return new ResourceLocation(replaceVariables(this.base, context, this.textureVariableMap));
+        }
+
+        if (this.output == null || this.output.isEmpty()) {
+            this.output = this.base;
+
+            for (String var : this.textureVariableMap.keySet()) {
+                this.output += "_" + var;
+            }
         }
 
         ResourceLocation output = new ResourceLocation(replaceVariables(this.output, context, this.textureVariableMap));
