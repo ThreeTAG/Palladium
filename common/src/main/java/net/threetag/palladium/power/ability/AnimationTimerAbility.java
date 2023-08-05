@@ -61,4 +61,9 @@ public class AnimationTimerAbility extends Ability implements AnimationTimer {
         return Mth.lerp(partialTick, entry.getProperty(PREV_VALUE), entry.getProperty(VALUE)) / entry.getProperty(MAX_VALUE);
     }
 
+    @Override
+    public float getAnimationTimer(AbilityEntry entry, float partialTick) {
+        return Mth.lerp(partialTick, entry.getProperty(PREV_VALUE), entry.getProperty(VALUE));
+    }
+
 }

@@ -28,6 +28,7 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> OBJECTIVE_SCORE = CONDITION_SERIALIZERS.register("objective_score", ObjectiveScoreCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> HAS_TAG = CONDITION_SERIALIZERS.register("has_tag", HasTagCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ABILITY_INTEGER_PROPERTY = CONDITION_SERIALIZERS.register("ability_integer_property", AbilityIntegerPropertyCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> ANIMATION_TIMER_ABILITY = CONDITION_SERIALIZERS.register("animation_timer_ability", AnimationTimerAbilityCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ABILITY_TICKS = CONDITION_SERIALIZERS.register("ability_ticks", AbilityTicksCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> CROUCHING = CONDITION_SERIALIZERS.register("crouching", CrouchingCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> POSE = CONDITION_SERIALIZERS.register("pose", PoseCondition.Serializer::new);

@@ -47,6 +47,10 @@ Ability Integer-Property</a>
 Ability Ticks</a>
 </li>
 <li>
+<a href="#palladium:animation_timer">
+Animation Timer Ability</a>
+</li>
+<li>
 <a href="#palladium:cape">
 Cape</a>
 </li>
@@ -547,6 +551,146 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:ability_ticks","power":"example:power_id","ability":"ability_key","add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
+</div>
+<hr>
+
+<div id="palladium:animation_timer">
+<h2>
+Animation Timer Ability</h2>
+<p>
+Returns the timer of an animation timer ability. The math operations can be arranged in any order and are fully optional!</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+power</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the power the ability is in.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+ability</td>
+<td>
+String</td>
+<td>
+Key of the ability that is being looked for.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+add</td>
+<td>
+Integer</td>
+<td>
+This value will be added on top of the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+subtract</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted from the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+multiply</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted with the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+divide</td>
+<td>
+Integer</td>
+<td>
+This value will be divided to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a minimum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a maximum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+modulo</td>
+<td>
+Integer</td>
+<td>
+Using this value will apply a modulo operation to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:animation_timer","power":"example:power_id","ability":"ability_key","add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
 </div>
 <hr>
 

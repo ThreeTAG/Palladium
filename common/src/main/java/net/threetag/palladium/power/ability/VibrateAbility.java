@@ -37,6 +37,11 @@ public class VibrateAbility extends Ability implements AnimationTimer {
     }
 
     @Override
+    public float getAnimationTimer(AbilityEntry entry, float partialTick) {
+        return Mth.lerp(partialTick, entry.getProperty(PREV_VALUE), entry.getProperty(VALUE));
+    }
+
+    @Override
     public boolean isEffect() {
         return true;
     }

@@ -71,6 +71,10 @@ activation</a>
 and</a>
 </li>
 <li>
+<a href="#palladium:animation_timer_ability">
+animation_timer_ability</a>
+</li>
+<li>
 <a href="#palladium:brightness_at_position">
 brightness_at_position</a>
 </li>
@@ -923,6 +927,86 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:and","conditions":[]}</pre>
+</div>
+<hr>
+
+<div id="palladium:animation_timer_ability">
+<h2>
+animation_timer_ability</h2>
+<p>
+Checks if the given animation timer ability has a certain value. This condition is a simplified version of the ability_integer_property condition designed to be used for animation timer abilities.<br><br>Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+power</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the power where is the desired ability is located. Can be null IF used for abilities, then it will look into the current power</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+ability</td>
+<td>
+String</td>
+<td>
+ID of the desired ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ability_id</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Minimum required amount of the timer value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Maximum required amount of the timer value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:animation_timer_ability","power":"null","ability":"ability_id","min":0,"max":0}</pre>
 </div>
 <hr>
 

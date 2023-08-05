@@ -12,6 +12,13 @@ public interface AnimationTimer {
      */
     float getAnimationValue(AbilityEntry entry, float partialTick);
 
+    /**
+     * Gets the raw animation timer value
+     *
+     * @return Value for the actual timer
+     */
+    float getAnimationTimer(AbilityEntry entry, float partialTick);
+
     static float getValue(LivingEntity entity, Ability ability, float partialTick, Easing easing) {
         if (ability instanceof AnimationTimer timer) {
             float f = 0F;
