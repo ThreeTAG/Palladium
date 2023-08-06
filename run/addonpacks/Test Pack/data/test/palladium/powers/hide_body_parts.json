@@ -8,6 +8,7 @@
       "title": "Hide Cape",
       "body_parts": "cape",
       "hidden": false,
+      "hidden_in_bar": false,
       "list_index": 0,
       "conditions": {
         "enabling": {
@@ -20,6 +21,7 @@
       "affects_first_person": false,
       "list_index": 1,
       "hidden": false,
+      "hidden_in_bar": false,
       "body_parts": [
         "right_arm",
         "left_arm"
@@ -35,6 +37,7 @@
       "affects_first_person": false,
       "list_index": 2,
       "hidden": false,
+      "hidden_in_bar": false,
       "body_parts": [
         "right_arm",
         "left_arm"
