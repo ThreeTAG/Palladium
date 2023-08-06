@@ -73,6 +73,24 @@ public abstract class Accessory {
     }
 
     @Environment(EnvType.CLIENT)
+    public boolean canRenderAsArm(AccessorySlot slot, HumanoidArm arm, AbstractClientPlayer player) {
+        if (player.getMainArm() == HumanoidArm.RIGHT) {
+            if (slot == AccessorySlot.MAIN_ARM || slot == AccessorySlot.MAIN_HAND) {
+                return arm == HumanoidArm.RIGHT;
+            } else if (slot == AccessorySlot.OFF_ARM || slot == AccessorySlot.OFF_HAND) {
+                return arm == HumanoidArm.LEFT;
+            }
+        } else {
+            if (slot == AccessorySlot.MAIN_ARM || slot == AccessorySlot.MAIN_HAND) {
+                return arm == HumanoidArm.LEFT;
+            } else if (slot == AccessorySlot.OFF_ARM || slot == AccessorySlot.OFF_HAND) {
+                return arm == HumanoidArm.RIGHT;
+            }
+        }
+        return false;
+    }
+
+    @Environment(EnvType.CLIENT)
     public static ModelPart getArm(PlayerModel<?> model, boolean mainHand, HumanoidArm primaryHand) {
         if (mainHand) {
             return primaryHand == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;

@@ -91,8 +91,9 @@ public class PlayerRendererMixin {
         // Render accessories
         Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
             for (Accessory accessory : accessories) {
-                if (accessory.isVisible(slot, player, true)) {
-                    accessory.renderArm(rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT, player, playerRenderer, rendererArm, rendererArmwear, slot, poseStack, buffer, combinedLight);
+                var arm = rightArm ? HumanoidArm.RIGHT : HumanoidArm.LEFT;
+                if (accessory.isVisible(slot, player, true) && accessory.canRenderAsArm(slot, arm, player)) {
+                    accessory.renderArm(arm, player, playerRenderer, rendererArm, rendererArmwear, slot, poseStack, buffer, combinedLight);
                 }
             }
         }));
