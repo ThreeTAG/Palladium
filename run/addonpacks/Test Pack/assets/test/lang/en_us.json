@@ -12,5 +12,5 @@
   "block.test.test_glass": "Test Glass",
   "suitset.test.wood": "Wooden Armor",
   "accessory.test.test": "Test Accessory",
-  "accessory_slot.test.test": "Test Slot"
+  "accessory_slot.test.render_layer_switch_test": "Render Layer Switch Test"
 }

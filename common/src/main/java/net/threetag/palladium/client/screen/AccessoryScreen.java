@@ -29,8 +29,10 @@ import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.client.screen.components.EditButton;
 import net.threetag.palladium.client.screen.components.FlatIconButton;
+import net.threetag.palladium.condition.InAccessorySlotMenuCondition;
 import net.threetag.palladium.network.ToggleAccessoryMessage;
 import net.threetag.palladium.util.SupporterHandler;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladiumcore.event.ScreenEvents;
 import net.threetag.palladiumcore.util.Platform;
 
@@ -113,7 +115,9 @@ public class AccessoryScreen extends OptionsSubScreen {
 
         drawCenteredString(poseStack, this.font, this.title, 80, 7, 16777215);
 
+        InAccessorySlotMenuCondition.CURRENT_SLOT = this.currentSlot;
         renderEntityInInventory(150 + (this.width - 150) / 2, this.height / 2 + this.height / 3, this.height / 3, (float) (this.rotation - 180F), 0F, 0F, this.minecraft.player);
+        InAccessorySlotMenuCondition.CURRENT_SLOT = null;
 
         super.render(poseStack, mouseX, mouseY, partialTicks);
     }
@@ -137,11 +141,11 @@ public class AccessoryScreen extends OptionsSubScreen {
     }
 
     public static void renderEntityInInventory(int posX, int posY, int scale, float rotation, float mouseX, float mouseY, LivingEntity livingEntity) {
-        float f = (float) Math.atan((double) (mouseX / 40.0F));
-        float g = (float) Math.atan((double) (mouseY / 40.0F));
+        float f = (float) Math.atan(mouseX / 40.0F);
+        float g = (float) Math.atan(mouseY / 40.0F);
         PoseStack poseStack = RenderSystem.getModelViewStack();
         poseStack.pushPose();
-        poseStack.translate((double) posX, (double) posY, 1050.0);
+        poseStack.translate(posX, posY, 1050.0);
         poseStack.scale(1.0F, 1.0F, -1.0F);
         RenderSystem.applyModelViewMatrix();
         PoseStack poseStack2 = new PoseStack();
@@ -190,8 +194,9 @@ public class AccessoryScreen extends OptionsSubScreen {
             super(minecraft, width, height, top, bottom, slotHeight);
 
             this.listWidth = width;
+            var context = DataContext.forEntity(minecraft.player);
             for (AccessorySlot slot : AccessorySlot.getSlots()) {
-                if (!Accessory.getAvailableAccessories(SupporterHandler.getPlayerData(minecraft.player.getUUID()), slot).isEmpty()) {
+                if (!Accessory.getAvailableAccessories(SupporterHandler.getPlayerData(minecraft.player.getUUID()), slot).isEmpty() && slot.isVisible(context)) {
                     Accessory.getPlayerData(minecraft.player).ifPresent(data -> {
                         this.addEntry(new SlotListEntry(slot, parent, data.getSlots().containsKey(slot) && !data.getSlots().get(slot).isEmpty()));
                     });

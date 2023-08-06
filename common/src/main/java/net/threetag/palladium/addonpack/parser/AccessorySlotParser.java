@@ -14,9 +14,12 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
+import net.threetag.palladium.condition.*;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.power.ability.AbilityReference;
 import net.threetag.palladium.util.json.GsonUtil;
+import net.threetag.palladiumcore.event.LifecycleEvents;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -38,6 +41,10 @@ public class AccessorySlotParser extends SimpleJsonResourceReloadListener {
 
                 if (GsonHelper.getAsBoolean(json, "allows_multiple", false)) {
                     slot.allowMultiple();
+                }
+
+                if (json.has("menu_visibility")) {
+                    LifecycleEvents.CLIENT_SETUP.register(() -> ConditionSerializer.listFromJSON(json.get("menu_visibility"), ConditionEnvironment.ASSETS));
                 }
 
                 i.getAndIncrement();
@@ -65,6 +72,10 @@ public class AccessorySlotParser extends SimpleJsonResourceReloadListener {
         builder.addProperty("allows_multiple", Boolean.class)
                 .description("Determines if multiple accessories in this slot can be equipped")
                 .fallback(false).exampleJson(new JsonPrimitive(false));
+
+        builder.addProperty("menu_visibility", Condition[].class)
+                .description("Determines if the slot is visible in the menu. Can be ignored, set to 'false' or defined by conditions")
+                .fallback(null).exampleJson(new JsonPrimitive(true));
 
         return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "accessory_slots"), "Accessory Slots").add(HTMLBuilder.heading("Accessory Slots")).addDocumentation(builder);
     }

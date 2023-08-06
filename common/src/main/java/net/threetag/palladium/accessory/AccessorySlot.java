@@ -11,13 +11,15 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.condition.Condition;
+import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.entity.BodyPart;
+import net.threetag.palladium.power.ability.AbilityReference;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class AccessorySlot {
 
@@ -40,6 +42,7 @@ public class AccessorySlot {
     private boolean multiple = false;
     private EquipmentSlot equipmentSlot;
     private ResourceLocation icon;
+    private List<Condition> visible = new ArrayList<>();
 
     private AccessorySlot(ResourceLocation name) {
         this.name = name;
@@ -57,6 +60,13 @@ public class AccessorySlot {
 
     public AccessorySlot setIcon(ResourceLocation icon) {
         this.icon = icon;
+        return this;
+    }
+
+    public AccessorySlot addVisibilityCondition(Condition condition) {
+        if (Platform.isClient()) {
+            this.visible.add(condition);
+        }
         return this;
     }
 
@@ -82,6 +92,10 @@ public class AccessorySlot {
 
     public ResourceLocation getIcon() {
         return this.icon;
+    }
+
+    public boolean isVisible(DataContext context) {
+        return ConditionSerializer.checkConditions(this.visible, context);
     }
 
     @Environment(EnvType.CLIENT)

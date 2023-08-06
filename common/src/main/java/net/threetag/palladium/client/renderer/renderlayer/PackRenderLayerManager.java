@@ -21,10 +21,9 @@ import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.client.renderer.item.armor.ArmorRendererData;
 import net.threetag.palladium.item.ArmorWithRenderer;
 import net.threetag.palladium.item.IAddonItem;
-import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityUtil;
-import net.threetag.palladium.power.ability.RenderLayerAbility;
+import net.threetag.palladium.power.ability.RenderLayerProviderAbility;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 
@@ -48,8 +47,9 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
         // Abilities
         registerProvider((entity, layers) -> {
             if (entity instanceof LivingEntity livingEntity) {
-                for (AbilityEntry entry : AbilityUtil.getEnabledEntries(livingEntity, Abilities.RENDER_LAYER.get())) {
-                    IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(entry.getProperty(RenderLayerAbility.RENDER_LAYER));
+                var manager = PackRenderLayerManager.getInstance();
+                for (AbilityEntry entry : AbilityUtil.getEnabledRenderLayerEntries(livingEntity)) {
+                    IPackRenderLayer layer = ((RenderLayerProviderAbility) entry.getConfiguration().getAbility()).getRenderLayer(entry, livingEntity, manager);
                     if (layer != null) {
                         layers.accept(DataContext.forAbility(livingEntity, entry), layer);
                     }
@@ -65,7 +65,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
                     if (!stack.isEmpty()) {
                         var context = DataContext.forArmorInSlot(livingEntity, slot);
 
-                        if(stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
+                        if (stack.getItem() instanceof IAddonItem addonItem && addonItem.getRenderLayerContainer() != null) {
                             var container = addonItem.getRenderLayerContainer();
 
                             for (ResourceLocation id : container.get(slot.getName())) {
@@ -77,7 +77,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
                             }
                         }
 
-                        if(stack.getItem() instanceof ArmorWithRenderer armorWithRenderer && armorWithRenderer.getCachedArmorRenderer() instanceof ArmorRendererData renderer) {
+                        if (stack.getItem() instanceof ArmorWithRenderer armorWithRenderer && armorWithRenderer.getCachedArmorRenderer() instanceof ArmorRendererData renderer) {
                             for (IPackRenderLayer layer : renderer.getRenderLayers()) {
                                 layers.accept(context, layer);
                             }

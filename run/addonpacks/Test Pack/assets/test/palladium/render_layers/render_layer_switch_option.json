@@ -1,0 +1,33 @@
+{
+  "model_layer": "minecraft:player#inner_armor",
+  "texture": {
+    "variables": {
+      "I": {
+        "type": "palladium:entity_ticks",
+        "divide": 20,
+        "modulo": 3
+      }
+    },
+    "base": "test:textures/models/animation_layer_#I.png"
+  },
+  "render_type": "glow",
+  "hidden_body_parts": [
+    "head_overlay"
+  ],
+  "conditions": {
+    "type": "palladium:or",
+    "conditions": [
+      {
+        "type": "palladium:in_accessory_slot_menu",
+        "accessory_slot": "test:render_layer_switch_test"
+      },
+      {
+        "type": "palladium:animation_timer_ability",
+        "power": "test:accessory_slot_render_layer_test",
+        "ability": "animation_timer",
+        "min": 10,
+        "max": 10
+      }
+    ]
+  }
+}

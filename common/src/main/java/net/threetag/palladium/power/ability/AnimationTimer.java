@@ -17,7 +17,11 @@ public interface AnimationTimer {
      *
      * @return Value for the actual timer
      */
-    float getAnimationTimer(AbilityEntry entry, float partialTick);
+    float getAnimationTimer(AbilityEntry entry, float partialTick, boolean maxedOut);
+
+    default float getAnimationTimer(AbilityEntry entry, float partialTick) {
+        return this.getAnimationTimer(entry, partialTick, false);
+    }
 
     static float getValue(LivingEntity entity, Ability ability, float partialTick, Easing easing) {
         if (ability instanceof AnimationTimer timer) {

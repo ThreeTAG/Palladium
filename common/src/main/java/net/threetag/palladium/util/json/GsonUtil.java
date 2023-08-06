@@ -12,6 +12,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.client.dynamictexture.TextureReference;
+import net.threetag.palladium.power.ability.AbilityReference;
 import net.threetag.palladium.util.ModelLayerLocationUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -189,6 +190,38 @@ public class GsonUtil {
 
     public static ModelLayerLocationUtil getAsModelLayerLocationUtil(JsonObject json, String memberName, @Nullable ModelLayerLocationUtil fallback) {
         return json.has(memberName) ? getAsModelLayerLocationUtil(json, memberName) : fallback;
+    }
+
+    public static AbilityReference convertToAbilityReference(JsonElement json, String memberName) {
+        if (json.isJsonPrimitive()) {
+            String[] s = json.getAsString().split("#", 2);
+
+            if (s.length == 2) {
+                return new AbilityReference(new ResourceLocation(s[0]), s[1]);
+            } else {
+                throw new JsonSyntaxException("Invalid syntax for ability reference at " + memberName);
+            }
+        } else {
+            throw new JsonSyntaxException("Expected " + memberName + " to be an ability reference, was " + GsonHelper.getType(json));
+        }
+    }
+
+    public static AbilityReference getAsAbilityReference(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            String[] s = GsonHelper.getAsString(json, memberName).split("#", 2);
+
+            if (s.length == 2) {
+                return new AbilityReference(new ResourceLocation(s[0]), s[1]);
+            } else {
+                throw new JsonSyntaxException("Invalid syntax for ability reference at " + memberName);
+            }
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find an ability reference");
+        }
+    }
+
+    public static AbilityReference getAsAbilityReference(JsonObject json, String memberName, @Nullable AbilityReference fallback) {
+        return json.has(memberName) ? getAsAbilityReference(json, memberName) : fallback;
     }
 
     public static UUID getAsUUID(JsonObject json, String memberName) {

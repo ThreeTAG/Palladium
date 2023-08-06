@@ -135,6 +135,10 @@ health</a>
 held</a>
 </li>
 <li>
+<a href="#palladium:in_accessory_slot_menu">
+in_accessory_slot_menu</a>
+</li>
+<li>
 <a href="#palladium:in_lava">
 in_lava</a>
 </li>
@@ -1679,6 +1683,50 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:held","cooldown":0,"key_type":"key_bind","needs_empty_hand":false}</pre>
+</div>
+<hr>
+
+<div id="palladium:in_accessory_slot_menu">
+<h2>
+in_accessory_slot_menu</h2>
+<p>
+Let's you check if the accessory menu is currently opened and the specified slot is selected. Only available for client-side conditions.<br><br>Applicable for: assets</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+accessory_slot</td>
+<td>
+AccessorySlot</td>
+<td>
+The acessory slot that must be open in the accessory menu.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+palladium:chest</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:in_accessory_slot_menu","accessory_slot":"palladium:chest"}</pre>
 </div>
 <hr>
 

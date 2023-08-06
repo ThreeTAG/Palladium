@@ -13,6 +13,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> DUMMY = ABILITIES.register("dummy", () -> new Ability().setDocumentationDescription("Does nothing."));
     public static final RegistrySupplier<Ability> COMMAND = ABILITIES.register("command", CommandAbility::new);
     public static final RegistrySupplier<Ability> RENDER_LAYER = ABILITIES.register("render_layer", RenderLayerAbility::new);
+    public static final RegistrySupplier<Ability> RENDER_LAYER_BY_ACCESSORY_SLOT = ABILITIES.register("render_layer_by_accessory_slot", RenderLayerByAccessorySlotAbility::new);
     public static final RegistrySupplier<Ability> ANIMATION_TIMER = ABILITIES.register("animation_timer", AnimationTimerAbility::new);
     public static final RegistrySupplier<Ability> REPEATING_ANIMATION_TIMER = ABILITIES.register("repeating_animation_timer", RepeatingAnimationTimerAbility::new);
     public static final RegistrySupplier<Ability> SHRINK_BODY_OVERLAY = ABILITIES.register("shrink_body_overlay", ShrinkBodyOverlayAbility::new);

@@ -87,6 +87,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Command");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
+            this.addAbility(Abilities.RENDER_LAYER_BY_ACCESSORY_SLOT, "Render Layer");
             this.addAbility(Abilities.ANIMATION_TIMER, "Animation Timer");
             this.addAbility(Abilities.REPEATING_ANIMATION_TIMER, "Animation Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "Shrink Body Overlay");
@@ -263,6 +264,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
+            this.addAbility(Abilities.RENDER_LAYER_BY_ACCESSORY_SLOT, "Render Layer");
             this.addAbility(Abilities.ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.REPEATING_ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
@@ -434,6 +436,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
+            this.addAbility(Abilities.RENDER_LAYER_BY_ACCESSORY_SLOT, "Render Layer");
             this.addAbility(Abilities.ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.REPEATING_ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");

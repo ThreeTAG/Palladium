@@ -65,7 +65,11 @@ public class AimAbility extends Ability implements AnimationTimer {
     }
 
     @Override
-    public float getAnimationTimer(AbilityEntry entry, float partialTick) {
+    public float getAnimationTimer(AbilityEntry entry, float partialTick, boolean maxedOut) {
+        if (maxedOut) {
+            return entry.getProperty(TIME);
+        }
+
         return Mth.lerp(partialTick, entry.getProperty(PREV_TIMER), entry.getProperty(TIMER));
     }
 }

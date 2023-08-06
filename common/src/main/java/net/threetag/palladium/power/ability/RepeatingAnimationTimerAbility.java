@@ -73,7 +73,10 @@ public class RepeatingAnimationTimerAbility extends Ability implements Animation
     }
 
     @Override
-    public float getAnimationTimer(AbilityEntry entry, float partialTick) {
+    public float getAnimationTimer(AbilityEntry entry, float partialTick, boolean maxedOut) {
+        if (maxedOut) {
+            return entry.getProperty(MAX_VALUE);
+        }
         return Mth.lerp(partialTick, entry.getProperty(PREV_VALUE), entry.getProperty(VALUE));
     }
 

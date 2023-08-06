@@ -65,12 +65,24 @@ false</td>
 <td>
 false</td>
 </tr>
+<tr>
+<td>
+menu_visibility</td>
+<td>
+Condition[]</td>
+<td>
+Determines if the slot is visible in the menu. Can be ignored, set to 'false' or defined by conditions</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"icon":"namespace:textures/gui/accessory_slots/example.png","allows_multiple":false}</pre>
+{"icon":"namespace:textures/gui/accessory_slots/example.png","allows_multiple":false,"menu_visibility":true}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {
