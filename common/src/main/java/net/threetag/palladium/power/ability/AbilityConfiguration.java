@@ -191,7 +191,6 @@ public class AbilityConfiguration {
         configuration.propertyManager.fromJSON(json);
 
         if (GsonHelper.isValidNode(json, "conditions")) {
-            ConditionSerializer.CURRENT_CONTEXT = ConditionEnvironment.DATA;
             JsonObject conditions = GsonHelper.getAsJsonObject(json, "conditions");
             boolean withKey = false;
             CooldownType cooldownType = null;

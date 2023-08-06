@@ -74,6 +74,7 @@ public abstract class ConditionSerializer implements IDefaultDocumentedConfigura
     }
 
     public static Condition fromJSON(JsonElement jsonElement, ConditionEnvironment type) {
+        ConditionSerializer.CURRENT_CONTEXT = type;
         if (jsonElement.isJsonPrimitive()) {
             boolean result = GsonHelper.convertToBoolean(jsonElement, "conditions");
             return result ? new TrueCondition() : new FalseCondition();
