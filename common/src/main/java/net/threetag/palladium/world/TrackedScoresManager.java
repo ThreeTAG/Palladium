@@ -10,22 +10,25 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.scores.Score;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
 import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrackedScoresManager extends SimplePreparableReloadListener<List<String>> implements PlayerEvents.Join {
+public class TrackedScoresManager extends SimplePreparableReloadListener<List<String>> {
 
     public static TrackedScoresManager INSTANCE;
     private final List<String> tracked = new ArrayList<>();
@@ -33,23 +36,6 @@ public class TrackedScoresManager extends SimplePreparableReloadListener<List<St
     public static void init() {
         INSTANCE = new TrackedScoresManager();
         ReloadListenerRegistry.register(PackType.SERVER_DATA, Palladium.id("tracked_scores"), INSTANCE);
-        PlayerEvents.JOIN.register(INSTANCE);
-    }
-
-    @Override
-    public void playerJoin(Player player) {
-        if (!player.level.isClientSide) {
-            for (String tracked : this.tracked) {
-                var scoreboard = player.getScoreboard();
-                var objective = scoreboard.getObjective(tracked);
-
-                if (objective != null && player instanceof ServerPlayer serverPlayer) {
-                    for (Score score : scoreboard.getPlayerScores(objective)) {
-                        serverPlayer.connection.send(new ClientboundSetScorePacket(ServerScoreboard.Method.CHANGE, objective.getName(), score.getOwner(), score.getScore()));
-                    }
-                }
-            }
-        }
     }
 
     @Override
@@ -110,6 +96,10 @@ public class TrackedScoresManager extends SimplePreparableReloadListener<List<St
                 }
             }
         }
+    }
+
+    public List<String> getTracked() {
+        return tracked;
     }
 
     public boolean isTracked(String objective) {

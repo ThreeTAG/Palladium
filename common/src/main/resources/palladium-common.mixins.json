@@ -35,6 +35,7 @@
     "InventoryMixin",
     "LivingEntityMixin",
     "OreFeatureMixin",
+    "PlayerListMixin",
     "PlayerMixin",
     "RangedAttributeAccessor",
     "ReloadableResourceManagerMixin",
