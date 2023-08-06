@@ -44,7 +44,7 @@ public class AccessorySlotParser extends SimpleJsonResourceReloadListener {
                 }
 
                 if (json.has("menu_visibility")) {
-                    LifecycleEvents.CLIENT_SETUP.register(() -> ConditionSerializer.listFromJSON(json.get("menu_visibility"), ConditionEnvironment.ASSETS));
+                    LifecycleEvents.CLIENT_SETUP.register(() -> ConditionSerializer.listFromJSON(json.get("menu_visibility"), ConditionEnvironment.ASSETS).forEach(slot::addVisibilityCondition));
                 }
 
                 i.getAndIncrement();
