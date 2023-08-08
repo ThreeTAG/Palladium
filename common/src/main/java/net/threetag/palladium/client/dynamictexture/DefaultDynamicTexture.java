@@ -40,7 +40,9 @@ public class DefaultDynamicTexture extends DynamicTexture {
             this.output = this.base;
 
             for (String var : this.textureVariableMap.keySet()) {
-                this.output += "_" + var;
+                if(!this.output.contains("#" + var)) {
+                    this.output += "_#" + var;
+                }
             }
         }
 

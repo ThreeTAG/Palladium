@@ -74,7 +74,7 @@ public class AnimationTimerAbilityVariable extends AbstractIntegerTextureVariabl
 
         @Override
         public ResourceLocation getId() {
-            return Palladium.id("animation_timer");
+            return Palladium.id("animation_timer_ability");
         }
     }
 }
