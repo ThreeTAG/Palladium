@@ -1,0 +1,5 @@
+{
+  "textures": "test:textures/models/armor/wood_layer_2.png",
+  "model_layers": "palladium:humanoid#suit",
+  "hide_second_layer": true
+}

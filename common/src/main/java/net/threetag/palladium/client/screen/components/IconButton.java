@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.icon.IIcon;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,7 +54,7 @@ public class IconButton extends Button {
             guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
 
-        this.getIcon().draw(minecraft, guiGraphics, this.getX() + 2, this.getY() + 2);
+        this.getIcon().draw(minecraft, guiGraphics, minecraft.player != null ? DataContext.forEntity(minecraft.player) : DataContext.create(), this.getX() + 2, this.getY() + 2);
     }
 
     @Environment(EnvType.CLIENT)

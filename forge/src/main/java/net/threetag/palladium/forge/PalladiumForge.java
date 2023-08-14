@@ -1,6 +1,8 @@
 package net.threetag.palladium.forge;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
@@ -11,14 +13,17 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.forgespi.language.IModInfo;
+import net.minecraftforge.forgespi.locating.IModFile;
 import net.minecraftforge.registries.NewRegistryEvent;
+import net.minecraftforge.resource.PathPackResources;
+import net.minecraftforge.resource.ResourcePackLoader;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
 import net.threetag.palladium.PalladiumConfig;
@@ -34,6 +39,8 @@ import net.threetag.palladiumcore.forge.PalladiumCoreForge;
 import net.threetag.palladiumcore.util.Platform;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Mod(Palladium.MOD_ID)
 @Mod.EventBusSubscriber(modid = Palladium.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -53,6 +60,10 @@ public class PalladiumForge {
 
         if (ModList.get().isLoaded("curios")) {
             CuriosCompat.init();
+        }
+
+        if (Platform.isModLoaded("geckolib3")) {
+            GeckoLibCompatImpl.init();
         }
 
         if (Platform.isClient()) {
@@ -75,9 +86,25 @@ public class PalladiumForge {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onConstructMod(FMLConstructModEvent event) {
-        event.enqueueWork(AddonPackManager::startLoading);
-    }
+        event.enqueueWork(() -> {
+            var addonPacks = AddonPackManager.getInstance();
+            ResourcePackLoader.loadResourcePacks(addonPacks.getPackList(), (mods) -> (infoConsumer, factory) -> {
+                for (Map.Entry<IModFile, ? extends PathPackResources> e : mods.entrySet()) {
+                    IModInfo mod = e.getKey().getModInfos().get(0);
+                    if (Objects.equals(mod.getModId(), "minecraft")) continue;
+                    final String name = "mod:" + mod.getModId();
+                    final Pack packInfo = Pack.create(name, false, e::getValue, factory, Pack.Position.BOTTOM, PackSource.DEFAULT);
+                    if (packInfo == null) {
+                        ModLoader.get().addWarning(new ModLoadingWarning(mod, ModLoadingStage.ERROR, "fml.modloading.brokenresources", e.getKey()));
+                        continue;
+                    }
+                    infoConsumer.accept(packInfo);
+                }
+            });
 
+            AddonPackManager.startLoading();
+        });
+    }
 
     @SubscribeEvent
     public static void setup(FMLCommonSetupEvent e) {

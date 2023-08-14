@@ -18,11 +18,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.PackData;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
-import net.threetag.palladium.client.renderer.renderlayer.IRenderLayerContext;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsUtil;
 import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.power.provider.PowerProvider;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
@@ -75,7 +75,7 @@ public class CuriosCompat {
                                         IPackRenderLayer layer = PackRenderLayerManager.getInstance().getLayer(layerId);
 
                                         if (layer != null) {
-                                            layers.accept(IRenderLayerContext.ofItem(entity, stack), layer);
+                                            layers.accept(DataContext.forItem(entity, stack), layer);
                                         }
                                     }
                                 }

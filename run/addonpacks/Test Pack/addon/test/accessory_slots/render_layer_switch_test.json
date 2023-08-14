@@ -1,0 +1,7 @@
+{
+  "icon": "test:textures/accessory_slots/test.png",
+  "menu_visibility": {
+    "type": "palladium:has_power",
+    "power": "test:accessory_slot_render_layer_test"
+  }
+}

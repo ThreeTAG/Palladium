@@ -1,8 +1,8 @@
 package net.threetag.palladium.compat.kubejs.condition;
 
 import com.google.gson.JsonObject;
-import dev.latvian.mods.kubejs.BuilderBase;
-import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.registry.BuilderBase;
+import dev.latvian.mods.kubejs.registry.RegistryInfo;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
@@ -29,7 +29,7 @@ public class ConditionBuilder extends BuilderBase<ConditionSerializer> {
     }
 
     @Override
-    public RegistryObjectBuilderTypes<? super ConditionSerializer> getRegistryType() {
+    public RegistryInfo getRegistryType() {
         return PalladiumKubeJSPlugin.CONDITION;
     }
 

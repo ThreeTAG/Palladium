@@ -10,6 +10,7 @@
       "type": "palladium:shrink_body_overlay",
       "max_value": 16,
       "hidden": false,
+      "hidden_in_bar": false,
       "icon": "minecraft:iron_ingot",
       "conditions": {
         "enabling": [

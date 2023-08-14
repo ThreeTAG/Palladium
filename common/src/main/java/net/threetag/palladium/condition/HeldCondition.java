@@ -2,6 +2,8 @@ package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
@@ -13,7 +15,7 @@ import net.threetag.palladium.util.property.PropertyManager;
 public class HeldCondition extends KeyCondition {
 
     public HeldCondition(int cooldown, AbilityConfiguration.KeyType type, boolean needsEmptyHand) {
-        super(cooldown, type, needsEmptyHand);
+        super(cooldown, type, needsEmptyHand, true);
     }
 
     @Override
@@ -22,7 +24,14 @@ public class HeldCondition extends KeyCondition {
     }
 
     @Override
-    public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
+    public boolean active(DataContext context) {
+        var entity = context.get(DataContextType.ENTITY);
+        var entry = context.get(DataContextType.ABILITY);
+
+        if (entity == null || entry == null) {
+            return false;
+        }
+
         if (this.cooldown != 0 && entry.cooldown == 0 && entry.keyPressed) {
             entry.keyPressed = false;
         }
@@ -60,18 +69,18 @@ public class HeldCondition extends KeyCondition {
 
         public Serializer() {
             this.withProperty(COOLDOWN, 0);
-            this.withProperty(KeyCondition.KEY_TYPE, AbilityConfiguration.KeyType.KEY_BIND);
+            this.withProperty(KeyCondition.KEY_TYPE_WITHOUT_SCROLLING, AbilityConfiguration.KeyType.KEY_BIND);
             this.withProperty(KeyCondition.NEEDS_EMPTY_HAND, false);
         }
 
         @Override
         public Condition make(JsonObject json) {
-            return new HeldCondition(this.getProperty(json, COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND));
+            return new HeldCondition(this.getProperty(json, COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE_WITHOUT_SCROLLING), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND));
         }
 
         @Override
-        public ConditionContextType getContextType() {
-            return ConditionContextType.ABILITIES;
+        public ConditionEnvironment getContextEnvironment() {
+            return ConditionEnvironment.DATA;
         }
 
         @Override

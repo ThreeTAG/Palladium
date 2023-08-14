@@ -1,19 +1,23 @@
 package net.threetag.palladium.power.ability;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladiumcore.event.EventResult;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
+import net.threetag.palladiumcore.event.PlayerEvents;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class AbilityEventHandler implements LivingEntityEvents.Hurt, LivingEntityEvents.Attack {
+public class AbilityEventHandler implements LivingEntityEvents.Hurt, LivingEntityEvents.Attack, PlayerEvents.NameFormat {
 
     public static void init() {
         AbilityEventHandler handler = new AbilityEventHandler();
         LivingEntityEvents.ATTACK.register(handler);
         LivingEntityEvents.HURT.register(handler);
+        PlayerEvents.NAME_FORMAT.register(handler);
     }
 
     @Override
@@ -44,5 +48,12 @@ public class AbilityEventHandler implements LivingEntityEvents.Hurt, LivingEntit
     @Override
     public EventResult livingEntityAttack(LivingEntity entity, DamageSource damageSource, float amount) {
         return this.livingEntityHurt(entity, damageSource, new AtomicReference<>(amount));
+    }
+
+    @Override
+    public void playerNameFormat(Player player, Component username, AtomicReference<Component> displayName) {
+        AbilityUtil.getEnabledEntries(player, Abilities.NAME_CHANGE.get()).stream().filter(ab -> ab.getProperty(NameChangeAbility.ACTIVE)).findFirst().ifPresent(ability -> {
+            displayName.set(ability.getProperty(NameChangeAbility.NAME));
+        });
     }
 }

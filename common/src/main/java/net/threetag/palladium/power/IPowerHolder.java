@@ -26,6 +26,6 @@ public interface IPowerHolder {
 
     void fromNBT(CompoundTag tag);
 
-    CompoundTag toNBT();
+    CompoundTag toNBT(boolean toDisk);
 
 }

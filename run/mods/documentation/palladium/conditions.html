@@ -39,6 +39,10 @@ ability_enabled</a>
 ability_integer_property</a>
 </li>
 <li>
+<a href="#palladium:ability_on_cooldown">
+ability_on_cooldown</a>
+</li>
+<li>
 <a href="#palladium:ability_ticks">
 ability_ticks</a>
 </li>
@@ -67,6 +71,10 @@ activation</a>
 and</a>
 </li>
 <li>
+<a href="#palladium:animation_timer_ability">
+animation_timer_ability</a>
+</li>
+<li>
 <a href="#palladium:brightness_at_position">
 brightness_at_position</a>
 </li>
@@ -79,8 +87,16 @@ command_result</a>
 crouching</a>
 </li>
 <li>
+<a href="#palladium:day">
+day</a>
+</li>
+<li>
 <a href="#palladium:dimension">
 dimension</a>
+</li>
+<li>
+<a href="#palladium:empty_slot">
+empty_slot</a>
 </li>
 <li>
 <a href="#palladium:entity_type">
@@ -93,6 +109,10 @@ entity_type_tag</a>
 <li>
 <a href="#palladium:experience_level_buyable">
 experience_level_buyable</a>
+</li>
+<li>
+<a href="#palladium:false">
+false</a>
 </li>
 <li>
 <a href="#palladium:float_property">
@@ -113,6 +133,10 @@ health</a>
 <li>
 <a href="#palladium:held">
 held</a>
+</li>
+<li>
+<a href="#palladium:in_accessory_slot_menu">
+in_accessory_slot_menu</a>
 </li>
 <li>
 <a href="#palladium:in_lava">
@@ -207,6 +231,10 @@ mod_loaded</a>
 moon_phase</a>
 </li>
 <li>
+<a href="#palladium:night">
+night</a>
+</li>
+<li>
 <a href="#palladium:not">
 not</a>
 </li>
@@ -239,8 +267,8 @@ sprinting</a>
 toggle</a>
 </li>
 <li>
-<a href="#palladium:under_water">
-under_water</a>
+<a href="#palladium:true">
+true</a>
 </li>
 <li>
 <a href="#palladium:wears_suit_set">
@@ -407,6 +435,62 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:ability_integer_property","power":"null","ability":"ability_id","property":"value","min":0,"max":0}</pre>
+</div>
+<hr>
+
+<div id="palladium:ability_on_cooldown">
+<h2>
+ability_on_cooldown</h2>
+<p>
+Checks if the ability is currently on cooldown. If the power is not null, it will look for the ability in the specified power. If the power is null, it will look for the ability in the current power.<br><br>Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+power</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the power where is the desired ability is located. Can be null IF used for abilities, then it will look into the current power</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+ability</td>
+<td>
+String</td>
+<td>
+ID of the desired ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ability_id</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_on_cooldown","power":"null","ability":"ability_id"}</pre>
 </div>
 <hr>
 
@@ -638,7 +722,7 @@ Example:</h3>
 <h2>
 action</h2>
 <p>
-This condition is used to activate the power when a key is pressed or a mouse button is clicked.<br><br>Applicable for: abilities</p>
+This condition is used to activate the power when a key is pressed or a mouse button is clicked.<br><br>Applicable for: data</p>
 <h3>
 Settings:</h3>
 <table>
@@ -675,7 +759,7 @@ key_type</td>
 <td>
 KeyType</td>
 <td>
-The type of key that needs to be pressed. Possible values: [key_bind, left_click, right_click, space_bar]</td>
+The type of key that needs to be pressed. Possible values: [key_bind, left_click, right_click, space_bar, scroll_up, scroll_down, scroll_either]</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -693,12 +777,24 @@ false</td>
 <td>
 false</td>
 </tr>
+<tr>
+<td>
+allow_scrolling_when_crouching</td>
+<td>
+Boolean</td>
+<td>
+If you choose scrolling as a key type, you can determine if scrolling is allowed when crouching. For other key types you can completely ignore this setting.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:action","cooldown":0,"key_type":"key_bind","needs_empty_hand":false}</pre>
+{"type":"palladium:action","cooldown":0,"key_type":"key_bind","needs_empty_hand":false,"allow_scrolling_when_crouching":true}</pre>
 </div>
 <hr>
 
@@ -706,7 +802,7 @@ Example:</h3>
 <h2>
 activation</h2>
 <p>
-This condition is used to activate the power when a key is pressed or a mouse button is clicked for a certain amount of ticks.<br><br>Applicable for: abilities</p>
+This condition is used to activate the power when a key is pressed or a mouse button is clicked for a certain amount of ticks.<br><br>Applicable for: data</p>
 <h3>
 Settings:</h3>
 <table>
@@ -755,7 +851,7 @@ key_type</td>
 <td>
 KeyType</td>
 <td>
-The type of key that needs to be pressed. Possible values: [key_bind, left_click, right_click, space_bar]</td>
+The type of key that needs to be pressed. Possible values: [key_bind, left_click, right_click, space_bar, scroll_up, scroll_down, scroll_either]</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -773,12 +869,24 @@ false</td>
 <td>
 false</td>
 </tr>
+<tr>
+<td>
+allow_scrolling_when_crouching</td>
+<td>
+Boolean</td>
+<td>
+If you choose scrolling as a key type, you can determine if scrolling is allowed when crouching. For other key types you can completely ignore this setting.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:activation","cooldown":0,"ticks":60,"key_type":"key_bind","needs_empty_hand":false}</pre>
+{"type":"palladium:activation","cooldown":0,"ticks":60,"key_type":"key_bind","needs_empty_hand":false,"allow_scrolling_when_crouching":true}</pre>
 </div>
 <hr>
 
@@ -823,6 +931,86 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:and","conditions":[]}</pre>
+</div>
+<hr>
+
+<div id="palladium:animation_timer_ability">
+<h2>
+animation_timer_ability</h2>
+<p>
+Checks if the given animation timer ability has a certain value. This condition is a simplified version of the ability_integer_property condition designed to be used for animation timer abilities.<br><br>Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+power</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the power where is the desired ability is located. Can be null IF used for abilities, then it will look into the current power</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+ability</td>
+<td>
+String</td>
+<td>
+ID of the desired ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ability_id</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Minimum required amount of the timer value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Maximum required amount of the timer value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:animation_timer_ability","power":"null","ability":"ability_id","min":0,"max":0}</pre>
 </div>
 <hr>
 
@@ -974,6 +1162,18 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:day">
+<h2>
+day</h2>
+<p>
+Checks if it's currently daytime<br><br>Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:day"}</pre>
+</div>
+<hr>
+
 <div id="palladium:dimension">
 <h2>
 dimension</h2>
@@ -1015,6 +1215,50 @@ minecraft:overworld</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:dimension","dimension":"minecraft:overworld"}</pre>
+</div>
+<hr>
+
+<div id="palladium:empty_slot">
+<h2>
+empty_slot</h2>
+<p>
+Checks if the given slot is empty.<br><br>Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+slot</td>
+<td>
+PlayerSlot</td>
+<td>
+Slot that must be empty. Example values: [mainhand, offhand, feet, legs, chest, head, curios:back, curios:necklace, trinkets:chest/back, trinkets:chest/necklace]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+chest</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:empty_slot","slot":"chest"}</pre>
 </div>
 <hr>
 
@@ -1110,7 +1354,7 @@ Example:</h3>
 <h2>
 experience_level_buyable</h2>
 <p>
-A condition that makes the ability buyable for a certain amount of xp levels.<br><br>Applicable for: abilities</p>
+A condition that makes the ability buyable for a certain amount of xp levels.<br><br>Applicable for: data</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1147,6 +1391,18 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:experience_level_buyable","xp_level":3}</pre>
+</div>
+<hr>
+
+<div id="palladium:false">
+<h2>
+false</h2>
+<p>
+It's just false. That's it.<br><br>Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:false"}</pre>
 </div>
 <hr>
 
@@ -1366,7 +1622,7 @@ Example:</h3>
 <h2>
 held</h2>
 <p>
-Allows the ability to be used while holding a key bind.<br><br>Applicable for: abilities</p>
+Allows the ability to be used while holding a key bind.<br><br>Applicable for: data</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1427,6 +1683,50 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:held","cooldown":0,"key_type":"key_bind","needs_empty_hand":false}</pre>
+</div>
+<hr>
+
+<div id="palladium:in_accessory_slot_menu">
+<h2>
+in_accessory_slot_menu</h2>
+<p>
+Let's you check if the accessory menu is currently opened and the specified slot is selected. Only available for client-side conditions.<br><br>Applicable for: assets</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+accessory_slot</td>
+<td>
+AccessorySlot</td>
+<td>
+The acessory slot that must be open in the accessory menu.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+palladium:chest</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:in_accessory_slot_menu","accessory_slot":"palladium:chest"}</pre>
 </div>
 <hr>
 
@@ -1526,7 +1826,7 @@ Example:</h3>
 <h2>
 interval</h2>
 <p>
-Allows you to set an amount of ticks the ability will be active and an amount of ticks the ability will be disabled. The ability will be active for the first amount of ticks and then disabled for the second amount of ticks and so on.<br><br>Applicable for: abilities</p>
+Allows you to set an amount of ticks the ability will be active and an amount of ticks the ability will be disabled. The ability will be active for the first amount of ticks and then disabled for the second amount of ticks and so on.<br><br>Applicable for: data</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1762,7 +2062,7 @@ Example:</h3>
 <h2>
 item_buyable</h2>
 <p>
-The player needs to spend a certain amount of items to unlock the ability.<br><br>Applicable for: abilities</p>
+The player needs to spend a certain amount of items to unlock the ability.<br><br>Applicable for: data</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1970,6 +2270,18 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:night">
+<h2>
+night</h2>
+<p>
+Checks if it's currently nighttime<br><br>Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:night"}</pre>
+</div>
+<hr>
+
 <div id="palladium:not">
 <h2>
 not</h2>
@@ -2018,7 +2330,7 @@ Example:</h3>
 <h2>
 objective_score</h2>
 <p>
-Checks if the player has a score in a specific objective.<br><br>Applicable for: all</p>
+Checks if the player has a score in a specific objective. IF YOU USE THIS, MAKE A 'tracked_score.json' AND PUT THE OBJECTIVE NAME IN IT, MORE ON THE WIKI!<br><br>Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>
@@ -2186,7 +2498,7 @@ Example:</h3>
 <h2>
 scoreboard_score_buyable</h2>
 <p>
-A buyable condition that requires a certain score for a scoreboard objective.<br><br>Applicable for: abilities</p>
+A buyable condition that requires a certain score for a scoreboard objective.<br><br>Applicable for: data</p>
 <h3>
 Settings:</h3>
 <table>
@@ -2278,7 +2590,7 @@ Example:</h3>
 <h2>
 toggle</h2>
 <p>
-Toggles the ability on and off after a key press or mouse click.<br><br>Applicable for: abilities</p>
+Toggles the ability on and off after a key press or mouse click.<br><br>Applicable for: data</p>
 <h3>
 Settings:</h3>
 <table>
@@ -2315,7 +2627,7 @@ key_type</td>
 <td>
 KeyType</td>
 <td>
-The type of key that needs to be pressed. Possible values: [key_bind, left_click, right_click, space_bar]</td>
+The type of key that needs to be pressed. Possible values: [key_bind, left_click, right_click, space_bar, scroll_up, scroll_down, scroll_either]</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2333,24 +2645,36 @@ false</td>
 <td>
 false</td>
 </tr>
+<tr>
+<td>
+allow_scrolling_when_crouching</td>
+<td>
+Boolean</td>
+<td>
+If you choose scrolling as a key type, you can determine if scrolling is allowed when crouching. For other key types you can completely ignore this setting.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:toggle","cooldown":0,"key_type":"key_bind","needs_empty_hand":false}</pre>
+{"type":"palladium:toggle","cooldown":0,"key_type":"key_bind","needs_empty_hand":false,"allow_scrolling_when_crouching":true}</pre>
 </div>
 <hr>
 
-<div id="palladium:under_water">
+<div id="palladium:true">
 <h2>
-under_water</h2>
+true</h2>
 <p>
-Checks if the entity is underwater.<br><br>Applicable for: all</p>
+It's just true. That's it.<br><br>Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:under_water"}</pre>
+{"type":"palladium:true"}</pre>
 </div>
 <hr>
 

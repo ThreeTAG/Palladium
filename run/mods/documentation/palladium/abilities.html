@@ -59,6 +59,10 @@ dummy</a>
 energy_blast</a>
 </li>
 <li>
+<a href="#palladium:fluid_walking">
+fluid_walking</a>
+</li>
+<li>
 <a href="#palladium:gui_overlay">
 gui_overlay</a>
 </li>
@@ -79,6 +83,10 @@ intangibility</a>
 invisibility</a>
 </li>
 <li>
+<a href="#palladium:name_change">
+name_change</a>
+</li>
+<li>
 <a href="#palladium:play_sound">
 play_sound</a>
 </li>
@@ -93,6 +101,14 @@ remove_body_part</a>
 <li>
 <a href="#palladium:render_layer">
 render_layer</a>
+</li>
+<li>
+<a href="#palladium:render_layer_by_accessory_slot">
+render_layer_by_accessory_slot</a>
+</li>
+<li>
+<a href="#palladium:repeating_animation_timer">
+repeating_animation_timer</a>
 </li>
 <li>
 <a href="#palladium:restrict_slots">
@@ -223,7 +239,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -257,7 +285,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -294,7 +322,7 @@ MAIN_ARM</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:aim","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","time":10,"arm":"main_arm"}</pre>
+{"type":"palladium:aim","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","time":10,"arm":"main_arm"}</pre>
 </div>
 <hr>
 
@@ -302,7 +330,7 @@ Example:</h3>
 <h2>
 animation_timer</h2>
 <p>
-This ability is used to create a timer that can be used for animations. It is not meant to be used directly.</p>
+This ability is used to create a timer that can be used for animations. It is not meant to be used directly. <a href="https://media.discordapp.net/attachments/954053032570683402/1120044643342635118/image.png">Click here to see how this animation works exactly.</a></p>
 <h3>
 Settings:</h3>
 <table>
@@ -363,7 +391,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -397,7 +437,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -434,7 +474,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:animation_timer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","start_value":0,"max_value":20}</pre>
+{"type":"palladium:animation_timer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","start_value":0,"max_value":20}</pre>
 </div>
 <hr>
 
@@ -503,7 +543,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -537,7 +589,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -598,7 +650,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:attribute_modifier","icon":"minecraft:iron_chestplate","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","attribute":"minecraft:generic.armor","amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
+{"type":"palladium:attribute_modifier","icon":"minecraft:iron_chestplate","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","attribute":"minecraft:generic.armor","amount":1.0,"operation":0,"uuid":"498be4fb-af04-42f2-8948-e6ccdc0d99e1"}</pre>
 </div>
 <hr>
 
@@ -667,7 +719,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -701,7 +765,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -750,7 +814,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:command","icon":"minecraft:command_block","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","first_tick_commands":[],"last_tick_commands":[],"commands":["say Hello World"]}</pre>
+{"type":"palladium:command","icon":"minecraft:command_block","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","first_tick_commands":[],"last_tick_commands":[],"commands":["say Hello World"]}</pre>
 </div>
 <hr>
 
@@ -819,7 +883,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -853,7 +929,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -878,7 +954,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:damage_immunity","icon":"minecraft:potion","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","damage_sources":["lightningBolt","cactus"]}</pre>
+{"type":"palladium:damage_immunity","icon":"minecraft:potion","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","damage_sources":["lightningBolt","cactus"]}</pre>
 </div>
 <hr>
 
@@ -947,7 +1023,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -981,7 +1069,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -994,7 +1082,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:dummy","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
+{"type":"palladium:dummy","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -1063,7 +1151,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1097,7 +1197,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -1158,7 +1258,147 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:energy_blast","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","origin":"eyes","color":"#FF0000","damage":1.0,"max_distance":30.0}</pre>
+{"type":"palladium:energy_blast","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","origin":"eyes","color":"#FF0000","damage":1.0,"max_distance":30.0}</pre>
+</div>
+<hr>
+
+<div id="palladium:fluid_walking">
+<h2>
+fluid_walking</h2>
+<p>
+Let's you define a fluid you can walk on.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+AbilityDescription</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+fluid_tag</td>
+<td>
+TagKey</td>
+<td>
+Determines the tag for the fluid(s) you can walk on. You need tags because of each fluid there are 2 fluids actually: A still and a flowing one. Minecraft's two fluid tags are: minecraft:water & minecraft:lava</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:lava</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:fluid_walking","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","fluid_tag":"minecraft:lava"}</pre>
 </div>
 <hr>
 
@@ -1227,7 +1467,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1261,7 +1513,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -1273,7 +1525,7 @@ false</td>
 <td>
 texture</td>
 <td>
-ResourceLocation</td>
+TextureReference</td>
 <td>
 Texture path for the gui overlay</td>
 <td style="background-color: lightcoral">
@@ -1358,7 +1610,7 @@ STRETCH</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:gui_overlay","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","texture":"minecraft:textures/gui/presets/isles.png","texture_width":256,"texture_height":256,"translate":[0.0,0.0,0.0],"rotate":[0.0,0.0,0.0],"scale":[1.0,1.0,1.0],"alignment":"stretch"}</pre>
+{"type":"palladium:gui_overlay","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","texture":"minecraft:textures/gui/presets/isles.png","texture_width":256,"texture_height":256,"translate":[0.0,0.0,0.0],"rotate":[0.0,0.0,0.0],"scale":[1.0,1.0,1.0],"alignment":"stretch"}</pre>
 </div>
 <hr>
 
@@ -1427,7 +1679,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1461,7 +1725,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -1498,7 +1762,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:healing","icon":"minecraft:apple","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","frequency":20,"amount":3.0}</pre>
+{"type":"palladium:healing","icon":"minecraft:apple","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","frequency":20,"amount":3.0}</pre>
 </div>
 <hr>
 
@@ -1567,7 +1831,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1601,7 +1877,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -1638,7 +1914,7 @@ true</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:hide_body_part","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","body_parts":["right_arm","left_arm"],"affects_first_person":true}</pre>
+{"type":"palladium:hide_body_part","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","body_parts":["right_arm","left_arm"],"affects_first_person":true}</pre>
 </div>
 <hr>
 
@@ -1707,7 +1983,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1741,7 +2029,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -1790,7 +2078,7 @@ palladium:prevents_intangibility</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:intangibility","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","vertical":false,"whitelist":"null","blacklist":"palladium:prevents_intangibility"}</pre>
+{"type":"palladium:intangibility","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","vertical":false,"whitelist":"null","blacklist":"palladium:prevents_intangibility"}</pre>
 </div>
 <hr>
 
@@ -1859,7 +2147,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1893,7 +2193,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -1906,7 +2206,147 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:invisibility","icon":"palladium:textures/icon/invisibility.png","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
+{"type":"palladium:invisibility","icon":"palladium:textures/icon/invisibility.png","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
+</div>
+<hr>
+
+<div id="palladium:name_change">
+<h2>
+name_change</h2>
+<p>
+Lets you change the name of the player (in chat, tablist, above head).</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+AbilityDescription</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+name</td>
+<td>
+Component</td>
+<td>
+The name the player's one will turn into</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+literal{John Doe}</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:name_change","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","name":{"text":"John Doe"}}</pre>
 </div>
 <hr>
 
@@ -1975,7 +2415,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2009,7 +2461,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -2082,7 +2534,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:play_sound","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","sound":"minecraft:item.elytra.flying","volume":1.0,"pitch":1.0,"looping":false,"play_self":false}</pre>
+{"type":"palladium:play_sound","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","sound":"minecraft:item.elytra.flying","volume":1.0,"pitch":1.0,"looping":false,"play_self":false}</pre>
 </div>
 <hr>
 
@@ -2151,7 +2603,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2185,7 +2649,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -2270,7 +2734,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:projectile","icon":"minecraft:snowball","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","entity_type":"minecraft:snowball","entity_data":"null","inaccuracy":0.0,"velocity":1.5,"swinging_arm":"main_arm","damage_from_player":false}</pre>
+{"type":"palladium:projectile","icon":"minecraft:snowball","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","entity_type":"minecraft:snowball","entity_data":"null","inaccuracy":0.0,"velocity":1.5,"swinging_arm":"main_arm","damage_from_player":false}</pre>
 </div>
 <hr>
 
@@ -2339,7 +2803,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2373,7 +2849,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -2410,7 +2886,7 @@ true</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:remove_body_part","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","body_parts":["right_arm","left_arm"],"affects_first_person":true}</pre>
+{"type":"palladium:remove_body_part","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","body_parts":["right_arm","left_arm"],"affects_first_person":true}</pre>
 </div>
 <hr>
 
@@ -2479,7 +2955,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2513,7 +3001,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -2527,7 +3015,7 @@ render_layer</td>
 <td>
 ResourceLocation</td>
 <td>
-ID of the render that will be rendered</td>
+ID of the render layer that will be rendered</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2538,7 +3026,309 @@ namespace:render_layer_id</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:render_layer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","render_layer":"namespace:render_layer_id"}</pre>
+{"type":"palladium:render_layer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","render_layer":"namespace:render_layer_id"}</pre>
+</div>
+<hr>
+
+<div id="palladium:render_layer_by_accessory_slot">
+<h2>
+render_layer_by_accessory_slot</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+AbilityDescription</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+default_layer</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the render layer that will be used if none is specified in the accessory slot. Can be null.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+namespace:render_layer_id</td>
+</tr>
+<tr>
+<td>
+accessory_slot</td>
+<td>
+AccessorySlot</td>
+<td>
+ID of the slot that will be looked in for to get a render layer. There must be a render_layer accessory in it to get it from.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+palladium:chest</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:render_layer_by_accessory_slot","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","default_layer":"namespace:render_layer_id","accessory_slot":"palladium:chest"}</pre>
+</div>
+<hr>
+
+<div id="palladium:repeating_animation_timer">
+<h2>
+repeating_animation_timer</h2>
+<p>
+This ability is used to create a timer that can be used for animations. It is not meant to be used directly. <a href="https://cdn.discordapp.com/attachments/954053032570683402/1120045044150325318/image.png">Click here to see how this animation works exactly.</a></p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+AbilityDescription</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+start_value</td>
+<td>
+Integer</td>
+<td>
+The value for the integer when the ability is disabled</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+max_value</td>
+<td>
+Integer</td>
+<td>
+The value for the integer when the ability is enabled</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+20</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:repeating_animation_timer","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","start_value":0,"max_value":20}</pre>
 </div>
 <hr>
 
@@ -2607,7 +3397,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2641,7 +3443,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -2666,7 +3468,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:restrict_slots","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","slots":["chest"]}</pre>
+{"type":"palladium:restrict_slots","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","slots":["chest"]}</pre>
 </div>
 <hr>
 
@@ -2735,7 +3537,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2769,7 +3583,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -2794,7 +3608,7 @@ minecraft:shaders/post/creeper.json</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:shader_effect","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","shader":"minecraft:shaders/post/creeper.json"}</pre>
+{"type":"palladium:shader_effect","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","shader":"minecraft:shaders/post/creeper.json"}</pre>
 </div>
 <hr>
 
@@ -2863,11 +3677,23 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
 true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
 </tr>
 <tr>
 <td>
@@ -2897,7 +3723,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -2910,7 +3736,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:show_both_arms","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null"}</pre>
+{"type":"palladium:show_both_arms","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -2979,7 +3805,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3013,7 +3851,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -3050,7 +3888,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:shrink_body_overlay","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","start_value":0,"max_value":20}</pre>
+{"type":"palladium:shrink_body_overlay","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","start_value":0,"max_value":20}</pre>
 </div>
 <hr>
 
@@ -3119,7 +3957,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3153,7 +4003,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -3178,7 +4028,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:size","icon":"palladium:textures/icon/size.png","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","scale":0.1}</pre>
+{"type":"palladium:size","icon":"palladium:textures/icon/size.png","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","scale":0.1}</pre>
 </div>
 <hr>
 
@@ -3247,7 +4097,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3281,7 +4143,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -3318,7 +4180,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:skin_change","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","texture":"minecraft:textures/entity/zombie/drowned.png","priority":50}</pre>
+{"type":"palladium:skin_change","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","texture":"minecraft:textures/entity/zombie/drowned.png","priority":50}</pre>
 </div>
 <hr>
 
@@ -3387,7 +4249,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3421,7 +4295,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -3434,7 +4308,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:slowfall","icon":"minecraft:feather","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
+{"type":"palladium:slowfall","icon":"minecraft:feather","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -3503,7 +4377,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3537,7 +4423,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -3550,7 +4436,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:vibrate","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null"}</pre>
+{"type":"palladium:vibrate","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -3619,7 +4505,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3653,7 +4551,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -3666,7 +4564,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:water_walk","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
+{"type":"palladium:water_walk","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -3733,7 +4631,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3767,7 +4677,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -3816,7 +4726,7 @@ animation_name</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"geckolib3:armor_animation","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","item":"test:example_item","controller":"main","animation":"animation_name"}</pre>
+{"type":"geckolib3:armor_animation","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","item":"test:example_item","controller":"main","animation":"animation_name"}</pre>
 </div>
 <hr>
 
@@ -3883,7 +4793,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -3917,7 +4839,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -3966,7 +4888,7 @@ animation_name</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"geckolib3:render_layer_animation","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"list_index":-1,"gui_position":"null","description":"null","render_layer":"test:example_layer","controller":"main","animation":"animation_name"}</pre>
+{"type":"geckolib3:render_layer_animation","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","render_layer":"test:example_layer","controller":"main","animation":"animation_name"}</pre>
 </div>
 <hr>
 
@@ -4003,7 +4925,7 @@ Icon for the ability</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-ItemIcon{stack=1 vibranium_circuit}</td>
+ItemIcon{stack=1 air}</td>
 </tr>
 <tr>
 <td>
@@ -4035,7 +4957,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -4069,7 +5003,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -4082,7 +5016,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"kubejs:testpack/test_ability","icon":"palladium:vibranium_circuit","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
+{"type":"kubejs:testpack/test_ability","icon":{"type":"palladium:item","item":"minecraft:air","count":0},"title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 
@@ -4151,7 +5085,19 @@ hidden</td>
 <td>
 Boolean</td>
 <td>
-Determines if the ability is visible in the ability bar and powers screen</td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -4185,7 +5131,7 @@ false</td>
 <td>
 description</td>
 <td>
-Component</td>
+AbilityDescription</td>
 <td>
 Description of the ability. Visible in ability menu</td>
 <td style="background-color: lightcoral">
@@ -4210,7 +5156,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"kubejs:testpack/test_ability_with_property","icon":"minecraft:barrier","title":"null","bar_color":"light_gray","hidden":false,"list_index":-1,"gui_position":"null","description":"null","some_important_number":0}</pre>
+{"type":"kubejs:testpack/test_ability_with_property","icon":"minecraft:barrier","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","some_important_number":0}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

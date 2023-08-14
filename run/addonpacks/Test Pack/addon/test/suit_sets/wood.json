@@ -4,9 +4,6 @@
   ],
   "armor_material": "test:wood",
   "creative_mode_tab": "combat",
-  "armor_texture": "test:textures/models/armor/wood_layer_1.png",
-  "armor_model_type": "minecraft:humanoid",
-  "armor_model_layer": "palladium:humanoid#suit",
   "chest": {
     "item_name": "wooden_chestplate",
     "tooltip": [
@@ -17,8 +14,7 @@
     "item_name": "wooden_leggings",
     "tooltip": [
       "Leggings"
-    ],
-    "armor_texture": "test:textures/models/armor/wood_layer_2.png"
+    ]
   },
   "feet": {
     "item_name": "wooden_boots",
@@ -28,6 +24,8 @@
   },
   "head": {
     "item_name": "wooden_helmet",
+    "openable": true,
+    "opening_time": 6,
     "tooltip": [
       "Helmet"
     ]

@@ -1,6 +1,10 @@
 package net.threetag.palladium.mixin.forge;
 
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.threetag.palladium.compat.geckolib.armor.GeckoArmorRenderer;
 import net.threetag.palladium.compat.geckolib.renderlayer.GeckoRenderLayerModel;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,6 +12,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
@@ -109,6 +114,11 @@ public class GeoArmorRendererMixin {
 
             }
         }
+    }
+
+    @Inject(method = "setCurrentItem", at = @At("HEAD"), remap = false)
+    public void setCurrentItem(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, CallbackInfoReturnable<GeoArmorRenderer> cir) {
+        GeckoArmorRenderer.RENDERED_ENTITY = entity;
     }
 
 }

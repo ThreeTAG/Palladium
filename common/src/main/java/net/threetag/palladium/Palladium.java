@@ -2,9 +2,11 @@ package net.threetag.palladium;
 
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.accessory.Accessories;
+import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.addonpack.parser.*;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
+import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.command.AbilityCommand;
 import net.threetag.palladium.command.PalladiumEntitySelectorOptions;
 import net.threetag.palladium.command.SuperpowerCommand;
@@ -31,12 +33,15 @@ import net.threetag.palladium.sound.PalladiumSoundEvents;
 import net.threetag.palladium.util.SupporterHandler;
 import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.icon.IconSerializers;
+import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.PalladiumProperties;
 import net.threetag.palladium.world.PalladiumConfiguredFeatures;
 import net.threetag.palladium.world.PalladiumFeatures;
 import net.threetag.palladium.world.PalladiumPlacedFeatures;
+import net.threetag.palladium.world.TrackedScoresManager;
 import net.threetag.palladiumcore.event.CommandEvents;
 import net.threetag.palladiumcore.event.LifecycleEvents;
+import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.util.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,6 +89,7 @@ public class Palladium {
         EntityEffects.init();
         SupporterHandler.init();
         PalladiumEntitySelectorOptions.init();
+        TrackedScoresManager.init();
 
         LifecycleEvents.SETUP.register(() -> {
             Palladium.generateDocumentation();
@@ -101,6 +107,27 @@ public class Palladium {
         if (!Platform.isProduction()) {
             PalladiumDebug.init();
         }
+
+        // Carry over data from old players to new
+        PlayerEvents.CLONE.register((oldPlayer, newPlayer, wasDeath) -> {
+            PowerManager.getPowerHandler(oldPlayer).ifPresent(handlerOld -> {
+                PowerManager.getPowerHandler(newPlayer).ifPresent(handlerNew -> {
+                    handlerNew.fromNBT(handlerOld.toNBT());
+                });
+            });
+
+            EntityPropertyHandler.getHandler(oldPlayer).ifPresent(handlerOld -> {
+                EntityPropertyHandler.getHandler(newPlayer).ifPresent(handlerNew -> {
+                    handlerNew.fromNBT(handlerOld.toNBT(true));
+                });
+            });
+
+            Accessory.getPlayerData(oldPlayer).ifPresent(handlerOld -> {
+                Accessory.getPlayerData(newPlayer).ifPresent(handlerNew -> {
+                    handlerNew.fromNBT(handlerOld.toNBT());
+                });
+            });
+        });
     }
 
     public static void generateDocumentation() {
@@ -114,6 +141,9 @@ public class Palladium {
             consumer.accept(BlockParser.documentationBuilder());
             consumer.accept(ItemParser.documentationBuilder());
             consumer.accept(IconSerializer.documentationBuilder());
+            consumer.accept(DynamicTexture.variableDocumentationBuilder());
+            consumer.accept(AccessoryParser.documentationBuilder());
+            consumer.accept(AccessorySlotParser.documentationBuilder());
             PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
         }
     }

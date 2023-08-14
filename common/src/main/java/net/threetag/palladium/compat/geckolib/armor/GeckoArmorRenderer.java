@@ -1,13 +1,17 @@
 package net.threetag.palladium.compat.geckolib.armor;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
+import net.threetag.palladium.compat.geckolib.renderlayer.GeckoRenderLayerModel;
+import net.threetag.palladium.util.context.DataContext;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 @SuppressWarnings("rawtypes")
 public class GeckoArmorRenderer<T extends ArmorItem & PackGeckoArmorItem> extends GeoArmorRenderer<T> {
 
+    public static LivingEntity RENDERED_ENTITY;
     public static final GeckoArmorRenderer INSTANCE = new GeckoArmorRenderer();
 
     public GeckoArmorRenderer() {
@@ -19,7 +23,7 @@ public class GeckoArmorRenderer<T extends ArmorItem & PackGeckoArmorItem> extend
 
             @Override
             public ResourceLocation getTextureResource(T object) {
-                return object.getGeckoTextureLocation();
+                return object.getGeckoTextureLocation().getTexture(DataContext.forEntity(RENDERED_ENTITY));
             }
 
             @Override

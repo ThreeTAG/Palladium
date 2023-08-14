@@ -9,11 +9,12 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.GuiUtil;
+import net.threetag.palladium.util.context.DataContext;
 
 public record IngredientIcon(Ingredient ingredient) implements IIcon {
 
     @Override
-    public void draw(Minecraft mc, PoseStack stack, int x, int y, int width, int height) {
+    public void draw(Minecraft mc, DataContext context, PoseStack stack, int x, int y, int width, int height) {
         stack.pushPose();
         stack.translate(x + width / 2D, y + height / 2D, 100);
 

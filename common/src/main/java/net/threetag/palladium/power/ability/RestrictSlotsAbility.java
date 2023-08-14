@@ -25,24 +25,21 @@ public class RestrictSlotsAbility extends Ability {
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         if (enabled && !entity.level.isClientSide) {
             for (PlayerSlot slot : entry.getProperty(SLOTS)) {
-                for (ItemStack item : slot.getItems(entity)) {
+                var items = slot.getItems(entity);
+                slot.clear(entity);
+                for (ItemStack item : items) {
                     if (!item.isEmpty()) {
                         this.drop(entity, item, slot);
                     }
                 }
-                slot.clear(entity);
             }
         }
     }
 
     public void drop(LivingEntity entity, ItemStack stack, PlayerSlot slot) {
         if (entity instanceof Player player) {
-            if(slot.getEquipmentSlot() == EquipmentSlot.MAINHAND) {
+            if (!player.getInventory().add(stack)) {
                 player.drop(stack, true);
-            } else {
-                if (!player.getInventory().add(stack)) {
-                    player.drop(stack, true);
-                }
             }
         } else {
             entity.spawnAtLocation(stack);

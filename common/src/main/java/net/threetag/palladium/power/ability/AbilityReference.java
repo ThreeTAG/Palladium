@@ -73,10 +73,9 @@ public class AbilityReference {
     public boolean equals(Object object) {
         if (this == object) {
             return true;
-        } else if (!(object instanceof AbilityReference)) {
+        } else if (!(object instanceof AbilityReference reference)) {
             return false;
         } else {
-            AbilityReference reference = (AbilityReference) object;
             return this.powerId.equals(reference.powerId) && this.abilityId.equals(reference.abilityId);
         }
     }

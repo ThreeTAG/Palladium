@@ -30,7 +30,7 @@ public class SyncAccessoriesMessage extends MessageS2C {
         int amount = buf.readInt();
         this.accessories = new HashMap<>();
         for (int i = 0; i < amount; i++) {
-            AccessorySlot slot = AccessorySlot.getSlotByName(buf.readUtf());
+            AccessorySlot slot = AccessorySlot.getSlotByName(buf.readResourceLocation());
             List<Accessory> accessories1 = new ArrayList<>();
             int slotAmount = buf.readInt();
             for (int j = 0; j < slotAmount; j++) {
@@ -55,7 +55,7 @@ public class SyncAccessoriesMessage extends MessageS2C {
         buf.writeInt(this.accessories.size());
 
         this.accessories.forEach((slot, accessories) -> {
-            buf.writeUtf(slot.getName());
+            buf.writeResourceLocation(slot.getName());
             buf.writeInt(accessories.size());
             for (Accessory accessory : accessories) {
                 buf.writeResourceLocation(Accessory.REGISTRY.getKey(accessory));

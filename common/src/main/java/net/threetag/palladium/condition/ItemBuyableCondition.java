@@ -99,8 +99,8 @@ public class ItemBuyableCondition extends BuyableCondition {
         }
 
         @Override
-        public ConditionContextType getContextType() {
-            return ConditionContextType.ABILITIES;
+        public ConditionEnvironment getContextEnvironment() {
+            return ConditionEnvironment.DATA;
         }
 
         @Override

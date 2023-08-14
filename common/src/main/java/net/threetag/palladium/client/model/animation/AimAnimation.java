@@ -20,12 +20,8 @@ public class AimAnimation extends PalladiumAnimation {
         if (right > 0F) {
             if (firstPersonContext.firstPerson()) {
                 builder.get(PlayerModelPart.RIGHT_ARM)
-                        .setX(-3.5F / 16F)
-                        .setY(1.5F / 16F)
-                        .setZ(1.5F / 16F)
-                        .setXRot((float) -Math.toRadians(20))
-                        .setYRot((float) -Math.toRadians(27))
-                        .setZRot((float) -Math.toRadians(30))
+                        .setY(-1).setX(-5).setZ(4)
+                        .setXRotDegrees(-8.5F).setYRotDegrees(-32.5F).setZRotDegrees(-33F)
                         .animate(Easing.INOUTSINE, right);
             } else {
                 builder.get(PlayerModelPart.RIGHT_ARM)
@@ -39,12 +35,8 @@ public class AimAnimation extends PalladiumAnimation {
         if (left > 0) {
             if (firstPersonContext.firstPerson()) {
                 builder.get(PlayerModelPart.LEFT_ARM)
-                        .setX(3.5F / 16F)
-                        .setY(1.5F / 16F)
-                        .setZ(1.5F / 16F)
-                        .setXRot((float) -Math.toRadians(20))
-                        .setYRot((float) Math.toRadians(27))
-                        .setZRot((float) Math.toRadians(30))
+                        .setY(-1).setX(5).setZ(4)
+                        .setXRotDegrees(-8.5F).setYRotDegrees(32.5F).setZRotDegrees(33F)
                         .animate(Easing.INOUTSINE, left);
             } else {
                 builder.get(PlayerModelPart.LEFT_ARM)

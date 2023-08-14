@@ -48,3 +48,5 @@ accessible method net/minecraft/world/entity/decoration/ArmorStand brokenByAnyth
 accessible method net/minecraft/world/entity/Entity isInRain ()Z
 
 transitive-accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry
+
+accessible field net/minecraft/server/ServerScoreboard trackedObjectives Ljava/util/Set;

@@ -18,6 +18,7 @@ import net.minecraft.util.Mth;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.util.context.DataContext;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -62,7 +63,7 @@ public class AbilityWidget extends GuiComponent {
         var description = abilityEntry.getProperty(Ability.DESCRIPTION);
         this.description = Language.getInstance()
                 .getVisualOrder(
-                        this.findOptimalLines(ComponentUtils.mergeStyles(description != null ? description.copy() : Component.empty(), Style.EMPTY.withColor(ChatFormatting.WHITE)), l)
+                        this.findOptimalLines(ComponentUtils.mergeStyles(description != null ? description.get(this.abilityEntry.isUnlocked()).copy() : Component.empty(), Style.EMPTY.withColor(ChatFormatting.WHITE)), l)
                 );
 
         for (FormattedCharSequence formattedCharSequence : this.description) {
@@ -148,7 +149,7 @@ public class AbilityWidget extends GuiComponent {
 
     public void drawDisplayIcon(Minecraft mc, PoseStack stack, int x, int y) {
         if (this.abilityEntry.isUnlocked()) {
-            this.abilityEntry.getProperty(Ability.ICON).draw(mc, stack, x, y);
+            this.abilityEntry.getProperty(Ability.ICON).draw(mc, DataContext.forAbility(mc.player, this.abilityEntry), stack, x, y);
         } else {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShader(GameRenderer::getPositionTexShader);

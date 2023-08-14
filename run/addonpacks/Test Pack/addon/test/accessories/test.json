@@ -1,0 +1,6 @@
+{
+  "type": "palladium:render_layer",
+  "slot": "test:render_layer_switch_test",
+  "render_layer": "test:render_layer_switch_option",
+  "disable_rendering": true
+}

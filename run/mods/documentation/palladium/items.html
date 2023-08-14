@@ -331,35 +331,11 @@ true</td>
 </tr>
 <tr>
 <td>
-armor_texture</td>
-<td>
-DynamicTexture</td>
-<td>
-Armor texture (rendered on the player when wearing it). Can be a dynamic one like in render layers</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-armor_model_type</td>
+armor_renderer</td>
 <td>
 ResourceLocation</td>
 <td>
-Armor model type, defines the bones for the model layer. Ideally only use minecraft:humanoid for 1 layer or minecraft:player for 2 layers</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-minecraft:humanoid</td>
-</tr>
-<tr>
-<td>
-armor_model_layer</td>
-<td>
-ModelLayerLocation</td>
-<td>
-Armor model layer, must have the body parts for a humanoid model (if not specified for another model type).</td>
+Location of the armor renderer file. Doesn't need to be specified, it will automatically look for one in a path corresponding to the item's ID: A 'test:item' will look for the armor renderer file at 'assets/test/palladium/armor_renderers/item.json'.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -367,22 +343,70 @@ false</td>
 </tr>
 <tr>
 <td>
-hide_second_player_layer</td>
+openable</td>
 <td>
 Boolean</td>
 <td>
-If enabled, the second player layer will be hidden when worn (only on the corresponding body part)</td>
+Marks the armor piece as openable.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
 false</td>
+</tr>
+<tr>
+<td>
+opening_time</td>
+<td>
+Integer</td>
+<td>
+Determines the time the item needs for it to be fully opened. Leave at 0 for instant. Needs 'openable' to be enabled to take effect.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+opened_sound</td>
+<td>
+ResourceLocation</td>
+<td>
+Sound that is played when the suit has been fully opened.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+closed_sound</td>
+<td>
+ResourceLocation</td>
+<td>
+Sound that is played when the suit has been fully closed.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+opening_toggle_sound</td>
+<td>
+ResourceLocation</td>
+<td>
+Sound that is played when opening button has been pressed.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","armor_texture":"example:textures/models/armor/example_armor.png","armor_model_type":"minecraft:humanoid","armor_model_layer":"palladium:humanoid#suit","hide_second_player_layer":true}</pre>
+{"type":"palladium:armor","slot":"chest","armor_material":"minecraft:diamond","armor_renderer":"test:item_renderer","openable":false,"opening_time":10,"opened_sound":"minecraft:item.armor.equip_leather","closed_sound":"minecraft:item.armor.equip_leather","opening_toggle_sound":"minecraft:item.armor.equip_leather"}</pre>
 </div>
 <hr>
 

@@ -4,11 +4,15 @@ import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -18,41 +22,66 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
-import net.threetag.palladium.client.model.ArmorModelManager;
+import net.threetag.palladium.client.renderer.item.armor.*;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.PlayerSlot;
+import net.threetag.palladium.util.PlayerUtil;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
+import net.threetag.palladiumcore.item.IPalladiumItem;
 import net.threetag.palladiumcore.util.Platform;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArmor {
+public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRenderer, Openable, IPalladiumItem {
 
     private List<Component> tooltipLines;
     private RenderLayerContainer renderLayerContainer = null;
     private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
-    private boolean hideSecondLayer = false;
+    protected ResourceLocation rendererFile;
+    private Object renderer;
+    private boolean openable = false;
+    private int openingTime = 0;
+    private ResourceLocation openedSound, closedSound, toggleSound;
 
     public AddonArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
         super(armorMaterial, equipmentSlot, properties);
     }
 
-    public AddonArmorItem hideSecondLayer() {
-        this.hideSecondLayer = true;
+    public AddonArmorItem setRenderer(ResourceLocation renderer) {
+        this.rendererFile = renderer;
+        return this;
+    }
+
+    public AddonArmorItem enableOpenable(boolean openable, int openingTime, ResourceLocation openedSound, ResourceLocation closedSound, ResourceLocation toggleSound) {
+        this.openable = openable;
+        this.openingTime = openingTime;
+        this.openedSound = openedSound;
+        this.closedSound = closedSound;
+        this.toggleSound = toggleSound;
         return this;
     }
 
     @Override
-    public boolean hideSecondPlayerLayer(Player player, ItemStack stack, EquipmentSlot slot) {
-        return this.hideSecondLayer;
+    public void setCachedArmorRenderer(Object object) {
+        this.renderer = object;
+    }
+
+    @Override
+    public Object getCachedArmorRenderer() {
+        return this.renderer;
+    }
+
+    @Override
+    public ResourceLocation getArmorRendererFile() {
+        return this.rendererFile != null ? this.rendererFile : ArmorWithRenderer.super.getArmorRendererFile();
     }
 
     @Override
@@ -64,7 +93,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArm
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
+    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
         return this.attributeContainer.get(PlayerSlot.get(slot), super.getDefaultAttributeModifiers(slot));
     }
 
@@ -88,6 +117,51 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArm
         return this.renderLayerContainer;
     }
 
+    @Override
+    public boolean canBeOpened(LivingEntity entity, ItemStack stack) {
+        return this.openable;
+    }
+
+    @Override
+    public int getOpeningTime(ItemStack stack) {
+        return this.openingTime;
+    }
+
+    @Override
+    public void onFullyClosed(LivingEntity entity, ItemStack stack) {
+        if (this.closedSound != null) {
+            PlayerUtil.playSoundToAll(entity.level, entity.getX(), entity.getEyeY(), entity.getZ(), 50, this.closedSound, SoundSource.PLAYERS);
+        }
+    }
+
+    @Override
+    public void onFullyOpened(LivingEntity entity, ItemStack stack) {
+        if (this.closedSound != null) {
+            PlayerUtil.playSoundToAll(entity.level, entity.getX(), entity.getEyeY(), entity.getZ(), 50, this.openedSound, SoundSource.PLAYERS);
+        }
+    }
+
+    @Override
+    public void onOpeningStateChange(LivingEntity entity, ItemStack stack, boolean open) {
+        if (this.toggleSound != null) {
+            PlayerUtil.playSoundToAll(entity.level, entity.getX(), entity.getEyeY(), entity.getZ(), 50, this.toggleSound, SoundSource.PLAYERS);
+        }
+    }
+
+    @Override
+    public void armorTick(ItemStack stack, Level level, Player player) {
+        if (this.openable) {
+            Openable.onTick(player, stack);
+        }
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        if (this.openable && entity instanceof LivingEntity living) {
+            Openable.onTick(living, stack);
+        }
+    }
+
     public static class Parser implements ItemParser.ItemTypeSerializer {
 
         @Override
@@ -104,40 +178,49 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArm
                 throw new JsonParseException("The given slot type must be for an armor item");
             }
 
-            AddonArmorItem item = new AddonArmorItem(armorMaterial, slot, properties);
+            var item = new AddonArmorItem(armorMaterial, slot, properties);
+
+            item.rendererFile = GsonUtil.getAsResourceLocation(json, "armor_renderer", null);
+
+            item.enableOpenable(
+                    GsonHelper.getAsBoolean(json, "openable", false),
+                    GsonUtil.getAsIntMin(json, "opening_time", 0, 0),
+                    GsonUtil.getAsResourceLocation(json, "opened_sound", null),
+                    GsonUtil.getAsResourceLocation(json, "closed_sound", null),
+                    GsonUtil.getAsResourceLocation(json, "opening_toggle_sound", null)
+            );
 
             if (Platform.isClient()) {
-                String modelTypeKey = "armor_model_type";
-
-                if (!json.has(modelTypeKey) && json.has("armor_model")) {
-                    AddonPackLog.warning("Deprecated use of 'armor_model' in render layer. Please switch to 'armor_model_type'!");
-                    modelTypeKey = "armor_model";
-                }
-
-                String finalModelTypeKey = modelTypeKey;
-                GsonUtil.ifHasKey(json, "armor_model_layer", jsonElement -> {
-                    ArmorModelManager.register(item,
-                            json.has(finalModelTypeKey) ? SkinTypedValue.fromJSON(json.get(finalModelTypeKey), jsonElement1 -> {
-                                ResourceLocation modelId = new ResourceLocation(jsonElement1.getAsString());
-                                ModelLookup.Model m = ModelLookup.get(modelId);
-
-                                if (m == null) {
-                                    throw new JsonParseException("Unknown model type '" + modelId + "'");
-                                }
-
-                                return m;
-                            }) : new SkinTypedValue<>(ModelLookup.HUMANOID),
-                            SkinTypedValue.fromJSON(jsonElement, jsonElement1 -> GsonUtil.convertToModelLayerLocation(jsonElement1, "armor_model_layer")),
-                            SkinTypedValue.fromJSON(json.get("armor_texture"), DynamicTexture::parse)
-                    );
-                });
-
-                if (GsonHelper.getAsBoolean(json, "hide_second_player_layer", false)) {
-                    item.hideSecondLayer();
-                }
+                this.clientLegacySupport(item, json);
             }
 
             return item;
+        }
+
+        @Environment(EnvType.CLIENT)
+        private void clientLegacySupport(AddonArmorItem item, JsonObject json) {
+            if (json.has("armor_model_layer") && json.has("armor_texture")) {
+                Palladium.LOGGER.warn("Deprecated use of armor model layers and/or textures in item json file found, please switch to an separate armor renderer file!");
+
+                ModelLookup.Model m = ModelLookup.HUMANOID;
+
+                if (json.has("armor_model_type")) {
+                    var modelTypeId = GsonUtil.getAsResourceLocation(json, "armor_model_type");
+                    m = ModelLookup.get(modelTypeId);
+
+                    if (m == null) {
+                        throw new JsonParseException("Unknown model type '" + modelTypeId + "'");
+                    }
+                }
+
+                var textures = new ArmorTextureData();
+                textures.add("default", SkinTypedValue.fromJSON(json.get("armor_texture"), DynamicTexture::parse));
+
+                var models = new ArmorModelData();
+                models.add("default", SkinTypedValue.fromJSON(json.get("armor_model_layer"), j -> GsonUtil.convertToModelLayerLocation(j, "armor_model_layer")));
+
+                ArmorRendererManager.LEGACY_SUPPORT.put(item, new ArmorRendererData(m, textures, models, new ArmorRendererConditions()));
+            }
         }
 
         @Override
@@ -152,21 +235,29 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ExtendedArm
                     .description("Armor material, which defines certain characteristics about the armor. Open armor_materials.html for seeing how to make custom ones. Possible values: " + Arrays.toString(ArmorMaterialParser.getIds().toArray(new ResourceLocation[0])))
                     .required().exampleJson(new JsonPrimitive("minecraft:diamond"));
 
-            builder.addProperty("armor_texture", DynamicTexture.class)
-                    .description("Armor texture (rendered on the player when wearing it). Can be a dynamic one like in render layers")
-                    .required().exampleJson(new JsonPrimitive("example:textures/models/armor/example_armor.png"));
+            builder.addProperty("armor_renderer", ResourceLocation.class)
+                    .description("Location of the armor renderer file. Doesn't need to be specified, it will automatically look for one in a path corresponding to the item's ID: A 'test:item' will look for the armor renderer file at 'assets/test/palladium/armor_renderers/item.json'.")
+                    .fallback(null).exampleJson(new JsonPrimitive("test:item_renderer"));
 
-            builder.addProperty("armor_model_type", ResourceLocation.class)
-                    .description("Armor model type, defines the bones for the model layer. Ideally only use minecraft:humanoid for 1 layer or minecraft:player for 2 layers")
-                    .fallbackObject(new ResourceLocation("minecraft:humanoid")).exampleJson(new JsonPrimitive("minecraft:humanoid"));
+            builder.addProperty("openable", Boolean.class)
+                    .description("Marks the armor piece as openable.")
+                    .fallback(false).exampleJson(new JsonPrimitive(false));
 
-            builder.addProperty("armor_model_layer", ModelLayerLocation.class)
-                    .description("Armor model layer, must have the body parts for a humanoid model (if not specified for another model type).")
-                    .fallbackObject(null).exampleJson(new JsonPrimitive("palladium:humanoid#suit"));
+            builder.addProperty("opening_time", Integer.class)
+                    .description("Determines the time the item needs for it to be fully opened. Leave at 0 for instant. Needs 'openable' to be enabled to take effect.")
+                    .fallback(0).exampleJson(new JsonPrimitive(10));
 
-            builder.addProperty("hide_second_player_layer", Boolean.class)
-                    .description("If enabled, the second player layer will be hidden when worn (only on the corresponding body part)")
-                    .fallback(false).exampleJson(new JsonPrimitive(true));
+            builder.addProperty("opened_sound", ResourceLocation.class)
+                    .description("Sound that is played when the suit has been fully opened.")
+                    .fallback(null).exampleJson(new JsonPrimitive("minecraft:item.armor.equip_leather"));
+
+            builder.addProperty("closed_sound", ResourceLocation.class)
+                    .description("Sound that is played when the suit has been fully closed.")
+                    .fallback(null).exampleJson(new JsonPrimitive("minecraft:item.armor.equip_leather"));
+
+            builder.addProperty("opening_toggle_sound", ResourceLocation.class)
+                    .description("Sound that is played when opening button has been pressed.")
+                    .fallback(null).exampleJson(new JsonPrimitive("minecraft:item.armor.equip_leather"));
         }
 
         @Override

@@ -161,7 +161,7 @@ public class PowerHandler implements IPowerHandler {
     }
 
     public void savePowerNbt(IPowerHolder holder) {
-        this.powerData.put(holder.getPower().getId().toString(), holder.toNBT());
+        this.powerData.put(holder.getPower().getId().toString(), holder.toNBT(true));
     }
 
     public void cleanPowerData() {

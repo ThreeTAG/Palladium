@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.threetag.palladium.entity.PalladiumPlayerExtension;
 
 import java.util.function.Function;
 
@@ -52,6 +53,26 @@ public class CapedHumanoidModel<T extends LivingEntity> extends HumanoidModel<T>
 
             float rotation = 6.0F + f2 / 2.0F + f1;
             this.cape.xRot = (float) Math.toRadians(rotation + 10F);
+
+            if (player instanceof PalladiumPlayerExtension extension) {
+                var flight = extension.palladium$getFlightHandler();
+                float hoveringAnimation = flight.getHoveringAnimation(partialTicks) - flight.getLevitationAnimation(partialTicks);
+
+                if (hoveringAnimation > 0F) {
+                    this.cape.xRot += (Math.toRadians(20F + Mth.sin((player.tickCount + partialTicks) / 20F) * 5F) - this.cape.xRot) * hoveringAnimation;
+                }
+
+                float flightAnimation = flight.getFlightAnimation(partialTicks);
+
+                if (flightAnimation <= 1F) {
+                    return;
+                }
+
+                flightAnimation = (flightAnimation - 1F) / 2F;
+                this.cape.xRot += (Math.toRadians(10F) - this.cape.xRot) * flightAnimation;
+            }
+        } else {
+            this.cape.xRot = (float) Math.toRadians(20F + Mth.sin((entity.tickCount + partialTicks) / 30F) * 5F);
         }
     }
 }

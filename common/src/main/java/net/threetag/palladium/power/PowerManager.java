@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -14,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
+import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
 import net.threetag.palladium.network.SyncPowersMessage;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
@@ -78,8 +78,11 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
         return this.byName.values();
     }
 
-    @ExpectPlatform
-    public static Optional<IPowerHandler> getPowerHandler(LivingEntity entity) {
-        throw new AssertionError();
+    public static Optional<PowerHandler> getPowerHandler(LivingEntity entity) {
+        if (entity instanceof PalladiumLivingEntityExtension ext) {
+            return Optional.of(ext.palladium$getPowerHandler());
+        } else {
+            return Optional.empty();
+        }
     }
 }

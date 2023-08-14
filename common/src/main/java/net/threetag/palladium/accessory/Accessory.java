@@ -1,7 +1,6 @@
 package net.threetag.palladium.accessory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
@@ -22,6 +21,7 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.entity.PalladiumPlayerExtension;
 import net.threetag.palladium.util.SupporterHandler;
 import net.threetag.palladiumcore.registry.PalladiumRegistry;
 import net.threetag.palladiumcore.util.Platform;
@@ -35,13 +35,23 @@ import java.util.Optional;
 public abstract class Accessory {
 
     public static final PalladiumRegistry<Accessory> REGISTRY = PalladiumRegistry.create(Accessory.class, Palladium.id("accessories"));
+    private boolean exclusive = false;
 
     public boolean isAvailable(Player entity) {
-        return !Platform.isProduction() || SupporterHandler.getPlayerData(entity.getUUID()).hasAccessory(this);
+        return this.isAvailable(SupporterHandler.getPlayerData(entity.getUUID()));
+    }
+
+    public boolean isAvailable(SupporterHandler.PlayerData data) {
+        return !this.exclusive || !Platform.isProduction() || data.hasAccessory(this);
     }
 
     public Component getDisplayName() {
         return Component.translatable(Util.makeDescriptionId("accessory", REGISTRY.getKey(this)));
+    }
+
+    public Accessory setExclusive() {
+        this.exclusive = true;
+        return this;
     }
 
     @Environment(EnvType.CLIENT)
@@ -60,6 +70,24 @@ public abstract class Accessory {
     @Environment(EnvType.CLIENT)
     public boolean isVisible(AccessorySlot slot, AbstractClientPlayer player, boolean isFirstPerson) {
         return (slot.getCorrespondingEquipmentSlot() == null || player.getItemBySlot(slot.getCorrespondingEquipmentSlot()).isEmpty()) && !slot.wasHidden(player, isFirstPerson);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public boolean canRenderAsArm(AccessorySlot slot, HumanoidArm arm, AbstractClientPlayer player) {
+        if (player.getMainArm() == HumanoidArm.RIGHT) {
+            if (slot == AccessorySlot.MAIN_ARM || slot == AccessorySlot.MAIN_HAND) {
+                return arm == HumanoidArm.RIGHT;
+            } else if (slot == AccessorySlot.OFF_ARM || slot == AccessorySlot.OFF_HAND) {
+                return arm == HumanoidArm.LEFT;
+            }
+        } else {
+            if (slot == AccessorySlot.MAIN_ARM || slot == AccessorySlot.MAIN_HAND) {
+                return arm == HumanoidArm.LEFT;
+            } else if (slot == AccessorySlot.OFF_ARM || slot == AccessorySlot.OFF_HAND) {
+                return arm == HumanoidArm.RIGHT;
+            }
+        }
+        return false;
     }
 
     @Environment(EnvType.CLIENT)
@@ -90,9 +118,9 @@ public abstract class Accessory {
     public static List<Accessory> getAvailableAccessories(SupporterHandler.PlayerData data) {
         List<Accessory> list = new ArrayList<>();
 
-        for (Accessory Accessory : Accessory.REGISTRY.getValues()) {
-            if (!Platform.isProduction() || data.hasAccessory(Accessory)) {
-                list.add(Accessory);
+        for (Accessory accessory : Accessory.REGISTRY.getValues()) {
+            if (accessory.isAvailable(data)) {
+                list.add(accessory);
             }
         }
 
@@ -102,18 +130,21 @@ public abstract class Accessory {
     public static List<Accessory> getAvailableAccessories(SupporterHandler.PlayerData data, AccessorySlot slot) {
         List<Accessory> list = new ArrayList<>();
 
-        for (Accessory Accessory : Accessory.REGISTRY.getValues()) {
-            if (Accessory.getPossibleSlots().contains(slot) && data.hasAccessory(Accessory)) {
-                list.add(Accessory);
+        for (Accessory accessory : Accessory.REGISTRY.getValues()) {
+            if (accessory.getPossibleSlots().contains(slot) && accessory.isAvailable(data)) {
+                list.add(accessory);
             }
         }
 
         return list;
     }
 
-    @ExpectPlatform
     public static Optional<AccessoryPlayerData> getPlayerData(Player player) {
-        throw new AssertionError();
+        if (player instanceof PalladiumPlayerExtension ext) {
+            return Optional.of(ext.palladium$getAccessories());
+        } else {
+            return Optional.empty();
+        }
     }
 
     public static class ReloadManager implements ResourceManagerReloadListener {

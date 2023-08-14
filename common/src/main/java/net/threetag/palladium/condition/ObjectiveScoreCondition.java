@@ -1,10 +1,8 @@
 package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.util.property.IntegerProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.StringProperty;
@@ -21,7 +19,13 @@ public class ObjectiveScoreCondition extends Condition {
     }
 
     @Override
-    public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
+    public boolean active(DataContext context) {
+        var entity = context.get(DataContextType.ENTITY);
+
+        if (entity == null) {
+            return false;
+        }
+
         var objective = entity.level.getScoreboard().getObjective(this.objectiveName);
 
         if (objective != null) {
@@ -60,7 +64,7 @@ public class ObjectiveScoreCondition extends Condition {
 
         @Override
         public String getDocumentationDescription() {
-            return "Checks if the player has a score in a specific objective.";
+            return "Checks if the player has a score in a specific objective. IF YOU USE THIS, MAKE A 'tracked_score.json' AND PUT THE OBJECTIVE NAME IN IT, MORE ON THE WIKI!";
         }
     }
 }

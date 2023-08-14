@@ -1,0 +1,27 @@
+{
+  "textures": {
+    "default": "test:textures/models/armor/wood_helmet_0.png",
+    "open": {
+      "base": "test:textures/models/armor/wood_helmet_#X.png",
+      "variables": {
+        "X": {
+          "type": "palladium:openable_equipment_progress"
+        }
+      }
+    }
+  },
+  "textures:alternative_way_example": {
+    "default": "test:textures/models/armor/wood_helmet_0.png",
+    "open_1": "test:textures/models/armor/wood_helmet_1.png",
+    "open_2": "test:textures/models/armor/wood_helmet_2.png",
+    "open_3": "test:textures/models/armor/wood_helmet_3.png",
+    "open_4": "test:textures/models/armor/wood_helmet_4.png",
+    "open_5": "test:textures/models/armor/wood_helmet_5.png",
+    "open_6": "test:textures/models/armor/wood_helmet_6.png"
+  },
+  "hide_second_layer": true,
+  "hide_second_layer:alternative_way_example": {
+    "type": "palladium:on_ground"
+  },
+  "model_layers": "palladium:humanoid#suit"
+}

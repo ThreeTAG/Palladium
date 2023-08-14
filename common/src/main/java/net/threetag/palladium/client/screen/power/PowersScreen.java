@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -57,7 +58,7 @@ public class PowersScreen extends Screen {
     private static final Component TITLE = Component.translatable("gui.palladium.powers");
     private final List<PowerTab> tabs = new ArrayList<>();
     @Nullable
-    private PowerTab selectedTab;
+    public PowerTab selectedTab;
     private boolean isScrolling;
     private static int tabPage;
     private static int maxPages;
@@ -90,7 +91,7 @@ public class PowersScreen extends Screen {
                     public IIcon getIcon() {
                         List<IIcon> icons = Lists.newArrayList();
                         Minecraft mc = Minecraft.getInstance();
-                        PowerManager.getPowerHandler(mc.player).ifPresent(handler -> handler.getPowerHolders().values().stream().filter(holder -> !holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN))).forEach(holder -> icons.add(holder.getPower().getIcon())));
+                        PowerManager.getPowerHandler(mc.player).ifPresent(handler -> handler.getPowerHolders().values().stream().filter(holder -> !holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN_IN_GUI))).forEach(holder -> icons.add(holder.getPower().getIcon())));
                         if (icons.size() <= 0) {
                             icons.add(new ItemIcon(Blocks.BARRIER));
                         }
@@ -118,10 +119,12 @@ public class PowersScreen extends Screen {
 
         AtomicInteger i = new AtomicInteger();
         PowerManager.getPowerHandler(this.minecraft.player).ifPresent(handler -> handler.getPowerHolders().values().forEach(holder -> {
-            if (!holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN))) {
+            if (!holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN_IN_GUI))) {
                 this.tabs.add(PowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
             }
         }));
+
+        this.tabs.sort(Comparator.comparingInt(o -> PowerManager.getInstance(false).getPowers().stream().toList().indexOf(o.powerHolder.getPower())));
 
         if (this.tabs.size() > PowerTabType.MAX_TABS) {
             int guiLeft = (this.width - WINDOW_WIDTH) / 2;
@@ -142,6 +145,11 @@ public class PowersScreen extends Screen {
         if (this.overlayScreen != null) {
             this.overlayScreen.init(this.minecraft, this.width, this.height);
         }
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
     }
 
     @Override

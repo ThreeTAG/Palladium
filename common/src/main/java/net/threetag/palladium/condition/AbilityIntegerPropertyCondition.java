@@ -2,9 +2,8 @@ package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.util.property.IntegerProperty;
@@ -29,7 +28,14 @@ public class AbilityIntegerPropertyCondition extends Condition {
     }
 
     @Override
-    public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
+    public boolean active(DataContext context) {
+        var entity = context.getLivingEntity();
+        var holder = context.getPowerHolder();
+
+        if (entity == null) {
+            return false;
+        }
+
         AbilityEntry dependency = null;
         if (this.power != null) {
             dependency = AbilityUtil.getEntry(entity, this.power, this.abilityId);

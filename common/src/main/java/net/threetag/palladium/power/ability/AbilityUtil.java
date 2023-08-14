@@ -61,6 +61,50 @@ public class AbilityUtil {
     }
 
     /**
+     * Returns all enabled ability entries from the given entity
+     *
+     * @param entity Entity having abilities
+     * @return List of all enabled ability entries
+     */
+    @NotNull
+    public static Collection<AbilityEntry> getEnabledEntries(LivingEntity entity) {
+        List<AbilityEntry> entries = new ArrayList<>();
+        PowerManager.getPowerHandler(entity).ifPresent(handler -> {
+            for (IPowerHolder holder : handler.getPowerHolders().values()) {
+                Collection<AbilityEntry> values = holder.getAbilities().values();
+                for (AbilityEntry value : values) {
+                    if (value.isEnabled()) {
+                        entries.add(value);
+                    }
+                }
+            }
+        });
+        return entries;
+    }
+
+    /**
+     * Returns all enabled render layer ability entries from the given entity
+     *
+     * @param entity Entity having abilities
+     * @return List of all enabled render layer ability entries
+     */
+    @NotNull
+    public static Collection<AbilityEntry> getEnabledRenderLayerEntries(LivingEntity entity) {
+        List<AbilityEntry> entries = new ArrayList<>();
+        PowerManager.getPowerHandler(entity).ifPresent(handler -> {
+            for (IPowerHolder holder : handler.getPowerHolders().values()) {
+                Collection<AbilityEntry> values = holder.getAbilities().values();
+                for (AbilityEntry value : values) {
+                    if (value.getConfiguration().getAbility() instanceof RenderLayerProviderAbility && value.isEnabled()) {
+                        entries.add(value);
+                    }
+                }
+            }
+        });
+        return entries;
+    }
+
+    /**
      * Returns all enabled ability entries of the given ability type from the entity
      *
      * @param entity    Entity having abilities

@@ -32,14 +32,15 @@ public class SetFlyingStateMessage extends MessageC2S {
     @Override
     public void handle(MessageContext context) {
         if (context.getPlayer() instanceof PalladiumPlayerExtension extension) {
+            var flight = extension.palladium$getFlightHandler();
             if (this.flying) {
                 var flightType = FlightHandler.getAvailableFlightType(context.getPlayer());
 
                 if (flightType.isNotNull()) {
-                    extension.palladium_setFlightType(flightType);
+                    flight.setFlightType(flightType);
                 }
             } else {
-                extension.palladium_setFlightType(FlightHandler.FlightType.NONE);
+                flight.setFlightType(FlightHandler.FlightType.NONE);
             }
 
             context.getPlayer().getAbilities().flying = false;

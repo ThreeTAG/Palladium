@@ -4,19 +4,22 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.condition.Condition;
+import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.entity.BodyPart;
+import net.threetag.palladium.power.ability.AbilityReference;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class AccessorySlot {
 
@@ -35,12 +38,13 @@ public class AccessorySlot {
     public static final AccessorySlot LEFT_LEG = register("left_leg").setIcon(Palladium.id("textures/gui/accessory_slots/left_leg.png"));
     public static final AccessorySlot SPECIAL = register("special").setIcon(Palladium.id("textures/gui/accessory_slots/special.png")).allowMultiple();
 
-    private final String name;
+    private final ResourceLocation name;
     private boolean multiple = false;
     private EquipmentSlot equipmentSlot;
     private ResourceLocation icon;
+    private List<Condition> visible = new ArrayList<>();
 
-    public AccessorySlot(String name) {
+    private AccessorySlot(ResourceLocation name) {
         this.name = name;
     }
 
@@ -59,16 +63,27 @@ public class AccessorySlot {
         return this;
     }
 
+    public AccessorySlot addVisibilityCondition(Condition condition) {
+        if (Platform.isClient()) {
+            this.visible.add(condition);
+        }
+        return this;
+    }
+
     public EquipmentSlot getCorrespondingEquipmentSlot() {
         return this.equipmentSlot;
     }
 
-    public String getName() {
+    public ResourceLocation getName() {
         return name;
     }
 
+    public String getTranslationKey() {
+        return Util.makeDescriptionId("accessory_slot", this.name);
+    }
+
     public Component getDisplayName() {
-        return Component.translatable("accessory_slot." + this.name);
+        return Component.translatable(this.getTranslationKey());
     }
 
     public boolean allowsMultiple() {
@@ -79,10 +94,14 @@ public class AccessorySlot {
         return this.icon;
     }
 
+    public boolean isVisible(DataContext context) {
+        return ConditionSerializer.checkConditions(this.visible, context);
+    }
+
     @Environment(EnvType.CLIENT)
     public boolean wasHidden(Player player, boolean isFirstPerson) {
         var result = BodyPart.getModifiedBodyParts(player, isFirstPerson, false);
-        return this.getHiddenBodyParts(player).stream().anyMatch(result::isHiddenOrRemoved);
+        return this.getHiddenBodyParts(player).stream().filter(p -> !p.isOverlay()).anyMatch(result::isHiddenOrRemoved);
     }
 
     public Collection<BodyPart> getHiddenBodyParts(Player player) {
@@ -102,14 +121,20 @@ public class AccessorySlot {
         return Collections.emptyList();
     }
 
-    public static AccessorySlot register(String name) {
+    public static AccessorySlot register(ResourceLocation name) {
         AccessorySlot slot = new AccessorySlot(name);
         SLOTS.add(slot);
         return slot;
     }
 
+    private static AccessorySlot register(String name) {
+        AccessorySlot slot = new AccessorySlot(Palladium.id(name));
+        SLOTS.add(slot);
+        return slot;
+    }
+
     @Nullable
-    public static AccessorySlot getSlotByName(String name) {
+    public static AccessorySlot getSlotByName(ResourceLocation name) {
         for (AccessorySlot slot : SLOTS) {
             if (slot.getName().equals(name)) {
                 return slot;

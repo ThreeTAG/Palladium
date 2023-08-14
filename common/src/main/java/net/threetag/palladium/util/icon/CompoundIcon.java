@@ -12,17 +12,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Items;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.util.context.DataContext;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 
 public class CompoundIcon implements IIcon {
 
-    private LinkedList<IIcon> icons = new LinkedList<>();
+    private final LinkedList<IIcon> icons = new LinkedList<>();
 
     @Override
-    public void draw(Minecraft mc, PoseStack stack, int x, int y, int width, int height) {
+    public void draw(Minecraft mc, DataContext context, PoseStack stack, int x, int y, int width, int height) {
         for (IIcon icon : this.icons) {
-            icon.draw(mc, stack, x, y, width, height);
+            icon.draw(mc, context, stack, x, y, width, height);
         }
     }
 
@@ -34,7 +36,7 @@ public class CompoundIcon implements IIcon {
     public static class Serializer extends IconSerializer<CompoundIcon> {
 
         @Override
-        public CompoundIcon fromJSON(JsonObject json) {
+        public @NotNull CompoundIcon fromJSON(JsonObject json) {
             JsonArray icons = GsonHelper.getAsJsonArray(json, "icons");
             CompoundIcon compoundIcon = new CompoundIcon();
 

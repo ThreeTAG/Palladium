@@ -1,0 +1,51 @@
+{
+  "name": "Scroll Action Test",
+  "icon": "minecraft:ice",
+  "abilities": {
+    "scroll_up": {
+      "type": "palladium:command",
+      "list_index": 0,
+      "title": "Scroll Up",
+      "commands": "say Scrolled up!",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 100,
+            "key_type": "scroll_up"
+          }
+        ]
+      }
+    },
+    "scroll_down": {
+      "type": "palladium:command",
+      "list_index": 1,
+      "title": "Scroll Down",
+      "commands": "say Scrolled down!",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 100,
+            "key_type": "scroll_down"
+          }
+        ]
+      }
+    },
+    "scroll_either": {
+      "type": "palladium:command",
+      "list_index": 2,
+      "title": "Scroll Either",
+      "commands": "say Scrolled either!",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action",
+            "cooldown": 100,
+            "key_type": "scroll_either"
+          }
+        ]
+      }
+    }
+  }
+}

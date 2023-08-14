@@ -47,6 +47,10 @@ Ingredient Icon</a>
 Item Icon</a>
 </li>
 <li>
+<a href="#palladium:item_in_slot">
+Item in Slot Icon</a>
+</li>
+<li>
 <a href="#palladium:texture">
 Textured Icon</a>
 </li>
@@ -227,7 +231,51 @@ item</td>
 <td>
 ResourceLocation</td>
 <td>
-ID of the item that's supposed to be displayed</td>
+ID of the item that's supposed to be displayed. If you leave it out, it will display the item from the current context (if given).</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:air</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:item","item":"minecraft:apple"}</pre>
+</div>
+<hr>
+
+<div id="palladium:item_in_slot">
+<h2>
+Item in Slot Icon</h2>
+<p>
+Uses the item that's in the specified slot.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+slot</td>
+<td>
+String</td>
+<td>
+Name of the slot.</td>
 <td style="background-color: lightgreen">
 true</td>
 <td>
@@ -238,7 +286,7 @@ true</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:item","item":"minecraft:apple"}</pre>
+{"type":"palladium:item_in_slot","slot":"chest"}</pre>
 </div>
 <hr>
 
@@ -269,9 +317,9 @@ Fallback Value</th>
 <td>
 texture</td>
 <td>
-ResourceLocation</td>
+TextureReference</td>
 <td>
-Path to the texture file.</td>
+Path to the texture file or dynamic texture json file.</td>
 <td style="background-color: lightgreen">
 true</td>
 <td>

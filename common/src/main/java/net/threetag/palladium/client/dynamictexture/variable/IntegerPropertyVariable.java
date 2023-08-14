@@ -1,9 +1,13 @@
 package net.threetag.palladium.client.dynamictexture.variable;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.Palladium;
+import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.IntegerProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
@@ -20,15 +24,10 @@ public class IntegerPropertyVariable extends AbstractIntegerTextureVariable {
         this.propertyKey = propertyKey;
     }
 
-    public IntegerPropertyVariable(JsonObject json) {
-        super(json);
-        this.propertyKey = GsonHelper.getAsString(json, "property");
-    }
-
     @Override
-    public int getNumber(Entity entity) {
+    public int getNumber(DataContext context) {
         AtomicInteger result = new AtomicInteger(0);
-        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> {
+        EntityPropertyHandler.getHandler(context.getEntity()).ifPresent(handler -> {
             PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
 
             if (property instanceof IntegerProperty integerProperty) {
@@ -37,5 +36,36 @@ public class IntegerPropertyVariable extends AbstractIntegerTextureVariable {
         });
 
         return result.get();
+    }
+
+    public static class Serializer implements ITextureVariableSerializer {
+
+        @Override
+        public ITextureVariable parse(JsonObject json) {
+            return new IntegerPropertyVariable(
+                    GsonHelper.getAsString(json, "property"),
+                    AbstractIntegerTextureVariable.parseOperations(json));
+        }
+
+        @Override
+        public String getDocumentationDescription() {
+            return "Returns the value of an integer property within the player. The math operations can be arranged in any order and are fully optional!";
+        }
+
+        @Override
+        public void addDocumentationFields(JsonDocumentationBuilder builder) {
+            builder.setTitle("Integer Property");
+
+            builder.addProperty("property", String.class)
+                    .description("Name of the property you want the value from.")
+                    .required().exampleJson(new JsonPrimitive("example_property"));
+
+            AbstractIntegerTextureVariable.addDocumentationFields(builder);
+        }
+
+        @Override
+        public ResourceLocation getId() {
+            return Palladium.id("integer_property");
+        }
     }
 }

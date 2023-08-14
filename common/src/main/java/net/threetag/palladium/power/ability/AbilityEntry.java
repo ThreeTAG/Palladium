@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.CooldownType;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.network.SyncAbilityEntryPropertyMessage;
 import net.threetag.palladium.network.SyncAbilityStateMessage;
 import net.threetag.palladium.power.IPowerHolder;
@@ -83,6 +84,10 @@ public class AbilityEntry {
         return enabled;
     }
 
+    public boolean isOnCooldown() {
+        return this.getConfiguration().getCooldownType() == CooldownType.STATIC ? this.cooldown > 0 : this.cooldown < this.maxCooldown;
+    }
+
     public int getEnabledTicks() {
         return enabledTicks;
     }
@@ -116,7 +121,7 @@ public class AbilityEntry {
             boolean sync = false;
 
             for (Condition unlockingCondition : this.abilityConfiguration.getUnlockingConditions()) {
-                if (!unlockingCondition.active(entity, this, power, powerHolder)) {
+                if (!unlockingCondition.active(DataContext.forAbility(entity, this))) {
                     unlocked = false;
                     break;
                 }
@@ -135,7 +140,7 @@ public class AbilityEntry {
 
             if (this.unlocked) {
                 for (Condition enablingCondition : this.abilityConfiguration.getEnablingConditions()) {
-                    if (!enablingCondition.active(entity, this, power, powerHolder)) {
+                    if (!enablingCondition.active(DataContext.forAbility(entity, this))) {
                         enabled = false;
                         break;
                     }
@@ -268,8 +273,8 @@ public class AbilityEntry {
         this.propertyManager.fromNBT(tag);
     }
 
-    public CompoundTag toNBT() {
-        return this.propertyManager.toNBT(false);
+    public CompoundTag toNBT(boolean toDisk) {
+        return this.propertyManager.toNBT(toDisk);
     }
 
 }

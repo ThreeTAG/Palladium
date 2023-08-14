@@ -53,11 +53,20 @@ public class AnimationTimerAbility extends Ability implements AnimationTimer {
     }
 
     public String getDocumentationDescription() {
-        return "This ability is used to create a timer that can be used for animations. It is not meant to be used directly.";
+        return "This ability is used to create a timer that can be used for animations. It is not meant to be used directly. <a href=\"https://media.discordapp.net/attachments/954053032570683402/1120044643342635118/image.png\">Click here to see how this animation works exactly.</a>";
     }
 
     @Override
     public float getAnimationValue(AbilityEntry entry, float partialTick) {
         return Mth.lerp(partialTick, entry.getProperty(PREV_VALUE), entry.getProperty(VALUE)) / entry.getProperty(MAX_VALUE);
     }
+
+    @Override
+    public float getAnimationTimer(AbilityEntry entry, float partialTick, boolean maxedOut) {
+        if (maxedOut) {
+            return entry.getProperty(MAX_VALUE);
+        }
+        return Mth.lerp(partialTick, entry.getProperty(PREV_VALUE), entry.getProperty(VALUE));
+    }
+
 }

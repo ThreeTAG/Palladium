@@ -40,6 +40,8 @@ public abstract class PlayerSlot {
 
     public abstract List<ItemStack> getItems(LivingEntity entity);
 
+    public abstract void setItem(LivingEntity entity, ItemStack stack);
+
     public abstract void clear(LivingEntity entity);
 
     public abstract Type getType();
@@ -60,6 +62,11 @@ public abstract class PlayerSlot {
         @Override
         public List<ItemStack> getItems(LivingEntity entity) {
             return Collections.singletonList(entity.getItemBySlot(this.slot));
+        }
+
+        @Override
+        public void setItem(LivingEntity entity, ItemStack stack) {
+            entity.setItemSlot(this.slot, stack);
         }
 
         @Override
@@ -96,6 +103,11 @@ public abstract class PlayerSlot {
         @Override
         public List<ItemStack> getItems(LivingEntity entity) {
             return CuriosTrinketsUtil.getInstance().getItemsInSlot(entity, this.slot);
+        }
+
+        @Override
+        public void setItem(LivingEntity entity, ItemStack stack) {
+            CuriosTrinketsUtil.getInstance().getSlot(entity, this.slot).setStackInSlot(0, stack);
         }
 
         @Override

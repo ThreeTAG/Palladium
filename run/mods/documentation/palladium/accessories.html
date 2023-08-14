@@ -1,0 +1,388 @@
+<html>
+<head>
+<title>
+Accessories</title>
+<style>
+table{font-family:arial, sans-serif;border-collapse:collapse;}
+td,th{border:1px solid #666666;text-align:left;padding:8px;min-width:45px;}
+th{background-color:#CCCCCC;}
+p{margin:0;}
+tr:nth-child(even){background-color:#D8D8D8;}
+tr:nth-child(odd){background-color:#EEEEEE;}
+td.true{background-color:#72FF85AA;}
+td.false{background-color:#FF6666AA;}
+td.other{background-color:#42A3FFAA;}
+td.error{color:#FF0000;}
+th,td.true,td.false,td.other{text-align:center;}pre{outline:1px solid #ccc;padding:5px;margin:5px;} .string{color:green;} .number{color:cornflowerblue;} .boolean{color:darkorange;} .null{color:orangered;} .key{color:purple;}hr { height: 5px; background-color: black }</style>
+<link rel="shortcut icon" type="image/x-icon" href="https://i.imgur.com/3sx4xJf.png">
+
+<style>
+.json-block { background-color: lightgray; display: inline-block; border: 5px solid darkgray; padding: 10px }</style>
+</head>
+<body>
+<h1>
+Accessories</h1>
+<hr>
+
+<p>
+<h2>
+Overview</h2>
+<h3>
+Palladium</h3>
+<ul>
+<li>
+<a href="#palladium:dummy">
+Dummy</a>
+</li>
+<li>
+<a href="#palladium:render_layer">
+Render Layer</a>
+</li>
+<li>
+<a href="#palladium:overlay">
+Overlay</a>
+</li>
+<li>
+<a href="#palladium:humanoid_model_layer">
+Humanoid Model Layer</a>
+</li>
+</ul>
+</p>
+<hr>
+
+<div id="palladium:dummy">
+<h2>
+Dummy</h2>
+<p>
+Does nothing.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+slot</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the slot the accessory will be in. Can be one or many. Possible values: [palladium:hat, palladium:head, palladium:face, palladium:chest, palladium:back, palladium:main_arm, palladium:off_arm, palladium:main_hand, palladium:off_hand, palladium:right_leg, palladium:left_leg, palladium:special, test:render_layer_switch_test]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:dummy","slot":"palladium:head"}</pre>
+</div>
+<hr>
+
+<div id="palladium:render_layer">
+<h2>
+Render Layer</h2>
+<p>
+Let's you use a render layer as an accessory</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+render_layer</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the render layer that's being used</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+disable_rendering</td>
+<td>
+Boolean</td>
+<td>
+Disables the rendering of the accessory, in case you want to hook it up to a render_layer_from_accessory ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+slot</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the slot the accessory will be in. Can be one or many. Possible values: [palladium:hat, palladium:head, palladium:face, palladium:chest, palladium:back, palladium:main_arm, palladium:off_arm, palladium:main_hand, palladium:off_hand, palladium:right_leg, palladium:left_leg, palladium:special, test:render_layer_switch_test]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:render_layer","render_layer":"namespace:example_layer","disable_rendering":false,"slot":"palladium:head"}</pre>
+</div>
+<hr>
+
+<div id="palladium:overlay">
+<h2>
+Overlay</h2>
+<p>
+Renders a texture skin-tight on the player</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+texture</td>
+<td>
+TextureReference</td>
+<td>
+Texture of the overlay. Can be skin-typed by specifying 'normal' and 'slim' in a json object.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+glowing</td>
+<td>
+Boolean</td>
+<td>
+Makes the overlay glow</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+only_render_for_slot</td>
+<td>
+Boolean</td>
+<td>
+If set to true, the texture will only render for the specified slot of the accessory. Example: The texture has a full player skin and the slot is set to 'head', only the head part of it will render.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hand_visibility_fix</td>
+<td>
+Boolean</td>
+<td>
+If 'only_render_for_slot' is set to true while the slot is for a hand but you want to have the accessory on the arm, set this to true.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+slot</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the slot the accessory will be in. Can be one or many. Possible values: [palladium:hat, palladium:head, palladium:face, palladium:chest, palladium:back, palladium:main_arm, palladium:off_arm, palladium:main_hand, palladium:off_hand, palladium:right_leg, palladium:left_leg, palladium:special, test:render_layer_switch_test]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:overlay","texture":"example:textures/accessory/test.png","glowing":false,"only_render_for_slot":false,"hand_visibility_fix":false,"slot":"palladium:head"}</pre>
+</div>
+<hr>
+
+<div id="palladium:humanoid_model_layer">
+<h2>
+Humanoid Model Layer</h2>
+<p>
+Renders a humanoid model layer on the player</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+texture</td>
+<td>
+TextureReference</td>
+<td>
+Texture for the accessory. Can be skin-typed by specifying 'normal' and 'slim' in a json object.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+model_layer</td>
+<td>
+ModelLayerLocationUtil</td>
+<td>
+Model layer for the accessory. Can be skin-typed by specifying 'normal' and 'slim' in a json object.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+glowing</td>
+<td>
+Boolean</td>
+<td>
+Makes the overlay glow</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+only_render_for_slot</td>
+<td>
+Boolean</td>
+<td>
+If set to true, the texture will only render for the specified slot of the accessory. Example: The texture has a full player skin and the slot is set to 'head', only the head part of it will render.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hand_visibility_fix</td>
+<td>
+Boolean</td>
+<td>
+If 'only_render_for_slot' is set to true while the slot is for a hand but you want to have the accessory on the arm, set this to true.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+slot</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the slot the accessory will be in. Can be one or many. Possible values: [palladium:hat, palladium:head, palladium:face, palladium:chest, palladium:back, palladium:main_arm, palladium:off_arm, palladium:main_hand, palladium:off_hand, palladium:right_leg, palladium:left_leg, palladium:special, test:render_layer_switch_test]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:humanoid_model_layer","texture":"example:textures/accessory/test.png","model_layer":"example:textures/accessory/test.png","glowing":false,"only_render_for_slot":false,"hand_visibility_fix":false,"slot":"palladium:head"}</pre>
+</div>
+<script>
+function syntaxHighlight(json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+
+    const elements = document.getElementsByClassName("json-snippet");
+    const amount = elements.length;
+    for (let i = 0; i < amount; i++) {
+        const element = elements[0];
+        const div = document.createElement("pre");
+        div.innerHTML = syntaxHighlight(JSON.stringify(JSON.parse(element.innerText), undefined, 4));
+        element.parentNode.replaceChild(div, element);
+    }</script>
+</body>
+</html>

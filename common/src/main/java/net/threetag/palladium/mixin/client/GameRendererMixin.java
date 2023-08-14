@@ -32,6 +32,9 @@ public abstract class GameRendererMixin {
     @Shadow
     public abstract void loadEffect(ResourceLocation resourceLocation);
 
+    @Shadow
+    public abstract Minecraft getMinecraft();
+
     @Inject(method = "bobView", at = @At("HEAD"), cancellable = true)
     private void bobView(PoseStack matrixStack, float partialTicks, CallbackInfo ci) {
         if (this.minecraft.getCameraEntity() instanceof LivingEntity livingEntity && !AbilityUtil.getEnabledEntries(livingEntity, Abilities.ENERGY_BLAST.get()).isEmpty()) {

@@ -15,7 +15,6 @@ public class SplashTextUtil {
         addDated(20, 12, "Happy birthday, Lucraft!");
         addDated(16, 7, "Happy birthday, Sheriff!");
         addDated(27, 10, "Happy birthday, Connor!");
-        addDated(8, 1, "TEST DU WICHT");
 
         addRandom(300, "Also try FiskHeroes!");
     }

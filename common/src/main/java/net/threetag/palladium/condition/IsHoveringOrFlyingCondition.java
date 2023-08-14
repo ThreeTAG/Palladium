@@ -1,19 +1,22 @@
 package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.entity.PalladiumPlayerExtension;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.AbilityEntry;
-import org.jetbrains.annotations.Nullable;
 
 public class IsHoveringOrFlyingCondition extends Condition {
 
     @Override
-    public boolean active(LivingEntity entity, @Nullable AbilityEntry entry, @Nullable Power power, @Nullable IPowerHolder holder) {
+    public boolean active(DataContext context) {
+        var entity = context.get(DataContextType.ENTITY);
+
+        if (entity == null) {
+            return false;
+        }
+
         if (entity instanceof PalladiumPlayerExtension extension) {
-            return extension.palladium_getHoveringAnimation(1F) > 0F || extension.palladium_getFlightAnimation(1F) > 0F;
+            return extension.palladium$getFlightHandler().getHoveringAnimation(1F) > 0F || extension.palladium$getFlightHandler().getFlightAnimation(1F) > 0F;
         }
         return false;
     }

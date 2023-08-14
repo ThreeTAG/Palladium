@@ -14,7 +14,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,13 +21,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegisterEvent;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.compat.geckolib.ability.ArmorAnimationAbility;
 import net.threetag.palladium.compat.geckolib.ability.RenderLayerAnimationAbility;
 import net.threetag.palladium.compat.geckolib.armor.GeckoArmorRenderer;
 import net.threetag.palladium.compat.geckolib.armor.PackGeckoArmorItem;
 import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
+import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.item.AddonAttributeContainer;
-import net.threetag.palladium.item.ExtendedArmor;
 import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.mixin.client.GeoArmorRendererInvoker;
 import net.threetag.palladium.power.ability.Ability;
@@ -51,10 +51,13 @@ import java.util.List;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class GeckoLibCompatImpl {
 
+    public static void init() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(GeckoLibCompatImpl::registerAbility);
+    }
+
     @OnlyIn(Dist.CLIENT)
     public static void initClient() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(GeckoLibCompatImpl::registerRenderers);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(GeckoLibCompatImpl::registerAbility);
     }
 
     public static void registerAbility(RegisterEvent e) {
@@ -69,11 +72,7 @@ public class GeckoLibCompatImpl {
 
     public static ArmorItem createArmorItem(ArmorMaterial armorMaterial, EquipmentSlot slot, Item.Properties properties, boolean hideSecondLayer) {
         var item = new ArmorItemImpl(armorMaterial, slot, properties);
-
-        if (hideSecondLayer) {
-            item.hideSecondLayer();
-        }
-
+        BodyPart.HIDES_LAYER.add(item);
         return item;
     }
 
@@ -139,13 +138,14 @@ public class GeckoLibCompatImpl {
         return GeoArmorRenderer.getRenderer(clazz, entity);
     }
 
-    public static class ArmorItemImpl extends GeoArmorItem implements IAnimatable, IAddonItem, ExtendedArmor, PackGeckoArmorItem {
+    public static class ArmorItemImpl extends GeoArmorItem implements IAnimatable, IAddonItem, PackGeckoArmorItem {
 
         private List<Component> tooltipLines;
         private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
         private RenderLayerContainer renderLayerContainer = null;
         private boolean hideSecondLayer = false;
-        private ResourceLocation texture, model, animationLocation;
+        private TextureReference texture;
+        private ResourceLocation model, animationLocation;
         public List<ParsedAnimationController<IAnimatable>> animationControllers;
         private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
@@ -166,16 +166,6 @@ public class GeckoLibCompatImpl {
         @Override
         public AnimationFactory getFactory() {
             return this.factory;
-        }
-
-        public ArmorItemImpl hideSecondLayer() {
-            this.hideSecondLayer = true;
-            return this;
-        }
-
-        @Override
-        public boolean hideSecondPlayerLayer(Player player, ItemStack stack, EquipmentSlot slot) {
-            return this.hideSecondLayer;
         }
 
         @Override
@@ -212,7 +202,7 @@ public class GeckoLibCompatImpl {
         }
 
         @Override
-        public PackGeckoArmorItem setGeckoLocations(ResourceLocation modelLocation, ResourceLocation textureLocation, ResourceLocation animationLocation, List<ParsedAnimationController<IAnimatable>> animationControllers) {
+        public PackGeckoArmorItem setGeckoLocations(ResourceLocation modelLocation, TextureReference textureLocation, ResourceLocation animationLocation, List<ParsedAnimationController<IAnimatable>> animationControllers) {
             this.model = modelLocation;
             this.texture = textureLocation;
             this.animationLocation = animationLocation;
@@ -226,7 +216,7 @@ public class GeckoLibCompatImpl {
         }
 
         @Override
-        public ResourceLocation getGeckoTextureLocation() {
+        public TextureReference getGeckoTextureLocation() {
             return this.texture;
         }
 

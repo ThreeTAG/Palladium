@@ -1,0 +1,22 @@
+{
+  "name": "Accessory Slot Render Layer Test",
+  "icon": "minecraft:gold_ingot",
+  "abilities": {
+    "animation_timer": {
+      "type": "palladium:animation_timer",
+      "hidden": false,
+      "hidden_in_bar": false,
+      "max_value": 10,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
+    },
+    "render_layer_by_slot": {
+      "type": "palladium:render_layer_by_accessory_slot",
+      "default_layer": "test:render_layer_switch_default",
+      "accessory_slot": "test:render_layer_switch_test"
+    }
+  }
+}

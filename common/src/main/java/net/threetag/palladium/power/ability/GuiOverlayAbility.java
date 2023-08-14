@@ -10,6 +10,8 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.*;
 import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 
@@ -17,7 +19,7 @@ import java.util.List;
 
 public class GuiOverlayAbility extends Ability {
 
-    public static final PalladiumProperty<ResourceLocation> TEXTURE = new ResourceLocationProperty("texture").sync(SyncType.SELF).configurable("Texture path for the gui overlay");
+    public static final PalladiumProperty<TextureReference> TEXTURE = new TextureReferenceProperty("texture").sync(SyncType.SELF).configurable("Texture path for the gui overlay");
     public static final PalladiumProperty<Integer> TEXTURE_WIDTH = new IntegerProperty("texture_width").sync(SyncType.SELF).configurable("Width of the texture file");
     public static final PalladiumProperty<Integer> TEXTURE_HEIGHT = new IntegerProperty("texture_height").sync(SyncType.SELF).configurable("Width of the texture file");
     public static final PalladiumProperty<Vec3> TRANSLATE = new Vec3Property("translate").sync(SyncType.SELF).configurable("Translation of the rendered object");
@@ -26,7 +28,7 @@ public class GuiOverlayAbility extends Ability {
     public static final PalladiumProperty<TextureAlignmentProperty.TextureAlignment> ALIGNMENT = new TextureAlignmentProperty("alignment").sync(SyncType.SELF).configurable("Determines how the image is aligned on the screen");
 
     public GuiOverlayAbility() {
-        this.withProperty(TEXTURE, new ResourceLocation("textures/gui/presets/isles.png"));
+        this.withProperty(TEXTURE, TextureReference.normal(new ResourceLocation("textures/gui/presets/isles.png")));
         this.withProperty(TEXTURE_WIDTH, 256);
         this.withProperty(TEXTURE_HEIGHT, 256);
         this.withProperty(TRANSLATE, Vec3.ZERO);
@@ -50,7 +52,7 @@ public class GuiOverlayAbility extends Ability {
             for (AbilityEntry entry : entries) {
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                RenderSystem.setShaderTexture(0, entry.getProperty(TEXTURE));
+                RenderSystem.setShaderTexture(0, entry.getProperty(TEXTURE).getTexture(DataContext.forAbility(minecraft.player, entry)));
 
                 var textureWidth = entry.getProperty(TEXTURE_WIDTH);
                 var textureHeight = entry.getProperty(TEXTURE_HEIGHT);

@@ -23,7 +23,8 @@ public class HoveringAnimation extends PalladiumAnimation {
         boolean active = !firstPersonContext.firstPerson();
 
         if (active && player instanceof PalladiumPlayerExtension extension) {
-            float anim = extension.palladium_getHoveringAnimation(partialTicks);
+            var flight = extension.palladium$getFlightHandler();
+            float anim = flight.getHoveringAnimation(partialTicks);
 
             if (anim <= 0F) {
                 return;

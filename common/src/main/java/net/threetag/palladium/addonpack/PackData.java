@@ -37,7 +37,16 @@ public final class PackData {
     }
 
     public static PackData fromJSON(JsonObject json) throws VersionParsingException, JsonParseException {
+        if (!GsonHelper.isValidNode(json, "pack")) {
+            return null;
+        }
+
         JsonObject pack = GsonHelper.getAsJsonObject(json, "pack");
+
+        if (!GsonHelper.isValidNode(pack, "id") || !GsonHelper.isValidNode(pack, "version")) {
+            return null;
+        }
+
         String id = GsonHelper.getAsString(pack, "id");
         Version version = VersionParser.parseSemantic(GsonHelper.getAsString(pack, "version"));
         Map<String, List<Dependency>> dependenciesMap = new HashMap<>();

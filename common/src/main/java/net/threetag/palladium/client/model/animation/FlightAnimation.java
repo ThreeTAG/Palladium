@@ -32,7 +32,8 @@ public class FlightAnimation extends PalladiumAnimation implements ViewportEvent
         boolean active = !firstPersonContext.firstPerson();
 
         if (active && player instanceof PalladiumPlayerExtension extension) {
-            float anim = extension.palladium_getFlightAnimation(partialTicks);
+            var flight = extension.palladium$getFlightHandler();
+            float anim = flight.getFlightAnimation(partialTicks);
 
             if (anim <= 1F) {
                 return;
@@ -40,9 +41,9 @@ public class FlightAnimation extends PalladiumAnimation implements ViewportEvent
 
             anim = (anim - 1F) / 2F;
 
-            var vec1 = to2D(extension.palladium_getFlightVector(partialTicks));
-            var vec2 = to2D(extension.palladium_getLookAngle(partialTicks));
-            var tilt = Mth.clamp(angleBetweenVector(vec1, vec2), -0.5F, 0.5F) * 90F * extension.palladium_getHorizontalSpeed(partialTicks);
+            var vec1 = to2D(flight.getFlightVector(partialTicks));
+            var vec2 = to2D(flight.getLookAngle(partialTicks));
+            var tilt = Mth.clamp(angleBetweenVector(vec1, vec2), -0.5F, 0.5F) * 90F * flight.getHorizontalSpeed(partialTicks);
 
             builder.get(PlayerModelPart.BODY)
                     .setZRotDegrees((float) -tilt)
@@ -119,7 +120,8 @@ public class FlightAnimation extends PalladiumAnimation implements ViewportEvent
     @Override
     public void computeCameraAngles(GameRenderer gameRenderer, Camera camera, double partialTick, AtomicReference<Float> yaw, AtomicReference<Float> pitch, AtomicReference<Float> roll) {
         if (Minecraft.getInstance().player instanceof PalladiumPlayerExtension extension) {
-            float anim = extension.palladium_getFlightAnimation((float) partialTick);
+            var flight = extension.palladium$getFlightHandler();
+            float anim = flight.getFlightAnimation((float) partialTick);
 
             if (anim <= 1F) {
                 return;
@@ -127,9 +129,9 @@ public class FlightAnimation extends PalladiumAnimation implements ViewportEvent
 
             anim = (anim - 1F) / 2F;
 
-            var vec1 = FlightAnimation.to2D(extension.palladium_getFlightVector((float) partialTick));
-            var vec2 = FlightAnimation.to2D(extension.palladium_getLookAngle((float) partialTick));
-            var tilt = Mth.clamp(FlightAnimation.angleBetweenVector(vec1, vec2), -0.5F, 0.5F) * 30F * extension.palladium_getHorizontalSpeed((float) partialTick);
+            var vec1 = FlightAnimation.to2D(flight.getFlightVector((float) partialTick));
+            var vec2 = FlightAnimation.to2D(flight.getLookAngle((float) partialTick));
+            var tilt = Mth.clamp(FlightAnimation.angleBetweenVector(vec1, vec2), -0.5F, 0.5F) * 30F * flight.getHorizontalSpeed((float) partialTick);
 
             roll.set((float) tilt * Easing.INOUTCUBIC.apply(anim));
         }

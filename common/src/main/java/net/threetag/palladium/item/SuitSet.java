@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public class SuitSet {
 
-    public static final PalladiumRegistry<SuitSet> REGISTRY = PalladiumRegistry.create(SuitSet.class, Palladium.id("suit_sets"));
+    public static final PalladiumRegistry<SuitSet> REGISTRY = PalladiumRegistry.create(SuitSet.class, Palladium.id("suit_set"));
 
     private final Supplier<Item> mainHand, offHand, helmet, chestplate, leggings, boots;
     @Nullable

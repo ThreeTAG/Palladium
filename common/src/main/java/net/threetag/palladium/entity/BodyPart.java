@@ -10,13 +10,18 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
+import net.minecraft.world.item.Item;
 import net.threetag.palladium.accessory.Accessory;
+import net.threetag.palladium.client.renderer.item.armor.ArmorRendererData;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
-import net.threetag.palladium.item.ExtendedArmor;
+import net.threetag.palladium.item.ArmorWithRenderer;
 import net.threetag.palladium.power.ability.*;
+import net.threetag.palladium.util.context.DataContext;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum BodyPart {
@@ -37,6 +42,7 @@ public enum BodyPart {
 
     private final String name;
     private final boolean overlay;
+    public static final List<Item> HIDES_LAYER = new ArrayList<>();
 
     BodyPart(String name, boolean overlay) {
         this.name = name;
@@ -159,18 +165,18 @@ public enum BodyPart {
                 if (slot.getType() == EquipmentSlot.Type.ARMOR) {
                     var stack = player.getItemBySlot(slot);
 
-                    if (stack.getItem() instanceof ExtendedArmor extendedArmor) {
-                        if (extendedArmor.hideSecondPlayerLayer(player, stack, slot)) {
-                            if (slot == EquipmentSlot.HEAD) {
-                                result.remove(BodyPart.HEAD_OVERLAY);
-                            } else if (slot == EquipmentSlot.CHEST) {
-                                result.remove(BodyPart.CHEST_OVERLAY);
-                                result.remove(BodyPart.RIGHT_ARM_OVERLAY);
-                                result.remove(BodyPart.LEFT_ARM_OVERLAY);
-                            } else {
-                                result.remove(BodyPart.RIGHT_LEG_OVERLAY);
-                                result.remove(BodyPart.LEFT_LEG_OVERLAY);
-                            }
+                    if (HIDES_LAYER.contains(stack.getItem()) || (stack.getItem() instanceof ArmorWithRenderer armorWithRenderer
+                            && armorWithRenderer.getCachedArmorRenderer() instanceof ArmorRendererData renderer
+                            && renderer.hidesSecondPlayerLayer(DataContext.forArmorInSlot(player, slot)))) {
+                        if (slot == EquipmentSlot.HEAD) {
+                            result.remove(BodyPart.HEAD_OVERLAY);
+                        } else if (slot == EquipmentSlot.CHEST) {
+                            result.remove(BodyPart.CHEST_OVERLAY);
+                            result.remove(BodyPart.RIGHT_ARM_OVERLAY);
+                            result.remove(BodyPart.LEFT_ARM_OVERLAY);
+                        } else {
+                            result.remove(BodyPart.RIGHT_LEG_OVERLAY);
+                            result.remove(BodyPart.LEFT_LEG_OVERLAY);
                         }
                     }
                 }

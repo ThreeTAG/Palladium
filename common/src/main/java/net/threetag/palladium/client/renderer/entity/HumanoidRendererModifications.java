@@ -56,7 +56,7 @@ public class HumanoidRendererModifications {
         float scale = AnimationTimer.getValue(entity, Abilities.SHRINK_BODY_OVERLAY.get(), partialTick, Easing.INOUTSINE);
 
         if (scale != 0F) {
-            float f = -0.1F * scale;
+            float f = -0.11F * scale;
             CACHED_SHRINK = f;
             Vector3f vec = new Vector3f(f, f, f);
             for (BodyPart value : BodyPart.values()) {
@@ -105,6 +105,11 @@ public class HumanoidRendererModifications {
                     int m = LivingEntityRenderer.getOverlayCoords(entity, renderer.getWhiteOverlayProgress(entity, partialTick));
                     renderer.getModel().renderToBuffer(poseStack, vertexConsumer, packedLight, m, 1.0F, 1.0F, 1.0F, bl2 ? 0.15F : 1.0F);
                 }
+
+                poseStack.popPose();
+                poseStack.pushPose();
+
+                poseStack.translate((rand.nextFloat() - 0.5F) / 7 * vibrate, 0, (rand.nextFloat() - 0.5F) / 7 * vibrate);
 
                 if (!entity.isSpectator()) {
                     for (Object layer : renderer.layers) {

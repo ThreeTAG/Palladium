@@ -23,10 +23,11 @@ public class LocalPlayerMixin {
         LocalPlayer player = (LocalPlayer) (Object) this;
 
         if (player instanceof PalladiumPlayerExtension extension) {
+            var flight = extension.palladium$getFlightHandler();
             if (player.getAbilities().flying) {
-                if (extension.palladium_getFlightType().isNotNull()) {
+                if (flight.getFlightType().isNotNull()) {
                     new SetFlyingStateMessage(false).send();
-                    extension.palladium_setFlightType(FlightHandler.FlightType.NONE);
+                    flight.setFlightType(FlightHandler.FlightType.NONE);
                 } else {
                     var flightType = FlightHandler.getAvailableFlightType(player);
 
@@ -35,11 +36,11 @@ public class LocalPlayerMixin {
                     }
 
                     new SetFlyingStateMessage(true).send();
-                    extension.palladium_setFlightType(flightType);
+                    flight.setFlightType(flightType);
                 }
             } else {
                 new SetFlyingStateMessage(false).send();
-                extension.palladium_setFlightType(FlightHandler.FlightType.NONE);
+                flight.setFlightType(FlightHandler.FlightType.NONE);
             }
 
             player.getAbilities().flying = false;

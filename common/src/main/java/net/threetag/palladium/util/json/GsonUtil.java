@@ -11,6 +11,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
+import net.threetag.palladium.power.ability.AbilityReference;
+import net.threetag.palladium.util.ModelLayerLocationUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
@@ -102,6 +105,26 @@ public class GsonUtil {
         return json.has(memberName) ? getAsResourceLocation(json, memberName) : fallback;
     }
 
+    public static TextureReference convertToTextureReference(JsonElement json, String memberName) {
+        if (json.isJsonPrimitive()) {
+            return TextureReference.parse(json.getAsString());
+        } else {
+            throw new JsonSyntaxException("Expected " + memberName + " to be a texture reference, was " + GsonHelper.getType(json));
+        }
+    }
+
+    public static TextureReference getAsTextureReference(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            return TextureReference.parse(GsonHelper.getAsString(json, memberName));
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a texture referenc");
+        }
+    }
+
+    public static TextureReference getAsTextureReference(JsonObject json, String memberName, @Nullable TextureReference fallback) {
+        return json.has(memberName) ? getAsTextureReference(json, memberName) : fallback;
+    }
+
     @Environment(EnvType.CLIENT)
     public static ModelLayerLocation convertToModelLayerLocation(JsonElement json, String memberName) {
         if (json.isJsonPrimitive()) {
@@ -135,6 +158,70 @@ public class GsonUtil {
     @Environment(EnvType.CLIENT)
     public static ModelLayerLocation getAsModelLayerLocation(JsonObject json, String memberName, @Nullable ModelLayerLocation fallback) {
         return json.has(memberName) ? getAsModelLayerLocation(json, memberName) : fallback;
+    }
+
+    public static ModelLayerLocationUtil convertToModelLayerLocationUtil(JsonElement json, String memberName) {
+        if (json.isJsonPrimitive()) {
+            String[] s = json.getAsString().split("#", 2);
+
+            if (s.length == 1) {
+                return new ModelLayerLocationUtil(new ResourceLocation(s[0]), "main");
+            } else {
+                return new ModelLayerLocationUtil(new ResourceLocation(s[0]), s[1]);
+            }
+        } else {
+            throw new JsonSyntaxException("Expected " + memberName + " to be a model layer location, was " + GsonHelper.getType(json));
+        }
+    }
+
+    public static ModelLayerLocationUtil getAsModelLayerLocationUtil(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            String[] s = GsonHelper.getAsString(json, memberName).split("#", 2);
+
+            if (s.length == 1) {
+                return new ModelLayerLocationUtil(new ResourceLocation(s[0]), "main");
+            } else {
+                return new ModelLayerLocationUtil(new ResourceLocation(s[0]), s[1]);
+            }
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a model layer location");
+        }
+    }
+
+    public static ModelLayerLocationUtil getAsModelLayerLocationUtil(JsonObject json, String memberName, @Nullable ModelLayerLocationUtil fallback) {
+        return json.has(memberName) ? getAsModelLayerLocationUtil(json, memberName) : fallback;
+    }
+
+    public static AbilityReference convertToAbilityReference(JsonElement json, String memberName) {
+        if (json.isJsonPrimitive()) {
+            String[] s = json.getAsString().split("#", 2);
+
+            if (s.length == 2) {
+                return new AbilityReference(new ResourceLocation(s[0]), s[1]);
+            } else {
+                throw new JsonSyntaxException("Invalid syntax for ability reference at " + memberName);
+            }
+        } else {
+            throw new JsonSyntaxException("Expected " + memberName + " to be an ability reference, was " + GsonHelper.getType(json));
+        }
+    }
+
+    public static AbilityReference getAsAbilityReference(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            String[] s = GsonHelper.getAsString(json, memberName).split("#", 2);
+
+            if (s.length == 2) {
+                return new AbilityReference(new ResourceLocation(s[0]), s[1]);
+            } else {
+                throw new JsonSyntaxException("Invalid syntax for ability reference at " + memberName);
+            }
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find an ability reference");
+        }
+    }
+
+    public static AbilityReference getAsAbilityReference(JsonObject json, String memberName, @Nullable AbilityReference fallback) {
+        return json.has(memberName) ? getAsAbilityReference(json, memberName) : fallback;
     }
 
     public static UUID getAsUUID(JsonObject json, String memberName) {

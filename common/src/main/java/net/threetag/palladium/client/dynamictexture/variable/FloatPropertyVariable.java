@@ -3,8 +3,11 @@ package net.threetag.palladium.client.dynamictexture.variable;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.Palladium;
+import net.threetag.palladium.documentation.JsonDocumentationBuilder;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
 import net.threetag.palladium.util.property.FloatProperty;
 import net.threetag.palladium.util.property.PalladiumProperty;
@@ -21,15 +24,10 @@ public class FloatPropertyVariable extends AbstractFloatTextureVariable {
         this.propertyKey = propertyKey;
     }
 
-    public FloatPropertyVariable(JsonObject json) {
-        super(json);
-        this.propertyKey = GsonHelper.getAsString(json, "property");
-    }
-
     @Override
-    public float getNumber(Entity entity) {
+    public float getNumber(DataContext context) {
         AtomicReference<Float> result = new AtomicReference<>(0F);
-        EntityPropertyHandler.getHandler(entity).ifPresent(handler -> {
+        EntityPropertyHandler.getHandler(context.getEntity()).ifPresent(handler -> {
             PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
 
             if (property instanceof FloatProperty floatProperty) {
@@ -38,5 +36,36 @@ public class FloatPropertyVariable extends AbstractFloatTextureVariable {
         });
 
         return result.get();
+    }
+
+    public static class Serializer implements ITextureVariableSerializer {
+
+        @Override
+        public ITextureVariable parse(JsonObject json) {
+            return new FloatPropertyVariable(
+                    GsonHelper.getAsString(json, "property"),
+                    AbstractFloatTextureVariable.parseOperations(json));
+        }
+
+        @Override
+        public String getDocumentationDescription() {
+            return "Returns the value of a float property within the player. The math operations can be arranged in any order and are fully optional!";
+        }
+
+        @Override
+        public void addDocumentationFields(JsonDocumentationBuilder builder) {
+            builder.setTitle("Float Property");
+
+            builder.addProperty("property", String.class)
+                    .description("Name of the property you want the value from.")
+                    .required().exampleJson(new JsonPrimitive("example_property"));
+
+            AbstractFloatTextureVariable.addDocumentationFields(builder);
+        }
+
+        @Override
+        public ResourceLocation getId() {
+            return Palladium.id("float_property");
+        }
     }
 }

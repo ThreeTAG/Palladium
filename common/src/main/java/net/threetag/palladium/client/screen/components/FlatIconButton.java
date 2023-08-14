@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.icon.IIcon;
 
 public class FlatIconButton extends Button {
@@ -33,7 +34,7 @@ public class FlatIconButton extends Button {
         RenderSystem.enableDepthTest();
         this.blit(matrixStack, this.x, this.y, 0, i, 20, this.height);
         this.renderBg(matrixStack, minecraft, x, y);
-        this.icon.draw(minecraft, matrixStack, this.x + 2, this.y + 2);
+        this.icon.draw(minecraft, minecraft.player != null ? DataContext.forEntity(minecraft.player) : DataContext.create(), matrixStack, this.x + 2, this.y + 2);
 
         if (this.isHovered) {
             this.renderToolTip(matrixStack, x, y);

@@ -7,8 +7,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.icon.IIcon;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,7 +52,7 @@ public class TextWithIconButton extends Button {
 
         font.drawShadow(poseStack, this.getMessage(), this.x + this.width / 2F - fullTextWidth / 2F, this.y + (this.height - 8F) / 2F, color);
         font.drawShadow(poseStack, this.suffix, this.x + this.width / 2F - fullTextWidth / 2F + prefixWidth + 16, this.y + (this.height - 8F) / 2F, color);
-        this.icon.draw(minecraft, poseStack, this.x + this.width / 2 - fullTextWidth / 2 + prefixWidth, this.y + (this.height - 8) / 2 - 4);
+        this.icon.draw(minecraft, DataContext.forEntity(minecraft.player), poseStack, this.x + this.width / 2 - fullTextWidth / 2 + prefixWidth, this.y + (this.height - 8) / 2 - 4);
 
         if (this.isHoveredOrFocused()) {
             this.renderToolTip(poseStack, mouseX, mouseY);

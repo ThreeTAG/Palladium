@@ -10,9 +10,11 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.icon.IIcon;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
@@ -21,7 +23,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 @Environment(EnvType.CLIENT)
 public class PowerTab extends GuiComponent {
@@ -53,15 +54,17 @@ public class PowerTab extends GuiComponent {
         this.powerHolder = powerHolder;
         this.icon = powerHolder.getPower().getIcon();
         this.title = powerHolder.getPower().getName();
-        this.init();
+        this.populate();
     }
 
-    public void init() {
+    public void populate() {
+        this.entries.clear();
+        this.connections.clear();
         List<AbilityWidget> root = new LinkedList<>();
 
         // Create entry for each ability
         for (AbilityEntry ability : this.powerHolder.getAbilities().values()) {
-            if (!ability.getProperty(Ability.HIDDEN)) {
+            if (!ability.getProperty(Ability.HIDDEN_IN_GUI)) {
                 var widget = new AbilityWidget(this, this.minecraft, this.powerHolder, ability).setPosition(0, 0);
                 this.entries.add(widget);
 
@@ -127,17 +130,9 @@ public class PowerTab extends GuiComponent {
                 int startY = toCoord(entry.gridY, 1D / (entry.children.size() + 1) * (entry.children.indexOf(child) + 1));
                 int endX = toCoord(child.gridX);
                 int endY = toCoord(child.gridY, 1D / (child.parents.size() + 1) * (child.parents.indexOf(entry) + 1));
-                if (entry.children.size() == 1) {
-                    connection.addLine(new ConnectionLine(startX, startY, endX, startY));
-                    connection.addLine(new ConnectionLine(endX, startY, endX, endY));
-                } else {
-                    int midX = (startX + endX) / 2;
-                    connection.addLine(new ConnectionLine(startX, startY, midX, startY));
-                    connection.addLine(new ConnectionLine(midX, startY, midX, endY));
-                    connection.addLine(new ConnectionLine(midX, endY, endX, endY));
-                }
-                Random random = new Random();
-                connection.color = new Color(random.nextFloat(), random.nextFloat(), random.nextFloat());
+                connection.addLine(new ConnectionLine(startX, startY, endX, startY));
+                connection.addLine(new ConnectionLine(endX, startY, endX, endY));
+                connection.color = child.abilityEntry.isUnlocked() ? this.powerHolder.getPower().getPrimaryColor() : this.powerHolder.getPower().getSecondaryColor();
                 this.connections.add(connection);
             }
         }
@@ -208,7 +203,7 @@ public class PowerTab extends GuiComponent {
     }
 
     public void drawIcon(PoseStack poseStack, int offsetX, int offsetY) {
-        this.type.drawIcon(poseStack, offsetX, offsetY, this.index, this.icon);
+        this.type.drawIcon(poseStack, DataContext.forPower(this.minecraft.player, this.powerHolder), offsetX, offsetY, this.index, this.icon);
     }
 
     public void drawContents(PoseStack poseStack) {
@@ -228,10 +223,11 @@ public class PowerTab extends GuiComponent {
         RenderSystem.depthFunc(GL11.GL_GEQUAL);
         fill(poseStack, PowersScreen.WINDOW_INSIDE_WIDTH, PowersScreen.WINDOW_INSIDE_HEIGHT, 0, 0, -16777216);
         RenderSystem.depthFunc(GL11.GL_LEQUAL);
-        ResourceLocation resourceLocation = this.powerHolder.getPower().getBackground();
+        TextureReference backgroundTexture = this.powerHolder.getPower().getBackground();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        if (resourceLocation != null) {
-            RenderSystem.setShaderTexture(0, resourceLocation);
+
+        if(backgroundTexture != null) {
+            RenderSystem.setShaderTexture(0, backgroundTexture.getTexture(DataContext.forPower(minecraft.player, this.powerHolder)));
         } else {
             RenderSystem.setShaderTexture(0, new ResourceLocation("textures/block/red_wool.png"));
         }
@@ -245,6 +241,10 @@ public class PowerTab extends GuiComponent {
             for (int n = -1; n <= 11; ++n) {
                 blit(poseStack, k + 16 * m, l + 16 * n, 0.0F, 0.0F, 16, 16, 16, 16);
             }
+        }
+
+        for (Connection connection : this.connections) {
+            connection.drawOutlines(this, poseStack, i, j);
         }
 
         for (Connection connection : this.connections) {
@@ -345,7 +345,6 @@ public class PowerTab extends GuiComponent {
 
     public static class Connection {
 
-        // TODO make gray when locked
         public Color color = Color.WHITE;
         public List<ConnectionLine> lines = new LinkedList<>();
 
@@ -362,10 +361,13 @@ public class PowerTab extends GuiComponent {
             return this;
         }
 
-        public void draw(PowerTab gui, PoseStack stack, int x, int y) {
+        public void drawOutlines(PowerTab gui, PoseStack stack, int x, int y) {
             for (ConnectionLine lines : this.lines) {
                 lines.draw(gui, stack, x, y, true, Color.BLACK);
             }
+        }
+
+        public void draw(PowerTab gui, PoseStack stack, int x, int y) {
             for (ConnectionLine lines : this.lines) {
                 lines.draw(gui, stack, x, y, false, this.color);
             }

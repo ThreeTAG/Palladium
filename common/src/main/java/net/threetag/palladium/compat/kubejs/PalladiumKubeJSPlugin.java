@@ -1,15 +1,14 @@
 package net.threetag.palladium.compat.kubejs;
 
-import dev.latvian.mods.kubejs.BuilderBase;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
-import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.item.custom.BasicItemJS;
+import dev.latvian.mods.kubejs.registry.RegistryInfo;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.util.AttachedData;
 import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.client.model.animation.AnimationUtil;
@@ -23,15 +22,19 @@ import net.threetag.palladium.power.SuperpowerUtil;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.util.Easing;
+import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 
 public class PalladiumKubeJSPlugin extends KubeJSPlugin {
 
-    public static RegistryObjectBuilderTypes<Ability> ABILITY = add(Ability.REGISTRY.getRegistryKey(), Ability.class, AbilityBuilder.class, AbilityBuilder::new);
-    public static RegistryObjectBuilderTypes<ConditionSerializer> CONDITION = add(ConditionSerializer.REGISTRY.getRegistryKey(), ConditionSerializer.class, ConditionBuilder.class, ConditionBuilder::new);
+    public static RegistryInfo ABILITY = RegistryInfo.of(Ability.REGISTRY.getRegistryKey()).type(Ability.class);
+    public static RegistryInfo CONDITION = RegistryInfo.of(ConditionSerializer.REGISTRY.getRegistryKey()).type(ConditionSerializer.class);
 
     @Override
     public void init() {
+        ABILITY.addType("basic", AbilityBuilder.class, AbilityBuilder::new);
+        CONDITION.addType("basic", ConditionBuilder.class, ConditionBuilder::new);
+
         PalladiumJSEvents.GROUP.register();
 
         PalladiumEvents.REGISTER_PROPERTY.register(handler -> {
@@ -41,14 +44,6 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
                 PalladiumJSEvents.REGISTER_PROPERTIES.post(new RegisterPalladiumPropertyEventJS(handler.getEntity(), handler));
             }
         });
-    }
-
-    @SuppressWarnings({"unchecked", "rawtypes", "UnnecessaryLocalVariable"})
-    public static <T> RegistryObjectBuilderTypes<T> add(ResourceKey<?> key, Class<T> clazz, Class<? extends BuilderBase<? extends T>> builderType, RegistryObjectBuilderTypes.BuilderFactory<T> factory) {
-        ResourceKey resourceKey = key;
-        RegistryObjectBuilderTypes type = RegistryObjectBuilderTypes.add(resourceKey, clazz);
-        type.addType("basic", builderType, factory);
-        return type;
     }
 
     @Environment(EnvType.CLIENT)
@@ -78,6 +73,7 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
         if (type == ScriptType.CLIENT) {
             typeWrappers.registerSimple(Easing.class, o -> Easing.fromString(o.toString()));
             typeWrappers.registerSimple(PalladiumAnimation.PlayerModelPart.class, o -> PalladiumAnimation.PlayerModelPart.fromName(o.toString()));
+            typeWrappers.registerSimple(PlayerSlot.class, o -> PlayerSlot.get(o.toString()));
         }
     }
 

@@ -8,6 +8,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladiumcore.registry.CreativeModeTabRegistry;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
+import java.util.Locale;
 
 public class PalladiumCreativeModeTabs {
 

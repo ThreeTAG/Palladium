@@ -3,6 +3,7 @@ package net.threetag.palladium.data.forge;
 import net.minecraft.data.DataGenerator;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessories;
+import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.entity.PalladiumAttributes;
@@ -86,7 +87,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Command");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
+            this.addAbility(Abilities.RENDER_LAYER_BY_ACCESSORY_SLOT, "Render Layer");
             this.addAbility(Abilities.ANIMATION_TIMER, "Animation Timer");
+            this.addAbility(Abilities.REPEATING_ANIMATION_TIMER, "Animation Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "Shrink Body Overlay");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attribute Modifier");
             this.addAbility(Abilities.HEALING, "Healing");
@@ -104,10 +107,12 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Show Both Arms");
             this.addAbility(Abilities.PLAYER_ANIMATION, "Player Animation");
             this.addAbility(Abilities.WATER_WALK, "Water Walk");
+            this.addAbility(Abilities.FLUID_WALKING, "Fluid Walking");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Restrict Slots");
             this.addAbility(Abilities.PLAY_SOUND, "Sound");
             this.addAbility(Abilities.VIBRATE, "Vibrate");
             this.addAbility(Abilities.INTANGIBILITY, "Intangibility");
+            this.addAbility(Abilities.NAME_CHANGE, "Name Change");
             this.add("ability.geckolib3.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib3.armor_animation", "Gecko Armor Animation");
 
@@ -117,6 +122,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "Abilities");
             this.add("key.palladium.switch_ability_list", "Switch Ability List");
+            this.add("key.palladium.open_equipment", "Open Equipment");
             for (int i = 1; i <= PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
                 this.add("key.palladium.ability_" + i, "Ability " + i);
             }
@@ -175,18 +181,18 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAccessory(Accessories.HAMMOND_CANE, "Hammond Cane");
             this.addAccessory(Accessories.WOODEN_LEG, "Wooden Leg");
 
-            this.add("accessory_slot.hat", "Hat");
-            this.add("accessory_slot.head", "Head");
-            this.add("accessory_slot.face", "Face");
-            this.add("accessory_slot.chest", "Chest");
-            this.add("accessory_slot.back", "Back");
-            this.add("accessory_slot.main_arm", "Main Arm");
-            this.add("accessory_slot.off_arm", "Off Arm");
-            this.add("accessory_slot.main_hand", "Main Hand");
-            this.add("accessory_slot.off_hand", "Off Hand");
-            this.add("accessory_slot.right_leg", "Right Leg");
-            this.add("accessory_slot.left_leg", "Left Leg");
-            this.add("accessory_slot.special", "Special");
+            this.add(AccessorySlot.HAT, "Hat");
+            this.add(AccessorySlot.HEAD, "Head");
+            this.add(AccessorySlot.FACE, "Face");
+            this.add(AccessorySlot.CHEST, "Chest");
+            this.add(AccessorySlot.BACK, "Back");
+            this.add(AccessorySlot.MAIN_ARM, "Main Arm");
+            this.add(AccessorySlot.OFF_ARM, "Off Arm");
+            this.add(AccessorySlot.MAIN_HAND, "Main Hand");
+            this.add(AccessorySlot.OFF_HAND, "Off Hand");
+            this.add(AccessorySlot.RIGHT_LEG, "Right Leg");
+            this.add(AccessorySlot.LEFT_LEG, "Left Leg");
+            this.add(AccessorySlot.SPECIAL, "Special");
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Heat Vision");
@@ -258,7 +264,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
+            this.addAbility(Abilities.RENDER_LAYER_BY_ACCESSORY_SLOT, "Render Layer");
             this.addAbility(Abilities.ANIMATION_TIMER, "Animations-Timer");
+            this.addAbility(Abilities.REPEATING_ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attributmodifikator");
             this.addAbility(Abilities.HEALING, "Heilung");
@@ -276,10 +284,12 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeigen");
             this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
             this.addAbility(Abilities.WATER_WALK, "Auf Wasser Laufen");
+            this.addAbility(Abilities.FLUID_WALKING, "Auf Flüssigkeit Laufen");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(Abilities.PLAY_SOUND, "Sound");
             this.addAbility(Abilities.VIBRATE, "Vibrieren");
             this.addAbility(Abilities.INTANGIBILITY, "Ungreifbarkeit");
+            this.addAbility(Abilities.NAME_CHANGE, "Namesänderung");
             this.add("ability.geckolib3.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib3.armor_animation", "Gecko Armor Animation");
 
@@ -289,6 +299,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "F\u00E4higkeiten");
             this.add("key.palladium.switch_ability_list", "F\u00E4higkeitenliste wechseln");
+            this.add("key.palladium.open_equipment", "Equipment öffnen");
             for (int i = 1; i <= PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
                 this.add("key.palladium.ability_" + i, "F\u00E4higkeit " + i);
             }
@@ -342,18 +353,18 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAccessory(Accessories.HAMMOND_CANE, "Hammonds Gehstock");
             this.addAccessory(Accessories.WOODEN_LEG, "Holzbein");
 
-            this.add("accessory_slot.hat", "Hut");
-            this.add("accessory_slot.head", "Kopf");
-            this.add("accessory_slot.face", "Gesicht");
-            this.add("accessory_slot.chest", "Brust");
-            this.add("accessory_slot.back", "R\u00FCcken");
-            this.add("accessory_slot.main_arm", "Hauptarm");
-            this.add("accessory_slot.off_arm", "Zweitarm");
-            this.add("accessory_slot.main_hand", "Haupthand");
-            this.add("accessory_slot.off_hand", "Zweithand");
-            this.add("accessory_slot.right_leg", "Rechtes Bein");
-            this.add("accessory_slot.left_leg", "Linkes Bein");
-            this.add("accessory_slot.special", "Spezial");
+            this.add(AccessorySlot.HAT, "Hut");
+            this.add(AccessorySlot.HEAD, "Kopf");
+            this.add(AccessorySlot.FACE, "Gesicht");
+            this.add(AccessorySlot.CHEST, "Brust");
+            this.add(AccessorySlot.BACK, "Rücken");
+            this.add(AccessorySlot.MAIN_ARM, "Hauptarm");
+            this.add(AccessorySlot.OFF_ARM, "Zweitarm");
+            this.add(AccessorySlot.MAIN_HAND, "Haupthand");
+            this.add(AccessorySlot.OFF_HAND, "Zweithand");
+            this.add(AccessorySlot.RIGHT_LEG, "Rechtes Bein");
+            this.add(AccessorySlot.LEFT_LEG, "Linkes Bein");
+            this.add(AccessorySlot.SPECIAL, "Spezial");
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
@@ -425,7 +436,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.DUMMY, "Dummy");
             this.addAbility(Abilities.COMMAND, "Befehl");
             this.addAbility(Abilities.RENDER_LAYER, "Render Layer");
+            this.addAbility(Abilities.RENDER_LAYER_BY_ACCESSORY_SLOT, "Render Layer");
             this.addAbility(Abilities.ANIMATION_TIMER, "Animations-Timer");
+            this.addAbility(Abilities.REPEATING_ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "\u00C4ttrib\u00FCtmodifikator");
             this.addAbility(Abilities.HEALING, "Helung");
@@ -443,10 +456,12 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeijen");
             this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
             this.addAbility(Abilities.WATER_WALK, "Uff Wasser Lofen");
+            this.addAbility(Abilities.FLUID_WALKING, "Uff Flüssichkeht Lofen");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(Abilities.PLAY_SOUND, "Sound");
             this.addAbility(Abilities.VIBRATE, "Vibrieren");
             this.addAbility(Abilities.INTANGIBILITY, "Ungreifbarkeht");
+            this.addAbility(Abilities.NAME_CHANGE, "Namesänderung");
             this.add("ability.geckolib3.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib3.armor_animation", "Gecko Armor Animation");
 
@@ -456,6 +471,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "F\u00E4hischgehden");
             this.add("key.palladium.switch_ability_list", "F\u00E4hischgehden wechseln");
+            this.add("key.palladium.open_equipment", "Equipmend öffnen");
             for (int i = 1; i <= PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
                 this.add("key.palladium.ability_" + i, "F\u00E4hischgehd " + i);
             }
@@ -509,18 +525,18 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAccessory(Accessories.HAMMOND_CANE, "Hammonds Gehstock");
             this.addAccessory(Accessories.WOODEN_LEG, "Holzbehn");
 
-            this.add("accessory_slot.hat", "Hut");
-            this.add("accessory_slot.head", "Nischel");
-            this.add("accessory_slot.face", "Jesichd");
-            this.add("accessory_slot.chest", "Brust");
-            this.add("accessory_slot.back", "R\u00FCggen");
-            this.add("accessory_slot.main_arm", "Haupdarm");
-            this.add("accessory_slot.off_arm", "Zweitarm");
-            this.add("accessory_slot.main_hand", "Haupthand");
-            this.add("accessory_slot.off_hand", "Nebenhand");
-            this.add("accessory_slot.right_leg", "Reschdes Bein");
-            this.add("accessory_slot.left_leg", "Linges Bein");
-            this.add("accessory_slot.special", "Spezial");
+            this.add(AccessorySlot.HAT, "Hut");
+            this.add(AccessorySlot.HEAD, "Nischel");
+            this.add(AccessorySlot.FACE, "Gusche");
+            this.add(AccessorySlot.CHEST, "Brust");
+            this.add(AccessorySlot.BACK, "Rüggen");
+            this.add(AccessorySlot.MAIN_ARM, "Haupdarm");
+            this.add(AccessorySlot.OFF_ARM, "Zwehtarm");
+            this.add(AccessorySlot.MAIN_HAND, "Haupthand");
+            this.add(AccessorySlot.OFF_HAND, "Zwehthand");
+            this.add(AccessorySlot.RIGHT_LEG, "Reschdes Behn");
+            this.add(AccessorySlot.LEFT_LEG, "Linges Behn");
+            this.add(AccessorySlot.SPECIAL, "Spezial");
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");

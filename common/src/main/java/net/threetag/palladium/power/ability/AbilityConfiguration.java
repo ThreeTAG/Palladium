@@ -32,8 +32,9 @@ public class AbilityConfiguration {
     private CooldownType cooldownType = CooldownType.STATIC;
     private boolean needsKey = false;
     private boolean needsEmptyHand = false;
+    private boolean allowScrollWhenCrouching = true;
     private KeyType keyType = KeyType.KEY_BIND;
-    private KeyPressType keyPressType = KeyPressType.ONCE;
+    private KeyPressType keyPressType = KeyPressType.ACTION;
     public List<String> dependencies = new ArrayList<>();
 
     public AbilityConfiguration(String id, Ability ability) {
@@ -93,6 +94,10 @@ public class AbilityConfiguration {
         return this.needsEmptyHand;
     }
 
+    public boolean allowScrollWhenCrouching() {
+        return this.allowScrollWhenCrouching;
+    }
+
     public KeyType getKeyType() {
         return this.keyType;
     }
@@ -121,6 +126,7 @@ public class AbilityConfiguration {
         this.propertyManager.toBuffer(buf);
         buf.writeBoolean(this.needsKey);
         buf.writeBoolean(this.needsEmptyHand);
+        buf.writeBoolean(this.allowScrollWhenCrouching);
         buf.writeBoolean(this.buyable);
         buf.writeInt(this.keyType.ordinal());
         buf.writeInt(this.keyPressType.ordinal());
@@ -140,6 +146,7 @@ public class AbilityConfiguration {
         configuration.propertyManager.fromBuffer(buf);
         configuration.needsKey = buf.readBoolean();
         configuration.needsEmptyHand = buf.readBoolean();
+        configuration.allowScrollWhenCrouching = buf.readBoolean();
         configuration.buyable = buf.readBoolean();
         configuration.keyType = KeyType.values()[buf.readInt()];
         configuration.keyPressType = KeyPressType.values()[buf.readInt()];
@@ -184,14 +191,13 @@ public class AbilityConfiguration {
         configuration.propertyManager.fromJSON(json);
 
         if (GsonHelper.isValidNode(json, "conditions")) {
-            ConditionSerializer.CURRENT_CONTEXT = ConditionContextType.ABILITIES;
             JsonObject conditions = GsonHelper.getAsJsonObject(json, "conditions");
             boolean withKey = false;
             CooldownType cooldownType = null;
 
             if (GsonHelper.isValidNode(conditions, "unlocking")) {
                 JsonElement condJson = conditions.get("unlocking");
-                var condList = ConditionSerializer.listFromJSON(condJson, ConditionContextType.ABILITIES);
+                var condList = ConditionSerializer.listFromJSON(condJson, ConditionEnvironment.DATA);
 
                 for (Condition condition : condList) {
                     if (condition instanceof BuyableCondition buyableCondition) {
@@ -221,7 +227,7 @@ public class AbilityConfiguration {
 
             if (GsonHelper.isValidNode(conditions, "enabling")) {
                 JsonElement condJson = conditions.get("enabling");
-                var condList = ConditionSerializer.listFromJSON(condJson, ConditionContextType.ABILITIES);
+                var condList = ConditionSerializer.listFromJSON(condJson, ConditionEnvironment.DATA);
 
                 for (Condition condition : condList) {
                     if (condition instanceof BuyableCondition) {
@@ -238,6 +244,7 @@ public class AbilityConfiguration {
 
                         if (condition instanceof KeyCondition key) {
                             configuration.needsEmptyHand = key.needsEmptyHand();
+                            configuration.allowScrollWhenCrouching = key.allowScrollingWhenCrouching();
                         }
                     }
 
@@ -268,13 +275,13 @@ public class AbilityConfiguration {
 
     public enum KeyType {
 
-        KEY_BIND, LEFT_CLICK, RIGHT_CLICK, SPACE_BAR;
+        KEY_BIND, LEFT_CLICK, RIGHT_CLICK, SPACE_BAR, SCROLL_UP, SCROLL_DOWN, SCROLL_EITHER;
 
     }
 
     public enum KeyPressType {
 
-        ONCE, HOLD
+        ACTION, ACTIVATION, TOGGLE, HOLD
 
     }
 

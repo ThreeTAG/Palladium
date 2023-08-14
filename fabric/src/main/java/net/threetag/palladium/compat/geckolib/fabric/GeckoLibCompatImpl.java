@@ -19,11 +19,13 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.compat.geckolib.ability.ArmorAnimationAbility;
 import net.threetag.palladium.compat.geckolib.ability.RenderLayerAnimationAbility;
 import net.threetag.palladium.compat.geckolib.armor.GeckoArmorRenderer;
 import net.threetag.palladium.compat.geckolib.armor.PackGeckoArmorItem;
 import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
+import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.item.AddonArmorItem;
 import net.threetag.palladium.mixin.client.GeoArmorRendererInvoker;
 import net.threetag.palladium.power.ability.Ability;
@@ -54,11 +56,7 @@ public class GeckoLibCompatImpl {
 
     public static ArmorItem createArmorItem(ArmorMaterial armorMaterial, EquipmentSlot slot, Item.Properties properties, boolean hideSecondLayer) {
         var item = new ArmorItemImpl(armorMaterial, slot, properties);
-
-        if (hideSecondLayer) {
-            item.hideSecondLayer();
-        }
-
+        BodyPart.HIDES_LAYER.add(item);
         return item;
     }
 
@@ -119,7 +117,8 @@ public class GeckoLibCompatImpl {
 
     public static class ArmorItemImpl extends AddonArmorItem implements IAnimatable, PackGeckoArmorItem {
 
-        private ResourceLocation texture, model, animationLocation;
+        private TextureReference texture;
+        private ResourceLocation model, animationLocation;
         public List<ParsedAnimationController<IAnimatable>> animationControllers;
         private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
@@ -143,7 +142,7 @@ public class GeckoLibCompatImpl {
         }
 
         @Override
-        public PackGeckoArmorItem setGeckoLocations(ResourceLocation modelLocation, ResourceLocation textureLocation, ResourceLocation animationLocation, List<ParsedAnimationController<IAnimatable>> animationControllers) {
+        public PackGeckoArmorItem setGeckoLocations(ResourceLocation modelLocation, TextureReference textureLocation, ResourceLocation animationLocation, List<ParsedAnimationController<IAnimatable>> animationControllers) {
             this.model = modelLocation;
             this.texture = textureLocation;
             this.animationLocation = animationLocation;
@@ -157,7 +156,7 @@ public class GeckoLibCompatImpl {
         }
 
         @Override
-        public ResourceLocation getGeckoTextureLocation() {
+        public TextureReference getGeckoTextureLocation() {
             return this.texture;
         }
 

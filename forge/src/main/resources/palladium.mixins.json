@@ -3,7 +3,6 @@
   "package": "net.threetag.palladium.mixin.forge",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "HumanoidArmorLayerMixin",
     "GeoArmorRendererMixin"
   ],
   "mixins": [

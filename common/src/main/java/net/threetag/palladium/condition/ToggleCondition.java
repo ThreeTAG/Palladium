@@ -2,6 +2,8 @@ package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
@@ -10,8 +12,8 @@ import net.threetag.palladium.util.property.PropertyManager;
 
 public class ToggleCondition extends KeyCondition {
 
-    public ToggleCondition(int cooldown, AbilityConfiguration.KeyType type, boolean needsEmptyHand) {
-        super(cooldown, type, needsEmptyHand);
+    public ToggleCondition(int cooldown, AbilityConfiguration.KeyType type, boolean needsEmptyHand, boolean allowScrollingWhenCrouching) {
+        super(cooldown, type, needsEmptyHand, allowScrollingWhenCrouching);
     }
 
     @Override
@@ -20,7 +22,14 @@ public class ToggleCondition extends KeyCondition {
     }
 
     @Override
-    public boolean active(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
+    public boolean active(DataContext context) {
+        var entity = context.get(DataContextType.ENTITY);
+        var entry = context.get(DataContextType.ABILITY);
+
+        if (entity == null || entry == null) {
+            return false;
+        }
+
         if (this.cooldown != 0 && entry.cooldown == 0) {
             entry.keyPressed = false;
         }
@@ -38,6 +47,11 @@ public class ToggleCondition extends KeyCondition {
     }
 
     @Override
+    public AbilityConfiguration.KeyPressType getKeyPressType() {
+        return AbilityConfiguration.KeyPressType.TOGGLE;
+    }
+
+    @Override
     public ConditionSerializer getSerializer() {
         return ConditionSerializers.TOGGLE.get();
     }
@@ -46,18 +60,19 @@ public class ToggleCondition extends KeyCondition {
 
         public Serializer() {
             this.withProperty(HeldCondition.Serializer.COOLDOWN, 0);
-            this.withProperty(KeyCondition.KEY_TYPE, AbilityConfiguration.KeyType.KEY_BIND);
+            this.withProperty(KeyCondition.KEY_TYPE_WITH_SCROLLING, AbilityConfiguration.KeyType.KEY_BIND);
             this.withProperty(KeyCondition.NEEDS_EMPTY_HAND, false);
+            this.withProperty(KeyCondition.ALLOW_SCROLLING_DURING_CROUCHING, true);
         }
 
         @Override
         public Condition make(JsonObject json) {
-            return new ToggleCondition(this.getProperty(json, HeldCondition.Serializer.COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND));
+            return new ToggleCondition(this.getProperty(json, HeldCondition.Serializer.COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE_WITH_SCROLLING), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND), this.getProperty(json, KeyCondition.ALLOW_SCROLLING_DURING_CROUCHING));
         }
 
         @Override
-        public ConditionContextType getContextType() {
-            return ConditionContextType.ABILITIES;
+        public ConditionEnvironment getContextEnvironment() {
+            return ConditionEnvironment.DATA;
         }
 
         @Override

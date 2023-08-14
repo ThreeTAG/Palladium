@@ -1,6 +1,5 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
-    id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 
 architectury {
@@ -50,10 +49,8 @@ dependencies {
     include "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
 
     // Cardinal Components
-    modApi "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_version}"
-    modApi "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_components_version}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_version}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_components_version}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_version}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_components_version}"
 
     // Mod Menu
     modImplementation "com.terraformersmc:modmenu:${rootProject.modmenu_version}"
@@ -84,10 +81,16 @@ dependencies {
     })
 
     // Condensed Creative
-    modImplementation "io.wispforest:condensed_creative-fabric:${rootProject.condensed_creative_version}"
+    modCompileOnly "io.wispforest:condensed_creative-fabric:${rootProject.condensed_creative_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    }
 }
 
 processResources {
@@ -107,19 +110,18 @@ shadowJar {
     exclude "architectury.common.json"
 
     configurations = [project.configurations.shadowCommon]
-    classifier "dev-shadow"
+    archiveClassifier = "dev-shadow"
 }
 
 remapJar {
     injectAccessWidener = true
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier null
-    archiveClassifier = 'fabric'
+    archiveClassifier = "fabric"
 }
 
 jar {
-    classifier "dev"
+    archiveClassifier = "dev"
 }
 
 sourcesJar {
