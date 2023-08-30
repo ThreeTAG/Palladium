@@ -29,7 +29,7 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
     private AccessoryPlayerData palladium$accessories;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void init(Level level, BlockPos blockPos, float f, GameProfile gameProfile, ProfilePublicKey profilePublicKey, CallbackInfo ci) {
+    public void init(Level level, BlockPos blockPos, float yRot, GameProfile gameProfile, CallbackInfo ci) {
         this.palladium$getFlightHandler();
         this.palladium$accessories = new AccessoryPlayerData();
     }

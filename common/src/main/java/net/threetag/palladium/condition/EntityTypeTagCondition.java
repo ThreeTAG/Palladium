@@ -2,6 +2,7 @@ package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
@@ -45,7 +46,7 @@ public class EntityTypeTagCondition extends Condition {
 
         @Override
         public Condition make(JsonObject json) {
-            return new EntityTypeTagCondition(TagKey.create(Registry.ENTITY_TYPE_REGISTRY, this.getProperty(json, ENTITY_TYPE)));
+            return new EntityTypeTagCondition(TagKey.create(Registries.ENTITY_TYPE, this.getProperty(json, ENTITY_TYPE)));
         }
 
         @Override

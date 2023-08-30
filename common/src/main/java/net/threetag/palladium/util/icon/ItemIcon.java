@@ -4,7 +4,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -29,13 +31,13 @@ public class ItemIcon implements IIcon {
     }
 
     @Override
-    public void draw(Minecraft mc, DataContext context, PoseStack stack, int x, int y, int width, int height) {
-        stack.pushPose();
-        stack.translate(x + width / 2D, y + height / 2D, 100);
+    public void draw(Minecraft mc, GuiGraphics guiGraphics, DataContext context, int x, int y, int width, int height) {
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(x + width / 2D, y + height / 2D, 100);
 
         if (width != 16 || height != 16) {
             int s = Math.min(width, height);
-            stack.scale(s / 16F, s / 16F, s / 16F);
+            guiGraphics.pose().scale(s / 16F, s / 16F, s / 16F);
         }
 
         var item = this.stack;
@@ -50,8 +52,8 @@ public class ItemIcon implements IIcon {
             }
         }
 
-        GuiUtil.drawItem(stack, item, 0, true, null);
-        stack.popPose();
+        GuiUtil.drawItem(guiGraphics, item, 0, true, null);
+        guiGraphics.pose().popPose();
     }
 
     @Override
@@ -79,7 +81,7 @@ public class ItemIcon implements IIcon {
         @Override
         public JsonObject toJSON(ItemIcon icon) {
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("item", Registry.ITEM.getKey(icon.stack.getItem()).toString());
+            jsonObject.addProperty("item", BuiltInRegistries.ITEM.getKey(icon.stack.getItem()).toString());
             jsonObject.addProperty("count", icon.stack.getCount());
             return jsonObject;
         }

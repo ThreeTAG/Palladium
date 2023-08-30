@@ -12,7 +12,6 @@ import net.threetag.palladium.power.ability.AbilityEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.xml.crypto.Data;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public class DataContext {
     }
 
     public static DataContext forEntity(Entity entity) {
-        return create().with(DataContextType.ENTITY, entity).with(DataContextType.LEVEL, entity.level);
+        return create().with(DataContextType.ENTITY, entity).with(DataContextType.LEVEL, entity.level());
     }
 
     public static DataContext forArmorInSlot(LivingEntity entity, EquipmentSlot slot) {

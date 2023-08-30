@@ -5,11 +5,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.CooldownType;
-import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.network.SyncAbilityEntryPropertyMessage;
 import net.threetag.palladium.network.SyncAbilityStateMessage;
 import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
 import net.threetag.palladium.util.property.SyncType;
@@ -60,7 +59,7 @@ public class AbilityEntry {
 
     @SuppressWarnings({"unchecked", "rawtypes", "UnnecessaryLocalVariable"})
     public void syncProperty(PalladiumProperty<?> property, LivingEntity entity, @Nullable SyncType syncType) {
-        if (!entity.level.isClientSide && this.propertyManager.isRegistered(property)) {
+        if (!entity.level().isClientSide && this.propertyManager.isRegistered(property)) {
             if (syncType == null) {
                 syncType = property.getSyncType();
             }
@@ -69,7 +68,7 @@ public class AbilityEntry {
             PalladiumProperty property1 = property;
             tag.put(property.getKey(), property1.toNBT(this.propertyManager.get(property)));
             if (syncType == SyncType.EVERYONE) {
-                new SyncAbilityEntryPropertyMessage(entity.getId(), new AbilityReference(holder.getPower().getId(), abilityConfiguration.getId()), property.getKey(), tag).sendToDimension(entity.level);
+                new SyncAbilityEntryPropertyMessage(entity.getId(), new AbilityReference(holder.getPower().getId(), abilityConfiguration.getId()), property.getKey(), tag).sendToDimension(entity.level());
             } else if (syncType == SyncType.SELF && entity instanceof ServerPlayer serverPlayer) {
                 new SyncAbilityEntryPropertyMessage(entity.getId(), new AbilityReference(holder.getPower().getId(), abilityConfiguration.getId()), property.getKey(), tag).send(serverPlayer);
             }
@@ -110,8 +109,8 @@ public class AbilityEntry {
         }
     }
 
-    public void tick(LivingEntity entity, Power power, IPowerHolder powerHolder) {
-        if (!entity.level.isClientSide) {
+    public void tick(LivingEntity entity, IPowerHolder powerHolder) {
+        if (!entity.level().isClientSide) {
             if (this.lifetime == 0) {
                 this.abilityConfiguration.getUnlockingConditions().forEach(condition -> condition.init(entity, this, this.propertyManager));
                 this.abilityConfiguration.getEnablingConditions().forEach(condition -> condition.init(entity, this, this.propertyManager));
@@ -197,7 +196,7 @@ public class AbilityEntry {
     }
 
     public void syncState(LivingEntity entity) {
-        getSyncStateMessage(entity).sendToDimension(entity.getLevel());
+        getSyncStateMessage(entity).sendToDimension(entity.level());
     }
 
     public SyncAbilityStateMessage getSyncStateMessage(LivingEntity entity) {

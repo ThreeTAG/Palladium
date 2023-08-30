@@ -1,7 +1,7 @@
 package net.threetag.palladium.power;
 
 import com.google.gson.*;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -69,20 +69,20 @@ public class ItemPowerManager extends SimpleJsonResourceReloadListener {
                 if (jsonObject.get("item").isJsonPrimitive()) {
                     ResourceLocation itemId = new ResourceLocation(jsonObject.get("item").getAsString());
 
-                    if (!Registry.ITEM.containsKey(itemId)) {
+                    if (!BuiltInRegistries.ITEM.containsKey(itemId)) {
                         throw new JsonParseException("Unknown item '" + itemId + "'");
                     }
 
-                    items = List.of(Registry.ITEM.get(itemId));
+                    items = List.of(BuiltInRegistries.ITEM.get(itemId));
                 } else if (jsonObject.get("item").isJsonArray()) {
                     for (JsonElement jsonElement : GsonHelper.getAsJsonArray(jsonObject, "item")) {
                         ResourceLocation itemId = new ResourceLocation(jsonElement.getAsString());
 
-                        if (!Registry.ITEM.containsKey(itemId)) {
+                        if (!BuiltInRegistries.ITEM.containsKey(itemId)) {
                             throw new JsonParseException("Unknown item '" + itemId + "'");
                         }
 
-                        items.add(Registry.ITEM.get(itemId));
+                        items.add(BuiltInRegistries.ITEM.get(itemId));
                     }
                 } else {
                     throw new JsonSyntaxException("Expected item to be string or array of strings");

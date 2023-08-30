@@ -144,7 +144,7 @@ public class AbilityUtil {
      */
     @Nullable
     public static AbilityEntry getEntry(LivingEntity entity, ResourceLocation powerId, String abilityKey) {
-        Power power = PowerManager.getInstance(entity.level).getPower(powerId);
+        Power power = PowerManager.getInstance(entity.level()).getPower(powerId);
 
         if (power == null) {
             return null;
@@ -249,7 +249,7 @@ public class AbilityUtil {
      * @return True if the entity has the power
      */
     public static boolean hasPower(LivingEntity entity, ResourceLocation powerId) {
-        Power power = PowerManager.getInstance(entity.level).getPower(powerId);
+        Power power = PowerManager.getInstance(entity.level()).getPower(powerId);
 
         if (power == null) {
             return false;

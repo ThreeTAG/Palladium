@@ -5,7 +5,10 @@ import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -21,6 +24,7 @@ import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.item.PalladiumCreativeModeTabs;
 import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.Utils;
+import net.threetag.palladiumcore.registry.CreativeModeTabRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -64,13 +68,6 @@ public class ItemBuilder extends AddonBuilder<Item> {
         Utils.ifNotNull(this.rarity, properties::rarity);
         Utils.ifTrue(this.isFireResistant, properties::fireResistant);
 
-        if (this.creativeModeTab != null) {
-            CreativeModeTab tab = PalladiumCreativeModeTabs.getTab(this.creativeModeTab);
-            if (tab != null) {
-                properties.tab(tab);
-            }
-        }
-
         properties.food(this.foodProperties);
 
         IAddonItem item = this.typeSerializer != null ? this.typeSerializer.parse(this.json, properties) : new AddonItem(properties);
@@ -80,7 +77,7 @@ public class ItemBuilder extends AddonBuilder<Item> {
         if (this.attributeModifiers != null) {
             for (PlayerSlot slot : this.attributeModifiers.keySet()) {
                 for (ResourceLocation attributeId : this.attributeModifiers.get(slot).keySet()) {
-                    Attribute attribute = Registry.ATTRIBUTE.get(attributeId);
+                    Attribute attribute = BuiltInRegistries.ATTRIBUTE.get(attributeId);
 
                     if (attribute != null) {
                         for (AttributeModifier attributeModifier : this.attributeModifiers.get(slot).get(attributeId)) {
@@ -95,7 +92,7 @@ public class ItemBuilder extends AddonBuilder<Item> {
 
         if (this.attributeModifiersAllSlots != null) {
             for (ResourceLocation attributeId : this.attributeModifiersAllSlots.keySet()) {
-                Attribute attribute = Registry.ATTRIBUTE.get(attributeId);
+                Attribute attribute = BuiltInRegistries.ATTRIBUTE.get(attributeId);
 
                 if (attribute != null) {
                     for (AttributeModifier attributeModifier : this.attributeModifiersAllSlots.get(attributeId)) {
@@ -111,6 +108,12 @@ public class ItemBuilder extends AddonBuilder<Item> {
 
         if (this.registerCurioTrinket) {
             CuriosTrinketsUtil.getInstance().registerCurioTrinket((Item) item, new CurioTrinket(item));
+        }
+
+        if (this.creativeModeTab != null) {
+            ResourceKey<CreativeModeTab> tabKey = ResourceKey.create(Registries.CREATIVE_MODE_TAB, this.creativeModeTab);
+            // TODO specific placements
+            CreativeModeTabRegistry.addToTab(tabKey, entries -> entries.add((Item) item));
         }
 
         return (Item) item;

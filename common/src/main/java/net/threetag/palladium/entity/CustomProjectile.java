@@ -6,23 +6,28 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.ExplosionDamageCalculator;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.threetag.palladiumcore.network.ExtendedEntitySpawnData;
 import net.threetag.palladiumcore.network.NetworkManager;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.List;
@@ -41,7 +46,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     public int setEntityOnFireSeconds = 0;
     public float explosionRadius = 0F;
     public boolean explosionCausesFire = false;
-    public Explosion.BlockInteraction explosionBlockInteraction = Explosion.BlockInteraction.NONE;
+    public Explosion.BlockInteraction explosionBlockInteraction = Explosion.BlockInteraction.KEEP;
     public float knockbackStrength = 0F;
     public String commandOnEntityHit = null;
     public String commandOnBlockHit = null;
@@ -60,7 +65,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkManager.createAddEntityPacket(this);
     }
 
@@ -86,19 +91,19 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             Entity entity = result.getEntity();
 
             if(entity != this.getOwner() || !this.preventShooterInteraction) {
                 if (this.commandOnEntityHit != null && !this.commandOnEntityHit.isBlank()) {
-                    this.level.getServer().getCommands()
+                    this.level().getServer().getCommands()
                             .performPrefixedCommand(this.createCommandSourceStack()
                                     .withMaximumPermission(2)
                                     .withSuppressedOutput(), this.commandOnEntityHit);
                 }
 
                 if (this.damage > 0F) {
-                    entity.hurt(DamageSource.thrown(this, this.getOwner()), this.damage);
+                    entity.hurt(entity.level().damageSources().thrown(this, this.getOwner()), this.damage);
                 }
 
                 if (this.setEntityOnFireSeconds > 0) {
@@ -106,7 +111,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
                 }
 
                 if (this.explosionRadius > 0F) {
-                    this.level.explode(this, this.getX(), this.getEyeY(), this.getZ(), this.explosionRadius, this.explosionCausesFire, this.explosionBlockInteraction);
+                    this.explode(this, this.level().damageSources().thrown(this, this.getOwner()), this.getX(), this.getEyeY(), this.getZ(), this.explosionRadius, this.explosionCausesFire, this.explosionBlockInteraction);
                 }
 
                 if (this.knockbackStrength > 0F && entity instanceof LivingEntity living) {
@@ -114,7 +119,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
                 }
 
                 if (this.dieOnEntityHit) {
-                    this.level.broadcastEntityEvent(this, (byte) 3);
+                    this.level().broadcastEntityEvent(this, (byte) 3);
                     this.discard();
                 }
             }
@@ -125,23 +130,30 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     protected void onHitBlock(BlockHitResult blockHitResult) {
         super.onHitBlock(blockHitResult);
 
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.commandOnBlockHit != null && !this.commandOnBlockHit.isBlank()) {
-                this.level.getServer().getCommands()
+                this.level().getServer().getCommands()
                         .performPrefixedCommand(this.createCommandSourceStack()
                                 .withMaximumPermission(2)
                                 .withSuppressedOutput(), this.commandOnBlockHit);
             }
 
             if (this.explosionRadius > 0F) {
-                this.level.explode(this, this.getX(), this.getEyeY(), this.getZ(), this.explosionRadius, this.explosionCausesFire, this.explosionBlockInteraction);
+                this.explode(this, this.level().damageSources().thrown(this, this.getOwner()), this.getX(), this.getEyeY(), this.getZ(), this.explosionRadius, this.explosionCausesFire, this.explosionBlockInteraction);
             }
 
             if (this.dieOnBlockHit) {
-                this.level.broadcastEntityEvent(this, (byte) 3);
+                this.level().broadcastEntityEvent(this, (byte) 3);
                 this.discard();
             }
         }
+    }
+
+    public Explosion explode(Entity source, @Nullable DamageSource damageSource, double x, double y, double z, float radius, boolean fire, Explosion.BlockInteraction blockInteraction) {
+        Explosion explosion = new Explosion(source.level(), source, damageSource, null, x, y, z, radius, fire, blockInteraction);
+        explosion.explode();
+        explosion.finalizeExplosion(true);
+        return explosion;
     }
 
     @Override
@@ -161,7 +173,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
             appearance.onTick(this);
         }
 
-        if (this.lifetime > 0 && this.tickCount >= this.lifetime && !this.level.isClientSide) {
+        if (this.lifetime > 0 && this.tickCount >= this.lifetime && !this.level().isClientSide) {
             this.discard();
         }
     }
@@ -222,7 +234,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
             this.explosionCausesFire = compound.getBoolean("ExplosionCausesFire");
         if (compound.contains("ExplosionBlockInteraction")) {
             var type = compound.getString("ExplosionBlockInteraction");
-            this.explosionBlockInteraction = type.equalsIgnoreCase("break") ? Explosion.BlockInteraction.BREAK : (type.equalsIgnoreCase("destroy") ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE);
+            this.explosionBlockInteraction = type.equalsIgnoreCase("break") ? Explosion.BlockInteraction.DESTROY : (type.equalsIgnoreCase("destroy") ? Explosion.BlockInteraction.DESTROY_WITH_DECAY : Explosion.BlockInteraction.KEEP);
         }
         if (compound.contains("KnockbackStrength", Tag.TAG_ANY_NUMERIC))
             this.knockbackStrength = compound.getFloat("KnockbackStrength");
@@ -293,7 +305,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
 
         public ParticleAppearance(CompoundTag tag) {
             super(tag);
-            this.type = tag.contains("ParticleType") ? Registry.PARTICLE_TYPE.get(new ResourceLocation(tag.getString("ParticleType"))) : ParticleTypes.FLAME;
+            this.type = tag.contains("ParticleType") ? BuiltInRegistries.PARTICLE_TYPE.get(new ResourceLocation(tag.getString("ParticleType"))) : ParticleTypes.FLAME;
             this.amount = tag.contains("Amount") ? tag.getInt("Amount") : 1;
             this.spread = tag.contains("Spread") ? tag.getFloat("Spread") : 1;
             this.options = tag.contains("Options") ? tag.getString("Options") : "";
@@ -307,7 +319,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
         @Override
         public void toNBT(CompoundTag nbt) {
             if (this.type != null) {
-                nbt.putString("ParticleType", Registry.PARTICLE_TYPE.getKey(this.type).toString());
+                nbt.putString("ParticleType", BuiltInRegistries.PARTICLE_TYPE.getKey(this.type).toString());
             }
             nbt.putInt("Amount", this.amount);
             nbt.putFloat("Spread", this.spread);
@@ -327,7 +339,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
                 float sZ = (random.nextFloat() - 0.5F) * this.spread;
 
                 try {
-                    projectile.level.addParticle(this.type.getDeserializer().fromCommand(this.type, new StringReader(this.options)), projectile.getX(), projectile.getY(), projectile.getZ(), sX, sY, sZ);
+                    projectile.level().addParticle(this.type.getDeserializer().fromCommand(this.type, new StringReader(this.options)), projectile.getX(), projectile.getY(), projectile.getZ(), sX, sY, sZ);
                 } catch (CommandSyntaxException ignored) {
                 }
             }
@@ -346,7 +358,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
                 float sZ = (random.nextFloat() - 0.5F) * this.spread * 2F;
 
                 try {
-                    projectile.level.addParticle(this.type.getDeserializer().fromCommand(this.type, new StringReader(this.options)), projectile.getX(), projectile.getY(), projectile.getZ(), sX, sY, sZ);
+                    projectile.level().addParticle(this.type.getDeserializer().fromCommand(this.type, new StringReader(this.options)), projectile.getX(), projectile.getY(), projectile.getZ(), sX, sY, sZ);
                 } catch (CommandSyntaxException ignored) {
                 }
             }
@@ -364,7 +376,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
             if (itemTag instanceof CompoundTag compoundTag) {
                 this.item = ItemStack.of(compoundTag);
             } else if (itemTag instanceof StringTag stringTag) {
-                this.item = new ItemStack(Registry.ITEM.get(new ResourceLocation(stringTag.getAsString())));
+                this.item = new ItemStack(BuiltInRegistries.ITEM.get(new ResourceLocation(stringTag.getAsString())));
             } else {
                 this.item = ItemStack.EMPTY;
             }
@@ -385,7 +397,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
             var data = new ItemParticleOption(ParticleTypes.ITEM, this.item);
 
             for (int i = 0; i < 8; ++i) {
-                projectile.level.addParticle(data, projectile.getX(), projectile.getY(), projectile.getZ(), 0.0D, 0.0D, 0.0D);
+                projectile.level().addParticle(data, projectile.getX(), projectile.getY(), projectile.getZ(), 0.0D, 0.0D, 0.0D);
             }
         }
     }

@@ -1,6 +1,5 @@
 package net.threetag.palladium.mixin.fabric;
 
-import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.threetag.palladium.addonpack.AddonPackManager;
@@ -23,8 +22,8 @@ public class PackRepositoryMixin {
     @Final
     private Set<RepositorySource> sources;
 
-    @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/server/packs/repository/Pack$PackConstructor;[Lnet/minecraft/server/packs/repository/RepositorySource;)V")
-    private void init(Pack.PackConstructor packConstructor, RepositorySource[] repositorySources, CallbackInfo ci) {
+    @Inject(at = @At("RETURN"), method = "<init>")
+    private void init(RepositorySource[] repositorySources, CallbackInfo ci) {
         if (!AddonPackManager.IGNORE_INJECT) {
             this.sources = new HashSet<>(sources);
             this.sources.add(AddonPackManager.getInstance().getWrappedPackFinder());

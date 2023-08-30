@@ -1,10 +1,9 @@
 package net.threetag.palladium.client.screen.power;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.icon.IIcon;
 
@@ -35,7 +34,7 @@ enum PowerTabType {
         return this.max;
     }
 
-    public void draw(PoseStack poseStack, GuiComponent abstractGui, int offsetX, int offsetY, boolean isSelected, int index) {
+    public void draw(GuiGraphics guiGraphics, int offsetX, int offsetY, boolean isSelected, int index) {
         int i = this.textureX;
         if (index > 0) {
             i += this.width;
@@ -46,35 +45,36 @@ enum PowerTabType {
         }
 
         int j = isSelected ? this.textureY + this.height : this.textureY;
-        abstractGui.blit(poseStack, offsetX + this.getX(index), offsetY + this.getY(index), i, j, this.width, this.height);
+        guiGraphics.blit(PowersScreen.WINDOW, offsetX + this.getX(index), offsetY + this.getY(index), i, j, this.width, this.height);
     }
 
-    public void drawIcon(PoseStack poseStack, DataContext context, int offsetX, int offsetY, int index, IIcon icon) {
+    public void drawIcon(GuiGraphics guiGraphics, DataContext context, int offsetX, int offsetY, int index, IIcon icon) {
         int i = offsetX + this.getX(index);
         int j = offsetY + this.getY(index);
-        switch(this) {
-            case ABOVE:
+        switch (this) {
+            case ABOVE -> {
                 i += 6;
                 j += 9;
-                break;
-            case BELOW:
+            }
+            case BELOW -> {
                 i += 6;
                 j += 6;
-                break;
-            case LEFT:
+            }
+            case LEFT -> {
                 i += 10;
                 j += 5;
-                break;
-            case RIGHT:
+            }
+            case RIGHT -> {
                 i += 6;
                 j += 5;
+            }
         }
 
-        icon.draw(Minecraft.getInstance(), context, poseStack, i, j);
+        icon.draw(Minecraft.getInstance(), guiGraphics, context, i, j);
     }
 
     public int getX(int index) {
-        switch(this) {
+        switch (this) {
             case ABOVE:
             case BELOW:
                 return (this.width + 4) * index;
@@ -88,7 +88,7 @@ enum PowerTabType {
     }
 
     public int getY(int index) {
-        switch(this) {
+        switch (this) {
             case ABOVE:
                 return -this.height + 4;
             case BELOW:
@@ -104,6 +104,6 @@ enum PowerTabType {
     public boolean isMouseOver(int offsetX, int offsetY, int index, double mouseX, double mouseY) {
         int i = offsetX + this.getX(index);
         int j = offsetY + this.getY(index);
-        return mouseX > (double)i && mouseX < (double)(i + this.width) && mouseY > (double)j && mouseY < (double)(j + this.height);
+        return mouseX > (double) i && mouseX < (double) (i + this.width) && mouseY > (double) j && mouseY < (double) (j + this.height);
     }
 }

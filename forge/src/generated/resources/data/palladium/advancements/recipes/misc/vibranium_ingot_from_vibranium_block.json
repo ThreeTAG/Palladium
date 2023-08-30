@@ -30,5 +30,6 @@
     "recipes": [
       "palladium:vibranium_ingot_from_vibranium_block"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

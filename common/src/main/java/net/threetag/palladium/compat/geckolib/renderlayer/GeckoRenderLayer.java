@@ -11,24 +11,20 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
-import net.threetag.palladium.client.renderer.renderlayer.*;
+import net.threetag.palladium.client.renderer.renderlayer.AbstractPackRenderLayer;
+import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
+import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
+import net.threetag.palladium.client.renderer.renderlayer.RenderTypeFunction;
 import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
 import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.molang.MolangParser;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.resource.GeckoLibCache;
-import software.bernie.geckolib3.util.MolangUtils;
 
 import java.util.List;
 
@@ -65,95 +61,42 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
         return null;
     }
 
-    public AnimatedGeoModel<GeckoLayerState> getGeoModel() {
-        return new AnimatedGeoModel<>() {
-
-            @Override
-            public ResourceLocation getAnimationResource(GeckoLayerState animatable) {
-                return animatable.layer.animationLocation;
-            }
-
-            @Override
-            public ResourceLocation getModelResource(GeckoLayerState object) {
-                return object.layer.cachedModel;
-            }
-
-            @Override
-            public ResourceLocation getTextureResource(GeckoLayerState object) {
-                return object.layer.cachedTexture;
-            }
-
-            @Override
-            public void setMolangQueries(IAnimatable animatable, double seekTime) {
-                super.setMolangQueries(animatable, seekTime);
-                MolangParser parser = GeckoLibCache.getInstance().parser;
-                Minecraft mc = Minecraft.getInstance();
-                var entity = GeckoRenderLayerModel.RENDERED_ENTITY;
-
-                if (entity != null) {
-                    parser.setValue("query.distance_from_camera", () -> mc.gameRenderer.getMainCamera().getPosition().distanceTo(entity.position()));
-                    parser.setValue("query.is_on_ground", () -> MolangUtils.booleanToFloat(entity.isOnGround()));
-                    parser.setValue("query.is_in_water", () -> MolangUtils.booleanToFloat(entity.isInWater()));
-                    parser.setValue("query.is_in_water_or_rain", () -> MolangUtils.booleanToFloat(entity.isInWaterRainOrBubble()));
-
-                    parser.setValue("query.health", entity::getHealth);
-                    parser.setValue("query.max_health", entity::getMaxHealth);
-                    parser.setValue("query.is_on_fire", () -> MolangUtils.booleanToFloat(entity.isOnFire()));
-                    parser.setValue("query.ground_speed", () -> {
-                        Vec3 velocity = entity.getDeltaMovement();
-
-                        return Mth.sqrt((float) ((velocity.x * velocity.x) + (velocity.z * velocity.z)));
-                    });
-                    parser.setValue("query.yaw_speed", () -> entity.getViewYRot((float) seekTime - entity.getViewYRot((float) seekTime - 0.1f)));
-                }
-            }
-        };
-    }
-
     @Override
     public void render(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<Entity> parentModel, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         var living = context.getLivingEntity();
 
-        if (living != null && IPackRenderLayer.conditionsFulfilled(living, this.conditions, this.thirdPersonConditions)) {
-            this.model.setRenderedEntity(living);
+        if (living != null && IPackRenderLayer.conditionsFulfilled(living, this.conditions, this.thirdPersonConditions) && parentModel instanceof HumanoidModel parentHumanoid) {
+            this.model.setCurrentRenderingFields(getState(living), living, parentHumanoid);
             HumanoidModel entityModel = this.model;
             entityModel.setAllVisible(true);
 
             this.cachedTexture = this.texture.get(living).getTexture(context);
             this.cachedModel = this.modelLocation.get(living);
-
-            parentModel.copyPropertiesTo(entityModel);
-
-            if (parentModel instanceof HumanoidModel parentHumanoid) {
-                IPackRenderLayer.copyModelProperties(living, parentHumanoid, entityModel);
-            } else {
-                entityModel.prepareMobModel(living, limbSwing, limbSwingAmount, partialTicks);
-                entityModel.setupAnim(living, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            }
+            IPackRenderLayer.copyModelProperties(living, parentHumanoid, entityModel);
 
             if (entityModel instanceof GeckoRenderLayerModel gecko) {
-                gecko.renderModel(context, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY);
+                gecko.renderToBuffer(poseStack, this.renderType.createVertexConsumer(bufferSource, this.cachedTexture, false), packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
             }
         }
     }
 
     @Override
     public void renderArm(DataContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        var living = context.getLivingEntity();
-        if (living != null && IPackRenderLayer.conditionsFulfilled(living, this.conditions, this.firstPersonConditions)) {
-            this.model.setRenderedEntity(living);
-            GeckoRenderLayerModel humanoidModel = this.model;
-            this.cachedTexture = this.texture.get(living).getTexture(context);
-            this.cachedModel = this.modelLocation.get(living);
-
-            playerRenderer.getModel().copyPropertiesTo(humanoidModel);
-            humanoidModel.attackTime = 0.0F;
-            humanoidModel.crouching = false;
-            humanoidModel.swimAmount = 0.0F;
-            humanoidModel.rightArm.xRot = 0.0F;
-            humanoidModel.leftArm.xRot = 0.0F;
-            humanoidModel.renderArm(context, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY, Minecraft.getInstance().getFrameTime(), arm == HumanoidArm.RIGHT);
-        }
+//        var living = context.getLivingEntity();
+//        if (living != null && IPackRenderLayer.conditionsFulfilled(living, this.conditions, this.firstPersonConditions)) {
+//            this.model.setRenderedEntity(living);
+//            GeckoRenderLayerModel humanoidModel = this.model;
+//            this.cachedTexture = this.texture.get(living).getTexture(context);
+//            this.cachedModel = this.modelLocation.get(living);
+//
+//            playerRenderer.getModel().copyPropertiesTo(humanoidModel);
+//            humanoidModel.attackTime = 0.0F;
+//            humanoidModel.crouching = false;
+//            humanoidModel.swimAmount = 0.0F;
+//            humanoidModel.rightArm.xRot = 0.0F;
+//            humanoidModel.leftArm.xRot = 0.0F;
+//            humanoidModel.renderArm(context, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY, Minecraft.getInstance().getFrameTime(), arm == HumanoidArm.RIGHT);
+//        }
     }
 
     public static GeckoRenderLayer parse(JsonObject json) {
@@ -169,7 +112,7 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
                 texture,
                 modelLocation,
                 GsonUtil.getAsResourceLocation(json, "animation_file", null),
-                ParsedAnimationController.getAsList(json, "animation_controllers"),
+                GsonUtil.fromListOrPrimitive(json.get("animation_controller"), el -> ParsedAnimationController.controllerFromJson(el.getAsJsonObject())),
                 renderType
         );
 

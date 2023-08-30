@@ -23,7 +23,7 @@ public class RestrictSlotsAbility extends Ability {
 
     @Override
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
-        if (enabled && !entity.level.isClientSide) {
+        if (enabled && !entity.level().isClientSide) {
             for (PlayerSlot slot : entry.getProperty(SLOTS)) {
                 var items = slot.getItems(entity);
                 slot.clear(entity);

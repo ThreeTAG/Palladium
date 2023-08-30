@@ -143,7 +143,7 @@ public class SuperpowerCommand {
             if (i == 0) {
                 source.sendFailure(Component.translatable("commands.superpower.error.noSuperpowers", livingEntity.getDisplayName()));
             } else {
-                source.sendSuccess(Component.translatable("commands.superpower.query.success", livingEntity.getDisplayName(), result.substring(0, result.length() - 3)), true);
+                source.sendSuccess(() -> Component.translatable("commands.superpower.query.success", livingEntity.getDisplayName(), result.substring(0, result.length() - 3)), true);
             }
 
             return i;
@@ -179,9 +179,10 @@ public class SuperpowerCommand {
         }
 
         if (i == 1) {
-            commandSource.sendSuccess(Component.translatable("commands.superpower.success.entity.single", (entities.iterator().next()).getDisplayName(), power.getName()), true);
+            commandSource.sendSuccess(() -> Component.translatable("commands.superpower.success.entity.single", (entities.iterator().next()).getDisplayName(), power.getName()), true);
         } else {
-            commandSource.sendSuccess(Component.translatable("commands.superpower.success.entity.multiple", i, power.getName()), true);
+            int finalI = i;
+            commandSource.sendSuccess(() -> Component.translatable("commands.superpower.success.entity.multiple", finalI, power.getName()), true);
         }
 
         return i;
@@ -208,9 +209,10 @@ public class SuperpowerCommand {
 
         if (!no) {
             if (i == 1) {
-                commandSource.sendSuccess(Component.translatable("commands.superpower.success.entity.single", (entities.iterator().next()).getDisplayName(), superpower.getName()), true);
+                commandSource.sendSuccess(() -> Component.translatable("commands.superpower.success.entity.single", (entities.iterator().next()).getDisplayName(), superpower.getName()), true);
             } else {
-                commandSource.sendSuccess(Component.translatable("commands.superpower.success.entity.multiple", i, superpower.getName()), true);
+                int finalI = i;
+                commandSource.sendSuccess(() -> Component.translatable("commands.superpower.success.entity.multiple", finalI, superpower.getName()), true);
             }
         }
 
@@ -240,9 +242,10 @@ public class SuperpowerCommand {
 
         if (!no) {
             if (i == 1) {
-                commandSource.sendSuccess(Component.translatable("commands.superpower.remove.success.entity.single", (entities.iterator().next()).getDisplayName()), true);
+                commandSource.sendSuccess(() -> Component.translatable("commands.superpower.remove.success.entity.single", (entities.iterator().next()).getDisplayName()), true);
             } else {
-                commandSource.sendSuccess(Component.translatable("commands.superpower.remove.success.entity.multiple", i), true);
+                int finalI = i;
+                commandSource.sendSuccess(() -> Component.translatable("commands.superpower.remove.success.entity.multiple", finalI), true);
             }
         }
 
@@ -272,9 +275,10 @@ public class SuperpowerCommand {
 
         if (!no) {
             if (i == 1) {
-                commandSource.sendSuccess(Component.translatable("commands.superpower.replace.success.entity.single", (entities.iterator().next()).getDisplayName()), true);
+                commandSource.sendSuccess(() -> Component.translatable("commands.superpower.replace.success.entity.single", (entities.iterator().next()).getDisplayName()), true);
             } else {
-                commandSource.sendSuccess(Component.translatable("commands.superpower.replace.success.entity.multiple", i), true);
+                int finalI = i;
+                commandSource.sendSuccess(() -> Component.translatable("commands.superpower.replace.success.entity.multiple", finalI), true);
             }
         }
 

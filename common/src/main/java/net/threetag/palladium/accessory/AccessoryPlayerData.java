@@ -27,8 +27,8 @@ public class AccessoryPlayerData {
                 this.accessories.put(slot, Collections.singletonList(accessory));
             }
 
-            if (!player.level.isClientSide)
-                new SyncAccessoriesMessage(player.getId(), this.accessories).sendToDimension(player.level);
+            if (!player.level().isClientSide)
+                new SyncAccessoriesMessage(player.getId(), this.accessories).sendToDimension(player.level());
         }
     }
 
@@ -44,8 +44,8 @@ public class AccessoryPlayerData {
             } else {
                 this.accessories.put(slot, new ArrayList<>());
             }
-            if (!player.level.isClientSide)
-                new SyncAccessoriesMessage(player.getId(), this.accessories).sendToDimension(player.level);
+            if (!player.level().isClientSide)
+                new SyncAccessoriesMessage(player.getId(), this.accessories).sendToDimension(player.level());
         }
     }
 
@@ -69,8 +69,8 @@ public class AccessoryPlayerData {
         for (AccessorySlot slot : AccessorySlot.getSlots()) {
             this.accessories.put(slot, new ArrayList<>());
         }
-        if (!player.level.isClientSide)
-            new SyncAccessoriesMessage(player.getId(), this.accessories).sendToDimension(player.level);
+        if (!player.level().isClientSide)
+            new SyncAccessoriesMessage(player.getId(), this.accessories).sendToDimension(player.level());
     }
 
     public Map<AccessorySlot, Collection<Accessory>> getSlots() {
@@ -82,7 +82,7 @@ public class AccessoryPlayerData {
         this.accessories.forEach((slot, list) -> {
             ListTag listNBT = new ListTag();
             for (Accessory accessory : list) {
-                listNBT.add(StringTag.valueOf(Accessory.REGISTRY.getKey(accessory).toString()));
+                listNBT.add(StringTag.valueOf(Objects.requireNonNull(Accessory.REGISTRY.getKey(accessory)).toString()));
             }
             nbt.put(slot.getName().toString(), listNBT);
         });

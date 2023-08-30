@@ -1,12 +1,12 @@
 package net.threetag.palladium.util.property;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 
 public class MobEffectProperty extends RegistryObjectProperty<MobEffect> {
 
     public MobEffectProperty(String key) {
-        super(key, Registry.MOB_EFFECT);
+        super(key, BuiltInRegistries.MOB_EFFECT);
     }
 
     @Override

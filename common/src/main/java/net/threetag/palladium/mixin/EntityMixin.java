@@ -51,11 +51,11 @@ public class EntityMixin implements PalladiumEntityExtension {
         compound.put("Palladium", palladiumTag);
     }
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/core/BlockPos;<init>(DDD)V"), method = "moveTowardsClosestSpace", cancellable = true)
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/core/BlockPos;containing(DDD)Lnet/minecraft/core/BlockPos;"), method = "moveTowardsClosestSpace", cancellable = true)
     protected void pushOutOfBlocks(double x, double y, double z, CallbackInfo ci) {
         if ((Object) this instanceof LivingEntity living) {
             for (AbilityEntry entry : AbilityUtil.getEnabledEntries(living, Abilities.INTANGIBILITY.get())) {
-                if (IntangibilityAbility.canGoThrough(entry, this.level.getBlockState(new BlockPos(x, y, z)))) {
+                if (IntangibilityAbility.canGoThrough(entry, this.level.getBlockState(BlockPos.containing(x, y, z)))) {
                     ci.cancel();
                     return;
                 }

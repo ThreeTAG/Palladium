@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -73,11 +74,11 @@ public class AddonBlockItem extends BlockItem implements IAddonItem {
         public IAddonItem parse(JsonObject json, Properties properties) {
             var blockId = GsonUtil.getAsResourceLocation(json, "block");
 
-            if (!Registry.BLOCK.containsKey(blockId)) {
+            if (!BuiltInRegistries.BLOCK.containsKey(blockId)) {
                 throw new JsonParseException("Unknown block '" + blockId + "'");
             }
 
-            return new AddonBlockItem(Registry.BLOCK.get(blockId), properties);
+            return new AddonBlockItem(BuiltInRegistries.BLOCK.get(blockId), properties);
         }
 
         @Override

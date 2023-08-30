@@ -3,6 +3,7 @@ package net.threetag.palladium.util.icon;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.GsonHelper;
@@ -14,7 +15,8 @@ import net.threetag.palladium.util.context.DataContext;
 public record IngredientIcon(Ingredient ingredient) implements IIcon {
 
     @Override
-    public void draw(Minecraft mc, DataContext context, PoseStack stack, int x, int y, int width, int height) {
+    public void draw(Minecraft mc, GuiGraphics guiGraphics, DataContext context, int x, int y, int width, int height) {
+        var stack = guiGraphics.pose();
         stack.pushPose();
         stack.translate(x + width / 2D, y + height / 2D, 100);
 
@@ -24,7 +26,7 @@ public record IngredientIcon(Ingredient ingredient) implements IIcon {
         }
 
         int stackIndex = (int) ((System.currentTimeMillis() / 1000) % this.ingredient.getItems().length);
-        GuiUtil.drawItem(stack, this.ingredient.getItems()[stackIndex], 0, true, null);
+        GuiUtil.drawItem(guiGraphics, this.ingredient.getItems()[stackIndex], 0, true, null);
         stack.popPose();
     }
 

@@ -8,13 +8,8 @@ public class NightCondition extends Condition {
 
     @Override
     public boolean active(DataContext context) {
-        var entity = context.get(DataContextType.ENTITY);
-
-        if (entity == null) {
-            return false;
-        }
-
-        return entity.level.isNight();
+        var level = context.getLevel();
+        return level != null && level.isNight();
     }
 
     @Override

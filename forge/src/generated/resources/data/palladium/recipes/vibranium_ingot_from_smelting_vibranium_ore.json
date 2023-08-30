@@ -1,5 +1,6 @@
 {
   "type": "minecraft:smelting",
+  "category": "misc",
   "cookingtime": 600,
   "experience": 1.0,
   "group": "vibranium_ingot",

@@ -4,8 +4,6 @@ import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
@@ -24,23 +22,18 @@ import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
-import net.threetag.palladium.client.dynamictexture.DynamicTexture;
-import net.threetag.palladium.client.renderer.item.armor.*;
-import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.PlayerUtil;
-import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.json.GsonUtil;
-import net.threetag.palladiumcore.item.IPalladiumItem;
-import net.threetag.palladiumcore.util.Platform;
+import net.threetag.palladiumcore.item.PalladiumItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRenderer, Openable, IPalladiumItem {
+public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRenderer, Openable, PalladiumItem {
 
     private List<Component> tooltipLines;
     private RenderLayerContainer renderLayerContainer = null;
@@ -51,8 +44,8 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
     private int openingTime = 0;
     private ResourceLocation openedSound, closedSound, toggleSound;
 
-    public AddonArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
-        super(armorMaterial, equipmentSlot, properties);
+    public AddonArmorItem(ArmorMaterial armorMaterial, ArmorItem.Type type, Properties properties) {
+        super(armorMaterial, type, properties);
     }
 
     public AddonArmorItem setRenderer(ResourceLocation renderer) {
@@ -130,21 +123,21 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
     @Override
     public void onFullyClosed(LivingEntity entity, ItemStack stack) {
         if (this.closedSound != null) {
-            PlayerUtil.playSoundToAll(entity.level, entity.getX(), entity.getEyeY(), entity.getZ(), 50, this.closedSound, SoundSource.PLAYERS);
+            PlayerUtil.playSoundToAll(entity.level(), entity.getX(), entity.getEyeY(), entity.getZ(), 50, this.closedSound, SoundSource.PLAYERS);
         }
     }
 
     @Override
     public void onFullyOpened(LivingEntity entity, ItemStack stack) {
         if (this.closedSound != null) {
-            PlayerUtil.playSoundToAll(entity.level, entity.getX(), entity.getEyeY(), entity.getZ(), 50, this.openedSound, SoundSource.PLAYERS);
+            PlayerUtil.playSoundToAll(entity.level(), entity.getX(), entity.getEyeY(), entity.getZ(), 50, this.openedSound, SoundSource.PLAYERS);
         }
     }
 
     @Override
     public void onOpeningStateChange(LivingEntity entity, ItemStack stack, boolean open) {
         if (this.toggleSound != null) {
-            PlayerUtil.playSoundToAll(entity.level, entity.getX(), entity.getEyeY(), entity.getZ(), 50, this.toggleSound, SoundSource.PLAYERS);
+            PlayerUtil.playSoundToAll(entity.level(), entity.getX(), entity.getEyeY(), entity.getZ(), 50, this.toggleSound, SoundSource.PLAYERS);
         }
     }
 
@@ -172,13 +165,13 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
                 throw new JsonParseException("Unknown armor material '" + GsonUtil.getAsResourceLocation(json, "armor_material") + "'");
             }
 
-            EquipmentSlot slot = EquipmentSlot.byName(GsonHelper.getAsString(json, "slot"));
+            ArmorItem.Type type = getArmorType(GsonHelper.getAsString(json, "slot"));
 
-            if (slot.getType() != EquipmentSlot.Type.ARMOR) {
-                throw new JsonParseException("The given slot type must be for an armor item");
+            if (type == null) {
+                throw new JsonParseException("Armor slot must be one of the following: " + Arrays.toString(Arrays.stream(ArmorItem.Type.values()).map(ArmorItem.Type::getName).toArray()));
             }
 
-            var item = new AddonArmorItem(armorMaterial, slot, properties);
+            var item = new AddonArmorItem(armorMaterial, type, properties);
 
             item.rendererFile = GsonUtil.getAsResourceLocation(json, "armor_renderer", null);
 
@@ -190,36 +183,20 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
                     GsonUtil.getAsResourceLocation(json, "opening_toggle_sound", null)
             );
 
-            if (Platform.isClient()) {
-                this.clientLegacySupport(item, json);
-            }
-
             return item;
         }
 
-        @Environment(EnvType.CLIENT)
-        private void clientLegacySupport(AddonArmorItem item, JsonObject json) {
-            if (json.has("armor_model_layer") && json.has("armor_texture")) {
-                Palladium.LOGGER.warn("Deprecated use of armor model layers and/or textures in item json file found, please switch to an separate armor renderer file!");
-
-                ModelLookup.Model m = ModelLookup.HUMANOID;
-
-                if (json.has("armor_model_type")) {
-                    var modelTypeId = GsonUtil.getAsResourceLocation(json, "armor_model_type");
-                    m = ModelLookup.get(modelTypeId);
-
-                    if (m == null) {
-                        throw new JsonParseException("Unknown model type '" + modelTypeId + "'");
-                    }
-                }
-
-                var textures = new ArmorTextureData();
-                textures.add("default", SkinTypedValue.fromJSON(json.get("armor_texture"), DynamicTexture::parse));
-
-                var models = new ArmorModelData();
-                models.add("default", SkinTypedValue.fromJSON(json.get("armor_model_layer"), j -> GsonUtil.convertToModelLayerLocation(j, "armor_model_layer")));
-
-                ArmorRendererManager.LEGACY_SUPPORT.put(item, new ArmorRendererData(m, textures, models, new ArmorRendererConditions()));
+        public static ArmorItem.Type getArmorType(String name) {
+            if (name.equalsIgnoreCase("head") || name.equalsIgnoreCase("helmet")) {
+                return Type.HELMET;
+            } else if (name.equalsIgnoreCase("chest") || name.equalsIgnoreCase("chestplate")) {
+                return Type.CHESTPLATE;
+            } else if (name.equalsIgnoreCase("legs") || name.equalsIgnoreCase("leggings")) {
+                return Type.LEGGINGS;
+            } else if (name.equalsIgnoreCase("feet") || name.equalsIgnoreCase("boots")) {
+                return Type.BOOTS;
+            } else {
+                return null;
             }
         }
 
@@ -227,8 +204,8 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
         public void generateDocumentation(JsonDocumentationBuilder builder) {
             builder.setTitle("Armor");
 
-            builder.addProperty("slot", EquipmentSlot.class)
-                    .description("The slot the item will fit in. Possible values: " + Arrays.toString(Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR).map(EquipmentSlot::getName).toArray()))
+            builder.addProperty("slot", ArmorItem.Type.class)
+                    .description("The slot the item will fit in. Possible values: " + Arrays.toString(Arrays.stream(ArmorItem.Type.values()).map(ArmorItem.Type::getName).toArray()))
                     .required().exampleJson(new JsonPrimitive("chest"));
 
             builder.addProperty("armor_material", ArmorMaterial.class)

@@ -19,7 +19,7 @@ public class SuperpowerUtil {
     public static Collection<Power> getSuperpowers(LivingEntity entity) {
         List<Power> powers = new ArrayList<>();
         for (ResourceLocation id : PalladiumProperties.SUPERPOWER_IDS.get(entity)) {
-            var power = PowerManager.getInstance(entity.level).getPower(id);
+            var power = PowerManager.getInstance(entity.level()).getPower(id);
 
             if (power != null) {
                 powers.add(power);
@@ -128,7 +128,7 @@ public class SuperpowerUtil {
      * @return true if the {@link Power} exists and wasn't already given to the {@link LivingEntity}
      */
     public static boolean addSuperpower(LivingEntity entity, ResourceLocation powerId) {
-        PowerManager powerManager = PowerManager.getInstance(entity.level);
+        PowerManager powerManager = PowerManager.getInstance(entity.level());
 
         if (powerManager.getPower(powerId) == null || hasSuperpower(entity, powerId)) {
             return false;
@@ -159,7 +159,7 @@ public class SuperpowerUtil {
      * @return true if the {@link Power} exists and was already given to the {@link LivingEntity}
      */
     public static boolean removeSuperpower(LivingEntity entity, ResourceLocation powerId) {
-        PowerManager powerManager = PowerManager.getInstance(entity.level);
+        PowerManager powerManager = PowerManager.getInstance(entity.level());
 
         if (powerManager.getPower(powerId) == null || !hasSuperpower(entity, powerId)) {
             return false;
@@ -185,7 +185,7 @@ public class SuperpowerUtil {
     /**
      * Removes all superpowers matching the predicate from the entity
      *
-     * @param entity The {@link LivingEntity} having the superpowers removed
+     * @param entity    The {@link LivingEntity} having the superpowers removed
      * @param predicate {@link Predicate} to test which powers are set to be removed
      * @return Amount of powers which have been removed
      */
@@ -211,7 +211,7 @@ public class SuperpowerUtil {
     /**
      * Removes all superpowers matching the predicate from the entity, using the IDs
      *
-     * @param entity The {@link LivingEntity} having the superpowers removed
+     * @param entity    The {@link LivingEntity} having the superpowers removed
      * @param predicate {@link Predicate} to test which powers are set to be removed
      * @return Amount of powers which have been removed
      */

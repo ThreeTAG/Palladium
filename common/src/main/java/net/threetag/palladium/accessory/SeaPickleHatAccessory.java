@@ -1,7 +1,7 @@
 package net.threetag.palladium.accessory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -24,7 +24,7 @@ public class SeaPickleHatAccessory extends Accessory {
     public void render(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderLayerParent, AccessorySlot slot, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         poseStack.pushPose();
         renderLayerParent.getModel().head.translateAndRotate(poseStack);
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(180F));
+        poseStack.mulPose(Axis.XP.rotationDegrees(180F));
         poseStack.translate(-0.5F, 0.5F, -0.5F);
         var blockRendererDispatcher = Minecraft.getInstance().getBlockRenderer();
         blockRendererDispatcher.renderSingleBlock(player.isEyeInFluid(FluidTags.WATER) ? Blocks.SEA_PICKLE.defaultBlockState() : Blocks.SEA_PICKLE.defaultBlockState().setValue(SeaPickleBlock.WATERLOGGED, false), poseStack, bufferSource, packedLightIn, OverlayTexture.NO_OVERLAY);

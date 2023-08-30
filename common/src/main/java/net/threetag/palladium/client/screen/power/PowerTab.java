@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class PowerTab extends GuiComponent {
+public class PowerTab {
 
     public static final int GRID_SIZE = 50;
     private final Minecraft minecraft;
@@ -198,39 +198,26 @@ public class PowerTab extends GuiComponent {
         return this.title;
     }
 
-    public void drawTab(PoseStack poseStack, int offsetX, int offsetY, boolean isSelected) {
-        this.type.draw(poseStack, this, offsetX, offsetY, isSelected, this.index);
+    public void drawTab(GuiGraphics guiGraphics, int offsetX, int offsetY, boolean isSelected) {
+        this.type.draw(guiGraphics, offsetX, offsetY, isSelected, this.index);
     }
 
-    public void drawIcon(PoseStack poseStack, int offsetX, int offsetY) {
-        this.type.drawIcon(poseStack, DataContext.forPower(this.minecraft.player, this.powerHolder), offsetX, offsetY, this.index, this.icon);
+    public void drawIcon(GuiGraphics guiGraphics, int offsetX, int offsetY) {
+        this.type.drawIcon(guiGraphics, DataContext.forPower(this.minecraft.player, this.powerHolder), offsetX, offsetY, this.index, this.icon);
     }
 
-    public void drawContents(PoseStack poseStack) {
+    public void drawContents(GuiGraphics guiGraphics, int x, int y) {
         if (!this.centered) {
             this.scrollX = 117 - (this.maxX + this.minX) / 2D;
             this.scrollY = 56 - (this.maxY + this.minY) / 2D;
             this.centered = true;
         }
 
-        poseStack.pushPose();
-        poseStack.translate(0.0D, 0.0D, 950.0D);
-        RenderSystem.enableDepthTest();
-        RenderSystem.colorMask(false, false, false, false);
-        fill(poseStack, 4680, 2260, -4680, -2260, -16777216);
-        RenderSystem.colorMask(true, true, true, true);
-        poseStack.translate(0.0D, 0.0D, -950.0D);
-        RenderSystem.depthFunc(GL11.GL_GEQUAL);
-        fill(poseStack, PowersScreen.WINDOW_INSIDE_WIDTH, PowersScreen.WINDOW_INSIDE_HEIGHT, 0, 0, -16777216);
-        RenderSystem.depthFunc(GL11.GL_LEQUAL);
+        guiGraphics.enableScissor(x, y, x + PowersScreen.WINDOW_INSIDE_WIDTH, y + PowersScreen.WINDOW_INSIDE_HEIGHT);
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate((float) x, (float) y, 0.0F);
         TextureReference backgroundTexture = this.powerHolder.getPower().getBackground();
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-
-        if(backgroundTexture != null) {
-            RenderSystem.setShaderTexture(0, backgroundTexture.getTexture(DataContext.forPower(minecraft.player, this.powerHolder)));
-        } else {
-            RenderSystem.setShaderTexture(0, new ResourceLocation("textures/block/red_wool.png"));
-        }
+        var texture = backgroundTexture != null ? backgroundTexture.getTexture(DataContext.forPower(minecraft.player, this.powerHolder)) : new ResourceLocation("textures/block/red_wool.png");
 
         int i = Mth.floor(this.scrollX);
         int j = Mth.floor(this.scrollY);
@@ -239,35 +226,30 @@ public class PowerTab extends GuiComponent {
 
         for (int m = -1; m <= 15; ++m) {
             for (int n = -1; n <= 11; ++n) {
-                blit(poseStack, k + 16 * m, l + 16 * n, 0.0F, 0.0F, 16, 16, 16, 16);
+                guiGraphics.blit(texture, k + 16 * m, l + 16 * n, 0.0F, 0.0F, 16, 16, 16, 16);
             }
         }
 
         for (Connection connection : this.connections) {
-            connection.drawOutlines(this, poseStack, i, j);
+            connection.drawOutlines(this, guiGraphics, i, j);
         }
 
         for (Connection connection : this.connections) {
-            connection.draw(this, poseStack, i, j);
+            connection.draw(this, guiGraphics, i, j);
         }
 
         for (AbilityWidget widget : this.entries) {
-            widget.drawIcon(this.minecraft, poseStack, i + widget.getX() + 16, j + widget.getY() + 13);
+            widget.drawIcon(this.minecraft, guiGraphics, i + widget.getX() + 16, j + widget.getY() + 13);
         }
 
-        RenderSystem.depthFunc(GL11.GL_GEQUAL);
-        poseStack.translate(0.0D, 0.0D, -950.0D);
-        RenderSystem.colorMask(false, false, false, false);
-        fill(poseStack, 4680, 2260, -4680, -2260, -16777216);
-        RenderSystem.colorMask(true, true, true, true);
-        RenderSystem.depthFunc(GL11.GL_LEQUAL);
-        poseStack.popPose();
+        guiGraphics.pose().popPose();
+        guiGraphics.disableScissor();
     }
 
-    public void drawTooltips(PoseStack poseStack, int mouseX, int mouseY, int width, int height, boolean overlayActive) {
-        poseStack.pushPose();
-        poseStack.translate(0.0D, 0.0D, -200.0D);
-        fill(poseStack, 0, 0, PowersScreen.WINDOW_INSIDE_WIDTH, PowersScreen.WINDOW_INSIDE_HEIGHT, Mth.floor(this.fade * 255.0F) << 24);
+    public void drawTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int width, int height, boolean overlayActive) {
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(0.0F, 0.0F, -200.0F);
+        guiGraphics.fill(0, 0, PowersScreen.WINDOW_INSIDE_WIDTH, PowersScreen.WINDOW_INSIDE_HEIGHT, Mth.floor(this.fade * 255.0F) << 24);
         boolean flag = false;
 
         if (!overlayActive) {
@@ -278,14 +260,14 @@ public class PowerTab extends GuiComponent {
                 for (AbilityWidget widget : this.entries) {
                     if (widget.isMouseOver(i, j, mouseX, mouseY)) {
                         flag = true;
-                        widget.drawHover(poseStack, i, j, this.fade, width, height);
+                        widget.drawHover(guiGraphics, i, j, this.fade, width, height);
                         break;
                     }
                 }
             }
         }
 
-        poseStack.popPose();
+        guiGraphics.pose().popPose();
 
         if (!overlayActive) {
             if (flag) {
@@ -361,15 +343,15 @@ public class PowerTab extends GuiComponent {
             return this;
         }
 
-        public void drawOutlines(PowerTab gui, PoseStack stack, int x, int y) {
+        public void drawOutlines(PowerTab gui, GuiGraphics guiGraphics, int x, int y) {
             for (ConnectionLine lines : this.lines) {
-                lines.draw(gui, stack, x, y, true, Color.BLACK);
+                lines.draw(gui, guiGraphics, x, y, true, Color.BLACK);
             }
         }
 
-        public void draw(PowerTab gui, PoseStack stack, int x, int y) {
+        public void draw(PowerTab gui, GuiGraphics guiGraphics, int x, int y) {
             for (ConnectionLine lines : this.lines) {
-                lines.draw(gui, stack, x, y, false, this.color);
+                lines.draw(gui, guiGraphics, x, y, false, this.color);
             }
         }
 
@@ -386,26 +368,26 @@ public class PowerTab extends GuiComponent {
             this.endY = Math.max(startY, endY);
         }
 
-        public void draw(PowerTab gui, PoseStack stack, int x, int y, boolean outline, Color color) {
+        public void draw(PowerTab gui, GuiGraphics guiGraphics, int x, int y, boolean outline, Color color) {
             // AARRGGBB
             int colorCode = color.getRGB();
             if (outline) {
                 if (this.startY == endY) {
                     //hLine
-                    gui.hLine(stack, x + startX - 2, x + endX + 1, y + startY - 2, colorCode);
-                    gui.hLine(stack, x + startX - 2, x + endX + 1, y + startY + 1, colorCode);
+                    guiGraphics.hLine(x + startX - 2, x + endX + 1, y + startY - 2, colorCode);
+                    guiGraphics.hLine(x + startX - 2, x + endX + 1, y + startY + 1, colorCode);
                 } else if (this.startX == endX) {
                     //vLine
-                    gui.vLine(stack, x + startX - 2, y + startY - 2, y + endY + 1, colorCode);
-                    gui.vLine(stack, x + startX + 1, y + startY - 2, y + endY + 1, colorCode);
+                    guiGraphics.vLine(x + startX - 2, y + startY - 2, y + endY + 1, colorCode);
+                    guiGraphics.vLine(x + startX + 1, y + startY - 2, y + endY + 1, colorCode);
                 }
             } else {
                 if (this.startY == endY) {
-                    gui.hLine(stack, x + startX - 1, x + endX, y + startY - 1, colorCode);
-                    gui.hLine(stack, x + startX - 1, x + endX, y + startY, colorCode);
+                    guiGraphics.hLine(x + startX - 1, x + endX, y + startY - 1, colorCode);
+                    guiGraphics.hLine(x + startX - 1, x + endX, y + startY, colorCode);
                 } else if (this.startX == endX) {
-                    gui.vLine(stack, x + startX - 1, y + startY - 1, y + endY, colorCode);
-                    gui.vLine(stack, x + startX, y + startY - 1, y + endY, colorCode);
+                    guiGraphics.vLine(x + startX - 1, y + startY - 1, y + endY, colorCode);
+                    guiGraphics.vLine(x + startX, y + startY - 1, y + endY, colorCode);
                 }
             }
         }

@@ -50,7 +50,7 @@ public abstract class LivingEntityMixin implements PalladiumLivingEntityExtensio
     @Inject(method = "tick", at = @At("RETURN"))
     private void tick(CallbackInfo ci) {
         var entity = (LivingEntity) (Object) this;
-        if (entity.level.isClientSide) {
+        if (entity.level().isClientSide) {
             this.palladium$renderLayerStates.tick(entity);
         }
     }

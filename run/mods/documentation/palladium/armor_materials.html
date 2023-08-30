@@ -57,9 +57,9 @@ true</td>
 <td>
 slot_protections</td>
 <td>
-Integer[]</td>
+JsonObject</td>
 <td>
-An array of 4 integers, determines the defense value of each slot. Order: feet, legs, chest, head. For reference, iron has [2, 5, 6, 2], diamond is in the example.</td>
+Protection values for the armor pieces, determines the defense value of each slot. For reference (Order: feet, legs, chest, head), iron has [2, 5, 6, 2], diamond is in the example.</td>
 <td style="background-color: lightgreen">
 true</td>
 <td>
@@ -130,7 +130,7 @@ empty ingredient</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"durability_multiplier":12,"slot_protections":[3,6,8,3],"enchantment_value":12,"equip_sound":"minecraft:item.armor.equip_iron","toughness":1.5,"knockback_resistance":0.1,"repair_ingredient":{"tag":"minecraft:dirt"}}</pre>
+{"durability_multiplier":12,"slot_protections":{"helmet":3,"chestplate":8,"leggings":6,"boots":3},"enchantment_value":12,"equip_sound":"minecraft:item.armor.equip_iron","toughness":1.5,"knockback_resistance":0.1,"repair_ingredient":{"tag":"minecraft:dirt"}}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

@@ -1,6 +1,7 @@
 package net.threetag.palladium.power.ability;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -35,7 +36,7 @@ public class AttributeModifierAbility extends Ability {
             Attribute attribute = entry.getProperty(ATTRIBUTE);
             AttributeInstance instance = entity.getAttribute(attribute);
 
-            if (instance == null || entity.level.isClientSide) {
+            if (instance == null || entity.level().isClientSide) {
                 return;
             }
 
@@ -66,8 +67,8 @@ public class AttributeModifierAbility extends Ability {
 
     private static String getAttributeList() {
         StringBuilder stringBuilder = new StringBuilder();
-        Registry.ATTRIBUTE.forEach(attribute -> {
-            stringBuilder.append(", \"").append(Objects.requireNonNull(Registry.ATTRIBUTE.getKey(attribute))).append("\"");
+        BuiltInRegistries.ATTRIBUTE.forEach(attribute -> {
+            stringBuilder.append(", \"").append(Objects.requireNonNull(BuiltInRegistries.ATTRIBUTE.getKey(attribute))).append("\"");
         });
 
         return stringBuilder.substring(2);

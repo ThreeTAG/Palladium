@@ -31,7 +31,7 @@ public class EntityUtil {
         Vec3 lookVec = getLookVector(entityIn);
         startVec = startVec == null ? entityIn.position().add(0, entityIn.getEyeHeight(), 0) : startVec;
         endVec = endVec == null ? startVec.add(lookVec.scale(distance)) : endVec;
-        HitResult blockResult = entityIn.level.clip(new ClipContext(startVec, endVec, blockModeIn, fluidModeIn, entityIn));
+        HitResult blockResult = entityIn.level().clip(new ClipContext(startVec, endVec, blockModeIn, fluidModeIn, entityIn));
         HitResult entityResult = null;
 
         for (int i = 0; i < distance * 2; i++) {
@@ -40,11 +40,9 @@ public class EntityUtil {
             float scale = i / 2F;
             Vec3 pos = startVec.add(lookVec.scale(scale));
 
-//            entityIn.level.addParticle(ParticleTypes.CRIT, pos.x(), pos.y(), pos.z(), 0, 0, 0);
-
             Vec3 min = pos.add(0.25F, 0.25F, 0.25F);
             Vec3 max = pos.add(-0.25F, -0.25F, -0.25F);
-            for (Entity entity : entityIn.level.getEntities(entityIn, new AABB(min.x, min.y, min.z, max.x, max.y, max.z))) {
+            for (Entity entity : entityIn.level().getEntities(entityIn, new AABB(min.x, min.y, min.z, max.x, max.y, max.z))) {
                 if (entityPredicate.test(entity)) {
                     entityResult = new EntityHitResult(entity, pos);
                     break;

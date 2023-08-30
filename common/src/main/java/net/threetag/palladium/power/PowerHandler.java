@@ -30,7 +30,7 @@ public class PowerHandler implements IPowerHandler {
 
     @Override
     public void tick() {
-        if (!this.entity.level.isClientSide) {
+        if (!this.entity.level().isClientSide) {
             List<IPowerHolder> toRemove = new ArrayList<>();
             PowerCollector collector = new PowerCollector(this.entity, this, toRemove);
 
@@ -135,7 +135,7 @@ public class PowerHandler implements IPowerHandler {
 
     @Override
     public void removeAndAddPowers(List<Power> toRemove, List<Power> toAdd) {
-        if (this.entity.level.isClientSide) {
+        if (this.entity.level().isClientSide) {
             for (Power power : toRemove) {
                 this.removePowerHolder(power);
             }
@@ -167,7 +167,7 @@ public class PowerHandler implements IPowerHandler {
     public void cleanPowerData() {
         List<String> toRemove = new ArrayList<>();
         for (String key : this.powerData.getAllKeys()) {
-            if (PowerManager.getInstance(this.entity.level).getPower(new ResourceLocation(key)) == null) {
+            if (PowerManager.getInstance(this.entity.level()).getPower(new ResourceLocation(key)) == null) {
                 toRemove.add(key);
             }
         }

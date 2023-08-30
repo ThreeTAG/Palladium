@@ -1,168 +1,140 @@
 package net.threetag.palladium.compat.geckolib.fabric;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.compat.geckolib.ability.ArmorAnimationAbility;
 import net.threetag.palladium.compat.geckolib.ability.RenderLayerAnimationAbility;
+import net.threetag.palladium.compat.geckolib.armor.AddonGeoArmorItem;
 import net.threetag.palladium.compat.geckolib.armor.GeckoArmorRenderer;
-import net.threetag.palladium.compat.geckolib.armor.PackGeckoArmorItem;
-import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
-import net.threetag.palladium.entity.BodyPart;
-import net.threetag.palladium.item.AddonArmorItem;
 import net.threetag.palladium.mixin.client.GeoArmorRendererInvoker;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladiumcore.registry.DeferredRegister;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.GeoArmorRenderer;
+import software.bernie.geckolib.GeckoLib;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.RenderProvider;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.object.Color;
 
-import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @SuppressWarnings("ALL")
 public class GeckoLibCompatImpl {
 
     public static void init() {
-        DeferredRegister<Ability> deferredRegister = DeferredRegister.create(GeckoLib.ModID, Ability.REGISTRY);
+        DeferredRegister<Ability> deferredRegister = DeferredRegister.create(GeckoLib.MOD_ID, Ability.REGISTRY);
         deferredRegister.register();
         deferredRegister.register("render_layer_animation", RenderLayerAnimationAbility::new);
         deferredRegister.register("armor_animation", ArmorAnimationAbility::new);
     }
 
-    @Environment(EnvType.CLIENT)
-    public static void initClient() {
-        for (Item item : BuiltInRegistries.ITEM) {
-            if (item instanceof ArmorItemImpl) {
-                GeoArmorRenderer.registerArmorRenderer(GeckoArmorRenderer.INSTANCE, item);
-            }
-        }
-    }
-
-    public static ArmorItem createArmorItem(ArmorMaterial armorMaterial, EquipmentSlot slot, Item.Properties properties, boolean hideSecondLayer) {
-        var item = new ArmorItemImpl(armorMaterial, slot, properties);
-        BodyPart.HIDES_LAYER.add(item);
-        return item;
-    }
-
-    public static GeoArmorRenderer getArmorRenderer(Class<? extends ArmorItem> clazz, Entity wearer) {
-        return GeoArmorRenderer.getRenderer(clazz);
+    public static AddonGeoArmorItem createArmorItem(ArmorMaterial materialIn, ArmorItem.Type type, Item.Properties builder) {
+        return new ArmorItemImpl(materialIn, type, builder);
     }
 
     @Environment(EnvType.CLIENT)
-    public static void renderFirstPerson(AbstractClientPlayer player, ItemStack stack, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, ModelPart rendererArm, boolean rightArm) {
-        if (stack.getItem() instanceof PackGeckoArmorItem gecko && stack.getItem() instanceof ArmorItem armorItem) {
-            var renderer = GeoArmorRenderer.getRenderer(armorItem.getClass());
+    public static void renderFirstPerson(AbstractClientPlayer player, ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, ModelPart rendererArm, boolean rightArm) {
+        if (stack.getItem() instanceof ArmorItemImpl gecko && stack.getItem() instanceof ArmorItem armorItem) {
+            var rendererProvider = gecko.getRenderProvider().get();
 
-            if (renderer != null) {
-                renderer.setCurrentItem(player, stack, EquipmentSlot.CHEST, ((PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player)).getModel());
+            if (rendererProvider instanceof RenderProvider provider) {
+                PlayerModel origModel = ((PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player)).getModel();
+                GeckoArmorRenderer<AddonGeoArmorItem> renderer = (GeckoArmorRenderer) provider.getHumanoidArmorModel(player, stack, EquipmentSlot.CHEST, origModel);
+                var bone = (rightArm ? renderer.getRightArmBone() : renderer.getLeftArmBone());
 
-                GeoModel model = renderer.getGeoModelProvider().getModel(renderer.getGeoModelProvider().getModelResource(armorItem));
+                if (bone != null) {
+                    if (rendererProvider instanceof GeoArmorRendererInvoker invoker) {
+                        invoker.invokeApplyBaseTransformations(origModel);
+                    }
 
-                model.getBone(rightArm ? renderer.rightArmBone : renderer.leftArmBone).ifPresent(bone -> {
-                    AnimationEvent<?> animationEvent = new AnimationEvent<>(gecko, 0, 0,
-                            Minecraft.getInstance().getFrameTime(), false,
-                            List.of());
+                    var partialTick = Minecraft.getInstance().getFrameTime();
+                    RenderType renderType = renderer.getRenderType(gecko, renderer.getTextureLocation(gecko), bufferSource, partialTick);
+                    VertexConsumer buffer = ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, false, stack.hasFoil());
 
                     poseStack.pushPose();
                     poseStack.translate(0, 24 / 16F, 0);
                     poseStack.scale(-1, -1, 1);
 
-                    renderer.getGeoModelProvider().setCustomAnimations(gecko, renderer.getInstanceId(armorItem), animationEvent);
-                    renderer.setCurrentModelRenderCycle(EModelRenderCycle.INITIAL);
+                    Color renderColor = renderer.getRenderColor(gecko, partialTick, combinedLight);
+                    float red = renderColor.getRedFloat();
+                    float green = renderColor.getGreenFloat();
+                    float blue = renderColor.getBlueFloat();
+                    float alpha = renderColor.getAlphaFloat();
+                    int packedOverlay = renderer.getPackedOverlay(gecko, 0);
+                    BakedGeoModel model = renderer.getGeoModel().getBakedModel(renderer.getGeoModel().getModelResource(gecko));
 
-                    if (renderer instanceof GeoArmorRendererInvoker invoker) {
-                        invoker.invokeFitToBiped();
-                    }
+                    if (renderType == null)
+                        renderType = renderer.getRenderType(gecko, renderer.getTextureLocation(gecko), bufferSource, partialTick);
 
-                    RenderSystem.setShaderTexture(0, renderer.getTextureLocation(armorItem));
+                    if (buffer == null)
+                        buffer = bufferSource.getBuffer(renderType);
 
-                    var buffer1 = buffer.getBuffer(renderer.getRenderType(armorItem, Minecraft.getInstance().getFrameTime(), poseStack, buffer, null, combinedLight,
-                            renderer.getTextureLocation(armorItem)));
-                    Color renderColor = renderer.getRenderColor(armorItem, 0, poseStack, null, buffer1, combinedLight);
+                    AnimationState<AddonGeoArmorItem> animationState = new AnimationState<>(gecko, 0, 0, partialTick, false);
+                    long instanceId = renderer.getInstanceId(gecko);
 
-                    renderer.setCurrentRTB(buffer);
-                    renderer.renderEarly(armorItem, poseStack, Minecraft.getInstance().getFrameTime(), buffer, buffer1, combinedLight,
-                            OverlayTexture.NO_OVERLAY, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-                            renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-
-                    renderer.renderLate(armorItem, poseStack, Minecraft.getInstance().getFrameTime(), buffer, buffer1, combinedLight,
-                            OverlayTexture.NO_OVERLAY, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-                            renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-                    renderer.renderRecursively(bone,
-                            poseStack, buffer1, combinedLight, OverlayTexture.NO_OVERLAY, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-                            renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-                    renderer.setCurrentModelRenderCycle(EModelRenderCycle.REPEATED);
+                    animationState.setData(DataTickets.TICK, gecko.getTick(player));
+                    animationState.setData(DataTickets.ITEMSTACK, stack);
+                    animationState.setData(DataTickets.ENTITY, player);
+                    animationState.setData(DataTickets.EQUIPMENT_SLOT, EquipmentSlot.CHEST);
+                    renderer.getGeoModel().addAdditionalStateData(gecko, instanceId, animationState::setData);
+                    renderer.getGeoModel().handleAnimations(gecko, instanceId, animationState);
+                    renderer.renderRecursively(poseStack, gecko, bone, renderType, bufferSource, buffer, false, partialTick, combinedLight, packedOverlay, red, green, blue, alpha);
 
                     poseStack.popPose();
-                });
+                }
             }
         }
     }
 
-    public static class ArmorItemImpl extends AddonArmorItem implements IAnimatable, PackGeckoArmorItem {
+    public static class ArmorItemImpl extends AddonGeoArmorItem {
 
-        private TextureReference texture;
-        private ResourceLocation model, animationLocation;
-        public List<ParsedAnimationController<IAnimatable>> animationControllers;
-        private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+        private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
-        public ArmorItemImpl(ArmorMaterial materialIn, EquipmentSlot equipmentSlot, Item.Properties builder) {
-            super(materialIn, equipmentSlot, builder);
+        public ArmorItemImpl(ArmorMaterial materialIn, Type type, Properties builder) {
+            super(materialIn, type, builder);
         }
 
         @Override
-        public void registerControllers(AnimationData data) {
-            if (this.animationLocation != null) {
-                for (ParsedAnimationController<IAnimatable> parsed : this.animationControllers) {
-                    var controller = parsed.createController(this);
-                    data.addAnimationController(controller);
+        public void createRenderer(Consumer<Object> consumer) {
+            consumer.accept(new RenderProvider() {
+                private GeckoArmorRenderer<?> renderer;
+
+                @Override
+                public HumanoidModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<LivingEntity> original) {
+                    if (this.renderer == null)
+                        this.renderer = new GeckoArmorRenderer(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(itemStack.getItem())));
+
+                    this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
+
+                    return this.renderer;
                 }
-            }
+            });
         }
 
         @Override
-        public AnimationFactory getFactory() {
-            return this.factory;
-        }
-
-        @Override
-        public PackGeckoArmorItem setGeckoLocations(ResourceLocation modelLocation, TextureReference textureLocation, ResourceLocation animationLocation, List<ParsedAnimationController<IAnimatable>> animationControllers) {
-            this.model = modelLocation;
-            this.texture = textureLocation;
-            this.animationLocation = animationLocation;
-            this.animationControllers = animationControllers;
-            return this;
-        }
-
-        @Override
-        public ResourceLocation getGeckoModelLocation() {
-            return this.model;
-        }
-
-        @Override
-        public TextureReference getGeckoTextureLocation() {
-            return this.texture;
-        }
-
-        @Override
-        public ResourceLocation getGeckoAnimationLocation() {
-            return this.animationLocation;
+        public Supplier<Object> getRenderProvider() {
+            return this.renderProvider;
         }
     }
 

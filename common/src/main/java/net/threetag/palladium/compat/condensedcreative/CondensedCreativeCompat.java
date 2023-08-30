@@ -3,6 +3,7 @@ package net.threetag.palladium.compat.condensedcreative;
 import io.wispforest.condensed_creative.registry.CondensedCreativeInitializer;
 import io.wispforest.condensed_creative.registry.CondensedEntryRegistry;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.Palladium;
@@ -26,8 +27,9 @@ public class CondensedCreativeCompat implements CondensedCreativeInitializer {
                                 icon,
                                 items
                         )
-                        .setTitleString(Component.translatable(suitSet.getDescriptionId()))
-                        .addItemGroup(items.stream().findFirst().get().getItem().getItemCategory());
+                        .setTitle(Component.translatable(suitSet.getDescriptionId()))
+                        // TODO set to tab of items
+                        .addToItemGroup(CreativeModeTabs.COMBAT);
             }
         }
     }

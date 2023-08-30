@@ -1,5 +1,5 @@
 {
-  "type": "geckolib3:default",
+  "type": "geckolib:default",
   "model": "test:geo/gecko_model_test.geo.json",
   "texture": "test:textures/models/gecko_model_test.png",
   "animation_file": "test:animations/gecko_model_test.animation.json",

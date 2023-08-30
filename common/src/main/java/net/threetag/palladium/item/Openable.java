@@ -25,7 +25,7 @@ public interface Openable {
     }
 
     default void setOpen(LivingEntity entity, ItemStack stack, boolean open) {
-        if (!entity.level.isClientSide && this.isOpen(stack) != open) {
+        if (!entity.level().isClientSide && this.isOpen(stack) != open) {
             if (!open || canBeOpened(entity, stack)) {
                 var nbt = stack.getOrCreateTag();
                 nbt.putBoolean(OPEN_TAG, open);
@@ -63,7 +63,7 @@ public interface Openable {
     }
 
     static void onTick(LivingEntity entity, ItemStack stack) {
-        if (!entity.level.isClientSide && stack.getItem() instanceof Openable openable) {
+        if (!entity.level().isClientSide && stack.getItem() instanceof Openable openable) {
             var nbt = stack.getOrCreateTag();
             var max = openable.getOpeningTime(stack);
 

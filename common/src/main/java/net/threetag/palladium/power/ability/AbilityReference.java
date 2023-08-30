@@ -37,7 +37,7 @@ public class AbilityReference {
     @Nullable
     public AbilityEntry getEntry(LivingEntity entity) {
         IPowerHandler handler = PowerManager.getPowerHandler(entity).orElse(null);
-        Power power = PowerManager.getInstance(entity.level).getPower(this.powerId);
+        Power power = PowerManager.getInstance(entity.level()).getPower(this.powerId);
 
         if (power != null && handler != null) {
             IPowerHolder holder = handler.getPowerHolder(power);

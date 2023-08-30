@@ -48,13 +48,13 @@ public class PlaySoundAbility extends Ability {
                 if (Platform.isClient()) {
                     this.startSound(entity, entry);
                 }
-            } else if (!entity.level.isClientSide) {
+            } else if (!entity.level().isClientSide) {
                 if(entry.getProperty(PLAY_SELF)) {
                     if(entity instanceof Player player) {
                         PlayerUtil.playSound(player, entity.getX(), entity.getEyeY(), entity.getZ(), entry.getProperty(SOUND), entity.getSoundSource(), entry.getProperty(VOLUME), entry.getProperty(PITCH));
                     }
                 } else {
-                    PlayerUtil.playSoundToAll(entity.level, entity.getX(), entity.getEyeY(), entity.getZ(), 100, entry.getProperty(SOUND), entity.getSoundSource(), entry.getProperty(VOLUME), entry.getProperty(PITCH));
+                    PlayerUtil.playSoundToAll(entity.level(), entity.getX(), entity.getEyeY(), entity.getZ(), 100, entry.getProperty(SOUND), entity.getSoundSource(), entry.getProperty(VOLUME), entry.getProperty(PITCH));
                 }
             }
         }

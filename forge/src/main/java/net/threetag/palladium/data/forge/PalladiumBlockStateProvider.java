@@ -1,7 +1,7 @@
 package net.threetag.palladium.data.forge;
 
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Block;
@@ -16,8 +16,8 @@ import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOL
 
 public class PalladiumBlockStateProvider extends BlockStateProvider {
 
-    public PalladiumBlockStateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
-        super(gen, Palladium.MOD_ID, exFileHelper);
+    public PalladiumBlockStateProvider(PackOutput packOutput, ExistingFileHelper exFileHelper) {
+        super(packOutput, Palladium.MOD_ID, exFileHelper);
     }
 
     @Override

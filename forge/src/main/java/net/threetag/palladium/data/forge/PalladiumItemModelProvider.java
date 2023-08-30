@@ -1,6 +1,6 @@
 package net.threetag.palladium.data.forge;
 
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -11,8 +11,8 @@ import net.threetag.palladiumcore.registry.RegistrySupplier;
 
 public class PalladiumItemModelProvider extends ItemModelProvider {
 
-    public PalladiumItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, Palladium.MOD_ID, existingFileHelper);
+    public PalladiumItemModelProvider(PackOutput packOutput, ExistingFileHelper existingFileHelper) {
+        super(packOutput, Palladium.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(item.getId().getNamespace(), "block/" + item.getId().getPath()));
     }
 
-    public void fluxCapacitor(RegistrySupplier<Item> item) {
+    public void fluxCapacitor(RegistrySupplier<? extends Item> item) {
         var charged = this.singleTexture(item.getId().getPath() + "_charged", new ResourceLocation("item/generated"), "layer0", new ResourceLocation(item.getId().getNamespace(), "item/" + item.getId().getPath() + "_charged"));
         this.singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(item.getId().getNamespace(), "item/" + item.getId().getPath())).override().predicate(Palladium.id("charged"), 1F).model(charged).end();
     }

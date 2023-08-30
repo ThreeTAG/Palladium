@@ -26,13 +26,13 @@ public class ObjectiveScoreCondition extends Condition {
             return false;
         }
 
-        var objective = entity.level.getScoreboard().getObjective(this.objectiveName);
+        var objective = entity.level().getScoreboard().getObjective(this.objectiveName);
 
         if (objective != null) {
-            if (!entity.level.getScoreboard().hasPlayerScore(entity.getScoreboardName(), objective)) {
+            if (!entity.level().getScoreboard().hasPlayerScore(entity.getScoreboardName(), objective)) {
                 return false;
             } else {
-                int score = entity.level.getScoreboard().getOrCreatePlayerScore(entity.getScoreboardName(), objective).getScore();
+                int score = entity.level().getScoreboard().getOrCreatePlayerScore(entity.getScoreboardName(), objective).getScore();
                 return score >= this.min && score <= this.max;
             }
         }

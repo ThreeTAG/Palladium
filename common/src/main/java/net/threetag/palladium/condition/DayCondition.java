@@ -8,7 +8,7 @@ public class DayCondition extends Condition {
 
     @Override
     public boolean active(DataContext context) {
-        var level = context.get(DataContextType.LEVEL);
+        var level = context.getLevel();
         return level != null && level.isDay();
     }
 

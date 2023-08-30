@@ -1,6 +1,6 @@
 package net.threetag.palladium.power.ability;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -35,12 +35,12 @@ public class ProjectileAbility extends Ability {
 
     @Override
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
-        if (!entity.level.isClientSide && enabled) {
+        if (!entity.level().isClientSide && enabled) {
             CompoundTag compound = entry.getProperty(ENTITY_DATA);
             compound = compound == null ? new CompoundTag() : compound;
-            compound.putString("id", Registry.ENTITY_TYPE.getKey(entry.getProperty(ENTITY_TYPE)).toString());
+            compound.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(entry.getProperty(ENTITY_TYPE)).toString());
 
-            ServerLevel world = (ServerLevel) entity.level;
+            ServerLevel world = (ServerLevel) entity.level();
             EntityType.loadEntityRecursive(compound, world, (en) -> {
                 if (!(en instanceof Projectile projectile))
                     return null;

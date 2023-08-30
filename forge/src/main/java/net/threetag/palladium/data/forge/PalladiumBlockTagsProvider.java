@@ -1,7 +1,9 @@
 package net.threetag.palladium.data.forge;
 
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -12,16 +14,18 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.tags.PalladiumBlockTags;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.CompletableFuture;
+
 import static net.threetag.palladium.block.PalladiumBlocks.*;
 
-public class PalladiumBlockTagsProvider extends BlockTagsProvider {
+public class PalladiumBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
 
-    public PalladiumBlockTagsProvider(DataGenerator arg, @Nullable ExistingFileHelper existingFileHelper) {
-        super(arg, Palladium.MOD_ID, existingFileHelper);
+    public PalladiumBlockTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable ExistingFileHelper existingFileHelper) {
+        super(packOutput, Registries.BLOCK, completableFuture, block -> block.builtInRegistryHolder().key(), Palladium.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags() {
+    protected void addTags(HolderLookup.Provider provider) {
         this.tag(PalladiumBlockTags.PREVENTS_INTANGIBILITY).add(Blocks.BEDROCK);
 
         this.tag(BlockTags.BEACON_BASE_BLOCKS).add(LEAD_BLOCK.get(), VIBRANIUM_BLOCK.get());

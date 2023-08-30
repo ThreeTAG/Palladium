@@ -5,16 +5,20 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.Palladium;
@@ -86,13 +90,14 @@ public class PowersScreen extends Screen {
             if (abilityButtonXPos > 0 && abilityButtonYPos > 0) {
                 int finalAbilityButtonXPos = abilityButtonXPos;
                 int finalAbilityButtonYPos = abilityButtonYPos;
-                screen.addRenderableWidget(new IconButton(finalAbilityButtonXPos, finalAbilityButtonYPos, new ItemIcon(ItemStack.EMPTY), b -> Minecraft.getInstance().setScreen(new PowersScreen()), (button, matrixStack, mouseX, mouseY) -> screen.renderTooltip(matrixStack, TITLE, mouseX, mouseY)) {
+                IconButton button;
+                screen.addRenderableWidget(button = new RotatingIconButton(finalAbilityButtonXPos, finalAbilityButtonYPos, new ItemIcon(ItemStack.EMPTY), b -> Minecraft.getInstance().setScreen(new PowersScreen())) {
                     @Override
                     public IIcon getIcon() {
                         List<IIcon> icons = Lists.newArrayList();
                         Minecraft mc = Minecraft.getInstance();
                         PowerManager.getPowerHandler(mc.player).ifPresent(handler -> handler.getPowerHolders().values().stream().filter(holder -> !holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN_IN_GUI))).forEach(holder -> icons.add(holder.getPower().getIcon())));
-                        if (icons.size() <= 0) {
+                        if (icons.isEmpty()) {
                             icons.add(new ItemIcon(Blocks.BARRIER));
                         }
                         int i = (mc.player.tickCount / 20) % icons.size();
@@ -101,13 +106,14 @@ public class PowersScreen extends Screen {
 
                     @SuppressWarnings("ConstantConditions")
                     @Override
-                    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+                    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
                         this.setPosition(finalAbilityButtonXPos, finalAbilityButtonYPos);
-                        this.visible = !(screen instanceof CreativeModeInventoryScreen) || ((CreativeModeInventoryScreen) screen).getSelectedTab() == CreativeModeTab.TAB_INVENTORY.getId();
-                        this.active = this.visible && PowerManager.getPowerHandler(Minecraft.getInstance().player).orElse(new PowerHandler(null)).getPowerHolders().size() > 0;
-                        super.render(matrixStack, mouseX, mouseY, partialTicks);
+                        this.visible = !(screen instanceof CreativeModeInventoryScreen) || CreativeModeInventoryScreen.selectedTab == BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.INVENTORY);
+                        this.active = this.visible && !PowerManager.getPowerHandler(Minecraft.getInstance().player).orElse(new PowerHandler(null)).getPowerHolders().isEmpty();
+                        super.render(guiGraphics, mouseX, mouseY, partialTicks);
                     }
                 });
+                button.setTooltip(Tooltip.create(TITLE));
             }
         });
     }
@@ -129,12 +135,12 @@ public class PowersScreen extends Screen {
         if (this.tabs.size() > PowerTabType.MAX_TABS) {
             int guiLeft = (this.width - WINDOW_WIDTH) / 2;
             int guiTop = (this.height - WINDOW_HEIGHT) / 2;
-            this.addRenderableWidget(new Button(guiLeft, guiTop - 50, 20, 20, Component.literal("<"), (b) -> {
+            this.addRenderableWidget(Button.builder(Component.literal("<"), (b) -> {
                 tabPage = Math.max(tabPage - 1, 0);
-            }));
-            this.addRenderableWidget(new Button(guiLeft + WINDOW_WIDTH - 20, guiTop - 50, 20, 20, Component.literal(">"), (b) -> {
+            }).bounds(guiLeft, guiTop - 50, 20, 20).build());
+            this.addRenderableWidget(Button.builder(Component.literal(">"), (b) -> {
                 tabPage = Math.min(tabPage + 1, maxPages);
-            }));
+            }).bounds(guiLeft + WINDOW_WIDTH - 20, guiTop - 50, 20, 20).build());
             maxPages = this.tabs.size() / PowerTabType.MAX_TABS;
         }
 
@@ -193,16 +199,17 @@ public class PowersScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         int i = (this.width - WINDOW_WIDTH) / 2;
         int j = (this.height - WINDOW_HEIGHT) / 2;
-        this.renderBackground(poseStack);
-        this.renderInside(poseStack, mouseX, mouseY, i, j);
-        this.renderWindow(poseStack, i, j);
-        this.renderTooltips(poseStack, mouseX, mouseY, i, j);
+        this.renderBackground(guiGraphics);
+        this.renderInside(guiGraphics, mouseX, mouseY, i, j);
+        this.renderWindow(guiGraphics, i, j);
+        this.renderTooltips(guiGraphics, mouseX, mouseY, i, j);
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         if (this.selectedTab != null && this.overlayScreen != null) {
-            this.overlayScreen.render(poseStack, mouseX, mouseY, partialTick);
+            this.overlayScreen.render(guiGraphics, mouseX, mouseY, partialTick);
             this.selectedTab.fade = Mth.clamp(this.selectedTab.fade + 0.02F, 0, 0.5F);
         }
     }
@@ -223,72 +230,64 @@ public class PowersScreen extends Screen {
         }
     }
 
-    private void renderInside(PoseStack poseStack, int mouseX, int mouseY, int offsetX, int offsetY) {
+    private void renderInside(GuiGraphics guiGraphics, int mouseX, int mouseY, int offsetX, int offsetY) {
         PowerTab tab = this.selectedTab;
         if (tab == null) {
-            fill(poseStack, offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y, offsetX + WINDOW_INSIDE_X + WINDOW_INSIDE_WIDTH, offsetY + WINDOW_INSIDE_Y + WINDOW_INSIDE_HEIGHT, -16777216);
+            guiGraphics.fill(offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y, offsetX + WINDOW_INSIDE_X + WINDOW_INSIDE_WIDTH, offsetY + WINDOW_INSIDE_Y + WINDOW_INSIDE_HEIGHT, -16777216);
             int i = offsetX + WINDOW_INSIDE_X + 117;
-            Font var10001 = this.font;
-            Component var10002 = NO_ADVANCEMENTS_LABEL;
-            int var10004 = offsetY + WINDOW_INSIDE_Y + 56;
-            Objects.requireNonNull(this.font);
-            drawCenteredString(poseStack, var10001, var10002, i, var10004 - 9 / 2, -1);
-            var10001 = this.font;
-            var10002 = VERY_SAD_LABEL;
-            var10004 = offsetY + 18 + WINDOW_INSIDE_HEIGHT;
-            Objects.requireNonNull(this.font);
-            drawCenteredString(poseStack, var10001, var10002, i, var10004 - 9, -1);
+            guiGraphics.drawCenteredString(this.font, NO_ADVANCEMENTS_LABEL, i, offsetY + WINDOW_INSIDE_Y + 56 - 4, -1);
+            guiGraphics.drawCenteredString(this.font, VERY_SAD_LABEL, i, offsetY + WINDOW_INSIDE_Y + WINDOW_INSIDE_HEIGHT - 9, -1);
         } else {
-            PoseStack poseStack2 = RenderSystem.getModelViewStack();
-            poseStack2.pushPose();
-            poseStack2.translate(offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y, 0.0D);
-            RenderSystem.applyModelViewMatrix();
-            tab.drawContents(poseStack);
-            poseStack2.popPose();
-            RenderSystem.applyModelViewMatrix();
-            RenderSystem.depthFunc(GL11.GL_LEQUAL);
-            RenderSystem.disableDepthTest();
+//            PoseStack poseStack2 = RenderSystem.getModelViewStack();
+//            poseStack2.pushPose();
+//            poseStack2.translate(offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y, 0.0D);
+//            RenderSystem.applyModelViewMatrix();
+            tab.drawContents(guiGraphics, offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y);
+//            poseStack2.popPose();
+//            RenderSystem.applyModelViewMatrix();
+//            RenderSystem.depthFunc(GL11.GL_LEQUAL);
+//            RenderSystem.disableDepthTest();
         }
     }
 
-    public void renderWindow(PoseStack poseStack, int offsetX, int offsetY) {
+    public void renderWindow(GuiGraphics guiGraphics, int offsetX, int offsetY) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableBlend();
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, WINDOW);
-        this.blit(poseStack, offsetX, offsetY, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        guiGraphics.blit(WINDOW, offsetX, offsetY, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         if (this.tabs.size() > 1) {
             RenderSystem.setShaderTexture(0, TABS);
 
             for (PowerTab tab : this.tabs) {
-                tab.drawTab(poseStack, offsetX, offsetY, tab == this.selectedTab);
+                tab.drawTab(guiGraphics, offsetX, offsetY, tab == this.selectedTab);
             }
 
             RenderSystem.defaultBlendFunc();
 
             for (PowerTab tab : this.tabs) {
-                tab.drawIcon(poseStack, offsetX, offsetY);
+                tab.drawIcon(guiGraphics, offsetX, offsetY);
             }
 
             RenderSystem.disableBlend();
         }
 
-        this.font.draw(poseStack, TITLE, (float) (offsetX + 8), (float) (offsetY + 6), 4210752);
+        guiGraphics.drawString(this.minecraft.font, TITLE, offsetX + 8, offsetY + 6, 4210752, false);
     }
 
-    private void renderTooltips(PoseStack poseStack, int mouseX, int mouseY, int offsetX, int offsetY) {
+    private void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int offsetX, int offsetY) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.selectedTab != null) {
-            poseStack.pushPose();
-            poseStack.translate(offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y, 400.0D);
-            this.selectedTab.drawTooltips(poseStack, mouseX - offsetX - WINDOW_INSIDE_X, mouseY - offsetY - WINDOW_INSIDE_Y, offsetX, offsetY, this.overlayScreen != null);
-            poseStack.popPose();
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate((float) (offsetX + WINDOW_INSIDE_X), (float) (offsetY + WINDOW_INSIDE_Y), 400.0F);
+            RenderSystem.enableDepthTest();
+            this.selectedTab.drawTooltips(guiGraphics, mouseX - offsetX - WINDOW_INSIDE_X, mouseY - offsetY - WINDOW_INSIDE_Y, offsetX, offsetY, this.overlayScreen != null);
+            RenderSystem.disableDepthTest();
+            guiGraphics.pose().popPose();
         }
 
         if (this.tabs.size() > 1) {
             for (PowerTab tab : this.tabs) {
                 if (tab.isMouseOver(offsetX, offsetY, mouseX, mouseY)) {
-                    this.renderTooltip(poseStack, tab.getTitle(), mouseX, mouseY);
+                    guiGraphics.renderTooltip(this.font, tab.getTitle(), mouseX, mouseY);
                 }
             }
         }
@@ -306,6 +305,13 @@ public class PowersScreen extends Screen {
 
     public boolean isOverOverlayScreen(double mouseX, double mouseY) {
         return overlayScreen != null;
+    }
+
+    public static class RotatingIconButton extends IconButton {
+
+        public RotatingIconButton(int x, int y, IIcon icon, OnPress onPress) {
+            super(x, y, icon, onPress, DEFAULT_NARRATION);
+        }
     }
 
 }

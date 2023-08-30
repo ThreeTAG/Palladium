@@ -63,7 +63,7 @@ public class RenderLayerStates {
 
     public static class State {
 
-        int ticks;
+        public int ticks;
 
         public void tick() {
             this.ticks++;

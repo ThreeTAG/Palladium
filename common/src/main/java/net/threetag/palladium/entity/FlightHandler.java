@@ -57,7 +57,7 @@ public class FlightHandler {
         this.prevFlightVector = this.flightVector;
 
         // Reset flight type if on ground
-        if (this.flightType.isNotNull() && (player.isOnGround() || player.isFallFlying() || player.isSwimming() || player.getAttributeValue(this.flightType.getAttribute()) <= 0D)) {
+        if (this.flightType.isNotNull() && (player.onGround() || player.isFallFlying() || player.isSwimming() || player.getAttributeValue(this.flightType.getAttribute()) <= 0D)) {
             this.flightType = FlightHandler.FlightType.NONE;
         }
 

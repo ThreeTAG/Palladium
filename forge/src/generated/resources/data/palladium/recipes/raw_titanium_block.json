@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "key": {
     "#": {
       "item": "palladium:raw_titanium"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "palladium:raw_titanium_block"
-  }
+  },
+  "show_notification": true
 }

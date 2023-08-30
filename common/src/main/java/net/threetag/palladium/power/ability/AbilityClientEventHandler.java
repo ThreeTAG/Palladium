@@ -45,8 +45,8 @@ public class AbilityClientEventHandler implements ViewportEvents.RenderFog, View
             double e = playerEntity.getEyeY() + (double) (((float) ((i >> 1) % 2) - 0.5F) * 0.1F);
             double f = playerEntity.getZ() + (double) (((float) ((i >> 2) % 2) - 0.5F) * playerEntity.getBbWidth() * 0.8F);
             mutable.set(d, e, f);
-            BlockState blockState = playerEntity.level.getBlockState(mutable);
-            if (blockState.getRenderShape() != RenderShape.INVISIBLE && blockState.isViewBlocking(playerEntity.level, mutable)) {
+            BlockState blockState = playerEntity.level().getBlockState(mutable);
+            if (blockState.getRenderShape() != RenderShape.INVISIBLE && blockState.isViewBlocking(playerEntity.level(), mutable)) {
                 return blockState;
             }
         }

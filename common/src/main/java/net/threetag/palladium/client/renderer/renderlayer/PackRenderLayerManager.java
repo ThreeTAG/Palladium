@@ -56,6 +56,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
                 }
             }
         });
+
         // Armor
         registerProvider((entity, layers) -> {
             if (entity instanceof LivingEntity livingEntity) {

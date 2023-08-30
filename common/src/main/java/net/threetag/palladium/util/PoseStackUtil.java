@@ -1,9 +1,9 @@
 package net.threetag.palladium.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 
 public class PoseStackUtil extends PoseStack {
 
@@ -14,17 +14,17 @@ public class PoseStackUtil extends PoseStack {
     }
 
     public PoseStackUtil rotateX(float degrees) {
-        this.poseStack.mulPose(Vector3f.XP.rotationDegrees(degrees));
+        this.poseStack.mulPose(Axis.XP.rotationDegrees(degrees));
         return this;
     }
 
     public PoseStackUtil rotateY(float degrees) {
-        this.poseStack.mulPose(Vector3f.YP.rotationDegrees(degrees));
+        this.poseStack.mulPose(Axis.YP.rotationDegrees(degrees));
         return this;
     }
 
     public PoseStackUtil rotateZ(float degrees) {
-        this.poseStack.mulPose(Vector3f.ZP.rotationDegrees(degrees));
+        this.poseStack.mulPose(Axis.ZP.rotationDegrees(degrees));
         return this;
     }
 
@@ -36,7 +36,7 @@ public class PoseStackUtil extends PoseStack {
         this.poseStack.scale(x, y, z);
     }
 
-    public void mulPose(Quaternion quaternion) {
+    public void mulPose(Quaternionf quaternion) {
         this.poseStack.mulPose(quaternion);
     }
 

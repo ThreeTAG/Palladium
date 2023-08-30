@@ -11,6 +11,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -50,9 +51,9 @@ public class TexturedIcon implements IIcon {
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void draw(Minecraft mc, DataContext context, PoseStack stack, int x, int y, int w, int h) {
+    public void draw(Minecraft mc, GuiGraphics guiGraphics, DataContext context, int x, int y, int w, int h) {
+        var stack = guiGraphics.pose();
         RenderSystem.setShaderTexture(0, this.texture.getTexture(context));
-        RenderSystem.enableTexture();
         RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         var tesselator = Tesselator.getInstance();

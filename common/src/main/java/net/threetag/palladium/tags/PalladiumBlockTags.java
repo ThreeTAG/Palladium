@@ -1,6 +1,7 @@
 package net.threetag.palladium.tags;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -25,7 +26,7 @@ public class PalladiumBlockTags {
     }
 
     private static TagKey<Block> tag(String domain, String path) {
-        return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(domain, path));
+        return TagKey.create(Registries.BLOCK, new ResourceLocation(domain, path));
     }
 
     private static TagKey<Block> forgeTag(String path) {

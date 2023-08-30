@@ -2,6 +2,7 @@ package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -39,7 +40,7 @@ public class DimensionCondition extends Condition {
 
         @Override
         public Condition make(JsonObject json) {
-            return new DimensionCondition(ResourceKey.create(Registry.DIMENSION_REGISTRY, this.getProperty(json, DIMENSION)));
+            return new DimensionCondition(ResourceKey.create(Registries.DIMENSION, this.getProperty(json, DIMENSION)));
         }
 
         @Override

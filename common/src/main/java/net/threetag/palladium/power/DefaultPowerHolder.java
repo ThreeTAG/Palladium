@@ -66,7 +66,7 @@ public class DefaultPowerHolder implements IPowerHolder {
 
     @Override
     public void tick() {
-        this.entryMap.forEach((id, entry) -> entry.tick(entity, this.getPower(), this));
+        this.entryMap.forEach((id, entry) -> entry.tick(entity, this));
     }
 
     @Override

@@ -4,14 +4,14 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -22,9 +22,11 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.client.screen.components.EditButton;
@@ -37,6 +39,7 @@ import net.threetag.palladiumcore.event.ScreenEvents;
 import net.threetag.palladiumcore.util.Platform;
 
 import java.util.Collection;
+import java.util.Objects;
 
 public class AccessoryScreen extends OptionsSubScreen {
 
@@ -56,22 +59,23 @@ public class AccessoryScreen extends OptionsSubScreen {
             Component text = Component.translatable("gui.palladium.accessories");
 
             if (screen instanceof SkinCustomizationScreen) {
-                button = new Button(screen.width / 2 - 100, screen.height / 6 + 24 * (12 >> 1), 200, 20, text,
-                        b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen)));
+                button = Button.builder(text, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen))).bounds(screen.width / 2 - 100, screen.height / 6 + 24 * (12 >> 1), 200, 20).build();
             }
 
             if (screen instanceof InventoryScreen inv) {
-                button = new EditButton(inv.leftPos + 63, inv.topPos + 66, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen)), (b, poseStack, i, j) -> screen.renderTooltip(poseStack, text, i, j));
+                button = new EditButton(inv.leftPos + 63, inv.topPos + 66, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen)));
+                button.setTooltip(Tooltip.create(text));
             }
 
             if (screen instanceof CreativeModeInventoryScreen inv) {
-                button = new EditButton(inv.leftPos + 93, inv.topPos + 37, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen)), (b, poseStack, i, j) -> screen.renderTooltip(poseStack, text, i, j)) {
+                button = new EditButton(inv.leftPos + 93, inv.topPos + 37, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen))) {
                     @Override
-                    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-                        this.visible = inv.getSelectedTab() == 11;
-                        super.render(poseStack, mouseX, mouseY, partialTick);
+                    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+                        this.visible = CreativeModeInventoryScreen.selectedTab == BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.INVENTORY);
+                        super.render(guiGraphics, mouseX, mouseY, partialTick);
                     }
                 };
+                button.setTooltip(Tooltip.create(text));
             }
 
             if (button != null) {
@@ -90,7 +94,7 @@ public class AccessoryScreen extends OptionsSubScreen {
     protected void init() {
         super.init();
 
-        this.addRenderableWidget(new Button(30, this.height - 30, 100, 20, Component.translatable("gui.done"), (button) -> this.onClose()));
+        this.addRenderableWidget(Button.builder(Component.translatable("gui.done"), (button) -> this.onClose()).bounds(30, this.height - 30, 100, 20).build());
         this.addRenderableWidget(this.rotationSlider = new RotationSlider(100 + (this.width - 150) / 2, this.height / 2 + this.height / 3 + 10, 100, 20, 0.5F));
 
         this.slotList = new AccessorySlotList(this.minecraft, this, 42, this.height, 20, this.height - 40, 36);
@@ -103,23 +107,23 @@ public class AccessoryScreen extends OptionsSubScreen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(poseStack);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(guiGraphics);
         this.renderDirtBackground(0, 160);
 
         if (this.accessoryList != null)
-            this.accessoryList.render(poseStack, mouseX, mouseY, partialTicks);
+            this.accessoryList.render(guiGraphics, mouseX, mouseY, partialTicks);
 
         if (this.slotList != null)
-            this.slotList.render(poseStack, mouseX, mouseY, partialTicks);
+            this.slotList.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-        drawCenteredString(poseStack, this.font, this.title, 80, 7, 16777215);
+        guiGraphics.drawCenteredString(this.font, this.title, 80, 7, 16777215);
 
         InAccessorySlotMenuCondition.CURRENT_SLOT = this.currentSlot;
-        renderEntityInInventory(150 + (this.width - 150) / 2, this.height / 2 + this.height / 3, this.height / 3, (float) (this.rotation - 180F), 0F, 0F, this.minecraft.player);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, (int) (150 + (this.width - 150) / 2), this.height / 2 + this.height / 3, this.height / 3, (int) (this.rotation - 180F), 0F, Objects.requireNonNull(this.minecraft.player));
         InAccessorySlotMenuCondition.CURRENT_SLOT = null;
 
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
     public void renderDirtBackground(int vOffset, int width) {
@@ -138,52 +142,6 @@ public class AccessoryScreen extends OptionsSubScreen {
         bufferBuilder.vertex(width, 0.0, 0.0).uv((float) width / 32.0F, (float) vOffset).color(64, 64, 64, 255).endVertex();
         bufferBuilder.vertex(0.0, 0.0, 0.0).uv(0.0F, (float) vOffset).color(64, 64, 64, 255).endVertex();
         tesselator.end();
-    }
-
-    public static void renderEntityInInventory(int posX, int posY, int scale, float rotation, float mouseX, float mouseY, LivingEntity livingEntity) {
-        float f = (float) Math.atan(mouseX / 40.0F);
-        float g = (float) Math.atan(mouseY / 40.0F);
-        PoseStack poseStack = RenderSystem.getModelViewStack();
-        poseStack.pushPose();
-        poseStack.translate(posX, posY, 1050.0);
-        poseStack.scale(1.0F, 1.0F, -1.0F);
-        RenderSystem.applyModelViewMatrix();
-        PoseStack poseStack2 = new PoseStack();
-        poseStack2.translate(0.0, 0.0, 1000.0);
-        poseStack2.scale((float) scale, (float) scale, (float) scale);
-        Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-        Quaternion quaternion2 = Vector3f.XP.rotationDegrees(g * 20.0F);
-        quaternion.mul(quaternion2);
-        poseStack2.mulPose(quaternion);
-        poseStack2.mulPose(Vector3f.XN.rotationDegrees(10));
-        poseStack2.mulPose(Vector3f.YP.rotationDegrees(rotation));
-        float h = livingEntity.yBodyRot;
-        float i = livingEntity.getYRot();
-        float j = livingEntity.getXRot();
-        float k = livingEntity.yHeadRotO;
-        float l = livingEntity.yHeadRot;
-        livingEntity.yBodyRot = 180.0F + f * 20.0F;
-        livingEntity.setYRot(180.0F + f * 40.0F);
-        livingEntity.setXRot(-g * 20.0F);
-        livingEntity.yHeadRot = livingEntity.getYRot();
-        livingEntity.yHeadRotO = livingEntity.getYRot();
-        Lighting.setupForEntityInInventory();
-        EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        quaternion2.conj();
-        entityRenderDispatcher.overrideCameraOrientation(quaternion2);
-        entityRenderDispatcher.setRenderShadow(false);
-        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
-        RenderSystem.runAsFancy(() -> entityRenderDispatcher.render(livingEntity, 0.0, 0.0, 0.0, 0.0F, 1.0F, poseStack2, bufferSource, 15728880));
-        bufferSource.endBatch();
-        entityRenderDispatcher.setRenderShadow(true);
-        livingEntity.yBodyRot = h;
-        livingEntity.setYRot(i);
-        livingEntity.setXRot(j);
-        livingEntity.yHeadRotO = k;
-        livingEntity.yHeadRot = l;
-        poseStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-        Lighting.setupFor3DItems();
     }
 
     public static class AccessorySlotList extends AbstractSelectionList<SlotListEntry> {
@@ -233,22 +191,20 @@ public class AccessoryScreen extends OptionsSubScreen {
         }
 
         @Override
-        public void render(PoseStack poseStack, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTick) {
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, FlatIconButton.WIDGETS_LOCATION);
+        public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTick) {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            blit(poseStack, left, top + 2, 20, (this.parent.currentSlot == this.slot ? 64 : (isMouseOver ? 32 : 0)), 32, 32, 256, 256);
+            guiGraphics.blit(FlatIconButton.WIDGETS_LOCATION, left, top + 2, 20, (this.parent.currentSlot == this.slot ? 64 : (isMouseOver ? 32 : 0)), 32, 32, 256, 256);
+            Font fontRenderer = this.parent.font;
             if (this.slot.getIcon() != null) {
                 RenderSystem.setShaderTexture(0, slot.getIcon());
-                blit(poseStack, left, top + 2, 0, 0, 32, 32, 32, 32);
+                guiGraphics.blit(FlatIconButton.WIDGETS_LOCATION, left, top + 2, 0, 0, 32, 32, 32, 32);
             } else {
-                Font fontRenderer = this.parent.font;
                 String s = this.slot.getDisplayName().getString().substring(0, 1);
-                fontRenderer.drawShadow(poseStack, Component.literal(s).getVisualOrderText(), left + 16 - fontRenderer.width(s) / 2F, top + 14, isMouseOver ? 16777120 : 0xfefefe);
+                guiGraphics.drawString(fontRenderer, Component.literal(s).getVisualOrderText(), (int) (left + 16 - fontRenderer.width(s) / 2F), top + 14, isMouseOver ? 16777120 : 0xfefefe);
             }
 
             if (isMouseOver) {
-                this.parent.renderTooltip(poseStack, this.slot.getDisplayName(), mouseX, mouseY);
+                guiGraphics.renderTooltip(fontRenderer, this.slot.getDisplayName(), mouseX, mouseY);
             }
         }
 
@@ -320,7 +276,7 @@ public class AccessoryScreen extends OptionsSubScreen {
         }
 
         @Override
-        public void render(PoseStack poseStack, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTick) {
+        public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTick) {
             Font fontRenderer = this.parent.font;
             Component name = this.accessory.getDisplayName();
 
@@ -328,12 +284,10 @@ public class AccessoryScreen extends OptionsSubScreen {
                 name = name.copy().withStyle(ChatFormatting.STRIKETHROUGH);
             }
 
-            fontRenderer.drawShadow(poseStack, fontRenderer.split(name, width - 25).get(0), left, top + 4, isMouseOver ? 16777120 : 0xfefefe);
+            guiGraphics.drawString(fontRenderer, fontRenderer.split(name, width - 25).get(0), left, top + 4, isMouseOver ? 16777120 : 0xfefefe);
             if (this.active) {
-                RenderSystem.setShader(GameRenderer::getPositionTexShader);
-                RenderSystem.setShaderTexture(0, FlatIconButton.WIDGETS_LOCATION);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                blit(poseStack, left + width - 25, top + 2, 0, 120, 16, 16, 256, 256);
+                guiGraphics.blit(FlatIconButton.WIDGETS_LOCATION, left + width - 25, top + 2, 0, 120, 16, 16, 256, 256);
             }
         }
 

@@ -72,11 +72,11 @@ public class EnergyBlastEffect extends EntityEffect {
     }
 
     public static void start(Entity anchor, Power power, AbilityEntry entry) {
-        if (!anchor.level.isClientSide) {
-            EffectEntity effectEntity = new EffectEntity(anchor.level, anchor, EntityEffects.ENERGY_BLAST.get());
+        if (!anchor.level().isClientSide) {
+            EffectEntity effectEntity = new EffectEntity(anchor.level(), anchor, EntityEffects.ENERGY_BLAST.get());
             ABILITY_ID.set(effectEntity, entry.getConfiguration().getId());
             POWER_ID.set(effectEntity, power.getId());
-            anchor.level.addFreshEntity(effectEntity);
+            anchor.level().addFreshEntity(effectEntity);
         }
     }
 }

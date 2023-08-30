@@ -3,6 +3,7 @@ package net.threetag.palladium.addonpack.parser;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
@@ -16,7 +17,7 @@ import net.threetag.palladiumcore.util.Platform;
 public class PoiTypeParser extends AddonParser<PoiType> {
 
     public PoiTypeParser() {
-        super(GSON, "poi_types", Registry.POINT_OF_INTEREST_TYPE_REGISTRY);
+        super(GSON, "poi_types", Registries.POINT_OF_INTEREST_TYPE);
     }
 
     @Override

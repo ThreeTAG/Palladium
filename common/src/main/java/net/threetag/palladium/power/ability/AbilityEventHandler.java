@@ -2,6 +2,8 @@ package net.threetag.palladium.power.ability;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.entity.PalladiumAttributes;
@@ -22,7 +24,7 @@ public class AbilityEventHandler implements LivingEntityEvents.Hurt, LivingEntit
 
     @Override
     public EventResult livingEntityHurt(LivingEntity entity, DamageSource damageSource, AtomicReference<Float> amount) {
-        if (damageSource == DamageSource.IN_WALL && AbilityUtil.isTypeEnabled(entity, Abilities.INTANGIBILITY.get())) {
+        if (damageSource.is(DamageTypes.IN_WALL) && AbilityUtil.isTypeEnabled(entity, Abilities.INTANGIBILITY.get())) {
             return EventResult.cancel();
         }
 
@@ -32,7 +34,7 @@ public class AbilityEventHandler implements LivingEntityEvents.Hurt, LivingEntit
             }
         }
 
-        if (damageSource == DamageSource.FALL && entity.getAttributes().hasAttribute(PalladiumAttributes.FALL_RESISTANCE.get())) {
+        if (damageSource.is(DamageTypes.FALL) && entity.getAttributes().hasAttribute(PalladiumAttributes.FALL_RESISTANCE.get())) {
             var resistance = entity.getAttributeValue(PalladiumAttributes.FALL_RESISTANCE.get());
 
             if (resistance == 100D) {

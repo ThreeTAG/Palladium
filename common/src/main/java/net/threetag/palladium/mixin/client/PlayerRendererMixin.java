@@ -1,7 +1,6 @@
 package net.threetag.palladium.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,6 +19,7 @@ import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.AnimationTimer;
 import net.threetag.palladium.util.Easing;
 import net.threetag.palladium.util.RenderUtil;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

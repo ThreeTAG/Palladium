@@ -2,7 +2,7 @@ package net.threetag.palladium.util.property;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HeadedModel;
@@ -80,16 +80,16 @@ public class EnergyBlastOriginProperty extends EnumPalladiumProperty<EnergyBlast
                 if (layer != null) {
                     distance /= SizeUtil.getInstance().getWidthScale(entity, partialTicks);
                     ((HeadedModel) layer.getParentModel()).getHead().translateAndRotate(poseStack);
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
-                    poseStack.mulPose(Vector3f.XP.rotationDegrees(90));
+                    poseStack.mulPose(Axis.YP.rotationDegrees(180));
+                    poseStack.mulPose(Axis.XP.rotationDegrees(90));
                 } else {
                     float yaw = entity.getViewYRot(partialTicks);
                     float pitch = entity.getViewXRot(partialTicks);
 
                     poseStack.translate(0, entity.getEyeHeight(), 0);
-                    poseStack.mulPose(Vector3f.YN.rotationDegrees(yaw));
-                    poseStack.mulPose(Vector3f.XP.rotationDegrees(pitch));
-                    poseStack.mulPose(Vector3f.XP.rotationDegrees(90));
+                    poseStack.mulPose(Axis.YN.rotationDegrees(yaw));
+                    poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
+                    poseStack.mulPose(Axis.XP.rotationDegrees(90));
                 }
 
                 if (this == EYES) {
@@ -108,15 +108,15 @@ public class EnergyBlastOriginProperty extends EnumPalladiumProperty<EnergyBlast
                     distance /= SizeUtil.getInstance().getWidthScale(entity, partialTicks);
                     ((HumanoidModel<LivingEntity>) layer.getParentModel()).body.translateAndRotate(poseStack);
                     poseStack.translate(0, 3F / 16F, 0);
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
-                    poseStack.mulPose(Vector3f.XP.rotationDegrees(90));
+                    poseStack.mulPose(Axis.YP.rotationDegrees(180));
+                    poseStack.mulPose(Axis.XP.rotationDegrees(90));
                 } else {
                     float yaw = Mth.lerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
                     float pitch = entity.isCrouching() ? 0.5F : 0;
                     poseStack.translate(0, 17F / 16F * 0.9375F * SizeUtil.getInstance().getHeightScale(entity, partialTicks), 0);
-                    poseStack.mulPose(Vector3f.YN.rotationDegrees(yaw));
-                    poseStack.mulPose(Vector3f.XP.rotation(pitch));
-                    poseStack.mulPose(Vector3f.XP.rotationDegrees(90));
+                    poseStack.mulPose(Axis.YN.rotationDegrees(yaw));
+                    poseStack.mulPose(Axis.XP.rotation(pitch));
+                    poseStack.mulPose(Axis.XP.rotationDegrees(90));
                 }
                 RenderUtil.drawGlowingBox(poseStack, vertexConsumer, (float) distance, 2F / 16F, color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, color.getAlpha() / 255F, 15728640);
             }

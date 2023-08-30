@@ -3,6 +3,7 @@ package net.threetag.palladium.compat.curiostinkets;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
@@ -93,8 +94,8 @@ public class CuriosTrinketsUtil {
         private final TagKey<Item> forge, fabric;
 
         public Slot(String forge, String fabric) {
-            this.forge = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("curios:" + forge));
-            this.fabric = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("trinkets:" + fabric));
+            this.forge = TagKey.create(Registries.ITEM, new ResourceLocation("curios:" + forge));
+            this.fabric = TagKey.create(Registries.ITEM, new ResourceLocation("trinkets:" + fabric));
         }
 
         public TagKey<Item> getFabric() {

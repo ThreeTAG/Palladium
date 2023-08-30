@@ -30,5 +30,6 @@
     "recipes": [
       "palladium:raw_lead"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

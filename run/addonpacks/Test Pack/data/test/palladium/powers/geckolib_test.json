@@ -9,7 +9,7 @@
       "render_layer": "test:geckolib_test"
     },
     "animation_extend_arm": {
-      "type": "geckolib3:render_layer_animation",
+      "type": "geckolib:render_layer_animation",
       "hidden": false,
       "render_layer": "test:geckolib_test",
       "controller": "extend_arm",

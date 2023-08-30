@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
@@ -31,7 +32,7 @@ public class BlockParser extends AddonParser<Block> {
 
 
     public BlockParser() {
-        super(GSON, "blocks", Registry.BLOCK_REGISTRY);
+        super(GSON, "blocks", Registries.BLOCK);
     }
 
     @Override
@@ -40,21 +41,15 @@ public class BlockParser extends AddonParser<Block> {
         BlockBuilder builder = new BlockBuilder(id, json)
                 .type(TYPE_SERIALIZERS.get(GsonUtil.getAsResourceLocation(json, "type", null)));
 
-        var materialId = GsonUtil.getAsResourceLocation(json, "material");
         var soundTypeId = GsonUtil.getAsResourceLocation(json, "sound_type");
-        var material = BlockMaterialRegistry.get(materialId);
         var soundType = BlockMaterialRegistry.getSoundType(soundTypeId);
-
-        if (material == null) {
-            throw new JsonParseException("Unknown block material '" + materialId + "'");
-        }
 
         if (soundType == null) {
             throw new JsonParseException("Unknown block sound type '" + soundTypeId + "'");
         }
 
-        builder.material(material).soundType(soundType);
-        GsonUtil.ifHasKey(json, "material_color", el -> builder.materialColor(BlockMaterialRegistry.getColor(GsonUtil.convertToResourceLocation(el, "material_color"))));
+        builder.soundType(soundType);
+        GsonUtil.ifHasKey(json, "map_color", el -> builder.mapColor(BlockMaterialRegistry.getColor(GsonUtil.convertToResourceLocation(el, "material_color"))));
         GsonUtil.ifHasKey(json, "destroy_time", el -> builder.destroyTime(GsonHelper.convertToFloat(el, "destroy_time")));
         GsonUtil.ifHasKey(json, "explosion_resistance", el -> builder.explosionResistance(GsonHelper.convertToFloat(el, "explosion_resistance")));
         builder.renderType(GsonHelper.getAsString(json, "render_type", null));
@@ -98,11 +93,8 @@ public class BlockParser extends AddonParser<Block> {
         builder.addProperty("type", ResourceLocation.class)
                 .description("Block Type, each come with new different settings. Listed below on this page.")
                 .fallback(new ResourceLocation("palladium:default"));
-        builder.addProperty("material", ResourceLocation.class)
-                .description("Material of the block. Determines some properties like flammability, piston reaction, solid, and more. Possible values: " + Arrays.toString(BlockMaterialRegistry.getAllIds().toArray()))
-                .required().exampleJson(new JsonPrimitive("minecraft:stone"));
-        builder.addProperty("material_color", ResourceLocation.class)
-                .description("Material color of the block. Determines the color displayed on maps. If not specified, it will use the default color of the material. Possible values: " + Arrays.toString(BlockMaterialRegistry.getAllColorIds().toArray()))
+        builder.addProperty("map_color", ResourceLocation.class)
+                .description("Determines the color displayed on maps. Possible values: " + Arrays.toString(BlockMaterialRegistry.getAllColorIds().toArray()))
                 .fallback(null).exampleJson(new JsonPrimitive("minecraft:color_blue"));
         builder.addProperty("sound_type", ResourceLocation.class)
                 .description("Place/break/step sound type of the block. Possible values: " + Arrays.toString(BlockMaterialRegistry.getAllSoundTypeIds().toArray()))

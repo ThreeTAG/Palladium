@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.*;
 import io.netty.util.collection.IntObjectHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -31,7 +31,7 @@ import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
+public class AbilityBarRenderer implements OverlayRegistry.IngameOverlay {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(Palladium.MOD_ID, "textures/gui/ability_bar.png");
     public static List<AbilityList> ABILITY_LISTS = new ArrayList<>();
@@ -53,11 +53,12 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
     }
 
     @Override
-    public void render(Minecraft mc, Gui gui, PoseStack poseStack, float partialTicks, int width, int height) {
+    public void render(Minecraft mc, Gui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {
         if (ABILITY_LISTS.isEmpty()) {
             return;
         }
 
+        var poseStack = guiGraphics.pose();
         Position position = PalladiumConfig.Client.ABILITY_BAR_POSITION.get();
         AbilityList list = getSelectedList();
 
@@ -82,14 +83,14 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
             if (!simple) {
                 poseStack.pushPose();
                 translateIndicatorBackground(poseStack, mc.getWindow(), position, indicatorWidth, indicatorHeight);
-                renderIndicator(list, mc, poseStack, position, texture, ABILITY_LISTS.size() > 1);
+                renderIndicator(list, mc, guiGraphics, poseStack, position, texture, ABILITY_LISTS.size() > 1);
                 poseStack.popPose();
             }
 
             poseStack.pushPose();
             translateAbilitiesBackground(poseStack, mc.getWindow(), position, indicatorHeight, 24, 112, simple);
-            renderAbilitiesBackground(mc, poseStack, position, list, texture, simple);
-            renderAbilitiesOverlay(mc, poseStack, position, list, texture, simple);
+            renderAbilitiesBackground(mc, guiGraphics, poseStack, position, list, texture, simple);
+            renderAbilitiesOverlay(mc, guiGraphics, poseStack, position, list, texture, simple);
             poseStack.popPose();
         }
     }
@@ -104,24 +105,20 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
         }
     }
 
-    private static void renderIndicator(AbilityList list, Minecraft minecraft, PoseStack poseStack, Position position, ResourceLocation texture, boolean showKey) {
+    private static void renderIndicator(AbilityList list, Minecraft minecraft, GuiGraphics guiGraphics, PoseStack poseStack, Position position, ResourceLocation texture, boolean showKey) {
         // Background
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.gui.blit(poseStack, 0, 0, position.left ? 52 : 0, position.top ? 28 : 0, 52, 28);
+        guiGraphics.blit(texture, 0, 0, position.left ? 52 : 0, position.top ? 28 : 0, 52, 28);
 
         // Icon
-        list.power.getIcon().draw(minecraft, DataContext.forPower(minecraft.player, list.getPowerHolder()), poseStack, showKey ? (position.left ? 30 : 6) : (position.left ? 17 : 19), position.top ? 5 : 7);
+        list.power.getIcon().draw(minecraft, guiGraphics, DataContext.forPower(minecraft.player, list.getPowerHolder()), showKey ? (position.left ? 30 : 6) : (position.left ? 17 : 19), position.top ? 5 : 7);
 
         // Button
         if (showKey) {
             FormattedText properties = minecraft.font.substrByWidth(PalladiumKeyMappings.SWITCH_ABILITY_LIST.getTranslatedKeyMessage(), 10);
             int length = minecraft.font.width(properties) + 10;
-            minecraft.font.draw(poseStack, Component.literal(properties.getString()), (position.left ? 15 : 37) - length / 2F + 10, position.top ? 10 : 12, 0xffffffff);
-
-            RenderSystem.setShaderTexture(0, texture);
-            minecraft.gui.blit(poseStack, (position.left ? 15 : 37) - length / 2, position.top ? 9 : 11, 78, minecraft.player.isCrouching() ? 64 : 56, 8, 8);
+            guiGraphics.drawString(minecraft.font, Component.literal(properties.getString()), (int) ((position.left ? 15 : 37) - length / 2F + 10), position.top ? 10 : 12, 0xffffffff, false);
+            guiGraphics.blit(texture, (position.left ? 15 : 37) - length / 2, position.top ? 9 : 11, 78, minecraft.player.isCrouching() ? 64 : 56, 8, 8);
         }
     }
 
@@ -141,7 +138,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
         }
     }
 
-    private static void renderAbilitiesBackground(Minecraft minecraft, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture, boolean simple) {
+    private static void renderAbilitiesBackground(Minecraft minecraft, GuiGraphics guiGraphics, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture, boolean simple) {
         boolean showName = minecraft.screen instanceof ChatScreen;
 
         for (int i = 0; i < 5; i++) {
@@ -150,11 +147,9 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
             }
             Lighting.setupFor3DItems();
             RenderSystem.enableBlend();
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, texture);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-            minecraft.gui.blit(poseStack, 3, i * 22 + 3, 60, 56, 18, 18);
+            guiGraphics.blit(texture, 3, i * 22 + 3, 60, 56, 18, 18);
 
             if (list != null) {
                 AbilityEntry entry = list.getDisplayedAbilities()[i];
@@ -162,21 +157,21 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
                 if (entry != null) {
                     if (entry.isEnabled() && entry.activationTimer != 0 && entry.maxActivationTimer != 0) {
                         int height = (int) ((float) entry.activationTimer / (float) entry.maxActivationTimer * 18);
-                        minecraft.gui.blit(poseStack, 3, i * 22 + 3, 24, 56, 18, 18);
-                        minecraft.gui.blit(poseStack, 3, i * 22 + 3 + (18 - height), 42, 74 - height, 18, height);
+                        guiGraphics.blit(texture, 3, i * 22 + 3, 24, 56, 18, 18);
+                        guiGraphics.blit(texture, 3, i * 22 + 3 + (18 - height), 42, 74 - height, 18, height);
                     } else {
-                        minecraft.gui.blit(poseStack, 3, i * 22 + 3, entry.isEnabled() ? 42 : 24, entry.isUnlocked() ? 56 : 74, 18, 18);
+                        guiGraphics.blit(texture, 3, i * 22 + 3, entry.isEnabled() ? 42 : 24, entry.isUnlocked() ? 56 : 74, 18, 18);
                     }
 
                     if (entry.cooldown > 0) {
                         int width = (int) ((float) entry.cooldown / (float) entry.maxCooldown * 18);
-                        minecraft.gui.blit(poseStack, 3, i * 22 + 3, 60, 74, width, 18);
+                        guiGraphics.blit(texture, 3, i * 22 + 3, 60, 74, width, 18);
                     }
 
                     if (!entry.isUnlocked()) {
-                        minecraft.gui.blit(poseStack, 3, i * 22 + 3, 42, 74, 18, 18);
+                        guiGraphics.blit(texture, 3, i * 22 + 3, 42, 74, 18, 18);
                     } else {
-                        entry.getProperty(Ability.ICON).draw(minecraft, DataContext.forAbility(minecraft.player, entry), poseStack, 4, 4 + i * 22);
+                        entry.getProperty(Ability.ICON).draw(minecraft, guiGraphics, DataContext.forAbility(minecraft.player, entry), 4, 4 + i * 22);
                     }
 
                     // Ability Name
@@ -185,30 +180,23 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
                         BufferBuilder bb = tes.getBuilder();
                         Component name = entry.getConfiguration().getDisplayName();
                         int width = minecraft.font.width(name);
-                        renderBlackBox(bb, tes, poseStack, minecraft.screen, position.left ? 24 : -width - 10, i * 22 + 5, 10 + width, 14, 0.5F);
-                        minecraft.font.draw(poseStack, name, position.left ? 29 : -width - 5, i * 22 + 8, 0xffffffff);
+                        renderBlackBox(bb, tes, poseStack, position.left ? 24 : -width - 10, i * 22 + 5, 10 + width, 14, 0.5F);
+                        guiGraphics.drawString(minecraft.font, name, position.left ? 29 : -width - 5, i * 22 + 8, 0xffffffff, false);
                     }
                 } else {
-                    minecraft.gui.blit(poseStack, 3, i * 22 + 3, 60, 56, 18, 18);
+                    guiGraphics.blit(texture, 3, i * 22 + 3, 60, 56, 18, 18);
                 }
             }
         }
-
-        // Overlay
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, texture);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    private static void renderAbilitiesOverlay(Minecraft minecraft, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture, boolean simple) {
+    private static void renderAbilitiesOverlay(Minecraft minecraft, GuiGraphics guiGraphics, PoseStack poseStack, Position position, AbilityList list, ResourceLocation texture, boolean simple) {
         // Overlay
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (!simple) {
-            minecraft.gui.blit(poseStack, 0, 0, 0, 56, 24, 112);
+            guiGraphics.blit(texture, 0, 0, 0, 56, 24, 112);
         } else {
-            minecraft.gui.blit(poseStack, 0, 0, 0, 168, 24, 24);
+            guiGraphics.blit(texture, 0, 0, 0, 168, 24, 24);
         }
 
         // Colored Frames + Keys
@@ -216,38 +204,36 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
             AbilityEntry ability = list.getDisplayedAbilities()[i];
 
             if (ability != null) {
-                RenderSystem.setShader(GameRenderer::getPositionTexShader);
-                RenderSystem.setShaderTexture(0, texture);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 Lighting.setupFor3DItems();
                 RenderSystem.enableBlend();
 
                 if (!ability.isUnlocked()) {
-                    minecraft.gui.blit(poseStack, 3, i * 22 + 3, 42, 74, 18, 18);
+                    guiGraphics.blit(texture, 3, i * 22 + 3, 42, 74, 18, 18);
                 }
 
                 AbilityColor color = ability.getProperty(Ability.COLOR);
-                minecraft.gui.blit(poseStack, 0, i * 22, color.getX(), color.getY(), 24, 24);
+                guiGraphics.blit(texture, 0, i * 22, color.getX(), color.getY(), 24, 24);
 
                 if (ability.getConfiguration().needsKey() && ability.isUnlocked()) {
                     AbilityConfiguration.KeyType keyType = ability.getConfiguration().getKeyType();
                     poseStack.pushPose();
-                    poseStack.translate(0, 0, minecraft.getItemRenderer().blitOffset + 200);
+                    poseStack.translate(0, 0, 200);
                     if (keyType == AbilityConfiguration.KeyType.KEY_BIND) {
                         Component key = PalladiumKeyMappings.ABILITY_KEYS[i].getTranslatedKeyMessage();
-                        GuiComponent.drawString(poseStack, minecraft.font, key, 5 + 19 - 2 - minecraft.font.width(key), 5 + i * 22 + 7, 0xffffff);
+                        guiGraphics.drawString(minecraft.font, key, 5 + 19 - 2 - minecraft.font.width(key), 5 + i * 22 + 7, 0xffffff, false);
                     } else if (keyType == AbilityConfiguration.KeyType.LEFT_CLICK) {
-                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 8, 24, 92, 5, 7);
+                        guiGraphics.blit(texture, 5 + 19 - 8, 5 + i * 22 + 8, 24, 92, 5, 7);
                     } else if (keyType == AbilityConfiguration.KeyType.RIGHT_CLICK) {
-                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 8, 29, 92, 5, 7);
+                        guiGraphics.blit(texture, 5 + 19 - 8, 5 + i * 22 + 8, 29, 92, 5, 7);
                     } else if (keyType == AbilityConfiguration.KeyType.SPACE_BAR) {
-                        minecraft.gui.blit(poseStack, 5 + 19 - 13, 5 + i * 22 + 10, 34, 92, 10, 5);
+                        guiGraphics.blit(texture, 5 + 19 - 13, 5 + i * 22 + 10, 34, 92, 10, 5);
                     } else if (keyType == AbilityConfiguration.KeyType.SCROLL_UP) {
-                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 4, 24, 99, 5, 11);
+                        guiGraphics.blit(texture, 5 + 19 - 8, 5 + i * 22 + 4, 24, 99, 5, 11);
                     } else if (keyType == AbilityConfiguration.KeyType.SCROLL_DOWN) {
-                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 4, 29, 99, 5, 11);
+                        guiGraphics.blit(texture, 5 + 19 - 8, 5 + i * 22 + 4, 29, 99, 5, 11);
                     } else if (keyType == AbilityConfiguration.KeyType.SCROLL_EITHER) {
-                        minecraft.gui.blit(poseStack, 5 + 19 - 8, 5 + i * 22 + 2, 34, 99, 5, 13);
+                        guiGraphics.blit(texture, 5 + 19 - 8, 5 + i * 22 + 2, 34, 99, 5, 13);
                     }
 
                     poseStack.popPose();
@@ -257,21 +243,19 @@ public class AbilityBarRenderer implements OverlayRegistry.IIngameOverlay {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public static void renderBlackBox(BufferBuilder bb, Tesselator tesselator, PoseStack matrixStack, GuiComponent gui, int x, int y, int width, int height, float opacity) {
-        RenderSystem.disableTexture();
+    public static void renderBlackBox(BufferBuilder bb, Tesselator tesselator, PoseStack matrixStack, int x, int y, int width, int height, float opacity) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         bb.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        bb.vertex(matrixStack.last().pose(), x + width, y, gui.getBlitOffset()).color(0F, 0F, 0F, opacity).endVertex();
-        bb.vertex(matrixStack.last().pose(), x, y, gui.getBlitOffset()).color(0F, 0F, 0F, opacity).endVertex();
-        bb.vertex(matrixStack.last().pose(), x, y + height, gui.getBlitOffset()).color(0F, 0F, 0F, opacity).endVertex();
-        bb.vertex(matrixStack.last().pose(), x + width, y + height, gui.getBlitOffset()).color(0F, 0F, 0F, opacity).endVertex();
+        bb.vertex(matrixStack.last().pose(), x + width, y, 0).color(0F, 0F, 0F, opacity).endVertex();
+        bb.vertex(matrixStack.last().pose(), x, y, 0).color(0F, 0F, 0F, opacity).endVertex();
+        bb.vertex(matrixStack.last().pose(), x, y + height, 0).color(0F, 0F, 0F, opacity).endVertex();
+        bb.vertex(matrixStack.last().pose(), x + width, y + height, 0).color(0F, 0F, 0F, opacity).endVertex();
         tesselator.end();
 
         RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
     }
 
     public static void updateCurrentLists() {

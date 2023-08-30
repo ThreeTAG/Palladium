@@ -45,11 +45,23 @@ Fallback Value</th>
 <td>
 icon</td>
 <td>
-ItemStack</td>
+Item</td>
 <td>
 Icon for tab, can only be an item.</td>
 <td style="background-color: lightgreen">
 true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Custom title for the tab. Will fall back to a translation key based on the ID.</td>
+<td style="background-color: lightcoral">
+false</td>
 <td>
 /</td>
 </tr>
@@ -58,7 +70,7 @@ true</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"icon":"minecraft:trident"}</pre>
+{"icon":"minecraft:trident","title":"itemGroup.namespace.example"}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

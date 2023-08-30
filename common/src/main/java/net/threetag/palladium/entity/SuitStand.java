@@ -6,6 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -112,12 +113,12 @@ public class SuitStand extends ArmorStand {
     }
 
     public void suitStandBrokenByPlayer(DamageSource damageSource) {
-        Block.popResource(this.level, this.blockPosition(), new ItemStack(PalladiumItems.SUIT_STAND.get()));
+        Block.popResource(this.level(), this.blockPosition(), new ItemStack(PalladiumItems.SUIT_STAND.get()));
         this.brokenByAnything(damageSource);
     }
 
     public void suitStandShowBreakingParticles() {
-        if (this.level instanceof ServerLevel serverLevel) {
+        if (this.level() instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.QUARTZ_BLOCK.defaultBlockState()), this.getX(), this.getY(0.6666666666666666), this.getZ(), 10, this.getBbWidth() / 4.0F, this.getBbHeight() / 4.0F, this.getBbWidth() / 4.0F, 0.05);
         }
     }
@@ -132,7 +133,8 @@ public class SuitStand extends ArmorStand {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkManager.createAddEntityPacket(this);
     }
+
 }

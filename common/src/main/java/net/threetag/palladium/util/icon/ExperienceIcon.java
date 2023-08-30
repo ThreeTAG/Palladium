@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
@@ -17,9 +18,10 @@ public record ExperienceIcon(int amount, boolean level) implements IIcon {
     private static final TexturedIcon BACKGROUND_ICON = new TexturedIcon(Palladium.id("textures/icon/experience.png"));
 
     @Override
-    public void draw(Minecraft mc, DataContext context, PoseStack stack, int x, int y, int width, int height) {
-        BACKGROUND_ICON.draw(mc, context, stack, x, y, width, height);
+    public void draw(Minecraft mc, GuiGraphics guiGraphics, DataContext context, int x, int y, int width, int height) {
+        BACKGROUND_ICON.draw(mc, guiGraphics, context, x, y, width, height);
 
+        var stack = guiGraphics.pose();
         stack.pushPose();
         stack.translate(x, y, 0);
 
@@ -28,11 +30,11 @@ public record ExperienceIcon(int amount, boolean level) implements IIcon {
         }
 
         String text = this.amount + (this.level ? "L" : "");
-        mc.font.draw(stack, text, 9, 8, 0);
-        mc.font.draw(stack, text, 7, 8, 0);
-        mc.font.draw(stack, text, 8, 9, 0);
-        mc.font.draw(stack, text, 8, 7, 0);
-        mc.font.draw(stack, text, 8, 8, 8453920);
+        guiGraphics.drawString(mc.font, text, 9, 8, 0, false);
+        guiGraphics.drawString(mc.font, text, 7, 8, 0, false);
+        guiGraphics.drawString(mc.font, text, 8, 9, 0, false);
+        guiGraphics.drawString(mc.font, text, 8, 7, 0, false);
+        guiGraphics.drawString(mc.font, text, 8, 8, 8453920, false);
 
         stack.popPose();
     }

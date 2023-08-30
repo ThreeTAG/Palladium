@@ -30,5 +30,6 @@
     "recipes": [
       "palladium:suit_stand"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

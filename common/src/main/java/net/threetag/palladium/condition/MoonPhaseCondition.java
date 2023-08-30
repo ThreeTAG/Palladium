@@ -17,13 +17,13 @@ public class MoonPhaseCondition extends Condition {
 
     @Override
     public boolean active(DataContext context) {
-        var entity = context.get(DataContextType.ENTITY);
+        var level = context.getLevel();
 
-        if (entity == null) {
+        if (level == null) {
             return false;
         }
 
-        return entity.level.getMoonPhase() >= this.min && entity.level.getMoonPhase() <= this.max;
+        return level.getMoonPhase() >= this.min && level.getMoonPhase() <= this.max;
     }
 
     @Override

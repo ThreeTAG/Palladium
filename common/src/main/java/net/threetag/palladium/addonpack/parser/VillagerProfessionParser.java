@@ -3,6 +3,7 @@ package net.threetag.palladium.addonpack.parser;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -13,7 +14,7 @@ import net.threetag.palladium.util.json.GsonUtil;
 public class VillagerProfessionParser extends AddonParser<VillagerProfession> {
 
     public VillagerProfessionParser() {
-        super(GSON, "villager_professions", Registry.VILLAGER_PROFESSION_REGISTRY);
+        super(GSON, "villager_professions", Registries.VILLAGER_PROFESSION);
     }
 
     @Override

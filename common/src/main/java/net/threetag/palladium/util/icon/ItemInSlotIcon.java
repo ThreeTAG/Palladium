@@ -2,8 +2,8 @@ package net.threetag.palladium.util.icon;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
@@ -14,16 +14,11 @@ import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.context.DataContext;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemInSlotIcon implements IIcon {
-
-    public final PlayerSlot slot;
-
-    public ItemInSlotIcon(PlayerSlot slot) {
-        this.slot = slot;
-    }
+public record ItemInSlotIcon(PlayerSlot slot) implements IIcon {
 
     @Override
-    public void draw(Minecraft mc, DataContext context, PoseStack stack, int x, int y, int width, int height) {
+    public void draw(Minecraft mc, GuiGraphics guiGraphics, DataContext context, int x, int y, int width, int height) {
+        var stack = guiGraphics.pose();
         stack.pushPose();
         stack.translate(x + width / 2D, y + height / 2D, 100);
 
@@ -43,7 +38,7 @@ public class ItemInSlotIcon implements IIcon {
             }
         }
 
-        GuiUtil.drawItem(stack, item, 0, true, null);
+        GuiUtil.drawItem(guiGraphics, item, 0, true, null);
         stack.popPose();
     }
 

@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -41,8 +42,8 @@ public class VillagerTradeParser extends SimpleJsonResourceReloadListener {
                     boolean rare = GsonHelper.getAsBoolean(json, "rare", false);
                     VillagerTradeRegistry.registerForWanderingTrader(rare, listings.toArray(new BasicItemListing[0]));
                 } else {
-                    if (Registry.VILLAGER_PROFESSION.containsKey(profId)) {
-                        VillagerTradeRegistry.registerForProfession(Registry.VILLAGER_PROFESSION.get(profId), GsonUtil.getAsIntMin(json, "level", 1), listings.toArray(new BasicItemListing[0]));
+                    if (BuiltInRegistries.VILLAGER_PROFESSION.containsKey(profId)) {
+                        VillagerTradeRegistry.registerForProfession(BuiltInRegistries.VILLAGER_PROFESSION.get(profId), GsonUtil.getAsIntMin(json, "level", 1), listings.toArray(new BasicItemListing[0]));
                     } else {
                         throw new JsonParseException("Unknown villager profession " + profId);
                     }

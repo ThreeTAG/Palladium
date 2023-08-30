@@ -1,6 +1,7 @@
 package net.threetag.palladium.entity;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 public class PalladiumAttributes {
 
-    public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Palladium.MOD_ID, Registry.ATTRIBUTE_REGISTRY);
+    public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Palladium.MOD_ID, Registries.ATTRIBUTE);
 
     public static final RegistrySupplier<Attribute> FLIGHT_SPEED = ATTRIBUTES.register("flight_speed", () -> new RangedAttribute(name("flight_speed"), 0D, 0D, 32D).setSyncable(true));
     public static final RegistrySupplier<Attribute> FLIGHT_FLEXIBILITY = ATTRIBUTES.register("flight_flexibility", () -> new RangedAttribute(name("flight_flexibility"), 0D, 0D, 10D).setSyncable(true));

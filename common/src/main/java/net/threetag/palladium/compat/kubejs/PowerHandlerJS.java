@@ -22,7 +22,7 @@ public class PowerHandlerJS {
     }
 
     public boolean setSuperpower(ResourceLocation id) {
-        Power power = PowerManager.getInstance(Objects.requireNonNull(this.parent).level).getPower(id);
+        Power power = PowerManager.getInstance(Objects.requireNonNull(this.parent).level()).getPower(id);
 
         if (power != null) {
             PalladiumProperties.SUPERPOWER_IDS.set(this.parent, Collections.singletonList(id));
@@ -33,7 +33,7 @@ public class PowerHandlerJS {
     }
 
     public boolean addSuperpower(ResourceLocation id) {
-        Power power = PowerManager.getInstance(Objects.requireNonNull(this.parent).level).getPower(id);
+        Power power = PowerManager.getInstance(Objects.requireNonNull(this.parent).level()).getPower(id);
 
         if (power != null && !PalladiumProperties.SUPERPOWER_IDS.get(this.parent).contains(id)) {
             List<ResourceLocation> powerIds = new ArrayList<>(PalladiumProperties.SUPERPOWER_IDS.get(this.parent));
@@ -46,7 +46,7 @@ public class PowerHandlerJS {
     }
 
     public boolean removeSuperpower(ResourceLocation id) {
-        Power power = PowerManager.getInstance(Objects.requireNonNull(this.parent).level).getPower(id);
+        Power power = PowerManager.getInstance(Objects.requireNonNull(this.parent).level()).getPower(id);
 
         if (power != null && PalladiumProperties.SUPERPOWER_IDS.get(this.parent).contains(id)) {
             List<ResourceLocation> powerIds = new ArrayList<>(PalladiumProperties.SUPERPOWER_IDS.get(this.parent));

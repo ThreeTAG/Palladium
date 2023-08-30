@@ -10,7 +10,7 @@ public class SuperpowerProvider extends PowerProvider {
     @Override
     public void providePowers(LivingEntity entity, IPowerHandler handler, PowerCollector collector) {
         for (ResourceLocation id : PalladiumProperties.SUPERPOWER_IDS.get(entity)) {
-            Power power = PowerManager.getInstance(entity.level).getPower(id);
+            Power power = PowerManager.getInstance(entity.level()).getPower(id);
             collector.addPower(power, Validator::new);
         }
     }

@@ -2,13 +2,9 @@
   "required": true,
   "package": "net.threetag.palladium.mixin.forge",
   "compatibilityLevel": "JAVA_17",
-  "client": [
-    "GeoArmorRendererMixin"
-  ],
   "mixins": [
     "CapabilityProviderMixin",
     "IEnergyStorageMixin",
-    "PackTypeMixin",
     "ForgeHooksMixin"
   ],
   "injectors": {

@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -47,7 +48,7 @@ public class ArmorRendererManager extends SimpleJsonResourceReloadListener {
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
         if (!LOOK_FOR_ITEMS) {
-            for (Item item : Registry.ITEM) {
+            for (Item item : BuiltInRegistries.ITEM) {
                 if (item instanceof ArmorWithRenderer armor) {
                     EXTENDED_ARMOR_ITEMS.add(armor);
                 }

@@ -1,10 +1,12 @@
 package net.threetag.palladium.util.json;
 
+import com.google.common.collect.Lists;
 import com.google.gson.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -17,11 +19,10 @@ import net.threetag.palladium.util.ModelLayerLocationUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class GsonUtil {
 
@@ -480,7 +481,7 @@ public class GsonUtil {
     public static JsonObject serializeItemStack(ItemStack stack, boolean writeNbt) {
         JsonObject json = new JsonObject();
 
-        json.addProperty("item", Registry.ITEM.getKey(stack.getItem()).toString());
+        json.addProperty("item", BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
         json.addProperty("count", stack.getCount());
 
         if (writeNbt && stack.hasTag()) {
@@ -494,20 +495,20 @@ public class GsonUtil {
         if (jsonElement.isJsonPrimitive()) {
             ResourceLocation id = new ResourceLocation(jsonElement.getAsString());
 
-            if (!Registry.ITEM.containsKey(id)) {
+            if (!BuiltInRegistries.ITEM.containsKey(id)) {
                 throw new JsonParseException("Unknown item '" + id + "'");
             }
 
-            return new ItemStack(Registry.ITEM.get(id));
+            return new ItemStack(BuiltInRegistries.ITEM.get(id));
         } else if (jsonElement.isJsonObject()) {
             var json = jsonElement.getAsJsonObject();
             ResourceLocation id = new ResourceLocation(GsonHelper.getAsString(json, "item"));
 
-            if (!Registry.ITEM.containsKey(id)) {
+            if (!BuiltInRegistries.ITEM.containsKey(id)) {
                 throw new JsonParseException("Unknown item '" + id + "'");
             }
 
-            Item item = Registry.ITEM.get(id);
+            Item item = BuiltInRegistries.ITEM.get(id);
 
             return new ItemStack(item, GsonHelper.getAsInt(json, "count", 1));
         } else {
@@ -524,6 +525,20 @@ public class GsonUtil {
                 consumer.accept(child);
             }
         }
+    }
+
+    public static <T> List<T> fromListOrPrimitive(JsonElement element, Function<JsonElement, T> function) {
+        if (element.isJsonPrimitive() || element.isJsonObject()) {
+            return Collections.singletonList(function.apply(element));
+        } else if (element.isJsonArray()) {
+            List<T> list = new ArrayList<>();
+            JsonArray array = element.getAsJsonArray();
+            for (JsonElement child : array) {
+                list.add(function.apply(child));
+            }
+            return list;
+        }
+        return Collections.emptyList();
     }
 
 }

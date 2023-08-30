@@ -26,10 +26,8 @@ public class AbstractClientPlayerMixin implements IAnimatablePlayer {
     @Unique
     private final ModifierLayer<IAnimation> modifierLayer = new ModifierLayer<>();
 
-    private final Map<PlayerAnimationFrame.PlayerPart, PalladiumAnimation.PartAnimationData> ANIMATION_DATA = new HashMap<>();
-
     @Inject(method = "<init>", at = @At(value = "RETURN"))
-    private void init(ClientLevel clientLevel, GameProfile gameProfile, @Nullable ProfilePublicKey profilePublicKey, CallbackInfo ci) {
+    private void init(ClientLevel clientLevel, GameProfile gameProfile, CallbackInfo ci) {
         PlayerAnimationAccess.getPlayerAnimLayer((AbstractClientPlayer) (Object) this).addAnimLayer(1000, modifierLayer);
     }
 

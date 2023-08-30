@@ -3,7 +3,6 @@
   "package": "net.threetag.palladium.mixin.fabric",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "GeoArmorRendererMixin",
     "LivingEntityRendererMixin"
   ],
   "mixins": [
@@ -11,7 +10,6 @@
     "IEnergyStorageMixin",
     "LivingEntityMixin",
     "PackRepositoryMixin",
-    "PackTypeMixin",
     "PlayerMixin",
     "ReloadableResourceManagerMixin",
     "TrinketsApiMixin"

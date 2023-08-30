@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -70,16 +71,6 @@ public class FluxCapacitorItem extends EnergyItem implements IAddonItem {
     }
 
     @Override
-    public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
-        if ((Registry.ITEM.getKey(this).getNamespace().equalsIgnoreCase(Palladium.MOD_ID) ? PalladiumConfig.Server.EXPERIMENTAL_FEATURES.get() : true) && this.allowedIn(category)) {
-            items.add(this.getDefaultInstance());
-            var filled = this.getDefaultInstance();
-            filled.getOrCreateTag().putInt("energy", this.getEnergyCapacity(filled));
-            items.add(filled);
-        }
-    }
-
-    @Override
     public void setTooltip(List<Component> lines) {
         this.tooltipLines = lines;
     }
@@ -102,6 +93,12 @@ public class FluxCapacitorItem extends EnergyItem implements IAddonItem {
     @Override
     public RenderLayerContainer getRenderLayerContainer() {
         return this.renderLayerContainer;
+    }
+
+    public ItemStack getFullyChargedInstance() {
+        var filled = this.getDefaultInstance();
+        filled.getOrCreateTag().putInt("energy", this.getEnergyCapacity(filled));
+        return filled;
     }
 
     public static class Parser implements ItemParser.ItemTypeSerializer {

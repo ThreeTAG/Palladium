@@ -1,36 +1,38 @@
 package net.threetag.palladium.compat.geckolib.renderlayer;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.util.context.DataContext;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.core.util.Color;
-import software.bernie.geckolib3.geo.render.built.GeoModel;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.GeoModelProvider;
-import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
-import software.bernie.geckolib3.util.EModelRenderCycle;
-import software.bernie.geckolib3.util.GeoUtils;
+import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.cache.texture.AnimatableTexture;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoRenderer;
+import software.bernie.geckolib.util.RenderUtils;
 
-import java.util.List;
-import java.util.Objects;
+public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> implements GeoRenderer<GeckoLayerState> {
 
-public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> implements IGeoRenderer<GeckoLayerState> {
+    protected final GeoModel<GeckoLayerState> modelProvider;
+    protected HumanoidModel<?> baseModel;
+    protected float scaleWidth = 1;
+    protected float scaleHeight = 1;
 
-    protected MultiBufferSource rtb;
-    private final GeckoRenderLayer renderLayer;
-    private GeckoLayerState state;
-    protected final AnimatedGeoModel<GeckoLayerState> modelProvider;
-    public static LivingEntity RENDERED_ENTITY;
+    protected Entity currentEntity = null;
+    protected GeckoLayerState currentState = null;
+
+    protected Matrix4f entityRenderTranslations = new Matrix4f();
 
     public String headBone = "armorHead";
     public String bodyBone = "armorBody";
@@ -39,200 +41,241 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
     public String rightLegBone = "armorRightLeg";
     public String leftLegBone = "armorLeftLeg";
 
+    protected BakedGeoModel lastModel = null;
+    protected GeoBone head = null;
+    protected GeoBone body = null;
+    protected GeoBone rightArm = null;
+    protected GeoBone leftArm = null;
+    protected GeoBone rightLeg = null;
+    protected GeoBone leftLeg = null;
+
     public GeckoRenderLayerModel(GeckoRenderLayer renderLayer) {
         super(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_INNER_ARMOR));
-        this.renderLayer = renderLayer;
-        this.modelProvider = renderLayer.getGeoModel();
+        this.modelProvider = new GeoModel<>() {
+            @Override
+            public ResourceLocation getModelResource(GeckoLayerState animatable) {
+                return renderLayer.cachedModel;
+            }
+
+            @Override
+            public ResourceLocation getTextureResource(GeckoLayerState animatable) {
+                return renderLayer.cachedTexture;
+            }
+
+            @Override
+            public ResourceLocation getAnimationResource(GeckoLayerState animatable) {
+                return renderLayer.animationLocation;
+            }
+        };
     }
 
-    public void setRenderedEntity(LivingEntity entityLiving) {
-        RENDERED_ENTITY = entityLiving;
-        this.state = this.renderLayer.getState(entityLiving);
+    public void setCurrentRenderingFields(GeckoLayerState state, Entity entity, HumanoidModel<?> baseModel) {
+        this.currentState = state;
+        this.baseModel = baseModel;
+        this.currentEntity = entity;
     }
 
     @Override
-    public MultiBufferSource getCurrentRTB() {
-        return this.rtb;
-    }
+    public void preRender(PoseStack poseStack, GeckoLayerState animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        this.entityRenderTranslations = new Matrix4f(poseStack.last().pose());
 
-    public void setCurrentRTB(MultiBufferSource rtb) {
-        this.rtb = rtb;
-    }
-
-    public void renderModel(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelResource(this.state));
-        var partialTick = Minecraft.getInstance().getFrameTime();
-        AnimationEvent<GeckoLayerState> animationEvent = new AnimationEvent<>(this.state, 0, 0,
-                partialTick, false,
-                List.of());
-
-        poseStack.pushPose();
-        poseStack.translate(0, 24 / 16F, 0);
-        poseStack.scale(-1, -1, 1);
-
-        this.modelProvider.setCustomAnimations(this.state, getInstanceId(this.state), animationEvent);
-        setCurrentModelRenderCycle(EModelRenderCycle.INITIAL);
-        fitToBiped();
-        RenderSystem.setShaderTexture(0, getTextureLocation(this.state));
-
-        var buffer = this.renderLayer.renderType.createVertexConsumer(bufferSource, getTextureLocation(this.state), context.getItem().hasFoil());
-        Color renderColor = getRenderColor(this.state, partialTick, poseStack, null, buffer, packedLight);
-
-        render(model, this.state, partialTick, null, poseStack, null, buffer, packedLight,
-                packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-                renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-
-        poseStack.popPose();
-    }
-
-    public void renderArm(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay,
-                          float partialTick, boolean rightArm) {
-        GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelResource(this.state));
-
-        model.getBone(rightArm ? this.rightArmBone : this.leftArmBone).ifPresent(bone -> {
-            AnimationEvent<GeckoLayerState> animationEvent = new AnimationEvent<>(this.state, 0, 0,
-                    partialTick, false,
-                    List.of());
-
-            poseStack.pushPose();
-            poseStack.translate(0, 24 / 16F, 0);
-            poseStack.scale(-1, -1, 1);
-
-            this.modelProvider.setCustomAnimations(this.state, getInstanceId(this.state), animationEvent);
-            setCurrentModelRenderCycle(EModelRenderCycle.INITIAL);
-            fitToBiped();
-            RenderSystem.setShaderTexture(0, getTextureLocation(this.state));
-
-            var buffer1 = this.renderLayer.renderType.createVertexConsumer(bufferSource, getTextureLocation(this.state), context.getItem().hasFoil());
-            Color renderColor = getRenderColor(this.state, 0, poseStack, null, buffer1, packedLight);
-
-            setCurrentRTB(bufferSource);
-            renderEarly(this.state, poseStack, partialTick, bufferSource, buffer1, packedLight,
-                    packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-                    renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-
-            renderLate(this.state, poseStack, partialTick, bufferSource, buffer1, packedLight,
-                    packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-                    renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-            this.renderRecursively(bone,
-                    poseStack, buffer1, packedLight, packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-                    renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-            setCurrentModelRenderCycle(EModelRenderCycle.REPEATED);
-
-            poseStack.popPose();
-        });
-    }
-
-    protected void fitToBiped() {
-        if (this.headBone != null) {
-            try {
-                IBone headBone = this.modelProvider.getBone(this.headBone);
-
-                GeoUtils.copyRotations(this.head, headBone);
-                copyScale(this.head, headBone);
-                headBone.setPositionX(this.head.x);
-                headBone.setPositionY(-this.head.y);
-                headBone.setPositionZ(this.head.z);
-                headBone.setHidden(!this.head.visible);
-            } catch (Exception ignored) {
-
-            }
-        }
-
-        if (this.bodyBone != null) {
-            try {
-                IBone bodyBone = this.modelProvider.getBone(this.bodyBone);
-
-                GeoUtils.copyRotations(this.body, bodyBone);
-                copyScale(this.body, bodyBone);
-                bodyBone.setPositionX(this.body.x);
-                bodyBone.setPositionY(-this.body.y);
-                bodyBone.setPositionZ(this.body.z);
-                bodyBone.setHidden(!this.body.visible);
-            } catch (Exception ignored) {
-
-            }
-        }
-
-        if (this.rightArmBone != null) {
-            try {
-                IBone rightArmBone = this.modelProvider.getBone(this.rightArmBone);
-
-                GeoUtils.copyRotations(this.rightArm, rightArmBone);
-                copyScale(this.rightArm, rightArmBone);
-                rightArmBone.setPositionX(this.rightArm.x + 5);
-                rightArmBone.setPositionY(2 - this.rightArm.y);
-                rightArmBone.setPositionZ(this.rightArm.z);
-                rightArmBone.setHidden(!this.rightArm.visible);
-            } catch (Exception ignored) {
-
-            }
-        }
-
-        if (this.leftArmBone != null) {
-            try {
-                IBone leftArmBone = this.modelProvider.getBone(this.leftArmBone);
-
-                GeoUtils.copyRotations(this.leftArm, leftArmBone);
-                copyScale(this.leftArm, leftArmBone);
-                leftArmBone.setPositionX(this.leftArm.x - 5);
-                leftArmBone.setPositionY(2 - this.leftArm.y);
-                leftArmBone.setPositionZ(this.leftArm.z);
-                leftArmBone.setHidden(!this.leftArm.visible);
-            } catch (Exception ignored) {
-
-            }
-        }
-
-        if (this.rightLegBone != null) {
-            try {
-                IBone rightLegBone = this.modelProvider.getBone(this.rightLegBone);
-
-                GeoUtils.copyRotations(this.rightLeg, rightLegBone);
-                copyScale(this.rightLeg, rightLegBone);
-                rightLegBone.setPositionX(this.rightLeg.x + 2);
-                rightLegBone.setPositionY(12 - this.rightLeg.y);
-                rightLegBone.setPositionZ(this.rightLeg.z);
-                rightLegBone.setHidden(!this.rightLeg.visible);
-            } catch (Exception ignored) {
-
-            }
-        }
-
-        if (this.leftLegBone != null) {
-            try {
-                IBone leftLegBone = this.modelProvider.getBone(this.leftLegBone);
-
-                GeoUtils.copyRotations(this.leftLeg, leftLegBone);
-                copyScale(this.leftLeg, leftLegBone);
-                leftLegBone.setPositionX(this.leftLeg.x - 2);
-                leftLegBone.setPositionY(12 - this.leftLeg.y);
-                leftLegBone.setPositionZ(this.leftLeg.z);
-                leftLegBone.setHidden(!this.leftLeg.visible);
-            } catch (Exception ignored) {
-
-            }
-        }
-    }
-
-    public static void copyScale(ModelPart part, IBone bone) {
-        bone.setScaleX(part.xScale);
-        bone.setScaleY(part.yScale);
-        bone.setScaleZ(part.zScale);
+        applyBaseModel(this.baseModel);
+        grabRelevantBones(getGeoModel().getBakedModel(getGeoModel().getModelResource(this.currentState)));
+        applyBaseTransformations(this.baseModel);
+        scaleModelForRender(this.scaleWidth, this.scaleHeight, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
     }
 
     @Override
-    public GeoModelProvider<GeckoLayerState> getGeoModelProvider() {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        Minecraft mc = Minecraft.getInstance();
+        MultiBufferSource bufferSource = mc.renderBuffers().bufferSource();
+
+        if (mc.levelRenderer.shouldShowEntityOutlines() && mc.shouldEntityAppearGlowing(this.currentEntity))
+            bufferSource = mc.renderBuffers().outlineBufferSource();
+
+        float partialTick = mc.getFrameTime();
+        RenderType renderType = getRenderType(this.currentState, getTextureLocation(this.currentState), bufferSource, partialTick);
+        buffer = ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, false, false);
+
+        defaultRender(poseStack, this.currentState, bufferSource, null, buffer,
+                0, partialTick, packedLight);
+    }
+
+    protected void grabRelevantBones(BakedGeoModel bakedModel) {
+        if (this.lastModel == bakedModel)
+            return;
+
+        this.lastModel = bakedModel;
+        this.head = getHeadBone();
+        this.body = getBodyBone();
+        this.rightArm = getRightArmBone();
+        this.leftArm = getLeftArmBone();
+        this.rightLeg = getRightLegBone();
+        this.leftLeg = getLeftLegBone();
+    }
+
+    protected void applyBaseModel(HumanoidModel<?> baseModel) {
+        this.young = baseModel.young;
+        this.crouching = baseModel.crouching;
+        this.riding = baseModel.riding;
+        this.rightArmPose = baseModel.rightArmPose;
+        this.leftArmPose = baseModel.leftArmPose;
+    }
+
+    @Nullable
+    public GeoBone getHeadBone() {
+        return this.modelProvider.getBone(this.headBone).orElse(null);
+    }
+
+    @Nullable
+    public GeoBone getBodyBone() {
+        return this.modelProvider.getBone(this.bodyBone).orElse(null);
+    }
+
+    @Nullable
+    public GeoBone getRightArmBone() {
+        return this.modelProvider.getBone(this.rightArmBone).orElse(null);
+    }
+
+    @Nullable
+    public GeoBone getLeftArmBone() {
+        return this.modelProvider.getBone(this.leftArmBone).orElse(null);
+    }
+
+    @Nullable
+    public GeoBone getRightLegBone() {
+        return this.modelProvider.getBone(this.rightLegBone).orElse(null);
+    }
+
+    @Nullable
+    public GeoBone getLeftLegBone() {
+        return this.modelProvider.getBone(this.leftLegBone).orElse(null);
+    }
+
+//
+//    public void renderArm(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay,
+//                          float partialTick, boolean rightArm) {
+//        GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelResource(this.state));
+//
+//        model.getBone(rightArm ? this.rightArmBone : this.leftArmBone).ifPresent(bone -> {
+//            AnimationEvent<GeckoLayerState> animationEvent = new AnimationEvent<>(this.state, 0, 0,
+//                    partialTick, false,
+//                    List.of());
+//
+//            poseStack.pushPose();
+//            poseStack.translate(0, 24 / 16F, 0);
+//            poseStack.scale(-1, -1, 1);
+//
+//            this.modelProvider.setCustomAnimations(this.state, getInstanceId(this.state), animationEvent);
+//            setCurrentModelRenderCycle(EModelRenderCycle.INITIAL);
+//            fitToBiped();
+//            RenderSystem.setShaderTexture(0, getTextureLocation(this.state));
+//
+//            var buffer1 = this.renderLayer.renderType.createVertexConsumer(bufferSource, getTextureLocation(this.state), context.getItem().hasFoil());
+//            Color renderColor = getRenderColor(this.state, 0, poseStack, null, buffer1, packedLight);
+//
+//            setCurrentRTB(bufferSource);
+//            renderEarly(this.state, poseStack, partialTick, bufferSource, buffer1, packedLight,
+//                    packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
+//                    renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
+//
+//            renderLate(this.state, poseStack, partialTick, bufferSource, buffer1, packedLight,
+//                    packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
+//                    renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
+//            this.renderRecursively(bone,
+//                    poseStack, buffer1, packedLight, packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
+//                    renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
+//            setCurrentModelRenderCycle(EModelRenderCycle.REPEATED);
+//
+//            poseStack.popPose();
+//        });
+//    }
+
+    protected void applyBaseTransformations(HumanoidModel<?> baseModel) {
+        if (this.head != null) {
+            ModelPart headPart = baseModel.head;
+
+            RenderUtils.matchModelPartRot(headPart, this.head);
+            copyScaleAndVisibility(headPart, this.head);
+            this.head.updatePosition(headPart.x, -headPart.y, headPart.z);
+        };
+
+        if (this.body != null) {
+            ModelPart bodyPart = baseModel.body;
+
+            RenderUtils.matchModelPartRot(bodyPart, this.body);
+            copyScaleAndVisibility(bodyPart, this.body);
+            this.body.updatePosition(bodyPart.x, -bodyPart.y, bodyPart.z);
+        }
+
+        if (this.rightArm != null) {
+            ModelPart rightArmPart = baseModel.rightArm;
+
+            RenderUtils.matchModelPartRot(rightArmPart, this.rightArm);
+            copyScaleAndVisibility(rightArmPart, this.rightArm);
+            this.rightArm.updatePosition(rightArmPart.x + 5, 2 - rightArmPart.y, rightArmPart.z);
+        }
+
+        if (this.leftArm != null) {
+            ModelPart leftArmPart = baseModel.leftArm;
+
+            RenderUtils.matchModelPartRot(leftArmPart, this.leftArm);
+            copyScaleAndVisibility(leftArmPart, this.leftArm);
+            this.leftArm.updatePosition(leftArmPart.x - 5f, 2f - leftArmPart.y, leftArmPart.z);
+        }
+
+        if (this.rightLeg != null) {
+            ModelPart rightLegPart = baseModel.rightLeg;
+
+            RenderUtils.matchModelPartRot(rightLegPart, this.rightLeg);
+            copyScaleAndVisibility(rightLegPart, this.rightLeg);
+            this.rightLeg.updatePosition(rightLegPart.x + 2, 12 - rightLegPart.y, rightLegPart.z);
+        }
+
+        if (this.leftLeg != null) {
+            ModelPart leftLegPart = baseModel.leftLeg;
+
+            RenderUtils.matchModelPartRot(leftLegPart, this.leftLeg);
+            copyScaleAndVisibility(leftLegPart, this.leftLeg);
+            this.leftLeg.updatePosition(leftLegPart.x - 2, 12 - leftLegPart.y, leftLegPart.z);
+        }
+    }
+
+    public static void copyScaleAndVisibility(ModelPart from, CoreGeoBone to) {
+        to.setScaleX(from.xScale);
+        to.setScaleY(from.yScale);
+        to.setScaleZ(from.zScale);
+        to.setHidden(!from.visible);
+    }
+
+    @Override
+    public GeoModel<GeckoLayerState> getGeoModel() {
         return this.modelProvider;
     }
 
     @Override
-    public ResourceLocation getTextureLocation(GeckoLayerState animatable) {
-        return this.modelProvider.getTextureResource(this.state);
+    public GeckoLayerState getAnimatable() {
+        return this.currentState;
     }
 
     @Override
-    public int getInstanceId(GeckoLayerState animatable) {
-        return Objects.hash(animatable);
+    public void fireCompileRenderLayersEvent() {
+
+    }
+
+    @Override
+    public boolean firePreRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+        return true;
+    }
+
+    @Override
+    public void firePostRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+
+    }
+
+    @Override
+    public void updateAnimatedTextureFrame(GeckoLayerState animatable) {
+        if (this.currentEntity != null)
+            AnimatableTexture.setAndUpdate(getTextureLocation(animatable), this.currentEntity.getId() + this.currentEntity.tickCount);
     }
 }

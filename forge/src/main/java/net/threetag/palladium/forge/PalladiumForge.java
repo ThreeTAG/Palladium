@@ -1,6 +1,7 @@
 package net.threetag.palladium.forge;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -28,7 +29,6 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
 import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.addonpack.AddonPackManager;
-import net.threetag.palladium.addonpack.forge.AddonPackType;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.compat.curios.forge.CuriosCompat;
@@ -53,7 +53,6 @@ public class PalladiumForge {
             PalladiumCoreForge.registerModEventBus("curios", FMLJavaModLoadingContext.get().getModEventBus());
         }
 
-        AddonPackType.init();
         Palladium.init();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PalladiumConfig.Client.generateConfig());
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, PalladiumConfig.Server.generateConfig());
@@ -62,7 +61,7 @@ public class PalladiumForge {
             CuriosCompat.init();
         }
 
-        if (Platform.isModLoaded("geckolib3")) {
+        if (Platform.isModLoaded("geckolib")) {
             GeckoLibCompatImpl.init();
         }
 
@@ -71,10 +70,6 @@ public class PalladiumForge {
 
             if (ModList.get().isLoaded("curios")) {
                 CuriosCompat.initClient();
-            }
-
-            if (Platform.isModLoaded("geckolib3")) {
-                GeckoLibCompatImpl.initClient();
             }
         }
     }
@@ -88,12 +83,12 @@ public class PalladiumForge {
     public static void onConstructMod(FMLConstructModEvent event) {
         event.enqueueWork(() -> {
             var addonPacks = AddonPackManager.getInstance();
-            ResourcePackLoader.loadResourcePacks(addonPacks.getPackList(), (mods) -> (infoConsumer, factory) -> {
+            ResourcePackLoader.loadResourcePacks(addonPacks.getPackList(), (mods) -> (infoConsumer) -> {
                 for (Map.Entry<IModFile, ? extends PathPackResources> e : mods.entrySet()) {
                     IModInfo mod = e.getKey().getModInfos().get(0);
                     if (Objects.equals(mod.getModId(), "minecraft")) continue;
                     final String name = "mod:" + mod.getModId();
-                    final Pack packInfo = Pack.create(name, false, e::getValue, factory, Pack.Position.BOTTOM, PackSource.DEFAULT);
+                    final Pack packInfo = Pack.readMetaAndCreate(name, Component.literal(e.getValue().packId()), false, id -> e.getValue(), AddonPackManager.getPackType(), Pack.Position.BOTTOM, PackSource.DEFAULT);
                     if (packInfo == null) {
                         ModLoader.get().addWarning(new ModLoadingWarning(mod, ModLoadingStage.ERROR, "fml.modloading.brokenresources", e.getKey()));
                         continue;
@@ -114,19 +109,20 @@ public class PalladiumForge {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent e) {
         Palladium.generateDocumentation();
+        var output = e.getGenerator().getPackOutput();
 
-        PalladiumBlockTagsProvider blockTagsProvider = new PalladiumBlockTagsProvider(e.getGenerator(), e.getExistingFileHelper());
+        PalladiumBlockTagsProvider blockTagsProvider = new PalladiumBlockTagsProvider(output, e.getLookupProvider(), e.getExistingFileHelper());
         e.getGenerator().addProvider(e.includeServer(), blockTagsProvider);
-        e.getGenerator().addProvider(e.includeServer(), new PalladiumItemTagsProvider(e.getGenerator(), blockTagsProvider, e.getExistingFileHelper()));
-        e.getGenerator().addProvider(e.includeServer(), new PalladiumRecipeProvider(e.getGenerator()));
-        e.getGenerator().addProvider(e.includeServer(), new PalladiumLootTableProvider(e.getGenerator()));
+        e.getGenerator().addProvider(e.includeServer(), new PalladiumItemTagsProvider(output, e.getLookupProvider(), e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeServer(), new PalladiumRecipeProvider(output));
+        e.getGenerator().addProvider(e.includeServer(), new PalladiumLootTableProvider(output));
 
-        e.getGenerator().addProvider(e.includeClient(), new PalladiumBlockStateProvider(e.getGenerator(), e.getExistingFileHelper()));
-        e.getGenerator().addProvider(e.includeClient(), new PalladiumItemModelProvider(e.getGenerator(), e.getExistingFileHelper()));
-        e.getGenerator().addProvider(e.includeClient(), new PalladiumSoundDefinitionsProvider(e.getGenerator(), e.getExistingFileHelper()));
-        e.getGenerator().addProvider(e.includeClient(), new PalladiumLangProvider.English(e.getGenerator()));
-        e.getGenerator().addProvider(e.includeClient(), new PalladiumLangProvider.German(e.getGenerator()));
-        e.getGenerator().addProvider(e.includeClient(), new PalladiumLangProvider.Saxon(e.getGenerator()));
+        e.getGenerator().addProvider(e.includeClient(), new PalladiumBlockStateProvider(output, e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeClient(), new PalladiumItemModelProvider(output, e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeClient(), new PalladiumSoundDefinitionsProvider(output, e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeClient(), new PalladiumLangProvider.English(output));
+        e.getGenerator().addProvider(e.includeClient(), new PalladiumLangProvider.German(output));
+        e.getGenerator().addProvider(e.includeClient(), new PalladiumLangProvider.Saxon(output));
     }
 
     @SubscribeEvent

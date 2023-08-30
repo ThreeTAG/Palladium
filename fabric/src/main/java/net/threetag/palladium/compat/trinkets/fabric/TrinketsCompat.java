@@ -33,7 +33,7 @@ public class TrinketsCompat {
     public static void initClient() {
         PackRenderLayerManager.registerProvider((entity, layers) -> {
             if (entity instanceof LivingEntity livingEntity) {
-                for (Map.Entry<String, SlotGroup> entry : TrinketsApi.getPlayerSlots(entity.level).entrySet()) {
+                for (Map.Entry<String, SlotGroup> entry : TrinketsApi.getPlayerSlots(entity.level()).entrySet()) {
                     TrinketsApi.getTrinketComponent(livingEntity).ifPresent(trinketComponent -> {
                         if (trinketComponent.getInventory().containsKey(entry.getKey())) {
                             trinketComponent.getInventory().get(entry.getKey()).forEach((key, trinketInventory) -> {

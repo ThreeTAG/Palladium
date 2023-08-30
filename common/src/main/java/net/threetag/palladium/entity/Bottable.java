@@ -94,7 +94,7 @@ public interface Bottable {
             livingEntity.saveToBottleTag(itemStack2);
             ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player, itemStack2, false);
             player.setItemInHand(interactionHand, itemStack3);
-            Level level = livingEntity.level;
+            Level level = livingEntity.level();
 //            if (!level.isClientSide) {
 //                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, itemStack2);
 //            }

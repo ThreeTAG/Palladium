@@ -110,7 +110,7 @@ public class PalladiumClient {
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("humanoid_animations"), PalladiumAnimationRegistry.INSTANCE);
 
         // Gecko
-        if (Platform.isModLoaded("geckolib3")) {
+        if (Platform.isModLoaded("geckolib")) {
             GeckoLibCompat.initClient();
         }
     }
@@ -124,7 +124,7 @@ public class PalladiumClient {
                 PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD.get(),
                 PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER.get());
 
-        for (Block block : Registry.BLOCK) {
+        for (Block block : BuiltInRegistries.BLOCK) {
             if (block instanceof IAddonBlock addonBlock) {
                 var type = addonBlock.getRenderType();
 

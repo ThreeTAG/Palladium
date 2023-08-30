@@ -1,7 +1,7 @@
 package net.threetag.palladium.client.model.animation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -488,15 +488,15 @@ public class PalladiumAnimation {
             poseStack.translate(this.x / 16.0F, this.y / 16.0F, this.z / 16.0F);
 
             if (this.zRot != 0.0F) {
-                poseStack.mulPose(Vector3f.ZP.rotation(this.zRot));
+                poseStack.mulPose(Axis.ZP.rotation(this.zRot));
             }
 
             if (this.yRot != 0.0F) {
-                poseStack.mulPose(Vector3f.YP.rotation(this.yRot));
+                poseStack.mulPose(Axis.YP.rotation(this.yRot));
             }
 
             if (this.xRot != 0.0F) {
-                poseStack.mulPose(Vector3f.XP.rotation(this.xRot));
+                poseStack.mulPose(Axis.XP.rotation(this.xRot));
             }
 
             poseStack.translate(this.x2 / 16.0F, this.y2 / 16.0F, this.z2 / 16.0F);

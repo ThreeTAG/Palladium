@@ -46,7 +46,7 @@ public class BlockStateBaseMixin {
 
     @Unique
     private boolean isAbove(Entity entity, VoxelShape shape, BlockPos pos, boolean defaultValue) {
-        return entity.getY() > (double) pos.getY() + shape.max(Direction.Axis.Y) - (entity.isOnGround() ? 8.05 / 16.0 : 0.0015);
+        return entity.getY() > (double) pos.getY() + shape.max(Direction.Axis.Y) - (entity.onGround() ? 8.05 / 16.0 : 0.0015);
     }
 
     @Inject(method = "entityInside", at = @At("HEAD"), cancellable = true)

@@ -8,13 +8,8 @@ public class OnGroundCondition extends Condition {
 
     @Override
     public boolean active(DataContext context) {
-        var entity = context.get(DataContextType.ENTITY);
-
-        if (entity == null) {
-            return false;
-        }
-
-        return entity.isOnGround();
+        var entity = context.getEntity();
+        return entity != null && entity.onGround();
     }
 
     @Override

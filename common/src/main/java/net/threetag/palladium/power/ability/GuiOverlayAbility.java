@@ -1,13 +1,12 @@
 package net.threetag.palladium.power.ability;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.dynamictexture.TextureReference;
@@ -42,17 +41,15 @@ public class GuiOverlayAbility extends Ability {
         return true;
     }
 
-    @SuppressWarnings("SuspiciousNameCombination")
     @Environment(EnvType.CLIENT)
-    public static class Renderer implements OverlayRegistry.IIngameOverlay {
+    public static class Renderer implements OverlayRegistry.IngameOverlay {
 
         @Override
-        public void render(Minecraft minecraft, Gui gui, PoseStack poseStack, float partialTicks, int width, int height) {
+        public void render(Minecraft minecraft, Gui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {
             List<AbilityEntry> entries = AbilityUtil.getEnabledEntries(minecraft.player, Abilities.GUI_OVERLAY.get()).stream().sorted((a1, a2) -> (int) (a1.getProperty(TRANSLATE).z - a2.getProperty(TRANSLATE).z)).toList();
             for (AbilityEntry entry : entries) {
-                RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                RenderSystem.setShaderTexture(0, entry.getProperty(TEXTURE).getTexture(DataContext.forAbility(minecraft.player, entry)));
+                var texture = entry.getProperty(TEXTURE).getTexture(DataContext.forAbility(minecraft.player, entry));
 
                 var textureWidth = entry.getProperty(TEXTURE_WIDTH);
                 var textureHeight = entry.getProperty(TEXTURE_HEIGHT);
@@ -61,48 +58,48 @@ public class GuiOverlayAbility extends Ability {
                 var rotate = entry.getProperty(ROTATE);
                 var scale = entry.getProperty(SCALE);
 
-                poseStack.pushPose();
+                guiGraphics.pose().pushPose();
 
                 if (alignment.isStretched()) {
                     scale = scale.multiply(width / (float) textureWidth, height / (float) textureHeight, 1);
                 }
 
-                poseStack.translate(translate.x + (textureWidth * scale.x) / 2F, translate.y + (textureWidth * scale.y) / 2F, translate.z);
+                guiGraphics.pose().translate(translate.x + (textureWidth * scale.x) / 2F, translate.y + (textureWidth * scale.y) / 2F, translate.z);
 
                 if (!alignment.isStretched()) {
                     var horizontal = alignment.getHorizontal();
                     var vertical = alignment.getVertical();
 
                     if (horizontal > 0) {
-                        poseStack.translate(horizontal == 1 ? (width - textureWidth) / 2F : width - textureWidth, 0, 0);
+                        guiGraphics.pose().translate(horizontal == 1 ? (width - textureWidth) / 2F : width - textureWidth, 0, 0);
                     }
 
                     if (vertical > 0) {
-                        poseStack.translate(0, vertical == 1 ? (height - textureHeight) / 2F : height - textureHeight, 0);
+                        guiGraphics.pose().translate(0, vertical == 1 ? (height - textureHeight) / 2F : height - textureHeight, 0);
                     }
                 }
 
                 if (rotate.x != 0D) {
-                    poseStack.mulPose(Vector3f.ZP.rotationDegrees((float) rotate.x));
+                    guiGraphics.pose().mulPose(Axis.ZP.rotationDegrees((float) rotate.x));
                 }
 
                 if (rotate.y != 0D) {
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees((float) rotate.y));
+                    guiGraphics.pose().mulPose(Axis.YP.rotationDegrees((float) rotate.y));
                 }
 
                 if (rotate.z != 0D) {
-                    poseStack.mulPose(Vector3f.ZP.rotationDegrees((float) rotate.z));
+                    guiGraphics.pose().mulPose(Axis.ZP.rotationDegrees((float) rotate.z));
                 }
 
 
-                renderImage(poseStack, gui, scale, textureWidth, textureHeight);
-                poseStack.popPose();
+                renderImage(guiGraphics, texture, scale, textureWidth, textureHeight);
+                guiGraphics.pose().popPose();
             }
         }
 
-        private void renderImage(PoseStack poseStack, Gui gui, Vec3 scale, int textureWidth, int textureHeight) {
-            poseStack.scale((float) scale.x, (float) scale.y, (float) scale.z);
-            Gui.blit(poseStack, -textureWidth / 2, -textureHeight / 2, gui.getBlitOffset(), 0, 0, textureWidth, textureHeight, textureWidth, textureHeight);
+        private void renderImage(GuiGraphics guiGraphics, ResourceLocation texture, Vec3 scale, int textureWidth, int textureHeight) {
+            guiGraphics.pose().scale((float) scale.x, (float) scale.y, (float) scale.z);
+            guiGraphics.blit(texture, -textureWidth / 2, -textureHeight / 2, 0, 0, 0, textureWidth, textureHeight, textureWidth, textureHeight);
         }
     }
 

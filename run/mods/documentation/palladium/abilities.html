@@ -28,6 +28,18 @@ Abilities</h1>
 <h2>
 Overview</h2>
 <h3>
+GeckoLib 4</h3>
+<ul>
+<li>
+<a href="#geckolib:armor_animation">
+armor_animation</a>
+</li>
+<li>
+<a href="#geckolib:render_layer_animation">
+render_layer_animation</a>
+</li>
+</ul>
+<h3>
 Palladium</h3>
 <ul>
 <li>
@@ -147,31 +159,331 @@ vibrate</a>
 water_walk</a>
 </li>
 </ul>
-<h3>
-GeckoLib</h3>
-<ul>
-<li>
-<a href="#geckolib3:armor_animation">
-armor_animation</a>
-</li>
-<li>
-<a href="#geckolib3:render_layer_animation">
-render_layer_animation</a>
-</li>
-</ul>
-<h3>
-KubeJS</h3>
-<ul>
-<li>
-<a href="#kubejs:testpack/test_ability">
-testpack/test_ability</a>
-</li>
-<li>
-<a href="#kubejs:testpack/test_ability_with_property">
-testpack/test_ability_with_property</a>
-</li>
-</ul>
 </p>
+<hr>
+
+<div id="geckolib:armor_animation">
+<h2>
+armor_animation</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+AbilityDescription</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+item</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the gecko armor item that must be worn currently.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+test:example_item</td>
+</tr>
+<tr>
+<td>
+controller</td>
+<td>
+String</td>
+<td>
+Name of the animation controller the animation is played on. Leave it as 'main' if you didnt specify one.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+main</td>
+</tr>
+<tr>
+<td>
+animation_trigger</td>
+<td>
+String</td>
+<td>
+Name of the animation trigger</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+animation_trigger_name</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"geckolib:armor_animation","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","item":"test:example_item","controller":"main","animation_trigger":"animation_trigger_name"}</pre>
+</div>
+<hr>
+
+<div id="geckolib:render_layer_animation">
+<h2>
+render_layer_animation</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+AbilityDescription</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+render_layer</td>
+<td>
+ResourceLocation</td>
+<td>
+Determines the ID of the render layer receiving the animation. Must be a gecko render layer!</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+test:example_layer</td>
+</tr>
+<tr>
+<td>
+controller</td>
+<td>
+String</td>
+<td>
+Name of the animation controller the animation is played on. Leave it as 'main' if you didnt specify one.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+main</td>
+</tr>
+<tr>
+<td>
+animation_trigger</td>
+<td>
+String</td>
+<td>
+Name of the animation trigger</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+animation_trigger_name</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"geckolib:render_layer_animation","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","render_layer":"test:example_layer","controller":"main","animation_trigger":"animation_trigger_name"}</pre>
+</div>
 <hr>
 
 <div id="palladium:aim">
@@ -603,7 +915,7 @@ attribute</td>
 <td>
 Attribute</td>
 <td>
-Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength", "forge:swim_speed", "forge:nametag_distance", "forge:entity_gravity", "forge:reach_distance", "forge:attack_range", "forge:step_height_addition", "palladium:flight_speed", "palladium:flight_flexibility", "palladium:levitation_speed", "palladium:heroic_flight_type", "palladium:punch_damage", "palladium:jump_power", "palladium:destroy_speed", "palladium:fall_resistance"</td>
+Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength", "forge:swim_speed", "forge:nametag_distance", "forge:entity_gravity", "forge:block_reach", "forge:entity_reach", "forge:step_height_addition", "palladium:flight_speed", "palladium:flight_flexibility", "palladium:levitation_speed", "palladium:heroic_flight_type", "palladium:punch_damage", "palladium:jump_power", "palladium:destroy_speed", "palladium:fall_resistance"</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -943,7 +1255,7 @@ damage_sources</td>
 <td>
 String[]</td>
 <td>
-Determines which damage sources have no effect on the entity. Common values: [inFire, lightningBolt, onFire, lava, hotFloor, inWall, cramming, drown, starve, cactus, fall, flyIntoWall, outOfWorld, generic, magic, wither, anvil, fallingBlock, dragonBreath, dryout, sweetBerryBush, freeze, fallingStalactite, stalagmite, badRespawnPoint]</td>
+Determines which damage sources have no effect on the entity.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -4565,598 +4877,6 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:water_walk","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
-</div>
-<hr>
-
-<div id="geckolib3:armor_animation">
-<h2>
-armor_animation</h2>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-icon</td>
-<td>
-IIcon</td>
-<td>
-Icon for the ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-ItemIcon{stack=1 blaze_rod}</td>
-</tr>
-<tr>
-<td>
-title</td>
-<td>
-Component</td>
-<td>
-Allows you to set a custom title for this ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-bar_color</td>
-<td>
-AbilityColor</td>
-<td>
-Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-LIGHT_GRAY</td>
-</tr>
-<tr>
-<td>
-hidden</td>
-<td>
-Boolean</td>
-<td>
-Determines if the ability is visible in the powers screen</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-true</td>
-</tr>
-<tr>
-<td>
-hidden_in_bar</td>
-<td>
-Boolean</td>
-<td>
-Determines if the ability is visible in the ability bar on your screen</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-true</td>
-</tr>
-<tr>
-<td>
-list_index</td>
-<td>
-Integer</td>
-<td>
-Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
--1</td>
-</tr>
-<tr>
-<td>
-gui_position</td>
-<td>
-Vec2</td>
-<td>
-Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-description</td>
-<td>
-AbilityDescription</td>
-<td>
-Description of the ability. Visible in ability menu</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-item</td>
-<td>
-ResourceLocation</td>
-<td>
-ID of the gecko armor item that must be worn currently.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-test:example_item</td>
-</tr>
-<tr>
-<td>
-controller</td>
-<td>
-String</td>
-<td>
-Name of the animation controller the animation is played on. Leave it as 'main' if you didnt specify one.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-main</td>
-</tr>
-<tr>
-<td>
-animation</td>
-<td>
-String</td>
-<td>
-Animation name that is supposed to be played</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-animation_name</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"geckolib3:armor_animation","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","item":"test:example_item","controller":"main","animation":"animation_name"}</pre>
-</div>
-<hr>
-
-<div id="geckolib3:render_layer_animation">
-<h2>
-render_layer_animation</h2>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-icon</td>
-<td>
-IIcon</td>
-<td>
-Icon for the ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-ItemIcon{stack=1 blaze_rod}</td>
-</tr>
-<tr>
-<td>
-title</td>
-<td>
-Component</td>
-<td>
-Allows you to set a custom title for this ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-bar_color</td>
-<td>
-AbilityColor</td>
-<td>
-Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-LIGHT_GRAY</td>
-</tr>
-<tr>
-<td>
-hidden</td>
-<td>
-Boolean</td>
-<td>
-Determines if the ability is visible in the powers screen</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-true</td>
-</tr>
-<tr>
-<td>
-hidden_in_bar</td>
-<td>
-Boolean</td>
-<td>
-Determines if the ability is visible in the ability bar on your screen</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-true</td>
-</tr>
-<tr>
-<td>
-list_index</td>
-<td>
-Integer</td>
-<td>
-Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
--1</td>
-</tr>
-<tr>
-<td>
-gui_position</td>
-<td>
-Vec2</td>
-<td>
-Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-description</td>
-<td>
-AbilityDescription</td>
-<td>
-Description of the ability. Visible in ability menu</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-render_layer</td>
-<td>
-ResourceLocation</td>
-<td>
-Determines the ID of the render layer receiving the animation. Must be a gecko render layer!</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-test:example_layer</td>
-</tr>
-<tr>
-<td>
-controller</td>
-<td>
-String</td>
-<td>
-Name of the animation controller the animation is played on. Leave it as 'main' if you didnt specify one.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-main</td>
-</tr>
-<tr>
-<td>
-animation</td>
-<td>
-String</td>
-<td>
-Animation name that is supposed to be played</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-animation_name</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"geckolib3:render_layer_animation","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","render_layer":"test:example_layer","controller":"main","animation":"animation_name"}</pre>
-</div>
-<hr>
-
-<div id="kubejs:testpack/test_ability">
-<h2>
-testpack/test_ability</h2>
-<p>
-This is a test ability, defined in a KubeJS script.</p>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-icon</td>
-<td>
-IIcon</td>
-<td>
-Icon for the ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-ItemIcon{stack=1 air}</td>
-</tr>
-<tr>
-<td>
-title</td>
-<td>
-Component</td>
-<td>
-Allows you to set a custom title for this ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-bar_color</td>
-<td>
-AbilityColor</td>
-<td>
-Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-LIGHT_GRAY</td>
-</tr>
-<tr>
-<td>
-hidden</td>
-<td>
-Boolean</td>
-<td>
-Determines if the ability is visible in the powers screen</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-false</td>
-</tr>
-<tr>
-<td>
-hidden_in_bar</td>
-<td>
-Boolean</td>
-<td>
-Determines if the ability is visible in the ability bar on your screen</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-false</td>
-</tr>
-<tr>
-<td>
-list_index</td>
-<td>
-Integer</td>
-<td>
-Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
--1</td>
-</tr>
-<tr>
-<td>
-gui_position</td>
-<td>
-Vec2</td>
-<td>
-Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-description</td>
-<td>
-AbilityDescription</td>
-<td>
-Description of the ability. Visible in ability menu</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"kubejs:testpack/test_ability","icon":{"type":"palladium:item","item":"minecraft:air","count":0},"title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
-</div>
-<hr>
-
-<div id="kubejs:testpack/test_ability_with_property">
-<h2>
-testpack/test_ability_with_property</h2>
-<p>
-This is a test ability, defined in a KubeJS script.</p>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-icon</td>
-<td>
-IIcon</td>
-<td>
-Icon for the ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-ItemIcon{stack=1 barrier}</td>
-</tr>
-<tr>
-<td>
-title</td>
-<td>
-Component</td>
-<td>
-Allows you to set a custom title for this ability</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-bar_color</td>
-<td>
-AbilityColor</td>
-<td>
-Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-LIGHT_GRAY</td>
-</tr>
-<tr>
-<td>
-hidden</td>
-<td>
-Boolean</td>
-<td>
-Determines if the ability is visible in the powers screen</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-false</td>
-</tr>
-<tr>
-<td>
-hidden_in_bar</td>
-<td>
-Boolean</td>
-<td>
-Determines if the ability is visible in the ability bar on your screen</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-false</td>
-</tr>
-<tr>
-<td>
-list_index</td>
-<td>
-Integer</td>
-<td>
-Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
--1</td>
-</tr>
-<tr>
-<td>
-gui_position</td>
-<td>
-Vec2</td>
-<td>
-Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-description</td>
-<td>
-AbilityDescription</td>
-<td>
-Description of the ability. Visible in ability menu</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-some_important_number</td>
-<td>
-Integer</td>
-<td>
-This is a test integer, defined in a KubeJS script</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"kubejs:testpack/test_ability_with_property","icon":"minecraft:barrier","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","some_important_number":0}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

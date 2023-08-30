@@ -23,7 +23,7 @@ public class BrightnessAtPositionCondition extends Condition {
             return false;
         }
 
-        var brightness = entity.level.getMaxLocalRawBrightness(entity.blockPosition());
+        var brightness = entity.level().getMaxLocalRawBrightness(entity.blockPosition());
         return brightness >= this.min && brightness <= this.max;
     }
 

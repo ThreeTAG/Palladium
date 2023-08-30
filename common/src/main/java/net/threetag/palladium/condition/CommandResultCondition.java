@@ -34,9 +34,9 @@ public class CommandResultCondition extends Condition implements CommandSource {
             return false;
         }
 
-        if (entity.level instanceof ServerLevel serverLevel) {
+        if (entity.level() instanceof ServerLevel serverLevel) {
             var stack = new CommandSourceStack(this, entity.position(), entity.getRotationVector(),
-                    serverLevel, 2, entity.getName().getString(), entity.getDisplayName(), entity.level.getServer(),
+                    serverLevel, 2, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(),
                     entity)
                     .withSuppressedOutput();
 

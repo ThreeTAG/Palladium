@@ -2,6 +2,8 @@ package net.threetag.palladium.addonpack.parser;
 
 import com.google.gson.*;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -31,7 +33,7 @@ public class ItemParser extends AddonParser<Item> {
     public final Map<ResourceLocation, ResourceLocation> autoRegisteredBlockItems = new HashMap<>();
 
     public ItemParser() {
-        super(GSON, "items", Registry.ITEM_REGISTRY);
+        super(GSON, "items", Registries.ITEM);
     }
 
     @Override
@@ -95,7 +97,7 @@ public class ItemParser extends AddonParser<Item> {
                 JsonObject effect = GsonHelper.convertToJsonObject(effectEl, "$.food.effects");
                 ResourceLocation mobEffect = GsonUtil.getAsResourceLocation(effect, "mob_effect");
 
-                if (!Registry.MOB_EFFECT.containsKey(mobEffect)) {
+                if (!BuiltInRegistries.MOB_EFFECT.containsKey(mobEffect)) {
                     throw new JsonParseException("Mob effect type '" + mobEffect.toString() + "' does not exist");
                 }
 
@@ -106,7 +108,7 @@ public class ItemParser extends AddonParser<Item> {
                 boolean showIcon = GsonHelper.getAsBoolean(effect, "show_icon", true);
                 float probability = GsonHelper.getAsFloat(effect, "probability", 1F);
 
-                properties.effect(new MobEffectInstance(Objects.requireNonNull(Registry.MOB_EFFECT.get(mobEffect)), duration, amplifier, ambient, visible, showIcon), probability);
+                properties.effect(new MobEffectInstance(Objects.requireNonNull(BuiltInRegistries.MOB_EFFECT.get(mobEffect)), duration, amplifier, ambient, visible, showIcon), probability);
             });
 
             builder.food(properties.build());
@@ -199,7 +201,7 @@ public class ItemParser extends AddonParser<Item> {
                 .description("Max damage for an item. Must be greater then or equal 0.")
                 .fallback(0);
         builder.addProperty("creative_mode_tab", ResourceLocation.class)
-                .description("ID of the creative mode tab the item is supposed to appear in. Possible values: " + Arrays.toString(PalladiumCreativeModeTabs.getTabs().stream().sorted(Comparator.comparing(ResourceLocation::toString)).toArray()))
+                .description("ID of the creative mode tab the item is supposed to appear in. Possible values: " + Arrays.toString(BuiltInRegistries.CREATIVE_MODE_TAB.keySet().stream().sorted(Comparator.comparing(ResourceLocation::toString)).toArray()))
                 .fallback(null)
                 .exampleJson(new JsonPrimitive("minecraft:decorations"));
         builder.addProperty("rarity", String.class)
@@ -228,7 +230,7 @@ public class ItemParser extends AddonParser<Item> {
                 "\"chest\": [ { \"attribute\": \"minecraft:generic.movement_speed\", \"amount\": 4, \"operation\": 1, \"uuid\": \"3a4df804-2be2-4002-a829-eaf29a629cac\" } ] }", JsonObject.class);
 
         builder.addProperty("attribute_modifiers", AttributeModifier[].class)
-                .description("Attribute modifiers when having the item equipped. You first specify the slot (\"all\" for every slot, other options: " + Arrays.toString(Arrays.stream(EquipmentSlot.values()).map(EquipmentSlot::getName).toArray()) + "), then an array for different modifiers. Possible attributes: " + Arrays.toString(Registry.ATTRIBUTE.stream().map(attribute -> Objects.requireNonNull(Registry.ATTRIBUTE.getKey(attribute)).toString()).toArray()))
+                .description("Attribute modifiers when having the item equipped. You first specify the slot (\"all\" for every slot, other options: " + Arrays.toString(Arrays.stream(EquipmentSlot.values()).map(EquipmentSlot::getName).toArray()) + "), then an array for different modifiers. Possible attributes: " + Arrays.toString(BuiltInRegistries.ATTRIBUTE.stream().map(attribute -> Objects.requireNonNull(BuiltInRegistries.ATTRIBUTE.getKey(attribute)).toString()).toArray()))
                 .fallback(null)
                 .exampleJson(attributeModifiers);
 
@@ -240,7 +242,7 @@ public class ItemParser extends AddonParser<Item> {
         foodExample.addProperty("fast", false);
         JsonArray effectsExample = new JsonArray();
         JsonObject effectExample = new JsonObject();
-        effectExample.addProperty("mob_effect", Objects.requireNonNull(Registry.MOB_EFFECT.getKey(MobEffects.DAMAGE_BOOST)).toString());
+        effectExample.addProperty("mob_effect", Objects.requireNonNull(BuiltInRegistries.MOB_EFFECT.getKey(MobEffects.DAMAGE_BOOST)).toString());
         effectExample.addProperty("duration", 40);
         effectExample.addProperty("amplifier", 1);
         effectExample.addProperty("ambient", false);

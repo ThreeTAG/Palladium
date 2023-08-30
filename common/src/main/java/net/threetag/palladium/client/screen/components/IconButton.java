@@ -17,7 +17,7 @@ public class IconButton extends Button {
     private final IIcon icon;
     private boolean renderBackground = true;
 
-    protected IconButton(int x, int y, IIcon icon, Button.OnPress onPress, CreateNarration createNarration) {
+    public IconButton(int x, int y, IIcon icon, Button.OnPress onPress, CreateNarration createNarration) {
         super(x, y, 20, 20, Component.empty(), onPress, createNarration);
         this.icon = icon;
     }

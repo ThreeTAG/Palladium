@@ -1,8 +1,9 @@
 package net.threetag.palladium.data.forge;
 
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
-import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -13,16 +14,18 @@ import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.tags.PalladiumItemTags;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.CompletableFuture;
+
 import static net.threetag.palladium.block.PalladiumBlocks.*;
 
-public class PalladiumItemTagsProvider extends ItemTagsProvider {
+public class PalladiumItemTagsProvider extends IntrinsicHolderTagsProvider<Item> {
 
-    public PalladiumItemTagsProvider(DataGenerator arg, BlockTagsProvider arg2, @Nullable ExistingFileHelper existingFileHelper) {
-        super(arg, arg2, Palladium.MOD_ID, existingFileHelper);
+    public PalladiumItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable ExistingFileHelper existingFileHelper) {
+        super(packOutput, Registries.ITEM, completableFuture, item -> item.builtInRegistryHolder().key(), Palladium.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags() {
+    protected void addTags(HolderLookup.Provider provider) {
         this.tag(PalladiumItemTags.VIBRATION_ABSORPTION_BOOTS).add(PalladiumItems.VIBRANIUM_WEAVE_BOOTS.get());
 
         this.multiLoaderTagMetal(PalladiumItemTags.ORES, PalladiumItemTags.Fabric.ORES, PalladiumItemTags.ORES_LEAD, PalladiumItemTags.Fabric.ORES_LEAD, LEAD_ORE.get(), DEEPSLATE_LEAD_ORE.get());

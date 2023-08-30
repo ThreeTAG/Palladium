@@ -17,6 +17,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -92,7 +93,7 @@ public class TrinketsUtil extends CuriosTrinketsUtil {
                             if (TrinketSlot.canInsert(stack, ref, user)) {
                                 ItemStack newStack = stack.copy();
                                 inv.setItem(i, newStack);
-                                SoundEvent soundEvent = stack.getEquipSound();
+                                SoundEvent soundEvent = stack.getItem() instanceof Equipable eq ? eq.getEquipSound() : null;
                                 if (!stack.isEmpty() && soundEvent != null) {
                                     user.gameEvent(GameEvent.EQUIP);
                                     user.playSound(soundEvent, 1.0F, 1.0F);

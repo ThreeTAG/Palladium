@@ -1,7 +1,7 @@
 package net.threetag.palladium.data.forge;
 
-import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.DyeColor;
@@ -16,8 +16,8 @@ import java.util.function.Supplier;
 
 public abstract class ExtendedLangProvider extends LanguageProvider {
 
-    public ExtendedLangProvider(DataGenerator gen, String modid, String locale) {
-        super(gen, modid, locale);
+    public ExtendedLangProvider(PackOutput packOutput, String modid, String locale) {
+        super(packOutput, modid, locale);
     }
 
     public void addAbility(Supplier<? extends Ability> key, String name) {
@@ -47,7 +47,7 @@ public abstract class ExtendedLangProvider extends LanguageProvider {
     }
 
     public void addBannerPatternDesc(BannerPattern bannerPattern, DyeColor color, String name) {
-        ResourceLocation id = Registry.BANNER_PATTERN.getKey(bannerPattern);
+        ResourceLocation id = BuiltInRegistries.BANNER_PATTERN.getKey(bannerPattern);
         this.add("block.minecraft.banner." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath() + "." + color.getName(), name);
     }
 

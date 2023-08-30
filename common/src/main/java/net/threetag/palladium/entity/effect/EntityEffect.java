@@ -42,15 +42,15 @@ public abstract class EntityEffect {
     }
 
     public static void start(Entity anchor, EntityEffect entityEffect) {
-        if (!anchor.level.isClientSide) {
-            EffectEntity effectEntity = new EffectEntity(anchor.level, anchor, entityEffect);
-            anchor.level.addFreshEntity(effectEntity);
+        if (!anchor.level().isClientSide) {
+            EffectEntity effectEntity = new EffectEntity(anchor.level(), anchor, entityEffect);
+            anchor.level().addFreshEntity(effectEntity);
         }
     }
 
     public static void stop(Entity anchor, Predicate<EntityEffect> predicate) {
-        if (!anchor.level.isClientSide) {
-            anchor.level.getEntities(anchor, anchor.getBoundingBox().inflate(2), entity -> entity instanceof EffectEntity && ((EffectEntity) entity).getAnchorEntity() == anchor && predicate.test(((EffectEntity) entity).entityEffect)).forEach(Entity::discard);
+        if (!anchor.level().isClientSide) {
+            anchor.level().getEntities(anchor, anchor.getBoundingBox().inflate(2), entity -> entity instanceof EffectEntity && ((EffectEntity) entity).getAnchorEntity() == anchor && predicate.test(((EffectEntity) entity).entityEffect)).forEach(Entity::discard);
         }
     }
 

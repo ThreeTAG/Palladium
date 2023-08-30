@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
 public class AddonPackManager {
 
     private static AddonPackManager INSTANCE;
+    public static PackType PACK_TYPE;
     public static boolean IGNORE_INJECT = false;
     public static ItemParser ITEM_PARSER;
     private static CompletableFuture<AddonPackManager> loaderFuture;
@@ -64,10 +66,10 @@ public class AddonPackManager {
     private AddonPackManager() {
         IGNORE_INJECT = true;
         this.resourceManager = new ReloadableResourceManager(getPackType());
-        this.folderPackFinder = new FolderRepositorySource(getLocation(), PackSource.DEFAULT);
+        this.folderPackFinder = new FolderRepositorySource(getLocation(), getPackType(), PackSource.DEFAULT);
         var modSource = getModRepositorySource();
         RepositorySource[] sources = modSource == null ? new RepositorySource[]{this.folderPackFinder} : new RepositorySource[]{this.folderPackFinder, modSource};
-        this.packList = new PackRepository(getPackType(), sources);
+        this.packList = new PackRepository(sources);
         IGNORE_INJECT = false;
 
         this.resourceManager.registerReloadListener(new CreativeModeTabParser());
@@ -84,9 +86,10 @@ public class AddonPackManager {
         this.resourceManager.registerReloadListener(new AccessoryParser());
     }
 
-    public File getLocation() {
-        File folder = Platform.getFolder().resolve("addonpacks").toFile();
-        if (!folder.exists() && !folder.mkdirs())
+    public Path getLocation() {
+        Path folder = Platform.getFolder().resolve("addonpacks");
+        var file = folder.toFile();
+        if (!file.exists() && !file.mkdirs())
             throw new RuntimeException("Could not create addonpacks directory! Please create the directory yourself, or make sure the name is not taken by a file and you have permission to create directories.");
         return folder;
     }
@@ -107,14 +110,16 @@ public class AddonPackManager {
         return packList;
     }
 
-    @ExpectPlatform
     public static RepositorySource getWrappedPackFinder(RepositorySource folderPackFinder) {
-        throw new AssertionError();
+        return (infoConsumer) -> folderPackFinder.loadPacks(pack -> {
+            pack.id = "addonpack:" + pack.getId();
+            pack.required = true;
+            infoConsumer.accept(pack);
+        });
     }
 
-    @ExpectPlatform
     public static PackType getPackType() {
-        throw new AssertionError();
+        return PACK_TYPE;
     }
 
     @ExpectPlatform
@@ -132,7 +137,7 @@ public class AddonPackManager {
         packs.clear();
         this.packList.getAvailablePacks().forEach(pack -> {
             try {
-                InputStream stream = pack.open().getRootResource("pack.mcmeta");
+                InputStream stream = pack.open().getRootResource("pack.mcmeta").get();
                 BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
                 JsonObject jsonobject = GsonHelper.parse(bufferedreader);
                 PackData packData = PackData.fromJSON(jsonobject);

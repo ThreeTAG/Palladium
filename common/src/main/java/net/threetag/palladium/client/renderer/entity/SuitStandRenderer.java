@@ -1,7 +1,7 @@
 package net.threetag.palladium.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.ArmorStandArmorModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.RenderType;
@@ -27,7 +27,7 @@ public class SuitStandRenderer extends LivingEntityRenderer<SuitStand, SuitStand
     public SuitStandRenderer(EntityRendererProvider.Context context) {
         super(context, new SuitStandBasePlateModel(context.bakeLayer(SuitStandBasePlateModel.MODEL_LAYER_LOCATION)), 0F);
         this.addLayer(new ColorableSuitStandLayer(this, new SuitStandModel(context.bakeLayer(SuitStandModel.MODEL_LAYER_LOCATION))));
-        this.addLayer(new HumanoidArmorLayer(this, new ArmorStandArmorModel(context.bakeLayer(ModelLayers.ARMOR_STAND_INNER_ARMOR)), new ArmorStandArmorModel(context.bakeLayer(ModelLayers.ARMOR_STAND_OUTER_ARMOR))));
+        this.addLayer(new HumanoidArmorLayer(this, new ArmorStandArmorModel(context.bakeLayer(ModelLayers.ARMOR_STAND_INNER_ARMOR)), new ArmorStandArmorModel(context.bakeLayer(ModelLayers.ARMOR_STAND_OUTER_ARMOR)), context.getModelManager()));
         this.addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()));
         this.addLayer(new ElytraLayer<>(this, context.getModelSet()));
         this.addLayer(new CustomHeadLayer<>(this, context.getModelSet(), context.getItemInHandRenderer()));
@@ -42,10 +42,10 @@ public class SuitStandRenderer extends LivingEntityRenderer<SuitStand, SuitStand
 
     @Override
     protected void setupRotations(SuitStand entityLiving, PoseStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks) {
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - rotationYaw));
-        float f = (float) (entityLiving.level.getGameTime() - entityLiving.lastHit) + partialTicks;
+        matrixStack.mulPose(Axis.YP.rotationDegrees(180.0F - rotationYaw));
+        float f = (float) (entityLiving.level().getGameTime() - entityLiving.lastHit) + partialTicks;
         if (f < 5.0F) {
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees(Mth.sin(f / 1.5F * (float) Math.PI) * 3.0F));
+            matrixStack.mulPose(Axis.YP.rotationDegrees(Mth.sin(f / 1.5F * (float) Math.PI) * 3.0F));
         }
     }
 

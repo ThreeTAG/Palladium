@@ -9,9 +9,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import software.bernie.geckolib.cache.object.GeoQuad;
 import software.bernie.geckolib.cache.object.GeoVertex;
+import software.bernie.geckolib.renderer.GeoRenderer;
 
-@Mixin(IGeoRenderer.class)
-public interface IGeoRendererMixin {
+@Mixin(GeoRenderer.class)
+public interface GeoRendererMixin {
 
     /**
      * @author Lucraft
@@ -20,12 +21,12 @@ public interface IGeoRendererMixin {
     @Overwrite
     default void createVerticesOfQuad(GeoQuad quad, Matrix4f poseState, Vector3f normal, VertexConsumer buffer,
                                       int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        for (GeoVertex vertex : quad.vertices) {
-            Vector4f vector4f = new Vector4f(vertex.position.x(), vertex.position.y(), vertex.position.z(), 1);
+        for (GeoVertex vertex : quad.vertices()) {
+            Vector3f position = vertex.position();
+            Vector4f vector4f = poseState.transform(new Vector4f(position.x(), position.y(), position.z(), 1.0f));
 
-            vector4f.transform(poseState);
-            buffer.vertex(vector4f.x(), vector4f.y(), vector4f.z(), red, green, blue, alpha * HumanoidRendererModifications.ALPHA_MULTIPLIER, vertex.textureU,
-                    vertex.textureV, packedOverlay, packedLight, normal.x(), normal.y(), normal.z());
+            buffer.vertex(vector4f.x(), vector4f.y(), vector4f.z(), red, green, blue, alpha * HumanoidRendererModifications.ALPHA_MULTIPLIER, vertex.texU(),
+                    vertex.texV(), packedOverlay, packedLight, normal.x(), normal.y(), normal.z());
         }
     }
 

@@ -25,7 +25,7 @@ public class AimAbility extends Ability implements AnimationTimer {
 
     @Override
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
-        if (entity.level.isClientSide) {
+        if (entity.level().isClientSide) {
             int timer = entry.getProperty(TIMER);
             entry.setUniqueProperty(PREV_TIMER, timer);
             if (enabled && timer < entry.getProperty(TIME)) {

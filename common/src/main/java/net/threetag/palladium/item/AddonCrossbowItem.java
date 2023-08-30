@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -124,8 +125,8 @@ public class AddonCrossbowItem extends CrossbowItem implements IAddonItem {
             float velocityMultiplier = GsonHelper.getAsFloat(json, "velocity_multiplier", 1F);
             float inaccuracy = GsonHelper.getAsFloat(json, "inaccuracy", 1F);
             int useDuration = GsonHelper.getAsInt(json, "use_duration", 72000);
-            TagKey<Item> projectiles = TagKey.create(Registry.ITEM_REGISTRY, GsonUtil.getAsResourceLocation(json, "projectiles", new ResourceLocation("minecraft:arrows")));
-            TagKey<Item> heldProjectiles = json.has("held_projectiles") ? TagKey.create(Registry.ITEM_REGISTRY, GsonUtil.getAsResourceLocation(json, "held_projectiles")) : null;
+            TagKey<Item> projectiles = TagKey.create(Registries.ITEM, GsonUtil.getAsResourceLocation(json, "projectiles", new ResourceLocation("minecraft:arrows")));
+            TagKey<Item> heldProjectiles = json.has("held_projectiles") ? TagKey.create(Registries.ITEM, GsonUtil.getAsResourceLocation(json, "held_projectiles")) : null;
 
             return new AddonCrossbowItem(velocityMultiplier, inaccuracy, useDuration, stack -> stack.is(projectiles), heldProjectiles == null ? null : stack -> stack.is(heldProjectiles), properties);
         }

@@ -1,10 +1,10 @@
 package net.threetag.palladium.client.screen.power;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
@@ -42,35 +42,35 @@ public class BuyAbilityScreen extends Screen {
 
         int guiLeft = (this.width - GUI_WIDTH) / 2;
         int guiTop = (this.height - GUI_HEIGHT) / 2;
-        this.addRenderableWidget(new BackgroundlessButton(guiLeft + 193, guiTop + 3, 5, 5, Component.literal("x"), s -> parentScreen.closeOverlayScreen()));
-        Button button = new TextWithIconButton(guiLeft + 23, guiTop + 33, 54, 20, Component.literal(this.unlockData.amount + "x "), null, this.unlockData.icon, s -> {
+        this.addRenderableWidget(BackgroundlessButton.backgroundlessBuilder(Component.literal("x"), s -> parentScreen.closeOverlayScreen()).bounds(guiLeft + 193, guiTop + 3, 5, 5).build());
+        Button button = TextWithIconButton.textWithIconBuilder(Component.literal(this.unlockData.amount + "x "), this.unlockData.icon, s -> {
             new BuyAbilityUnlockMessage(this.reference).send();
             this.parentScreen.closeOverlayScreen();
             Objects.requireNonNull(Objects.requireNonNull(this.minecraft).player).playSound(SoundEvents.PLAYER_LEVELUP, 1F, 1F);
-        }, (button1, poseStack, i, j) -> this.renderTooltip(poseStack, Component.literal(this.unlockData.amount + "x ").append(this.unlockData.description), i, j));
+        }).bounds(guiLeft + 23, guiTop + 33, 54, 20).build();
+        button.setTooltip(Tooltip.create(Component.literal(this.unlockData.amount + "x ").append(this.unlockData.description)));
         button.active = this.available;
         this.addRenderableWidget(button);
-        this.addRenderableWidget(new Button(guiLeft + 125, guiTop + 33, 54, 20, Component.translatable("gui.no"), s -> parentScreen.overlayScreen = null));
+        this.addRenderableWidget(Button.builder(Component.translatable("gui.no"), s -> parentScreen.overlayScreen = null).bounds(guiLeft + 125, guiTop + 33, 54, 20).build());
     }
 
+
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         int guiLeft = (this.width - GUI_WIDTH) / 2;
         int guiTop = (this.height - GUI_HEIGHT) / 2;
 
-        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-        RenderSystem.setShaderTexture(0, PowersScreen.WINDOW);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        this.blit(poseStack, guiLeft, guiTop, 0, 196, GUI_WIDTH, GUI_HEIGHT);
+        guiGraphics.blit(PowersScreen.WINDOW, guiLeft, guiTop, 0, 196, GUI_WIDTH, GUI_HEIGHT);
 
         List<FormattedCharSequence> lines = this.font.split(this.text, GUI_WIDTH - 40);
         for (int k = 0; k < lines.size(); k++) {
             FormattedCharSequence text = lines.get(k);
             int width = this.font.width(text);
-            this.font.draw(poseStack, text, guiLeft + GUI_WIDTH / 2F - width / 2F, guiTop + 9 + k * 10, 4210752);
+            guiGraphics.drawString(font, text, (int) (guiLeft + GUI_WIDTH / 2F - width / 2F), guiTop + 9 + k * 10, 4210752, false);
         }
 
-        super.render(poseStack, mouseX, mouseY, partialTick);
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
     }
 }

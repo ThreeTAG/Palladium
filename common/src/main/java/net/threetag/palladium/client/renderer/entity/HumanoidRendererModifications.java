@@ -2,7 +2,6 @@ package net.threetag.palladium.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,6 +19,7 @@ import net.threetag.palladium.mixin.client.AgeableListModelInvoker;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.AnimationTimer;
 import net.threetag.palladium.util.Easing;
+import org.joml.Vector3f;
 
 @SuppressWarnings({"rawtypes"})
 public class HumanoidRendererModifications {

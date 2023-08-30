@@ -19,8 +19,8 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
-import net.threetag.palladium.item.SimpleToolTier;
 import net.threetag.palladium.util.json.GsonUtil;
+import net.threetag.palladiumcore.item.SimpleToolTier;
 
 import java.util.HashMap;
 import java.util.Map;

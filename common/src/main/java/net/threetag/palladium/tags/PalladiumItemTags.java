@@ -1,6 +1,7 @@
 package net.threetag.palladium.tags;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -33,7 +34,7 @@ public class PalladiumItemTags {
     public static final TagKey<Item> INGOTS_VIBRANIUM = forgeTag("ingots/vibranium");
 
     private static TagKey<Item> tag(String domain, String path) {
-        return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(domain, path));
+        return TagKey.create(Registries.ITEM, new ResourceLocation(domain, path));
     }
 
     private static TagKey<Item> forgeTag(String path) {

@@ -43,7 +43,7 @@ public class AbilityCommand {
 
                 for (IPowerHolder holder : manager.getPowerHolders().values()) {
                     for (AbilityEntry entry : holder.getAbilities().values()) {
-                        if(entry.getConfiguration().isBuyable()) {
+                        if (entry.getConfiguration().isBuyable()) {
                             if (!powers.contains(holder.getPower().getId())) {
                                 powers.add(holder.getPower().getId());
                             }
@@ -125,7 +125,8 @@ public class AbilityCommand {
             }
         }
 
-        source.sendSuccess(Component.translatable("commands.ability." + (locking ? "locking" : "unlocking") + ".success", abilityKey, power.getId(), i), true);
+        int finalI = i;
+        source.sendSuccess(() -> Component.translatable("commands.ability." + (locking ? "locking" : "unlocking") + ".success", abilityKey, power.getId(), finalI), true);
 
         return i;
     }

@@ -1,5 +1,5 @@
 {
-  "type": "geckolib3:armor",
+  "type": "geckolib:armor",
   "slot": "chest",
   "armor_material": "test:dirt",
   "creative_mode_tab": "test:test_tab",

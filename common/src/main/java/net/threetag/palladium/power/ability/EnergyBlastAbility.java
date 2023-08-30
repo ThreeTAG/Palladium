@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -63,7 +64,7 @@ public class EnergyBlastAbility extends Ability {
     @Override
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         if (enabled) {
-            if (entity.level.isClientSide && entry.getProperty(ANIMATION_TIMER) < 5) {
+            if (entity.level().isClientSide && entry.getProperty(ANIMATION_TIMER) < 5) {
                 entry.setUniqueProperty(ANIMATION_TIMER, entry.getProperty(ANIMATION_TIMER) + 1);
             }
 
@@ -79,42 +80,42 @@ public class EnergyBlastAbility extends Ability {
             entry.setUniqueProperty(DISTANCE, hitResult.getLocation().distanceTo(startVec));
 
             if (entry.getEnabledTicks() >= 5) {
-                if (!entity.level.isClientSide()) {
+                if (!entity.level().isClientSide()) {
                     if (hitResult.getType() == HitResult.Type.ENTITY) {
                         EntityHitResult entityHitResult = (EntityHitResult) hitResult;
                         entityHitResult.getEntity().setSecondsOnFire(5);
                         if (entity instanceof Player player)
-                            entityHitResult.getEntity().hurt(DamageSource.playerAttack(player), entry.getProperty(DAMAGE));
+                            entityHitResult.getEntity().hurt(entity.level().damageSources().playerAttack(player), entry.getProperty(DAMAGE));
                         else
-                            entityHitResult.getEntity().hurt(DamageSource.mobAttack(entity), entry.getProperty(DAMAGE));
+                            entityHitResult.getEntity().hurt(entity.level().damageSources().mobAttack(entity), entry.getProperty(DAMAGE));
                     } else if (hitResult.getType() == HitResult.Type.BLOCK) {
                         BlockHitResult blockHitResult = (BlockHitResult) hitResult;
-                        BlockState blockState = entity.level.getBlockState(blockHitResult.getBlockPos());
+                        BlockState blockState = entity.level().getBlockState(blockHitResult.getBlockPos());
 
                         SimpleContainer simpleContainer = new SimpleContainer(new ItemStack(blockState.getBlock()));
-                        entity.level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, simpleContainer, entity.level).ifPresent(recipe -> {
-                            ItemStack result = recipe.assemble(simpleContainer);
+                        entity.level().getRecipeManager().getRecipeFor(RecipeType.SMELTING, simpleContainer, entity.level()).ifPresent(recipe -> {
+                            ItemStack result = recipe.assemble(simpleContainer, entity.level().registryAccess());
 
                             if (!result.isEmpty() && Block.byItem(result.getItem()) != Blocks.AIR) {
-                                entity.level.setBlockAndUpdate(blockHitResult.getBlockPos(), Block.byItem(result.getItem()).defaultBlockState());
+                                entity.level().setBlockAndUpdate(blockHitResult.getBlockPos(), Block.byItem(result.getItem()).defaultBlockState());
                             }
                         });
 
-                        blockState = entity.level.getBlockState(blockHitResult.getBlockPos());
+                        blockState = entity.level().getBlockState(blockHitResult.getBlockPos());
 
-                        if (blockState.getMaterial().isFlammable()) {
+                        if (((FireBlock)Blocks.FIRE).canBurn(blockState)) {
                             BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getDirection().getNormal());
-                            if (entity.level.isEmptyBlock(pos)) {
-                                entity.level.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
+                            if (entity.level().isEmptyBlock(pos)) {
+                                entity.level().setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
                             }
                         }
                     }
                 } else {
                     Vec3 direction = new Vec3(startVec.x() - hitResult.getLocation().x(), startVec.y() - hitResult.getLocation().y(), startVec.z() - hitResult.getLocation().z()).normalize().scale(0.1D);
-                    entity.level.addParticle(new Random().nextBoolean() ? ParticleTypes.SMOKE : ParticleTypes.FLAME, hitResult.getLocation().x(), hitResult.getLocation().y(), hitResult.getLocation().z(), direction.x(), direction.y(), direction.z());
+                    entity.level().addParticle(new Random().nextBoolean() ? ParticleTypes.SMOKE : ParticleTypes.FLAME, hitResult.getLocation().x(), hitResult.getLocation().y(), hitResult.getLocation().z(), direction.x(), direction.y(), direction.z());
                 }
             }
-        } else if (entity.level.isClientSide && entry.getProperty(ANIMATION_TIMER) > 0) {
+        } else if (entity.level().isClientSide && entry.getProperty(ANIMATION_TIMER) > 0) {
             entry.setUniqueProperty(ANIMATION_TIMER, entry.getProperty(ANIMATION_TIMER) - 1);
         }
     }

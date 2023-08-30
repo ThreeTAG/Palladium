@@ -3,6 +3,7 @@ package net.threetag.palladium.entity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -34,7 +35,7 @@ public class EffectEntity extends Entity implements ExtendedEntitySpawnData {
 
     public Entity getAnchorEntity() {
         if (this.anchor == null) {
-            this.anchor = this.level.getEntity(this.anchorId);
+            this.anchor = this.level().getEntity(this.anchorId);
         }
         return this.anchor;
     }
@@ -44,13 +45,13 @@ public class EffectEntity extends Entity implements ExtendedEntitySpawnData {
         Entity anchor = getAnchorEntity();
         if (anchor != null && this.entityEffect != null) {
             if (!anchor.isAlive() || EntityEffect.IS_DONE_PLAYING.get(this)) {
-                if (!this.level.isClientSide)
+                if (!this.level().isClientSide)
                     this.discard();
             } else {
                 this.entityEffect.tick(this, anchor);
                 this.moveTo(anchor.getX(), anchor.getY() + anchor.getMyRidingOffset() + anchor.getEyeHeight(), anchor.getZ(), anchor.getYRot(), anchor.getXRot());
             }
-        } else if (!this.level.isClientSide) {
+        } else if (!this.level().isClientSide) {
             this.discard();
         }
     }
@@ -107,7 +108,7 @@ public class EffectEntity extends Entity implements ExtendedEntitySpawnData {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkManager.createAddEntityPacket(this);
     }
 }

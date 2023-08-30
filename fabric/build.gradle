@@ -43,8 +43,6 @@ dependencies {
     modImplementation("software.bernie.geckolib:geckolib-fabric-1.20:${rootProject.geckolib_version}")
 
     // Forge Config API Port
-    implementation 'com.electronwill.night-config:core:3.6.5'
-    implementation 'com.electronwill.night-config:toml:3.6.5'
     modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
     include "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
 

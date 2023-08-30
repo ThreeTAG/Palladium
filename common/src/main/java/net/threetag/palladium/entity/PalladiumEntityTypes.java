@@ -1,6 +1,7 @@
 package net.threetag.palladium.entity;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -13,7 +14,7 @@ import java.util.function.Supplier;
 
 public class PalladiumEntityTypes {
 
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Palladium.MOD_ID, Registry.ENTITY_TYPE_REGISTRY);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Palladium.MOD_ID, Registries.ENTITY_TYPE);
 
     public static final RegistrySupplier<EntityType<EffectEntity>> EFFECT = register("effect", () -> EntityType.Builder.<EffectEntity>of(EffectEntity::new, MobCategory.MISC).sized(0.1F, 0.1F));
     public static final RegistrySupplier<EntityType<CustomProjectile>> CUSTOM_PROJECTILE = register("custom_projectile", () -> EntityType.Builder.of(CustomProjectile::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(4).updateInterval(10));

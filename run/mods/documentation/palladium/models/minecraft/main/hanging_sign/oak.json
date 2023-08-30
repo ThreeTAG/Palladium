@@ -1,0 +1,296 @@
+{
+  "mesh": {
+    "vChains": {
+      "cubes": [
+        {
+          "origin": [
+            -6.0,
+            -6.0,
+            0.0
+          ],
+          "dimensions": [
+            12.0,
+            6.0,
+            0.0
+          ],
+          "texture_offset": [
+            14.0,
+            6.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "normalChains": {
+      "cubes": [],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {
+        "chainR2": {
+          "cubes": [
+            {
+              "origin": [
+                -1.5,
+                0.0,
+                0.0
+              ],
+              "dimensions": [
+                3.0,
+                6.0,
+                0.0
+              ],
+              "texture_offset": [
+                6.0,
+                6.0
+              ],
+              "deformation": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "mirror": false
+            }
+          ],
+          "part_pose": {
+            "offset": [
+              5.0,
+              -6.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              45.0,
+              0.0
+            ]
+          },
+          "children": {}
+        },
+        "chainR1": {
+          "cubes": [
+            {
+              "origin": [
+                -1.5,
+                0.0,
+                0.0
+              ],
+              "dimensions": [
+                3.0,
+                6.0,
+                0.0
+              ],
+              "texture_offset": [
+                0.0,
+                6.0
+              ],
+              "deformation": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "mirror": false
+            }
+          ],
+          "part_pose": {
+            "offset": [
+              5.0,
+              -6.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              -45.0,
+              0.0
+            ]
+          },
+          "children": {}
+        },
+        "chainL2": {
+          "cubes": [
+            {
+              "origin": [
+                -1.5,
+                0.0,
+                0.0
+              ],
+              "dimensions": [
+                3.0,
+                6.0,
+                0.0
+              ],
+              "texture_offset": [
+                6.0,
+                6.0
+              ],
+              "deformation": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "mirror": false
+            }
+          ],
+          "part_pose": {
+            "offset": [
+              -5.0,
+              -6.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              45.0,
+              0.0
+            ]
+          },
+          "children": {}
+        },
+        "chainL1": {
+          "cubes": [
+            {
+              "origin": [
+                -1.5,
+                0.0,
+                0.0
+              ],
+              "dimensions": [
+                3.0,
+                6.0,
+                0.0
+              ],
+              "texture_offset": [
+                0.0,
+                6.0
+              ],
+              "deformation": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "mirror": false
+            }
+          ],
+          "part_pose": {
+            "offset": [
+              -5.0,
+              -6.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              -45.0,
+              0.0
+            ]
+          },
+          "children": {}
+        }
+      }
+    },
+    "board": {
+      "cubes": [
+        {
+          "origin": [
+            -7.0,
+            0.0,
+            -1.0
+          ],
+          "dimensions": [
+            14.0,
+            10.0,
+            2.0
+          ],
+          "texture_offset": [
+            0.0,
+            12.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    },
+    "plank": {
+      "cubes": [
+        {
+          "origin": [
+            -8.0,
+            -6.0,
+            -2.0
+          ],
+          "dimensions": [
+            16.0,
+            2.0,
+            4.0
+          ],
+          "texture_offset": [
+            0.0,
+            0.0
+          ],
+          "deformation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mirror": false
+        }
+      ],
+      "part_pose": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "children": {}
+    }
+  },
+  "texture_width": 64,
+  "texture_height": 32
+}

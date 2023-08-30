@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -22,9 +23,9 @@ public class CompoundIcon implements IIcon {
     private final LinkedList<IIcon> icons = new LinkedList<>();
 
     @Override
-    public void draw(Minecraft mc, DataContext context, PoseStack stack, int x, int y, int width, int height) {
+    public void draw(Minecraft mc, GuiGraphics guiGraphics, DataContext context, int x, int y, int width, int height) {
         for (IIcon icon : this.icons) {
-            icon.draw(mc, context, stack, x, y, width, height);
+            icon.draw(mc, guiGraphics, context, x, y, width, height);
         }
     }
 

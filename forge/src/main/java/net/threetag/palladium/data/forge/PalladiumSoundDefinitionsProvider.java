@@ -1,6 +1,6 @@
 package net.threetag.palladium.data.forge;
 
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
@@ -10,8 +10,8 @@ import net.threetag.palladiumcore.registry.RegistrySupplier;
 
 public class PalladiumSoundDefinitionsProvider extends SoundDefinitionsProvider {
 
-    public PalladiumSoundDefinitionsProvider(DataGenerator generator, ExistingFileHelper helper) {
-        super(generator, Palladium.MOD_ID, helper);
+    public PalladiumSoundDefinitionsProvider(PackOutput packOutput, ExistingFileHelper helper) {
+        super(packOutput, Palladium.MOD_ID, helper);
     }
 
     @Override

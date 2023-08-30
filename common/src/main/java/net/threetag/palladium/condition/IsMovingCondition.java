@@ -14,7 +14,7 @@ public class IsMovingCondition extends Condition {
             return false;
         }
 
-        if(entity.level.isClientSide) {
+        if(entity.level().isClientSide) {
             return entity.xo != entity.getX() || entity.yo != entity.getY() || entity.zo != entity.getZ();
         } else {
             return entity.walkDist != entity.walkDistO;

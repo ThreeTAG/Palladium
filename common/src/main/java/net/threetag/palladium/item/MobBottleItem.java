@@ -26,25 +26,11 @@ import java.util.function.Supplier;
 
 public class MobBottleItem extends Item {
 
-    public static final CreativeModeTabFiller FILLER = new CreativeModeTabFiller(() -> Items.TADPOLE_BUCKET);
     private final Supplier<? extends EntityType<?>> entityTypeSupplier;
-    private CreativeModeTabFiller filler = FILLER;
 
     public MobBottleItem(Supplier<? extends EntityType<?>> entityTypeSupplier, Properties properties) {
         super(properties);
         this.entityTypeSupplier = entityTypeSupplier;
-    }
-
-    public MobBottleItem setFiller(CreativeModeTabFiller filler) {
-        this.filler = filler;
-        return this;
-    }
-
-    @Override
-    public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
-        if (this.allowedIn(category)) {
-            this.filler.fill(this, category, items);
-        }
     }
 
     @Override

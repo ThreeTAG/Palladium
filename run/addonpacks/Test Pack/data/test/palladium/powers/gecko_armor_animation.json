@@ -5,7 +5,7 @@
   "icon": "minecraft:turtle_spawn_egg",
   "abilities": {
     "animation_extend_arm": {
-      "type": "geckolib3:armor_animation",
+      "type": "geckolib:armor_animation",
       "hidden": false,
       "item": "test:gecko_test_chestplate",
       "controller": "extend_arm",

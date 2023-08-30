@@ -8,6 +8,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.addonpack.builder.AddonBuilder;
@@ -21,7 +22,7 @@ import java.util.function.Supplier;
 public class ParticleTypeParser extends AddonParser<ParticleType<?>> {
 
     public ParticleTypeParser() {
-        super(GSON, "particle_types", Registry.PARTICLE_TYPE_REGISTRY);
+        super(GSON, "particle_types", Registries.PARTICLE_TYPE);
     }
 
     @Override

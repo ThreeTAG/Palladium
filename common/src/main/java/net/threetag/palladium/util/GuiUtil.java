@@ -4,20 +4,24 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.util.Mth;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 
 public class GuiUtil {
 
-    public static void drawItem(PoseStack poseStack, ItemStack stack, int hash, boolean renderOverlay, @Nullable String text) {
+    public static void drawItem(GuiGraphics graphics, ItemStack stack, int hash, boolean renderOverlay, @Nullable String text) {
         if (stack.isEmpty()) {
             return;
         }
@@ -26,14 +30,14 @@ public class GuiUtil {
         var itemRenderer = mc.getItemRenderer();
         var bakedModel = itemRenderer.getModel(stack, null, mc.player, hash);
 
-        Minecraft.getInstance().getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
-        RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
+        Minecraft.getInstance().getTextureManager().getTexture(InventoryMenu.BLOCK_ATLAS).setFilter(false, false);
+        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         PoseStack modelViewStack = RenderSystem.getModelViewStack();
         modelViewStack.pushPose();
-        modelViewStack.mulPoseMatrix(poseStack.last().pose());
+        modelViewStack.mulPoseMatrix(graphics.pose().last().pose());
         // modelViewStack.translate(x, y, 100.0D + this.blitOffset);
         modelViewStack.scale(1F, -1F, 1F);
         modelViewStack.scale(16F, 16F, 16F);
@@ -45,7 +49,7 @@ public class GuiUtil {
             Lighting.setupForFlatItems();
         }
 
-        itemRenderer.render(stack, ItemTransforms.TransformType.GUI, false, new PoseStack(), bufferSource, 0xF000F0, OverlayTexture.NO_OVERLAY, bakedModel);
+        itemRenderer.render(stack, ItemDisplayContext.GUI, false, new PoseStack(), bufferSource, 0xF000F0, OverlayTexture.NO_OVERLAY, bakedModel);
         bufferSource.endBatch();
         RenderSystem.enableDepthTest();
 
@@ -62,23 +66,21 @@ public class GuiUtil {
 
             if (stack.getCount() != 1 || text != null) {
                 var s = text == null ? String.valueOf(stack.getCount()) : text;
-                poseStack.pushPose();
-                poseStack.translate(9D - font.width(s), 1D, 20D);
-                font.drawInBatch(s, 0F, 0F, 0xFFFFFF, true, poseStack.last().pose(), bufferSource, false, 0, 0xF000F0);
+                graphics.pose().pushPose();
+                graphics.pose().translate(9D - font.width(s), 1D, 20D);
+                font.drawInBatch(s, 0F, 0F, 0xFFFFFF, true, graphics.pose().last().pose(), bufferSource, Font.DisplayMode.NORMAL, 0, 0xF000F0);
                 bufferSource.endBatch();
-                poseStack.popPose();
+                graphics.pose().popPose();
             }
 
             if (stack.isBarVisible()) {
                 RenderSystem.disableDepthTest();
-                RenderSystem.disableTexture();
                 RenderSystem.disableBlend();
                 var barWidth = stack.getBarWidth();
                 var barColor = stack.getBarColor();
-                draw(poseStack, t, -6, 5, 13, 2, 0, 0, 0, 255);
-                draw(poseStack, t, -6, 5, barWidth, 1, barColor >> 16 & 255, barColor >> 8 & 255, barColor & 255, 255);
+                draw(graphics, t, -6, 5, 13, 2, 0, 0, 0, 255);
+                draw(graphics, t, -6, 5, barWidth, 1, barColor >> 16 & 255, barColor >> 8 & 255, barColor & 255, 255);
                 RenderSystem.enableBlend();
-                RenderSystem.enableTexture();
                 RenderSystem.enableDepthTest();
             }
 
@@ -86,23 +88,21 @@ public class GuiUtil {
 
             if (cooldown > 0F) {
                 RenderSystem.disableDepthTest();
-                RenderSystem.disableTexture();
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
-                draw(poseStack, t, -8, Mth.floor(16F * (1F - cooldown)) - 8, 16, Mth.ceil(16F * cooldown), 255, 255, 255, 127);
-                RenderSystem.enableTexture();
+                draw(graphics, t, -8, Mth.floor(16F * (1F - cooldown)) - 8, 16, Mth.ceil(16F * cooldown), 255, 255, 255, 127);
                 RenderSystem.enableDepthTest();
             }
         }
     }
 
-    private static void draw(PoseStack matrixStack, Tesselator t, int x, int y, int width, int height, int red, int green, int blue, int alpha) {
+    private static void draw(GuiGraphics graphics, Tesselator t, int x, int y, int width, int height, int red, int green, int blue, int alpha) {
         if (width <= 0 || height <= 0) {
             return;
         }
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        var m = matrixStack.last().pose();
+        var m = graphics.pose().last().pose();
         var renderer = t.getBuilder();
         renderer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         renderer.vertex(m, x, y, 0).color(red, green, blue, alpha).endVertex();
@@ -111,6 +111,7 @@ public class GuiUtil {
         renderer.vertex(m, x + width, y, 0).color(red, green, blue, alpha).endVertex();
         t.end();
     }
+
 
     public static void drawContinuousTexturedBox(PoseStack poseStack, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight,
                                                  int borderSize, float zLevel) {

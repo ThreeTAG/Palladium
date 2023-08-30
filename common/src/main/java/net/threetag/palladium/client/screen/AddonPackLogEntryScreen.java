@@ -4,11 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
@@ -47,11 +46,11 @@ public class AddonPackLogEntryScreen extends Screen {
 
         this.addWidget(this.panel = new Panel(this.minecraft, this.width, this.height - 64 - 48, 48, 0));
 
-        this.addRenderableWidget(new Button(this.width / 2 - 310, this.height - 64 + 32 - 10, 250, 20, Component.translatable("gui.palladium.addon_pack_log_entry.copy_to_clipboard"), (button) -> {
+        this.addRenderableWidget(Button.builder(Component.translatable("gui.palladium.addon_pack_log_entry.copy_to_clipboard"), (button) -> {
             Objects.requireNonNull(this.minecraft).keyboardHandler.setClipboard(this.entry.getText() + "\n" + this.entry.getStacktrace());
-        }));
+        }).bounds(this.width / 2 - 310, this.height - 64 + 32 - 10, 250, 20).build());
 
-        this.addRenderableWidget(new Button(this.width / 2 - 50, this.height - 64 + 32 - 10, 250, 20, Component.translatable("gui.palladium.addon_pack_log_entry.upload_to_mclogs"), (button) -> {
+        this.addRenderableWidget(Button.builder(Component.translatable("gui.palladium.addon_pack_log_entry.upload_to_mclogs"), (button) -> {
             try {
                 String url = this.uploadPastebin();
                 Objects.requireNonNull(this.minecraft).setScreen(new ConfirmLinkScreen((b) -> {
@@ -64,23 +63,23 @@ public class AddonPackLogEntryScreen extends Screen {
             } catch (Exception ignored) {
 
             }
-        }));
+        }).bounds(this.width / 2 - 50, this.height - 64 + 32 - 10, 250, 20).build());
 
-        this.addRenderableWidget(new Button(this.width / 2 + 310 - 70, this.height - 64 + 32 - 10, 75, 20, CommonComponents.GUI_BACK, (button) -> {
+        this.addRenderableWidget(Button.builder(CommonComponents.GUI_BACK, (button) -> {
             Objects.requireNonNull(this.minecraft).setScreen(this.parent);
-        }));
+        }).bounds(this.width / 2 + 310 - 70, this.height - 64 + 32 - 10, 75, 20).build());
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(poseStack);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(guiGraphics);
 
         if (this.panel != null)
-            this.panel.render(poseStack, mouseX, mouseY, partialTicks);
+            this.panel.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-        drawCenteredString(poseStack, this.font, this.title, this.width / 2, 20, 16777215);
+        guiGraphics.drawCenteredString(this.font, this.title, this.width / 2, 20, 16777215);
 
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
     public String uploadPastebin() {
@@ -147,20 +146,21 @@ public class AddonPackLogEntryScreen extends Screen {
         }
 
         @Override
-        protected void drawPanel(PoseStack mStack, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
+        protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
+            var font = Minecraft.getInstance().font;
             RenderSystem.enableBlend();
             relativeY += 15;
 
             for (FormattedCharSequence processor : this.lines1) {
-                font.draw(mStack, processor, left + 10, relativeY, 0xfefefe);
+                guiGraphics.drawString(font, processor, left + 10, relativeY, 0xfefefe, false);
                 relativeY += 15;
             }
 
-            Gui.fill(mStack, left + 10, relativeY, left + width - 10, ++relativeY, 0xfffefefe);
+            guiGraphics.fill(left + 10, relativeY, left + width - 10, ++relativeY, 0xfffefefe);
             relativeY += 15;
 
             for (FormattedCharSequence processor : this.lines2) {
-                font.draw(mStack, processor, left + 10, relativeY, 0xfefefe);
+                guiGraphics.drawString(font, processor, left + 10, relativeY, 0xfefefe);
                 relativeY += 15;
             }
 

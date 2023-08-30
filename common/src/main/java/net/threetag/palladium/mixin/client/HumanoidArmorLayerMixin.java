@@ -44,7 +44,7 @@ public abstract class HumanoidArmorLayerMixin {
                 HumanoidArmorLayer layer = (HumanoidArmorLayer) (Object) this;
                 ArmorItem armorItem = (ArmorItem) item.getItem();
 
-                if (armorItem.getSlot() == slot) {
+                if (armorItem.getEquipmentSlot() == slot) {
                     var context = DataContext.forArmorInSlot(livingEntity, slot);
                     var overriddenModel = renderer.getModel(livingEntity, context);
                     var armorTexture = renderer.getTexture(context);

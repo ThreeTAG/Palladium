@@ -7,7 +7,7 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_vibranium": {
+    "has_vibranium_ingot": {
       "conditions": {
         "items": [
           {
@@ -20,7 +20,7 @@
   },
   "requirements": [
     [
-      "has_vibranium",
+      "has_vibranium_ingot",
       "has_the_recipe"
     ]
   ],
@@ -28,5 +28,6 @@
     "recipes": [
       "palladium:vibranium_weave_boots_smithing"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

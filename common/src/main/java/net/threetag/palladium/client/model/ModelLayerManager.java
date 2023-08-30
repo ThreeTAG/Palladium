@@ -2,7 +2,6 @@ package net.threetag.palladium.client.model;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.*;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -18,6 +17,7 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import java.io.File;
 import java.io.IOException;

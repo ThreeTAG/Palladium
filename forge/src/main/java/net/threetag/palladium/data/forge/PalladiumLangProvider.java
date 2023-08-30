@@ -1,6 +1,6 @@
 package net.threetag.palladium.data.forge;
 
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessories;
 import net.threetag.palladium.accessory.AccessorySlot;
@@ -11,21 +11,22 @@ import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.sound.PalladiumSoundEvents;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
-    public PalladiumLangProvider(DataGenerator gen, String modid, String locale) {
-        super(gen, modid, locale);
+    public PalladiumLangProvider(PackOutput output, String modid, String locale) {
+        super(output, modid, locale);
     }
 
-    public PalladiumLangProvider(DataGenerator gen, String locale) {
-        super(gen, Palladium.MOD_ID, locale);
+    public PalladiumLangProvider(PackOutput packOutput, String locale) {
+        super(packOutput, Palladium.MOD_ID, locale);
     }
 
     public static class English extends PalladiumLangProvider {
 
-        public English(DataGenerator gen) {
-            super(gen, "en_us");
+        public English(PackOutput packOutput) {
+            super(packOutput, "en_us");
         }
 
         @Override
@@ -113,8 +114,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.VIBRATE, "Vibrate");
             this.addAbility(Abilities.INTANGIBILITY, "Intangibility");
             this.addAbility(Abilities.NAME_CHANGE, "Name Change");
-            this.add("ability.geckolib3.render_layer_animation", "Gecko Render Layer Animation");
-            this.add("ability.geckolib3.armor_animation", "Gecko Armor Animation");
+            this.add("ability.geckolib.render_layer_animation", "Gecko Render Layer Animation");
+            this.add("ability.geckolib.armor_animation", "Gecko Armor Animation");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
@@ -201,8 +202,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
     public static class German extends PalladiumLangProvider {
 
-        public German(DataGenerator gen) {
-            super(gen, "de_de");
+        public German(PackOutput packOutput) {
+            super(packOutput, "de_de");
         }
 
         @Override
@@ -216,7 +217,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE, "Tiefenschiefer-Redstone-Flux-Kristallgeode");
             this.addBlock(PalladiumBlocks.SMALL_REDSTONE_FLUX_CRYSTAL_BUD, "Kleine Redstone-Flux-Kristallknospe");
             this.addBlock(PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD, "Mittlere Redstone-Flux-Kristallknospe");
-            this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Gro\u00DFe Redstone-Flux-Kristallknospe");
+            this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Große Redstone-Flux-Kristallknospe");
             this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER, "Redstone-Flux-Kristallhaufen");
             this.addBlock(PalladiumBlocks.LEAD_BLOCK, "Bleiblock");
             this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Vibraniumblock");
@@ -224,8 +225,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK, "Rohtitaniumblock");
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Rohvibraniumblock");
             this.addBlock(PalladiumBlocks.SOLAR_PANEL, "Solarpaneel");
-            this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Herzf\u00F6rmiges Kraut");
-            this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Eingetopftes Herzf\u00F6rmige Kraut");
+            this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Herzförmiges Kraut");
+            this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Eingetopftes Herzförmige Kraut");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Rohblei");
@@ -267,18 +268,18 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.RENDER_LAYER_BY_ACCESSORY_SLOT, "Render Layer");
             this.addAbility(Abilities.ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.REPEATING_ANIMATION_TIMER, "Animations-Timer");
-            this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
+            this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "Körperoverlay schrumpfen");
             this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Attributmodifikator");
             this.addAbility(Abilities.HEALING, "Heilung");
             this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
-            this.addAbility(Abilities.DAMAGE_IMMUNITY, "Schadensimmunit\u00E4t");
+            this.addAbility(Abilities.DAMAGE_IMMUNITY, "Schadensimmunität");
             this.addAbility(Abilities.INVISIBILITY, "Unsichtbarkeit");
-            this.addAbility(Abilities.SIZE, "Gr\u00F6\u00DFe");
+            this.addAbility(Abilities.SIZE, "Größe");
             this.addAbility(Abilities.PROJECTILE, "Projektil");
-            this.addAbility(Abilities.SKIN_CHANGE, "Skin \u00C4nderung");
+            this.addAbility(Abilities.SKIN_CHANGE, "Skin Änderung");
             this.addAbility(Abilities.AIM, "Zielen");
-            this.addAbility(Abilities.HIDE_BODY_PART, "K\u00F6rperteile verstecken");
-            this.addAbility(Abilities.REMOVE_BODY_PART, "K\u00F6rperteile entfernen");
+            this.addAbility(Abilities.HIDE_BODY_PART, "Körperteile verstecken");
+            this.addAbility(Abilities.REMOVE_BODY_PART, "Körperteile entfernen");
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(Abilities.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeigen");
@@ -290,18 +291,18 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.VIBRATE, "Vibrieren");
             this.addAbility(Abilities.INTANGIBILITY, "Ungreifbarkeit");
             this.addAbility(Abilities.NAME_CHANGE, "Namesänderung");
-            this.add("ability.geckolib3.render_layer_animation", "Gecko Render Layer Animation");
-            this.add("ability.geckolib3.armor_animation", "Gecko Armor Animation");
+            this.add("ability.geckolib.render_layer_animation", "Gecko Render Layer Animation");
+            this.add("ability.geckolib.armor_animation", "Gecko Armor Animation");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
 
             // Key Mappings
-            this.add(PalladiumKeyMappings.CATEGORY, "F\u00E4higkeiten");
-            this.add("key.palladium.switch_ability_list", "F\u00E4higkeitenliste wechseln");
+            this.add(PalladiumKeyMappings.CATEGORY, "Fähigkeiten");
+            this.add("key.palladium.switch_ability_list", "Fähigkeitenliste wechseln");
             this.add("key.palladium.open_equipment", "Equipment öffnen");
             for (int i = 1; i <= PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
-                this.add("key.palladium.ability_" + i, "F\u00E4higkeit " + i);
+                this.add("key.palladium.ability_" + i, "Fähigkeit " + i);
             }
 
             // Commands
@@ -321,12 +322,12 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("argument.entity.options.palladium.power.description", "Benötigte Kraft");
 
             // GUI
-            this.add("gui.palladium.powers", "Kr\u00E4fte");
+            this.add("gui.palladium.powers", "Kräfte");
             this.add("gui.palladium.powers.buy_ability", "Möchtest du diese Fähigkeit freischalten?");
             this.add("gui.palladium.powers.buy_ability.or", "oder");
             this.add("gui.palladium.powers.buy_ability.experience_level", "Erfahrungsstufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "Erfahrungsstufen");
-            this.add("gui.palladium.accessories", "Zubeh\u00F6r");
+            this.add("gui.palladium.accessories", "Zubehör");
             this.add("gui.palladium.addon_pack_log", "Addon Pack Log");
             this.add("gui.palladium.addon_pack_log.search", "Suchen...");
             this.add("gui.palladium.addon_pack_log_entry", "Logeintrag");
@@ -373,8 +374,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
     public static class Saxon extends PalladiumLangProvider {
 
-        public Saxon(DataGenerator gen) {
-            super(gen, "sxu");
+        public Saxon(PackOutput packOutput) {
+            super(packOutput, "sxu");
         }
 
         @Override
@@ -388,7 +389,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE, "Diefnschieforr-Redstone-Flux-Kristallgeode");
             this.addBlock(PalladiumBlocks.SMALL_REDSTONE_FLUX_CRYSTAL_BUD, "Gleene Redstone-Flux-Kristallgnosbe");
             this.addBlock(PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD, "Mittlorre Redstone-Flux-Kristallgnosbe");
-            this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Gro\u00DFe Redstone-Flux-Kristallgnosbe");
+            this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Große Redstone-Flux-Kristallgnosbe");
             this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER, "Redstone-Flux-Kristallhaufn");
             this.addBlock(PalladiumBlocks.LEAD_BLOCK, "Bleblogg");
             this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Vibraniumblogg");
@@ -396,8 +397,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK, "Rohtitaniumblogg");
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Rohvibraniumblogg");
             this.addBlock(PalladiumBlocks.SOLAR_PANEL, "Solarpaneel");
-            this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Herzf\u00F6rmijes Graud");
-            this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Eingedobbdes Herzf\u00F6rmije Graud");
+            this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Herzförmijes Graud");
+            this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Eingedobbdes Herzförmije Graud");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Rohble");
@@ -439,18 +440,18 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.RENDER_LAYER_BY_ACCESSORY_SLOT, "Render Layer");
             this.addAbility(Abilities.ANIMATION_TIMER, "Animations-Timer");
             this.addAbility(Abilities.REPEATING_ANIMATION_TIMER, "Animations-Timer");
-            this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "K\u00F6rperoverlay schrumpfen");
-            this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "\u00C4ttrib\u00FCtmodifikator");
+            this.addAbility(Abilities.SHRINK_BODY_OVERLAY, "Körperoverlay schrumpfen");
+            this.addAbility(Abilities.ATTRIBUTE_MODIFIER, "Ättribütmodifikator");
             this.addAbility(Abilities.HEALING, "Helung");
             this.addAbility(Abilities.SLOWFALL, "Langsamer Fall");
-            this.addAbility(Abilities.DAMAGE_IMMUNITY, "Schadensimmunit\u00E4t");
+            this.addAbility(Abilities.DAMAGE_IMMUNITY, "Schadensimmunität");
             this.addAbility(Abilities.INVISIBILITY, "Unsischtbarkeet");
-            this.addAbility(Abilities.SIZE, "Gr\u00F6\u00DFe");
+            this.addAbility(Abilities.SIZE, "Größe");
             this.addAbility(Abilities.PROJECTILE, "Projektil");
-            this.addAbility(Abilities.SKIN_CHANGE, "Skin \u00C4nderung");
+            this.addAbility(Abilities.SKIN_CHANGE, "Skin Änderung");
             this.addAbility(Abilities.AIM, "Zielen");
-            this.addAbility(Abilities.HIDE_BODY_PART, "G\u00F6rperdeile versteggen");
-            this.addAbility(Abilities.REMOVE_BODY_PART, "G\u00F6rperdeile entfernen");
+            this.addAbility(Abilities.HIDE_BODY_PART, "Görperdeile versteggen");
+            this.addAbility(Abilities.REMOVE_BODY_PART, "Görperdeile entfernen");
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(Abilities.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeijen");
@@ -462,18 +463,18 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.VIBRATE, "Vibrieren");
             this.addAbility(Abilities.INTANGIBILITY, "Ungreifbarkeht");
             this.addAbility(Abilities.NAME_CHANGE, "Namesänderung");
-            this.add("ability.geckolib3.render_layer_animation", "Gecko Render Layer Animation");
-            this.add("ability.geckolib3.armor_animation", "Gecko Armor Animation");
+            this.add("ability.geckolib.render_layer_animation", "Gecko Render Layer Animation");
+            this.add("ability.geckolib.armor_animation", "Gecko Armor Animation");
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");
 
             // Key Mappings
-            this.add(PalladiumKeyMappings.CATEGORY, "F\u00E4hischgehden");
-            this.add("key.palladium.switch_ability_list", "F\u00E4hischgehden wechseln");
+            this.add(PalladiumKeyMappings.CATEGORY, "Fähischgehden");
+            this.add("key.palladium.switch_ability_list", "Fähischgehden wechseln");
             this.add("key.palladium.open_equipment", "Equipmend öffnen");
             for (int i = 1; i <= PalladiumKeyMappings.ABILITY_KEYS.length; i++) {
-                this.add("key.palladium.ability_" + i, "F\u00E4hischgehd " + i);
+                this.add("key.palladium.ability_" + i, "Fähischgehd " + i);
             }
 
             // Commands
@@ -493,12 +494,12 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("argument.entity.options.palladium.power.description", "Benötichte Kraft");
 
             // GUI
-            this.add("gui.palladium.powers", "Kr\u00E4fte");
+            this.add("gui.palladium.powers", "Kräfte");
             this.add("gui.palladium.powers.buy_ability", "Möschtest'e disse Fähischgeht freischaltn?");
             this.add("gui.palladium.powers.buy_ability.or", "oder");
             this.add("gui.palladium.powers.buy_ability.experience_level", "Erfahrungsschdufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "Erfahrungsschdufen");
-            this.add("gui.palladium.accessories", "Zubeh\u00F6r");
+            this.add("gui.palladium.accessories", "Zubehör");
             this.add("gui.palladium.addon_pack_log", "Addon Pack Log");
             this.add("gui.palladium.addon_pack_log.search", "Suchen...");
             this.add("gui.palladium.addon_pack_log_entry", "Logeintrag");
@@ -544,7 +545,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Palladium " + super.getName();
     }
 }

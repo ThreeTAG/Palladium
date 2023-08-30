@@ -50,3 +50,14 @@ accessible method net/minecraft/world/entity/Entity isInRain ()Z
 transitive-accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry
 
 accessible field net/minecraft/server/ServerScoreboard trackedObjectives Ljava/util/Set;
+
+accessible method net/minecraft/client/renderer/LevelRenderer shouldShowEntityOutlines ()Z
+
+accessible field net/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen selectedTab Lnet/minecraft/world/item/CreativeModeTab;
+
+accessible method net/minecraft/world/level/block/FireBlock canBurn (Lnet/minecraft/world/level/block/state/BlockState;)Z
+
+accessible field net/minecraft/server/packs/repository/Pack id Ljava/lang/String;
+mutable field net/minecraft/server/packs/repository/Pack id Ljava/lang/String;
+accessible field net/minecraft/server/packs/repository/Pack required Z
+mutable field net/minecraft/server/packs/repository/Pack required Z
