@@ -26,5 +26,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "palladium:blocks/medium_redstone_flux_crystal_bud"
 }

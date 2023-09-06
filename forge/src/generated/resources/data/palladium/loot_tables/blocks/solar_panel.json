@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "palladium:heart_shaped_herb"
+          "name": "palladium:solar_panel"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "palladium:blocks/heart_shaped_herb"
+  "random_sequence": "palladium:blocks/solar_panel"
 }

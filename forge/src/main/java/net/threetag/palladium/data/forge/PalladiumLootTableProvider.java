@@ -3,10 +3,12 @@ package net.threetag.palladium.data.forge;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.*;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
@@ -15,8 +17,11 @@ import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladiumcore.registry.RegistrySupplier;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class PalladiumLootTableProvider extends LootTableProvider {
@@ -50,6 +55,17 @@ public class PalladiumLootTableProvider extends LootTableProvider {
             this.dropSelf(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get());
             this.dropSelf(PalladiumBlocks.HEART_SHAPED_HERB.get());
             this.dropPottedContents(PalladiumBlocks.POTTED_HEART_SHAPED_HERB.get());
+            this.dropSelf(PalladiumBlocks.SOLAR_PANEL.get());
         }
+
+        @Override
+        protected @NotNull Iterable<Block> getKnownBlocks() {
+            return PalladiumBlocks.BLOCKS.getEntries().stream().map(RegistrySupplier::get).toList();
+        }
+    }
+
+    @Override
+    protected void validate(Map<ResourceLocation, LootTable> map, @NotNull ValidationContext context) {
+        map.forEach((id, table) -> table.validate(context.setParams(table.getParamSet()).enterElement("{" + id + "}", new LootDataId<>(LootDataType.TABLE, id))));
     }
 }

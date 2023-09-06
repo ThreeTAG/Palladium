@@ -74,5 +74,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "palladium:blocks/deepslate_redstone_flux_crystal_geode"
 }

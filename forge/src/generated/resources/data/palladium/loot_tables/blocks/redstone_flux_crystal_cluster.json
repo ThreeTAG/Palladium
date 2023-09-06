@@ -74,5 +74,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "palladium:blocks/redstone_flux_crystal_cluster"
 }
