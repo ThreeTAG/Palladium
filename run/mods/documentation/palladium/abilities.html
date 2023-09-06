@@ -1134,7 +1134,7 @@ Example:</h3>
 <h2>
 damage_immunity</h2>
 <p>
-Makes the entity immune against certain damage sources.</p>
+Makes the entity immune against certain damage source tags.</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1253,20 +1253,20 @@ false</td>
 <td>
 damage_sources</td>
 <td>
-String[]</td>
+List</td>
 <td>
-Determines which damage sources have no effect on the entity.</td>
+Determines which damage sources have no effect on the entity based on a tag. Minecraft's builtin damage source tags: [minecraft:damages_helmet, minecraft:bypasses_armor, minecraft:bypasses_shield, minecraft:bypasses_invulnerability, minecraft:bypasses_cooldown, minecraft:bypasses_effects, minecraft:bypasses_resistance, minecraft:bypasses_enchantments, minecraft:is_fire, minecraft:is_projectile, minecraft:witch_resistant_to, minecraft:is_explosion, minecraft:is_fall, minecraft:is_drowning, minecraft:is_freezing, minecraft:is_lightning, minecraft:no_anger, minecraft:no_impact, minecraft:always_most_significant_fall, minecraft:wither_immune_to, minecraft:ignites_armor_stands, minecraft:burns_armor_stands, minecraft:avoids_guardian_thorns, minecraft:always_triggers_silverfish, minecraft:always_hurts_ender_dragons]</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-[lightningBolt, cactus]</td>
+[minecraft:is_lightning, minecraft:is_fall]</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:damage_immunity","icon":"minecraft:potion","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","damage_sources":["lightningBolt","cactus"]}</pre>
+{"type":"palladium:damage_immunity","icon":"minecraft:potion","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","damage_sources":["minecraft:is_lightning","minecraft:is_fall"]}</pre>
 </div>
 <hr>
 
