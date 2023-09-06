@@ -20,7 +20,7 @@ public class BackgroundlessButton extends Button {
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
         int i = this.active ? 16777215 : 10526880;
-        this.renderString(guiGraphics, Minecraft.getInstance().font, i | Mth.ceil(this.alpha * 255.0F) << 24);
+        guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX(), this.getY(), i | Mth.ceil(this.alpha * 255.0F) << 24, false);
     }
 
     public static Builder backgroundlessBuilder(Component message, OnPress onPress) {

@@ -2,9 +2,7 @@ package net.threetag.palladium.client.screen.power;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
@@ -12,12 +10,10 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -31,12 +27,10 @@ import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladiumcore.event.ScreenEvents;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PowersScreen extends Screen {
@@ -209,8 +203,10 @@ public class PowersScreen extends Screen {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         if (this.selectedTab != null && this.overlayScreen != null) {
+            guiGraphics.pose().translate(0, 0, 500);
             this.overlayScreen.render(guiGraphics, mouseX, mouseY, partialTick);
             this.selectedTab.fade = Mth.clamp(this.selectedTab.fade + 0.02F, 0, 0.5F);
+            guiGraphics.pose().translate(0, 0, -500);
         }
     }
 
@@ -238,15 +234,7 @@ public class PowersScreen extends Screen {
             guiGraphics.drawCenteredString(this.font, NO_ADVANCEMENTS_LABEL, i, offsetY + WINDOW_INSIDE_Y + 56 - 4, -1);
             guiGraphics.drawCenteredString(this.font, VERY_SAD_LABEL, i, offsetY + WINDOW_INSIDE_Y + WINDOW_INSIDE_HEIGHT - 9, -1);
         } else {
-//            PoseStack poseStack2 = RenderSystem.getModelViewStack();
-//            poseStack2.pushPose();
-//            poseStack2.translate(offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y, 0.0D);
-//            RenderSystem.applyModelViewMatrix();
             tab.drawContents(guiGraphics, offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y);
-//            poseStack2.popPose();
-//            RenderSystem.applyModelViewMatrix();
-//            RenderSystem.depthFunc(GL11.GL_LEQUAL);
-//            RenderSystem.disableDepthTest();
         }
     }
 
