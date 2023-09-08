@@ -116,6 +116,7 @@ public class PalladiumForge {
         e.getGenerator().addProvider(e.includeServer(), new PalladiumItemTagsProvider(output, e.getLookupProvider(), e.getExistingFileHelper()));
         e.getGenerator().addProvider(e.includeServer(), new PalladiumRecipeProvider(output));
         e.getGenerator().addProvider(e.includeServer(), new PalladiumLootTableProvider(output));
+        e.getGenerator().addProvider(e.includeServer(), new PalladiumWorldGenProvider(output, e.getLookupProvider()));
 
         e.getGenerator().addProvider(e.includeClient(), new PalladiumBlockStateProvider(output, e.getExistingFileHelper()));
         e.getGenerator().addProvider(e.includeClient(), new PalladiumItemModelProvider(output, e.getExistingFileHelper()));

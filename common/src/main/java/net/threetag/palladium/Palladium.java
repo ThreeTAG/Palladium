@@ -61,8 +61,6 @@ public class Palladium {
         PowerProviders.PROVIDERS.register();
         IconSerializers.ICON_SERIALIZERS.register();
         PalladiumFeatures.FEATURES.register();
-//        PalladiumConfiguredFeatures.CONFIGURED_FEATURES.register();
-//        PalladiumPlacedFeatures.PLACED_FEATURES.register();
         PalladiumAttributes.ATTRIBUTES.register();
         EntityEffects.EFFECTS.register();
         PalladiumEntityTypes.ENTITIES.register();

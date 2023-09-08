@@ -47,7 +47,7 @@ public class UndergroundMeteoriteFeature extends Feature<OreConfiguration> {
                         }
                     }
 
-                    if (level.isEmptyBlock(p) && PalladiumBlocks.HEART_SHAPED_HERB.get().defaultBlockState().canSurvive(level, p)) {
+                    if (rand.nextBoolean() && level.isEmptyBlock(p) && PalladiumBlocks.HEART_SHAPED_HERB.get().defaultBlockState().canSurvive(level, p)) {
                         level.setBlock(p, PalladiumBlocks.HEART_SHAPED_HERB.get().defaultBlockState(), 2);
                     }
                 }
