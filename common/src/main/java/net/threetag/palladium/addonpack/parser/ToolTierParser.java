@@ -88,7 +88,7 @@ public class ToolTierParser extends SimpleJsonResourceReloadListener {
 
     public static HTMLBuilder documentationBuilder() {
         JsonDocumentationBuilder builder = new JsonDocumentationBuilder()
-                .setDescription("Each tool type goes into a seperate file into the 'addon/[namespace]/tool_types' folder, which can then be used for custom tools (swords, pickaxes, etc.).");
+                .setDescription("Each tool type goes into a seperate file into the 'addon/[namespace]/tool_tiers' folder, which can then be used for custom tools (swords, pickaxes, etc.).");
 
         builder.addProperty("level", Integer.class)
                 .description("Determines the mining level and what blocks can be harvested. For reference: iron has 2, diamond has 3. So obsidian can only be mined with tools with the level 3 or above, thats why you need a diamond pickaxe for it")
