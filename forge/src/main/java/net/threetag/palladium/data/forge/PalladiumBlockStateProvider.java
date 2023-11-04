@@ -37,20 +37,6 @@ public class PalladiumBlockStateProvider extends BlockStateProvider {
         this.simpleBlock(PalladiumBlocks.RAW_LEAD_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get());
-        this.simpleBlock(PalladiumBlocks.SOLAR_PANEL.get(), models()
-                .withExistingParent("solar_panel", BLOCK_FOLDER + "/block")
-                .texture("particle", new ResourceLocation(Palladium.MOD_ID, "block/solar_panel_top"))
-                .texture("top", new ResourceLocation(Palladium.MOD_ID, "block/solar_panel_top"))
-                .texture("side", new ResourceLocation(Palladium.MOD_ID, "block/solar_panel_side"))
-                .texture("bottom", new ResourceLocation(Palladium.MOD_ID, "block/solar_panel_bottom"))
-                .element().from(0, 0, 0).to(16, 3, 16).allFaces((direction, faceBuilder) -> {
-                    switch (direction) {
-                        case NORTH, EAST, WEST, SOUTH -> faceBuilder.texture("#side").end();
-                        case UP -> faceBuilder.texture("#top").end();
-                        case DOWN -> faceBuilder.texture("#bottom").end();
-                    }
-                }).end()
-        );
         this.simpleBlock(PalladiumBlocks.HEART_SHAPED_HERB.get(), models().cross("heart_shaped_herb", new ResourceLocation(Palladium.MOD_ID, "block/heart_shaped_herb")));
         this.simpleBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB.get(), models().withExistingParent("potted_heart_shaped_herb", BLOCK_FOLDER + "/flower_pot_cross").texture("plant", new ResourceLocation(Palladium.MOD_ID, "block/heart_shaped_herb")));
     }

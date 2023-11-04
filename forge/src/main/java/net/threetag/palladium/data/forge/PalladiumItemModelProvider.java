@@ -36,7 +36,6 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.defaultBlockItem(PalladiumItems.RAW_TITANIUM_BLOCK);
         this.defaultBlockItem(PalladiumItems.RAW_VIBRANIUM_BLOCK);
 
-        this.defaultBlockItem(PalladiumItems.SOLAR_PANEL);
         this.singleTexture(PalladiumItems.HEART_SHAPED_HERB.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(Palladium.MOD_ID, "block/heart_shaped_herb"));
 
         this.defaultItem(PalladiumItems.RAW_LEAD);

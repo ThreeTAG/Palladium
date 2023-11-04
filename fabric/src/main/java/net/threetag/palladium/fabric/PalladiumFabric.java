@@ -14,16 +14,13 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.addonpack.AddonPackManager;
-import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.compat.geckolib.fabric.GeckoLibCompatImpl;
 import net.threetag.palladium.compat.trinkets.fabric.TrinketsCompat;
-import net.threetag.palladium.energy.IBlockEntityEnergyContainer;
 import net.threetag.palladium.entity.fabric.ForgeAttributes;
 import net.threetag.palladium.loot.LootTableModificationManager;
 import net.threetag.palladium.world.PalladiumPlacedFeatures;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
 import net.threetag.palladiumcore.util.Platform;
-import team.reborn.energy.api.EnergyStorage;
 
 import java.util.function.Function;
 
@@ -53,7 +50,7 @@ public class PalladiumFabric implements ModInitializer {
     }
 
     private static void registerEnergyHandlers() {
-        EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> (EnergyStorage) ((IBlockEntityEnergyContainer) blockEntity).getEnergyStorage(direction), PalladiumBlockEntityTypes.SOLAR_PANEL.get());
+
     }
 
     private static void registerEvents() {

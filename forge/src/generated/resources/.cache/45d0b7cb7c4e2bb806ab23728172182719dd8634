@@ -1,4 +1,4 @@
-// 1.19.2	2022-12-30T22:40:39.2827132	Palladium Block States: palladium
+// 1.19.2	2023-11-04T17:54:02.5132938	Palladium Block States: palladium
 b4b72c70e241197eb58378e61b88d571277a4685 assets/palladium/blockstates/deepslate_lead_ore.json
 e7e5614a1444291fdd5031b4798308b6e9319375 assets/palladium/blockstates/deepslate_redstone_flux_crystal_geode.json
 7ecd5958c25b28388dc08dd2543dcdb5abdd0c6a assets/palladium/blockstates/heart_shaped_herb.json
@@ -13,7 +13,6 @@ d9e853fd5aeff0217943fd9cf91791c30bfce39b assets/palladium/blockstates/raw_titani
 010c7041b32f68d8ae2bf5890de7c9e1d9fd8335 assets/palladium/blockstates/redstone_flux_crystal_cluster.json
 d6830761c1ab0833c6982eab3ac4b6884d89853b assets/palladium/blockstates/redstone_flux_crystal_geode.json
 e8f2e1966887492ace616709a160188f08dd764b assets/palladium/blockstates/small_redstone_flux_crystal_bud.json
-0ac865fa63bc773977f41ddad6b85b832e87717f assets/palladium/blockstates/solar_panel.json
 f0b1bbef536f462e9e7b1b0c34961e57567bd5a9 assets/palladium/blockstates/titanium_ore.json
 08eda07f668122dd70aacb6825d571e374256163 assets/palladium/blockstates/vibranium_block.json
 7620c0f6b4e87bea68b87f9050423ebc041cd4e3 assets/palladium/blockstates/vibranium_ore.json
@@ -31,7 +30,6 @@ f34625dbf876c7ecf918e2e5bf3f825ea128ee2d assets/palladium/models/block/raw_lead_
 845bbe8795783081bc5dc7e3c0f817050f5d2fef assets/palladium/models/block/redstone_flux_crystal_cluster.json
 0a08b96a20c5074c0a6092b8ff474370b122e57e assets/palladium/models/block/redstone_flux_crystal_geode.json
 15e7eb64017774c5d88152fc50e2c79e31876a7a assets/palladium/models/block/small_redstone_flux_crystal_bud.json
-e97a15c3dc64c5c67a6d8ea7041864566800d13f assets/palladium/models/block/solar_panel.json
 4dfee3656527b3eae12f3323b6ebd6317a5b5394 assets/palladium/models/block/titanium_ore.json
 c55fbadd219cf28ee84f700e348c17489e377624 assets/palladium/models/block/vibranium_block.json
 c5c6bd85abfc537056ce2a08b06d5bd898e174aa assets/palladium/models/block/vibranium_ore.json
