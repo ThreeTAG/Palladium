@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
@@ -16,9 +15,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ParsedAnimationController<T extends GeoAnimatable> {
@@ -49,11 +46,19 @@ public class ParsedAnimationController<T extends GeoAnimatable> {
     }
 
     public AnimationController<T> createController(T animatable) {
+        AnimationController<T> controller;
+
         if (this.preset != null) {
-            return this.preset.createController(animatable);
+            controller = this.preset.createController(animatable);
         } else {
-            return new AnimationController<>(animatable, this.name, this.transitionTickTime, animationState -> animationState.setAndContinue(this.rawAnimation));
+            controller = new AnimationController<>(animatable, this.name, this.transitionTickTime, animationState -> animationState.setAndContinue(this.rawAnimation));
         }
+
+        for (Map.Entry<String, RawAnimation> e : this.triggers.entrySet()) {
+            controller.triggerableAnim(e.getKey(), e.getValue()).receiveTriggeredAnimations();
+        }
+
+        return controller;
     }
 
     @NotNull
@@ -90,7 +95,9 @@ public class ParsedAnimationController<T extends GeoAnimatable> {
     public static RawAnimation animationFromJson(JsonElement element) {
         var animation = RawAnimation.begin();
 
-        if (element.isJsonPrimitive()) {
+        if (element == null || element.isJsonNull()) {
+            return animation;
+        } else if (element.isJsonPrimitive()) {
             animation.thenPlay(element.getAsString());
         } else {
             var jsonArray = GsonHelper.convertToJsonArray(element, "animation");
@@ -108,7 +115,7 @@ public class ParsedAnimationController<T extends GeoAnimatable> {
                 } else if (type.equalsIgnoreCase("then_play_and_hold")) {
                     animation.thenPlayAndHold(GsonHelper.getAsString(step, "animation"));
                 } else if (type.equalsIgnoreCase("then_play_x_times")) {
-                    animation.thenPlayXTimes(GsonHelper.getAsString(step, "animation"), GsonHelper.getAsInt(step, "ticks"));
+                    animation.thenPlayXTimes(GsonHelper.getAsString(step, "animation"), GsonHelper.getAsInt(step, "play_count"));
                 }
             }
         }

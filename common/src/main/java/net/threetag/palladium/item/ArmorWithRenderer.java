@@ -1,6 +1,5 @@
 package net.threetag.palladium.item;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -13,6 +12,10 @@ public interface ArmorWithRenderer {
 
     default ResourceLocation getArmorRendererFile() {
         return BuiltInRegistries.ITEM.getKey((Item) this);
+    }
+
+    default boolean hasCustomRenderer() {
+        return true;
     }
 
 }

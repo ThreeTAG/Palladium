@@ -46,7 +46,7 @@ configurations {
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    forge "net.neoforged:forge:${rootProject.neoforge_version}"
     modApi "net.threetag:PalladiumCore-forge:${rootProject.palladiumcore_version}"
     include "net.threetag:PalladiumCore-forge:${rootProject.palladiumcore_version}"
 
@@ -54,7 +54,7 @@ dependencies {
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-forge:${rootProject.player_anim_version}")
 
     // GeckoLib
-    modImplementation("software.bernie.geckolib:geckolib-forge-1.20:${rootProject.geckolib_version}")
+    modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:${rootProject.geckolib_version}")
 
     // JEI
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"

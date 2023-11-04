@@ -1,9 +1,6 @@
 package net.threetag.palladium.compat.geckolib.armor;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
+import com.google.gson.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ArmorItem;
@@ -11,6 +8,8 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.threetag.palladium.addonpack.parser.ArmorMaterialParser;
 import net.threetag.palladium.addonpack.parser.ItemParser;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
+import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.item.AddonArmorItem;
@@ -23,6 +22,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +30,9 @@ public class AddonGeoArmorItem extends AddonArmorItem implements GeoItem {
 
     public List<ParsedAnimationController<GeoItem>> animationControllers;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    public ResourceLocation modelPath;
+    public TextureReference texturePath;
+    public ResourceLocation animationsPath;
 
     public AddonGeoArmorItem(ArmorMaterial materialIn, ArmorItem.Type type, Properties builder) {
         super(materialIn, type, builder);
@@ -48,6 +51,11 @@ public class AddonGeoArmorItem extends AddonArmorItem implements GeoItem {
         return this.cache;
     }
 
+    @Override
+    public boolean hasCustomRenderer() {
+        return false;
+    }
+
     public static class Parser implements ItemParser.ItemTypeSerializer {
 
         @Override
@@ -64,7 +72,13 @@ public class AddonGeoArmorItem extends AddonArmorItem implements GeoItem {
                 throw new JsonParseException("Armor slot must be one of the following: " + Arrays.toString(Arrays.stream(ArmorItem.Type.values()).map(ArmorItem.Type::getName).toArray()));
             }
 
-            return new AddonGeoArmorItem(armorMaterial, type, properties);
+            var item = GeckoLibCompat.createArmorItem(armorMaterial, type, properties);
+            item.modelPath = GsonUtil.getAsResourceLocation(json, "armor_model", null);
+            item.texturePath = GsonUtil.getAsTextureReference(json, "armor_texture", null);
+            item.animationsPath = GsonUtil.getAsResourceLocation(json, "armor_animations", null);
+            item.animationControllers = json.has("animation_controller") ? GsonUtil.fromListOrPrimitive(json.get("animation_controller"), el -> ParsedAnimationController.controllerFromJson(el.getAsJsonObject())) : new ArrayList<>();
+
+            return item;
         }
 
         @Override
@@ -79,28 +93,30 @@ public class AddonGeoArmorItem extends AddonArmorItem implements GeoItem {
                     .description("Armor material, which defines certain characteristics about the armor. Open armor_materials.html for seeing how to make custom ones. Possible values: " + Arrays.toString(ArmorMaterialParser.getIds().toArray(new ResourceLocation[0])))
                     .required().exampleJson(new JsonPrimitive("minecraft:diamond"));
 
-            builder.addProperty("armor_texture", ResourceLocation.class)
-                    .description("Armor texture (rendered on the player when wearing it). Simple texture file required")
-                    .required().exampleJson(new JsonPrimitive("example:textures/models/armor/example_armor.png"));
-
             builder.addProperty("armor_model", ResourceLocation.class)
-                    .description("Path to geckolib model file. Required bones: [armorHead, armorBody, armorRightArm, armorLeftArm, armorRightLeg, armorLeftLeg, armorRightBoot, armorLeftBoot]")
-                    .required().exampleJson(new JsonPrimitive("palladium:geo/test_model.geo.json"));
+                    .description("Path to geckolib model file. Required bones: [armorHead, armorBody, armorRightArm, armorLeftArm, armorRightLeg, armorLeftLeg, armorRightBoot, armorLeftBoot].")
+                    .fallback(null).exampleJson(new JsonPrimitive("palladium:test_model.geo.json"));
 
-            builder.addProperty("armor_animation_file", ResourceLocation.class)
-                    .description("Path to geckolib model animation file.")
-                    .fallbackObject(null).exampleJson(new JsonPrimitive("palladium:animations/test_model.animation.json"));
+            builder.addProperty("armor_texture", TextureReference.class)
+                    .description("Location of the armor texture. Can also use a dynamic texture using #.")
+                    .fallback(null).exampleJson(new JsonPrimitive("example:textures/models/armor/example_armor.png"));
+
+            builder.addProperty("armor_animations", ResourceLocation.class)
+                    .description("ID of the animations that will be used.")
+                    .fallback(null).exampleJson(new JsonPrimitive("palladium:animations/test_animation.animation.json"));
 
             var animationsExample = new JsonArray();
-            animationsExample.add("main");
             var extendedC = new JsonObject();
-            extendedC.addProperty("name", "second_controller");
-            extendedC.addProperty("initial_animation", "animation_name");
-            extendedC.addProperty("transition_ticks", 1);
+            extendedC.addProperty("name", "controller_name");
+            extendedC.addProperty("animation", "animation_name");
+            extendedC.addProperty("transition_tick_time", 10);
+            var triggers = new JsonObject();
+            triggers.addProperty("trigger_name", "animation_name");
+            extendedC.add("triggers", triggers);
             animationsExample.add(extendedC);
             builder.addProperty("armor_animation_controllers", List.class)
-                    .description("Names of controllers for the animation. Leave it empty to just have one main one. Add multiple to play multiple animations at the same time.")
-                    .fallbackObject("main").exampleJson(animationsExample);
+                    .description("Names of controllers for the animation.")
+                    .fallbackObject(null).exampleJson(animationsExample);
 
             builder.addProperty("hide_second_player_layer", Boolean.class)
                     .description("If enabled, the second player layer will be hidden when worn (only on the corresponding body part)")

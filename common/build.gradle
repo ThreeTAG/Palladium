@@ -17,7 +17,7 @@ dependencies {
     modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_anim_version}")
 
     // GeckoLib
-    modImplementation("software.bernie.geckolib:geckolib-forge-1.20:${rootProject.geckolib_version}")
+    modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:${rootProject.geckolib_version}")
 
     // KubeJS
     modCompileOnly "dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}"

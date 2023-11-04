@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
@@ -30,16 +29,14 @@ import net.threetag.palladiumcore.registry.DeferredRegister;
 import software.bernie.geckolib.GeckoLib;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.object.Color;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@SuppressWarnings("ALL")
+@SuppressWarnings({"unchecked", "rawtypes", "ConstantValue"})
 public class GeckoLibCompatImpl {
 
     public static void init() {
@@ -55,7 +52,7 @@ public class GeckoLibCompatImpl {
 
     @Environment(EnvType.CLIENT)
     public static void renderFirstPerson(AbstractClientPlayer player, ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, ModelPart rendererArm, boolean rightArm) {
-        if (stack.getItem() instanceof ArmorItemImpl gecko && stack.getItem() instanceof ArmorItem armorItem) {
+        if (stack.getItem() instanceof ArmorItemImpl gecko) {
             var rendererProvider = gecko.getRenderProvider().get();
 
             if (rendererProvider instanceof RenderProvider provider) {
@@ -82,7 +79,6 @@ public class GeckoLibCompatImpl {
                     float blue = renderColor.getBlueFloat();
                     float alpha = renderColor.getAlphaFloat();
                     int packedOverlay = renderer.getPackedOverlay(gecko, 0);
-                    BakedGeoModel model = renderer.getGeoModel().getBakedModel(renderer.getGeoModel().getModelResource(gecko));
 
                     if (renderType == null)
                         renderType = renderer.getRenderType(gecko, renderer.getTextureLocation(gecko), bufferSource, partialTick);
@@ -123,7 +119,7 @@ public class GeckoLibCompatImpl {
                 @Override
                 public HumanoidModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<LivingEntity> original) {
                     if (this.renderer == null)
-                        this.renderer = new GeckoArmorRenderer(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(itemStack.getItem())));
+                        this.renderer = new GeckoArmorRenderer((AddonGeoArmorItem) itemStack.getItem());
 
                     this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
 

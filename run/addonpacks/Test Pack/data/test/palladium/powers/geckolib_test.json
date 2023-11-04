@@ -11,9 +11,10 @@
     "animation_extend_arm": {
       "type": "geckolib:render_layer_animation",
       "hidden": false,
+      "hidden_in_bar": false,
       "render_layer": "test:geckolib_test",
-      "controller": "extend_arm",
-      "animation": "animation.model.extend_arm",
+      "controller": "triggerable_controller",
+      "animation_trigger": "test_trigger",
       "conditions": {
         "enabling": {
           "type": "palladium:action"

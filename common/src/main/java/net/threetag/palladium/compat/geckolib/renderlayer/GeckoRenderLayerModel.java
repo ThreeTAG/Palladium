@@ -17,7 +17,9 @@ import org.joml.Matrix4f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.texture.AnimatableTexture;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.util.RenderUtils;
@@ -69,6 +71,11 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         };
     }
 
+    @Override
+    public long getInstanceId(GeckoLayerState animatable) {
+        return GeoRenderer.super.getInstanceId(animatable) + this.currentEntity.getId();
+    }
+
     public void setCurrentRenderingFields(GeckoLayerState state, Entity entity, HumanoidModel<?> baseModel) {
         this.currentState = state;
         this.baseModel = baseModel;
@@ -97,8 +104,21 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         RenderType renderType = getRenderType(this.currentState, getTextureLocation(this.currentState), bufferSource, partialTick);
         buffer = ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, false, false);
 
+        poseStack.pushPose();
+        poseStack.translate(0, 24 / 16f, 0);
+        poseStack.scale(-1, -1, 1);
+
+        AnimationState<GeckoLayerState> animationState = new AnimationState<>(this.currentState, 0, 0, partialTick, false);
+        long instanceId = getInstanceId(this.currentState);
+
+        animationState.setData(DataTickets.TICK, this.currentState.getTick(this.currentEntity));
+        animationState.setData(DataTickets.ENTITY, this.currentEntity);
+        this.modelProvider.addAdditionalStateData(this.currentState, instanceId, animationState::setData);
+        this.modelProvider.handleAnimations(this.currentState, instanceId, animationState);
+
         defaultRender(poseStack, this.currentState, bufferSource, null, buffer,
                 0, partialTick, packedLight);
+        poseStack.popPose();
     }
 
     protected void grabRelevantBones(BakedGeoModel bakedModel) {
@@ -198,7 +218,8 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
             RenderUtils.matchModelPartRot(headPart, this.head);
             copyScaleAndVisibility(headPart, this.head);
             this.head.updatePosition(headPart.x, -headPart.y, headPart.z);
-        };
+        }
+        ;
 
         if (this.body != null) {
             ModelPart bodyPart = baseModel.body;

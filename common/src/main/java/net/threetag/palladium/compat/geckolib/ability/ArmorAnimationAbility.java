@@ -1,15 +1,10 @@
 package net.threetag.palladium.compat.geckolib.ability;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.compat.geckolib.armor.AddonGeoArmorItem;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.ability.Ability;
@@ -18,11 +13,7 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.ResourceLocationProperty;
 import net.threetag.palladium.util.property.StringProperty;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Objects;
-
-@SuppressWarnings("unchecked")
 public class ArmorAnimationAbility extends Ability {
 
     public static final PalladiumProperty<ResourceLocation> ITEM = new ResourceLocationProperty("item").configurable("ID of the gecko armor item that must be worn currently.");
@@ -50,7 +41,7 @@ public class ArmorAnimationAbility extends Ability {
                     for (EquipmentSlot slot : EquipmentSlot.values()) {
                         if (slot.getType() == EquipmentSlot.Type.ARMOR) {
                             if (entity.getItemBySlot(slot).is(item) && !entity.getItemBySlot(slot).isEmpty()) {
-                                long geoId = GeoItem.getOrAssignId(entity.getItemBySlot(slot), (ServerLevel) entity.level());
+                                long geoId = GeoItem.getId(entity.getItemBySlot(slot)) + entity.getId();
                                 geo.triggerAnim(entity, geoId, entry.getProperty(CONTROLLER), entry.getProperty(ANIMATION_TRIGGER));
                             }
                         }

@@ -1,10 +1,16 @@
 package net.threetag.palladium.compat.geckolib.forge;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,20 +22,22 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.threetag.palladium.compat.geckolib.ability.ArmorAnimationAbility;
 import net.threetag.palladium.compat.geckolib.ability.RenderLayerAnimationAbility;
 import net.threetag.palladium.compat.geckolib.armor.AddonGeoArmorItem;
 import net.threetag.palladium.compat.geckolib.armor.GeckoArmorRenderer;
+import net.threetag.palladium.mixin.client.GeoArmorRendererInvoker;
 import net.threetag.palladium.power.ability.Ability;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.GeckoLib;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.object.Color;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
-@SuppressWarnings({"rawtypes"})
+@SuppressWarnings({"rawtypes", "ConstantValue"})
 public class GeckoLibCompatImpl {
 
     public static void init() {
@@ -46,61 +54,54 @@ public class GeckoLibCompatImpl {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void renderFirstPerson(AbstractClientPlayer player, ItemStack stack, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, ModelPart rendererArm, boolean rightArm) {
-//        if (stack.getItem() instanceof PackGeckoArmorItem gecko && stack.getItem() instanceof ArmorItem armorItem) {
-//            var renderer = GeoArmorRenderer.getRenderer(armorItem.getClass(), player);
-//
-//            if (renderer != null) {
-//                renderer.setCurrentItem(player, stack, EquipmentSlot.CHEST);
-//
-//                (rightArm ? renderer.rightArm : renderer.leftArm).copyFrom(rendererArm);
-//                renderer.attackTime = 0.0F;
-//                renderer.crouching = false;
-//                renderer.swimAmount = 0.0F;
-//                renderer.rightArm.xRot = 0.0F;
-//                renderer.leftArm.xRot = 0.0F;
-//
-//                GeoModel model = renderer.getGeoModelProvider().getModel(renderer.getGeoModelProvider().getModelResource(armorItem));
-//
-//                model.getBone(rightArm ? renderer.rightArmBone : renderer.leftArmBone).ifPresent(bone -> {
-//                    AnimationEvent<?> animationEvent = new AnimationEvent<>(gecko, 0, 0,
-//                            Minecraft.getInstance().getFrameTime(), false,
-//                            List.of());
-//
-//                    poseStack.pushPose();
-//                    poseStack.translate(0, 24 / 16F, 0);
-//                    poseStack.scale(-1, -1, 1);
-//
-//                    renderer.getGeoModelProvider().setCustomAnimations(gecko, renderer.getInstanceId(armorItem), animationEvent);
-//                    renderer.setCurrentModelRenderCycle(EModelRenderCycle.INITIAL);
-//
-//                    if (renderer instanceof GeoArmorRendererInvoker invoker) {
-//                        invoker.invokeApplyBaseTransformations();
-//                    }
-//
-//                    RenderSystem.setShaderTexture(0, renderer.getTextureLocation(armorItem));
-//
-//                    var buffer1 = buffer.getBuffer(renderer.getRenderType(gecko, Minecraft.getInstance().getFrameTime(), poseStack, buffer, null, combinedLight,
-//                            renderer.getTextureLocation(armorItem)));
-//                    Color renderColor = renderer.getRenderColor(armorItem, 0, poseStack, null, buffer1, combinedLight);
-//
-//                    renderer.setCurrentRTB(buffer);
-//                    renderer.renderEarly(armorItem, poseStack, Minecraft.getInstance().getFrameTime(), buffer, buffer1, combinedLight,
-//                            OverlayTexture.NO_OVERLAY, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-//                            renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-//
-//                    renderer.renderLate(armorItem, poseStack, Minecraft.getInstance().getFrameTime(), buffer, buffer1, combinedLight,
-//                            OverlayTexture.NO_OVERLAY, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-//                            renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-//                    renderer.renderRecursively(bone,
-//                            poseStack, buffer1, combinedLight, OverlayTexture.NO_OVERLAY, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-//                            renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-//                    renderer.setCurrentModelRenderCycle(EModelRenderCycle.REPEATED);
-//
-//                    poseStack.popPose();
-//                });
-//            }
-//        }
+    public static void renderFirstPerson(AbstractClientPlayer player, ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, ModelPart rendererArm, boolean rightArm) {
+        if (stack.getItem() instanceof ArmorItemImpl gecko) {
+            var rendererProvider = IClientItemExtensions.of(stack);
+
+            PlayerModel origModel = ((PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player)).getModel();
+            GeckoArmorRenderer<AddonGeoArmorItem> renderer = (GeckoArmorRenderer<AddonGeoArmorItem>) rendererProvider.getHumanoidArmorModel(player, stack, EquipmentSlot.CHEST, origModel);
+            var bone = (rightArm ? renderer.getRightArmBone() : renderer.getLeftArmBone());
+
+            if (bone != null) {
+                if (rendererProvider instanceof GeoArmorRendererInvoker invoker) {
+                    invoker.invokeApplyBaseTransformations(origModel);
+                }
+
+                var partialTick = Minecraft.getInstance().getFrameTime();
+                RenderType renderType = renderer.getRenderType(gecko, renderer.getTextureLocation(gecko), bufferSource, partialTick);
+                VertexConsumer buffer = ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, false, stack.hasFoil());
+
+                poseStack.pushPose();
+                poseStack.translate(0, 24 / 16F, 0);
+                poseStack.scale(-1, -1, 1);
+
+                Color renderColor = renderer.getRenderColor(gecko, partialTick, combinedLight);
+                float red = renderColor.getRedFloat();
+                float green = renderColor.getGreenFloat();
+                float blue = renderColor.getBlueFloat();
+                float alpha = renderColor.getAlphaFloat();
+                int packedOverlay = renderer.getPackedOverlay(gecko, 0);
+
+                if (renderType == null)
+                    renderType = renderer.getRenderType(gecko, renderer.getTextureLocation(gecko), bufferSource, partialTick);
+
+                if (buffer == null)
+                    buffer = bufferSource.getBuffer(renderType);
+
+                AnimationState<AddonGeoArmorItem> animationState = new AnimationState<>(gecko, 0, 0, partialTick, false);
+                long instanceId = renderer.getInstanceId(gecko);
+
+                animationState.setData(DataTickets.TICK, gecko.getTick(player));
+                animationState.setData(DataTickets.ITEMSTACK, stack);
+                animationState.setData(DataTickets.ENTITY, player);
+                animationState.setData(DataTickets.EQUIPMENT_SLOT, EquipmentSlot.CHEST);
+                renderer.getGeoModel().addAdditionalStateData(gecko, instanceId, animationState::setData);
+                renderer.getGeoModel().handleAnimations(gecko, instanceId, animationState);
+                renderer.renderRecursively(poseStack, gecko, bone, renderType, bufferSource, buffer, false, partialTick, combinedLight, packedOverlay, red, green, blue, alpha);
+
+                poseStack.popPose();
+            }
+        }
     }
 
     public static class ArmorItemImpl extends AddonGeoArmorItem {
@@ -117,12 +118,13 @@ public class GeckoLibCompatImpl {
                 @Override
                 public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
                     if (this.renderer == null)
-                        this.renderer = new GeckoArmorRenderer(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(itemStack.getItem())));
+                        this.renderer = new GeckoArmorRenderer((AddonGeoArmorItem) itemStack.getItem());
 
                     this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
 
                     return this.renderer;
                 }
+
             });
         }
     }

@@ -3,12 +3,19 @@
   "model": "test:geo/gecko_model_test.geo.json",
   "texture": "test:textures/models/gecko_model_test.png",
   "animation_file": "test:animations/gecko_model_test.animation.json",
-  "animation_controllers": [
+  "animation_controller": [
     {
-      "name": "looping",
-      "initial_animation": "animation.model.loop"
+      "name": "looping_controller",
+      "transition_tick_time": 10,
+      "animation": "animation.model.loop"
     },
-    "extend_arm"
+    {
+      "name": "triggerable_controller",
+      "transition_tick_time": 10,
+      "triggers": {
+        "test_trigger": "animation.model.extend_arm"
+      }
+    }
   ],
   "bones": {
     "head": "armorHead",

@@ -93,6 +93,7 @@
 		},
 		"animation.model.extend_arm": {
 			"animation_length": 0.66667,
+			"loop": false,
 			"bones": {
 				"armNested": {
 					"position": {

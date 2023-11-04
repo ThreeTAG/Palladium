@@ -40,6 +40,9 @@ allprojects {
     }
 
     repositories {
+        // NeoForge
+        maven { url "https://maven.neoforged.net/releases/" }
+
         // KubeJS / Rhino
         maven {
             // saps.dev Maven (KubeJS and Rhino)

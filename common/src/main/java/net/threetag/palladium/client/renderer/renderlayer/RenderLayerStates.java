@@ -45,6 +45,8 @@ public class RenderLayerStates {
         for (IPackRenderLayer layer : toRemove) {
             this.map.remove(layer);
         }
+
+        this.map.values().forEach(State::tick);
     }
 
     @Nullable

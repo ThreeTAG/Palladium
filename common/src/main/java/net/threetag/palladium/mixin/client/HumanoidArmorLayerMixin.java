@@ -37,7 +37,7 @@ public abstract class HumanoidArmorLayerMixin {
     private void renderArmorPiece(PoseStack poseStack, MultiBufferSource buffer, LivingEntity livingEntity, EquipmentSlot slot, int packedLight, HumanoidModel model, CallbackInfo ci) {
         var item = livingEntity.getItemBySlot(slot);
 
-        if (!item.isEmpty() && item.getItem() instanceof ArmorWithRenderer armorWithRenderer) {
+        if (!item.isEmpty() && item.getItem() instanceof ArmorWithRenderer armorWithRenderer && armorWithRenderer.hasCustomRenderer()) {
             ci.cancel();
 
             if (armorWithRenderer.getCachedArmorRenderer() instanceof ArmorRendererData renderer) {
