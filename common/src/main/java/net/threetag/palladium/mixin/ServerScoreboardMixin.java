@@ -29,6 +29,8 @@ public abstract class ServerScoreboardMixin {
     @Shadow
     public abstract List<Packet<?>> getStopTrackingPackets(Objective objective);
 
+    @Shadow public abstract void startTrackingObjective(Objective objective);
+
     @Inject(method = "setDisplayObjective", at = @At("HEAD"))
     public void setDisplayObjective(int objectiveSlot, @Nullable Objective objective, CallbackInfo ci) {
         var scoreboard = (Scoreboard) (Object) this;
@@ -62,6 +64,13 @@ public abstract class ServerScoreboardMixin {
             }
 
             cir.setReturnValue(packets);
+        }
+    }
+
+    @Inject(method = "onObjectiveAdded", at = @At("RETURN"))
+    public void onObjectiveAdded(Objective objective, CallbackInfo ci) {
+        if (TrackedScoresManager.INSTANCE.isTracked(objective.getName())) {
+            this.startTrackingObjective(objective);
         }
     }
 
