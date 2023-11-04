@@ -1,6 +1,7 @@
 package net.threetag.palladium.util.property;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.event.PalladiumEvents;
 
 import java.util.ArrayList;
@@ -18,11 +19,14 @@ public class PalladiumProperties {
     public static void init() {
         PalladiumEvents.REGISTER_PROPERTY.register(handler -> {
             handler.register(SUPERPOWER_IDS, new ArrayList<>());
-            handler.register(JUMP_KEY_DOWN, false);
-            handler.register(LEFT_KEY_DOWN, false);
-            handler.register(RIGHT_KEY_DOWN, false);
-            handler.register(FORWARD_KEY_DOWN, false);
-            handler.register(BACKWARDS_KEY_DOWN, false);
+
+            if (handler.entity instanceof Player) {
+                handler.register(JUMP_KEY_DOWN, false);
+                handler.register(LEFT_KEY_DOWN, false);
+                handler.register(RIGHT_KEY_DOWN, false);
+                handler.register(FORWARD_KEY_DOWN, false);
+                handler.register(BACKWARDS_KEY_DOWN, false);
+            }
         });
     }
 }

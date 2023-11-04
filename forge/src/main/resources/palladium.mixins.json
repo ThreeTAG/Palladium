@@ -7,9 +7,10 @@
   ],
   "mixins": [
     "CapabilityProviderMixin",
+    "ForgeHooksMixin",
     "IEnergyStorageMixin",
-    "PackTypeMixin",
-    "ForgeHooksMixin"
+    "NetworkManagerMixin",
+    "PackTypeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

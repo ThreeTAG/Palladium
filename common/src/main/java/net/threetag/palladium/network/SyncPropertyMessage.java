@@ -18,7 +18,7 @@ import java.util.Objects;
 public class SyncPropertyMessage extends MessageS2C {
 
     private final int entityId;
-    private final CompoundTag tag;
+    public final CompoundTag tag;
 
     @SuppressWarnings({"rawtypes", "unchecked", "UnnecessaryLocalVariable"})
     public SyncPropertyMessage(int entityId, PalladiumProperty<?> property, Object value) {
