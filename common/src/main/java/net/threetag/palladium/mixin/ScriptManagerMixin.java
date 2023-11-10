@@ -1,15 +1,10 @@
 package net.threetag.palladium.mixin;
 
-import dev.latvian.mods.kubejs.KubeJS;
-import dev.latvian.mods.kubejs.script.ScriptManager;
-import dev.latvian.mods.kubejs.script.ScriptPack;
-import dev.latvian.mods.kubejs.script.ScriptPackInfo;
-import dev.latvian.mods.kubejs.script.ScriptType;
+import dev.latvian.mods.kubejs.script.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.threetag.palladium.addonpack.AddonPackManager;
-import net.threetag.palladium.compat.kubejs.AddonPackScriptFile;
 import net.threetag.palladium.compat.kubejs.AddonPackScriptFileInfo;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -56,16 +51,17 @@ public class ScriptManagerMixin {
                 }
 
                 for (var fileInfo : scriptPack.info.scripts) {
-                    var error = fileInfo.preload(null);
+                    try {
+                        fileInfo.preload(null);
+                        var skip = fileInfo.skipLoading();
 
-                    if (fileInfo.skipLoading()) {
-                        continue;
-                    }
-
-                    if (error == null) {
-                        scriptPack.scripts.add(new AddonPackScriptFile(scriptPack, fileInfo, null));
-                    } else {
-                        KubeJS.LOGGER.error("Failed to pre-load script file " + fileInfo.location + ": " + error);
+                        if (skip.isEmpty()) {
+                            scriptPack.scripts.add(new ScriptFile(scriptPack, fileInfo, null));
+                        } else {
+                            scriptType.console.info("Skipped " + fileInfo.location + ": " + skip);
+                        }
+                    } catch (Throwable error) {
+                        scriptType.console.error("Failed to pre-load script file " + fileInfo.location + ": " + error);
                     }
                 }
 
