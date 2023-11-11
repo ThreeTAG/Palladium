@@ -20,6 +20,7 @@ import net.threetag.palladium.item.AddonItem;
 import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.item.PalladiumCreativeModeTabs;
 import net.threetag.palladium.util.PlayerSlot;
+import net.threetag.palladium.util.RegistrySynonymsHandler;
 import net.threetag.palladium.util.Utils;
 import org.jetbrains.annotations.Nullable;
 
@@ -80,7 +81,7 @@ public class ItemBuilder extends AddonBuilder<Item> {
         if (this.attributeModifiers != null) {
             for (PlayerSlot slot : this.attributeModifiers.keySet()) {
                 for (ResourceLocation attributeId : this.attributeModifiers.get(slot).keySet()) {
-                    Attribute attribute = Registry.ATTRIBUTE.get(attributeId);
+                    Attribute attribute = Registry.ATTRIBUTE.get(RegistrySynonymsHandler.getReplacement(Registry.ATTRIBUTE, attributeId));
 
                     if (attribute != null) {
                         for (AttributeModifier attributeModifier : this.attributeModifiers.get(slot).get(attributeId)) {
