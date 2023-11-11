@@ -69,5 +69,6 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> DAY = CONDITION_SERIALIZERS.register("day", DayCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> NIGHT = CONDITION_SERIALIZERS.register("night", NightCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IN_ACCESSORY_SLOT_MENU = CONDITION_SERIALIZERS.register("in_accessory_slot_menu", InAccessorySlotMenuCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> HAS_EFFECT = CONDITION_SERIALIZERS.register("has_effect", HasEffectCondition.Serializer::new);
 
 }

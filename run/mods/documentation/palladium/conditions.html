@@ -119,6 +119,10 @@ false</a>
 float_property</a>
 </li>
 <li>
+<a href="#palladium:has_effect">
+has_effect</a>
+</li>
+<li>
 <a href="#palladium:has_power">
 has_power</a>
 </li>
@@ -273,18 +277,6 @@ true</a>
 <li>
 <a href="#palladium:wears_suit_set">
 wears_suit_set</a>
-</li>
-</ul>
-<h3>
-KubeJS</h3>
-<ul>
-<li>
-<a href="#kubejs:testpack/test_condition">
-testpack/test_condition</a>
-</li>
-<li>
-<a href="#kubejs:testpack/test_condition_with_property">
-testpack/test_condition_with_property</a>
 </li>
 </ul>
 </p>
@@ -1471,6 +1463,50 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:float_property","property":"value","min":0.0,"max":0.0}</pre>
+</div>
+<hr>
+
+<div id="palladium:has_effect">
+<h2>
+has_effect</h2>
+<p>
+Checks if the entity has a (potion) effect.<br><br>Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+effect</td>
+<td>
+Object</td>
+<td>
+ID of the (potion) effect that is being checked for.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:poison</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:has_effect","effect":"minecraft:poison"}</pre>
 </div>
 <hr>
 
@@ -2719,62 +2755,6 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:wears_suit_set","suit_set":"null"}</pre>
-</div>
-<hr>
-
-<div id="kubejs:testpack/test_condition">
-<h2>
-testpack/test_condition</h2>
-<p>
-Applicable for: all</p>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"kubejs:testpack/test_condition"}</pre>
-</div>
-<hr>
-
-<div id="kubejs:testpack/test_condition_with_property">
-<h2>
-testpack/test_condition_with_property</h2>
-<p>
-Applicable for: all</p>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-my_integer</td>
-<td>
-Integer</td>
-<td>
-This is a test integer, defined in a KubeJS script</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"kubejs:testpack/test_condition_with_property","my_integer":0}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {
