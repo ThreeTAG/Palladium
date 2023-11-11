@@ -8,6 +8,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.util.RegistrySynonymsHandler;
 
 import java.util.Objects;
 
@@ -22,7 +23,7 @@ public class RegistryObjectProperty<T> extends PalladiumProperty<T> {
 
     @Override
     public T fromJSON(JsonElement jsonElement) {
-        ResourceLocation id = new ResourceLocation(jsonElement.getAsString());
+        ResourceLocation id = RegistrySynonymsHandler.getReplacement(this.registry, new ResourceLocation(jsonElement.getAsString()));
 
         if (this.registry.containsKey(id)) {
             return this.registry.get(id);
@@ -39,7 +40,7 @@ public class RegistryObjectProperty<T> extends PalladiumProperty<T> {
     @Override
     public T fromNBT(Tag tag, T defaultValue) {
         if (tag instanceof StringTag stringTag) {
-            ResourceLocation id = new ResourceLocation(stringTag.getAsString());
+            ResourceLocation id = RegistrySynonymsHandler.getReplacement(this.registry, new ResourceLocation(stringTag.getAsString()));
 
             if (this.registry.containsKey(id)) {
                 return this.registry.get(id);

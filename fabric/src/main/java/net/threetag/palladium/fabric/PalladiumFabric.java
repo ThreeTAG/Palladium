@@ -16,7 +16,6 @@ import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.compat.geckolib.fabric.GeckoLibCompatImpl;
 import net.threetag.palladium.compat.trinkets.fabric.TrinketsCompat;
-import net.threetag.palladium.entity.fabric.ForgeAttributes;
 import net.threetag.palladium.loot.LootTableModificationManager;
 import net.threetag.palladium.world.PalladiumPlacedFeatures;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
@@ -29,7 +28,6 @@ public class PalladiumFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Palladium.init();
-        ForgeAttributes.init();
         ModLoadingContext.registerConfig(Palladium.MOD_ID, ModConfig.Type.CLIENT, PalladiumConfig.Client.generateConfig());
         ModLoadingContext.registerConfig(Palladium.MOD_ID, ModConfig.Type.SERVER, PalladiumConfig.Server.generateConfig());
 

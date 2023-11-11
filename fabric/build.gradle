@@ -48,6 +48,13 @@ dependencies {
     modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
     include "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
 
+    // PortingLib Stuff
+    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.2.0"))
+    implementation(include("io.github.llamalad7:mixinextras-fabric:0.2.0"))
+    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:attributes:${rootProject.portinglib_version}", {
+        exclude group: "com.github.llamalad7.mixinextras"
+    }))
+
     // Cardinal Components
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_version}"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_components_version}"
