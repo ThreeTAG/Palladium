@@ -21,6 +21,9 @@
     "client": [
       "net.threetag.palladium.fabric.PalladiumFabricClient"
     ],
+    "server": [
+      "net.threetag.palladium.fabric.PalladiumFabricServer"
+    ],
     "condensed_creative": [
       "net.threetag.palladium.compat.condensedcreative.CondensedCreativeCompat"
     ]
