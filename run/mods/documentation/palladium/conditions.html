@@ -79,6 +79,18 @@ animation_timer_ability</a>
 brightness_at_position</a>
 </li>
 <li>
+<a href="#palladium:chat_action">
+chat_action</a>
+</li>
+<li>
+<a href="#palladium:chat_activation">
+chat_activation</a>
+</li>
+<li>
+<a href="#palladium:chat_toggle">
+chat_toggle</a>
+</li>
+<li>
 <a href="#palladium:command_result">
 command_result</a>
 </li>
@@ -806,7 +818,7 @@ Example:</h3>
 <h2>
 activation</h2>
 <p>
-This condition is used to activate the power when a key is pressed or a mouse button is clicked for a certain amount of ticks.<br><br>Applicable for: data</p>
+This condition is used to activate the ability when a key is pressed or a mouse button is clicked for a certain amount of ticks.<br><br>Applicable for: data</p>
 <h3>
 Settings:</h3>
 <table>
@@ -1071,6 +1083,186 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:brightness_at_position","min_brightness":0,"max_brightness":16}</pre>
+</div>
+<hr>
+
+<div id="palladium:chat_action">
+<h2>
+chat_action</h2>
+<p>
+This condition will be active once, when a chat message has been sent.<br><br>Applicable for: data</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+chat_message</td>
+<td>
+String</td>
+<td>
+The chat message to look for, will check case insensitive.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+Hello World</td>
+</tr>
+<tr>
+<td>
+cooldown</td>
+<td>
+Integer</td>
+<td>
+Amount of ticks the ability wont be useable for after using it.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:chat_action","chat_message":"Hello World","cooldown":0}</pre>
+</div>
+<hr>
+
+<div id="palladium:chat_activation">
+<h2>
+chat_activation</h2>
+<p>
+This condition is used to activate the ability when a chat message was sent for a certain amount of ticks.<br><br>Applicable for: data</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+chat_message</td>
+<td>
+String</td>
+<td>
+The chat message to look for, will check case insensitive.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+Hello World</td>
+</tr>
+<tr>
+<td>
+cooldown</td>
+<td>
+Integer</td>
+<td>
+Amount of ticks the ability wont be useable for after using it.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+ticks</td>
+<td>
+Integer</td>
+<td>
+The amount of ticks the ability will be active for</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+60</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:chat_activation","chat_message":"Hello World","cooldown":0,"ticks":60}</pre>
+</div>
+<hr>
+
+<div id="palladium:chat_toggle">
+<h2>
+chat_toggle</h2>
+<p>
+Toggles the ability on and off after a chat message was sent.<br><br>Applicable for: data</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+chat_message</td>
+<td>
+String</td>
+<td>
+The chat message to look for, will check case insensitive.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+Hello World</td>
+</tr>
+<tr>
+<td>
+cooldown</td>
+<td>
+Integer</td>
+<td>
+Amount of ticks the ability can be used for</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:chat_toggle","chat_message":"Hello World","cooldown":0}</pre>
 </div>
 <hr>
 

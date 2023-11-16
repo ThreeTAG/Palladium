@@ -70,5 +70,8 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> NIGHT = CONDITION_SERIALIZERS.register("night", NightCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IN_ACCESSORY_SLOT_MENU = CONDITION_SERIALIZERS.register("in_accessory_slot_menu", InAccessorySlotMenuCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> HAS_EFFECT = CONDITION_SERIALIZERS.register("has_effect", HasEffectCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> CHAT_ACTION = CONDITION_SERIALIZERS.register("chat_action", ChatActionCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> CHAT_ACTIVATION = CONDITION_SERIALIZERS.register("chat_activation", ChatActivationCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> CHAT_TOGGLE = CONDITION_SERIALIZERS.register("chat_toggle", ChatToggleCondition.Serializer::new);
 
 }

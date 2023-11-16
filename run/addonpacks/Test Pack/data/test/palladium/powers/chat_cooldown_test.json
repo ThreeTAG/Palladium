@@ -1,0 +1,51 @@
+{
+  "name": "Chat Cooldown Test",
+  "icon": "minecraft:ice",
+  "abilities": {
+    "action": {
+      "type": "palladium:command",
+      "list_index": 0,
+      "title": "Action",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:chat_action",
+            "chat_message": "Action",
+            "cooldown": 100
+          }
+        ]
+      }
+    },
+    "activation": {
+      "type": "palladium:size",
+      "list_index": 1,
+      "title": "Activation",
+      "scale": 1.2,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:chat_activation",
+            "chat_message": "Activation",
+            "ticks": 100,
+            "cooldown": 200
+          }
+        ]
+      }
+    },
+    "toggle": {
+      "type": "palladium:size",
+      "list_index": 2,
+      "title": "Toggle",
+      "scale": 1.2,
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:chat_toggle",
+            "chat_message": "Toggle",
+            "cooldown": 100
+          }
+        ]
+      }
+    }
+  }
+}

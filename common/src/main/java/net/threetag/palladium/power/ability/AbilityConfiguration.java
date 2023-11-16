@@ -192,6 +192,7 @@ public class AbilityConfiguration {
 
         if (GsonHelper.isValidNode(json, "conditions")) {
             JsonObject conditions = GsonHelper.getAsJsonObject(json, "conditions");
+            boolean withKeyOrChat = false;
             boolean withKey = false;
             CooldownType cooldownType = null;
 
@@ -208,8 +209,8 @@ public class AbilityConfiguration {
                         }
                     }
 
-                    if (condition.needsKey()) {
-                        throw new JsonParseException("Can't have key binding conditions for unlocking!");
+                    if (condition.needsKey() || condition instanceof ChatMessageCondition) {
+                        throw new JsonParseException("Can't have key binding or chat message conditions for unlocking!");
                     }
 
                     if (condition.handlesCooldown()) {
@@ -234,17 +235,20 @@ public class AbilityConfiguration {
                         throw new JsonParseException("Can't have a buyable unlock condition for enabling!");
                     }
 
-                    if (condition.needsKey()) {
-                        if (withKey) {
-                            throw new JsonParseException("Can't have two key binding conditions on one ability!");
+                    if (condition.needsKey() || condition instanceof ChatMessageCondition) {
+                        if (withKeyOrChat) {
+                            throw new JsonParseException("Can't have two key binding or chat message conditions on one ability!");
                         }
-                        withKey = true;
-                        configuration.keyType = condition.getKeyType();
-                        configuration.keyPressType = condition.getKeyPressType();
+                        withKeyOrChat = true;
+                        if(condition.needsKey()) {
+                            withKey = true;
+                            configuration.keyType = condition.getKeyType();
+                            configuration.keyPressType = condition.getKeyPressType();
 
-                        if (condition instanceof KeyCondition key) {
-                            configuration.needsEmptyHand = key.needsEmptyHand();
-                            configuration.allowScrollWhenCrouching = key.allowScrollingWhenCrouching();
+                            if (condition instanceof KeyCondition key) {
+                                configuration.needsEmptyHand = key.needsEmptyHand();
+                                configuration.allowScrollWhenCrouching = key.allowScrollingWhenCrouching();
+                            }
                         }
                     }
 
