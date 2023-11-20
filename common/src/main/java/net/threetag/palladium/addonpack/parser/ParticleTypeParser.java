@@ -3,9 +3,6 @@ package net.threetag.palladium.addonpack.parser;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
@@ -13,10 +10,7 @@ import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.addonpack.builder.AddonBuilder;
 import net.threetag.palladium.addonpack.builder.ParticleTypeBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
-import net.threetag.palladiumcore.registry.client.ParticleProviderRegistry;
 import net.threetag.palladiumcore.util.Platform;
-
-import java.util.function.Supplier;
 
 public class ParticleTypeParser extends AddonParser<ParticleType<?>> {
 
@@ -64,14 +58,12 @@ public class ParticleTypeParser extends AddonParser<ParticleType<?>> {
         return builder;
     }
 
-    @SuppressWarnings({"UnnecessaryLocalVariable", "rawtypes", "unchecked"})
+
     @Override
-    @Environment(EnvType.CLIENT)
     public void postRegister(AddonBuilder<ParticleType<?>> addonBuilder) {
-        if (Platform.isClient() && addonBuilder instanceof ParticleTypeBuilder typeBuilder) {
-            Supplier supplier = addonBuilder;
-            ParticleEngine.SpriteParticleRegistration provider = spriteSet -> new ParticleTypeBuilder.Provider(typeBuilder, spriteSet);
-            ParticleProviderRegistry.register(supplier, provider);
+        if (Platform.isClient()) {
+            ParticleTypeParserClient.registerProvider(addonBuilder);
         }
     }
+
 }
