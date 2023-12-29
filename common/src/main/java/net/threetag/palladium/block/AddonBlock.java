@@ -3,7 +3,6 @@ package net.threetag.palladium.block;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.parser.BlockParser;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 
@@ -39,7 +38,7 @@ public class AddonBlock extends Block implements IAddonBlock {
 
         @Override
         public ResourceLocation getId() {
-            return Palladium.id("default");
+            return BlockParser.FALLBACK_SERIALIZER;
         }
     }
 

@@ -5,7 +5,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.AnimationTimer;
-import net.threetag.palladium.power.ability.AnimationTimerAbility;
 import net.threetag.palladium.util.Easing;
 
 public class AnimationUtil {
@@ -27,9 +26,9 @@ public class AnimationUtil {
     public static float getAnimationTimerAbilityValue(LivingEntity entity, ResourceLocation powerId, String abilityKey, float partialTicks, float start, float end) {
         var entry = AbilityUtil.getEntry(entity, powerId, abilityKey);
 
-        if (entry != null && entry.getConfiguration().getAbility() instanceof AnimationTimerAbility) {
-            var timer = Mth.lerp(partialTicks, entry.getProperty(AnimationTimerAbility.PREV_VALUE), entry.getProperty(AnimationTimerAbility.VALUE));
-            return getInbetweenProgress(timer, start, end);
+        if (entry != null && entry.getConfiguration().getAbility() instanceof AnimationTimer timer) {
+            var val = timer.getAnimationTimer(entry, partialTicks);
+            return getInbetweenProgress(val, start, end);
         }
 
         return 0F;

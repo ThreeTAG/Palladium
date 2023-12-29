@@ -17,12 +17,14 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsUtil;
 import net.threetag.palladium.item.AddonItem;
 import net.threetag.palladium.item.IAddonItem;
 import net.threetag.palladium.item.PalladiumCreativeModeTabs;
 import net.threetag.palladium.util.PlayerSlot;
+import net.threetag.palladium.util.RegistrySynonymsHandler;
 import net.threetag.palladium.util.Utils;
 import net.threetag.palladiumcore.registry.CreativeModeTabRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +36,7 @@ import java.util.Map;
 public class ItemBuilder extends AddonBuilder<Item> {
 
     private final JsonObject json;
-    private ItemParser.ItemTypeSerializer typeSerializer = null;
+    private ResourceLocation typeSerializerId = null;
     private Integer maxStackSize = null;
     private Integer maxDamage = null;
     private Boolean isFireResistant = null;
@@ -70,14 +72,24 @@ public class ItemBuilder extends AddonBuilder<Item> {
 
         properties.food(this.foodProperties);
 
-        IAddonItem item = this.typeSerializer != null ? this.typeSerializer.parse(this.json, properties) : new AddonItem(properties);
+        if (this.typeSerializerId == null) {
+            this.typeSerializerId = ItemParser.FALLBACK_SERIALIZER;
+        }
+
+        ItemParser.ItemTypeSerializer serializer = ItemParser.getTypeSerializer(this.typeSerializerId);
+
+        if (serializer == null) {
+            AddonPackLog.warning("Unknown item type '" + this.typeSerializerId + "', falling back to '" + ItemParser.FALLBACK_SERIALIZER + "'");
+        }
+
+        IAddonItem item = serializer != null ? serializer.parse(this.json, properties) : new AddonItem(properties);
 
         Utils.ifNotNull(this.tooltipLines, item::setTooltip);
 
         if (this.attributeModifiers != null) {
             for (PlayerSlot slot : this.attributeModifiers.keySet()) {
                 for (ResourceLocation attributeId : this.attributeModifiers.get(slot).keySet()) {
-                    Attribute attribute = BuiltInRegistries.ATTRIBUTE.get(attributeId);
+                    Attribute attribute = BuiltInRegistries.ATTRIBUTE.get(RegistrySynonymsHandler.getReplacement(BuiltInRegistries.ATTRIBUTE, attributeId));
 
                     if (attribute != null) {
                         for (AttributeModifier attributeModifier : this.attributeModifiers.get(slot).get(attributeId)) {
@@ -92,7 +104,7 @@ public class ItemBuilder extends AddonBuilder<Item> {
 
         if (this.attributeModifiersAllSlots != null) {
             for (ResourceLocation attributeId : this.attributeModifiersAllSlots.keySet()) {
-                Attribute attribute = BuiltInRegistries.ATTRIBUTE.get(attributeId);
+                Attribute attribute = BuiltInRegistries.ATTRIBUTE.get(RegistrySynonymsHandler.getReplacement(BuiltInRegistries.ATTRIBUTE, attributeId));
 
                 if (attribute != null) {
                     for (AttributeModifier attributeModifier : this.attributeModifiersAllSlots.get(attributeId)) {
@@ -119,8 +131,8 @@ public class ItemBuilder extends AddonBuilder<Item> {
         return (Item) item;
     }
 
-    public ItemBuilder type(ItemParser.ItemTypeSerializer serializer) {
-        this.typeSerializer = serializer;
+    public ItemBuilder type(ResourceLocation serializerId) {
+        this.typeSerializerId = serializerId;
         return this;
     }
 

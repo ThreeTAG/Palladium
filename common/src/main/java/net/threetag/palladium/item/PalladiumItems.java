@@ -48,7 +48,6 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> RAW_TITANIUM_BLOCK = ITEMS.register("raw_titanium_block", () -> new BlockItem(PalladiumBlocks.RAW_TITANIUM_BLOCK.get(), new Item.Properties()));
     public static final RegistrySupplier<Item> RAW_VIBRANIUM_BLOCK = ITEMS.register("raw_vibranium_block", () -> new BlockItem(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get(), new Item.Properties()));
 
-    public static final RegistrySupplier<Item> SOLAR_PANEL = ITEMS.register("solar_panel", () -> new BlockItem(PalladiumBlocks.SOLAR_PANEL.get(), new Item.Properties()));
     public static final RegistrySupplier<Item> HEART_SHAPED_HERB = ITEMS.register("heart_shaped_herb", () -> new BlockItem(PalladiumBlocks.HEART_SHAPED_HERB.get(), new Item.Properties()));
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -73,7 +72,6 @@ public class PalladiumItems {
 
     public static void init() {
         CreativeModeTabRegistry.addToTab(PalladiumCreativeModeTabs.TECHNOLOGY, entries -> {
-            entries.add(SOLAR_PANEL.get());
             entries.add(LEAD_CIRCUIT.get());
             entries.add(QUARTZ_CIRCUIT.get());
             entries.add(VIBRANIUM_CIRCUIT.get());

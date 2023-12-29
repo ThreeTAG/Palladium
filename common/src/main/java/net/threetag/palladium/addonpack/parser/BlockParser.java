@@ -28,6 +28,7 @@ import java.util.Map;
 
 public class BlockParser extends AddonParser<Block> {
 
+    public static final ResourceLocation FALLBACK_SERIALIZER = Palladium.id("default");
     private static final Map<ResourceLocation, BlockTypeSerializer> TYPE_SERIALIZERS = new LinkedHashMap<>();
 
 
@@ -39,7 +40,7 @@ public class BlockParser extends AddonParser<Block> {
     public AddonBuilder<Block> parse(ResourceLocation id, JsonElement jsonElement) {
         JsonObject json = GsonHelper.convertToJsonObject(jsonElement, "$");
         BlockBuilder builder = new BlockBuilder(id, json)
-                .type(TYPE_SERIALIZERS.get(GsonUtil.getAsResourceLocation(json, "type", null)));
+                .type(GsonUtil.getAsResourceLocation(json, "type", null));
 
         var soundTypeId = GsonUtil.getAsResourceLocation(json, "sound_type");
         var soundType = BlockMaterialRegistry.getSoundType(soundTypeId);
@@ -71,6 +72,10 @@ public class BlockParser extends AddonParser<Block> {
 
     public static void registerTypeSerializer(BlockTypeSerializer serializer) {
         TYPE_SERIALIZERS.put(serializer.getId(), serializer);
+    }
+
+    public static BlockTypeSerializer getTypeSerializer(ResourceLocation id) {
+        return TYPE_SERIALIZERS.get(id);
     }
 
     static {

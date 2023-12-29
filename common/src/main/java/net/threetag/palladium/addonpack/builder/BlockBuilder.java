@@ -1,12 +1,12 @@
 package net.threetag.palladium.addonpack.builder;
 
 import com.google.gson.JsonObject;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.BlockParser;
 import net.threetag.palladium.block.AddonBlock;
 import net.threetag.palladium.block.IAddonBlock;
@@ -14,7 +14,7 @@ import net.threetag.palladium.block.IAddonBlock;
 public class BlockBuilder extends AddonBuilder<Block> {
 
     private final JsonObject json;
-    private BlockParser.BlockTypeSerializer typeSerializer = null;
+    private ResourceLocation typeSerializerId = null;
     private MapColor mapColor;
     private SoundType soundType;
     private float destroyTime;
@@ -45,15 +45,25 @@ public class BlockBuilder extends AddonBuilder<Block> {
             properties.requiresCorrectToolForDrops();
         }
 
-        IAddonBlock block = this.typeSerializer != null ? this.typeSerializer.parse(this.json, properties) : new AddonBlock(properties);
+        if (this.typeSerializerId == null) {
+            this.typeSerializerId = BlockParser.FALLBACK_SERIALIZER;
+        }
+
+        BlockParser.BlockTypeSerializer serializer = BlockParser.getTypeSerializer(this.typeSerializerId);
+
+        if (serializer == null) {
+            AddonPackLog.warning("Unknown block type '" + this.typeSerializerId + "', falling back to '" + BlockParser.FALLBACK_SERIALIZER + "'");
+        }
+
+        IAddonBlock block = serializer != null ? serializer.parse(this.json, properties) : new AddonBlock(properties);
 
         block.setRenderType(this.renderType);
 
         return (Block) block;
     }
 
-    public BlockBuilder type(BlockParser.BlockTypeSerializer serializer) {
-        this.typeSerializer = serializer;
+    public BlockBuilder type(ResourceLocation serializerId) {
+        this.typeSerializerId = serializerId;
         return this;
     }
 

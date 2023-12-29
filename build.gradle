@@ -46,7 +46,7 @@ allprojects {
         // KubeJS / Rhino
         maven {
             // saps.dev Maven (KubeJS and Rhino)
-            url = 'https://maven.latvian.dev/releases'
+            url = 'https://maven.saps.dev/releases'
             content {
                 includeGroup 'dev.latvian.mods'
             }
@@ -131,6 +131,9 @@ allprojects {
         maven {
             url = 'https://maven.wispforest.io'
         }
+
+        // Porting Lib
+        maven { url = "https://mvn.devos.one/snapshots/" }
     }
 
     java {

@@ -4,13 +4,15 @@ import dev.latvian.mods.kubejs.script.ScriptFileInfo;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Mixin(ScriptFileInfo.class)
 public interface ScriptFileInfoMixin {
 
     @Accessor(remap = false)
-    Map<String, String> getProperties();
+    Map<String, List<String>>  getProperties();
 
     @Accessor(remap = false)
     int getPriority();
@@ -26,4 +28,7 @@ public interface ScriptFileInfoMixin {
 
     @Accessor(value = "packMode", remap = false)
     void setPackMode(String packMode);
+
+    @Accessor(value = "requiredMods", remap = false)
+    Set<String> getRequiredMods();
 }

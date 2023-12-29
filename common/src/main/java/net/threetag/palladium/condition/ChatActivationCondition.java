@@ -2,9 +2,6 @@ package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.IntegerProperty;
@@ -12,12 +9,12 @@ import net.threetag.palladium.util.property.PalladiumProperty;
 
 import java.util.Objects;
 
-public class ActivationCondition extends KeyCondition {
+public class ChatActivationCondition extends ChatMessageCondition {
 
     public final int ticks;
 
-    public ActivationCondition(int ticks, int cooldown, AbilityConfiguration.KeyType type, boolean needsEmptyHand, boolean allowScrollingWhenCrouching) {
-        super(cooldown, type, needsEmptyHand, allowScrollingWhenCrouching);
+    public ChatActivationCondition(String chatMessage, int ticks, int cooldown) {
+        super(chatMessage, cooldown);
         this.ticks = ticks;
     }
 
@@ -33,11 +30,12 @@ public class ActivationCondition extends KeyCondition {
         if (this.cooldown != 0 && Objects.requireNonNull(entry).activationTimer == 1) {
             entry.startCooldown(context.getLivingEntity(), this.cooldown);
         }
+
         return Objects.requireNonNull(entry).activationTimer > 0;
     }
 
     @Override
-    public void onKeyPressed(LivingEntity entity, AbilityEntry entry, Power power, IPowerHolder holder) {
+    public void onChat(LivingEntity entity, AbilityEntry entry) {
         if (entry.cooldown <= 0 && entry.activationTimer == 0) {
             entry.startActivationTimer(entity, this.ticks);
         }
@@ -45,12 +43,7 @@ public class ActivationCondition extends KeyCondition {
 
     @Override
     public ConditionSerializer getSerializer() {
-        return ConditionSerializers.ACTIVATION.get();
-    }
-
-    @Override
-    public AbilityConfiguration.KeyPressType getKeyPressType() {
-        return AbilityConfiguration.KeyPressType.ACTIVATION;
+        return ConditionSerializers.CHAT_ACTIVATION.get();
     }
 
     public static class Serializer extends ConditionSerializer {
@@ -58,16 +51,14 @@ public class ActivationCondition extends KeyCondition {
         public static final PalladiumProperty<Integer> TICKS = new IntegerProperty("ticks").configurable("The amount of ticks the ability will be active for");
 
         public Serializer() {
-            this.withProperty(ActionCondition.Serializer.COOLDOWN, 0);
+            this.withProperty(CHAT_MESSAGE, "Hello World");
+            this.withProperty(ChatActionCondition.Serializer.COOLDOWN, 0);
             this.withProperty(TICKS, 60);
-            this.withProperty(KeyCondition.KEY_TYPE_WITH_SCROLLING, AbilityConfiguration.KeyType.KEY_BIND);
-            this.withProperty(KeyCondition.NEEDS_EMPTY_HAND, false);
-            this.withProperty(KeyCondition.ALLOW_SCROLLING_DURING_CROUCHING, true);
         }
 
         @Override
         public Condition make(JsonObject json) {
-            return new ActivationCondition(this.getProperty(json, TICKS), this.getProperty(json, ActionCondition.Serializer.COOLDOWN), this.getProperty(json, KeyCondition.KEY_TYPE_WITH_SCROLLING), this.getProperty(json, KeyCondition.NEEDS_EMPTY_HAND), this.getProperty(json, KeyCondition.ALLOW_SCROLLING_DURING_CROUCHING));
+            return new ChatActivationCondition(this.getProperty(json, CHAT_MESSAGE), this.getProperty(json, TICKS), this.getProperty(json, ChatActionCondition.Serializer.COOLDOWN));
         }
 
         @Override
@@ -77,7 +68,7 @@ public class ActivationCondition extends KeyCondition {
 
         @Override
         public String getDocumentationDescription() {
-            return "This condition is used to activate the ability when a key is pressed or a mouse button is clicked for a certain amount of ticks.";
+            return "This condition is used to activate the ability when a chat message was sent for a certain amount of ticks.";
         }
     }
 }

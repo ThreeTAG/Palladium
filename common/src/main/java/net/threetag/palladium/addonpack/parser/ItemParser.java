@@ -29,6 +29,7 @@ import java.util.*;
 
 public class ItemParser extends AddonParser<Item> {
 
+    public static final ResourceLocation FALLBACK_SERIALIZER = Palladium.id("default");
     private static final Map<ResourceLocation, ItemTypeSerializer> TYPE_SERIALIZERS = new LinkedHashMap<>();
     public final Map<ResourceLocation, ResourceLocation> autoRegisteredBlockItems = new HashMap<>();
 
@@ -52,7 +53,7 @@ public class ItemParser extends AddonParser<Item> {
         JsonObject json = GsonHelper.convertToJsonObject(jsonElement, "$");
         ItemBuilder builder = new ItemBuilder(id, json);
 
-        builder.type(TYPE_SERIALIZERS.get(GsonUtil.getAsResourceLocation(json, "type", null)))
+        builder.type(GsonUtil.getAsResourceLocation(json, "type", null))
                 .maxStackSize(GsonUtil.getAsIntRanged(json, "max_stack_size", 1, 64, 64))
                 .maxDamage(GsonUtil.getAsIntMin(json, "max_damage", 1, 0))
                 .creativeModeTab(GsonUtil.getAsResourceLocation(json, "creative_mode_tab", null))
@@ -183,6 +184,10 @@ public class ItemParser extends AddonParser<Item> {
 
     public static void registerTypeSerializer(ItemTypeSerializer serializer) {
         TYPE_SERIALIZERS.put(serializer.getId(), serializer);
+    }
+
+    public static ItemTypeSerializer getTypeSerializer(ResourceLocation id) {
+        return TYPE_SERIALIZERS.get(id);
     }
 
     public static JsonDocumentationBuilder getDefaultDocumentationBuilder() {
