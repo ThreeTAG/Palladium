@@ -166,6 +166,14 @@ Example:</h3>
 <h2>
 Overview</h2>
 <h3>
+GeckoLib 4</h3>
+<ul>
+<li>
+<a href="#geckolib:armor">
+GeckoLib Armor</a>
+</li>
+</ul>
+<h3>
 Palladium</h3>
 <ul>
 <li>
@@ -217,15 +225,121 @@ Crossbow</a>
 Flux Capacitor (Energy Containing Item)</a>
 </li>
 </ul>
-<h3>
-Geckolib</h3>
-<ul>
-<li>
-<a href="#geckolib:armor">
-GeckoLib Armor</a>
-</li>
-</ul>
 </p>
+<hr>
+
+<div id="geckolib:armor">
+<h2>
+GeckoLib Armor</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+slot</td>
+<td>
+Type</td>
+<td>
+The slot the item will fit in. Possible values: [helmet, chestplate, leggings, boots]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+armor_material</td>
+<td>
+ArmorMaterial</td>
+<td>
+Armor material, which defines certain characteristics about the armor. Open armor_materials.html for seeing how to make custom ones. Possible values: [minecraft:diamond, test:wood, minecraft:gold, minecraft:leather, test:dirt, minecraft:turtle, minecraft:chainmail, minecraft:iron, minecraft:netherite]</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+armor_model</td>
+<td>
+ResourceLocation</td>
+<td>
+Path to geckolib model file. Required bones: [armorHead, armorBody, armorRightArm, armorLeftArm, armorRightLeg, armorLeftLeg, armorRightBoot, armorLeftBoot].</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+armor_texture</td>
+<td>
+TextureReference</td>
+<td>
+Location of the armor texture. Can also use a dynamic texture using #.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+armor_animations</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the animations that will be used.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+armor_animation_controller</td>
+<td>
+List</td>
+<td>
+Names of controllers for the animation.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+hide_second_player_layer</td>
+<td>
+Boolean</td>
+<td>
+If enabled, the second player layer will be hidden when worn (only on the corresponding body part)</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"geckolib:armor","slot":"chest","armor_material":"minecraft:diamond","armor_model":"palladium:test_model.geo.json","armor_texture":"example:textures/models/armor/example_armor.png","armor_animations":"palladium:animations/test_animation.animation.json","armor_animation_controller":[{"name":"controller_name","animation":"animation_name","transition_tick_time":10,"triggers":{"trigger_name":"animation_name"}}],"hide_second_player_layer":true}</pre>
+</div>
 <hr>
 
 <div id="palladium:default">
@@ -1037,120 +1151,6 @@ true</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:flux_capacitor","capacity":500000,"max_input":1000,"max_output":1000}</pre>
-</div>
-<hr>
-
-<div id="geckolib:armor">
-<h2>
-GeckoLib Armor</h2>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-slot</td>
-<td>
-Type</td>
-<td>
-The slot the item will fit in. Possible values: [helmet, chestplate, leggings, boots]</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-armor_material</td>
-<td>
-ArmorMaterial</td>
-<td>
-Armor material, which defines certain characteristics about the armor. Open armor_materials.html for seeing how to make custom ones. Possible values: [minecraft:diamond, test:wood, minecraft:gold, minecraft:leather, test:dirt, minecraft:turtle, minecraft:chainmail, minecraft:iron, minecraft:netherite]</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-armor_model</td>
-<td>
-ResourceLocation</td>
-<td>
-Path to geckolib model file. Required bones: [armorHead, armorBody, armorRightArm, armorLeftArm, armorRightLeg, armorLeftLeg, armorRightBoot, armorLeftBoot].</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-armor_texture</td>
-<td>
-TextureReference</td>
-<td>
-Location of the armor texture. Can also use a dynamic texture using #.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-armor_animations</td>
-<td>
-ResourceLocation</td>
-<td>
-ID of the animations that will be used.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-armor_animation_controllers</td>
-<td>
-List</td>
-<td>
-Names of controllers for the animation.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-hide_second_player_layer</td>
-<td>
-Boolean</td>
-<td>
-If enabled, the second player layer will be hidden when worn (only on the corresponding body part)</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-false</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"geckolib:armor","slot":"chest","armor_material":"minecraft:diamond","armor_model":"palladium:test_model.geo.json","armor_texture":"example:textures/models/armor/example_armor.png","armor_animations":"palladium:animations/test_animation.animation.json","armor_animation_controllers":[{"name":"controller_name","animation":"animation_name","transition_tick_time":10,"triggers":{"trigger_name":"animation_name"}}],"hide_second_player_layer":true}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

@@ -3,15 +3,19 @@ package net.threetag.palladium.compat.geckolib.renderlayer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
@@ -25,6 +29,9 @@ import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.object.Color;
 
 import java.util.List;
 
@@ -82,21 +89,50 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
 
     @Override
     public void renderArm(DataContext context, HumanoidArm arm, PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-//        var living = context.getLivingEntity();
-//        if (living != null && IPackRenderLayer.conditionsFulfilled(living, this.conditions, this.firstPersonConditions)) {
-//            this.model.setRenderedEntity(living);
-//            GeckoRenderLayerModel humanoidModel = this.model;
-//            this.cachedTexture = this.texture.get(living).getTexture(context);
-//            this.cachedModel = this.modelLocation.get(living);
-//
-//            playerRenderer.getModel().copyPropertiesTo(humanoidModel);
-//            humanoidModel.attackTime = 0.0F;
-//            humanoidModel.crouching = false;
-//            humanoidModel.swimAmount = 0.0F;
-//            humanoidModel.rightArm.xRot = 0.0F;
-//            humanoidModel.leftArm.xRot = 0.0F;
-//            humanoidModel.renderArm(context, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY, Minecraft.getInstance().getFrameTime(), arm == HumanoidArm.RIGHT);
-//        }
+        var living = context.getLivingEntity();
+        if (living != null && IPackRenderLayer.conditionsFulfilled(living, this.conditions, this.firstPersonConditions)) {
+            var state = getState(living);
+            this.model.setCurrentRenderingFields(state, living, playerRenderer.getModel());
+            this.cachedTexture = this.texture.get(living).getTexture(context);
+            this.cachedModel = this.modelLocation.get(living);
+
+            var bone = (arm == HumanoidArm.RIGHT ? this.model.getRightArmBone() : this.model.getLeftArmBone());
+
+            if (state != null && bone != null) {
+                var partialTick = Minecraft.getInstance().getFrameTime();
+                RenderType renderType = this.model.getRenderType(state, this.model.getTextureLocation(state), bufferSource, partialTick);
+                VertexConsumer buffer = ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, false, false);
+
+                poseStack.pushPose();
+                poseStack.translate(0, 24 / 16F, 0);
+                poseStack.scale(-1, -1, 1);
+
+                Color renderColor = this.model.getRenderColor(state, partialTick, packedLight);
+                float red = renderColor.getRedFloat();
+                float green = renderColor.getGreenFloat();
+                float blue = renderColor.getBlueFloat();
+                float alpha = renderColor.getAlphaFloat();
+                int packedOverlay = this.model.getPackedOverlay(state, 0, partialTick);
+
+                if (renderType == null)
+                    renderType = this.model.getRenderType(state, this.model.getTextureLocation(state), bufferSource, partialTick);
+
+                if (buffer == null)
+                    buffer = bufferSource.getBuffer(renderType);
+
+                AnimationState<GeckoLayerState> animationState = new AnimationState<>(state, 0, 0, partialTick, false);
+                long instanceId = this.model.getInstanceId(state);
+
+                animationState.setData(DataTickets.TICK, state.getTick(living));
+                animationState.setData(DataTickets.ENTITY, living);
+                animationState.setData(DataTickets.EQUIPMENT_SLOT, EquipmentSlot.CHEST);
+                this.model.getGeoModel().addAdditionalStateData(state, instanceId, animationState::setData);
+                this.model.getGeoModel().handleAnimations(state, instanceId, animationState);
+                this.model.renderRecursively(poseStack, state, bone, renderType, bufferSource, buffer, false, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+
+                poseStack.popPose();
+            }
+        }
     }
 
     public static GeckoRenderLayer parse(JsonObject json) {

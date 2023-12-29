@@ -12,14 +12,14 @@ import java.util.function.Function;
 
 public class PalladiumRenderTypes extends RenderType {
 
+    public PalladiumRenderTypes(String string, VertexFormat vertexFormat, VertexFormat.Mode mode, int i, boolean bl, boolean bl2, Runnable runnable, Runnable runnable2) {
+        super(string, vertexFormat, mode, i, bl, bl2, runnable, runnable2);
+    }
+
     private static final Function<ResourceLocation, RenderType> GLOWING = Util.memoize((resourceLocation) -> {
         RenderType.CompositeState compositeState = RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENERGY_SWIRL_SHADER).setTextureState(new TextureStateShard(resourceLocation, false, false)).setTransparencyState(TRANSLUCENT_TRANSPARENCY).setCullState(NO_CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).setLayeringState(VIEW_OFFSET_Z_LAYERING).createCompositeState(true);
         return create(Palladium.MOD_ID + ":glowing", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, compositeState);
     });
-
-    public PalladiumRenderTypes(String string, VertexFormat vertexFormat, VertexFormat.Mode mode, int i, boolean bl, boolean bl2, Runnable runnable, Runnable runnable2) {
-        super(string, vertexFormat, mode, i, bl, bl2, runnable, runnable2);
-    }
 
     public static final RenderType LASER = create(Palladium.MOD_ID + ":laser", DefaultVertexFormat.POSITION_COLOR_LIGHTMAP, VertexFormat.Mode.QUADS, 256, false, true, RenderType.CompositeState.builder()
             .setShaderState(RENDERTYPE_LIGHTNING_SHADER)
@@ -31,7 +31,7 @@ public class PalladiumRenderTypes extends RenderType {
             .setLayeringState(VIEW_OFFSET_Z_LAYERING)
             .createCompositeState(true));
 
-    public static final Function<ResourceLocation, RenderType> ARMOR_CUTOUT_NO_CULL_TRANSPARENCY = Util.memoize(
+    private static final Function<ResourceLocation, RenderType> ARMOR_CUTOUT_NO_CULL_TRANSPARENCY = Util.memoize(
             resourceLocation -> {
                 CompositeState compositeState = CompositeState.builder()
                         .setShaderState(RENDERTYPE_ARMOR_CUTOUT_NO_CULL_SHADER)
@@ -42,12 +42,16 @@ public class PalladiumRenderTypes extends RenderType {
                         .setOverlayState(OVERLAY)
                         .setLayeringState(VIEW_OFFSET_Z_LAYERING)
                         .createCompositeState(true);
-                return create("armor_cutout_no_cull_transparency", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, compositeState);
+                return create(Palladium.MOD_ID + ":armor_cutout_no_cull_transparency", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, compositeState);
             }
     );
 
     public static RenderType getGlowing(ResourceLocation texture) {
         return GLOWING.apply(texture);
+    }
+
+    public static RenderType getArmorTranslucent(ResourceLocation texture) {
+        return ARMOR_CUTOUT_NO_CULL_TRANSPARENCY.apply(texture);
     }
 
 }

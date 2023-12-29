@@ -76,7 +76,7 @@ public class AddonGeoArmorItem extends AddonArmorItem implements GeoItem {
             item.modelPath = GsonUtil.getAsResourceLocation(json, "armor_model", null);
             item.texturePath = GsonUtil.getAsTextureReference(json, "armor_texture", null);
             item.animationsPath = GsonUtil.getAsResourceLocation(json, "armor_animations", null);
-            item.animationControllers = json.has("animation_controller") ? GsonUtil.fromListOrPrimitive(json.get("animation_controller"), el -> ParsedAnimationController.controllerFromJson(el.getAsJsonObject())) : new ArrayList<>();
+            item.animationControllers = json.has("armor_animation_controller") ? GsonUtil.fromListOrPrimitive(json.get("armor_animation_controller"), el -> ParsedAnimationController.controllerFromJson(el.getAsJsonObject())) : new ArrayList<>();
 
             return item;
         }
@@ -114,7 +114,7 @@ public class AddonGeoArmorItem extends AddonArmorItem implements GeoItem {
             triggers.addProperty("trigger_name", "animation_name");
             extendedC.add("triggers", triggers);
             animationsExample.add(extendedC);
-            builder.addProperty("armor_animation_controllers", List.class)
+            builder.addProperty("armor_animation_controller", List.class)
                     .description("Names of controllers for the animation.")
                     .fallbackObject(null).exampleJson(animationsExample);
 

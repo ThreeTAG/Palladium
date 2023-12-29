@@ -10,10 +10,8 @@ import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -23,9 +21,10 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
+import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
-import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.item.ArmorWithRenderer;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladiumcore.util.Platform;
 
 import java.util.*;
@@ -88,7 +87,7 @@ public class ArmorRendererManager extends SimpleJsonResourceReloadListener {
         if (!stack.isEmpty() && stack.getItem() instanceof ArmorWithRenderer item && item.getCachedArmorRenderer() instanceof ArmorRendererData renderer) {
             var context = DataContext.forArmorInSlot(player, EquipmentSlot.CHEST);
             var armorModel = renderer.getModel(player, context);
-            var vertex = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(renderer.getTexture(context)), false, stack.hasFoil());
+            var vertex = ItemRenderer.getArmorFoilBuffer(buffer, PalladiumRenderTypes.getArmorTranslucent(renderer.getTexture(context)), false, stack.hasFoil());
             var arm = rightArm ? armorModel.rightArm : armorModel.leftArm;
             arm.copyFrom(rendererArm);
             arm.xRot = 0.0F;
@@ -100,10 +99,10 @@ public class ArmorRendererManager extends SimpleJsonResourceReloadListener {
                 arm.xRot = 0.0F;
                 arm.render(poseStack, vertex, combinedLight, OverlayTexture.NO_OVERLAY);
             }
+        }
 
-            if (Platform.isModLoaded("geckolib3")) {
-                GeckoLibCompat.renderFirstPerson(player, stack, poseStack, buffer, combinedLight, rendererArm, rightArm);
-            }
+        if (!stack.isEmpty() && Platform.isModLoaded("geckolib")) {
+            GeckoLibCompat.renderFirstPerson(player, stack, poseStack, buffer, combinedLight, rendererArm, rightArm);
         }
     }
 }

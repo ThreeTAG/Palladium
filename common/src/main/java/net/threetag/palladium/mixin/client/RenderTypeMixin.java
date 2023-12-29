@@ -23,7 +23,7 @@ public class RenderTypeMixin {
     @Inject(method = "armorCutoutNoCull", at = @At("HEAD"), cancellable = true)
     private static void armorCutoutNoCull(ResourceLocation location, CallbackInfoReturnable<RenderType> cir) {
         if (HumanoidRendererModifications.ALPHA_MULTIPLIER != 1F) {
-            cir.setReturnValue(PalladiumRenderTypes.ARMOR_CUTOUT_NO_CULL_TRANSPARENCY.apply(location));
+            cir.setReturnValue(PalladiumRenderTypes.getArmorTranslucent(location));
         }
     }
 

@@ -60,7 +60,13 @@ public class RenderLayerAnimationAbility extends Ability {
                 var state = entity.palladium$getRenderLayerStates().get(renderLayer);
                 if (state instanceof GeckoLayerState gecko) {
                     AnimatableManager<?> manager = gecko.getAnimatableInstanceCache().getManagerForId(gecko.layer.getModel().getInstanceId(gecko));
-                    manager.tryTriggerAnimation(entry.getProperty(CONTROLLER), entry.getProperty(ANIMATION_TRIGGER));
+                    var controller = manager.getAnimationControllers().get(entry.getProperty(CONTROLLER));
+
+                    if (controller != null) {
+                        controller.forceAnimationReset();
+                        controller.stop();
+                        controller.tryTriggerAnimation(entry.getProperty(ANIMATION_TRIGGER));
+                    }
                 }
             }
         }

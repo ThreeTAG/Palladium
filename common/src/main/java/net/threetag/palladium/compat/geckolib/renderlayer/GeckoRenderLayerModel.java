@@ -8,8 +8,6 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
@@ -101,8 +99,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
             bufferSource = mc.renderBuffers().outlineBufferSource();
 
         float partialTick = mc.getFrameTime();
-        RenderType renderType = getRenderType(this.currentState, getTextureLocation(this.currentState), bufferSource, partialTick);
-        buffer = ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, false, false);
+        buffer = this.currentState.layer.renderType.createVertexConsumer(bufferSource, this.getTextureLocation(this.currentState), false);
 
         poseStack.pushPose();
         poseStack.translate(0, 24 / 16f, 0);
@@ -172,45 +169,6 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         return this.modelProvider.getBone(this.leftLegBone).orElse(null);
     }
 
-//
-//    public void renderArm(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay,
-//                          float partialTick, boolean rightArm) {
-//        GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelResource(this.state));
-//
-//        model.getBone(rightArm ? this.rightArmBone : this.leftArmBone).ifPresent(bone -> {
-//            AnimationEvent<GeckoLayerState> animationEvent = new AnimationEvent<>(this.state, 0, 0,
-//                    partialTick, false,
-//                    List.of());
-//
-//            poseStack.pushPose();
-//            poseStack.translate(0, 24 / 16F, 0);
-//            poseStack.scale(-1, -1, 1);
-//
-//            this.modelProvider.setCustomAnimations(this.state, getInstanceId(this.state), animationEvent);
-//            setCurrentModelRenderCycle(EModelRenderCycle.INITIAL);
-//            fitToBiped();
-//            RenderSystem.setShaderTexture(0, getTextureLocation(this.state));
-//
-//            var buffer1 = this.renderLayer.renderType.createVertexConsumer(bufferSource, getTextureLocation(this.state), context.getItem().hasFoil());
-//            Color renderColor = getRenderColor(this.state, 0, poseStack, null, buffer1, packedLight);
-//
-//            setCurrentRTB(bufferSource);
-//            renderEarly(this.state, poseStack, partialTick, bufferSource, buffer1, packedLight,
-//                    packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-//                    renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-//
-//            renderLate(this.state, poseStack, partialTick, bufferSource, buffer1, packedLight,
-//                    packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-//                    renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-//            this.renderRecursively(bone,
-//                    poseStack, buffer1, packedLight, packedOverlay, renderColor.getRed() / 255f, renderColor.getGreen() / 255f,
-//                    renderColor.getBlue() / 255f, renderColor.getAlpha() / 255f);
-//            setCurrentModelRenderCycle(EModelRenderCycle.REPEATED);
-//
-//            poseStack.popPose();
-//        });
-//    }
-
     protected void applyBaseTransformations(HumanoidModel<?> baseModel) {
         if (this.head != null) {
             ModelPart headPart = baseModel.head;
@@ -219,7 +177,6 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
             copyScaleAndVisibility(headPart, this.head);
             this.head.updatePosition(headPart.x, -headPart.y, headPart.z);
         }
-        ;
 
         if (this.body != null) {
             ModelPart bodyPart = baseModel.body;

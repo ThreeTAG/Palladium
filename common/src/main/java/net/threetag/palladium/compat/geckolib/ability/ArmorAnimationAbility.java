@@ -34,7 +34,7 @@ public class ArmorAnimationAbility extends Ability {
     @Override
     public void tick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
         if (enabled) {
-            if (!entity.level().isClientSide) {
+            if (entity.level().isClientSide) {
                 Item item = BuiltInRegistries.ITEM.get(entry.getProperty(ITEM));
 
                 if (item instanceof AddonGeoArmorItem geo) {
@@ -42,7 +42,13 @@ public class ArmorAnimationAbility extends Ability {
                         if (slot.getType() == EquipmentSlot.Type.ARMOR) {
                             if (entity.getItemBySlot(slot).is(item) && !entity.getItemBySlot(slot).isEmpty()) {
                                 long geoId = GeoItem.getId(entity.getItemBySlot(slot)) + entity.getId();
-                                geo.triggerAnim(entity, geoId, entry.getProperty(CONTROLLER), entry.getProperty(ANIMATION_TRIGGER));
+                                var controller = geo.getAnimatableInstanceCache().getManagerForId(geoId).getAnimationControllers().get(entry.getProperty(CONTROLLER));
+
+                                if (controller != null) {
+                                    controller.forceAnimationReset();
+                                    controller.stop();
+                                    controller.tryTriggerAnimation(entry.getProperty(ANIMATION_TRIGGER));
+                                }
                             }
                         }
                     }

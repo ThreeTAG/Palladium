@@ -14,9 +14,8 @@ import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.util.context.DataContext;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
-public class GeckoArmorRenderer<T extends AddonGeoArmorItem> extends GeoArmorRenderer<T> {
+public class GeckoArmorRenderer<T extends AddonGeoArmorItem> extends GeoArmorRenderer<T> implements CancelGeckoArmorBuffer {
 
     private static Entity CURRENT_ENTITY = null;
     private static EquipmentSlot CURRENT_SLOT = null;
@@ -24,7 +23,7 @@ public class GeckoArmorRenderer<T extends AddonGeoArmorItem> extends GeoArmorRen
     public GeckoArmorRenderer(AddonGeoArmorItem item) {
         super(createGeoModel(item));
 
-        addRenderLayer(new AutoGlowingGeoLayer<>(this));
+//        addRenderLayer(new AutoGlowingGeoLayer<>(this));
     }
 
     public static <R extends AddonGeoArmorItem> GeoModel<R> createGeoModel(AddonGeoArmorItem item) {
@@ -41,7 +40,7 @@ public class GeckoArmorRenderer<T extends AddonGeoArmorItem> extends GeoArmorRen
 
     @Override
     public RenderType getRenderType(T animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return PalladiumRenderTypes.ARMOR_CUTOUT_NO_CULL_TRANSPARENCY.apply(texture);
+        return PalladiumRenderTypes.getArmorTranslucent(texture);
     }
 
     public static class GeoModel<T extends AddonGeoArmorItem> extends software.bernie.geckolib.model.GeoModel<T> {
@@ -81,6 +80,11 @@ public class GeckoArmorRenderer<T extends AddonGeoArmorItem> extends GeoArmorRen
         @Override
         public ResourceLocation getAnimationResource(AddonGeoArmorItem animatable) {
             return this.animationsPath;
+        }
+
+        @Override
+        public RenderType getRenderType(T animatable, ResourceLocation texture) {
+            return PalladiumRenderTypes.getArmorTranslucent(texture);
         }
     }
 

@@ -14,8 +14,10 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.client.renderer.item.armor.ArmorRendererData;
-import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.compat.geckolib.armor.CancelGeckoArmorBuffer;
 import net.threetag.palladium.item.ArmorWithRenderer;
+import net.threetag.palladium.util.context.DataContext;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -23,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({"unchecked", "rawtypes", "DataFlowIssue"})
 @Mixin(HumanoidArmorLayer.class)
 public abstract class HumanoidArmorLayerMixin {
 
@@ -68,6 +70,14 @@ public abstract class HumanoidArmorLayerMixin {
                     } else {
                         this.palladium$renderModelCustom(poseStack, buffer, packedLight, foil, model, armorTexture, innerModel, 1.0F, 1.0F, 1.0F);
                     }
+
+//                    HumanoidModel finalModel = model;
+//                    ArmorTrim.getTrim(livingEntity.level().registryAccess(), item).ifPresent((armorTrim) -> {
+//                        this.renderTrim(armorItem.getMaterial(), poseStack, buffer, packedLight, armorTrim, finalModel, innerModel);
+//                    });
+//                    if (item.hasFoil()) {
+//                        this.renderGlint(poseStack, buffer, packedLight, finalModel);
+//                    }
                 }
             }
 
@@ -77,8 +87,16 @@ public abstract class HumanoidArmorLayerMixin {
 
     @Unique
     private void palladium$renderModelCustom(PoseStack poseStack, MultiBufferSource buffer, int packedLight, boolean foil, HumanoidModel model, ResourceLocation texture, boolean innerModel, float red, float green, float blue) {
-        VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(buffer, PalladiumRenderTypes.ARMOR_CUTOUT_NO_CULL_TRANSPARENCY.apply(texture), false, foil);
+        VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(buffer, PalladiumRenderTypes.getArmorTranslucent(texture), false, foil);
         model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+    }
+
+    @Inject(method = "renderModel", at = @At("HEAD"), cancellable = true)
+    private void renderModel(PoseStack poseStack, MultiBufferSource buffer, int packedLight, ArmorItem armorItem, HumanoidModel model, boolean withGlint, float red, float green, float blue, @Nullable String armorSuffix, CallbackInfo ci) {
+        if (model instanceof CancelGeckoArmorBuffer) {
+            model.renderToBuffer(poseStack, null, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+            ci.cancel();
+        }
     }
 
 }

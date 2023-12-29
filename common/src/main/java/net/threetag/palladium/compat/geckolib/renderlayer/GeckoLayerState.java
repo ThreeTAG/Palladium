@@ -1,5 +1,6 @@
 package net.threetag.palladium.compat.geckolib.renderlayer;
 
+import net.minecraft.client.Minecraft;
 import net.threetag.palladium.client.renderer.renderlayer.RenderLayerStates;
 import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
 import org.jetbrains.annotations.Nullable;
@@ -43,6 +44,6 @@ public class GeckoLayerState extends RenderLayerStates.State implements GeoAnima
 
     @Override
     public double getTick(Object o) {
-        return this.ticks;
+        return this.ticks + Minecraft.getInstance().getFrameTime();
     }
 }

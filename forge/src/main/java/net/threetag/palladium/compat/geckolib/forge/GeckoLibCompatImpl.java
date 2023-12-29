@@ -80,7 +80,7 @@ public class GeckoLibCompatImpl {
                 float green = renderColor.getGreenFloat();
                 float blue = renderColor.getBlueFloat();
                 float alpha = renderColor.getAlphaFloat();
-                int packedOverlay = renderer.getPackedOverlay(gecko, 0);
+                int packedOverlay = renderer.getPackedOverlay(gecko, 0, partialTick);
 
                 if (renderType == null)
                     renderType = renderer.getRenderType(gecko, renderer.getTextureLocation(gecko), bufferSource, partialTick);
