@@ -17,6 +17,8 @@ public class RegistrySynonymsHandler {
         register(BuiltInRegistries.ATTRIBUTE, new ResourceLocation("porting_lib:step_height_addition"), new ResourceLocation("forge:step_height_addition"));
         register(BuiltInRegistries.ATTRIBUTE, new ResourceLocation("porting_lib:entity_gravity"), new ResourceLocation("forge:entity_gravity"));
         register(BuiltInRegistries.ATTRIBUTE, new ResourceLocation("porting_lib:swim_speed"), new ResourceLocation("forge:swim_speed"));
+        register(BuiltInRegistries.ATTRIBUTE, new ResourceLocation("reach-entity-attributes:reach"), new ResourceLocation("forge:block_reach"));
+        register(BuiltInRegistries.ATTRIBUTE, new ResourceLocation("reach-entity-attributes:attack_range"), new ResourceLocation("forge:entity_reach"));
     }
 
     public static void register(Registry<?> registry, ResourceLocation id1, ResourceLocation id2) {
