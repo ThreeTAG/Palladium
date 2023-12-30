@@ -4,9 +4,6 @@ import net.minecraft.server.packs.PackType;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.gen.Invoker;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Arrays;
 
@@ -24,8 +21,7 @@ public class PackTypeMixin {
         throw new AssertionError();
     }
 
-    @Inject(method = "<clinit>", at = @At("TAIL"))
-    private static void classInit(CallbackInfo cb) {
+    static {
         var entry = create("ADDON", $VALUES.length, "addon");
 
         AddonPackManager.PACK_TYPE = entry;

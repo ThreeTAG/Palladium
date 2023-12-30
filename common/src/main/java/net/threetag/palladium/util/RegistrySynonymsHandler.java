@@ -1,6 +1,7 @@
 package net.threetag.palladium.util;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
@@ -13,9 +14,9 @@ public class RegistrySynonymsHandler {
     private static final Map<Registry<?>, List<Synonym>> SYNONYMS = new HashMap<>();
 
     static {
-        register(Registry.ATTRIBUTE, new ResourceLocation("porting_lib:step_height_addition"), new ResourceLocation("forge:step_height_addition"));
-        register(Registry.ATTRIBUTE, new ResourceLocation("porting_lib:entity_gravity"), new ResourceLocation("forge:entity_gravity"));
-        register(Registry.ATTRIBUTE, new ResourceLocation("porting_lib:swim_speed"), new ResourceLocation("forge:swim_speed"));
+        register(BuiltInRegistries.ATTRIBUTE, new ResourceLocation("porting_lib:step_height_addition"), new ResourceLocation("forge:step_height_addition"));
+        register(BuiltInRegistries.ATTRIBUTE, new ResourceLocation("porting_lib:entity_gravity"), new ResourceLocation("forge:entity_gravity"));
+        register(BuiltInRegistries.ATTRIBUTE, new ResourceLocation("porting_lib:swim_speed"), new ResourceLocation("forge:swim_speed"));
     }
 
     public static void register(Registry<?> registry, ResourceLocation id1, ResourceLocation id2) {

@@ -1,4 +1,4 @@
-// 1.20.1	2023-09-06T23:41:16.4281596	Palladium Item Models: palladium
+// 1.20.1	2023-12-30T01:12:47.4425076	Palladium Item Models: palladium
 11a06785621363364a346b4e2cc1bd09b5775672 assets/palladium/models/item/deepslate_lead_ore.json
 5ae97bd720bfec6634121db4f2f835c7e96bd30d assets/palladium/models/item/deepslate_redstone_flux_crystal_geode.json
 8192364f6d0d34a843b18119663f01bb567816c0 assets/palladium/models/item/heart_shaped_herb.json
@@ -23,7 +23,6 @@ ff6c9eb9c052842793943774b78d2c524d79728c assets/palladium/models/item/redstone_f
 24bcfe787cf771e634877495bef253f69153731a assets/palladium/models/item/redstone_flux_crystal_cluster.json
 8fbaaf946fbc1f38a3cfd13b9620f4d46c9ad471 assets/palladium/models/item/redstone_flux_crystal_geode.json
 a3f71ca82f70cbf088a11a85c1be095d76de5965 assets/palladium/models/item/small_redstone_flux_crystal_bud.json
-fffddbbae1bc2c1de6178929f55d2e3d0adfabaa assets/palladium/models/item/solar_panel.json
 4538c6b660db154e86b7543be3c8a47c1945d908 assets/palladium/models/item/suit_stand.json
 639c527c471066bc8eed4f08d995d54e9e2179e3 assets/palladium/models/item/titanium_ore.json
 af2b1ef6843a17642026e5457cf9cb475083ad49 assets/palladium/models/item/vibranium_block.json

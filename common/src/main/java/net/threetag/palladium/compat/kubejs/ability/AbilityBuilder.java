@@ -39,7 +39,7 @@ public class AbilityBuilder extends BuilderBase<Ability> {
     }
 
     @Override
-    public RegistryInfo getRegistryType() {
+    public RegistryInfo<Ability> getRegistryType() {
         return PalladiumKubeJSPlugin.ABILITY;
     }
 

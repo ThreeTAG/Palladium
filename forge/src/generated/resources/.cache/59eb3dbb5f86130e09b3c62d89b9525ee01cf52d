@@ -1,4 +1,4 @@
-// 1.20.1	2023-09-06T23:41:16.4236323	Loot Tables
+// 1.20.1	2023-12-30T01:12:47.4391122	Loot Tables
 ca3e734dbc4d10ba3e5519e8248d716c2b2579cc data/palladium/loot_tables/blocks/deepslate_lead_ore.json
 26ab809fc35e931138f926ff50bb46979aee89b8 data/palladium/loot_tables/blocks/deepslate_redstone_flux_crystal_geode.json
 de8f3327763431ce9b71d601b249e0676f528b8b data/palladium/loot_tables/blocks/heart_shaped_herb.json
@@ -13,7 +13,6 @@ ab8b8a1bfb14f439e72c72b353d0032405712233 data/palladium/loot_tables/blocks/mediu
 786ef59fbf69d7ab200229280ecd917c797c0b53 data/palladium/loot_tables/blocks/redstone_flux_crystal_cluster.json
 2066f72a8a8633e4dff3d59da3ce7ad51db39890 data/palladium/loot_tables/blocks/redstone_flux_crystal_geode.json
 473ba74644bba1a19286a60c157aa0305faf6ab9 data/palladium/loot_tables/blocks/small_redstone_flux_crystal_bud.json
-c82e072d503aa712a29b0bb44125bb263fb11cda data/palladium/loot_tables/blocks/solar_panel.json
 32c241a4ed773adf0db312d67ebab19c7ec2801b data/palladium/loot_tables/blocks/titanium_ore.json
 10be7e9a1750b8cb82156aaca36eaed6cd4e58cc data/palladium/loot_tables/blocks/vibranium_block.json
 fc397c7d207ae084b3627be671db333a36419e06 data/palladium/loot_tables/blocks/vibranium_ore.json

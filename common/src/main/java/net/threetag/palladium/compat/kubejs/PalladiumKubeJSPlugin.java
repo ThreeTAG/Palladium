@@ -26,8 +26,8 @@ import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 
 public class PalladiumKubeJSPlugin extends KubeJSPlugin {
 
-    public static RegistryInfo ABILITY = RegistryInfo.of(Ability.REGISTRY.getRegistryKey()).type(Ability.class);
-    public static RegistryInfo CONDITION = RegistryInfo.of(ConditionSerializer.REGISTRY.getRegistryKey()).type(ConditionSerializer.class);
+    public static RegistryInfo<Ability> ABILITY = RegistryInfo.of(Ability.REGISTRY.getRegistryKey(), Ability.class);
+    public static RegistryInfo<ConditionSerializer> CONDITION = RegistryInfo.of(ConditionSerializer.REGISTRY.getRegistryKey(), ConditionSerializer.class);
 
     @Override
     public void init() {

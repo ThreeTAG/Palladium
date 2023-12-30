@@ -134,6 +134,14 @@ allprojects {
 
         // Porting Lib
         maven { url = "https://mvn.devos.one/snapshots/" }
+
+        // ReachEntityAttributes
+        maven {
+            url = 'https://maven.jamieswhiteshirt.com/libs-release'
+            content {
+                includeGroup 'com.jamieswhiteshirt'
+            }
+        }
     }
 
     java {

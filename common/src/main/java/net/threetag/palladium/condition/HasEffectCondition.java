@@ -1,7 +1,7 @@
 package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.threetag.palladium.util.context.DataContext;
@@ -29,7 +29,7 @@ public class HasEffectCondition extends Condition {
 
     public static class Serializer extends ConditionSerializer {
 
-        public static final PalladiumProperty<MobEffect> EFFECT = new RegistryObjectProperty<>("effect", Registry.MOB_EFFECT).configurable("ID of the (potion) effect that is being checked for.");
+        public static final PalladiumProperty<MobEffect> EFFECT = new RegistryObjectProperty<>("effect", BuiltInRegistries.MOB_EFFECT).configurable("ID of the (potion) effect that is being checked for.");
 
         public Serializer() {
             this.withProperty(EFFECT, MobEffects.POISON);

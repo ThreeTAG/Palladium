@@ -5,7 +5,6 @@ import dev.latvian.mods.kubejs.script.ScriptPackInfo;
 import dev.latvian.mods.kubejs.script.ScriptSource;
 import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.threetag.palladium.mixin.ScriptFileInfoMixin;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -27,7 +26,7 @@ public class AddonPackScriptFileInfo extends ScriptFileInfo {
     }
 
     @Override
-    public @Nullable Throwable preload(ScriptSource source) {
+    public void preload(ScriptSource source) {
         ScriptFileInfoMixin mixin = (ScriptFileInfoMixin) this;
         mixin.getProperties().clear();
         mixin.setPriority(0);
@@ -62,10 +61,8 @@ public class AddonPackScriptFileInfo extends ScriptFileInfo {
             mixin.setIgnored(getProperty("ignored", "false").equals("true") || getProperty("ignore", "false").equals("true"));
             mixin.setPackMode(getProperty("packmode", ""));
             mixin.getRequiredMods().addAll(getProperties("requires"));
-        } catch (Throwable ex) {
-            return ex;
-        }
+        } catch (Throwable ignored) {
 
-        return null;
+        }
     }
 }

@@ -1,9 +1,9 @@
 package net.threetag.palladium.mixin;
 
 import dev.latvian.mods.kubejs.script.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.resources.IoSupplier;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.compat.kubejs.AddonPackScriptFileInfo;
 import org.spongepowered.asm.mixin.Final;
@@ -24,7 +24,9 @@ public class ScriptManagerMixin {
     @Final
     public Map<String, ScriptPack> packs;
 
-    @Shadow @Final public ScriptType scriptType;
+    @Shadow
+    @Final
+    public ScriptType scriptType;
 
     @Inject(at = @At("RETURN"), method = "loadFromDirectory", remap = false)
     public void loadFromDirectory(CallbackInfo ci) {
@@ -36,19 +38,22 @@ public class ScriptManagerMixin {
 
             for (String namespace : packResources.getNamespaces(packType)) {
                 var scriptPack = new ScriptPack((ScriptManager) (Object) this, new ScriptPackInfo("addonpack_" + namespace, ""));
-                for (ResourceLocation scriptId : packResources.getResources(packType, namespace, "kubejs_scripts", id -> id.getPath().endsWith(".js"))) {
-                    scriptPack.info.scripts.add(new AddonPackScriptFileInfo(scriptPack.info, scriptId.getPath(), () -> {
-                        try {
-                            var packResources1 = pack.open();
-                            InputStream inputStream = packResources1.getResource(packType, scriptId);
-                            packResources1.close();
-                            return inputStream;
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            return null;
-                        }
-                    }));
-                }
+
+                packResources.listResources(packType, namespace, "kubejs_scripts", (path, inputStreamIoSupplier) -> {
+                    if(path.getPath().endsWith(".json")) {
+                        scriptPack.info.scripts.add(new AddonPackScriptFileInfo(scriptPack.info, path.getPath(), () -> {
+                            try {
+                                var packResources1 = pack.open();
+                                IoSupplier<InputStream> inputStream = packResources1.getResource(packType, path);
+                                packResources1.close();
+                                return inputStream.get();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                return null;
+                            }
+                        }));
+                    }
+                });
 
                 for (var fileInfo : scriptPack.info.scripts) {
                     try {

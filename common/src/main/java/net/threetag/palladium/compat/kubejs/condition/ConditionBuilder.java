@@ -29,7 +29,7 @@ public class ConditionBuilder extends BuilderBase<ConditionSerializer> {
     }
 
     @Override
-    public RegistryInfo getRegistryType() {
+    public RegistryInfo<ConditionSerializer> getRegistryType() {
         return PalladiumKubeJSPlugin.CONDITION;
     }
 
