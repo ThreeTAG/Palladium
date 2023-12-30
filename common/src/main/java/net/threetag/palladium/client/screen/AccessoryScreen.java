@@ -1,9 +1,11 @@
 package net.threetag.palladium.client.screen;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -19,13 +21,10 @@ import net.minecraft.client.gui.screens.SkinCustomizationScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.accessory.AccessorySlot;
@@ -37,6 +36,7 @@ import net.threetag.palladium.util.SupporterHandler;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladiumcore.event.ScreenEvents;
 import net.threetag.palladiumcore.util.Platform;
+import org.joml.Quaternionf;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -120,7 +120,24 @@ public class AccessoryScreen extends OptionsSubScreen {
         guiGraphics.drawCenteredString(this.font, this.title, 80, 7, 16777215);
 
         InAccessorySlotMenuCondition.CURRENT_SLOT = this.currentSlot;
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, (int) (150 + (this.width - 150) / 2), this.height / 2 + this.height / 3, this.height / 3, (int) (this.rotation - 180F), 0F, Objects.requireNonNull(this.minecraft.player));
+        Quaternionf quaternionf = (new Quaternionf()).rotateX((float) Math.toRadians(180F)).rotateY((float) Math.toRadians(this.rotation));
+        var player = Objects.requireNonNull(Objects.requireNonNull(this.minecraft).player);
+        float h = player.yBodyRot;
+        float i = player.getYRot();
+        float j = player.getXRot();
+        float k = player.yHeadRotO;
+        float l = player.yHeadRot;
+        player.yBodyRot = 180.0F;
+        player.setYRot(180.0F);
+        player.setXRot(0);
+        player.yHeadRot = player.getYRot();
+        player.yHeadRotO = player.getYRot();
+        InventoryScreen.renderEntityInInventory(guiGraphics, 150 + (this.width - 150) / 2, this.height / 2 + this.height / 3, this.height / 3, quaternionf, null, player);
+        player.yBodyRot = h;
+        player.setYRot(i);
+        player.setXRot(j);
+        player.yHeadRotO = k;
+        player.yHeadRot = l;
         InAccessorySlotMenuCondition.CURRENT_SLOT = null;
 
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
@@ -196,8 +213,7 @@ public class AccessoryScreen extends OptionsSubScreen {
             guiGraphics.blit(FlatIconButton.WIDGETS_LOCATION, left, top + 2, 20, (this.parent.currentSlot == this.slot ? 64 : (isMouseOver ? 32 : 0)), 32, 32, 256, 256);
             Font fontRenderer = this.parent.font;
             if (this.slot.getIcon() != null) {
-                RenderSystem.setShaderTexture(0, slot.getIcon());
-                guiGraphics.blit(FlatIconButton.WIDGETS_LOCATION, left, top + 2, 0, 0, 32, 32, 32, 32);
+                guiGraphics.blit(this.slot.getIcon(), left, top + 2, 0, 0, 32, 32, 32, 32);
             } else {
                 String s = this.slot.getDisplayName().getString().substring(0, 1);
                 guiGraphics.drawString(fontRenderer, Component.literal(s).getVisualOrderText(), (int) (left + 16 - fontRenderer.width(s) / 2F), top + 14, isMouseOver ? 16777120 : 0xfefefe);
