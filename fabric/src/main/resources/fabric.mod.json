@@ -34,10 +34,9 @@
   ],
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.19.2",
-    "palladiumcore": ">=1.19.2-1.0.6",
-    "com_electronwill_night-config_core": "*",
-    "com_electronwill_night-config_toml": "*"
+    "minecraft": ">=1.20.1",
+    "palladiumcore": ">=1.20.1-1.6.0.0",
+    "forgeconfigapiport": "*"
   },
   "custom": {
     "catalogue": {
