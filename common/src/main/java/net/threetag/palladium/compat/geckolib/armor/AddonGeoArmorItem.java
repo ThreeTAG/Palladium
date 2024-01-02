@@ -1,6 +1,9 @@
 package net.threetag.palladium.compat.geckolib.armor;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ArmorItem;
@@ -22,8 +25,8 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class AddonGeoArmorItem extends AddonArmorItem implements GeoItem {
@@ -76,7 +79,7 @@ public class AddonGeoArmorItem extends AddonArmorItem implements GeoItem {
             item.modelPath = GsonUtil.getAsResourceLocation(json, "armor_model", null);
             item.texturePath = GsonUtil.getAsTextureReference(json, "armor_texture", null);
             item.animationsPath = GsonUtil.getAsResourceLocation(json, "armor_animations", null);
-            item.animationControllers = json.has("armor_animation_controller") ? GsonUtil.fromListOrPrimitive(json.get("armor_animation_controller"), el -> ParsedAnimationController.controllerFromJson(el.getAsJsonObject())) : new ArrayList<>();
+            item.animationControllers = GsonUtil.fromListOrPrimitive(json.get("armor_animation_controller"), el -> ParsedAnimationController.controllerFromJson(el.getAsJsonObject()), Collections.emptyList());
 
             return item;
         }

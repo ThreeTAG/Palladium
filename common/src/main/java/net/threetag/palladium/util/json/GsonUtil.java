@@ -1,11 +1,9 @@
 package net.threetag.palladium.util.json;
 
-import com.google.common.collect.Lists;
 import com.google.gson.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
@@ -19,8 +17,8 @@ import net.threetag.palladium.util.ModelLayerLocationUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -539,6 +537,14 @@ public class GsonUtil {
             return list;
         }
         return Collections.emptyList();
+    }
+
+    public static <T> List<T> fromListOrPrimitive(JsonElement element, Function<JsonElement, T> function, @Nullable List<T> fallback) {
+        if (element == null) {
+            return fallback;
+        } else {
+            return fromListOrPrimitive(element, function);
+        }
     }
 
 }

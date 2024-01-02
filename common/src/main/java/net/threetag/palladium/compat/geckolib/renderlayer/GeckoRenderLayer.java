@@ -33,6 +33,7 @@ import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.object.Color;
 
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings({"unchecked", "rawtypes", "ConstantValue"})
@@ -148,7 +149,7 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
                 texture,
                 modelLocation,
                 GsonUtil.getAsResourceLocation(json, "animation_file", null),
-                GsonUtil.fromListOrPrimitive(json.get("animation_controller"), el -> ParsedAnimationController.controllerFromJson(el.getAsJsonObject())),
+                GsonUtil.fromListOrPrimitive(json.get("animation_controller"), el -> ParsedAnimationController.controllerFromJson(el.getAsJsonObject()), Collections.emptyList()),
                 renderType
         );
 
