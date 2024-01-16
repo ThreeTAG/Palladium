@@ -8,8 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -100,9 +98,10 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
             var bone = (arm == HumanoidArm.RIGHT ? this.model.getRightArmBone() : this.model.getLeftArmBone());
 
             if (state != null && bone != null) {
+                this.model.applyBaseTransformations(playerRenderer.getModel());
+
                 var partialTick = Minecraft.getInstance().getFrameTime();
-                RenderType renderType = this.model.getRenderType(state, this.model.getTextureLocation(state), bufferSource, partialTick);
-                VertexConsumer buffer = ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, false, false);
+                VertexConsumer buffer = state.layer.renderType.createVertexConsumer(bufferSource, this.model.getTextureLocation(state), false);
 
                 poseStack.pushPose();
                 poseStack.translate(0, 24 / 16F, 0);
@@ -115,12 +114,6 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
                 float alpha = renderColor.getAlphaFloat();
                 int packedOverlay = this.model.getPackedOverlay(state, 0, partialTick);
 
-                if (renderType == null)
-                    renderType = this.model.getRenderType(state, this.model.getTextureLocation(state), bufferSource, partialTick);
-
-                if (buffer == null)
-                    buffer = bufferSource.getBuffer(renderType);
-
                 AnimationState<GeckoLayerState> animationState = new AnimationState<>(state, 0, 0, partialTick, false);
                 long instanceId = this.model.getInstanceId(state);
 
@@ -129,7 +122,7 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
                 animationState.setData(DataTickets.EQUIPMENT_SLOT, EquipmentSlot.CHEST);
                 this.model.getGeoModel().addAdditionalStateData(state, instanceId, animationState::setData);
                 this.model.getGeoModel().handleAnimations(state, instanceId, animationState);
-                this.model.renderRecursively(poseStack, state, bone, renderType, bufferSource, buffer, false, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+                this.model.renderRecursively(poseStack, state, bone, null, bufferSource, buffer, false, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
 
                 poseStack.popPose();
             }

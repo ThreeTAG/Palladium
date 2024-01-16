@@ -23,6 +23,7 @@ import net.threetag.palladium.compat.geckolib.ability.ArmorAnimationAbility;
 import net.threetag.palladium.compat.geckolib.ability.RenderLayerAnimationAbility;
 import net.threetag.palladium.compat.geckolib.armor.AddonGeoArmorItem;
 import net.threetag.palladium.compat.geckolib.armor.GeckoArmorRenderer;
+import net.threetag.palladium.mixin.client.GeoArmorRendererInvoker;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import software.bernie.geckolib.GeckoLib;
@@ -60,9 +61,9 @@ public class GeckoLibCompatImpl {
                 var bone = (rightArm ? renderer.getRightArmBone() : renderer.getLeftArmBone());
 
                 if (bone != null) {
-//                    if (rendererProvider instanceof GeoArmorRendererInvoker invoker) {
-//                        invoker.invokeApplyBaseTransformations(origModel);
-//                    }
+                    if (rendererProvider instanceof GeoArmorRendererInvoker invoker) {
+                        invoker.invokeApplyBaseTransformations(origModel);
+                    }
 
                     var partialTick = Minecraft.getInstance().getFrameTime();
                     RenderType renderType = renderer.getRenderType(gecko, renderer.getTextureLocation(gecko), bufferSource, partialTick);
