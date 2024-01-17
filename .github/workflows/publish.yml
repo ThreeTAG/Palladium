@@ -40,8 +40,8 @@ jobs:
         with:
           name: Palladium ${{ env.mod_version }} for Forge/NeoForge ${{ env.minecraft_version }}
           version: ${{ env.mod_version }}+${{ env.minecraft_version }}
-#          modrinth-id: lt2zd42r
-#          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          modrinth-id: lt2zd42r
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-id: 963363
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           changelog-file: CHANGELOG.md
