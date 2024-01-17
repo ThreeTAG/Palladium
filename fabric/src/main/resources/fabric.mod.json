@@ -9,7 +9,8 @@
   ],
   "contact": {
     "homepage": "https://modrinth.com/project/threetag-palladium",
-    "sources": "https://github.com/ThreeTAG/Palladium"
+    "sources": "https://github.com/ThreeTAG/Palladium",
+    "issues": "https://github.com/ThreeTAG/Palladium/issues"
   },
   "license": "All rights reserved",
   "icon": "palladium_icon.png",
