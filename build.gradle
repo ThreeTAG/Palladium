@@ -31,7 +31,7 @@ allprojects {
     apply plugin: "maven-publish"
 
     archivesBaseName = rootProject.archives_base_name
-    version = "${rootProject.minecraft_version}-${rootProject.mod_version}" as Object
+    version = "${rootProject.mod_version}+${rootProject.minecraft_version}" as Object
     group = rootProject.maven_group
 
     tasks.withType(JavaCompile) {

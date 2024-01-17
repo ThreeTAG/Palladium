@@ -1,0 +1,81 @@
+name: Build and Release (1.20)
+
+on:
+  push:
+    branches:
+      - "1.20/main"
+
+jobs:
+  build:
+    name: "Build and Release"
+    runs-on: ubuntu-20.04
+
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Setting mod version
+        run: |
+          cat $GITHUB_WORKSPACE/gradle.properties | grep ^archives_base_name= >> $GITHUB_ENV
+          cat $GITHUB_WORKSPACE/gradle.properties | grep ^minecraft_version= >> $GITHUB_ENV
+          cat $GITHUB_WORKSPACE/gradle.properties | grep ^mod_version= >> $GITHUB_ENV
+
+      - name: Publish Forge version
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          name: Palladium ${{ env.mod_version }} for Forge ${{ env.minecraft_version }}
+          version: ${{ env.mod_version }}+${{ env.minecraft_version }}
+          modrinth-id: lt2zd42r
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-id: 963363
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          changelog-file: CHANGELOG.md
+          loaders: |
+            forge
+            neoforge
+          game-versions: |
+            ${{ env.minecraft_version }}
+          files: |
+            forge/build/libs/!(*-@(dev|sources|javadoc)).jar
+            forge/build/libs/*-@(dev|sources|javadoc).jar
+          dependencies: |
+            condensedcreative(optional){modrinth:Zw7fMbBg}{curseforge:624911}
+            curios(optional){modrinth:vvuO3ImH}{curseforge:309927}
+            geckolib(optional){modrinth:8BmcQJ2H}{curseforge:388172}
+            kubejs(optional){modrinth:umyGl7zF}{curseforge:238086}
+            pehkui(optional){modrinth:t5W7Jfwy}{curseforge:319596}
+
+      - name: Publish Fabric version
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          name: Palladium ${{ env.mod_version }} for Fabric/Quilt ${{ env.minecraft_version }}
+          version: ${{ env.mod_version }}+${{ env.minecraft_version }}
+          modrinth-id: lt2zd42r
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          #          curseforge-id: 394468
+          #          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          changelog-file: CHANGELOG.md
+          loaders: |
+            fabric
+            quilt
+          game-versions: |
+            ${{ env.minecraft_version }}
+          files: |
+            fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
+            fabric/build/libs/*-@(dev|sources|javadoc).jar
+          dependencies: |
+            condensedcreative(optional){modrinth:Zw7fMbBg}{curseforge:624911}
+            trinkets(optional){modrinth:5aaWibi9}{curseforge:341284}
+            geckolib(optional){modrinth:8BmcQJ2H}{curseforge:388172}
+            kubejs(optional){modrinth:umyGl7zF}{curseforge:238086}
+            pehkui(optional){modrinth:t5W7Jfwy}{curseforge:319596}
