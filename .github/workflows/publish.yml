@@ -38,7 +38,7 @@ jobs:
       - name: Publish Forge version
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          name: Palladium ${{ env.mod_version }} for Forge ${{ env.minecraft_version }}
+          name: Palladium ${{ env.mod_version }} for Forge/NeoForge ${{ env.minecraft_version }}
           version: ${{ env.mod_version }}+${{ env.minecraft_version }}
           modrinth-id: lt2zd42r
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -50,8 +50,9 @@ jobs:
             neoforge
           game-versions: |
             ${{ env.minecraft_version }}
-          files: |
+          files-primary: |
             forge/build/libs/!(*-@(dev|sources|javadoc)).jar
+          files-secondary: |
             forge/build/libs/*-@(dev|sources|javadoc).jar
           dependencies: |
             condensedcreative(optional){modrinth:Zw7fMbBg}{curseforge:624911}
@@ -75,8 +76,9 @@ jobs:
             quilt
           game-versions: |
             ${{ env.minecraft_version }}
-          files: |
+          files-primary: |
             fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
+          files-secondary: |
             fabric/build/libs/*-@(dev|sources|javadoc).jar
           dependencies: |
             condensedcreative(optional){modrinth:Zw7fMbBg}{curseforge:624911}
