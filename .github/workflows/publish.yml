@@ -40,8 +40,8 @@ jobs:
         with:
           name: Palladium ${{ env.mod_version }} for Forge/NeoForge ${{ env.minecraft_version }}
           version: ${{ env.mod_version }}+${{ env.minecraft_version }}
-          modrinth-id: lt2zd42r
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+#          modrinth-id: lt2zd42r
+#          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-id: 963363
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           changelog-file: CHANGELOG.md
@@ -50,10 +50,8 @@ jobs:
             neoforge
           game-versions: |
             ${{ env.minecraft_version }}
-          files-primary: |
+          files: |
             forge/build/libs/!(*-@(dev|sources|javadoc)).jar
-          files-secondary: |
-            forge/build/libs/*-@(dev|sources|javadoc).jar
           dependencies: |
             condensedcreative(optional){modrinth:Zw7fMbBg}{curseforge:624911}
             curios(optional){modrinth:vvuO3ImH}{curseforge:309927}
@@ -68,18 +66,16 @@ jobs:
           version: ${{ env.mod_version }}+${{ env.minecraft_version }}
           modrinth-id: lt2zd42r
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          #          curseforge-id: 394468
-          #          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          curseforge-id: 963363
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           changelog-file: CHANGELOG.md
           loaders: |
             fabric
             quilt
           game-versions: |
             ${{ env.minecraft_version }}
-          files-primary: |
+          files: |
             fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
-          files-secondary: |
-            fabric/build/libs/*-@(dev|sources|javadoc).jar
           dependencies: |
             condensedcreative(optional){modrinth:Zw7fMbBg}{curseforge:624911}
             trinkets(optional){modrinth:5aaWibi9}{curseforge:341284}
