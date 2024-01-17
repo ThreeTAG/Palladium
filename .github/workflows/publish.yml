@@ -51,7 +51,7 @@ jobs:
           game-versions: |
             ${{ env.minecraft_version }}
           files: |
-            forge/build/libs/!(*-@(dev|sources|javadoc)).jar
+            forge/build/libs/!(*-@(dev-shadow|sources|javadoc)).jar
           dependencies: |
             condensedcreative(optional){modrinth:Zw7fMbBg}{curseforge:624911}
             curios(optional){modrinth:vvuO3ImH}{curseforge:309927}
@@ -75,7 +75,7 @@ jobs:
           game-versions: |
             ${{ env.minecraft_version }}
           files: |
-            fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
+            fabric/build/libs/!(*-@(dev-shadow|sources|javadoc)).jar
           dependencies: |
             condensedcreative(optional){modrinth:Zw7fMbBg}{curseforge:624911}
             trinkets(optional){modrinth:5aaWibi9}{curseforge:341284}
