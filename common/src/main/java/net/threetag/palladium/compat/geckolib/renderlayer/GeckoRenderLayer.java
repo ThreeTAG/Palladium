@@ -94,6 +94,7 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
             this.model.setCurrentRenderingFields(state, living, playerRenderer.getModel());
             this.cachedTexture = this.texture.get(living).getTexture(context);
             this.cachedModel = this.modelLocation.get(living);
+            this.model.grabRelevantBones(this.model.getGeoModel().getBakedModel(this.model.getGeoModel().getModelResource(this.model.currentState)));
 
             var bone = (arm == HumanoidArm.RIGHT ? this.model.getRightArmBone() : this.model.getLeftArmBone());
 

@@ -58,13 +58,14 @@ public class GeckoLibCompatImpl {
             if (rendererProvider instanceof RenderProvider provider) {
                 PlayerModel origModel = ((PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player)).getModel();
                 GeckoArmorRenderer<AddonGeoArmorItem> renderer = (GeckoArmorRenderer) provider.getHumanoidArmorModel(player, stack, EquipmentSlot.CHEST, origModel);
+
+                if (rendererProvider instanceof GeoArmorRendererInvoker invoker) {
+                    invoker.invokeGrabRelevantBones(renderer.getGeoModel().getBakedModel(renderer.getGeoModel().getModelResource(gecko)));
+                }
+
                 var bone = (rightArm ? renderer.getRightArmBone() : renderer.getLeftArmBone());
 
                 if (bone != null) {
-                    if (rendererProvider instanceof GeoArmorRendererInvoker invoker) {
-                        invoker.invokeApplyBaseTransformations(origModel);
-                    }
-
                     var partialTick = Minecraft.getInstance().getFrameTime();
                     RenderType renderType = renderer.getRenderType(gecko, renderer.getTextureLocation(gecko), bufferSource, partialTick);
                     VertexConsumer buffer = ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, false, stack.hasFoil());
