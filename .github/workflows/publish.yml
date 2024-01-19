@@ -82,3 +82,19 @@ jobs:
             geckolib(optional){modrinth:8BmcQJ2H}{curseforge:388172}
             kubejs(optional){modrinth:umyGl7zF}{curseforge:238086}
             pehkui(optional){modrinth:t5W7Jfwy}{curseforge:319596}
+
+      - name: Send SquirrelControl Update
+        uses: tyrrrz/action-http-request@master
+        with:
+          url: https://squirrelcontrol.threetag.net/api/mod-update-post
+          method: POST
+          headers: |
+            Content-Type: application/json
+          body: |
+            {
+              "mod": "palladium",
+              "version": "${{ env.mod_version }}",
+              "token": "${{ secrets.SQUIRRELCONTROL_API_TOKEN }}"
+            }
+          retry-count: 3
+          retry-delay: 500
