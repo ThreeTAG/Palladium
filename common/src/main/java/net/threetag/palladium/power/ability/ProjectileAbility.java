@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.entity.CustomProjectile;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.util.icon.ItemIcon;
@@ -22,6 +23,7 @@ public class ProjectileAbility extends Ability {
     public static final PalladiumProperty<Float> VELOCITY = new FloatProperty("velocity").configurable("Determines the velocity when shooting the projectile");
     public static final PalladiumProperty<ArmTypeProperty.ArmType> SWINGING_ARM = new ArmTypeProperty("swinging_arm").configurable("Determines which arm(s) should swing upon shooting");
     public static final PalladiumProperty<Boolean> DAMAGE_FROM_PLAYER = new BooleanProperty("damage_from_player").configurable("If this is set to true and a custom projectile is used, the damage will automatically be set the player damage value");
+    public static final PalladiumProperty<Boolean> IGNORE_PLAYER_MOVEMENT = new BooleanProperty("ignore_player_movement").configurable("If this is set to true and you shoot a projectile, your player's movement will NOT be added to it. Having the player movement be added is default default vanilla behaviour");
 
     public ProjectileAbility() {
         this.withProperty(ICON, new ItemIcon(Items.SNOWBALL));
@@ -31,6 +33,7 @@ public class ProjectileAbility extends Ability {
         this.withProperty(VELOCITY, 1.5F);
         this.withProperty(SWINGING_ARM, ArmTypeProperty.ArmType.MAIN_ARM);
         this.withProperty(DAMAGE_FROM_PLAYER, false);
+        this.withProperty(IGNORE_PLAYER_MOVEMENT, false);
     }
 
     @Override
@@ -49,6 +52,10 @@ public class ProjectileAbility extends Ability {
                 float velocity = entry.getProperty(VELOCITY);
                 float inaccuracy = entry.getProperty(INACCURACY);
                 projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, velocity, inaccuracy);
+                if (entry.getProperty(IGNORE_PLAYER_MOVEMENT)) {
+                    Vec3 vec3 = entity.getDeltaMovement();
+                    projectile.setDeltaMovement(projectile.getDeltaMovement().subtract(vec3.x, entity.onGround() ? 0.0 : vec3.y, vec3.z));
+                }
                 projectile.setOwner(entity);
 
                 for (InteractionHand hand : entry.getProperty(SWINGING_ARM).getHand(entity)) {

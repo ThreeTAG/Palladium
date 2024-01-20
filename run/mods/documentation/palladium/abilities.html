@@ -3053,12 +3053,24 @@ false</td>
 <td>
 false</td>
 </tr>
+<tr>
+<td>
+ignore_player_movement</td>
+<td>
+Boolean</td>
+<td>
+If this is set to true and you shoot a projectile, your player's movement will NOT be added to it. Having the player movement be added is default default vanilla behaviour</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:projectile","icon":"minecraft:snowball","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","entity_type":"minecraft:snowball","entity_data":"null","inaccuracy":0.0,"velocity":1.5,"swinging_arm":"main_arm","damage_from_player":false}</pre>
+{"type":"palladium:projectile","icon":"minecraft:snowball","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","entity_type":"minecraft:snowball","entity_data":"null","inaccuracy":0.0,"velocity":1.5,"swinging_arm":"main_arm","damage_from_player":false,"ignore_player_movement":false}</pre>
 </div>
 <hr>
 
