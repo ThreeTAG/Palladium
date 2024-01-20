@@ -1,1 +1,2 @@
-- Release!
+- Fixed datapack content (like powers) not loading on Quilt
+- Added ignore_player_movement option to projectile abilities
