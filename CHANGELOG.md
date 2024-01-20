@@ -1,2 +1,3 @@
 - Fixed datapack content (like powers) not loading on Quilt
 - Added ignore_player_movement option to projectile abilities
+- Fixed gecko render layers not showing arms before going into 3rd person
