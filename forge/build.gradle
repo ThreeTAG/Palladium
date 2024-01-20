@@ -35,6 +35,10 @@ loom {
             mod "palladium"
         }
     }
+
+    mixin {
+        defaultRefmapName = "palladium-forge-refmap.json"
+    }
 }
 
 configurations {

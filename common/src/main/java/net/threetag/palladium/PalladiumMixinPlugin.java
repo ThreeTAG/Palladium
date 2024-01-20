@@ -15,12 +15,14 @@ public class PalladiumMixinPlugin implements IMixinConfigPlugin {
     private static final boolean HAS_TRINKETS;
     private static final boolean HAS_CURIOS;
     private static final boolean HAS_GECKO;
+    public static final boolean HAS_QUILT;
 
     static {
         HAS_KUBEJS = hasClass("dev.latvian.mods.kubejs.KubeJS");
         HAS_TRINKETS = hasClass("dev.emi.trinkets.api.TrinketsApi");
         HAS_CURIOS = hasClass("top.theillusivec4.curios.api.CuriosApi");
         HAS_GECKO = hasClass("software.bernie.geckolib.renderer.GeoArmorRenderer");
+        HAS_QUILT = hasClass("org.quiltmc.qsl.resource.loader.impl.ResourceLoaderImpl");
     }
 
     @Override
@@ -44,12 +46,15 @@ public class PalladiumMixinPlugin implements IMixinConfigPlugin {
                 return HAS_TRINKETS;
             }
 
-            if (mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.forge.GeoArmorRendererMixin")
-                    || mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.fabric.GeoArmorRendererMixin")
+            if (mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.client.GeoArmorRendererMixin")
                     || mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.client.GeoArmorRendererInvoker")
                     || mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.client.GeoRendererMixin")
             ) {
                 return HAS_GECKO;
+            }
+
+            if (mixinClassName.equalsIgnoreCase("net.threetag.palladium.mixin.fabric.ResourceLoaderImplMixin")) {
+                return HAS_QUILT;
             }
         } catch (Exception ignored) {
             return true;

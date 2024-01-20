@@ -24,7 +24,7 @@ public class ScriptManagerMixin {
     @Final
     public Map<String, ScriptPack> packs;
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
     public ScriptType scriptType;
 

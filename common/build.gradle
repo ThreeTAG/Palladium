@@ -4,6 +4,10 @@ architectury {
 
 loom {
     accessWidenerPath = file("src/main/resources/palladium.accesswidener")
+
+    mixin {
+        defaultRefmapName = "palladium-common-refmap.json"
+    }
 }
 
 dependencies {

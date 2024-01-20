@@ -20,6 +20,10 @@ loom {
         } else if (name == "server")
             runDir = "../run/server-fabric"
     }
+
+    mixin {
+        defaultRefmapName = "palladium-fabric-refmap.json"
+    }
 }
 
 configurations {
@@ -35,6 +39,9 @@ dependencies {
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
     modApi "net.threetag:PalladiumCore-fabric:${rootProject.palladiumcore_version}"
     include "net.threetag:PalladiumCore-fabric:${rootProject.palladiumcore_version}"
+
+    // QuiltSL
+    modCompileOnly "org.quiltmc:qsl:${rootProject.qsl_version}"
 
     // Player Animator
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_anim_version}")
@@ -90,6 +97,10 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+}
+
+repositories {
+    maven { url "https://maven.quiltmc.org/repository/release/" }
 }
 
 configurations.all {

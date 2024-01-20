@@ -12,6 +12,7 @@
     "PackRepositoryMixin",
     "PlayerMixin",
     "ReloadableResourceManagerMixin",
+    "ResourceLoaderImplMixin",
     "TrinketsApiMixin"
   ],
   "injectors": {
