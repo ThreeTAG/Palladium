@@ -156,10 +156,10 @@ publishing {
 
     repositories {
         maven {
-            url 'https://repo.repsy.io/mvn/lucraft/threetag'
+            url 'https://maven.threetag.net'
             credentials {
-                username System.getenv('REPSY_USERNAME')
-                password System.getenv('REPSY_PASSWORD')
+                username System.getenv('MAVEN_USERNAME')
+                password System.getenv('MAVEN_PASSWORD')
             }
         }
     }

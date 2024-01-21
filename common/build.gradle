@@ -39,9 +39,6 @@ dependencies {
         exclude group: "dev.architectury"
     })
 
-    // Forge Config API Port
-    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-common:${rootProject.forge_config_api_port_version}"
-
     // Condensed Creative
     modCompileOnly "io.wispforest:condensed_creative:${rootProject.condensed_creative_version}"
 }
@@ -49,17 +46,17 @@ dependencies {
 publishing {
     publications {
         mavenCommon(MavenPublication) {
-            artifactId = rootProject.archives_base_name
+            artifactId = rootProject.archives_base_name + "-" + project.name
             from components.java
         }
     }
 
     repositories {
         maven {
-            url 'https://repo.repsy.io/mvn/lucraft/threetag'
+            url 'https://maven.threetag.net'
             credentials {
-                username System.getenv('REPSY_USERNAME')
-                password System.getenv('REPSY_PASSWORD')
+                username System.getenv('MAVEN_USERNAME')
+                password System.getenv('MAVEN_PASSWORD')
             }
         }
     }

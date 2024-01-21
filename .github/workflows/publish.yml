@@ -98,3 +98,6 @@ jobs:
             }
           retry-count: 3
           retry-delay: 500
+
+      - name: Publish to Maven
+        run: "./gradlew publish"
