@@ -57,7 +57,7 @@ public class AddonPackManagerImpl {
 
                 net.fabricmc.fabric.api.resource.ModResourcePack pack = ModNioResourcePack.create(container.getMetadata().getId(), container, null, type, ResourcePackActivationType.ALWAYS_ENABLED);
 
-                if (Objects.equals(pack.packId(), "minecraft")) continue;
+                if (pack == null || Objects.equals(pack.packId(), "minecraft")) continue;
 
                 Pack resourcePackProfile = Pack.readMetaAndCreate("mod:" + pack.packId(), Component.nullToEmpty(pack.getFabricModMetadata().getName()),
                         false, factory -> new ModResourcePack(container, pack.packId(), true, container.getRootPath()), type, Pack.Position.BOTTOM,

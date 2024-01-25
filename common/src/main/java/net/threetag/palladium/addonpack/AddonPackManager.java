@@ -146,7 +146,7 @@ public class AddonPackManager {
                 if (packData == null) {
                     bufferedreader.close();
                     stream.close();
-                    throw new RuntimeException("Addonpack " + pack.getId() + " is missing key details in pack.mcmeta (\"id\" & \"version\" in \"packs\"-section)");
+                    Palladium.LOGGER.info("Skipping " + pack.getId() + " as it's not been marked as an addonpack");
                 }
 
                 if (packs.containsKey(packData.getId())) {
