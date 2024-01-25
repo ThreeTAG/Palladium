@@ -16,6 +16,7 @@ import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Unit;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.log.AddonPackLogEntry;
 import net.threetag.palladium.addonpack.parser.*;
 import net.threetag.palladium.addonpack.version.VersionParsingException;
@@ -142,16 +143,10 @@ public class AddonPackManager {
                 JsonObject jsonobject = GsonHelper.parse(bufferedreader);
                 PackData packData = PackData.fromJSON(jsonobject);
 
-                if (packData == null && !(Platform.isForge() ? pack.getId().startsWith("mod:") : pack.getId().equalsIgnoreCase("Fabric Mods"))) {
-                    bufferedreader.close();
-                    stream.close();
-                    throw new RuntimeException("Addonpack " + pack.getId() + " is missing key details in pack.mcmeta (\"id\" & \"version\" in \"packs\"-section)");
-                }
-
                 if (packData == null) {
                     bufferedreader.close();
                     stream.close();
-                    return;
+                    throw new RuntimeException("Addonpack " + pack.getId() + " is missing key details in pack.mcmeta (\"id\" & \"version\" in \"packs\"-section)");
                 }
 
                 if (packs.containsKey(packData.getId())) {
@@ -163,8 +158,8 @@ public class AddonPackManager {
                 packs.put(packData.getId(), packData);
                 bufferedreader.close();
                 stream.close();
-            } catch (IOException | VersionParsingException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                AddonPackLog.error(e.getLocalizedMessage());
             }
         });
 

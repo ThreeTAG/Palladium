@@ -1,15 +1,18 @@
 package net.threetag.palladium.forge;
 
+import com.google.common.base.Charsets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.server.packs.resources.IoSupplier;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.common.util.MavenVersionStringHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -35,9 +38,16 @@ import net.threetag.palladium.compat.curios.forge.CuriosCompat;
 import net.threetag.palladium.compat.geckolib.forge.GeckoLibCompatImpl;
 import net.threetag.palladium.data.forge.*;
 import net.threetag.palladium.mixin.ReloadableResourceManagerMixin;
+import net.threetag.palladium.mixin.forge.PathPackResourcesAccessor;
 import net.threetag.palladiumcore.forge.PalladiumCoreForge;
 import net.threetag.palladiumcore.util.Platform;
+import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -88,7 +98,7 @@ public class PalladiumForge {
                     IModInfo mod = e.getKey().getModInfos().get(0);
                     if (Objects.equals(mod.getModId(), "minecraft")) continue;
                     final String name = "mod:" + mod.getModId();
-                    final Pack packInfo = Pack.readMetaAndCreate(name, Component.literal(e.getValue().packId()), false, id -> e.getValue(), AddonPackManager.getPackType(), Pack.Position.BOTTOM, PackSource.DEFAULT);
+                    final Pack packInfo = Pack.readMetaAndCreate(name, Component.literal(e.getValue().packId()), false, id -> new ModResourcePack(e.getValue(), mod), AddonPackManager.getPackType(), Pack.Position.BOTTOM, PackSource.DEFAULT);
                     if (packInfo == null) {
                         ModLoader.get().addWarning(new ModLoadingWarning(mod, ModLoadingStage.ERROR, "fml.modloading.brokenresources", e.getKey()));
                         continue;
@@ -140,6 +150,39 @@ public class PalladiumForge {
         List<PreparableReloadListener> listeners = ((ReloadableResourceManagerMixin) mc.getResourceManager()).getListeners();
         int idx = listeners.indexOf(mc.getEntityModels());
         listeners.add(idx + 1, new ModelLayerManager());
+    }
+
+    public static class ModResourcePack extends PathPackResources {
+
+        private final PathPackResources parent;
+        private final IModInfo mod;
+
+        public ModResourcePack(PathPackResources parent, IModInfo mod) {
+            super(parent.packId(), parent.isBuiltin(), parent.getSource());
+            this.parent = parent;
+            this.mod = mod;
+        }
+
+        @Override
+        public @Nullable IoSupplier<InputStream> getRootResource(String... paths) {
+            String fileName = String.join("/", paths);
+            final Path path = resolve(paths);
+
+            if ("pack.mcmeta".equals(fileName) && !Files.exists(path)) {
+                String id = this.mod.getModId();
+                String version = MavenVersionStringHelper.artifactVersionToString(this.mod.getVersion());
+                String description = this.mod.getDescription();
+                String pack = String.format("{\"pack\":{\"id\": \"%s\", \"version\": \"%s\", \"description\":\"%s\"}}", id, version, description);
+                return () -> IOUtils.toInputStream(pack, Charsets.UTF_8);
+            }
+
+            return super.getRootResource(paths);
+        }
+
+        @Override
+        protected @NotNull Path resolve(String... paths) {
+            return this.parent instanceof PathPackResourcesAccessor acc ? acc.invokeResolve(paths) : super.resolve(paths);
+        }
     }
 
 }
