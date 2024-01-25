@@ -17,6 +17,7 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.addonpack.PackData;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsUtil;
@@ -85,9 +86,13 @@ public class CuriosCompat {
         });
     }
 
+    @Deprecated
     public static void interModQueue(InterModEnqueueEvent e) {
         for (PackData pack : AddonPackManager.getInstance().getPacks()) {
             if (pack.getCustomData().has("curios")) {
+
+                AddonPackLog.warning("Addon Pack " + pack.getId() + " adds Curios slots in pack.mcmeta, this is deprecated! Please use the new system: https://docs.illusivesoulworks.com/curios/datapack-example");
+
                 var curios = GsonHelper.getAsJsonObject(pack.getCustomData(), "curios");
                 for (Map.Entry<String, JsonElement> entry : curios.entrySet()) {
                     String name = entry.getKey();
