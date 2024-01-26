@@ -45,7 +45,7 @@ enum PowerTabType {
         }
 
         int j = isSelected ? this.textureY + this.height : this.textureY;
-        guiGraphics.blit(PowersScreen.WINDOW, offsetX + this.getX(index), offsetY + this.getY(index), i, j, this.width, this.height);
+        guiGraphics.blit(PowersScreen.TABS, offsetX + this.getX(index), offsetY + this.getY(index), i, j, this.width, this.height);
     }
 
     public void drawIcon(GuiGraphics guiGraphics, DataContext context, int offsetX, int offsetY, int index, IIcon icon) {
