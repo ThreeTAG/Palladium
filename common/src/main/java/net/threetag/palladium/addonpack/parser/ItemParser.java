@@ -1,7 +1,6 @@
 package net.threetag.palladium.addonpack.parser;
 
 import com.google.gson.*;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -43,7 +42,7 @@ public class ItemParser extends AddonParser<Item> {
             var json = new JsonObject();
             json.addProperty("type", "palladium:block_item");
             json.addProperty("block", id.toString());
-            json.addProperty("creative_mode_tab", autoRegisteredBlockItems.get(id).toString());
+            json.addProperty("creative_mode_tab", autoRegisteredBlockItems.get(id) != null ? autoRegisteredBlockItems.get(id).toString() : null);
             map.put(id, json);
         }
     }
