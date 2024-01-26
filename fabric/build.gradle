@@ -61,8 +61,8 @@ dependencies {
     }))
 
     // Cardinal Components
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_version}"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_components_version}"
+//    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_components_version}"
+//    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_components_version}"
 
     // Mod Menu
     modImplementation "com.terraformersmc:modmenu:${rootProject.modmenu_version}"
@@ -75,9 +75,7 @@ dependencies {
 //    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rootProject.rei_version}"
 
     // Trinkets
-    modImplementation ("dev.emi:trinkets:${rootProject.trinkets_version}") {
-        exclude(group: "dev.onyxstudios.cardinal-components-api")
-    }
+    modImplementation ("dev.emi:trinkets:${rootProject.trinkets_version}")
 
     // Energy & TechReborn
     include modApi("teamreborn:energy:${rootProject.energy_version}") {
