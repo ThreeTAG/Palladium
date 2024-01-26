@@ -64,9 +64,9 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> QUARTZ_CIRCUIT = ITEMS.register("quartz_circuit", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> VIBRANIUM_CIRCUIT = ITEMS.register("vibranium_circuit", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
 
-    public static final RegistrySupplier<FluxCapacitorItem> LEAD_FLUX_CAPACITOR = ITEMS.register("lead_flux_capacitor", () -> new FluxCapacitorItem(new Item.Properties(), 500000, 1000, 1000));
-    public static final RegistrySupplier<FluxCapacitorItem> QUARTZ_FLUX_CAPACITOR = ITEMS.register("quartz_flux_capacitor", () -> new FluxCapacitorItem(new Item.Properties(), 1000000, 5000, 5000));
-    public static final RegistrySupplier<FluxCapacitorItem> VIBRANIUM_FLUX_CAPACITOR = ITEMS.register("vibranium_flux_capacitor", () -> new FluxCapacitorItem(new Item.Properties().rarity(Rarity.RARE), 2000000, 10000, 10000));
+    public static final RegistrySupplier<FluxCapacitorItem> LEAD_FLUX_CAPACITOR = ITEMS.register("lead_flux_capacitor", () -> new FluxCapacitorItem(new Item.Properties().stacksTo(1), 500000, 1000, 1000));
+    public static final RegistrySupplier<FluxCapacitorItem> QUARTZ_FLUX_CAPACITOR = ITEMS.register("quartz_flux_capacitor", () -> new FluxCapacitorItem(new Item.Properties().stacksTo(1), 1000000, 5000, 5000));
+    public static final RegistrySupplier<FluxCapacitorItem> VIBRANIUM_FLUX_CAPACITOR = ITEMS.register("vibranium_flux_capacitor", () -> new FluxCapacitorItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 2000000, 10000, 10000));
 
     public static final RegistrySupplier<Item> VIBRANIUM_WEAVE_BOOTS = ITEMS.register("vibranium_weave_boots", () -> new VibraniumWeaveArmorItem(VIBRANIUM_WEAVE, ArmorItem.Type.BOOTS, (new Item.Properties())));
 
