@@ -27,7 +27,9 @@ jobs:
       - run: chmod +x gradlew
 
       - name: Build Version
-        run: "./gradlew build"
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build --stacktrace --no-daemon
 
       - name: Setting mod version
         run: |
@@ -100,7 +102,9 @@ jobs:
           retry-delay: 500
 
       - name: Publish to Maven
+        uses: gradle/gradle-build-action@v2
         env:
-          MAVEN_USERNAME: "${{ secrets.MAVEN_USERNAME }}"
-          MAVEN_PASSWORD: "${{ secrets.MAVEN_PASSWORD }}"
-        run: "./gradlew publish"
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+        with:
+          arguments: publish --stacktrace --no-daemon
