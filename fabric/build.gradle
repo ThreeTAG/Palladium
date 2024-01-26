@@ -97,10 +97,6 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 }
 
-repositories {
-    maven { url "https://maven.quiltmc.org/repository/release/" }
-}
-
 configurations.all {
     resolutionStrategy {
         force "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"

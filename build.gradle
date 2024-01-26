@@ -142,6 +142,9 @@ allprojects {
                 includeGroup 'com.jamieswhiteshirt'
             }
         }
+
+        // Quilt
+        maven { url "https://maven.quiltmc.org/repository/release/" }
     }
 
     java {
