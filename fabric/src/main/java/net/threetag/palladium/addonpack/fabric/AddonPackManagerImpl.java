@@ -97,7 +97,7 @@ public class AddonPackManagerImpl {
             String fileName = String.join("/", paths);
             final Path path = resolve(paths);
 
-            if ("pack.mcmeta".equals(fileName) && !Files.exists(path)) {
+            if ("pack.mcmeta".equals(fileName) && (path == null || !Files.exists(path))) {
                 String id = this.modContainer.getMetadata().getId();
                 String version = this.modContainer.getMetadata().getVersion().getFriendlyString();
                 String description = this.modContainer.getMetadata().getDescription();

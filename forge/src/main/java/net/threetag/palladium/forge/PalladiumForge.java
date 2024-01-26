@@ -168,7 +168,7 @@ public class PalladiumForge {
             String fileName = String.join("/", paths);
             final Path path = resolve(paths);
 
-            if ("pack.mcmeta".equals(fileName) && !Files.exists(path)) {
+            if ("pack.mcmeta".equals(fileName) && (path == null || !Files.exists(path))) {
                 String id = this.mod.getModId();
                 String version = MavenVersionStringHelper.artifactVersionToString(this.mod.getVersion());
                 String description = this.mod.getDescription();
