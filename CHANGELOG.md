@@ -1,3 +1,6 @@
-- Fixed datapack content (like powers) not loading on Quilt
-- Added ignore_player_movement option to projectile abilities
-- Fixed gecko render layers not showing arms before going into 3rd person
+- Improved how mods are loaded as addonpacks
+- Added warning when addonpacks as Curios slots via pack.mcmeta, please check the Curios wiki for the updated way
+- Added recipes for circuits and flux capacitors
+- Fixed Create incompatibility on Fabric
+- Fixed first person arm rotation for Gecko armor
+- Fixed tabs texture in powers screen
