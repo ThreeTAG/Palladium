@@ -2,6 +2,7 @@ package net.threetag.palladium.compat.geckolib.armor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -41,6 +42,11 @@ public class GeckoArmorRenderer<T extends AddonGeoArmorItem> extends GeoArmorRen
     @Override
     public RenderType getRenderType(T animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
         return PalladiumRenderTypes.getArmorTranslucent(texture);
+    }
+
+    @Override
+    public void applyBaseTransformations(HumanoidModel<?> baseModel) {
+        super.applyBaseTransformations(baseModel);
     }
 
     public static class GeoModel<T extends AddonGeoArmorItem> extends software.bernie.geckolib.model.GeoModel<T> {

@@ -27,6 +27,7 @@ import net.threetag.palladium.compat.geckolib.ability.ArmorAnimationAbility;
 import net.threetag.palladium.compat.geckolib.ability.RenderLayerAnimationAbility;
 import net.threetag.palladium.compat.geckolib.armor.AddonGeoArmorItem;
 import net.threetag.palladium.compat.geckolib.armor.GeckoArmorRenderer;
+import net.threetag.palladium.compat.geckolib.renderlayer.GeckoRenderLayerModel;
 import net.threetag.palladium.mixin.client.GeoArmorRendererInvoker;
 import net.threetag.palladium.power.ability.Ability;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,7 @@ import software.bernie.geckolib.GeckoLib;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.object.Color;
+import software.bernie.geckolib.util.RenderUtils;
 
 import java.util.function.Consumer;
 
@@ -68,10 +70,13 @@ public class GeckoLibCompatImpl {
             var bone = (rightArm ? renderer.getRightArmBone() : renderer.getLeftArmBone());
 
             if (bone != null) {
-
                 var partialTick = Minecraft.getInstance().getFrameTime();
                 RenderType renderType = renderer.getRenderType(gecko, renderer.getTextureLocation(gecko), bufferSource, partialTick);
                 VertexConsumer buffer = ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, false, stack.hasFoil());
+
+                RenderUtils.matchModelPartRot(rendererArm, bone);
+                GeckoRenderLayerModel.copyScaleAndVisibility(rendererArm, bone);
+                bone.updatePosition(rendererArm.x + (rightArm ? 5 : -5), 2 - rendererArm.y, rendererArm.z);
 
                 poseStack.pushPose();
                 poseStack.translate(0, 24 / 16F, 0);
@@ -83,12 +88,6 @@ public class GeckoLibCompatImpl {
                 float blue = renderColor.getBlueFloat();
                 float alpha = renderColor.getAlphaFloat();
                 int packedOverlay = renderer.getPackedOverlay(gecko, 0, partialTick);
-
-                if (renderType == null)
-                    renderType = renderer.getRenderType(gecko, renderer.getTextureLocation(gecko), bufferSource, partialTick);
-
-                if (buffer == null)
-                    buffer = bufferSource.getBuffer(renderType);
 
                 AnimationState<AddonGeoArmorItem> animationState = new AnimationState<>(gecko, 0, 0, partialTick, false);
                 long instanceId = renderer.getInstanceId(gecko);

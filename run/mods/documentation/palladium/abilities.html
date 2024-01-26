@@ -927,7 +927,7 @@ attribute</td>
 <td>
 Attribute</td>
 <td>
-Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength"</td>
+Determines which attribute should be modified. Possible attribute:"minecraft:generic.max_health", "minecraft:generic.follow_range", "minecraft:generic.knockback_resistance", "minecraft:generic.movement_speed", "minecraft:generic.flying_speed", "minecraft:generic.attack_damage", "minecraft:generic.attack_knockback", "minecraft:generic.attack_speed", "minecraft:generic.armor", "minecraft:generic.armor_toughness", "minecraft:generic.luck", "minecraft:zombie.spawn_reinforcements", "minecraft:horse.jump_strength", "porting_lib:step_height_addition", "porting_lib:entity_gravity", "porting_lib:swim_speed", "porting_lib:reach_distance", "porting_lib:attack_range"</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -4937,7 +4937,7 @@ Icon for the ability</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-ItemIcon{stack=1 vibranium_circuit}</td>
+ItemIcon{stack=0 air}</td>
 </tr>
 <tr>
 <td>
@@ -5028,7 +5028,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"kubejs:testpack/test_ability","icon":"palladium:vibranium_circuit","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
+{"type":"kubejs:testpack/test_ability","icon":{"type":"palladium:item","item":"minecraft:air","count":0},"title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
 </div>
 <hr>
 

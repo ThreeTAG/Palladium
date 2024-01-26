@@ -19,10 +19,13 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.compat.geckolib.ability.ArmorAnimationAbility;
 import net.threetag.palladium.compat.geckolib.ability.RenderLayerAnimationAbility;
 import net.threetag.palladium.compat.geckolib.armor.AddonGeoArmorItem;
 import net.threetag.palladium.compat.geckolib.armor.GeckoArmorRenderer;
+import net.threetag.palladium.compat.geckolib.renderlayer.GeckoRenderLayer;
+import net.threetag.palladium.compat.geckolib.renderlayer.GeckoRenderLayerModel;
 import net.threetag.palladium.mixin.client.GeoArmorRendererInvoker;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladiumcore.registry.DeferredRegister;
@@ -32,6 +35,7 @@ import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.object.Color;
+import software.bernie.geckolib.util.RenderUtils;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -70,6 +74,10 @@ public class GeckoLibCompatImpl {
                     RenderType renderType = renderer.getRenderType(gecko, renderer.getTextureLocation(gecko), bufferSource, partialTick);
                     VertexConsumer buffer = ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, false, stack.hasFoil());
 
+                    RenderUtils.matchModelPartRot(rendererArm, bone);
+                    GeckoRenderLayerModel.copyScaleAndVisibility(rendererArm, bone);
+                    bone.updatePosition(rendererArm.x + (rightArm ? 5 : -5), 2 - rendererArm.y, rendererArm.z);
+
                     poseStack.pushPose();
                     poseStack.translate(0, 24 / 16F, 0);
                     poseStack.scale(-1, -1, 1);
@@ -80,12 +88,6 @@ public class GeckoLibCompatImpl {
                     float blue = renderColor.getBlueFloat();
                     float alpha = renderColor.getAlphaFloat();
                     int packedOverlay = renderer.getPackedOverlay(gecko, 0, partialTick);
-
-                    if (renderType == null)
-                        renderType = renderer.getRenderType(gecko, renderer.getTextureLocation(gecko), bufferSource, partialTick);
-
-                    if (buffer == null)
-                        buffer = bufferSource.getBuffer(renderType);
 
                     AnimationState<AddonGeoArmorItem> animationState = new AnimationState<>(gecko, 0, 0, partialTick, false);
                     long instanceId = renderer.getInstanceId(gecko);
