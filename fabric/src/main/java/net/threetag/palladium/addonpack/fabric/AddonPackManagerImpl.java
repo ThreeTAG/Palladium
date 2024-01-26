@@ -16,6 +16,7 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.server.packs.resources.IoSupplier;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.PalladiumMixinPlugin;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -67,7 +68,9 @@ public class AddonPackManagerImpl {
             }
 
             // Register all built-in resource packs provided by mods.
-            ResourceManagerHelperImpl.registerBuiltinResourcePacks(this.type, onLoad);
+            if (!PalladiumMixinPlugin.HAS_QUILT) {
+                ResourceManagerHelperImpl.registerBuiltinResourcePacks(this.type, onLoad);
+            }
         }
     }
 
