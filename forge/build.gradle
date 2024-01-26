@@ -101,7 +101,7 @@ processResources {
 }
 
 sourceSets.main.resources {
-    exclude '**/data/palladium/**/fabric/*'
+    exclude '**/data/c/*'
 }
 
 shadowJar {

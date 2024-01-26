@@ -1,14 +1,6 @@
 {
   "values": [
-    "#forge:ingots/iron",
-    "#c:ingots",
-    "#forge:ingots/gold",
-    "#c:ingots",
-    "#forge:ingots/copper",
-    "#c:ingots",
     "#forge:ingots/lead",
-    "#c:ingots",
-    "#forge:ingots/vibranium",
-    "#c:ingots"
+    "#forge:ingots/vibranium"
   ]
 }

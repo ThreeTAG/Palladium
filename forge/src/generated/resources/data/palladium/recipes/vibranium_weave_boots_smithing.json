@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smithing_transform",
   "addition": {
-    "tag": "forge:ingots/vibranium"
+    "tag": "palladium:connector/vibranium_ingots"
   },
   "base": {
     "item": "minecraft:leather_boots"

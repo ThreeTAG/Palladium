@@ -1,8 +1,9 @@
 {
   "values": [
+    "#forge:storage_blocks/raw_lead",
+    "#forge:storage_blocks/raw_titanium",
+    "#forge:storage_blocks/raw_vibranium",
     "#forge:storage_blocks/lead",
-    "#c:storage_blocks",
-    "#forge:storage_blocks/vibranium",
-    "#c:storage_blocks"
+    "#forge:storage_blocks/vibranium"
   ]
 }

@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "B": {
-      "tag": "forge:storage_blocks/quartz"
+      "tag": "palladium:connector/quartz"
     },
     "S": [
       {

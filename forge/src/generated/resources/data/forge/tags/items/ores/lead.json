@@ -1,5 +1,6 @@
 {
   "values": [
-    "#c:lead_ores"
+    "palladium:lead_ore",
+    "palladium:deepslate_lead_ore"
   ]
 }

@@ -117,7 +117,7 @@ processResources {
 
 sourceSets.main.resources {
     srcDir project(":forge").file("src/generated/resources").absolutePath
-    exclude '**/data/palladium/**/forge/*'
+    exclude '**/data/forge/*'
 }
 
 shadowJar {

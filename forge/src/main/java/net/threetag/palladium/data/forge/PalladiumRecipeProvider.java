@@ -10,7 +10,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
@@ -32,7 +31,7 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, PalladiumItems.SUIT_STAND.get()).pattern(" B ").pattern("SBS").pattern("SXS").define('B', Tags.Items.STORAGE_BLOCKS_QUARTZ).define('S', Ingredient.of(Blocks.QUARTZ_SLAB, Blocks.SMOOTH_QUARTZ_SLAB)).define('X', Blocks.SMOOTH_STONE_SLAB).unlockedBy(getHasName(Items.ARMOR_STAND), has(Items.ARMOR_STAND)).save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, PalladiumItems.SUIT_STAND.get()).pattern(" B ").pattern("SBS").pattern("SXS").define('B', PalladiumItemTags.QUARTZ).define('S', Ingredient.of(Blocks.QUARTZ_SLAB, Blocks.SMOOTH_QUARTZ_SLAB)).define('X', Blocks.SMOOTH_STONE_SLAB).unlockedBy(getHasName(Items.ARMOR_STAND), has(Items.ARMOR_STAND)).save(consumer);
 
         oreSmelting(consumer, LEAD_SMELTABLES, RecipeCategory.MISC, PalladiumItems.LEAD_INGOT.get(), 0.7F, 200, "lead_ingot");
         oreSmelting(consumer, VIBRANIUM_SMELTABLES, RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT.get(), 1F, 600, "vibranium_ingot");
@@ -49,8 +48,15 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.PURPLE_DYE).requires(PalladiumBlocks.HEART_SHAPED_HERB.get()).group("purple_dye").unlockedBy("has_flower", has(PalladiumBlocks.HEART_SHAPED_HERB.get())).save(consumer, new ResourceLocation(Palladium.MOD_ID, "purple_dye_from_heart_shaped_herb"));
 
-        SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(Items.LEATHER_BOOTS), Ingredient.of(PalladiumItemTags.INGOTS_VIBRANIUM), RecipeCategory.COMBAT, PalladiumItems.VIBRANIUM_WEAVE_BOOTS.get()).unlocks(getHasName(PalladiumItems.VIBRANIUM_INGOT.get()), has(PalladiumItemTags.INGOTS_VIBRANIUM)).save(consumer, Palladium.id("vibranium_weave_boots_smithing"));
-        ;
+        SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(Items.LEATHER_BOOTS), Ingredient.of(PalladiumItemTags.VIBRANIUM_INGOTS), RecipeCategory.COMBAT, PalladiumItems.VIBRANIUM_WEAVE_BOOTS.get()).unlocks(getHasName(PalladiumItems.VIBRANIUM_INGOT.get()), has(PalladiumItemTags.VIBRANIUM_INGOTS)).save(consumer, Palladium.id("vibranium_weave_boots_smithing"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.LEAD_CIRCUIT.get()).pattern("II").pattern("LL").pattern("GG").define('I', PalladiumItemTags.IRON_INGOTS).define('L', PalladiumItemTags.LEAD_INGOTS).define('G', PalladiumItemTags.GOLD_INGOTS).unlockedBy(getHasName(PalladiumItems.LEAD_INGOT.get()), has(PalladiumItemTags.LEAD_INGOTS)).save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.QUARTZ_CIRCUIT.get()).pattern("II").pattern("QQ").pattern("CC").define('I', PalladiumItemTags.IRON_INGOTS).define('Q', PalladiumItemTags.QUARTZ).define('C', PalladiumItemTags.COPPER_INGOTS).unlockedBy(getHasName(Items.QUARTZ), has(PalladiumItemTags.QUARTZ)).save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.VIBRANIUM_CIRCUIT.get()).pattern("II").pattern("VV").pattern("DD").define('I', PalladiumItemTags.IRON_INGOTS).define('V', PalladiumItemTags.VIBRANIUM_INGOTS).define('D', PalladiumItemTags.DIAMONDS).unlockedBy(getHasName(PalladiumItems.VIBRANIUM_INGOT.get()), has(PalladiumItemTags.VIBRANIUM_INGOTS)).save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.LEAD_FLUX_CAPACITOR.get()).pattern("RLR").pattern("GCG").pattern("LRL").define('R', PalladiumItems.REDSTONE_FLUX_CRYSTAL.get()).define('L', PalladiumItemTags.LEAD_INGOTS).define('G', PalladiumItemTags.GOLD_INGOTS).define('C', PalladiumItems.LEAD_CIRCUIT.get()).unlockedBy(getHasName(PalladiumItems.LEAD_INGOT.get()), has(PalladiumItemTags.LEAD_INGOTS)).save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.QUARTZ_FLUX_CAPACITOR.get()).pattern("RQR").pattern("CFC").pattern("QRQ").define('R', PalladiumItems.REDSTONE_FLUX_CRYSTAL.get()).define('Q', PalladiumItemTags.QUARTZ).define('C', PalladiumItemTags.COPPER_INGOTS).define('F', PalladiumItems.LEAD_FLUX_CAPACITOR.get()).unlockedBy(getHasName(Items.QUARTZ), has(PalladiumItemTags.QUARTZ)).save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.VIBRANIUM_FLUX_CAPACITOR.get()).pattern("RVR").pattern("DFD").pattern("VRV").define('R', PalladiumItems.REDSTONE_FLUX_CRYSTAL.get()).define('V', PalladiumItemTags.VIBRANIUM_INGOTS).define('D', PalladiumItemTags.DIAMONDS).define('F', PalladiumItems.QUARTZ_FLUX_CAPACITOR.get()).unlockedBy(getHasName(PalladiumItems.VIBRANIUM_INGOT.get()), has(PalladiumItemTags.VIBRANIUM_INGOTS)).save(consumer);
     }
 
     protected static void oreSmelting(Consumer<FinishedRecipe> finishedRecipeConsumer, List<ItemLike> ingredients, RecipeCategory category, ItemLike result, float experience, int cookingTIme, String group) {
@@ -68,15 +74,15 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
     }
 
     protected static void nineBlockStorageRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer, RecipeCategory unpackedCategory, ItemLike unpacked, RecipeCategory packedCategory, ItemLike packed) {
-        nineBlockStorageRecipes(finishedRecipeConsumer, unpackedCategory, unpacked, packedCategory, packed, getSimpleRecipeName(packed), (String) null, getSimpleRecipeName(unpacked), (String) null);
+        nineBlockStorageRecipes(finishedRecipeConsumer, unpackedCategory, unpacked, packedCategory, packed, getSimpleRecipeName(packed), null, getSimpleRecipeName(unpacked), null);
     }
 
     protected static void nineBlockStorageRecipesWithCustomPacking(Consumer<FinishedRecipe> finishedRecipeConsumer, RecipeCategory unpackedCategory, ItemLike unpacked, RecipeCategory packedCategory, ItemLike packed, String packedName, String packedGroup) {
-        nineBlockStorageRecipes(finishedRecipeConsumer, unpackedCategory, unpacked, packedCategory, packed, packedName, packedGroup, getSimpleRecipeName(unpacked), (String) null);
+        nineBlockStorageRecipes(finishedRecipeConsumer, unpackedCategory, unpacked, packedCategory, packed, packedName, packedGroup, getSimpleRecipeName(unpacked), null);
     }
 
     protected static void nineBlockStorageRecipesRecipesWithCustomUnpacking(Consumer<FinishedRecipe> finishedRecipeConsumer, RecipeCategory unpackedCategory, ItemLike unpacked, RecipeCategory packedCategory, ItemLike packed, String unpackedName, String unpackedGroup) {
-        nineBlockStorageRecipes(finishedRecipeConsumer, unpackedCategory, unpacked, packedCategory, packed, getSimpleRecipeName(packed), (String) null, unpackedName, unpackedGroup);
+        nineBlockStorageRecipes(finishedRecipeConsumer, unpackedCategory, unpacked, packedCategory, packed, getSimpleRecipeName(packed), null, unpackedName, unpackedGroup);
     }
 
     protected static void nineBlockStorageRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer, RecipeCategory unpackedCategory, ItemLike unpacked, RecipeCategory packedCategory, ItemLike packed, String packedName, @javax.annotation.Nullable String packedGroup, String unpackedName, @javax.annotation.Nullable String unpackedGroup) {

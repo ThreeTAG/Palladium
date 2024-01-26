@@ -25,7 +25,7 @@ public class PalladiumItems {
                 enumMap.put(ArmorItem.Type.CHESTPLATE, 3);
                 enumMap.put(ArmorItem.Type.HELMET, 1);
             }), 12, () -> SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F,
-            () -> Ingredient.of(PalladiumItemTags.INGOTS_VIBRANIUM));
+            () -> Ingredient.of(PalladiumItemTags.VIBRANIUM_INGOTS));
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Palladium.MOD_ID, Registries.ITEM);
 

@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "#forge:rods/wooden",
+      "required": false
+    },
+    {
+      "id": "#c:wood_sticks",
+      "required": false
+    }
+  ]
+}
