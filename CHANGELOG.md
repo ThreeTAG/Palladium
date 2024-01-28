@@ -1,6 +1,5 @@
-- Improved how mods are loaded as addonpacks
-- Added warning when addonpacks as Curios slots via pack.mcmeta, please check the Curios wiki for the updated way
-- Added recipes for circuits and flux capacitors
-- Fixed Create incompatibility on Fabric
-- Fixed first person arm rotation for Gecko armor
-- Fixed tabs texture in powers screen
+- Fixed crash when addonpack blocks have no creative tab
+- Fixed hide/remove body parts not properly applying to gecko render layers in first person
+- Fixed crash when mods are loaded as addonpacks
+- Fixed Quilt crash
+- Some internal code fixes
