@@ -19,14 +19,15 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.log.AddonPackLogEntry;
 import net.threetag.palladium.addonpack.parser.*;
-import net.threetag.palladium.addonpack.version.VersionParsingException;
 import net.threetag.palladium.client.screen.AddonPackLogScreen;
 import net.threetag.palladiumcore.event.EventResult;
 import net.threetag.palladiumcore.event.ScreenEvents;
 import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
@@ -120,6 +121,8 @@ public class AddonPackManager {
     }
 
     public static PackType getPackType() {
+        // just to make sure the mixin is loaded
+        var client = PackType.CLIENT_RESOURCES;
         return PACK_TYPE;
     }
 
