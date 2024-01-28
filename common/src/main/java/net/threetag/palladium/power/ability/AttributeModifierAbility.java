@@ -1,7 +1,7 @@
 package net.threetag.palladium.power.ability;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -12,12 +12,12 @@ import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.property.*;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AttributeModifierAbility extends Ability {
 
-    public static final PalladiumProperty<Attribute> ATTRIBUTE = new AttributeProperty("attribute").configurable("Determines which attribute should be modified. Possible attribute:" + getAttributeList());
+    public static final PalladiumProperty<Attribute> ATTRIBUTE = new AttributeProperty("attribute").configurable("Determines which attribute should be modified. Possible attributes: " + getAttributeList());
     public static final PalladiumProperty<Double> AMOUNT = new DoubleProperty("amount").configurable("The amount for the giving attribute modifier");
     public static final PalladiumProperty<Integer> OPERATION = new IntegerProperty("operation").configurable("The operation for the giving attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)");
     public static final PalladiumProperty<UUID> UUID = new UUIDProperty("uuid").configurable("Sets the unique identifier for this attribute modifier. If not specified it will generate a random one");
@@ -65,13 +65,8 @@ public class AttributeModifierAbility extends Ability {
         }
     }
 
-    private static String getAttributeList() {
-        StringBuilder stringBuilder = new StringBuilder();
-        BuiltInRegistries.ATTRIBUTE.forEach(attribute -> {
-            stringBuilder.append(", \"").append(Objects.requireNonNull(BuiltInRegistries.ATTRIBUTE.getKey(attribute))).append("\"");
-        });
-
-        return stringBuilder.substring(2);
+    public static String getAttributeList() {
+        return BuiltInRegistries.ATTRIBUTE.keySet().stream().map(ResourceLocation::toString).sorted(Comparator.naturalOrder()).collect(Collectors.joining(", "));
     }
 
     @Override

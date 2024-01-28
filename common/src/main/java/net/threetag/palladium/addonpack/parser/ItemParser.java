@@ -20,6 +20,7 @@ import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.item.*;
+import net.threetag.palladium.power.ability.AttributeModifierAbility;
 import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.json.GsonUtil;
 import net.threetag.palladiumcore.util.Platform;
@@ -234,7 +235,7 @@ public class ItemParser extends AddonParser<Item> {
                 "\"chest\": [ { \"attribute\": \"minecraft:generic.movement_speed\", \"amount\": 4, \"operation\": 1, \"uuid\": \"3a4df804-2be2-4002-a829-eaf29a629cac\" } ] }", JsonObject.class);
 
         builder.addProperty("attribute_modifiers", AttributeModifier[].class)
-                .description("Attribute modifiers when having the item equipped. You first specify the slot (\"all\" for every slot, other options: " + Arrays.toString(Arrays.stream(EquipmentSlot.values()).map(EquipmentSlot::getName).toArray()) + "), then an array for different modifiers. Possible attributes: " + Arrays.toString(BuiltInRegistries.ATTRIBUTE.stream().map(attribute -> Objects.requireNonNull(BuiltInRegistries.ATTRIBUTE.getKey(attribute)).toString()).toArray()))
+                .description("Attribute modifiers when having the item equipped. You first specify the slot (\"all\" for every slot, other options: " + Arrays.toString(Arrays.stream(EquipmentSlot.values()).map(EquipmentSlot::getName).toArray()) + "), then an array for different modifiers. Possible attributes: " + AttributeModifierAbility.getAttributeList())
                 .fallback(null)
                 .exampleJson(attributeModifiers);
 

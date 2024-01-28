@@ -5,7 +5,7 @@ StartupEvents.registry('palladium:abilities', (event) => {
     event.create('testpack/test_ability')
 
         // Preset icon, can also be changed individually in the power json
-        .icon(palladium.createItemIcon('palladium:vibranium_circuit'))
+        .icon(palladium.createItemIcon('minecraft:bread'))
 
         // Documentation description
         .documentationDescription('This is a test ability, defined in a KubeJS script.')
