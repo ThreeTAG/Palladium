@@ -5,6 +5,7 @@ import com.google.gson.JsonParseException;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.renderer.renderlayer.ModelLookup;
@@ -63,7 +64,7 @@ public class ArmorModelData {
         var data = new ArmorModelData();
 
         if (json == null) {
-            return data;
+            return data.add(ArmorRendererConditions.BASE_TEXTURE, new SkinTypedValue<>(ModelLayers.ARMOR_STAND_OUTER_ARMOR));
         }
 
         // If primitive, or if it's specifically skin-typed
