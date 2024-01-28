@@ -51,8 +51,8 @@ configurations {
 
 dependencies {
     forge "net.neoforged:forge:${rootProject.neoforge_version}"
-    modApi "net.threetag:PalladiumCore-forge:${rootProject.palladiumcore_version}"
-    include "net.threetag:PalladiumCore-forge:${rootProject.palladiumcore_version}"
+    modApi "net.threetag:palladiumcore-forge:${rootProject.palladiumcore_version}"
+    include "net.threetag:palladiumcore-forge:${rootProject.palladiumcore_version}"
 
     // Mixin Extras
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.2.0"))

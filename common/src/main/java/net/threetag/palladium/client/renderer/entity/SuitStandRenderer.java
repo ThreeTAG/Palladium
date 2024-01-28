@@ -18,8 +18,10 @@ import net.threetag.palladium.client.model.SuitStandBasePlateModel;
 import net.threetag.palladium.client.model.SuitStandModel;
 import net.threetag.palladium.client.renderer.renderlayer.ColorableSuitStandLayer;
 import net.threetag.palladium.entity.SuitStand;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class SuitStandRenderer extends LivingEntityRenderer<SuitStand, SuitStandBasePlateModel> {
 
     public static final ResourceLocation DEFAULT_SKIN_LOCATION = Palladium.id("textures/entity/suit_stand.png");
@@ -71,7 +73,7 @@ public class SuitStandRenderer extends LivingEntityRenderer<SuitStand, SuitStand
     }
 
     @Override
-    public ResourceLocation getTextureLocation(SuitStand entity) {
+    public @NotNull ResourceLocation getTextureLocation(SuitStand entity) {
         return DEFAULT_SKIN_LOCATION;
     }
 }
