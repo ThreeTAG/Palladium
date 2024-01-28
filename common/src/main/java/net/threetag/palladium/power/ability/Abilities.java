@@ -1,7 +1,9 @@
 package net.threetag.palladium.power.ability;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.icon.TexturedIcon;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
@@ -40,6 +42,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> VIBRATE = ABILITIES.register("vibrate", VibrateAbility::new);
     public static final RegistrySupplier<Ability> INTANGIBILITY = ABILITIES.register("intangibility", IntangibilityAbility::new);
     public static final RegistrySupplier<Ability> NAME_CHANGE = ABILITIES.register("name_change", NameChangeAbility::new);
+    public static final RegistrySupplier<Ability> SCULK_IMMUNITY = ABILITIES.register("sculk_immunity", () -> new Ability().withProperty(Ability.ICON, new ItemIcon(Items.SCULK)).setDocumentationDescription("When enabled, the player will not cause any walk-related sculk vibrations anymore."));
 
     public static void init() {
 

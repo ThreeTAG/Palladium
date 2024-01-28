@@ -82,7 +82,6 @@ public class PalladiumItemTagsProvider extends IntrinsicHolderTagsProvider<Item>
     public void multiLoaderTagMetalTags(TagKey<Item> rootForge, TagKey<Item> ownForge, TagKey<Item> rootFabric, TagKey<Item> ownFabric) {
         this.tag(rootForge).addTag(ownForge);
         this.tag(rootFabric).addTag(ownFabric);
-        System.out.println(rootFabric.location() + " <- " + ownFabric.location());
     }
 
     public void connectTag(TagKey<Item> palladiumTag, TagKey<Item> forgeTag, TagKey<Item> fabricTag) {
