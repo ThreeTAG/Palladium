@@ -78,7 +78,6 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
 
             this.cachedTexture = this.texture.get(living).getTexture(context);
             this.cachedModel = this.modelLocation.get(living);
-            IPackRenderLayer.copyModelProperties(living, parentHumanoid, entityModel);
 
             if (entityModel instanceof GeckoRenderLayerModel gecko) {
                 gecko.renderToBuffer(poseStack, this.renderType.createVertexConsumer(bufferSource, this.cachedTexture, false), packedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
@@ -99,6 +98,7 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
             var bone = (arm == HumanoidArm.RIGHT ? this.model.getRightArmBone() : this.model.getLeftArmBone());
 
             if (state != null && bone != null) {
+                playerRenderer.getModel().copyPropertiesTo(this.model);
                 this.model.applyBaseTransformations(playerRenderer.getModel());
 
                 var partialTick = Minecraft.getInstance().getFrameTime();

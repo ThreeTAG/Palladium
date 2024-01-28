@@ -10,6 +10,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -170,8 +171,10 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
     }
 
     protected void applyBaseTransformations(HumanoidModel<?> baseModel) {
+        IPackRenderLayer.copyModelProperties(this.currentEntity, baseModel, this);
+
         if (this.head != null) {
-            ModelPart headPart = baseModel.head;
+            ModelPart headPart = super.head;
 
             RenderUtils.matchModelPartRot(headPart, this.head);
             copyScaleAndVisibility(headPart, this.head);
@@ -179,7 +182,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         }
 
         if (this.body != null) {
-            ModelPart bodyPart = baseModel.body;
+            ModelPart bodyPart = super.body;
 
             RenderUtils.matchModelPartRot(bodyPart, this.body);
             copyScaleAndVisibility(bodyPart, this.body);
@@ -187,7 +190,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         }
 
         if (this.rightArm != null) {
-            ModelPart rightArmPart = baseModel.rightArm;
+            ModelPart rightArmPart = super.rightArm;
 
             RenderUtils.matchModelPartRot(rightArmPart, this.rightArm);
             copyScaleAndVisibility(rightArmPart, this.rightArm);
@@ -195,7 +198,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         }
 
         if (this.leftArm != null) {
-            ModelPart leftArmPart = baseModel.leftArm;
+            ModelPart leftArmPart = super.leftArm;
 
             RenderUtils.matchModelPartRot(leftArmPart, this.leftArm);
             copyScaleAndVisibility(leftArmPart, this.leftArm);
@@ -203,7 +206,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         }
 
         if (this.rightLeg != null) {
-            ModelPart rightLegPart = baseModel.rightLeg;
+            ModelPart rightLegPart = super.rightLeg;
 
             RenderUtils.matchModelPartRot(rightLegPart, this.rightLeg);
             copyScaleAndVisibility(rightLegPart, this.rightLeg);
@@ -211,7 +214,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         }
 
         if (this.leftLeg != null) {
-            ModelPart leftLegPart = baseModel.leftLeg;
+            ModelPart leftLegPart = super.leftLeg;
 
             RenderUtils.matchModelPartRot(leftLegPart, this.leftLeg);
             copyScaleAndVisibility(leftLegPart, this.leftLeg);

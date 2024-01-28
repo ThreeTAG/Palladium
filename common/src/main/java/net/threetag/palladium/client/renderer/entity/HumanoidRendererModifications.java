@@ -127,6 +127,9 @@ public class HumanoidRendererModifications {
     public static void applyRemovedBodyParts(HumanoidModel model) {
         var hideResult = HumanoidRendererModifications.CACHED_HIDE_RESULT;
 
+        if (hideResult == null)
+            return;
+
         if (hideResult.isRemoved(BodyPart.HEAD))
             model.head.visible = model.hat.visible = false;
         if (hideResult.isRemoved(BodyPart.CHEST))
