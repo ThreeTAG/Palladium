@@ -3,7 +3,6 @@ package net.threetag.palladium.client.dynamictexture.variable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionEnvironment;
@@ -30,7 +29,7 @@ public class ConditionTextureVariable extends AbstractBooleanTextureVariable {
                 return false;
             }
         }
-        return false;
+        return true;
     }
 
     public static class Serializer implements ITextureVariableSerializer {
