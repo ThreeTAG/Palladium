@@ -20,10 +20,7 @@ import net.threetag.palladium.documentation.IDocumentedConfigurable;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class BlockParser extends AddonParser<Block> {
 
@@ -63,7 +60,13 @@ public class BlockParser extends AddonParser<Block> {
         }
 
         if (GsonHelper.getAsBoolean(json, "register_item", true)) {
-            AddonPackManager.ITEM_PARSER.autoRegisteredBlockItems.put(id, GsonUtil.getAsResourceLocation(json, "creative_mode_tab", null));
+            List<ItemParser.PlacedTabPlacement> placements = new ArrayList<>();
+            GsonUtil.ifHasKey(json, "creative_mode_tab", je -> {
+                for (ItemParser.PlacedTabPlacement placedTabPlacement : GsonUtil.fromListOrPrimitive(je, ItemParser.PlacedTabPlacement::fromJson)) {
+                    placements.add(placedTabPlacement);
+                }
+            });
+            AddonPackManager.ITEM_PARSER.autoRegisteredBlockItems.put(id, placements);
         }
 
         return builder;

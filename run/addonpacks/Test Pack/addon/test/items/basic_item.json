@@ -1,6 +1,12 @@
 {
   "max_stack_size": 42,
-  "creative_mode_tab": "test:test_tab",
+  "creative_mode_tab": [
+    "test:test_tab",
+    {
+      "tab": "minecraft:food_and_drinks",
+      "after": "minecraft:bread"
+    }
+  ],
   "rarity": "epic",
   "is_fire_resistant": true,
   "tooltip": [

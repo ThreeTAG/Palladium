@@ -4,7 +4,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -22,13 +21,13 @@ import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.compat.curiostinkets.CuriosTrinketsUtil;
 import net.threetag.palladium.item.AddonItem;
 import net.threetag.palladium.item.IAddonItem;
-import net.threetag.palladium.item.PalladiumCreativeModeTabs;
 import net.threetag.palladium.util.PlayerSlot;
 import net.threetag.palladium.util.RegistrySynonymsHandler;
 import net.threetag.palladium.util.Utils;
 import net.threetag.palladiumcore.registry.CreativeModeTabRegistry;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +39,7 @@ public class ItemBuilder extends AddonBuilder<Item> {
     private Integer maxStackSize = null;
     private Integer maxDamage = null;
     private Boolean isFireResistant = null;
-    private ResourceLocation creativeModeTab = null;
+    private final List<ItemParser.PlacedTabPlacement> creativeModeTabs = new ArrayList<>();
     private Rarity rarity = null;
     private List<Component> tooltipLines = null;
     private Multimap<ResourceLocation, AttributeModifier> attributeModifiersAllSlots;
@@ -122,10 +121,9 @@ public class ItemBuilder extends AddonBuilder<Item> {
             CuriosTrinketsUtil.getInstance().registerCurioTrinket((Item) item, new CurioTrinket(item));
         }
 
-        if (this.creativeModeTab != null) {
-            ResourceKey<CreativeModeTab> tabKey = ResourceKey.create(Registries.CREATIVE_MODE_TAB, this.creativeModeTab);
-            // TODO specific placements
-            CreativeModeTabRegistry.addToTab(tabKey, entries -> entries.add((Item) item));
+        for (ItemParser.PlacedTabPlacement creativeModeTab : this.creativeModeTabs) {
+            ResourceKey<CreativeModeTab> tabKey = ResourceKey.create(Registries.CREATIVE_MODE_TAB, creativeModeTab.getTab());
+            CreativeModeTabRegistry.addToTab(tabKey, entries -> creativeModeTab.addToTab(entries, (Item) item));
         }
 
         return (Item) item;
@@ -146,8 +144,8 @@ public class ItemBuilder extends AddonBuilder<Item> {
         return this;
     }
 
-    public ItemBuilder creativeModeTab(ResourceLocation name) {
-        this.creativeModeTab = name;
+    public ItemBuilder creativeModeTab(ItemParser.PlacedTabPlacement tabPlacement) {
+        this.creativeModeTabs.add(tabPlacement);
         return this;
     }
 
