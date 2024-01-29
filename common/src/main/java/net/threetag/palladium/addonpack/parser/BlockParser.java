@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -103,7 +102,7 @@ public class BlockParser extends AddonParser<Block> {
                 .fallback(null).exampleJson(new JsonPrimitive("minecraft:color_blue"));
         builder.addProperty("sound_type", ResourceLocation.class)
                 .description("Place/break/step sound type of the block. Possible values: " + Arrays.toString(BlockMaterialRegistry.getAllSoundTypeIds().toArray()))
-                .fallback(new ResourceLocation("stone")).exampleJson(new JsonPrimitive("minecraft:stone"));
+                .required();
         builder.addProperty("destroy_time", Float.class)
                 .description("Value that determines how long a player needs to break this block. For reference: stone has 1.5, oak planks have 2.0, obsidian has 50. For insta-break blocks, leave it at 0")
                 .fallback(0F).exampleJson(new JsonPrimitive(1.5F));
