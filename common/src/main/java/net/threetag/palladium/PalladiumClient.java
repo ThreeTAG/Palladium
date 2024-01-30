@@ -167,6 +167,10 @@ public class PalladiumClient {
                 });
             }
 
+            if (item instanceof AddonShieldItem) {
+                ItemPropertyRegistry.register(item, new ResourceLocation("blocking"), (itemStack, clientLevel, livingEntity, i) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack ? 1.0F : 0.0F);
+            }
+
             if (item instanceof AddonBowItem) {
                 ItemPropertyRegistry.register(item, new ResourceLocation("pull"), (itemStack, clientLevel, livingEntity, i) -> {
                     if (livingEntity == null) {
