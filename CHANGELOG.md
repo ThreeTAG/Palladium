@@ -1,5 +1,11 @@
-- Fixed crash when addonpack blocks have no creative tab
-- Fixed hide/remove body parts not properly applying to gecko render layers in first person
-- Fixed crash when mods are loaded as addonpacks
-- Fixed Quilt crash
-- Some internal code fixes
+- Added "Palladium Mods" Creative Tab
+- Added Sculk Immunity ability
+- Added advanced ways to add items to creative mode tabs (check wiki)
+- Added missing "blocking" item model predicate to shield addon items
+- Fixed addonpacks not having their dependencies met causing crash
+- Fixed condition texture variable
+- Fixed crash when armor renderer has no model layer specified
+- Fixed energy blast crash
+- Fixed "sound_type" not being marked as required in blocks.html
+- Fixed registry synonyms for reach attributes
+- Fixed KJS scripts from mod-addonpacks not being loaded
