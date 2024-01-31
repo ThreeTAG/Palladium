@@ -71,6 +71,42 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> VIBRANIUM_WEAVE_BOOTS = ITEMS.register("vibranium_weave_boots", () -> new VibraniumWeaveArmorItem(VIBRANIUM_WEAVE, ArmorItem.Type.BOOTS, (new Item.Properties())));
 
     public static void init() {
+        CreativeModeTabRegistry.addToTab(PalladiumCreativeModeTabs.PALLADIUM_MODS, entries -> {
+            entries.add(
+                    LEAD_ORE.get(),
+                    DEEPSLATE_LEAD_ORE.get(),
+                    TITANIUM_ORE.get(),
+                    VIBRANIUM_ORE.get(),
+                    REDSTONE_FLUX_CRYSTAL_GEODE.get(),
+                    DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE.get(),
+                    SMALL_REDSTONE_FLUX_CRYSTAL_BUD.get(),
+                    MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD.get(),
+                    LARGE_REDSTONE_FLUX_CRYSTAL_BUD.get(),
+                    REDSTONE_FLUX_CRYSTAL_CLUSTER.get(),
+                    LEAD_BLOCK.get(),
+                    VIBRANIUM_BLOCK.get(),
+                    RAW_LEAD_BLOCK.get(),
+                    RAW_TITANIUM_BLOCK.get(),
+                    RAW_VIBRANIUM_BLOCK.get(),
+                    HEART_SHAPED_HERB.get(),
+                    RAW_LEAD.get(),
+                    LEAD_INGOT.get(),
+                    RAW_TITANIUM.get(),
+                    RAW_VIBRANIUM.get(),
+                    VIBRANIUM_INGOT.get(),
+                    REDSTONE_FLUX_CRYSTAL.get(),
+                    SUIT_STAND.get(),
+                    LEAD_CIRCUIT.get(),
+                    QUARTZ_CIRCUIT.get(),
+                    VIBRANIUM_CIRCUIT.get(),
+                    LEAD_FLUX_CAPACITOR.get(),
+                    LEAD_BLOCK.get(),
+                    QUARTZ_FLUX_CAPACITOR.get(),
+                    VIBRANIUM_FLUX_CAPACITOR.get(),
+                    VIBRANIUM_WEAVE_BOOTS.get()
+            );
+        });
+
         CreativeModeTabRegistry.addToTab(PalladiumCreativeModeTabs.TECHNOLOGY, entries -> {
             entries.add(LEAD_CIRCUIT.get());
             entries.add(QUARTZ_CIRCUIT.get());

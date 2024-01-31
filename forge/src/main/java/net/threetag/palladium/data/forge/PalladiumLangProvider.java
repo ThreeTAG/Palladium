@@ -119,6 +119,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technology");
+            this.add("itemGroup.palladium.mods", "Palladium Mods");
 
             // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "Abilities");
@@ -296,6 +297,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technologie");
+            this.add("itemGroup.palladium.mods", "Palladium Mods");
 
             // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "Fähigkeiten");
@@ -468,6 +470,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // Creative Tab
             this.add("itemGroup.palladium.technology", "Technolojie");
+            this.add("itemGroup.palladium.mods", "Palladium Mods");
 
             // Key Mappings
             this.add(PalladiumKeyMappings.CATEGORY, "Fähischgehden");
