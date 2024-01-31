@@ -176,48 +176,44 @@ public class AddonPackManager {
             }
         }
 
-        if (!dependencyConflicts.isEmpty()) {
-            List<String> test = new ArrayList<>();
-            for (Map.Entry<PackData, List<PackData.Dependency>> entry : dependencyConflicts.entrySet()) {
-                for (PackData.Dependency dependency : entry.getValue()) {
-                    test.add("Pack " + entry.getKey().getId() + " requires " + dependency.getId() + " " + Arrays.toString(dependency.getVersionRequirements().toArray()));
-                }
+        List<String> test = new ArrayList<>();
+        for (Map.Entry<PackData, List<PackData.Dependency>> entry : dependencyConflicts.entrySet()) {
+            for (PackData.Dependency dependency : entry.getValue()) {
+                test.add("Pack " + entry.getKey().getId() + " requires " + dependency.getId() + " " + Arrays.toString(dependency.getVersionRequirements().toArray()));
             }
-
-            if (Platform.isServer()) {
-                throw new RuntimeException(Arrays.toString(test.toArray()));
-            } else {
-                ScreenEvents.OPENING.register((currentScreen, newScreen) -> {
-                    if (newScreen.get() instanceof TitleScreen) {
-                        newScreen.set(new AddonPackLogScreen(dependencyConflicts.keySet().stream().map(packData -> {
-                            StringBuilder s = new StringBuilder("Addon Pack '" + packData.getId() + "' requires ");
-                            for (PackData.Dependency dependency : dependencyConflicts.get(packData)) {
-                                s.append(dependency.getId()).append(" ").append(Arrays.toString(dependency.getVersionRequirements().toArray())).append("; ");
-                            }
-                            s = new StringBuilder(s.substring(0, s.length() - 2));
-                            return new AddonPackLogEntry(AddonPackLogEntry.Type.ERROR, s.toString());
-                        }).collect(Collectors.toList()), null));
-                    }
-
-                    return EventResult.pass();
-                });
-            }
-
-        } else {
-            mainThreadExecutor = new QueueableExecutor();
-
-            return this.resourceManager
-                    .createReload(backgroundExecutor, mainThreadExecutor, CompletableFuture.completedFuture(Unit.INSTANCE), this.packList.openAllSelected())
-                    .done().whenComplete((unit, throwable) -> {
-                        if (throwable != null) {
-                            this.resourceManager.close();
-                            throwable.printStackTrace();
-                        }
-                    })
-                    .thenRun(mainThreadExecutor::finish)
-                    .thenApply((unit) -> this);
         }
-        return null;
+
+        if (Platform.isServer()) {
+            throw new RuntimeException(Arrays.toString(test.toArray()));
+        } else {
+            ScreenEvents.OPENING.register((currentScreen, newScreen) -> {
+                if (newScreen.get() instanceof TitleScreen) {
+                    newScreen.set(new AddonPackLogScreen(dependencyConflicts.keySet().stream().map(packData -> {
+                        StringBuilder s = new StringBuilder("Addon Pack '" + packData.getId() + "' requires ");
+                        for (PackData.Dependency dependency : dependencyConflicts.get(packData)) {
+                            s.append(dependency.getId()).append(" ").append(Arrays.toString(dependency.getVersionRequirements().toArray())).append("; ");
+                        }
+                        s = new StringBuilder(s.substring(0, s.length() - 2));
+                        return new AddonPackLogEntry(AddonPackLogEntry.Type.ERROR, s.toString());
+                    }).collect(Collectors.toList()), null));
+                }
+
+                return EventResult.pass();
+            });
+        }
+
+        mainThreadExecutor = new QueueableExecutor();
+
+        return this.resourceManager
+                .createReload(backgroundExecutor, mainThreadExecutor, CompletableFuture.completedFuture(Unit.INSTANCE), this.packList.openAllSelected())
+                .done().whenComplete((unit, throwable) -> {
+                    if (throwable != null) {
+                        this.resourceManager.close();
+                        AddonPackLog.error(throwable.getMessage());
+                    }
+                })
+                .thenRun(mainThreadExecutor::finish)
+                .thenApply((unit) -> this);
     }
 
     private void finish() {
