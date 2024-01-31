@@ -28,7 +28,7 @@ public class RegistryObjectProperty<T> extends PalladiumProperty<T> {
         if (this.registry.containsKey(id)) {
             return this.registry.get(id);
         } else {
-            throw new JsonParseException("Unknown " + this.registry.key().registry().toString() + " '" + id + "'");
+            throw new JsonParseException("Unknown " + this.registry.key().location() + " '" + id + "'");
         }
     }
 
