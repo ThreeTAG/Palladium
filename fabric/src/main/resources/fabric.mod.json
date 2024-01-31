@@ -37,7 +37,8 @@
     "fabric": "*",
     "minecraft": ">=1.20.1",
     "palladiumcore": ">=1.0.0",
-    "forgeconfigapiport": "*"
+    "forgeconfigapiport": "*",
+    "porting_lib_attributes": "*"
   },
   "custom": {
     "catalogue": {
