@@ -39,7 +39,7 @@ public class ScriptManagerMixin {
             for (String namespace : packResources.getNamespaces(packType)) {
                 var scriptPack = new ScriptPack((ScriptManager) (Object) this, new ScriptPackInfo("addonpack_" + namespace, ""));
                 packResources.listResources(packType, namespace, "kubejs_scripts", (path, inputStreamIoSupplier) -> {
-                    if(path.getPath().endsWith(".js")) {
+                    if (path.getPath().endsWith(".js")) {
                         scriptPack.info.scripts.add(new AddonPackScriptFileInfo(scriptPack.info, path.getPath(), () -> {
                             try {
                                 var packResources1 = pack.open();

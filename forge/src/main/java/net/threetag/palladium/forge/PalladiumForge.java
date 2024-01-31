@@ -91,24 +91,7 @@ public class PalladiumForge {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onConstructMod(FMLConstructModEvent event) {
-        event.enqueueWork(() -> {
-            var addonPacks = AddonPackManager.getInstance();
-            ResourcePackLoader.loadResourcePacks(addonPacks.getPackList(), (mods) -> (infoConsumer) -> {
-                for (Map.Entry<IModFile, ? extends PathPackResources> e : mods.entrySet()) {
-                    IModInfo mod = e.getKey().getModInfos().get(0);
-                    if (Objects.equals(mod.getModId(), "minecraft")) continue;
-                    final String name = "mod:" + mod.getModId();
-                    final Pack packInfo = Pack.readMetaAndCreate(name, Component.literal(e.getValue().packId()), false, id -> new ModResourcePack(e.getValue(), mod), AddonPackManager.getPackType(), Pack.Position.BOTTOM, PackSource.DEFAULT);
-                    if (packInfo == null) {
-                        ModLoader.get().addWarning(new ModLoadingWarning(mod, ModLoadingStage.ERROR, "fml.modloading.brokenresources", e.getKey()));
-                        continue;
-                    }
-                    infoConsumer.accept(packInfo);
-                }
-            });
-
-            AddonPackManager.startLoading();
-        });
+        event.enqueueWork(AddonPackManager::startLoading);
     }
 
     @SubscribeEvent
@@ -151,38 +134,4 @@ public class PalladiumForge {
         int idx = listeners.indexOf(mc.getEntityModels());
         listeners.add(idx + 1, new ModelLayerManager());
     }
-
-    public static class ModResourcePack extends PathPackResources {
-
-        private final PathPackResources parent;
-        private final IModInfo mod;
-
-        public ModResourcePack(PathPackResources parent, IModInfo mod) {
-            super(parent.packId(), parent.isBuiltin(), parent.getSource());
-            this.parent = parent;
-            this.mod = mod;
-        }
-
-        @Override
-        public @Nullable IoSupplier<InputStream> getRootResource(String... paths) {
-            String fileName = String.join("/", paths);
-            final Path path = resolve(paths);
-
-            if ("pack.mcmeta".equals(fileName) && (path == null || !Files.exists(path))) {
-                String id = this.mod.getModId();
-                String version = MavenVersionStringHelper.artifactVersionToString(this.mod.getVersion());
-                String description = this.mod.getDescription();
-                String pack = String.format("{\"pack\":{\"id\": \"%s\", \"version\": \"%s\", \"description\":\"%s\"}}", id, version, description);
-                return () -> IOUtils.toInputStream(pack, Charsets.UTF_8);
-            }
-
-            return super.getRootResource(paths);
-        }
-
-        @Override
-        protected @NotNull Path resolve(String... paths) {
-            return this.parent instanceof PathPackResourcesAccessor acc ? acc.invokeResolve(paths) : super.resolve(paths);
-        }
-    }
-
 }
