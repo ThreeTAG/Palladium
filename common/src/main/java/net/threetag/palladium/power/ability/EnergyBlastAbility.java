@@ -22,9 +22,9 @@ import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
 import net.threetag.palladium.entity.effect.EnergyBlastEffect;
-import net.threetag.palladium.mixin.FireBlockInvoker;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.util.EntityUtil;
+import net.threetag.palladium.util.PalladiumBlockUtil;
 import net.threetag.palladium.util.property.*;
 
 import java.awt.*;
@@ -102,7 +102,8 @@ public class EnergyBlastAbility extends Ability {
 
                         blockState = entity.level().getBlockState(blockHitResult.getBlockPos());
 
-                        if (((FireBlockInvoker)Blocks.FIRE).invokeCanBurn(blockState)) {
+
+                        if (PalladiumBlockUtil.canBurn(blockState, entity.level(), blockHitResult.getBlockPos(), blockHitResult.getDirection())) {
                             BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getDirection().getNormal());
                             if (entity.level().isEmptyBlock(pos)) {
                                 entity.level().setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());

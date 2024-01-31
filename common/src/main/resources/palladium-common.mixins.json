@@ -32,7 +32,6 @@
     "EntityMixin",
     "EntitySelectorOptionsInvoker",
     "EntitySelectorParserMixin",
-    "FireBlockInvoker",
     "InventoryMixin",
     "LivingEntityMixin",
     "OreFeatureMixin",
