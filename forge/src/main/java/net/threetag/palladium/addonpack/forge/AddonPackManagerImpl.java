@@ -9,9 +9,6 @@ import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.server.packs.resources.IoSupplier;
 import net.minecraftforge.common.util.MavenVersionStringHelper;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoader;
-import net.minecraftforge.fml.ModLoadingStage;
-import net.minecraftforge.fml.ModLoadingWarning;
 import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.resource.PathPackResources;
 import net.minecraftforge.resource.ResourcePackLoader;
@@ -51,7 +48,6 @@ public class AddonPackManagerImpl {
                 final String name = "mod:" + modInfo.getModId();
                 final Pack packInfo = Pack.readMetaAndCreate(name, Component.literal(pack.packId()), false, id -> new ModResourcePack(pack, modInfo), AddonPackManager.getPackType(), Pack.Position.BOTTOM, PackSource.DEFAULT);
                 if (packInfo == null) {
-                    ModLoader.get().addWarning(new ModLoadingWarning(modInfo, ModLoadingStage.ERROR, "fml.modloading.brokenresources", modInfo.getOwningFile()));
                     continue;
                 }
                 onLoad.accept(packInfo);
