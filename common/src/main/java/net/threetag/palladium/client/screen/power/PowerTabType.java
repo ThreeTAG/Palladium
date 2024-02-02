@@ -8,7 +8,7 @@ import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.icon.IIcon;
 
 @Environment(EnvType.CLIENT)
-enum PowerTabType {
+public enum PowerTabType {
 
     ABOVE(0, 0, 28, 32, 8),
     BELOW(84, 0, 28, 32, 8),

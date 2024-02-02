@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -19,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.screen.components.IconButton;
-import net.threetag.palladium.network.RequestAbilityBuyScreenMessage;
+import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerHandler;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.Ability;
@@ -41,8 +42,8 @@ public class PowersScreen extends Screen {
 
     public static final int WINDOW_WIDTH = 252;
     public static final int WINDOW_HEIGHT = 196;
-    private static final int WINDOW_INSIDE_X = 9;
-    private static final int WINDOW_INSIDE_Y = 18;
+    public static final int WINDOW_INSIDE_X = 9;
+    public static final int WINDOW_INSIDE_Y = 18;
     public static final int WINDOW_INSIDE_WIDTH = 234;
     public static final int WINDOW_INSIDE_HEIGHT = 169;
     private static final int WINDOW_TITLE_X = 8;
@@ -115,12 +116,19 @@ public class PowersScreen extends Screen {
     @Override
     protected void init() {
         this.tabs.clear();
+
+        if (this.selectedTab != null) {
+            this.selectedTab.onClosed();
+        }
         this.selectedTab = null;
 
         AtomicInteger i = new AtomicInteger();
         PowerManager.getPowerHandler(this.minecraft.player).ifPresent(handler -> handler.getPowerHolders().values().forEach(holder -> {
             if (!holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN_IN_GUI))) {
-                this.tabs.add(PowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
+                if (holder.getPower().getGuiDisplayType() == Power.GuiDisplayType.TREE)
+                    this.tabs.add(TreePowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
+                else
+                    this.tabs.add(ListPowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
             }
         }));
 
@@ -140,11 +148,17 @@ public class PowersScreen extends Screen {
 
         if (!this.tabs.isEmpty()) {
             this.selectedTab = tabs.get(0);
+            this.selectedTab.onOpened();
         }
 
         if (this.overlayScreen != null) {
             this.overlayScreen.init(this.minecraft, this.width, this.height);
         }
+    }
+
+    @Override
+    public void removeWidget(GuiEventListener listener) {
+        super.removeWidget(listener);
     }
 
     @Override
@@ -163,16 +177,17 @@ public class PowersScreen extends Screen {
             } else {
                 for (PowerTab powerTab : this.tabs) {
                     if (powerTab.isMouseOver(i, j, mouseX, mouseY)) {
+                        if (this.selectedTab != null) {
+                            this.selectedTab.onClosed();
+                        }
                         this.selectedTab = powerTab;
+                        this.selectedTab.onOpened();
                         break;
                     }
                 }
 
-                if (selectedTab != null) {
-                    AbilityWidget entry = this.selectedTab.getAbilityHoveredOver((int) (mouseX - i - 9), (int) (mouseY - j - 18), i, j);
-                    if (entry != null && entry.abilityEntry.getConfiguration().isBuyable()) {
-                        new RequestAbilityBuyScreenMessage(entry.abilityEntry.getReference()).send();
-                    }
+                if (this.selectedTab != null) {
+                    this.selectedTab.mouseClicked(mouseX, mouseY, button);
                 }
             }
         }
@@ -197,9 +212,9 @@ public class PowersScreen extends Screen {
         int i = (this.width - WINDOW_WIDTH) / 2;
         int j = (this.height - WINDOW_HEIGHT) / 2;
         this.renderBackground(guiGraphics);
-        this.renderInside(guiGraphics, mouseX, mouseY, i, j);
+        this.renderInside(guiGraphics, mouseX, mouseY, i, j, partialTick);
         this.renderWindow(guiGraphics, i, j);
-        this.renderTooltips(guiGraphics, mouseX, mouseY, i, j);
+        this.renderTooltips(guiGraphics, mouseX, mouseY, i, j, partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         if (this.selectedTab != null && this.overlayScreen != null) {
@@ -218,15 +233,15 @@ public class PowersScreen extends Screen {
         } else {
             if (!this.isScrolling) {
                 this.isScrolling = true;
-            } else if (this.selectedTab != null) {
-                this.selectedTab.scroll(dragX, dragY);
+            } else if (this.selectedTab instanceof TreePowerTab tree) {
+                tree.scroll(dragX, dragY);
             }
 
             return true;
         }
     }
 
-    private void renderInside(GuiGraphics guiGraphics, int mouseX, int mouseY, int offsetX, int offsetY) {
+    private void renderInside(GuiGraphics guiGraphics, int mouseX, int mouseY, int offsetX, int offsetY, float partialTick) {
         PowerTab tab = this.selectedTab;
         if (tab == null) {
             guiGraphics.fill(offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y, offsetX + WINDOW_INSIDE_X + WINDOW_INSIDE_WIDTH, offsetY + WINDOW_INSIDE_Y + WINDOW_INSIDE_HEIGHT, -16777216);
@@ -234,7 +249,7 @@ public class PowersScreen extends Screen {
             guiGraphics.drawCenteredString(this.font, NO_ADVANCEMENTS_LABEL, i, offsetY + WINDOW_INSIDE_Y + 56 - 4, -1);
             guiGraphics.drawCenteredString(this.font, VERY_SAD_LABEL, i, offsetY + WINDOW_INSIDE_Y + WINDOW_INSIDE_HEIGHT - 9, -1);
         } else {
-            tab.drawContents(guiGraphics, offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y);
+            tab.drawContents(guiGraphics, offsetX + WINDOW_INSIDE_X, offsetY + WINDOW_INSIDE_Y, mouseX, mouseY, partialTick);
         }
     }
 
@@ -261,13 +276,13 @@ public class PowersScreen extends Screen {
         guiGraphics.drawString(this.minecraft.font, TITLE, offsetX + 8, offsetY + 6, 4210752, false);
     }
 
-    private void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int offsetX, int offsetY) {
+    private void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int offsetX, int offsetY, float partialTick) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.selectedTab != null) {
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate((float) (offsetX + WINDOW_INSIDE_X), (float) (offsetY + WINDOW_INSIDE_Y), 400.0F);
             RenderSystem.enableDepthTest();
-            this.selectedTab.drawTooltips(guiGraphics, mouseX - offsetX - WINDOW_INSIDE_X, mouseY - offsetY - WINDOW_INSIDE_Y, offsetX, offsetY, this.overlayScreen != null);
+            this.selectedTab.drawTooltips(guiGraphics, mouseX - offsetX - WINDOW_INSIDE_X, mouseY - offsetY - WINDOW_INSIDE_Y, offsetX, offsetY, partialTick, this.overlayScreen != null);
             RenderSystem.disableDepthTest();
             guiGraphics.pose().popPose();
         }

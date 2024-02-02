@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AbilityWidget {
+public class TreeAbilityWidget {
 
     private static final int HEIGHT = 26;
     private static final int BOX_X = 0;
@@ -37,21 +37,21 @@ public class AbilityWidget {
     private static final int TITLE_Y = 9;
     private static final int TITLE_MAX_WIDTH = 163;
     private static final int[] TEST_SPLIT_OFFSETS = new int[]{0, 10, -10, 25, -25};
-    private final PowerTab tab;
+    private final TreePowerTab tab;
     private final IPowerHolder holder;
     public final AbilityEntry abilityEntry;
     private final FormattedCharSequence title;
     private final int width;
     private final List<FormattedCharSequence> description;
     private final Minecraft minecraft;
-    List<AbilityWidget> parents = new LinkedList<>();
-    List<AbilityWidget> children = new LinkedList<>();
+    List<TreeAbilityWidget> parents = new LinkedList<>();
+    List<TreeAbilityWidget> children = new LinkedList<>();
     private int x;
     private int y;
     public double gridX, gridY;
     public boolean fixedPosition = false;
 
-    public AbilityWidget(PowerTab tab, Minecraft mc, IPowerHolder holder, AbilityEntry abilityEntry) {
+    public TreeAbilityWidget(TreePowerTab tab, Minecraft mc, IPowerHolder holder, AbilityEntry abilityEntry) {
         this.tab = tab;
         this.holder = holder;
         this.abilityEntry = abilityEntry;
@@ -71,39 +71,39 @@ public class AbilityWidget {
         this.width = l + 3 + 5;
     }
 
-    public AbilityWidget updatePosition(double x, double y, PowerTab tab) {
+    public TreeAbilityWidget updatePosition(double x, double y, TreePowerTab tab) {
         this.gridX = x;
         this.gridY = y;
-        this.x = (int) (x * PowerTab.GRID_SIZE) - 16;
-        this.y = (int) (tab.getFreeYPos(x, y) * PowerTab.GRID_SIZE) - 13;
+        this.x = (int) (x * TreePowerTab.GRID_SIZE) - 16;
+        this.y = (int) (tab.getFreeYPos(x, y) * TreePowerTab.GRID_SIZE) - 13;
 
-        for (AbilityWidget child : this.children) {
+        for (TreeAbilityWidget child : this.children) {
             child.updatePosition(this.gridX + 1, y, tab);
         }
 
         return this;
     }
 
-    public AbilityWidget setPosition(double x, double y) {
+    public TreeAbilityWidget setPosition(double x, double y) {
         this.gridX = x;
         this.gridY = y;
-        this.x = (int) (x * PowerTab.GRID_SIZE) - 16;
-        this.y = (int) (y * PowerTab.GRID_SIZE) - 13;
+        this.x = (int) (x * TreePowerTab.GRID_SIZE) - 16;
+        this.y = (int) (y * TreePowerTab.GRID_SIZE) - 13;
         return this;
     }
 
-    public AbilityWidget setPositionFixed(double x, double y) {
+    public TreeAbilityWidget setPositionFixed(double x, double y) {
         this.fixedPosition = true;
         return this.setPosition(x, y);
     }
 
-    public AbilityWidget updateRelatives(Collection<AbilityWidget> list) {
+    public TreeAbilityWidget updateRelatives(Collection<TreeAbilityWidget> list) {
         this.parents.clear();
         this.children.clear();
         List<AbilityEntry> parents = Ability.findParentsWithinHolder(this.abilityEntry.getConfiguration(), this.holder);
         List<AbilityEntry> children = Ability.findChildrenWithinHolder(this.abilityEntry.getConfiguration(), this.holder);
 
-        for (AbilityWidget widget : list) {
+        for (TreeAbilityWidget widget : list) {
             if (!parents.isEmpty()) {
                 if (parents.contains(widget.abilityEntry)) {
                     this.parents.add(widget);
@@ -150,13 +150,13 @@ public class AbilityWidget {
             this.abilityEntry.getProperty(Ability.ICON).draw(mc, guiGraphics, DataContext.forAbility(mc.player, this.abilityEntry), x, y);
         } else {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            guiGraphics.blit(PowersScreen.WIDGETS, x, y, 90, 133, 16, 16);
+            guiGraphics.blit(PowersScreen.WIDGETS, x, y, 90, 83, 16, 16);
         }
     }
 
     public void drawIcon(Minecraft mc, GuiGraphics guiGraphics, int x, int y) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        guiGraphics.blit(PowersScreen.WIDGETS, x - 13, y - 13, 0, this.abilityEntry.isUnlocked() ? 128 : 154, 26, 26);
+        guiGraphics.blit(PowersScreen.WIDGETS, x - 13, y - 13, 0, this.abilityEntry.isUnlocked() ? 78 : 104, 26, 26);
         this.drawDisplayIcon(mc, guiGraphics, x - 8, y - 8);
     }
 
@@ -217,7 +217,7 @@ public class AbilityWidget {
 
         guiGraphics.blit(PowersScreen.WIDGETS, m, l, 0, advancementWidgetType.getIndex() * 26, j, 26);
         guiGraphics.blit(PowersScreen.WIDGETS, m + j, l, 200 - k, advancementWidgetType2.getIndex() * 26, k, 26);
-        guiGraphics.blit(PowersScreen.WIDGETS, x + this.x + 3, y + this.y, 0, 128 + advancementWidgetType3.getIndex() * 26, 26, 26);
+        guiGraphics.blit(PowersScreen.WIDGETS, x + this.x + 3, y + this.y, 0, 78 + advancementWidgetType3.getIndex() * 26, 26, 26);
         if (bl) {
             guiGraphics.drawString(this.minecraft.font, this.title, m + 5, y + this.y + 9, -1);
             if (string != null) {

@@ -1,6 +1,7 @@
 package net.threetag.palladium.power;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -27,9 +28,10 @@ public class Power {
     private final Color primaryColor, secondaryColor;
     private final boolean persistentData;
     private final boolean hidden;
+    private final GuiDisplayType guiDisplayType;
     private boolean invalid = false;
 
-    public Power(ResourceLocation id, Component name, IIcon icon, TextureReference background, TextureReference abilityBar, Color primaryColor, Color secondaryColor, boolean persistentData, boolean hidden) {
+    public Power(ResourceLocation id, Component name, IIcon icon, TextureReference background, TextureReference abilityBar, Color primaryColor, Color secondaryColor, boolean persistentData, boolean hidden, GuiDisplayType guiDisplayType) {
         this.id = id;
         this.name = name;
         this.icon = icon;
@@ -39,6 +41,7 @@ public class Power {
         this.secondaryColor = secondaryColor;
         this.persistentData = persistentData;
         this.hidden = hidden;
+        this.guiDisplayType = guiDisplayType;
     }
 
     public void invalidate() {
@@ -94,6 +97,10 @@ public class Power {
         return this.hidden;
     }
 
+    public GuiDisplayType getGuiDisplayType() {
+        return this.guiDisplayType;
+    }
+
     public void toBuffer(FriendlyByteBuf buf) {
         buf.writeComponent(this.name);
         buf.writeNbt(IconSerializer.serializeNBT(this.icon));
@@ -109,6 +116,7 @@ public class Power {
         buf.writeInt(this.secondaryColor.getRGB());
         buf.writeBoolean(this.persistentData);
         buf.writeBoolean(this.hidden);
+        buf.writeInt(this.guiDisplayType.ordinal());
         buf.writeInt(this.abilities.size());
         for (AbilityConfiguration configuration : this.abilities) {
             configuration.toBuffer(buf);
@@ -116,7 +124,7 @@ public class Power {
     }
 
     public static Power fromBuffer(ResourceLocation id, FriendlyByteBuf buf) {
-        Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())), buf.readBoolean() ? TextureReference.fromBuffer(buf) : null, buf.readBoolean() ? TextureReference.fromBuffer(buf) : null, new Color(buf.readInt()), new Color(buf.readInt()), buf.readBoolean(), buf.readBoolean());
+        Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())), buf.readBoolean() ? TextureReference.fromBuffer(buf) : null, buf.readBoolean() ? TextureReference.fromBuffer(buf) : null, new Color(buf.readInt()), new Color(buf.readInt()), buf.readBoolean(), buf.readBoolean(), GuiDisplayType.values()[buf.readInt()]);
         int amount = buf.readInt();
 
         for (int i = 0; i < amount; i++) {
@@ -130,6 +138,12 @@ public class Power {
         Component name = Component.Serializer.fromJson(json.get("name"));
         TextureReference background = GsonUtil.getAsTextureReference(json, "background", null);
         TextureReference abilityBarTexture = GsonUtil.getAsTextureReference(json, "ability_bar_texture", null);
+        GuiDisplayType displayType = GuiDisplayType.getByName(GsonHelper.getAsString(json, "gui_display_type", "list"));
+
+        if (displayType == null) {
+            throw new JsonParseException("Unknown gui display type '" + GsonHelper.getAsString(json, "gui_display_type", "list") + "'");
+        }
+
         Power power = new Power(id,
                 name,
                 IconSerializer.parseJSON(json.get("icon")),
@@ -138,7 +152,9 @@ public class Power {
                 GsonUtil.getAsColor(json, "primary_color", new Color(210, 112, 49)),
                 GsonUtil.getAsColor(json, "secondary_color", new Color(126, 97, 86)),
                 GsonHelper.getAsBoolean(json, "persistent_data", false),
-                GsonHelper.getAsBoolean(json, "hidden", false));
+                GsonHelper.getAsBoolean(json, "hidden", false),
+                displayType
+        );
 
         if (GsonHelper.isValidNode(json, "abilities")) {
             JsonObject abilities = GsonHelper.getAsJsonObject(json, "abilities");
@@ -149,6 +165,31 @@ public class Power {
         }
 
         return power;
+    }
+
+    public enum GuiDisplayType {
+
+        TREE("tree"),
+        LIST("list");
+
+        private final String name;
+
+        GuiDisplayType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static GuiDisplayType getByName(String name) {
+            for (GuiDisplayType value : values()) {
+                if (value.getName().equalsIgnoreCase(name)) {
+                    return value;
+                }
+            }
+            return null;
+        }
     }
 
 }

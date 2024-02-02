@@ -11,8 +11,7 @@
       "palladium": ">=4.0.0"
     },
     "fabric": {
-      "trinkets": ">=3.7.0",
-      "test": "*"
+      "trinkets": ">=3.7.0"
     }
   },
   "custom": {

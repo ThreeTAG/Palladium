@@ -1,6 +1,7 @@
 {
   "name": "Unlock Test",
   "icon": "minecraft:iron_ingot",
+  "gui_display_type": "tree",
   "persistent_data": true,
   "abilities": {
     "item": {
