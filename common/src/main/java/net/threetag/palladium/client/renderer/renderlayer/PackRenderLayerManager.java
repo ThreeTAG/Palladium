@@ -78,7 +78,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
                             }
                         }
 
-                        if (stack.getItem() instanceof ArmorWithRenderer armorWithRenderer && armorWithRenderer.getCachedArmorRenderer() instanceof ArmorRendererData renderer) {
+                        if (slot.isArmor() && stack.getItem() instanceof ArmorWithRenderer armorWithRenderer && armorWithRenderer.getCachedArmorRenderer() instanceof ArmorRendererData renderer) {
                             for (IPackRenderLayer layer : renderer.getRenderLayers()) {
                                 layers.accept(context, layer);
                             }
