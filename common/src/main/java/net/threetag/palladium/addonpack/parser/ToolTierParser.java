@@ -82,7 +82,7 @@ public class ToolTierParser extends SimpleJsonResourceReloadListener {
                 GsonUtil.getAsIntMin(json, "uses", 1),
                 GsonUtil.getAsFloatMin(json, "speed", 0),
                 GsonUtil.getAsFloatMin(json, "attack_damage_bonus", 0),
-                GsonUtil.getAsIntMax(json, "enchantment_value", 0),
+                GsonUtil.getAsIntMin(json, "enchantment_value", 0),
                 () -> json.has("repair_ingredient") ? Ingredient.fromJson(json.get("repair_ingredient")) : Ingredient.EMPTY);
     }
 
