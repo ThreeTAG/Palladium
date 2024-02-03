@@ -24,11 +24,13 @@ import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityColor;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityEntry;
+import net.threetag.palladium.power.energybar.EnergyBar;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladiumcore.event.ClientTickEvents;
 import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class AbilityBarRenderer implements OverlayRegistry.IngameOverlay {
@@ -84,6 +86,13 @@ public class AbilityBarRenderer implements OverlayRegistry.IngameOverlay {
                 poseStack.pushPose();
                 translateIndicatorBackground(poseStack, mc.getWindow(), position, indicatorWidth, indicatorHeight);
                 renderIndicator(list, mc, guiGraphics, poseStack, position, texture, ABILITY_LISTS.size() > 1);
+                poseStack.popPose();
+            }
+
+            if (!list.energyBars.isEmpty()) {
+                poseStack.pushPose();
+                translateEnergyBars(poseStack, mc.getWindow(), position, indicatorHeight, 24, list.energyBars.size());
+                renderEnergyBars(guiGraphics, list, texture);
                 poseStack.popPose();
             }
 
@@ -243,6 +252,35 @@ public class AbilityBarRenderer implements OverlayRegistry.IngameOverlay {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
+    public static void translateEnergyBars(PoseStack poseStack, Window window, Position position, int indicatorHeight, int abilitiesWidth, int energyBarAmount) {
+        int width = (energyBarAmount * 9) + 1;
+        int height = 104;
+
+        if (position.top) {
+            poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth - width + 1 : abilitiesWidth - 1, indicatorHeight - 1, 0);
+        } else {
+            poseStack.translate(!position.left ? window.getGuiScaledWidth() - abilitiesWidth - width + 1 : abilitiesWidth - 1, window.getGuiScaledHeight() - indicatorHeight - height + 1, 0);
+        }
+    }
+
+    public static void renderEnergyBars(GuiGraphics guiGraphics, AbilityList list, ResourceLocation texture) {
+        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+        guiGraphics.blit(texture, 0, 0, 152, 0, 1, 104);
+
+        int x = 1;
+
+        for (EnergyBar energyBar : list.energyBars) {
+            guiGraphics.blit(texture, x, 0, 153, 0, 9, 104);
+
+            int height = (int) ((energyBar.get() / (float) energyBar.getMax()) * 98);
+            var color = energyBar.getConfiguration().getColor();
+            RenderSystem.setShaderColor(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 1F);
+            guiGraphics.blit(texture, x + 2, 3 + 98 - height, 162, 98 - height, 4, height);
+            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+            x += 9;
+        }
+    }
+
     public static void renderBlackBox(BufferBuilder bb, Tesselator tesselator, PoseStack matrixStack, int x, int y, int width, int height, float opacity) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -352,20 +390,26 @@ public class AbilityBarRenderer implements OverlayRegistry.IngameOverlay {
         private final IntObjectHashMap<List<AbilityEntry>> abilities = new IntObjectHashMap<>();
         private final ResourceLocation texture;
         public boolean simple = false;
+        private final Collection<EnergyBar> energyBars;
 
         public AbilityList(IPowerHolder powerHolder) {
             this.powerHolder = powerHolder;
             this.power = powerHolder.getPower();
             var powerTex = this.power.getAbilityBarTexture();
             this.texture = powerTex != null ? powerTex.getTexture(DataContext.forPower(Minecraft.getInstance().player, this.powerHolder)) : null;
+            this.energyBars = powerHolder.getEnergyBars().values();
         }
 
         public IPowerHolder getPowerHolder() {
-            return powerHolder;
+            return this.powerHolder;
         }
 
         public Power getPower() {
-            return power;
+            return this.power;
+        }
+
+        public Collection<EnergyBar> getEnergyBars() {
+            return this.energyBars;
         }
 
         public AbilityList addAbility(int index, AbilityEntry ability) {
@@ -423,6 +467,10 @@ public class AbilityBarRenderer implements OverlayRegistry.IngameOverlay {
         }
 
         public void simplify() {
+            if (!this.energyBars.isEmpty()) {
+                return;
+            }
+
             int abilities = 0;
             AbilityEntry entry = null;
 

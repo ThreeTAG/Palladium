@@ -10,6 +10,7 @@ import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.condition.*;
+import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.json.GsonUtil;
@@ -36,6 +37,7 @@ public class AbilityConfiguration {
     private KeyType keyType = KeyType.KEY_BIND;
     private KeyPressType keyPressType = KeyPressType.ACTION;
     public List<String> dependencies = new ArrayList<>();
+    private final List<EnergyBarUsage> energyBarUsages = new ArrayList<>();
 
     public AbilityConfiguration(String id, Ability ability) {
         this.id = id;
@@ -55,6 +57,10 @@ public class AbilityConfiguration {
         Component title = this.propertyManager.get(Ability.TITLE);
         ResourceLocation id = Ability.REGISTRY.getKey(this.getAbility());
         return title != null ? title : Component.translatable("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath());
+    }
+
+    public List<EnergyBarUsage> getEnergyBarUsages() {
+        return this.energyBarUsages;
     }
 
     public <T> AbilityConfiguration set(PalladiumProperty<T> data, T value) {
@@ -190,6 +196,10 @@ public class AbilityConfiguration {
         AbilityConfiguration configuration = new AbilityConfiguration(id, ability);
         configuration.propertyManager.fromJSON(json);
 
+        if (GsonHelper.isValidNode(json, "energy_bar_usage")) {
+            GsonUtil.fromListOrPrimitive(json.get("energy_bar_usage"), jsonElement -> configuration.energyBarUsages.add(EnergyBarUsage.fromJson(GsonHelper.convertToJsonObject(jsonElement, "energy_bar_usage"))));
+        }
+
         if (GsonHelper.isValidNode(json, "conditions")) {
             JsonObject conditions = GsonHelper.getAsJsonObject(json, "conditions");
             boolean withKeyOrChat = false;
@@ -240,7 +250,7 @@ public class AbilityConfiguration {
                             throw new JsonParseException("Can't have two key binding or chat message conditions on one ability!");
                         }
                         withKeyOrChat = true;
-                        if(condition.needsKey()) {
+                        if (condition.needsKey()) {
                             withKey = true;
                             configuration.keyType = condition.getKeyType();
                             configuration.keyPressType = condition.getKeyPressType();

@@ -73,5 +73,6 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> CHAT_ACTION = CONDITION_SERIALIZERS.register("chat_action", ChatActionCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> CHAT_ACTIVATION = CONDITION_SERIALIZERS.register("chat_activation", ChatActivationCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> CHAT_TOGGLE = CONDITION_SERIALIZERS.register("chat_toggle", ChatToggleCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> ENERGY_BAR = CONDITION_SERIALIZERS.register("energy_bar", EnergyBarCondition.Serializer::new);
 
 }

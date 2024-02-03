@@ -148,6 +148,14 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.ability.locking.success", "The %s abilities of the %s power have been locked for %s entities");
             this.add("commands.ability.unlocking.success", "The %s abilities of the %s power have been unlocked for %s entities");
 
+            this.add("commands.energybar.error.noLivingEntity", "This entity is not a living entity");
+            this.add("commands.energybar.error.energyBarNotFound", "Energy bar does not exist");
+            this.add("commands.energybar.value.get.success", "%s's energy bar %s#%s is at %s");
+            this.add("commands.energybar.value.set.success", "%s's energy bar %s#%s was set to %s");
+            this.add("commands.energybar.maxValue.get.success", "%s's energy bar %s#%s has a maximum of %s");
+            this.add("commands.energybar.maxValue.set.success", "%s's energy bar %s#%s was set to have a maximum of %s");
+            this.add("commands.energybar.maxValue.reset.success", "%s's energy bar %s#%s was reset to have a maximum of %s");
+
             this.add("argument.entity.options.palladium.power.description", "Required power");
 
             // GUI
@@ -321,6 +329,19 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.error.alreadyHasSuperpower", "%s hat bereits diese Superkraft");
             this.add("commands.superpower.error.doesntHaveSuperpower", "%s hat diese Superkraft nicht");
 
+            this.add("commands.ability.error.notUnlockable", "Die %s Fähigkeit von der %s Kraft kann nicht freigeschaltet werden");
+            this.add("commands.ability.error.doesntHavePower", "%s hat diese Kraft nicht");
+            this.add("commands.ability.locking.success", "Die %s Fähigkeiten von der %s Kraft wurden für %s Lebewesen gesperrt");
+            this.add("commands.ability.unlocking.success", "Die %s Fähigkeiten von der %s Kraft wurden für %s Lebewesen freigeschaltet");
+
+            this.add("commands.energybar.error.noLivingEntity", "Objekt ist nicht lebend");
+            this.add("commands.energybar.error.energyBarNotFound", "Energy-Bar existiert nicht");
+            this.add("commands.energybar.value.get.success", "%s's Energy-Bar %s#%s ist bei %s");
+            this.add("commands.energybar.value.set.success", "%s's Energy-Bar %s#%s wurde auf %s gesetzt");
+            this.add("commands.energybar.maxValue.get.success", "%s's Energy-Bar %s#%s hat ein Maximum von %s");
+            this.add("commands.energybar.maxValue.set.success", "%s's Energy-Bar %s#%s wurde auf ein Maximum von %s gesetzt");
+            this.add("commands.energybar.maxValue.reset.success", "%s's Energy-Bar %s#%s wurde auf ein Maximum von %s zurückgesetzt");
+
             this.add("argument.entity.options.palladium.power.description", "Benötigte Kraft");
 
             // GUI
@@ -493,6 +514,19 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.superpower.replace.success.entity.multiple", "De Supperkraft/-kräfte von %s Lebewesen wurd'n ausjetoscht");
             this.add("commands.superpower.error.alreadyHasSuperpower", "%s had berehts dise Supperkraft");
             this.add("commands.superpower.error.doesntHaveSuperpower", "%s had dese Supperkraft nich");
+
+            this.add("commands.ability.error.notUnlockable", "De %s Fähischgehd von der %s Kraft kann nüsch freigeschaltet werd'n");
+            this.add("commands.ability.error.doesntHavePower", "%s hat diese Kraft nüsch");
+            this.add("commands.ability.locking.success", "De %s Fähischgehden von der %s Kraft wurd'n für %s Lebewesen jesperrt");
+            this.add("commands.ability.unlocking.success", "De %s Fähischgehden von der %s Kraft wurd'n für %s Lebewesen freijeschaltet");
+
+            this.add("commands.energybar.error.noLivingEntity", "Objekt ist nicht lebend");
+            this.add("commands.energybar.error.energyBarNotFound", "Energy-Bar existiert nüscht");
+            this.add("commands.energybar.value.get.success", "%s's Energy-Bar %s#%s is bei %s");
+            this.add("commands.energybar.value.set.success", "%s's Energy-Bar %s#%s wurd' uff %s jesetzt");
+            this.add("commands.energybar.maxValue.get.success", "%s's Energy-Bar %s#%s hat ehn Maximum von %s");
+            this.add("commands.energybar.maxValue.set.success", "%s's Energy-Bar %s#%s wurd' uff ehn Maximum von %s jesetzt");
+            this.add("commands.energybar.maxValue.reset.success", "%s's Energy-Bar %s#%s wurd' uff ehn Maximum von %s zurückjesetzt");
 
             this.add("argument.entity.options.palladium.power.description", "Benötichte Kraft");
 

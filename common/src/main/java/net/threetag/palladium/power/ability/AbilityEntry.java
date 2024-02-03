@@ -7,6 +7,7 @@ import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.CooldownType;
 import net.threetag.palladium.network.SyncAbilityEntryPropertyMessage;
 import net.threetag.palladium.network.SyncAbilityStateMessage;
+import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.PalladiumProperty;
@@ -42,7 +43,7 @@ public class AbilityEntry {
     }
 
     public AbilityConfiguration getConfiguration() {
-        return abilityConfiguration;
+        return this.abilityConfiguration;
     }
 
     public PropertyManager getPropertyManager() {
@@ -171,6 +172,10 @@ public class AbilityEntry {
 
         if (this.isEnabled()) {
             this.enabledTicks++;
+
+            for (EnergyBarUsage usage : this.getConfiguration().getEnergyBarUsages()) {
+                usage.consume(this.holder);
+            }
         } else if (this.enabledTicks > 0) {
             this.enabledTicks--;
         }

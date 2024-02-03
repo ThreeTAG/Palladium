@@ -7,33 +7,33 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
-import net.threetag.palladium.power.ability.AbilityEntry;
-import net.threetag.palladium.power.ability.AbilityReference;
+import net.threetag.palladium.power.energybar.EnergyBar;
+import net.threetag.palladium.power.energybar.EnergyBarReference;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.List;
 
-public class AbilityTicksTextureVariable extends AbstractIntegerTextureVariable {
+public class EnergyBarTextureVariable extends AbstractIntegerTextureVariable {
 
-    private final AbilityReference reference;
+    private final EnergyBarReference reference;
 
-    public AbilityTicksTextureVariable(ResourceLocation powerId, String abilityId, List<Pair<Operation, Integer>> operations) {
+    public EnergyBarTextureVariable(ResourceLocation powerId, String energyBarName, List<Pair<Operation, Integer>> operations) {
         super(operations);
-        this.reference = new AbilityReference(powerId, abilityId);
+        this.reference = new EnergyBarReference(powerId, energyBarName);
     }
 
     @Override
     public int getNumber(DataContext context) {
         var livingEntity = context.getLivingEntity();
         if (livingEntity != null) {
-            AbilityEntry entry = this.reference.getEntry(livingEntity);
+            EnergyBar bar = this.reference.getEntry(livingEntity);
 
-            if (entry == null) {
+            if (bar == null) {
                 return 0;
             }
 
-            return entry.getEnabledTicks();
+            return bar.get();
         }
         return 0;
     }
@@ -44,33 +44,33 @@ public class AbilityTicksTextureVariable extends AbstractIntegerTextureVariable 
         public ITextureVariable parse(JsonObject json) {
             return new EnergyBarTextureVariable(
                     GsonUtil.getAsResourceLocation(json, "power"),
-                    GsonHelper.getAsString(json, "ability"),
+                    GsonHelper.getAsString(json, "energy_bar"),
                     AbstractIntegerTextureVariable.parseOperations(json));
         }
 
         @Override
         public String getDocumentationDescription() {
-            return "Returns the tick count of an ability being enabled. The math operations can be arranged in any order and are fully optional!";
+            return "Returns the value of an energy bar. The math operations can be arranged in any order and are fully optional!";
         }
 
         @Override
         public void addDocumentationFields(JsonDocumentationBuilder builder) {
-            builder.setTitle("Ability Ticks");
+            builder.setTitle("Energy Bar");
             
             builder.addProperty("power", ResourceLocation.class)
-                    .description("ID of the power the ability is in.")
+                    .description("ID of the power the energy bar is in.")
                     .required().exampleJson(new JsonPrimitive("example:power_id"));
 
-            builder.addProperty("ability", String.class)
-                    .description("Key of the ability that is being looked for.")
-                    .required().exampleJson(new JsonPrimitive("ability_key"));
+            builder.addProperty("energy_bar", String.class)
+                    .description("Name of the energy bar that is being looked for.")
+                    .required().exampleJson(new JsonPrimitive("energy_bar_name"));
 
             AbstractIntegerTextureVariable.addDocumentationFields(builder);
         }
 
         @Override
         public ResourceLocation getId() {
-            return Palladium.id("ability_ticks");
+            return Palladium.id("energy_bar");
         }
     }
 

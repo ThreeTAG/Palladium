@@ -32,6 +32,7 @@ public class PalladiumNetwork {
     public static final MessageType BUY_ABILITY_UNLOCK = NETWORK.registerC2S("buy_ability_unlock", BuyAbilityUnlockMessage::new);
     public static final MessageType SET_FLYING_STATE = NETWORK.registerC2S("set_flying_state", SetFlyingStateMessage::new);
     public static final MessageType TOGGLE_OPENABLE_EQUIPMENT = NETWORK.registerC2S("toggle_openable_equipment", ToggleOpenableEquipmentMessage::new);
+    public static final MessageType SET_ENERGY_BAR = NETWORK.registerS2C("set_energy_bar", SetEnergyBarMessage::new);
 
     public static void init() {
         // Powers
@@ -41,7 +42,7 @@ public class PalladiumNetwork {
 
                 if (opt.isPresent()) {
                     var handler = opt.get();
-                    consumer.accept(new UpdatePowersMessage(livingEntity.getId(), Collections.emptyList(), handler.getPowerHolders().values().stream().map(h -> h.getPower().getId()).toList()));
+                    consumer.accept(new UpdatePowersMessage(livingEntity, Collections.emptyList(), handler.getPowerHolders().values().stream().map(h -> h.getPower().getId()).toList()));
 
                     for (AbilityEntry entry : AbilityUtil.getEntries(livingEntity)) {
                         consumer.accept(entry.getSyncStateMessage(livingEntity));

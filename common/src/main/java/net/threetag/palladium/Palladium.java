@@ -8,6 +8,7 @@ import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.command.AbilityCommand;
+import net.threetag.palladium.command.EnergyBarCommand;
 import net.threetag.palladium.command.PalladiumEntitySelectorOptions;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
@@ -98,6 +99,7 @@ public class Palladium {
         CommandEvents.REGISTER.register((dispatcher, selection) -> {
             SuperpowerCommand.register(dispatcher);
             AbilityCommand.register(dispatcher);
+            EnergyBarCommand.register(dispatcher);
         });
 
         if (!Platform.isProduction()) {

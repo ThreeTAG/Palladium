@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
+import net.threetag.palladium.power.energybar.EnergyBarConfiguration;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.IconSerializer;
 import net.threetag.palladium.util.json.GsonUtil;
@@ -23,6 +24,7 @@ public class Power {
     private final Component name;
     private final IIcon icon;
     private final List<AbilityConfiguration> abilities = new ArrayList<>();
+    private final List<EnergyBarConfiguration> energyBars = new ArrayList<>();
     private final TextureReference background;
     private final TextureReference abilityBar;
     private final Color primaryColor, secondaryColor;
@@ -57,6 +59,11 @@ public class Power {
         return this;
     }
 
+    public Power addEnergyBar(EnergyBarConfiguration configuration) {
+        this.energyBars.add(configuration);
+        return this;
+    }
+
     public ResourceLocation getId() {
         return id;
     }
@@ -71,6 +78,10 @@ public class Power {
 
     public List<AbilityConfiguration> getAbilities() {
         return abilities;
+    }
+
+    public List<EnergyBarConfiguration> getEnergyBars() {
+        return energyBars;
     }
 
     public TextureReference getBackground() {
@@ -117,18 +128,22 @@ public class Power {
         buf.writeBoolean(this.persistentData);
         buf.writeBoolean(this.hidden);
         buf.writeInt(this.guiDisplayType.ordinal());
-        buf.writeInt(this.abilities.size());
-        for (AbilityConfiguration configuration : this.abilities) {
-            configuration.toBuffer(buf);
-        }
+
+        buf.writeCollection(this.abilities, (buf1, configuration) -> configuration.toBuffer(buf1));
+        buf.writeCollection(this.energyBars, (friendlyByteBuf, energyBar) -> energyBar.toBuffer(friendlyByteBuf));
     }
 
     public static Power fromBuffer(ResourceLocation id, FriendlyByteBuf buf) {
         Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())), buf.readBoolean() ? TextureReference.fromBuffer(buf) : null, buf.readBoolean() ? TextureReference.fromBuffer(buf) : null, new Color(buf.readInt()), new Color(buf.readInt()), buf.readBoolean(), buf.readBoolean(), GuiDisplayType.values()[buf.readInt()]);
-        int amount = buf.readInt();
 
-        for (int i = 0; i < amount; i++) {
-            power.addAbility(AbilityConfiguration.fromBuffer(buf));
+        List<AbilityConfiguration> configurations = buf.readList(AbilityConfiguration::fromBuffer);
+        for (AbilityConfiguration configuration : configurations) {
+            power.addAbility(configuration);
+        }
+
+        List<EnergyBarConfiguration> energyBars = buf.readList(EnergyBarConfiguration::fromBuffer);
+        for (EnergyBarConfiguration energyBar : energyBars) {
+            power.addEnergyBar(energyBar);
         }
 
         return power;
@@ -161,6 +176,14 @@ public class Power {
 
             for (String key : abilities.keySet()) {
                 power.addAbility(AbilityConfiguration.fromJSON(key, GsonHelper.getAsJsonObject(abilities, key)));
+            }
+        }
+
+        if (GsonHelper.isValidNode(json, "energy_bars")) {
+            JsonObject energyBars = GsonHelper.getAsJsonObject(json, "energy_bars");
+
+            for (String key : energyBars.keySet()) {
+                power.addEnergyBar(EnergyBarConfiguration.fromJson(key, GsonHelper.getAsJsonObject(energyBars, key)));
             }
         }
 

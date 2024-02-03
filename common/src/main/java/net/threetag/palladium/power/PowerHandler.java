@@ -58,7 +58,7 @@ public class PowerHandler implements IPowerHandler {
 
             // Sync
             if (!toRemove.isEmpty() || !collector.getAdded().isEmpty()) {
-                var msg = new UpdatePowersMessage(this.entity.getId(), toRemove.stream().map(p -> p.getPower().getId()).toList(), collector.getAdded().stream().map(p -> p.getPower().getId()).toList());
+                var msg = new UpdatePowersMessage(this.entity, toRemove.stream().map(p -> p.getPower().getId()).toList(), collector.getAdded().stream().map(p -> p.getPower().getId()).toList());
                 if (this.entity instanceof ServerPlayer serverPlayer) {
                     msg.sendToTrackingAndSelf(serverPlayer);
                 } else {
