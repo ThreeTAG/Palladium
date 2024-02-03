@@ -42,7 +42,7 @@ public class AbilityTicksTextureVariable extends AbstractIntegerTextureVariable 
 
         @Override
         public ITextureVariable parse(JsonObject json) {
-            return new EnergyBarTextureVariable(
+            return new AbilityTicksTextureVariable(
                     GsonUtil.getAsResourceLocation(json, "power"),
                     GsonHelper.getAsString(json, "ability"),
                     AbstractIntegerTextureVariable.parseOperations(json));
@@ -56,7 +56,7 @@ public class AbilityTicksTextureVariable extends AbstractIntegerTextureVariable 
         @Override
         public void addDocumentationFields(JsonDocumentationBuilder builder) {
             builder.setTitle("Ability Ticks");
-            
+
             builder.addProperty("power", ResourceLocation.class)
                     .description("ID of the power the ability is in.")
                     .required().exampleJson(new JsonPrimitive("example:power_id"));
