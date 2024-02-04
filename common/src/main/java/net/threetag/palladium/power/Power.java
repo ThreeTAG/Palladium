@@ -153,10 +153,10 @@ public class Power {
         Component name = Component.Serializer.fromJson(json.get("name"));
         TextureReference background = GsonUtil.getAsTextureReference(json, "background", null);
         TextureReference abilityBarTexture = GsonUtil.getAsTextureReference(json, "ability_bar_texture", null);
-        GuiDisplayType displayType = GuiDisplayType.getByName(GsonHelper.getAsString(json, "gui_display_type", "list"));
+        GuiDisplayType displayType = GuiDisplayType.getByName(GsonHelper.getAsString(json, "gui_display_type", "auto"));
 
         if (displayType == null) {
-            throw new JsonParseException("Unknown gui display type '" + GsonHelper.getAsString(json, "gui_display_type", "list") + "'");
+            throw new JsonParseException("Unknown gui display type '" + GsonHelper.getAsString(json, "gui_display_type", "list") + "', must be either 'list' or 'tree'");
         }
 
         Power power = new Power(id,
@@ -192,6 +192,7 @@ public class Power {
 
     public enum GuiDisplayType {
 
+        AUTO("auto"),
         TREE("tree"),
         LIST("list");
 

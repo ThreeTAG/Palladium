@@ -270,6 +270,15 @@ public class TreePowerTab extends PowerTab {
         return null;
     }
 
+    public static boolean canBeTree(IPowerHolder holder) {
+        return holder.getAbilities().values().stream().filter(entry -> !entry.getProperty(Ability.HIDDEN_IN_GUI)).anyMatch(entry -> {
+            List<AbilityEntry> parents = Ability.findParentsWithinHolder(entry.getConfiguration(), holder);
+            List<AbilityEntry> children = Ability.findChildrenWithinHolder(entry.getConfiguration(), holder);
+
+            return !parents.isEmpty() || !children.isEmpty();
+        });
+    }
+
     public void scroll(double dragX, double dragY) {
         if (this.maxX - this.minX > PowersScreen.WINDOW_INSIDE_WIDTH) {
             this.scrollX = Mth.clamp(this.scrollX + dragX, -(this.maxX - PowersScreen.WINDOW_INSIDE_WIDTH), -this.minX);

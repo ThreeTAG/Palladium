@@ -78,7 +78,7 @@ public class ListPowerTab extends PowerTab {
         guiGraphics.fill(0, 0, PowersScreen.WINDOW_INSIDE_WIDTH, PowersScreen.WINDOW_INSIDE_HEIGHT, Mth.floor(this.fade * 255.0F) << 24);
         guiGraphics.pose().popPose();
 
-        if (this.hovered != null) {
+        if (this.hovered != null && !overlayActive) {
             var description = this.hovered.getProperty(Ability.DESCRIPTION);
 
             if (description != null) {

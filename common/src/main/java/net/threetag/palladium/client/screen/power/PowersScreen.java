@@ -123,16 +123,24 @@ public class PowersScreen extends Screen {
         this.selectedTab = null;
 
         AtomicInteger i = new AtomicInteger();
-        PowerManager.getPowerHandler(this.minecraft.player).ifPresent(handler -> handler.getPowerHolders().values().forEach(holder -> {
-            if (!holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN_IN_GUI))) {
-                if (holder.getPower().getGuiDisplayType() == Power.GuiDisplayType.TREE)
-                    this.tabs.add(TreePowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
-                else
-                    this.tabs.add(ListPowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
-            }
-        }));
+        PowerManager.getPowerHandler(this.minecraft.player).ifPresent(handler -> handler.getPowerHolders()
+                .values()
+                .stream()
+                .sorted(Comparator.comparingInt(holder -> PowerManager.getInstance(false).getPowers().stream().toList().indexOf(holder.getPower())))
+                .forEach(holder -> {
+                    if (!holder.getPower().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getProperty(Ability.HIDDEN_IN_GUI))) {
+                        var type = holder.getPower().getGuiDisplayType();
 
-        this.tabs.sort(Comparator.comparingInt(o -> PowerManager.getInstance(false).getPowers().stream().toList().indexOf(o.powerHolder.getPower())));
+                        if (type == Power.GuiDisplayType.AUTO) {
+                            type = TreePowerTab.canBeTree(holder) ? Power.GuiDisplayType.TREE : Power.GuiDisplayType.LIST;
+                        }
+
+                        if (type == Power.GuiDisplayType.TREE)
+                            this.tabs.add(TreePowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
+                        else
+                            this.tabs.add(ListPowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
+                    }
+                }));
 
         if (this.tabs.size() > PowerTabType.MAX_TABS) {
             int guiLeft = (this.width - WINDOW_WIDTH) / 2;
@@ -147,7 +155,7 @@ public class PowersScreen extends Screen {
         }
 
         if (!this.tabs.isEmpty()) {
-            this.selectedTab = tabs.get(0);
+            this.selectedTab = this.tabs.get(0);
             this.selectedTab.onOpened();
         }
 
