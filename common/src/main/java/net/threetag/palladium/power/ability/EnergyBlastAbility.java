@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -15,22 +16,21 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
 import net.threetag.palladium.entity.effect.EnergyBlastEffect;
 import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.util.EntityUtil;
 import net.threetag.palladium.util.PalladiumBlockUtil;
 import net.threetag.palladium.util.property.*;
 
 import java.awt.*;
 import java.util.Random;
 
-public class EnergyBlastAbility extends Ability {
+public class EnergyBlastAbility extends Ability implements AnimationTimer {
 
     public static final PalladiumProperty<EnergyBlastOriginProperty.EnergyBlastOrigin> ORIGIN = new EnergyBlastOriginProperty("origin").configurable("Defines the origin point of the energy blast");
     public static final PalladiumProperty<Color> COLOR = new ColorProperty("color").configurable("Defines the color of the blast");
@@ -55,7 +55,7 @@ public class EnergyBlastAbility extends Ability {
 
     @Override
     public void firstTick(LivingEntity entity, AbilityEntry entry, IPowerHolder holder, boolean enabled) {
-        if(enabled) {
+        if (enabled) {
             EnergyBlastEffect.start(entity, holder.getPower(), entry);
         }
     }
@@ -75,20 +75,33 @@ public class EnergyBlastAbility extends Ability {
 
             Vec3 startVec = origin.getOriginVector(entity);
             Vec3 endVec = origin.getEndVector(entity, startVec, entry.getProperty(MAX_DISTANCE));
-            HitResult hitResult = EntityUtil.rayTraceWithEntities(entity, startVec, endVec, entry.getProperty(MAX_DISTANCE), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, target -> !target.isInvulnerable());
-            entry.setUniqueProperty(DISTANCE, hitResult.getLocation().distanceTo(startVec));
+            HitResult endHit = entity.level().clip(new ClipContext(startVec, endVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
+            entry.setUniqueProperty(DISTANCE, endHit.getLocation().distanceTo(startVec));
+
+            if (entry.getEnabledTicks() >= 5) {
+                for (int i = 0; i < entry.getProperty(MAX_DISTANCE) * 2; i++) {
+                    Vec3 stepVec = endVec.subtract(startVec).scale(1F / (entry.getProperty(MAX_DISTANCE) * 2));
+                    Vec3 pos = startVec.add(stepVec.scale(i));
+
+                    Vec3 min = pos.add(0.25F, 0.25F, 0.25F);
+                    Vec3 max = pos.add(-0.25F, -0.25F, -0.25F);
+                    for (Entity target : entity.level().getEntities(entity, new AABB(min.x, min.y, min.z, max.x, max.y, max.z))) {
+                        if (!target.isInvulnerable()) {
+                            target.setSecondsOnFire(8);
+
+                            if (entity instanceof Player player)
+                                target.hurt(entity.level().damageSources().playerAttack(player), entry.getProperty(DAMAGE));
+                            else
+                                target.hurt(entity.level().damageSources().mobAttack(entity), entry.getProperty(DAMAGE));
+                        }
+                    }
+                }
+            }
 
             if (entry.getEnabledTicks() >= 5) {
                 if (!entity.level().isClientSide()) {
-                    if (hitResult.getType() == HitResult.Type.ENTITY) {
-                        EntityHitResult entityHitResult = (EntityHitResult) hitResult;
-                        entityHitResult.getEntity().setSecondsOnFire(5);
-                        if (entity instanceof Player player)
-                            entityHitResult.getEntity().hurt(entity.level().damageSources().playerAttack(player), entry.getProperty(DAMAGE));
-                        else
-                            entityHitResult.getEntity().hurt(entity.level().damageSources().mobAttack(entity), entry.getProperty(DAMAGE));
-                    } else if (hitResult.getType() == HitResult.Type.BLOCK) {
-                        BlockHitResult blockHitResult = (BlockHitResult) hitResult;
+                   if (endHit.getType() == HitResult.Type.BLOCK) {
+                        BlockHitResult blockHitResult = (BlockHitResult) endHit;
                         BlockState blockState = entity.level().getBlockState(blockHitResult.getBlockPos());
 
                         SimpleContainer simpleContainer = new SimpleContainer(new ItemStack(blockState.getBlock()));
@@ -111,8 +124,8 @@ public class EnergyBlastAbility extends Ability {
                         }
                     }
                 } else {
-                    Vec3 direction = new Vec3(startVec.x() - hitResult.getLocation().x(), startVec.y() - hitResult.getLocation().y(), startVec.z() - hitResult.getLocation().z()).normalize().scale(0.1D);
-                    entity.level().addParticle(new Random().nextBoolean() ? ParticleTypes.SMOKE : ParticleTypes.FLAME, hitResult.getLocation().x(), hitResult.getLocation().y(), hitResult.getLocation().z(), direction.x(), direction.y(), direction.z());
+                    Vec3 direction = new Vec3(startVec.x() - endHit.getLocation().x(), startVec.y() - endHit.getLocation().y(), startVec.z() - endHit.getLocation().z()).normalize().scale(0.1D);
+                    entity.level().addParticle(new Random().nextBoolean() ? ParticleTypes.SMOKE : ParticleTypes.FLAME, endHit.getLocation().x(), endHit.getLocation().y(), endHit.getLocation().z(), direction.x(), direction.y(), direction.z());
                 }
             }
         } else if (entity.level().isClientSide && entry.getProperty(ANIMATION_TIMER) > 0) {
@@ -139,5 +152,18 @@ public class EnergyBlastAbility extends Ability {
     @Override
     public String getDocumentationDescription() {
         return "Shoots a laser from your eyes or chest that can set entities on fire and smelt blocks.";
+    }
+
+    @Override
+    public float getAnimationValue(AbilityEntry entry, float partialTick) {
+        return entry.getProperty(ANIMATION_TIMER) / 5F;
+    }
+
+    @Override
+    public float getAnimationTimer(AbilityEntry entry, float partialTick, boolean maxedOut) {
+        if (maxedOut) {
+            return 5;
+        }
+        return entry.getProperty(ANIMATION_TIMER);
     }
 }
