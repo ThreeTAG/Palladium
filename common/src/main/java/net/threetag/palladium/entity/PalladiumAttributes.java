@@ -1,12 +1,14 @@
 package net.threetag.palladium.entity;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.mixin.RangedAttributeAccessor;
 import net.threetag.palladiumcore.event.LifecycleEvents;
@@ -32,6 +34,7 @@ public class PalladiumAttributes {
     public static final RegistrySupplier<Attribute> JUMP_POWER = ATTRIBUTES.register("jump_power", () -> new RangedAttribute(name("jump_power"), 1.0, 0.0, 2048.0).setSyncable(true));
     public static final RegistrySupplier<Attribute> DESTROY_SPEED = ATTRIBUTES.register("destroy_speed", () -> new RangedAttribute(name("destroy_speed"), 1.0, 0.0, 2048.0).setSyncable(true));
     public static final RegistrySupplier<Attribute> FALL_RESISTANCE = ATTRIBUTES.register("fall_resistance", () -> new RangedAttribute(name("fall_resistance"), 1.0, 0.0, 100D));
+    public static final RegistrySupplier<Attribute> LEAPING = ATTRIBUTES.register("leaping", () -> new RangedAttribute(name("leaping"), 1.0, 0.0, 100D));
 
     public static final UUID PUNCH_DAMAGE_MOD_UUID = UUID.fromString("b587e52f-6985-40f4-988e-48e3a7d3fdcb");
 
@@ -44,8 +47,9 @@ public class PalladiumAttributes {
         EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, JUMP_POWER);
         EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, DESTROY_SPEED);
         EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, FALL_RESISTANCE);
+        EntityAttributeRegistry.registerModification(() -> EntityType.PLAYER, LEAPING);
 
-        punchDamageHandling();
+        events();
 
         if (!Platform.isModLoaded("attributefix")) {
             LifecycleEvents.SETUP.register(() -> {
@@ -56,7 +60,7 @@ public class PalladiumAttributes {
         }
     }
 
-    private static void punchDamageHandling() {
+    private static void events() {
         LivingEntityEvents.TICK.register(entity -> {
             if (entity.getAttributes().hasAttribute(PUNCH_DAMAGE.get())) {
                 var punchDmg = entity.getAttributeValue(PUNCH_DAMAGE.get());
@@ -69,6 +73,22 @@ public class PalladiumAttributes {
 
                 if ((currentMod == null && punchDmg > 0D) || (currentMod != null && currentMod.getAmount() != punchDmg)) {
                     attackDmg.addTransientModifier(new AttributeModifier(PUNCH_DAMAGE_MOD_UUID, "Punch Damage", punchDmg, AttributeModifier.Operation.ADDITION));
+                }
+            }
+        });
+
+        LivingEntityEvents.JUMP.register(entity -> {
+            if (entity.getAttributes().hasAttribute(LEAPING.get())) {
+                double mul = entity.getAttributeValue(LEAPING.get());
+
+                if (mul != 1F) {
+                    Vec3 vec3 = entity.getDeltaMovement();
+                    vec3 = vec3.add(vec3.x * mul, 0, vec3.z * mul);
+                    entity.setDeltaMovement(vec3);
+
+                    if(entity instanceof ServerPlayer player) {
+                        player.connection.send(new ClientboundSetEntityMotionPacket(player));
+                    }
                 }
             }
         });

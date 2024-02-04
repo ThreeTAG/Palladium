@@ -3,8 +3,9 @@
   "icon": "minecraft:rabbit_foot",
   "abilities": {
     "leap": {
-      "type": "palladium:leap",
-      "multiplier": 2
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:leaping",
+      "amount": 5
     },
     "speed": {
       "type": "palladium:attribute_modifier",

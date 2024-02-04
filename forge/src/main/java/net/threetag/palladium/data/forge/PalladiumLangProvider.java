@@ -81,6 +81,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.JUMP_POWER, "Jump Power");
             this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Destroy Speed");
             this.addAttribute(PalladiumAttributes.FALL_RESISTANCE, "Fall Resistance");
+            this.addAttribute(PalladiumAttributes.LEAPING, "Leaping");
             this.add("attribute.name.forge.swim_speed", "Swim Speed");
 
             // Abilities
@@ -114,7 +115,6 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.INTANGIBILITY, "Intangibility");
             this.addAbility(Abilities.NAME_CHANGE, "Name Change");
             this.addAbility(Abilities.SCULK_IMMUNITY, "Sculk Immunity");
-            this.addAbility(Abilities.LEAP, "Leap");
             this.add("ability.geckolib.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib.armor_animation", "Gecko Armor Animation");
 
@@ -268,6 +268,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
             this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Abbaugeschwindigkeit");
             this.addAttribute(PalladiumAttributes.FALL_RESISTANCE, "Fallwiderstand");
+            this.addAttribute(PalladiumAttributes.LEAPING, "Weitsprung");
             this.add("attribute.name.forge.swim_speed", "Schwimmgeschwindigkeit");
 
             // Abilities
@@ -301,7 +302,6 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.INTANGIBILITY, "Ungreifbarkeit");
             this.addAbility(Abilities.NAME_CHANGE, "Namesänderung");
             this.addAbility(Abilities.SCULK_IMMUNITY, "Sculk-Immunität");
-            this.addAbility(Abilities.LEAP, "Sprung");
             this.add("ability.geckolib.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib.armor_animation", "Gecko Armor Animation");
 
@@ -455,6 +455,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAttribute(PalladiumAttributes.JUMP_POWER, "Sprungkraft");
             this.addAttribute(PalladiumAttributes.DESTROY_SPEED, "Abbohjeschwindichket");
             this.addAttribute(PalladiumAttributes.FALL_RESISTANCE, "Fallwidorstand");
+            this.addAttribute(PalladiumAttributes.LEAPING, "Wehtsprung");
             this.add("attribute.name.forge.swim_speed", "Schwimmjeschwindigkeit");
 
             // Abilities
@@ -488,7 +489,6 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.INTANGIBILITY, "Ungreifbarkeht");
             this.addAbility(Abilities.NAME_CHANGE, "Namesänderung");
             this.addAbility(Abilities.SCULK_IMMUNITY, "Sculk-Immunität");
-            this.addAbility(Abilities.LEAP, "Sprung");
             this.add("ability.geckolib.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib.armor_animation", "Gecko Armor Animation");
 

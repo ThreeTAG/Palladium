@@ -43,7 +43,6 @@ public class Abilities {
     public static final RegistrySupplier<Ability> INTANGIBILITY = ABILITIES.register("intangibility", IntangibilityAbility::new);
     public static final RegistrySupplier<Ability> NAME_CHANGE = ABILITIES.register("name_change", NameChangeAbility::new);
     public static final RegistrySupplier<Ability> SCULK_IMMUNITY = ABILITIES.register("sculk_immunity", () -> new Ability().withProperty(Ability.ICON, new ItemIcon(Items.SCULK)).setDocumentationDescription("When enabled, the player will not cause any walk-related sculk vibrations anymore."));
-    public static final RegistrySupplier<Ability> LEAP = ABILITIES.register("leap", LeapAbility::new);
 
     public static void init() {
 
