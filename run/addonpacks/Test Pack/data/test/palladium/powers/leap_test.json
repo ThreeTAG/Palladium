@@ -1,0 +1,15 @@
+{
+  "name": "Leap Test",
+  "icon": "minecraft:rabbit_foot",
+  "abilities": {
+    "leap": {
+      "type": "palladium:leap",
+      "multiplier": 2
+    },
+    "speed": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "generic.movement_speed",
+      "amount": 0.1
+    }
+  }
+}
