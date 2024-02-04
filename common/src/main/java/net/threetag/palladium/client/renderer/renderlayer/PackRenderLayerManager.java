@@ -90,6 +90,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
 
         registerParser(new ResourceLocation(Palladium.MOD_ID, "default"), PackRenderLayer::parse);
         registerParser(new ResourceLocation(Palladium.MOD_ID, "compound"), CompoundPackRenderLayer::parse);
+        registerParser(new ResourceLocation(Palladium.MOD_ID, "skin_overlay"), SkinOverlayPackRenderLayer::parse);
 
         registerRenderType(new ResourceLocation("minecraft", "solid"), (source, texture, glint) -> ItemRenderer.getArmorFoilBuffer(source, RenderType.entityTranslucent(texture), false, glint));
         registerRenderType(new ResourceLocation("minecraft", "glow"), (source, texture, glint) -> ItemRenderer.getArmorFoilBuffer(source, PalladiumRenderTypes.getGlowing(texture), false, glint));

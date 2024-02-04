@@ -1,0 +1,10 @@
+{
+  "name": "Leap Test",
+  "icon": "minecraft:rabbit_foot",
+  "abilities": {
+    "render_layer": {
+      "type": "palladium:render_layer",
+      "render_layer": "test:skin_overlay_test"
+    }
+  }
+}
