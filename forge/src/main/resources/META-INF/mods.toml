@@ -14,7 +14,7 @@ Core mod for all ThreeTAG mods.
 logoFile = "palladium_banner.png"
 logoBlur = false
 displayURL = "https://modrinth.com/project/threetag-palladium"
-updateJSONURL = "https://api.modrinth.com/updates/threetag-palladium/forge_updates.json"
+updateJSONURL = "https://squirrelcontrol.threetag.net/api/forge_updates/threetag-palladium"
 
 [modproperties.palladium]
 catalogueImageIcon = "palladium_icon.png"
