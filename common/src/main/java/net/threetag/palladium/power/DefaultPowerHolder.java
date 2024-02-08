@@ -97,11 +97,7 @@ public class DefaultPowerHolder implements IPowerHolder {
 
         if (!this.getEntity().level().isClientSide) {
             for (EnergyBar value : this.energyBars.values()) {
-                if (this.getEntity().isCrouching()) {
-                    value.add(-1);
-                } else {
-                    value.add(value.getConfiguration().getAutoIncrease());
-                }
+                value.add(value.getConfiguration().getAutoIncrease());
             }
         }
     }
