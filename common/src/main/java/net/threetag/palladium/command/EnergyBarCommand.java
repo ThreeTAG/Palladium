@@ -168,7 +168,7 @@ public class EnergyBarCommand {
             var bar = new EnergyBarReference(powerId, energyBarName).getEntry(living);
 
             if (bar != null) {
-                bar.setMax(value);
+                bar.setOverriddenMaxValue(value);
                 source.sendSuccess(() -> Component.translatable("commands.energybar.maxValue.set.success", entity.getDisplayName(), powerId.toString(), energyBarName, bar.getMax()), true);
                 return 1;
             } else {
@@ -186,7 +186,7 @@ public class EnergyBarCommand {
             var bar = new EnergyBarReference(powerId, energyBarName).getEntry(living);
 
             if (bar != null) {
-                bar.setMax(-1);
+                bar.setOverriddenMaxValue(-1);
                 source.sendSuccess(() -> Component.translatable("commands.energybar.maxValue.reset.success", entity.getDisplayName(), powerId.toString(), energyBarName, bar.getMax()), true);
                 return 1;
             } else {

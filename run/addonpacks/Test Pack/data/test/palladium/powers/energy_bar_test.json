@@ -9,6 +9,8 @@
   "energy_bars": {
     "test_1": {
       "max": 500,
+      "auto_increase_per_tick": -50,
+      "auto_increase_interval": 100,
       "color": [
         240,
         30,

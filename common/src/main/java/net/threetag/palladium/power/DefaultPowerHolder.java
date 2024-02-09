@@ -96,13 +96,7 @@ public class DefaultPowerHolder implements IPowerHolder {
         this.entryMap.forEach((id, entry) -> entry.tick(entity, this));
 
         if (!this.getEntity().level().isClientSide) {
-            for (EnergyBar value : this.energyBars.values()) {
-                int increase = value.getConfiguration().getAutoIncrease();
-
-                if (increase != 0 && this.getEntity().tickCount % value.getConfiguration().getAutoIncreaseInterval() == 0) {
-                    value.add(value.getConfiguration().getAutoIncrease());
-                }
-            }
+            this.energyBars.forEach((id, bar) -> bar.tick(entity));
         }
     }
 
