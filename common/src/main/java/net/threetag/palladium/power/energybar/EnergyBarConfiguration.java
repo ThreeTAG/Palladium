@@ -13,12 +13,14 @@ public class EnergyBarConfiguration {
     private final Color color;
     private final int maxValue;
     private final int autoIncrease;
+    private final int autoIncreaseInterval;
 
-    public EnergyBarConfiguration(String name, Color color, int maxValue, int autoIncrease) {
+    public EnergyBarConfiguration(String name, Color color, int maxValue, int autoIncrease, int autoIncreaseInterval) {
         this.name = name;
         this.color = color;
         this.maxValue = maxValue;
         this.autoIncrease = autoIncrease;
+        this.autoIncreaseInterval = autoIncreaseInterval;
     }
 
     public String getName() {
@@ -37,14 +39,24 @@ public class EnergyBarConfiguration {
         return this.autoIncrease;
     }
 
+    public int getAutoIncreaseInterval() {
+        return this.autoIncreaseInterval;
+    }
+
     public static EnergyBarConfiguration fromJson(String name, JsonObject json) {
-        return new EnergyBarConfiguration(name, GsonUtil.getAsColor(json, "color", Color.WHITE), GsonUtil.getAsIntMin(json, "max", 1), GsonUtil.getAsIntMin(json, "auto_increase_per_tick", 0, 0));
+        return new EnergyBarConfiguration(
+                name, GsonUtil.getAsColor(json, "color", Color.WHITE),
+                GsonUtil.getAsIntMin(json, "max", 1),
+                GsonUtil.getAsIntMin(json, "auto_increase_per_tick", 0, 0),
+                GsonUtil.getAsIntMin(json, "auto_increase_interval", 1, 1)
+        );
     }
 
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
         json.addProperty("max", this.maxValue);
         json.addProperty("auto_increase_per_tick", this.autoIncrease);
+        json.addProperty("auto_increase_interval", this.autoIncreaseInterval);
 
         var color = new JsonArray();
         color.add(this.color.getRed());
@@ -55,7 +67,7 @@ public class EnergyBarConfiguration {
     }
 
     public static EnergyBarConfiguration fromBuffer(FriendlyByteBuf buf) {
-        return new EnergyBarConfiguration(buf.readUtf(), new Color(buf.readInt()), buf.readInt(), buf.readInt());
+        return new EnergyBarConfiguration(buf.readUtf(), new Color(buf.readInt()), buf.readInt(), buf.readInt(), buf.readInt());
     }
 
     public void toBuffer(FriendlyByteBuf buf) {
@@ -63,5 +75,6 @@ public class EnergyBarConfiguration {
         buf.writeInt(this.color.getRGB());
         buf.writeInt(this.maxValue);
         buf.writeInt(this.autoIncrease);
+        buf.writeInt(this.autoIncreaseInterval);
     }
 }
