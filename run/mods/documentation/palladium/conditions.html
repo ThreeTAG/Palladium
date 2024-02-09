@@ -243,6 +243,10 @@ item_buyable</a>
 item_in_slot</a>
 </li>
 <li>
+<a href="#palladium:item_in_slot_open">
+item_in_slot_open</a>
+</li>
+<li>
 <a href="#palladium:mod_loaded">
 mod_loaded</a>
 </li>
@@ -2491,6 +2495,50 @@ chest</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:item_in_slot","item":{"item":"minecraft:leather_chestplate"},"slot":"chest"}</pre>
+</div>
+<hr>
+
+<div id="palladium:item_in_slot_open">
+<h2>
+item_in_slot_open</h2>
+<p>
+Checks if the item in the given slot is opened. Needs to be using the openable-system for items.<br><br>Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+slot</td>
+<td>
+PlayerSlot</td>
+<td>
+Slot that must contain an opened item. Example values: [mainhand, offhand, feet, legs, chest, head, curios:back, curios:necklace, trinkets:chest/back, trinkets:chest/necklace]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+chest</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:item_in_slot_open","slot":"chest"}</pre>
 </div>
 <hr>
 

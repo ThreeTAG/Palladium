@@ -35,6 +35,7 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> MOON_PHASE = CONDITION_SERIALIZERS.register("moon_phase", MoonPhaseCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> MOD_LOADED = CONDITION_SERIALIZERS.register("mod_loaded", ModLoadedCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ITEM_IN_SLOT = CONDITION_SERIALIZERS.register("item_in_slot", ItemInSlotCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> ITEM_IN_SLOT_OPEN = CONDITION_SERIALIZERS.register("item_in_slot_open", ItemInSlotOpenCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> EMPTY_SLOT = CONDITION_SERIALIZERS.register("empty_slot", EmptySlotCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ENTITY_TYPE = CONDITION_SERIALIZERS.register("entity_type", EntityTypeCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ENTITY_TYPE_TAG = CONDITION_SERIALIZERS.register("entity_type_tag", EntityTypeTagCondition.Serializer::new);
