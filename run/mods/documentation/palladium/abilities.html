@@ -4633,6 +4633,18 @@ SkinTypedValue{normal=minecraft:textures/entity/zombie/drowned.png, slim=minecra
 </tr>
 <tr>
 <td>
+model_type</td>
+<td>
+ChangedModelType</td>
+<td>
+Model type for the player. 'normal' = Wide-armed Steve model; 'slim' = Slim-armed Alex model; 'keep' = Does not change the player's default model. Possible values: [keep, normal, slim]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+KEEP</td>
+</tr>
+<tr>
+<td>
 priority</td>
 <td>
 Integer</td>
@@ -4648,7 +4660,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:skin_change","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","texture":"minecraft:textures/entity/zombie/drowned.png","priority":50}</pre>
+{"type":"palladium:skin_change","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","texture":"minecraft:textures/entity/zombie/drowned.png","model_type":"keep","priority":50}</pre>
 </div>
 <hr>
 

@@ -4,6 +4,8 @@
   "abilities": {
     "skin_change": {
       "type": "palladium:skin_change",
+      "model_type": "slim",
+      "hidden_in_bar": false,
       "hidden": false,
       "conditions": {
         "enabling": {

@@ -5,8 +5,8 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.power.ability.*;
-import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.power.ability.SkinChangeAbility;
+import net.threetag.palladium.util.property.ChangedPlayerModelTypeProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,24 @@ public class PlayerSkinHandler {
         return defaultSkin;
     }
 
+    public static String getCurrentModelType(GameProfile gameProfile, String modelType) {
+        AbstractClientPlayer player = (AbstractClientPlayer) Objects.requireNonNull(Minecraft.getInstance().level).getPlayerByUUID(gameProfile.getId());
+
+        if (player != null && !PROVIDER.isEmpty()) {
+            var overriddenType = PROVIDER.get(PROVIDER.size() - 1).getSecond().getModelType(player);
+
+            if (overriddenType == ChangedPlayerModelTypeProperty.ChangedModelType.KEEP) {
+                return modelType;
+            } else if (overriddenType == ChangedPlayerModelTypeProperty.ChangedModelType.NORMAL) {
+                return "default";
+            } else {
+                return "slim";
+            }
+        }
+
+        return modelType;
+    }
+
     public static void registerSkinProvider(int priority, ISkinProvider provider) {
         PROVIDER.add(Pair.of(priority, provider));
         PROVIDER.sort((p1, p2) -> p2.getFirst() - p1.getFirst());
@@ -41,20 +59,15 @@ public class PlayerSkinHandler {
 
         ResourceLocation getSkin(AbstractClientPlayer player, ResourceLocation previousSkin, ResourceLocation defaultSkin);
 
+        default ChangedPlayerModelTypeProperty.ChangedModelType getModelType(AbstractClientPlayer player) {
+            return ChangedPlayerModelTypeProperty.ChangedModelType.KEEP;
+        }
+
     }
 
     static {
         // Abilities
-        registerSkinProvider(30, (player, previousSkin, defaultSkin) -> {
-            var abilities = AbilityUtil.getEnabledEntries(player, Abilities.SKIN_CHANGE.get()).stream().filter(AbilityEntry::isEnabled).sorted((a1, a2) -> a2.getProperty(SkinChangeAbility.PRIORITY) - a1.getProperty(SkinChangeAbility.PRIORITY)).toList();
-
-            if (abilities.size() > 0) {
-                var ability = abilities.get(0);
-                return ability.getProperty(SkinChangeAbility.TEXTURE).get(player).getTexture(DataContext.forAbility(player, ability));
-            }
-
-            return previousSkin;
-        });
+        registerSkinProvider(30, new SkinChangeAbility.SkinProvider());
     }
 
 }

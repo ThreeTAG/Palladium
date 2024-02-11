@@ -15,13 +15,31 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerInfo.class)
 public class PlayerInfoMixin {
 
-    @Shadow @Final private GameProfile profile;
+    @Shadow
+    @Final
+    private GameProfile profile;
 
     @Inject(at = @At("RETURN"), method = "getSkinLocation", cancellable = true)
     public void getSkinLocation(CallbackInfoReturnable<ResourceLocation> ci) {
-        if(!EntityDynamicTexture.IGNORE_SKIN_CHANGE) {
+        if (!EntityDynamicTexture.IGNORE_SKIN_CHANGE) {
             var original = ci.getReturnValue();
-            ci.setReturnValue(PlayerSkinHandler.getCurrentSkin(this.profile, original));
+            var overridden = PlayerSkinHandler.getCurrentSkin(this.profile, original);
+
+            if (!original.equals(overridden)) {
+                ci.setReturnValue(overridden);
+            }
+        }
+    }
+
+    @Inject(at = @At("RETURN"), method = "getModelName", cancellable = true)
+    public void getModelName(CallbackInfoReturnable<String> ci) {
+        if (!EntityDynamicTexture.IGNORE_SKIN_CHANGE) {
+            var original = ci.getReturnValue();
+            var overridden = PlayerSkinHandler.getCurrentModelType(this.profile, original);
+
+            if (!original.equals(overridden)) {
+                ci.setReturnValue(overridden);
+            }
         }
     }
 
