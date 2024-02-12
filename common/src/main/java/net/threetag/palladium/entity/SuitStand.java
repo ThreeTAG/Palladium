@@ -5,6 +5,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -25,9 +26,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladiumcore.network.ExtendedEntitySpawnData;
 import net.threetag.palladiumcore.network.NetworkManager;
+import org.jetbrains.annotations.NotNull;
 
-public class SuitStand extends ArmorStand {
+public class SuitStand extends ArmorStand implements ExtendedEntitySpawnData {
 
     private static final Rotations DEFAULT_LEFT_ARM_POSE = new Rotations(0.0F, 0.0F, 0.0F);
     private static final Rotations DEFAULT_RIGHT_ARM_POSE = new Rotations(0.0F, 0.0F, 0.0F);
@@ -133,8 +136,19 @@ public class SuitStand extends ArmorStand {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkManager.createAddEntityPacket(this);
     }
 
+    @Override
+    public void saveAdditionalSpawnData(FriendlyByteBuf buf) {
+        CompoundTag nbt = new CompoundTag();
+        this.addAdditionalSaveData(nbt);
+        buf.writeNbt(nbt);
+    }
+
+    @Override
+    public void loadAdditionalSpawnData(FriendlyByteBuf buf) {
+        this.readAdditionalSaveData(buf.readNbt());
+    }
 }
