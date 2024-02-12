@@ -10,11 +10,11 @@ import net.threetag.palladium.addonpack.parser.AccessoryParser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccessoryBuilder extends AddonBuilder<Accessory> {
+public class AccessoryBuilder extends AddonBuilder<Accessory, AccessoryBuilder> {
 
     private final JsonObject json;
     private AccessoryParser.TypeSerializer typeSerializer = null;
-    private List<AccessorySlot> slots = new ArrayList<>();
+    private List<AccessorySlot> slots;
 
     public AccessoryBuilder(ResourceLocation id, JsonObject json) {
         super(id);
@@ -25,7 +25,7 @@ public class AccessoryBuilder extends AddonBuilder<Accessory> {
     protected Accessory create() {
         var accessory = this.typeSerializer != null ? this.typeSerializer.parse(this.json) : new DefaultAccessory();
 
-        accessory.slot(this.slots.toArray(new AccessorySlot[0]));
+        accessory.slot(this.getValue(b -> b.slots, new ArrayList<AccessorySlot>()).toArray(new AccessorySlot[0]));
 
         return accessory;
     }
@@ -36,6 +36,10 @@ public class AccessoryBuilder extends AddonBuilder<Accessory> {
     }
 
     public AccessoryBuilder addSlot(AccessorySlot slot) {
+        if (this.slots == null) {
+            this.slots = new ArrayList<>();
+        }
+
         if (slot != null && !this.slots.contains(slot)) {
             this.slots.add(slot);
         }

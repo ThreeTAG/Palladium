@@ -20,22 +20,23 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class AddonParser<T> extends SimpleJsonResourceReloadListener {
+public abstract class AddonParser<B extends AddonBuilder<?, B>> extends SimpleJsonResourceReloadListener {
 
     public static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 
-    public final ResourceKey<? extends Registry<T>> resourceKey;
+    public final ResourceKey<? extends Registry<?>> resourceKey;
 
-    public AddonParser(Gson gson, String string, ResourceKey<? extends Registry<T>> resourceKey) {
+    public AddonParser(Gson gson, String string, ResourceKey<? extends Registry<?>> resourceKey) {
         super(gson, string);
         this.resourceKey = resourceKey;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes", "UnnecessaryLocalVariable"})
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
         this.injectJsons(object);
         AtomicInteger i = new AtomicInteger();
-        Map<ResourceLocation, AddonBuilder<T>> addonBuilders = new HashMap<>();
+        Map<ResourceLocation, B> addonBuilders = new HashMap<>();
         Map<String, List<String>> loadingOrders = new HashMap<>();
 
         object.forEach((id, jsonElement) -> {
@@ -56,7 +57,7 @@ public abstract class AddonParser<T> extends SimpleJsonResourceReloadListener {
             }
         });
 
-        Map<ResourceLocation, AddonBuilder<T>> sorted = new TreeMap<>((id1, id2) -> {
+        Map<ResourceLocation, B> sorted = new TreeMap<>((id1, id2) -> {
             if (id1.getNamespace().equals(id2.getNamespace())) {
                 List<String> order = loadingOrders.get(id1.getNamespace());
 
@@ -79,9 +80,14 @@ public abstract class AddonParser<T> extends SimpleJsonResourceReloadListener {
         });
         sorted.putAll(addonBuilders);
 
+        for (B addonBuilder : sorted.values()) {
+            addonBuilder.resolveParent(sorted);
+        }
 
-        for (AddonBuilder<T> addonBuilder : sorted.values()) {
-            register(this.resourceKey, addonBuilder);
+        for (B addonBuilder : sorted.values()) {
+            ResourceKey key1 = this.resourceKey;
+            AddonBuilder builder1 = addonBuilder;
+            register(key1, builder1);
             this.postRegister(addonBuilder);
         }
 
@@ -98,11 +104,11 @@ public abstract class AddonParser<T> extends SimpleJsonResourceReloadListener {
     }
 
     @ExpectPlatform
-    public static <T> void register(ResourceKey<? extends Registry<T>> key, AddonBuilder<T> builder) {
+    public static <T> void register(ResourceKey<? extends Registry<T>> key, AddonBuilder<T, ?> builder) {
         throw new AssertionError();
     }
 
-    public void postRegister(AddonBuilder<T> addonBuilder) {
+    public void postRegister(B addonBuilder) {
 
     }
 
@@ -110,5 +116,5 @@ public abstract class AddonParser<T> extends SimpleJsonResourceReloadListener {
 
     }
 
-    public abstract AddonBuilder<T> parse(ResourceLocation id, JsonElement jsonElement);
+    public abstract B parse(ResourceLocation id, JsonElement jsonElement);
 }

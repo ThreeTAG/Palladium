@@ -19,7 +19,7 @@ public class AddonParserImpl {
     private static final Map<ResourceKey<? extends Registry<?>>, RegistryEntries<?>> OBJECTS = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public static <T> void register(ResourceKey<? extends Registry<T>> key, AddonBuilder<T> builder) {
+    public static <T> void register(ResourceKey<? extends Registry<T>> key, AddonBuilder<T, ?> builder) {
         RegistryEntries<T> entries = OBJECTS.containsKey(key) ? (RegistryEntries<T>) OBJECTS.get(key) : new RegistryEntries<>(key);
         entries.add(builder);
         OBJECTS.put(key, entries);
@@ -35,18 +35,18 @@ public class AddonParserImpl {
     public static class RegistryEntries<T> {
 
         private final ResourceKey<? extends Registry<T>> key;
-        private final List<AddonBuilder<T>> addonBuilders = new ArrayList<>();
+        private final List<AddonBuilder<T, ?>> addonBuilders = new ArrayList<>();
 
         public RegistryEntries(ResourceKey<? extends Registry<T>> key) {
             this.key = key;
         }
 
-        public void add(AddonBuilder<T> builder) {
+        public void add(AddonBuilder<T, ?> builder) {
             this.addonBuilders.add(builder);
         }
 
         public void register(RegisterEvent e) {
-            for (AddonBuilder<T> addonBuilder : this.addonBuilders) {
+            for (AddonBuilder<T, ?> addonBuilder : this.addonBuilders) {
                 e.register(this.key, addonBuilder.getId(), addonBuilder);
             }
         }

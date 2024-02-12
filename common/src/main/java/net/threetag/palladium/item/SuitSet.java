@@ -1,6 +1,8 @@
 package net.threetag.palladium.item;
 
 import net.minecraft.Util;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -14,17 +16,17 @@ public class SuitSet {
 
     public static final PalladiumRegistry<SuitSet> REGISTRY = PalladiumRegistry.create(SuitSet.class, Palladium.id("suit_set"));
 
-    private final Supplier<Item> mainHand, offHand, helmet, chestplate, leggings, boots;
+    private final ItemReference mainHand, offHand, helmet, chestplate, leggings, boots;
     @Nullable
     private String descriptionId;
 
-    public SuitSet(@Nullable Supplier<Item> mainHand, @Nullable Supplier<Item> offHand, @Nullable Supplier<Item> helmet, @Nullable Supplier<Item> chestplate, @Nullable Supplier<Item> leggings, @Nullable Supplier<Item> boots) {
-        this.mainHand = mainHand;
-        this.offHand = offHand;
-        this.helmet = helmet;
-        this.chestplate = chestplate;
-        this.leggings = leggings;
-        this.boots = boots;
+    public SuitSet(@Nullable ResourceLocation mainHand, @Nullable ResourceLocation offHand, @Nullable ResourceLocation helmet, @Nullable ResourceLocation chestplate, @Nullable ResourceLocation leggings, @Nullable ResourceLocation boots) {
+        this.mainHand = mainHand != null ? new ItemReference(mainHand) : null;
+        this.offHand = offHand != null ? new ItemReference(offHand) : null;
+        this.helmet = helmet != null ? new ItemReference(helmet) : null;
+        this.chestplate = chestplate != null ? new ItemReference(chestplate) : null;
+        this.leggings = leggings != null ? new ItemReference(leggings) : null;
+        this.boots = boots != null ? new ItemReference(boots) : null;
     }
 
     public String getDescriptionId() {
@@ -91,5 +93,27 @@ public class SuitSet {
         }
 
         return this.getBoots() == null || entity.getItemBySlot(EquipmentSlot.FEET).is(this.getBoots());
+    }
+
+    public static class ItemReference implements Supplier<Item> {
+
+        private boolean fetched = false;
+        private final ResourceLocation itemId;
+        private Item item;
+
+        public ItemReference(ResourceLocation itemId) {
+            this.itemId = itemId;
+        }
+
+        @Nullable
+        @Override
+        public Item get() {
+            if (!this.fetched) {
+                this.item = BuiltInRegistries.ITEM.get(this.itemId);
+                this.fetched = true;
+            }
+
+            return this.item;
+        }
     }
 }

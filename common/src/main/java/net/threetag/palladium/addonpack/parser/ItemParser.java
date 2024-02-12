@@ -15,7 +15,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.addonpack.builder.AddonBuilder;
 import net.threetag.palladium.addonpack.builder.ItemBuilder;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
@@ -30,14 +29,19 @@ import net.threetag.palladiumcore.util.Platform;
 
 import java.util.*;
 
-public class ItemParser extends AddonParser<Item> {
+public class ItemParser extends AddonParser<ItemBuilder> {
 
     public static final ResourceLocation FALLBACK_SERIALIZER = Palladium.id("default");
     private static final Map<ResourceLocation, ItemTypeSerializer> TYPE_SERIALIZERS = new LinkedHashMap<>();
     public final Map<ResourceLocation, List<PlacedTabPlacement>> autoRegisteredBlockItems = new HashMap<>();
+    public final Map<ResourceLocation, JsonObject> injected = new HashMap<>();
 
     public ItemParser() {
         super(GSON, "items", Registries.ITEM);
+    }
+
+    public void inject(ResourceLocation id, JsonObject json) {
+        this.injected.put(id, json);
     }
 
     @Override
@@ -47,7 +51,7 @@ public class ItemParser extends AddonParser<Item> {
             json.addProperty("type", "palladium:block_item");
             json.addProperty("block", id.toString());
             JsonArray jsonArray = new JsonArray();
-            if(this.autoRegisteredBlockItems.get(id) != null) {
+            if (this.autoRegisteredBlockItems.get(id) != null) {
                 for (PlacedTabPlacement tabPlacement : this.autoRegisteredBlockItems.get(id)) {
                     jsonArray.add(tabPlacement.toJson());
                 }
@@ -55,10 +59,18 @@ public class ItemParser extends AddonParser<Item> {
             json.add("creative_mode_tab", jsonArray);
             map.put(id, json);
         }
+
+        for (ResourceLocation id : this.injected.keySet()) {
+            if (map.containsKey(id)) {
+                throw new JsonParseException("Tried to create suitset-item with ID '" + id + "', but item with that ID already exists!");
+            }
+
+            map.put(id, this.injected.get(id));
+        }
     }
 
     @Override
-    public AddonBuilder<Item> parse(ResourceLocation id, JsonElement jsonElement) {
+    public ItemBuilder parse(ResourceLocation id, JsonElement jsonElement) {
         JsonObject json = GsonHelper.convertToJsonObject(jsonElement, "$");
         ItemBuilder builder = new ItemBuilder(id, json);
 

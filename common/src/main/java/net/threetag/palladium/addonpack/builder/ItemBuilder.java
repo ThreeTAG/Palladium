@@ -32,21 +32,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemBuilder extends AddonBuilder<Item> {
+public class ItemBuilder extends AddonBuilder<Item, ItemBuilder> {
 
     private final JsonObject json;
     private ResourceLocation typeSerializerId = null;
     private Integer maxStackSize = null;
     private Integer maxDamage = null;
     private Boolean isFireResistant = null;
-    private final List<ItemParser.PlacedTabPlacement> creativeModeTabs = new ArrayList<>();
+    private List<ItemParser.PlacedTabPlacement> creativeModeTabs;
     private Rarity rarity = null;
     private List<Component> tooltipLines = null;
     private Multimap<ResourceLocation, AttributeModifier> attributeModifiersAllSlots;
     private Map<PlayerSlot, Multimap<ResourceLocation, AttributeModifier>> attributeModifiers;
     private FoodProperties foodProperties = null;
     private IAddonItem.RenderLayerContainer renderLayerContainer = null;
-    private boolean registerCurioTrinket = false;
 
     public ItemBuilder(ResourceLocation id, JsonObject json) {
         super(id);
@@ -57,22 +56,25 @@ public class ItemBuilder extends AddonBuilder<Item> {
     protected Item create() {
         var properties = new Item.Properties();
 
-        if (this.maxDamage != null && this.maxDamage != 0) {
-            Utils.ifNotNull(this.maxDamage, properties::durability);
+        var maxDamage = this.getValue(b -> b.maxDamage);
+        if (maxDamage != null && maxDamage != 0) {
+            Utils.ifNotNull(maxDamage, properties::durability);
         }
 
-        if (this.maxStackSize != null && this.maxStackSize != 64) {
-            Utils.ifNotNull(this.maxStackSize, properties::stacksTo);
+        var maxStackSize = this.getValue(b -> b.maxStackSize);
+        if (maxStackSize != null && maxStackSize != 64) {
+            Utils.ifNotNull(maxStackSize, properties::stacksTo);
         }
 
-        Utils.ifNotNull(this.rarity, properties::rarity);
-        Utils.ifNotNull(this.rarity, properties::rarity);
-        Utils.ifTrue(this.isFireResistant, properties::fireResistant);
+        Utils.ifNotNull(this.getValue(b -> b.rarity), properties::rarity);
+        Utils.ifTrue(this.getValue(b -> b.isFireResistant), properties::fireResistant);
 
-        properties.food(this.foodProperties);
+        properties.food(this.getValue(b -> b.foodProperties));
 
-        if (this.typeSerializerId == null) {
-            this.typeSerializerId = ItemParser.FALLBACK_SERIALIZER;
+        if (this.getParent() == null) {
+            if (this.typeSerializerId == null) {
+                this.typeSerializerId = ItemParser.FALLBACK_SERIALIZER;
+            }
         }
 
         ItemParser.ItemTypeSerializer serializer = ItemParser.getTypeSerializer(this.typeSerializerId);
@@ -83,15 +85,16 @@ public class ItemBuilder extends AddonBuilder<Item> {
 
         IAddonItem item = serializer != null ? serializer.parse(this.json, properties) : new AddonItem(properties);
 
-        Utils.ifNotNull(this.tooltipLines, item::setTooltip);
+        Utils.ifNotNull(this.getValue(b -> b.tooltipLines), item::setTooltip);
 
-        if (this.attributeModifiers != null) {
-            for (PlayerSlot slot : this.attributeModifiers.keySet()) {
-                for (ResourceLocation attributeId : this.attributeModifiers.get(slot).keySet()) {
+        var attributeModifiers = this.getValue(b -> b.attributeModifiers);
+        if (attributeModifiers != null) {
+            for (PlayerSlot slot : attributeModifiers.keySet()) {
+                for (ResourceLocation attributeId : attributeModifiers.get(slot).keySet()) {
                     Attribute attribute = BuiltInRegistries.ATTRIBUTE.get(RegistrySynonymsHandler.getReplacement(BuiltInRegistries.ATTRIBUTE, attributeId));
 
                     if (attribute != null) {
-                        for (AttributeModifier attributeModifier : this.attributeModifiers.get(slot).get(attributeId)) {
+                        for (AttributeModifier attributeModifier : attributeModifiers.get(slot).get(attributeId)) {
                             item.getAttributeContainer().add(slot, attribute, attributeModifier);
                         }
                     } else {
@@ -101,12 +104,13 @@ public class ItemBuilder extends AddonBuilder<Item> {
             }
         }
 
-        if (this.attributeModifiersAllSlots != null) {
-            for (ResourceLocation attributeId : this.attributeModifiersAllSlots.keySet()) {
+        var attributeModifiersAllSlots = this.getValue(b -> b.attributeModifiersAllSlots);
+        if (attributeModifiersAllSlots != null) {
+            for (ResourceLocation attributeId : attributeModifiersAllSlots.keySet()) {
                 Attribute attribute = BuiltInRegistries.ATTRIBUTE.get(RegistrySynonymsHandler.getReplacement(BuiltInRegistries.ATTRIBUTE, attributeId));
 
                 if (attribute != null) {
-                    for (AttributeModifier attributeModifier : this.attributeModifiersAllSlots.get(attributeId)) {
+                    for (AttributeModifier attributeModifier : attributeModifiersAllSlots.get(attributeId)) {
                         item.getAttributeContainer().addForAllSlots(attribute, attributeModifier);
                     }
                 } else {
@@ -115,13 +119,13 @@ public class ItemBuilder extends AddonBuilder<Item> {
             }
         }
 
-        item.setRenderLayerContainer(this.renderLayerContainer);
+        item.setRenderLayerContainer(this.getValue(b -> b.renderLayerContainer));
 
-        if (this.registerCurioTrinket) {
+        if (attributeModifiers != null || attributeModifiersAllSlots != null) {
             CuriosTrinketsUtil.getInstance().registerCurioTrinket((Item) item, new CurioTrinket(item));
         }
 
-        for (ItemParser.PlacedTabPlacement creativeModeTab : this.creativeModeTabs) {
+        for (ItemParser.PlacedTabPlacement creativeModeTab : this.getValue(b -> b.creativeModeTabs, new ArrayList<ItemParser.PlacedTabPlacement>())) {
             ResourceKey<CreativeModeTab> tabKey = ResourceKey.create(Registries.CREATIVE_MODE_TAB, creativeModeTab.getTab());
             CreativeModeTabRegistry.addToTab(tabKey, entries -> creativeModeTab.addToTab(entries, (Item) item));
         }
@@ -145,6 +149,9 @@ public class ItemBuilder extends AddonBuilder<Item> {
     }
 
     public ItemBuilder creativeModeTab(ItemParser.PlacedTabPlacement tabPlacement) {
+        if (this.creativeModeTabs == null) {
+            this.creativeModeTabs = new ArrayList<>();
+        }
         this.creativeModeTabs.add(tabPlacement);
         return this;
     }
@@ -165,8 +172,6 @@ public class ItemBuilder extends AddonBuilder<Item> {
     }
 
     public ItemBuilder addAttributeModifier(@Nullable PlayerSlot slot, ResourceLocation attributeId, AttributeModifier modifier) {
-        this.registerCurioTrinket = true;
-
         if (slot == null) {
             if (this.attributeModifiersAllSlots == null) {
                 this.attributeModifiersAllSlots = ArrayListMultimap.create();

@@ -12,16 +12,16 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
-public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
+public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>, ParticleTypeBuilder> {
 
     private boolean overrideLimiter = false;
-    private RenderType renderType = RenderType.PARTICLE_SHEET_OPAQUE;
-    private TextureType textureType = TextureType.RANDOM;
-    private int lifetime = 100;
-    private boolean hasPhysics = true;
-    private float gravity = 0.02F;
-    private float quadSize = 1F;
-    private int brightness = -1;
+    private RenderType renderType; // default: RenderType.PARTICLE_SHEET_OPAQUE
+    private TextureType textureType; // default: TextureType.RANDOM
+    private Integer lifetime; // default: 100
+    private Boolean hasPhysics; // default: true
+    private Float gravity; // default: 0.02F
+    private Float quadSize; // default: 1F
+    private Integer brightness; // default: -1
 
     public ParticleTypeBuilder(ResourceLocation id) {
         super(id);
@@ -82,10 +82,10 @@ public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
             super(clientLevel, x, y, z, xd, yd, zd);
             this.builder = builder;
             this.spriteSet = spriteSet;
-            this.lifetime = this.builder.lifetime;
-            this.hasPhysics = this.builder.hasPhysics;
-            this.gravity = this.builder.gravity;
-            this.quadSize = this.builder.quadSize;
+            this.lifetime = this.builder.getValue(b -> b.lifetime, 100);
+            this.hasPhysics = this.builder.getValue(b -> b.hasPhysics, true);
+            this.gravity = this.builder.getValue(b -> b.gravity, 0.02F);
+            this.quadSize = this.builder.getValue(b -> b.quadSize, 1F);
 
             if (this.gravity == 0F) {
                 this.xd = 0F;
@@ -93,9 +93,9 @@ public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
                 this.zd = 0F;
             }
 
-            if (this.builder.textureType == TextureType.RANDOM) {
+            if (this.builder.getValue(b -> b.textureType, TextureType.RANDOM) == TextureType.RANDOM) {
                 this.pickSprite(this.spriteSet);
-            } else if (this.builder.textureType == TextureType.AGING) {
+            } else if (this.builder.getValue(b -> b.textureType, TextureType.RANDOM) == TextureType.AGING) {
                 this.setSpriteFromAge(this.spriteSet);
             }
         }
@@ -120,7 +120,7 @@ public class ParticleTypeBuilder extends AddonBuilder<ParticleType<?>> {
 
         @Override
         public ParticleRenderType getRenderType() {
-            switch (this.builder.renderType) {
+            switch (this.builder.getValue(b -> b.renderType, RenderType.PARTICLE_SHEET_OPAQUE)) {
                 case NO_RENDER -> {
                     return ParticleRenderType.NO_RENDER;
                 }

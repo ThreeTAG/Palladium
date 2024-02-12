@@ -3,24 +3,21 @@ package net.threetag.palladium.addonpack.parser;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.core.Registry;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.threetag.palladium.addonpack.builder.AddonBuilder;
 import net.threetag.palladium.addonpack.builder.ParticleTypeBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
 import net.threetag.palladiumcore.util.Platform;
 
-public class ParticleTypeParser extends AddonParser<ParticleType<?>> {
+public class ParticleTypeParser extends AddonParser<ParticleTypeBuilder> {
 
     public ParticleTypeParser() {
         super(GSON, "particle_types", Registries.PARTICLE_TYPE);
     }
 
     @Override
-    public AddonBuilder<ParticleType<?>> parse(ResourceLocation id, JsonElement jsonElement) {
+    public ParticleTypeBuilder parse(ResourceLocation id, JsonElement jsonElement) {
         JsonObject json = GsonHelper.convertToJsonObject(jsonElement, "$");
         var builder = new ParticleTypeBuilder(id);
 
@@ -59,12 +56,10 @@ public class ParticleTypeParser extends AddonParser<ParticleType<?>> {
         return builder;
     }
 
-
     @Override
-    public void postRegister(AddonBuilder<ParticleType<?>> addonBuilder) {
+    public void postRegister(ParticleTypeBuilder addonBuilder) {
         if (Platform.isClient()) {
             ParticleTypeParserClient.registerProvider(addonBuilder);
         }
     }
-
 }

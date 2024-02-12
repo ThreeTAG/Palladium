@@ -11,11 +11,11 @@ import net.threetag.palladiumcore.registry.CreativeModeTabRegistry;
 
 import java.util.LinkedList;
 
-public class CreativeModeTabBuilder extends AddonBuilder<CreativeModeTab> {
+public class CreativeModeTabBuilder extends AddonBuilder<CreativeModeTab, CreativeModeTabBuilder> {
 
     private ResourceLocation iconItemId;
     private Component title;
-    private final LinkedList<ResourceLocation> itemIds = new LinkedList<>();
+    private LinkedList<ResourceLocation> itemIds;
 
     public CreativeModeTabBuilder(ResourceLocation id) {
         super(id);
@@ -25,10 +25,10 @@ public class CreativeModeTabBuilder extends AddonBuilder<CreativeModeTab> {
     @Override
     protected CreativeModeTab create() {
         return CreativeModeTabRegistry.create(builder -> {
-            builder.icon(() -> new ItemStack(BuiltInRegistries.ITEM.get(this.iconItemId)));
-            builder.title(this.title);
+            builder.icon(() -> new ItemStack(BuiltInRegistries.ITEM.get((ResourceLocation) this.getValue(b -> b.iconItemId))));
+            builder.title(this.getValue(b -> b.title));
             builder.displayItems((itemDisplayParameters, output) -> {
-                for (ResourceLocation itemId : this.itemIds) {
+                for (ResourceLocation itemId : this.getValue(b -> b.itemIds, new LinkedList<ResourceLocation>())) {
                     var item = BuiltInRegistries.ITEM.get(itemId);
 
                     if (item != Items.AIR) {
@@ -52,6 +52,9 @@ public class CreativeModeTabBuilder extends AddonBuilder<CreativeModeTab> {
     }
 
     public CreativeModeTabBuilder addItem(ResourceLocation itemId) {
+        if (this.itemIds == null) {
+            this.itemIds = new LinkedList<>();
+        }
         this.itemIds.add(itemId);
         return this;
     }

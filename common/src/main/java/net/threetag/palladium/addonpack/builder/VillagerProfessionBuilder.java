@@ -2,7 +2,6 @@ package net.threetag.palladium.addonpack.builder;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -12,7 +11,7 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 
 import java.util.function.Predicate;
 
-public class VillagerProfessionBuilder extends AddonBuilder<VillagerProfession> {
+public class VillagerProfessionBuilder extends AddonBuilder<VillagerProfession, VillagerProfessionBuilder> {
 
     private ResourceKey<PoiType> poiTypeKey;
     private ResourceLocation soundEventId;
@@ -33,8 +32,8 @@ public class VillagerProfessionBuilder extends AddonBuilder<VillagerProfession> 
 
     @Override
     protected VillagerProfession create() {
-        var sound = BuiltInRegistries.SOUND_EVENT.get(this.soundEventId);
-        Predicate<Holder<PoiType>> predicate = holder -> holder.is(this.poiTypeKey);
+        var sound = BuiltInRegistries.SOUND_EVENT.get((ResourceLocation) this.getValue(b -> b.soundEventId));
+        Predicate<Holder<PoiType>> predicate = holder -> holder.is((ResourceKey<PoiType>) this.getValue(b -> b.poiTypeKey));
 
         return new VillagerProfession(this.getId().getPath(),
                 predicate,

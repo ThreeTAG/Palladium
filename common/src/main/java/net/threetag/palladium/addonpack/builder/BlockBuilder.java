@@ -10,18 +10,19 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.BlockParser;
 import net.threetag.palladium.block.AddonBlock;
 import net.threetag.palladium.block.IAddonBlock;
+import net.threetag.palladium.util.Utils;
 
-public class BlockBuilder extends AddonBuilder<Block> {
+public class BlockBuilder extends AddonBuilder<Block, BlockBuilder> {
 
     private final JsonObject json;
     private ResourceLocation typeSerializerId = null;
     private MapColor mapColor;
     private SoundType soundType;
-    private float destroyTime;
-    private float explosionResistance;
-    private boolean noOcclusion = false;
-    private boolean requiresCorrectToolForDrops = false;
-    private String renderType = null;
+    private Float destroyTime;
+    private Float explosionResistance;
+    private Boolean noOcclusion;
+    private Boolean requiresCorrectToolForDrops;
+    private String renderType;
 
     public BlockBuilder(ResourceLocation id, JsonObject json) {
         super(id);
@@ -30,23 +31,23 @@ public class BlockBuilder extends AddonBuilder<Block> {
 
     @Override
     protected Block create() {
-        var properties = BlockBehaviour.Properties.of().mapColor(this.mapColor)
-                .strength(this.destroyTime, this.explosionResistance);
+        var properties = BlockBehaviour.Properties.of().mapColor((MapColor) this.getValue(b -> b.mapColor))
+                .strength(this.getValue(b -> b.destroyTime, 0F), this.getValue(b -> b.explosionResistance, 0F));
 
-        if (this.soundType != null) {
-            properties.sound(this.soundType);
-        }
+        Utils.ifNotNull(this.getValue(b -> b.soundType), properties::sound);
 
-        if (this.noOcclusion) {
+        if (this.getValue(b -> b.noOcclusion, false)) {
             properties.noOcclusion();
         }
 
-        if (this.requiresCorrectToolForDrops) {
+        if (this.getValue(b -> b.requiresCorrectToolForDrops, false)) {
             properties.requiresCorrectToolForDrops();
         }
 
-        if (this.typeSerializerId == null) {
-            this.typeSerializerId = BlockParser.FALLBACK_SERIALIZER;
+        if (this.getParent() == null) {
+            if (this.typeSerializerId == null) {
+                this.typeSerializerId = BlockParser.FALLBACK_SERIALIZER;
+            }
         }
 
         BlockParser.BlockTypeSerializer serializer = BlockParser.getTypeSerializer(this.typeSerializerId);
@@ -57,7 +58,7 @@ public class BlockBuilder extends AddonBuilder<Block> {
 
         IAddonBlock block = serializer != null ? serializer.parse(this.json, properties) : new AddonBlock(properties);
 
-        block.setRenderType(this.renderType);
+        block.setRenderType(this.getValue(b -> b.renderType));
 
         return (Block) block;
     }

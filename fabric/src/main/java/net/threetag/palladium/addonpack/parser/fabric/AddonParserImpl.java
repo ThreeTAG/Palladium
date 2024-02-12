@@ -7,8 +7,8 @@ import net.threetag.palladium.addonpack.builder.AddonBuilder;
 
 public class AddonParserImpl {
 
-    @SuppressWarnings({"unchecked", "ConstantConditions"})
-    public static <T> void register(ResourceKey<? extends Registry<T>> key, AddonBuilder<T> builder) {
+    @SuppressWarnings({"ConstantConditions", "unchecked"})
+    public static <T> void register(ResourceKey<? extends Registry<T>> key, AddonBuilder<T, ?> builder) {
         var registry = (Registry<T>) BuiltInRegistries.REGISTRY.get(key.location());
         Registry.register(registry, builder.getId(), builder.get());
     }

@@ -10,7 +10,6 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.AddonPackManager;
-import net.threetag.palladium.addonpack.builder.AddonBuilder;
 import net.threetag.palladium.addonpack.builder.BlockBuilder;
 import net.threetag.palladium.block.AddonBlock;
 import net.threetag.palladium.block.BlockMaterialRegistry;
@@ -22,7 +21,7 @@ import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.*;
 
-public class BlockParser extends AddonParser<Block> {
+public class BlockParser extends AddonParser<BlockBuilder> {
 
     public static final ResourceLocation FALLBACK_SERIALIZER = Palladium.id("default");
     private static final Map<ResourceLocation, BlockTypeSerializer> TYPE_SERIALIZERS = new LinkedHashMap<>();
@@ -33,7 +32,7 @@ public class BlockParser extends AddonParser<Block> {
     }
 
     @Override
-    public AddonBuilder<Block> parse(ResourceLocation id, JsonElement jsonElement) {
+    public BlockBuilder parse(ResourceLocation id, JsonElement jsonElement) {
         JsonObject json = GsonHelper.convertToJsonObject(jsonElement, "$");
         BlockBuilder builder = new BlockBuilder(id, json)
                 .type(GsonUtil.getAsResourceLocation(json, "type", null));
@@ -62,9 +61,7 @@ public class BlockParser extends AddonParser<Block> {
         if (GsonHelper.getAsBoolean(json, "register_item", true)) {
             List<ItemParser.PlacedTabPlacement> placements = new ArrayList<>();
             GsonUtil.ifHasKey(json, "creative_mode_tab", je -> {
-                for (ItemParser.PlacedTabPlacement placedTabPlacement : GsonUtil.fromListOrPrimitive(je, ItemParser.PlacedTabPlacement::fromJson)) {
-                    placements.add(placedTabPlacement);
-                }
+                placements.addAll(GsonUtil.fromListOrPrimitive(je, ItemParser.PlacedTabPlacement::fromJson));
             });
             AddonPackManager.ITEM_PARSER.autoRegisteredBlockItems.put(id, placements);
         }
