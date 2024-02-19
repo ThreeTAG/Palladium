@@ -47,5 +47,10 @@ public class HasTagCondition extends Condition {
         public String getDocumentationDescription() {
             return "Checks if the entity has a specific tag. These tags are added to entities via /tag command.";
         }
+
+        @Override
+        public ConditionEnvironment getContextEnvironment() {
+            return ConditionEnvironment.DATA;
+        }
     }
 }
