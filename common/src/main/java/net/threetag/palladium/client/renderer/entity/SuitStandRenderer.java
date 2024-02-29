@@ -36,7 +36,7 @@ public class SuitStandRenderer extends LivingEntityRenderer<SuitStand, SuitStand
     }
 
     @Override
-    protected void scale(SuitStand livingEntity, PoseStack matrixStack, float partialTickTime) {
+    public void scale(SuitStand livingEntity, PoseStack matrixStack, float partialTickTime) {
         float scale = 0.9375F;
         matrixStack.scale(scale, scale, scale);
         if (!livingEntity.isNoBasePlate()) matrixStack.translate(0, -1F / 16F, 0F);

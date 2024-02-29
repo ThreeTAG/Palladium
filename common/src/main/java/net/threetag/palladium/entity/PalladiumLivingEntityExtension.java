@@ -9,4 +9,6 @@ public interface PalladiumLivingEntityExtension {
 
     RenderLayerStates palladium$getRenderLayerStates();
 
+    TrailHandler palladium$getTrailHandler();
+
 }

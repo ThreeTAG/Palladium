@@ -32,11 +32,13 @@ import net.threetag.palladium.client.model.animation.*;
 import net.threetag.palladium.client.renderer.entity.CustomProjectileRenderer;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
 import net.threetag.palladium.client.renderer.entity.SuitStandRenderer;
+import net.threetag.palladium.client.renderer.entity.TrailSegmentEntityRenderer;
 import net.threetag.palladium.client.renderer.item.armor.ArmorRendererManager;
 import net.threetag.palladium.client.renderer.renderlayer.AbilityEffectsRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.AccessoryRenderLayer;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerRenderer;
+import net.threetag.palladium.client.renderer.trail.TrailRendererManager;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
 import net.threetag.palladium.client.screen.AccessoryScreen;
 import net.threetag.palladium.client.screen.AddonPackLogScreen;
@@ -80,6 +82,7 @@ public class PalladiumClient {
 
         // Entity Renderers
         EntityRendererRegistry.register(PalladiumEntityTypes.EFFECT, EffectEntityRenderer::new);
+        EntityRendererRegistry.register(PalladiumEntityTypes.TRAIL_SEGMENT, TrailSegmentEntityRenderer::new);
         EntityRendererRegistry.register(PalladiumEntityTypes.CUSTOM_PROJECTILE, CustomProjectileRenderer::new);
         EntityRendererRegistry.register(PalladiumEntityTypes.SUIT_STAND, SuitStandRenderer::new);
         EntityRendererRegistry.registerModelLayer(SuitStandModel.MODEL_LAYER_LOCATION, SuitStandModel::createBodyLayer);
@@ -108,6 +111,7 @@ public class PalladiumClient {
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("armor_renderers"), new ArmorRendererManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("accessory_renderers"), new Accessory.ReloadManager());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("humanoid_animations"), PalladiumAnimationRegistry.INSTANCE);
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("trail_renderers"), TrailRendererManager.INSTANCE);
 
         // Gecko
         if (Platform.isModLoaded("geckolib")) {

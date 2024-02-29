@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.threetag.palladium.client.renderer.renderlayer.RenderLayerStates;
 import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
+import net.threetag.palladium.entity.TrailHandler;
 import net.threetag.palladium.power.PowerHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,6 +31,9 @@ public abstract class LivingEntityMixin implements PalladiumLivingEntityExtensio
     @Unique
     private RenderLayerStates palladium$renderLayerStates;
 
+    @Unique
+    private TrailHandler palladium$trailHandler;
+
     @Shadow
     public abstract AttributeMap getAttributes();
 
@@ -37,6 +41,7 @@ public abstract class LivingEntityMixin implements PalladiumLivingEntityExtensio
     public void init(EntityType entityType, Level level, CallbackInfo ci) {
         this.palladium$powerHandler = new PowerHandler((LivingEntity) (Object) this);
         this.palladium$renderLayerStates = new RenderLayerStates();
+        this.palladium$trailHandler = new TrailHandler((LivingEntity) (Object) this);
     }
 
     @Inject(method = "getJumpPower", at = @At("RETURN"), cancellable = true)
@@ -52,6 +57,7 @@ public abstract class LivingEntityMixin implements PalladiumLivingEntityExtensio
         var entity = (LivingEntity) (Object) this;
         if (entity.level().isClientSide) {
             this.palladium$renderLayerStates.tick(entity);
+            this.palladium$trailHandler.tick();
         }
     }
 
@@ -80,4 +86,8 @@ public abstract class LivingEntityMixin implements PalladiumLivingEntityExtensio
         return this.palladium$renderLayerStates;
     }
 
+    @Override
+    public TrailHandler palladium$getTrailHandler() {
+        return this.palladium$trailHandler;
+    }
 }

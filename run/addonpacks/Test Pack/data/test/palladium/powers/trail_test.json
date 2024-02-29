@@ -1,0 +1,10 @@
+{
+  "name": "Trail Test",
+  "icon": "minecraft:gold_ingot",
+  "abilities": {
+    "after_image": {
+      "type": "palladium:trail",
+      "trail_renderer": "test:after_image_test"
+    }
+  }
+}
