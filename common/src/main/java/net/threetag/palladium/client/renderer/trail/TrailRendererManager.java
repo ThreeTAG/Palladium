@@ -9,27 +9,26 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.AddonParser;
+import net.threetag.palladium.documentation.IDocumentedConfigurable;
 import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 public class TrailRendererManager extends SimpleJsonResourceReloadListener {
 
     public static final TrailRendererManager INSTANCE = new TrailRendererManager();
-    private static final Map<ResourceLocation, Function<JsonObject, TrailRenderer>> PARSERS = new HashMap<>();
+    private static final Map<ResourceLocation, TypeSerializer> PARSERS = new HashMap<>();
     private Map<ResourceLocation, TrailRenderer> renderer = new HashMap<>();
 
     public TrailRendererManager() {
-        super(AddonParser.GSON, "palladium/trail_renderer");
+        super(AddonParser.GSON, "palladium/trails");
     }
 
     static {
-        registerParser(Palladium.id("after_image"), jsonObject -> new AfterImageTrailRenderer());
+        registerParser(new AfterImageTrailRenderer.Serializer());
     }
 
     @Override
@@ -52,8 +51,8 @@ public class TrailRendererManager extends SimpleJsonResourceReloadListener {
         return this.renderer.get(id);
     }
 
-    public static void registerParser(ResourceLocation id, Function<JsonObject, TrailRenderer> function) {
-        PARSERS.put(id, function);
+    public static void registerParser(TypeSerializer serializer) {
+        PARSERS.put(serializer.getId(), serializer);
     }
 
     public static TrailRenderer fromJson(JsonObject json) {
@@ -63,6 +62,12 @@ public class TrailRendererManager extends SimpleJsonResourceReloadListener {
             throw new JsonParseException("Unknown trail renderer type '" + parserId + "'");
         }
 
-        return PARSERS.get(parserId).apply(json);
+        return PARSERS.get(parserId).parse(json);
+    }
+
+    public interface TypeSerializer extends IDocumentedConfigurable {
+
+        TrailRenderer parse(JsonObject json);
+
     }
 }

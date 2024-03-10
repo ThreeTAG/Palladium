@@ -2,9 +2,11 @@ package net.threetag.palladium.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidArmorModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -13,13 +15,13 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
-import net.minecraft.client.renderer.entity.layers.PlayerItemInHandLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import net.threetag.palladium.client.renderer.trail.AfterImageTrailRenderer;
 import net.threetag.palladium.entity.TrailSegmentEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,7 +32,6 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
     public TrailSegmentEntityRenderer(EntityRendererProvider.Context context) {
         super(context, null, 0);
         this.addLayer(new HumanoidArmorLayer(this, new HumanoidArmorModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidArmorModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
-        this.addLayer(new PlayerItemInHandLayer(this, context.getItemInHandRenderer()));
     }
 
     @Override
@@ -38,19 +39,21 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
         if (entity.renderer == null && Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity.parent) instanceof RenderLayerParent<?, ?> layerParent) {
             entity.renderer = layerParent;
             entity.model = layerParent.getModel();
-            entity.texture = ((EntityRenderer) layerParent).getTextureLocation(entity.parent);
+            entity.texture = entity.mimicPlayer ? ((EntityRenderer) layerParent).getTextureLocation(entity.parent) : AfterImageTrailRenderer.TEXTURE;
             entity.partialTick = partialTicks;
         }
 
-        if (entity.renderer != null) {
+        if(entity.parent == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON) {
+            return;
+        }
+
+        if (entity.trailRenderer != null) {
             this.model = (EntityModel) entity.model;
-            HumanoidRendererModifications.ALPHA_MULTIPLIER = 1F - (entity.tickCount / (float) entity.lifetime);
-            this.renderModel(entity, entityYaw, entity.partialTick, poseStack, buffer, packedLight);
-            HumanoidRendererModifications.ALPHA_MULTIPLIER = 1F;
+            entity.trailRenderer.render(poseStack, buffer, packedLight, this, entity.parent, entity, partialTicks, entityYaw);
         }
     }
 
-    private void renderModel(TrailSegmentEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void renderModel(TrailSegmentEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         this.model.attackTime = this.getAttackAnim(entity, partialTicks);
         this.model.riding = entity.isPassenger();
@@ -60,8 +63,7 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
 
         float h = g - f;
         float i;
-        if (entity.isPassenger() && entity.getVehicle() instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) entity.getVehicle();
+        if (entity.isPassenger() && entity.getVehicle() instanceof LivingEntity livingEntity) {
             f = Mth.rotLerp(partialTicks, livingEntity.yBodyRotO, livingEntity.yBodyRot);
             h = g - f;
             i = Mth.wrapDegrees(h);
@@ -135,10 +137,17 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
         if (renderType != null) {
             VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
             int m = getOverlayCoords(entity, this.getWhiteOverlayProgress(entity, partialTicks));
-            this.model.renderToBuffer(poseStack, vertexConsumer, packedLight, m, 1.0F, 1.0F, 1.0F, 1.0F);
+            var color = entity.trailRenderer.getColor();
+
+            if(!entity.mimicPlayer && this.model instanceof PlayerModel playerModel) {
+                playerModel.hat.visible = playerModel.jacket.visible = playerModel.rightSleeve.visible =
+                        playerModel.leftSleeve.visible = playerModel.rightPants.visible = playerModel.leftPants.visible = false;
+            }
+
+            this.model.renderToBuffer(poseStack, vertexConsumer, packedLight, m, color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 1.0F);
         }
 
-        if (!entity.isSpectator()) {
+        if (!entity.isSpectator() && entity.mimicPlayer) {
             for (RenderLayer<TrailSegmentEntity, EntityModel<TrailSegmentEntity>> layer : this.layers) {
                 RenderLayer renderLayer = layer;
                 renderLayer.render(poseStack, buffer, packedLight, entity, entity.limbSwing, entity.limbSwingAmount, partialTicks, entity.ageInTicks, entity.netHeadYaw, entity.headPitch);

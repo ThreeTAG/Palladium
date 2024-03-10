@@ -4,7 +4,7 @@
   "abilities": {
     "after_image": {
       "type": "palladium:trail",
-      "trail_renderer": "test:after_image_test"
+      "trail": "test:after_image_test"
     }
   }
 }

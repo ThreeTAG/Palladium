@@ -35,13 +35,13 @@ public class TrailHandler {
             if (!trails.isEmpty()) {
                 var last = trails.get(trails.size() - 1);
 
-                if (last.position().distanceTo(this.entity.position()) >= entity.getBbWidth() * 1.1F) {
-                    trails.add(this.spawnEntity(renderer.getLifetime()));
+                if (last.position().distanceTo(this.entity.position()) >= entity.getBbWidth() * renderer.getSpacing()) {
+                    trails.add(this.spawnEntity(renderer));
                 }
 
                 trails = trails.stream().filter(LivingEntity::isAlive).collect(Collectors.toList());
-            } else {
-                trails.add(this.spawnEntity(renderer.getLifetime()));
+            } else if (this.entity.xo != this.entity.getX() || this.entity.yo != this.entity.getY() || this.entity.zo != this.entity.getZ()) {
+                trails.add(this.spawnEntity(renderer));
             }
 
             if (!active.contains(renderer) && trails.isEmpty()) {
@@ -54,8 +54,8 @@ public class TrailHandler {
         this.trails = toChange;
     }
 
-    private TrailSegmentEntity spawnEntity(int lifetime) {
-        var entity = new TrailSegmentEntity(this.entity, lifetime);
+    private TrailSegmentEntity spawnEntity(TrailRenderer trailRenderer) {
+        var entity = new TrailSegmentEntity(this.entity, trailRenderer);
         Objects.requireNonNull(Minecraft.getInstance().level).putNonPlayerEntity(0, entity);
         return entity;
     }

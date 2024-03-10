@@ -1,5 +1,6 @@
 package net.threetag.palladium.entity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
@@ -7,6 +8,8 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.threetag.palladium.client.renderer.trail.AfterImageTrailRenderer;
+import net.threetag.palladium.client.renderer.trail.TrailRenderer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -16,6 +19,9 @@ import java.util.stream.Collectors;
 public class TrailSegmentEntity extends LivingEntity {
 
     public LivingEntity parent;
+    public EntityDimensions dimensions;
+    public boolean mimicPlayer;
+    public TrailRenderer trailRenderer;
     public Object renderer;
     public Object model;
     public ResourceLocation texture;
@@ -32,15 +38,19 @@ public class TrailSegmentEntity extends LivingEntity {
         this.noPhysics = true;
     }
 
-    public TrailSegmentEntity(LivingEntity parent, int lifetime) {
+    public TrailSegmentEntity(LivingEntity parent, TrailRenderer trailRenderer) {
         this(PalladiumEntityTypes.TRAIL_SEGMENT.get(), parent.level());
         this.parent = parent;
-        this.lifetime = lifetime;
-        this.setPos(parent.position());
+        this.lifetime = trailRenderer.getLifetime();
+        this.dimensions = EntityDimensions.fixed(parent.getBbWidth(), parent.getBbHeight());
+        this.refreshDimensions();
+        this.setPos(parent.getPosition(Minecraft.getInstance().getFrameTime()));
         this.setXRot(parent.getXRot());
         this.setYRot(parent.getYRot());
         this.setYBodyRot(parent.yBodyRot);
+        this.yBodyRotO = parent.yBodyRotO;
         this.setYHeadRot(parent.getYHeadRot());
+        this.yHeadRotO = parent.yHeadRotO;
         this.xo = parent.xo;
         this.yo = parent.yo;
         this.zo = parent.zo;
@@ -50,9 +60,11 @@ public class TrailSegmentEntity extends LivingEntity {
         this.walkAnimation.speed = parent.walkAnimation.speed;
         this.walkAnimation.speedOld = parent.walkAnimation.speedOld;
         this.walkAnimation.position = parent.walkAnimation.position;
+        this.trailRenderer = trailRenderer;
+        this.mimicPlayer = trailRenderer instanceof AfterImageTrailRenderer ai && ai.mimicPlayer;
 
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-            this.items.put(slot, parent.getItemBySlot(slot).copy());
+            this.items.put(slot, mimicPlayer ? parent.getItemBySlot(slot).copy() : ItemStack.EMPTY);
         }
     }
 
@@ -83,6 +95,11 @@ public class TrailSegmentEntity extends LivingEntity {
     @Override
     public @NotNull HumanoidArm getMainArm() {
         return this.mainArm;
+    }
+
+    @Override
+    public EntityDimensions getDimensions(Pose pose) {
+        return this.dimensions;
     }
 
     @Override
