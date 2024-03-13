@@ -3,6 +3,8 @@ package net.threetag.palladium.client.renderer.trail;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -16,7 +18,7 @@ import net.threetag.palladium.util.json.GsonUtil;
 
 import java.awt.*;
 
-public class AfterImageTrailRenderer extends TrailRenderer {
+public class AfterImageTrailRenderer extends TrailRenderer<TrailRenderer.SegmentCache> {
 
     public static final ResourceLocation TEXTURE = Palladium.id("textures/entity/trail.png");
     private final Color color;
@@ -32,7 +34,8 @@ public class AfterImageTrailRenderer extends TrailRenderer {
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, TrailSegmentEntityRenderer trailRenderer, LivingEntity livingEntity, TrailSegmentEntity segment, float partialTick, float entityYaw) {
+    @Environment(EnvType.CLIENT)
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, TrailSegmentEntityRenderer trailRenderer, LivingEntity livingEntity, TrailSegmentEntity<SegmentCache> segment, float partialTick, float entityYaw) {
         HumanoidRendererModifications.ALPHA_MULTIPLIER = (1F - (segment.tickCount / (float) segment.lifetime)) * 0.5F;
         trailRenderer.renderModel(segment, entityYaw, segment.partialTick, poseStack, buffer, packedLight);
         HumanoidRendererModifications.ALPHA_MULTIPLIER = 1F;
@@ -55,7 +58,7 @@ public class AfterImageTrailRenderer extends TrailRenderer {
     public static class Serializer implements TrailRendererManager.TypeSerializer {
 
         @Override
-        public TrailRenderer parse(JsonObject json) {
+        public TrailRenderer<?> parse(JsonObject json) {
             var color = GsonUtil.getAsColor(json, "color", Color.WHITE);
             boolean mimicPlayer = GsonHelper.getAsBoolean(json, "mimic_player", false);
             float spacing = GsonUtil.getAsFloatMin(json, "spacing", 0.1F, 1F);

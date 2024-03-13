@@ -22,12 +22,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.threetag.palladium.client.renderer.trail.AfterImageTrailRenderer;
+import net.threetag.palladium.client.renderer.trail.TrailRenderer;
 import net.threetag.palladium.entity.TrailSegmentEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings({"rawtypes", "unchecked", "UnnecessaryLocalVariable"})
-public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmentEntity, EntityModel<TrailSegmentEntity>> {
+public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmentEntity<?>, EntityModel<TrailSegmentEntity<?>>> {
 
     public TrailSegmentEntityRenderer(EntityRendererProvider.Context context) {
         super(context, null, 0);
@@ -35,7 +36,7 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
     }
 
     @Override
-    public void render(TrailSegmentEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(TrailSegmentEntity<? extends TrailRenderer.SegmentCache> entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         if (entity.renderer == null && Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity.parent) instanceof RenderLayerParent<?, ?> layerParent) {
             entity.renderer = layerParent;
             entity.model = layerParent.getModel();
@@ -49,7 +50,8 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
 
         if (entity.trailRenderer != null) {
             this.model = (EntityModel) entity.model;
-            entity.trailRenderer.render(poseStack, buffer, packedLight, this, entity.parent, entity, partialTicks, entityYaw);
+            TrailRenderer trailRenderer = entity.trailRenderer;
+            trailRenderer.render(poseStack, buffer, packedLight, this, entity.parent, entity, partialTicks, entityYaw);
         }
     }
 
@@ -148,7 +150,7 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
         }
 
         if (!entity.isSpectator() && entity.mimicPlayer) {
-            for (RenderLayer<TrailSegmentEntity, EntityModel<TrailSegmentEntity>> layer : this.layers) {
+            for (RenderLayer<TrailSegmentEntity<?>, EntityModel<TrailSegmentEntity<?>>> layer : this.layers) {
                 RenderLayer renderLayer = layer;
                 renderLayer.render(poseStack, buffer, packedLight, entity, entity.limbSwing, entity.limbSwingAmount, partialTicks, entity.ageInTicks, entity.netHeadYaw, entity.headPitch);
             }

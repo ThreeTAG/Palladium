@@ -28,7 +28,7 @@ public class PalladiumRenderTypes extends RenderType {
             .setWriteMaskState(COLOR_DEPTH_WRITE)
             .setLightmapState(LIGHTMAP)
             .setTransparencyState(RenderStateShard.LIGHTNING_TRANSPARENCY)
-            .setLayeringState(VIEW_OFFSET_Z_LAYERING)
+            .setLayeringState(POLYGON_OFFSET_LAYERING)
             .createCompositeState(true));
 
     private static final Function<ResourceLocation, RenderType> ARMOR_CUTOUT_NO_CULL_TRANSPARENCY = Util.memoize(

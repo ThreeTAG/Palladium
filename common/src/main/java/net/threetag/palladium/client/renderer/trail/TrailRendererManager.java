@@ -21,7 +21,7 @@ public class TrailRendererManager extends SimpleJsonResourceReloadListener {
 
     public static final TrailRendererManager INSTANCE = new TrailRendererManager();
     private static final Map<ResourceLocation, TypeSerializer> PARSERS = new HashMap<>();
-    private Map<ResourceLocation, TrailRenderer> renderer = new HashMap<>();
+    private Map<ResourceLocation, TrailRenderer<?>> renderer = new HashMap<>();
 
     public TrailRendererManager() {
         super(AddonParser.GSON, "palladium/trails");
@@ -29,15 +29,16 @@ public class TrailRendererManager extends SimpleJsonResourceReloadListener {
 
     static {
         registerParser(new AfterImageTrailRenderer.Serializer());
+        registerParser(new LightningTrailRenderer.Serializer());
     }
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
-        ImmutableMap.Builder<ResourceLocation, TrailRenderer> builder = ImmutableMap.builder();
+        ImmutableMap.Builder<ResourceLocation, TrailRenderer<?>> builder = ImmutableMap.builder();
 
         object.forEach((resourceLocation, jsonElement) -> {
             try {
-                TrailRenderer trailRenderer = fromJson(GsonHelper.convertToJsonObject(jsonElement, "$"));
+                TrailRenderer<?> trailRenderer = fromJson(GsonHelper.convertToJsonObject(jsonElement, "$"));
                 builder.put(resourceLocation, trailRenderer);
             } catch (Exception e) {
                 AddonPackLog.error("Parsing error loading trail renderer {}", resourceLocation, e);
@@ -47,7 +48,7 @@ public class TrailRendererManager extends SimpleJsonResourceReloadListener {
         this.renderer = builder.build();
     }
 
-    public TrailRenderer getRenderer(ResourceLocation id) {
+    public TrailRenderer<?> getRenderer(ResourceLocation id) {
         return this.renderer.get(id);
     }
 
@@ -55,7 +56,7 @@ public class TrailRendererManager extends SimpleJsonResourceReloadListener {
         PARSERS.put(serializer.getId(), serializer);
     }
 
-    public static TrailRenderer fromJson(JsonObject json) {
+    public static TrailRenderer<?> fromJson(JsonObject json) {
         ResourceLocation parserId = GsonUtil.getAsResourceLocation(json, "type");
 
         if (!PARSERS.containsKey(parserId)) {
@@ -67,7 +68,7 @@ public class TrailRendererManager extends SimpleJsonResourceReloadListener {
 
     public interface TypeSerializer extends IDocumentedConfigurable {
 
-        TrailRenderer parse(JsonObject json);
+        TrailRenderer<?> parse(JsonObject json);
 
     }
 }

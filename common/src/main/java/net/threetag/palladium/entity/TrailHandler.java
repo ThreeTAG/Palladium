@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class TrailHandler {
 
     private final LivingEntity entity;
-    private Map<TrailRenderer, List<TrailSegmentEntity>> trails = new HashMap<>();
+    private Map<TrailRenderer<?>, List<TrailSegmentEntity<?>>> trails = new HashMap<>();
 
     public TrailHandler(LivingEntity entity) {
         this.entity = entity;
@@ -22,15 +22,15 @@ public class TrailHandler {
 
     public void tick() {
         var active = AbilityUtil.getEnabledEntries(this.entity, Abilities.TRAIL.get()).stream().map(e -> TrailRendererManager.INSTANCE.getRenderer(e.getProperty(TrailAbility.TRAIL_RENDERER_ID))).filter(Objects::nonNull).distinct().toList();
-        Map<TrailRenderer, List<TrailSegmentEntity>> toChange = new HashMap<>(this.trails);
+        Map<TrailRenderer<?>, List<TrailSegmentEntity<?>>> toChange = new HashMap<>(this.trails);
 
-        for (TrailRenderer renderer : active) {
+        for (TrailRenderer<?> renderer : active) {
             this.trails.putIfAbsent(renderer, new LinkedList<>());
         }
 
-        for (Map.Entry<TrailRenderer, List<TrailSegmentEntity>> entry : this.trails.entrySet()) {
+        for (Map.Entry<TrailRenderer<?>, List<TrailSegmentEntity<?>>> entry : this.trails.entrySet()) {
             var renderer = entry.getKey();
-            List<TrailSegmentEntity> trails = entry.getValue();
+            List<TrailSegmentEntity<?>> trails = entry.getValue();
 
             if (!trails.isEmpty()) {
                 var last = trails.get(trails.size() - 1);
@@ -54,13 +54,13 @@ public class TrailHandler {
         this.trails = toChange;
     }
 
-    private TrailSegmentEntity spawnEntity(TrailRenderer trailRenderer) {
-        var entity = new TrailSegmentEntity(this.entity, trailRenderer);
+    private TrailSegmentEntity<?> spawnEntity(TrailRenderer<?> trailRenderer) {
+        var entity = new TrailSegmentEntity<>(this.entity, trailRenderer);
         Objects.requireNonNull(Minecraft.getInstance().level).putNonPlayerEntity(0, entity);
         return entity;
     }
 
-    public Map<TrailRenderer, List<TrailSegmentEntity>> getTrails() {
+    public Map<TrailRenderer<?>, List<TrailSegmentEntity<?>>> getTrails() {
         return this.trails;
     }
 }

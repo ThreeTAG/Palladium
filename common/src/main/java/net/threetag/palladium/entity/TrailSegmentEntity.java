@@ -16,12 +16,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class TrailSegmentEntity extends LivingEntity {
+public class TrailSegmentEntity<T extends TrailRenderer.SegmentCache> extends LivingEntity {
 
     public LivingEntity parent;
     public EntityDimensions dimensions;
     public boolean mimicPlayer;
-    public TrailRenderer trailRenderer;
+    public TrailRenderer<T> trailRenderer;
+    public T cache;
     public Object renderer;
     public Object model;
     public ResourceLocation texture;
@@ -38,7 +39,8 @@ public class TrailSegmentEntity extends LivingEntity {
         this.noPhysics = true;
     }
 
-    public TrailSegmentEntity(LivingEntity parent, TrailRenderer trailRenderer) {
+    @SuppressWarnings("unchecked")
+    public TrailSegmentEntity(LivingEntity parent, TrailRenderer<T> trailRenderer) {
         this(PalladiumEntityTypes.TRAIL_SEGMENT.get(), parent.level());
         this.parent = parent;
         this.lifetime = trailRenderer.getLifetime();
@@ -62,6 +64,7 @@ public class TrailSegmentEntity extends LivingEntity {
         this.walkAnimation.position = parent.walkAnimation.position;
         this.trailRenderer = trailRenderer;
         this.mimicPlayer = trailRenderer instanceof AfterImageTrailRenderer ai && ai.mimicPlayer;
+        this.cache = (T) this.trailRenderer.createCache();
 
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             this.items.put(slot, mimicPlayer ? parent.getItemBySlot(slot).copy() : ItemStack.EMPTY);

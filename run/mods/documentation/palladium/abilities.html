@@ -935,7 +935,7 @@ attribute</td>
 <td>
 Attribute</td>
 <td>
-Determines which attribute should be modified. Possible attributes: minecraft:generic.armor, minecraft:generic.armor_toughness, minecraft:generic.attack_damage, minecraft:generic.attack_knockback, minecraft:generic.attack_speed, minecraft:generic.flying_speed, minecraft:generic.follow_range, minecraft:generic.knockback_resistance, minecraft:generic.luck, minecraft:generic.max_health, minecraft:generic.movement_speed, minecraft:horse.jump_strength, minecraft:zombie.spawn_reinforcements</td>
+Determines which attribute should be modified. Possible attributes: minecraft:generic.armor, minecraft:generic.armor_toughness, minecraft:generic.attack_damage, minecraft:generic.attack_knockback, minecraft:generic.attack_speed, minecraft:generic.flying_speed, minecraft:generic.follow_range, minecraft:generic.knockback_resistance, minecraft:generic.luck, minecraft:generic.max_health, minecraft:generic.movement_speed, minecraft:horse.jump_strength, minecraft:zombie.spawn_reinforcements, porting_lib:attack_range, porting_lib:entity_gravity, porting_lib:reach_distance, porting_lib:step_height_addition, porting_lib:swim_speed</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -4915,11 +4915,11 @@ false</td>
 </tr>
 <tr>
 <td>
-trail_renderer</td>
+trail</td>
 <td>
 ResourceLocation</td>
 <td>
-ID for the trail renderer.</td>
+ID for the trail renderer. Trail configuration files must be under 'assets/<namespace>/palladium/trails/<trail_id>.json'</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -4930,7 +4930,7 @@ example:trail_renderer_id</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:trail","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","trail_renderer":"example:trail_renderer_id"}</pre>
+{"type":"palladium:trail","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","trail":"example:trail_renderer_id"}</pre>
 </div>
 <hr>
 

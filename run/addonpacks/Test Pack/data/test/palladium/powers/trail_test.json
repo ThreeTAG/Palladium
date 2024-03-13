@@ -4,7 +4,23 @@
   "abilities": {
     "after_image": {
       "type": "palladium:trail",
-      "trail": "test:after_image_test"
+      "title": "After Image",
+      "trail": "test:after_image_test",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
+    },
+    "red_lightning": {
+      "type": "palladium:trail",
+      "title": "Red Lightning",
+      "trail": "test:red_lightning_test",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
     }
   }
 }
