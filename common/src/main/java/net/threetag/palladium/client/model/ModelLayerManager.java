@@ -12,17 +12,22 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -58,6 +63,10 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
     }
 
     public static LayerDefinition parseLayerDefinition(JsonObject json) {
+        if (GsonHelper.isValidNode(json, "minecraft:geometry")) {
+            return parseBedrockEntityFormat(json);
+        }
+
         MeshDefinition meshDefinition = new MeshDefinition();
         PartDefinition root = meshDefinition.getRoot();
         JsonObject parts = GsonHelper.getAsJsonObject(json, "mesh");
@@ -144,7 +153,7 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
         AtomicBoolean result = new AtomicBoolean(true);
 
         Minecraft.getInstance().getEntityModels().roots.forEach((modelLayerLocation, layerDefinition) -> {
-            if(!modelLayerLocation.getModel().getNamespace().equalsIgnoreCase("minecraft")) {
+            if (!modelLayerLocation.getModel().getNamespace().equalsIgnoreCase("minecraft")) {
                 return;
             }
             File layerFolder = new File(file, modelLayerLocation.getModel().getNamespace() + "/" + modelLayerLocation.getLayer());
@@ -222,5 +231,141 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
         array.add(cubeDeformation.growY);
         array.add(cubeDeformation.growZ);
         return array;
+    }
+
+
+    public static LayerDefinition parseBedrockEntityFormat(JsonObject json) {
+        var geometry = GsonHelper.getAsJsonArray(json, "minecraft:geometry");
+
+        if (geometry.isEmpty()) {
+            throw new JsonParseException("Empty geometry!");
+        }
+
+        MeshDefinition meshDefinition = new MeshDefinition();
+        PartDefinition root = meshDefinition.getRoot();
+        var geo = GsonHelper.convertToJsonObject(geometry.get(0), "minecraft:geometry[].$");
+        var description = GsonHelper.getAsJsonObject(geo, "description", new JsonObject());
+        int textureWidth = GsonHelper.getAsInt(description, "texture_width");
+        int textureHeight = GsonHelper.getAsInt(description, "texture_height");
+
+        var bones = GsonHelper.getAsJsonArray(geo, "bones", new JsonArray());
+        Map<String, BedrockModelPartCache> cache = new HashMap<>();
+        Map<String, PartDefinition> modelParts = new HashMap<>();
+
+        for (JsonElement b : bones) {
+            var bone = GsonHelper.convertToJsonObject(b, "minecraft:geomeotry[].bones.$");
+            var name = GsonHelper.getAsString(bone, "name");
+            var parent = GsonHelper.getAsString(bone, "parent", null);
+            var pivot = GsonUtil.getFloatArray(bone, 3, "pivot", 0, 0, 0);
+            var rotation = GsonUtil.getFloatArray(bone, 3, "rotation", 0, 0, 0);
+            var cubesJson = GsonHelper.getAsJsonArray(bone, "cubes", new JsonArray());
+            List<BedrockModelCube> cubes = new ArrayList<>();
+
+            for (JsonElement cj : cubesJson) {
+                var cubeJson = GsonHelper.convertToJsonObject(cj, "minecraft:geomeotry[].bones[].cubes[].$");
+                var origin = GsonUtil.getFloatArray(cubeJson, 3, "origin");
+                var size = GsonUtil.getFloatArray(cubeJson, 3, "origin");
+                var inflate = GsonHelper.getAsFloat(cubeJson, "inflate", 0);
+                var uv = GsonUtil.getIntArray(cubeJson, 2, "uv", 0, 0);
+
+                cubes.add(new BedrockModelCube(new Vec3(origin[0], origin[1], origin[2]),
+                        new Vec3(size[0], size[1], size[2]),
+                        inflate, new Vec2(uv[0], uv[1])));
+            }
+
+            cache.put(name, new BedrockModelPartCache(name, parent, new Vec3(pivot[0], pivot[1], pivot[2]),
+                    new Vec3(Math.toRadians(rotation[0]), Math.toRadians(rotation[1]), Math.toRadians(rotation[2])), cubes).convert());
+        }
+
+        // Validate parents
+        for (Map.Entry<String, BedrockModelPartCache> e : cache.entrySet()) {
+            if (e.getValue().parent != null && !cache.containsKey(e.getValue().parent)) {
+                throw new JsonParseException("Unknown parent '" + e.getValue().parent + "'");
+            }
+        }
+
+        // Organize hierarchy
+        while (!cache.isEmpty()) {
+            var copy = new HashMap<>(cache);
+
+            for (Map.Entry<String, BedrockModelPartCache> e : copy.entrySet()) {
+                if (e.getValue().parent == null) {
+                    modelParts.put(e.getKey(), e.getValue().add(root));
+                    cache.remove(e.getKey());
+                } else {
+                    var parent = modelParts.get(e.getValue().parent);
+
+                    if (parent != null) {
+                        modelParts.put(e.getKey(), e.getValue().add(parent));
+                        cache.remove(e.getKey());
+                    }
+                }
+            }
+        }
+
+        return LayerDefinition.create(meshDefinition, textureWidth, textureHeight);
+    }
+
+    public static class BedrockModelPartCache {
+
+        private final String name;
+        @Nullable
+        public final String parent;
+        private Vec3 pivot;
+        private final Vec3 rotation;
+        private final List<BedrockModelCube> cubes;
+
+        public BedrockModelPartCache(String name, @Nullable String parent, Vec3 pivot, Vec3 rotation, List<BedrockModelCube> cubes) {
+            this.name = name;
+            this.parent = parent;
+            this.pivot = pivot;
+            this.rotation = rotation;
+            this.cubes = cubes;
+        }
+
+        public PartDefinition add(PartDefinition parent) {
+            var builder = CubeListBuilder.create();
+
+            for (BedrockModelCube cube : this.cubes) {
+                cube.add(builder);
+            }
+
+            return parent.addOrReplaceChild(this.name, builder,
+                    PartPose.offsetAndRotation(
+                            (float) this.pivot.x, (float) this.pivot.y, (float) this.pivot.z,
+                            (float) this.rotation.x, (float) this.rotation.y, (float) this.rotation.z));
+        }
+
+        public BedrockModelPartCache convert() {
+            this.cubes.forEach(c -> c.convert(this.pivot));
+            this.pivot = this.pivot.multiply(0, -1, 0).add(0, 24, 0);
+            return this;
+        }
+    }
+
+    public static class BedrockModelCube {
+
+        private Vec3 origin;
+        private final Vec3 size;
+        private final float inflate;
+        private final Vec2 uv;
+
+        public BedrockModelCube(Vec3 origin, Vec3 size, float inflate, Vec2 uv) {
+            this.origin = origin;
+            this.size = size;
+            this.inflate = inflate;
+            this.uv = uv;
+        }
+
+        public void add(CubeListBuilder builder) {
+            builder.addBox(
+                    (float) this.origin.x, (float) this.origin.y, (float) this.origin.z,
+                    (float) this.size.x, (float) this.size.y, (float) this.size.z,
+                    new CubeDeformation(this.inflate), this.uv.x, this.uv.y);
+        }
+
+        public void convert(Vec3 pivot) {
+            this.origin = pivot.subtract(this.origin);
+        }
     }
 }
