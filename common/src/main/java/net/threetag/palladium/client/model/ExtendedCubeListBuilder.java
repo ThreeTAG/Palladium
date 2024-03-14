@@ -120,7 +120,7 @@ public class ExtendedCubeListBuilder extends CubeListBuilder {
 
         @Override
         public ModelPart.Cube bake(int texWidth, int texHeight) {
-            return new PerFaceUVCube(this.uvMap, this.origin.x, this.origin.y, this.origin.z, this.dimensions.x, this.dimensions.y, this.dimensions.z, this.grow.growX, this.grow.growY, this.grow.growZ, this.mirror, this.texScale.u(), this.texScale.v());
+            return new PerFaceUVCube(this.uvMap, this.origin.x, this.origin.y, this.origin.z, this.dimensions.x, this.dimensions.y, this.dimensions.z, this.grow.growX, this.grow.growY, this.grow.growZ, this.mirror, (float)texWidth * this.texScale.u(), (float)texHeight * this.texScale.v());
         }
     }
 
@@ -130,16 +130,16 @@ public class ExtendedCubeListBuilder extends CubeListBuilder {
 
     private static class PerFaceUVCube extends ModelPart.Cube {
 
-        public PerFaceUVCube(Map<Direction, PerFaceUV> uvMap, float originX, float originY, float originZ, float dimensionX, float dimensionY, float dimensionZ, float gtowX, float growY, float growZ, boolean mirror, float texScaleU, float texScaleV) {
-            super(0, 0, originX, originY, originZ, dimensionX, dimensionY, dimensionZ, gtowX, growY, growZ, mirror, texScaleU, texScaleV, uvMap.keySet());
+        public PerFaceUVCube(Map<Direction, PerFaceUV> uvMap, float originX, float originY, float originZ, float dimensionX, float dimensionY, float dimensionZ, float growX, float growY, float growZ, boolean mirror, float texScaleU, float texScaleV) {
+            super(0, 0, originX, originY, originZ, dimensionX, dimensionY, dimensionZ, growX, growY, growZ, mirror, texScaleU, texScaleV, uvMap.keySet());
 
             float f = originX + dimensionX;
             float g = originY + dimensionY;
             float h = originZ + dimensionZ;
-            originX -= gtowX;
+            originX -= growX;
             originY -= growY;
             originZ -= growZ;
-            f += gtowX;
+            f += growX;
             g += growY;
             h += growZ;
             if (mirror) {
@@ -159,32 +159,32 @@ public class ExtendedCubeListBuilder extends CubeListBuilder {
             int s = 0;
             if (uvMap.containsKey(Direction.DOWN)) {
                 var uv = uvMap.get(Direction.DOWN);
-                this.polygons[s++] = new ModelPart.Polygon(new ModelPart.Vertex[]{vertex6, vertex5, vertex, vertex2}, uv.uv.u(), uv.uv.v(), uv.uv.u() + uv.uv.u(), uv.uv.v() + uv.size.v(), texScaleU, texScaleV, mirror, Direction.DOWN);
+                this.polygons[s++] = new ModelPart.Polygon(new ModelPart.Vertex[]{vertex6, vertex5, vertex, vertex2}, uv.uv.u(), uv.uv.v(), uv.uv.u() + uv.size.u(), uv.uv.v() + uv.size.v(), texScaleU, texScaleV, mirror, Direction.DOWN);
             }
 
             if (uvMap.containsKey(Direction.UP)) {
                 var uv = uvMap.get(Direction.UP);
-                this.polygons[s++] = new ModelPart.Polygon(new ModelPart.Vertex[]{vertex3, vertex4, vertex8, vertex7}, uv.uv.u(), uv.uv.v(), uv.uv.u() + uv.uv.u(), uv.uv.v() + uv.size.v(), texScaleU, texScaleV, mirror, Direction.UP);
+                this.polygons[s++] = new ModelPart.Polygon(new ModelPart.Vertex[]{vertex3, vertex4, vertex8, vertex7}, uv.uv.u(), uv.uv.v(), uv.uv.u() + uv.size.u(), uv.uv.v() + uv.size.v(), texScaleU, texScaleV, mirror, Direction.UP);
             }
 
             if (uvMap.containsKey(Direction.WEST)) {
                 var uv = uvMap.get(Direction.WEST);
-                this.polygons[s++] = new ModelPart.Polygon(new ModelPart.Vertex[]{vertex, vertex5, vertex8, vertex4}, uv.uv.u(), uv.uv.v(), uv.uv.u() + uv.uv.u(), uv.uv.v() + uv.size.v(), texScaleU, texScaleV, mirror, Direction.WEST);
+                this.polygons[s++] = new ModelPart.Polygon(new ModelPart.Vertex[]{vertex, vertex5, vertex8, vertex4}, uv.uv.u(), uv.uv.v(), uv.uv.u() + uv.size.u(), uv.uv.v() + uv.size.v(), texScaleU, texScaleV, mirror, Direction.WEST);
             }
 
             if (uvMap.containsKey(Direction.NORTH)) {
                 var uv = uvMap.get(Direction.NORTH);
-                this.polygons[s++] = new ModelPart.Polygon(new ModelPart.Vertex[]{vertex2, vertex, vertex4, vertex3}, uv.uv.u(), uv.uv.v(), uv.uv.u() + uv.uv.u(), uv.uv.v() + uv.size.v(), texScaleU, texScaleV, mirror, Direction.NORTH);
+                this.polygons[s++] = new ModelPart.Polygon(new ModelPart.Vertex[]{vertex2, vertex, vertex4, vertex3}, uv.uv.u(), uv.uv.v(), uv.uv.u() + uv.size.u(), uv.uv.v() + uv.size.v(), texScaleU, texScaleV, mirror, Direction.NORTH);
             }
 
             if (uvMap.containsKey(Direction.EAST)) {
                 var uv = uvMap.get(Direction.EAST);
-                this.polygons[s++] = new ModelPart.Polygon(new ModelPart.Vertex[]{vertex6, vertex2, vertex3, vertex7}, uv.uv.u(), uv.uv.v(), uv.uv.u() + uv.uv.u(), uv.uv.v() + uv.size.v(), texScaleU, texScaleV, mirror, Direction.EAST);
+                this.polygons[s++] = new ModelPart.Polygon(new ModelPart.Vertex[]{vertex6, vertex2, vertex3, vertex7}, uv.uv.u(), uv.uv.v(), uv.uv.u() + uv.size.u(), uv.uv.v() + uv.size.v(), texScaleU, texScaleV, mirror, Direction.EAST);
             }
 
             if (uvMap.containsKey(Direction.SOUTH)) {
                 var uv = uvMap.get(Direction.SOUTH);
-                this.polygons[s] = new ModelPart.Polygon(new ModelPart.Vertex[]{vertex5, vertex6, vertex7, vertex8}, uv.uv.u(), uv.uv.v(), uv.uv.u() + uv.uv.u(), uv.uv.v() + uv.size.v(), texScaleU, texScaleV, mirror, Direction.SOUTH);
+                this.polygons[s] = new ModelPart.Polygon(new ModelPart.Vertex[]{vertex5, vertex6, vertex7, vertex8}, uv.uv.u(), uv.uv.v(), uv.uv.u() + uv.size.u(), uv.uv.v() + uv.size.v(), texScaleU, texScaleV, mirror, Direction.SOUTH);
             }
         }
     }

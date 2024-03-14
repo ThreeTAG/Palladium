@@ -1,0 +1,15 @@
+{
+  "name": {
+    "text": "Bedrock Model Test"
+  },
+  "icon": {
+    "type": "palladium:item",
+    "item": "minecraft:bedrock"
+  },
+  "abilities": {
+    "render_layer": {
+      "type": "palladium:render_layer",
+      "render_layer": "test:bedrock_model_test"
+    }
+  }
+}

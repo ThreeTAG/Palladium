@@ -13,7 +13,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.phys.Vec2;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
@@ -280,7 +279,7 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
                             var directionJson = GsonHelper.getAsJsonObject(uvs, direction.getName());
                             var uv = GsonUtil.getIntArray(directionJson, 2, "uv", 0, 0);
                             var uvSize = GsonUtil.getIntArray(directionJson, 2, "uv_size", 0, 0);
-                            uvMap.put(direction, new ExtendedCubeListBuilder.PerFaceUV(new UVPair(uv[0], uv[1]), new UVPair(uvSize[0], uvSize[1])));
+                            uvMap.put(direction.getAxis() == Direction.Axis.Z ? direction : direction.getOpposite(), new ExtendedCubeListBuilder.PerFaceUV(new UVPair(uv[0], uv[1]), new UVPair(uvSize[0], uvSize[1])));
                         }
                     }
                     cubes.add(new BedrockModelCube(new Vector3f(origin[0], origin[1], origin[2]),
