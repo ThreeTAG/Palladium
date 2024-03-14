@@ -7,11 +7,13 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.phys.Vec2;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
@@ -23,10 +25,7 @@ import org.joml.Vector3f;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ModelLayerManager extends SimpleJsonResourceReloadListener {
@@ -265,12 +264,29 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
                 var origin = GsonUtil.getFloatArray(cubeJson, 3, "origin");
                 var size = GsonUtil.getFloatArray(cubeJson, 3, "size");
                 var inflate = GsonHelper.getAsFloat(cubeJson, "inflate", 0);
-                var uv = GsonUtil.getIntArray(cubeJson, 2, "uv", 0, 0);
+                var uvJson = cubeJson.get("uv");
                 var mirror = GsonHelper.getAsBoolean(cubeJson, "mirror", false);
 
-                cubes.add(new BedrockModelCube(new Vector3f(origin[0], origin[1], origin[2]),
-                        new Vector3f(size[0], size[1], size[2]),
-                        inflate, new UVPair(uv[0], uv[1]), mirror));
+                if (uvJson.isJsonArray()) {
+                    var uv = GsonUtil.getIntArray(cubeJson, 2, "uv", 0, 0);
+                    cubes.add(new BedrockModelCube(new Vector3f(origin[0], origin[1], origin[2]),
+                            new Vector3f(size[0], size[1], size[2]),
+                            inflate, mirror, new UVPair(uv[0], uv[1])));
+                } else {
+                    var uvs = GsonHelper.convertToJsonObject(uvJson, "minecraft:geomeotry[].bones[].cubes[].uv");
+                    Map<Direction, ExtendedCubeListBuilder.PerFaceUV> uvMap = new HashMap<>();
+                    for (Direction direction : Direction.values()) {
+                        if (GsonHelper.isValidNode(uvs, direction.getName())) {
+                            var directionJson = GsonHelper.getAsJsonObject(uvs, direction.getName());
+                            var uv = GsonUtil.getIntArray(directionJson, 2, "uv", 0, 0);
+                            var uvSize = GsonUtil.getIntArray(directionJson, 2, "uv_size", 0, 0);
+                            uvMap.put(direction, new ExtendedCubeListBuilder.PerFaceUV(new UVPair(uv[0], uv[1]), new UVPair(uvSize[0], uvSize[1])));
+                        }
+                    }
+                    cubes.add(new BedrockModelCube(new Vector3f(origin[0], origin[1], origin[2]),
+                            new Vector3f(size[0], size[1], size[2]),
+                            inflate, mirror, uvMap));
+                }
             }
 
             cache.put(name, new BedrockModelPartCache(name, parent, new Vector3f(pivot[0], pivot[1], pivot[2]),
@@ -324,7 +340,7 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
         }
 
         public PartDefinition add(PartDefinition parent) {
-            var builder = CubeListBuilder.create();
+            var builder = ExtendedCubeListBuilder.create();
 
             for (BedrockModelCube cube : this.cubes) {
                 cube.add(builder);
@@ -349,21 +365,40 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
         private final Vector3f size;
         private final float inflate;
         private final UVPair uv;
+        private final Map<Direction, ExtendedCubeListBuilder.PerFaceUV> uvMap;
         private final boolean mirror;
 
-        public BedrockModelCube(Vector3f origin, Vector3f size, float inflate, UVPair uv, boolean mirror) {
+        public BedrockModelCube(Vector3f origin, Vector3f size, float inflate, boolean mirror, UVPair uv) {
             this.origin = origin;
             this.size = size;
             this.inflate = inflate;
-            this.uv = uv;
             this.mirror = mirror;
+            this.uv = uv;
+            this.uvMap = null;
         }
 
-        public void add(CubeListBuilder builder) {
-            builder.mirror(this.mirror).texOffs((int) this.uv.u(), (int) this.uv.v()).addBox(
-                    this.origin.x, this.origin.y, this.origin.z,
-                    this.size.x, this.size.y, this.size.z,
-                    new CubeDeformation(this.inflate));
+        public BedrockModelCube(Vector3f origin, Vector3f size, float inflate, boolean mirror, Map<Direction, ExtendedCubeListBuilder.PerFaceUV> uvMap) {
+            this.origin = origin;
+            this.size = size;
+            this.inflate = inflate;
+            this.mirror = mirror;
+            this.uv = null;
+            this.uvMap = uvMap;
+        }
+
+        public void add(ExtendedCubeListBuilder builder) {
+            if (this.uv != null) {
+                builder.mirror(this.mirror).texOffs((int) this.uv.u(), (int) this.uv.v()).addBox(
+                        this.origin.x, this.origin.y, this.origin.z,
+                        this.size.x, this.size.y, this.size.z,
+                        new CubeDeformation(this.inflate));
+            } else {
+                var cubeBuilder = builder.addPerFaceUVCube().origin(this.origin).dimensions(this.size).grow(this.inflate);
+                for (Map.Entry<Direction, ExtendedCubeListBuilder.PerFaceUV> e : Objects.requireNonNull(this.uvMap).entrySet()) {
+                    cubeBuilder.addFace(e.getKey(), e.getValue().uv(), e.getValue().size());
+                }
+                cubeBuilder.build();
+            }
         }
 
         public void convert(Vector3f pivot) {
