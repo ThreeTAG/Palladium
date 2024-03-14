@@ -12,8 +12,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.phys.Vec2;
-import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.documentation.HTMLBuilder;
@@ -243,6 +241,7 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
 
         MeshDefinition meshDefinition = new MeshDefinition();
         PartDefinition root = meshDefinition.getRoot();
+
         var geo = GsonHelper.convertToJsonObject(geometry.get(0), "minecraft:geometry[].$");
         var description = GsonHelper.getAsJsonObject(geo, "description", new JsonObject());
         int textureWidth = GsonHelper.getAsInt(description, "texture_width");
@@ -264,17 +263,18 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
             for (JsonElement cj : cubesJson) {
                 var cubeJson = GsonHelper.convertToJsonObject(cj, "minecraft:geomeotry[].bones[].cubes[].$");
                 var origin = GsonUtil.getFloatArray(cubeJson, 3, "origin");
-                var size = GsonUtil.getFloatArray(cubeJson, 3, "origin");
+                var size = GsonUtil.getFloatArray(cubeJson, 3, "size");
                 var inflate = GsonHelper.getAsFloat(cubeJson, "inflate", 0);
                 var uv = GsonUtil.getIntArray(cubeJson, 2, "uv", 0, 0);
+                var mirror = GsonHelper.getAsBoolean(cubeJson, "mirror", false);
 
-                cubes.add(new BedrockModelCube(new Vec3(origin[0], origin[1], origin[2]),
-                        new Vec3(size[0], size[1], size[2]),
-                        inflate, new Vec2(uv[0], uv[1])));
+                cubes.add(new BedrockModelCube(new Vector3f(origin[0], origin[1], origin[2]),
+                        new Vector3f(size[0], size[1], size[2]),
+                        inflate, new UVPair(uv[0], uv[1]), mirror));
             }
 
-            cache.put(name, new BedrockModelPartCache(name, parent, new Vec3(pivot[0], pivot[1], pivot[2]),
-                    new Vec3(Math.toRadians(rotation[0]), Math.toRadians(rotation[1]), Math.toRadians(rotation[2])), cubes).convert());
+            cache.put(name, new BedrockModelPartCache(name, parent, new Vector3f(pivot[0], pivot[1], pivot[2]),
+                    new Vector3f((float) Math.toRadians(rotation[0]), (float) Math.toRadians(rotation[1]), (float) Math.toRadians(rotation[2])), cubes).convert());
         }
 
         // Validate parents
@@ -311,11 +311,11 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
         private final String name;
         @Nullable
         public final String parent;
-        private Vec3 pivot;
-        private final Vec3 rotation;
+        private final Vector3f pivot;
+        private final Vector3f rotation;
         private final List<BedrockModelCube> cubes;
 
-        public BedrockModelPartCache(String name, @Nullable String parent, Vec3 pivot, Vec3 rotation, List<BedrockModelCube> cubes) {
+        public BedrockModelPartCache(String name, @Nullable String parent, Vector3f pivot, Vector3f rotation, List<BedrockModelCube> cubes) {
             this.name = name;
             this.parent = parent;
             this.pivot = pivot;
@@ -332,40 +332,43 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
 
             return parent.addOrReplaceChild(this.name, builder,
                     PartPose.offsetAndRotation(
-                            (float) this.pivot.x, (float) this.pivot.y, (float) this.pivot.z,
-                            (float) this.rotation.x, (float) this.rotation.y, (float) this.rotation.z));
+                            this.pivot.x, this.pivot.y, this.pivot.z,
+                            this.rotation.x, this.rotation.y, this.rotation.z));
         }
 
         public BedrockModelPartCache convert() {
             this.cubes.forEach(c -> c.convert(this.pivot));
-            this.pivot = this.pivot.multiply(0, -1, 0).add(0, 24, 0);
+            this.pivot.mul(1, -1, 1).add(0, 24, 0);
             return this;
         }
     }
 
     public static class BedrockModelCube {
 
-        private Vec3 origin;
-        private final Vec3 size;
+        private final Vector3f origin;
+        private final Vector3f size;
         private final float inflate;
-        private final Vec2 uv;
+        private final UVPair uv;
+        private final boolean mirror;
 
-        public BedrockModelCube(Vec3 origin, Vec3 size, float inflate, Vec2 uv) {
+        public BedrockModelCube(Vector3f origin, Vector3f size, float inflate, UVPair uv, boolean mirror) {
             this.origin = origin;
             this.size = size;
             this.inflate = inflate;
             this.uv = uv;
+            this.mirror = mirror;
         }
 
         public void add(CubeListBuilder builder) {
-            builder.addBox(
-                    (float) this.origin.x, (float) this.origin.y, (float) this.origin.z,
-                    (float) this.size.x, (float) this.size.y, (float) this.size.z,
-                    new CubeDeformation(this.inflate), this.uv.x, this.uv.y);
+            builder.mirror(this.mirror).texOffs((int) this.uv.u(), (int) this.uv.v()).addBox(
+                    this.origin.x, this.origin.y, this.origin.z,
+                    this.size.x, this.size.y, this.size.z,
+                    new CubeDeformation(this.inflate));
         }
 
-        public void convert(Vec3 pivot) {
-            this.origin = pivot.subtract(this.origin);
+        public void convert(Vector3f pivot) {
+            this.origin.sub(pivot.x, 0, pivot.z);
+            this.origin.y = pivot.y - this.origin.y - this.size.y;
         }
     }
 }
