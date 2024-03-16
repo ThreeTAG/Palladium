@@ -1,6 +1,10 @@
 accessWidener v2 named
 
 accessible field net/minecraft/client/model/PlayerModel cloak Lnet/minecraft/client/model/geom/ModelPart;
+accessible method net/minecraft/client/model/HumanoidModel poseRightArm (Lnet/minecraft/world/entity/LivingEntity;)V
+accessible method net/minecraft/client/model/HumanoidModel poseLeftArm (Lnet/minecraft/world/entity/LivingEntity;)V
+accessible method net/minecraft/client/model/HumanoidModel getAttackArm (Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/entity/HumanoidArm;
+accessible method net/minecraft/client/model/HumanoidModel quadraticArmUpdate (F)F
 accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
 accessible field net/minecraft/client/model/geom/ModelPart$Cube polygons [Lnet/minecraft/client/model/geom/ModelPart$Polygon;
 accessible field net/minecraft/client/model/geom/builders/CubeListBuilder cubes Ljava/util/List;
