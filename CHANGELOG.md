@@ -1,7 +1,7 @@
-- Added energy bars to powers (along with command, condition, and texture variable)
-- Added "gui_display_type" for powers, "list" and "tree". "Tree" is the usual skill-tree-like view, "list" is a list similiar to LucraftCore's
-- Added "leaping" attribute
-- Added skin_overlay render layer type
-- Made energy blast ability go through entities
-- Fixed render layers from armor renderer appearing in hand slots
-- Fixed tool tier's not accepting enchantment_value over 0
+- Added option "auto_increase_interval" for energy bars
+- Added option to make energy bar depend on score/property
+- Added item_in_slot_open condition
+- Added "model_type" option to skin_change ability
+- Fixed suit stand not having data synced correctly after reloading
+- Marked has_tag condition as server-side only
+- Fixed KJS scripts overriding other namespaces

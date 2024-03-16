@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.model.BasicModel;
 import net.threetag.palladium.client.model.CapedHumanoidModel;
+import net.threetag.palladium.client.model.ImprovedHumanoidModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class ModelLookup {
 
     static {
         register(Palladium.id("basic"), new Model(BasicModel::new, (en, model) -> true));
-        HUMANOID = register(new ResourceLocation("humanoid"), new Model(HumanoidModel::new, (en, model) -> model instanceof HumanoidModel));
+        HUMANOID = register(new ResourceLocation("humanoid"), new Model(ImprovedHumanoidModel::new, (en, model) -> model instanceof HumanoidModel));
         register(new ResourceLocation("player"), new Model(modelPart -> new PlayerModel<>(modelPart, false), (en, model) -> model instanceof HumanoidModel));
         register(new ResourceLocation("pig"), new Model(PigModel::new, (en, model) -> model instanceof PigModel));
         register(new ResourceLocation("wolf"), new Model(WolfModel::new, (en, model) -> model instanceof WolfModel));
@@ -66,6 +67,8 @@ public class ModelLookup {
         register(new ResourceLocation("turtle"), new Model(TurtleModel::new, (en, model) -> model instanceof TurtleModel));
         register(new ResourceLocation("vex"), new Model(VexModel::new, (en, model) -> model instanceof VexModel));
         register(new ResourceLocation("wither"), new Model(WitherBossModel::new, (en, model) -> model instanceof WitherBossModel));
+        register(new ResourceLocation("camel"), new Model(CamelModel::new, (en, model) -> model instanceof CamelModel));
+        register(new ResourceLocation("frog"), new Model(FrogModel::new, (en, model) -> model instanceof FrogModel));
 
         register(Palladium.id("caped_humanoid"), new Model(CapedHumanoidModel::new, (en, model) -> model instanceof HumanoidModel));
     }
