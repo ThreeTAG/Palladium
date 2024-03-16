@@ -33,14 +33,16 @@ public class TrailHandler {
             List<TrailSegmentEntity<?>> trails = entry.getValue();
 
             if (!trails.isEmpty()) {
-                var last = trails.get(trails.size() - 1);
+                if (active.contains(entry.getKey())) {
+                    var last = trails.get(trails.size() - 1);
 
-                if (last.position().distanceTo(this.entity.position()) >= entity.getBbWidth() * renderer.getSpacing()) {
-                    trails.add(this.spawnEntity(renderer));
+                    if (last.position().distanceTo(this.entity.position()) >= entity.getBbWidth() * renderer.getSpacing()) {
+                        trails.add(this.spawnEntity(renderer));
+                    }
                 }
 
                 trails = trails.stream().filter(LivingEntity::isAlive).collect(Collectors.toList());
-            } else if (this.entity.xo != this.entity.getX() || this.entity.yo != this.entity.getY() || this.entity.zo != this.entity.getZ()) {
+            } else if (active.contains(entry.getKey()) && (this.entity.xo != this.entity.getX() || this.entity.yo != this.entity.getY() || this.entity.zo != this.entity.getZ())) {
                 trails.add(this.spawnEntity(renderer));
             }
 

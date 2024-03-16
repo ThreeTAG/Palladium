@@ -10,6 +10,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -21,7 +22,6 @@ import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
 import net.threetag.palladium.entity.TrailSegmentEntity;
 import net.threetag.palladium.util.RenderUtil;
 import net.threetag.palladium.util.json.GsonUtil;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.List;
@@ -52,14 +52,14 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
     @Override
     @Environment(EnvType.CLIENT)
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, TrailSegmentEntityRenderer trailRenderer, LivingEntity livingEntity, TrailSegmentEntity<Cache> segment, float partialTick, float entityYaw) {
-        var vertexConsumer = buffer.getBuffer(PalladiumRenderTypes.LASER);
-
         if (livingEntity instanceof PalladiumLivingEntityExtension ext) {
             var trails = ext.palladium$getTrailHandler().getTrails().get(this);
             var index = trails.indexOf(segment);
 
             if (index == trails.size() - 1) {
-                for (int i = 0; i < 4; i++) {
+                var vertexConsumer = buffer.getBuffer(PalladiumRenderTypes.LASER);
+
+                for (int i = 0; i < 2; i++) {
                     renderSegmentWithChild(poseStack, vertexConsumer, segment, trails, partialTick, index, i);
                 }
             }
@@ -72,17 +72,32 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
             var cache = segment.cache;
             var previousC = previousSegment.cache;
 
-            if (previousC instanceof Cache previousCache && cache.offsets.length == previousCache.offsets.length) {
+            if (index == segments.size() - 1) {
                 for (int i = 0; i < cache.offsets.length; i++) {
-                    var start = getOffsetPos(segment, null, cache.offsets[i]);
-                    var end = getOffsetPos(previousSegment, null, previousCache.offsets[i]).add(previousSegment.position().subtract(segment.position()));
+                    var start = getOffsetPos(segment, cache.offsets[i]);
+                    var end = getOffsetPos(segment.parent, cache.offsets[i]).add(segment.parent.getPosition(partialTick).subtract(segment.position()));
                     float opacity = 1F - ((segment.tickCount + partialTick) / (float) segment.lifetime);
 
                     poseStack.pushPose();
                     poseStack.translate(start.x, start.y, start.z);
                     faceVec(poseStack, start, end);
                     poseStack.mulPose(Axis.XP.rotationDegrees(90));
-                    renderBox(poseStack, vertexConsumer, (float) start.distanceTo(end), this.thickness, stage == 0 ? this.coreColor : this.color, opacity, stage);
+                    renderBox(poseStack, vertexConsumer, (float) start.distanceTo(end), this.thickness * opacity, stage == 0 ? this.coreColor : this.color, opacity, stage);
+                    poseStack.popPose();
+                }
+            }
+
+            if (previousC instanceof Cache previousCache && cache.offsets.length == previousCache.offsets.length) {
+                for (int i = 0; i < cache.offsets.length; i++) {
+                    var start = getOffsetPos(segment, cache.offsets[i]);
+                    var end = getOffsetPos(previousSegment, previousCache.offsets[i]).add(previousSegment.position().subtract(segment.position()));
+                    float opacity = 1F - ((segment.tickCount + partialTick) / (float) segment.lifetime);
+
+                    poseStack.pushPose();
+                    poseStack.translate(start.x, start.y, start.z);
+                    faceVec(poseStack, start, end);
+                    poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                    renderBox(poseStack, vertexConsumer, (float) start.distanceTo(end), this.thickness * opacity, stage == 0 ? this.coreColor : this.color, opacity, stage);
                     poseStack.popPose();
                 }
 
@@ -101,18 +116,13 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
         if (stage == 0) {
             RenderUtil.renderFilledBox(poseStack, consumer, box, color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, alpha, 15728640);
         } else {
-            int i = stage - 1;
+            int i = stage;
             RenderUtil.renderFilledBox(poseStack, consumer, box.inflate(i * 0.5F * 0.0625F), color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, (1F / i / 2) * alpha, 15728640);
         }
     }
 
-    public static Vec3 getOffsetPos(TrailSegmentEntity<?> segment, @Nullable TrailSegmentEntity<?> previous, Vec3 offset) {
-        if (previous == null) {
-            return new Vec3(offset.x * segment.getBbWidth(), (segment.getBbHeight() / 2D) + (offset.y * segment.getBbHeight()), offset.z * segment.getBbWidth());
-        } else {
-            var offsetBetween = previous.position().subtract(segment.position());
-            return new Vec3(offsetBetween.x - (offset.x * previous.getBbWidth()), offsetBetween.y + (previous.getBbHeight() / 2D) + (offset.y * previous.getBbHeight()), offsetBetween.z - (offset.z * previous.getBbWidth()));
-        }
+    public static Vec3 getOffsetPos(Entity segment, Vec3 offset) {
+        return new Vec3(offset.x * segment.getBbWidth(), (segment.getBbHeight() / 2D) + (offset.y * segment.getBbHeight()), offset.z * segment.getBbWidth());
     }
 
     public static void faceVec(PoseStack poseStack, Vec3 src, Vec3 dst) {
