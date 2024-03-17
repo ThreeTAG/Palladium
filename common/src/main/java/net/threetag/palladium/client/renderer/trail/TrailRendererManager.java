@@ -34,6 +34,7 @@ public class TrailRendererManager extends SimpleJsonResourceReloadListener {
     static {
         registerParser(new AfterImageTrailRenderer.Serializer());
         registerParser(new LightningTrailRenderer.Serializer());
+        registerParser(new GradientTrailRenderer.Serializer());
         registerParser(new CompoundTrailRenderer.Serializer());
     }
 

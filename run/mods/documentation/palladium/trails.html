@@ -39,6 +39,10 @@ After Image Trail</a>
 Compound</a>
 </li>
 <li>
+<a href="#palladium:gradient">
+</a>
+</li>
+<li>
 <a href="#palladium:lightning">
 Lightning Trail</a>
 </li>
@@ -179,6 +183,96 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:compound","trails":[]}</pre>
+</div>
+<hr>
+
+<div id="palladium:gradient">
+<h2>
+</h2>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+color</td>
+<td>
+Color</td>
+<td>
+Determines the tint/color of the gradient</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+#ffffff</td>
+</tr>
+<tr>
+<td>
+spacing</td>
+<td>
+Float</td>
+<td>
+Determines the space between two trail segments</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1.0</td>
+</tr>
+<tr>
+<td>
+lifetime</td>
+<td>
+Integer</td>
+<td>
+Determines how long one trail segment stays alive (in ticks)</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+20</td>
+</tr>
+<tr>
+<td>
+opacity</td>
+<td>
+Float</td>
+<td>
+Determines the (initial) opacity of the after image.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.5</td>
+</tr>
+<tr>
+<td>
+normal_transparency</td>
+<td>
+Boolean</td>
+<td>
+Can be turned on if you want to make a gradient black.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:gradient","color":"#ffffff","spacing":false,"lifetime":20,"opacity":0.5,"normal_transparency":false}</pre>
 </div>
 <hr>
 

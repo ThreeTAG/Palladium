@@ -72,6 +72,7 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
         }
     }
 
+    @Environment(EnvType.CLIENT)
     private void renderSegmentWithChild(PoseStack poseStack, VertexConsumer vertexConsumer, TrailSegmentEntity<Cache> segment, List<TrailSegmentEntity<?>> segments, float partialTick, int index, int stage) {
         if (index > 0) {
             var overallOpacity = stage == 0 ? this.coreOpacity : this.glowOpacity;
@@ -122,6 +123,7 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
         }
     }
 
+    @Environment(EnvType.CLIENT)
     private static void renderBox(PoseStack poseStack, VertexConsumer consumer, float length, float width, Color color, float alpha, int stage) {
         AABB box = new AABB(-width / 2F, 0, -width / 2F, width / 2F, length, width / 2F);
 
@@ -132,10 +134,12 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
         }
     }
 
+    @Environment(EnvType.CLIENT)
     public static Vec3 getOffsetPos(Entity segment, Vec3 offset) {
         return new Vec3(offset.x * segment.getBbWidth(), (segment.getBbHeight() / 2D) + (offset.y * segment.getBbHeight()), offset.z * segment.getBbWidth());
     }
 
+    @Environment(EnvType.CLIENT)
     public static void faceVec(PoseStack poseStack, Vec3 src, Vec3 dst) {
         double x = dst.x - src.x;
         double y = dst.y - src.y;

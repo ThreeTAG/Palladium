@@ -35,9 +35,20 @@
         }
       }
     },
+    "gradient": {
+      "type": "palladium:trail",
+      "list_index": 3,
+      "title": "Blue Gradient",
+      "trail": "test:blue_gradient_test",
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
+    },
     "test_3": {
       "type": "palladium:projectile",
-      "list_index": 3,
+      "list_index": 4,
       "entity_type": "palladium:custom_projectile",
       "title": "Trail Projectile",
       "velocity": 1.5,
