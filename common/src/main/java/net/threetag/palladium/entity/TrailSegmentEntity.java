@@ -172,6 +172,11 @@ public class TrailSegmentEntity<T extends TrailRenderer.SegmentCache> extends Li
     }
 
     @Override
+    public boolean shouldRenderAtSqrDistance(double distance) {
+        return true;
+    }
+
+    @Override
     public @NotNull AABB getBoundingBoxForCulling() {
         return this.getBoundingBox().inflate(50, 50, 50);
     }
