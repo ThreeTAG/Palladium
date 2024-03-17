@@ -82,7 +82,7 @@ public class AfterImageTrailRenderer extends TrailRenderer<TrailRenderer.Segment
                     .fallback(false).exampleJson(new JsonPrimitive(false));
             builder.addProperty("spacing", Float.class)
                     .description("Determines the space between two trail segments")
-                    .fallback(1F).exampleJson(new JsonPrimitive(false));
+                    .fallback(1F).exampleJson(new JsonPrimitive(1F));
             builder.addProperty("lifetime", Integer.class)
                     .description("Determines how long one trail segment stays alive (in ticks)")
                     .fallback(20).exampleJson(new JsonPrimitive(20));
