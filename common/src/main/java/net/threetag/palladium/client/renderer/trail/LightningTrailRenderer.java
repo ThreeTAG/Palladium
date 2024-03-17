@@ -11,14 +11,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.client.renderer.entity.TrailSegmentEntityRenderer;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
-import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
+import net.threetag.palladium.entity.PalladiumEntityExtension;
 import net.threetag.palladium.entity.TrailSegmentEntity;
 import net.threetag.palladium.util.RenderUtil;
 import net.threetag.palladium.util.json.GsonUtil;
@@ -51,8 +50,8 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, TrailSegmentEntityRenderer trailRenderer, LivingEntity livingEntity, TrailSegmentEntity<Cache> segment, float partialTick, float entityYaw) {
-        if (livingEntity instanceof PalladiumLivingEntityExtension ext) {
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, TrailSegmentEntityRenderer trailRenderer, Entity livingEntity, TrailSegmentEntity<Cache> segment, float partialTick, float entityYaw) {
+        if (livingEntity instanceof PalladiumEntityExtension ext) {
             var trails = ext.palladium$getTrailHandler().getTrails().get(this);
             var index = trails.indexOf(segment);
 
@@ -72,7 +71,7 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
             var cache = segment.cache;
             var previousC = previousSegment.cache;
 
-            if (index == segments.size() - 1) {
+            if (index == segments.size() - 1 && segment.parent.isAlive()) {
                 for (int i = 0; i < cache.offsets.length; i++) {
                     var start = getOffsetPos(segment, cache.offsets[i]);
                     var end = getOffsetPos(segment.parent, cache.offsets[i]).add(segment.parent.getPosition(partialTick).subtract(segment.position()));
@@ -87,7 +86,7 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
                 }
             }
 
-            if (previousC instanceof Cache previousCache && cache.offsets.length == previousCache.offsets.length) {
+            if (previousC instanceof Cache previousCache && cache.offsets.length == previousCache.offsets.length && previousSegment.isAlive()) {
                 for (int i = 0; i < cache.offsets.length; i++) {
                     var start = getOffsetPos(segment, cache.offsets[i]);
                     var end = getOffsetPos(previousSegment, previousCache.offsets[i]).add(previousSegment.position().subtract(segment.position()));
@@ -97,7 +96,7 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
                     poseStack.translate(start.x, start.y, start.z);
                     faceVec(poseStack, start, end);
                     poseStack.mulPose(Axis.XP.rotationDegrees(90));
-                    renderBox(poseStack, vertexConsumer, (float) start.distanceTo(end), this.thickness * opacity, stage == 0 ? this.coreColor : this.color, opacity, stage);
+                    renderBox(poseStack, vertexConsumer, (float) start.distanceTo(end), this.thickness * opacity * segment.scale, stage == 0 ? this.coreColor : this.color, opacity, stage);
                     poseStack.popPose();
                 }
 
@@ -191,6 +190,9 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
 
         @Override
         public void generateDocumentation(JsonDocumentationBuilder builder) {
+            builder.setTitle("Lightning Trail");
+            builder.setDescription("Flash-like lightning trail");
+
             builder.addProperty("color", Color.class)
                     .description("Determines the tint/color of glow")
                     .fallback(Color.WHITE).exampleJson(new JsonPrimitive("#ffffff"));

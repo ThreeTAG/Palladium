@@ -21,6 +21,33 @@
           "type": "palladium:toggle"
         }
       }
+    },
+    "test_3": {
+      "type": "palladium:projectile",
+      "entity_type": "palladium:custom_projectile",
+      "title": "Trail Projectile",
+      "velocity": 1.5,
+      "entity_data": {
+        "Damage": 10,
+        "Gravity": 0.03,
+        "Size": 0.5,
+        "Lifetime": 1200,
+        "DieOnEntityHit": false,
+        "DieOnBlockHit": true,
+        "Appearances": [
+          {
+            "Type": "trail",
+            "Trail": "test:red_lightning_test"
+          }
+        ]
+      },
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:action"
+          }
+        ]
+      }
     }
   }
 }

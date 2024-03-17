@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.threetag.palladium.client.renderer.trail.AfterImageTrailRenderer;
 import net.threetag.palladium.client.renderer.trail.TrailRenderer;
+import net.threetag.palladium.util.SizeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class TrailSegmentEntity<T extends TrailRenderer.SegmentCache> extends LivingEntity {
 
-    public LivingEntity parent;
+    public Entity parent;
     public EntityDimensions dimensions;
     public boolean mimicPlayer;
     public TrailRenderer<T> trailRenderer;
@@ -28,11 +29,13 @@ public class TrailSegmentEntity<T extends TrailRenderer.SegmentCache> extends Li
     public ResourceLocation texture;
     public float partialTick = -1;
     public int lifetime = -1;
-
     public boolean fetchedAnimationValues = false;
     public float limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, renderYawOffset;
     public Map<EquipmentSlot, ItemStack> items = new HashMap<>();
     public HumanoidArm mainArm = HumanoidArm.RIGHT;
+    public float scaleHeight = 1F;
+    public float scaleWidth = 1F;
+    public float scale = 1F;
 
     public TrailSegmentEntity(EntityType<? extends LivingEntity> entityType, Level level) {
         super(entityType, level);
@@ -40,34 +43,46 @@ public class TrailSegmentEntity<T extends TrailRenderer.SegmentCache> extends Li
     }
 
     @SuppressWarnings("unchecked")
-    public TrailSegmentEntity(LivingEntity parent, TrailRenderer<T> trailRenderer) {
+    public TrailSegmentEntity(Entity parent, TrailRenderer<T> trailRenderer) {
         this(PalladiumEntityTypes.TRAIL_SEGMENT.get(), parent.level());
+
+        float partialTick = Minecraft.getInstance().getFrameTime();
         this.parent = parent;
         this.lifetime = trailRenderer.getLifetime();
         this.dimensions = EntityDimensions.fixed(parent.getBbWidth(), parent.getBbHeight());
         this.refreshDimensions();
-        this.setPos(parent.getPosition(Minecraft.getInstance().getFrameTime()));
+        this.setPos(parent.getPosition(partialTick));
         this.setXRot(parent.getXRot());
         this.setYRot(parent.getYRot());
-        this.setYBodyRot(parent.yBodyRot);
-        this.yBodyRotO = parent.yBodyRotO;
         this.setYHeadRot(parent.getYHeadRot());
-        this.yHeadRotO = parent.yHeadRotO;
         this.xo = parent.xo;
         this.yo = parent.yo;
         this.zo = parent.zo;
         this.xRotO = parent.getXRot();
         this.yRotO = parent.getYRot();
-        this.mainArm = parent.getMainArm();
-        this.walkAnimation.speed = parent.walkAnimation.speed;
-        this.walkAnimation.speedOld = parent.walkAnimation.speedOld;
-        this.walkAnimation.position = parent.walkAnimation.position;
         this.trailRenderer = trailRenderer;
         this.mimicPlayer = trailRenderer instanceof AfterImageTrailRenderer ai && ai.mimicPlayer;
         this.cache = (T) this.trailRenderer.createCache();
+        this.scaleWidth = SizeUtil.getInstance().getWidthScale(parent, partialTick);
+        this.scaleHeight = SizeUtil.getInstance().getHeightScale(parent, partialTick);
+        this.scale = (this.scaleWidth + this.scaleHeight) / 2F;
 
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            this.items.put(slot, mimicPlayer ? parent.getItemBySlot(slot).copy() : ItemStack.EMPTY);
+        if (parent instanceof LivingEntity living) {
+            this.setYBodyRot(living.yBodyRot);
+            this.yBodyRotO = living.yBodyRotO;
+            this.yHeadRotO = living.yHeadRotO;
+            this.mainArm = living.getMainArm();
+            this.walkAnimation.speed = living.walkAnimation.speed;
+            this.walkAnimation.speedOld = living.walkAnimation.speedOld;
+            this.walkAnimation.position = living.walkAnimation.position;
+
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                this.items.put(slot, mimicPlayer ? living.getItemBySlot(slot).copy() : ItemStack.EMPTY);
+            }
+        } else {
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                this.items.put(slot, ItemStack.EMPTY);
+            }
         }
     }
 

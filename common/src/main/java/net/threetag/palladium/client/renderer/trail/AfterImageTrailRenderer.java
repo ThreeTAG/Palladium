@@ -8,7 +8,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.renderer.entity.HumanoidRendererModifications;
 import net.threetag.palladium.client.renderer.entity.TrailSegmentEntityRenderer;
@@ -35,7 +35,7 @@ public class AfterImageTrailRenderer extends TrailRenderer<TrailRenderer.Segment
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, TrailSegmentEntityRenderer trailRenderer, LivingEntity livingEntity, TrailSegmentEntity<SegmentCache> segment, float partialTick, float entityYaw) {
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, TrailSegmentEntityRenderer trailRenderer, Entity livingEntity, TrailSegmentEntity<SegmentCache> segment, float partialTick, float entityYaw) {
         HumanoidRendererModifications.ALPHA_MULTIPLIER = (1F - (segment.tickCount / (float) segment.lifetime)) * 0.5F;
         trailRenderer.renderModel(segment, entityYaw, segment.partialTick, poseStack, buffer, packedLight);
         HumanoidRendererModifications.ALPHA_MULTIPLIER = 1F;
@@ -68,6 +68,9 @@ public class AfterImageTrailRenderer extends TrailRenderer<TrailRenderer.Segment
 
         @Override
         public void generateDocumentation(JsonDocumentationBuilder builder) {
+            builder.setTitle("After Image Trail");
+            builder.setDescription("Spawns copies of you as a trail.");
+
             builder.addProperty("color", Color.class)
                     .description("Determines the tint/color of the after image")
                     .fallback(Color.WHITE).exampleJson(new JsonPrimitive("#ffffff"));

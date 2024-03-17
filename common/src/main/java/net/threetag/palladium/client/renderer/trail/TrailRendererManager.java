@@ -9,13 +9,17 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.addonpack.parser.AddonParser;
+import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.IDocumentedConfigurable;
 import net.threetag.palladium.util.json.GsonUtil;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TrailRendererManager extends SimpleJsonResourceReloadListener {
 
@@ -30,6 +34,7 @@ public class TrailRendererManager extends SimpleJsonResourceReloadListener {
     static {
         registerParser(new AfterImageTrailRenderer.Serializer());
         registerParser(new LightningTrailRenderer.Serializer());
+        registerParser(new CompoundTrailRenderer.Serializer());
     }
 
     @Override
@@ -64,6 +69,12 @@ public class TrailRendererManager extends SimpleJsonResourceReloadListener {
         }
 
         return PARSERS.get(parserId).parse(json);
+    }
+
+    public static HTMLBuilder documentationBuilder() {
+        return new HTMLBuilder(new ResourceLocation(Palladium.MOD_ID, "trails"), "Trails")
+                .add(HTMLBuilder.heading("Trails"))
+                .addDocumentationSettings(PARSERS.values().stream().sorted(Comparator.comparing(o -> o.getId().toString())).collect(Collectors.toList()));
     }
 
     public interface TypeSerializer extends IDocumentedConfigurable {

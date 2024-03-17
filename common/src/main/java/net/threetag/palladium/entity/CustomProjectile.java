@@ -2,7 +2,6 @@ package net.threetag.palladium.entity;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
@@ -20,8 +19,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.ExplosionDamageCalculator;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -58,6 +55,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
         APPEARANCE_REGISTRY.put("particles", ParticleAppearance::new);
         APPEARANCE_REGISTRY.put("laser", LaserAppearance::new);
         APPEARANCE_REGISTRY.put("renderLayer", RenderLayerAppearance::new);
+        APPEARANCE_REGISTRY.put("trail", TrailAppearance::new);
     }
 
     public CustomProjectile(EntityType<? extends ThrowableProjectile> entityType, Level level) {
@@ -94,7 +92,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
         if (!this.level().isClientSide) {
             Entity entity = result.getEntity();
 
-            if(entity != this.getOwner() || !this.preventShooterInteraction) {
+            if (entity != this.getOwner() || !this.preventShooterInteraction) {
                 if (this.commandOnEntityHit != null && !this.commandOnEntityHit.isBlank()) {
                     this.level().getServer().getCommands()
                             .performPrefixedCommand(this.createCommandSourceStack()
@@ -473,6 +471,46 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
                     listTag.add(StringTag.valueOf(layer.toString()));
                 }
                 nbt.put("RenderLayer", listTag);
+            }
+        }
+    }
+
+    public static class TrailAppearance extends Appearance {
+
+        public final List<ResourceLocation> trails;
+
+        public TrailAppearance(CompoundTag tag) {
+            super(tag);
+            this.trails = new ArrayList<>();
+
+            var trailTag = tag.get("Trail");
+
+            if (trailTag instanceof StringTag stringTag) {
+                this.trails.add(new ResourceLocation(stringTag.getAsString()));
+            } else if (trailTag instanceof ListTag list) {
+                for (Tag t : list) {
+                    if (t instanceof StringTag stringTag) {
+                        this.trails.add(new ResourceLocation(stringTag.getAsString()));
+                    }
+                }
+            }
+        }
+
+        @Override
+        public String getId() {
+            return "trail";
+        }
+
+        @Override
+        public void toNBT(CompoundTag nbt) {
+            if (this.trails.size() == 1) {
+                nbt.putString("Trail", this.trails.get(0).toString());
+            } else {
+                ListTag listTag = new ListTag();
+                for (ResourceLocation layer : this.trails) {
+                    listTag.add(StringTag.valueOf(layer.toString()));
+                }
+                nbt.put("Trail", listTag);
             }
         }
     }

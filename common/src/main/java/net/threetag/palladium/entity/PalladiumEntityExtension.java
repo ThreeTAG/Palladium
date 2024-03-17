@@ -6,4 +6,6 @@ public interface PalladiumEntityExtension {
 
     EntityPropertyHandler palladium$getPropertyHandler();
 
+    TrailHandler palladium$getTrailHandler();
+
 }

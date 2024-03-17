@@ -7,6 +7,7 @@ import net.threetag.palladium.addonpack.parser.*;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.block.entity.PalladiumBlockEntityTypes;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
+import net.threetag.palladium.client.renderer.trail.TrailRendererManager;
 import net.threetag.palladium.command.AbilityCommand;
 import net.threetag.palladium.command.EnergyBarCommand;
 import net.threetag.palladium.command.PalladiumEntitySelectorOptions;
@@ -142,6 +143,7 @@ public class Palladium {
             consumer.accept(DynamicTexture.variableDocumentationBuilder());
             consumer.accept(AccessoryParser.documentationBuilder());
             consumer.accept(AccessorySlotParser.documentationBuilder());
+            consumer.accept(TrailRendererManager.documentationBuilder());
             PalladiumEvents.GENERATE_DOCUMENTATION.invoker().generate(consumer);
         }
     }

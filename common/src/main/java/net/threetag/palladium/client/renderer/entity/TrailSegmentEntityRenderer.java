@@ -44,7 +44,7 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
             entity.partialTick = partialTicks;
         }
 
-        if(entity.parent == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON) {
+        if (entity.parent == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON) {
             return;
         }
 
@@ -141,7 +141,7 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
             int m = getOverlayCoords(entity, this.getWhiteOverlayProgress(entity, partialTicks));
             var color = entity.trailRenderer.getColor();
 
-            if(!entity.mimicPlayer && this.model instanceof PlayerModel playerModel) {
+            if (!entity.mimicPlayer && this.model instanceof PlayerModel playerModel) {
                 playerModel.hat.visible = playerModel.jacket.visible = playerModel.rightSleeve.visible =
                         playerModel.leftSleeve.visible = playerModel.rightPants.visible = playerModel.leftPants.visible = false;
             }
@@ -161,8 +161,9 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
 
     @Override
     public void scale(TrailSegmentEntity livingEntity, PoseStack poseStack, float partialTickTime) {
-        if (livingEntity.renderer instanceof LivingEntityRenderer entityRenderer) {
-            entityRenderer.scale(livingEntity.parent, poseStack, partialTickTime);
+        if (livingEntity.renderer instanceof LivingEntityRenderer entityRenderer && livingEntity.parent instanceof LivingEntity living) {
+            entityRenderer.scale(living, poseStack, partialTickTime);
+            poseStack.scale(livingEntity.scaleWidth, livingEntity.scaleHeight, livingEntity.scaleWidth);
         }
     }
 

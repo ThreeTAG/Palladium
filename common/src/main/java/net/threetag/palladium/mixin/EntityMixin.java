@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.entity.PalladiumEntityExtension;
+import net.threetag.palladium.entity.TrailHandler;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.AbilityEntry;
 import net.threetag.palladium.power.ability.AbilityUtil;
@@ -28,12 +29,16 @@ public class EntityMixin implements PalladiumEntityExtension {
     @Unique
     private EntityPropertyHandler palladium$propertyHandler;
 
+    @Unique
+    private TrailHandler palladium$trailHandler;
+
     @Shadow
     public Level level;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void init(EntityType entityType, Level level, CallbackInfo ci) {
         this.palladium$propertyHandler = new EntityPropertyHandler((Entity) (Object) this);
+        this.palladium$trailHandler = new TrailHandler((Entity) (Object) this);
     }
 
     @Inject(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V", shift = At.Shift.AFTER))
@@ -63,8 +68,21 @@ public class EntityMixin implements PalladiumEntityExtension {
         }
     }
 
+    @Inject(method = "tick", at = @At("RETURN"))
+    private void tick(CallbackInfo ci) {
+        var entity = (Entity) (Object) this;
+        if (entity.level().isClientSide && !(entity instanceof LivingEntity)) {
+            this.palladium$trailHandler.tick();
+        }
+    }
+
     @Override
     public EntityPropertyHandler palladium$getPropertyHandler() {
         return this.palladium$propertyHandler;
+    }
+
+    @Override
+    public TrailHandler palladium$getTrailHandler() {
+        return this.palladium$trailHandler;
     }
 }
