@@ -10,7 +10,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -93,7 +92,7 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
 
                     poseStack.pushPose();
                     poseStack.translate(start.x, start.y, start.z);
-                    faceVec(poseStack, start, end);
+                    RenderUtil.faceVec(poseStack, start, end);
                     poseStack.mulPose(Axis.XP.rotationDegrees(90));
                     renderBox(poseStack, vertexConsumer, (float) start.distanceTo(end), this.thickness * opacity, stage == 0 ? this.coreColor : this.glowColor, opacity, stage);
                     poseStack.popPose();
@@ -108,7 +107,7 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
 
                     poseStack.pushPose();
                     poseStack.translate(start.x, start.y, start.z);
-                    faceVec(poseStack, start, end);
+                    RenderUtil.faceVec(poseStack, start, end);
                     poseStack.mulPose(Axis.XP.rotationDegrees(90));
                     renderBox(poseStack, vertexConsumer, (float) start.distanceTo(end), this.thickness * opacity * segment.scale, stage == 0 ? this.coreColor : this.glowColor, opacity, stage);
                     poseStack.popPose();
@@ -137,19 +136,6 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
     @Environment(EnvType.CLIENT)
     public static Vec3 getOffsetPos(Entity segment, Vec3 offset) {
         return new Vec3(offset.x * segment.getBbWidth(), (segment.getBbHeight() / 2D) + (offset.y * segment.getBbHeight()), offset.z * segment.getBbWidth());
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static void faceVec(PoseStack poseStack, Vec3 src, Vec3 dst) {
-        double x = dst.x - src.x;
-        double y = dst.y - src.y;
-        double z = dst.z - src.z;
-        double diff = Mth.sqrt((float) (x * x + z * z));
-        float yaw = (float) (Math.atan2(z, x) * 180 / Math.PI) - 90;
-        float pitch = (float) -(Math.atan2(y, diff) * 180 / Math.PI);
-
-        poseStack.mulPose(Axis.YP.rotationDegrees(-yaw));
-        poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
     }
 
     @Override
@@ -200,7 +186,7 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
             int amount = GsonUtil.getAsIntMin(json, "amount", 1, 10);
             float spreadX = GsonUtil.getAsFloatMin(json, "spread_x", 0F, 1F);
             float spreadY = GsonUtil.getAsFloatMin(json, "spread_y", 0F, 1F);
-            float thickness = GsonUtil.getAsFloatMin(json, "thickness", 0.001F, 0.1F);
+            float thickness = GsonUtil.getAsFloatMin(json, "thickness", 0.001F, 0.05F);
             float glowOpacity = GsonUtil.getAsFloatRanged(json, "glow_opacity", 0F, 1F, 1F);
             float coreOpacity = GsonUtil.getAsFloatRanged(json, "core_opacity", 0F, 1F, 1F);
             boolean normalTransparency = GsonHelper.getAsBoolean(json, "normal_transparency", false);

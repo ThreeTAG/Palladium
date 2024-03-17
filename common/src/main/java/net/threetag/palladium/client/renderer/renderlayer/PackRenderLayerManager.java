@@ -40,7 +40,6 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
     private static final List<Provider> RENDER_LAYERS_PROVIDERS = new ArrayList<>();
     private static final Map<ResourceLocation, Function<JsonObject, IPackRenderLayer>> RENDER_LAYERS_PARSERS = new HashMap<>();
     private static final Map<ResourceLocation, RenderTypeFunction> RENDER_TYPES = new HashMap<>();
-    static Function<IPackRenderLayer, RenderLayerStates.State> STATE_FUNCTION = null;
     private Map<ResourceLocation, IPackRenderLayer> renderLayers = new HashMap<>();
 
     static {
@@ -91,6 +90,7 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
         registerParser(new ResourceLocation(Palladium.MOD_ID, "default"), PackRenderLayer::parse);
         registerParser(new ResourceLocation(Palladium.MOD_ID, "compound"), CompoundPackRenderLayer::parse);
         registerParser(new ResourceLocation(Palladium.MOD_ID, "skin_overlay"), SkinOverlayPackRenderLayer::parse);
+        registerParser(new ResourceLocation(Palladium.MOD_ID, "lightning_sparks"), LightningSparksRenderLayer::parse);
 
         registerRenderType(new ResourceLocation("minecraft", "solid"), (source, texture, glint) -> ItemRenderer.getArmorFoilBuffer(source, RenderType.entityTranslucent(texture), false, glint));
         registerRenderType(new ResourceLocation("minecraft", "glow"), (source, texture, glint) -> ItemRenderer.getArmorFoilBuffer(source, PalladiumRenderTypes.getGlowing(texture), false, glint));
@@ -158,10 +158,6 @@ public class PackRenderLayerManager extends SimpleJsonResourceReloadListener {
         for (Provider provider : RENDER_LAYERS_PROVIDERS) {
             provider.addRenderLayers(entity, consumer);
         }
-    }
-
-    public static void registerStateFunction(Function<IPackRenderLayer, RenderLayerStates.State> function) {
-        STATE_FUNCTION = function;
     }
 
     public interface Provider {

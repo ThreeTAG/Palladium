@@ -17,10 +17,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
-import net.threetag.palladium.client.renderer.renderlayer.AbstractPackRenderLayer;
-import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
-import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
-import net.threetag.palladium.client.renderer.renderlayer.RenderTypeFunction;
+import net.threetag.palladium.client.renderer.renderlayer.*;
 import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
 import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
 import net.threetag.palladium.util.SkinTypedValue;
@@ -65,6 +62,11 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
             return extension.palladium$getRenderLayerStates().getOrCreate(this) instanceof GeckoLayerState state ? state : null;
         }
         return null;
+    }
+
+    @Override
+    public RenderLayerStates.State createState() {
+        return new GeckoLayerState(this);
     }
 
     @Override

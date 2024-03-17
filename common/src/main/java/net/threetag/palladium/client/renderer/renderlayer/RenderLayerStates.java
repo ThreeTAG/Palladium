@@ -13,10 +13,6 @@ public class RenderLayerStates {
     private final Map<IPackRenderLayer, State> map = new HashMap<>();
 
     public void tick(LivingEntity entity) {
-        if (PackRenderLayerManager.STATE_FUNCTION == null) {
-            return;
-        }
-
         // Gather current layers
         List<IPackRenderLayer> layers = new ArrayList<>();
         PackRenderLayerManager.forEachLayer(entity, (context, layer) -> {
@@ -46,7 +42,9 @@ public class RenderLayerStates {
             this.map.remove(layer);
         }
 
-        this.map.values().forEach(State::tick);
+        for (State state : this.map.values()) {
+            state.tick(entity);
+        }
     }
 
     @Nullable
@@ -56,18 +54,19 @@ public class RenderLayerStates {
 
     @Nullable
     public State getOrCreate(IPackRenderLayer layer) {
-        if (PackRenderLayerManager.STATE_FUNCTION == null) {
-            return null;
+        if (this.map.containsKey(layer)) {
+            return this.map.get(layer);
+        } else {
+            var state = layer.createState();
+            return this.map.computeIfAbsent(layer, l -> state);
         }
-
-        return this.map.computeIfAbsent(layer, l -> PackRenderLayerManager.STATE_FUNCTION.apply(l));
     }
 
     public static class State {
 
         public int ticks;
 
-        public void tick() {
+        public void tick(LivingEntity entity) {
             this.ticks++;
         }
 

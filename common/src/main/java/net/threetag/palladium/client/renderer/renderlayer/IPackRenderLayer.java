@@ -13,8 +13,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.threetag.palladium.client.renderer.entity.HumanoidRendererModifications;
 import net.threetag.palladium.condition.*;
-import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.entity.BodyPart;
+import net.threetag.palladium.util.context.DataContext;
 
 import java.util.List;
 
@@ -40,6 +40,10 @@ public interface IPackRenderLayer {
 
     default boolean isOrContains(IPackRenderLayer layer) {
         return this == layer;
+    }
+
+    default RenderLayerStates.State createState() {
+        return null;
     }
 
     static <T extends IPackRenderLayer> T parseConditions(T layer, JsonObject json) {

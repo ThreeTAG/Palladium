@@ -14,9 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.addonpack.parser.ItemParser;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
-import net.threetag.palladium.client.renderer.renderlayer.RenderLayerStates;
 import net.threetag.palladium.compat.geckolib.armor.AddonGeoArmorItem;
-import net.threetag.palladium.compat.geckolib.renderlayer.GeckoLayerState;
 import net.threetag.palladium.compat.geckolib.renderlayer.GeckoRenderLayer;
 import software.bernie.geckolib.GeckoLib;
 
@@ -29,7 +27,6 @@ public class GeckoLibCompat {
     @Environment(EnvType.CLIENT)
     public static void initClient() {
         PackRenderLayerManager.registerParser(new ResourceLocation(GeckoLib.MOD_ID, "default"), GeckoRenderLayer::parse);
-        PackRenderLayerManager.registerStateFunction(layer -> layer instanceof GeckoRenderLayer g ? new GeckoLayerState(g) : new RenderLayerStates.State());
     }
 
     @ExpectPlatform

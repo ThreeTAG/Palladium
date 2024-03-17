@@ -73,6 +73,10 @@
           }
         ]
       }
+    },
+    "sparks": {
+      "type": "palladium:render_layer",
+      "render_layer": "test:lightning_sparks_test"
     }
   }
 }
