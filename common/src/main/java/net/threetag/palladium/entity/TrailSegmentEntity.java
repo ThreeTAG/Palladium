@@ -8,6 +8,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.threetag.palladium.client.renderer.trail.AfterImageTrailRenderer;
 import net.threetag.palladium.client.renderer.trail.TrailRenderer;
 import net.threetag.palladium.util.SizeUtil;
@@ -168,5 +169,10 @@ public class TrailSegmentEntity<T extends TrailRenderer.SegmentCache> extends Li
     @Override
     public boolean canBeHitByProjectile() {
         return false;
+    }
+
+    @Override
+    public @NotNull AABB getBoundingBoxForCulling() {
+        return this.getBoundingBox().inflate(50, 50, 50);
     }
 }
