@@ -207,7 +207,7 @@ Fallback Value</th>
 <tbody>
 <tr>
 <td>
-color</td>
+glow_color</td>
 <td>
 Color</td>
 <td>
@@ -216,6 +216,18 @@ Determines the tint/color of glow</td>
 false</td>
 <td>
 #ffffff</td>
+</tr>
+<tr>
+<td>
+glow_opacity</td>
+<td>
+Float</td>
+<td>
+Determines the (initial) opacity of a lightning glow.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1.0</td>
 </tr>
 <tr>
 <td>
@@ -228,6 +240,18 @@ Determines the tint/color of inner core</td>
 false</td>
 <td>
 #ffffff</td>
+</tr>
+<tr>
+<td>
+core_opacity</td>
+<td>
+Float</td>
+<td>
+Determines the (initial) opacity of a lightning core.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1.0</td>
 </tr>
 <tr>
 <td>
@@ -303,22 +327,22 @@ false</td>
 </tr>
 <tr>
 <td>
-opacity</td>
+normal_transparency</td>
 <td>
-Float</td>
+Boolean</td>
 <td>
-Determines the (initial) opacity of a lightning.</td>
+Can be turned on if you want to make a lightning black.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-1.0</td>
+false</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:lightning","color":"#ffffff","core_color":"#ffffff","spacing":1.0,"lifetime":20,"amount":7,"spread_x":1.0,"spread_y":1.0,"thickness":0.05,"opacity":1.0}</pre>
+{"type":"palladium:lightning","glow_color":"#ffffff","glow_opacity":1.0,"core_color":"#ffffff","core_opacity":1.0,"spacing":1.0,"lifetime":20,"amount":7,"spread_x":1.0,"spread_y":1.0,"thickness":0.05,"normal_transparency":false}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

@@ -31,6 +31,16 @@ public class PalladiumRenderTypes extends RenderType {
             .setLayeringState(POLYGON_OFFSET_LAYERING)
             .createCompositeState(true));
 
+    public static final RenderType LASER_NORMAL_TRANSPARENCY = create(Palladium.MOD_ID + ":laser_normal_transparency  ", DefaultVertexFormat.POSITION_COLOR_LIGHTMAP, VertexFormat.Mode.QUADS, 256, false, true, RenderType.CompositeState.builder()
+            .setShaderState(RENDERTYPE_LIGHTNING_SHADER)
+            .setTextureState(NO_TEXTURE)
+            .setCullState(NO_CULL)
+            .setWriteMaskState(COLOR_DEPTH_WRITE)
+            .setLightmapState(LIGHTMAP)
+            .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+            .setLayeringState(POLYGON_OFFSET_LAYERING)
+            .createCompositeState(true));
+
     private static final Function<ResourceLocation, RenderType> ARMOR_CUTOUT_NO_CULL_TRANSPARENCY = Util.memoize(
             resourceLocation -> {
                 CompositeState compositeState = CompositeState.builder()
