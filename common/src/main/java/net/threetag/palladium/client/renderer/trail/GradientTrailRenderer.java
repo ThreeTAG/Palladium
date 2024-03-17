@@ -116,6 +116,9 @@ public class GradientTrailRenderer extends TrailRenderer<TrailRenderer.SegmentCa
 
         @Override
         public void generateDocumentation(JsonDocumentationBuilder builder) {
+            builder.setTitle("Gradient Trail");
+            builder.setDescription("Renders a simple, colored gradient trail.");
+
             builder.addProperty("color", Color.class)
                     .description("Determines the tint/color of the gradient")
                     .fallback(Color.WHITE, "#ffffff").exampleJson(new JsonPrimitive("#ffffff"));
