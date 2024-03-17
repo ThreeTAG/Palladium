@@ -79,7 +79,7 @@ Determines the tint/color of the after image</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-java.awt.Color[r=255,g=255,b=255]</td>
+#ffffff</td>
 </tr>
 <tr>
 <td>
@@ -117,12 +117,24 @@ false</td>
 <td>
 20</td>
 </tr>
+<tr>
+<td>
+opacity</td>
+<td>
+Float</td>
+<td>
+Determines the (initial) opacity of the after image.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.5</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:after_image","color":"#ffffff","mimic_player":null,"spacing":null,"lifetime":null}</pre>
+{"type":"palladium:after_image","color":"#ffffff","mimic_player":false,"spacing":false,"lifetime":20,"opacity":0.5}</pre>
 </div>
 <hr>
 
@@ -166,7 +178,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:compound","trails":null}</pre>
+{"type":"palladium:compound","trails":[]}</pre>
 </div>
 <hr>
 
@@ -203,7 +215,7 @@ Determines the tint/color of glow</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-java.awt.Color[r=255,g=255,b=255]</td>
+#ffffff</td>
 </tr>
 <tr>
 <td>
@@ -215,7 +227,7 @@ Determines the tint/color of inner core</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-java.awt.Color[r=255,g=255,b=255]</td>
+#ffffff</td>
 </tr>
 <tr>
 <td>
@@ -289,12 +301,24 @@ false</td>
 <td>
 0.05</td>
 </tr>
+<tr>
+<td>
+opacity</td>
+<td>
+Float</td>
+<td>
+Determines the (initial) opacity of a lightning.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1.0</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:lightning","color":"#ffffff","core_color":"#ffffff","spacing":null,"lifetime":null,"amount":null,"spread_x":null,"spread_y":null,"thickness":null}</pre>
+{"type":"palladium:lightning","color":"#ffffff","core_color":"#ffffff","spacing":1.0,"lifetime":20,"amount":7,"spread_x":1.0,"spread_y":1.0,"thickness":0.05,"opacity":1.0}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

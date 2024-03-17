@@ -1,5 +1,6 @@
 package net.threetag.palladium.client.renderer.trail;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
@@ -53,7 +54,8 @@ public class CompoundTrailRenderer extends TrailRenderer {
             builder.setDescription("Can be used to merge multiple trails into one file.");
 
             builder.addProperty("trails", TrailRenderer[].class)
-                    .description("Can be used to merge multiple trails into one file. Simply declare them in this array");
+                    .description("Can be used to merge multiple trails into one file. Simply declare them in this array")
+                    .exampleJson(new JsonArray());
         }
 
         @Override

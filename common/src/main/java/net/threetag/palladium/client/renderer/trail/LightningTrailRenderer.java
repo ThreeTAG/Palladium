@@ -36,8 +36,9 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
     private final int amount;
     private final float spreadX, spreadY;
     private final float thickness;
+    private final float opacity;
 
-    public LightningTrailRenderer(Color color, Color coreColor, float spacing, int lifetime, int amount, float spreadX, float spreadY, float thickness) {
+    public LightningTrailRenderer(Color color, Color coreColor, float spacing, int lifetime, int amount, float spreadX, float spreadY, float thickness, float opacity) {
         this.color = color;
         this.coreColor = coreColor;
         this.spacing = spacing;
@@ -46,6 +47,7 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
         this.spreadX = spreadX;
         this.spreadY = spreadY;
         this.thickness = thickness;
+        this.opacity = opacity;
     }
 
     @Override
@@ -81,7 +83,7 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
                     poseStack.translate(start.x, start.y, start.z);
                     faceVec(poseStack, start, end);
                     poseStack.mulPose(Axis.XP.rotationDegrees(90));
-                    renderBox(poseStack, vertexConsumer, (float) start.distanceTo(end), this.thickness * opacity, stage == 0 ? this.coreColor : this.color, opacity, stage);
+                    renderBox(poseStack, vertexConsumer, (float) start.distanceTo(end), this.thickness * opacity, stage == 0 ? this.coreColor : this.color, opacity * this.opacity, stage);
                     poseStack.popPose();
                 }
             }
@@ -185,7 +187,8 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
             float spreadX = GsonUtil.getAsFloatMin(json, "spread_x", 0F, 1F);
             float spreadY = GsonUtil.getAsFloatMin(json, "spread_y", 0F, 1F);
             float thickness = GsonUtil.getAsFloatMin(json, "thickness", 0.001F, 0.1F);
-            return new LightningTrailRenderer(color, coreColor, spacing, lifetime, amount, spreadX, spreadY, thickness);
+            float opacity = GsonUtil.getAsFloatRanged(json, "opacity", 0F, 1F, 1F);
+            return new LightningTrailRenderer(color, coreColor, spacing, lifetime, amount, spreadX, spreadY, thickness, opacity);
         }
 
         @Override
@@ -195,28 +198,31 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
 
             builder.addProperty("color", Color.class)
                     .description("Determines the tint/color of glow")
-                    .fallback(Color.WHITE).exampleJson(new JsonPrimitive("#ffffff"));
+                    .fallback(Color.WHITE, "#ffffff").exampleJson(new JsonPrimitive("#ffffff"));
             builder.addProperty("core_color", Color.class)
                     .description("Determines the tint/color of inner core")
-                    .fallback(Color.WHITE).exampleJson(new JsonPrimitive("#ffffff"));
+                    .fallback(Color.WHITE, "#ffffff").exampleJson(new JsonPrimitive("#ffffff"));
             builder.addProperty("spacing", Float.class)
                     .description("Determines the space between two trail segments")
-                    .fallback(1F);
+                    .fallback(1F).exampleJson(new JsonPrimitive(1F));
             builder.addProperty("lifetime", Integer.class)
                     .description("Determines how long one trail segment stays alive (in ticks)")
-                    .fallback(20);
+                    .fallback(20).exampleJson(new JsonPrimitive(20));
             builder.addProperty("amount", Integer.class)
                     .description("Determines how many lightnings the entity will generate behind it")
-                    .fallback(7);
+                    .fallback(7).exampleJson(new JsonPrimitive(7));
             builder.addProperty("spread_x", Float.class)
                     .description("Determines the spread of a lightning position relative to the player on the X/horizontal axis. 1 means across the normal player hitbox, 0 means always in the middle.")
-                    .fallback(1F);
+                    .fallback(1F).exampleJson(new JsonPrimitive(1F));
             builder.addProperty("spread_y", Float.class)
                     .description("Determines the spread of a lightning position relative to the player on the Y/vertical axis. 1 means across the normal player hitbox, 0 means always in the middle.")
-                    .fallback(1F);
+                    .fallback(1F).exampleJson(new JsonPrimitive(1F));
             builder.addProperty("thickness", Float.class)
                     .description("Determines the thickness of one lightning bolt.")
-                    .fallback(0.05F);
+                    .fallback(0.05F).exampleJson(new JsonPrimitive(0.05F));
+            builder.addProperty("opacity", Float.class)
+                    .description("Determines the (initial) opacity of a lightning.")
+                    .fallback(1F).exampleJson(new JsonPrimitive(1F));
         }
 
         @Override
