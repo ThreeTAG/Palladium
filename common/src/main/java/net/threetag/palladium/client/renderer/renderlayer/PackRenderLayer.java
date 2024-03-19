@@ -25,6 +25,8 @@ import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 
+import java.util.function.Consumer;
+
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class PackRenderLayer extends AbstractPackRenderLayer {
 
@@ -84,6 +86,17 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
                     humanoidModel.leftArm.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
                 }
             }
+        }
+    }
+
+    @Override
+    public void createSnapshot(DataContext context, EntityModel<Entity> parentModel, Consumer<Snapshot> consumer) {
+        var entity = context.getEntity();
+
+        if (IPackRenderLayer.conditionsFulfilled(entity, this.conditions, this.firstPersonConditions) && this.modelLookup.get(entity).fitsEntity(entity, parentModel)) {
+            EntityModel<Entity> entityModel = this.model.get(entity);
+            var texture = this.texture.get(entity).getTexture(context);
+            consumer.accept(new Snapshot(entityModel, texture));
         }
     }
 

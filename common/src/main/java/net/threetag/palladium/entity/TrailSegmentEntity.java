@@ -1,5 +1,7 @@
 package net.threetag.palladium.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -9,12 +11,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.trail.AfterImageTrailRenderer;
 import net.threetag.palladium.client.renderer.trail.TrailRenderer;
 import net.threetag.palladium.util.SizeUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -37,6 +42,8 @@ public class TrailSegmentEntity<T extends TrailRenderer.SegmentCache> extends Li
     public float scaleHeight = 1F;
     public float scaleWidth = 1F;
     public float scale = 1F;
+    public boolean snapshotsGathered = false;
+    private final List<Object> renderLayerSnapshots = new ArrayList<>();
 
     public TrailSegmentEntity(EntityType<? extends LivingEntity> entityType, Level level) {
         super(entityType, level);
@@ -85,6 +92,16 @@ public class TrailSegmentEntity<T extends TrailRenderer.SegmentCache> extends Li
                 this.items.put(slot, ItemStack.EMPTY);
             }
         }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void addSnapshot(IPackRenderLayer.Snapshot snapshot) {
+        this.renderLayerSnapshots.add(snapshot);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public List<Object> getRenderLayerSnapshots() {
+        return this.renderLayerSnapshots;
     }
 
     @Override

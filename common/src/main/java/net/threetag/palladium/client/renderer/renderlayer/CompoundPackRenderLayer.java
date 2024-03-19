@@ -17,6 +17,7 @@ import net.threetag.palladium.util.context.DataContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public final class CompoundPackRenderLayer extends AbstractPackRenderLayer {
 
@@ -60,6 +61,13 @@ public final class CompoundPackRenderLayer extends AbstractPackRenderLayer {
         }
 
         return bodyParts;
+    }
+
+    @Override
+    public void createSnapshot(DataContext context, EntityModel<Entity> parentModel, Consumer<Snapshot> consumer) {
+        for (IPackRenderLayer layer : this.layers) {
+            layer.createSnapshot(context, parentModel, consumer);
+        }
     }
 
     public static CompoundPackRenderLayer parse(JsonObject json) {

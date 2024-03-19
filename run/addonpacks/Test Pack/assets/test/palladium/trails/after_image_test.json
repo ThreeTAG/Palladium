@@ -2,6 +2,6 @@
   "type": "palladium:after_image",
   "spacing": 2,
   "lifetime": 20,
-  "mimic_player": false,
-  "color": [255, 0, 0]
+  "mimic_player": true,
+  "color": "#ffffff"
 }

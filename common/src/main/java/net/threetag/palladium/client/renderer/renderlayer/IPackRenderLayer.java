@@ -3,9 +3,13 @@ package net.threetag.palladium.client.renderer.renderlayer;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
@@ -14,9 +18,13 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.threetag.palladium.client.renderer.entity.HumanoidRendererModifications;
 import net.threetag.palladium.condition.*;
 import net.threetag.palladium.entity.BodyPart;
+import net.threetag.palladium.mixin.client.AgeableListModelInvoker;
 import net.threetag.palladium.util.context.DataContext;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 public interface IPackRenderLayer {
 
@@ -44,6 +52,10 @@ public interface IPackRenderLayer {
 
     default RenderLayerStates.State createState() {
         return null;
+    }
+
+    default void createSnapshot(DataContext context, EntityModel<Entity> parentModel, Consumer<Snapshot> consumer) {
+
     }
 
     static <T extends IPackRenderLayer> T parseConditions(T layer, JsonObject json) {
@@ -121,6 +133,54 @@ public interface IPackRenderLayer {
 
         PerspectiveConditionContext(String key) {
             this.key = key;
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    class Snapshot {
+
+        private final EntityModel<?> model;
+        private final ResourceLocation texture;
+        private final Map<ModelPart, PartPose> poseMap = new HashMap<>();
+
+        public Snapshot(EntityModel<?> model, ResourceLocation texture) {
+            this.model = model;
+            this.texture = texture;
+
+            if (model instanceof AgeableListModelInvoker ageable) {
+                for (ModelPart part : ageable.invokeHeadParts()) {
+                    this.storePose(part);
+                }
+
+                for (ModelPart part : ageable.invokeBodyParts()) {
+                    this.storePose(part);
+                }
+            } else if (model instanceof HierarchicalModel hierarchical) {
+                for (ModelPart part : hierarchical.root().children.values()) {
+                    this.storePose(part);
+                }
+            }
+        }
+
+        private void storePose(ModelPart part) {
+            this.poseMap.put(part, part.storePose());
+            for (ModelPart child : part.children.values()) {
+                storePose(child);
+            }
+        }
+
+        public void applyPoses() {
+            for (Map.Entry<ModelPart, PartPose> e : this.poseMap.entrySet()) {
+                e.getKey().loadPose(e.getValue());
+            }
+        }
+
+        public EntityModel<?> getModel() {
+            return model;
+        }
+
+        public ResourceLocation getTexture() {
+            return texture;
         }
     }
 

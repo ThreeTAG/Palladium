@@ -16,11 +16,13 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.trail.AfterImageTrailRenderer;
 import net.threetag.palladium.client.renderer.trail.TrailRenderer;
 import net.threetag.palladium.entity.TrailSegmentEntity;
@@ -136,10 +138,11 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
         boolean bl2 = !bl && !entity.isInvisibleTo(minecraft.player);
         boolean bl3 = minecraft.shouldEntityAppearGlowing(entity);
         RenderType renderType = this.getRenderType(entity, bl, bl2, bl3);
+        var color = entity.trailRenderer.getColor();
+
         if (renderType != null) {
             VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
             int m = getOverlayCoords(entity, this.getWhiteOverlayProgress(entity, partialTicks));
-            var color = entity.trailRenderer.getColor();
 
             if (!entity.mimicPlayer && this.model instanceof PlayerModel playerModel) {
                 playerModel.hat.visible = playerModel.jacket.visible = playerModel.rightSleeve.visible =
@@ -153,6 +156,14 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
             for (RenderLayer<TrailSegmentEntity<?>, EntityModel<TrailSegmentEntity<?>>> layer : this.layers) {
                 RenderLayer renderLayer = layer;
                 renderLayer.render(poseStack, buffer, packedLight, entity, entity.limbSwing, entity.limbSwingAmount, partialTicks, entity.ageInTicks, entity.netHeadYaw, entity.headPitch);
+            }
+
+            for (Object s : entity.getRenderLayerSnapshots()) {
+                IPackRenderLayer.Snapshot snapshot = (IPackRenderLayer.Snapshot) s;
+                snapshot.applyPoses();
+                poseStack.pushPose();
+                snapshot.getModel().renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucent(snapshot.getTexture())), packedLight, OverlayTexture.NO_OVERLAY, color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 1.0F);
+                poseStack.popPose();
             }
         }
 
