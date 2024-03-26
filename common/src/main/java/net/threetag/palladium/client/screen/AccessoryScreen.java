@@ -26,6 +26,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.client.screen.components.EditButton;
@@ -55,32 +56,34 @@ public class AccessoryScreen extends OptionsSubScreen {
 
     public static void addButton() {
         ScreenEvents.INIT_POST.register((screen) -> {
-            Button button = null;
-            Component text = Component.translatable("gui.palladium.accessories");
+            if (PalladiumConfig.Client.ACCESSORY_BUTTON.get()) {
+                Button button = null;
+                Component text = Component.translatable("gui.palladium.accessories");
 
-            if (screen instanceof SkinCustomizationScreen) {
-                button = Button.builder(text, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen))).bounds(screen.width / 2 - 100, screen.height / 6 + 24 * (12 >> 1), 200, 20).build();
-            }
+                if (screen instanceof SkinCustomizationScreen) {
+                    button = Button.builder(text, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen))).bounds(screen.width / 2 - 100, screen.height / 6 + 24 * (12 >> 1), 200, 20).build();
+                }
 
-            if (screen instanceof InventoryScreen inv) {
-                button = new EditButton(inv.leftPos + 63, inv.topPos + 66, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen)));
-                button.setTooltip(Tooltip.create(text));
-            }
+                if (screen instanceof InventoryScreen inv) {
+                    button = new EditButton(inv.leftPos + 63, inv.topPos + 66, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen)));
+                    button.setTooltip(Tooltip.create(text));
+                }
 
-            if (screen instanceof CreativeModeInventoryScreen inv) {
-                button = new EditButton(inv.leftPos + 93, inv.topPos + 37, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen))) {
-                    @Override
-                    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-                        this.visible = CreativeModeInventoryScreen.selectedTab == BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.INVENTORY);
-                        super.render(guiGraphics, mouseX, mouseY, partialTick);
-                    }
-                };
-                button.setTooltip(Tooltip.create(text));
-            }
+                if (screen instanceof CreativeModeInventoryScreen inv) {
+                    button = new EditButton(inv.leftPos + 93, inv.topPos + 37, b -> Minecraft.getInstance().setScreen(new AccessoryScreen(screen))) {
+                        @Override
+                        public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+                            this.visible = CreativeModeInventoryScreen.selectedTab == BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.INVENTORY);
+                            super.render(guiGraphics, mouseX, mouseY, partialTick);
+                        }
+                    };
+                    button.setTooltip(Tooltip.create(text));
+                }
 
-            if (button != null) {
-                button.active = Minecraft.getInstance().player != null && !Accessory.getAvailableAccessories(SupporterHandler.getPlayerData(Minecraft.getInstance().player.getGameProfile().getId())).isEmpty();
-                screen.addRenderableWidget(button);
+                if (button != null) {
+                    button.active = Minecraft.getInstance().player != null && !Accessory.getAvailableAccessories(SupporterHandler.getPlayerData(Minecraft.getInstance().player.getGameProfile().getId())).isEmpty();
+                    screen.addRenderableWidget(button);
+                }
             }
         });
     }

@@ -9,11 +9,13 @@ public class PalladiumConfig {
 
         public static ForgeConfigSpec.EnumValue<AbilityBarRenderer.Position> ABILITY_BAR_POSITION;
         public static ForgeConfigSpec.BooleanValue ADDON_PACK_DEV_MODE;
+        public static ForgeConfigSpec.BooleanValue ACCESSORY_BUTTON;
 
         public static ForgeConfigSpec generateConfig() {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
             ABILITY_BAR_POSITION = builder.defineEnum("abilityBarPosition", AbilityBarRenderer.Position.BOTTOM_RIGHT);
             ADDON_PACK_DEV_MODE = builder.define("addonPackDevMode", false);
+            ACCESSORY_BUTTON = builder.define("accessoryButton", true);
             return builder.build();
         }
 
