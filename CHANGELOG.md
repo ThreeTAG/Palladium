@@ -1,7 +1,4 @@
-- Added option "auto_increase_interval" for energy bars
-- Added option to make energy bar depend on score/property
-- Added item_in_slot_open condition
-- Added "model_type" option to skin_change ability
-- Fixed suit stand not having data synced correctly after reloading
-- Marked has_tag condition as server-side only
-- Fixed KJS scripts overriding other namespaces
+- Added Trails! Check wiki for more info
+- Added "lightning_sparks" render layer type
+- Palladium can now load Bedrock's entity models! No more need for the Palladium BlockBench plugin
+- Added config option to disable accessory button in inventory
