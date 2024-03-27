@@ -1,4 +1,15 @@
 {
-  "textures": "test:textures/models/armor/wood_layer_1.png",
+  "textures": {
+    "default": {
+      "base": "test:textures/models/armor/#TEST_layer_1.png",
+      "variables": {
+        "TEST": {
+          "type": "palladium:accessory",
+          "accessory_slot": "test:accessory_variable_test",
+          "fallback_value": "wood"
+        }
+      }
+    }
+  },
   "model_layers": "palladium:humanoid#suit"
 }
