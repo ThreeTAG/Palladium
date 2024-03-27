@@ -17,6 +17,9 @@ dependencies {
     // Forge Config API Port
     modApi "fuzs.forgeconfigapiport:forgeconfigapiport-common:${rootProject.forge_config_api_port_version}"
 
+    // Mocha
+    modImplementation("team.unnamed:mocha:3.0.0-SNAPSHOT")
+
     // Player Animator
     modCompileOnly("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_anim_version}")
 

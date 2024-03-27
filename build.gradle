@@ -43,6 +43,9 @@ allprojects {
         // NeoForge
         maven { url "https://maven.neoforged.net/releases/" }
 
+        // Mocha
+        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+
         // KubeJS / Rhino
         maven {
             // saps.dev Maven (KubeJS and Rhino)
