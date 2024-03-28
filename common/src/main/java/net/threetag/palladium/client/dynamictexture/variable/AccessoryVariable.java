@@ -11,6 +11,7 @@ import net.threetag.palladium.accessory.AccessoryPlayerData;
 import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.context.DataContext;
+import net.threetag.palladium.util.json.GsonUtil;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -18,9 +19,10 @@ import java.util.Comparator;
 import java.util.Optional;
 
 public class AccessoryVariable implements ITextureVariable {
-    private final String accessorySlot, fallbackValue, splitValue;
+    private final AccessorySlot accessorySlot;
+    private final String fallbackValue, splitValue;
 
-    public AccessoryVariable(String accessorySlot, String fallbackValue, String splitValue) {
+    public AccessoryVariable(AccessorySlot accessorySlot, String fallbackValue, String splitValue) {
         this.accessorySlot = accessorySlot;
         this.fallbackValue = fallbackValue;
         this.splitValue = splitValue;
@@ -31,7 +33,7 @@ public class AccessoryVariable implements ITextureVariable {
         Optional<AccessoryPlayerData> dataOptional = Accessory.getPlayerData(context.getPlayer());
         if (dataOptional.isEmpty()) return "";
         AccessoryPlayerData data = dataOptional.get();
-        Collection<Accessory> accessories = data.accessories.get(AccessorySlot.getSlotByName(ResourceLocation.of(accessorySlot, ':')));
+        Collection<Accessory> accessories = data.accessories.get(accessorySlot);
         if (accessories == null || accessories.isEmpty()) return fallbackValue;
 
         StringBuilder result = new StringBuilder();
@@ -48,7 +50,7 @@ public class AccessoryVariable implements ITextureVariable {
         @Override
         public ITextureVariable parse(JsonObject json) {
             return new AccessoryVariable(
-                    GsonHelper.getAsString(json, "accessory_slot"),
+                    GsonUtil.getAsAccessorySlot(json, "accessory_slot"),
                     GsonHelper.getAsString(json, "fallback_value", ""),
                     GsonHelper.getAsString(json, "split_value", "_")
             );
