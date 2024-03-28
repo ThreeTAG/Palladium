@@ -1,0 +1,20 @@
+{
+  "name": "Accessory Selected Test",
+  "icon": "minecraft:end_rod",
+  "abilities": {
+    "jump_power": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:jump_power",
+      "uuid": "6c05c4b8-1984-f541-8bac-aa2b059e33d0",
+      "amount": 3,
+      "operation": 0,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:accessory_selected",
+          "accessory_slot": "test:accessory_variable_test",
+          "accessory": "test:wood"
+        }
+      }
+    }
+  }
+}

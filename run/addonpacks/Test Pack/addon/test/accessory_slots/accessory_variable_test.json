@@ -1,0 +1,11 @@
+{
+  "icon": "palladium:textures/gui/accessory_slots/chest.png",
+  "menu_visibility": {
+    "type": "palladium:item_in_slot",
+    "item": {
+      "item": "test:wooden_chestplate"
+    },
+    "slot": "chest"
+  },
+  "allows_multiple": true
+}

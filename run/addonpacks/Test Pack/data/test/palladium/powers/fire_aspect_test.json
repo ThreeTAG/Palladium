@@ -1,0 +1,12 @@
+{
+  "name": "Fire Aspect Test",
+  "icon": "minecraft:flint_and_steel",
+  "abilities": {
+    "fire_aspect": {
+      "type": "palladium:fire_aspect",
+      "time": 5,
+      "should_stack_time":  true,
+      "max_time": 30
+    }
+  }
+}

@@ -12,5 +12,8 @@
   "block.test.test_glass": "Test Glass",
   "suitset.test.wood": "Wooden Armor",
   "accessory.test.test": "Test Accessory",
-  "accessory_slot.test.render_layer_switch_test": "Render Layer Switch Test"
+  "accessory_slot.test.render_layer_switch_test": "Render Layer Switch Test",
+  "accessory.test.wood": "Oak Chestplate",
+  "accessory.test.birch": "Birch Chestplate",
+  "accessory_slot.test.accessory_variable_test": "Accessory Variable Test"
 }

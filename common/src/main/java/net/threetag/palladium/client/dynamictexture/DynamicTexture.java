@@ -53,6 +53,7 @@ public abstract class DynamicTexture {
         registerVariable(new ObjectiveScoreTextureVariable.Serializer());
         registerVariable(new AnimationTimerAbilityVariable.Serializer());
         registerVariable(new EnergyBarTextureVariable.Serializer());
+        registerVariable(new AccessoryVariable.Serializer());
     }
 
     public abstract ResourceLocation getTexture(DataContext context);

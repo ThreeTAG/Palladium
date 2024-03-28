@@ -1,4 +1,46 @@
 {
-  "textures": "test:textures/models/armor/wood_layer_1.png",
-  "model_layers": "palladium:humanoid#suit"
+  "textures": {
+    "default": {
+      "base": "test:textures/models/armor/#TEST_layer_1.png",
+      "variables": {
+        "TEST": {
+          "type": "palladium:accessory",
+          "accessory_slot": "test:accessory_variable_test",
+          "fallback_value": "wood"
+        }
+      }
+    }
+  },
+  "model_layers": {
+    "default": "palladium:humanoid#suit",
+    "slim": "palladium:humanoid#suit",
+    "tight": "palladium:humanoid#tight_suit",
+    "tight_slim": "palladium:humanoid#tight_suit_slim"
+  },
+  "conditions": [
+    {
+      "model_layer": "tight_slim",
+      "if": {
+        "type": "palladium:accessory_selected",
+        "accessory_slot": "test:accessory_variable_test",
+        "accessory": "test:birch"
+      }
+    },
+    {
+      "model_layer": "tight_slim",
+      "if": {
+        "type": "palladium:and",
+        "conditions": [
+          {
+            "type": "palladium:small_arms"
+          },
+          {
+            "type": "palladium:accessory_selected",
+            "accessory_slot": "test:accessory_variable_test",
+            "accessory": "test:birch"
+          }
+        ]
+      }
+    }
+  ]
 }

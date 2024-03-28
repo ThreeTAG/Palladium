@@ -115,6 +115,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.INTANGIBILITY, "Intangibility");
             this.addAbility(Abilities.NAME_CHANGE, "Name Change");
             this.addAbility(Abilities.SCULK_IMMUNITY, "Sculk Immunity");
+            this.addAbility(Abilities.FIRE_ASPECT, "Fire Aspect");
             this.add("ability.geckolib.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib.armor_animation", "Gecko Armor Animation");
 

@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.power.ability.AbilityReference;
 import net.threetag.palladium.util.ModelLayerLocationUtil;
@@ -401,6 +402,14 @@ public class GsonUtil {
 
     public static Color getAsColor(JsonObject json, String memberName, @org.jetbrains.annotations.Nullable Color fallback) {
         return json.has(memberName) ? getAsColor(json, memberName) : fallback;
+    }
+
+    public static AccessorySlot getAsAccessorySlot(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            return AccessorySlot.getSlotByName(getAsResourceLocation(json, memberName));
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find an accessory slot");
+        }
     }
 
     public static void ifHasKey(JsonObject json, String memberName, Consumer<JsonElement> consumer) {

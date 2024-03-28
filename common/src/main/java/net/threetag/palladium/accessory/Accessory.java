@@ -49,6 +49,11 @@ public abstract class Accessory {
         return Component.translatable(Util.makeDescriptionId("accessory", REGISTRY.getKey(this)));
     }
 
+    @Override
+    public String toString() {
+        return REGISTRY.getKey(this).toString();
+    }
+
     public Accessory setExclusive() {
         this.exclusive = true;
         return this;
