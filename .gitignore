@@ -27,7 +27,7 @@ run/addonpacks/*
 
 !run/mods
 run/mods/*
-!run/mods/documentation
+run/mods/documentation
 
 !run/config
 run/config/*
