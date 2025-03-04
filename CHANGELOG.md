@@ -1,2 +1,1 @@
-- Added XOR condition
-- Bug fixes
+- Added immortality ability
