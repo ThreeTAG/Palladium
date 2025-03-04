@@ -118,6 +118,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SCULK_IMMUNITY, "Sculk Immunity");
             this.addAbility(Abilities.FIRE_ASPECT, "Fire Aspect");
             this.addAbility(Abilities.PARTICLES, "Particles");
+            this.addAbility(Abilities.IMMORTALITY, "Immortality");
             this.add("ability.geckolib.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib.armor_animation", "Gecko Armor Animation");
 
@@ -308,6 +309,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SCULK_IMMUNITY, "Sculk-Immunität");
             this.addAbility(Abilities.FIRE_ASPECT, "Verbrennung");
             this.addAbility(Abilities.PARTICLES, "Partikel");
+            this.addAbility(Abilities.IMMORTALITY, "Unsterblichkeit");
             this.add("ability.geckolib.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib.armor_animation", "Gecko Armor Animation");
 
@@ -498,6 +500,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SCULK_IMMUNITY, "Sculk-Immunität");
             this.addAbility(Abilities.FIRE_ASPECT, "Vorbrennung");
             this.addAbility(Abilities.PARTICLES, "Partikel");
+            this.addAbility(Abilities.IMMORTALITY, "Unsterblichkeht");
             this.add("ability.geckolib.render_layer_animation", "Gecko Render Layer Animation");
             this.add("ability.geckolib.armor_animation", "Gecko Armor Animation");
 

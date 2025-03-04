@@ -2,6 +2,8 @@ package net.threetag.palladium.mixin;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -11,6 +13,8 @@ import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.entity.PalladiumEntityExtension;
 import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
 import net.threetag.palladium.power.PowerHandler;
+import net.threetag.palladium.power.ability.Abilities;
+import net.threetag.palladium.power.ability.AbilityUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,6 +40,10 @@ public abstract class LivingEntityMixin implements PalladiumLivingEntityExtensio
 
     @Shadow public abstract void indicateDamage(double xDistance, double zDistance);
 
+    @Shadow public abstract void setHealth(float health);
+
+    @Shadow public abstract boolean removeAllEffects();
+
     @Inject(method = "<init>", at = @At("RETURN"))
     public void init(EntityType entityType, Level level, CallbackInfo ci) {
         this.palladium$powerHandler = new PowerHandler((LivingEntity) (Object) this);
@@ -47,6 +55,16 @@ public abstract class LivingEntityMixin implements PalladiumLivingEntityExtensio
         if (this.getAttributes().hasAttribute(PalladiumAttributes.JUMP_POWER.get())) {
             var instance = this.getAttributes().getInstance(PalladiumAttributes.JUMP_POWER.get());
             cir.setReturnValue((float) Objects.requireNonNull(instance).getValue() * cir.getReturnValue());
+        }
+    }
+
+    @SuppressWarnings("ConstantValue")
+    @Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)
+    private void checkTotemDeathProtection(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
+        if(!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && AbilityUtil.isTypeEnabled((LivingEntity) (Object) this, Abilities.IMMORTALITY.get())) {
+            this.setHealth(1.0F);
+            this.removeAllEffects();
+            cir.setReturnValue(true);
         }
     }
 
