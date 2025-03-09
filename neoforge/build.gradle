@@ -54,6 +54,9 @@ dependencies {
     // MidnightLib
     modImplementation include ("maven.modrinth:midnightlib:${rootProject.midnightlib_version}-neoforge")
 
+    // GeckoLib
+    modImplementation "software.bernie.geckolib:geckolib-neoforge-${rootProject.minecraft_version}:${rootProject.geckolib_version}"
+
     // Player Animator
 //    modImplementation include("dev.kosmx.player-anim:player-animation-lib-forge:${rootProject.player_animator_version}")
 

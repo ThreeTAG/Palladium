@@ -1,17 +1,14 @@
 package net.threetag.palladium.entity;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.util.PlayerUtil;
 
 import java.util.Objects;
-import java.util.function.Function;
 
 public class SkinTypedValue<T> {
 
@@ -37,6 +34,10 @@ public class SkinTypedValue<T> {
 
     public T get(boolean slim) {
         return slim ? this.getSlim() : this.getWide();
+    }
+
+    public T get(DataContext context) {
+        return this.get(context.getEntity());
     }
 
     public T get(Entity entity) {

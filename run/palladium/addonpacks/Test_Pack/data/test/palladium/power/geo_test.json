@@ -1,0 +1,14 @@
+{
+  "name": "Gecko Test",
+  "icon": "minecraft:bread",
+  "abilities": {
+    "layer": {
+      "type": "palladium:dummy",
+      "properties": {
+        "render_layer": "test:geo_test",
+        "title": "Layer",
+        "list_index": 0
+      }
+    }
+  }
+}

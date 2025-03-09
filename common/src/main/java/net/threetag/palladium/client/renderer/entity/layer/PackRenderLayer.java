@@ -47,12 +47,12 @@ public abstract class PackRenderLayer<T extends PackRenderLayer.State> {
 
     public static class State {
 
-        public final PackRenderLayer renderLayer;
+        public final PackRenderLayer<?> renderLayer;
         private DataContext context;
         public int ticks = 0;
         protected boolean markedForRemoval = false;
 
-        public State(PackRenderLayer renderLayer, DataContext context) {
+        public State(PackRenderLayer<?> renderLayer, DataContext context) {
             this.renderLayer = renderLayer;
             this.context = context;
         }

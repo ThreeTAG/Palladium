@@ -24,6 +24,9 @@ accessible field net/minecraft/server/packs/repository/BuiltInPackSource packTyp
 # GameRenderer
 accessible method net/minecraft/client/renderer/GameRenderer setPostEffect (Lnet/minecraft/resources/ResourceLocation;)V
 
+# LevelRenderer
+accessible method net/minecraft/client/renderer/LevelRenderer shouldShowEntityOutlines ()Z
+
 # EntityRenderDispatcher
 accessible field net/minecraft/client/renderer/entity/EntityRenderDispatcher equipmentAssets Lnet/minecraft/client/resources/model/EquipmentAssetManager;
 
