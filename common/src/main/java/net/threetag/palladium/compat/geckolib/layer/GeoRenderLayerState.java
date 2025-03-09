@@ -1,4 +1,4 @@
-package net.threetag.palladium.compat.geckolib;
+package net.threetag.palladium.compat.geckolib.layer;
 
 import net.minecraft.client.Minecraft;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayer;

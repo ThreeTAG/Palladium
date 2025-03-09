@@ -1,14 +1,18 @@
 package net.threetag.palladium.compat.geckolib;
 
-import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerializer;
-import software.bernie.geckolib.GeckoLibConstants;
+import net.threetag.palladium.compat.geckolib.ability.GeoLayerAnimationTriggerAbility;
+import net.threetag.palladium.core.registry.DeferredRegister;
+import net.threetag.palladium.core.registry.RegistryHolder;
+import net.threetag.palladium.power.ability.AbilitySerializer;
+import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 public class GeckoLibCompat {
 
-    public static final PackRenderLayerSerializer<GeoRenderLayer> RENDER_LAYER = PackRenderLayerSerializer.register(GeckoLibConstants.id("render_layer"), new GeoRenderLayer.Serializer());
+    private static final DeferredRegister<AbilitySerializer<?>> ABILITIES = DeferredRegister.create("geckolib", PalladiumRegistryKeys.ABILITY_SERIALIZER);
+    public static final RegistryHolder<AbilitySerializer<GeoLayerAnimationTriggerAbility>> TRIGGER_LAYER_ANIMATION = ABILITIES.register("trigger_layer_animation", GeoLayerAnimationTriggerAbility.Serializer::new);
 
     public static void init() {
-
+        ABILITIES.register();
     }
 
 }

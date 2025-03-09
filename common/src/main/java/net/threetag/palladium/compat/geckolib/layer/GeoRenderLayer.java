@@ -1,4 +1,4 @@
-package net.threetag.palladium.compat.geckolib;
+package net.threetag.palladium.compat.geckolib.layer;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -20,6 +20,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayer;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerializer;
 import net.threetag.palladium.client.texture.TextureReference;
+import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
 import net.threetag.palladium.condition.PerspectiveAwareConditions;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.entity.SkinTypedValue;
@@ -61,7 +62,7 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
     @Nullable
     private final SkinTypedValue<ResourceLocation> animations;
     protected final List<AnimationControllerFactory<?>> animationController;
-    private GeoRenderLayerRenderer renderer;
+    public GeoRenderLayerRenderer renderer;
     private final int lightEmission;
     private final Map<Bone, String> bones;
 
@@ -128,7 +129,7 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
 
     @Override
     public PackRenderLayerSerializer<?> getSerializer() {
-        return GeckoLibCompat.RENDER_LAYER;
+        return GeckoLibCompatClient.RENDER_LAYER;
     }
 
     @Override

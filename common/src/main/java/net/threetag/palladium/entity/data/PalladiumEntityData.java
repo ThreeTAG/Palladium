@@ -11,6 +11,8 @@ import net.threetag.palladium.entity.PalladiumEntityExtension;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
+import java.util.Optional;
+
 public abstract class PalladiumEntityData<T extends Entity> {
 
     private final T entity;
@@ -40,6 +42,11 @@ public abstract class PalladiumEntityData<T extends Entity> {
     @SuppressWarnings("unchecked")
     public static <T extends PalladiumEntityData<?>> T get(Entity entity, PalladiumEntityDataType<T> type) {
         return (T) ((PalladiumEntityExtension) entity).palladium$getDataMap().get(type);
+    }
+
+    public static <T extends PalladiumEntityData<?>> Optional<T> opt(Entity entity, PalladiumEntityDataType<T> type) {
+        var data = get(entity, type);
+        return Optional.ofNullable(data);
     }
 
     public static void registerEvents() {

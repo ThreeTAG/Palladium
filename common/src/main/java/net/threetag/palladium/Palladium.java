@@ -10,6 +10,7 @@ import net.threetag.palladium.command.PalladiumCommand;
 import net.threetag.palladium.command.RegistryDumpCommand;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.accessories.AccessoriesCompatImpl;
+import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.condition.ConditionSerializers;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
@@ -72,6 +73,9 @@ public final class Palladium {
         // Compat
         if (Platform.isModLoaded("accessories")) {
             AccessoriesCompatImpl.init();
+        }
+        if (Platform.isModLoaded("geckolib")) {
+            GeckoLibCompat.init();
         }
     }
 

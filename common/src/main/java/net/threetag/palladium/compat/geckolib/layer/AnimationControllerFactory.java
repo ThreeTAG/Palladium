@@ -1,4 +1,4 @@
-package net.threetag.palladium.compat.geckolib;
+package net.threetag.palladium.compat.geckolib.layer;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;

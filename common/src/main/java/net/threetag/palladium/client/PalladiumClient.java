@@ -14,7 +14,7 @@ import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.client.renderer.WatcherRenderer;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerManager;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerializers;
-import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
+import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
 import net.threetag.palladium.core.registry.GuiLayerRegistry;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 
@@ -47,7 +47,7 @@ public class PalladiumClient {
 
         // Compat
         if (Platform.isModLoaded("geckolib")) {
-            GeckoLibCompat.init();
+            GeckoLibCompatClient.init();
         }
     }
 

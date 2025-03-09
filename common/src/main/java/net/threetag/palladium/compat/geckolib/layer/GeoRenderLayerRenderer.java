@@ -1,4 +1,4 @@
-package net.threetag.palladium.compat.geckolib;
+package net.threetag.palladium.compat.geckolib.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -48,7 +48,7 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
     protected Matrix4f entityRenderTranslations = new Matrix4f();
     protected Matrix4f modelRenderTranslations = new Matrix4f();
 
-    protected final Map<net.threetag.palladium.compat.geckolib.GeoRenderLayer.Bone, String> bones;
+    protected final Map<net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone, String> bones;
     protected BakedGeoModel lastModel = null;
     protected GeoBone head = null;
     protected GeoBone body = null;
@@ -67,7 +67,7 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
     protected float netHeadYaw;
     protected float headPitch;
 
-    public GeoRenderLayerRenderer(Map<net.threetag.palladium.compat.geckolib.GeoRenderLayer.Bone, String> bones, GeoModel<GeoRenderLayerState> model) {
+    public GeoRenderLayerRenderer(Map<net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone, String> bones, GeoModel<GeoRenderLayerState> model) {
         super(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_INNER_ARMOR));
         this.model = model;
         this.bones = bones;
@@ -153,7 +153,7 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
         return this;
     }
 
-    public GeoBone getBone(GeoModel<GeoRenderLayerState> model, net.threetag.palladium.compat.geckolib.GeoRenderLayer.Bone bone) {
+    public GeoBone getBone(GeoModel<GeoRenderLayerState> model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone bone) {
         return model.getBone(this.bones.getOrDefault(bone, bone.getSerializedName())).orElse(null);
     }
 
@@ -166,7 +166,7 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
      */
     @Nullable
     public GeoBone getHeadBone(GeoModel<GeoRenderLayerState> model) {
-        return this.getBone(model, net.threetag.palladium.compat.geckolib.GeoRenderLayer.Bone.HEAD);
+        return this.getBone(model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.HEAD);
     }
 
     /**
@@ -178,7 +178,7 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
      */
     @Nullable
     public GeoBone getBodyBone(GeoModel<GeoRenderLayerState> model) {
-        return this.getBone(model, net.threetag.palladium.compat.geckolib.GeoRenderLayer.Bone.BODY);
+        return this.getBone(model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.BODY);
     }
 
     /**
@@ -190,7 +190,7 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
      */
     @Nullable
     public GeoBone getRightArmBone(GeoModel<GeoRenderLayerState> model) {
-        return this.getBone(model, net.threetag.palladium.compat.geckolib.GeoRenderLayer.Bone.RIGHT_ARM);
+        return this.getBone(model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.RIGHT_ARM);
     }
 
     /**
@@ -202,7 +202,7 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
      */
     @Nullable
     public GeoBone getLeftArmBone(GeoModel<GeoRenderLayerState> model) {
-        return this.getBone(model, net.threetag.palladium.compat.geckolib.GeoRenderLayer.Bone.LEFT_ARM);
+        return this.getBone(model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.LEFT_ARM);
     }
 
     /**
@@ -214,7 +214,7 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
      */
     @Nullable
     public GeoBone getRightLegBone(GeoModel<GeoRenderLayerState> model) {
-        return this.getBone(model, net.threetag.palladium.compat.geckolib.GeoRenderLayer.Bone.RIGHT_LEG);
+        return this.getBone(model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.RIGHT_LEG);
     }
 
     /**
@@ -226,7 +226,7 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
      */
     @Nullable
     public GeoBone getLeftLegBone(GeoModel<GeoRenderLayerState> model) {
-        return this.getBone(model, net.threetag.palladium.compat.geckolib.GeoRenderLayer.Bone.LEFT_LEG);
+        return this.getBone(model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.LEFT_LEG);
     }
 
     /**
@@ -302,6 +302,11 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
                     packedLight, packedOverlay, renderColor);
 
         poseStack.popPose();
+    }
+
+    @Override
+    public long getInstanceId(GeoRenderLayerState animatable) {
+        return GeoRenderer.super.getInstanceId(animatable) + this.currentEntity.getId();
     }
 
     /**
