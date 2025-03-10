@@ -20,7 +20,8 @@
     "ItemMixin",
     "LevelSummaryMixin",
     "PackTypeMixin",
-    "SimpleJsonResourceReloadListenerMixin"
+    "SimpleJsonResourceReloadListenerMixin",
+    "VibrationSystemListenerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

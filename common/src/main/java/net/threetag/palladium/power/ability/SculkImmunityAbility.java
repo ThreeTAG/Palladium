@@ -11,8 +11,6 @@ import java.util.List;
 
 public class SculkImmunityAbility extends Ability {
 
-    // TODO
-
     public static final MapCodec<SculkImmunityAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, SculkImmunityAbility::new));
