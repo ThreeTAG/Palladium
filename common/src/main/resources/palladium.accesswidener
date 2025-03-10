@@ -9,6 +9,12 @@ mutable field net/minecraft/world/level/block/state/BlockBehaviour$Properties CO
 # Entity
 transitive-accessible method net/minecraft/world/entity/Entity isInRain ()Z
 
+# ArmorSlot
+accessible class net/minecraft/world/inventory/ArmorSlot
+accessible field net/minecraft/world/inventory/ArmorSlot owner Lnet/minecraft/world/entity/LivingEntity;
+accessible field net/minecraft/world/inventory/ArmorSlot slot Lnet/minecraft/world/entity/EquipmentSlot;
+accessible field net/minecraft/world/inventory/ArmorSlot emptyIcon Lnet/minecraft/resources/ResourceLocation;
+
 # ReloadableResourceManager
 accessible field net/minecraft/server/packs/resources/ReloadableResourceManager listeners Ljava/util/List;
 mutable field net/minecraft/server/packs/resources/ReloadableResourceManager listeners Ljava/util/List;

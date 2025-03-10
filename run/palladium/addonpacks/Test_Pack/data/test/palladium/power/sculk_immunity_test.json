@@ -2,7 +2,7 @@
   "name": "Sculk Immunity Test",
   "icon": "minecraft:sculk",
   "abilities": {
-    "fire_aspect": {
+    "sculk_immunity": {
       "type": "palladium:sculk_immunity"
     }
   }
