@@ -4,21 +4,19 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.util.ExtraCodecs;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
+import net.threetag.palladium.util.CodecExtras;
 
 import java.util.List;
 
 public class FireAspectAbility extends Ability {
 
-    // TODO
-
     public static final MapCodec<FireAspectAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    ExtraCodecs.NON_NEGATIVE_INT.fieldOf("time").forGetter(ab -> ab.time),
+                    CodecExtras.TIME.fieldOf("time").forGetter(ab -> ab.time),
                     Codec.BOOL.optionalFieldOf("should_stack_time", false).forGetter(ab -> ab.shouldStackTime),
-                    ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("max_time", 60).forGetter(ab -> ab.maxTime),
+                    CodecExtras.TIME.optionalFieldOf("max_time", 60 * 20).forGetter(ab -> ab.maxTime),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, FireAspectAbility::new));
 
@@ -48,9 +46,9 @@ public class FireAspectAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, FireAspectAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Makes this entity's attacks light targets on fire as if fire aspect was used.")
-                    .add("time", TYPE_INT, "The amount of time, in seconds, that the victim entity will be set on fire for")
+                    .add("time", TYPE_INT, "The amount of time, in ticks, that the victim entity will be set on fire for")
                     .addOptional("should_stack_time", TYPE_BOOLEAN, "If true, attacking an entity that's already on fire will add the \"time\" field to their current burn time instead of setting it", false)
-                    .addOptional("max_time", TYPE_INT, "If \"should_stack_time\" is true, the victim's burn time (in seconds) will not exceed this value after being hit", 60)
+                    .addOptional("max_time", TYPE_INT, "If \"should_stack_time\" is true, the victim's burn time (in ticks) will not exceed this value after being hit", 60 * 20)
                     .setExampleObject(new FireAspectAbility(5, false, 5, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
