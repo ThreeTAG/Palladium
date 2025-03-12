@@ -13,12 +13,16 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
+import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.condition.PerspectiveAwareConditions;
 import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.entity.SkinTypedValue;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +32,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
 
     public static final MapCodec<DefaultPackRenderLayer> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             SkinTypedValue.codec(ModelLayerLocationCodec.CODEC).optionalFieldOf("model_layer").forGetter(l -> Optional.ofNullable(l.modelLayers)),
-            SkinTypedValue.codec(ResourceLocation.CODEC).fieldOf("texture").forGetter(l -> l.textures),
+            SkinTypedValue.codec(TextureReference.CODEC).fieldOf("texture").forGetter(l -> l.textures),
             RenderTypeFunctions.CODEC.optionalFieldOf("render_type", RenderTypeFunctions.SOLID).forGetter(l -> l.renderType),
             ExtraCodecs.intRange(0, 15).optionalFieldOf("light_emission", 0).forGetter(l -> l.lightEmission),
             PackRenderLayerAnimations.CODEC.optionalFieldOf("animations", PackRenderLayerAnimations.EMPTY).forGetter(l -> l.animations),
@@ -40,12 +44,12 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
     @Nullable
     private final SkinTypedValue<ModelLayerLocationCodec> modelLayers;
     private SkinTypedValue<Model.Simple> model;
-    private final SkinTypedValue<ResourceLocation> textures;
+    private final SkinTypedValue<TextureReference> textures;
     private final RenderTypeFunction renderType;
     private final int lightEmission;
     private final PackRenderLayerAnimations animations;
 
-    public DefaultPackRenderLayer(@Nullable SkinTypedValue<ModelLayerLocationCodec> modelLayers, SkinTypedValue<ResourceLocation> textures, RenderTypeFunction renderType, int lightEmission, PackRenderLayerAnimations animations, PerspectiveAwareConditions conditions) {
+    public DefaultPackRenderLayer(@Nullable SkinTypedValue<ModelLayerLocationCodec> modelLayers, SkinTypedValue<TextureReference> textures, RenderTypeFunction renderType, int lightEmission, PackRenderLayerAnimations animations, PerspectiveAwareConditions conditions) {
         super(conditions);
 
         this.modelLayers = modelLayers;
@@ -89,7 +93,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
 
         model.renderToBuffer(
                 poseStack,
-                this.renderType.createVertexConsumer(bufferSource, this.textures.get(entity), context.getItem().hasFoil()),
+                this.renderType.createVertexConsumer(bufferSource, this.textures.get(entity).getTexture(context), context.getItem().hasFoil()),
                 LightTexture.lightCoordsWithEmission(packedLight, this.lightEmission),
                 OverlayTexture.NO_OVERLAY
         );
@@ -120,7 +124,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
 
         armPart.render(
                 poseStack,
-                this.renderType.createVertexConsumer(bufferSource, this.textures.get(entity), context.getItem().hasFoil()),
+                this.renderType.createVertexConsumer(bufferSource, this.textures.get(entity).getTexture(context), context.getItem().hasFoil()),
                 LightTexture.lightCoordsWithEmission(packedLight, this.lightEmission),
                 OverlayTexture.NO_OVERLAY
         );
@@ -143,6 +147,23 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             return CODEC;
         }
 
+        @Override
+        public void addDocumentation(CodecDocumentationBuilder<PackRenderLayer<? extends State>, DefaultPackRenderLayer> builder, HolderLookup.Provider provider) {
+            builder.setName("Default Render Layer")
+                    .setDescription("Default render layer that renders a model with a texture.")
+                    .addOptional("model_layer", TYPE_RESOURCE_LOCATION, "The model layer to render.", "If not present, the model of the parent entity will be used.")
+                    .add("texture", TYPE_TEXTURE_REFERENCE, "The texture to render the model with.")
+                    .addOptional("render_type", SettingType.enumList(RenderTypeFunctions.types().stream().map(ResourceLocation::toString).toList()), "The render type to render the model with.", RenderTypeFunctions.getKey(RenderTypeFunctions.SOLID))
+                    .addOptional("light_emission", TYPE_INT, "The light emission of the model. Must be within 0 - 15", 0)
+                    .setExampleObject(new DefaultPackRenderLayer(
+                            new SkinTypedValue<>(ModelLayerLocationCodec.parse("example:wide_model"), ModelLayerLocationCodec.parse("example:slim_model")),
+                            new SkinTypedValue<>(TextureReference.normal(ResourceLocation.fromNamespaceAndPath("example", "wide_texture")), TextureReference.normal(ResourceLocation.fromNamespaceAndPath("example", "slim_texture"))),
+                            RenderTypeFunctions.SOLID,
+                            5,
+                            PackRenderLayerAnimations.EMPTY,
+                            PerspectiveAwareConditions.EMPTY
+                    ));
+        }
     }
 
 }

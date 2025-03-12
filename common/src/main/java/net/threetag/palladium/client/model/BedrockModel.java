@@ -16,6 +16,8 @@ import java.util.*;
 
 public record BedrockModel(List<Geometry> geometries) {
 
+    public static final Codec<UVPair> UV_PAIR_CODEC = Codec.FLOAT.listOf(2, 2).xmap(floats -> new UVPair(floats.getFirst(), floats.getLast()), uvPair -> List.of(uvPair.u(), uvPair.v()));
+
     public static final Codec<BedrockModel> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Geometry.CODEC.listOf().fieldOf("minecraft:geometry").forGetter(BedrockModel::geometries)
     ).apply(instance, BedrockModel::new));
@@ -195,7 +197,7 @@ public record BedrockModel(List<Geometry> geometries) {
 
     private static class BoxUV extends UV {
 
-        public static final Codec<BoxUV> CODEC = CodecExtras.UV_PAIR_CODEC.xmap(BoxUV::new, boxUV -> boxUV.uvPair);
+        public static final Codec<BoxUV> CODEC = UV_PAIR_CODEC.xmap(BoxUV::new, boxUV -> boxUV.uvPair);
 
         private final UVPair uvPair;
 
@@ -208,8 +210,8 @@ public record BedrockModel(List<Geometry> geometries) {
 
         private record PerFaceUVObject(UVPair uv, UVPair uvSize) {
             public static final Codec<PerFaceUVObject> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                    CodecExtras.UV_PAIR_CODEC.optionalFieldOf("uv", new UVPair(0, 0)).forGetter(PerFaceUVObject::uv),
-                    CodecExtras.UV_PAIR_CODEC.optionalFieldOf("uv_size", new UVPair(0, 0)).forGetter(PerFaceUVObject::uv)
+                    UV_PAIR_CODEC.optionalFieldOf("uv", new UVPair(0, 0)).forGetter(PerFaceUVObject::uv),
+                    UV_PAIR_CODEC.optionalFieldOf("uv_size", new UVPair(0, 0)).forGetter(PerFaceUVObject::uv)
             ).apply(instance, PerFaceUVObject::new));
         }
 

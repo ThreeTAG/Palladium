@@ -7,6 +7,7 @@ import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -27,6 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.block.PalladiumBlockUtil;
 import net.threetag.palladium.client.energybeam.EnergyBeamManager;
 import net.threetag.palladium.component.PalladiumDataComponents;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.entity.effect.EnergyBeamEffect;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import net.threetag.palladium.util.CodecExtras;
@@ -167,6 +169,28 @@ public class EnergyBeamAbility extends Ability {
         @Override
         public MapCodec<EnergyBeamAbility> codec() {
             return CODEC;
+        }
+
+        @Override
+        public void addDocumentation(CodecDocumentationBuilder<Ability, EnergyBeamAbility> builder, HolderLookup.Provider provider) {
+            builder.setDescription("Shoots an energy beam in the direction the player is looking at.")
+                    .add("energy_beam", TYPE_RESOURCE_LOCATION, "The id of the energy beam to use")
+                    .addOptional("damage", TYPE_FLOAT, "The damage the beam deals to entities", 0F)
+                    .addOptional("max_distance", TYPE_FLOAT, "The maximum distance the beam can travel", 30F)
+                    .addOptional("set_on_fire_ticks", TYPE_INT, "The amount of ticks the hit entity is set on fire", 0)
+                    .addOptional("cause_fire", TYPE_BOOLEAN, "If the beam should cause fire on blocks", false)
+                    .addOptional("smelt_blocks", TYPE_BOOLEAN, "If the beam should smelt hit blocks", false)
+                    .setExampleObject(new EnergyBeamAbility(
+                            ResourceLocation.fromNamespaceAndPath("example", "energy_beam_id"),
+                            5F,
+                            25F,
+                            20,
+                            false,
+                            false,
+                            AbilityProperties.BASIC,
+                            AbilityStateManager.EMPTY,
+                            List.of()
+                    ));
         }
     }
 }

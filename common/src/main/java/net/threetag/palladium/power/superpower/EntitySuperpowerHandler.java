@@ -39,4 +39,9 @@ public class EntitySuperpowerHandler extends PalladiumEntityData<LivingEntity> {
         }
         return nbt;
     }
+
+    public static class Slot {
+
+    }
+
 }

@@ -11,7 +11,7 @@ public abstract class AbilitySerializer<T extends Ability> implements Documented
 
     @Override
     public CodecDocumentationBuilder<Ability, T> getDocumentation(HolderLookup.Provider provider) {
-        var builder = new CodecDocumentationBuilder<>(codec(), Ability.CODEC)
+        var builder = new CodecDocumentationBuilder<>(codec(), Ability.CODEC, provider)
                 .ignore("properties")
                 .ignore("state")
                 .ignore("energy_bar_usage");
@@ -24,7 +24,5 @@ public abstract class AbilitySerializer<T extends Ability> implements Documented
         return builder;
     }
 
-    public void addDocumentation(CodecDocumentationBuilder<Ability, T> builder, HolderLookup.Provider provider) {
-
-    }
+    public abstract void addDocumentation(CodecDocumentationBuilder<Ability, T> builder, HolderLookup.Provider provider);
 }

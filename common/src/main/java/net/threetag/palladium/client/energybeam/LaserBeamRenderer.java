@@ -5,10 +5,15 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.LaserRenderer;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.util.EntityScaleUtil;
+import org.joml.Vector2f;
+
+import java.awt.*;
 
 public class LaserBeamRenderer extends EnergyBeamRenderer {
 
@@ -42,6 +47,20 @@ public class LaserBeamRenderer extends EnergyBeamRenderer {
         @Override
         public MapCodec<LaserBeamRenderer> codec() {
             return CODEC;
+        }
+
+        @Override
+        public void addDocumentation(CodecDocumentationBuilder<EnergyBeamRenderer, LaserBeamRenderer> builder, HolderLookup.Provider provider) {
+            builder.setName("Laser")
+                    .setDescription("Renders a laser beam between two points.")
+                    .add("render_settings", TYPE_LASER_RENDERER, "The render settings for the laser.")
+                    .setExampleObject(new LaserBeamRenderer(
+                            new LaserRenderer(
+                                    new LaserRenderer.LaserPart(Color.BLUE, 1F, 0F, null),
+                                    new LaserRenderer.LaserPart(Color.WHITE, 1F, 0F, null),
+                                    2, new Vector2f(2 / 16F, 2 / 16F), false, 0, 0
+                            )
+                    ));
         }
     }
 }

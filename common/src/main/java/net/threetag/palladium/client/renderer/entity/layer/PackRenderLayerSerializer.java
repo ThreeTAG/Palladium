@@ -2,12 +2,18 @@ package net.threetag.palladium.client.renderer.entity.layer;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.documentation.Documented;
 
-public abstract class PackRenderLayerSerializer<T extends PackRenderLayer<? extends PackRenderLayer.State>> {
+import java.util.Map;
+
+public abstract class PackRenderLayerSerializer<T extends PackRenderLayer<? extends PackRenderLayer.State>> implements Documented<PackRenderLayer<? extends PackRenderLayer.State>, T> {
 
     private static final BiMap<ResourceLocation, PackRenderLayerSerializer<?>> TYPES = HashBiMap.create();
 
@@ -28,6 +34,19 @@ public abstract class PackRenderLayerSerializer<T extends PackRenderLayer<? exte
         return serializer;
     }
 
+    public static Map<ResourceLocation, PackRenderLayerSerializer<?>> getTypes() {
+        return ImmutableMap.copyOf(TYPES);
+    }
+
     public abstract MapCodec<T> codec();
+
+    @Override
+    public CodecDocumentationBuilder<PackRenderLayer<? extends PackRenderLayer.State>, T> getDocumentation(HolderLookup.Provider provider) {
+        var builder = new CodecDocumentationBuilder<>(codec(), PackRenderLayer.CODEC, provider);
+        this.addDocumentation(builder, provider);
+        return builder;
+    }
+
+    public abstract void addDocumentation(CodecDocumentationBuilder<PackRenderLayer<? extends PackRenderLayer.State>, T> builder, HolderLookup.Provider provider);
 
 }

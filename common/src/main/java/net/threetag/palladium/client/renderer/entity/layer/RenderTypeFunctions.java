@@ -8,6 +8,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.List;
+
 public class RenderTypeFunctions {
 
     private static final BiMap<ResourceLocation, RenderTypeFunction> RENDER_TYPES = HashBiMap.create();
@@ -30,6 +32,14 @@ public class RenderTypeFunctions {
 
     public static RenderTypeFunction get(ResourceLocation id) {
         return RENDER_TYPES.get(id);
+    }
+
+    public static ResourceLocation getKey(RenderTypeFunction function) {
+        return RENDER_TYPES.inverse().get(function);
+    }
+
+    public static List<ResourceLocation> types() {
+        return List.copyOf(RENDER_TYPES.keySet());
     }
 
     // TODO keep MC namespace?

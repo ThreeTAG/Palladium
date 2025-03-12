@@ -5,13 +5,18 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.LaserRenderer;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.util.CodecExtras;
 import net.threetag.palladium.util.EntityScaleUtil;
+import org.joml.Vector2f;
+
+import java.awt.*;
 
 public class LightningBeamRenderer extends EnergyBeamRenderer {
 
@@ -76,6 +81,26 @@ public class LightningBeamRenderer extends EnergyBeamRenderer {
         @Override
         public MapCodec<LightningBeamRenderer> codec() {
             return CODEC;
+        }
+
+        @Override
+        public void addDocumentation(CodecDocumentationBuilder<EnergyBeamRenderer, LightningBeamRenderer> builder, HolderLookup.Provider provider) {
+            builder.setName("Lightning Beam")
+                    .setDescription("Renders a fluctuating lightning between two points.")
+                    .add("render_settings", TYPE_LASER_RENDERER, "The render settings for the lightning.")
+                    .addOptional("segments", TYPE_INT, "The amount of segments the lightning should have.", 5)
+                    .addOptional("frequency", TYPE_INT, "The frequency of the lightning fluctuation.", 2)
+                    .addOptional("spread", TYPE_FLOAT, "The spread of the lightning fluctuation. It defines how \"far\" the lightning can spread out from the core", 5F)
+                    .setExampleObject(new LightningBeamRenderer(
+                            new LaserRenderer(
+                                    new LaserRenderer.LaserPart(Color.BLUE, 1F, 0F, null),
+                                    new LaserRenderer.LaserPart(Color.WHITE, 1F, 0F, null),
+                                    2, new Vector2f(2 / 16F, 2 / 16F), false, 0, 0
+                            ),
+                            10,
+                            4,
+                            7F
+                    ));
         }
     }
 }

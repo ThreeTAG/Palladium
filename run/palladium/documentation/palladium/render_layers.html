@@ -1,0 +1,372 @@
+<html>
+<head>
+<title>
+Render Layers</title>
+<style>
+table{font-family:arial, sans-serif;border-collapse:collapse;}
+td,th{border:1px solid #666666;text-align:left;padding:8px;min-width:45px;}
+th{background-color:#CCCCCC;}
+p{margin:0;}
+tr:nth-child(even){background-color:#D8D8D8;}
+tr:nth-child(odd){background-color:#EEEEEE;}
+td.true{background-color:#72FF85AA;}
+td.false{background-color:#FF6666AA;}
+td.other{background-color:#42A3FFAA;}
+td.error{color:#FF0000;}
+th,td.true,td.false,td.other{text-align:center;}pre{outline:1px solid #ccc;padding:5px;margin:5px;} .string{color:green;} .number{color:cornflowerblue;} .boolean{color:darkorange;} .null{color:orangered;} .key{color:purple;}hr { height: 5px; background-color: black }</style>
+<link rel="shortcut icon" type="image/x-icon" href="https://i.imgur.com/3sx4xJf.png">
+
+<style>
+.json-block { background-color: lightgray; display: inline-block; border: 5px solid darkgray; padding: 10px }</style>
+</head>
+<body>
+<h1>
+Render Layers</h1>
+<hr>
+
+<p>
+<h2>
+Overview</h2>
+<h3>
+GeckoLib 4</h3>
+<ul>
+<li>
+<a href="#geckolib:render_layer">
+Geo Render Layer</a>
+</li>
+</ul>
+<h3>
+Palladium</h3>
+<ul>
+<li>
+<a href="#palladium:compound">
+Compound Render Layer</a>
+</li>
+<li>
+<a href="#palladium:render_layer">
+Default Render Layer</a>
+</li>
+<li>
+<a href="#palladium:lightning_sparks">
+Lightning Sparks</a>
+</li>
+</ul>
+</p>
+<hr>
+
+<div>
+<h2>
+Geo Render Layer</h2>
+<p>
+Uses GeckoLib to render a geo model, including animations</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+light_emission</td>
+<td>
+integer</td>
+<td>
+The light emission of the model. Must be within 0 - 15</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+texture</td>
+<td>
+Texture Reference</td>
+<td>
+The texture of the model</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bones</td>
+<td>
+Map<Bone, String></td>
+<td>
+The bones of the model. You can specify here what the bones for each body part are called in your model file.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+{HEAD=head, BODY=body, RIGHT_ARM=right_arm, LEFT_ARM=left_arm, RIGHT_LEG=right_leg, LEFT_LEG=left_leg}</td>
+</tr>
+<tr>
+<td>
+animations</td>
+<td>
+ResourceLocation</td>
+<td>
+The animations to use</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+model</td>
+<td>
+ResourceLocation</td>
+<td>
+The model to render</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+animation_controller</td>
+<td>
+Animation Controller | Animation Controller[]</td>
+<td>
+The animation controllers to control or trigger the animations.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+
+<div>
+<h2>
+Compound Render Layer</h2>
+<p>
+A compound render layer that can contain multiple render layers.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+layers</td>
+<td>
+Render Layers</td>
+<td>
+The list of render layers this compound render layer contains.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+
+<div>
+<h2>
+Default Render Layer</h2>
+<p>
+Default render layer that renders a model with a texture.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+light_emission</td>
+<td>
+integer</td>
+<td>
+The light emission of the model. Must be within 0 - 15</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+texture</td>
+<td>
+Texture Reference</td>
+<td>
+The texture to render the model with.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+model_layer</td>
+<td>
+ResourceLocation</td>
+<td>
+The model layer to render.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+If not present, the model of the parent entity will be used.</td>
+</tr>
+<tr>
+<td>
+render_type</td>
+<td>
+"minecraft:solid" | "minecraft:cutout"</td>
+<td>
+The render type to render the model with.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+minecraft:solid</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:render_layer","light_emission":5,"model_layer":{"wide":"example:wide_model#main","slim":"example:slim_model#main"},"texture":{"wide":"example:wide_texture","slim":"example:slim_texture"}}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Lightning Sparks</h2>
+<p>
+Renders lightning sparks around the entity.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+amount</td>
+<td>
+integer</td>
+<td>
+The amount of sparks to spawn during each occurence.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+5</td>
+</tr>
+<tr>
+<td>
+render_settings</td>
+<td>
+Laser Renderer Settings</td>
+<td>
+The render settings for the sparks.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+frequency</td>
+<td>
+float</td>
+<td>
+The frequency of the sparks.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.5</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:lightning_sparks","frequency":0.2,"amount":10,"render_settings":{"size":2.0,"glow":"#0000ff","bloom":2}}</pre>
+</div>
+<script>
+function syntaxHighlight(json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+
+    const elements = document.getElementsByClassName("json-snippet");
+    const amount = elements.length;
+    for (let i = 0; i < amount; i++) {
+        const element = elements[0];
+        const div = document.createElement("pre");
+        div.innerHTML = syntaxHighlight(JSON.stringify(JSON.parse(element.innerText), undefined, 4));
+        element.parentNode.replaceChild(div, element);
+    }</script>
+</body>
+</html>

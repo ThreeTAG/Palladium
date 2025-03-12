@@ -1,11 +1,13 @@
 package net.threetag.palladium.client;
 
+import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.ReloadListenerRegistry;
 import net.minecraft.server.packs.PackType;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.energybeam.EnergyBeamManager;
+import net.threetag.palladium.client.energybeam.EnergyBeamRendererSerializer;
 import net.threetag.palladium.client.energybeam.EnergyBeamRendererSerializers;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.power.PowersScreen;
@@ -13,10 +15,14 @@ import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.client.renderer.WatcherRenderer;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerManager;
+import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerializer;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerializers;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
 import net.threetag.palladium.core.registry.GuiLayerRegistry;
+import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
+import net.threetag.palladium.registry.PalladiumRegistries;
+import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 import java.util.Collections;
 
@@ -44,6 +50,13 @@ public class PalladiumClient {
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, EnergyBeamManager.INSTANCE, Palladium.id("energy_beams"));
         WatcherRenderer.init();
         EnergyBeamRendererSerializers.init();
+
+        // Documentation
+        ClientLifecycleEvent.CLIENT_LEVEL_LOAD.register(clientLevel -> {
+            HTMLBuilder.documentedPage(Palladium.id("render_layers"), PackRenderLayerSerializer.getTypes(), "Render Layers", clientLevel.registryAccess()).save();
+            HTMLBuilder.documentedPage(Palladium.id("energy_beams"), EnergyBeamRendererSerializer.getTypes(), "Energy Beams", clientLevel.registryAccess()).save();
+            HTMLBuilder.documentedPage(PalladiumRegistryKeys.ABILITY_SERIALIZER, PalladiumRegistries.ABILITY_SERIALIZER, "Abilities", clientLevel.registryAccess()).save();
+        });
 
         // Compat
         if (Platform.isModLoaded("geckolib")) {

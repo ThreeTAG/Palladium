@@ -8,9 +8,11 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.condition.PerspectiveAwareConditions;
 import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 
 import java.util.List;
 
@@ -67,6 +69,13 @@ public class CompoundPackRenderLayer extends PackRenderLayer<PackRenderLayer.Sta
         @Override
         public MapCodec<CompoundPackRenderLayer> codec() {
             return CODEC;
+        }
+
+        @Override
+        public void addDocumentation(CodecDocumentationBuilder<PackRenderLayer<? extends State>, CompoundPackRenderLayer> builder, HolderLookup.Provider provider) {
+            builder.setName("Compound Render Layer")
+                    .setDescription("A compound render layer that can contain multiple render layers.")
+                    .add("layers", TYPE_RENDER_LAYERS, "The list of render layers this compound render layer contains.");
         }
 
     }

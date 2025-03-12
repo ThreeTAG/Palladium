@@ -13,7 +13,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
-import net.threetag.palladium.documentation.Documented;
+import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 
 import java.util.Comparator;
@@ -100,7 +100,7 @@ public class AttributeModifierAbility extends Ability {
             builder.setDescription("Adds an attribute modifier to the entity while the ability is enabled.")
                     .add("attribute", TYPE_ATTRIBUTE, "Determines which attribute should be modified. Possible attributes: " + getAttributeList())
                     .add("amount", TYPE_DOUBLE, "The amount for the giving attribute modifier")
-                    .add("operation", Documented.typeEnum(AttributeModifier.Operation.values()), "The operation for the attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)")
+                    .add("operation", SettingType.enumList(AttributeModifier.Operation.values()), "The operation for the attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)")
                     .add("id", TYPE_STRING, "Sets the unique identifier for this attribute modifier.")
                     .setExampleObject(new AttributeModifierAbility(Attributes.ARMOR, 1D, AttributeModifier.Operation.ADD_VALUE, ResourceLocation.fromNamespaceAndPath("example", "modifier_id"), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }

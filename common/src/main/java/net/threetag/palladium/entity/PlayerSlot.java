@@ -60,6 +60,13 @@ public abstract class PlayerSlot {
         return SLOTS.values();
     }
 
+    public static Collection<PlayerSlot> exampleValues() {
+        List<PlayerSlot> slots = new ArrayList<>(EQUIPMENT_SLOTS.values());
+        slots.add(get("accessories:head"));
+        slots.add(get("accessories:necklace"));
+        return slots;
+    }
+
     public abstract List<ItemStack> getItems(LivingEntity entity);
 
     public abstract ItemStack getItem(LivingEntity entity, int index);

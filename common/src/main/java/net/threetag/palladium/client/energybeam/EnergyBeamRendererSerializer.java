@@ -2,12 +2,18 @@ package net.threetag.palladium.client.energybeam;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.documentation.Documented;
 
-public abstract class EnergyBeamRendererSerializer<T extends EnergyBeamRenderer> {
+import java.util.Map;
+
+public abstract class EnergyBeamRendererSerializer<T extends EnergyBeamRenderer> implements Documented<EnergyBeamRenderer, T> {
 
     private static final BiMap<ResourceLocation, EnergyBeamRendererSerializer<?>> TYPES = HashBiMap.create();
 
@@ -28,6 +34,20 @@ public abstract class EnergyBeamRendererSerializer<T extends EnergyBeamRenderer>
         return serializer;
     }
 
+    public static Map<ResourceLocation, EnergyBeamRendererSerializer<?>> getTypes() {
+        return ImmutableMap.copyOf(TYPES);
+    }
+
     public abstract MapCodec<T> codec();
+
+    @Override
+    public CodecDocumentationBuilder<EnergyBeamRenderer, T> getDocumentation(HolderLookup.Provider provider) {
+        var builder = new CodecDocumentationBuilder<>(codec(), EnergyBeamRenderer.CODEC, provider)
+                .ignore("conditions");
+        this.addDocumentation(builder, provider);
+        return builder;
+    }
+
+    public abstract void addDocumentation(CodecDocumentationBuilder<EnergyBeamRenderer, T> builder, HolderLookup.Provider provider);
 
 }

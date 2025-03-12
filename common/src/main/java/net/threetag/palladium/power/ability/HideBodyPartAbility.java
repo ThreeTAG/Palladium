@@ -5,7 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
-import net.threetag.palladium.documentation.Documented;
+import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import net.threetag.palladium.util.CodecExtras;
@@ -47,7 +47,7 @@ public class HideBodyPartAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, HideBodyPartAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Hides the specified body parts of the entity.")
-                    .add("body_parts", Documented.typeEnum(BodyPart.values()), "The body parts to hide.")
+                    .add("body_parts", SettingType.enumList(BodyPart.values()), "The body parts to hide.")
                     .addOptional("affects_first_person", TYPE_BOOLEAN, "Determines if the first person arm should disappear as well (if it's disabled).")
                     .setExampleObject(new HideBodyPartAbility(List.of(BodyPart.HEAD, BodyPart.CHEST), false, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }

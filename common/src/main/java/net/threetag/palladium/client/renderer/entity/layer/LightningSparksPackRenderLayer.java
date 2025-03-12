@@ -9,6 +9,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -19,7 +20,10 @@ import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.LaserRenderer;
 import net.threetag.palladium.condition.PerspectiveAwareConditions;
 import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import org.joml.Vector2f;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -140,6 +144,25 @@ public class LightningSparksPackRenderLayer extends PackRenderLayer<LightningSpa
         @Override
         public MapCodec<LightningSparksPackRenderLayer> codec() {
             return CODEC;
+        }
+
+        @Override
+        public void addDocumentation(CodecDocumentationBuilder<PackRenderLayer<? extends PackRenderLayer.State>, LightningSparksPackRenderLayer> builder, HolderLookup.Provider provider) {
+            builder.setName("Lightning Sparks")
+                    .setDescription("Renders lightning sparks around the entity.")
+                    .addOptional("frequency", TYPE_FLOAT, "The frequency of the sparks.", 0.5F)
+                    .addOptional("amount", TYPE_INT, "The amount of sparks to spawn during each occurence.", 5)
+                    .add("render_settings", TYPE_LASER_RENDERER, "The render settings for the sparks.")
+                    .setExampleObject(new LightningSparksPackRenderLayer(
+                            0.2F,
+                            10,
+                            new LaserRenderer(
+                                    new LaserRenderer.LaserPart(Color.BLUE, 1F, 0F, null),
+                                    new LaserRenderer.LaserPart(Color.WHITE, 1F, 0F, null),
+                                    2, new Vector2f(2 / 16F, 2 / 16F), false, 0, 0
+                            ),
+                            PerspectiveAwareConditions.EMPTY
+                    ));
         }
 
     }

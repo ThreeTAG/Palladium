@@ -1,0 +1,1628 @@
+<html>
+<head>
+<title>
+Abilities</title>
+<style>
+table{font-family:arial, sans-serif;border-collapse:collapse;}
+td,th{border:1px solid #666666;text-align:left;padding:8px;min-width:45px;}
+th{background-color:#CCCCCC;}
+p{margin:0;}
+tr:nth-child(even){background-color:#D8D8D8;}
+tr:nth-child(odd){background-color:#EEEEEE;}
+td.true{background-color:#72FF85AA;}
+td.false{background-color:#FF6666AA;}
+td.other{background-color:#42A3FFAA;}
+td.error{color:#FF0000;}
+th,td.true,td.false,td.other{text-align:center;}pre{outline:1px solid #ccc;padding:5px;margin:5px;} .string{color:green;} .number{color:cornflowerblue;} .boolean{color:darkorange;} .null{color:orangered;} .key{color:purple;}hr { height: 5px; background-color: black }</style>
+<link rel="shortcut icon" type="image/x-icon" href="https://i.imgur.com/3sx4xJf.png">
+
+<style>
+.json-block { background-color: lightgray; display: inline-block; border: 5px solid darkgray; padding: 10px }</style>
+</head>
+<body>
+<h1>
+Abilities</h1>
+<hr>
+
+<p>
+<h2>
+Overview</h2>
+<h3>
+GeckoLib 4</h3>
+<ul>
+<li>
+<a href="#geckolib:trigger_layer_animation">
+Geo Animation</a>
+</li>
+</ul>
+<h3>
+Palladium</h3>
+<ul>
+<li>
+<a href="#palladium:fire_aspect">
+Fire Aspect</a>
+</li>
+<li>
+<a href="#palladium:energy_beam">
+Energy Beam</a>
+</li>
+<li>
+<a href="#palladium:sculk_immunity">
+Sculk Immunity</a>
+</li>
+<li>
+<a href="#palladium:play_sound">
+Sound</a>
+</li>
+<li>
+<a href="#palladium:aim">
+Aim</a>
+</li>
+<li>
+<a href="#palladium:skin_change">
+Skin Change</a>
+</li>
+<li>
+<a href="#palladium:name_change">
+Name Change</a>
+</li>
+<li>
+<a href="#palladium:attribute_modifier">
+Attribute Modifier</a>
+</li>
+<li>
+<a href="#palladium:fluid_walking">
+Fluid Walking</a>
+</li>
+<li>
+<a href="#palladium:shrink_body_overlay">
+Shrink Body Overlay</a>
+</li>
+<li>
+<a href="#palladium:remove_body_part">
+Remove Body Part</a>
+</li>
+<li>
+<a href="#palladium:show_both_arms">
+Show Both Arms</a>
+</li>
+<li>
+<a href="#palladium:damage_immunity">
+Damage Immunity</a>
+</li>
+<li>
+<a href="#palladium:invisibility">
+Invisibility</a>
+</li>
+<li>
+<a href="#palladium:size">
+Size</a>
+</li>
+<li>
+<a href="#palladium:hide_body_part">
+Hide Body Part</a>
+</li>
+<li>
+<a href="#palladium:vibrate">
+Vibrate</a>
+</li>
+<li>
+<a href="#palladium:gui_overlay">
+Gui Overlay</a>
+</li>
+<li>
+<a href="#palladium:intangibility">
+Intangibility</a>
+</li>
+<li>
+<a href="#palladium:command">
+Command</a>
+</li>
+<li>
+<a href="#palladium:water_walk">
+Water Walk</a>
+</li>
+<li>
+<a href="#palladium:slowfall">
+Slowfall</a>
+</li>
+<li>
+<a href="#palladium:particles">
+Particles</a>
+</li>
+<li>
+<a href="#palladium:restrict_slots">
+Restrict Slots</a>
+</li>
+<li>
+<a href="#palladium:trail">
+ability.palladium.trail</a>
+</li>
+<li>
+<a href="#palladium:dummy">
+Dummy</a>
+</li>
+<li>
+<a href="#palladium:shader_effect">
+Shader Effect</a>
+</li>
+<li>
+<a href="#palladium:healing">
+Healing</a>
+</li>
+</ul>
+</p>
+<hr>
+
+<div>
+<h2>
+Geo Animation</h2>
+<p>
+This ability let's you trigger animations defined in a GeckoLib render layer.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+render_layer</td>
+<td>
+ResourceLocation</td>
+<td>
+The ID of the render layer receiving the animation. Must be a gecko render layer!</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+controller</td>
+<td>
+string</td>
+<td>
+Name of the animation controller the animation is played on.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+trigger</td>
+<td>
+string</td>
+<td>
+Name of the animation trigger</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"geckolib:trigger_layer_animation","render_layer":"example:geo_render_layer","controller":"example_controller","trigger":"example_trigger"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Fire Aspect</h2>
+<p>
+Makes this entity's attacks light targets on fire as if fire aspect was used.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+time</td>
+<td>
+integer</td>
+<td>
+The amount of time, in ticks, that the victim entity will be set on fire for</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max_time</td>
+<td>
+integer</td>
+<td>
+If "should_stack_time" is true, the victim's burn time (in ticks) will not exceed this value after being hit</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1200</td>
+</tr>
+<tr>
+<td>
+should_stack_time</td>
+<td>
+boolean</td>
+<td>
+If true, attacking an entity that's already on fire will add the "time" field to their current burn time instead of setting it</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:fire_aspect","time":5,"max_time":5}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Energy Beam</h2>
+<p>
+Shoots an energy beam in the direction the player is looking at.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+damage</td>
+<td>
+float</td>
+<td>
+The damage the beam deals to entities</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.0</td>
+</tr>
+<tr>
+<td>
+cause_fire</td>
+<td>
+boolean</td>
+<td>
+If the beam should cause fire on blocks</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+energy_beam</td>
+<td>
+ResourceLocation</td>
+<td>
+The id of the energy beam to use</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+set_on_fire_ticks</td>
+<td>
+integer</td>
+<td>
+The amount of ticks the hit entity is set on fire</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+smelt_blocks</td>
+<td>
+boolean</td>
+<td>
+If the beam should smelt hit blocks</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+max_distance</td>
+<td>
+float</td>
+<td>
+The maximum distance the beam can travel</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+30.0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:energy_beam","energy_beam":"example:energy_beam_id","damage":5.0,"max_distance":25.0,"set_on_fire_ticks":20}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Sculk Immunity</h2>
+<p>
+When enabled, the player will not cause any walk-related sculk vibrations anymore.</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:sculk_immunity"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Sound</h2>
+<p>
+Plays a sound.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+volume</td>
+<td>
+float</td>
+<td>
+The volume for the played sound.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1.0</td>
+</tr>
+<tr>
+<td>
+play_self</td>
+<td>
+boolean</td>
+<td>
+Whether or not the sound should be played to just the player executing the ability, or to all players.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+looping</td>
+<td>
+boolean</td>
+<td>
+Whether or not the sound should loop during the time the ability is enabled.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+sound</td>
+<td>
+ResourceLocation</td>
+<td>
+The sound that is being played.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+pitch</td>
+<td>
+float</td>
+<td>
+The pitch for the played sound.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+1.0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:play_sound","sound":"minecraft:item.elytra.flying"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Aim</h2>
+<p>
+Allows the player to aim their arms.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+arm</td>
+<td>
+"NONE" | "MAIN_ARM" | "OFF_ARM" | "RIGHT_ARM" | "LEFT_ARM" | "BOTH"</td>
+<td>
+The arm(s) that should point.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+MAIN_ARM</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:aim"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Skin Change</h2>
+<p>
+An ability that changes the player's skin.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+texture</td>
+<td>
+Texture Reference</td>
+<td>
+The texture that should be used for the player's skin.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+model_type</td>
+<td>
+"KEEP" | "WIDE" | "SLIM"</td>
+<td>
+Model type for the player. 'wide' = Wide-armed Steve model; 'slim' = Slim-armed Alex model; 'keep' = Does not change the player's default model</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+KEEP</td>
+</tr>
+<tr>
+<td>
+priority</td>
+<td>
+integer</td>
+<td>
+Priority for the skin (in case multiple skin changes are applied, the one with the highest priority will be used)</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+50</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:skin_change","texture":"minecraft:textures/entity/zombie/drowned.png","model_type":"wide"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Name Change</h2>
+<p>
+Changes the name of the player executing the ability.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+name</td>
+<td>
+Text Component</td>
+<td>
+The new name of the player.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:name_change","name":"New Name"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Attribute Modifier</h2>
+<p>
+Adds an attribute modifier to the entity while the ability is enabled.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+amount</td>
+<td>
+double</td>
+<td>
+The amount for the giving attribute modifier</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+attribute</td>
+<td>
+Attribute ID</td>
+<td>
+Determines which attribute should be modified. Possible attributes: minecraft:armor, minecraft:armor_toughness, minecraft:attack_damage, minecraft:attack_knockback, minecraft:attack_speed, minecraft:block_break_speed, minecraft:block_interaction_range, minecraft:burning_time, minecraft:entity_interaction_range, minecraft:explosion_knockback_resistance, minecraft:fall_damage_multiplier, minecraft:flying_speed, minecraft:follow_range, minecraft:gravity, minecraft:jump_strength, minecraft:knockback_resistance, minecraft:luck, minecraft:max_absorption, minecraft:max_health, minecraft:mining_efficiency, minecraft:movement_efficiency, minecraft:movement_speed, minecraft:oxygen_bonus, minecraft:safe_fall_distance, minecraft:scale, minecraft:sneaking_speed, minecraft:spawn_reinforcements, minecraft:step_height, minecraft:submerged_mining_speed, minecraft:sweeping_damage_ratio, minecraft:tempt_range, minecraft:water_movement_efficiency</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+id</td>
+<td>
+string</td>
+<td>
+Sets the unique identifier for this attribute modifier.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+operation</td>
+<td>
+"ADD_VALUE" | "ADD_MULTIPLIED_BASE" | "ADD_MULTIPLIED_TOTAL"</td>
+<td>
+The operation for the attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:attribute_modifier","id":"example:modifier_id","attribute":"minecraft:armor","amount":1.0,"operation":"add_value"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Fluid Walking</h2>
+<p>
+Allows the entity to walk on a specific fluid.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+fluid_tag</td>
+<td>
+ResourceLocation</td>
+<td>
+The fluid tag the entity can walk on.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:fluid_walking","fluid_tag":"minecraft:water"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Shrink Body Overlay</h2>
+<p>
+An ability that shrinks the body overlay of the entity.</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:shrink_body_overlay"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Remove Body Part</h2>
+<p>
+Removes the specified body parts of the entity.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+body_parts</td>
+<td>
+"HEAD" | "HEAD_OVERLAY" | "CHEST" | "CHEST_OVERLAY" | "RIGHT_ARM" | "RIGHT_ARM_OVERLAY" | "LEFT_ARM" | "LEFT_ARM_OVERLAY" | "RIGHT_LEG" | "RIGHT_LEG_OVERLAY" | "LEFT_LEG" | "LEFT_LEG_OVERLAY" | "CAPE"</td>
+<td>
+The body parts to remove.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+affects_first_person</td>
+<td>
+boolean</td>
+<td>
+Determines if the first person arm should disappear as well (if it's disabled).</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:remove_body_part","body_parts":["head","chest"],"affects_first_person":false}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Show Both Arms</h2>
+<p>
+Enables the rendering of your off-hand in first-person.</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:show_both_arms"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Damage Immunity</h2>
+<p>
+Makes the entity immune against certain damage types.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+damage_types</td>
+<td>
+Damage Type ID or Tag | Damage Type ID or Tag[]</td>
+<td>
+The damage types the entity is immune against.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:damage_immunity","damage_types":"minecraft:cactus"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Invisibility</h2>
+<p>
+Makes the player invisible. Also makes mobs not see the player anymore.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+mob_visibility_modifier</td>
+<td>
+float</td>
+<td>
+A multiplier for how visible the player is to mobs. 0.0 means completely invisible, 1.0 means normal visibility.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:invisibility","mob_visibility_modifier":0.5}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Size</h2>
+<p>
+An ability that changes the size of the entity using Pehkui.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+scale</td>
+<td>
+float</td>
+<td>
+The target scale of the entity.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:size","scale":1.5}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Hide Body Part</h2>
+<p>
+Hides the specified body parts of the entity.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+body_parts</td>
+<td>
+"HEAD" | "HEAD_OVERLAY" | "CHEST" | "CHEST_OVERLAY" | "RIGHT_ARM" | "RIGHT_ARM_OVERLAY" | "LEFT_ARM" | "LEFT_ARM_OVERLAY" | "RIGHT_LEG" | "RIGHT_LEG_OVERLAY" | "LEFT_LEG" | "LEFT_LEG_OVERLAY" | "CAPE"</td>
+<td>
+The body parts to hide.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+affects_first_person</td>
+<td>
+boolean</td>
+<td>
+Determines if the first person arm should disappear as well (if it's disabled).</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:hide_body_part","body_parts":["head","chest"],"affects_first_person":false}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Vibrate</h2>
+<p>
+Adds a vibration effect to the player.</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:vibrate"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Gui Overlay</h2>
+<p>
+Renders an image on the screen.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+rotate</td>
+<td>
+Vector 3D</td>
+<td>
+The rotation of the texture.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+(0.0, 0.0, 0.0)</td>
+</tr>
+<tr>
+<td>
+texture</td>
+<td>
+Texture Reference</td>
+<td>
+The texture to render.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+scale</td>
+<td>
+Vector 3D</td>
+<td>
+The scale of the texture.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+(1.0, 1.0, 1.0)</td>
+</tr>
+<tr>
+<td>
+texture_height</td>
+<td>
+integer</td>
+<td>
+The height of the texture.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+256</td>
+</tr>
+<tr>
+<td>
+alignment</td>
+<td>
+"TOP_LEFT" | "TOP_CENTER" | "TOP_RIGHT" | "MIDDLE_LEFT" | "CENTER" | "MIDDLE_RIGHT" | "BOTTOM_LEFT" | "BOTTOM_CENTER" | "BOTTOM_RIGHT" | "STRETCH"</td>
+<td>
+Determines how the image is aligned on the screen.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+texture_width</td>
+<td>
+integer</td>
+<td>
+The width of the texture.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+256</td>
+</tr>
+<tr>
+<td>
+translate</td>
+<td>
+Vector 3D</td>
+<td>
+The translation of the texture.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+(0.0, 0.0, 0.0)</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:gui_overlay","alignment":"top_left","texture":"minecraft:textures/gui/presets/isles.png"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Intangibility</h2>
+<p>
+Makes the entity intangible to certain blocks.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+blacklist</td>
+<td>
+ResourceLocation</td>
+<td>
+Block tag which includes the block the player can phase through. Leave null for all blocks.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+palladium:prevents_intangibility</td>
+</tr>
+<tr>
+<td>
+vertical</td>
+<td>
+boolean</td>
+<td>
+Makes the player vertically intangible aswell.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+whitelist</td>
+<td>
+ResourceLocation</td>
+<td>
+Block tag which includes the block the player can phase through. Leave null for all blocks.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:intangibility"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Command</h2>
+<p>
+An ability that executes commands.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+last_tick_commands</td>
+<td>
+string[]</td>
+<td>
+The commands that are executed on the last tick of the ability being active.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+first_tick_commands</td>
+<td>
+string[]</td>
+<td>
+The commands that are executed upon activating the ability.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+commands</td>
+<td>
+string[]</td>
+<td>
+The commands that are executed during each tick of the ability being active.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:command","commands":"say Tick","first_tick_commands":"say First Tick","last_tick_commands":"say Last Tick"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Water Walk</h2>
+<p>
+Allows the player to walk on water.</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:water_walk"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Slowfall</h2>
+<p>
+Makes the entity fall slower.</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:slowfall"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Particles</h2>
+<p>
+Spawns particles around the entity.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+particle_type</td>
+<td>
+Particle Type ID</td>
+<td>
+ID of the particle you want to spawn.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+options</td>
+<td>
+NBT</td>
+<td>
+Additional options for the particle (like color of a dust particle).</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+emitter</td>
+<td>
+ResourceLocation | ResourceLocation[]</td>
+<td>
+List of emitter IDs where the particles spawn at.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+
+<div>
+<h2>
+Restrict Slots</h2>
+<p>
+Restricts the slots of the entity.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+slots</td>
+<td>
+"legs" | "mainhand" | "chest" | "head" | "offhand" | "body" | "feet" | "accessories:head" | "accessories:necklace"</td>
+<td>
+The slots that should be restricted.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:restrict_slots","slots":"chest"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+ability.palladium.trail</h2>
+<p>
+An ability that renders a trail behind the entity.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+trail</td>
+<td>
+ResourceLocation</td>
+<td>
+The id of the trail renderer to use.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:trail","trail":"example:trail_id"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Dummy</h2>
+<p>
+A dummy ability that does nothing.</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:dummy"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Shader Effect</h2>
+<p>
+Applies a shader effect to the player.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+shader</td>
+<td>
+ResourceLocation</td>
+<td>
+The ID of the shader that shall be applied.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:shader_effect","shader":"minecraft:shaders/post/creeper.json"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Healing</h2>
+<p>
+An ability that heals the entity every x ticks by y amount.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+amount</td>
+<td>
+float</td>
+<td>
+The amount of hearts for each healing</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+frequency</td>
+<td>
+integer</td>
+<td>
+The frequency of healing (in ticks)</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:healing","frequency":20,"amount":1.0}</pre>
+</div>
+<script>
+function syntaxHighlight(json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+
+    const elements = document.getElementsByClassName("json-snippet");
+    const amount = elements.length;
+    for (let i = 0; i < amount; i++) {
+        const element = elements[0];
+        const div = document.createElement("pre");
+        div.innerHTML = syntaxHighlight(JSON.stringify(JSON.parse(element.innerText), undefined, 4));
+        element.parentNode.replaceChild(div, element);
+    }</script>
+</body>
+</html>

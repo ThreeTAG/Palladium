@@ -5,7 +5,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.Util;
-import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
@@ -36,7 +35,7 @@ public class CodecExtras {
      * Codec for colors. Does NOT support alpha
      */
     public static final Codec<Color> COLOR_CODEC = Codec.withAlternative(
-            Codec.INT.xmap(Color::new, Color::getRGB),
+            Codec.STRING.xmap(s -> Color.decode(s.startsWith("#") ? s : "#" + s), color -> "#" + Integer.toHexString(color.getRGB()).substring(2)),
             Codec.withAlternative(
                     Codec.INT.listOf(3, 3).xmap(integers -> new Color(integers.getFirst(), integers.get(1), integers.get(2)), color -> {
                         List<Integer> integers = new ArrayList<>();
@@ -45,7 +44,7 @@ public class CodecExtras {
                         integers.add(color.getBlue());
                         return integers;
                     }),
-                    Codec.STRING.xmap(s -> Color.decode(s.startsWith("#") ? s : "#" + s), color -> "#" + Integer.toHexString(color.getRGB()))
+                    Codec.INT.xmap(Color::new, Color::getRGB)
             )
     );
     public static final StreamCodec<ByteBuf, Color> COLOR_STREAM_CODEC = ByteBufCodecs.VAR_INT.map(Color::new, Color::getRGB);
@@ -64,8 +63,6 @@ public class CodecExtras {
     public static final Codec<Vector2f> VOXEL_VECTOR_2F = VECTOR_2F_CODEC.xmap(vector2f -> vector2f.div(16), vector2f -> vector2f.mul(16));
     public static final Codec<Float> VOXEL_FLOAT = Codec.FLOAT.xmap(f -> f / 16, f -> f * 16);
     public static final Codec<Float> NON_NEGATIVE_VOXEL_FLOAT = ExtraCodecs.NON_NEGATIVE_FLOAT.xmap(f -> f / 16, f -> f * 16);
-
-    public static final Codec<UVPair> UV_PAIR_CODEC = Codec.FLOAT.listOf(2, 2).xmap(floats -> new UVPair(floats.getFirst(), floats.getLast()), uvPair -> List.of(uvPair.u(), uvPair.v()));
 
     public static final Codec<Integer> TIME = Codec.withAlternative(
             ExtraCodecs.NON_NEGATIVE_INT,

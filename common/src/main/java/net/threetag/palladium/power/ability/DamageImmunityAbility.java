@@ -8,7 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
-import net.threetag.palladium.documentation.Documented;
+import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import net.threetag.palladium.util.AdvancedHolderSet;
 
@@ -49,7 +49,7 @@ public class DamageImmunityAbility extends Ability {
         public void addDocumentation(CodecDocumentationBuilder<Ability, DamageImmunityAbility> builder, HolderLookup.Provider provider) {
             builder.setName("Damage Immunity")
                     .setDescription("Makes the entity immune against certain damage types.")
-                    .add("damage_types", Documented.typeListOrPrimitive(TYPE_DAMAGE_TYPE_ID_OR_TAG), "The damage types the entity is immune against.")
+                    .add("damage_types", SettingType.listOrPrimitive(TYPE_DAMAGE_TYPE_ID_OR_TAG), "The damage types the entity is immune against.")
                     .addToExampleJson("type", new JsonPrimitive("palladium:damage_immunity"))
                     .addToExampleJson("damage_types", new JsonPrimitive("minecraft:cactus"));
         }

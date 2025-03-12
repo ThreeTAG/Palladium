@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
-import net.threetag.palladium.documentation.Documented;
+import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import net.threetag.palladium.util.HudElementAlignment;
 
@@ -144,7 +144,7 @@ public class GuiOverlayAbility extends Ability {
                     .addOptional("translate", TYPE_VECTOR3, "The translation of the texture.", Vec3.ZERO)
                     .addOptional("rotate", TYPE_VECTOR3, "The rotation of the texture.", Vec3.ZERO)
                     .addOptional("scale", TYPE_VECTOR3, "The scale of the texture.", new Vec3(1, 1, 1))
-                    .add("alignment", Documented.typeEnum(HudElementAlignment.values()), "Determines how the image is aligned on the screen.")
+                    .add("alignment", SettingType.enumList(HudElementAlignment.values()), "Determines how the image is aligned on the screen.")
                     .setExampleObject(new GuiOverlayAbility(TextureReference.normal(ResourceLocation.withDefaultNamespace("textures/gui/presets/isles.png")), 256, 256, Vec3.ZERO, Vec3.ZERO, new Vec3(1, 1, 1), HudElementAlignment.TOP_LEFT, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }

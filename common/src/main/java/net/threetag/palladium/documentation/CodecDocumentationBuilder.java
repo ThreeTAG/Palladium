@@ -5,27 +5,28 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import dev.architectury.platform.Platform;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CodecDocumentationBuilder<T, R extends T> {
 
-    public static final String FOLDER = "palladium/export/documentation";
-    public static final Map<ResourceLocation, List<JsonElement>> RESULTS = new HashMap<>();
+    public static final String DOCUMENTATION_FOLDER = "palladium/documentation";
+    public static final String FOLDER = DOCUMENTATION_FOLDER + "/export";
 
     private final MapCodec<R> mapCodec;
     private final Codec<T> mainCodec;
+    private final HolderLookup.Provider provider;
     private String name;
     private String description;
     private R exampleObject;
@@ -33,19 +34,25 @@ public class CodecDocumentationBuilder<T, R extends T> {
     private final Map<String, Entry> entries = new HashMap<>();
     private final List<String> ignoredKeys = new ArrayList<>();
 
-    public CodecDocumentationBuilder(MapCodec<R> mapCodec) {
+    public CodecDocumentationBuilder(MapCodec<R> mapCodec, HolderLookup.Provider provider) {
         this.mapCodec = mapCodec;
         this.mainCodec = null;
+        this.provider = provider;
     }
 
-    public CodecDocumentationBuilder(MapCodec<R> mapCodec, Codec<T> mainCodec) {
+    public CodecDocumentationBuilder(MapCodec<R> mapCodec, Codec<T> mainCodec, HolderLookup.Provider provider) {
         this.mapCodec = mapCodec;
         this.mainCodec = mainCodec;
+        this.provider = provider;
     }
 
     public CodecDocumentationBuilder<T, R> setName(String name) {
         this.name = name;
         return this;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public CodecDocumentationBuilder<T, R> setDescription(String description) {
@@ -57,7 +64,11 @@ public class CodecDocumentationBuilder<T, R extends T> {
     public CodecDocumentationBuilder<T, R> setExampleObject(R exampleObject) {
         this.exampleObject = exampleObject;
         Codec<T> codec = this.mainCodec != null ? this.mainCodec : (Codec<T>) this.mapCodec.codec();
-        this.exampleJson = codec.encodeStart(JsonOps.INSTANCE, exampleObject).getOrThrow();
+        try {
+            this.exampleJson = codec.encodeStart(this.provider.createSerializationContext(JsonOps.INSTANCE), exampleObject).getOrThrow();
+        } catch (Exception e) {
+            Palladium.LOGGER.error("Error while encoding example object for documentation {}", this.name, e);
+        }
         return this;
     }
 
@@ -88,22 +99,22 @@ public class CodecDocumentationBuilder<T, R extends T> {
         return this;
     }
 
-    public CodecDocumentationBuilder<T, R> add(String key, JsonElement type, String description) {
+    public CodecDocumentationBuilder<T, R> add(String key, SettingType type, String description) {
         this.entries.put(key, new Entry(key, type, description, true, null));
         return this;
     }
 
-    public CodecDocumentationBuilder<T, R> addOptional(String key, JsonElement type, String description) {
+    public CodecDocumentationBuilder<T, R> addOptional(String key, SettingType type, String description) {
         this.entries.put(key, new Entry(key, type, description, false, null));
         return this;
     }
 
-    public CodecDocumentationBuilder<T, R> addOptional(String key, JsonElement type, String description, Object fallback) {
+    public CodecDocumentationBuilder<T, R> addOptional(String key, SettingType type, String description, Object fallback) {
         this.entries.put(key, new Entry(key, type, description, false, fallback));
         return this;
     }
 
-    public void build(ResourceKey<?> id) {
+    public JsonObject build(ResourceKey<?> id) {
         var json = new JsonObject();
 
         json.addProperty("namespace", id.location().getNamespace());
@@ -127,7 +138,7 @@ public class CodecDocumentationBuilder<T, R extends T> {
                     var documented = this.entries.get(key);
                     var entryJson = new JsonObject();
                     entryJson.addProperty("key", key);
-                    entryJson.add("type", documented.type);
+                    entryJson.add("type", documented.type.toJson());
                     entryJson.addProperty("description", documented.description);
                     entryJson.addProperty("required", documented.required);
                     entryJson.add("fallback", toJsonElement(documented.fallback));
@@ -142,11 +153,40 @@ public class CodecDocumentationBuilder<T, R extends T> {
             json.add("example", orderJsonObject(this.exampleJson));
         }
 
-        RESULTS.computeIfAbsent(id.registry(), x -> new ArrayList<>()).add(json);
+        return json;
     }
 
-    public static void createFiles() {
-        for (Map.Entry<ResourceLocation, List<JsonElement>> e : RESULTS.entrySet()) {
+    public void addToHtml(HTMLBuilder.HTMLObject div) {
+        if (this.name != null && !this.name.isEmpty()) {
+            div.add(HTMLBuilder.subHeading(this.name));
+        }
+
+        if (this.description != null && !this.description.isEmpty()) {
+            div.add(HTMLBuilder.paragraph(this.description));
+        }
+
+        if (!this.entries.isEmpty()) {
+            div.add(HTMLBuilder.subSubHeading("Settings:"))
+                    .add(HTMLBuilder.table(Arrays.asList("Setting", "Type", "Description", "Required", "Fallback Value"), this.entries.entrySet().stream().map(e -> {
+                        List<Object> list = new ArrayList<>();
+                        var entry = e.getValue();
+                        list.add(e.getKey());
+                        list.add(entry.type.toString());
+                        list.add(entry.description);
+                        list.add(entry.required);
+                        list.add(Utils.orElse(entry.fallback, "/").toString());
+                        return list;
+                    }).collect(Collectors.toList())));
+        }
+
+        if (this.exampleJson != null) {
+            div.add(HTMLBuilder.subSubHeading("Example:"))
+                    .add(new HTMLBuilder.HTMLObject("pre", orderJsonObject(this.exampleJson).toString()).addAttribute("class", "json-snippet"));
+        }
+    }
+
+    public static void createDocFiles(Map<ResourceLocation, List<JsonElement>> generated) {
+        for (Map.Entry<ResourceLocation, List<JsonElement>> e : generated.entrySet()) {
             try {
                 var jsonArray = new JsonArray();
                 for (JsonElement j : e.getValue()) {
@@ -168,7 +208,7 @@ public class CodecDocumentationBuilder<T, R extends T> {
         if (!file.exists() && !file.mkdirs())
             throw new RuntimeException("Could not create palladium export directory! Please create the directory yourself, or make sure the name is not taken by a file and you have permission to create directories.");
 
-        file = folder.resolve(filename + ".json").toFile();
+        file = folder.resolve(filename + ".paldoc").toFile();
         return new BufferedWriter(new FileWriter(file));
     }
 
@@ -204,7 +244,7 @@ public class CodecDocumentationBuilder<T, R extends T> {
         }
     }
 
-    private record Entry(String key, JsonElement type, String description, boolean required, Object fallback) {
+    private record Entry(String key, SettingType type, String description, boolean required, Object fallback) {
 
     }
 }

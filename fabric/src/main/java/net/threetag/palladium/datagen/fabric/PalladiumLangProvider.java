@@ -7,6 +7,7 @@ import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityKeyBindDisplay;
 import net.threetag.palladium.command.SuperpowerCommand;
+import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.power.ability.AbilitySerializers;
 
 import java.util.concurrent.CompletableFuture;
@@ -57,7 +58,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.SLOWFALL, "Slowfall");
             this.addAbility(builder, AbilitySerializers.DAMAGE_IMMUNITY, "Damage Immunity");
             this.addAbility(builder, AbilitySerializers.INVISIBILITY, "Invisibility");
-//            this.addAbility(builder, AbilitySerializers.ENERGY_BEAM, "Energy Beam");
+            this.addAbility(builder, AbilitySerializers.ENERGY_BEAM, "Energy Beam");
             this.addAbility(builder, AbilitySerializers.SIZE, "Size");
 //            this.addAbility(builder, AbilitySerializers.PROJECTILE, "Projectile");
             this.addAbility(builder, AbilitySerializers.SKIN_CHANGE, "Skin Change");
@@ -78,6 +79,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.SCULK_IMMUNITY, "Sculk Immunity");
             this.addAbility(builder, AbilitySerializers.FIRE_ASPECT, "Fire Aspect");
             this.addAbility(builder, AbilitySerializers.PARTICLES, "Particles");
+            this.addAbility(builder, GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
             // Commands
             builder.add(SuperpowerCommand.QUERY_SUCCESS, "%s has the following superpowers: %s");
@@ -132,7 +134,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.SLOWFALL, "Langsamer Fall");
             this.addAbility(builder, AbilitySerializers.DAMAGE_IMMUNITY, "Schadensimmunität");
             this.addAbility(builder, AbilitySerializers.INVISIBILITY, "Unsichtbarkeit");
-//            this.addAbility(builder, AbilitySerializers.ENERGY_BEAM, "Energiestrahl");
+            this.addAbility(builder, AbilitySerializers.ENERGY_BEAM, "Energiestrahl");
             this.addAbility(builder, AbilitySerializers.SIZE, "Größe");
 //            this.addAbility(builder, AbilitySerializers.PROJECTILE, "Projektil");
             this.addAbility(builder, AbilitySerializers.SKIN_CHANGE, "Skin Änderung");
@@ -153,6 +155,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.SCULK_IMMUNITY, "Sculk-Immunität");
             this.addAbility(builder, AbilitySerializers.FIRE_ASPECT, "Verbrennung");
             this.addAbility(builder, AbilitySerializers.PARTICLES, "Partikel");
+            this.addAbility(builder, GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
             // GUI
             builder.add("gui.palladium.powers", "Kräfte");
@@ -203,7 +206,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.SLOWFALL, "Langsamer Fall");
             this.addAbility(builder, AbilitySerializers.DAMAGE_IMMUNITY, "Schadensimmunität");
             this.addAbility(builder, AbilitySerializers.INVISIBILITY, "Unsischtbarkeet");
-//            this.addAbility(builder, AbilitySerializers.ENERGY_BEAM, "Energiestrahl");
+            this.addAbility(builder, AbilitySerializers.ENERGY_BEAM, "Energiestrahl");
             this.addAbility(builder, AbilitySerializers.SIZE, "Größe");
 //            this.addAbility(builder, AbilitySerializers.PROJECTILE, "Projektil");
             this.addAbility(builder, AbilitySerializers.SKIN_CHANGE, "Skin Änderung");
@@ -224,6 +227,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.SCULK_IMMUNITY, "Sculk-Immunität");
             this.addAbility(builder, AbilitySerializers.FIRE_ASPECT, "Vorbrennung");
             this.addAbility(builder, AbilitySerializers.PARTICLES, "Partikel");
+            this.addAbility(builder, GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
             // GUI
             builder.add("gui.palladium.powers", "Kräfte");

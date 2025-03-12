@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
-import net.threetag.palladium.documentation.Documented;
+import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import net.threetag.palladium.util.CodecExtras;
 
@@ -82,11 +82,13 @@ public class ParticleAbility extends Ability {
 
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, ParticleAbility> builder, HolderLookup.Provider provider) {
+            var particleType = provider.lookupOrThrow(Registries.PARTICLE_TYPE).getOrThrow(ResourceKey.create(Registries.PARTICLE_TYPE, ResourceLocation.withDefaultNamespace("dust")));
+
             builder.setDescription("Spawns particles around the entity.")
-                    .add("emitter", Documented.typeListOrPrimitive(TYPE_RESOURCE_LOCATION), "List of emitter IDs where the particles spawn at.")
+                    .add("emitter", SettingType.listOrPrimitive(TYPE_RESOURCE_LOCATION), "List of emitter IDs where the particles spawn at.")
                     .add("particle_type", TYPE_PARTICLE_TYPE, "ID of the particle you want to spawn.")
                     .addOptional("options", TYPE_NBT, "Additional options for the particle (like color of a dust particle).")
-                    .setExampleObject(new ParticleAbility(List.of(ResourceLocation.fromNamespaceAndPath("example", "emitter_id")), provider.get(ResourceKey.create(Registries.PARTICLE_TYPE, ResourceLocation.withDefaultNamespace("dust"))).get(), null, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .setExampleObject(new ParticleAbility(List.of(ResourceLocation.fromNamespaceAndPath("example", "emitter_id")), particleType, null, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }
