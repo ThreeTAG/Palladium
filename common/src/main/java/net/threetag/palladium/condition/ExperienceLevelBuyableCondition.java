@@ -33,11 +33,9 @@ public class ExperienceLevelBuyableCondition extends BuyableCondition {
 
     @Override
     public boolean takeFromEntity(LivingEntity entity) {
-        if (entity instanceof Player player) {
-            if (player.experienceLevel >= this.xpLevel) {
-                player.giveExperienceLevels(-this.xpLevel);
-                return true;
-            }
+        if (entity instanceof Player player && this.isAvailable(entity)) {
+            player.giveExperiencePoints(-getExpEquivalentForLevel(this.xpLevel));
+            return true;
         }
 
         return false;
@@ -69,6 +67,24 @@ public class ExperienceLevelBuyableCondition extends BuyableCondition {
         @Override
         public String getDocumentationDescription() {
             return "A condition that makes the ability buyable for a certain amount of xp levels.";
+        }
+    }
+
+    private int getExpEquivalentForLevel(int levelsToRemove) {
+        int xp = 0;
+        for (int level = 0; level < levels; level++) {
+            xp += getXpForLevel(level);
+        }
+        return xp;
+    }
+
+    private int getXpForLevel(int level) {
+        if (level >= 30) {
+            return 9 * level - 158;
+        } else if (level >= 15) {
+            return 5 * level - 38;
+        } else {
+            return 2 * level + 7;
         }
     }
 }
