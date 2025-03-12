@@ -34,7 +34,7 @@ public class ExperienceLevelBuyableCondition extends BuyableCondition {
     @Override
     public boolean takeFromEntity(LivingEntity entity) {
         if (entity instanceof Player player && this.isAvailable(entity)) {
-            player.giveExperiencePoints(-getExpEquivalentForLevel(this.xpLevel));
+            player.giveExperiencePoints(-getTotalXpForLevel(this.xpLevel));
             return true;
         }
 
@@ -70,21 +70,14 @@ public class ExperienceLevelBuyableCondition extends BuyableCondition {
         }
     }
 
-    private int getExpEquivalentForLevel(int levelsToRemove) {
-        int xp = 0;
-        for (int level = 0; level < levels; level++) {
-            xp += getXpForLevel(level);
-        }
-        return xp;
-    }
-
-    private int getXpForLevel(int level) {
-        if (level >= 30) {
-            return 9 * level - 158;
-        } else if (level >= 15) {
-            return 5 * level - 38;
+    private int getTotalXpForLevel(int level) {
+        // https://minecraft.fandom.com/wiki/Experience#Leveling_up
+        if (level <= 16) {
+            return level * level + 6 * level;
+        } else if (level <= 31) {
+            return (int) (2.5 * level * level - 40.5 * level + 360);
         } else {
-            return 2 * level + 7;
+            return (int) (4.5 * level * level - 162.5 * level + 2220);
         }
     }
 }
