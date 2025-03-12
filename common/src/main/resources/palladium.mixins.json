@@ -7,6 +7,7 @@
     "client.AbstractClientPlayerMixin",
     "client.EntityRenderDispatcherMixin",
     "client.HumanoidModelMixin",
+    "client.ItemInHandRendererMixin",
     "client.KeyboardInputMixin",
     "client.LivingEntityRendererMixin",
     "client.MinecraftMixin",

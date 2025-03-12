@@ -61,7 +61,14 @@ public abstract class PlayerSlot {
     }
 
     public static Collection<PlayerSlot> exampleValues() {
-        List<PlayerSlot> slots = new ArrayList<>(EQUIPMENT_SLOTS.values());
+        List<PlayerSlot> slots = new ArrayList<>();
+        slots.add(get(EquipmentSlot.MAINHAND));
+        slots.add(get(EquipmentSlot.OFFHAND));
+        slots.add(get(EquipmentSlot.HEAD));
+        slots.add(get(EquipmentSlot.CHEST));
+        slots.add(get(EquipmentSlot.LEGS));
+        slots.add(get(EquipmentSlot.FEET));
+        slots.add(get(EquipmentSlot.BODY));
         slots.add(get("accessories:head"));
         slots.add(get("accessories:necklace"));
         return slots;
