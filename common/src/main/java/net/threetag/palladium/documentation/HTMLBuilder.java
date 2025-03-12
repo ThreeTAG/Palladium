@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -80,9 +81,9 @@ public class HTMLBuilder {
         return builder;
     }
 
-    public static HTMLObject documented(CodecDocumentationBuilder<?, ?> builder) {
+    public static HTMLObject documented(CodecDocumentationBuilder<?, ?> builder, @Nullable ResourceLocation id) {
         HTMLObject div = div();
-        builder.addToHtml(div);
+        builder.addToHtml(div, id);
         return div;
     }
 
@@ -94,7 +95,9 @@ public class HTMLBuilder {
         for (Map.Entry<ResourceLocation, CodecDocumentationBuilder<?, ?>> e : settings.entrySet()) {
             var mod = Platform.getMod(e.getKey().getNamespace());
             String modName = mod != null ? mod.getName() : e.getKey().getNamespace();
-            sorted.computeIfAbsent(modName, x -> new ArrayList<>()).add(Pair.of(e.getKey(), e.getValue()));
+            var list = sorted.computeIfAbsent(modName, x -> new ArrayList<>());
+            list.add(Pair.of(e.getKey(), e.getValue()));
+            list.sort(Comparator.comparing(o -> o.getFirst().toString()));
         }
 
         HTMLObject overview;
@@ -109,7 +112,7 @@ public class HTMLBuilder {
 
         sorted.values().forEach(modSettings -> {
             modSettings.forEach(setting -> {
-                this.add(hr()).add(documented(setting.getSecond()));
+                this.add(hr()).add(documented(setting.getSecond(), setting.getFirst()));
                 this.hasJson = true;
             });
         });

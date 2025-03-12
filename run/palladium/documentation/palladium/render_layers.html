@@ -43,19 +43,19 @@ Palladium</h3>
 Compound Render Layer</a>
 </li>
 <li>
-<a href="#palladium:render_layer">
-Default Render Layer</a>
-</li>
-<li>
 <a href="#palladium:lightning_sparks">
 Lightning Sparks</a>
+</li>
+<li>
+<a href="#palladium:render_layer">
+Default Render Layer</a>
 </li>
 </ul>
 </p>
 <hr>
 
 <div>
-<h2>
+<h2 id="geckolib:render_layer">
 Geo Render Layer</h2>
 <p>
 Uses GeckoLib to render a geo model, including animations</p>
@@ -155,7 +155,7 @@ false</td>
 <hr>
 
 <div>
-<h2>
+<h2 id="palladium:compound">
 Compound Render Layer</h2>
 <p>
 A compound render layer that can contain multiple render layers.</p>
@@ -195,7 +195,75 @@ true</td>
 <hr>
 
 <div>
-<h2>
+<h2 id="palladium:lightning_sparks">
+Lightning Sparks</h2>
+<p>
+Renders lightning sparks around the entity.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+amount</td>
+<td>
+integer</td>
+<td>
+The amount of sparks to spawn during each occurence.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+5</td>
+</tr>
+<tr>
+<td>
+render_settings</td>
+<td>
+Laser Renderer Settings</td>
+<td>
+The render settings for the sparks.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+frequency</td>
+<td>
+float</td>
+<td>
+The frequency of the sparks.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.5</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:lightning_sparks","frequency":0.2,"amount":10,"render_settings":{"size":2.0,"glow":"#0000ff","bloom":2}}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:render_layer">
 Default Render Layer</h2>
 <p>
 Default render layer that renders a model with a texture.</p>
@@ -271,74 +339,6 @@ minecraft:solid</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:render_layer","light_emission":5,"model_layer":{"wide":"example:wide_model#main","slim":"example:slim_model#main"},"texture":{"wide":"example:wide_texture","slim":"example:slim_texture"}}</pre>
-</div>
-<hr>
-
-<div>
-<h2>
-Lightning Sparks</h2>
-<p>
-Renders lightning sparks around the entity.</p>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-amount</td>
-<td>
-integer</td>
-<td>
-The amount of sparks to spawn during each occurence.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-5</td>
-</tr>
-<tr>
-<td>
-render_settings</td>
-<td>
-Laser Renderer Settings</td>
-<td>
-The render settings for the sparks.</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-frequency</td>
-<td>
-float</td>
-<td>
-The frequency of the sparks.</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0.5</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:lightning_sparks","frequency":0.2,"amount":10,"render_settings":{"size":2.0,"glow":"#0000ff","bloom":2}}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

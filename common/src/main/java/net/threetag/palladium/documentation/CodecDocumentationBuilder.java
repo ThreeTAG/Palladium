@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.util.Utils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -156,9 +157,13 @@ public class CodecDocumentationBuilder<T, R extends T> {
         return json;
     }
 
-    public void addToHtml(HTMLBuilder.HTMLObject div) {
+    public void addToHtml(HTMLBuilder.HTMLObject div, @Nullable ResourceLocation id) {
         if (this.name != null && !this.name.isEmpty()) {
-            div.add(HTMLBuilder.subHeading(this.name));
+            var heading = HTMLBuilder.subHeading(this.name);
+            if (id != null) {
+                heading.setId(id.toString());
+            }
+            div.add(heading);
         }
 
         if (this.description != null && !this.description.isEmpty()) {
