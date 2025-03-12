@@ -83,12 +83,12 @@ Shrink Body Overlay</a>
 Remove Body Part</a>
 </li>
 <li>
-<a href="#palladium:show_both_arms">
-Show Both Arms</a>
-</li>
-<li>
 <a href="#palladium:damage_immunity">
 Damage Immunity</a>
+</li>
+<li>
+<a href="#palladium:show_both_arms">
+Show Both Arms</a>
 </li>
 <li>
 <a href="#palladium:invisibility">
@@ -131,12 +131,12 @@ Slowfall</a>
 Particles</a>
 </li>
 <li>
-<a href="#palladium:restrict_slots">
-Restrict Slots</a>
-</li>
-<li>
 <a href="#palladium:trail">
 ability.palladium.trail</a>
+</li>
+<li>
+<a href="#palladium:restrict_slots">
+Restrict Slots</a>
 </li>
 <li>
 <a href="#palladium:dummy">
@@ -707,9 +707,9 @@ id</td>
 <td>
 string</td>
 <td>
-Sets the unique identifier for this attribute modifier.</td>
-<td style="background-color: lightgreen">
-true</td>
+Sets the unique identifier for this attribute modifier. Will fallback to a generated one based on the ability/power ID.</td>
+<td style="background-color: lightcoral">
+false</td>
 <td>
 /</td>
 </tr>
@@ -730,7 +730,7 @@ true</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:attribute_modifier","id":"example:modifier_id","attribute":"minecraft:armor","amount":1.0,"operation":"add_value"}</pre>
+{"type":"palladium:attribute_modifier","attribute":"minecraft:armor","amount":1.0,"operation":"add_value"}</pre>
 </div>
 <hr>
 
@@ -848,18 +848,6 @@ Example:</h3>
 
 <div>
 <h2>
-Show Both Arms</h2>
-<p>
-Enables the rendering of your off-hand in first-person.</p>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:show_both_arms"}</pre>
-</div>
-<hr>
-
-<div>
-<h2>
 Damage Immunity</h2>
 <p>
 Makes the entity immune against certain damage types.</p>
@@ -899,6 +887,18 @@ true</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:damage_immunity","damage_types":"minecraft:cactus"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Show Both Arms</h2>
+<p>
+Enables the rendering of your off-hand in first-person.</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:show_both_arms"}</pre>
 </div>
 <hr>
 
@@ -1400,50 +1400,6 @@ true</td>
 
 <div>
 <h2>
-Restrict Slots</h2>
-<p>
-Restricts the slots of the entity.</p>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-slots</td>
-<td>
-"legs" | "mainhand" | "chest" | "head" | "offhand" | "body" | "feet" | "accessories:head" | "accessories:necklace"</td>
-<td>
-The slots that should be restricted.</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:restrict_slots","slots":"chest"}</pre>
-</div>
-<hr>
-
-<div>
-<h2>
 ability.palladium.trail</h2>
 <p>
 An ability that renders a trail behind the entity.</p>
@@ -1483,6 +1439,50 @@ true</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:trail","trail":"example:trail_id"}</pre>
+</div>
+<hr>
+
+<div>
+<h2>
+Restrict Slots</h2>
+<p>
+Restricts the slots of the entity.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+slots</td>
+<td>
+"feet" | "chest" | "offhand" | "head" | "legs" | "body" | "mainhand" | "accessories:head" | "accessories:necklace"</td>
+<td>
+The slots that should be restricted.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:restrict_slots","slots":"chest"}</pre>
 </div>
 <hr>
 
