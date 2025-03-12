@@ -1,14 +1,20 @@
 package net.threetag.palladium.mixin;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.entity.PalladiumEntityExtension;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataType;
+import net.threetag.palladium.power.ability.AbilityInstance;
+import net.threetag.palladium.power.ability.AbilitySerializers;
+import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.power.ability.IntangibilityAbility;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,6 +33,8 @@ public abstract class EntityMixin implements PalladiumEntityExtension {
     @Shadow
     public abstract RegistryAccess registryAccess();
 
+    @Shadow
+    private Level level;
     @Unique
     private Map<PalladiumEntityDataType<?>, PalladiumEntityData<?>> palladium$dataMap;
 
@@ -72,5 +80,17 @@ public abstract class EntityMixin implements PalladiumEntityExtension {
     @Override
     public Map<PalladiumEntityDataType<?>, PalladiumEntityData<?>> palladium$getDataMap() {
         return ImmutableMap.copyOf(this.palladium$dataMap);
+    }
+
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/core/BlockPos;containing(DDD)Lnet/minecraft/core/BlockPos;"), method = "moveTowardsClosestSpace", cancellable = true)
+    protected void pushOutOfBlocks(double x, double y, double z, CallbackInfo ci) {
+        if ((Object) this instanceof LivingEntity living) {
+            for (AbilityInstance<IntangibilityAbility> instance : AbilityUtil.getEnabledInstances(living, AbilitySerializers.INTANGIBILITY.get())) {
+                if (IntangibilityAbility.canGoThrough(instance, this.level.getBlockState(BlockPos.containing(x, y, z)))) {
+                    ci.cancel();
+                    return;
+                }
+            }
+        }
     }
 }

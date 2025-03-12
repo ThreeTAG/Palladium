@@ -9,14 +9,17 @@
     "client.HumanoidModelMixin",
     "client.ItemInHandRendererMixin",
     "client.KeyboardInputMixin",
+    "client.LevelRendererMixin",
     "client.LivingEntityRendererMixin",
     "client.MinecraftMixin",
     "client.ModelPartMixin",
     "client.PlayerRendererMixin",
+    "client.ScreenEffectRendererMixin",
     "client.SkyRendererMixin"
   ],
   "mixins": [
     "BlockBehaviourMixin",
+    "BlockStateBaseMixin",
     "EntityMixin",
     "InventoryMixin",
     "ItemMixin",

@@ -1,0 +1,16 @@
+{
+  "name": "Intangibility Test",
+  "icon": "minecraft:glass_pane",
+  "abilities": {
+    "intangibility": {
+      "type": "palladium:intangibility",
+      "vertical": true,
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

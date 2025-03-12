@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "client": [
     "client.fabric.ClientLevelMixin",
+    "client.fabric.FogRendererMixin",
     "client.fabric.ModelLayerManagerMixin",
     "client.fabric.ReloadableResourceManagerMixin"
   ],

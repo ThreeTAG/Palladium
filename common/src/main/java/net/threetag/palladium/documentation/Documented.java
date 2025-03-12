@@ -8,6 +8,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_STRING = SettingType.simple("string");
     SettingType TYPE_STRING_ARRAY = SettingType.simple("string[]");
     SettingType TYPE_RESOURCE_LOCATION = SettingType.simple("ResourceLocation");
+    SettingType TYPE_BLOCK_TAG = SettingType.simple("Block Tag");
     SettingType TYPE_BOOLEAN = SettingType.simple("boolean");
     SettingType TYPE_INT = SettingType.simple("integer");
     SettingType TYPE_FLOAT = SettingType.simple("float");
