@@ -146,10 +146,6 @@ ability.palladium.trail</a>
 <a href="#palladium:vibrate">
 Vibrate</a>
 </li>
-<li>
-<a href="#palladium:water_walk">
-Water Walk</a>
-</li>
 </ul>
 </p>
 <hr>
@@ -669,20 +665,20 @@ Fallback Value</th>
 <td>
 fluid_tag</td>
 <td>
-ResourceLocation</td>
+Fluid Tag | Fluid Tag[]</td>
 <td>
-The fluid tag the entity can walk on.</td>
-<td style="background-color: lightgreen">
-true</td>
+The fluid tag(s) the entity can walk on.</td>
+<td style="background-color: lightcoral">
+false</td>
 <td>
-/</td>
+minecraft:water</td>
 </tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:fluid_walking","fluid_tag":"minecraft:water"}</pre>
+{"type":"palladium:fluid_walking","fluid_tag":["#minecraft:water","#minecraft:lava"]}</pre>
 </div>
 <hr>
 
@@ -1583,18 +1579,6 @@ Adds a vibration effect to the player.</p>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:vibrate"}</pre>
-</div>
-<hr>
-
-<div>
-<h2 id="palladium:water_walk">
-Water Walk</h2>
-<p>
-Allows the player to walk on water.</p>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:water_walk"}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

@@ -69,7 +69,6 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.GUI_OVERLAY, "Gui Overlay");
             this.addAbility(builder, AbilitySerializers.SHOW_BOTH_ARMS, "Show Both Arms");
 //            this.addAbility(builder, AbilitySerializers.PLAYER_ANIMATION, "Player Animation");
-            this.addAbility(builder, AbilitySerializers.WATER_WALK, "Water Walk");
             this.addAbility(builder, AbilitySerializers.FLUID_WALKING, "Fluid Walking");
             this.addAbility(builder, AbilitySerializers.RESTRICT_SLOTS, "Restrict Slots");
             this.addAbility(builder, AbilitySerializers.PLAY_SOUND, "Sound");
@@ -145,7 +144,6 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(builder, AbilitySerializers.SHOW_BOTH_ARMS, "Beide Arme zeigen");
 //            this.addAbility(builder, AbilitySerializers.PLAYER_ANIMATION, "Spieler-Animation");
-            this.addAbility(builder, AbilitySerializers.WATER_WALK, "Auf Wasser Laufen");
             this.addAbility(builder, AbilitySerializers.FLUID_WALKING, "Auf Flüssigkeit Laufen");
             this.addAbility(builder, AbilitySerializers.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(builder, AbilitySerializers.PLAY_SOUND, "Sound");
@@ -217,7 +215,6 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(builder, AbilitySerializers.SHOW_BOTH_ARMS, "Beide Arme zeijen");
 //            this.addAbility(builder, AbilitySerializers.PLAYER_ANIMATION, "Spieler-Animation");
-            this.addAbility(builder, AbilitySerializers.WATER_WALK, "Uff Wasser Lofen");
             this.addAbility(builder, AbilitySerializers.FLUID_WALKING, "Uff Flüssichkeht Lofen");
             this.addAbility(builder, AbilitySerializers.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(builder, AbilitySerializers.PLAY_SOUND, "Sound");

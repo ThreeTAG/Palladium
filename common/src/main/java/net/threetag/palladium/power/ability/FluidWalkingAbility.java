@@ -10,33 +10,33 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
+import net.threetag.palladium.util.CodecExtras;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class FluidWalkingAbility extends Ability {
 
-    // TODO
-
     public static final MapCodec<FluidWalkingAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    TagKey.codec(Registries.FLUID).fieldOf("fluid_tag").forGetter(ab -> ab.fluidTag),
+                    CodecExtras.listOrPrimitive(TagKey.hashedCodec(Registries.FLUID)).optionalFieldOf("fluid_tag", Collections.singletonList(FluidTags.WATER)).forGetter(ab -> ab.fluidTags),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, FluidWalkingAbility::new));
 
-    public final TagKey<Fluid> fluidTag;
+    public final List<TagKey<Fluid>> fluidTags;
 
-    public FluidWalkingAbility(TagKey<Fluid> fluidTag, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
+    public FluidWalkingAbility(List<TagKey<Fluid>> fluidTags, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
         super(properties, conditions, energyBarUsages);
-        this.fluidTag = fluidTag;
+        this.fluidTags = fluidTags;
     }
 
     public static boolean canWalkOn(LivingEntity entity, FluidState fluid) {
-        if (fluid.is(FluidTags.WATER) && AbilityUtil.isTypeEnabled(entity, AbilitySerializers.WATER_WALK.get())) {
-            return true;
-        } else {
-            return AbilityUtil.getEnabledInstances(entity, AbilitySerializers.FLUID_WALKING.get()).stream().anyMatch(e -> fluid.is(e.getAbility().fluidTag));
-        }
+        return AbilityUtil.getEnabledInstances(entity, AbilitySerializers.FLUID_WALKING.get())
+                .stream()
+                .anyMatch(e -> e.getAbility().fluidTags.stream().anyMatch(fluid::is));
     }
 
     @Override
@@ -54,8 +54,8 @@ public class FluidWalkingAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, FluidWalkingAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Allows the entity to walk on a specific fluid.")
-                    .add("fluid_tag", TYPE_RESOURCE_LOCATION, "The fluid tag the entity can walk on.")
-                    .setExampleObject(new FluidWalkingAbility(FluidTags.WATER, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addOptional("fluid_tag", SettingType.listOrPrimitive(TYPE_FLUID_TAG), "The fluid tag(s) the entity can walk on.", FluidTags.WATER.location().toString())
+                    .setExampleObject(new FluidWalkingAbility(Arrays.asList(FluidTags.WATER, FluidTags.LAVA), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

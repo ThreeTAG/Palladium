@@ -29,7 +29,6 @@ public class AbilitySerializers {
     public static final RegistryHolder<GuiOverlayAbility.Serializer> GUI_OVERLAY = ABILITIES.register("gui_overlay", GuiOverlayAbility.Serializer::new);
     public static final RegistryHolder<ShowBothArmsAbility.Serializer> SHOW_BOTH_ARMS = ABILITIES.register("show_both_arms", ShowBothArmsAbility.Serializer::new);
     //    public static final RegistryHolder<PlayerAnimationAbility.Serializer> PLAYER_ANIMATION = ABILITIES.register("player_animation", PlayerAnimationAbility::new);
-    public static final RegistryHolder<WaterWalkAbility.Serializer> WATER_WALK = ABILITIES.register("water_walk", WaterWalkAbility.Serializer::new);
     public static final RegistryHolder<FluidWalkingAbility.Serializer> FLUID_WALKING = ABILITIES.register("fluid_walking", FluidWalkingAbility.Serializer::new);
     public static final RegistryHolder<RestrictSlotsAbility.Serializer> RESTRICT_SLOTS = ABILITIES.register("restrict_slots", RestrictSlotsAbility.Serializer::new);
     public static final RegistryHolder<PlaySoundAbility.Serializer> PLAY_SOUND = ABILITIES.register("play_sound", PlaySoundAbility.Serializer::new);
