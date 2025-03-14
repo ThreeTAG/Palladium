@@ -1,0 +1,5 @@
+{
+  "type": "palladium:string",
+  "sync_with": "all",
+  "copy_on_death": true
+}

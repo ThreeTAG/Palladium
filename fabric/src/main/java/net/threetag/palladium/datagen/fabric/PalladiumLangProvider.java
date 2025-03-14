@@ -6,6 +6,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityKeyBindDisplay;
+import net.threetag.palladium.command.DataAttachmentCommand;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.power.ability.AbilitySerializers;
@@ -82,6 +83,12 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // Commands
             builder.add(SuperpowerCommand.QUERY_SUCCESS, "%s has the following superpowers: %s");
+            builder.add(DataAttachmentCommand.TRANS_UNKNOWN_TYPE, "Unknown data attachment type: %s");
+            builder.add(DataAttachmentCommand.TRANS_NO_DATA, "No data found for data attachment type %s");
+            builder.add(DataAttachmentCommand.TRANS_GET_DATA, "Data attachment value %s for %s is %s");
+            builder.add(DataAttachmentCommand.TRANS_PARSE_ERROR, "Error while parsing data attachment value");
+            builder.add(DataAttachmentCommand.TRANS_SET_DATA_SINGLE, "Data attachment value %s for %s is now set to %s");
+            builder.add(DataAttachmentCommand.TRANS_SET_DATA_MULTIPLE, "Data attachment value %s for %s entities is now set to %s");
 
             // GUI
             builder.add("gui.palladium.powers", "Powers");
@@ -155,6 +162,14 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.PARTICLES, "Partikel");
             this.addAbility(builder, GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
+            // Commands
+            builder.add(DataAttachmentCommand.TRANS_UNKNOWN_TYPE, "Unbekannter Datenanhang: %s");
+            builder.add(DataAttachmentCommand.TRANS_NO_DATA, "Keine Daten für Datenanlagentyp %s gefunden");
+            builder.add(DataAttachmentCommand.TRANS_GET_DATA, "Der Wert der Datenanlage %s für %s ist %s");
+            builder.add(DataAttachmentCommand.TRANS_PARSE_ERROR, "Fehler beim Parsen von Datenanhangswerten");
+            builder.add(DataAttachmentCommand.TRANS_SET_DATA_SINGLE, "Datenanhangswert %s für %s ist jetzt auf %s gesetzt");
+            builder.add(DataAttachmentCommand.TRANS_SET_DATA_MULTIPLE, "Datenanhangswert %s für %s Entitäten ist jetzt auf %s gesetzt");
+
             // GUI
             builder.add("gui.palladium.powers", "Kräfte");
             builder.add("gui.palladium.powers.buy_ability", "Möchtest du diese Fähigkeit freischalten?");
@@ -225,6 +240,14 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.FIRE_ASPECT, "Vorbrennung");
             this.addAbility(builder, AbilitySerializers.PARTICLES, "Partikel");
             this.addAbility(builder, GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
+
+            // Commands
+            builder.add(DataAttachmentCommand.TRANS_UNKNOWN_TYPE, "Unbegannter Datenanhang: %s");
+            builder.add(DataAttachmentCommand.TRANS_NO_DATA, "Kehne Daten für Datenanlagentyp %s jefunden");
+            builder.add(DataAttachmentCommand.TRANS_GET_DATA, "Der Wert dor Datenanlage %s für %s is %s");
+            builder.add(DataAttachmentCommand.TRANS_PARSE_ERROR, "Fehler beim Parsen von Datenanhangswerten");
+            builder.add(DataAttachmentCommand.TRANS_SET_DATA_SINGLE, "Datenanhangswert %s für %s jetze uff %s jesetzt");
+            builder.add(DataAttachmentCommand.TRANS_SET_DATA_MULTIPLE, "Datenanhangswert %s für %s Entitäten is jetze uff %s jesetzt");
 
             // GUI
             builder.add("gui.palladium.powers", "Kräfte");

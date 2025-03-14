@@ -59,6 +59,7 @@ public class AddonPackManager {
     }
 
     static {
+        registerLoader(DataAttachmentLoader.INSTANCE);
         registerLoader(new ToolMaterialLoader());
         registerLoader(new ArmorMaterialLoader());
         registerRegistryLoader(Registries.CREATIVE_MODE_TAB, callback -> new AddonObjectLoader<>(CreativeModeTabCodec.CODEC, Registries.CREATIVE_MODE_TAB, callback));

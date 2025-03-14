@@ -19,6 +19,7 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.AddonPackManager;
+import net.threetag.palladium.attachment.neoforge.PlatformAttachmentTypeImpl;
 import net.threetag.palladium.client.PalladiumClient;
 import net.threetag.palladium.client.model.ModelLayerManager;
 
@@ -31,6 +32,7 @@ public final class PalladiumNeoForge {
 
     public PalladiumNeoForge() {
         Palladium.init();
+        PlatformAttachmentTypeImpl.initEvents();
 
         if (Platform.getEnvironment() == Env.CLIENT) {
             PalladiumClient.init();
