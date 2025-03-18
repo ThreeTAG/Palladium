@@ -1,1 +1,2 @@
-- Added immortality ability
+- Added "allow_bar_shrinking" option to powers
+- Use EXP Rate instead of flat level for XP-buy conditions (DeveloperAnonymous)
