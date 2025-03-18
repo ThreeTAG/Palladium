@@ -467,7 +467,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IngameOverlay {
         }
 
         public void simplify() {
-            if (!this.energyBars.isEmpty()) {
+            if (!this.power.allowBarShrinking() || !this.energyBars.isEmpty()) {
                 return;
             }
 

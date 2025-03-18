@@ -30,10 +30,11 @@ public class Power {
     private final Color primaryColor, secondaryColor;
     private final boolean persistentData;
     private final boolean hidden;
+    private final boolean allowBarShrinking;
     private final GuiDisplayType guiDisplayType;
     private boolean invalid = false;
 
-    public Power(ResourceLocation id, Component name, IIcon icon, TextureReference background, TextureReference abilityBar, Color primaryColor, Color secondaryColor, boolean persistentData, boolean hidden, GuiDisplayType guiDisplayType) {
+    public Power(ResourceLocation id, Component name, IIcon icon, TextureReference background, TextureReference abilityBar, Color primaryColor, Color secondaryColor, boolean persistentData, boolean hidden, boolean allowBarShrinking, GuiDisplayType guiDisplayType) {
         this.id = id;
         this.name = name;
         this.icon = icon;
@@ -43,6 +44,7 @@ public class Power {
         this.secondaryColor = secondaryColor;
         this.persistentData = persistentData;
         this.hidden = hidden;
+        this.allowBarShrinking = allowBarShrinking;
         this.guiDisplayType = guiDisplayType;
     }
 
@@ -108,6 +110,10 @@ public class Power {
         return this.hidden;
     }
 
+    public boolean allowBarShrinking() {
+        return this.allowBarShrinking;
+    }
+
     public GuiDisplayType getGuiDisplayType() {
         return this.guiDisplayType;
     }
@@ -127,6 +133,7 @@ public class Power {
         buf.writeInt(this.secondaryColor.getRGB());
         buf.writeBoolean(this.persistentData);
         buf.writeBoolean(this.hidden);
+        buf.writeBoolean(this.allowBarShrinking);
         buf.writeInt(this.guiDisplayType.ordinal());
 
         buf.writeCollection(this.abilities, (buf1, configuration) -> configuration.toBuffer(buf1));
@@ -134,7 +141,7 @@ public class Power {
     }
 
     public static Power fromBuffer(ResourceLocation id, FriendlyByteBuf buf) {
-        Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())), buf.readBoolean() ? TextureReference.fromBuffer(buf) : null, buf.readBoolean() ? TextureReference.fromBuffer(buf) : null, new Color(buf.readInt()), new Color(buf.readInt()), buf.readBoolean(), buf.readBoolean(), GuiDisplayType.values()[buf.readInt()]);
+        Power power = new Power(id, buf.readComponent(), IconSerializer.parseNBT(Objects.requireNonNull(buf.readNbt())), buf.readBoolean() ? TextureReference.fromBuffer(buf) : null, buf.readBoolean() ? TextureReference.fromBuffer(buf) : null, new Color(buf.readInt()), new Color(buf.readInt()), buf.readBoolean(), buf.readBoolean(),buf.readBoolean(), GuiDisplayType.values()[buf.readInt()]);
 
         List<AbilityConfiguration> configurations = buf.readList(AbilityConfiguration::fromBuffer);
         for (AbilityConfiguration configuration : configurations) {
@@ -168,6 +175,7 @@ public class Power {
                 GsonUtil.getAsColor(json, "secondary_color", new Color(126, 97, 86)),
                 GsonHelper.getAsBoolean(json, "persistent_data", false),
                 GsonHelper.getAsBoolean(json, "hidden", false),
+                GsonHelper.getAsBoolean(json, "allow_bar_shrinking", true),
                 displayType
         );
 
