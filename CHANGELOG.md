@@ -1,2 +1,2 @@
-- Added "allow_bar_shrinking" option to powers
-- Use EXP Rate instead of flat level for XP-buy conditions (DeveloperAnonymous)
+- Added "flat_levels" option for xp_level_buyable condition to switch between old and new logic
+- Added pt_br translation (kluas005)
