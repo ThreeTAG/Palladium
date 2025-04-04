@@ -19,7 +19,7 @@ import java.util.List;
 public class CompoundPackRenderLayer extends PackRenderLayer<PackRenderLayer.State> {
 
     public static final MapCodec<CompoundPackRenderLayer> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            PackRenderLayer.CODEC.listOf().fieldOf("layers").forGetter(l -> l.layers),
+            Codecs.SIMPLE_CODEC.listOf().fieldOf("layers").forGetter(l -> l.layers),
             conditionsCodec()
     ).apply(instance, CompoundPackRenderLayer::new));
 

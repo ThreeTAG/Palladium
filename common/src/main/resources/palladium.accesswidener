@@ -19,6 +19,9 @@ accessible field net/minecraft/world/inventory/ArmorSlot emptyIcon Lnet/minecraf
 accessible field net/minecraft/server/packs/resources/ReloadableResourceManager listeners Ljava/util/List;
 mutable field net/minecraft/server/packs/resources/ReloadableResourceManager listeners Ljava/util/List;
 
+# TextureManager
+accessible field net/minecraft/client/renderer/texture/TextureManager byPath Ljava/util/Map;
+
 # ServerboundCustomPayloadPacket
 accessible field net/minecraft/network/protocol/common/ServerboundCustomPayloadPacket MAX_PAYLOAD_SIZE I
 

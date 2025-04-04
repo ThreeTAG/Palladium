@@ -17,6 +17,13 @@ import net.threetag.palladium.client.renderer.WatcherRenderer;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerManager;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerializer;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerializers;
+import net.threetag.palladium.client.texture.DynamicTextureSerializer;
+import net.threetag.palladium.client.texture.DynamicTextureSerializers;
+import net.threetag.palladium.client.texture.transformer.TextureTransformerSerializer;
+import net.threetag.palladium.client.texture.transformer.TextureTransformerSerializers;
+import net.threetag.palladium.client.variable.DynamicTextureManager;
+import net.threetag.palladium.client.variable.PathVariableSerializer;
+import net.threetag.palladium.client.variable.PathVariableSerializers;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
 import net.threetag.palladium.core.registry.GuiLayerRegistry;
 import net.threetag.palladium.documentation.HTMLBuilder;
@@ -24,7 +31,7 @@ import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
-import java.util.Collections;
+import java.util.Arrays;
 
 public class PalladiumClient {
 
@@ -42,7 +49,8 @@ public class PalladiumClient {
         PowersScreen.register();
 
         // Render Layers
-        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, PackRenderLayerManager.INSTANCE, Palladium.id("render_layers"), Collections.singletonList(ModelLayerManager.ID));
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, DynamicTextureManager.INSTANCE, DynamicTextureManager.ID);
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, PackRenderLayerManager.INSTANCE, PackRenderLayerManager.ID, Arrays.asList(ModelLayerManager.ID, DynamicTextureManager.ID));
         PackRenderLayerSerializers.init();
 
         // Misc
@@ -50,9 +58,15 @@ public class PalladiumClient {
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, EnergyBeamManager.INSTANCE, Palladium.id("energy_beams"));
         WatcherRenderer.init();
         EnergyBeamRendererSerializers.init();
+        PathVariableSerializers.init();
+        TextureTransformerSerializers.init();
+        DynamicTextureSerializers.init();
 
         // Documentation
         ClientLifecycleEvent.CLIENT_LEVEL_LOAD.register(clientLevel -> {
+            HTMLBuilder.documentedPage(Palladium.id("path_variables"), PathVariableSerializer.getTypes(), "Path Variables", clientLevel.registryAccess()).save();
+            HTMLBuilder.documentedPage(Palladium.id("texture_transformers"), TextureTransformerSerializer.getTypes(), "Texture Transformers", clientLevel.registryAccess()).save();
+            HTMLBuilder.documentedPage(Palladium.id("dynamic_textures"), DynamicTextureSerializer.getTypes(), "Dynamic Textures", clientLevel.registryAccess()).save();
             HTMLBuilder.documentedPage(Palladium.id("render_layers"), PackRenderLayerSerializer.getTypes(), "Render Layers", clientLevel.registryAccess()).save();
             HTMLBuilder.documentedPage(Palladium.id("energy_beams"), EnergyBeamRendererSerializer.getTypes(), "Energy Beams", clientLevel.registryAccess()).save();
             HTMLBuilder.documentedPage(PalladiumRegistryKeys.ABILITY_SERIALIZER, PalladiumRegistries.ABILITY_SERIALIZER, "Abilities", clientLevel.registryAccess()).save();

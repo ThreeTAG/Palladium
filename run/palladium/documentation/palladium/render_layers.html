@@ -93,7 +93,7 @@ false</td>
 <td>
 texture</td>
 <td>
-Texture Reference</td>
+ResourceLocation | Dynamic Texture | Texture Reference</td>
 <td>
 The texture of the model</td>
 <td style="background-color: lightgreen">
@@ -301,7 +301,7 @@ false</td>
 <td>
 texture</td>
 <td>
-Texture Reference</td>
+ResourceLocation | Dynamic Texture | Texture Reference</td>
 <td>
 The texture to render the model with.</td>
 <td style="background-color: lightgreen">
@@ -338,7 +338,7 @@ minecraft:solid</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:render_layer","light_emission":5,"model_layer":{"wide":"example:wide_model#main","slim":"example:slim_model#main"},"texture":{"wide":"example:wide_texture","slim":"example:slim_texture"}}</pre>
+{"type":"palladium:render_layer","light_emission":5,"model_layer":{"wide":"example:wide_model#main","slim":"example:slim_model#main"},"texture":{"wide":{"texture":"example:wide_texture"},"slim":{"texture":"example:slim_texture"}}}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {

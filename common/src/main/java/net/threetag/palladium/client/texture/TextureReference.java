@@ -9,6 +9,7 @@ import net.minecraft.ResourceLocationException;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.client.variable.DynamicTextureManager;
 import net.threetag.palladium.data.DataContext;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,13 +49,12 @@ public class TextureReference {
     @Nullable
     @Environment(EnvType.CLIENT)
     public ResourceLocation getTexture(DataContext context) {
-        // TODO
-//        if (this.dynamic) {
-//            var dyn = DynamicTextureManager.INSTANCE.get(this.path);
-//            return dyn != null ? dyn.getTexture(context) : null;
-//        } else {
-        return this.path;
-//        }
+        if (this.dynamic) {
+            var dyn = DynamicTextureManager.INSTANCE.get(this.path);
+            return dyn != null ? dyn.getTexture(context) : null;
+        } else {
+            return this.path;
+        }
     }
 
     public static TextureReference normal(ResourceLocation path) {
@@ -79,6 +79,14 @@ public class TextureReference {
         } catch (ResourceLocationException e) {
             return DataResult.error(() -> "Not a valid texture reference: " + path + " " + e.getMessage());
         }
+    }
+
+    public ResourceLocation getPath() {
+        return this.path;
+    }
+
+    public boolean isDynamic() {
+        return this.dynamic;
     }
 
     @Override

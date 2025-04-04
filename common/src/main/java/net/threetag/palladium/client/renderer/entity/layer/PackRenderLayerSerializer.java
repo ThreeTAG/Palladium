@@ -42,7 +42,7 @@ public abstract class PackRenderLayerSerializer<T extends PackRenderLayer<? exte
 
     @Override
     public CodecDocumentationBuilder<PackRenderLayer<? extends PackRenderLayer.State>, T> getDocumentation(HolderLookup.Provider provider) {
-        var builder = new CodecDocumentationBuilder<>(codec(), PackRenderLayer.CODEC, provider);
+        var builder = new CodecDocumentationBuilder<>(codec(), PackRenderLayer.Codecs.SIMPLE_CODEC, provider);
         this.addDocumentation(builder, provider);
         return builder;
     }

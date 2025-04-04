@@ -1,0 +1,736 @@
+<html>
+<head>
+<title>
+Path Variables</title>
+<style>
+table{font-family:arial, sans-serif;border-collapse:collapse;}
+td,th{border:1px solid #666666;text-align:left;padding:8px;min-width:45px;}
+th{background-color:#CCCCCC;}
+p{margin:0;}
+tr:nth-child(even){background-color:#D8D8D8;}
+tr:nth-child(odd){background-color:#EEEEEE;}
+td.true{background-color:#72FF85AA;}
+td.false{background-color:#FF6666AA;}
+td.other{background-color:#42A3FFAA;}
+td.error{color:#FF0000;}
+th,td.true,td.false,td.other{text-align:center;}pre{outline:1px solid #ccc;padding:5px;margin:5px;} .string{color:green;} .number{color:cornflowerblue;} .boolean{color:darkorange;} .null{color:orangered;} .key{color:purple;}hr { height: 5px; background-color: black }</style>
+<link rel="shortcut icon" type="image/x-icon" href="https://i.imgur.com/3sx4xJf.png">
+
+<style>
+.json-block { background-color: lightgray; display: inline-block; border: 5px solid darkgray; padding: 10px }</style>
+</head>
+<body>
+<h1>
+Path Variables</h1>
+<hr>
+
+<p>
+<h2>
+Overview</h2>
+<h3>
+Palladium</h3>
+<ul>
+<li>
+<a href="#palladium:ability_key">
+Ability Key</a>
+</li>
+<li>
+<a href="#palladium:ability_tick_count">
+Ability Tick Count</a>
+</li>
+<li>
+<a href="#palladium:animation_timer">
+Animation Timer</a>
+</li>
+<li>
+<a href="#palladium:condition">
+Condition</a>
+</li>
+<li>
+<a href="#palladium:crouching">
+Crouching</a>
+</li>
+<li>
+<a href="#palladium:energy_bar">
+Energy Bar</a>
+</li>
+<li>
+<a href="#palladium:entity_health">
+Entity Health</a>
+</li>
+<li>
+<a href="#palladium:entity_tick_count">
+Entity Tick Count</a>
+</li>
+<li>
+<a href="#palladium:moon_phase">
+Moon Phase</a>
+</li>
+<li>
+<a href="#palladium:score">
+Score</a>
+</li>
+<li>
+<a href="#palladium:slim_player_model">
+Slim Player Model</a>
+</li>
+<li>
+<a href="#palladium:wide_player_model">
+Wide Player Model</a>
+</li>
+</ul>
+</p>
+<hr>
+
+<div>
+<h2 id="palladium:ability_key">
+Ability Key</h2>
+<p>
+Returns the key of the ability in the context.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+modify</td>
+<td>
+MoLang</td>
+<td>
+MoLang function to modify the value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_key"}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:ability_tick_count">
+Ability Tick Count</h2>
+<p>
+Returns the ticks the ability in the context has been enabled for.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+modify</td>
+<td>
+MoLang</td>
+<td>
+MoLang function to modify the value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+ability</td>
+<td>
+Ability Reference</td>
+<td>
+The ability to get the ticks from. Defined in this syntax: <power_id>#<ability_key></td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_tick_count","ability":"namespace:example_power#ability_key"}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:animation_timer">
+Animation Timer</h2>
+<p>
+Returns the value of the animation timer for the specified ability. Defaults to 0 if no ability or animation timer was found.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+modify</td>
+<td>
+MoLang</td>
+<td>
+MoLang function to modify the value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+ability</td>
+<td>
+Ability Reference</td>
+<td>
+The ability to get the animation timer for. Defined in this syntax: <power_id>#<ability_key></td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:animation_timer","ability":"namespace:example_power#ability_key"}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:condition">
+Condition</h2>
+<p>
+Accepts to condition(s) to use different strings as variables</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+condition</td>
+<td>
+Condition | Condition[]</td>
+<td>
+The condition(s) to check. Can be a single condition or a list of conditions.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+on_false</td>
+<td>
+string</td>
+<td>
+The value to return if the result is false.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+on_true</td>
+<td>
+string</td>
+<td>
+The value to return if the result is true.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:condition","condition":{"type":"palladium:crouching"},"on_true":"is_crouching","on_false":"not_crouching"}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:crouching">
+Crouching</h2>
+<p>
+Checks if the entity is crouching.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+on_false</td>
+<td>
+string</td>
+<td>
+The value to return if the result is false.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+on_true</td>
+<td>
+string</td>
+<td>
+The value to return if the result is true.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:crouching","on_true":"is_crouching","on_false":"not_crouching"}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:energy_bar">
+Energy Bar</h2>
+<p>
+Returns of the current value of a specific energy bar.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+modify</td>
+<td>
+MoLang</td>
+<td>
+MoLang function to modify the value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+energy_bar</td>
+<td>
+Ability Reference</td>
+<td>
+The energy bar to look for. Defined in this syntax: <power_id>#<energy_bar_key></td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:energy_bar","energy_bar":"namespace:example_power#energy_bar_key"}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:entity_health">
+Entity Health</h2>
+<p>
+Returns the health of the entity.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+modify</td>
+<td>
+MoLang</td>
+<td>
+MoLang function to modify the value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:entity_health","modify":"value * 2"}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:entity_tick_count">
+Entity Tick Count</h2>
+<p>
+Returns the tick count of the entity.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+modify</td>
+<td>
+MoLang</td>
+<td>
+MoLang function to modify the value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:entity_tick_count","modify":"value * 2"}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:moon_phase">
+Moon Phase</h2>
+<p>
+Returns the current moon phase, an integer from 0 to 7.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+modify</td>
+<td>
+MoLang</td>
+<td>
+MoLang function to modify the value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:moon_phase","modify":"value * 2"}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:score">
+Score</h2>
+<p>
+Returns the score of the entity for the given objective.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+modify</td>
+<td>
+MoLang</td>
+<td>
+MoLang function to modify the value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:score","objective":"objective_name","modify":"value * 2"}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:slim_player_model">
+Slim Player Model</h2>
+<p>
+Checks if the entity is a player and has the slim-armed (Alex) player model.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+on_false</td>
+<td>
+string</td>
+<td>
+The value to return if the result is false.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+on_true</td>
+<td>
+string</td>
+<td>
+The value to return if the result is true.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:slim_player_model","on_true":"slim_arms","on_false":"wide_arms"}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:wide_player_model">
+Wide Player Model</h2>
+<p>
+Checks if the entity is a player and has the wide-armed (Steve) player model.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+on_false</td>
+<td>
+string</td>
+<td>
+The value to return if the result is false.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+on_true</td>
+<td>
+string</td>
+<td>
+The value to return if the result is true.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:wide_player_model","on_true":"wide_arms","on_false":"slim_arms"}</pre>
+</div>
+<script>
+function syntaxHighlight(json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+
+    const elements = document.getElementsByClassName("json-snippet");
+    const amount = elements.length;
+    for (let i = 0; i < amount; i++) {
+        const element = elements[0];
+        const div = document.createElement("pre");
+        div.innerHTML = syntaxHighlight(JSON.stringify(JSON.parse(element.innerText), undefined, 4));
+        element.parentNode.replaceChild(div, element);
+    }</script>
+</body>
+</html>

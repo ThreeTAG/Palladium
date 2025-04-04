@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 
 import java.util.HashMap;
@@ -12,12 +13,13 @@ import java.util.Map;
 
 public class PackRenderLayerManager extends SimpleJsonResourceReloadListener<PackRenderLayer<?>> {
 
+    public static final ResourceLocation ID = Palladium.id("render_layers");
     public static final PackRenderLayerManager INSTANCE = new PackRenderLayerManager();
 
     private final Map<ResourceLocation, PackRenderLayer<?>> byName = new HashMap<>();
 
     protected PackRenderLayerManager() {
-        super(PackRenderLayer.CODEC, FileToIdConverter.json("palladium/render_layers"));
+        super(PackRenderLayer.Codecs.SIMPLE_CODEC, FileToIdConverter.json("palladium/render_layers"));
     }
 
     @Override

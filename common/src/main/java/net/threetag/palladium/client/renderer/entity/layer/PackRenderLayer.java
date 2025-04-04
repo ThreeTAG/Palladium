@@ -15,8 +15,6 @@ import net.threetag.palladium.data.DataContext;
 
 public abstract class PackRenderLayer<T extends PackRenderLayer.State> {
 
-    public static Codec<PackRenderLayer<?>> CODEC = PackRenderLayerSerializer.TYPE_CODEC.dispatch(PackRenderLayer::getSerializer, PackRenderLayerSerializer::codec);
-
     protected final PerspectiveAwareConditions conditions;
 
     protected PackRenderLayer(PerspectiveAwareConditions conditions) {
@@ -76,6 +74,14 @@ public abstract class PackRenderLayer<T extends PackRenderLayer.State> {
         public boolean isMarkedForRemoval() {
             return this.markedForRemoval;
         }
+
+    }
+
+    public static class Codecs {
+
+        public static final Codec<PackRenderLayer<?>> DIRECT_CODEC = PackRenderLayerSerializer.TYPE_CODEC.dispatch(PackRenderLayer::getSerializer, PackRenderLayerSerializer::codec);
+
+        public static Codec<PackRenderLayer<?>> SIMPLE_CODEC = Codec.withAlternative(DIRECT_CODEC, DefaultPackRenderLayer.CODEC.codec());
 
     }
 

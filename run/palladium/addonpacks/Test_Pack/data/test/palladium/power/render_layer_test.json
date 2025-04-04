@@ -43,6 +43,40 @@
           "behaviour": "toggle"
         }
       }
+    },
+    "cycling_number": {
+      "type": "palladium:dummy",
+      "properties": {
+        "render_layer": "test:cycling_number",
+        "title": "Cycling Number",
+        "list_index": 3
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "alpha_mask": {
+      "type": "palladium:dummy",
+      "properties": {
+        "title": "Alpha Mask",
+        "list_index": 4,
+        "animation_timer": 16
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "alpha_mask_render_layer": {
+      "type": "palladium:dummy",
+      "properties": {
+        "render_layer": "test:alpha_mask_test"
+      }
     }
   }
 }

@@ -20,6 +20,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayer;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerializer;
+import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerTexture;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
 import net.threetag.palladium.condition.PerspectiveAwareConditions;
@@ -47,7 +48,7 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
             .build();
 
     public static final MapCodec<GeoRenderLayer> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            SkinTypedValue.codec(TextureReference.CODEC).fieldOf("texture").forGetter(l -> l.texture),
+            SkinTypedValue.codec(PackRenderLayerTexture.CODEC).fieldOf("texture").forGetter(l -> l.texture),
             SkinTypedValue.codec(TextureReference.CODEC).fieldOf("model").forGetter(l -> l.model),
             SkinTypedValue.codec(ResourceLocation.CODEC).optionalFieldOf("animations").forGetter(l -> Optional.ofNullable(l.animations)),
             CodecExtras.listOrPrimitive(AnimationControllerFactory.CODEC).optionalFieldOf("animation_controller", Collections.emptyList()).forGetter(l -> l.animationController),
@@ -61,7 +62,7 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
     private static ResourceLocation CACHED_MODEL = null;
     private static ResourceLocation CACHED_ANIMATIONS = null;
 
-    private final SkinTypedValue<TextureReference> texture;
+    private final SkinTypedValue<PackRenderLayerTexture> texture;
     private final SkinTypedValue<TextureReference> model;
     @Nullable
     private final SkinTypedValue<ResourceLocation> animations;
@@ -70,7 +71,7 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
     private final int lightEmission;
     private final Map<Bone, String> bones;
 
-    public GeoRenderLayer(SkinTypedValue<TextureReference> texture, SkinTypedValue<TextureReference> model,
+    public GeoRenderLayer(SkinTypedValue<PackRenderLayerTexture> texture, SkinTypedValue<TextureReference> model,
                           @Nullable SkinTypedValue<ResourceLocation> animations, List<AnimationControllerFactory<?>> animationController,
                           int lightEmission, Map<Bone, String> bones, PerspectiveAwareConditions conditions) {
         super(conditions);
@@ -175,7 +176,7 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
         public void addDocumentation(CodecDocumentationBuilder<PackRenderLayer<? extends State>, GeoRenderLayer> builder, HolderLookup.Provider provider) {
             builder.setName("Geo Render Layer")
                     .setDescription("Uses GeckoLib to render a geo model, including animations")
-                    .add("texture", TYPE_TEXTURE_REFERENCE, "The texture of the model")
+                    .add("texture", TYPE_ANY_TEXTURE, "The texture of the model")
                     .add("model", TYPE_RESOURCE_LOCATION, "The model to render")
                     .addOptional("animations", TYPE_RESOURCE_LOCATION, "The animations to use")
                     .addOptional("animation_controller", TYPE_GEO_ANIMATION_CONTROLLER, "The animation controllers to control or trigger the animations.")
