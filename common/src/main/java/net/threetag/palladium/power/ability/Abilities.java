@@ -49,6 +49,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> FIRE_ASPECT = ABILITIES.register("fire_aspect", FireAspectAbility::new);
     public static final RegistrySupplier<Ability> PARTICLES = ABILITIES.register("particles", ParticleAbility::new);
     public static final RegistrySupplier<Ability> IMMORTALITY = ABILITIES.register("immortality", ImmortalityAbility::new);
+    public static final RegistrySupplier<Ability> ENTITY_GLOW = ABILITIES.register("entity_glow", EntityGlowAbility::new);
 
     public static void init() {
 

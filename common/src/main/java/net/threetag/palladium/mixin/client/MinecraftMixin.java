@@ -2,9 +2,11 @@ package net.threetag.palladium.mixin.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.network.AbilityKeyPressedMessage;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
+import net.threetag.palladium.power.ability.EntityGlowAbility;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,6 +19,9 @@ public class MinecraftMixin {
 
     @Shadow
     public LocalPlayer player;
+
+    @Shadow
+    public Entity cameraEntity;
 
     @Inject(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;hasMissTime()Z"), cancellable = true)
     private void startAttackStartAbility(CallbackInfoReturnable<Boolean> cir) {
@@ -92,6 +97,13 @@ public class MinecraftMixin {
     private void startUseItemStopAbility(CallbackInfo ci) {
         if (PalladiumKeyMappings.RIGHT_CLICKED_ABILITY != null) {
             ci.cancel();
+        }
+    }
+
+    @Inject(method = "shouldEntityAppearGlowing", at = @At("RETURN"), cancellable = true)
+    private void showGlow(Entity entity, CallbackInfoReturnable<Boolean> cir) {
+        if (EntityGlowAbility.shouldGlow(entity, this.cameraEntity)) {
+            cir.setReturnValue(true);
         }
     }
 
