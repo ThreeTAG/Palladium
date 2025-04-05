@@ -86,7 +86,6 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity> {
         var powerId = power.unwrapKey().orElseThrow().location();
         if (this.powers.containsKey(powerId)) {
             var holder = this.powers.get(powerId);
-            boolean isStillValid = !holder.getPower().value().isInvalid();
             boolean hasPersistentData = holder.getPower().value().hasPersistentData();
             holder.lastTick();
 
@@ -96,7 +95,7 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity> {
 
             this.powers.remove(powerId);
 
-            if (isStillValid && !hasPersistentData) {
+            if (!hasPersistentData) {
                 this.powerData.remove(powerId.toString());
             }
         }

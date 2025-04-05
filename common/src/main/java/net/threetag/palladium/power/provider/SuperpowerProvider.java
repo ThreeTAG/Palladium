@@ -8,15 +8,18 @@ public class SuperpowerProvider extends PowerProvider {
 
     @Override
     public void providePowers(LivingEntity entity, EntityPowerHandler handler, PowerCollector collector) {
-        collector.addPower(SuperpowerUtil.getHandler(entity).getSuperpower(), Validator::new);
+        for (Holder<Power> superpower : SuperpowerUtil.getHandler(entity).getSuperpowers()) {
+            collector.addPower(superpower, () -> Validator.INSTANCE);
+        }
     }
 
     public static class Validator implements PowerValidator {
 
+        private static final Validator INSTANCE = new Validator();
+
         @Override
         public boolean stillValid(LivingEntity entity, Holder<Power> power) {
-            var current = SuperpowerUtil.getHandler(entity).getSuperpower();
-            return current != null && current.is(power);
+            return SuperpowerUtil.getHandler(entity).getSuperpowers().contains(power);
         }
     }
 

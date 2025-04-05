@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.client.icon.Icon;
 import net.threetag.palladium.client.texture.TextureReference;
@@ -11,6 +12,7 @@ import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.energybar.EnergyBarConfiguration;
 import net.threetag.palladium.util.CodecExtras;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.Collections;
@@ -21,6 +23,7 @@ public class Power {
 
     public static final Codec<Power> CODEC = RecordCodecBuilder.create((instance) -> instance
             .group(
+                    ResourceLocation.CODEC.optionalFieldOf("parent").forGetter(p -> Optional.ofNullable(p.parentId)),
                     ComponentSerialization.CODEC.fieldOf("name").forGetter(Power::getName),
                     Icon.CODEC.fieldOf("icon").forGetter(Power::getIcon),
                     TextureReference.CODEC.optionalFieldOf("background").forGetter(p -> Optional.ofNullable(p.background)),
@@ -33,10 +36,12 @@ public class Power {
                     Codec.unboundedMap(Codec.STRING, Ability.CODEC).optionalFieldOf("abilities", Collections.emptyMap()).forGetter(Power::getAbilities),
                     Codec.unboundedMap(Codec.STRING, EnergyBarConfiguration.CODEC).optionalFieldOf("energy_bars", Collections.emptyMap()).forGetter(Power::getEnergyBars)
             )
-            .apply(instance, (name, icon, background, barTexture, primColor, secondColor, persistentData, hidden, guiDisplayType, abilities, energyBars) ->
-                    new Power(name, icon, background.orElse(null), barTexture.orElse(null), primColor, secondColor, persistentData, hidden, guiDisplayType, abilities, energyBars)));
+            .apply(instance, (parent, name, icon, background, barTexture, primColor, secondColor, persistentData, hidden, guiDisplayType, abilities, energyBars) ->
+                    new Power(parent.orElse(null), name, icon, background.orElse(null), barTexture.orElse(null), primColor, secondColor, persistentData, hidden, guiDisplayType, abilities, energyBars)));
 
 
+    @Nullable
+    private final ResourceLocation parentId;
     private final Component name;
     private final Icon icon;
     private final Map<String, Ability> abilities;
@@ -47,9 +52,9 @@ public class Power {
     private final boolean persistentData;
     private final boolean hidden;
     private final GuiDisplayType guiDisplayType;
-    private boolean invalid = false;
 
-    public Power(Component name, Icon icon, TextureReference background, TextureReference abilityBar, Color primaryColor, Color secondaryColor, boolean persistentData, boolean hidden, GuiDisplayType guiDisplayType, Map<String, Ability> abilities, Map<String, EnergyBarConfiguration> energyBars) {
+    public Power(@Nullable ResourceLocation parentId, Component name, Icon icon, TextureReference background, TextureReference abilityBar, Color primaryColor, Color secondaryColor, boolean persistentData, boolean hidden, GuiDisplayType guiDisplayType, Map<String, Ability> abilities, Map<String, EnergyBarConfiguration> energyBars) {
+        this.parentId = parentId;
         this.name = name;
         this.icon = icon;
         this.background = background;
@@ -71,12 +76,8 @@ public class Power {
         }
     }
 
-    public void invalidate() {
-        this.invalid = true;
-    }
-
-    public boolean isInvalid() {
-        return this.invalid;
+    public @Nullable ResourceLocation getParentId() {
+        return parentId;
     }
 
     public Component getName() {

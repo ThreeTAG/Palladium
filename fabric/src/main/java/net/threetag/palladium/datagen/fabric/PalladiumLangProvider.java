@@ -39,6 +39,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addConfigEnum(builder, AbilityKeyBindDisplay.INSIDE, "Inside");
             this.addConfigEnum(builder, AbilityKeyBindDisplay.OUTSIDE, "Outside");
             this.addConfigEntry(builder, "HIDE_EXPERIMENTAL_WARNING", "Singleplayer - Hide Experimental Settings Warning");
+            this.addConfigCategory(builder, PalladiumConfig.CATEGORY_GAMEPLAY, "Gameplay");
+            this.addConfigEntry(builder, "MAX_SUPERPOWER_SETS", "Max. amount of superpower sets");
 
             // Key Mappings
             builder.add("key.palladium.categories.powers", "Powers");
@@ -82,7 +84,24 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
             // Commands
+            builder.add(SuperpowerCommand.ERROR_NO_LIVING_ENTITY, "%s is not a living entity");
             builder.add(SuperpowerCommand.QUERY_SUCCESS, "%s has the following superpowers: %s");
+            builder.add(SuperpowerCommand.QUERY_NO_POWERS, "%s has no superpowers");
+            builder.add(SuperpowerCommand.SET_SUCCESS_SINGLE, "%s has gained the superpower %s");
+            builder.add(SuperpowerCommand.SET_SUCCESS_MULTIPLE, "%s entities have gained the superpower %s");
+            builder.add(SuperpowerCommand.ADD_ERROR_ALREADY_HAS, "%s already has that superpower");
+            builder.add(SuperpowerCommand.ADD_ERROR_NOT_POSSIBLE, "This superpower can not be added to %s anymore");
+            builder.add(SuperpowerCommand.ADD_ERROR_NONE_ADDED, "No entity was able to gain the superpower %s");
+            builder.add(SuperpowerCommand.ADD_SUCCESS_SINGLE, "%s has gained the superpower %s");
+            builder.add(SuperpowerCommand.ADD_SUCCESS_MULTIPLE, "%s entities have gained the superpower %s");
+            builder.add(SuperpowerCommand.REMOVE_ERROR_NO_MATCH, "No matching superpower was found");
+            builder.add(SuperpowerCommand.REMOVE_SUCCESS_SINGLE, "The superpower(s) of %s were removed");
+            builder.add(SuperpowerCommand.REMOVE_SUCCESS_MULTIPLE, "The superpower(s) of %s entities were removed");
+            builder.add(SuperpowerCommand.REPLACE_SUCCESS_SINGLE, "Some of %s's superpowers have been replaced with %s");
+            builder.add(SuperpowerCommand.REPLACE_SUCCESS_MULTIPLE, "Some of %s entities' superpowers have been replaced with %s");
+            builder.add(SuperpowerCommand.REPLACE_ERROR_NOT_POSSIBLE, "This superpower can not be added to %s anymore");
+            builder.add(SuperpowerCommand.REPLACE_ERROR_NONE_ADDED, "No entity was able to gain the superpower %s");
+
             builder.add(DataAttachmentCommand.TRANS_UNKNOWN_TYPE, "Unknown data attachment type: %s");
             builder.add(DataAttachmentCommand.TRANS_NO_DATA, "No data found for data attachment type %s");
             builder.add(DataAttachmentCommand.TRANS_GET_DATA, "Data attachment value %s for %s is %s");
@@ -120,6 +139,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addConfigEnum(builder, AbilityKeyBindDisplay.INSIDE, "Innen");
             this.addConfigEnum(builder, AbilityKeyBindDisplay.OUTSIDE, "Außen");
             this.addConfigEntry(builder, "HIDE_EXPERIMENTAL_WARNING", "Singleplayer - Experimental Settings Warnung ausblenden");
+            this.addConfigCategory(builder, PalladiumConfig.CATEGORY_GAMEPLAY, "Gameplay");
+            this.addConfigEntry(builder, "MAX_SUPERPOWER_SETS", "Max. Anzahl an Superkraft-Sets");
 
             // Key Mappings
             builder.add("key.palladium.categories.powers", "Kräfte");
@@ -163,6 +184,24 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
             // Commands
+            builder.add(SuperpowerCommand.ERROR_NO_LIVING_ENTITY, "%s ist kein lebendes Wesen");
+            builder.add(SuperpowerCommand.QUERY_SUCCESS, "%s hat folgende Superkräfte: %s");
+            builder.add(SuperpowerCommand.QUERY_NO_POWERS, "%s hat keine Superkräfte");
+            builder.add(SuperpowerCommand.SET_SUCCESS_SINGLE, "%s hat die Superkraft %s erhalten");
+            builder.add(SuperpowerCommand.SET_SUCCESS_MULTIPLE, "%s Wesen haben die Superkraft %s erhalten");
+            builder.add(SuperpowerCommand.ADD_ERROR_ALREADY_HAS, "%s besitzt diese Superkraft bereits");
+            builder.add(SuperpowerCommand.ADD_ERROR_NOT_POSSIBLE, "Diese Superkraft kann %s nicht mehr hinzugefügt werden");
+            builder.add(SuperpowerCommand.ADD_ERROR_NONE_ADDED, "Keinem Wesen konnte die Superkraft %s verliehen werden");
+            builder.add(SuperpowerCommand.ADD_SUCCESS_SINGLE, "%s hat die Superkraft %s erhalten");
+            builder.add(SuperpowerCommand.ADD_SUCCESS_MULTIPLE, "%s Wesen haben die Superkraft %s erhalten");
+            builder.add(SuperpowerCommand.REMOVE_ERROR_NO_MATCH, "Keine passende Superkraft wurde gefunden");
+            builder.add(SuperpowerCommand.REMOVE_SUCCESS_SINGLE, "Die Superkraft(e) von %s wurde(n) entfernt");
+            builder.add(SuperpowerCommand.REMOVE_SUCCESS_MULTIPLE, "Die Superkraft(e) von %s Wesen wurden entfernt");
+            builder.add(SuperpowerCommand.REPLACE_SUCCESS_SINGLE, "Einige von %ss Superkräften wurden durch %s ersetzt");
+            builder.add(SuperpowerCommand.REPLACE_SUCCESS_MULTIPLE, "Einige der Superkräfte von %s Wesen wurden durch %s ersetzt");
+            builder.add(SuperpowerCommand.REPLACE_ERROR_NOT_POSSIBLE, "Diese Superkraft kann %s nicht mehr hinzugefügt werden");
+            builder.add(SuperpowerCommand.REPLACE_ERROR_NONE_ADDED, "Keinem Wesen konnte die Superkraft %s verliehen werden");
+
             builder.add(DataAttachmentCommand.TRANS_UNKNOWN_TYPE, "Unbekannter Datenanhang: %s");
             builder.add(DataAttachmentCommand.TRANS_NO_DATA, "Keine Daten für Datenanlagentyp %s gefunden");
             builder.add(DataAttachmentCommand.TRANS_GET_DATA, "Der Wert der Datenanlage %s für %s ist %s");
@@ -199,6 +238,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addConfigEnum(builder, AbilityKeyBindDisplay.INSIDE, "Innen");
             this.addConfigEnum(builder, AbilityKeyBindDisplay.OUTSIDE, "Außen");
             this.addConfigEntry(builder, "HIDE_EXPERIMENTAL_WARNING", "Singleplayer - Experimental Settings Warnung ausblenden");
+            this.addConfigCategory(builder, PalladiumConfig.CATEGORY_GAMEPLAY, "Gameplay");
+            this.addConfigEntry(builder, "MAX_SUPERPOWER_SETS", "Max. Anzahl an Superkraft-Sets");
 
             // Key Mappings
             builder.add("key.palladium.categories.powers", "Gräfte");
@@ -242,6 +283,24 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
             // Commands
+            builder.add(SuperpowerCommand.ERROR_NO_LIVING_ENTITY, "%s is keen lebdisches Viech");
+            builder.add(SuperpowerCommand.QUERY_SUCCESS, "%s hat de folgende Superkrächte: %s");
+            builder.add(SuperpowerCommand.QUERY_NO_POWERS, "%s hat keene Superkrächte");
+            builder.add(SuperpowerCommand.SET_SUCCESS_SINGLE, "%s hat nu die Superkraft %s bekomm");
+            builder.add(SuperpowerCommand.SET_SUCCESS_MULTIPLE, "%s Viecher ham nu die Superkraft %s bekomm");
+            builder.add(SuperpowerCommand.ADD_ERROR_ALREADY_HAS, "%s hat die Superkraft doch schon");
+            builder.add(SuperpowerCommand.ADD_ERROR_NOT_POSSIBLE, "Die Superkraft kann mer %s nich mehr geb'n");
+            builder.add(SuperpowerCommand.ADD_ERROR_NONE_ADDED, "Keins von de Viecher konnt die Superkraft %s kriegn");
+            builder.add(SuperpowerCommand.ADD_SUCCESS_SINGLE, "%s hat nu die Superkraft %s bekomm");
+            builder.add(SuperpowerCommand.ADD_SUCCESS_MULTIPLE, "%s Viecher ham nu die Superkraft %s bekomm");
+            builder.add(SuperpowerCommand.REMOVE_ERROR_NO_MATCH, "Keene passnde Superkraft gefundn");
+            builder.add(SuperpowerCommand.REMOVE_SUCCESS_SINGLE, "Die Superkraft(e) von %s sin nu wech");
+            builder.add(SuperpowerCommand.REMOVE_SUCCESS_MULTIPLE, "Die Superkraft(e) von %s Viechern sin nu wech");
+            builder.add(SuperpowerCommand.REPLACE_SUCCESS_SINGLE, "E paar von %ss Superkrächte sin nu %s");
+            builder.add(SuperpowerCommand.REPLACE_SUCCESS_MULTIPLE, "E paar Superkrächte von %s Viechern sin nu %s");
+            builder.add(SuperpowerCommand.REPLACE_ERROR_NOT_POSSIBLE, "Die Superkraft kann mer %s nich mehr geb'n");
+            builder.add(SuperpowerCommand.REPLACE_ERROR_NONE_ADDED, "Keins von de Viecher konnt die Superkraft %s kriegn");
+
             builder.add(DataAttachmentCommand.TRANS_UNKNOWN_TYPE, "Unbegannter Datenanhang: %s");
             builder.add(DataAttachmentCommand.TRANS_NO_DATA, "Kehne Daten für Datenanlagentyp %s jefunden");
             builder.add(DataAttachmentCommand.TRANS_GET_DATA, "Der Wert dor Datenanlage %s für %s is %s");

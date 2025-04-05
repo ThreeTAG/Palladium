@@ -7,6 +7,7 @@ import net.threetag.palladium.client.gui.screen.abilitybar.AbilityKeyBindDisplay
 public class PalladiumConfig extends MidnightConfig {
 
     public static final String CATEGORY_CLIENT = "client";
+    public static final String CATEGORY_GAMEPLAY = "gameplay";
 
     @Entry(category = CATEGORY_CLIENT)
     public static UiAlignment ABILITY_BAR_ALIGNMENT = UiAlignment.TOP_LEFT;
@@ -16,5 +17,8 @@ public class PalladiumConfig extends MidnightConfig {
 
     @Entry(category = CATEGORY_CLIENT)
     public static boolean HIDE_EXPERIMENTAL_WARNING = true;
+
+    @Entry(category = CATEGORY_GAMEPLAY)
+    public static int MAX_SUPERPOWER_SETS = 1;
 
 }
