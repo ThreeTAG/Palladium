@@ -4,19 +4,25 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.ProfilePublicKey;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.threetag.palladium.accessory.AccessoryPlayerData;
 import net.threetag.palladium.entity.FlightHandler;
 import net.threetag.palladium.entity.PalladiumPlayerExtension;
+import net.threetag.palladium.power.ability.Abilities;
+import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.power.ability.ToolHandsAbility;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(Player.class)
@@ -84,6 +90,14 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
         CompoundTag palladiumTag = compound.contains("Palladium") ? compound.getCompound("Palladium") : new CompoundTag();
         palladiumTag.put("Accessories", this.palladium$accessories.toNBT());
         compound.put("Palladium", palladiumTag);
+    }
+
+
+    @Inject(method = "hasCorrectToolForDrops", at = @At("RETURN"), cancellable = true)
+    public void palladium$hasCorrectToolForDrops(BlockState state, CallbackInfoReturnable<Boolean> cir) {
+        if (!cir.getReturnValue()) AbilityUtil.getEnabledInstances((LivingEntity) (Object) this, Abilities.TOOL_HANDS.get()).forEach(abilityInstance -> {
+            if (ToolHandsAbility.blockDrops(abilityInstance, state)) cir.setReturnValue(true);
+        });
     }
 
     @Override
