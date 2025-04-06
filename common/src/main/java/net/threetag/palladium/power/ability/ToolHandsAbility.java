@@ -1,15 +1,14 @@
 package net.threetag.palladium.power.ability;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.threetag.palladium.util.icon.ItemIcon;
-import net.threetag.palladium.util.property.*;
+import net.threetag.palladium.util.property.PalladiumProperty;
+import net.threetag.palladium.util.property.TagKeyListProperty;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,10 +23,16 @@ public class ToolHandsAbility extends Ability {
     }
 
     public static boolean blockDrops(AbilityInstance instance, BlockState blockState) {
-        if (!instance.isEnabled()) return false;
-        for (TagKey<Block> blockTag : instance.getProperty(DROP_BLOCK_TAGS)) {
-            if (blockState.is(blockTag)) return true;
+        if (!instance.isEnabled()) {
+            return false;
         }
+
+        for (TagKey<Block> blockTag : instance.getProperty(DROP_BLOCK_TAGS)) {
+            if (blockState.is(blockTag)) {
+                return true;
+            }
+        }
+
         return false;
     }
 

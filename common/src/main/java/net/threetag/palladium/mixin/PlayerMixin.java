@@ -7,7 +7,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.ProfilePublicKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.threetag.palladium.accessory.AccessoryPlayerData;
@@ -95,9 +94,13 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
 
     @Inject(method = "hasCorrectToolForDrops", at = @At("RETURN"), cancellable = true)
     public void palladium$hasCorrectToolForDrops(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValue()) AbilityUtil.getEnabledInstances((LivingEntity) (Object) this, Abilities.TOOL_HANDS.get()).forEach(abilityInstance -> {
-            if (ToolHandsAbility.blockDrops(abilityInstance, state)) cir.setReturnValue(true);
-        });
+        if (!cir.getReturnValue()) {
+            AbilityUtil.getEnabledInstances((LivingEntity) (Object) this, Abilities.TOOL_HANDS.get()).forEach(abilityInstance -> {
+                if (ToolHandsAbility.blockDrops(abilityInstance, state)) {
+                    cir.setReturnValue(true);
+                }
+            });
+        }
     }
 
     @Override
