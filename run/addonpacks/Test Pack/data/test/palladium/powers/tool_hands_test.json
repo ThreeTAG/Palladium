@@ -1,0 +1,20 @@
+{
+  "name": "Tool Hands Test",
+  "icon": "wooden_pickaxe",
+  "abilities": {
+    "tool_hands": {
+      "type": "palladium:tool_hands",
+      "drop_block_tags": [
+        "minecraft:mineable/pickaxe",
+        "minecraft:needs_wooden_tool"
+      ]
+    },
+    "speed": {
+      "type": "palladium:attribute_modifier",
+      "attribute": "palladium:destroy_speed",
+      "amount": 3,
+      "operation": 0,
+      "uuid": "0a05b171-fb72-4638-4425-2964f90ac44b"
+    }
+  }
+}
