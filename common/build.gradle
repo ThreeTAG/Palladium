@@ -23,7 +23,7 @@ dependencies {
     modImplementation("io.wispforest:accessories-common:${rootProject.accessories_version}")
 
     // Mocha
-    implementation ("team.unnamed:mocha:3.0.0")
+    implementation ("team.unnamed:mocha:3.0.1")
 
     // Iris
     modCompileOnly "maven.modrinth:iris:${rootProject.iris_version}-fabric"
