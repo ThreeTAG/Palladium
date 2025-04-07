@@ -1,0 +1,17 @@
+{
+  "name": "Play Sound Test",
+  "icon": "minecraft:jukebox",
+  "abilities": {
+    "invisibility": {
+      "type": "palladium:play_sound",
+      "sound": "item.elytra.flying",
+      "looping": true,
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

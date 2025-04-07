@@ -15,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
+import net.threetag.palladium.sound.AbilitySound;
 import net.threetag.palladium.util.PlayerUtil;
 
 import java.util.List;
@@ -69,8 +70,7 @@ public class PlaySoundAbility extends Ability {
     @Environment(EnvType.CLIENT)
     public void startSound(LivingEntity entity, AbilityInstance<?> instance) {
         if (!this.playSelf || Minecraft.getInstance().player == entity) {
-            // TODO
-//            Minecraft.getInstance().getSoundManager().play(new AbilitySound(instance.getReference(), entity, this.sound, entity.getSoundSource(), this.volume, this.pitch));
+            Minecraft.getInstance().getSoundManager().play(new AbilitySound(instance.getReference(), entity, this.sound, entity.getSoundSource(), this.volume, this.pitch));
         }
     }
 
@@ -87,7 +87,7 @@ public class PlaySoundAbility extends Ability {
                     .add("sound", TYPE_RESOURCE_LOCATION, "The sound that is being played.")
                     .addOptional("volume", TYPE_FLOAT, "The volume for the played sound.", 1F)
                     .addOptional("pitch", TYPE_FLOAT, "The pitch for the played sound.", 1F)
-                    .addOptional("looping", TYPE_BOOLEAN,  "Whether or not the sound should loop during the time the ability is enabled.", false)
+                    .addOptional("looping", TYPE_BOOLEAN, "Whether or not the sound should loop during the time the ability is enabled.", false)
                     .addOptional("play_self", TYPE_BOOLEAN, "Whether or not the sound should be played to just the player executing the ability, or to all players.", false)
                     .setExampleObject(new PlaySoundAbility(ResourceLocation.withDefaultNamespace("item.elytra.flying"), 1F, 1F, false, false, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
