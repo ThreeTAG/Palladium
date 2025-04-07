@@ -2,24 +2,30 @@ package net.threetag.palladium.power.ability;
 
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.threetag.palladium.component.PalladiumDataComponents;
+import net.threetag.palladium.core.event.PalladiumPlayerEvents;
 
-public class AbilityEventHandler implements EntityEvent.LivingHurt {
+import java.util.concurrent.atomic.AtomicReference;
+
+public class AbilityEventHandler implements EntityEvent.LivingHurt, PalladiumPlayerEvents.NameFormat {
 
     public static void init() {
         AbilityEventHandler handler = new AbilityEventHandler();
         EntityEvent.LIVING_HURT.register(handler);
+        PalladiumPlayerEvents.NAME_FORMAT.register(handler);
     }
 
-    // TODO
-//    @Override
-//    public void playerNameFormat(Player player, Component username, AtomicReference<Component> displayName) {
-//        AbilityUtil.getEnabledInstances(player, AbilitySerializers.NAME_CHANGE.get()).stream().filter(ab -> ab.get(PalladiumDataComponents.Abilities.NAME_CHANGE_ACTIVE.get())).findFirst().ifPresent(ability -> {
-//            displayName.set(ability.getAbility().name);
-//        });
-//    }
+    @Override
+    public void playerNameFormat(Player player, Component username, AtomicReference<Component> displayName) {
+        AbilityUtil.getEnabledInstances(player, AbilitySerializers.NAME_CHANGE.get()).stream().filter(ab -> ab.get(PalladiumDataComponents.Abilities.NAME_CHANGE_ACTIVE.get())).findFirst().ifPresent(ability -> {
+            displayName.set(ability.getAbility().name);
+        });
+    }
 
     @Override
     public EventResult hurt(LivingEntity entity, DamageSource damageSource, float amount) {
@@ -52,4 +58,5 @@ public class AbilityEventHandler implements EntityEvent.LivingHurt {
 
         return EventResult.pass();
     }
+
 }

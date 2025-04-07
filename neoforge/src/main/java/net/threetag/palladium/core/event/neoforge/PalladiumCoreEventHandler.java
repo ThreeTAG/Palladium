@@ -1,5 +1,6 @@
 package net.threetag.palladium.core.event.neoforge;
 
+import net.minecraft.network.chat.Component;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -10,6 +11,8 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.core.event.PalladiumEntityEvents;
 import net.threetag.palladium.core.event.PalladiumLifecycleEvents;
 import net.threetag.palladium.core.event.PalladiumPlayerEvents;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 @EventBusSubscriber(modid = Palladium.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class PalladiumCoreEventHandler {
@@ -37,6 +40,13 @@ public class PalladiumCoreEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void stopTracking(PlayerEvent.StopTracking e) {
         PalladiumPlayerEvents.STOP_TRACKING.invoker().playerTracking(e.getEntity(), e.getTarget());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void playerChangedDimension(PlayerEvent.NameFormat e) {
+        AtomicReference<Component> name = new AtomicReference<>(e.getDisplayname());
+        PalladiumPlayerEvents.NAME_FORMAT.invoker().playerNameFormat(e.getEntity(), e.getUsername(), name);
+        e.setDisplayname(name.get());
     }
 
 }
