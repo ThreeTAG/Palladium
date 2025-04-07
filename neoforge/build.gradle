@@ -69,10 +69,10 @@ dependencies {
     forgeRuntimeLibrary("io.wispforest.endec:netty:0.1.5")
 
     // Mocha
-//    implementation include ("team.unnamed:mocha:3.0.1")
-//    forgeRuntimeLibrary ("team.unnamed:mocha:3.0.1")
-//    implementation include ("org.javassist:javassist:3.30.2-GA")
-//    forgeRuntimeLibrary ("org.javassist:javassist:3.30.2-GA")
+    implementation include ("team.unnamed:mocha:3.0.1")
+    forgeRuntimeLibrary ("team.unnamed:mocha:3.0.1")
+    implementation include ("org.javassist:javassist:3.30.2-GA")
+    forgeRuntimeLibrary ("org.javassist:javassist:3.30.2-GA")
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle(project(path: ':common', configuration: 'transformProductionNeoForge')) { transitive false }
