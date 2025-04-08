@@ -1,2 +1,2 @@
-- Added "flat_levels" option for xp_level_buyable condition to switch between old and new logic
-- Added pt_br translation (kluas005)
+- Added entity_glow ability
+- Added tool_hands ability (ThePhantomPig791)
