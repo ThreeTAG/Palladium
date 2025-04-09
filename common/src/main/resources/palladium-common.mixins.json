@@ -6,6 +6,7 @@
   "client": [
     "client.AbstractClientPlayerMixin",
     "client.AgeableListModelInvoker",
+    "client.ClientEntityMixin",
     "client.GameRendererMixin",
     "client.GeoArmorRendererInvoker",
     "client.GeoArmorRendererMixin",

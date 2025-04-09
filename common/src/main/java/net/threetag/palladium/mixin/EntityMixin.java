@@ -75,50 +75,6 @@ public class EntityMixin implements PalladiumEntityExtension {
         }
     }
 
-    @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
-    private void getTeamColor(CallbackInfoReturnable<Integer> cir) {
-        Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
-        Entity renderedEntity = (Entity) (Object) this;
-        int i = 0;
-        float red = 0F;
-        float green = 0F;
-        float blue = 0F;
-
-        if (renderedEntity instanceof LivingEntity living) {
-            for (AbilityInstance ability : AbilityUtil.getEnabledInstances(living, Abilities.ENTITY_GLOW.get())) {
-                if (ability.getProperty(EntityGlowAbility.MODE) == EntityGlowAbility.Mode.SELF) {
-                    var color = ability.getProperty(EntityGlowAbility.COLOR);
-
-                    if (color != null) {
-                        red += color.getRed() / 255F;
-                        green += color.getGreen() / 255F;
-                        blue += color.getBlue() / 255F;
-                        i++;
-                    }
-                }
-            }
-        }
-
-        if (cameraEntity instanceof LivingEntity living) {
-            for (AbilityInstance ability : AbilityUtil.getEnabledInstances(living, Abilities.ENTITY_GLOW.get())) {
-                if (ability.getProperty(EntityGlowAbility.MODE) == EntityGlowAbility.Mode.OTHERS) {
-                    var color = ability.getProperty(EntityGlowAbility.COLOR);
-
-                    if (color != null) {
-                        red += color.getRed() / 255F;
-                        green += color.getGreen() / 255F;
-                        blue += color.getBlue() / 255F;
-                        i++;
-                    }
-                }
-            }
-        }
-
-        if (i > 0) {
-            cir.setReturnValue(Mth.color(red / i, green / i, blue / i));
-        }
-    }
-
     @Override
     public EntityPropertyHandler palladium$getPropertyHandler() {
         return this.palladium$propertyHandler;
