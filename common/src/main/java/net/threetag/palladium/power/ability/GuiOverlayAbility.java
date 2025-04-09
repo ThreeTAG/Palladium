@@ -26,8 +26,6 @@ import java.util.List;
 
 public class GuiOverlayAbility extends Ability {
 
-    // TODO
-
     public static final MapCodec<GuiOverlayAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     TextureReference.CODEC.fieldOf("texture").forGetter(ab -> ab.texture),
@@ -63,6 +61,8 @@ public class GuiOverlayAbility extends Ability {
 
     @Environment(EnvType.CLIENT)
     public static class Renderer implements LayeredDraw.Layer {
+
+        public static final Renderer INSTANCE = new Renderer();
 
         @Override
         public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
@@ -123,7 +123,7 @@ public class GuiOverlayAbility extends Ability {
 
         private void renderImage(GuiGraphics guiGraphics, ResourceLocation texture, Vec3 scale, int textureWidth, int textureHeight) {
             guiGraphics.pose().scale((float) scale.x, (float) scale.y, (float) scale.z);
-            guiGraphics.blit(RenderType::guiTextured, texture, -textureWidth / 2, -textureHeight / 2, 0, 0, 0, textureWidth, textureHeight, textureWidth, textureHeight);
+            guiGraphics.blit(RenderType::guiTextured, texture, -textureWidth / 2, -textureHeight / 2, 0, 0, textureWidth, textureHeight, textureWidth, textureHeight);
         }
 
     }

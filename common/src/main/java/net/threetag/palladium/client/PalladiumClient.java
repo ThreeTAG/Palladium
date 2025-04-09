@@ -28,6 +28,7 @@ import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
 import net.threetag.palladium.core.registry.GuiLayerRegistry;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
+import net.threetag.palladium.power.ability.GuiOverlayAbility;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
@@ -43,6 +44,7 @@ public class PalladiumClient {
 
         // Overlay Renderer
         GuiLayerRegistry.register(Palladium.id("ability_bar"), AbilityBar.INSTANCE);
+        GuiLayerRegistry.register(Palladium.id("gui_overlay_abilities"), GuiOverlayAbility.Renderer.INSTANCE);
         ClientTickEvent.CLIENT_POST.register(AbilityBar.INSTANCE);
 
         // Screens
