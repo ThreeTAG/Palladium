@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.power.PowersScreen;
+import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.power.ability.AbilityReference;
 
 public record SyncAbilityComponentPacket(int entityId, AbilityReference reference,
@@ -45,7 +46,21 @@ public record SyncAbilityComponentPacket(int entityId, AbilityReference referenc
         Level level = Minecraft.getInstance().level;
         if (level != null && level.getEntity(packet.entityId) instanceof LivingEntity livingEntity) {
             packet.reference.optional(livingEntity, null).ifPresent(ability -> {
+                boolean prevEnabled = ability.isEnabled();
                 ability.applyPatch(packet.patch);
+                var optional = packet.patch.get(PalladiumDataComponents.Abilities.ENABLED.get());
+
+                if (optional != null && optional.isPresent()) {
+                    optional.ifPresent(enabled -> {
+                        if (enabled != prevEnabled) {
+                            if (enabled) {
+                                ability.getAbility().firstTick(livingEntity, ability);
+                            } else if (ability.getLifetime() > 0) {
+                                ability.getAbility().lastTick(livingEntity, ability);
+                            }
+                        }
+                    });
+                }
 
                 if (livingEntity == Minecraft.getInstance().player) {
                     AbilityBar.INSTANCE.populate();

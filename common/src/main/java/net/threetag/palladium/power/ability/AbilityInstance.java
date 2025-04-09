@@ -78,6 +78,10 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
         return this.prevEnabledTicks;
     }
 
+    public int getLifetime() {
+        return this.lifetime;
+    }
+
     public void tick(LivingEntity entity, PowerHolder powerHolder) {
         this.prevEnabledTicks = this.enabledTicks;
 

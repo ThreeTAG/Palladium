@@ -1,0 +1,16 @@
+{
+  "name": "Shader Effect Test",
+  "icon": "minecraft:glass_pane",
+  "abilities": {
+    "invisibility": {
+      "type": "palladium:shader_effect",
+      "shader": "creeper",
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

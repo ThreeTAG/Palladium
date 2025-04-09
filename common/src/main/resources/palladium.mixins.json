@@ -6,6 +6,7 @@
   "client": [
     "client.AbstractClientPlayerMixin",
     "client.EntityRenderDispatcherMixin",
+    "client.GameRendererMixin",
     "client.HumanoidModelMixin",
     "client.ItemInHandRendererMixin",
     "client.KeyboardInputMixin",

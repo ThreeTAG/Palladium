@@ -55,7 +55,6 @@ public class ShaderEffectAbility extends Ability {
         var mc = Minecraft.getInstance();
 
         if (entity == mc.player) {
-            // TODO mixin into checkPostEffect
             mc.gameRenderer.setPostEffect(shader);
         }
     }
@@ -89,7 +88,7 @@ public class ShaderEffectAbility extends Ability {
         public void addDocumentation(CodecDocumentationBuilder<Ability, ShaderEffectAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Applies a shader effect to the player.")
                     .add("shader", TYPE_RESOURCE_LOCATION, "The ID of the shader that shall be applied.")
-                    .setExampleObject(new ShaderEffectAbility(ResourceLocation.withDefaultNamespace("shaders/post/creeper.json"), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .setExampleObject(new ShaderEffectAbility(ResourceLocation.withDefaultNamespace("creeper"), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }
