@@ -1,2 +1,1 @@
-- Added entity_glow ability
-- Added tool_hands ability (ThePhantomPig791)
+- Fixed server crash
