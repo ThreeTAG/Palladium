@@ -126,6 +126,11 @@ public class EffectEntity extends Entity implements EntitySpawnExtension {
     }
 
     @Override
+    public boolean shouldRender(double x, double y, double z) {
+        return true;
+    }
+
+    @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         this.entityEffect = PalladiumRegistries.ENTITY_EFFECT.getValue(ResourceLocation.parse(compound.getString("entity_effect")));
         this.anchorId = compound.getInt("anchor_id");
