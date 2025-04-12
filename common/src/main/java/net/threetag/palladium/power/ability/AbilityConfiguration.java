@@ -219,8 +219,8 @@ public class AbilityConfiguration {
                         }
                     }
 
-                    if (condition.needsKey() || condition instanceof ChatMessageCondition) {
-                        throw new JsonParseException("Can't have key binding or chat message conditions for unlocking!");
+                    if (condition.needsKey() || condition instanceof ChatMessageCondition || condition instanceof AbilityWheelCondition) {
+                        throw new JsonParseException("Can't have key binding, chat message or ability wheel conditions for unlocking!");
                     }
 
                     if (condition.handlesCooldown()) {
@@ -245,9 +245,9 @@ public class AbilityConfiguration {
                         throw new JsonParseException("Can't have a buyable unlock condition for enabling!");
                     }
 
-                    if (condition.needsKey() || condition instanceof ChatMessageCondition) {
+                    if (condition.needsKey() || condition instanceof ChatMessageCondition || condition instanceof AbilityWheelCondition) {
                         if (withKeyOrChat) {
-                            throw new JsonParseException("Can't have two key binding or chat message conditions on one ability!");
+                            throw new JsonParseException("Can't have two key binding, chat message or ability wheel conditions on one ability!");
                         }
                         withKeyOrChat = true;
                         if (condition.needsKey()) {

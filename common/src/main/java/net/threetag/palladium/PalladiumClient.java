@@ -41,6 +41,7 @@ import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerRenderer;
 import net.threetag.palladium.client.renderer.trail.TrailRendererManager;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
+import net.threetag.palladium.client.screen.AbilityWheelRenderer;
 import net.threetag.palladium.client.screen.AccessoryScreen;
 import net.threetag.palladium.client.screen.AddonPackLogScreen;
 import net.threetag.palladium.client.screen.components.IconButton;
@@ -105,6 +106,7 @@ public class PalladiumClient {
         // Overlay Renderer
         OverlayRegistry.registerOverlay("palladium/ability_bar", new AbilityBarRenderer());
         OverlayRegistry.registerOverlay("palladium/gui_overlay_abilities", new GuiOverlayAbility.Renderer());
+        OverlayRegistry.registerOverlay("palladium/ability_wheel", new AbilityWheelRenderer());
 
         // Reload Listeners
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Palladium.id("dynamic_textures"), new DynamicTextureManager());

@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.client.screen.AbilityWheelRenderer;
 import net.threetag.palladium.network.AbilityKeyPressedMessage;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.EntityGlowAbility;
@@ -26,6 +27,20 @@ public class MinecraftMixin {
     @Inject(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;hasMissTime()Z"), cancellable = true)
     private void startAttackStartAbility(CallbackInfoReturnable<Boolean> cir) {
         if (PalladiumKeyMappings.LEFT_CLICKED_ABILITY == null) {
+            if (AbilityWheelRenderer.CURRENT_WHEEL != null) {
+                var ability = AbilityWheelRenderer.CURRENT_WHEEL.getSelectedAbility();
+                if (ability != null) {
+                    if (!ability.isOnCooldown()) {
+                        new AbilityKeyPressedMessage(ability.getReference(), true).send();
+                        PalladiumKeyMappings.LEFT_CLICKED_ABILITY = ability;
+                        cir.setReturnValue(false);
+                        AbilityWheelRenderer.setWheel(null);
+                    }
+                }
+                cir.setReturnValue(false);
+                return;
+            }
+
             var entry = PalladiumKeyMappings.getPrioritisedKeyedAbility(AbilityConfiguration.KeyType.LEFT_CLICK);
 
             if (entry != null && entry.isUnlocked() && (!entry.getConfiguration().needsEmptyHand() || this.player.getMainHandItem().isEmpty())) {

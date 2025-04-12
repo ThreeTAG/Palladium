@@ -3,6 +3,7 @@ package net.threetag.palladium.power.ability;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.condition.AbilityWheelCondition;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.CooldownType;
 import net.threetag.palladium.network.SyncAbilityEntryPropertyMessage;
@@ -227,22 +228,22 @@ public class AbilityInstance {
 
     public void keyPressed(LivingEntity entity, boolean pressed) {
         for (Condition condition : this.getConfiguration().getUnlockingConditions()) {
-            if (condition.needsKey()) {
+            if (condition.needsKey() || condition instanceof AbilityWheelCondition) {
                 if (pressed) {
-                    condition.onKeyPressed(entity, this, holder.getPower(), holder);
+                    condition.onKeyPressed(entity, this, this.holder.getPower(), this.holder);
                 } else {
-                    condition.onKeyReleased(entity, this, holder.getPower(), holder);
+                    condition.onKeyReleased(entity, this, this.holder.getPower(), this.holder);
                 }
                 return;
             }
         }
 
         for (Condition condition : this.getConfiguration().getEnablingConditions()) {
-            if (condition.needsKey()) {
+            if (condition.needsKey() || condition instanceof AbilityWheelCondition) {
                 if (pressed) {
-                    condition.onKeyPressed(entity, this, holder.getPower(), holder);
+                    condition.onKeyPressed(entity, this, this.holder.getPower(), this.holder);
                 } else {
-                    condition.onKeyReleased(entity, this, holder.getPower(), holder);
+                    condition.onKeyReleased(entity, this, this.holder.getPower(), this.holder);
                 }
                 return;
             }

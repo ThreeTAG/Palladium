@@ -19,6 +19,7 @@
     "client.MinecraftMixin",
     "client.ModelPartInvoker",
     "client.ModelPartMixin",
+    "client.MouseHandlerMixin",
     "client.PlayerInfoMixin",
     "client.PlayerRendererInvoker",
     "client.PlayerRendererMixin",

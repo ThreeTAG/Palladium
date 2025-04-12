@@ -50,7 +50,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
         if (client.player != null && client.screen == null && !client.player.isSpectator()) {
 
             // Open Equipment
-            if(OPEN_EQUIPMENT.isDown()) {
+            if (OPEN_EQUIPMENT.isDown()) {
                 new ToggleOpenableEquipmentMessage().send();
                 return;
             }
@@ -179,7 +179,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
             for (AbilityInstance ability : list.getDisplayedAbilities()) {
                 if (ability != null && ability.isUnlocked()) {
                     if (ability.getConfiguration().getKeyType() == keyType) {
-                        if(!ability.getConfiguration().getKeyType().toString().toLowerCase(Locale.ROOT).startsWith("scroll") || (!ability.getConfiguration().allowScrollWhenCrouching() || !Objects.requireNonNull(Minecraft.getInstance().player).isCrouching())) {
+                        if (!ability.getConfiguration().getKeyType().toString().toLowerCase(Locale.ROOT).startsWith("scroll") || (!ability.getConfiguration().allowScrollWhenCrouching() || !Objects.requireNonNull(Minecraft.getInstance().player).isCrouching())) {
                             return ability;
                         }
                     }
@@ -190,7 +190,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
         for (AbilityInstance entry : AbilityUtil.getInstances(Minecraft.getInstance().player)) {
             if (entry != null && entry.isUnlocked()) {
                 if (entry.getConfiguration().getKeyType() == keyType) {
-                    if(!entry.getConfiguration().getKeyType().toString().toLowerCase(Locale.ROOT).startsWith("scroll") || (!entry.getConfiguration().allowScrollWhenCrouching() || !Objects.requireNonNull(Minecraft.getInstance().player).isCrouching())) {
+                    if (!entry.getConfiguration().getKeyType().toString().toLowerCase(Locale.ROOT).startsWith("scroll") || (!entry.getConfiguration().allowScrollWhenCrouching() || !Objects.requireNonNull(Minecraft.getInstance().player).isCrouching())) {
                         return entry;
                     }
                 }

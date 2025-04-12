@@ -35,10 +35,10 @@ public class AbilityKeyPressedMessage extends MessageC2S {
 
     @Override
     public void handle(MessageContext context) {
-        AbilityInstance entry = this.reference.getEntry(context.getPlayer());
+        AbilityInstance instance = this.reference.getEntry(context.getPlayer());
 
-        if (entry != null && entry.isUnlocked()) {
-            entry.keyPressed(context.getPlayer(), this.pressed);
+        if (instance != null && instance.isUnlocked()) {
+            instance.keyPressed(context.getPlayer(), this.pressed);
         }
     }
 }

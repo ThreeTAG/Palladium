@@ -44,15 +44,15 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
 
         ChatEvents.SERVER_SUBMITTED.register((player, rawMessage, message) -> {
             if (CHECK_FOR_CHAT_MESSAGES.contains(rawMessage.trim().toLowerCase(Locale.ROOT))) {
-                for (AbilityInstance entry : AbilityUtil.getEntries(player)) {
-                    for (Condition condition : entry.getConfiguration().getUnlockingConditions()) {
+                for (AbilityInstance instance : AbilityUtil.getInstances(player)) {
+                    for (Condition condition : instance.getConfiguration().getUnlockingConditions()) {
                         if (condition instanceof ChatMessageCondition chat && chat.chatMessage.trim().equalsIgnoreCase(rawMessage.trim())) {
-                            chat.onChat(player, entry);
+                            chat.onChat(player, instance);
                         }
                     }
-                    for (Condition condition : entry.getConfiguration().getEnablingConditions()) {
+                    for (Condition condition : instance.getConfiguration().getEnablingConditions()) {
                         if (condition instanceof ChatMessageCondition chat && chat.chatMessage.trim().equalsIgnoreCase(rawMessage.trim())) {
-                            chat.onChat(player, entry);
+                            chat.onChat(player, instance);
                         }
                     }
                 }

@@ -67,6 +67,10 @@ ability_type_unlocked</a>
 ability_unlocked</a>
 </li>
 <li>
+<a href="#palladium:ability_wheel">
+ability_wheel</a>
+</li>
+<li>
 <a href="#palladium:accessory_selected">
 accessory_selected</a>
 </li>
@@ -875,6 +879,50 @@ ability_id</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:ability_unlocked","power":"null","ability":"ability_id"}</pre>
+</div>
+<hr>
+
+<div id="palladium:ability_wheel">
+<h2>
+ability_wheel</h2>
+<p>
+Allows ability to be used in an ability wheel.<br><br>Applicable for: data</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+cooldown</td>
+<td>
+Integer</td>
+<td>
+Amount of ticks the ability wont be useable for after using it</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_wheel","cooldown":0}</pre>
 </div>
 <hr>
 
