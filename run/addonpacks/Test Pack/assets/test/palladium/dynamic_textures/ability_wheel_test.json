@@ -1,0 +1,8 @@
+{
+  "base": "test:textures/gui/ability_wheel_#SELECTION.png",
+  "variables": {
+    "SELECTION": {
+      "type": "palladium:ability_wheel_selection"
+    }
+  }
+}

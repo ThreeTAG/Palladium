@@ -4,11 +4,13 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.client.screen.AbilityWheelRenderer;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.StringArrayProperty;
 import net.threetag.palladium.util.property.SyncType;
+import net.threetag.palladium.util.property.TextureReferenceProperty;
 import net.threetag.palladiumcore.util.Platform;
 
 import java.util.ArrayList;
@@ -16,10 +18,12 @@ import java.util.List;
 
 public class AbilityWheelAbility extends Ability {
 
-    public static final PalladiumProperty<String[]> ABILITIES = new StringArrayProperty("abilities").configurable("List of ability keys to be used in the ability wheel.").sync(SyncType.NONE);
+    public static final PalladiumProperty<String[]> ABILITIES = new StringArrayProperty("abilities").configurable("List of ability keys to be used in the ability wheel.").sync(SyncType.SELF);
+    public static final PalladiumProperty<TextureReference> TEXTURE = new TextureReferenceProperty("texture").configurable("Lets you use a custom texture for the wheel. If left null it will use the default rendering.").sync(SyncType.SELF);
 
     public AbilityWheelAbility() {
-        this.withProperty(ABILITIES, new String[]{"example_ability"});
+        this.withProperty(ABILITIES, new String[]{"example_ability"})
+                .withProperty(TEXTURE, null);
     }
 
     @Override
@@ -48,7 +52,7 @@ public class AbilityWheelAbility extends Ability {
                 }
             }
 
-            AbilityWheelRenderer.setWheel(list);
+            AbilityWheelRenderer.setWheel(new AbilityWheelRenderer.Wheel(list, instance.getProperty(TEXTURE)));
         }
     }
 

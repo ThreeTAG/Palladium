@@ -19,6 +19,22 @@
         }
       }
     },
+    "wheel_textured": {
+      "type": "palladium:ability_wheel",
+      "title": "Ability Wheel Textured",
+      "texture": "#test:ability_wheel_test",
+      "abilities": [
+        "ability_1",
+        "ability_2",
+        "ability_3",
+        "ability_4"
+      ],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:held"
+        }
+      }
+    },
     "ability_1": {
       "type": "palladium:command",
       "title": "Ability 1",
