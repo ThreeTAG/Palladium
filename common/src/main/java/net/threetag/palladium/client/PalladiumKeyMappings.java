@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
+import net.threetag.palladium.client.screen.AbilityWheelRenderer;
 import net.threetag.palladium.network.AbilityKeyPressedMessage;
 import net.threetag.palladium.network.NotifyMovementKeyListenerMessage;
 import net.threetag.palladium.network.ToggleOpenableEquipmentMessage;
@@ -119,6 +120,12 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
                 new AbilityKeyPressedMessage(active.getReference(), true).send();
                 return EventResult.cancel();
             }
+        }
+
+        // Ability Wheel
+        if (AbilityWheelRenderer.CURRENT_WHEEL != null) {
+            AbilityWheelRenderer.CURRENT_WHEEL.scroll(scrollDelta < 0D);
+            return EventResult.cancel();
         }
 
         AbilityInstance entry = null;

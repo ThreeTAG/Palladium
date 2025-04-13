@@ -160,8 +160,7 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
                 angle += 360;
             }
 
-            double adjustedAngle = angle + (SPACING_BETWEEN / 2.0)
-                    - 180 - (this.degreesPerSegment / 2.0);
+            double adjustedAngle = angle + (SPACING_BETWEEN / 2.0) - 180 - (this.degreesPerSegment / 2.0);
 
             while (adjustedAngle >= 360) {
                 adjustedAngle -= 360;
@@ -171,6 +170,18 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
             }
 
             this.selected = (int) (adjustedAngle / this.degreesPerSegment);
+            this.selectedAbility = this.abilities.get(Mth.clamp(this.selected, 0, this.abilities.size() - 1));
+        }
+
+        public void scroll(boolean up) {
+            this.selected += up ? 1 : -1;
+
+            if(this.selected < 0) {
+                this.selected = this.abilities.size() - 1;
+            } else if (this.selected >= this.abilities.size()) {
+                this.selected = 0;
+            }
+
             this.selectedAbility = this.abilities.get(Mth.clamp(this.selected, 0, this.abilities.size() - 1));
         }
 

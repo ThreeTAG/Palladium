@@ -33,7 +33,13 @@ public class MouseHandlerMixin {
     public void turnPlayer(CallbackInfo ci) {
         if (AbilityWheelRenderer.CURRENT_WHEEL != null) {
             if (this.accumulatedDX != 0 || this.accumulatedDY != 0) {
-                AbilityWheelRenderer.CURRENT_WHEEL.setFromMouseInput(this.accumulatedDX, this.accumulatedDY);
+                double d4 = this.minecraft.options.sensitivity().get() * 0.6F + 0.2F;
+                double d5 = d4 * d4 * d4;
+                double d6 = d5 * 8.0;
+                double dx = this.accumulatedDX * d6;
+                double dy = this.accumulatedDY * d6;
+
+                AbilityWheelRenderer.CURRENT_WHEEL.setFromMouseInput(dx, dy);
                 this.accumulatedDX = 0;
                 this.accumulatedDY = 0;
             }
