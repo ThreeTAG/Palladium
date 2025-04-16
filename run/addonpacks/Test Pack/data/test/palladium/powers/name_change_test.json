@@ -1,0 +1,30 @@
+{
+  "name": "Name Change",
+  "icon": {
+    "type": "palladium:item",
+    "item": "minecraft:glass_pane"
+  },
+  "background": "minecraft:textures/block/amethyst_block.png",
+  "abilities": {
+    "name_change": {
+      "type": "palladium:name_change",
+      "hidden_in_bar": false,
+      "name": [
+        {
+          "text": "Health: ",
+          "bold": true
+        },
+        {
+          "nbt": "Health",
+          "entity": "@s",
+          "color": "gold"
+        }
+      ],
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
+    }
+  }
+}

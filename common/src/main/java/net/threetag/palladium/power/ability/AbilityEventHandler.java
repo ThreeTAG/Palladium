@@ -1,6 +1,8 @@
 package net.threetag.palladium.power.ability;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,7 +29,7 @@ public class AbilityEventHandler implements LivingEntityEvents.Hurt, LivingEntit
             return EventResult.cancel();
         }
 
-        for (AbilityInstance entry : AbilityUtil.getEnabledEntries(entity, Abilities.DAMAGE_IMMUNITY.get())) {
+        for (AbilityInstance entry : AbilityUtil.getEnabledInstances(entity, Abilities.DAMAGE_IMMUNITY.get())) {
             if (DamageImmunityAbility.isImmuneAgainst(entry, damageSource)) {
                 return EventResult.cancel();
             }
@@ -51,7 +53,7 @@ public class AbilityEventHandler implements LivingEntityEvents.Hurt, LivingEntit
         if (damageSource.getEntity() instanceof LivingEntity sourceEntity && AbilityUtil.isTypeEnabled(sourceEntity, Abilities.FIRE_ASPECT.get())) {
             boolean hasAddedExistingFire = false;
             int fireSeconds = 0;
-            for (AbilityInstance entry : AbilityUtil.getEnabledEntries(sourceEntity, Abilities.FIRE_ASPECT.get())) {
+            for (AbilityInstance entry : AbilityUtil.getEnabledInstances(sourceEntity, Abilities.FIRE_ASPECT.get())) {
                 int time = Math.max(entry.getProperty(FireAspectAbility.TIME), 0);
                 if (!hasAddedExistingFire && entry.getProperty(FireAspectAbility.SHOULD_STACK_TIME)) {
                     fireSeconds = Math.min(fireSeconds + (entity.getRemainingFireTicks() / 20), entry.getProperty(FireAspectAbility.MAX_TIME));
@@ -66,8 +68,14 @@ public class AbilityEventHandler implements LivingEntityEvents.Hurt, LivingEntit
 
     @Override
     public void playerNameFormat(Player player, Component username, AtomicReference<Component> displayName) {
-        AbilityUtil.getEnabledEntries(player, Abilities.NAME_CHANGE.get()).stream().filter(ab -> ab.getProperty(NameChangeAbility.ACTIVE)).findFirst().ifPresent(ability -> {
-            displayName.set(ability.getProperty(NameChangeAbility.NAME));
+        AbilityUtil.getEnabledInstances(player, Abilities.NAME_CHANGE.get()).stream().filter(ab -> ab.getProperty(NameChangeAbility.ACTIVE)).findFirst().ifPresent(ability -> {
+            try {
+                displayName.set(
+                        ComponentUtils.updateForEntity(player.createCommandSourceStack(), ability.getProperty(NameChangeAbility.NAME), player, 0)
+                );
+            } catch (CommandSyntaxException e) {
+                displayName.set(ability.getProperty(NameChangeAbility.NAME));
+            }
         });
     }
 }
