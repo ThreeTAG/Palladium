@@ -130,6 +130,7 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
         private final float degreesPerSegment;
         private int selected = -1;
         private AbilityInstance selectedAbility = null;
+        private double posX = 0, posY = 0;
 
         public Wheel(List<AbilityInstance> abilities, TextureReference texture) {
             this.abilities = abilities;
@@ -150,7 +151,10 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
         }
 
         public void setFromMouseInput(double dx, double dy) {
-            double angle = Math.atan2(dy, dx);
+            this.posX = Mth.clamp(this.posX + dx, -500, 500);
+            this.posY = Mth.clamp(this.posY + dy, -500, 500);
+
+            double angle = Math.atan2(this.posY, this.posX);
             angle = Math.toDegrees(angle);
 
             while (angle >= 360) {
@@ -169,14 +173,14 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
                 adjustedAngle += 360;
             }
 
-            this.selected = (int) (adjustedAngle / this.degreesPerSegment);
-            this.selectedAbility = this.abilities.get(Mth.clamp(this.selected, 0, this.abilities.size() - 1));
+            this.selected = Mth.clamp((int) (adjustedAngle / this.degreesPerSegment), 0, this.abilities.size() - 1);
+            this.selectedAbility = this.abilities.get(this.selected);
         }
 
         public void scroll(boolean up) {
             this.selected += up ? 1 : -1;
 
-            if(this.selected < 0) {
+            if (this.selected < 0) {
                 this.selected = this.abilities.size() - 1;
             } else if (this.selected >= this.abilities.size()) {
                 this.selected = 0;
