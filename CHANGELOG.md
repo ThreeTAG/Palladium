@@ -1,1 +1,3 @@
-- Fixed server crash
+- Added ability wheels
+- Increased energy beam render distance
+- Made NBT and scoreboard text components possible in name_change ability
