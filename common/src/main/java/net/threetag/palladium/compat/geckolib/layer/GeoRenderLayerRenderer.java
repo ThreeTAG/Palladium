@@ -309,6 +309,10 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
         return GeoRenderer.super.getInstanceId(animatable) + this.currentEntity.getId();
     }
 
+    public long getInstanceIdForEntity(GeoRenderLayerState animatable, Entity entity) {
+        return GeoRenderer.super.getInstanceId(animatable) + entity.getId();
+    }
+
     /**
      * Construct the {@link AnimationState} for the given render pass, ready to pass onto the {@link GeoModel} for handling.
      * <p>

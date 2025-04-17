@@ -58,7 +58,7 @@ public class GeoLayerAnimationTriggerAbility extends Ability {
                 var state = layers.getLayerStates().get(layer);
 
                 if (state instanceof GeoRenderLayerState geoState) {
-                    var manager = geoState.getAnimatableInstanceCache().getManagerForId(geoLayer.renderer.getInstanceId(geoState));
+                    var manager = geoState.getAnimatableInstanceCache().getManagerForId(geoLayer.renderer.getInstanceIdForEntity(geoState, entity));
                     manager.tryTriggerAnimation(controller, trigger);
                 }
             }
