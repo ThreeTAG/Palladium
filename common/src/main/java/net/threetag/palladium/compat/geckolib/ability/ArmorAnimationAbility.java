@@ -32,7 +32,7 @@ public class ArmorAnimationAbility extends Ability {
     }
 
     @Override
-    public void tick(LivingEntity entity, AbilityInstance entry, IPowerHolder holder, boolean enabled) {
+    public void firstTick(LivingEntity entity, AbilityInstance entry, IPowerHolder holder, boolean enabled) {
         if (enabled) {
             if (entity.level().isClientSide) {
                 Item item = BuiltInRegistries.ITEM.get(entry.getProperty(ITEM));

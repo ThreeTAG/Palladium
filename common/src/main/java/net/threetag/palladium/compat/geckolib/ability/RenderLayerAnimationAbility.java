@@ -39,7 +39,7 @@ public class RenderLayerAnimationAbility extends Ability {
     }
 
     @Override
-    public void tick(LivingEntity entity, AbilityInstance entry, IPowerHolder holder, boolean enabled) {
+    public void firstTick(LivingEntity entity, AbilityInstance entry, IPowerHolder holder, boolean enabled) {
         if (enabled && entity.level().isClientSide && entity instanceof PalladiumLivingEntityExtension extension) {
             this.playAnimation(extension, entry);
         }
