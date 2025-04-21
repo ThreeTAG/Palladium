@@ -1,3 +1,5 @@
-- Added ability wheels
-- Increased energy beam render distance
-- Made NBT and scoreboard text components possible in name_change ability
+- Fixed GeckoLib animations sometimes skipping with low FPS
+- Fixed ability wheels showing up for other players in multiplayer
+- Fixed ability wheel still allowing you to break blocks
+- Added setting to disable mouse scrolling in ability wheels
+- Added command to lock/unlock all abilities from a power
