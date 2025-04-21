@@ -127,15 +127,17 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
 
         private final List<AbilityInstance> abilities;
         private final TextureReference texture;
+        private final boolean disableMouseScrolling;
         private final float degreesPerSegment;
         private int selected = -1;
         private AbilityInstance selectedAbility = null;
         private double posX = 0, posY = 0;
 
-        public Wheel(List<AbilityInstance> abilities, TextureReference texture) {
+        public Wheel(List<AbilityInstance> abilities, TextureReference texture, boolean disableMouseScrolling) {
             this.abilities = abilities;
             this.degreesPerSegment = 360F / abilities.size();
             this.texture = texture;
+            this.disableMouseScrolling = disableMouseScrolling;
         }
 
         public List<AbilityInstance> abilities() {
@@ -144,6 +146,10 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
 
         public TextureReference getTexture() {
             return this.texture;
+        }
+
+        public boolean disablesMouseScrolling() {
+            return this.disableMouseScrolling;
         }
 
         public AbilityInstance getSelectedAbility() {

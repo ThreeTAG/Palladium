@@ -7,10 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.client.screen.AbilityWheelRenderer;
 import net.threetag.palladium.power.IPowerHolder;
-import net.threetag.palladium.util.property.PalladiumProperty;
-import net.threetag.palladium.util.property.StringArrayProperty;
-import net.threetag.palladium.util.property.SyncType;
-import net.threetag.palladium.util.property.TextureReferenceProperty;
+import net.threetag.palladium.util.property.*;
 import net.threetag.palladiumcore.util.Platform;
 
 import java.util.ArrayList;
@@ -20,10 +17,12 @@ public class AbilityWheelAbility extends Ability {
 
     public static final PalladiumProperty<String[]> ABILITIES = new StringArrayProperty("abilities").configurable("List of ability keys to be used in the ability wheel.").sync(SyncType.SELF);
     public static final PalladiumProperty<TextureReference> TEXTURE = new TextureReferenceProperty("texture").configurable("Lets you use a custom texture for the wheel. If left null it will use the default rendering.").sync(SyncType.SELF);
+    public static final PalladiumProperty<Boolean> DISABLE_MOUSE_SCROLLING = new BooleanProperty("disable_mouse_scrolling").configurable("Disables the ability to use the mouse wheel to scroll between the options.").sync(SyncType.SELF);
 
     public AbilityWheelAbility() {
         this.withProperty(ABILITIES, new String[]{"example_ability"})
-                .withProperty(TEXTURE, null);
+                .withProperty(TEXTURE, null)
+                .withProperty(DISABLE_MOUSE_SCROLLING, false);
     }
 
     @Override
@@ -52,7 +51,7 @@ public class AbilityWheelAbility extends Ability {
                 }
             }
 
-            AbilityWheelRenderer.setWheel(new AbilityWheelRenderer.Wheel(list, instance.getProperty(TEXTURE)));
+            AbilityWheelRenderer.setWheel(new AbilityWheelRenderer.Wheel(list, instance.getProperty(TEXTURE), instance.getProperty(DISABLE_MOUSE_SCROLLING)));
         }
     }
 

@@ -123,7 +123,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
         }
 
         // Ability Wheel
-        if (AbilityWheelRenderer.CURRENT_WHEEL != null) {
+        if (AbilityWheelRenderer.CURRENT_WHEEL != null && !AbilityWheelRenderer.CURRENT_WHEEL.disablesMouseScrolling()) {
             AbilityWheelRenderer.CURRENT_WHEEL.scroll(scrollDelta < 0D);
             return EventResult.cancel();
         }
