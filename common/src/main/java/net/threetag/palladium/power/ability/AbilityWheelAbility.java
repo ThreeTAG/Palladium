@@ -41,7 +41,7 @@ public class AbilityWheelAbility extends Ability {
 
     @Environment(EnvType.CLIENT)
     private void setWheel(LivingEntity entity, AbilityInstance instance, IPowerHolder holder) {
-        if (entity != Minecraft.getInstance().player) {
+        if (entity == Minecraft.getInstance().player) {
             List<AbilityInstance> list = new ArrayList<>();
 
             for (String s : instance.getProperty(ABILITIES)) {
@@ -57,7 +57,7 @@ public class AbilityWheelAbility extends Ability {
 
     @Environment(EnvType.CLIENT)
     private void resetWheel(LivingEntity entity) {
-        if (entity != Minecraft.getInstance().player) {
+        if (entity == Minecraft.getInstance().player) {
             AbilityWheelRenderer.setWheel(null);
         }
     }
