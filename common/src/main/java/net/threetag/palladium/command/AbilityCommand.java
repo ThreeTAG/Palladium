@@ -63,7 +63,7 @@ public class AbilityCommand {
         try {
             context.getArgument("power", ResourceLocation.class);
             power = SuperpowerCommand.getSuperpower(context, "power");
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
         if (power != null) {
@@ -87,6 +87,10 @@ public class AbilityCommand {
                                         .then(Commands.argument("ability", StringArgumentType.word()).suggests(SUGGEST_ABILITIES)
                                                 .executes(context -> {
                                                     return lockAbility(context.getSource(), EntityArgument.getEntities(context, "entities"), SuperpowerCommand.getSuperpower(context, "power"), StringArgumentType.getString(context, "ability"), true);
+                                                }))
+                                        .then(Commands.literal("all")
+                                                .executes(context -> {
+                                                    return lockAllAbilities(context.getSource(), EntityArgument.getEntities(context, "entities"), SuperpowerCommand.getSuperpower(context, "power"), true);
                                                 })))))
                 .then(Commands.literal("unlock")
                         .then(Commands.argument("entities", EntityArgument.entities())
@@ -94,6 +98,10 @@ public class AbilityCommand {
                                         .then(Commands.argument("ability", StringArgumentType.word()).suggests(SUGGEST_ABILITIES)
                                                 .executes(context -> {
                                                     return lockAbility(context.getSource(), EntityArgument.getEntities(context, "entities"), SuperpowerCommand.getSuperpower(context, "power"), StringArgumentType.getString(context, "ability"), false);
+                                                }))
+                                        .then(Commands.literal("all")
+                                                .executes(context -> {
+                                                    return lockAllAbilities(context.getSource(), EntityArgument.getEntities(context, "entities"), SuperpowerCommand.getSuperpower(context, "power"), false);
                                                 }))))));
     }
 
@@ -127,6 +135,33 @@ public class AbilityCommand {
 
         int finalI = i;
         source.sendSuccess(() -> Component.translatable("commands.ability." + (locking ? "locking" : "unlocking") + ".success", abilityKey, power.getId(), finalI), true);
+
+        return i;
+    }
+
+    public static int lockAllAbilities(CommandSourceStack source, Collection<? extends Entity> entities, Power power, boolean locking) {
+        int i = 0;
+        for (Entity entity : entities) {
+            if (entity instanceof LivingEntity living) {
+                var holder = PowerManager.getPowerHandler(living).orElse(new PowerHandler(living)).getPowerHolder(power);
+
+                if (holder != null) {
+                    for (AbilityInstance abilityInstance : holder.getAbilities().values()) {
+                        if (abilityInstance.getPropertyManager().isRegistered(BuyableCondition.BOUGHT)) {
+                            abilityInstance.setUniqueProperty(BuyableCondition.BOUGHT, !locking);
+                            i++;
+                        }
+                    }
+                } else {
+                    source.sendFailure(Component.translatable("commands.ability.error.doesntHavePower"));
+                }
+            } else {
+                source.sendFailure(Component.translatable("commands.superpower.error.noLivingEntity"));
+            }
+        }
+
+        int finalI = i;
+        source.sendSuccess(() -> Component.translatable("commands.ability." + (locking ? "locking" : "unlocking") + ".all.success", power.getId(), finalI), true);
 
         return i;
     }

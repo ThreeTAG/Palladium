@@ -154,7 +154,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.ability.error.notUnlockable", "The %s ability of the %s power is not unlockable");
             this.add("commands.ability.error.doesntHavePower", "%s does not have that power");
             this.add("commands.ability.locking.success", "The %s abilities of the %s power have been locked for %s entities");
+            this.add("commands.ability.locking.all.success", "%s abilities of the %s powers in %s entities have been locked");
             this.add("commands.ability.unlocking.success", "The %s abilities of the %s power have been unlocked for %s entities");
+            this.add("commands.ability.unlocking.all.success", "%s abilities of the %s powers in %s entities have been unlocked");
 
             this.add("commands.energybar.error.noLivingEntity", "This entity is not a living entity");
             this.add("commands.energybar.error.energyBarNotFound", "Energy bar does not exist");
@@ -348,7 +350,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.ability.error.notUnlockable", "Die %s Fähigkeit von der %s Kraft kann nicht freigeschaltet werden");
             this.add("commands.ability.error.doesntHavePower", "%s hat diese Kraft nicht");
             this.add("commands.ability.locking.success", "Die %s Fähigkeiten von der %s Kraft wurden für %s Lebewesen gesperrt");
+            this.add("commands.ability.locking.all.success", "%s Fähigkeiten von der %s Kraft wurden für %s Lebewesen gesperrt");
             this.add("commands.ability.unlocking.success", "Die %s Fähigkeiten von der %s Kraft wurden für %s Lebewesen freigeschaltet");
+            this.add("commands.ability.unlocking.all.success", "%s Fähigkeiten von der %s Kraft wurden für %s Lebewesen freigeschaltet");
 
             this.add("commands.energybar.error.noLivingEntity", "Objekt ist nicht lebend");
             this.add("commands.energybar.error.energyBarNotFound", "Energy-Bar existiert nicht");
@@ -542,7 +546,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("commands.ability.error.notUnlockable", "De %s Fähischgehd von der %s Kraft kann nüsch freigeschaltet werd'n");
             this.add("commands.ability.error.doesntHavePower", "%s hat diese Kraft nüsch");
             this.add("commands.ability.locking.success", "De %s Fähischgehden von der %s Kraft wurd'n für %s Lebewesen jesperrt");
+            this.add("commands.ability.locking.all.success", "%s Fähischgehden von der %s Kraft wurd'n für %s Lebewesen jesperrt");
             this.add("commands.ability.unlocking.success", "De %s Fähischgehden von der %s Kraft wurd'n für %s Lebewesen freijeschaltet");
+            this.add("commands.ability.unlocking.all.success", "%s Fähigkeiten von der %s Kraft wurd'n für %s Lebewesen freijeschaltet");
 
             this.add("commands.energybar.error.noLivingEntity", "Objekt ist nicht lebend");
             this.add("commands.energybar.error.energyBarNotFound", "Energy-Bar existiert nüscht");
