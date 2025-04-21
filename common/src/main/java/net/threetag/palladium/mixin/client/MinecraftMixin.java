@@ -1,6 +1,8 @@
 package net.threetag.palladium.mixin.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
+import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.client.PalladiumKeyMappings;
@@ -8,6 +10,7 @@ import net.threetag.palladium.client.screen.AbilityWheelRenderer;
 import net.threetag.palladium.network.AbilityKeyPressedMessage;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.EntityGlowAbility;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,23 +27,33 @@ public class MinecraftMixin {
     @Shadow
     public Entity cameraEntity;
 
+    @Shadow
+    @Final
+    public Options options;
+
+    @Shadow
+    public MultiPlayerGameMode gameMode;
+
+    @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)
+    private void startAttackAbilityWheel(CallbackInfoReturnable<Boolean> cir) {
+        if (AbilityWheelRenderer.CURRENT_WHEEL != null) {
+            var ability = AbilityWheelRenderer.CURRENT_WHEEL.getSelectedAbility();
+            if (ability != null) {
+                if (!ability.isOnCooldown()) {
+                    new AbilityKeyPressedMessage(ability.getReference(), true).send();
+                    PalladiumKeyMappings.LEFT_CLICKED_ABILITY = ability;
+                    AbilityWheelRenderer.setWheel(null);
+                }
+            }
+            cir.setReturnValue(false);
+            this.options.keyAttack.consumeClick();
+            this.options.keyAttack.setDown(false);
+        }
+    }
+
     @Inject(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;hasMissTime()Z"), cancellable = true)
     private void startAttackStartAbility(CallbackInfoReturnable<Boolean> cir) {
-        if (PalladiumKeyMappings.LEFT_CLICKED_ABILITY == null) {
-            if (AbilityWheelRenderer.CURRENT_WHEEL != null) {
-                var ability = AbilityWheelRenderer.CURRENT_WHEEL.getSelectedAbility();
-                if (ability != null) {
-                    if (!ability.isOnCooldown()) {
-                        new AbilityKeyPressedMessage(ability.getReference(), true).send();
-                        PalladiumKeyMappings.LEFT_CLICKED_ABILITY = ability;
-                        cir.setReturnValue(false);
-                        AbilityWheelRenderer.setWheel(null);
-                    }
-                }
-                cir.setReturnValue(false);
-                return;
-            }
-
+        if (PalladiumKeyMappings.LEFT_CLICKED_ABILITY == null && AbilityWheelRenderer.CURRENT_WHEEL == null) {
             var entry = PalladiumKeyMappings.getPrioritisedKeyedAbility(AbilityConfiguration.KeyType.LEFT_CLICK);
 
             if (entry != null && entry.isUnlocked() && (!entry.getConfiguration().needsEmptyHand() || this.player.getMainHandItem().isEmpty())) {
@@ -119,6 +132,26 @@ public class MinecraftMixin {
     private void showGlow(Entity entity, CallbackInfoReturnable<Boolean> cir) {
         if (EntityGlowAbility.shouldGlow(entity, this.cameraEntity)) {
             cir.setReturnValue(true);
+        }
+    }
+
+    @Inject(method = "continueAttack", at = @At("HEAD"), cancellable = true)
+    private void continueAttack(boolean leftClick, CallbackInfo ci) {
+        if (leftClick) {
+            if (AbilityWheelRenderer.CURRENT_WHEEL != null) {
+                var ability = AbilityWheelRenderer.CURRENT_WHEEL.getSelectedAbility();
+                if (ability != null) {
+                    if (!ability.isOnCooldown()) {
+                        new AbilityKeyPressedMessage(ability.getReference(), true).send();
+                        PalladiumKeyMappings.LEFT_CLICKED_ABILITY = ability;
+                        AbilityWheelRenderer.setWheel(null);
+                    }
+                }
+                ci.cancel();
+                this.options.keyAttack.consumeClick();
+                this.options.keyAttack.setDown(false);
+                this.gameMode.stopDestroyBlock();
+            }
         }
     }
 
