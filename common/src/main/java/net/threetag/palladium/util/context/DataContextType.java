@@ -19,5 +19,7 @@ public class DataContextType<T> {
     public static DataContextType<Power> POWER = new DataContextType<>();
     public static DataContextType<IPowerHolder> POWER_HOLDER = new DataContextType<>();
     public static DataContextType<Integer> ABILITY_WHEEL_SELECTION = new DataContextType<>();
+    public static DataContextType<Boolean> ABILITY_WHEEL_HOVERED = new DataContextType<>();
+    public static DataContextType<Boolean> ABILITY_WHEEL_DISPLAYED = new DataContextType<>();
 
 }

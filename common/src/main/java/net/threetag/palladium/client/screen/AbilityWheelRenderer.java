@@ -83,7 +83,9 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
                 if (!ability.isUnlocked()) {
                     guiGraphics.blit(AbilityBarRenderer.TEXTURE, -8, -8, 42, 74, 18, 18);
                 } else {
-                    ability.getProperty(Ability.ICON).draw(minecraft, guiGraphics, DataContext.forEntity(minecraft.player), -8, -8);
+                    ability.getProperty(Ability.ICON).draw(minecraft, guiGraphics,
+                            DataContext.forAbility(minecraft.player, ability).with(DataContextType.ABILITY_WHEEL_HOVERED, selected),
+                            -8, -8);
                 }
                 guiGraphics.pose().popPose();
 
@@ -93,7 +95,9 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
                     if (!ability.isUnlocked()) {
                         guiGraphics.blit(AbilityBarRenderer.TEXTURE, -8, -8, 42, 74, 18, 18);
                     } else {
-                        ability.getProperty(Ability.ICON).draw(minecraft, guiGraphics, DataContext.forEntity(minecraft.player), -8, -8);
+                        ability.getProperty(Ability.ICON).draw(minecraft, guiGraphics,
+                                DataContext.forAbility(minecraft.player, ability).with(DataContextType.ABILITY_WHEEL_DISPLAYED, true),
+                                -8, -8);
                     }
                     guiGraphics.pose().popPose();
 
