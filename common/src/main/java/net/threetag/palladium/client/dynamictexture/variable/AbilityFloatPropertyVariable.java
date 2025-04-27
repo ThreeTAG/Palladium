@@ -20,11 +20,13 @@ public class AbilityFloatPropertyVariable extends AbstractFloatTextureVariable {
 
     private final AbilityReference reference;
     private final String propertyKey;
+    private final float fallbackValue;
 
-    public AbilityFloatPropertyVariable(ResourceLocation powerId, String abilityId, String propertyKey, List<Pair<Operation, JsonPrimitive>> operations) {
+    public AbilityFloatPropertyVariable(ResourceLocation powerId, String abilityId, String propertyKey, float fallbackValue, List<Pair<Operation, JsonPrimitive>> operations) {
         super(operations);
         this.reference = new AbilityReference(powerId, abilityId);
         this.propertyKey = propertyKey;
+        this.fallbackValue = fallbackValue;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class AbilityFloatPropertyVariable extends AbstractFloatTextureVariable {
             AbilityInstance entry = this.reference.getEntry(livingEntity);
 
             if (entry == null) {
-                return 0F;
+                return this.fallbackValue;
             }
 
             PalladiumProperty<?> property = entry.getEitherPropertyByKey(this.propertyKey);
@@ -44,7 +46,7 @@ public class AbilityFloatPropertyVariable extends AbstractFloatTextureVariable {
             }
         }
 
-        return 0F;
+        return this.fallbackValue;
     }
 
     public static class Serializer implements ITextureVariableSerializer {
@@ -55,6 +57,7 @@ public class AbilityFloatPropertyVariable extends AbstractFloatTextureVariable {
                     GsonUtil.getAsResourceLocation(json, "power"),
                     GsonHelper.getAsString(json, "ability"),
                     GsonHelper.getAsString(json, "property"),
+                    GsonHelper.getAsFloat(json, "fallback", 0.0F),
                     AbstractFloatTextureVariable.parseOperations(json));
         }
 
@@ -78,6 +81,10 @@ public class AbilityFloatPropertyVariable extends AbstractFloatTextureVariable {
             builder.addProperty("property", String.class)
                     .description("Name of the property you want the value from. It's 'value' for animation timer ablities.")
                     .required().exampleJson(new JsonPrimitive("value"));
+
+            builder.addProperty("fallback", Float.class)
+                    .description("If the property is not found, this value will be used instead.")
+                    .exampleJson(new JsonPrimitive(0F));
 
             AbstractFloatTextureVariable.addDocumentationFields(builder);
         }

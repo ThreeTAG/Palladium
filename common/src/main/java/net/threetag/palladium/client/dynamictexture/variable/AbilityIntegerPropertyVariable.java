@@ -20,11 +20,13 @@ public class AbilityIntegerPropertyVariable extends AbstractIntegerTextureVariab
 
     private final AbilityReference reference;
     private final String propertyKey;
+    private final int fallbackValue;
 
-    public AbilityIntegerPropertyVariable(ResourceLocation powerId, String abilityId, String propertyKey, List<Pair<Operation, Integer>> operations) {
+    public AbilityIntegerPropertyVariable(ResourceLocation powerId, String abilityId, String propertyKey, int fallbackValue, List<Pair<Operation, Integer>> operations) {
         super(operations);
         this.reference = new AbilityReference(powerId, abilityId);
         this.propertyKey = propertyKey;
+        this.fallbackValue = fallbackValue;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class AbilityIntegerPropertyVariable extends AbstractIntegerTextureVariab
             AbilityInstance entry = this.reference.getEntry(livingEntity);
 
             if (entry == null) {
-                return 0;
+                return this.fallbackValue;
             }
 
             PalladiumProperty<?> property = entry.getEitherPropertyByKey(this.propertyKey);
@@ -44,7 +46,7 @@ public class AbilityIntegerPropertyVariable extends AbstractIntegerTextureVariab
             }
         }
 
-        return 0;
+        return this.fallbackValue;
     }
 
     public static class Serializer implements ITextureVariableSerializer {
@@ -55,6 +57,7 @@ public class AbilityIntegerPropertyVariable extends AbstractIntegerTextureVariab
                     GsonUtil.getAsResourceLocation(json, "power"),
                     GsonHelper.getAsString(json, "ability"),
                     GsonHelper.getAsString(json, "property"),
+                    GsonHelper.getAsInt(json, "fallback", 0),
                     AbstractIntegerTextureVariable.parseOperations(json));
         }
 
@@ -78,6 +81,10 @@ public class AbilityIntegerPropertyVariable extends AbstractIntegerTextureVariab
             builder.addProperty("property", String.class)
                     .description("Name of the property you want the value from. It's 'value' for animation timer ablities.")
                     .required().exampleJson(new JsonPrimitive("value"));
+
+            builder.addProperty("fallback", Integer.class)
+                    .description("If the property is not found, this value will be used instead.")
+                    .exampleJson(new JsonPrimitive(0));
 
             AbstractIntegerTextureVariable.addDocumentationFields(builder);
         }

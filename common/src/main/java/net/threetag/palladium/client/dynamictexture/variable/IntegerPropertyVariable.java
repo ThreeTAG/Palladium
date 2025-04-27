@@ -18,15 +18,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class IntegerPropertyVariable extends AbstractIntegerTextureVariable {
 
     private final String propertyKey;
+    private final int fallbackValue;
 
-    public IntegerPropertyVariable(String propertyKey, List<Pair<Operation, Integer>> operations) {
+    public IntegerPropertyVariable(String propertyKey, int fallbackValue, List<Pair<Operation, Integer>> operations) {
         super(operations);
         this.propertyKey = propertyKey;
+        this.fallbackValue = fallbackValue;
     }
 
     @Override
     public int getNumber(DataContext context) {
-        AtomicInteger result = new AtomicInteger(0);
+        AtomicInteger result = new AtomicInteger(this.fallbackValue);
         EntityPropertyHandler.getHandler(context.getEntity()).ifPresent(handler -> {
             PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
 
@@ -44,6 +46,7 @@ public class IntegerPropertyVariable extends AbstractIntegerTextureVariable {
         public ITextureVariable parse(JsonObject json) {
             return new IntegerPropertyVariable(
                     GsonHelper.getAsString(json, "property"),
+                    GsonHelper.getAsInt(json, "fallback", 0),
                     AbstractIntegerTextureVariable.parseOperations(json));
         }
 
@@ -59,6 +62,9 @@ public class IntegerPropertyVariable extends AbstractIntegerTextureVariable {
             builder.addProperty("property", String.class)
                     .description("Name of the property you want the value from.")
                     .required().exampleJson(new JsonPrimitive("example_property"));
+            builder.addProperty("fallback", Integer.class)
+                    .description("If the property is not found, this value will be used instead.")
+                    .exampleJson(new JsonPrimitive(0));
 
             AbstractIntegerTextureVariable.addDocumentationFields(builder);
         }

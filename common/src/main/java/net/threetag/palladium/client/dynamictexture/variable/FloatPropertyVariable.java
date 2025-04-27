@@ -18,15 +18,17 @@ import java.util.concurrent.atomic.AtomicReference;
 public class FloatPropertyVariable extends AbstractFloatTextureVariable {
 
     private final String propertyKey;
+    private final float fallbackValue;
 
-    public FloatPropertyVariable(String propertyKey, List<Pair<Operation, JsonPrimitive>> operations) {
+    public FloatPropertyVariable(String propertyKey, float fallbackValue, List<Pair<Operation, JsonPrimitive>> operations) {
         super(operations);
         this.propertyKey = propertyKey;
+        this.fallbackValue = fallbackValue;
     }
 
     @Override
     public float getNumber(DataContext context) {
-        AtomicReference<Float> result = new AtomicReference<>(0F);
+        AtomicReference<Float> result = new AtomicReference<>(this.fallbackValue);
         EntityPropertyHandler.getHandler(context.getEntity()).ifPresent(handler -> {
             PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
 
@@ -44,6 +46,7 @@ public class FloatPropertyVariable extends AbstractFloatTextureVariable {
         public ITextureVariable parse(JsonObject json) {
             return new FloatPropertyVariable(
                     GsonHelper.getAsString(json, "property"),
+                    GsonHelper.getAsFloat(json, "fallback", 0.0F),
                     AbstractFloatTextureVariable.parseOperations(json));
         }
 
@@ -59,6 +62,10 @@ public class FloatPropertyVariable extends AbstractFloatTextureVariable {
             builder.addProperty("property", String.class)
                     .description("Name of the property you want the value from.")
                     .required().exampleJson(new JsonPrimitive("example_property"));
+
+            builder.addProperty("fallback", Float.class)
+                    .description("If the property is not found, this value will be used instead.")
+                    .exampleJson(new JsonPrimitive(0F));
 
             AbstractFloatTextureVariable.addDocumentationFields(builder);
         }
