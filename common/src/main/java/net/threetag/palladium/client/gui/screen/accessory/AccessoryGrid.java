@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.AccessorySlot;
+import net.threetag.palladium.client.PoseStackTransformation;
 import net.threetag.palladium.client.gui.component.grid.AbstractSelectionGrid;
 
 import java.util.Objects;
@@ -21,10 +22,12 @@ import java.util.Objects;
 public class AccessoryGrid extends AbstractSelectionGrid<AccessoryGrid.Entry> {
 
     private final AccessorySlot slot;
+    private final PoseStackTransformation preview;
 
     public AccessoryGrid(ScreenRectangle rectangle, AccessorySlot slot, Minecraft minecraft) {
         super(minecraft, rectangle.left(), rectangle.top(), rectangle.width(), rectangle.height(), 50, 50, 4);
         this.slot = slot;
+        this.preview = slot.preview().invertYRot();
 
         this.addEntry(new Entry(EquipmentSlot.HEAD, Items.LEATHER_HELMET));
         this.addEntry(new Entry(EquipmentSlot.HEAD, Items.IRON_HELMET));
@@ -91,11 +94,7 @@ public class AccessoryGrid extends AbstractSelectionGrid<AccessoryGrid.Entry> {
             var originalItem = Objects.requireNonNull(player).getItemBySlot(this.slot);
             player.setItemSlot(this.slot, this.item.getDefaultInstance());
             guiGraphics.enableScissor(left, top, left + width, top + height);
-
-//            var orientation = new AccessorySlot.Orientation(new Vector3f(3F, 3F, 3F), new Vector3f(0, 75, 0),
-//                    Axis.XP.rotationDegrees(15).rotateY((float) Math.toRadians(-40)));
-            var orientation = AccessoryGrid.this.slot.preview().button();
-            AccessoryScreen.renderEntityInInventory(guiGraphics, left + width / 2F, top + height - 5, 20, orientation, true, Minecraft.getInstance().player);
+            AccessoryScreen.renderEntityInInventory(guiGraphics, left + width / 2F, top + height  / 2F, 20, AccessoryGrid.this.preview, Minecraft.getInstance().player);
             guiGraphics.disableScissor();
             player.setItemSlot(this.slot, originalItem);
         }

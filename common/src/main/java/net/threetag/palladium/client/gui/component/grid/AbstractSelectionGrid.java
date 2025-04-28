@@ -234,7 +234,7 @@ public abstract class AbstractSelectionGrid<E extends AbstractSelectionGrid.Entr
 
         super.setFocused(focused);
         int i = this.children.indexOf(focused);
-        System.out.println(i);
+
         if (i >= 0) {
             E entry2 = this.children.get(i);
             this.setSelected(entry2);

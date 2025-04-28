@@ -3,39 +3,16 @@
     "translate": "accessory_slot.palladium.head"
   },
   "preview": {
-    "button": {
-      "rotation": [
-        15.0,
-        40.0,
-        0.0
-      ],
-      "scale": [
-        3.0,
-        3.0,
-        3.0
-      ],
-      "translation": [
-        0.0,
-        75.0,
-        0.0
-      ]
-    },
-    "player": {
-      "rotation": [
-        15.0,
-        40.0,
-        0.0
-      ],
-      "scale": [
-        2.5,
-        2.5,
-        2.5
-      ],
-      "translation": [
-        0.0,
-        230.0,
-        0.0
-      ]
-    }
+    "rotation": [
+      15.0,
+      40.0,
+      0.0
+    ],
+    "scale": 2.5,
+    "translation": [
+      0.0,
+      2.0,
+      0.0
+    ]
   }
 }

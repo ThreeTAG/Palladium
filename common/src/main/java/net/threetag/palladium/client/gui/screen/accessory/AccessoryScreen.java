@@ -20,10 +20,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.threetag.palladium.accessory.AccessorySlot;
+import net.threetag.palladium.client.PoseStackTransformation;
 import net.threetag.palladium.client.gui.component.EditButton;
 import net.threetag.palladium.client.gui.component.tab.IconTabNavigationBar;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
-import org.joml.Quaternionf;
 
 import java.util.Objects;
 
@@ -136,12 +136,12 @@ public class AccessoryScreen extends Screen {
         this.minecraft.setScreen(this.lastScreen);
     }
 
-    public void changePreviewOrientation(AccessorySlot.Orientation orientation) {
-        this.preview.setTargetOrientation(orientation);
+    public void changePreview(PoseStackTransformation transformation) {
+        this.preview.setTargetTransformation(transformation);
     }
 
     public static void renderEntityInInventory(
-            GuiGraphics guiGraphics, float x, float y, float baseScale, AccessorySlot.Orientation orientation, boolean invertYRotation, LivingEntity entity
+            GuiGraphics guiGraphics, float x, float y, float baseScale, PoseStackTransformation transformation, LivingEntity entity
     ) {
         entity.setYHeadRot(0F);
         entity.setXRot(0F);
@@ -149,20 +149,16 @@ public class AccessoryScreen extends Screen {
 
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(x, y, 50.0);
-
-        var translation = orientation.translation();
-        guiGraphics.pose().translate(translation.x, translation.y, translation.z);
-
         guiGraphics.pose().scale(baseScale, baseScale, -baseScale);
 
-        var scale = orientation.scale();
-        guiGraphics.pose().scale((float) scale.x, (float) scale.y, (float) scale.z);
+        guiGraphics.pose().translate(0, 0, 500);
+        guiGraphics.fill(-10, -10, 10, 10, 0xFFFF0000);
+        guiGraphics.pose().translate(0, 0, -500);
 
-        var rotation = orientation.rotation();
-        guiGraphics.pose().mulPose(new Quaternionf()
-                .rotationXYZ((float) (rotation.x * (Math.PI / 180.0)), (float) ((invertYRotation ? -1 : 1) * rotation.y * (Math.PI / 180.0)), (float) (rotation.z * (Math.PI / 180.0))));
+        transformation.apply(guiGraphics.pose());
 
         guiGraphics.pose().mulPose(Axis.XP.rotationDegrees(180));
+        guiGraphics.pose().translate(0, entity.getBbHeight() / -2F, 0);
 
         guiGraphics.flush();
         Lighting.setupForEntityInInventory();

@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.AccessorySlot;
+import net.threetag.palladium.client.PoseStackTransformation;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 import java.util.concurrent.CompletableFuture;
@@ -21,37 +22,37 @@ public class AccessorySlotProvider extends FabricCodecDataProvider<AccessorySlot
     @Override
     protected void configure(BiConsumer<ResourceLocation, AccessorySlot> provider, HolderLookup.Provider lookup) {
         this.add(provider, "hat",
-                AccessorySlot.orientation(3F, 0, 85, 0, 15, 40, 0),
-                AccessorySlot.orientation(2.5F, 0, 260, 0, 15, 40, 0));
+                PoseStackTransformation.create(2.5F, 0, 2.2F, 0, 15, 40, 0));
         this.add(provider, "head",
-                AccessorySlot.orientation(3F, 0, 75, 0, 15, 40, 0),
-                AccessorySlot.orientation(2.5F, 0, 230, 0, 15, 40, 0));
+                PoseStackTransformation.create(2.5F, 0, 2F, 0, 15, 40, 0));
         this.add(provider, "face",
-                AccessorySlot.orientation(3F, 0, 80, 0, -15, 0, 0),
-                AccessorySlot.orientation(3F, 0, 300, 0, -15, 0, 0));
-        this.add(provider, "chest");
-        this.add(provider, "back");
-        this.add(provider, "main_arm");
-        this.add(provider, "off_arm");
-        this.add(provider, "main_hand");
-        this.add(provider, "off_hand");
-        this.add(provider, "right_leg");
-        this.add(provider, "left_leg");
+                PoseStackTransformation.create(2.5F, 0, 2F, 0, -15, 0, 0));
+        this.add(provider, "chest",
+                PoseStackTransformation.create(2.2F, 0, 0.5F, 0, 15, 40, 0));
+        this.add(provider, "back",
+                PoseStackTransformation.create(2.2F, 0, 0.5F, 0, 15, 130, 0));
+        this.add(provider, "main_arm",
+                PoseStackTransformation.create(2.2F, 0, 0.5F, 0, 15, 40, 0));
+        this.add(provider, "off_arm",
+                PoseStackTransformation.create(2.2F, 0, 0.5F, 0, 15, 40, 0));
+        this.add(provider, "main_hand",
+                PoseStackTransformation.create(2.2F, 0, 0.5F, 0, 15, 40, 0));
+        this.add(provider, "off_hand",
+                PoseStackTransformation.create(2.2F, 0, 0.5F, 0, 15, 40, 0));
+        this.add(provider, "right_leg",
+                PoseStackTransformation.create(2.2F, 0, -1F, 0, 15, 40, 0));
+        this.add(provider, "left_leg",
+                PoseStackTransformation.create(2.2F, 0, -1F, 0, 15, 40, 0));
         this.add(provider, "special");
     }
 
     private void add(BiConsumer<ResourceLocation, AccessorySlot> provider, String id) {
-        this.add(provider, id, AccessorySlot.Orientation.DEFAULT);
+        this.add(provider, id, AccessorySlot.DEFAULT_PREVIEW);
     }
 
-    private void add(BiConsumer<ResourceLocation, AccessorySlot> provider, String id, AccessorySlot.Orientation orientation) {
+    private void add(BiConsumer<ResourceLocation, AccessorySlot> provider, String id, PoseStackTransformation transformation) {
         provider.accept(Palladium.id(id), new AccessorySlot(Component.translatable("accessory_slot.palladium." + id),
-                new AccessorySlot.Preview(orientation, orientation)));
-    }
-
-    private void add(BiConsumer<ResourceLocation, AccessorySlot> provider, String id, AccessorySlot.Orientation button, AccessorySlot.Orientation player) {
-        provider.accept(Palladium.id(id), new AccessorySlot(Component.translatable("accessory_slot.palladium." + id),
-                new AccessorySlot.Preview(button, player)));
+                transformation));
     }
 
     @Override
