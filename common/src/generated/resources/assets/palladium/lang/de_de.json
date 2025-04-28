@@ -49,6 +49,7 @@
   "commands.palladium.superpower.replace.success.single": "Einige von %ss Superkräften wurden durch %s ersetzt",
   "commands.palladium.superpower.set.success.multiple": "%s Wesen haben die Superkraft %s erhalten",
   "commands.palladium.superpower.set.success.single": "%s hat die Superkraft %s erhalten",
+  "gui.palladium.accessories": "Zubehör",
   "gui.palladium.powers": "Kräfte",
   "gui.palladium.powers.buy_ability": "Möchtest du diese Fähigkeit freischalten?",
   "gui.palladium.powers.buy_ability.experience_level": "%sx Erfahrungsstufe",

@@ -6,6 +6,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityKeyBindDisplay;
+import net.threetag.palladium.client.gui.screen.accessory.AccessoryScreen;
 import net.threetag.palladium.command.DataAttachmentCommand;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
@@ -115,6 +116,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             builder.add("gui.palladium.powers.buy_ability.or", "or");
             builder.add("gui.palladium.powers.buy_ability.experience_level", "%sx experience level");
             builder.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx experience levels");
+            builder.add(AccessoryScreen.TITLE_TRANSLATION_KEY, "Accessories");
         }
 
     }
@@ -215,6 +217,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             builder.add("gui.palladium.powers.buy_ability.or", "oder");
             builder.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsstufe");
             builder.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsstufen");
+            builder.add(AccessoryScreen.TITLE_TRANSLATION_KEY, "Zubehör");
         }
     }
 
@@ -314,6 +317,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             builder.add("gui.palladium.powers.buy_ability.or", "oder");
             builder.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsschdufe");
             builder.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsschdufen");
+            builder.add(AccessoryScreen.TITLE_TRANSLATION_KEY, "Zubehör");
         }
     }
 

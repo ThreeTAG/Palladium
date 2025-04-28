@@ -10,6 +10,7 @@ import net.threetag.palladium.client.energybeam.EnergyBeamManager;
 import net.threetag.palladium.client.energybeam.EnergyBeamRendererSerializer;
 import net.threetag.palladium.client.energybeam.EnergyBeamRendererSerializers;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
+import net.threetag.palladium.client.gui.screen.accessory.AccessoryScreen;
 import net.threetag.palladium.client.gui.screen.power.PowersScreen;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
@@ -49,6 +50,7 @@ public class PalladiumClient {
 
         // Screens
         PowersScreen.register();
+        AccessoryScreen.register();
 
         // Render Layers
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, DynamicTextureManager.INSTANCE, DynamicTextureManager.ID);

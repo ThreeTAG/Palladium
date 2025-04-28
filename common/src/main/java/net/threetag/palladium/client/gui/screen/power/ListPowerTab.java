@@ -177,7 +177,7 @@ public class ListPowerTab extends PowerTab {
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 guiGraphics.blit(RenderType::guiTextured, PowersScreen.WIDGETS, left + 5, top + 5, 90, 83, 16, 16, 256, 256);
 
-                // TOPO
+                // TODO
 //                if (this.abilityInstance.getAbility().getConditions().isBuyable()) {
 //                    guiGraphics.blit(PowersScreen.WIDGETS, left + 14, top + 16, 106, 83, 7, 7);
 //                }

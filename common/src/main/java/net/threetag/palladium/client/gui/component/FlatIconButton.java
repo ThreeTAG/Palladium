@@ -8,15 +8,12 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.icon.Icon;
 import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.util.RenderUtil;
 import org.jetbrains.annotations.Nullable;
 
 public class FlatIconButton extends Button {
-
-    public static final ResourceLocation WIDGETS_LOCATION = Palladium.id("textures/gui/widgets.png");
 
     private final Icon icon;
 
@@ -32,7 +29,7 @@ public class FlatIconButton extends Button {
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         Minecraft minecraft = Minecraft.getInstance();
-        guiGraphics.blit(RenderType::guiTextured, WIDGETS_LOCATION, this.getX(), this.getY(), 0, this.getTextureY(), 20, this.height, 256, 256);
+        guiGraphics.blit(RenderType::guiTextured, RenderUtil.WIDGETS_LOCATION, this.getX(), this.getY(), 0, this.getTextureY(), 20, this.height, 256, 256);
         this.icon.draw(minecraft, guiGraphics, minecraft.player != null ? DataContext.forEntity(minecraft.player) : DataContext.create(), this.getX() + 2, this.getY() + 2);
     }
 

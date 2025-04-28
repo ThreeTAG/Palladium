@@ -3,6 +3,7 @@ package net.threetag.palladium.registry;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.Item;
+import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.client.icon.IconSerializer;
 import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.core.registry.DataPackRegistryBuilder;
@@ -33,6 +34,7 @@ public class PalladiumRegistries {
 
     public static void init() {
         DataPackRegistryBuilder.create(PalladiumRegistryKeys.POWER, Power.CODEC, Power.CODEC);
+        DataPackRegistryBuilder.create(PalladiumRegistryKeys.ACCESSORY_SLOT, AccessorySlot.CODEC, AccessorySlot.CODEC);
     }
 
 }

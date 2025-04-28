@@ -49,6 +49,7 @@
   "commands.palladium.superpower.replace.success.single": "Some of %s's superpowers have been replaced with %s",
   "commands.palladium.superpower.set.success.multiple": "%s entities have gained the superpower %s",
   "commands.palladium.superpower.set.success.single": "%s has gained the superpower %s",
+  "gui.palladium.accessories": "Accessories",
   "gui.palladium.powers": "Powers",
   "gui.palladium.powers.buy_ability": "Do you want to unlock this ability?",
   "gui.palladium.powers.buy_ability.experience_level": "%sx experience level",

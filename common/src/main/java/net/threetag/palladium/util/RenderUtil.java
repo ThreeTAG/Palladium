@@ -4,15 +4,18 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.architectury.platform.Platform;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.compat.iris.IrisCompat;
 import org.joml.Matrix4f;
 
 public class RenderUtil {
 
+    public static final ResourceLocation WIDGETS_LOCATION = Palladium.id("textures/gui/widgets.png");
     private static Entity CURRENTLY_RENDERED_ENTITY = null;
     private static float CURRENTLY_RENDERED_PARTIAL_TICK = 0F;
 
