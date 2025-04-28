@@ -29,7 +29,8 @@ public class StringPropertyVariable implements ITextureVariable {
         EntityPropertyHandler.getHandler(context.getEntity()).ifPresent(handler -> {
             PalladiumProperty<?> property = handler.getPropertyByName(this.propertyKey);
             if (property instanceof StringProperty stringProperty) {
-                result.set(handler.get(stringProperty));
+                var value = handler.get(stringProperty);
+                result.set(value == null || value.isEmpty() ? this.fallbackValue : value);
             }
         });
         return result.get();
