@@ -18,11 +18,13 @@ public class AbilityWheelAbility extends Ability {
     public static final PalladiumProperty<String[]> ABILITIES = new StringArrayProperty("abilities").configurable("List of ability keys to be used in the ability wheel.").sync(SyncType.SELF);
     public static final PalladiumProperty<TextureReference> TEXTURE = new TextureReferenceProperty("texture").configurable("Lets you use a custom texture for the wheel. If left null it will use the default rendering.").sync(SyncType.SELF);
     public static final PalladiumProperty<Boolean> DISABLE_MOUSE_SCROLLING = new BooleanProperty("disable_mouse_scrolling").configurable("Disables the ability to use the mouse wheel to scroll between the options.").sync(SyncType.SELF);
+    public static final PalladiumProperty<Boolean> DISABLE_CENTER_ICON = new BooleanProperty("disable_center_icon").configurable("Disables the rendering of the icon in the middle of the wheel.").sync(SyncType.SELF);
 
     public AbilityWheelAbility() {
         this.withProperty(ABILITIES, new String[]{"example_ability"})
                 .withProperty(TEXTURE, null)
-                .withProperty(DISABLE_MOUSE_SCROLLING, false);
+                .withProperty(DISABLE_MOUSE_SCROLLING, false)
+                .withProperty(DISABLE_CENTER_ICON, false);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class AbilityWheelAbility extends Ability {
                 }
             }
 
-            AbilityWheelRenderer.setWheel(new AbilityWheelRenderer.Wheel(list, instance.getProperty(TEXTURE), instance.getProperty(DISABLE_MOUSE_SCROLLING)));
+            AbilityWheelRenderer.setWheel(new AbilityWheelRenderer.Wheel(list, instance.getProperty(TEXTURE), instance.getProperty(DISABLE_MOUSE_SCROLLING), instance.getProperty(DISABLE_CENTER_ICON)));
         }
     }
 

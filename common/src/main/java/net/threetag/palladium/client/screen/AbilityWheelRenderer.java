@@ -89,7 +89,7 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
                 }
                 guiGraphics.pose().popPose();
 
-                if (selected) {
+                if (selected && !CURRENT_WHEEL.disablesCenterIcon()) {
                     guiGraphics.pose().pushPose();
                     guiGraphics.pose().scale(2, 2, 1);
                     if (!ability.isUnlocked()) {
@@ -132,16 +132,18 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
         private final List<AbilityInstance> abilities;
         private final TextureReference texture;
         private final boolean disableMouseScrolling;
+        private final boolean disableCenterIcon;
         private final float degreesPerSegment;
         private int selected = -1;
         private AbilityInstance selectedAbility = null;
         private double posX = 0, posY = 0;
 
-        public Wheel(List<AbilityInstance> abilities, TextureReference texture, boolean disableMouseScrolling) {
+        public Wheel(List<AbilityInstance> abilities, TextureReference texture, boolean disableMouseScrolling, boolean disableCenterIcon) {
             this.abilities = abilities;
             this.degreesPerSegment = 360F / abilities.size();
             this.texture = texture;
             this.disableMouseScrolling = disableMouseScrolling;
+            this.disableCenterIcon = disableCenterIcon;
         }
 
         public List<AbilityInstance> abilities() {
@@ -154,6 +156,10 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
 
         public boolean disablesMouseScrolling() {
             return this.disableMouseScrolling;
+        }
+
+        public boolean disablesCenterIcon() {
+            return this.disableCenterIcon;
         }
 
         public AbilityInstance getSelectedAbility() {

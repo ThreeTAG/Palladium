@@ -47,6 +47,14 @@ Ability Integer-Property</a>
 Ability Ticks</a>
 </li>
 <li>
+<a href="#palladium:ability_wheel_displayed">
+Ability Wheel Displayed</a>
+</li>
+<li>
+<a href="#palladium:ability_wheel_hovered">
+Ability Wheel Hovered</a>
+</li>
+<li>
 <a href="#palladium:ability_wheel_selection">
 Ability Wheel Selection</a>
 </li>
@@ -175,6 +183,18 @@ true</td>
 </tr>
 <tr>
 <td>
+fallback</td>
+<td>
+Float</td>
+<td>
+If the property is not found, this value will be used instead.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 add</td>
 <td>
 Float</td>
@@ -262,7 +282,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:ability_float_property","power":"example:power_id","ability":"ability_key","property":"value","add":5.2,"subtract":3.1,"multiply":2.5,"divide":7.5,"min":5.5,"max":123.4,"modulo":5.0}</pre>
+{"type":"palladium:ability_float_property","power":"example:power_id","ability":"ability_key","property":"value","fallback":0.0,"add":5.2,"subtract":3.1,"multiply":2.5,"divide":7.5,"min":5.5,"max":123.4,"modulo":5.0}</pre>
 </div>
 <hr>
 
@@ -339,6 +359,18 @@ true</td>
 </tr>
 <tr>
 <td>
+fallback</td>
+<td>
+Integer</td>
+<td>
+If the property is not found, this value will be used instead.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 add</td>
 <td>
 Integer</td>
@@ -426,7 +458,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:ability_integer_property","power":"example:power_id","ability":"ability_key","property":"value","add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
+{"type":"palladium:ability_integer_property","power":"example:power_id","ability":"ability_key","property":"value","fallback":0,"add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
 </div>
 <hr>
 
@@ -567,6 +599,118 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:ability_ticks","power":"example:power_id","ability":"ability_key","add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
+</div>
+<hr>
+
+<div id="palladium:ability_wheel_displayed">
+<h2>
+Ability Wheel Displayed</h2>
+<p>
+Returns a true/false value depending on whether the texture is currently used in an ability, which is shown in the center of an ability wheel.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+true_value</td>
+<td>
+Boolean</td>
+<td>
+If the variable turns out to be true, this value will be inserted into the texture path</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+false_value</td>
+<td>
+Boolean</td>
+<td>
+If the variable turns out to be false, this value will be inserted into the texture path</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_wheel_displayed","true_value":"true","false_value":"false"}</pre>
+</div>
+<hr>
+
+<div id="palladium:ability_wheel_hovered">
+<h2>
+Ability Wheel Hovered</h2>
+<p>
+Returns a true/false value depending on whether the texture is currently used in an ability, which is hovered over in an ability wheel.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+true_value</td>
+<td>
+Boolean</td>
+<td>
+If the variable turns out to be true, this value will be inserted into the texture path</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+true</td>
+</tr>
+<tr>
+<td>
+false_value</td>
+<td>
+Boolean</td>
+<td>
+If the variable turns out to be false, this value will be inserted into the texture path</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:ability_wheel_hovered","true_value":"true","false_value":"false"}</pre>
 </div>
 <hr>
 
@@ -1567,6 +1711,18 @@ true</td>
 </tr>
 <tr>
 <td>
+fallback</td>
+<td>
+Float</td>
+<td>
+If the property is not found, this value will be used instead.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 add</td>
 <td>
 Float</td>
@@ -1654,7 +1810,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:float_property","property":"example_property","add":5.2,"subtract":3.1,"multiply":2.5,"divide":7.5,"min":5.5,"max":123.4,"modulo":5.0}</pre>
+{"type":"palladium:float_property","property":"example_property","fallback":0.0,"add":5.2,"subtract":3.1,"multiply":2.5,"divide":7.5,"min":5.5,"max":123.4,"modulo":5.0}</pre>
 </div>
 <hr>
 
@@ -1695,6 +1851,18 @@ true</td>
 </tr>
 <tr>
 <td>
+fallback</td>
+<td>
+Integer</td>
+<td>
+If the property is not found, this value will be used instead.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
 add</td>
 <td>
 Integer</td>
@@ -1782,7 +1950,7 @@ false</td>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:integer_property","property":"example_property","add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
+{"type":"palladium:integer_property","property":"example_property","fallback":0,"add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
 </div>
 <hr>
 
@@ -2237,12 +2405,24 @@ true</td>
 <td>
 /</td>
 </tr>
+<tr>
+<td>
+fallback</td>
+<td>
+String</td>
+<td>
+If the property is not found, this value will be used instead.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:string_property","property":"example_property"}</pre>
+{"type":"palladium:string_property","property":"example_property","fallback":""}</pre>
 </div>
 <script>
 function syntaxHighlight(json) {
