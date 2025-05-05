@@ -161,7 +161,7 @@ public class AbilityCommand {
         }
 
         int finalI = i;
-        source.sendSuccess(() -> Component.translatable("commands.ability." + (locking ? "locking" : "unlocking") + ".all.success", power.getId(), finalI), true);
+        source.sendSuccess(() -> Component.translatable("commands.ability." + (locking ? "locking" : "unlocking") + ".all.success", finalI, power.getId(), entities.size()), true);
 
         return i;
     }
