@@ -47,6 +47,9 @@ dependencies {
 
     // Iris
     modCompileOnly "maven.modrinth:iris:${rootProject.iris_version}"
+
+    // Mermod
+    modCompileOnly "maven.modrinth:mermod:${rootProject.mermod_version}"
 }
 
 publishing {

@@ -22,6 +22,7 @@ import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
 import net.threetag.palladium.client.renderer.item.armor.ArmorRendererData;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
+import net.threetag.palladium.compat.mermod.MermodClientCompat;
 import net.threetag.palladium.item.ArmorWithRenderer;
 import net.threetag.palladium.mixin.client.PlayerRendererInvoker;
 import net.threetag.palladium.power.ability.*;
@@ -156,6 +157,13 @@ public enum BodyPart {
                     playerModel.leftSleeve.visible = player.isModelPartShown(PlayerModelPart.LEFT_SLEEVE);
                     playerModel.rightSleeve.visible = player.isModelPartShown(PlayerModelPart.RIGHT_SLEEVE);
                     playerModel.cloak.visible = player.isModelPartShown(PlayerModelPart.CAPE);
+
+                    if (MermodClientCompat.INSTANCE.shouldRenderTail(player)) {
+                        playerModel.rightLeg.visible = false;
+                        playerModel.rightPants.visible = false;
+                        playerModel.leftLeg.visible = false;
+                        playerModel.leftPants.visible = false;
+                    }
                 }
             }
         } else {

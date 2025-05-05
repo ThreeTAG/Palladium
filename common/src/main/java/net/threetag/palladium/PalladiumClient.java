@@ -47,6 +47,7 @@ import net.threetag.palladium.client.screen.AddonPackLogScreen;
 import net.threetag.palladium.client.screen.components.IconButton;
 import net.threetag.palladium.client.screen.power.PowersScreen;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
+import net.threetag.palladium.compat.mermod.MermodClientCompatImpl;
 import net.threetag.palladium.energy.EnergyHelper;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.event.PalladiumClientEvents;
@@ -121,6 +122,11 @@ public class PalladiumClient {
         // Gecko
         if (Platform.isModLoaded("geckolib")) {
             GeckoLibCompat.initClient();
+        }
+
+        // Mermod
+        if (Platform.isModLoaded("mermod")) {
+            MermodClientCompatImpl.init();
         }
     }
 
