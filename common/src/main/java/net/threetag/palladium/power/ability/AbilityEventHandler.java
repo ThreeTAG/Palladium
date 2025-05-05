@@ -1,8 +1,6 @@
 package net.threetag.palladium.power.ability;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
@@ -68,14 +66,10 @@ public class AbilityEventHandler implements LivingEntityEvents.Hurt, LivingEntit
 
     @Override
     public void playerNameFormat(Player player, Component username, AtomicReference<Component> displayName) {
-        AbilityUtil.getEnabledInstances(player, Abilities.NAME_CHANGE.get()).stream().filter(ab -> ab.getProperty(NameChangeAbility.ACTIVE)).findFirst().ifPresent(ability -> {
-            try {
-                displayName.set(
-                        ComponentUtils.updateForEntity(player.createCommandSourceStack(), ability.getProperty(NameChangeAbility.NAME), player, 0)
-                );
-            } catch (CommandSyntaxException e) {
-                displayName.set(ability.getProperty(NameChangeAbility.NAME));
-            }
-        });
+        AbilityUtil.getEnabledInstances(player, Abilities.NAME_CHANGE.get())
+                .stream()
+                .filter(ab -> ab.getProperty(NameChangeAbility.NAME_CACHED) != null)
+                .findFirst()
+                .ifPresent(ability -> displayName.set(ability.getProperty(NameChangeAbility.NAME_CACHED)));
     }
 }
