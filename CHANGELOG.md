@@ -1,5 +1,7 @@
-- Fixed GeckoLib animations sometimes skipping with low FPS
-- Fixed ability wheels showing up for other players in multiplayer
-- Fixed ability wheel still allowing you to break blocks
-- Added setting to disable mouse scrolling in ability wheels
-- Added command to lock/unlock all abilities from a power
+- Added ability_wheel_hovered & ability_wheel_displayed texture variables
+- Added fallback values to all property variables 
+- Added "disable_center_icon" to ability wheel ability
+- #145 Fixed mermod incompatibility
+- Fixed /ablity lock all response
+- Fix for name change ability
+- Compressed PNGs and decreased jar file size
