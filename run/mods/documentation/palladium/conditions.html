@@ -287,6 +287,10 @@ objective_score</a>
 on_ground</a>
 </li>
 <li>
+<a href="#palladium:openable_item_progress">
+openable_item_progress</a>
+</li>
+<li>
 <a href="#palladium:or">
 or</a>
 </li>
@@ -3027,6 +3031,74 @@ Checks if the entity is on the ground.<br><br>Applicable for: all</p>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:on_ground"}</pre>
+</div>
+<hr>
+
+<div id="palladium:openable_item_progress">
+<h2>
+openable_item_progress</h2>
+<p>
+Checks if the openable item in the given slot has a certain amount of progress. Needs to be using the openable-system for items.<br><br>Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+slot</td>
+<td>
+PlayerSlot</td>
+<td>
+Slot that must contain an opened item. Example values: [mainhand, offhand, feet, legs, chest, head, curios:back, curios:necklace, trinkets:chest/back, trinkets:chest/necklace]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+chest</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Minimum required amount of the progress value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Maximum required amount of the progress value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:openable_item_progress","slot":"chest","min":0,"max":0}</pre>
 </div>
 <hr>
 
