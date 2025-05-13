@@ -55,15 +55,21 @@ public class ArmorRendererConditions {
     public String getModelLayer(DataContext context, ArmorModelData models) {
         String key = BASE_TEXTURE;
 
-        if (context.has(DataContextType.ITEM) && context.getItem().getItem() instanceof Openable openable && openable.getOpeningProgress(context.getItem()) > 0) {
-            if (openable.getOpeningTime(context.getItem()) <= 0) {
-                key = OPENED_TEXTURE;
-            } else {
-                key = OPENED_TEXTURE + "_" + openable.getOpeningProgress(context.getItem());
-
-                if (!models.has(key)) {
+        var stack = context.getItem();
+        if (context.has(DataContextType.ITEM) && stack.getItem() instanceof Openable openable) {
+            if (openable.getOpeningProgress(context.getItem()) > 0) {
+                if (openable.getOpeningTime(context.getItem()) <= 0) {
                     key = OPENED_TEXTURE;
+                } else {
+                    key = OPENED_TEXTURE + "_" + openable.getOpeningProgress(stack);
+
+                    if (!models.has(key)) {
+                        key = OPENED_TEXTURE;
+                    }
                 }
+            }
+            else if (openable.isOpen(stack)) {
+                key = OPENED_TEXTURE;
             }
         }
 

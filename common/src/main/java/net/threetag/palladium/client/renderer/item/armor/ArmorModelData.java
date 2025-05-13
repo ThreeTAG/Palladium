@@ -28,8 +28,9 @@ public class ArmorModelData {
 
     @Nullable
     public HumanoidModel<?> get(String key, LivingEntity entity, boolean hasConditions) {
+        // If the armor is openable, shouldn't it still use the key param? So we pass key instead of ArmorRendererConditions.BASE_TEXTURE
         if (!hasConditions) {
-            var fallback = this.generatedByKey.get(ArmorRendererConditions.BASE_TEXTURE);
+            var fallback = this.generatedByKey.get(key);
             return fallback != null ? fallback.get(entity) : null;
         }
 
