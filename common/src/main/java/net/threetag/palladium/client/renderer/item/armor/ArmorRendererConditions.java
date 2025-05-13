@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.util.GsonHelper;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionEnvironment;
 import net.threetag.palladium.condition.ConditionSerializer;
@@ -27,15 +28,19 @@ public class ArmorRendererConditions {
 
         var stack = context.getItem();
         if (!stack.isEmpty() && stack.getItem() instanceof Openable openable) {
-            var max = openable.getOpeningTime(stack);
-            if (max <= 0 && openable.isOpen(stack)) {
-                key = OPENED_TEXTURE;
-            } else if (max > 0) {
-                key = OPENED_TEXTURE + "_" + openable.getOpeningProgress(context.getItem());
-
-                if (!textures.has(key)) {
+            if (openable.getOpeningProgress(stack) > 0) {
+                if (openable.getOpeningTime(stack) <= 0) {
                     key = OPENED_TEXTURE;
+                } else {
+                    key = OPENED_TEXTURE + "_" + openable.getOpeningProgress(stack);
+
+                    if (!textures.has(key)) {
+                        key = OPENED_TEXTURE;
+                    }
                 }
+            }
+            else if (openable.isOpen(stack)) {
+                key = OPENED_TEXTURE;
             }
         }
 
@@ -57,8 +62,8 @@ public class ArmorRendererConditions {
 
         var stack = context.getItem();
         if (context.has(DataContextType.ITEM) && stack.getItem() instanceof Openable openable) {
-            if (openable.getOpeningProgress(context.getItem()) > 0) {
-                if (openable.getOpeningTime(context.getItem()) <= 0) {
+            if (openable.getOpeningProgress(stack) > 0) {
+                if (openable.getOpeningTime(stack) <= 0) {
                     key = OPENED_TEXTURE;
                 } else {
                     key = OPENED_TEXTURE + "_" + openable.getOpeningProgress(stack);
