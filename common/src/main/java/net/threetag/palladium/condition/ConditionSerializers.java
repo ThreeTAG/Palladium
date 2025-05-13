@@ -82,5 +82,6 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> ACCESSORY_SELECTED = CONDITION_SERIALIZERS.register("accessory_selected", AccessorySelectedCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> SMALL_ARMS = CONDITION_SERIALIZERS.register("small_arms", SmallArmsCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> SIZE = CONDITION_SERIALIZERS.register("size", SizeCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> OPENABLE_ITEM_PROGRESS = CONDITION_SERIALIZERS.register("openable_item_progress", OpenableItemProgressCondition.Serializer::new);
 
 }

@@ -114,6 +114,8 @@ public abstract class PalladiumProperty<T> {
             value = number.doubleValue();
         } else if (property instanceof ResourceLocationProperty && value instanceof String string) {
             value = new ResourceLocation(string);
+        } else if (property instanceof EnumPalladiumProperty<?> && value instanceof String string) {
+            value = ((EnumPalladiumProperty<?>) property).getByName(string);
         }
 
         return value;
