@@ -1137,7 +1137,7 @@ attribute</td>
 <td>
 Attribute</td>
 <td>
-Determines which attribute should be modified. Possible attributes: minecraft:generic.armor, minecraft:generic.armor_toughness, minecraft:generic.attack_damage, minecraft:generic.attack_knockback, minecraft:generic.attack_speed, minecraft:generic.flying_speed, minecraft:generic.follow_range, minecraft:generic.knockback_resistance, minecraft:generic.luck, minecraft:generic.max_health, minecraft:generic.movement_speed, minecraft:horse.jump_strength, minecraft:zombie.spawn_reinforcements, porting_lib:entity_gravity, porting_lib:step_height_addition, porting_lib:swim_speed</td>
+Determines which attribute should be modified. Possible attributes: minecraft:generic.armor, minecraft:generic.armor_toughness, minecraft:generic.attack_damage, minecraft:generic.attack_knockback, minecraft:generic.attack_speed, minecraft:generic.flying_speed, minecraft:generic.follow_range, minecraft:generic.knockback_resistance, minecraft:generic.luck, minecraft:generic.max_health, minecraft:generic.movement_speed, minecraft:horse.jump_strength, minecraft:zombie.spawn_reinforcements, porting_lib:entity_gravity, porting_lib:step_height_addition, porting_lib:swim_speed, reach-entity-attributes:attack_range, reach-entity-attributes:reach</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -2173,12 +2173,36 @@ false</td>
 <td>
 0.0</td>
 </tr>
+<tr>
+<td>
+property_key</td>
+<td>
+String</td>
+<td>
+If you want to make the glow dependent on a Palladium Property, this is the key/name of it which you can specify.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+property_value</td>
+<td>
+String</td>
+<td>
+If you want to make the glow dependent on a Palladium Property, this is value of it which you can specify.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:entity_glow","icon":"minecraft:glow_berries","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","mode":"self","color":"null","distance":0.0}</pre>
+{"type":"palladium:entity_glow","icon":"minecraft:glow_berries","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","mode":"self","color":"null","distance":0.0,"property_key":"null","property_value":"null"}</pre>
 </div>
 <hr>
 
