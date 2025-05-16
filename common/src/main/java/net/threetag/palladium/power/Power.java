@@ -10,7 +10,7 @@ import net.threetag.palladium.client.icon.Icon;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.energybar.EnergyBarConfiguration;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,8 +28,8 @@ public class Power {
                     Icon.CODEC.fieldOf("icon").forGetter(Power::getIcon),
                     TextureReference.CODEC.optionalFieldOf("background").forGetter(p -> Optional.ofNullable(p.background)),
                     TextureReference.CODEC.optionalFieldOf("ability_bar_texture").forGetter(p -> Optional.ofNullable(p.abilityBar)),
-                    CodecExtras.COLOR_CODEC.optionalFieldOf("primary_color", new Color(210, 112, 49)).forGetter(Power::getPrimaryColor),
-                    CodecExtras.COLOR_CODEC.optionalFieldOf("secondary_color", new Color(126, 97, 86)).forGetter(Power::getSecondaryColor),
+                    PalladiumCodecs.COLOR_CODEC.optionalFieldOf("primary_color", new Color(210, 112, 49)).forGetter(Power::getPrimaryColor),
+                    PalladiumCodecs.COLOR_CODEC.optionalFieldOf("secondary_color", new Color(126, 97, 86)).forGetter(Power::getSecondaryColor),
                     Codec.BOOL.optionalFieldOf("persistent_data", false).forGetter(Power::hasPersistentData),
                     Codec.BOOL.optionalFieldOf("hidden", false).forGetter(Power::isHidden),
                     GuiDisplayType.CODEC.optionalFieldOf("gui_display_type", GuiDisplayType.AUTO).forGetter(Power::getGuiDisplayType),

@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.List;
 
@@ -14,9 +14,9 @@ public class FireAspectAbility extends Ability {
 
     public static final MapCodec<FireAspectAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    CodecExtras.TIME.fieldOf("time").forGetter(ab -> ab.time),
+                    PalladiumCodecs.TIME.fieldOf("time").forGetter(ab -> ab.time),
                     Codec.BOOL.optionalFieldOf("should_stack_time", false).forGetter(ab -> ab.shouldStackTime),
-                    CodecExtras.TIME.optionalFieldOf("max_time", 60 * 20).forGetter(ab -> ab.maxTime),
+                    PalladiumCodecs.TIME.optionalFieldOf("max_time", 60 * 20).forGetter(ab -> ab.maxTime),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, FireAspectAbility::new));
 

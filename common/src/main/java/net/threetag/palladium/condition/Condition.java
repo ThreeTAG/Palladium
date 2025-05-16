@@ -10,7 +10,7 @@ import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +25,7 @@ public interface Condition {
                     right -> right ? TrueCondition.INSTANCE : FalseCondition.INSTANCE),
             condition -> condition instanceof TrueCondition ? Either.right(true) : (condition instanceof FalseCondition ? Either.right(false) : Either.left(condition)));
 
-    Codec<List<Condition>> LIST_CODEC = CodecExtras.listOrPrimitive(FALSE_TRUE_WRAPPED_CODEC);
+    Codec<List<Condition>> LIST_CODEC = PalladiumCodecs.listOrPrimitive(FALSE_TRUE_WRAPPED_CODEC);
     StreamCodec<RegistryFriendlyByteBuf, Condition> STREAM_CODEC = ByteBufCodecs.registry(PalladiumRegistryKeys.CONDITION_SERIALIZER).dispatch(Condition::getSerializer, ConditionSerializer::streamCodec);
 
     boolean test(DataContext context);

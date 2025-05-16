@@ -19,7 +19,7 @@ import java.util.List;
 public class ParsedCommands {
 
     public static final ParsedCommands EMPTY = new ParsedCommands(Collections.emptyList());
-    public static final Codec<ParsedCommands> CODEC = CodecExtras.listOrPrimitive(Codec.STRING).xmap(ParsedCommands::new, ParsedCommands::getLines);
+    public static final Codec<ParsedCommands> CODEC = PalladiumCodecs.listOrPrimitive(Codec.STRING).xmap(ParsedCommands::new, ParsedCommands::getLines);
     public static final StreamCodec<ByteBuf, ParsedCommands> STREAM_CODEC = ByteBufCodecs.collection(Utils::newList, ByteBufCodecs.STRING_UTF8).map(ParsedCommands::new, ParsedCommands::getLines);
 
     private final List<String> lines;

@@ -14,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.condition.PerspectiveAwareConditions;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.entity.BodyPart;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import net.threetag.palladium.util.PerspectiveValue;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -48,10 +48,10 @@ public class ParticleEmitter {
     public static final Codec<ParticleEmitter> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BodyPart.CODEC.optionalFieldOf("body_part").forGetter(e -> Optional.ofNullable(e.anchor)),
             ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("amount", 1F).forGetter(e -> e.amount),
-            PerspectiveValue.codec(CodecExtras.VOXEL_VECTOR_3F).optionalFieldOf("offset", new PerspectiveValue<>(new Vector3f())).forGetter(e -> e.offset),
-            PerspectiveValue.codec(CodecExtras.VOXEL_VECTOR_3F).optionalFieldOf("offset_random", new PerspectiveValue<>(new Vector3f())).forGetter(e -> e.offset),
-            PerspectiveValue.codec(CodecExtras.VOXEL_VECTOR_3F).optionalFieldOf("motion", new PerspectiveValue<>(new Vector3f())).forGetter(e -> e.offset),
-            PerspectiveValue.codec(CodecExtras.VOXEL_VECTOR_3F).optionalFieldOf("motion_random", new PerspectiveValue<>(new Vector3f())).forGetter(e -> e.offset),
+            PerspectiveValue.codec(PalladiumCodecs.VOXEL_VECTOR_3F).optionalFieldOf("offset", new PerspectiveValue<>(new Vector3f())).forGetter(e -> e.offset),
+            PerspectiveValue.codec(PalladiumCodecs.VOXEL_VECTOR_3F).optionalFieldOf("offset_random", new PerspectiveValue<>(new Vector3f())).forGetter(e -> e.offset),
+            PerspectiveValue.codec(PalladiumCodecs.VOXEL_VECTOR_3F).optionalFieldOf("motion", new PerspectiveValue<>(new Vector3f())).forGetter(e -> e.offset),
+            PerspectiveValue.codec(PalladiumCodecs.VOXEL_VECTOR_3F).optionalFieldOf("motion_random", new PerspectiveValue<>(new Vector3f())).forGetter(e -> e.offset),
             PerspectiveAwareConditions.CODEC.optionalFieldOf("conditions", PerspectiveAwareConditions.EMPTY).forGetter(e -> e.conditions)
     ).apply(instance, (bodyPart, amount, offset, offsetRandom, motion, motionRandom, conditions) -> {
         return new ParticleEmitter(bodyPart.orElse(null), amount, offset, offsetRandom, motion, motionRandom, conditions);

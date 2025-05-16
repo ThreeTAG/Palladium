@@ -3,7 +3,7 @@ package net.threetag.palladium.power.energybar;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.threetag.palladium.entity.number.EntityDependentNumber;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
@@ -14,7 +14,7 @@ public final class EnergyBarConfiguration {
 
     public static final Codec<EnergyBarConfiguration> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    CodecExtras.COLOR_CODEC.optionalFieldOf("color", Color.WHITE).forGetter(EnergyBarConfiguration::color),
+                    PalladiumCodecs.COLOR_CODEC.optionalFieldOf("color", Color.WHITE).forGetter(EnergyBarConfiguration::color),
                     EntityDependentNumber.CODEC.optionalFieldOf("synced_value").forGetter(c -> Optional.ofNullable(c.syncedValue)),
                     EntityDependentNumber.CODEC.fieldOf("max").forGetter(EnergyBarConfiguration::maxValue),
                     Codec.INT.optionalFieldOf("auto_increase_per_tick", 0).forGetter(EnergyBarConfiguration::autoIncrease),

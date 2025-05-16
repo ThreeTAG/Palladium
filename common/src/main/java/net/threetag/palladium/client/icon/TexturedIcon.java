@@ -13,7 +13,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.data.DataContext;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.awt.*;
 
@@ -22,12 +22,12 @@ public class TexturedIcon implements Icon {
     public static final MapCodec<TexturedIcon> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance
             .group(
                     TextureReference.CODEC.fieldOf("texture").forGetter(TexturedIcon::getTexture),
-                    CodecExtras.COLOR_CODEC.optionalFieldOf("texture", Color.WHITE).forGetter(TexturedIcon::getTint)
+                    PalladiumCodecs.COLOR_CODEC.optionalFieldOf("texture", Color.WHITE).forGetter(TexturedIcon::getTint)
             )
             .apply(instance, TexturedIcon::new));
     public static final StreamCodec<RegistryFriendlyByteBuf, TexturedIcon> STREAM_CODEC = StreamCodec.composite(
             TextureReference.STREAM_CODEC, icon -> icon.texture,
-            CodecExtras.COLOR_STREAM_CODEC, icon -> icon.tint,
+            PalladiumCodecs.COLOR_STREAM_CODEC, icon -> icon.tint,
             TexturedIcon::new
     );
 

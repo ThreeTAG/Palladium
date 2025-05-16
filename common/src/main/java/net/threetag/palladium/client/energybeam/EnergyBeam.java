@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.entity.BodyPart;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import net.threetag.palladium.util.PerspectiveValue;
 import org.joml.Vector3f;
 
@@ -22,9 +22,9 @@ public class EnergyBeam {
 
     public static final Codec<EnergyBeam> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BodyPart.CODEC.fieldOf("body_part").forGetter(beam -> beam.anchor),
-            PerspectiveValue.codec(CodecExtras.VOXEL_VECTOR_3F).optionalFieldOf("offset", new PerspectiveValue<>(new Vector3f())).forGetter(beam -> beam.offset),
+            PerspectiveValue.codec(PalladiumCodecs.VOXEL_VECTOR_3F).optionalFieldOf("offset", new PerspectiveValue<>(new Vector3f())).forGetter(beam -> beam.offset),
             EnergyBeamRenderer.CODEC.fieldOf("renderer").forGetter(beam -> beam.renderer),
-            CodecExtras.listOrPrimitive(EnergyBeamParticle.CODEC).optionalFieldOf("particles", Collections.emptyList()).forGetter(beam -> beam.particles)
+            PalladiumCodecs.listOrPrimitive(EnergyBeamParticle.CODEC).optionalFieldOf("particles", Collections.emptyList()).forGetter(beam -> beam.particles)
     ).apply(instance, EnergyBeam::new));
 
     private final BodyPart anchor;

@@ -15,7 +15,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import net.threetag.palladium.util.RenderUtil;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
@@ -28,7 +28,7 @@ public record LaserRenderer(net.threetag.palladium.client.renderer.LaserRenderer
                             int bloom, Vector2f size, boolean normalTransparency, float rotation,
                             float rotationSpeed) {
 
-    public static final Codec<Vector2f> SIZE_CODEC = Codec.either(CodecExtras.VOXEL_VECTOR_2F, CodecExtras.NON_NEGATIVE_VOXEL_FLOAT).xmap(
+    public static final Codec<Vector2f> SIZE_CODEC = Codec.either(PalladiumCodecs.VOXEL_VECTOR_2F, PalladiumCodecs.NON_NEGATIVE_VOXEL_FLOAT).xmap(
             either -> either.map(vector2f -> vector2f, aFloat -> new Vector2f(aFloat, aFloat)),
             vector2f -> vector2f.x == vector2f.y ? Either.right(vector2f.x) : Either.left(vector2f));
 
@@ -129,13 +129,13 @@ public record LaserRenderer(net.threetag.palladium.client.renderer.LaserRenderer
         public static final LaserPart DEFAULT = new LaserPart(Color.WHITE, 1F, 0F, null);
 
         private static final Codec<LaserPart> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                CodecExtras.COLOR_CODEC.optionalFieldOf("color", Color.WHITE).forGetter(LaserPart::color),
+                PalladiumCodecs.COLOR_CODEC.optionalFieldOf("color", Color.WHITE).forGetter(LaserPart::color),
                 ExtraCodecs.floatRange(0F, 1F).optionalFieldOf("opacity", 1F).forGetter(LaserPart::opacity),
-                CodecExtras.FLOAT_OR_BOOLEAN_CODEC.optionalFieldOf("rainbow", 0F).forGetter(LaserPart::rainbow),
+                PalladiumCodecs.FLOAT_OR_BOOLEAN_CODEC.optionalFieldOf("rainbow", 0F).forGetter(LaserPart::rainbow),
                 Pulse.CODEC.optionalFieldOf("pulse").forGetter(p -> Optional.ofNullable(p.pulse()))
         ).apply(instance, (color, opacity, rainbow, pulse) -> new LaserPart(color, opacity, rainbow, pulse.orElse(null))));
 
-        public static final Codec<LaserPart> CODEC = Codec.either(CodecExtras.COLOR_CODEC, DIRECT_CODEC).xmap(colorLaserPartEither ->
+        public static final Codec<LaserPart> CODEC = Codec.either(PalladiumCodecs.COLOR_CODEC, DIRECT_CODEC).xmap(colorLaserPartEither ->
                         colorLaserPartEither.map(color1 -> new LaserPart(color1, 1F, 0F, null), laserPart -> laserPart),
                 laserPart -> laserPart.opacity == 1F && laserPart.rainbow == 0F && laserPart.pulse == null ?
                         Either.left(laserPart.color()) :

@@ -3,15 +3,15 @@ package net.threetag.palladium.power.ability;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import net.threetag.palladium.util.Easing;
 
 public record AnimationTimerSetting(int min, int max, Easing easing) {
 
     private static final Codec<AnimationTimerSetting> DIRECT_CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    CodecExtras.TIME.optionalFieldOf("min", 0).forGetter(AnimationTimerSetting::min),
-                    CodecExtras.TIME.fieldOf("max").forGetter(AnimationTimerSetting::max),
+                    PalladiumCodecs.TIME.optionalFieldOf("min", 0).forGetter(AnimationTimerSetting::min),
+                    PalladiumCodecs.TIME.fieldOf("max").forGetter(AnimationTimerSetting::max),
                     Easing.CODEC.optionalFieldOf("easing", Easing.LINEAR).forGetter(AnimationTimerSetting::easing)
             ).apply(instance, AnimationTimerSetting::new));
 

@@ -31,7 +31,7 @@ import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.entity.effect.EnergyBeamEffect;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import net.threetag.palladium.util.EntityUtil;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public class EnergyBeamAbility extends Ability {
                     ResourceLocation.CODEC.fieldOf("energy_beam").forGetter(ab -> ab.beamId),
                     Codec.floatRange(0, Float.MAX_VALUE).optionalFieldOf("damage", 0F).forGetter(ab -> ab.damage),
                     Codec.floatRange(0, Float.MAX_VALUE).optionalFieldOf("max_distance", 30F).forGetter(ab -> ab.maxDistance),
-                    CodecExtras.TIME.optionalFieldOf("set_on_fire_ticks", 0).forGetter(ab -> ab.setOnFireSeconds),
+                    PalladiumCodecs.TIME.optionalFieldOf("set_on_fire_ticks", 0).forGetter(ab -> ab.setOnFireSeconds),
                     Codec.BOOL.optionalFieldOf("cause_fire", false).forGetter(ab -> ab.causeFire),
                     Codec.BOOL.optionalFieldOf("smelt_blocks", false).forGetter(ab -> ab.smeltBlocks),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()

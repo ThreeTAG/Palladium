@@ -8,13 +8,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.entity.PlayerSlot;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 public record ItemInSlotCondition(Ingredient ingredient, PlayerSlot slot) implements Condition {
 
     public static final MapCodec<ItemInSlotCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
-                    CodecExtras.INGREDIENT_CODEC.fieldOf("item").forGetter(ItemInSlotCondition::ingredient),
+                    PalladiumCodecs.INGREDIENT_CODEC.fieldOf("item").forGetter(ItemInSlotCondition::ingredient),
                     PlayerSlot.CODEC.fieldOf("slot").forGetter(ItemInSlotCondition::slot)
             ).apply(instance, ItemInSlotCondition::new)
     );

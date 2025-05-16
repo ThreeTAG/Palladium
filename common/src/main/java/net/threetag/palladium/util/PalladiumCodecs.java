@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-public class CodecExtras {
+public class PalladiumCodecs {
 
     public static final Codec<Float> FLOAT_OR_BOOLEAN_CODEC = Codec.either(Codec.FLOAT, Codec.BOOL).xmap(
             either -> either.map(
@@ -66,7 +66,7 @@ public class CodecExtras {
 
     public static final Codec<Integer> TIME = Codec.withAlternative(
             ExtraCodecs.NON_NEGATIVE_INT,
-            Codec.STRING.comapFlatMap(CodecExtras::readTime, String::valueOf).stable()
+            Codec.STRING.comapFlatMap(PalladiumCodecs::readTime, String::valueOf).stable()
     );
 
     public static <T> Codec<List<T>> listOrPrimitive(Codec<T> codec) {

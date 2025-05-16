@@ -9,15 +9,15 @@ import net.minecraft.resources.ResourceKey;
 
 import java.util.List;
 
-public class AdvancedHolderSet<T> {
+public class MixedHolderSet<T> {
 
-    public static <T> Codec<AdvancedHolderSet<T>> codec(ResourceKey<? extends Registry<T>> registryKey) {
-        return CodecExtras.listOrPrimitive(RegistryCodecs.homogeneousList(registryKey)).xmap(AdvancedHolderSet::new, holderSet -> holderSet.holderSets);
+    public static <T> Codec<MixedHolderSet<T>> codec(ResourceKey<? extends Registry<T>> registryKey) {
+        return PalladiumCodecs.listOrPrimitive(RegistryCodecs.homogeneousList(registryKey)).xmap(MixedHolderSet::new, holderSet -> holderSet.holderSets);
     }
 
     private final List<HolderSet<T>> holderSets;
 
-    private AdvancedHolderSet(List<HolderSet<T>> holderSets) {
+    private MixedHolderSet(List<HolderSet<T>> holderSets) {
         this.holderSets = holderSets;
     }
 

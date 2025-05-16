@@ -11,7 +11,7 @@ import net.threetag.palladium.client.texture.transformer.TransformedTexture;
 import net.threetag.palladium.client.variable.PathVariable;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +22,7 @@ public class ConfiguredTexture extends DynamicTexture {
     public static final MapCodec<ConfiguredTexture> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.STRING.fieldOf("base").forGetter(t -> t.base),
             Codec.unboundedMap(Codec.STRING, PathVariable.CODEC).optionalFieldOf("variables", Collections.emptyMap()).forGetter(t -> t.variables),
-            CodecExtras.listOrPrimitive(TextureTransformer.CODEC).optionalFieldOf("transformers", Collections.emptyList()).forGetter(t -> t.transformers)
+            PalladiumCodecs.listOrPrimitive(TextureTransformer.CODEC).optionalFieldOf("transformers", Collections.emptyList()).forGetter(t -> t.transformers)
     ).apply(instance, ConfiguredTexture::new));
 
     private final String base;

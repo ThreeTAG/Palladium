@@ -28,7 +28,7 @@ import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.entity.SkinTypedValue;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
@@ -51,7 +51,7 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
             SkinTypedValue.codec(PackRenderLayerTexture.CODEC).fieldOf("texture").forGetter(l -> l.texture),
             SkinTypedValue.codec(TextureReference.CODEC).fieldOf("model").forGetter(l -> l.model),
             SkinTypedValue.codec(ResourceLocation.CODEC).optionalFieldOf("animations").forGetter(l -> Optional.ofNullable(l.animations)),
-            CodecExtras.listOrPrimitive(AnimationControllerFactory.CODEC).optionalFieldOf("animation_controller", Collections.emptyList()).forGetter(l -> l.animationController),
+            PalladiumCodecs.listOrPrimitive(AnimationControllerFactory.CODEC).optionalFieldOf("animation_controller", Collections.emptyList()).forGetter(l -> l.animationController),
             ExtraCodecs.intRange(0, 15).optionalFieldOf("light_emission", 0).forGetter(l -> l.lightEmission),
             Codec.unboundedMap(Bone.CODEC, Codec.STRING).optionalFieldOf("bones", DEFAULT_BONES).forGetter(l -> l.bones),
             conditionsCodec()

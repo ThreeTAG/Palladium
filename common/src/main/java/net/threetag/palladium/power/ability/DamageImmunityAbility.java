@@ -10,7 +10,7 @@ import net.minecraft.world.damagesource.DamageType;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
-import net.threetag.palladium.util.AdvancedHolderSet;
+import net.threetag.palladium.util.MixedHolderSet;
 
 import java.util.List;
 
@@ -18,13 +18,13 @@ public class DamageImmunityAbility extends Ability {
 
     public static final MapCodec<DamageImmunityAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    AdvancedHolderSet.codec(Registries.DAMAGE_TYPE).fieldOf("damage_types").forGetter(ab -> ab.damageTypes),
+                    MixedHolderSet.codec(Registries.DAMAGE_TYPE).fieldOf("damage_types").forGetter(ab -> ab.damageTypes),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, DamageImmunityAbility::new));
 
-    public final AdvancedHolderSet<DamageType> damageTypes;
+    public final MixedHolderSet<DamageType> damageTypes;
 
-    public DamageImmunityAbility(AdvancedHolderSet<DamageType> damageTypes, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
+    public DamageImmunityAbility(MixedHolderSet<DamageType> damageTypes, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
         super(properties, conditions, energyBarUsages);
         this.damageTypes = damageTypes;
     }

@@ -8,15 +8,15 @@ import net.minecraft.network.codec.StreamCodec;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilityReference;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 public record AnimationTimerAbilityCondition(AbilityReference ability, int min, int max) implements Condition {
 
     public static final MapCodec<AnimationTimerAbilityCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
                     AbilityReference.CODEC.fieldOf("ability").forGetter(AnimationTimerAbilityCondition::ability),
-                    CodecExtras.TIME.optionalFieldOf("min", Integer.MIN_VALUE).forGetter(AnimationTimerAbilityCondition::min),
-                    CodecExtras.TIME.optionalFieldOf("max", Integer.MAX_VALUE).forGetter(AnimationTimerAbilityCondition::max)
+                    PalladiumCodecs.TIME.optionalFieldOf("min", Integer.MIN_VALUE).forGetter(AnimationTimerAbilityCondition::min),
+                    PalladiumCodecs.TIME.optionalFieldOf("max", Integer.MAX_VALUE).forGetter(AnimationTimerAbilityCondition::max)
             ).apply(instance, AnimationTimerAbilityCondition::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, AnimationTimerAbilityCondition> STREAM_CODEC = StreamCodec.composite(

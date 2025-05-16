@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.entity.PlayerSlot;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class RestrictSlotsAbility extends Ability {
 
     public static final MapCodec<RestrictSlotsAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    CodecExtras.listOrPrimitive(PlayerSlot.CODEC).fieldOf("slots").forGetter(ab -> ab.slots),
+                    PalladiumCodecs.listOrPrimitive(PlayerSlot.CODEC).fieldOf("slots").forGetter(ab -> ab.slots),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, RestrictSlotsAbility::new));
 

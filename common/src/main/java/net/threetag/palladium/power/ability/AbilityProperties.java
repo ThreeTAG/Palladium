@@ -10,7 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec2;
 import net.threetag.palladium.client.icon.Icon;
 import net.threetag.palladium.client.icon.ItemIcon;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -29,9 +29,9 @@ public class AbilityProperties {
             Codec.BOOL.optionalFieldOf("hidden_in_gui", false).forGetter(AbilityProperties::isHiddenInGUI),
             Codec.BOOL.optionalFieldOf("hidden_in_bar", false).forGetter(AbilityProperties::isHiddenInBar),
             Codec.intRange(-1, Integer.MAX_VALUE).optionalFieldOf("list_index", -1).forGetter(AbilityProperties::getListIndex),
-            CodecExtras.VEC2_CODEC.optionalFieldOf("gui_position").forGetter(p -> Optional.ofNullable(p.guiPosition)),
+            PalladiumCodecs.VEC2_CODEC.optionalFieldOf("gui_position").forGetter(p -> Optional.ofNullable(p.guiPosition)),
             AnimationTimerSetting.CODEC.optionalFieldOf("animation_timer").forGetter(p -> Optional.ofNullable(p.animationTimerSetting)),
-            CodecExtras.listOrPrimitive(ResourceLocation.CODEC).optionalFieldOf("render_layer", Collections.emptyList()).forGetter(p -> p.renderLayers)
+            PalladiumCodecs.listOrPrimitive(ResourceLocation.CODEC).optionalFieldOf("render_layer", Collections.emptyList()).forGetter(p -> p.renderLayers)
     ).apply(instance, (title, icon, desc, color, hiddenGui, hiddenBar, listIndex, guiPos, timer, renderLayers) ->
             new AbilityProperties(title.orElse(null), icon, desc.orElse(null), color, hiddenGui, hiddenBar, listIndex, guiPos.orElse(null), timer.orElse(null), renderLayers)));
 

@@ -6,7 +6,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.entity.PlayerSlot;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import net.threetag.palladium.util.Utils;
 
 import java.util.*;
@@ -15,7 +15,7 @@ public record SlotDependentIdComponent(Map<PlayerSlot, List<ResourceLocation>> e
 
     public static final Codec<SlotDependentIdComponent> CODEC = Codec.unboundedMap(
             PlayerSlot.CODEC,
-            CodecExtras.listOrPrimitive(ResourceLocation.CODEC)
+            PalladiumCodecs.listOrPrimitive(ResourceLocation.CODEC)
     ).xmap(SlotDependentIdComponent::new, SlotDependentIdComponent::entries);
     public static final StreamCodec<FriendlyByteBuf, SlotDependentIdComponent> STREAM_CODEC = ByteBufCodecs.map(
             Utils::newMap,

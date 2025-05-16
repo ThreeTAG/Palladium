@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.threetag.palladium.client.icon.IngredientIcon;
 import net.threetag.palladium.condition.Condition;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import net.threetag.palladium.util.Utils;
 
 import java.util.Collections;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ItemBuyableUnlockingHandler extends BuyableUnlockingHandler {
 
     public static final MapCodec<ItemBuyableUnlockingHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            CodecExtras.INGREDIENT_CODEC.fieldOf("ingredient").forGetter(h -> h.ingredient),
+            PalladiumCodecs.INGREDIENT_CODEC.fieldOf("ingredient").forGetter(h -> h.ingredient),
             ExtraCodecs.POSITIVE_INT.optionalFieldOf("amount", 1).forGetter(h -> h.amount),
             Condition.LIST_CODEC.optionalFieldOf("conditions", Collections.emptyList()).forGetter(h -> h.conditions)
     ).apply(instance, ItemBuyableUnlockingHandler::new));

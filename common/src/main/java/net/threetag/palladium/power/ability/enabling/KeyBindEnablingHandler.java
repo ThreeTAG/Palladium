@@ -17,7 +17,7 @@ import net.threetag.palladium.network.AbilityKeyChangePacket;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.keybind.AbilityKeyBind;
 import net.threetag.palladium.power.ability.keybind.KeyBindType;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.IntFunction;
@@ -27,7 +27,7 @@ public class KeyBindEnablingHandler extends EnablingHandler {
     public static final MapCodec<KeyBindEnablingHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             KeyBindType.CODEC.optionalFieldOf("key_bind", AbilityKeyBind.INSTANCE).forGetter(KeyBindEnablingHandler::getKeyBindType),
             Behaviour.CODEC.optionalFieldOf("behaviour", Behaviour.ACTION).forGetter(KeyBindEnablingHandler::getBehaviour),
-            CodecExtras.TIME.optionalFieldOf("cooldown", 0).forGetter(h -> h.cooldown)
+            PalladiumCodecs.TIME.optionalFieldOf("cooldown", 0).forGetter(h -> h.cooldown)
     ).apply(instance, KeyBindEnablingHandler::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, KeyBindEnablingHandler> STREAM_CODEC = StreamCodec.composite(

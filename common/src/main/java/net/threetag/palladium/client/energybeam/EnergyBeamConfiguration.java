@@ -6,13 +6,13 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.List;
 
 public class EnergyBeamConfiguration {
 
-    public static final Codec<EnergyBeamConfiguration> CODEC = CodecExtras.listOrPrimitive(EnergyBeam.CODEC).xmap(EnergyBeamConfiguration::new, e -> e.beams);
+    public static final Codec<EnergyBeamConfiguration> CODEC = PalladiumCodecs.listOrPrimitive(EnergyBeam.CODEC).xmap(EnergyBeamConfiguration::new, e -> e.beams);
 
     private final List<EnergyBeam> beams;
 

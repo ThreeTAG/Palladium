@@ -7,7 +7,7 @@ import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
 import net.threetag.palladium.addonpack.AddonObjectLoader;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +19,7 @@ public class ItemPropertiesCodec {
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static final Codec<Item.Properties> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             DataComponentMap.CODEC.optionalFieldOf("components", DataComponentMap.EMPTY).forGetter(p -> p.components.build()),
-            CodecExtras.listOrPrimitive(TabPlacement.CODEC).optionalFieldOf("tab", Collections.emptyList()).forGetter(p -> p instanceof ExtendedProperties ext ? ext.getTabs() : Collections.emptyList())
+            PalladiumCodecs.listOrPrimitive(TabPlacement.CODEC).optionalFieldOf("tab", Collections.emptyList()).forGetter(p -> p instanceof ExtendedProperties ext ? ext.getTabs() : Collections.emptyList())
     ).apply(instance, (components, tabs) -> {
         var properties = new ExtendedProperties();
 

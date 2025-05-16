@@ -8,7 +8,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ExtraCodecs;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -151,8 +151,8 @@ public record BedrockModel(List<Geometry> geometries) {
         public static final Codec<Bone> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.fieldOf("name").forGetter(Bone::name),
                 Codec.STRING.optionalFieldOf("parent").forGetter(b -> Optional.ofNullable(b.parent())),
-                CodecExtras.VECTOR_3F_CODEC.optionalFieldOf("pivot", new Vector3f(0, 0, 0)).forGetter(Bone::pivot),
-                CodecExtras.VECTOR_3F_CODEC.optionalFieldOf("rotation", new Vector3f(0, 0, 0)).forGetter(Bone::rotation),
+                PalladiumCodecs.VECTOR_3F_CODEC.optionalFieldOf("pivot", new Vector3f(0, 0, 0)).forGetter(Bone::pivot),
+                PalladiumCodecs.VECTOR_3F_CODEC.optionalFieldOf("rotation", new Vector3f(0, 0, 0)).forGetter(Bone::rotation),
                 Cube.CODEC.listOf().optionalFieldOf("cubes", Collections.emptyList()).forGetter(Bone::cubes)
         ).apply(instance, (name, parent, pivot, rot, cubes) -> new Bone(name, parent.orElse(null), pivot, rot, cubes)));
 
@@ -163,8 +163,8 @@ public record BedrockModel(List<Geometry> geometries) {
         public static final Codec<UV> UV_CODEC = Codec.either(BoxUV.CODEC, PerFaceUV.CODEC).xmap(either -> either.map(uv -> uv, uv -> uv), uv -> uv instanceof BoxUV ? Either.left((BoxUV) uv) : Either.right((PerFaceUV) uv));
 
         public static final Codec<Cube> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                CodecExtras.VECTOR_3F_CODEC.fieldOf("origin").forGetter(Cube::origin),
-                CodecExtras.VECTOR_3F_CODEC.fieldOf("size").forGetter(Cube::size),
+                PalladiumCodecs.VECTOR_3F_CODEC.fieldOf("origin").forGetter(Cube::origin),
+                PalladiumCodecs.VECTOR_3F_CODEC.fieldOf("size").forGetter(Cube::size),
                 Codec.FLOAT.optionalFieldOf("inflate", 0.0F).forGetter(Cube::inflate),
                 Codec.BOOL.optionalFieldOf("mirror", false).forGetter(Cube::mirror),
                 UV_CODEC.fieldOf("uv").forGetter(Cube::uv)

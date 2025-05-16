@@ -12,7 +12,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +22,7 @@ public class FluidWalkingAbility extends Ability {
 
     public static final MapCodec<FluidWalkingAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    CodecExtras.listOrPrimitive(TagKey.hashedCodec(Registries.FLUID)).optionalFieldOf("fluid_tag", Collections.singletonList(FluidTags.WATER)).forGetter(ab -> ab.fluidTags),
+                    PalladiumCodecs.listOrPrimitive(TagKey.hashedCodec(Registries.FLUID)).optionalFieldOf("fluid_tag", Collections.singletonList(FluidTags.WATER)).forGetter(ab -> ab.fluidTags),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, FluidWalkingAbility::new));
 

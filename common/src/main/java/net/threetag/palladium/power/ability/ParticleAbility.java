@@ -21,7 +21,7 @@ import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class ParticleAbility extends Ability {
 
     public static final MapCodec<ParticleAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    CodecExtras.listOrPrimitive(ResourceLocation.CODEC).fieldOf("emitter").forGetter(ab -> ab.particleEmitterIds),
+                    PalladiumCodecs.listOrPrimitive(ResourceLocation.CODEC).fieldOf("emitter").forGetter(ab -> ab.particleEmitterIds),
                     BuiltInRegistries.PARTICLE_TYPE.holderByNameCodec().fieldOf("particle_type").forGetter(ab -> ab.particleTypeHolder),
                     CompoundTag.CODEC.optionalFieldOf("options", new CompoundTag()).forGetter(ab -> ab.options),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()

@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.LaserRenderer;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import net.threetag.palladium.util.EntityScaleUtil;
 import org.joml.Vector2f;
 
@@ -24,7 +24,7 @@ public class LightningBeamRenderer extends EnergyBeamRenderer {
             LaserRenderer.codec(1).fieldOf("render_settings").forGetter(beam -> beam.laserRenderer),
             ExtraCodecs.POSITIVE_INT.optionalFieldOf("segments", 5).forGetter(beam -> beam.segments),
             ExtraCodecs.POSITIVE_INT.optionalFieldOf("frequency", 2).forGetter(beam -> beam.frequency),
-            CodecExtras.NON_NEGATIVE_VOXEL_FLOAT.optionalFieldOf("spread", 5F).forGetter(beam -> beam.spread)
+            PalladiumCodecs.NON_NEGATIVE_VOXEL_FLOAT.optionalFieldOf("spread", 5F).forGetter(beam -> beam.spread)
     ).apply(instance, LightningBeamRenderer::new));
 
     private final LaserRenderer laserRenderer;

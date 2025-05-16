@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.ExtraCodecs;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 import software.bernie.geckolib.animation.Animation;
 import software.bernie.geckolib.animation.RawAnimation;
 
@@ -26,7 +26,7 @@ public class RawAnimationCodec {
         return animation;
     }, rawAnimation -> rawAnimation.getAnimationStages().getFirst().animationName());
 
-    public static final Codec<RawAnimation> DIRECT_CODEC = CodecExtras.listOrPrimitive(STAGE_CODEC).xmap(stages -> {
+    public static final Codec<RawAnimation> DIRECT_CODEC = PalladiumCodecs.listOrPrimitive(STAGE_CODEC).xmap(stages -> {
         var animation = RawAnimation.begin();
         animation.getAnimationStages().addAll(stages);
         return animation;

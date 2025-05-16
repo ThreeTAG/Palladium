@@ -8,7 +8,7 @@ import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
-import net.threetag.palladium.util.CodecExtras;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class RemoveBodyPartAbility extends Ability {
 
     public static final MapCodec<RemoveBodyPartAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    CodecExtras.listOrPrimitive(BodyPart.CODEC).fieldOf("body_parts").forGetter(ab -> ab.bodyParts),
+                    PalladiumCodecs.listOrPrimitive(BodyPart.CODEC).fieldOf("body_parts").forGetter(ab -> ab.bodyParts),
                     Codec.BOOL.optionalFieldOf("affects_first_person", true).forGetter(ab -> ab.affectsFirstPerson),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, RemoveBodyPartAbility::new));
