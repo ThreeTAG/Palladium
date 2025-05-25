@@ -38,6 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PowersScreen extends Screen {
 
+    public static RenderCallback POST_RENDER_CALLBACK = null;
     public static final ResourceLocation WINDOW = new ResourceLocation(Palladium.MOD_ID, "textures/gui/powers/window.png");
     public static final ResourceLocation TABS = new ResourceLocation(Palladium.MOD_ID, "textures/gui/powers/tabs.png");
     public static final ResourceLocation WIDGETS = new ResourceLocation(Palladium.MOD_ID, "textures/gui/powers/widgets.png");
@@ -199,6 +200,11 @@ public class PowersScreen extends Screen {
             this.selectedTab.fade = Mth.clamp(this.selectedTab.fade + 0.02F, 0, 0.5F);
             guiGraphics.pose().translate(0, 0, -500);
         }
+
+        if (POST_RENDER_CALLBACK != null) {
+            var powerId = this.selectedTab != null ? this.selectedTab.powerHolder.getPower().getId() : null;
+            POST_RENDER_CALLBACK.postRender(this, guiGraphics, mouseX, mouseY, partialTick, powerId);
+        }
     }
 
     @Override
@@ -328,6 +334,13 @@ public class PowersScreen extends Screen {
             }
             return null;
         }
+    }
+
+    @FunctionalInterface
+    public interface RenderCallback {
+
+        void postRender(PowersScreen screen, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, ResourceLocation tab);
+
     }
 
 }
