@@ -9,6 +9,7 @@ import net.threetag.palladium.client.screen.AbilityWheelRenderer;
 import net.threetag.palladium.network.AbilityKeyPressedMessage;
 import net.threetag.palladium.network.NotifyMovementKeyListenerMessage;
 import net.threetag.palladium.network.ToggleOpenableEquipmentMessage;
+import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilityUtil;
@@ -105,6 +106,10 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
     @Override
     public EventResult mouseScrolling(Minecraft client, double scrollDelta, boolean leftDown, boolean middleDown, boolean rightDown, double mouseX, double mouseY) {
         var player = Objects.requireNonNull(client.player);
+
+        if (AbilityUtil.isTypeEnabled(player, Abilities.DISABLE_HOTBAR_SCROLL.get())) {
+            return EventResult.cancel();
+        }
 
         // Disable active toggle abilities
         List<AbilityInstance> activeToggles = AbilityUtil.getInstances(player).stream()
