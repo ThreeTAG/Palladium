@@ -3,10 +3,13 @@ package net.threetag.palladium.core.registry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -46,6 +49,15 @@ public abstract class DeferredRegister<T> implements Iterable<RegistryHolder<T>>
     public abstract <R extends T> RegistryHolder<R> register(String id, Supplier<R> supplier);
 
     /**
+     * Adds a new function to the list of entries to be registered depending on the ID, and returns a {@link RegistryHolder} that will be populated with the created entry automatically.
+     *
+     * @param id       ID for the given registered object
+     * @param function Function that returns the object to be registered
+     * @return A {@link RegistryHolder} that will contain the registered object
+     */
+    public abstract <R extends T> RegistryHolder<R> register(String id, Function<ResourceLocation, R> function);
+
+    /**
      * @return Unmodifiable list of all registered objects
      */
     public abstract Collection<RegistryHolder<T>> getEntries();
@@ -73,6 +85,11 @@ public abstract class DeferredRegister<T> implements Iterable<RegistryHolder<T>>
         throw new AssertionError();
     }
 
+    @ExpectPlatform
+    public static Items createItems(String modId) {
+        throw new AssertionError();
+    }
+
     /**
      * Creates a new instance of a {@link DeferredRegister} with the given {@link RegistryBuilder}
      *
@@ -83,6 +100,12 @@ public abstract class DeferredRegister<T> implements Iterable<RegistryHolder<T>>
      */
     public static <T> DeferredRegister<T> create(String modId, Registry<T> registry) {
         return create(modId, registry.key());
+    }
+
+    public static abstract class Items extends DeferredRegister<Item> {
+
+        public abstract <I extends Item> RegistryHolder<I> registerItem(String id, Function<Item.Properties, I> function);
+
     }
 
 }

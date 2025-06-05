@@ -16,18 +16,25 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.client.PoseStackTransformation;
 import net.threetag.palladium.client.gui.component.grid.AbstractSelectionGrid;
-
-import java.util.Objects;
+import net.threetag.palladium.entity.SuitStand;
 
 public class AccessoryGrid extends AbstractSelectionGrid<AccessoryGrid.Entry> {
 
     private final AccessorySlot slot;
     private final PoseStackTransformation preview;
+    private final SuitStand suitStandPreview;
 
     public AccessoryGrid(ScreenRectangle rectangle, AccessorySlot slot, Minecraft minecraft) {
         super(minecraft, rectangle.left(), rectangle.top(), rectangle.width(), rectangle.height(), 50, 50, 4);
         this.slot = slot;
         this.preview = slot.preview().invertYRot();
+        this.suitStandPreview = new SuitStand(this.minecraft.level, 0.0, 0.0, 0.0);
+        this.suitStandPreview.setNoBasePlate(true);
+        this.suitStandPreview.setShowArms(true);
+        this.suitStandPreview.yBodyRot = 0F;
+        this.suitStandPreview.setXRot(0F);
+        this.suitStandPreview.yHeadRot = this.suitStandPreview.getYRot();
+        this.suitStandPreview.yHeadRotO = this.suitStandPreview.getYRot();
 
         this.addEntry(new Entry(EquipmentSlot.HEAD, Items.LEATHER_HELMET));
         this.addEntry(new Entry(EquipmentSlot.HEAD, Items.IRON_HELMET));
@@ -90,13 +97,13 @@ public class AccessoryGrid extends AbstractSelectionGrid<AccessoryGrid.Entry> {
                     0xFFFFFFFF
             );
 
-            var player = Minecraft.getInstance().player;
-            var originalItem = Objects.requireNonNull(player).getItemBySlot(this.slot);
-            player.setItemSlot(this.slot, this.item.getDefaultInstance());
+            var suitStand = AccessoryGrid.this.suitStandPreview;
+            var originalItem = suitStand.getItemBySlot(this.slot);
+            suitStand.setItemSlot(this.slot, this.item.getDefaultInstance());
             guiGraphics.enableScissor(left, top, left + width, top + height);
-            AccessoryScreen.renderEntityInInventory(guiGraphics, left + width / 2F, top + height  / 2F, 20, AccessoryGrid.this.preview, Minecraft.getInstance().player);
+            AccessoryScreen.renderEntityInInventory(guiGraphics, left + width / 2F, top + height / 2F, 20, AccessoryGrid.this.preview, suitStand);
             guiGraphics.disableScissor();
-            player.setItemSlot(this.slot, originalItem);
+            suitStand.setItemSlot(this.slot, originalItem);
         }
 
         @Override

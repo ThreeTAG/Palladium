@@ -13,6 +13,7 @@ import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.accessory.AccessoryScreen;
 import net.threetag.palladium.client.gui.screen.power.PowersScreen;
 import net.threetag.palladium.client.model.ModelLayerManager;
+import net.threetag.palladium.client.model.PalladiumModelLayers;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.client.renderer.WatcherRenderer;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerManager;
@@ -42,6 +43,7 @@ public class PalladiumClient {
 
         // Entity Renderers
         PalladiumEntityTypes.initRenderers();
+        PalladiumModelLayers.init();
 
         // Overlay Renderer
         GuiLayerRegistry.register(Palladium.id("ability_bar"), AbilityBar.INSTANCE);

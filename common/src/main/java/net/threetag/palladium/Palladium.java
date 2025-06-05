@@ -20,6 +20,7 @@ import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.entity.effect.EntityEffects;
 import net.threetag.palladium.entity.number.EntityDependentNumberTypes;
 import net.threetag.palladium.item.ItemTypes;
+import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.item.TabPlacement;
 import net.threetag.palladium.network.DataSyncUtil;
 import net.threetag.palladium.network.PalladiumNetwork;
@@ -45,6 +46,7 @@ public final class Palladium {
         PalladiumRegistries.init();
         ItemTypes.init();
 
+        PalladiumItems.ITEMS.register();
         PalladiumEntityDataTypes.DATA_TYPES.register();
         PalladiumEntityTypes.ENTITIES.register();
         EntityEffects.EFFECTS.register();
@@ -62,6 +64,7 @@ public final class Palladium {
         PalladiumNetwork.init();
         PowerEventHandler.init();
         AbilityEventHandler.init();
+        PalladiumItems.init();
         PalladiumEntityTypes.init();
         PalladiumEntityData.registerEvents();
         LifecycleEvent.SETUP.register(TabPlacement::loadTabs);

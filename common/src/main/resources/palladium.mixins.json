@@ -19,6 +19,7 @@
     "client.SkyRendererMixin"
   ],
   "mixins": [
+    "ArmorStandMixin",
     "BlockBehaviourMixin",
     "BlockStateBaseMixin",
     "EntityMixin",

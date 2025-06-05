@@ -12,19 +12,17 @@ loom {
             if (System.getenv('MC_USERNAME') && System.getenv('MC_UUID') && System.getenv('MC_ACCESS_TOKEN')) {
                 programArgs '--username', System.getenv('MC_USERNAME'), '--uuid', System.getenv('MC_UUID'), '--accessToken', System.getenv('MC_ACCESS_TOKEN')
             }
-        } else if (name == "server")
+        } else if (name == "server") {
             runDir = "../run/server-fabric"
-    }
-
-    runs {
-        datagen {
-            inherit server
-            name "Data Generation"
-            vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${project(':common').file("src/generated/resources")}"
-            vmArg "-Dfabric-api.datagen.modid=palladium"
-            runDir "build/datagen"
         }
+    }
+}
+
+fabricApi {
+    configureDataGeneration {
+        client = true
+        outputDirectory = project(':common').file("src/generated")
+        modId = 'palladium'
     }
 }
 

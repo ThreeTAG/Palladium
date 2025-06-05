@@ -5,9 +5,11 @@ import com.mojang.datafixers.util.Either;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderOwner;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.threetag.palladium.core.registry.DeferredRegister;
 import net.threetag.palladium.core.registry.RegistryHolder;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -28,28 +31,41 @@ public class DeferredRegisterImpl {
         return new Impl<>(modid, resourceKey);
     }
 
+    public static DeferredRegister.Items createItems(String modId) {
+        return new ItemsImpl(modId);
+    }
+
     public static class Impl<T> extends DeferredRegister<T> {
 
-        private final String modid;
+        public final String modId;
         private final net.neoforged.neoforge.registries.DeferredRegister<T> register;
         private final List<RegistryHolder<T>> entries;
 
-        public Impl(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
-            this.modid = modid;
-            this.register = net.neoforged.neoforge.registries.DeferredRegister.create(resourceKey, modid);
+        public Impl(String modId, ResourceKey<? extends Registry<T>> resourceKey) {
+            this.modId = modId;
+            this.register = net.neoforged.neoforge.registries.DeferredRegister.create(resourceKey, modId);
             this.entries = new ArrayList<>();
         }
 
         @Override
         public void register() {
-            this.register.register(PalladiumNeoForge.getModEventBus(this.modid).orElseThrow(() -> new IllegalStateException("Mod '" + this.modid + "' did not register event bus to Palladium!")));
+            this.register.register(PalladiumNeoForge.getModEventBus(this.modId).orElseThrow(() -> new IllegalStateException("Mod '" + this.modId + "' did not register event bus to Palladium!")));
         }
 
         @SuppressWarnings("unchecked")
         @Override
         public <R extends T> RegistryHolder<R> register(String id, Supplier<R> supplier) {
-            var orig = this.register.register(id, supplier);
-            var registrySupplier = new RegistryHolderImpl<>(orig);
+            DeferredHolder<T, R> orig = this.register.register(id, supplier);
+            RegistryHolderImpl<T> registrySupplier = new RegistryHolderImpl<>(orig);
+            this.entries.add(registrySupplier);
+            return (RegistryHolder<R>) registrySupplier;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public <R extends T> RegistryHolder<R> register(String id, Function<ResourceLocation, R> function) {
+            DeferredHolder<T, R> orig = this.register.register(id, function);
+            RegistryHolderImpl<T> registrySupplier = new RegistryHolderImpl<>(orig);
             this.entries.add(registrySupplier);
             return (RegistryHolder<R>) registrySupplier;
         }
@@ -58,6 +74,54 @@ public class DeferredRegisterImpl {
         public Collection<RegistryHolder<T>> getEntries() {
             return ImmutableList.copyOf(this.entries);
         }
+    }
+
+    public static class ItemsImpl extends DeferredRegister.Items {
+
+        public final String modId;
+        private final net.neoforged.neoforge.registries.DeferredRegister<Item> register;
+        private final List<RegistryHolder<Item>> entries;
+
+        public ItemsImpl(String modId) {
+            this.modId = modId;
+            this.register = net.neoforged.neoforge.registries.DeferredRegister.create(Registries.ITEM, modId);
+            this.entries = new ArrayList<>();
+        }
+
+        @Override
+        public void register() {
+            this.register.register(PalladiumNeoForge.getModEventBus(this.modId).orElseThrow(() -> new IllegalStateException("Mod '" + this.modId + "' did not register event bus to Palladium!")));
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public <R extends Item> RegistryHolder<R> register(String id, Supplier<R> supplier) {
+            DeferredHolder<Item, R> orig = this.register.register(id, supplier);
+            RegistryHolderImpl<Item> registrySupplier = new RegistryHolderImpl<Item>(orig);
+            this.entries.add(registrySupplier);
+            return (RegistryHolder<R>) registrySupplier;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public <R extends Item> RegistryHolder<R> register(String id, Function<ResourceLocation, R> function) {
+            DeferredHolder<Item, R> orig = this.register.register(id, function);
+            RegistryHolderImpl<Item> registrySupplier = new RegistryHolderImpl<>(orig);
+            this.entries.add(registrySupplier);
+            return (RegistryHolder<R>) registrySupplier;
+        }
+
+        @Override
+        public <I extends Item> RegistryHolder<I> registerItem(String id, Function<Item.Properties, I> function) {
+            Item.Properties props = new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(this.modId, id)));
+            return this.register(id, () -> function.apply(props));
+        }
+
+        @Override
+        public Collection<RegistryHolder<Item>> getEntries() {
+            return ImmutableList.copyOf(this.entries);
+        }
+
     }
 
     public static class RegistryHolderImpl<T> extends RegistryHolder<T> {

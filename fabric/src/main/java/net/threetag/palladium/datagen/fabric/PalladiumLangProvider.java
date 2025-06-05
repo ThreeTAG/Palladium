@@ -10,6 +10,7 @@ import net.threetag.palladium.client.gui.screen.accessory.AccessoryScreen;
 import net.threetag.palladium.command.DataAttachmentCommand;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
+import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.AbilitySerializers;
 
 import java.util.concurrent.CompletableFuture;
@@ -28,6 +29,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
         @Override
         public void generateTranslations(HolderLookup.Provider provider, TranslationBuilder builder) {
+            // Items
+            builder.add(PalladiumItems.SUIT_STAND.get(), "Suit Stand");
+
             // Config
             this.addConfigTitle(builder, "Palladium");
             this.addConfigCategory(builder, PalladiumConfig.CATEGORY_CLIENT, "Client");
@@ -129,6 +133,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
         @Override
         public void generateTranslations(HolderLookup.Provider provider, TranslationBuilder builder) {
+            // Items
+            builder.add(PalladiumItems.SUIT_STAND.get(), "Anzugsständer");
+
             // Config
             this.addConfigTitle(builder, "Palladium");
             this.addConfigCategory(builder, PalladiumConfig.CATEGORY_CLIENT, "Client");
@@ -229,6 +236,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
         @Override
         public void generateTranslations(HolderLookup.Provider provider, TranslationBuilder builder) {
+            // Items
+            builder.add(PalladiumItems.SUIT_STAND.get(), "Anzuchsschdändorr");
+
             // Config
             this.addConfigTitle(builder, "Palladium");
             this.addConfigCategory(builder, PalladiumConfig.CATEGORY_CLIENT, "Client");
