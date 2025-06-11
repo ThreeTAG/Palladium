@@ -33,6 +33,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
     public static AbilityKeyMapping[] ABILITY_KEYS = new AbilityKeyMapping[5];
     public static AbilityInstance LEFT_CLICKED_ABILITY = null;
     public static AbilityInstance RIGHT_CLICKED_ABILITY = null;
+    public static AbilityInstance SPACE_BAR_ABILITY = null;
 
     public static void init() {
         KeyMappingRegistry.register(OPEN_EQUIPMENT);
@@ -78,6 +79,31 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
                         }
                     }
                 }
+            }
+
+            // Space Bar
+            if (PalladiumKeyMappings.SPACE_BAR_ABILITY == null && client.options.keyJump.isDown()) {
+                var entry = PalladiumKeyMappings.getPrioritisedKeyedAbility(AbilityConfiguration.KeyType.SPACE_BAR);
+
+                if (entry != null && entry.isUnlocked() && (!entry.getConfiguration().needsEmptyHand() || client.player.getMainHandItem().isEmpty())) {
+                    var pressType = entry.getConfiguration().getKeyPressType();
+
+                    if (pressType == AbilityConfiguration.KeyPressType.ACTION) {
+                        if (!entry.isOnCooldown()) {
+                            new AbilityKeyPressedMessage(entry.getReference(), true).send();
+                            PalladiumKeyMappings.SPACE_BAR_ABILITY = entry;
+                        }
+                    } else if (pressType == AbilityConfiguration.KeyPressType.ACTIVATION) {
+                        if (!entry.isOnCooldown() && !entry.isEnabled()) {
+                            new AbilityKeyPressedMessage(entry.getReference(), true).send();
+                            PalladiumKeyMappings.SPACE_BAR_ABILITY = entry;
+                        }
+                    } else {
+                        new AbilityKeyPressedMessage(entry.getReference(), true).send();
+                        PalladiumKeyMappings.SPACE_BAR_ABILITY = entry;
+                    }
+                }
+
             }
 
             // Sync jump key
@@ -180,6 +206,12 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
             if (RIGHT_CLICKED_ABILITY != null && !minecraft.options.keyUse.isDown()) {
                 new AbilityKeyPressedMessage(RIGHT_CLICKED_ABILITY.getReference(), false).send();
                 RIGHT_CLICKED_ABILITY = null;
+            }
+
+            // Stop space bar ability
+            if (SPACE_BAR_ABILITY != null && !minecraft.options.keyJump.isDown()) {
+                new AbilityKeyPressedMessage(SPACE_BAR_ABILITY.getReference(), false).send();
+                SPACE_BAR_ABILITY = null;
             }
         }
     }
