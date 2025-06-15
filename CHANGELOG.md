@@ -1,7 +1,9 @@
-- Added ability_wheel_hovered & ability_wheel_displayed texture variables
-- Added fallback values to all property variables 
-- Added "disable_center_icon" to ability wheel ability
-- #145 Fixed mermod incompatibility
-- Fixed /ablity lock all response
-- Fix for name change ability
-- Compressed PNGs and decreased jar file size
+- Added palladium property filter for entity glow ability
+- Added disable_hotbar_scroll ability
+- Allowed space bar abilities to be enabled even when not visible in ability bar
+- Added "visibility" field for energy beam renderers
+- New condition: openable item progress (Spyeedy)
+- KJS condition can now add descriptions (Spyeedy)
+- Added renderPowerScreen KJS event
+- Fixed for name change ability
+- Various minor fixes
