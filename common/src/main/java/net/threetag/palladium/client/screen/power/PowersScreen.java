@@ -263,9 +263,9 @@ public class PowersScreen extends Screen {
         if (this.selectedTab != null) {
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate((float) (offsetX + WINDOW_INSIDE_X), (float) (offsetY + WINDOW_INSIDE_Y), 400.0F);
-            RenderSystem.enableDepthTest();
+//            RenderSystem.enableDepthTest();
             this.selectedTab.drawTooltips(guiGraphics, mouseX - offsetX - WINDOW_INSIDE_X, mouseY - offsetY - WINDOW_INSIDE_Y, offsetX, offsetY, partialTick, this.overlayScreen != null);
-            RenderSystem.disableDepthTest();
+//            RenderSystem.disableDepthTest();
             guiGraphics.pose().popPose();
         }
 
