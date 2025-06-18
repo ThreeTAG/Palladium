@@ -64,6 +64,7 @@ transitive-accessible class net/minecraft/client/gui/components/AbstractSelectio
 accessible field net/minecraft/server/ServerScoreboard trackedObjectives Ljava/util/Set;
 
 accessible method net/minecraft/client/renderer/LevelRenderer shouldShowEntityOutlines ()Z
+accessible field net/minecraft/client/renderer/LevelRenderer renderBuffers Lnet/minecraft/client/renderer/RenderBuffers;
 
 accessible field net/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen selectedTab Lnet/minecraft/world/item/CreativeModeTab;
 
