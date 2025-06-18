@@ -31,7 +31,7 @@ public class NameChangeAbility extends Ability {
         if (entity instanceof Player player) {
             if (!entity.level().isClientSide) {
                 try {
-                    entry.setUniqueProperty(NAME_CACHED, ComponentUtils.updateForEntity(player.createCommandSourceStack(), entry.getProperty(NameChangeAbility.NAME), player, 0));
+                    entry.setUniqueProperty(NAME_CACHED, ComponentUtils.updateForEntity(player.createCommandSourceStack().withPermission(2), entry.getProperty(NameChangeAbility.NAME), player, 0));
                 } catch (CommandSyntaxException e) {
                     entry.setUniqueProperty(NAME_CACHED, entry.getProperty(NameChangeAbility.NAME));
                 }
