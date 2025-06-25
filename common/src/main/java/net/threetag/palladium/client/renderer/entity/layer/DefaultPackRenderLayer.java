@@ -84,8 +84,17 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             }
 
             model = this.model.get(entity);
-            model.allParts().forEach(ModelPart::resetPose);
+            for (ModelPart modelPart : model.allParts()) {
+                modelPart.resetPose();
+                modelPart.visible = true;
+                modelPart.skipDraw = false;
+            }
             mimicModelParts(parentModel.root(), model.root());
+        } else {
+            for (ModelPart modelPart : model.allParts()) {
+                modelPart.visible = true;
+                modelPart.skipDraw = false;
+            }
         }
 
         this.animations.animate(model, context);
@@ -109,7 +118,11 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             }
 
             model = this.model.get(entity);
-            model.allParts().forEach(ModelPart::resetPose);
+            for (ModelPart modelPart : model.allParts()) {
+                modelPart.resetPose();
+                modelPart.visible = true;
+                modelPart.skipDraw = false;
+            }
             var partName = arm == HumanoidArm.RIGHT ? "rightArm" : "leftArm";
 
             if (model.root().hasChild(partName)) {
@@ -117,6 +130,9 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                 foundPart.copyFrom(armPart);
                 armPart = foundPart;
             }
+        } else {
+            armPart.visible = true;
+            armPart.skipDraw = false;
         }
 
         this.animations.animate(model, context);
