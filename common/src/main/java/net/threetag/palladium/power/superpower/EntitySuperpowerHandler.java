@@ -27,6 +27,14 @@ public class EntitySuperpowerHandler extends PalladiumEntityData<LivingEntity> {
         super(entity);
     }
 
+    @Override
+    public void copyFrom(PalladiumEntityData<LivingEntity> source) {
+        if (source instanceof EntitySuperpowerHandler old) {
+            this.superpowers.clear();
+            this.superpowers.addAll(old.superpowers);
+        }
+    }
+
     public boolean canBeAdded(Holder<Power> powerHolder) {
         var power = powerHolder.value();
 

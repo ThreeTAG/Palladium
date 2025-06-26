@@ -60,13 +60,13 @@ public final class Palladium {
         PowerProviders.PROVIDERS.register();
         IconSerializers.ICON_SERIALIZERS.register();
 
-        DataSyncUtil.init();
         PalladiumNetwork.init();
         PowerEventHandler.init();
         AbilityEventHandler.init();
         PalladiumItems.init();
         PalladiumEntityTypes.init();
         PalladiumEntityData.registerEvents();
+        DataSyncUtil.init();
         LifecycleEvent.SETUP.register(TabPlacement::loadTabs);
 
         // Commands

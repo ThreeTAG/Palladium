@@ -32,6 +32,13 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity> {
     }
 
     @Override
+    public void copyFrom(PalladiumEntityData<LivingEntity> source) {
+        if (source instanceof EntityPowerHandler old) {
+            this.powerData = old.powerData.copy();
+        }
+    }
+
+    @Override
     public void tick() {
         if (!this.getEntity().level().isClientSide) {
             List<PowerHolder> invalidPowers = new ArrayList<>();

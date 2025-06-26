@@ -1,5 +1,6 @@
 package net.threetag.palladium.entity.data;
 
+import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -39,6 +40,14 @@ public abstract class PalladiumEntityData<T extends Entity> {
         return this.entity.registryAccess();
     }
 
+    public boolean copyOnDeath() {
+        return true;
+    }
+
+    public void copyFrom(PalladiumEntityData<T> source) {
+
+    }
+
     @SuppressWarnings("unchecked")
     public static <T extends PalladiumEntityData<?>> T get(Entity entity, PalladiumEntityDataType<T> type) {
         return (T) ((PalladiumEntityExtension) entity).palladium$getDataMap().get(type);
@@ -49,6 +58,7 @@ public abstract class PalladiumEntityData<T extends Entity> {
         return Optional.ofNullable(data);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static void registerEvents() {
         PalladiumEntityEvents.TICK_POST.register(entity -> {
             for (PalladiumEntityDataType<?> type : entity.registryAccess().lookupOrThrow(PalladiumRegistryKeys.ENTITY_DATA_TYPE)) {
@@ -69,6 +79,20 @@ public abstract class PalladiumEntityData<T extends Entity> {
                         if (data != null) {
                             data.onReload();
                         }
+                    }
+                }
+            }
+        });
+
+        PlayerEvent.PLAYER_CLONE.register((oldPlayer, newPlayer, wonGame) -> {
+            for (PalladiumEntityDataType<?> type : PalladiumRegistries.ENTITY_DATA_TYPE) {
+                PalladiumEntityData oldData = get(oldPlayer, type);
+
+                if (oldData != null && (wonGame || oldData.copyOnDeath())) {
+                    PalladiumEntityData newData = get(newPlayer, type);
+
+                    if (newData != null) {
+                        newData.copyFrom(oldData);
                     }
                 }
             }
