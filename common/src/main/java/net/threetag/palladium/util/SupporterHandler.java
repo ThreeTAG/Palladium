@@ -20,8 +20,8 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.util.Platform;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,7 +63,7 @@ public class SupporterHandler {
             JsonObject json = readJsonFromUrl(BASE_URL + "player/" + uuid.toString());
             PlayerData data = new PlayerData(uuid, GsonHelper.getAsJsonObject(json, "data"));
             DATA.put(uuid, data);
-            Palladium.LOGGER.info("Successfully read user's supporter data! (" + uuid + ")");
+            Palladium.LOGGER.info("Successfully read user's supporter data! ({})", uuid);
 
             if (Platform.getCurrentServer() != null) {
                 Player player = Platform.getCurrentServer().getPlayerList().getPlayer(uuid);
@@ -75,7 +75,9 @@ public class SupporterHandler {
 
             return data;
         } catch (Exception e) {
-            Palladium.LOGGER.error("Was not able to read user's supporter data! (" + uuid.toString() + ")");
+            if (!Platform.isProduction()) {
+                Palladium.LOGGER.warn("Was not able to read user's supporter data! ({})", uuid.toString());
+            }
         }
         PlayerData data = new PlayerData(uuid, new JsonObject());
         DATA.put(uuid, data);
