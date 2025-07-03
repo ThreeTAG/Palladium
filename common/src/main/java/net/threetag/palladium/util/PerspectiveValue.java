@@ -7,6 +7,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.Objects;
 
@@ -44,6 +45,15 @@ public class PerspectiveValue<T> {
     @Environment(EnvType.CLIENT)
     public T get() {
         return this.get(Minecraft.getInstance().options.getCameraType());
+    }
+
+    @Environment(EnvType.CLIENT)
+    public T getForPlayer(Player player) {
+        if (player == Minecraft.getInstance().player) {
+            return this.get();
+        } else {
+            return this.get(false);
+        }
     }
 
     @Override
