@@ -13,8 +13,6 @@ import java.util.List;
 
 public class AimAbility extends Ability {
 
-    // TODO
-
     public static final MapCodec<AimAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     ArmSetting.CODEC.optionalFieldOf("arm", ArmSetting.MAIN_ARM).forGetter(ab -> ab.arm),

@@ -1,11 +1,13 @@
 package net.threetag.palladium.power.ability;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.component.PalladiumDataComponents;
@@ -38,14 +40,16 @@ public class NameChangeAbility extends Ability {
     }
 
     @Override
-    public void registerDataComponents(DataComponentMap.Builder components) {
-        components.set(PalladiumDataComponents.Abilities.NAME_CHANGE_ACTIVE.get(), false);
-    }
-
-    @Override
     public void firstTick(LivingEntity entity, AbilityInstance<?> instance) {
-        if (entity instanceof Player player) {
-            instance.set(PalladiumDataComponents.Abilities.NAME_CHANGE_ACTIVE.get(), true);
+        if (entity instanceof Player player && entity.level() instanceof ServerLevel serverLevel) {
+            if (!entity.level().isClientSide) {
+                try {
+                    instance.set(PalladiumDataComponents.Abilities.NAME_CHANGE_CACHED.get(),
+                            ComponentUtils.updateForEntity(player.createCommandSourceStackForNameResolution(serverLevel).withPermission(2), this.name, player, 0));
+                } catch (CommandSyntaxException e) {
+                    instance.set(PalladiumDataComponents.Abilities.NAME_CHANGE_CACHED.get(), this.name);
+                }
+            }
             PlayerNameChange.refreshDisplayName(player);
         }
     }
@@ -53,7 +57,7 @@ public class NameChangeAbility extends Ability {
     @Override
     public void lastTick(LivingEntity entity, AbilityInstance<?> instance) {
         if (entity instanceof Player player) {
-            instance.set(PalladiumDataComponents.Abilities.NAME_CHANGE_ACTIVE.get(), false);
+            instance.remove(PalladiumDataComponents.Abilities.NAME_CHANGE_CACHED.get());
             PlayerNameChange.refreshDisplayName(player);
         }
     }

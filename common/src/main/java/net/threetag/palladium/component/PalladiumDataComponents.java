@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.component.CustomData;
@@ -83,8 +85,8 @@ public class PalladiumDataComponents {
                 .networkSynchronized(ByteBufCodecs.VECTOR3F.map(Vec3::new, Vec3::toVector3f))
                 .build());
 
-        public static final RegistryHolder<DataComponentType<Boolean>> NAME_CHANGE_ACTIVE = DATA_COMPONENTS.register("name_change_active", () -> DataComponentType.<Boolean>builder()
-                .networkSynchronized(ByteBufCodecs.BOOL)
+        public static final RegistryHolder<DataComponentType<Component>> NAME_CHANGE_CACHED = DATA_COMPONENTS.register("name_change_cached", () -> DataComponentType.<Component>builder()
+                .networkSynchronized(ComponentSerialization.STREAM_CODEC)
                 .build());
 
         private static DataComponentMap COMMON_COMPONENTS = null;

@@ -22,8 +22,12 @@ public class AbilityEventHandler implements EntityEvent.LivingHurt, PalladiumPla
 
     @Override
     public void playerNameFormat(Player player, Component username, AtomicReference<Component> displayName) {
-        AbilityUtil.getEnabledInstances(player, AbilitySerializers.NAME_CHANGE.get()).stream().filter(ab -> ab.get(PalladiumDataComponents.Abilities.NAME_CHANGE_ACTIVE.get())).findFirst().ifPresent(ability -> {
-            displayName.set(ability.getAbility().name);
+        AbilityUtil.getEnabledInstances(player, AbilitySerializers.NAME_CHANGE.get())
+                .stream()
+                .filter(ab -> ab.get(PalladiumDataComponents.Abilities.NAME_CHANGE_CACHED.get()) != null)
+                .findFirst()
+                .ifPresent(ability -> {
+            displayName.set(ability.get(PalladiumDataComponents.Abilities.NAME_CHANGE_CACHED.get()));
         });
     }
 
