@@ -41,6 +41,7 @@ public class ConditionSerializers {
     public static final RegistryHolder<BrightnessAtPositionCondition.Serializer> BRIGHTNESS_AT_POSITION = CONDITION_SERIALIZERS.register("brightness_at_position", BrightnessAtPositionCondition.Serializer::new);
     public static final RegistryHolder<OnGroundCondition.Serializer> ON_GROUND = CONDITION_SERIALIZERS.register("on_ground", OnGroundCondition.Serializer::new);
     public static final RegistryHolder<IsMovingCondition.Serializer> IS_MOVING = CONDITION_SERIALIZERS.register("is_moving", IsMovingCondition.Serializer::new);
+    public static final RegistryHolder<HasMovementInputCondition.Serializer> HAS_MOVEMENT_INPUT = CONDITION_SERIALIZERS.register("has_movement_input", HasMovementInputCondition.Serializer::new);
     public static final RegistryHolder<CommandResultCondition.Serializer> COMMAND_RESULT = CONDITION_SERIALIZERS.register("command_result", CommandResultCondition.Serializer::new);
     public static final RegistryHolder<IntervalCondition.Serializer> INTERVAL = CONDITION_SERIALIZERS.register("interval", IntervalCondition.Serializer::new);
     public static final RegistryHolder<SprintingCondition.Serializer> SPRINTING = CONDITION_SERIALIZERS.register("sprinting", SprintingCondition.Serializer::new);
