@@ -9,6 +9,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.network.chat.Component;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class SupporterHandler {
 
@@ -58,30 +60,31 @@ public class SupporterHandler {
         });
     }
 
-    public static PlayerData loadPlayerData(UUID uuid) {
-        try {
-            JsonObject json = readJsonFromUrl(BASE_URL + "player/" + uuid.toString());
-            PlayerData data = new PlayerData(uuid, GsonHelper.getAsJsonObject(json, "data"));
-            DATA.put(uuid, data);
-            Palladium.LOGGER.info("Successfully read user's supporter data! ({})", uuid);
+    public static void loadPlayerData(UUID uuid) {
+        CompletableFuture.runAsync(() ->  {
+            try {
+                JsonObject json = readJsonFromUrl(BASE_URL + "player/" + uuid.toString());
+                PlayerData data = new PlayerData(uuid, GsonHelper.getAsJsonObject(json, "data"));
+                DATA.put(uuid, data);
+                Palladium.LOGGER.info("Successfully read user's supporter data! ({})", uuid);
 
-            if (Platform.getCurrentServer() != null) {
-                Player player = Platform.getCurrentServer().getPlayerList().getPlayer(uuid);
+                if (Platform.getCurrentServer() != null) {
+                    Player player = Platform.getCurrentServer().getPlayerList().getPlayer(uuid);
 
-                if (player != null) {
-                    Accessory.getPlayerData(player).ifPresent(accessoryData -> accessoryData.validate(player));
+                    if (player != null) {
+                        Accessory.getPlayerData(player).ifPresent(accessoryData -> accessoryData.validate(player));
+                    }
+                }
+
+                return;
+            } catch (Exception e) {
+                if (!Platform.isProduction()) {
+                    Palladium.LOGGER.warn("Was not able to read user's supporter data! ({})", uuid.toString());
                 }
             }
-
-            return data;
-        } catch (Exception e) {
-            if (!Platform.isProduction()) {
-                Palladium.LOGGER.warn("Was not able to read user's supporter data! ({})", uuid.toString());
-            }
-        }
-        PlayerData data = new PlayerData(uuid, new JsonObject());
-        DATA.put(uuid, data);
-        return data;
+            PlayerData data = new PlayerData(uuid, new JsonObject());
+            DATA.put(uuid, data);
+        }, Util.backgroundExecutor()).join();
     }
 
     public static void enableSupporterCheck() {
