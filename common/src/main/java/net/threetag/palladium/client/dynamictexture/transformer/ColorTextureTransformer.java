@@ -8,7 +8,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.function.Function;
 
-public record ColorTextureTransformer(Object rawColor, boolean ignoreBlank) implements ITextureTransformer {
+public record ColorTextureTransformer(Object rawColor, boolean ignoreBlank,
+                                      Color filter) implements ITextureTransformer {
 
     @Override
     public NativeImage transform(NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
@@ -54,16 +55,27 @@ public record ColorTextureTransformer(Object rawColor, boolean ignoreBlank) impl
             throw new UnsupportedOperationException("Can only call blendPixel with RGBA format");
         } else {
             int i = texture.getPixelRGBA(x, y);
-            if (FastColor.ABGR32.alpha(i) == 0 & this.ignoreBlank) return;
+
+            if (FastColor.ABGR32.alpha(i) == 0 && this.ignoreBlank) {
+                return;
+            }
+
+            int origR = FastColor.ABGR32.red(i);
+            int origG = FastColor.ABGR32.green(i);
+            int origB = FastColor.ABGR32.blue(i);
+
+            if (this.filter != null && !colorMatches(origR, origG, origB, this.filter)) {
+                return;
+            }
 
             float f = color.getAlpha() / 255.0F;
             float g = color.getBlue() / 255.0F;
             float h = color.getGreen() / 255.0F;
             float j = color.getRed() / 255.0F;
             // skip base texture alpha
-            float l = (float) FastColor.ABGR32.blue(i) / 255.0F;
-            float m = (float) FastColor.ABGR32.green(i) / 255.0F;
-            float n = (float) FastColor.ABGR32.red(i) / 255.0F;
+            float l = (float) origB / 255.0F;
+            float m = (float) origG / 255.0F;
+            float n = (float) origR / 255.0F;
 
             float p = 1.0F - f;
             float r = g * f + l * p;
@@ -87,5 +99,9 @@ public record ColorTextureTransformer(Object rawColor, boolean ignoreBlank) impl
             int z = (int) (t * 255.0F);
             texture.setPixelRGBA(x, y, FastColor.ABGR32.color(FastColor.ABGR32.alpha(i), v, w, z));
         }
+    }
+
+    private static boolean colorMatches(int red, int green, int blue, Color color) {
+        return color.getRed() == red && color.getGreen() == green && color.getBlue() == blue;
     }
 }
