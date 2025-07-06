@@ -1,9 +1,6 @@
-- Added palladium property filter for entity glow ability
-- Added disable_hotbar_scroll ability
-- Allowed space bar abilities to be enabled even when not visible in ability bar
-- Added "visibility" field for energy beam renderers
-- New condition: openable item progress (Spyeedy)
-- KJS condition can now add descriptions (Spyeedy)
-- Added renderPowerScreen KJS event
-- Fixed for name change ability
-- Various minor fixes
+- Added has_movement_input condition
+- Added "filter" option to color transformer
+- Fixed gecko render layers causing re-render on cursor if using shaders
+- Fixed name change ability not working if players dont have permissions
+- Removed "Was not able to read user's supporter data!" log because people keep misinterpreting it
+- Make supporter data fetching async
