@@ -12,6 +12,7 @@ import net.threetag.palladium.client.renderer.LaserRenderer;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.PerspectiveValue;
 import net.threetag.palladium.util.SizeUtil;
+import net.threetag.palladium.util.context.DataContext;
 import org.joml.Vector2f;
 
 public class LaserBeamRenderer extends EnergyBeamRenderer {
@@ -32,7 +33,7 @@ public class LaserBeamRenderer extends EnergyBeamRenderer {
             this.laserRenderer
                     .size(size.mul(SizeUtil.getInstance().getModelWidthScale(player, partialTick), SizeUtil.getInstance().getModelHeightScale(player, partialTick), new Vector2f()))
                     .length((float) origin.distanceTo(target) * lengthMultiplier)
-                    .faceAndRender(poseStack, bufferSource, origin, target, player.tickCount, partialTick);
+                    .faceAndRender(DataContext.forEntity(player), poseStack, bufferSource, origin, target, player.tickCount, partialTick);
 
             this.laserRenderer.size(size);
         }

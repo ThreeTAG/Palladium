@@ -14,6 +14,7 @@ import net.threetag.palladium.client.renderer.LaserRenderer;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.PerspectiveValue;
 import net.threetag.palladium.util.SizeUtil;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.joml.Vector2f;
 
@@ -57,7 +58,7 @@ public class LightningBeamRenderer extends EnergyBeamRenderer {
                     poseStack.pushPose();
                     poseStack.translate(offset.x, offset.y, offset.z);
                     this.laserRenderer.length((float) startVec.distanceTo(end) * currentProgress)
-                            .faceAndRender(poseStack, bufferSource, startVec, end, player.tickCount, partialTick);
+                            .faceAndRender(DataContext.forEntity(player), poseStack, bufferSource, startVec, end, player.tickCount, partialTick);
                     poseStack.popPose();
                     startVec = end;
                 }

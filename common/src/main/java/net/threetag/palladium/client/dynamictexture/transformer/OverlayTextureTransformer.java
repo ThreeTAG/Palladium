@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.FastColor;
+import net.threetag.palladium.util.context.DataContext;
 
 import java.io.IOException;
 import java.util.function.Function;
@@ -11,7 +12,7 @@ import java.util.function.Function;
 public record OverlayTextureTransformer(String overlayLocation, boolean ignoreBlank) implements ITextureTransformer {
 
     @Override
-    public NativeImage transform(NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
+    public NativeImage transform(DataContext context, NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
         NativeImage overlay = NativeImage.read(manager.getResource(new ResourceLocation(stringConverter.apply(this.overlayLocation))).get().open());
 
         for (int y = 0; y < overlay.getHeight(); ++y) {

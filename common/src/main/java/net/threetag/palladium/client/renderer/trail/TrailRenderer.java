@@ -5,6 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.client.renderer.entity.TrailSegmentEntityRenderer;
 import net.threetag.palladium.entity.TrailSegmentEntity;
 
@@ -21,8 +22,8 @@ public abstract class TrailRenderer<T extends TrailRenderer.SegmentCache> {
         return new SegmentCache();
     }
 
-    public Color getColor() {
-        return Color.WHITE;
+    public DynamicColor getColor() {
+        return DynamicColor.WHITE;
     }
 
     public abstract float getSpacing();

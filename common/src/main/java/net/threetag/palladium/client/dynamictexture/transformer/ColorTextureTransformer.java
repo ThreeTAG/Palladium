@@ -3,54 +3,32 @@ package net.threetag.palladium.client.dynamictexture.transformer;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.FastColor;
+import net.threetag.palladium.client.renderer.DynamicColor;
+import net.threetag.palladium.util.context.DataContext;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.function.Function;
 
-public record ColorTextureTransformer(Object rawColor, boolean ignoreBlank,
-                                      Color filter) implements ITextureTransformer {
+public record ColorTextureTransformer(DynamicColor rawColor, boolean ignoreBlank,
+                                      DynamicColor filter) implements ITextureTransformer {
 
     @Override
-    public NativeImage transform(NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
-        var color = Color.WHITE;
-        if (this.rawColor instanceof String string) {
-            color = Color.decode(stringConverter.apply(string));
-        } else if (this.rawColor instanceof Object[] integers) {
-            if (integers.length == 3) {
-                color = new Color(
-                        convertColorPart(integers[0], stringConverter),
-                        convertColorPart(integers[1], stringConverter),
-                        convertColorPart(integers[2], stringConverter)
-                );
-            } else if (integers.length == 4) {
-                color = new Color(
-                        convertColorPart(integers[0], stringConverter),
-                        convertColorPart(integers[1], stringConverter),
-                        convertColorPart(integers[2], stringConverter),
-                        convertColorPart(integers[3], stringConverter)
-                );
-            }
-        }
+    public NativeImage transform(DataContext context, NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
+        var color = this.rawColor.getColor(context, stringConverter);
+        var filter = this.filter != null ? this.filter.getColor(context, stringConverter) : null;
 
         for (int y = 0; y < texture.getHeight(); ++y) {
             for (int x = 0; x < texture.getWidth(); ++x) {
-                blendPixel(texture, x, y, color);
+                blendPixel(texture, x, y, color, filter);
             }
         }
 
         return texture;
     }
 
-    private Integer convertColorPart(Object o, Function<String, String> stringConverter) {
-        if (o instanceof Integer i) {
-            return i;
-        } else {
-            return Integer.getInteger(stringConverter.apply(o.toString()));
-        }
-    }
-
-    public void blendPixel(NativeImage texture, int x, int y, Color color) {
+    public void blendPixel(NativeImage texture, int x, int y, Color color, @Nullable Color filter) {
         if (texture.format() != NativeImage.Format.RGBA) {
             throw new UnsupportedOperationException("Can only call blendPixel with RGBA format");
         } else {
@@ -64,7 +42,7 @@ public record ColorTextureTransformer(Object rawColor, boolean ignoreBlank,
             int origG = FastColor.ABGR32.green(i);
             int origB = FastColor.ABGR32.blue(i);
 
-            if (this.filter != null && !colorMatches(origR, origG, origB, this.filter)) {
+            if (filter != null && !colorMatches(origR, origG, origB, filter)) {
                 return;
             }
 

@@ -26,6 +26,7 @@ import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import net.threetag.palladium.client.renderer.trail.AfterImageTrailRenderer;
 import net.threetag.palladium.client.renderer.trail.TrailRenderer;
 import net.threetag.palladium.entity.TrailSegmentEntity;
+import net.threetag.palladium.util.context.DataContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -138,7 +139,7 @@ public class TrailSegmentEntityRenderer extends LivingEntityRenderer<TrailSegmen
         boolean bl2 = !bl && !entity.isInvisibleTo(minecraft.player);
         boolean bl3 = minecraft.shouldEntityAppearGlowing(entity);
         RenderType renderType = this.getRenderType(entity, bl, bl2, bl3);
-        var color = entity.trailRenderer.getColor();
+        var color = entity.trailRenderer.getColor().getColor(DataContext.forEntity(entity.parent));
 
         if (renderType != null) {
             VertexConsumer vertexConsumer = buffer.getBuffer(renderType);

@@ -12,11 +12,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.client.renderer.entity.TrailSegmentEntityRenderer;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.entity.PalladiumEntityExtension;
 import net.threetag.palladium.entity.TrailSegmentEntity;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.joml.Matrix4f;
 
@@ -26,11 +28,11 @@ public class GradientTrailRenderer extends TrailRenderer<TrailRenderer.SegmentCa
 
     private final float spacing;
     private final int lifetime;
-    private final Color color;
+    private final DynamicColor color;
     private final float opacity;
     private final boolean normalTransparency;
 
-    public GradientTrailRenderer(float spacing, int lifetime, Color color, float opacity, boolean normalTransparency) {
+    public GradientTrailRenderer(float spacing, int lifetime, DynamicColor color, float opacity, boolean normalTransparency) {
         this.spacing = spacing;
         this.lifetime = lifetime;
         this.color = color;
@@ -47,9 +49,10 @@ public class GradientTrailRenderer extends TrailRenderer<TrailRenderer.SegmentCa
 
             if (index > 0) {
                 var vertexConsumer = buffer.getBuffer(this.normalTransparency ? PalladiumRenderTypes.LASER_NORMAL_TRANSPARENCY : PalladiumRenderTypes.LASER);
-                float r = this.color.getRed() / 255F;
-                float g = this.color.getGreen() / 255F;
-                float b = this.color.getBlue() / 255F;
+                var color = this.color.getColor(DataContext.forEntity(livingEntity));
+                float r = color.getRed() / 255F;
+                float g = color.getGreen() / 255F;
+                float b = color.getBlue() / 255F;
                 float segmentOpacity = 1F - Mth.clamp((segment.tickCount + partialTick) / segment.lifetime, 0, 1);
 
                 if (index == trails.size() - 1) {
@@ -98,7 +101,7 @@ public class GradientTrailRenderer extends TrailRenderer<TrailRenderer.SegmentCa
     }
 
     @Override
-    public Color getColor() {
+    public DynamicColor getColor() {
         return this.color;
     }
 
@@ -106,7 +109,7 @@ public class GradientTrailRenderer extends TrailRenderer<TrailRenderer.SegmentCa
 
         @Override
         public TrailRenderer<?> parse(JsonObject json) {
-            var color = GsonUtil.getAsColor(json, "color", Color.WHITE);
+            var color = DynamicColor.getFromJson(json, "color", DynamicColor.WHITE);
             float spacing = GsonUtil.getAsFloatMin(json, "spacing", 0.1F, 1F);
             int lifetime = GsonUtil.getAsIntMin(json, "lifetime", 1, 20);
             float opacity = GsonUtil.getAsFloatRanged(json, "opacity", 0F, 1F, 0.5F);

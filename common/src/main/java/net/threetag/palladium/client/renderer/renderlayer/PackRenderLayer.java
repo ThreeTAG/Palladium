@@ -20,9 +20,11 @@ import net.threetag.palladium.client.dynamictexture.DynamicModelLayerLocation;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.client.dynamictexture.DynamicTextureManager;
 import net.threetag.palladium.client.model.ExtraAnimatedModel;
+import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.context.DataContext;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -34,13 +36,15 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
     private final SkinTypedValue<ModelCache> model;
     private final SkinTypedValue<DynamicTexture> texture;
     private final RenderTypeFunction renderType;
+    private final DynamicColor tint;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public PackRenderLayer(SkinTypedValue<ModelTypes.Model> model, SkinTypedValue<DynamicModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture, RenderTypeFunction renderType) {
+    public PackRenderLayer(SkinTypedValue<ModelTypes.Model> model, SkinTypedValue<DynamicModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture, RenderTypeFunction renderType, DynamicColor tint) {
         this.modelLookup = model;
         this.model = new SkinTypedValue(new ModelCache(modelLayerLocation.getNormal()), new ModelCache(modelLayerLocation.getSlim()));
         this.texture = texture;
         this.renderType = renderType;
+        this.tint = tint;
     }
 
     @Override
@@ -62,7 +66,22 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
 
             VertexConsumer vertexConsumer = this.renderType.createVertexConsumer(bufferSource, this.texture.get(entity).getTexture(context), context.getItem().hasFoil());
 
-            entityModel.renderToBuffer(poseStack, vertexConsumer, this.renderType.getPackedLight(packedLight), OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+            var tint = Color.WHITE;
+
+            if (this.tint != null) {
+                tint = this.tint.getColor(context);
+            }
+
+            entityModel.renderToBuffer(
+                    poseStack,
+                    vertexConsumer,
+                    this.renderType.getPackedLight(packedLight),
+                    OverlayTexture.NO_OVERLAY,
+                    tint.getRed() / 255F,
+                    tint.getGreen() / 255F,
+                    tint.getBlue() / 255F,
+                    tint.getAlpha() / 255F
+            );
         }
     }
 
@@ -80,12 +99,34 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
                 humanoidModel.crouching = false;
                 humanoidModel.swimAmount = 0.0F;
 
+                var tint = Color.WHITE;
+
+                if (this.tint != null) {
+                    tint = this.tint.getColor(context);
+                }
+
                 if (arm == HumanoidArm.RIGHT) {
                     humanoidModel.rightArm.xRot = 0.0F;
-                    humanoidModel.rightArm.render(poseStack, vertexConsumer, this.renderType.getPackedLight(packedLight), OverlayTexture.NO_OVERLAY);
+                    humanoidModel.rightArm.render(
+                            poseStack,
+                            vertexConsumer,
+                            this.renderType.getPackedLight(packedLight),
+                            OverlayTexture.NO_OVERLAY,
+                            tint.getRed() / 255F,
+                            tint.getGreen() / 255F,
+                            tint.getBlue() / 255F,
+                            tint.getAlpha() / 255F);
                 } else {
                     humanoidModel.leftArm.xRot = 0.0F;
-                    humanoidModel.leftArm.render(poseStack, vertexConsumer, this.renderType.getPackedLight(packedLight), OverlayTexture.NO_OVERLAY);
+                    humanoidModel.leftArm.render(
+                            poseStack,
+                            vertexConsumer,
+                            this.renderType.getPackedLight(packedLight),
+                            OverlayTexture.NO_OVERLAY,
+                            tint.getRed() / 255F,
+                            tint.getGreen() / 255F,
+                            tint.getBlue() / 255F,
+                            tint.getAlpha() / 255F);
                 }
             }
         }
@@ -132,7 +173,12 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
             throw new JsonParseException("Unknown render type '" + new ResourceLocation(GsonHelper.getAsString(json, "render_type", "solid")) + "'");
         }
 
-        return new PackRenderLayer(model, SkinTypedValue.fromJSON(json.get("model_layer"), DynamicModelLayerLocation::fromJson), SkinTypedValue.fromJSON(json.get("texture"), DynamicTextureManager::fromJson), renderType);
+        return new PackRenderLayer(
+                model,
+                SkinTypedValue.fromJSON(json.get("model_layer"), DynamicModelLayerLocation::fromJson),
+                SkinTypedValue.fromJSON(json.get("texture"), DynamicTextureManager::fromJson),
+                renderType,
+                DynamicColor.getFromJson(json, "tint", null));
     }
 
     public static class ModelCache {

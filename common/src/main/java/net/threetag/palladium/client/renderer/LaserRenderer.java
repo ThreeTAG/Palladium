@@ -14,6 +14,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.util.RenderUtil;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.joml.Vector2f;
 
@@ -21,8 +22,8 @@ import java.awt.*;
 
 public class LaserRenderer {
 
-    private Color glowColor;
-    private Color coreColor = Color.WHITE;
+    private DynamicColor glowColor;
+    private DynamicColor coreColor = DynamicColor.staticColor(Color.WHITE);
     private float rainbow = 0F;
     private float glowOpacity = 1F;
     private float coreOpacity = 1F;
@@ -34,31 +35,31 @@ public class LaserRenderer {
     private float rotationSpeed = 0F;
     private float opacityAndSizeModifier = 1F;
 
-    public LaserRenderer(Color color) {
+    public LaserRenderer(DynamicColor color) {
         this.glowColor = color;
     }
 
-    public LaserRenderer(Color glowColor, Color coreColor) {
+    public LaserRenderer(DynamicColor glowColor, DynamicColor coreColor) {
         this.glowColor = glowColor;
         this.coreColor = coreColor;
     }
 
-    public LaserRenderer color(Color color) {
+    public LaserRenderer color(DynamicColor color) {
         this.glowColor = color;
         return this;
     }
 
-    public LaserRenderer color(Color glowColor, Color coreColor) {
+    public LaserRenderer color(DynamicColor glowColor, DynamicColor coreColor) {
         this.glowColor = glowColor;
         this.coreColor = coreColor;
         return this;
     }
 
-    public Color getCoreColor() {
+    public DynamicColor getCoreColor() {
         return this.coreColor;
     }
 
-    public Color getGlowColor() {
+    public DynamicColor getGlowColor() {
         return this.glowColor;
     }
 
@@ -168,14 +169,14 @@ public class LaserRenderer {
         poseStack.mulPose(Axis.XP.rotationDegrees(90));
     }
 
-    public void faceAndRender(PoseStack poseStack, MultiBufferSource bufferSource, Vec3 origin, Vec3 target, int ticks, float partialTick) {
+    public void faceAndRender(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, Vec3 origin, Vec3 target, int ticks, float partialTick) {
         poseStack.pushPose();
         this.face(poseStack, origin, target);
-        this.render(poseStack, bufferSource, ticks, partialTick);
+        this.render(context, poseStack, bufferSource, ticks, partialTick);
         poseStack.popPose();
     }
 
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int ticks, float partialTick) {
+    public void render(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, int ticks, float partialTick) {
         var rot = this.rotation;
 
         if (this.rotationSpeed > 0F) {
@@ -190,10 +191,11 @@ public class LaserRenderer {
         AABB box = new AABB(-size.x / 2F, 0, -size.y / 2F, size.x / 2F, this.length, size.y / 2F);
 
         if (this.coreOpacity > 0F) {
-            RenderUtil.renderFilledBox(poseStack, consumer, box, this.coreColor.getRed() / 255F, this.coreColor.getGreen() / 255F, this.coreColor.getBlue() / 255F, this.coreOpacity * this.opacityAndSizeModifier, 15728640);
+            var coreColor = this.coreColor.getColor(context);
+            RenderUtil.renderFilledBox(poseStack, consumer, box, coreColor.getRed() / 255F, coreColor.getGreen() / 255F, coreColor.getBlue() / 255F, this.coreOpacity * this.opacityAndSizeModifier, 15728640);
         }
 
-        var glowColor = getRenderedGlowColor(ticks, partialTick);
+        var glowColor = getRenderedGlowColor(context, ticks, partialTick);
         var r = glowColor.getRed() / 255F;
         var g = glowColor.getGreen() / 255F;
         var b = glowColor.getBlue() / 255F;
@@ -207,7 +209,7 @@ public class LaserRenderer {
         poseStack.popPose();
     }
 
-    private Color getRenderedGlowColor(int ticks, float partialTick) {
+    private Color getRenderedGlowColor(DataContext context, int ticks, float partialTick) {
         if (this.rainbow > 0F) {
             int rate = Math.max((int) (25 * (1F - this.rainbow)), 1);
             int j = ticks / rate;
@@ -219,7 +221,7 @@ public class LaserRenderer {
             float[] gs = Sheep.getColorArray(DyeColor.byId(m));
             return new Color(fs[0] * (1.0F - f) + gs[0] * f, fs[1] * (1.0F - f) + gs[1] * f, fs[2] * (1.0F - f) + gs[2] * f);
         } else {
-            return this.glowColor;
+            return this.glowColor.getColor(context);
         }
     }
 
@@ -229,8 +231,8 @@ public class LaserRenderer {
 
     public static LaserRenderer fromJson(JsonObject json, int defaultBloom) {
         var laser = new LaserRenderer(
-                GsonUtil.getAsColor(json, "glow_color", Color.WHITE),
-                GsonUtil.getAsColor(json, "core_color", Color.WHITE))
+                DynamicColor.getFromJson(json, "glow_color", DynamicColor.WHITE),
+                DynamicColor.getFromJson(json, "core_color", DynamicColor.WHITE))
                 .enableRainbow(GsonUtil.getAsBooleanFloat(json, "rainbow", 0F))
                 .opacity(GsonUtil.getAsFloatRanged(json, "glow_opacity", 0F, 1F, 1F),
                         GsonUtil.getAsFloatRanged(json, "core_opacity", 0F, 1F, 1F))

@@ -14,6 +14,7 @@ import net.threetag.palladium.client.dynamictexture.transformer.ColorTextureTran
 import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.OverlayTextureTransformer;
 import net.threetag.palladium.client.dynamictexture.variable.*;
+import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;
@@ -37,7 +38,7 @@ public class DynamicTextureManager extends SimpleJsonResourceReloadListener {
 
         registerTransformer(Palladium.id("alpha_mask"), j -> new AlphaMaskTextureTransformer(GsonHelper.getAsString(j, "mask")));
         registerTransformer(Palladium.id("overlay"), j -> new OverlayTextureTransformer(GsonHelper.getAsString(j, "overlay"), GsonHelper.getAsBoolean(j, "ignore_blank", false)));
-        registerTransformer(Palladium.id("color"), j -> new ColorTextureTransformer(GsonUtil.getAsRawColor(j, "color"), GsonHelper.getAsBoolean(j, "ignore_blank"), GsonUtil.getAsColor(j, "filter", null)));
+        registerTransformer(Palladium.id("color"), j -> new ColorTextureTransformer(DynamicColor.getFromJson(j, "color"), GsonHelper.getAsBoolean(j, "ignore_blank"), DynamicColor.getFromJson(j, "filter", null)));
 
         registerVariable(new ConditionTextureVariable.Serializer());
         registerVariable(new CrouchingTextureVariable.Serializer());
