@@ -3,7 +3,9 @@ package net.threetag.palladium.registry;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.Item;
-import net.threetag.palladium.accessory.AccessorySlot;
+import net.threetag.palladium.customization.Customization;
+import net.threetag.palladium.customization.CustomizationSerializer;
+import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.client.icon.IconSerializer;
 import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.core.registry.DataPackRegistryBuilder;
@@ -31,10 +33,12 @@ public class PalladiumRegistries {
     public static final Registry<EntityDependentNumberType<?>> ENTITY_DEPENDENT_NUMBER_TYPE = RegistryBuilder.create(PalladiumRegistryKeys.ENTITY_DEPENDENT_NUMBER_TYPE).build();
     public static final Registry<MapCodec<? extends Item>> ITEM_TYPE = RegistryBuilder.create(PalladiumRegistryKeys.ITEM_TYPE).build();
     public static final Registry<EntityEffect> ENTITY_EFFECT = RegistryBuilder.create(PalladiumRegistryKeys.ENTITY_EFFECT).build();
+    public static final Registry<CustomizationSerializer<?>> CUSTOMIZATION_SERIALIZERS = RegistryBuilder.create(PalladiumRegistryKeys.CUSTOMIZATION_SERIALIZERS).build();
 
     public static void init() {
         DataPackRegistryBuilder.create(PalladiumRegistryKeys.POWER, Power.CODEC, Power.CODEC);
-        DataPackRegistryBuilder.create(PalladiumRegistryKeys.ACCESSORY_SLOT, AccessorySlot.CODEC, AccessorySlot.CODEC);
+        DataPackRegistryBuilder.create(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY, CustomizationCategory.CODEC, CustomizationCategory.CODEC);
+        DataPackRegistryBuilder.create(PalladiumRegistryKeys.CUSTOMIZATION, Customization.Codecs.SIMPLE_CODEC, Customization.Codecs.SIMPLE_CODEC);
     }
 
 }

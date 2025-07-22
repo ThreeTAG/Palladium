@@ -1,0 +1,9 @@
+{
+  "type": "palladium:render_layer",
+  "light_emission": 15,
+  "model_layer": {
+    "slim": "minecraft:player_slim",
+    "wide": "minecraft:player"
+  },
+  "texture": "palladium:textures/customization/herobrine_eyes.png"
+}

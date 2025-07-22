@@ -1,0 +1,17 @@
+{
+  "hidden_by_equipment": "head",
+  "preview": {
+    "rotation": [
+      15.0,
+      40.0,
+      0.0
+    ],
+    "scale": 2.5,
+    "translation": [
+      0.0,
+      2.200000047683716,
+      0.0
+    ]
+  },
+  "sort_index": 10
+}

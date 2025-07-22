@@ -3,10 +3,13 @@ package net.threetag.palladium.client.renderer.entity.layer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.customization.CustomizationCategory;
+import net.threetag.palladium.customization.EntityCustomizationHandler;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.entity.PlayerSlot;
 import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +24,7 @@ public class PackRenderLayerProvider {
         PROVIDERS.add(provider);
     }
 
-    public static void forEach(Entity entity, BiConsumer<DataContext, PackRenderLayer> consumer) {
+    public static void forEach(Entity entity, BiConsumer<DataContext, PackRenderLayer<?>> consumer) {
         Lookup lookup = PackRenderLayerManager.INSTANCE::get;
         for (Provider provider : PROVIDERS) {
             provider.provide(entity, lookup, consumer);
@@ -29,6 +32,26 @@ public class PackRenderLayerProvider {
     }
 
     static {
+        // Customizations
+        register((entity, lookup, layers) -> {
+            if (entity instanceof LivingEntity living) {
+                var registry = entity.registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY);
+                var handler = EntityCustomizationHandler.get(living);
+
+                for (CustomizationCategory slot : registry) {
+                    var customization = handler.get(registry.wrapAsHolder(slot));
+
+                    if (customization != null && (slot.hiddenByEquipment() == null || living.getItemBySlot(slot.hiddenByEquipment()).isEmpty())) {
+                        var layer = lookup.get(customization.value().getRenderLayerId(entity.registryAccess()));
+
+                        if (layer != null) {
+                            layers.accept(DataContext.forEntity(entity), layer);
+                        }
+                    }
+                }
+            }
+        });
+
         // Abilities
         register((entity, lookup, layers) -> {
             if (entity instanceof LivingEntity living) {
@@ -69,14 +92,14 @@ public class PackRenderLayerProvider {
     @FunctionalInterface
     public interface Provider {
 
-        void provide(Entity entity, Lookup lookup, BiConsumer<DataContext, PackRenderLayer> layers);
+        void provide(Entity entity, Lookup lookup, BiConsumer<DataContext, PackRenderLayer<?>> layers);
 
     }
 
     @FunctionalInterface
     public interface Lookup {
 
-        PackRenderLayer get(ResourceLocation id);
+        PackRenderLayer<?> get(ResourceLocation id);
 
     }
 

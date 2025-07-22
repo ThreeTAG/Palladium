@@ -7,9 +7,9 @@
 //import net.minecraft.network.RegistryFriendlyByteBuf;
 //import net.minecraft.network.codec.ByteBufCodecs;
 //import net.minecraft.network.codec.StreamCodec;
-//import net.threetag.palladium.accessory.Accessory;
-//import net.threetag.palladium.accessory.AccessoryPlayerData;
-//import net.threetag.palladium.accessory.AccessorySlot;
+//import net.threetag.palladium.customization.Accessory;
+//import net.threetag.palladium.customization.AccessoryPlayerData;
+//import net.threetag.palladium.customization.AccessorySlot;
 //import net.threetag.palladium.registry.PalladiumRegistries;
 //import net.threetag.palladium.registry.PalladiumRegistryKeys;
 //import net.threetag.palladium.data.DataContext;
@@ -17,17 +17,17 @@
 //import java.util.Collection;
 //import java.util.Optional;
 //
-//public record AccessorySelectedCondition(AccessorySlot accessorySlot, Accessory accessory) implements Condition {
+//public record AccessorySelectedCondition(AccessorySlot accessorySlot, Accessory customization) implements Condition {
 //
 //    public static final MapCodec<AccessorySelectedCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
 //            .group(
 //                    AccessorySlot.BY_NAME_CODEC.fieldOf("accessory_slot").forGetter(AccessorySelectedCondition::accessorySlot),
-//                    PalladiumRegistries.ACCESSORY.byNameCodec().fieldOf("accessory").forGetter(AccessorySelectedCondition::accessory)
+//                    PalladiumRegistries.ACCESSORY.byNameCodec().fieldOf("customization").forGetter(AccessorySelectedCondition::customization)
 //            ).apply(instance, AccessorySelectedCondition::new)
 //    );
 //    public static final StreamCodec<RegistryFriendlyByteBuf, AccessorySelectedCondition> STREAM_CODEC = StreamCodec.composite(
 //            AccessorySlot.STREAM_CODEC, AccessorySelectedCondition::accessorySlot,
-//            ByteBufCodecs.registry(PalladiumRegistryKeys.ACCESSORY), AccessorySelectedCondition::accessory,
+//            ByteBufCodecs.registry(PalladiumRegistryKeys.ACCESSORY), AccessorySelectedCondition::customization,
 //            AccessorySelectedCondition::new
 //    );
 //
@@ -40,8 +40,8 @@
 //        }
 //
 //        AccessoryPlayerData data = dataOptional.get();
-//        Collection<Accessory> accessories = data.accessories.get(this.accessorySlot);
-//        return accessories != null && accessories.contains(this.accessory);
+//        Collection<Accessory> customizations = data.customizations.get(this.accessorySlot);
+//        return customizations != null && customizations.contains(this.customization);
 //    }
 //
 //    @Override
@@ -63,7 +63,7 @@
 //
 //        @Override
 //        public String getDocumentationDescription() {
-//            return "Checks if the entity has a specified accessory selected from a specific accessory slot. An empty string can be used to check for no accessory.";
+//            return "Checks if the entity has a specified customization selected from a specific customization slot. An empty string can be used to check for no customization.";
 //        }
 //    }
 //}

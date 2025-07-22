@@ -1,6 +1,7 @@
 package net.threetag.palladium.entity.data;
 
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.customization.EntityCustomizationHandler;
 import net.threetag.palladium.client.renderer.entity.layer.EntityRenderLayers;
 import net.threetag.palladium.core.registry.DeferredRegister;
 import net.threetag.palladium.core.registry.RegistryHolder;
@@ -13,12 +14,15 @@ public class PalladiumEntityDataTypes {
     public static final DeferredRegister<PalladiumEntityDataType<?>> DATA_TYPES = DeferredRegister.create(Palladium.MOD_ID, PalladiumRegistryKeys.ENTITY_DATA_TYPE);
 
     public static final RegistryHolder<PalladiumLivingEntityDataType<EntityPowerHandler>> POWER_HANDLER =
-            DATA_TYPES.register("power_handler", () -> EntityPowerHandler::new);
+            DATA_TYPES.register("powers", () -> EntityPowerHandler::new);
 
     public static final RegistryHolder<PalladiumLivingEntityDataType<EntitySuperpowerHandler>> SUPERPOWER_HANDLER =
-            DATA_TYPES.register("superpower_handler", () -> EntitySuperpowerHandler::new);
+            DATA_TYPES.register("superpowers", () -> EntitySuperpowerHandler::new);
 
     public static final RegistryHolder<PalladiumLivingEntityDataType<EntityRenderLayers>> RENDER_LAYERS =
             DATA_TYPES.register("render_layers", () -> EntityRenderLayers::create);
+
+    public static final RegistryHolder<PalladiumLivingEntityDataType<EntityCustomizationHandler>> CUSTOMIZATION_HANDLER =
+            DATA_TYPES.register("customizations", () -> EntityCustomizationHandler::new);
 
 }

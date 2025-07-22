@@ -1,0 +1,11 @@
+{
+  "type": "palladium:render_layer",
+  "model_layer": {
+    "slim": "minecraft:player_slim",
+    "wide": "minecraft:player"
+  },
+  "texture": {
+    "slim": "palladium:textures/customization/winter_soldier_arm_slim.png",
+    "wide": "palladium:textures/customization/winter_soldier_arm.png"
+  }
+}

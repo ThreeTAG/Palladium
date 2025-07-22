@@ -6,7 +6,7 @@
 //import com.mojang.serialization.codecs.RecordCodecBuilder;
 //import net.minecraft.network.RegistryFriendlyByteBuf;
 //import net.minecraft.network.codec.StreamCodec;
-//import net.threetag.palladium.accessory.AccessorySlot;
+//import net.threetag.palladium.customization.AccessorySlot;
 //import net.threetag.palladium.data.DataContext;
 //
 //public record InAccessorySlotMenuCondition(AccessorySlot slot) implements Condition {
@@ -45,7 +45,7 @@
 //
 //        @Override
 //        public String getDocumentationDescription() {
-//            return "Let's you check if the accessory menu is currently opened and the specified slot is selected. Only available for client-side conditions.";
+//            return "Let's you check if the customization menu is currently opened and the specified slot is selected. Only available for client-side conditions.";
 //        }
 //
 //        @Override

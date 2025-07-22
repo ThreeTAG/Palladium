@@ -129,6 +129,8 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                 var foundPart = model.root().getChild(partName);
                 foundPart.copyFrom(armPart);
                 armPart = foundPart;
+            } else {
+                return;
             }
         } else {
             armPart.visible = true;
@@ -147,6 +149,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
 
     private static void mimicModelParts(ModelPart source, ModelPart target) {
         target.copyFrom(source);
+        target.visible = source.visible;
 
         source.children.forEach((name, modelPart) -> {
             if (target.hasChild(name)) {

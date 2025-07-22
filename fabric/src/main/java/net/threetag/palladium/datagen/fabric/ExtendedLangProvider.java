@@ -4,7 +4,12 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.Palladium;
+import net.threetag.palladium.customization.BuiltinCustomization;
+import net.threetag.palladium.customization.Customization;
+import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.power.ability.AbilitySerializer;
 import net.threetag.palladium.registry.PalladiumRegistries;
 
@@ -47,6 +52,18 @@ public abstract class ExtendedLangProvider extends FabricLanguageProvider {
 
     public void addKeyMapping(TranslationBuilder builder, String key, String name) {
         builder.add("key.palladium." + key, name);
+    }
+
+    public void addCustomizationCategory(TranslationBuilder builder, ResourceKey<CustomizationCategory> key, String name) {
+        builder.add(CustomizationCategory.makeDescriptionId(key), name);
+    }
+
+    public void addCustomization(TranslationBuilder builder, ResourceKey<Customization> key, String name) {
+        builder.add(Customization.makeDescriptionId(key), name);
+    }
+
+    public void addBuiltinCustomization(TranslationBuilder builder, BuiltinCustomization.Type type, String name) {
+        builder.add(Customization.makeDescriptionId(Palladium.id(type.name())), name);
     }
 
 }

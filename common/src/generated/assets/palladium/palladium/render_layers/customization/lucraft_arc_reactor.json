@@ -1,0 +1,8 @@
+{
+  "type": "palladium:render_layer",
+  "model_layer": {
+    "slim": "minecraft:player_slim",
+    "wide": "minecraft:player"
+  },
+  "texture": "palladium:textures/customization/lucraft_arc_reactor.png"
+}

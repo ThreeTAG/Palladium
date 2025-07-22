@@ -5,11 +5,9 @@ import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import eu.midnightdust.lib.config.MidnightConfig;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.customization.CustomizationSerializers;
 import net.threetag.palladium.client.icon.IconSerializers;
-import net.threetag.palladium.command.DataAttachmentCommand;
-import net.threetag.palladium.command.PalladiumCommand;
-import net.threetag.palladium.command.RegistryDumpCommand;
-import net.threetag.palladium.command.SuperpowerCommand;
+import net.threetag.palladium.command.*;
 import net.threetag.palladium.compat.accessories.AccessoriesCompatImpl;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.component.PalladiumDataComponents;
@@ -59,6 +57,7 @@ public final class Palladium {
         ConditionSerializers.CONDITION_SERIALIZERS.register();
         PowerProviders.PROVIDERS.register();
         IconSerializers.ICON_SERIALIZERS.register();
+        CustomizationSerializers.CUSTOMIZATION_SERIALIZERS.register();
 
         PalladiumNetwork.init();
         PowerEventHandler.init();
@@ -73,6 +72,7 @@ public final class Palladium {
         SuperpowerCommand.register();
         RegistryDumpCommand.register();
         DataAttachmentCommand.register();
+        CustomizationCommand.register();
         CommandRegistrationEvent.EVENT.register((dispatcher, context, selection) -> PalladiumCommand.register(dispatcher, context));
 
         // Compat

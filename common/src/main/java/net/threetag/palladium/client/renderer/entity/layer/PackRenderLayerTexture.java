@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.client.texture.DynamicTexture;
-import net.threetag.palladium.client.texture.StaticTexture;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.client.variable.DynamicTextureManager;
 import net.threetag.palladium.data.DataContext;
@@ -35,8 +34,8 @@ public class PackRenderLayerTexture {
     }
 
     public PackRenderLayerTexture(ResourceLocation texture) {
-        this.dynamicTexture = new StaticTexture(texture);
-        this.textureReference = null;
+        this.dynamicTexture = null;
+        this.textureReference = TextureReference.normal(texture);
     }
 
     public ResourceLocation getTexture(DataContext context) {

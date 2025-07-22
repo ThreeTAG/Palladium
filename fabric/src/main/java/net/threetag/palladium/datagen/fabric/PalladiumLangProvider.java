@@ -4,9 +4,10 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumConfig;
+import net.threetag.palladium.customization.CustomizationCategories;
 import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityKeyBindDisplay;
-import net.threetag.palladium.client.gui.screen.accessory.AccessoryScreen;
+import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
 import net.threetag.palladium.command.DataAttachmentCommand;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
@@ -120,7 +121,14 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             builder.add("gui.palladium.powers.buy_ability.or", "or");
             builder.add("gui.palladium.powers.buy_ability.experience_level", "%sx experience level");
             builder.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx experience levels");
-            builder.add(AccessoryScreen.TITLE_TRANSLATION_KEY, "Accessories");
+            builder.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Customization");
+
+            this.addCustomizationCategory(builder, CustomizationCategories.HAT, "Hat");
+            this.addCustomizationCategory(builder, CustomizationCategories.HEAD, "Head");
+            this.addCustomizationCategory(builder, CustomizationCategories.CHEST, "Chest");
+            this.addCustomizationCategory(builder, CustomizationCategories.BACK, "Back");
+            this.addCustomizationCategory(builder, CustomizationCategories.ARMS, "Arms");
+            this.addCustomizationCategory(builder, CustomizationCategories.LEGS, "Legs");
         }
 
     }
@@ -224,7 +232,14 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             builder.add("gui.palladium.powers.buy_ability.or", "oder");
             builder.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsstufe");
             builder.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsstufen");
-            builder.add(AccessoryScreen.TITLE_TRANSLATION_KEY, "Zubehör");
+            builder.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
+
+            this.addCustomizationCategory(builder, CustomizationCategories.HAT, "Hut");
+            this.addCustomizationCategory(builder, CustomizationCategories.HEAD, "Kopf");
+            this.addCustomizationCategory(builder, CustomizationCategories.CHEST, "Brust");
+            this.addCustomizationCategory(builder, CustomizationCategories.BACK, "Rücken");
+            this.addCustomizationCategory(builder, CustomizationCategories.ARMS, "Arme");
+            this.addCustomizationCategory(builder, CustomizationCategories.LEGS, "Beine");
         }
     }
 
@@ -327,7 +342,15 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             builder.add("gui.palladium.powers.buy_ability.or", "oder");
             builder.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsschdufe");
             builder.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsschdufen");
-            builder.add(AccessoryScreen.TITLE_TRANSLATION_KEY, "Zubehör");
+            builder.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
+
+            this.addCustomizationCategory(builder, CustomizationCategories.HAT, "Hood");
+            this.addCustomizationCategory(builder, CustomizationCategories.HEAD, "Nüschl");
+            this.addCustomizationCategory(builder, CustomizationCategories.CHEST, "Bruscht");
+            this.addCustomizationCategory(builder, CustomizationCategories.BACK, "Rieggn");
+            this.addCustomizationCategory(builder, CustomizationCategories.ARMS, "Arme");
+            this.addCustomizationCategory(builder, CustomizationCategories.LEGS, "Behne");
+
         }
     }
 

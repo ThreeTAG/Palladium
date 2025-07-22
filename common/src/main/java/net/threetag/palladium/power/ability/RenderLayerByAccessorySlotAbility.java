@@ -9,9 +9,9 @@
 //import net.minecraft.resources.ResourceLocation;
 //import net.minecraft.world.entity.LivingEntity;
 //import net.minecraft.world.entity.player.Player;
-//import net.threetag.palladium.accessory.Accessory;
-//import net.threetag.palladium.accessory.AccessorySlot;
-//import net.threetag.palladium.accessory.RenderLayerAccessory;
+//import net.threetag.palladium.customization.Accessory;
+//import net.threetag.palladium.customization.AccessorySlot;
+//import net.threetag.palladium.customization.RenderLayerAccessory;
 //import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 //import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 //import net.threetag.palladium.power.energybar.EnergyBarUsage;

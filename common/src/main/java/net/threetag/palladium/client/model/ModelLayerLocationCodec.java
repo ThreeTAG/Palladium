@@ -7,6 +7,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -38,7 +39,11 @@ public record ModelLayerLocationCodec(ResourceLocation model, String layer) {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
+        if (this.layer.equals("main")) {
+            return this.model.toString();
+        }
+
         return this.model.toString() + "#" + this.layer;
     }
 

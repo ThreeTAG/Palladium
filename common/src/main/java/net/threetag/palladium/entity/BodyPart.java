@@ -1,6 +1,5 @@
 package net.threetag.palladium.entity;
 
-import com.google.gson.JsonParseException;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
@@ -16,27 +15,24 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.PlayerModelPart;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
-import net.threetag.palladium.power.ability.*;
+import net.threetag.palladium.customization.Customization;
+import net.threetag.palladium.customization.EntityCustomizationHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.IntFunction;
 
 public enum BodyPart implements StringRepresentable {
@@ -62,7 +58,6 @@ public enum BodyPart implements StringRepresentable {
     private final int id;
     private final String name;
     private final boolean overlay;
-    public static final List<Item> HIDES_LAYER = new ArrayList<>();
 
     BodyPart(int id, String name, boolean overlay) {
         this.id = id;
@@ -105,22 +100,25 @@ public enum BodyPart implements StringRepresentable {
         };
     }
 
+    @Nullable
+    public BodyPart getOverlayPart() {
+        return switch (this) {
+            case HEAD -> HEAD_OVERLAY;
+            case CHEST -> CHEST_OVERLAY;
+            case RIGHT_ARM -> RIGHT_ARM_OVERLAY;
+            case LEFT_ARM -> LEFT_ARM_OVERLAY;
+            case RIGHT_LEG -> RIGHT_LEG_OVERLAY;
+            case LEFT_LEG -> LEFT_LEG_OVERLAY;
+            default -> null;
+        };
+    }
+
     @Environment(EnvType.CLIENT)
     public void setVisibility(HumanoidModel<?> model, boolean visible) {
         ModelPart part = getModelPart(model);
 
         if (part != null) {
             part.visible = visible;
-        }
-    }
-
-    public static BodyPart fromJson(String name) {
-        var part = byName(name);
-
-        if (part != null) {
-            return part;
-        } else {
-            throw new JsonParseException("Unknown body part '" + name + "'");
         }
     }
 
@@ -134,156 +132,19 @@ public enum BodyPart implements StringRepresentable {
         return null;
     }
 
-    @Environment(EnvType.CLIENT)
-    public static void hideHiddenOrRemovedParts(HumanoidModel<?> model, LivingEntity entity, ModifiedBodyPartResult result) {
-        for (BodyPart part : values()) {
-            if (result.isHiddenOrRemoved(part)) {
-                part.setVisibility(model, false);
-            }
+    public static Set<BodyPart> getHiddenBodyParts(LivingEntity entity) {
+        Set<BodyPart> parts = new HashSet<>();
+
+        // Customizations
+        for (Holder<Customization> customization : EntityCustomizationHandler.get(entity).getSelected()) {
+            parts.addAll(customization.value().getHiddenBodyParts());
         }
+
+        return parts;
     }
 
-    @Environment(EnvType.CLIENT)
-    public static void hideRemovedParts(HumanoidModel<?> model, LivingEntity entity, ModifiedBodyPartResult result) {
-        for (BodyPart part : values()) {
-            if (result.isRemoved(part)) {
-                part.setVisibility(model, false);
-            }
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static void resetBodyParts(LivingEntity entity, HumanoidModel<?> model) {
-        if (entity instanceof Player player) {
-            if (player.isSpectator()) {
-                model.setAllVisible(false);
-                model.head.visible = true;
-                model.hat.visible = true;
-            } else {
-                model.setAllVisible(true);
-                model.hat.visible = player.isModelPartShown(PlayerModelPart.HAT);
-
-                if (model instanceof PlayerModel playerModel) {
-                    playerModel.jacket.visible = player.isModelPartShown(PlayerModelPart.JACKET);
-                    playerModel.leftPants.visible = player.isModelPartShown(PlayerModelPart.LEFT_PANTS_LEG);
-                    playerModel.rightPants.visible = player.isModelPartShown(PlayerModelPart.RIGHT_PANTS_LEG);
-                    playerModel.leftSleeve.visible = player.isModelPartShown(PlayerModelPart.LEFT_SLEEVE);
-                    playerModel.rightSleeve.visible = player.isModelPartShown(PlayerModelPart.RIGHT_SLEEVE);
-                }
-
-                if (model instanceof PlayerCapeModel<?> capeModel) {
-                    capeModel.cape.visible = player.isModelPartShown(PlayerModelPart.CAPE);
-                }
-            }
-        } else {
-            model.setAllVisible(true);
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static ModifiedBodyPartResult getModifiedBodyParts(LivingEntity entity, boolean isFirstPerson) {
-        return getModifiedBodyParts(entity, isFirstPerson, true);
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static ModifiedBodyPartResult getModifiedBodyParts(LivingEntity entity, boolean isFirstPerson, boolean includeAccessories) {
-        ModifiedBodyPartResult result = new ModifiedBodyPartResult();
-
-        if (entity instanceof Player player) {
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
-                    var stack = player.getItemBySlot(slot);
-
-                    // TODO
-//                    if (HIDES_LAYER.contains(stack.getItem()) || (stack.getItem() instanceof ArmorWithRenderer armorWithRenderer
-//                            && armorWithRenderer.getCachedArmorRenderer() instanceof ArmorRendererData renderer
-//                            && renderer.hidesSecondPlayerLayer(DataContext.forArmorInSlot(player, slot)))) {
-//                        if (slot == EquipmentSlot.HEAD) {
-//                            result.remove(BodyPart.HEAD_OVERLAY);
-//                        } else if (slot == EquipmentSlot.CHEST) {
-//                            result.remove(BodyPart.CHEST_OVERLAY);
-//                            result.remove(BodyPart.RIGHT_ARM_OVERLAY);
-//                            result.remove(BodyPart.LEFT_ARM_OVERLAY);
-//                        } else {
-//                            result.remove(BodyPart.RIGHT_LEG_OVERLAY);
-//                            result.remove(BodyPart.LEFT_LEG_OVERLAY);
-//                        }
-//                    }
-                }
-            }
-
-//            if (includeAccessories) {
-//                Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
-//                    if (!accessories.isEmpty()) {
-//                        for (BodyPart part : slot.getHiddenBodyParts(player)) {
-//                            result.hide(part);
-//                        }
-//                    }
-//                }));
-//            }
-        }
-
-        for (AbilityInstance<HideBodyPartAbility> bodyPartHide : AbilityUtil.getEnabledInstances(entity, AbilitySerializers.HIDE_BODY_PART.get())) {
-            if (!isFirstPerson || bodyPartHide.getAbility().affectsFirstPerson) {
-                for (BodyPart part : bodyPartHide.getAbility().bodyParts) {
-                    result.hide(part);
-                }
-            }
-        }
-
-        for (AbilityInstance<RemoveBodyPartAbility> bodyPartHide : AbilityUtil.getEnabledInstances(entity, AbilitySerializers.REMOVE_BODY_PART.get())) {
-            if (!isFirstPerson || bodyPartHide.getAbility().affectsFirstPerson) {
-                for (BodyPart part : bodyPartHide.getAbility().bodyParts) {
-                    result.remove(part);
-                }
-            }
-        }
-
-        // TODO
-//        PackRenderLayerManager.forEachLayer(entity, (context, layer) -> {
-//            for (BodyPart part : layer.getHiddenBodyParts(entity)) {
-//                result.hide(part);
-//            }
-//        });
-
-        return result;
-    }
-
-    public static class ModifiedBodyPartResult {
-
-        private final Map<BodyPart, Integer> states = new HashMap<>();
-
-        public ModifiedBodyPartResult hide(BodyPart part) {
-            return this.set(part, false);
-        }
-
-        public ModifiedBodyPartResult remove(BodyPart part) {
-            return this.set(part, true);
-        }
-
-        public ModifiedBodyPartResult set(BodyPart part, boolean remove) {
-            int mod = remove ? 2 : 1;
-            if (!this.states.containsKey(part)) {
-                this.states.put(part, mod);
-            } else {
-                this.states.put(part, Math.max(this.states.get(part), mod));
-            }
-
-            return this;
-        }
-
-        public boolean isHiddenOrRemoved(BodyPart bodyPart) {
-            return this.states.containsKey(bodyPart);
-        }
-
-        public boolean isHidden(BodyPart bodyPart) {
-            return this.states.containsKey(bodyPart) && this.states.get(bodyPart) == 1;
-        }
-
-        public boolean isRemoved(BodyPart bodyPart) {
-            return this.states.containsKey(bodyPart) && this.states.get(bodyPart) == 2;
-        }
-
+    public static Set<BodyPart> getRemovedBodyParts(LivingEntity entity) {
+        return Collections.emptySet();
     }
 
     @SuppressWarnings("rawtypes")
@@ -303,7 +164,7 @@ public enum BodyPart implements StringRepresentable {
                 Direction direction = state.bedOrientation;
                 if (direction != null) {
                     float f = state.eyeHeight - 0.1F;
-                    poseStack.translate((float)(-direction.getStepX()) * f, 0.0F, (float)(-direction.getStepZ()) * f);
+                    poseStack.translate((float) (-direction.getStepX()) * f, 0.0F, (float) (-direction.getStepZ()) * f);
                 }
             }
 

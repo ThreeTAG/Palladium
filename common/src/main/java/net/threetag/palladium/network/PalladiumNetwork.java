@@ -28,16 +28,20 @@ public class PalladiumNetwork {
         registerS2C(SyncEnergyBarPacket.TYPE, SyncEnergyBarPacket.STREAM_CODEC, SyncEnergyBarPacket::handle);
         registerS2C(OpenAbilityBuyScreenPacket.TYPE, OpenAbilityBuyScreenPacket.STREAM_CODEC, OpenAbilityBuyScreenPacket::handle);
         registerS2C(SyncAttachmentTypePacket.TYPE, SyncAttachmentTypePacket.STREAM_CODEC, SyncAttachmentTypePacket::handle);
+        registerS2C(SyncEntityCustomizationsPacket.TYPE, SyncEntityCustomizationsPacket.STREAM_CODEC, SyncEntityCustomizationsPacket::handle);
+        registerS2C(SyncEntityCustomizationPacket.TYPE, SyncEntityCustomizationPacket.STREAM_CODEC, SyncEntityCustomizationPacket::handle);
 
         // Client -> Server
         registerC2S(AbilityKeyChangePacket.TYPE, AbilityKeyChangePacket.STREAM_CODEC, AbilityKeyChangePacket::handle);
         registerC2S(AbilityClickedPacket.TYPE, AbilityClickedPacket.STREAM_CODEC, AbilityClickedPacket::handle);
         registerC2S(BuyAbilityPacket.TYPE, BuyAbilityPacket.STREAM_CODEC, BuyAbilityPacket::handle);
+        registerC2S(SelectCustomizationPacket.TYPE, SelectCustomizationPacket.STREAM_CODEC, SelectCustomizationPacket::handle);
 
         // Data Sync
         DataSyncUtil.registerEntitySync((entity, consumer) -> {
             if (entity instanceof LivingEntity livingEntity) {
                 consumer.accept(SyncEntityPowersPacket.create(livingEntity));
+                consumer.accept(SyncEntityCustomizationsPacket.create(livingEntity));
             }
         });
     }

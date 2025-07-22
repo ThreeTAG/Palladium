@@ -30,11 +30,11 @@ public class ColorableSuitStandLayer extends RenderLayer<SuitStandRenderState, S
             if (renderState.customName != null && "Lucraft".equals(renderState.customName.getString())) {
                 int j = 25;
                 int k = Mth.floor(renderState.ageInTicks);
-                int l = k / 25 + renderState.id;
+                int l = k / j + renderState.id;
                 int m = DyeColor.values().length;
                 int n = l % m;
                 int o = (l + 1) % m;
-                float h = ((float) (k % 25) + Mth.frac(renderState.ageInTicks)) / 25.0F;
+                float h = ((float) (k % j) + Mth.frac(renderState.ageInTicks)) / 25.0F;
                 int p = Sheep.getColor(DyeColor.byId(n));
                 int q = Sheep.getColor(DyeColor.byId(o));
                 r = ARGB.lerp(h, p, q);
