@@ -23,6 +23,7 @@ public class DefaultPowerHolder implements IPowerHolder {
     public DefaultPowerHolder(LivingEntity entity, Power power, IPowerValidator validator) {
         this.entity = entity;
         this.power = power;
+        this.validator = validator;
 
         final Map<String, AbilityInstance> abilities = new HashMap<>();
         for (AbilityConfiguration ability : this.getPower().getAbilities()) {
@@ -37,8 +38,6 @@ public class DefaultPowerHolder implements IPowerHolder {
             energyBars.put(energyBar.getName(), new EnergyBar(this, energyBar));
         }
         this.energyBars = ImmutableMap.copyOf(energyBars);
-
-        this.validator = validator;
     }
 
     @Override
