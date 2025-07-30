@@ -16,22 +16,28 @@ public class DefaultPowerHolder implements IPowerHolder {
 
     public final LivingEntity entity;
     private final Power power;
-    private final Map<String, AbilityInstance> entryMap = new HashMap<>();
-    private final Map<String, EnergyBar> energyBars = new LinkedHashMap<>();
+    private final ImmutableMap<String, AbilityInstance> abilityInstances;
+    private final ImmutableMap<String, EnergyBar> energyBars;
     private IPowerValidator validator;
 
     public DefaultPowerHolder(LivingEntity entity, Power power, IPowerValidator validator) {
         this.entity = entity;
         this.power = power;
+        this.validator = validator;
+
+        final Map<String, AbilityInstance> abilities = new HashMap<>();
         for (AbilityConfiguration ability : this.getPower().getAbilities()) {
             AbilityInstance entry = new AbilityInstance(ability, this);
             entry.id = ability.getId();
-            this.entryMap.put(ability.getId(), entry);
+            abilities.put(ability.getId(), entry);
         }
+        this.abilityInstances = ImmutableMap.copyOf(abilities);
+
+        final Map<String, EnergyBar> energyBars = new LinkedHashMap<>();
         for (EnergyBarConfiguration energyBar : this.getPower().getEnergyBars()) {
-            this.energyBars.put(energyBar.getName(), new EnergyBar(this, energyBar));
+            energyBars.put(energyBar.getName(), new EnergyBar(this, energyBar));
         }
-        this.validator = validator;
+        this.energyBars = ImmutableMap.copyOf(energyBars);
     }
 
     @Override
@@ -46,7 +52,7 @@ public class DefaultPowerHolder implements IPowerHolder {
 
     @Override
     public void fromNBT(CompoundTag tag) {
-        for (Map.Entry<String, AbilityInstance> entry : this.entryMap.entrySet()) {
+        for (Map.Entry<String, AbilityInstance> entry : this.abilityInstances.entrySet()) {
             if (tag.contains(entry.getKey())) {
                 CompoundTag abData = tag.getCompound(entry.getKey());
                 entry.getValue().fromNBT(abData);
@@ -67,7 +73,7 @@ public class DefaultPowerHolder implements IPowerHolder {
     public CompoundTag toNBT(boolean toDisk) {
         CompoundTag tag = new CompoundTag();
 
-        for (Map.Entry<String, AbilityInstance> entry : this.entryMap.entrySet()) {
+        for (Map.Entry<String, AbilityInstance> entry : this.abilityInstances.entrySet()) {
             CompoundTag abData = entry.getValue().toNBT(toDisk);
             tag.put(entry.getKey(), abData);
         }
@@ -82,32 +88,36 @@ public class DefaultPowerHolder implements IPowerHolder {
     }
 
     @Override
-    public Map<String, AbilityInstance> getAbilities() {
-        return ImmutableMap.copyOf(this.entryMap);
+    public ImmutableMap<String, AbilityInstance> getAbilities() {
+        return this.abilityInstances;
     }
 
     @Override
-    public Map<String, EnergyBar> getEnergyBars() {
-        return ImmutableMap.copyOf(this.energyBars);
+    public ImmutableMap<String, EnergyBar> getEnergyBars() {
+        return this.energyBars;
     }
 
     @Override
     public void tick() {
-        this.entryMap.forEach((id, entry) -> entry.tick(entity, this));
+        for (AbilityInstance abilityInstance : abilityInstances.values()) {
+            abilityInstance.tick(entity, this);
+        }
 
         if (!this.getEntity().level().isClientSide) {
-            this.energyBars.forEach((id, bar) -> bar.tick(entity));
+            for (EnergyBar energyBar : energyBars.values()) {
+                energyBar.tick(entity);
+            }
         }
     }
 
     @Override
     public void firstTick() {
-        this.entryMap.forEach((id, entry) -> entry.getConfiguration().getAbility().firstTick(entity, entry, this, entry.isEnabled()));
+        this.abilityInstances.forEach((id, entry) -> entry.getConfiguration().getAbility().firstTick(entity, entry, this, entry.isEnabled()));
     }
 
     @Override
     public void lastTick() {
-        this.entryMap.forEach((id, entry) -> entry.getConfiguration().getAbility().lastTick(entity, entry, this, entry.isEnabled()));
+        this.abilityInstances.forEach((id, entry) -> entry.getConfiguration().getAbility().lastTick(entity, entry, this, entry.isEnabled()));
     }
 
     @Override
