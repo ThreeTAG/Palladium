@@ -16,6 +16,8 @@ import net.threetag.palladium.util.property.PropertyManager;
 import net.threetag.palladium.util.property.SyncType;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class AbilityInstance {
 
     private final AbilityConfiguration abilityConfiguration;
@@ -125,52 +127,26 @@ public class AbilityInstance {
                 this.abilityConfiguration.getEnablingConditions().forEach(condition -> condition.init(entity, this, this.propertyManager));
             }
 
-            boolean unlocked = true;
+            final boolean unlocked = !entity.isSpectator() && this.evaluateConditions(this.abilityConfiguration.getUnlockingConditions(), entity);
             boolean sync = false;
-
-            for (Condition unlockingCondition : this.abilityConfiguration.getUnlockingConditions()) {
-                if (!unlockingCondition.active(DataContext.forAbility(entity, this))) {
-                    unlocked = false;
-                    break;
-                }
-            }
-
-            if (entity.isSpectator()) {
-                unlocked = false;
-            }
 
             if (this.unlocked != unlocked) {
                 this.unlocked = unlocked;
                 sync = true;
             }
 
-            boolean enabled = this.unlocked;
-
-            if (this.unlocked) {
-                for (Condition enablingCondition : this.abilityConfiguration.getEnablingConditions()) {
-                    if (!enablingCondition.active(DataContext.forAbility(entity, this))) {
-                        enabled = false;
-                        break;
-                    }
-                }
-            }
-
-            if (entity.isSpectator()) {
-                enabled = false;
-            }
-
+            final boolean enabled = this.unlocked && this.evaluateConditions(this.abilityConfiguration.getEnablingConditions(), entity);
             if (this.enabled != enabled) {
                 if (!this.enabled) {
                     this.enabled = true;
-                    sync = true;
                     this.abilityConfiguration.getAbility().firstTick(entity, this, powerHolder, this.isEnabled());
                 } else {
                     this.keyPressed = false;
                     this.abilityConfiguration.getAbility().lastTick(entity, this, powerHolder, this.isEnabled());
                     this.enabled = false;
-                    sync = true;
-
                 }
+
+                sync = true;
             }
 
             if (sync || lifetime == 0) {
@@ -188,11 +164,12 @@ public class AbilityInstance {
             this.enabledTicks--;
         }
 
-        if (this.abilityConfiguration.getCooldownType() == CooldownType.STATIC) {
+        final CooldownType cooldownType = this.abilityConfiguration.getCooldownType();
+        if (cooldownType == CooldownType.STATIC) {
             if (this.cooldown > 0) {
                 this.cooldown--;
             }
-        } else if (this.abilityConfiguration.getCooldownType() == CooldownType.DYNAMIC) {
+        } else if (cooldownType == CooldownType.DYNAMIC) {
             if (this.isEnabled() && this.cooldown > 0) {
                 this.cooldown--;
             } else if (!this.isEnabled() && this.cooldown < this.maxCooldown) {
@@ -206,6 +183,15 @@ public class AbilityInstance {
 
         this.lifetime++;
         this.abilityConfiguration.getAbility().tick(entity, this, powerHolder, this.isEnabled());
+    }
+
+    private boolean evaluateConditions(List<Condition> conditions, LivingEntity entity) {
+        for (Condition condition : conditions) {
+            if (!condition.active(DataContext.forAbility(entity, this))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void syncState(LivingEntity entity) {
