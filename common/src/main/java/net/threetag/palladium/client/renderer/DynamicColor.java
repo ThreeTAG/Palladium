@@ -27,8 +27,12 @@ public abstract class DynamicColor {
         return new Static(color);
     }
 
+    public static DynamicColor variable(ITextureVariable variable) {
+        return new Variable(variable);
+    }
+
     public static DynamicColor stringWithVariables(String raw) {
-        return new StringVariables(raw);
+        return new StringWithVariables(raw);
     }
 
     public static DynamicColor segmented(ColorSegment red, ColorSegment green, ColorSegment blue) {
@@ -83,8 +87,17 @@ public abstract class DynamicColor {
             } else {
                 throw new JsonParseException("Color array must either have 3 (RGB) or 4 (RGBA) segments");
             }
+        } else if (element.isJsonObject()) {
+            var json = element.getAsJsonObject();
+            var serializer = DynamicTextureManager.getTextureVariableSerializer(GsonUtil.getAsResourceLocation(json, "type"));
+
+            if (serializer != null) {
+                return variable(serializer.parse(json));
+            } else {
+                throw new JsonParseException("Unknown texture variable serializer type " + GsonUtil.getAsResourceLocation(json, "type"));
+            }
         } else {
-            throw new JsonParseException("Color must either be defined as RGB-string or array of integers/variables");
+            throw new JsonParseException("Color must either be defined as RGB-string, a variable, or array of integers/variables");
         }
     }
 
@@ -102,12 +115,32 @@ public abstract class DynamicColor {
         }
     }
 
-    private static class StringVariables extends DynamicColor {
+    private static class Variable extends DynamicColor {
+
+        private final ITextureVariable variable;
+
+        private Variable(ITextureVariable variable) {
+            this.variable = variable;
+        }
+
+        @Override
+        public Color getColor(DataContext context, @Nullable Function<String, String> stringConverter) {
+            Object value = this.variable.get(context);
+            if (value instanceof Number number) {
+                return new Color(number.intValue());
+            } else if (value instanceof String s) {
+                return Color.decode(s.startsWith("#") ? s : "#" + s);
+            }
+            return Color.WHITE;
+        }
+    }
+
+    private static class StringWithVariables extends DynamicColor {
 
         private final String raw;
         private Color parsed;
 
-        private StringVariables(String raw) {
+        private StringWithVariables(String raw) {
             this.raw = raw;
 
             if (raw.lastIndexOf("#") > 0) {
