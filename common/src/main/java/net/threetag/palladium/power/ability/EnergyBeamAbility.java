@@ -47,7 +47,8 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer, Comman
     public static final PalladiumProperty<Integer> SET_ON_FIRE_SECONDS = new IntegerProperty("set_on_fire_seconds").configurable("You can use this to set targeted entities on fire. If set to 0 it will not cause any.");
     public static final PalladiumProperty<Boolean> CAUSE_FIRE = new BooleanProperty("cause_fire").configurable("If enabled, targeted blocks will start to burn (fire will be placed).");
     public static final PalladiumProperty<Boolean> SMELT_BLOCKS = new BooleanProperty("smelt_blocks").configurable("If enabled, targeted blocks will turn into their smelting result (e.g. sand will turn into glass).");
-    public static final PalladiumProperty<CommandFunctionProperty.CommandFunctionParsing> COMMANDS_ON_HIT = new CommandFunctionProperty("commands_on_hit").sync(SyncType.NONE).disablePersistence().configurable("Sets the commands which get executed when the beam hits an object");
+    public static final PalladiumProperty<CommandFunctionProperty.CommandFunctionParsing> COMMANDS_ON_BLOCK_HIT = new CommandFunctionProperty("commands_on_block_hit").sync(SyncType.NONE).disablePersistence().configurable("Sets the commands which get executed when the beam hits an object");
+    public static final PalladiumProperty<CommandFunctionProperty.CommandFunctionParsing> COMMANDS_ON_ENTITY_HIT = new CommandFunctionProperty("commands_on_entity_hit").sync(SyncType.NONE).disablePersistence().configurable("Sets the commands which get executed when the beam hits an object");
 
     public static final PalladiumProperty<Vec3> TARGET = new Vec3Property("distance").sync(SyncType.NONE);
     public static final PalladiumProperty<Float> VALUE = new FloatProperty("value").sync(SyncType.NONE).disablePersistence();
@@ -62,7 +63,8 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer, Comman
                 .withProperty(SET_ON_FIRE_SECONDS, 0)
                 .withProperty(CAUSE_FIRE, false)
                 .withProperty(SMELT_BLOCKS, false)
-                .withProperty(COMMANDS_ON_HIT, new CommandFunctionProperty.CommandFunctionParsing(Collections.emptyList()));
+                .withProperty(COMMANDS_ON_BLOCK_HIT, new CommandFunctionProperty.CommandFunctionParsing(Collections.emptyList()))
+                .withProperty(COMMANDS_ON_ENTITY_HIT, new CommandFunctionProperty.CommandFunctionParsing(Collections.emptyList()));
         ;
     }
 
@@ -113,15 +115,17 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer, Comman
                 if (dmg > 0) {
                     var dmgSources = entity.level().damageSources();
                     var customType = entry.getProperty(DAMAGE_TYPE);
-                    var damageSrc = dmgSources.source(customType != null ? ResourceKey.create(Registries.DAMAGE_TYPE, customType) : (entity instanceof Player ? DamageTypes.PLAYER_ATTACK : DamageTypes.MOB_ATTACK), entity);
+                    var damageSrc = dmgSources.source(customType != null ? ResourceKey.create(Registries.DAMAGE_TYPE, customType) : (entity instanceof Player ? DamageTypes.PLAYER_ATTACK : DamageTypes.MOB_ATTACK), entity, entity);
                     entityHitResult.getEntity().hurt(damageSrc, dmg);
                 }
 
                 if (Platform.isClient()) {
                     this.spawnParticles(entity.level(), hit.getLocation(), entry);
-                } else if (entity.level() instanceof ServerLevel serverLevel) {
+                }
+
+                if (entity.level() instanceof ServerLevel serverLevel) {
                     var source = this.createCommandSourceStack(entity, serverLevel, hit.getLocation());
-                    var function = entry.getProperty(COMMANDS_ON_HIT).getCommandFunction(entity.level().getServer());
+                    var function = entry.getProperty(COMMANDS_ON_ENTITY_HIT).getCommandFunction(entity.level().getServer());
 
                     if (function != null) {
                         Objects.requireNonNull(entity.level().getServer()).getFunctions().execute(function, source.withSuppressedOutput().withMaximumPermission(2));
@@ -153,9 +157,11 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer, Comman
 
                     if (Platform.isClient()) {
                         this.spawnParticles(entity.level(), hit.getLocation(), entry);
-                    } else if (entity.level() instanceof ServerLevel serverLevel) {
+                    }
+
+                    if (entity.level() instanceof ServerLevel serverLevel) {
                         var source = this.createCommandSourceStack(entity, serverLevel, hit.getLocation());
-                        var function = entry.getProperty(COMMANDS_ON_HIT).getCommandFunction(entity.level().getServer());
+                        var function = entry.getProperty(COMMANDS_ON_BLOCK_HIT).getCommandFunction(entity.level().getServer());
 
                         if (function != null) {
                             Objects.requireNonNull(entity.level().getServer()).getFunctions().execute(function, source.withSuppressedOutput().withMaximumPermission(2));
