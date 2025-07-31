@@ -18,7 +18,7 @@ import net.threetag.palladiumcore.registry.PalladiumRegistry;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class Ability implements IDefaultDocumentedConfigurable {
+public class Ability implements IDefaultDocumentedConfigurable {
 
     public static final PalladiumRegistry<Ability> REGISTRY = PalladiumRegistry.create(Ability.class, Palladium.id("abilities"));
 
