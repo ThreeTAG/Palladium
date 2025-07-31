@@ -2,10 +2,14 @@ package net.threetag.palladium.power.ability;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.commands.CommandSource;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -30,7 +34,10 @@ import net.threetag.palladium.util.PalladiumBlockUtil;
 import net.threetag.palladium.util.property.*;
 import net.threetag.palladiumcore.util.Platform;
 
-public class EnergyBeamAbility extends Ability implements AnimationTimer {
+import java.util.Collections;
+import java.util.Objects;
+
+public class EnergyBeamAbility extends Ability implements AnimationTimer, CommandSource {
 
     public static final PalladiumProperty<ResourceLocation> BEAM = new ResourceLocationProperty("energy_beam").configurable("Configuration for the look of the beam. Check wiki for information.");
     public static final PalladiumProperty<ResourceLocation> DAMAGE_TYPE = new ResourceLocationProperty("damage_type").configurable("Damage type which is applied when an entity is hit. Uses normal player/mob attack if null/unchanged.");
@@ -40,6 +47,7 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer {
     public static final PalladiumProperty<Integer> SET_ON_FIRE_SECONDS = new IntegerProperty("set_on_fire_seconds").configurable("You can use this to set targeted entities on fire. If set to 0 it will not cause any.");
     public static final PalladiumProperty<Boolean> CAUSE_FIRE = new BooleanProperty("cause_fire").configurable("If enabled, targeted blocks will start to burn (fire will be placed).");
     public static final PalladiumProperty<Boolean> SMELT_BLOCKS = new BooleanProperty("smelt_blocks").configurable("If enabled, targeted blocks will turn into their smelting result (e.g. sand will turn into glass).");
+    public static final PalladiumProperty<CommandFunctionProperty.CommandFunctionParsing> COMMANDS_ON_HIT = new CommandFunctionProperty("commands_on_hit").sync(SyncType.NONE).disablePersistence().configurable("Sets the commands which get executed when the beam hits an object");
 
     public static final PalladiumProperty<Vec3> TARGET = new Vec3Property("distance").sync(SyncType.NONE);
     public static final PalladiumProperty<Float> VALUE = new FloatProperty("value").sync(SyncType.NONE).disablePersistence();
@@ -53,7 +61,9 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer {
                 .withProperty(SPEED, 0.5F)
                 .withProperty(SET_ON_FIRE_SECONDS, 0)
                 .withProperty(CAUSE_FIRE, false)
-                .withProperty(SMELT_BLOCKS, false);
+                .withProperty(SMELT_BLOCKS, false)
+                .withProperty(COMMANDS_ON_HIT, new CommandFunctionProperty.CommandFunctionParsing(Collections.emptyList()));
+        ;
     }
 
     @Override
@@ -109,6 +119,13 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer {
 
                 if (Platform.isClient()) {
                     this.spawnParticles(entity.level(), hit.getLocation(), entry);
+                } else if (entity.level() instanceof ServerLevel serverLevel) {
+                    var source = this.createCommandSourceStack(entity, serverLevel, hit.getLocation());
+                    var function = entry.getProperty(COMMANDS_ON_HIT).getCommandFunction(entity.level().getServer());
+
+                    if (function != null) {
+                        Objects.requireNonNull(entity.level().getServer()).getFunctions().execute(function, source.withSuppressedOutput().withMaximumPermission(2));
+                    }
                 }
             } else if (hit instanceof BlockHitResult blockHitResult) {
                 BlockState blockState = entity.level().getBlockState(blockHitResult.getBlockPos());
@@ -136,10 +153,23 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer {
 
                     if (Platform.isClient()) {
                         this.spawnParticles(entity.level(), hit.getLocation(), entry);
+                    } else if (entity.level() instanceof ServerLevel serverLevel) {
+                        var source = this.createCommandSourceStack(entity, serverLevel, hit.getLocation());
+                        var function = entry.getProperty(COMMANDS_ON_HIT).getCommandFunction(entity.level().getServer());
+
+                        if (function != null) {
+                            Objects.requireNonNull(entity.level().getServer()).getFunctions().execute(function, source.withSuppressedOutput().withMaximumPermission(2));
+                        }
                     }
                 }
             }
         }
+    }
+
+    public CommandSourceStack createCommandSourceStack(LivingEntity entity, ServerLevel serverLevel, Vec3 position) {
+        return new CommandSourceStack(this, position, entity.getRotationVector(),
+                serverLevel, 2, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity)
+                .withSuppressedOutput();
     }
 
     @Environment(EnvType.CLIENT)
@@ -170,5 +200,25 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer {
             return 1F;
         }
         return Mth.lerp(partialTick, entry.getProperty(PREV_VALUE), entry.getProperty(VALUE));
+    }
+
+    @Override
+    public void sendSystemMessage(Component component) {
+
+    }
+
+    @Override
+    public boolean acceptsSuccess() {
+        return false;
+    }
+
+    @Override
+    public boolean acceptsFailure() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldInformAdmins() {
+        return false;
     }
 }
