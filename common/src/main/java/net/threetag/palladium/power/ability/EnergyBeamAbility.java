@@ -113,7 +113,7 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer, Comman
                 if (dmg > 0) {
                     var dmgSources = entity.level().damageSources();
                     var customType = entry.getProperty(DAMAGE_TYPE);
-                    var damageSrc = dmgSources.source(customType != null ? ResourceKey.create(Registries.DAMAGE_TYPE, customType) : (entity instanceof Player ? DamageTypes.PLAYER_ATTACK : DamageTypes.MOB_ATTACK), entity, null);
+                    var damageSrc = dmgSources.source(customType != null ? ResourceKey.create(Registries.DAMAGE_TYPE, customType) : (entity instanceof Player ? DamageTypes.PLAYER_ATTACK : DamageTypes.MOB_ATTACK), entity);
                     entityHitResult.getEntity().hurt(damageSrc, dmg);
                 }
 
