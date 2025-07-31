@@ -47,7 +47,7 @@ public class PlaySoundAbility extends Ability {
     public void firstTick(LivingEntity entity, AbilityInstance entry, IPowerHolder holder, boolean enabled) {
         if (enabled) {
             if (entry.getProperty(LOOPING)) {
-                if (Platform.isClient()) {
+                if (Platform.isClient() && entity.level().isClientSide) {
                     this.startSound(entity, entry);
                 }
             } else if (!entity.level().isClientSide) {
