@@ -1965,12 +1965,36 @@ false</td>
 <td>
 false</td>
 </tr>
+<tr>
+<td>
+commands_on_block_hit</td>
+<td>
+CommandFunctionParsing</td>
+<td>
+Sets the commands which get executed when the beam hits an object</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+[]</td>
+</tr>
+<tr>
+<td>
+commands_on_entity_hit</td>
+<td>
+CommandFunctionParsing</td>
+<td>
+Sets the commands which get executed when the beam hits an object</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+[]</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:energy_beam","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","energy_beam":"example:energy_beam","damage_type":"null","damage":5.0,"max_distance":30.0,"speed":0.5,"set_on_fire_seconds":0,"cause_fire":false,"smelt_blocks":false}</pre>
+{"type":"palladium:energy_beam","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","energy_beam":"example:energy_beam","damage_type":"null","damage":5.0,"max_distance":30.0,"speed":0.5,"set_on_fire_seconds":0,"cause_fire":false,"smelt_blocks":false,"commands_on_block_hit":[],"commands_on_entity_hit":[]}</pre>
 </div>
 <hr>
 
@@ -4059,12 +4083,24 @@ false</td>
 <td>
 false</td>
 </tr>
+<tr>
+<td>
+play_others</td>
+<td>
+Boolean</td>
+<td>
+If 'play_self' is disabled, this determines whether or not the sound should be played to the players around the player executing the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:play_sound","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","sound":"minecraft:item.elytra.flying","volume":1.0,"pitch":1.0,"looping":false,"play_self":false}</pre>
+{"type":"palladium:play_sound","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","sound":"minecraft:item.elytra.flying","volume":1.0,"pitch":1.0,"looping":false,"play_self":false,"play_others":false}</pre>
 </div>
 <hr>
 

@@ -209,10 +209,14 @@ public class PowersScreen extends Screen {
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        int x1 = ((this.width - WINDOW_WIDTH) / 2) + WINDOW_INSIDE_X;
+        int y1 = ((this.height - WINDOW_HEIGHT) / 2) + WINDOW_INSIDE_Y;
+        boolean inWindow = mouseX >= x1 && mouseX <= x1 + WINDOW_INSIDE_WIDTH && mouseY >= y1 && mouseY <= y1 + WINDOW_INSIDE_HEIGHT;
+
         if (button != 0) {
             this.isScrolling = false;
             return false;
-        } else {
+        } else if (this.isScrolling || inWindow) {
             if (!this.isScrolling) {
                 this.isScrolling = true;
             } else if (this.selectedTab instanceof TreePowerTab tree) {
@@ -221,6 +225,14 @@ public class PowersScreen extends Screen {
 
             return true;
         }
+
+        return false;
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        this.isScrolling = false;
+        return super.mouseReleased(mouseX, mouseY, button);
     }
 
     private void renderInside(GuiGraphics guiGraphics, int mouseX, int mouseY, int offsetX, int offsetY, float partialTick) {
