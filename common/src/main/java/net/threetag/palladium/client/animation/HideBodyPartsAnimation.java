@@ -2,9 +2,9 @@ package net.threetag.palladium.client.animation;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.client.renderer.entity.ExtendedEntityRenderState;
+import net.threetag.palladium.data.DataContextType;
 import net.threetag.palladium.entity.BodyPart;
-import net.threetag.palladium.util.RenderUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +21,8 @@ public class HideBodyPartsAnimation {
             CACHED_VISIBILITIES.put(bodyPart, modelPart == null || modelPart.visible);
         }
 
-        if (RenderUtil.getCurrentlyRenderedEntity() instanceof LivingEntity living) {
-            for (BodyPart part : BodyPart.getHiddenBodyParts(living)) {
+        if (state instanceof ExtendedEntityRenderState ext && ext.palladium$hasData(DataContextType.Client.HIDDEN_BODY_PARTS)) {
+            for (BodyPart part : ext.palladium$getData(DataContextType.Client.HIDDEN_BODY_PARTS)) {
                 part.setVisibility(model, false);
             }
         }

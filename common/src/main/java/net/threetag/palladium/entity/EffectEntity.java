@@ -12,6 +12,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.threetag.palladium.entity.effect.EntityEffect;
 import net.threetag.palladium.registry.PalladiumRegistries;
 
@@ -31,17 +33,17 @@ public class EffectEntity extends Entity implements EntitySpawnExtension {
         super(entityType, world);
     }
 
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(IS_DONE_PLAYING, false);
-        builder.define(DATA, new CompoundTag());
-    }
-
     public EffectEntity(Level worldIn, Entity anchor, EntityEffect entityEffect) {
         this(PalladiumEntityTypes.EFFECT.get(), worldIn);
         this.anchorId = anchor.getId();
         this.entityEffect = entityEffect;
-        this.moveTo(anchor.getX(), anchor.getY(), anchor.getZ(), anchor.getYRot(), anchor.getXRot());
+        this.snapTo(anchor.position(), anchor.getYRot(), anchor.getXRot());
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(IS_DONE_PLAYING, false);
+        builder.define(DATA, new CompoundTag());
     }
 
     public Entity getAnchorEntity() {
@@ -59,7 +61,7 @@ public class EffectEntity extends Entity implements EntitySpawnExtension {
                 this.discard();
             } else {
                 this.entityEffect.tick(this, anchor);
-                this.moveTo(anchor.getX(), anchor.getY(), anchor.getZ(), anchor.getYRot(), anchor.getXRot());
+                this.setOldPosAndRot(anchor.position(), anchor.getYRot(), anchor.getXRot());
             }
         } else {
             this.discard();
@@ -131,14 +133,14 @@ public class EffectEntity extends Entity implements EntitySpawnExtension {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag compound) {
-        this.entityEffect = PalladiumRegistries.ENTITY_EFFECT.getValue(ResourceLocation.parse(compound.getString("entity_effect")));
-        this.anchorId = compound.getInt("anchor_id");
+    protected void readAdditionalSaveData(ValueInput input) {
+        this.entityEffect = PalladiumRegistries.ENTITY_EFFECT.getValue(ResourceLocation.parse(input.getStringOr("entity_effect", "")));
+        this.anchorId = input.getIntOr("anchor_id", -1);
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
-        compound.putString("entity_effect", Objects.requireNonNull(PalladiumRegistries.ENTITY_EFFECT.getKey(this.entityEffect)).toString());
-        compound.putInt("anchor_id", this.anchorId);
+    protected void addAdditionalSaveData(ValueOutput output) {
+        output.putString("entity_effect", Objects.requireNonNull(PalladiumRegistries.ENTITY_EFFECT.getKey(this.entityEffect)).toString());
+        output.putInt("anchor_id", this.anchorId);
     }
 }

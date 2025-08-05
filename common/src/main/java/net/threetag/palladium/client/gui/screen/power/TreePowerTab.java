@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -179,8 +180,8 @@ public class TreePowerTab extends PowerTab {
         }
 
         guiGraphics.enableScissor(x, y, x + PowersScreen.WINDOW_INSIDE_WIDTH, y + PowersScreen.WINDOW_INSIDE_HEIGHT);
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate((float) x, (float) y, 0.0F);
+        guiGraphics.pose().pushMatrix();
+        guiGraphics.pose().translate((float) x, (float) y);
         TextureReference backgroundTexture = this.powerHolder.getPower().value().getBackground();
         var texture = backgroundTexture != null ? backgroundTexture.getTexture(DataContext.forPower(minecraft.player, this.powerHolder)) : ResourceLocation.withDefaultNamespace("textures/block/red_wool.png");
 
@@ -191,7 +192,7 @@ public class TreePowerTab extends PowerTab {
 
         for (int m = -1; m <= 15; ++m) {
             for (int n = -1; n <= 11; ++n) {
-                guiGraphics.blit(RenderType::guiTextured, texture, k + 16 * m, l + 16 * n, 0.0F, 0.0F, 16, 16, 16, 16, 16, 16);
+                guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, k + 16 * m, l + 16 * n, 0.0F, 0.0F, 16, 16, 16, 16, 16, 16);
             }
         }
 
@@ -207,14 +208,12 @@ public class TreePowerTab extends PowerTab {
             widget.drawIcon(this.minecraft, guiGraphics, i + widget.getX() + 16, j + widget.getY() + 13);
         }
 
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
         guiGraphics.disableScissor();
     }
 
     @Override
     public void drawTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int width, int height, float partialTick, boolean overlayActive) {
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(0.0F, 0.0F, -200.0F);
         guiGraphics.fill(0, 0, PowersScreen.WINDOW_INSIDE_WIDTH, PowersScreen.WINDOW_INSIDE_HEIGHT, Mth.floor(this.fade * 255.0F) << 24);
         boolean flag = false;
 
@@ -232,8 +231,6 @@ public class TreePowerTab extends PowerTab {
                 }
             }
         }
-
-        guiGraphics.pose().popPose();
 
         if (!overlayActive) {
             if (flag) {

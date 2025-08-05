@@ -5,7 +5,6 @@ import io.netty.util.collection.IntObjectHashMap;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumConfig;
@@ -13,6 +12,7 @@ import net.threetag.palladium.client.gui.component.CompoundUiComponent;
 import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.component.UiComponent;
 import net.threetag.palladium.client.texture.TextureReference;
+import net.threetag.palladium.core.registry.GuiLayerRegistry;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.power.PowerHolder;
 import net.threetag.palladium.power.PowerUtil;
@@ -22,7 +22,7 @@ import net.threetag.palladium.power.energybar.EnergyBarInstance;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbilityBar implements LayeredDraw.Layer, UiComponent, ClientTickEvent.Client {
+public class AbilityBar implements GuiLayerRegistry.GuiLayer, UiComponent, ClientTickEvent.Client {
 
     public static final AbilityBar INSTANCE = new AbilityBar();
     private static final ResourceLocation TEXTURE = Palladium.id("textures/gui/ability_bar.png");

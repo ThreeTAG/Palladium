@@ -55,18 +55,18 @@ dependencies {
     modImplementation include ("maven.modrinth:midnightlib:${rootProject.midnightlib_version}-neoforge")
 
     // GeckoLib
-    modImplementation "software.bernie.geckolib:geckolib-neoforge-${rootProject.minecraft_version}:${rootProject.geckolib_version}"
+    modImplementation "software.bernie.geckolib:geckolib-neoforge-${rootProject.geckolib_version}"
 
     // Player Animator
 //    modImplementation include("dev.kosmx.player-anim:player-animation-lib-forge:${rootProject.player_animator_version}")
 
     // Accessories
-    modImplementation("io.wispforest:accessories-neoforge:${rootProject.accessories_version}")
-    forgeRuntimeLibrary("blue.endless:jankson:1.2.2")
-    forgeRuntimeLibrary("io.wispforest:endec:0.1.9")
-    forgeRuntimeLibrary("io.wispforest.endec:gson:0.1.5")
-    forgeRuntimeLibrary("io.wispforest.endec:jankson:0.1.6")
-    forgeRuntimeLibrary("io.wispforest.endec:netty:0.1.5")
+//    modImplementation("io.wispforest:accessories-neoforge:${rootProject.accessories_version}")
+//    forgeRuntimeLibrary("blue.endless:jankson:1.2.2")
+//    forgeRuntimeLibrary("io.wispforest:endec:0.1.9")
+//    forgeRuntimeLibrary("io.wispforest.endec:gson:0.1.5")
+//    forgeRuntimeLibrary("io.wispforest.endec:jankson:0.1.6")
+//    forgeRuntimeLibrary("io.wispforest.endec:netty:0.1.5")
 
     // Mocha
     implementation include ("team.unnamed:mocha:3.0.1")
@@ -76,13 +76,6 @@ dependencies {
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle(project(path: ':common', configuration: 'transformProductionNeoForge')) { transitive false }
-}
-
-tasks {
-    compileJava {
-        sourceCompatibility = "8"
-        targetCompatibility = "8"
-    }
 }
 
 processResources {

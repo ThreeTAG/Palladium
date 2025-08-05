@@ -2,6 +2,7 @@ package net.threetag.palladium.compat.geckolib.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -9,9 +10,12 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
@@ -20,28 +24,32 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.processing.AnimationProcessor;
+import software.bernie.geckolib.animatable.processing.AnimationState;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.object.Color;
-import software.bernie.geckolib.renderer.GeoRenderer;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
+import software.bernie.geckolib.renderer.base.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayersContainer;
 import software.bernie.geckolib.util.RenderUtil;
 
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 @SuppressWarnings("rawtypes")
-public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer<GeoRenderLayerState> {
+public class GeoRenderLayerRenderer<R extends LivingEntityRenderState & GeoRenderState> extends HumanoidModel implements GeoRenderer<GeoRenderLayerState, DataContext, R> {
 
-    protected final GeoRenderLayersContainer<GeoRenderLayerState> renderLayers = new GeoRenderLayersContainer<>(this);
+    protected final GeoRenderLayersContainer<GeoRenderLayerState, DataContext, R> renderLayers = new GeoRenderLayersContainer<>(this);
     protected final GeoModel<GeoRenderLayerState> model;
 
-    protected GeoRenderLayerState animatable;
-    protected HumanoidModel<?> baseModel;
     protected float scaleWidth = 1;
     protected float scaleHeight = 1;
 
@@ -50,22 +58,12 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
 
     protected final Map<net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone, String> bones;
     protected BakedGeoModel lastModel = null;
-    protected GeoBone head = null;
-    protected GeoBone body = null;
-    protected GeoBone rightArm = null;
-    protected GeoBone leftArm = null;
-    protected GeoBone rightLeg = null;
-    protected GeoBone leftLeg = null;
-
-    protected Entity currentEntity = null;
-    protected ItemStack currentStack = null;
-    protected EquipmentSlot currentSlot = null;
-    protected MultiBufferSource bufferSource = null;
-    protected float partialTick;
-    protected float limbSwing;
-    protected float limbSwingAmount;
-    protected float netHeadYaw;
-    protected float headPitch;
+    protected GeoBone headBone = null;
+    protected GeoBone bodyBone = null;
+    protected GeoBone rightArmBone = null;
+    protected GeoBone leftArmBone = null;
+    protected GeoBone rightLegBone = null;
+    protected GeoBone leftLegBone = null;
 
     public GeoRenderLayerRenderer(Map<net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone, String> bones, GeoModel<GeoRenderLayerState> model) {
         super(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_INNER_ARMOR));
@@ -82,57 +80,14 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
     }
 
     /**
-     * Gets the {@link GeoRenderLayerState} instance currently being rendered
-     */
-    public GeoRenderLayerState getAnimatable() {
-        return this.animatable;
-    }
-
-    /**
-     * Returns the entity currently being rendered with armour equipped
-     */
-    public Entity getCurrentEntity() {
-        return this.currentEntity;
-    }
-
-    /**
-     * Returns the ItemStack pertaining to the current piece of armor being rendered
-     */
-    public ItemStack getCurrentStack() {
-        return this.currentStack;
-    }
-
-    /**
-     * Returns the equipped slot of the armor piece being rendered
-     */
-    public EquipmentSlot getCurrentSlot() {
-        return this.currentSlot;
-    }
-
-    /**
-     * Gets the {@link RenderType} to render the given animatable with
-     * <p>
-     * Uses the {@link RenderType#armorCutoutNoCull} {@code RenderType} by default
-     * <p>
-     * Override this to change the way a model will render (such as translucent models, etc)
+     * Returns the list of registered {@link GeoRenderLayer GeoRenderLayers} for this renderer
      */
     @Override
-    public RenderType getRenderType(GeoRenderLayerState animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.armorCutoutNoCull(texture);
-    }
-
-    /**
-     * Returns the list of registered {@link software.bernie.geckolib.renderer.layer.GeoRenderLayer GeoRenderLayers} for this renderer
-     */
-    @Override
-    public List<software.bernie.geckolib.renderer.layer.GeoRenderLayer<GeoRenderLayerState>> getRenderLayers() {
+    public List<GeoRenderLayer<GeoRenderLayerState, DataContext, R>> getRenderLayers() {
         return this.renderLayers.getRenderLayers();
     }
 
-    /**
-     * Adds a {@link software.bernie.geckolib.renderer.layer.GeoRenderLayer} to this renderer, to be called after the main model is rendered each frame
-     */
-    public GeoRenderLayerRenderer addRenderLayer(GeoRenderLayer<GeoRenderLayerState> renderLayer) {
+    public GeoRenderLayerRenderer<R> addRenderLayer(GeoRenderLayer<GeoRenderLayerState, DataContext, R> renderLayer) {
         this.renderLayers.addLayer(renderLayer);
         return this;
     }
@@ -140,194 +95,70 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
     /**
      * Sets a scale override for this renderer, telling GeckoLib to pre-scale the model
      */
-    public GeoRenderLayerRenderer withScale(float scale) {
+    public GeoRenderLayerRenderer<R> withScale(float scale) {
         return withScale(scale, scale);
     }
 
     /**
      * Sets a scale override for this renderer, telling GeckoLib to pre-scale the model
      */
-    public GeoRenderLayerRenderer withScale(float scaleWidth, float scaleHeight) {
+    public GeoRenderLayerRenderer<R> withScale(float scaleWidth, float scaleHeight) {
         this.scaleWidth = scaleWidth;
         this.scaleHeight = scaleHeight;
+
         return this;
     }
 
-    public GeoBone getBone(GeoModel<GeoRenderLayerState> model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone bone) {
-        return model.getBone(this.bones.getOrDefault(bone, bone.getSerializedName())).orElse(null);
-    }
-
-    /**
-     * Returns the 'head' GeoBone from this model
-     * <p>
-     * Override if your geo model has different bone names for these bones
-     *
-     * @return The bone for the head model piece, or null if not using it
-     */
-    @Nullable
-    public GeoBone getHeadBone(GeoModel<GeoRenderLayerState> model) {
-        return this.getBone(model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.HEAD);
-    }
-
-    /**
-     * Returns the 'body' GeoBone from this model
-     * <p>
-     * Override if your geo model has different bone names for these bones
-     *
-     * @return The bone for the body model piece, or null if not using it
-     */
-    @Nullable
-    public GeoBone getBodyBone(GeoModel<GeoRenderLayerState> model) {
-        return this.getBone(model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.BODY);
-    }
-
-    /**
-     * Returns the 'right arm' GeoBone from this model
-     * <p>
-     * Override if your geo model has different bone names for these bones
-     *
-     * @return The bone for the right arm model piece, or null if not using it
-     */
-    @Nullable
-    public GeoBone getRightArmBone(GeoModel<GeoRenderLayerState> model) {
-        return this.getBone(model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.RIGHT_ARM);
-    }
-
-    /**
-     * Returns the 'left arm' GeoBone from this model
-     * <p>
-     * Override if your geo model has different bone names for these bones
-     *
-     * @return The bone for the left arm model piece, or null if not using it
-     */
-    @Nullable
-    public GeoBone getLeftArmBone(GeoModel<GeoRenderLayerState> model) {
-        return this.getBone(model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.LEFT_ARM);
-    }
-
-    /**
-     * Returns the 'right leg' GeoBone from this model
-     * <p>
-     * Override if your geo model has different bone names for these bones
-     *
-     * @return The bone for the right leg model piece, or null if not using it
-     */
-    @Nullable
-    public GeoBone getRightLegBone(GeoModel<GeoRenderLayerState> model) {
-        return this.getBone(model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.RIGHT_LEG);
-    }
-
-    /**
-     * Returns the 'left leg' GeoBone from this model
-     * <p>
-     * Override if your geo model has different bone names for these bones
-     *
-     * @return The bone for the left leg model piece, or null if not using it
-     */
-    @Nullable
-    public GeoBone getLeftLegBone(GeoModel<GeoRenderLayerState> model) {
-        return this.getBone(model, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.LEFT_LEG);
-    }
-
-    /**
-     * Gets a tint-applying color to render the given animatable with
-     * <p>
-     * Returns {@link Color#WHITE} by default
-     */
     @Override
-    public Color getRenderColor(GeoRenderLayerState animatable, float partialTick, int packedLight) {
-        return this.currentStack.is(ItemTags.DYEABLE) ? Color.ofOpaque(DyedItemColor.getOrDefault(this.currentStack, -6265536)) : Color.WHITE;
+    public long getInstanceId(GeoRenderLayerState animatable, DataContext relatedObject) {
+        return GeoRenderer.super.getInstanceId(animatable, relatedObject);
     }
 
-    /**
-     * Called before rendering the model to buffer. Allows for render modifications and preparatory work such as scaling and translating
-     * <p>
-     * {@link PoseStack} translations made here are kept until the end of the render process
-     */
+    @Nullable
     @Override
-    public void preRender(PoseStack poseStack, GeoRenderLayerState animatable, BakedGeoModel model, @Nullable MultiBufferSource bufferSource,
-                          @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight,
-                          int packedOverlay, int renderColor) {
-        this.entityRenderTranslations = new Matrix4f(poseStack.last().pose());
-
-        applyBaseModel(this.baseModel);
-        grabRelevantBones(model);
-        applyBaseTransformations(this.baseModel);
-        scaleModelForBaby(poseStack, animatable, partialTick, isReRender);
-        scaleModelForRender(this.scaleWidth, this.scaleHeight, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
-
-        if (!(this.currentEntity instanceof GeoAnimatable))
-            applyBoneVisibilityBySlot(this.currentSlot);
+    public RenderType getRenderType(R renderState, ResourceLocation texture) {
+        return RenderType.armorCutoutNoCull(texture);
     }
 
-    @ApiStatus.Internal
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, int renderColor) {
-        Minecraft mc = Minecraft.getInstance();
-
-        if (mc.levelRenderer.shouldShowEntityOutlines() && mc.shouldEntityAppearGlowing(this.currentEntity))
-            bufferSource = mc.renderBuffers().outlineBufferSource();
-
-        float partialTick = mc.getDeltaTracker().getGameTimeDeltaPartialTick(true);
-        RenderType renderType = getRenderType(this.animatable, getTextureLocation(this.animatable), bufferSource, partialTick);
-        VertexConsumer vertexConsumer = renderType == null ? null : ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, this.currentStack.hasFoil());
-
-        defaultRender(poseStack, this.animatable, bufferSource, renderType, vertexConsumer, partialTick, packedLight);
-
-        this.animatable = null;
-    }
-
-    /**
-     * The actual render method that subtype renderers should override to handle their specific rendering tasks
-     * <p>
-     * {@link GeoRenderer#preRender} has already been called by this stage, and {@link GeoRenderer#postRender} will be called directly after
-     */
     @Override
-    public void actuallyRender(PoseStack poseStack, GeoRenderLayerState animatable, BakedGeoModel model, @Nullable RenderType renderType,
-                               MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick,
-                               int packedLight, int packedOverlay, int renderColor) {
-        poseStack.pushPose();
-        poseStack.translate(0, 24 / 16f, 0);
-        poseStack.scale(-1, -1, 1);
+    public R captureDefaultRenderState(GeoRenderLayerState animatable, DataContext context, R renderState, float partialTick) {
+        GeoRenderer.super.captureDefaultRenderState(animatable, context, renderState, partialTick);
 
-        if (!isReRender) {
-            long instanceId = getInstanceId(animatable);
+        var slot = context.getSlot();
+        var item = context.getItem();
 
-            getGeoModel().handleAnimations(animatable, instanceId, createAnimationState(animatable, instanceId, 0, 0, partialTick, false), partialTick);
+        renderState.addGeckolibData(DataTickets.IS_GECKOLIB_WEARER, context.getEntity() instanceof GeoAnimatable);
+        if (slot != null)
+            renderState.addGeckolibData(DataTickets.EQUIPMENT_SLOT, slot.getEquipmentSlot());
+        if (!item.isEmpty()) {
+            renderState.addGeckolibData(DataTickets.HAS_GLINT, item.hasFoil());
+            renderState.addGeckolibData(DataTickets.IS_ENCHANTED, item.isEnchanted());
+            renderState.addGeckolibData(DataTickets.IS_STACKABLE, item.isStackable());
         }
+        renderState.addGeckolibData(DataTickets.INVISIBLE_TO_PLAYER, renderState.isInvisibleToPlayer);
+        renderState.addGeckolibData(DataTickets.IS_GLOWING, renderState.appearsGlowing);
 
-        this.modelRenderTranslations = new Matrix4f(poseStack.last().pose());
-
-        if (buffer != null)
-            GeoRenderer.super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick,
-                    packedLight, packedOverlay, renderColor);
-
-        poseStack.popPose();
+        return renderState;
     }
 
     @Override
-    public long getInstanceId(GeoRenderLayerState animatable) {
-        return GeoRenderer.super.getInstanceId(animatable) + this.currentEntity.getId();
+    public void preRender(R renderState, PoseStack poseStack, BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer,
+                          boolean isReRender, int packedLight, int packedOverlay, int renderColor) {
+        if (!isReRender) {
+            this.entityRenderTranslations = new Matrix4f(poseStack.last().pose());
+
+            applyBaseTransformations(renderState.getGeckolibData(DataTickets.HUMANOID_MODEL));
+            applyBaseModel(renderState.getGeckolibData(DataTickets.HUMANOID_MODEL));
+            grabRelevantBones(model);
+
+            if (!renderState.getGeckolibData(DataTickets.IS_GECKOLIB_WEARER))
+                applyBoneVisibilityBySlot(renderState.getGeckolibData(DataTickets.EQUIPMENT_SLOT));
+        }
     }
 
-    public long getInstanceIdForEntity(GeoRenderLayerState animatable, Entity entity) {
-        return GeoRenderer.super.getInstanceId(animatable) + entity.getId();
-    }
-
-    /**
-     * Construct the {@link AnimationState} for the given render pass, ready to pass onto the {@link GeoModel} for handling.
-     * <p>
-     * Override this method to add additional {@link software.bernie.geckolib.constant.DataTickets data} to the AnimationState as needed
-     */
     @Override
-    public AnimationState<GeoRenderLayerState> createAnimationState(GeoRenderLayerState animatable, long instanceId, float limbSwing, float limbSwingAmount, float partialTick, boolean isMoving) {
-        AnimationState<GeoRenderLayerState> animationState = GeoRenderer.super.createAnimationState(animatable, instanceId, limbSwing, limbSwingAmount, partialTick, isMoving);
-
-        animationState.setData(DataTickets.TICK, animatable.getTick(this.currentEntity));
-        animationState.setData(DataTickets.ITEMSTACK, this.currentStack);
-        animationState.setData(DataTickets.ENTITY, this.currentEntity);
-        animationState.setData(DataTickets.EQUIPMENT_SLOT, this.currentSlot);
-
-        return animationState;
+    public void scaleModelForRender(R renderState, float widthScale, float heightScale, PoseStack poseStack, BakedGeoModel model, boolean isReRender) {
+        GeoRenderer.super.scaleModelForRender(renderState, widthScale * this.scaleWidth, heightScale * this.scaleHeight, poseStack, model, isReRender);
     }
 
     @Override
@@ -336,41 +167,40 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
     }
 
     @Override
-    public boolean firePreRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+    public void fireCompileRenderStateEvent(GeoRenderLayerState animatable, DataContext relatedObject, R renderState) {
+
+    }
+
+    @Override
+    public boolean firePreRenderEvent(R renderState, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource) {
         return true;
     }
 
     @Override
-    public void firePostRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+    public void firePostRenderEvent(R renderState, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource) {
 
     }
 
-    /**
-     * Called after all render operations are completed and the render pass is considered functionally complete.
-     * <p>
-     * Use this method to clean up any leftover persistent objects stored during rendering or any other post-render maintenance tasks as required
-     */
     @Override
-    public void doPostRenderCleanup() {
-        this.baseModel = null;
-        this.currentEntity = null;
-        this.currentStack = null;
-        this.animatable = null;
-        this.currentSlot = null;
-        this.bufferSource = null;
-        this.partialTick = 0;
-        this.limbSwing = 0;
-        this.limbSwingAmount = 0;
-        this.netHeadYaw = 0;
-        this.headPitch = 0;
+    public void actuallyRender(R renderState, PoseStack poseStack, BakedGeoModel model, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, int packedLight, int packedOverlay, int renderColor) {
+        poseStack.pushPose();
+        poseStack.translate(0, 24 / 16f, 0);
+        poseStack.scale(-1, -1, 1);
+
+        if (!isReRender)
+            getGeoModel().handleAnimations(createAnimationState(renderState));
+
+        this.modelRenderTranslations = new Matrix4f(poseStack.last().pose());
+
+        if (buffer != null)
+            GeoRenderer.super.actuallyRender(renderState, poseStack, model, renderType, bufferSource, buffer, isReRender, packedLight, packedOverlay, renderColor);
+
+        poseStack.popPose();
     }
 
-    /**
-     * Renders the provided {@link GeoBone} and its associated child bones
-     */
     @Override
-    public void renderRecursively(PoseStack poseStack, GeoRenderLayerState animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight,
-                                  int packedOverlay, int renderColor) {
+    public void renderRecursively(R renderState, PoseStack poseStack, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender,
+                                  int packedLight, int packedOverlay, int renderColor) {
         if (bone.isTrackingMatrices()) {
             Matrix4f poseState = new Matrix4f(poseStack.last().pose());
 
@@ -378,102 +208,62 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
             bone.setLocalSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.entityRenderTranslations));
         }
 
-        GeoRenderer.super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
+        GeoRenderer.super.renderRecursively(renderState, poseStack, bone, renderType, bufferSource, buffer, isReRender, packedLight, packedOverlay, renderColor);
     }
 
-    /**
-     * Gets and caches the relevant armor model bones for this baked model if it hasn't been done already
-     */
     protected void grabRelevantBones(BakedGeoModel bakedModel) {
         if (this.lastModel == bakedModel)
             return;
 
-        GeoModel<GeoRenderLayerState> model = getGeoModel();
+        AnimationProcessor<GeoRenderLayerState> animationProcessor = this.model.getAnimationProcessor();
         this.lastModel = bakedModel;
-        this.head = getHeadBone(model);
-        this.body = getBodyBone(model);
-        this.rightArm = getRightArmBone(model);
-        this.leftArm = getLeftArmBone(model);
-        this.rightLeg = getRightLegBone(model);
-        this.leftLeg = getLeftLegBone(model);
+        this.headBone = this.getBone(animationProcessor, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.HEAD);
+        this.bodyBone = this.getBone(animationProcessor, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.BODY);
+        this.rightArmBone = this.getBone(animationProcessor, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.RIGHT_ARM);
+        this.leftArmBone = this.getBone(animationProcessor, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.LEFT_ARM);
+        this.rightLegBone = this.getBone(animationProcessor, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.RIGHT_LEG);
+        this.leftLegBone = this.getBone(animationProcessor, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone.LEFT_LEG);
     }
 
-    /**
-     * Prepare the renderer for the current render pass
-     * <p>
-     * Must be called prior to render as the default HumanoidModel doesn't give render context
-     *
-     * @param layerState   The layer state being rendered
-     * @param context      The current context during rendering
-     * @param baseModel    The default (vanilla) model that would have been rendered if this model hadn't replaced it
-     * @param bufferSource The buffer supplier for the current render context
-     * @param partialTick  The fraction of a tick passed since the last game tick
-     * @param yRot         The entity's Y rotation, discounting any head rotation
-     * @param xRot         The entity's X rotation
-     */
-    public void prepForRender(GeoRenderLayerState layerState, DataContext context, HumanoidModel<?> baseModel, MultiBufferSource bufferSource,
-                              float partialTick, float yRot, float xRot) {
-        this.baseModel = baseModel;
-        this.currentEntity = context.getEntity();
-        this.currentStack = context.getItem();
-        this.animatable = layerState;
-        var slot = context.getSlot();
-        this.currentSlot = slot != null ? slot.getEquipmentSlot() : null;
-        this.bufferSource = bufferSource;
-        this.partialTick = partialTick;
-        this.netHeadYaw = yRot;
-        this.headPitch = xRot;
+    public GeoBone getBone(AnimationProcessor<GeoRenderLayerState> processor, net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer.Bone bone) {
+        return model.getBone(this.bones.getOrDefault(bone, bone.getSerializedName())).orElse(null);
     }
 
-    /**
-     * Applies settings and transformations pre-render based on the default model
-     */
     protected void applyBaseModel(HumanoidModel<?> baseModel) {
-        //this.young = baseModel.young;
-        //this.crouching = baseModel.crouching;
-        //this.riding = baseModel.riding;
-        //this.rightArmPose = baseModel.rightArmPose;
-        //this.leftArmPose = baseModel.leftArmPose;
+        HumanoidModel<?> self = (HumanoidModel<?>)this;
+
+        self.head.visible = baseModel.head.visible;
+        self.hat.visible = baseModel.hat.visible;
+        self.body.visible = baseModel.body.visible;
+        self.rightArm.visible = baseModel.rightArm.visible;
+        self.leftArm.visible = baseModel.leftArm.visible;
+        self.rightLeg.visible = baseModel.rightLeg.visible;
+        self.leftLeg.visible = baseModel.leftLeg.visible;
     }
 
-    /**
-     * Resets the bone visibility for the model based on the currently rendering slot,
-     * and then sets bones relevant to the current slot as visible for rendering
-     * <p>
-     * This is only called by default for non-geo entities (I.E. players or vanilla mobs)
-     */
     protected void applyBoneVisibilityBySlot(EquipmentSlot currentSlot) {
-        setAllVisible(currentSlot == null);
+        setAllBonesVisible(false);
 
-        if (currentSlot != null) {
-            switch (currentSlot) {
-                case HEAD -> setBoneVisible(this.head, true);
-                case CHEST -> {
-                    setBoneVisible(this.body, true);
-                    setBoneVisible(this.rightArm, true);
-                    setBoneVisible(this.leftArm, true);
-                }
-                case LEGS -> {
-                    setBoneVisible(this.body, true);
-                    setBoneVisible(this.rightLeg, true);
-                    setBoneVisible(this.leftLeg, true);
-                }
-                case FEET -> {
-                    setBoneVisible(this.rightLeg, true);
-                    setBoneVisible(this.rightLeg, true);
-                }
-                default -> {
-                }
-            }
+        switch (currentSlot) {
+            case HEAD -> setBonesVisible(this.head.visible, this.headBone);
+            case CHEST -> setBonesVisible(this.body.visible, this.bodyBone, this.rightArmBone, this.leftArmBone);
+            case LEGS -> setBonesVisible(this.rightLeg.visible, this.bodyBone, this.rightLegBone, this.leftLegBone);
+            case FEET -> setBonesVisible(this.rightLeg.visible, this.rightLegBone, this.leftLegBone);
+            default -> {}
         }
     }
 
-    /**
-     * Resets the bone visibility for the model based on the current {@link ModelPart} and {@link EquipmentSlot},
-     * and then sets the bones relevant to the current part as visible for rendering
-     * <p>
-     * If you are rendering a geo entity with armor, you should probably be calling this prior to rendering
-     */
+    @Override
+    public void setAllVisible(boolean visible) {
+        super.setAllVisible(visible);
+        setAllBonesVisible(visible);
+    }
+
+    protected void setAllBonesVisible(boolean visible) {
+        setBonesVisible(visible, this.headBone, this.bodyBone, this.rightArmBone, this.leftArmBone,
+                this.rightLegBone, this.leftLegBone);
+    }
+
     public void applyBoneVisibilityByPart(EquipmentSlot currentSlot, ModelPart currentPart, HumanoidModel<?> model) {
         setAllVisible(false);
 
@@ -481,17 +271,22 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
         GeoBone bone = null;
 
         if (currentPart == model.hat || currentPart == model.head) {
-            bone = this.head;
-        } else if (currentPart == model.body) {
-            bone = this.body;
-        } else if (currentPart == model.leftArm) {
-            bone = this.leftArm;
-        } else if (currentPart == model.rightArm) {
-            bone = this.rightArm;
-        } else if (currentPart == model.leftLeg) {
-            bone = this.leftLeg;
-        } else if (currentPart == model.rightLeg) {
-            bone = this.rightLeg;
+            bone = this.headBone;
+        }
+        else if (currentPart == model.body) {
+            bone = this.bodyBone;
+        }
+        else if (currentPart == model.leftArm) {
+            bone = this.leftArmBone;
+        }
+        else if (currentPart == model.rightArm) {
+            bone = this.rightArmBone;
+        }
+        else if (currentPart == model.leftLeg) {
+            bone = this.leftLegBone;
+        }
+        else if (currentPart == model.rightLeg) {
+            bone = this.rightLegBone;
         }
 
         if (bone != null)
@@ -502,92 +297,92 @@ public class GeoRenderLayerRenderer extends HumanoidModel implements GeoRenderer
      * Transform the currently rendering {@link GeoModel} to match the positions and rotations of the base model
      */
     protected void applyBaseTransformations(HumanoidModel<?> baseModel) {
-        if (this.head != null) {
+        if (this.headBone != null) {
             ModelPart headPart = baseModel.head;
 
-            RenderUtil.matchModelPartRot(headPart, this.head);
-            this.head.updatePosition(headPart.x, -headPart.y, headPart.z);
+            RenderUtil.matchModelPartRot(headPart, this.headBone);
+            this.headBone.updatePosition(headPart.x, -headPart.y, headPart.z);
         }
 
-        if (this.body != null) {
+        if (this.bodyBone != null) {
             ModelPart bodyPart = baseModel.body;
 
-            RenderUtil.matchModelPartRot(bodyPart, this.body);
-            this.body.updatePosition(bodyPart.x, -bodyPart.y, bodyPart.z);
+            RenderUtil.matchModelPartRot(bodyPart, this.bodyBone);
+            this.bodyBone.updatePosition(bodyPart.x, -bodyPart.y, bodyPart.z);
         }
 
-        if (this.rightArm != null) {
+        if (this.rightArmBone != null) {
             ModelPart rightArmPart = baseModel.rightArm;
 
-            RenderUtil.matchModelPartRot(rightArmPart, this.rightArm);
-            this.rightArm.updatePosition(rightArmPart.x + 5, 2 - rightArmPart.y, rightArmPart.z);
+            RenderUtil.matchModelPartRot(rightArmPart, this.rightArmBone);
+            this.rightArmBone.updatePosition(rightArmPart.x + 5, 2 - rightArmPart.y, rightArmPart.z);
         }
 
-        if (this.leftArm != null) {
+        if (this.leftArmBone != null) {
             ModelPart leftArmPart = baseModel.leftArm;
 
-            RenderUtil.matchModelPartRot(leftArmPart, this.leftArm);
-            this.leftArm.updatePosition(leftArmPart.x - 5f, 2f - leftArmPart.y, leftArmPart.z);
+            RenderUtil.matchModelPartRot(leftArmPart, this.leftArmBone);
+            this.leftArmBone.updatePosition(leftArmPart.x - 5f, 2f - leftArmPart.y, leftArmPart.z);
         }
 
-        if (this.rightLeg != null) {
+        if (this.rightLegBone != null) {
             ModelPart rightLegPart = baseModel.rightLeg;
 
-            RenderUtil.matchModelPartRot(rightLegPart, this.rightLeg);
-            this.rightLeg.updatePosition(rightLegPart.x + 2, 12 - rightLegPart.y, rightLegPart.z);
+            RenderUtil.matchModelPartRot(rightLegPart, this.rightLegBone);
+            this.rightLegBone.updatePosition(rightLegPart.x + 2, 12 - rightLegPart.y, rightLegPart.z);
         }
 
-        if (this.leftLeg != null) {
+        if (this.leftLegBone != null) {
             ModelPart leftLegPart = baseModel.leftLeg;
 
-            RenderUtil.matchModelPartRot(leftLegPart, this.leftLeg);
-            this.leftLeg.updatePosition(leftLegPart.x - 2, 12 - leftLegPart.y, leftLegPart.z);
+            RenderUtil.matchModelPartRot(leftLegPart, this.leftLegBone);
+            this.leftLegBone.updatePosition(leftLegPart.x - 2, 12 - leftLegPart.y, leftLegPart.z);
         }
     }
 
-    @Override
-    public void setAllVisible(boolean pVisible) {
-        super.setAllVisible(pVisible);
+    public static <S extends HumanoidRenderState, M extends HumanoidModel<S>, A extends HumanoidModel<S>> boolean tryRenderGeoRenderLayer(
+            PoseStack poseStack, MultiBufferSource bufferSource, S humanoidRenderState, ItemStack stack, EquipmentSlot equipmentSlot,
+            M parentModel, A baseModel, int packedLight, float netHeadYaw, float headPitch, BiConsumer<A, EquipmentSlot> partVisibilitySetter) {
+        GeoRenderProvider renderProvider;
 
-        setBoneVisible(this.head, pVisible);
-        setBoneVisible(this.body, pVisible);
-        setBoneVisible(this.rightArm, pVisible);
-        setBoneVisible(this.leftArm, pVisible);
-        setBoneVisible(this.rightLeg, pVisible);
-        setBoneVisible(this.leftLeg, pVisible);
-    }
+        if (!HumanoidArmorLayer.shouldRender(stack, equipmentSlot) || (renderProvider = GeoRenderProvider.of(stack)) == GeoRenderProvider.DEFAULT || !(humanoidRenderState instanceof GeoRenderState geoRenderState))
+            return false;
 
-    /**
-     * Apply custom scaling to account for AgeableListModel baby models
-     */
-    public void scaleModelForBaby(PoseStack poseStack, GeoRenderLayerState animatable, float partialTick, boolean isReRender) {
-		/*if (!this.young || isReRender)
-			return;
+        final GeoArmorRenderer armorRenderer = renderProvider.getGeoArmorRenderer(humanoidRenderState, stack, equipmentSlot,
+                equipmentSlot == EquipmentSlot.LEGS ? EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS : EquipmentClientInfo.LayerType.HUMANOID, baseModel);
+        if (armorRenderer == null)
+            return false;
 
-		if (this.currentSlot == EquipmentSlot.HEAD) {
-			if (this.baseModel.scaleHead) {
-				float headScale = 1.5f / this.baseModel.babyHeadScale;
+        Map<DataTicket<?>, Object> existingRenderData = null;
 
-				poseStack.scale(headScale, headScale, headScale);
-			}
+        EnumMap<EquipmentSlot, Map<DataTicket<?>, Object>> perSlotData = geoRenderState.hasGeckolibData(DataTickets.PER_SLOT_RENDER_DATA) ? geoRenderState.getGeckolibData(DataTickets.PER_SLOT_RENDER_DATA) : null;
 
-			poseStack.translate(0, this.baseModel.babyYHeadOffset / 16f, this.baseModel.babyZHeadOffset / 16f);
-		}
-		else {
-			float bodyScale = 1 / this.baseModel.babyBodyScale;
+        geoRenderState.addGeckolibData(DataTickets.PACKED_LIGHT, packedLight);
 
-			poseStack.scale(bodyScale, bodyScale, bodyScale);
-			poseStack.translate(0, this.baseModel.bodyYOffset / 16f, 0);
-		}*/
-    }
+        if (perSlotData != null && perSlotData.containsKey(equipmentSlot)) {
+            Map<DataTicket<?>, Object> renderData = geoRenderState.getDataMap();
+            existingRenderData = new Reference2ObjectOpenHashMap<>(renderData);
+            renderData.clear();
+            renderData.putAll(perSlotData.get(equipmentSlot));
+        }
 
-    /**
-     * Sets a bone as visible or hidden, with nullability
-     */
-    protected void setBoneVisible(@Nullable GeoBone bone, boolean visible) {
-        if (bone == null)
-            return;
+        geoRenderState.addGeckolibData(DataTickets.HUMANOID_MODEL, baseModel);
+        geoRenderState.addGeckolibData(DataTickets.PACKED_LIGHT, packedLight);
 
-        bone.setHidden(!visible);
+        parentModel.copyPropertiesTo(baseModel);
+        partVisibilitySetter.accept(baseModel, equipmentSlot);
+        baseModel.copyPropertiesTo(armorRenderer);
+
+        RenderType renderType = armorRenderer.getRenderType(humanoidRenderState, armorRenderer.getTextureLocation(geoRenderState));
+        VertexConsumer buffer = renderType == null ? null : ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, geoRenderState.getGeckolibData(DataTickets.HAS_GLINT));
+
+        armorRenderer.defaultRender(geoRenderState, poseStack, bufferSource, renderType, buffer);
+
+        if (existingRenderData != null) {
+            geoRenderState.getDataMap().clear();
+            geoRenderState.getDataMap().putAll(existingRenderData);
+        }
+
+        return true;
     }
 }

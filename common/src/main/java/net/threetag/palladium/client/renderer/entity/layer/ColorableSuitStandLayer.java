@@ -1,12 +1,12 @@
 package net.threetag.palladium.client.renderer.entity.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.color.ColorLerper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.threetag.palladium.client.model.SuitStandBasePlateModel;
 import net.threetag.palladium.client.model.SuitStandModel;
@@ -35,11 +35,11 @@ public class ColorableSuitStandLayer extends RenderLayer<SuitStandRenderState, S
                 int n = l % m;
                 int o = (l + 1) % m;
                 float h = ((float) (k % j) + Mth.frac(renderState.ageInTicks)) / 25.0F;
-                int p = Sheep.getColor(DyeColor.byId(n));
-                int q = Sheep.getColor(DyeColor.byId(o));
+                int p = ColorLerper.Type.SHEEP.getColor(DyeColor.byId(n));
+                int q = ColorLerper.Type.SHEEP.getColor(DyeColor.byId(o));
                 r = ARGB.lerp(h, p, q);
             } else {
-                r = Sheep.getColor(renderState.color);
+                r = ColorLerper.Type.SHEEP.getColor(renderState.color);
             }
 
             this.getParentModel().copyPropertiesTo(this.model);

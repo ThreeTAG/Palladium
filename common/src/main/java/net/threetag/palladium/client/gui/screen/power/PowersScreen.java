@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -28,6 +29,7 @@ import net.threetag.palladium.client.icon.ItemIcon;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerUtil;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
+import net.threetag.palladium.util.GuiUtil;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
@@ -196,10 +198,8 @@ public class PowersScreen extends Screen {
         this.renderTooltips(guiGraphics, mouseX, mouseY, i, j, partialTick);
 
         if (this.selectedTab != null && this.overlayScreen != null) {
-            guiGraphics.pose().translate(0, 0, 300);
             this.overlayScreen.renderWithTooltip(guiGraphics, mouseX, mouseY, partialTick);
             this.selectedTab.fade = Mth.clamp(this.selectedTab.fade + 0.02F, 0, 0.5F);
-            guiGraphics.pose().translate(0, 0, -300);
         }
     }
 
@@ -232,41 +232,32 @@ public class PowersScreen extends Screen {
     }
 
     public void renderWindow(GuiGraphics guiGraphics, int offsetX, int offsetY) {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.enableBlend();
-        guiGraphics.blit(RenderType::guiTextured, WINDOW, offsetX, offsetY, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,WINDOW, offsetX, offsetY, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 256, 256);
         if (this.tabs.size() > 1) {
-            RenderSystem.setShaderTexture(0, TABS);
-
             for (PowerTab tab : this.tabs) {
                 tab.drawTab(guiGraphics, offsetX, offsetY, tab == this.selectedTab);
             }
 
-            RenderSystem.defaultBlendFunc();
-
             for (PowerTab tab : this.tabs) {
                 tab.drawIcon(guiGraphics, offsetX, offsetY);
             }
-
-            RenderSystem.disableBlend();
         }
 
-        guiGraphics.drawString(Objects.requireNonNull(this.minecraft).font, TITLE, offsetX + 8, offsetY + 6, 4210752, false);
+        guiGraphics.drawString(Objects.requireNonNull(this.minecraft).font, TITLE, offsetX + 8, offsetY + 6, GuiUtil.DEFAULT_GRAY, false);
     }
 
     private void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int offsetX, int offsetY, float partialTick) {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.selectedTab != null) {
-            guiGraphics.pose().pushPose();
-            guiGraphics.pose().translate((float) (offsetX + WINDOW_INSIDE_X), (float) (offsetY + WINDOW_INSIDE_Y), 400.0F);
+            guiGraphics.pose().pushMatrix();
+            guiGraphics.pose().translate((float) (offsetX + WINDOW_INSIDE_X), (float) (offsetY + WINDOW_INSIDE_Y));
             this.selectedTab.drawTooltips(guiGraphics, mouseX - offsetX - WINDOW_INSIDE_X, mouseY - offsetY - WINDOW_INSIDE_Y, offsetX, offsetY, partialTick, this.overlayScreen != null);
-            guiGraphics.pose().popPose();
+            guiGraphics.pose().popMatrix();
         }
 
         if (this.tabs.size() > 1) {
             for (PowerTab tab : this.tabs) {
                 if (tab.isMouseOver(offsetX, offsetY, mouseX, mouseY)) {
-                    guiGraphics.renderTooltip(this.font, tab.getTitle(), mouseX, mouseY);
+                    guiGraphics.setTooltipForNextFrame(this.font, tab.getTitle(), mouseX, mouseY);
                 }
             }
         }

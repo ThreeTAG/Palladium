@@ -14,20 +14,24 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.client.event.RegisterPictureInPictureRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.attachment.neoforge.PlatformAttachmentTypeImpl;
 import net.threetag.palladium.client.PalladiumClient;
+import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderState;
+import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderer;
 import net.threetag.palladium.client.model.ModelLayerManager;
+import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
 @Mod(Palladium.MOD_ID)
-@EventBusSubscriber(modid = Palladium.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Palladium.MOD_ID)
 public final class PalladiumNeoForge {
 
     public PalladiumNeoForge() {
@@ -64,25 +68,16 @@ public final class PalladiumNeoForge {
         AddonPackManager.initiateFor(e.getRegistryKey(), (registry, id, object) -> e.register(registry, id, () -> object));
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent.Client e) {
-        // TODO
-//        Palladium.generateDocumentation();
-        var output = e.getGenerator().getPackOutput();
+    public static void registerPiP(RegisterPictureInPictureRenderersEvent e) {
+        e.register(GuiMultiEntityRenderState.class, bufferSource -> new GuiMultiEntityRenderer(bufferSource, Minecraft.getInstance().getEntityRenderDispatcher()));
+    }
 
-//        PalladiumBlockTagsProvider blockTagsProvider = new PalladiumBlockTagsProvider(output, e.getLookupProvider(), e.getExistingFileHelper());
-//        e.getGenerator().addProvider(e.includeServer(), blockTagsProvider);
-//        e.getGenerator().addProvider(e.includeServer(), new PalladiumItemTagsProvider(output, e.getLookupProvider(), e.getExistingFileHelper()));
-//        e.getGenerator().addProvider(e.includeServer(), new PalladiumRecipeProvider(output, e.getLookupProvider()));
-//        e.getGenerator().addProvider(e.includeServer(), new PalladiumLootTableProvider(output, e.getLookupProvider()));
-//        e.getGenerator().addProvider(e.includeServer(), new PalladiumWorldGenProvider(output, e.getLookupProvider()));
-
-//        e.getGenerator().addProvider(e.includeClient(), new PalladiumBlockStateProvider(output, e.getExistingFileHelper()));
-//        e.getGenerator().addProvider(e.includeClient(), new PalladiumItemModelProvider(output, e.getExistingFileHelper()));
-//        e.getGenerator().addProvider(e.includeClient(), new PalladiumSoundDefinitionsProvider(output, e.getExistingFileHelper()));
-//        e.getGenerator().addProvider(true, new PalladiumLangProvider.English(output));
-//        e.getGenerator().addProvider(true, new PalladiumLangProvider.German(output));
-//        e.getGenerator().addProvider(true, new PalladiumLangProvider.Saxon(output));
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public static void registerPipelines(RegisterRenderPipelinesEvent e) {
+        e.registerPipeline(PalladiumRenderTypes.Pipelines.ADD);
     }
 
     public static Optional<IEventBus> getModEventBus(String modId) {

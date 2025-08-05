@@ -31,8 +31,12 @@ import net.threetag.palladium.entity.SkinTypedValue;
 import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.GeoRenderer;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
+import software.bernie.geckolib.renderer.base.GeoRenderer;
 
 import java.util.*;
 
@@ -87,14 +91,14 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
     @Override
     public void render(DataContext context, PoseStack poseStack, MultiBufferSource bufferSource, EntityModel<LivingEntityRenderState> parentModel, LivingEntityRenderState entityState, GeoRenderLayerState layerState, int packedLight, float partialTick, float xRot, float yRot) {
         if (this.renderer == null) {
-            this.renderer = new GeoRenderLayerRenderer(this.bones, new GeoModel<>() {
+            this.renderer = new GeoRenderLayerRenderer<>(this.bones, new GeoModel<>() {
                 @Override
-                public ResourceLocation getModelResource(GeoRenderLayerState animatable, @Nullable GeoRenderer<GeoRenderLayerState> renderer) {
+                public ResourceLocation getModelResource(GeoRenderState state) {
                     return CACHED_MODEL;
                 }
 
                 @Override
-                public ResourceLocation getTextureResource(GeoRenderLayerState animatable, @Nullable GeoRenderer<GeoRenderLayerState> renderer) {
+                public ResourceLocation getTextureResource(GeoRenderState state) {
                     return CACHED_TEXTURE;
                 }
 
@@ -105,24 +109,24 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
             });
         }
 
-        if (parentModel instanceof HumanoidModel<?> humanoidModel) {
+        if (parentModel instanceof HumanoidModel<?> humanoidModel && entityState instanceof GeoRenderState geoRenderState) {
             CACHED_TEXTURE = this.texture.get(context).getTexture(context);
             CACHED_MODEL = this.model.get(context).getTexture(context);
             CACHED_ANIMATIONS = this.animations != null ? this.animations.get(context) : null;
 
-            this.renderer.prepForRender(layerState, context, humanoidModel, bufferSource, partialTick, yRot, xRot);
             humanoidModel.copyPropertiesTo(this.renderer);
+            geoRenderState.addGeckolibData(DataTickets.PACKED_LIGHT, LightTexture.lightCoordsWithEmission(packedLight, this.lightEmission));
 
             if (context.getSlot() != null) {
                 this.renderer.applyBoneVisibilityBySlot(Objects.requireNonNull(context.getSlot().getEquipmentSlot()));
             }
 
-            this.renderer.render(
+            this.renderer.defaultRender(
+                    geoRenderState,
                     poseStack,
                     bufferSource,
-                    packedLight,
-                    OverlayTexture.NO_OVERLAY,
-                    LightTexture.lightCoordsWithEmission(packedLight, this.lightEmission)
+                    null,
+                    null
             );
         }
     }

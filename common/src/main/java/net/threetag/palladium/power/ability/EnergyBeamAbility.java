@@ -77,7 +77,7 @@ public class EnergyBeamAbility extends Ability {
     @Override
     public void firstTick(LivingEntity entity, AbilityInstance<?> instance) {
         var timer = instance.getAnimationTimer();
-        if (entity instanceof Player player && (timer == null || timer.value() <= 0F) && Platform.getEnv() == EnvType.CLIENT) {
+        if (entity instanceof Player player && (timer == null || timer.value() <= 0F) && entity.level().isClientSide) {
             EnergyBeamEffect.start(player, instance.getReference());
         }
     }

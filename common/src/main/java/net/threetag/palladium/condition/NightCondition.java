@@ -15,7 +15,7 @@ public class NightCondition implements Condition {
     @Override
     public boolean test(DataContext context) {
         var level = context.getLevel();
-        return level != null && level.isNight();
+        return level != null && (!level.dimensionType().hasFixedTime() && level.getSkyDarken() >= 4);
     }
 
     @Override

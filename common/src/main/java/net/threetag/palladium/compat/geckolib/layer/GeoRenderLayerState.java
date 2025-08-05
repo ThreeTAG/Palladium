@@ -5,7 +5,7 @@ import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayer;
 import net.threetag.palladium.data.DataContext;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class GeoRenderLayerState extends PackRenderLayer.State implements GeoAnimatable {

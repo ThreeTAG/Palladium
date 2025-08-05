@@ -1,8 +1,8 @@
 package net.threetag.palladium.mixin.client;
 
+import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
 import net.minecraft.client.Camera;
-import net.minecraft.client.renderer.FogParameters;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.ability.AbilitySerializers;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class LevelRendererMixin {
 
     @Inject(method = "addSkyPass", at = @At("HEAD"), cancellable = true)
-    private void skipSkyRenderingForPhasingBlindness(FrameGraphBuilder frameGraphBuilder, Camera camera, float partialTick, FogParameters fog, CallbackInfo ci) {
+    private void skipSkyRenderingForPhasingBlindness(FrameGraphBuilder frameGraphBuilder, Camera camera, float partialTick, GpuBufferSlice shaderFog, CallbackInfo ci) {
         if (camera.getEntity() instanceof LivingEntity living) {
             if (AbilityUtil.isTypeEnabled(living, AbilitySerializers.INTANGIBILITY.get())) {
                 if (IntangibilityAbility.getInWallBlockState(living) != null) {

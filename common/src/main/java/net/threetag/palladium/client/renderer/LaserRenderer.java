@@ -5,12 +5,13 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.color.ColorLerper;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
@@ -25,7 +26,7 @@ import java.util.Optional;
 
 public record LaserRenderer(net.threetag.palladium.client.renderer.LaserRenderer.LaserPart glow,
                             net.threetag.palladium.client.renderer.LaserRenderer.LaserPart core,
-                            int bloom, Vector2f size, boolean normalTransparency, float rotation,
+                            int bloom, Vector2f size, float rotation,
                             float rotationSpeed) {
 
     public static final Codec<Vector2f> SIZE_CODEC = Codec.either(PalladiumCodecs.VOXEL_VECTOR_2F, PalladiumCodecs.NON_NEGATIVE_VOXEL_FLOAT).xmap(
@@ -38,7 +39,6 @@ public record LaserRenderer(net.threetag.palladium.client.renderer.LaserRenderer
                 LaserPart.CODEC.optionalFieldOf("core", LaserPart.DEFAULT).forGetter(LaserRenderer::core),
                 ExtraCodecs.intRange(0, 10).optionalFieldOf("bloom", defaultBloom).forGetter(LaserRenderer::bloom),
                 SIZE_CODEC.optionalFieldOf("size", new Vector2f(1 / 16F, 1 / 16F)).forGetter(LaserRenderer::size),
-                Codec.BOOL.optionalFieldOf("normal_transparency", false).forGetter(LaserRenderer::normalTransparency),
                 ExtraCodecs.floatRange(0F, 360F).optionalFieldOf("rotation", 0F).forGetter(LaserRenderer::rotation),
                 ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("rotation_speed", 0F).forGetter(LaserRenderer::rotationSpeed)
         ).apply(instance, LaserRenderer::new));
@@ -80,7 +80,7 @@ public record LaserRenderer(net.threetag.palladium.client.renderer.LaserRenderer
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(rot % 360F));
 
-        var consumer = bufferSource.getBuffer(this.normalTransparency ? PalladiumRenderTypes.LASER_NORMAL_TRANSPARENCY : PalladiumRenderTypes.LASER);
+        var consumer = bufferSource.getBuffer(PalladiumRenderTypes.LASER);
         var size = new Vector2f(this.size).mul(sizeMultiplier.x, sizeMultiplier.y).mul(this.core.getPulseScale(ticks + partialTick));
         AABB box = new AABB(-size.x / 2F, 0, -size.y / 2F, size.x / 2F, length, size.y / 2F);
 
@@ -99,6 +99,7 @@ public record LaserRenderer(net.threetag.palladium.client.renderer.LaserRenderer
         b = glowColor.getBlue() / 255F;
 
         if (this.glow.opacity > 0F) {
+            consumer = bufferSource.getBuffer(PalladiumRenderTypes.LASER);
             float pulse = this.glow.getPulseScale(ticks + partialTick);
             for (int i = 0; i < this.bloom + 1; i++) {
                 RenderUtil.renderFilledBox(poseStack, consumer, box.inflate(i * 0.5F * 0.0625F * pulse), r, g, b, (1F / i / 2) * this.glow.opacity * opacityMultiplier, LightTexture.FULL_SKY);
@@ -116,8 +117,8 @@ public record LaserRenderer(net.threetag.palladium.client.renderer.LaserRenderer
             int n = l % m;
             int o = (l + 1) % m;
             float h = ((float) (ticks % rate) + partialTick) / rate;
-            int p = Sheep.getColor(DyeColor.byId(n));
-            int q = Sheep.getColor(DyeColor.byId(o));
+            int p = ColorLerper.Type.SHEEP.getColor(DyeColor.byId(n));
+            int q = ColorLerper.Type.SHEEP.getColor(DyeColor.byId(o));
             return new Color(ARGB.lerp(h, p, q));
         } else {
             return part.color;

@@ -7,6 +7,6 @@ import java.util.Map;
 
 public interface PalladiumEntityExtension {
 
-    Map<PalladiumEntityDataType<?>, PalladiumEntityData<?>> palladium$getDataMap();
+    Map<PalladiumEntityDataType<?>, PalladiumEntityData<?, ?>> palladium$getDataMap();
 
 }

@@ -4,6 +4,8 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ARGB;
+import net.threetag.palladium.util.GuiUtil;
 
 public class TextUiComponent implements UiComponent {
 
@@ -37,21 +39,10 @@ public class TextUiComponent implements UiComponent {
 
     @Override
     public void render(Minecraft minecraft, GuiGraphics gui, DeltaTracker deltaTracker, int x, int y, UiAlignment alignment) {
-        x += this.outline ? 1 : 0;
-        y += this.outline ? 1 : 0;
-
         if (this.outline) {
-            gui.drawString(minecraft.font, this.text, x + 1, y, 0, false);
-            gui.drawString(minecraft.font, this.text, x - 1, y, 0, false);
-            gui.drawString(minecraft.font, this.text, x, y + 1, 0, false);
-            gui.drawString(minecraft.font, this.text, x, y - 1, 0, false);
-
-            gui.drawString(minecraft.font, this.text, x + 1, y + 1, 0, false);
-            gui.drawString(minecraft.font, this.text, x + 1, y - 1, 0, false);
-            gui.drawString(minecraft.font, this.text, x - 1, y + 1, 0, false);
-            gui.drawString(minecraft.font, this.text, x - 1, y - 1, 0, false);
+            GuiUtil.drawStringWithBlackOutline(gui, this.text, x, y, ARGB.white(1F));
+        } else {
+            gui.drawString(minecraft.font, this.text, x, y, ARGB.white(1F), false);
         }
-
-        gui.drawString(minecraft.font, this.text, x, y, 0xffffff, false);
     }
 }

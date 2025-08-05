@@ -22,18 +22,18 @@ public record IngredientIcon(Ingredient ingredient) implements Icon {
     @Override
     public void draw(Minecraft mc, GuiGraphics guiGraphics, DataContext context, int x, int y, int width, int height) {
         var stack = guiGraphics.pose();
-        stack.pushPose();
-        stack.translate(x + width / 2D, y + height / 2D, 100);
+        stack.pushMatrix();
+        stack.translate(x + width / 2F, y + height / 2F);
 
         if (width != 16 || height != 16) {
             int s = Math.min(width, height);
-            stack.scale(s / 16F, s / 16F, s / 16F);
+            stack.scale(s / 16F, s / 16F);
         }
 
         var items = this.ingredient.items().toList();
         int stackIndex = (int) ((System.currentTimeMillis() / 1000) % items.size());
         guiGraphics.renderItem(items.get(stackIndex).value().getDefaultInstance(), -width / 2, -height / 2);
-        stack.popPose();
+        stack.popMatrix();
     }
 
     @Override

@@ -15,6 +15,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_FLOAT = SettingType.simple("float");
     SettingType TYPE_DOUBLE = SettingType.simple("double");
     SettingType TYPE_VECTOR3 = SettingType.simple("Vector 3D");
+    SettingType TYPE_VECTOR2 = SettingType.simple("Vector 2D");
     SettingType TYPE_DYNAMIC_TEXTURE = SettingType.simple("Dynamic Texture");
     SettingType TYPE_TEXTURE_REFERENCE = SettingType.simple("Texture Reference");
     SettingType TYPE_ANY_TEXTURE = SettingType.combined(TYPE_RESOURCE_LOCATION, TYPE_DYNAMIC_TEXTURE, TYPE_TEXTURE_REFERENCE);

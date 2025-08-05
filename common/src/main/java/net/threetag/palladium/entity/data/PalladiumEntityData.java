@@ -1,11 +1,14 @@
 package net.threetag.palladium.entity.data;
 
+import com.mojang.serialization.MapCodec;
 import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.threetag.palladium.core.event.PalladiumEntityEvents;
 import net.threetag.palladium.core.event.PalladiumLifecycleEvents;
 import net.threetag.palladium.entity.PalladiumEntityExtension;
@@ -14,17 +17,16 @@ import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 import java.util.Optional;
 
-public abstract class PalladiumEntityData<T extends Entity> {
+public abstract class PalladiumEntityData<T extends Entity, R extends PalladiumEntityData<T, ?>> {
 
-    private final T entity;
+    private T entity;
 
-    protected PalladiumEntityData(T entity) {
-        this.entity = entity;
+    @SuppressWarnings("unchecked")
+    public void setEntity(Entity entity) {
+        this.entity = (T) entity;
     }
 
-    public abstract void load(CompoundTag nbt, HolderLookup.Provider registryLookup);
-
-    public abstract CompoundTag save(HolderLookup.Provider registryLookup);
+    public abstract MapCodec<R> codec();
 
     public void tick() {
     }
@@ -44,16 +46,16 @@ public abstract class PalladiumEntityData<T extends Entity> {
         return true;
     }
 
-    public void copyFrom(PalladiumEntityData<T> source) {
+    public void copyFrom(PalladiumEntityData<T, R> source) {
 
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends PalladiumEntityData<?>> T get(Entity entity, PalladiumEntityDataType<T> type) {
+    public static <T extends PalladiumEntityData<?, T>> T get(Entity entity, PalladiumEntityDataType<T> type) {
         return (T) ((PalladiumEntityExtension) entity).palladium$getDataMap().get(type);
     }
 
-    public static <T extends PalladiumEntityData<?>> Optional<T> opt(Entity entity, PalladiumEntityDataType<T> type) {
+    public static <T extends PalladiumEntityData<?, T>> Optional<T> opt(Entity entity, PalladiumEntityDataType<T> type) {
         var data = get(entity, type);
         return Optional.ofNullable(data);
     }
@@ -61,7 +63,7 @@ public abstract class PalladiumEntityData<T extends Entity> {
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static void registerEvents() {
         PalladiumEntityEvents.TICK_POST.register(entity -> {
-            for (PalladiumEntityDataType<?> type : entity.registryAccess().lookupOrThrow(PalladiumRegistryKeys.ENTITY_DATA_TYPE)) {
+            for (PalladiumEntityDataType type : entity.registryAccess().lookupOrThrow(PalladiumRegistryKeys.ENTITY_DATA_TYPE)) {
                 var data = get(entity, type);
 
                 if (data != null) {
@@ -72,7 +74,7 @@ public abstract class PalladiumEntityData<T extends Entity> {
 
         PalladiumLifecycleEvents.DATA_PACK_SYNC.register((playerList, pl) -> {
             if (pl == null) {
-                for (PalladiumEntityDataType<?> type : PalladiumRegistries.ENTITY_DATA_TYPE) {
+                for (PalladiumEntityDataType type : PalladiumRegistries.ENTITY_DATA_TYPE) {
                     for (ServerPlayer player : playerList.getPlayers()) {
                         var data = PalladiumEntityData.get(player, type);
 
@@ -85,7 +87,7 @@ public abstract class PalladiumEntityData<T extends Entity> {
         });
 
         PlayerEvent.PLAYER_CLONE.register((oldPlayer, newPlayer, wonGame) -> {
-            for (PalladiumEntityDataType<?> type : PalladiumRegistries.ENTITY_DATA_TYPE) {
+            for (PalladiumEntityDataType type : PalladiumRegistries.ENTITY_DATA_TYPE) {
                 PalladiumEntityData oldData = get(oldPlayer, type);
 
                 if (oldData != null && (wonGame || oldData.copyOnDeath())) {

@@ -14,6 +14,8 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.item.PalladiumItems;
 
@@ -46,15 +48,15 @@ public class SuitStand extends ArmorStand {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        this.setDyeColor(DyeColor.byId(nbt.getByte("color")));
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.setDyeColor(DyeColor.byId(input.getByteOr("color", (byte) 0)));
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putByte("color", (byte) this.getDyeColor().getId());
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putByte("color", (byte) this.getDyeColor().getId());
     }
 
     @Override

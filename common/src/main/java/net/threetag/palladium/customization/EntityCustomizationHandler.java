@@ -1,5 +1,8 @@
 package net.threetag.palladium.customization;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -10,6 +13,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.storage.ValueInput;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.network.PalladiumNetwork;
@@ -18,13 +22,19 @@ import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 import java.util.*;
 
-public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity> {
+public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity, EntityCustomizationHandler> {
 
-    private final Map<Holder<CustomizationCategory>, Holder<Customization>> selected = new HashMap<>();
-    private final List<Holder<Customization>> unlocked = new ArrayList<>();
+    public static final MapCodec<EntityCustomizationHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Codec.unboundedMap(CustomizationCategory.HOLDER_CODEC, Customization.Codecs.HOLDER_CODEC).optionalFieldOf("selected", Collections.emptyMap()).forGetter(h -> h.selected),
+            Customization.Codecs.HOLDER_CODEC.listOf().optionalFieldOf("unlocked", Collections.emptyList()).forGetter(h -> h.unlocked)
+    ).apply(instance, EntityCustomizationHandler::new));
 
-    public EntityCustomizationHandler(LivingEntity entity) {
-        super(entity);
+    private Map<Holder<CustomizationCategory>, Holder<Customization>> selected;
+    private List<Holder<Customization>> unlocked;
+
+    public EntityCustomizationHandler(Map<Holder<CustomizationCategory>, Holder<Customization>> selected, List<Holder<Customization>> unlocked) {
+        this.selected = new HashMap<>(selected);
+        this.unlocked = new ArrayList<>(unlocked);
     }
 
     public boolean unlock(Holder<Customization> customizationHolder) {
@@ -91,44 +101,8 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
     }
 
     @Override
-    public void load(CompoundTag nbt, HolderLookup.Provider registryLookup) {
-        this.selected.clear();
-        this.unlocked.clear();
-
-        if (nbt.contains("selected")) {
-            var entry = nbt.getCompound("selected");
-            for (String slotId : entry.getAllKeys()) {
-                registryLookup
-                        .get(ResourceKey.create(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY, ResourceLocation.parse(slotId)))
-                        .ifPresent(slotRef -> registryLookup
-                                .get(ResourceKey.create(PalladiumRegistryKeys.CUSTOMIZATION, ResourceLocation.parse(entry.getString(slotId))))
-                                .ifPresent(accRef -> this.selected.put(slotRef, accRef)));
-            }
-        }
-
-        if (nbt.contains("unlocked")) {
-            for (Tag tag : nbt.getList("unlocked", Tag.TAG_STRING)) {
-                registryLookup
-                        .get(ResourceKey.create(PalladiumRegistryKeys.CUSTOMIZATION, ResourceLocation.parse(tag.getAsString())))
-                        .ifPresent(this.unlocked::add);
-            }
-        }
-    }
-
-    @Override
-    public CompoundTag save(HolderLookup.Provider registryLookup) {
-        var nbt = new CompoundTag();
-
-        var selectedTag = new CompoundTag();
-        this.selected.forEach((slot, acc) ->
-                selectedTag.putString(slot.getRegisteredName(), acc.getRegisteredName()));
-        nbt.put("selected", selectedTag);
-
-        var unlockedTag = new ListTag();
-        this.unlocked.forEach(acc -> unlockedTag.add(StringTag.valueOf(acc.getRegisteredName())));
-        nbt.put("unlocked", unlockedTag);
-
-        return nbt;
+    public MapCodec<EntityCustomizationHandler> codec() {
+        return CODEC;
     }
 
     public static EntityCustomizationHandler get(LivingEntity living) {

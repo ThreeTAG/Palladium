@@ -7,6 +7,7 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -95,7 +96,7 @@ public class DataAttachmentCommand {
             throw ERROR_UNKNOWN_TYPE.create(typeId.toString());
         }
 
-        Tag tag = (new TagParser(new StringReader(rawValue))).readValue();
+        Tag tag = TagParser.parseCompoundFully(rawValue);
         DataResult dataResult = type.getCodec().parse(source.registryAccess().createSerializationContext(NbtOps.INSTANCE), tag);
         Optional<Object> optional = dataResult.result();
 

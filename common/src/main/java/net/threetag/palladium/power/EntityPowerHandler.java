@@ -1,6 +1,9 @@
 package net.threetag.palladium.power;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -18,13 +21,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EntityPowerHandler extends PalladiumEntityData<LivingEntity> {
+public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, EntityPowerHandler> {
+
+    public static final MapCodec<EntityPowerHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            CompoundTag.CODEC.optionalFieldOf("power_data", new CompoundTag()).forGetter(EntityPowerHandler::savePowerDataTag)
+    ).apply(instance, EntityPowerHandler::new));
 
     private final Map<ResourceLocation, PowerHolder> powers = new HashMap<>();
-    private CompoundTag powerData = new CompoundTag();
+    private CompoundTag powerData;
 
-    public EntityPowerHandler(LivingEntity entity) {
-        super(entity);
+    public EntityPowerHandler(CompoundTag powerData) {
+        this.powerData = powerData;
     }
 
     public Map<ResourceLocation, PowerHolder> getPowerHolders() {
@@ -32,10 +39,15 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity> {
     }
 
     @Override
-    public void copyFrom(PalladiumEntityData<LivingEntity> source) {
+    public void copyFrom(PalladiumEntityData<LivingEntity, EntityPowerHandler> source) {
         if (source instanceof EntityPowerHandler old) {
             this.powerData = old.powerData.copy();
         }
+    }
+
+    @Override
+    public MapCodec<EntityPowerHandler> codec() {
+        return CODEC;
     }
 
     @Override
@@ -116,13 +128,7 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity> {
         return this.powers.containsKey(powerId);
     }
 
-    @Override
-    public void load(CompoundTag nbt, HolderLookup.Provider registryLookup) {
-        this.powerData = nbt;
-    }
-
-    @Override
-    public CompoundTag save(HolderLookup.Provider registryLookup) {
+    public CompoundTag savePowerDataTag() {
         for (PowerHolder holder : this.powers.values()) {
             this.powerData.put(holder.getPowerId().toString(), holder.save());
         }
@@ -132,7 +138,7 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity> {
 
     public void cleanPowerData() {
         List<String> toRemove = new ArrayList<>();
-        for (String key : this.powerData.getAllKeys()) {
+        for (String key : this.powerData.keySet()) {
             if (!this.getEntity().registryAccess().lookupOrThrow(PalladiumRegistryKeys.POWER).containsKey(ResourceLocation.parse(key))) {
                 toRemove.add(key);
             }

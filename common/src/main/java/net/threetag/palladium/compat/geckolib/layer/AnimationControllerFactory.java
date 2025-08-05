@@ -5,9 +5,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.entity.LivingEntity;
 import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.constant.DataTickets;
@@ -65,7 +64,7 @@ public class AnimationControllerFactory<T extends GeoAnimatable> {
         if (this.preset != null) {
             controller = this.preset.createController(animatable);
         } else {
-            controller = new AnimationController<>(animatable, this.name, this.transitionTickTime, animationState -> animationState.setAndContinue(this.rawAnimation));
+            controller = new AnimationController<>(this.name, this.transitionTickTime, animationState -> animationState.setAndContinue(this.rawAnimation));
         }
 
         for (Map.Entry<String, RawAnimation> e : this.triggers.entrySet()) {
@@ -103,32 +102,30 @@ public class AnimationControllerFactory<T extends GeoAnimatable> {
 
         public <T extends GeoAnimatable> AnimationController<T> createController(T animatable) {
             return switch (this) {
-                case LIVING -> DefaultAnimations.genericLivingController(animatable);
-                case IDLE -> DefaultAnimations.genericIdleController(animatable);
+                case LIVING -> DefaultAnimations.genericLivingController();
+                case IDLE -> DefaultAnimations.genericIdleController();
                 case SNEAK ->
-                        new AnimationController<T>(animatable, "Sneak", 10, state -> state.setAndContinue(DefaultAnimations.SNEAK));
+                        new AnimationController<T>("Sneak", 10, state -> state.setAndContinue(DefaultAnimations.SNEAK));
                 case CRAWL ->
-                        new AnimationController<T>(animatable, "Crawl", 10, state -> state.setAndContinue(DefaultAnimations.CRAWL));
-                case WALK -> DefaultAnimations.genericWalkController(animatable);
-                case WALK_OR_ELSE_IDLE -> DefaultAnimations.genericWalkIdleController(animatable);
-                case ATTACK -> new AnimationController<>(animatable, "Attack", 5, state -> {
-                    if (state.getData(DataTickets.ENTITY) instanceof LivingEntity living && living.swinging)
+                        new AnimationController<T>("Crawl", 10, state -> state.setAndContinue(DefaultAnimations.CRAWL));
+                case WALK -> DefaultAnimations.genericWalkController();
+                case WALK_OR_ELSE_IDLE -> DefaultAnimations.genericWalkIdleController();
+                case ATTACK -> new AnimationController<>("Attack", 5, state -> {
+                    if (Boolean.TRUE.equals(state.getDataOrDefault(DataTickets.SWINGING_ARM, false)))
                         return state.setAndContinue(DefaultAnimations.ATTACK_SWING);
 
-                    state.getController().forceAnimationReset();
+                    state.controller().forceAnimationReset();
 
                     return PlayState.STOP;
                 });
-                case SWIM -> DefaultAnimations.genericSwimController(animatable);
-                case SWIM_OR_ELSE_IDLE -> DefaultAnimations.genericSwimIdleController(animatable);
-                case FLY -> DefaultAnimations.genericFlyController(animatable);
-                case FLY_OR_ELSE_IDLE -> DefaultAnimations.genericFlyIdleController(animatable);
-                case WALK_RUN_OR_ELSE_IDLE -> new AnimationController<T>(animatable, "Walk/Run/Idle", 0, state -> {
-                    if (state.isMoving()) {
-                        return state.setAndContinue(state.getData(DataTickets.ENTITY) instanceof LivingEntity en && en.isSprinting() ? DefaultAnimations.RUN : DefaultAnimations.WALK);
-                    } else {
-                        return state.setAndContinue(DefaultAnimations.IDLE);
-                    }
+                case SWIM -> DefaultAnimations.genericSwimController();
+                case SWIM_OR_ELSE_IDLE -> DefaultAnimations.genericSwimIdleController();
+                case FLY -> DefaultAnimations.genericFlyController();
+                case FLY_OR_ELSE_IDLE -> DefaultAnimations.genericFlyIdleController();
+                case WALK_RUN_OR_ELSE_IDLE -> new AnimationController<T>("Walk/Run/Idle", 0, state -> {
+                    if (state.isMoving())
+                        return state.setAndContinue(Boolean.TRUE.equals(state.getDataOrDefault(DataTickets.SPRINTING, false)) ? DefaultAnimations.RUN : DefaultAnimations.WALK);
+                    return state.setAndContinue(DefaultAnimations.IDLE);
                 });
             };
         }

@@ -1,7 +1,5 @@
 package net.threetag.palladium.client.gui.screen.customization;
 
-import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.math.Axis;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -10,23 +8,30 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.tabs.TabManager;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.gui.render.state.pip.GuiEntityRenderState;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.threetag.palladium.customization.CustomizationCategory;
-import net.threetag.palladium.client.PoseStackTransformation;
 import net.threetag.palladium.client.gui.component.EditButton;
 import net.threetag.palladium.client.gui.component.tab.IconTabNavigationBar;
+import net.threetag.palladium.customization.CustomizationCategory;
+import net.threetag.palladium.customization.CustomizationPreview;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class PlayerCustomizationScreen extends Screen {
 
@@ -143,39 +148,50 @@ public class PlayerCustomizationScreen extends Screen {
         this.minecraft.setScreen(this.lastScreen);
     }
 
-    public void changePreview(PoseStackTransformation transformation) {
+    public void changePreview(CustomizationPreview transformation) {
         this.preview.setTargetTransformation(transformation);
     }
 
-    public static void renderEntityInInventory(
-            GuiGraphics guiGraphics, float x, float y, float baseScale, PoseStackTransformation transformation, LivingEntity entity
+    public static void renderEntity(
+            GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, float baseScale,
+            CustomizationPreview transformation, LivingEntity entity, @Nullable Consumer<GuiEntityRenderState> stateConsumer
     ) {
+        var yHeadRot = entity.getYHeadRot();
+        var xRot = entity.getXRot();
+        var yBodyRot = entity.yBodyRot;
         entity.setYHeadRot(0F);
         entity.setXRot(0F);
         entity.setYBodyRot(0F);
 
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(x, y, 50.0);
-        guiGraphics.pose().scale(baseScale, baseScale, -baseScale);
+        var rotation = transformation.rotation();
+        Quaternionf quaternionf = new Quaternionf().rotateZ((float) Math.PI).rotateY((float) Math.toRadians(180F));
+        quaternionf.mul(new Quaternionf()
+                .rotationXYZ((float) (rotation.x * (Math.PI / 180.0)), (float) (rotation.y * (Math.PI / 180.0)), (float) (rotation.z * (Math.PI / 180.0))));
 
-        guiGraphics.pose().translate(0, 0, 500);
-        guiGraphics.fill(-10, -10, 10, 10, 0xFFFF0000);
-        guiGraphics.pose().translate(0, 0, -500);
+        var translation = new Vector3f(0, entity.getBbHeight() / 2F, 0).add(transformation.translation().toVector3f().div(2));
+        var scale = (baseScale / entity.getScale()) * transformation.scale();
 
-        transformation.apply(guiGraphics.pose());
+        if (stateConsumer == null) {
+            InventoryScreen.renderEntityInInventory(guiGraphics, x1, y1, x2, y2,
+                    scale,
+                    translation,
+                    quaternionf,
+                    null,
+                    entity);
+        } else {
+            EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+            EntityRenderer entityRenderer = entityRenderDispatcher.getRenderer(entity);
+            EntityRenderState cachedState = entityRenderer.reusedState;
+            entityRenderer.reusedState = entityRenderer.createRenderState();
+            EntityRenderState entityRenderState = entityRenderer.createRenderState(entity, 1.0F);
+            entityRenderState.hitboxesRenderState = null;
+            var state = new GuiEntityRenderState(entityRenderState, translation, quaternionf, null, x1, y1, x2, y2, scale, guiGraphics.scissorStack.peek());
+            stateConsumer.accept(state);
+            entityRenderer.reusedState = cachedState;
+        }
 
-        guiGraphics.pose().mulPose(Axis.XP.rotationDegrees(180));
-        guiGraphics.pose().translate(0, entity.getBbHeight() / -2F, 0);
-
-        guiGraphics.flush();
-        Lighting.setupForEntityInInventory();
-        EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-
-        entityRenderDispatcher.setRenderShadow(false);
-        guiGraphics.drawSpecial(multiBufferSource -> entityRenderDispatcher.render(entity, 0.0, 0.0, 0.0, 1.0F, guiGraphics.pose(), multiBufferSource, 15728880));
-        guiGraphics.flush();
-        entityRenderDispatcher.setRenderShadow(true);
-        guiGraphics.pose().popPose();
-        Lighting.setupFor3DItems();
+        entity.setYHeadRot(yHeadRot);
+        entity.setXRot(xRot);
+        entity.setYBodyRot(yBodyRot);
     }
 }

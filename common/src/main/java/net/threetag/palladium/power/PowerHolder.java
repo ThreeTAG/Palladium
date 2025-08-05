@@ -32,9 +32,9 @@ public class PowerHolder {
         this.powerId = power.unwrapKey().orElseThrow().location();
         this.validator = validator;
 
-        var subTag = componentTag.getCompound("abilities");
+        var subTag = componentTag.getCompoundOrEmpty("abilities");
         for (Map.Entry<String, Ability> e : this.getPower().value().getAbilities().entrySet()) {
-            AbilityInstance<?> entry = new AbilityInstance<>(e.getValue(), this, subTag.getCompound(e.getKey()));
+            AbilityInstance<?> entry = new AbilityInstance<>(e.getValue(), this, subTag.getCompoundOrEmpty(e.getKey()));
             this.entryMap.put(e.getKey(), entry);
         }
 

@@ -13,6 +13,7 @@ import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerManage
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer;
 import net.threetag.palladium.compat.geckolib.layer.GeoRenderLayerState;
+import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
@@ -45,12 +46,12 @@ public class GeoLayerAnimationTriggerAbility extends Ability {
     @Override
     public void tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
         if (enabled && entity.level().isClientSide) {
-            playAnimation(entity, this.renderLayer, this.controller, this.trigger);
+            playAnimation(entity, abilityInstance, this.renderLayer, this.controller, this.trigger);
         }
     }
 
     @Environment(EnvType.CLIENT)
-    public static void playAnimation(LivingEntity entity, ResourceLocation renderLayer, String controller, String trigger) {
+    public static void playAnimation(LivingEntity entity, AbilityInstance<?> abilityInstance, ResourceLocation renderLayer, String controller, String trigger) {
         PalladiumEntityData.opt(entity, PalladiumEntityDataTypes.RENDER_LAYERS.get()).ifPresent(l -> {
             var layer = PackRenderLayerManager.INSTANCE.get(renderLayer);
 
@@ -58,7 +59,7 @@ public class GeoLayerAnimationTriggerAbility extends Ability {
                 var state = layers.getLayerStates().get(layer);
 
                 if (state instanceof GeoRenderLayerState geoState) {
-                    var manager = geoState.getAnimatableInstanceCache().getManagerForId(geoLayer.renderer.getInstanceIdForEntity(geoState, entity));
+                    var manager = geoState.getAnimatableInstanceCache().getManagerForId(geoLayer.renderer.getInstanceId(geoState, DataContext.forAbility(entity, abilityInstance)));
                     manager.tryTriggerAnimation(controller, trigger);
                 }
             }

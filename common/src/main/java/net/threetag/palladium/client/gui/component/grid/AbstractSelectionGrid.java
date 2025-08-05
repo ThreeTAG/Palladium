@@ -14,7 +14,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.ScreenDirection;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -178,13 +178,24 @@ public abstract class AbstractSelectionGrid<E extends AbstractSelectionGrid.Entr
     protected void renderGridSeparators(GuiGraphics guiGraphics) {
         ResourceLocation resourceLocation = this.minecraft.level == null ? Screen.HEADER_SEPARATOR : Screen.INWORLD_HEADER_SEPARATOR;
         ResourceLocation resourceLocation2 = this.minecraft.level == null ? Screen.FOOTER_SEPARATOR : Screen.INWORLD_FOOTER_SEPARATOR;
-        guiGraphics.blit(RenderType::guiTextured, resourceLocation, this.getX(), this.getY() - 2, 0.0F, 0.0F, this.getWidth(), 2, 32, 2);
-        guiGraphics.blit(RenderType::guiTextured, resourceLocation2, this.getX(), this.getBottom(), 0.0F, 0.0F, this.getWidth(), 2, 32, 2);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, resourceLocation, this.getX(), this.getY() - 2, 0.0F, 0.0F, this.getWidth(), 2, 32, 2);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, resourceLocation2, this.getX(), this.getBottom(), 0.0F, 0.0F, this.getWidth(), 2, 32, 2);
     }
 
     protected void renderGridBackground(GuiGraphics guiGraphics) {
         ResourceLocation resourceLocation = this.minecraft.level == null ? MENU_LIST_BACKGROUND : INWORLD_MENU_LIST_BACKGROUND;
-        guiGraphics.blit(RenderType::guiTextured, resourceLocation, this.getX(), this.getY(), (float) this.getRight(), (float) (this.getBottom() + (int) this.scrollAmount()), this.getWidth(), this.getHeight(), 32, 32);
+        guiGraphics.blit(
+                RenderPipelines.GUI_TEXTURED,
+                resourceLocation,
+                this.getX(),
+                this.getY(),
+                this.getRight(),
+                this.getBottom() + (int) this.scrollAmount(),
+                this.getWidth(),
+                this.getHeight(),
+                32,
+                32
+        );
     }
 
     protected void enableScissor(GuiGraphics guiGraphics) {

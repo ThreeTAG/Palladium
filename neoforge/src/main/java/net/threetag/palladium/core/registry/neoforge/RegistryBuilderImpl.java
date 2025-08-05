@@ -10,7 +10,7 @@ import net.threetag.palladium.Palladium;
 import java.util.ArrayList;
 import java.util.List;
 
-@EventBusSubscriber(modid = Palladium.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Palladium.MOD_ID)
 public class RegistryBuilderImpl {
 
     private static final List<Registry<?>> REGISTRIES = new ArrayList<>();

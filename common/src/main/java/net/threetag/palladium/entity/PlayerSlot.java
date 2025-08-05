@@ -98,8 +98,12 @@ public abstract class PlayerSlot {
         @Override
         public List<ItemStack> getItems(LivingEntity entity) {
             List<ItemStack> list = new ArrayList<>();
-            for (ItemStack slot : entity.getAllSlots()) {
-                list.add(slot);
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                var item = entity.getItemBySlot(slot);
+
+                if (!item.isEmpty()) {
+                    list.add(item);
+                }
             }
             return list;
         }
@@ -107,11 +111,15 @@ public abstract class PlayerSlot {
         @Override
         public ItemStack getItem(LivingEntity entity, int index) {
             int i = 0;
-            for (ItemStack slot : entity.getAllSlots()) {
-                if (i == index) {
-                    return slot;
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                var item = entity.getItemBySlot(slot);
+
+                if (!item.isEmpty()) {
+                    if (i == index) {
+                        return item;
+                    }
+                    i++;
                 }
-                i++;
             }
             return ItemStack.EMPTY;
         }
@@ -124,8 +132,10 @@ public abstract class PlayerSlot {
         @Override
         public int getSize(LivingEntity entity) {
             int i = 0;
-            for (ItemStack slot : entity.getAllSlots()) {
-                i++;
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                if (!entity.getItemBySlot(slot).isEmpty()) {
+                    i++;
+                }
             }
             return i;
         }

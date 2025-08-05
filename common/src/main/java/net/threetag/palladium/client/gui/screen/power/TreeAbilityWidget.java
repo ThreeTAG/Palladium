@@ -7,6 +7,7 @@ import net.minecraft.client.StringSplitter;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.advancements.AdvancementWidgetType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -143,14 +144,12 @@ public class TreeAbilityWidget {
         if (this.abilityInstance.isUnlocked()) {
             this.abilityInstance.getAbility().getProperties().getIcon().draw(mc, guiGraphics, DataContext.forAbility(mc.player, this.abilityInstance), x, y);
         } else {
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            guiGraphics.blit(RenderType::guiTextured, PowersScreen.WIDGETS, x, y, 90, 83, 16, 16, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED,PowersScreen.WIDGETS, x, y, 90, 83, 16, 16, 256, 256);
         }
     }
 
     public void drawIcon(Minecraft mc, GuiGraphics guiGraphics, int x, int y) {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        guiGraphics.blit(RenderType::guiTextured, PowersScreen.WIDGETS, x - 13, y - 13, 0, this.abilityInstance.isUnlocked() ? 78 : 104, 26, 26, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,PowersScreen.WIDGETS, x - 13, y - 13, 0, this.abilityInstance.isUnlocked() ? 78 : 104, 26, 26, 256, 256);
         this.drawDisplayIcon(mc, guiGraphics, x - 8, y - 8);
     }
 
@@ -200,17 +199,17 @@ public class TreeAbilityWidget {
         int r = i + m;
         if (!this.description.isEmpty()) {
             if (bl2) {
-                guiGraphics.blitSprite(RenderType::guiTextured, TITLE_BOX_SPRITE, q, k - r, this.width, r);
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, TITLE_BOX_SPRITE, q, k - r, this.width, r);
             } else {
-                guiGraphics.blitSprite(RenderType::guiTextured, TITLE_BOX_SPRITE, q, j, this.width, r);
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, TITLE_BOX_SPRITE, q, j, this.width, r);
             }
         }
 
         if (advancementWidgetType != advancementWidgetType2) {
-            guiGraphics.blitSprite(RenderType::guiTextured, advancementWidgetType.boxSprite(), 200, i, 0, 0, q, j, o, i);
-            guiGraphics.blitSprite(RenderType::guiTextured, advancementWidgetType2.boxSprite(), 200, i, 200 - p, 0, q + o, j, p, i);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, advancementWidgetType.boxSprite(), 200, i, 0, 0, q, j, o, i);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, advancementWidgetType2.boxSprite(), 200, i, 200 - p, 0, q + o, j, p, i);
         } else {
-            guiGraphics.blitSprite(RenderType::guiTextured, advancementWidgetType.boxSprite(), q, j, this.width, i);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, advancementWidgetType.boxSprite(), q, j, this.width, i);
         }
 
         int s = q + 5;

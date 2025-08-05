@@ -3,6 +3,7 @@ package net.threetag.palladium.client.gui.screen.abilitybar;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.component.UiComponent;
@@ -32,7 +33,7 @@ public class SimplifiedPowerComponent implements UiComponent {
     @Override
     public void render(Minecraft minecraft, GuiGraphics gui, DeltaTracker deltaTracker, int x, int y, UiAlignment alignment) {
         var texture = this.abilityList.getTexture(DataContext.forAbility(minecraft.player, this.abilityInstance));
-        gui.blit(RenderType::guiTextured, texture, x, y, 0, 168, 24, 24, 256, 256);
+        gui.blit(RenderPipelines.GUI_TEXTURED,texture, x, y, 0, 168, 24, 24, 256, 256);
         AbilityListComponent.renderAbility(minecraft, texture, gui, deltaTracker, x + 3, y + 3, alignment, this.abilityInstance, 0);
     }
 }

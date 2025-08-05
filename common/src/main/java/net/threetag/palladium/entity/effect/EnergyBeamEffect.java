@@ -27,7 +27,6 @@ public class EnergyBeamEffect extends EntityEffect {
         if (anchor instanceof AbstractClientPlayer player) {
             var ref = getAbilityReference(renderState.extraData);
             AbilityInstance<?> instance = ref.getInstance(player);
-
             if (instance != null && instance.getAbility() instanceof EnergyBeamAbility) {
                 var ability = (AbilityInstance<EnergyBeamAbility>) instance;
                 var hitResult = ability.getAbility().updateTargetPos(player, ability, partialTicks);
@@ -80,7 +79,7 @@ public class EnergyBeamEffect extends EntityEffect {
     }
 
     public static AbilityReference getAbilityReference(CompoundTag tag) {
-        return AbilityReference.parse(tag.getString("ability"));
+        return AbilityReference.parse(tag.getString("ability").orElse(""));
     }
 
     public static void setAbilityReference(EffectEntity entity, AbilityReference abilityReference) {

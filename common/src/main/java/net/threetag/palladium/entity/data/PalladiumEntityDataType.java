@@ -1,37 +1,35 @@
 package net.threetag.palladium.entity.data;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
-import java.util.function.Function;
 import java.util.function.Predicate;
 
-public interface PalladiumEntityDataType<T extends PalladiumEntityData<? extends Entity>> {
+public class PalladiumEntityDataType<T extends PalladiumEntityData<? extends Entity, ?>> {
 
-    T make(Entity entity);
+    public static final Predicate<Entity> FILTER_ALL = (en) -> true;
+    public static final Predicate<Entity> FILTER_LIVING = (en) -> en instanceof LivingEntity;
+    public static final Predicate<Entity> FILTER_PLAYER = (en) -> en instanceof Player;
 
-    class Builder<T extends PalladiumEntityData<?>> {
+    private final MapCodec<T> codec;
+    private final Predicate<Entity> predicate;
 
-        private final Function<Entity, T> function;
-        private Predicate<Entity> predicate;
-
-        public Builder(Function<Entity, T> function) {
-            this.function = function;
-        }
-
-        public Builder<T> predicate(Predicate<Entity> predicate) {
-            this.predicate = predicate;
-            return this;
-        }
-
-        public PalladiumEntityDataType<T> build() {
-            return entity -> {
-                if (predicate != null) {
-                    return this.predicate.test(entity) ? this.function.apply(entity) : null;
-                } else {
-                    return this.function.apply(entity);
-                }
-            };
-        }
+    public PalladiumEntityDataType(MapCodec<T> codec, Predicate<Entity> predicate) {
+        this.codec = codec;
+        this.predicate = predicate;
     }
 
+    public PalladiumEntityDataType(MapCodec<T> codec) {
+        this(codec, FILTER_ALL);
+    }
+
+    public MapCodec<T> codec() {
+        return this.codec;
+    }
+
+    public Predicate<Entity> getPredicate() {
+        return this.predicate;
+    }
 }

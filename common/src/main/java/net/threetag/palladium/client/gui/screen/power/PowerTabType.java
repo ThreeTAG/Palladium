@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.threetag.palladium.client.icon.Icon;
 import net.threetag.palladium.data.DataContext;
@@ -46,7 +47,7 @@ public enum PowerTabType {
         }
 
         int j = isSelected ? this.textureY + this.height : this.textureY;
-        guiGraphics.blit(RenderType::guiTextured, PowersScreen.TABS, offsetX + this.getX(index), offsetY + this.getY(index), i, j, this.width, this.height, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,PowersScreen.TABS, offsetX + this.getX(index), offsetY + this.getY(index), i, j, this.width, this.height, 256, 256);
     }
 
     public void drawIcon(GuiGraphics guiGraphics, DataContext context, int offsetX, int offsetY, int index, Icon icon) {

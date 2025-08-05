@@ -50,7 +50,7 @@ public class SuitStandItem extends Item {
                     }
 
                     float f = (float) Mth.floor((Mth.wrapDegrees(context.getRotation() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
-                    suitStand.moveTo(suitStand.getX(), suitStand.getY(), suitStand.getZ(), f, 0.0F);
+                    suitStand.snapTo(suitStand.getX(), suitStand.getY(), suitStand.getZ(), f, 0.0F);
                     serverLevel.addFreshEntityWithPassengers(suitStand);
                     level.playSound(null, suitStand.getX(), suitStand.getY(), suitStand.getZ(), SoundEvents.ARMOR_STAND_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
                     suitStand.gameEvent(GameEvent.ENTITY_PLACE, context.getPlayer());

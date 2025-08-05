@@ -1,10 +1,10 @@
 package net.threetag.palladium.client.gui.component;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ARGB;
 import net.threetag.palladium.util.RenderUtil;
 
 public class EditButton extends Button {
@@ -15,9 +15,7 @@ public class EditButton extends Button {
 
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-        RenderSystem.enableDepthTest();
         int u = this.active ? (this.isHoveredOrFocused() ? 24 : 12) : 0;
-        guiGraphics.blit(RenderType::guiTextured, RenderUtil.WIDGETS_LOCATION, this.getX(), this.getY(), (float) u, (float) 136, this.width, this.height, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, RenderUtil.WIDGETS_LOCATION, this.getX(), this.getY(), u, 136, this.width, this.height, 256, 256, ARGB.white(this.alpha));
     }
 }

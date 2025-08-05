@@ -22,11 +22,4 @@ public abstract class BlockBehaviourMixin {
         cir.setReturnValue(BlockPropertiesCodec.CODEC.fieldOf("properties").forGetter(BlockBehaviour::properties));
     }
 
-    @Inject(method = "getCollisionShape", at = @At("RETURN"), cancellable = true)
-    public void getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-
-
-
-    }
-
 }

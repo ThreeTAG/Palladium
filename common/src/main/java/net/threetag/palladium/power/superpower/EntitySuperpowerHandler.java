@@ -1,34 +1,38 @@
 package net.threetag.palladium.power.superpower;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class EntitySuperpowerHandler extends PalladiumEntityData<LivingEntity> {
+public class EntitySuperpowerHandler extends PalladiumEntityData<LivingEntity, EntitySuperpowerHandler> {
 
-    private final List<Holder<Power>> superpowers = new ArrayList<>();
+    public static final MapCodec<EntitySuperpowerHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Power.HOLDER_CODEC.listOf().optionalFieldOf("powers", Collections.emptyList()).forGetter(h -> h.superpowers)
+    ).apply(instance, EntitySuperpowerHandler::new));
 
-    public EntitySuperpowerHandler(LivingEntity entity) {
-        super(entity);
+    private final List<Holder<Power>> superpowers;
+
+    public EntitySuperpowerHandler(List<Holder<Power>> superpowers) {
+        this.superpowers = new ArrayList<>(superpowers);
     }
 
     @Override
-    public void copyFrom(PalladiumEntityData<LivingEntity> source) {
+    public MapCodec<EntitySuperpowerHandler> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public void copyFrom(PalladiumEntityData<LivingEntity, EntitySuperpowerHandler> source) {
         if (source instanceof EntitySuperpowerHandler old) {
             this.superpowers.clear();
             this.superpowers.addAll(old.superpowers);
@@ -85,33 +89,6 @@ public class EntitySuperpowerHandler extends PalladiumEntityData<LivingEntity> {
 
     public List<Holder<Power>> getSuperpowers() {
         return ImmutableList.copyOf(this.superpowers);
-    }
-
-    @Override
-    public void load(CompoundTag nbt, HolderLookup.Provider registryLookup) {
-        this.superpowers.clear();
-        if (nbt.contains("powers")) {
-            for (Tag tag : nbt.getList("powers", Tag.TAG_STRING)) {
-                this.superpowers.add(registryLookup.lookupOrThrow(PalladiumRegistryKeys.POWER).get(ResourceKey.create(PalladiumRegistryKeys.POWER, ResourceLocation.parse(tag.getAsString()))).orElse(null));
-            }
-        }
-    }
-
-    @Override
-    public CompoundTag save(HolderLookup.Provider registryLookup) {
-        var nbt = new CompoundTag();
-        var list = new ListTag();
-
-        for (Holder<Power> superpower : this.superpowers) {
-            list.add(StringTag.valueOf(superpower.unwrapKey().orElseThrow().location().toString()));
-        }
-
-        nbt.put("powers", list);
-        return nbt;
-    }
-
-    public static class Slot {
-
     }
 
 }

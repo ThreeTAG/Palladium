@@ -7,10 +7,12 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.util.PalladiumCodecs;
@@ -55,20 +57,17 @@ public class TexturedIcon implements Icon {
     @Environment(EnvType.CLIENT)
     public void draw(Minecraft mc, GuiGraphics guiGraphics, DataContext context, int x, int y, int w, int h) {
         var texture = this.texture.withPath(context, "textures/icon/", ".png");
-        var m = guiGraphics.pose().last().pose();
 
         var r = this.tint.getRed();
         var g = this.tint.getGreen();
         var b = this.tint.getBlue();
         var a = this.tint.getAlpha();
 
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(x, y, 0);
-        guiGraphics.pose().scale(w / 16F, h / 16F, 1.0F);
-        RenderSystem.setShaderColor(r / 255F, g / 255F, b / 255F, a / 255F);
-        guiGraphics.blit(RenderType::guiTextured, texture, 0, 0, 0, 0, 16, 16, 16, 16);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().pushMatrix();
+        guiGraphics.pose().translate(x, y);
+        guiGraphics.pose().scale(w / 16F, h / 16F);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, 0, 0, 0, 0, 16, 16, 16, 16, ARGB.color(a, r, g, b));
+        guiGraphics.pose().popMatrix();
     }
 
     public TextureReference getTexture() {

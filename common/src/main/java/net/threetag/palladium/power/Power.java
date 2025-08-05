@@ -2,14 +2,17 @@ package net.threetag.palladium.power;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.client.icon.Icon;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.energybar.EnergyBarConfiguration;
+import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,6 +42,7 @@ public class Power {
             .apply(instance, (parent, name, icon, background, barTexture, primColor, secondColor, persistentData, hidden, guiDisplayType, abilities, energyBars) ->
                     new Power(parent.orElse(null), name, icon, background.orElse(null), barTexture.orElse(null), primColor, secondColor, persistentData, hidden, guiDisplayType, abilities, energyBars)));
 
+    public static final Codec<Holder<Power>> HOLDER_CODEC = RegistryFixedCodec.create(PalladiumRegistryKeys.POWER);
 
     @Nullable
     private final ResourceLocation parentId;

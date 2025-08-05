@@ -23,12 +23,12 @@ public record ItemInSlotIcon(PlayerSlot slot) implements Icon {
     @Override
     public void draw(Minecraft mc, GuiGraphics guiGraphics, DataContext context, int x, int y, int width, int height) {
         var stack = guiGraphics.pose();
-        stack.pushPose();
-        stack.translate(x + width / 2D, y + height / 2D, 100);
+        stack.pushMatrix();
+        stack.translate(x + width / 2F, y + height / 2F);
 
         if (width != 16 || height != 16) {
             int s = Math.min(width, height);
-            stack.scale(s / 16F, s / 16F, s / 16F);
+            stack.scale(s / 16F, s / 16F);
         }
 
         var item = new ItemStack(Items.BARRIER);
@@ -43,7 +43,7 @@ public record ItemInSlotIcon(PlayerSlot slot) implements Icon {
         }
 
         guiGraphics.renderItem(item, -width / 2, -height / 2);
-        stack.popPose();
+        stack.popMatrix();
     }
 
     @Override

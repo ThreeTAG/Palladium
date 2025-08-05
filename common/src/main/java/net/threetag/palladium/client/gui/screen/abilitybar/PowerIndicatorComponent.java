@@ -1,10 +1,9 @@
 package net.threetag.palladium.client.gui.screen.abilitybar;
 
-import com.mojang.math.Axis;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.gui.component.CompoundUiComponent;
@@ -13,6 +12,7 @@ import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.component.UiComponent;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.util.Easing;
+import net.threetag.palladium.util.GuiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,14 @@ public class PowerIndicatorComponent implements UiComponent {
 
     @Override
     public void render(Minecraft minecraft, GuiGraphics gui, DeltaTracker deltaTracker, int x, int y, UiAlignment alignment) {
-        gui.blit(RenderType::guiTextured, this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder())), x, y, getU(alignment), getV(alignment), this.getWidth(), this.getHeight(), 256, 256);
+        gui.blit(
+                RenderPipelines.GUI_TEXTURED,
+                this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder())),
+                x, y,
+                getU(alignment), getV(alignment),
+                this.getWidth(), this.getHeight(),
+                256, 256
+        );
         int width = this.keyAndIcon.getWidth();
         int height = this.keyAndIcon.getHeight();
         int offsetX = alignment.isLeft() ? 0 : 3;
@@ -100,22 +107,22 @@ public class PowerIndicatorComponent implements UiComponent {
 
         @Override
         public void render(Minecraft minecraft, GuiGraphics gui, DeltaTracker deltaTracker, int x, int y, UiAlignment alignment) {
-            gui.drawString(minecraft.font, this.keyText, x, y, 0xFFFFFFFF, false);
+            gui.drawString(minecraft.font, this.keyText, x, y, GuiUtil.FULL_WHITE, false);
 
-            gui.pose().pushPose();
-            gui.pose().translate(x + minecraft.font.width(this.keyText) + 3 + 4, y + 4, 0);
+            gui.pose().pushMatrix();
+            gui.pose().translate(x + minecraft.font.width(this.keyText) + 3 + 4, y + 4);
 
             if (AbilityBar.KEY_ROTATION > 0) {
-                gui.pose().mulPose(
-                        Axis.ZP.rotationDegrees(
+                gui.pose().rotate(
+                        (float) Math.toRadians(
                                 Easing.inOutCubic((AbilityBar.KEY_ROTATION - deltaTracker.getRealtimeDeltaTicks()) / 10F) * 360F
                                         * (AbilityBar.KEY_ROTATION_FORWARD ? -1 : 1)
                         )
                 );
             }
 
-            gui.blit(RenderType::guiTextured, this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder())), -4, -4, 78, AbilityBar.KEY_ROTATION_FORWARD ? 56 : 64, 8, 8, 256, 256);
-            gui.pose().popPose();
+            gui.blit(RenderPipelines.GUI_TEXTURED, this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder())), -4, -4, 78, AbilityBar.KEY_ROTATION_FORWARD ? 56 : 64, 8, 8, 256, 256);
+            gui.pose().popMatrix();
         }
     }
 }

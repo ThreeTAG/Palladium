@@ -14,7 +14,7 @@ import net.threetag.palladium.core.event.PalladiumPlayerEvents;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-@EventBusSubscriber(modid = Palladium.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = Palladium.MOD_ID)
 public class PalladiumCoreEventHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGH)

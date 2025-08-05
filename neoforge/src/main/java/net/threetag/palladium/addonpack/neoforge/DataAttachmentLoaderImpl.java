@@ -1,6 +1,7 @@
 package net.threetag.palladium.addonpack.neoforge;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -20,7 +21,14 @@ public class DataAttachmentLoaderImpl {
         dataAttachments.forEach((id, type) -> {
             Codec<Object> codec = (Codec<Object>) type.getCodec();
             Supplier defaultSupplier = type.getDefaultSupplier();
-            AttachmentType attachmentType = AttachmentType.builder(defaultSupplier).serialize(codec).build();
+            AttachmentType.Builder builder = AttachmentType.builder(defaultSupplier).serialize(codec.fieldOf(id.toString()));
+
+            if (type.isSyncedWith() != PlatformAttachmentType.SyncWith.NONE) {
+                StreamCodec streamCodec = type.getStreamCodec();
+                builder.sync((iAttachmentHolder, player) -> iAttachmentHolder == player || type.isSyncedWith() == PlatformAttachmentType.SyncWith.ALL, streamCodec);
+            }
+
+            var attachmentType = builder.build();
             type.setPlatformObject(attachmentType);
             TYPE_MAP.put(attachmentType, type);
             SimpleRegisterImpl.register(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, id, attachmentType);

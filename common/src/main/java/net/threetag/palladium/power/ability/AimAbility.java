@@ -26,8 +26,8 @@ public class AimAbility extends Ability {
         this.arm = arm;
     }
 
-    public static float[] getTimer(LivingEntity entity, float partialTicks) {
-        float[] f = new float[]{0F, 0F};
+    public static Float[] getTimer(LivingEntity entity, float partialTicks) {
+        Float[] f = new Float[]{0F, 0F};
 
         for (AbilityInstance<AimAbility> instance : AbilityUtil.getInstances(entity, AbilitySerializers.AIM.get())) {
             var armType = instance.getAbility().arm;

@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -67,7 +68,7 @@ public class BuyAbilityScreen extends Screen {
         int guiLeft = (this.width - GUI_WIDTH) / 2;
         int guiTop = (this.height - GUI_HEIGHT) / 2;
 
-        guiGraphics.blit(RenderType::guiTextured, PowersScreen.WINDOW, guiLeft, guiTop, 0, 196, GUI_WIDTH, GUI_HEIGHT, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,PowersScreen.WINDOW, guiLeft, guiTop, 0, 196, GUI_WIDTH, GUI_HEIGHT, 256, 256);
 
         List<FormattedCharSequence> lines = this.font.split(this.text, GUI_WIDTH - 40);
         for (int k = 0; k < lines.size(); k++) {

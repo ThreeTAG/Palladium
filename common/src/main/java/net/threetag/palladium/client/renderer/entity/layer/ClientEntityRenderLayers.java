@@ -8,10 +8,6 @@ public class ClientEntityRenderLayers extends EntityRenderLayers {
 
     private final Map<PackRenderLayer<?>, PackRenderLayer.State> layers = new HashMap<>();
 
-    public ClientEntityRenderLayers(LivingEntity entity) {
-        super(entity);
-    }
-
     @Override
     public void tick() {
         // Gather current layers

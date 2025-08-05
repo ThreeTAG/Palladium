@@ -3,6 +3,8 @@ package net.threetag.palladium.datagen.fabric;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.tags.TagEntry;
 import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.tag.PalladiumBlockTags;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +19,7 @@ public class PalladiumBlockTagProvider extends FabricTagProvider.BlockTagProvide
 
     @Override
     protected void addTags(HolderLookup.Provider wrapperLookup) {
-        this.getOrCreateTagBuilder(PalladiumBlockTags.PREVENTS_INTANGIBILITY).add(Blocks.BEDROCK);
+        this.builder(PalladiumBlockTags.PREVENTS_INTANGIBILITY).add(BuiltInRegistries.BLOCK.getResourceKey(Blocks.BEDROCK).orElseThrow());
     }
 
     @Override

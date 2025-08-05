@@ -15,7 +15,7 @@ public class DayCondition implements Condition {
     @Override
     public boolean test(DataContext context) {
         var level = context.getLevel();
-        return level != null && level.isDay();
+        return level != null && !level.dimensionType().hasFixedTime() && level.getSkyDarken() < 4;
     }
 
     @Override

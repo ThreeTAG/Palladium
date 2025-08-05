@@ -4,6 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ARGB;
+import net.threetag.palladium.util.GuiUtil;
 
 public class CloseButton extends Button {
 
@@ -14,18 +16,9 @@ public class CloseButton extends Button {
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (this.isHoveredOrFocused()) {
-            guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX() + 2, this.getY() - 1, 0, false);
-            guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX(), this.getY() - 1, 0, false);
-            guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX() + 1, this.getY(), 0, false);
-            guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX() + 1, this.getY() - 2, 0, false);
-            guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX(), this.getY() - 2, 0, false);
-            guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX(), this.getY(), 0, false);
-            guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX() + 2, this.getY(), 0, false);
-            guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX() + 2, this.getY() - 2, 0, false);
-
-            guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX() + 1, this.getY() - 1, 0xffffff, false);
+            GuiUtil.drawStringWithBlackOutline(guiGraphics, this.getMessage(), this.getX(), this.getY(), ARGB.opaque(4210752));
         } else {
-            guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX() + 1, this.getY() - 1, 4210752, false);
+            guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX() + 1, this.getY() - 1, ARGB.opaque(4210752), false);
         }
     }
 }

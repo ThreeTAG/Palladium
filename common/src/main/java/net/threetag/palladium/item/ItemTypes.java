@@ -37,17 +37,17 @@ public class ItemTypes {
             BuiltInRegistries.BLOCK.byNameCodec().fieldOf("block").forGetter(BlockItem::getBlock),
             propertiesCodec()
     ).apply(instance, BlockItem::new));
-    public static final MapCodec<SwordItem> SWORD_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final MapCodec<Item> SWORD_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ToolMaterialRegistry.CODEC.fieldOf("tool_material").forGetter(i -> ToolMaterial.IRON),
             ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("attack_damage", 3F).forGetter(i -> 0F),
             Codec.FLOAT.optionalFieldOf("attack_speed", -2.4F).forGetter(i -> 0F),
             propertiesCodec()
-    ).apply(instance, SwordItem::new));
-    public static final MapCodec<ArmorItem> ARMOR_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    ).apply(instance, (toolMaterial, attackDamage, attackSpeed, properties) -> new Item(properties.sword(toolMaterial, attackDamage, attackSpeed))));
+    public static final MapCodec<Item> ARMOR_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ArmorMaterialRegistry.CODEC.fieldOf("armor_material").forGetter(i -> ArmorMaterials.IRON),
             ArmorType.CODEC.fieldOf("armor_type").forGetter(i -> ArmorType.BODY),
             propertiesCodec()
-    ).apply(instance, ArmorItem::new));
+    ).apply(instance, (armorMaterial, armorType, properties) -> new Item(properties.humanoidArmor(armorMaterial, armorType))));
 
     public static final Codec<Item> CODEC = PalladiumRegistries.ITEM_TYPE.byNameCodec().dispatch(i -> i instanceof BlockItem ? BLOCK_ITEM_CODEC : ITEM_CODEC, Function.identity());
 }

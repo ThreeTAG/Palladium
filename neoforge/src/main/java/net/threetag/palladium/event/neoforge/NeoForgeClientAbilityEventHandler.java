@@ -1,6 +1,5 @@
 package net.threetag.palladium.event.neoforge;
 
-import com.mojang.blaze3d.shaders.FogShape;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -11,7 +10,7 @@ import net.threetag.palladium.power.ability.AbilitySerializers;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.IntangibilityAbility;
 
-@EventBusSubscriber(modid = Palladium.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Palladium.MOD_ID, value = Dist.CLIENT)
 public class NeoForgeClientAbilityEventHandler {
 
     @SubscribeEvent
@@ -30,7 +29,6 @@ public class NeoForgeClientAbilityEventHandler {
         if (e.getCamera().getEntity() instanceof LivingEntity living
                 && AbilityUtil.isTypeEnabled(living, AbilitySerializers.INTANGIBILITY.get())
                 && IntangibilityAbility.getInWallBlockState(living) != null) {
-            e.setFogShape(FogShape.SPHERE);
             e.setFarPlaneDistance(5F);
             e.setNearPlaneDistance(1F);
         }

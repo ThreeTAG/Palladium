@@ -20,16 +20,7 @@
       "type": "palladium:gui_overlay",
       "texture": "textures/gui/presets/isles.png",
       "alignment": "center",
-      "translate": [
-        0,
-        0,
-        -30
-      ],
-      "rotate": [
-        0,
-        0,
-        45
-      ],
+      "rotate": 45,
       "properties": {
         "title": "Center"
       },
@@ -72,11 +63,6 @@
       "type": "palladium:gui_overlay",
       "texture": "textures/gui/presets/isles.png",
       "alignment": "stretch",
-      "translate": [
-        0,
-        0,
-        10
-      ],
       "properties": {
         "title": "Stretched"
       },

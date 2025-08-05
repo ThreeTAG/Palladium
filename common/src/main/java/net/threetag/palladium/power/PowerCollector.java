@@ -52,7 +52,7 @@ public class PowerCollector {
     public record PowerHolderCache(Holder<Power> power, PowerValidator validator) {
 
         public PowerHolder make(LivingEntity entity, CompoundTag compoundTag) {
-            return new PowerHolder(entity, this.power, this.validator, compoundTag.getCompound(this.power.unwrapKey().orElseThrow().location().toString()));
+            return new PowerHolder(entity, this.power, this.validator, compoundTag.getCompoundOrEmpty(this.power.unwrapKey().orElseThrow().location().toString()));
         }
 
     }

@@ -7,31 +7,41 @@ import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.CommonInputs;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.gui.render.state.pip.GuiEntityRenderState;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.DyeColor;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.gui.component.grid.AbstractSelectionGrid;
+import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderState;
+import net.threetag.palladium.client.renderer.entity.layer.ClientEntityRenderLayers;
 import net.threetag.palladium.customization.Customization;
 import net.threetag.palladium.customization.CustomizationCategory;
+import net.threetag.palladium.customization.CustomizationPreview;
 import net.threetag.palladium.customization.EntityCustomizationHandler;
-import net.threetag.palladium.client.PoseStackTransformation;
-import net.threetag.palladium.client.gui.component.grid.AbstractSelectionGrid;
-import net.threetag.palladium.client.renderer.entity.layer.ClientEntityRenderLayers;
 import net.threetag.palladium.entity.SuitStand;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.network.SelectCustomizationPacket;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid.Entry> {
 
     private final CustomizationCategory slot;
-    private final PoseStackTransformation preview;
+    private final CustomizationPreview preview;
+    private final List<GuiEntityRenderState> drawnEntities = new ArrayList<>();
 
     public CustomizationsGrid(ScreenRectangle rectangle, CustomizationCategory slot, Minecraft minecraft) {
         super(minecraft, rectangle.left(), rectangle.top(), rectangle.width(), rectangle.height(), 50, 50, 4);
         this.slot = slot;
-        this.preview = slot.preview().invertYRot();
+        this.preview = slot.preview();
 
         var slotRegistry = minecraft.level.registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY);
         var slotId = slotRegistry.getKey(slot);
@@ -70,6 +80,13 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
 
     }
 
+    @Override
+    protected void renderGridItems(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        this.drawnEntities.clear();
+        super.renderGridItems(guiGraphics, mouseX, mouseY, partialTick);
+        guiGraphics.guiRenderState.submitPicturesInPictureState(new GuiMultiEntityRenderState(this.drawnEntities));
+    }
+
     public class Entry extends AbstractSelectionGrid.Entry<Entry> {
 
         private static final WidgetSprites SPRITES = new WidgetSprites(
@@ -96,21 +113,19 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
         @Override
         public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
             guiGraphics.blitSprite(
-                    RenderType::guiTextured,
+                    RenderPipelines.GUI_TEXTURED,
                     SPRITES.get(true, hovering),
                     left,
                     top,
                     width,
                     height,
-                    0xFFFFFFFF
+                    ARGB.white(1F)
             );
 
-            guiGraphics.enableScissor(left, top, left + width, top + height);
-            PlayerCustomizationScreen.renderEntityInInventory(guiGraphics, left + width / 2F, top + height / 2F, 20, CustomizationsGrid.this.preview, this.suitStandPreview);
-            guiGraphics.disableScissor();
+            PlayerCustomizationScreen.renderEntity(guiGraphics, left, top, left + width, top + height, 20, CustomizationsGrid.this.preview, this.suitStandPreview, CustomizationsGrid.this.drawnEntities::add);
 
             if (hovering) {
-                guiGraphics.renderTooltip(
+                guiGraphics.setTooltipForNextFrame(
                         CustomizationsGrid.this.minecraft.font,
                         this.customization.value().getTitle(CustomizationsGrid.this.minecraft.level.registryAccess()),
                         mouseX,

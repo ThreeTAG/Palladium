@@ -1,10 +1,15 @@
 package net.threetag.palladium.mixin.client.fabric;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.blaze3d.buffers.GpuBuffer;
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.FogParameters;
-import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.fog.FogData;
+import net.minecraft.client.renderer.fog.FogRenderer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.material.FogType;
 import net.threetag.palladium.power.ability.AbilitySerializers;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.IntangibilityAbility;
@@ -13,12 +18,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(FogRenderer.class)
 public class FogRendererMixin {
 
     @Inject(method = "computeFogColor", at = @At("HEAD"), cancellable = true)
-    private static void computeFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, CallbackInfoReturnable<Vector4f> cir) {
+    private static void computeFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, boolean isFoggy, CallbackInfoReturnable<Vector4f> cir) {
         if (camera.getEntity() instanceof LivingEntity living
                 && AbilityUtil.isTypeEnabled(living, AbilitySerializers.INTANGIBILITY.get())
                 && IntangibilityAbility.getInWallBlockState(living) != null) {
@@ -26,13 +32,15 @@ public class FogRendererMixin {
         }
     }
 
-    @Inject(method = "setupFog", at = @At("RETURN"), cancellable = true)
-    private static void setupFog(Camera camera, FogRenderer.FogMode fogMode, Vector4f fogColor, float renderDistance, boolean isFoggy, float partialTick, CallbackInfoReturnable<FogParameters> cir) {
+    @Inject(method = "setupFog",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/fog/FogRenderer;updateBuffer(Ljava/nio/ByteBuffer;ILorg/joml/Vector4f;FFFFFF)V")
+    )
+    private static void setupFog(Camera camera, int renderDistance, boolean isFoggy, DeltaTracker deltaTracker, float darkenWorldAmount, ClientLevel level, CallbackInfoReturnable<Vector4f> cir, @Local FogData fogData) {
         if (camera.getEntity() instanceof LivingEntity living
                 && AbilityUtil.isTypeEnabled(living, AbilitySerializers.INTANGIBILITY.get())
                 && IntangibilityAbility.getInWallBlockState(living) != null) {
-            var fog = cir.getReturnValue();
-            cir.setReturnValue(new FogParameters(1F, 5F, fog.shape(), fog.red(), fog.green(), fog.blue(), fog.alpha()));
+            fogData.environmentalStart = 1F;
+            fogData.environmentalEnd = 5F;
         }
     }
 

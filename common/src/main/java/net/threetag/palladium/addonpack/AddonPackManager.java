@@ -38,6 +38,8 @@ import java.util.function.Function;
 
 public class AddonPackManager {
 
+    public static final int PACK_FORMAT = 2;
+
     private static AddonPackManager INSTANCE;
     public static PackType PACK_TYPE;
     public static final PackSource PACK_SOURCE = PackSource.create(PackSource.decorateWithSource("pack.source.addonpack"), true);

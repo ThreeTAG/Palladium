@@ -3,7 +3,7 @@ package net.threetag.palladium.client.gui.screen.abilitybar;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.component.UiComponent;
 import net.threetag.palladium.data.DataContext;
@@ -35,7 +35,7 @@ public class EnergyBarComponent implements UiComponent {
         int height = (int) ((energyBarInstance.get() / (float) energyBarInstance.getMax()) * fullHeight);
 
         var texture = this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder()));
-        gui.blit(RenderType::guiTextured, texture, x, y, 152, 0, this.getWidth(), this.getHeight(), 256, 256);
-        gui.blit(RenderType::guiTextured, texture, x + 3, y + 3 + fullHeight - height, 162, fullHeight - height, this.getWidth() - 6, height, 256, 256, this.energyBarInstance.getConfiguration().color().getRGB());
+        gui.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 152, 0, this.getWidth(), this.getHeight(), 256, 256);
+        gui.blit(RenderPipelines.GUI_TEXTURED, texture, x + 3, y + 3 + fullHeight - height, 162, fullHeight - height, this.getWidth() - 6, height, 256, 256, this.energyBarInstance.getConfiguration().color().getRGB());
     }
 }

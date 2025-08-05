@@ -57,13 +57,13 @@ dependencies {
     modImplementation include("maven.modrinth:midnightlib:${rootProject.midnightlib_version}-fabric")
 
     // GeckoLib
-    modImplementation "software.bernie.geckolib:geckolib-fabric-${rootProject.minecraft_version}:${rootProject.geckolib_version}"
+    modImplementation "software.bernie.geckolib:geckolib-fabric-${rootProject.geckolib_version}"
 
     // Player Animator
     modImplementation include("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_animator_version}")
 
     // Accessories
-    modImplementation("io.wispforest:accessories-fabric:${rootProject.accessories_version}")
+//    modImplementation("io.wispforest:accessories-fabric:${rootProject.accessories_version}")
 
     // Mocha
     implementation include("team.unnamed:mocha:3.0.1")

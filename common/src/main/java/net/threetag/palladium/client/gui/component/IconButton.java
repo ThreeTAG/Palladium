@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.threetag.palladium.client.icon.Icon;
 import net.threetag.palladium.data.DataContext;
@@ -47,7 +47,7 @@ public class IconButton extends Button {
                 i += 20;
             }
 
-            guiGraphics.blit(RenderType::guiTextured, RenderUtil.WIDGETS_LOCATION, this.getX(), this.getY(), (float) 0, (float) i, this.width, this.height, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED,RenderUtil.WIDGETS_LOCATION, this.getX(), this.getY(), 0, i, this.width, this.height, 256, 256);
         }
 
         this.getIcon().draw(minecraft, guiGraphics, minecraft.player != null ? DataContext.forEntity(minecraft.player) : DataContext.create(), this.getX() + 2, this.getY() + 2);

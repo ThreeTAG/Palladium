@@ -1,16 +1,11 @@
 package net.threetag.palladium.attachment.neoforge;
 
-import dev.architectury.networking.NetworkManager;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.threetag.palladium.addonpack.DataAttachmentLoader;
 import net.threetag.palladium.attachment.PlatformAttachmentType;
-import net.threetag.palladium.network.DataSyncUtil;
-import net.threetag.palladium.network.PalladiumNetwork;
-import net.threetag.palladium.network.SyncAttachmentTypePacket;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings({"rawtypes", "unchecked", "UnnecessaryLocalVariable"})
@@ -27,14 +22,6 @@ public class PlatformAttachmentTypeImpl {
                 });
             }
         });
-
-        DataSyncUtil.registerEntitySync((entity, consumer) -> {
-            DataAttachmentLoader.INSTANCE.all().forEach((id, type) -> {
-                if (type.isSyncedWith() != PlatformAttachmentType.SyncWith.NONE && entity.hasData(getNeoForgeType(type))) {
-                    consumer.accept(new SyncAttachmentTypePacket(entity.getId(), type, get(entity, type), entity.registryAccess()));
-                }
-            });
-        });
     }
 
     public static <T> AttachmentType<T> getNeoForgeType(PlatformAttachmentType<T> type) {
@@ -50,14 +37,6 @@ public class PlatformAttachmentTypeImpl {
             entity.removeData(getNeoForgeType(type));
         } else {
             entity.setData(getNeoForgeType(type), value);
-        }
-
-        if (type.isSyncedWith() != PlatformAttachmentType.SyncWith.NONE) {
-            if (type.isSyncedWith() == PlatformAttachmentType.SyncWith.ALL) {
-                PalladiumNetwork.sendToTrackingAndSelf(entity, new SyncAttachmentTypePacket(entity.getId(), type, value, entity.registryAccess()));
-            } else if (entity instanceof ServerPlayer serverPlayer) {
-                NetworkManager.sendToPlayer(serverPlayer, new SyncAttachmentTypePacket(entity.getId(), type, value, entity.registryAccess()));
-            }
         }
     }
 

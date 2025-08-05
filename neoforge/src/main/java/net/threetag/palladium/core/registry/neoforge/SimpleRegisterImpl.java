@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Palladium.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Palladium.MOD_ID)
 public class SimpleRegisterImpl {
 
     private static final List<Entry<?>> ENTRIES = new ArrayList<>();

@@ -25,7 +25,7 @@ public class PalladiumKeyMappings implements ClientRawInputEvent.KeyPressed, Cli
     public static final String CATEGORY = "key.palladium.categories.powers";
     public static final KeyMapping OPEN_EQUIPMENT = new KeyMapping("key.palladium.open_equipment", GLFW.GLFW_KEY_BACKSLASH, "key.categories.gameplay");
     public static final KeyMapping SHOW_POWERS = new KeyMapping("key.palladium.show_powers", InputConstants.UNKNOWN.getValue(), CATEGORY);
-    public static final KeyMapping ROTATE_ABILITY_LIST = new KeyMapping("key.palladium.rotate_ability_list", GLFW.GLFW_KEY_X, CATEGORY);
+    public static final KeyMapping ROTATE_ABILITY_LIST = new KeyMapping("key.palladium.rotate_ability_list", GLFW.GLFW_KEY_Y, CATEGORY);
     public static AbilityKeyMapping[] ABILITY_KEYS = new AbilityKeyMapping[5];
 
     private static boolean LEFT_CLICK_DOWN = false;

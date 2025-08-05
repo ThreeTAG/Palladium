@@ -7,11 +7,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
-import net.minecraft.util.Mth;
 import net.threetag.palladium.client.icon.Icon;
 import net.threetag.palladium.data.DataContext;
 import org.jetbrains.annotations.Nullable;
@@ -31,15 +30,21 @@ public class TextWithIconButton extends Button {
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         Minecraft minecraft = Minecraft.getInstance();
-        guiGraphics.blitSprite(RenderType::guiTextured, SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight(), ARGB.white(this.alpha));
-
-        int i = this.active ? 16777215 : 10526880;
+        guiGraphics.blitSprite(
+                RenderPipelines.GUI_TEXTURED,
+                SPRITES.get(this.active, this.isHoveredOrFocused()),
+                this.getX(),
+                this.getY(),
+                this.getWidth(),
+                this.getHeight(),
+                ARGB.white(this.alpha)
+        );
+        int i = ARGB.color(this.alpha, this.active ? -1 : -6250336);
         int prefixWidth = minecraft.font.width(this.getMessage());
         int fullTextWidth = prefixWidth + 16 + minecraft.font.width(this.suffix);
-        int color = i | Mth.ceil(this.alpha * 255.0F) << 24;
 
-        guiGraphics.drawString(minecraft.font, this.getMessage(), (int) (this.getX() + this.width / 2F - fullTextWidth / 2F), (int) (this.getY() + (this.getHeight() - 8) / 2F), color);
-        guiGraphics.drawString(minecraft.font, this.suffix, (int) (this.getX() + this.width / 2F - fullTextWidth / 2F + prefixWidth + 16), (int) (this.getY() + (this.height - 8F) / 2F), color);
+        guiGraphics.drawString(minecraft.font, this.getMessage(), (int) (this.getX() + this.width / 2F - fullTextWidth / 2F), (int) (this.getY() + (this.getHeight() - 8) / 2F), i);
+        guiGraphics.drawString(minecraft.font, this.suffix, (int) (this.getX() + this.width / 2F - fullTextWidth / 2F + prefixWidth + 16), (int) (this.getY() + (this.height - 8F) / 2F), i);
         this.icon.draw(minecraft, guiGraphics, DataContext.forEntity(minecraft.player), this.getX() + this.width / 2 - fullTextWidth / 2 + prefixWidth, this.getY() + (this.height - 8) / 2 - 4);
     }
 

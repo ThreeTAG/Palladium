@@ -33,11 +33,11 @@ public record ExperienceIcon(int amount, boolean level) implements Icon {
         BACKGROUND_ICON.draw(mc, guiGraphics, context, x, y, width, height);
 
         var stack = guiGraphics.pose();
-        stack.pushPose();
-        stack.translate(x, y, 0);
+        stack.pushMatrix();
+        stack.translate(x, y);
 
         if (width != 16 || height != 16) {
-            stack.scale(width / 16F, height / 16F, 1);
+            stack.scale(width / 16F, height / 16F);
         }
 
         String text = this.amount + (this.level ? "L" : "");
@@ -47,7 +47,7 @@ public record ExperienceIcon(int amount, boolean level) implements Icon {
         guiGraphics.drawString(mc.font, text, 8, 7, 0, false);
         guiGraphics.drawString(mc.font, text, 8, 8, 8453920, false);
 
-        stack.popPose();
+        stack.popMatrix();
     }
 
     @Override

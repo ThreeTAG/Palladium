@@ -28,7 +28,7 @@ Abilities</h1>
 <h2>
 Overview</h2>
 <h3>
-GeckoLib 4</h3>
+GeckoLib 5</h3>
 <ul>
 <li>
 <a href="#geckolib:trigger_layer_animation">
@@ -303,7 +303,7 @@ attribute</td>
 <td>
 Attribute ID</td>
 <td>
-Determines which attribute should be modified. Possible attributes: minecraft:armor, minecraft:armor_toughness, minecraft:attack_damage, minecraft:attack_knockback, minecraft:attack_speed, minecraft:block_break_speed, minecraft:block_interaction_range, minecraft:burning_time, minecraft:entity_interaction_range, minecraft:explosion_knockback_resistance, minecraft:fall_damage_multiplier, minecraft:flying_speed, minecraft:follow_range, minecraft:gravity, minecraft:jump_strength, minecraft:knockback_resistance, minecraft:luck, minecraft:max_absorption, minecraft:max_health, minecraft:mining_efficiency, minecraft:movement_efficiency, minecraft:movement_speed, minecraft:oxygen_bonus, minecraft:safe_fall_distance, minecraft:scale, minecraft:sneaking_speed, minecraft:spawn_reinforcements, minecraft:step_height, minecraft:submerged_mining_speed, minecraft:sweeping_damage_ratio, minecraft:tempt_range, minecraft:water_movement_efficiency</td>
+Determines which attribute should be modified. Possible attributes: minecraft:armor, minecraft:armor_toughness, minecraft:attack_damage, minecraft:attack_knockback, minecraft:attack_speed, minecraft:block_break_speed, minecraft:block_interaction_range, minecraft:burning_time, minecraft:camera_distance, minecraft:entity_interaction_range, minecraft:explosion_knockback_resistance, minecraft:fall_damage_multiplier, minecraft:flying_speed, minecraft:follow_range, minecraft:gravity, minecraft:jump_strength, minecraft:knockback_resistance, minecraft:luck, minecraft:max_absorption, minecraft:max_health, minecraft:mining_efficiency, minecraft:movement_efficiency, minecraft:movement_speed, minecraft:oxygen_bonus, minecraft:safe_fall_distance, minecraft:scale, minecraft:sneaking_speed, minecraft:spawn_reinforcements, minecraft:step_height, minecraft:submerged_mining_speed, minecraft:sweeping_damage_ratio, minecraft:tempt_range, minecraft:water_movement_efficiency, minecraft:waypoint_receive_range, minecraft:waypoint_transmit_range</td>
 <td style="background-color: lightgreen">
 true</td>
 <td>
@@ -709,13 +709,13 @@ Fallback Value</th>
 <td>
 rotate</td>
 <td>
-Vector 3D</td>
+float</td>
 <td>
 The rotation of the texture.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-(0.0, 0.0, 0.0)</td>
+0.0</td>
 </tr>
 <tr>
 <td>
@@ -733,13 +733,13 @@ true</td>
 <td>
 scale</td>
 <td>
-Vector 3D</td>
+Vector 2D</td>
 <td>
 The scale of the texture.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-(1.0, 1.0, 1.0)</td>
+net.minecraft.world.phys.Vec2@2d054e5d</td>
 </tr>
 <tr>
 <td>
@@ -781,13 +781,13 @@ false</td>
 <td>
 translate</td>
 <td>
-Vector 3D</td>
+Vector 2D</td>
 <td>
 The translation of the texture.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-(0.0, 0.0, 0.0)</td>
+net.minecraft.world.phys.Vec2@367234e3</td>
 </tr>
 </tbody>
 </table>

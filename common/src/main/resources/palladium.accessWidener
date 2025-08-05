@@ -42,6 +42,10 @@ accessible method net/minecraft/client/renderer/LevelRenderer shouldShowEntityOu
 # EntityRenderDispatcher
 accessible field net/minecraft/client/renderer/entity/EntityRenderDispatcher equipmentAssets Lnet/minecraft/client/resources/model/EquipmentAssetManager;
 
+# EntityRenderer
+accessible field net/minecraft/client/renderer/entity/EntityRenderer reusedState Lnet/minecraft/client/renderer/entity/state/EntityRenderState;
+mutable field net/minecraft/client/renderer/entity/EntityRenderer reusedState Lnet/minecraft/client/renderer/entity/state/EntityRenderState;
+
 # PlayerRenderer
 accessible method net/minecraft/client/renderer/entity/player/PlayerRenderer setupRotations (Lnet/minecraft/client/renderer/entity/state/PlayerRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;FF)V
 accessible method net/minecraft/client/renderer/entity/player/PlayerRenderer scale (Lnet/minecraft/client/renderer/entity/state/PlayerRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;)V
@@ -97,3 +101,10 @@ accessible method net/minecraft/client/gui/screens/Screen addWidget (Lnet/minecr
 
 # CreativeModeInventoryScreen
 accessible field net/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen selectedTab Lnet/minecraft/world/item/CreativeModeTab;
+
+# GuiGraphics
+accessible field net/minecraft/client/gui/GuiGraphics guiRenderState Lnet/minecraft/client/gui/render/state/GuiRenderState;
+accessible field net/minecraft/client/gui/GuiGraphics scissorStack Lnet/minecraft/client/gui/GuiGraphics$ScissorStack;
+
+# PictureInPictureRenderer
+accessible field net/minecraft/client/gui/render/pip/PictureInPictureRenderer textureView Lcom/mojang/blaze3d/textures/GpuTextureView;

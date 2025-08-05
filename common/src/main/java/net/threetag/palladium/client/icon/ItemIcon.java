@@ -32,12 +32,12 @@ public class ItemIcon implements Icon {
 
     @Override
     public void draw(Minecraft mc, GuiGraphics guiGraphics, DataContext context, int x, int y, int width, int height) {
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(x + width / 2D, y + height / 2D, 100);
+        guiGraphics.pose().pushMatrix();
+        guiGraphics.pose().translate(x + width / 2F, y + height / 2F);
 
         if (width != 16 || height != 16) {
             int s = Math.min(width, height);
-            guiGraphics.pose().scale(s / 16F, s / 16F, s / 16F);
+            guiGraphics.pose().scale(s / 16F, s / 16F);
         }
 
         var item = this.stack;
@@ -53,7 +53,7 @@ public class ItemIcon implements Icon {
         }
 
         guiGraphics.renderItem(item, -width / 2, -height / 2);
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
     }
 
     @Override

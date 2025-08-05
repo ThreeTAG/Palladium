@@ -7,7 +7,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.power.ability.AbilitySerializers;
 import net.threetag.palladium.power.ability.AbilityUtil;
 
-@EventBusSubscriber(modid = Palladium.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = Palladium.MOD_ID)
 public class NeoForgeAbilityEventHandler {
 
     @SubscribeEvent

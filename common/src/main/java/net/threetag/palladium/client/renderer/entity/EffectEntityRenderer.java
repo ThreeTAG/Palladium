@@ -25,10 +25,8 @@ public class EffectEntityRenderer extends EntityRenderer<EffectEntity, EffectEnt
     @Override
     public void render(EffectEntityRenderState renderState, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
         Entity anchor = renderState.anchor;
-
         if (anchor != null) {
             var mc = Minecraft.getInstance();
-
             poseStack.pushPose();
             renderState.effect.render(renderState, anchor, poseStack, bufferSource, packedLight,
                     mc.player == anchor && mc.options.getCameraType().isFirstPerson(),

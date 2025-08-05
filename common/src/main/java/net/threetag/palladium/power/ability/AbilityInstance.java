@@ -147,7 +147,7 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
     }
 
     @Nullable
-    public <R> R set(DataComponentType<? super R> component, @Nullable R value) {
+    public <R> R set(DataComponentType<R> component, @Nullable R value) {
         var changed = this.components.set(component, value);
         if (!this.holder.getEntity().level().isClientSide) {
             var patch = DataComponentPatch.builder().set(Objects.requireNonNull(this.components.getTyped(component))).build();
@@ -157,7 +157,7 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
     }
 
     @Nullable
-    public <R> R setSilently(DataComponentType<? super R> component, @Nullable R value) {
+    public <R> R setSilently(DataComponentType<R> component, @Nullable R value) {
         return this.components.set(component, value);
     }
 

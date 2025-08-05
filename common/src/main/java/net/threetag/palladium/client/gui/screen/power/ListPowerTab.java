@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.locale.Language;
 import net.minecraft.resources.ResourceLocation;
@@ -62,7 +63,7 @@ public class ListPowerTab extends PowerTab {
 
         for (int m = -1; m <= 13; ++m) {
             for (int n = -1; n <= 9; ++n) {
-                guiGraphics.blit(RenderType::guiTextured, Objects.requireNonNull(texture), x + 10 + 16 * m, y + 10 + 16 * n, 0.0F, 0.0F, 16, 16, 16, 16, 256, 256);
+                guiGraphics.blit(RenderPipelines.GUI_TEXTURED, Objects.requireNonNull(texture), x + 10 + 16 * m, y + 10 + 16 * n, 0.0F, 0.0F, 16, 16, 16, 16, 256, 256);
             }
         }
 
@@ -74,16 +75,15 @@ public class ListPowerTab extends PowerTab {
 
     @Override
     public void drawTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int width, int height, float partialTick, boolean overlayActive) {
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(0.0F, 0.0F, -200.0F);
+        guiGraphics.pose().pushMatrix();
         guiGraphics.fill(0, 0, PowersScreen.WINDOW_INSIDE_WIDTH, PowersScreen.WINDOW_INSIDE_HEIGHT, Mth.floor(this.fade * 255.0F) << 24);
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
 
         if (this.hovered != null && !overlayActive) {
             var description = this.hovered.getAbility().getProperties().getDescription();
 
             if (description != null) {
-                guiGraphics.renderTooltip(this.minecraft.font, this.minecraft.font.split(description.get(this.hovered.isUnlocked()), 150), mouseX, mouseY);
+                guiGraphics.setTooltipForNextFrame(this.minecraft.font, this.minecraft.font.split(description.get(this.hovered.isUnlocked()), 150), mouseX, mouseY);
             }
         }
 
@@ -167,24 +167,20 @@ public class ListPowerTab extends PowerTab {
 
         @Override
         public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
-            guiGraphics.pose().pushPose();
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            guiGraphics.blit(RenderType::guiTextured, PowersScreen.WIDGETS, left, top, 0, 130 + (this.abilityInstance.isUnlocked() ? (hovering ? 2 : 0) : 1) * 26, width, height, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED,PowersScreen.WIDGETS, left, top, 0, 130 + (this.abilityInstance.isUnlocked() ? (hovering ? 2 : 0) : 1) * 26, width, height, 256, 256);
 
             if (this.abilityInstance.isUnlocked()) {
                 this.abilityInstance.getAbility().getProperties().getIcon().draw(this.minecraft, guiGraphics, DataContext.forAbility(this.minecraft.player, this.abilityInstance), left + 5, top + 5);
             } else {
-                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                guiGraphics.blit(RenderType::guiTextured, PowersScreen.WIDGETS, left + 5, top + 5, 90, 83, 16, 16, 256, 256);
+                guiGraphics.blit(RenderPipelines.GUI_TEXTURED,PowersScreen.WIDGETS, left + 5, top + 5, 90, 83, 16, 16, 256, 256);
 
                 // TODO
 //                if (this.abilityInstance.getAbility().getConditions().isBuyable()) {
-//                    guiGraphics.blit(PowersScreen.WIDGETS, left + 14, top + 16, 106, 83, 7, 7);
+//                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED,PowersScreen.WIDGETS, left + 14, top + 16, 106, 83, 7, 7);
 //                }
             }
 
             guiGraphics.drawString(this.minecraft.font, Language.getInstance().getVisualOrder(this.minecraft.font.substrByWidth(abilityInstance.getAbility().getDisplayName(), 180)), left + 30, top + 9, this.abilityInstance.isUnlocked() ? (hovering ? 0xfcfc7e : 0x675d49) : 0x332e25, false);
-            guiGraphics.pose().popPose();
 
             if (hovering) {
                 this.list.parent.hovered = this.abilityInstance;

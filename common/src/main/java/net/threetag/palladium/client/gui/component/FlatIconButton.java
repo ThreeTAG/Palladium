@@ -6,8 +6,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ARGB;
 import net.threetag.palladium.client.icon.Icon;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.util.RenderUtil;
@@ -29,7 +30,7 @@ public class FlatIconButton extends Button {
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         Minecraft minecraft = Minecraft.getInstance();
-        guiGraphics.blit(RenderType::guiTextured, RenderUtil.WIDGETS_LOCATION, this.getX(), this.getY(), 0, this.getTextureY(), 20, this.height, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, RenderUtil.WIDGETS_LOCATION, this.getX(), this.getY(), 0, this.getTextureY(), 20, this.height, 256, 256, ARGB.white(this.alpha));
         this.icon.draw(minecraft, guiGraphics, minecraft.player != null ? DataContext.forEntity(minecraft.player) : DataContext.create(), this.getX() + 2, this.getY() + 2);
     }
 

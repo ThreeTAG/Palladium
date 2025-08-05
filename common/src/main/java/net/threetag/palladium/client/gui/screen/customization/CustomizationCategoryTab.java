@@ -10,6 +10,7 @@ import net.threetag.palladium.client.PoseStackTransformation;
 import net.threetag.palladium.client.gui.component.tab.IconTab;
 import net.threetag.palladium.client.icon.Icon;
 import net.threetag.palladium.client.icon.TexturedIcon;
+import net.threetag.palladium.customization.CustomizationPreview;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 import java.util.Objects;
@@ -17,7 +18,7 @@ import java.util.Objects;
 public class CustomizationCategoryTab extends GridLayoutTab implements IconTab {
 
     private final PlayerCustomizationScreen parent;
-    private final PoseStackTransformation transformation;
+    private final CustomizationPreview transformation;
     private final Icon icon;
     private final CustomizationsGrid grid;
 

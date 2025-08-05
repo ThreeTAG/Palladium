@@ -14,7 +14,7 @@ dependencies {
     modImplementation ("maven.modrinth:midnightlib:${rootProject.midnightlib_version}-fabric")
 
     // GeckoLib
-    modImplementation "software.bernie.geckolib:geckolib-common-${rootProject.minecraft_version}:${rootProject.geckolib_version}"
+    modImplementation "software.bernie.geckolib:geckolib-common-${rootProject.geckolib_version}"
 
     // Player Animator
     modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_animator_version}")

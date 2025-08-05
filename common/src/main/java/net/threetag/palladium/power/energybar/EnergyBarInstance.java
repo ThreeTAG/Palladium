@@ -122,9 +122,9 @@ public class EnergyBarInstance {
     }
 
     public void load(CompoundTag nbt) {
-        this.set(nbt.getInt("value"));
-        this.setMax(nbt.getInt("max_value"));
-        this.overriddenMaxValue = nbt.getInt("overridden_max_value");
+        this.set(nbt.getIntOr("value", 0));
+        this.setMax(nbt.getIntOr("max_value", 0));
+        this.overriddenMaxValue = nbt.getIntOr("overridden_max_value", -1);
     }
 
 }

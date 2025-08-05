@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -71,7 +72,7 @@ public abstract class BlockStateBaseMixin {
     }
 
     @Inject(method = "entityInside", at = @At("HEAD"), cancellable = true)
-    private void preventCollisionWhenPhasing(Level level, BlockPos pos, Entity entity, CallbackInfo ci) {
+    private void preventCollisionWhenPhasing(Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, CallbackInfo ci) {
         if (entity instanceof LivingEntity living) {
             for (AbilityInstance<IntangibilityAbility> instance : AbilityUtil.getEnabledInstances(living, AbilitySerializers.INTANGIBILITY.get())) {
                 if (IntangibilityAbility.canGoThrough(instance, level.getBlockState(pos))) {

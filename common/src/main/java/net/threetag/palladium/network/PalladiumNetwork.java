@@ -27,7 +27,6 @@ public class PalladiumNetwork {
         registerS2C(SyncAbilityComponentPacket.TYPE, SyncAbilityComponentPacket.STREAM_CODEC, SyncAbilityComponentPacket::handle);
         registerS2C(SyncEnergyBarPacket.TYPE, SyncEnergyBarPacket.STREAM_CODEC, SyncEnergyBarPacket::handle);
         registerS2C(OpenAbilityBuyScreenPacket.TYPE, OpenAbilityBuyScreenPacket.STREAM_CODEC, OpenAbilityBuyScreenPacket::handle);
-        registerS2C(SyncAttachmentTypePacket.TYPE, SyncAttachmentTypePacket.STREAM_CODEC, SyncAttachmentTypePacket::handle);
         registerS2C(SyncEntityCustomizationsPacket.TYPE, SyncEntityCustomizationsPacket.STREAM_CODEC, SyncEntityCustomizationsPacket::handle);
         registerS2C(SyncEntityCustomizationPacket.TYPE, SyncEntityCustomizationPacket.STREAM_CODEC, SyncEntityCustomizationPacket::handle);
 

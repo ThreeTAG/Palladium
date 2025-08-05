@@ -22,7 +22,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.threetag.palladium.data.DataContext;
@@ -51,7 +51,7 @@ public class IconTabNavigationBar extends AbstractContainerEventHandler implemen
         ImmutableList.Builder<TabButton> builder = ImmutableList.builder();
         this.layout.setY(33);
 
-        for(Tab tab : tabs) {
+        for (Tab tab : tabs) {
             builder.add(this.layout.addChild(new IconTabButton(tabManager, tab, 0, HEIGHT)));
         }
 
@@ -67,7 +67,7 @@ public class IconTabNavigationBar extends AbstractContainerEventHandler implemen
     }
 
     public boolean isMouseOver(double mouseX, double mouseY) {
-        return mouseX >= (double)this.layout.getX() && mouseY >= (double)this.layout.getY() && mouseX < (double)(this.layout.getX() + this.layout.getWidth()) && mouseY < (double)(this.layout.getY() + this.layout.getHeight());
+        return mouseX >= (double) this.layout.getX() && mouseY >= (double) this.layout.getY() && mouseX < (double) (this.layout.getX() + this.layout.getWidth()) && mouseY < (double) (this.layout.getY() + this.layout.getHeight());
     }
 
     public void setFocused(boolean focused) {
@@ -129,9 +129,9 @@ public class IconTabNavigationBar extends AbstractContainerEventHandler implemen
     }
 
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        guiGraphics.blit(RenderType::guiTextured, Screen.HEADER_SEPARATOR, 0, this.layout.getY() + this.layout.getHeight() - 2, 0.0F, 0.0F, this.tabButtons.get(0).getX(), 2, 32, 2);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,Screen.HEADER_SEPARATOR, 0, this.layout.getY() + this.layout.getHeight() - 2, 0, 0, this.tabButtons.get(0).getX(), 2, 32, 2);
         int i = this.tabButtons.get(this.tabButtons.size() - 1).getRight();
-        guiGraphics.blit(RenderType::guiTextured, Screen.HEADER_SEPARATOR, i, this.layout.getY() + this.layout.getHeight() - 2, 0.0F, 0.0F, this.width, 2, 32, 2);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,Screen.HEADER_SEPARATOR, i, this.layout.getY() + this.layout.getHeight() - 2, 0, 0, this.width, 2, 32, 2);
 
         for (TabButton tabButton : this.tabButtons) {
             tabButton.render(guiGraphics, mouseX, mouseY, partialTick);
@@ -240,7 +240,7 @@ public class IconTabNavigationBar extends AbstractContainerEventHandler implemen
 
         @Override
         public void renderString(GuiGraphics guiGraphics, Font font, int color) {
-            if(this.tab() instanceof IconTab iconTab) {
+            if (this.tab() instanceof IconTab iconTab) {
                 var mc = Minecraft.getInstance();
                 iconTab.getIcon().draw(mc, guiGraphics, DataContext.forEntity(mc.player), this.getX() + (this.getWidth() / 2) - 8, this.getY() + (this.getHeight() / 2) - 7);
             } else {

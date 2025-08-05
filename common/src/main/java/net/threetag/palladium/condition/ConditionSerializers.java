@@ -60,8 +60,6 @@ public class ConditionSerializers {
     public static final RegistryHolder<IsUnderWaterCondition.Serializer> IS_UNDER_WATER = CONDITION_SERIALIZERS.register("is_under_water", IsUnderWaterCondition.Serializer::new);
     public static final RegistryHolder<IsInRainCondition.Serializer> IS_IN_RAIN = CONDITION_SERIALIZERS.register("is_in_rain", IsInRainCondition.Serializer::new);
     public static final RegistryHolder<IsInWaterOrRainCondition.Serializer> IS_IN_WATER_OR_RAIN = CONDITION_SERIALIZERS.register("is_in_water_or_rain", IsInWaterOrRainCondition.Serializer::new);
-    public static final RegistryHolder<IsInWaterRainOrBubbleCondition.Serializer> IS_IN_WATER_RAIN_OR_BUBBLE = CONDITION_SERIALIZERS.register("is_in_water_rain_or_bubble", IsInWaterRainOrBubbleCondition.Serializer::new);
-    public static final RegistryHolder<IsInWaterOrBubbleCondition.Serializer> IS_IN_WATER_OR_BUBBLE = CONDITION_SERIALIZERS.register("is_in_water_or_bubble", IsInWaterOrBubbleCondition.Serializer::new);
     public static final RegistryHolder<DayCondition.Serializer> DAY = CONDITION_SERIALIZERS.register("day", DayCondition.Serializer::new);
     public static final RegistryHolder<NightCondition.Serializer> NIGHT = CONDITION_SERIALIZERS.register("night", NightCondition.Serializer::new);
 //    public static final RegistryHolder<InAccessorySlotMenuCondition.Serializer> IN_ACCESSORY_SLOT_MENU = CONDITION_SERIALIZERS.register("in_accessory_slot_menu", InAccessorySlotMenuCondition.Serializer::new);

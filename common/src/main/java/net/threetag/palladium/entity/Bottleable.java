@@ -66,31 +66,41 @@ public interface Bottleable {
      * @deprecated
      */
     @Deprecated
-    static void loadDefaultDataFromBottleTag(Mob mob, CompoundTag tag) {
-        if (tag.contains("NoAI")) {
-            mob.setNoAi(tag.getBoolean("NoAI"));
-        }
+    static void saveDefaultDataToBucketTag(Mob mob, ItemStack bottle) {
+        bottle.copyFrom(DataComponents.CUSTOM_NAME, mob);
+        CustomData.update(PalladiumDataComponents.Items.BOTTLE_ENTITY_DATA.get(), bottle, compoundTag -> {
+            if (mob.isNoAi()) {
+                compoundTag.putBoolean("NoAI", mob.isNoAi());
+            }
 
-        if (tag.contains("Silent")) {
-            mob.setSilent(tag.getBoolean("Silent"));
-        }
+            if (mob.isSilent()) {
+                compoundTag.putBoolean("Silent", mob.isSilent());
+            }
 
-        if (tag.contains("NoGravity")) {
-            mob.setNoGravity(tag.getBoolean("NoGravity"));
-        }
+            if (mob.isNoGravity()) {
+                compoundTag.putBoolean("NoGravity", mob.isNoGravity());
+            }
 
-        if (tag.contains("Glowing")) {
-            mob.setGlowingTag(tag.getBoolean("Glowing"));
-        }
+            if (mob.hasGlowingTag()) {
+                compoundTag.putBoolean("Glowing", mob.hasGlowingTag());
+            }
 
-        if (tag.contains("Invulnerable")) {
-            mob.setInvulnerable(tag.getBoolean("Invulnerable"));
-        }
+            if (mob.isInvulnerable()) {
+                compoundTag.putBoolean("Invulnerable", mob.isInvulnerable());
+            }
 
-        if (tag.contains("Health", 99)) {
-            mob.setHealth(tag.getFloat("Health"));
-        }
+            compoundTag.putFloat("Health", mob.getHealth());
+        });
+    }
 
+    @Deprecated
+    static void loadDefaultDataFromBucketTag(Mob mob, CompoundTag tag) {
+        tag.getBoolean("NoAI").ifPresent(mob::setNoAi);
+        tag.getBoolean("Silent").ifPresent(mob::setSilent);
+        tag.getBoolean("NoGravity").ifPresent(mob::setNoGravity);
+        tag.getBoolean("Glowing").ifPresent(mob::setGlowingTag);
+        tag.getBoolean("Invulnerable").ifPresent(mob::setInvulnerable);
+        tag.getFloat("Health").ifPresent(mob::setHealth);
     }
 
     static <T extends LivingEntity & Bottleable> Optional<InteractionResult> bottleMobPickup(Player player, InteractionHand hand, T entity) {
