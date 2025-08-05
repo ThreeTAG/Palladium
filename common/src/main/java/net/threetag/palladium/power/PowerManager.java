@@ -34,7 +34,6 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
     private static PowerManager INSTANCE;
     public Map<ResourceLocation, Power> byName = ImmutableMap.of();
     public static final List<String> CHECK_FOR_CHAT_MESSAGES = new ArrayList<>();
-    private static final Map<PowerHandler, Optional<PowerHandler>> POWER_HANDLER_MAP = new WeakHashMap<>();
 
     public static void init() {
         ReloadListenerRegistry.register(PackType.SERVER_DATA, Palladium.id("powers"), INSTANCE = new PowerManager());
@@ -103,15 +102,10 @@ public class PowerManager extends SimpleJsonResourceReloadListener {
     }
 
     public static Optional<PowerHandler> getPowerHandler(LivingEntity entity) {
-        if (!(entity instanceof PalladiumLivingEntityExtension ext)) {
+        if (entity instanceof PalladiumLivingEntityExtension ext) {
+            return Optional.of(ext.palladium$getPowerHandler());
+        } else {
             return Optional.empty();
         }
-
-        final PowerHandler handler = ext.palladium$getPowerHandler();
-        if (handler == null) {
-            return Optional.empty();
-        }
-
-        return POWER_HANDLER_MAP.computeIfAbsent(handler, Optional::of);
     }
 }
