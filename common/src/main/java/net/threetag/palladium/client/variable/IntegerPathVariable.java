@@ -43,7 +43,9 @@ public abstract class IntegerPathVariable extends PathVariable {
     }
 
     public interface ModifyIntFunction extends MochaCompiledFunction {
+
         int modify(@Named("value") int value);
+
     }
 
     public static abstract class IntSerializer<T extends IntegerPathVariable> extends PathVariableSerializer<T> {

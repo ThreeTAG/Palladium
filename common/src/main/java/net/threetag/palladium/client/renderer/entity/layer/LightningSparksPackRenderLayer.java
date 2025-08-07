@@ -159,7 +159,7 @@ public class LightningSparksPackRenderLayer extends PackRenderLayer<LightningSpa
                             new LaserRenderer(
                                     new LaserRenderer.LaserPart(Color.BLUE, 1F, 0F, null),
                                     new LaserRenderer.LaserPart(Color.WHITE, 1F, 0F, null),
-                                    2, new Vector2f(2 / 16F, 2 / 16F), false, 0, 0
+                                    2, new Vector2f(2 / 16F, 2 / 16F), 0, 0
                             ),
                             PerspectiveAwareConditions.EMPTY
                     ));

@@ -25,11 +25,6 @@ public class DynamicTextureManager extends SimpleJsonResourceReloadListener<Dyna
     }
 
     @Override
-    protected Map<ResourceLocation, DynamicTexture> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
-        return super.prepare(resourceManager, profiler);
-    }
-
-    @Override
     protected void apply(Map<ResourceLocation, DynamicTexture> objects, ResourceManager resourceManager, ProfilerFiller profiler) {
         this.byName.clear();
         this.byName.putAll(objects);

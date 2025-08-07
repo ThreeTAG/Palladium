@@ -44,8 +44,6 @@ public record LaserRenderer(net.threetag.palladium.client.renderer.LaserRenderer
         ).apply(instance, LaserRenderer::new));
     }
 
-    ;
-
     public void face(PoseStack poseStack, Vec3 origin, Vec3 target) {
         RenderUtil.faceVec(poseStack, origin, target);
         poseStack.mulPose(Axis.XP.rotationDegrees(90));
