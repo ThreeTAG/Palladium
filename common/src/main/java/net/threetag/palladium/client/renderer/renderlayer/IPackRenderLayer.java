@@ -75,6 +75,18 @@ public interface IPackRenderLayer {
         return layer;
     }
 
+    static boolean conditionsFulfilled(Entity entity, List<Condition> conditions) {
+        if (entity instanceof LivingEntity livingEntity) {
+            for (Condition condition : conditions) {
+                if (!condition.active(DataContext.forEntity(livingEntity))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     static boolean conditionsFulfilled(Entity entity, List<Condition> bothConditions, List<Condition> specificConditions) {
         if (entity instanceof LivingEntity livingEntity) {
             for (Condition condition : bothConditions) {

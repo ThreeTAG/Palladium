@@ -38,6 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PowersScreen extends Screen {
 
+    public static RenderCallback POST_RENDER_CALLBACK = null;
     public static final ResourceLocation WINDOW = new ResourceLocation(Palladium.MOD_ID, "textures/gui/powers/window.png");
     public static final ResourceLocation TABS = new ResourceLocation(Palladium.MOD_ID, "textures/gui/powers/tabs.png");
     public static final ResourceLocation WIDGETS = new ResourceLocation(Palladium.MOD_ID, "textures/gui/powers/widgets.png");
@@ -199,14 +200,23 @@ public class PowersScreen extends Screen {
             this.selectedTab.fade = Mth.clamp(this.selectedTab.fade + 0.02F, 0, 0.5F);
             guiGraphics.pose().translate(0, 0, -500);
         }
+
+        if (POST_RENDER_CALLBACK != null) {
+            var powerId = this.selectedTab != null ? this.selectedTab.powerHolder.getPower().getId() : null;
+            POST_RENDER_CALLBACK.postRender(this, guiGraphics, mouseX, mouseY, partialTick, powerId);
+        }
     }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        int x1 = ((this.width - WINDOW_WIDTH) / 2) + WINDOW_INSIDE_X;
+        int y1 = ((this.height - WINDOW_HEIGHT) / 2) + WINDOW_INSIDE_Y;
+        boolean inWindow = mouseX >= x1 && mouseX <= x1 + WINDOW_INSIDE_WIDTH && mouseY >= y1 && mouseY <= y1 + WINDOW_INSIDE_HEIGHT;
+
         if (button != 0) {
             this.isScrolling = false;
             return false;
-        } else {
+        } else if (this.isScrolling || inWindow) {
             if (!this.isScrolling) {
                 this.isScrolling = true;
             } else if (this.selectedTab instanceof TreePowerTab tree) {
@@ -215,6 +225,14 @@ public class PowersScreen extends Screen {
 
             return true;
         }
+
+        return false;
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        this.isScrolling = false;
+        return super.mouseReleased(mouseX, mouseY, button);
     }
 
     private void renderInside(GuiGraphics guiGraphics, int mouseX, int mouseY, int offsetX, int offsetY, float partialTick) {
@@ -257,9 +275,9 @@ public class PowersScreen extends Screen {
         if (this.selectedTab != null) {
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate((float) (offsetX + WINDOW_INSIDE_X), (float) (offsetY + WINDOW_INSIDE_Y), 400.0F);
-            RenderSystem.enableDepthTest();
+//            RenderSystem.enableDepthTest();
             this.selectedTab.drawTooltips(guiGraphics, mouseX - offsetX - WINDOW_INSIDE_X, mouseY - offsetY - WINDOW_INSIDE_Y, offsetX, offsetY, partialTick, this.overlayScreen != null);
-            RenderSystem.disableDepthTest();
+//            RenderSystem.disableDepthTest();
             guiGraphics.pose().popPose();
         }
 
@@ -328,6 +346,13 @@ public class PowersScreen extends Screen {
             }
             return null;
         }
+    }
+
+    @FunctionalInterface
+    public interface RenderCallback {
+
+        void postRender(PowersScreen screen, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, ResourceLocation tab);
+
     }
 
 }

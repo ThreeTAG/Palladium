@@ -28,7 +28,7 @@ public class LevelRendererMixin {
         }
     }
 
-    @Inject(method = "renderSky", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose()V", ordinal = 1, shift = At.Shift.AFTER), cancellable = true)
+    @Inject(method = "renderSky", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose()V", ordinal = 1, shift = At.Shift.AFTER))
     private void renderWatcher(PoseStack poseStack, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean bl, Runnable skyFogSetup, CallbackInfo ci) {
         WatcherRenderer.INSTANCE.render(poseStack, WatcherRenderer.INSTANCE.getVisibility(partialTick));
     }

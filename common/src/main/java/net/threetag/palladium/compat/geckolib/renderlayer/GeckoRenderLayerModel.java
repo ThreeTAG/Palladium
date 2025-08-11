@@ -94,10 +94,10 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         Minecraft mc = Minecraft.getInstance();
-        MultiBufferSource bufferSource = mc.renderBuffers().bufferSource();
+        MultiBufferSource bufferSource = mc.levelRenderer.renderBuffers.bufferSource();
 
         if (mc.levelRenderer.shouldShowEntityOutlines() && mc.shouldEntityAppearGlowing(this.currentEntity))
-            bufferSource = mc.renderBuffers().outlineBufferSource();
+            bufferSource = mc.levelRenderer.renderBuffers.outlineBufferSource();
 
         float partialTick = mc.getFrameTime();
         buffer = this.currentState.layer.renderType.createVertexConsumer(bufferSource, this.getTextureLocation(this.currentState), false);

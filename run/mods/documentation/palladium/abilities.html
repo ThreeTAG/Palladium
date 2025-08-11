@@ -67,6 +67,10 @@ command</a>
 damage_immunity</a>
 </li>
 <li>
+<a href="#palladium:disable_hotbar_scroll">
+disable_hotbar_scroll</a>
+</li>
+<li>
 <a href="#palladium:dummy">
 dummy</a>
 </li>
@@ -1137,7 +1141,7 @@ attribute</td>
 <td>
 Attribute</td>
 <td>
-Determines which attribute should be modified. Possible attributes: minecraft:generic.armor, minecraft:generic.armor_toughness, minecraft:generic.attack_damage, minecraft:generic.attack_knockback, minecraft:generic.attack_speed, minecraft:generic.flying_speed, minecraft:generic.follow_range, minecraft:generic.knockback_resistance, minecraft:generic.luck, minecraft:generic.max_health, minecraft:generic.movement_speed, minecraft:horse.jump_strength, minecraft:zombie.spawn_reinforcements, porting_lib:entity_gravity, porting_lib:step_height_addition, porting_lib:swim_speed</td>
+Determines which attribute should be modified. Possible attributes: minecraft:generic.armor, minecraft:generic.armor_toughness, minecraft:generic.attack_damage, minecraft:generic.attack_knockback, minecraft:generic.attack_speed, minecraft:generic.flying_speed, minecraft:generic.follow_range, minecraft:generic.knockback_resistance, minecraft:generic.luck, minecraft:generic.max_health, minecraft:generic.movement_speed, minecraft:horse.jump_strength, minecraft:zombie.spawn_reinforcements, porting_lib:entity_gravity, porting_lib:step_height_addition, porting_lib:swim_speed, reach-entity-attributes:attack_range, reach-entity-attributes:reach</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -1492,6 +1496,134 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:disable_hotbar_scroll">
+<h2>
+disable_hotbar_scroll</h2>
+<p>
+When enabled, the player will not be able to scroll through the hotbar anymore.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon for the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 blaze_rod}</td>
+</tr>
+<tr>
+<td>
+title</td>
+<td>
+Component</td>
+<td>
+Allows you to set a custom title for this ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+bar_color</td>
+<td>
+AbilityColor</td>
+<td>
+Changes the color of the ability in the ability bar. Possible values: [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+LIGHT_GRAY</td>
+</tr>
+<tr>
+<td>
+hidden</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the powers screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+hidden_in_bar</td>
+<td>
+Boolean</td>
+<td>
+Determines if the ability is visible in the ability bar on your screen</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+list_index</td>
+<td>
+Integer</td>
+<td>
+Determines the list index for custom ability lists. Starts at 0. Going beyond 4 (which is the 5th place in the ability) will start a new list. Keeping it at -1 will automatically arrange the abilities.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+-1</td>
+</tr>
+<tr>
+<td>
+gui_position</td>
+<td>
+Vec2</td>
+<td>
+Position of the ability in the ability menu. Leave null for automatic positioning. 0/0 is center</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+AbilityDescription</td>
+<td>
+Description of the ability. Visible in ability menu</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:disable_hotbar_scroll","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null"}</pre>
+</div>
+<hr>
+
 <div id="palladium:dummy">
 <h2>
 dummy</h2>
@@ -1833,12 +1965,36 @@ false</td>
 <td>
 false</td>
 </tr>
+<tr>
+<td>
+commands_on_block_hit</td>
+<td>
+CommandFunctionParsing</td>
+<td>
+Sets the commands which get executed when the beam hits an object</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+[]</td>
+</tr>
+<tr>
+<td>
+commands_on_entity_hit</td>
+<td>
+CommandFunctionParsing</td>
+<td>
+Sets the commands which get executed when the beam hits an object</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+[]</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:energy_beam","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","energy_beam":"example:energy_beam","damage_type":"null","damage":5.0,"max_distance":30.0,"speed":0.5,"set_on_fire_seconds":0,"cause_fire":false,"smelt_blocks":false}</pre>
+{"type":"palladium:energy_beam","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","energy_beam":"example:energy_beam","damage_type":"null","damage":5.0,"max_distance":30.0,"speed":0.5,"set_on_fire_seconds":0,"cause_fire":false,"smelt_blocks":false,"commands_on_block_hit":[],"commands_on_entity_hit":[]}</pre>
 </div>
 <hr>
 
@@ -2173,12 +2329,36 @@ false</td>
 <td>
 0.0</td>
 </tr>
+<tr>
+<td>
+property_key</td>
+<td>
+String</td>
+<td>
+If you want to make the glow dependent on a Palladium Property, this is the key/name of it which you can specify.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+property_value</td>
+<td>
+String</td>
+<td>
+If you want to make the glow dependent on a Palladium Property, this is value of it which you can specify.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:entity_glow","icon":"minecraft:glow_berries","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","mode":"self","color":"null","distance":0.0}</pre>
+{"type":"palladium:entity_glow","icon":"minecraft:glow_berries","title":"null","bar_color":"light_gray","hidden":false,"hidden_in_bar":false,"list_index":-1,"gui_position":"null","description":"null","mode":"self","color":"null","distance":0.0,"property_key":"null","property_value":"null"}</pre>
 </div>
 <hr>
 
@@ -3903,12 +4083,24 @@ false</td>
 <td>
 false</td>
 </tr>
+<tr>
+<td>
+play_others</td>
+<td>
+Boolean</td>
+<td>
+If 'play_self' is disabled, this determines whether or not the sound should be played to the players around the player executing the ability</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:play_sound","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","sound":"minecraft:item.elytra.flying","volume":1.0,"pitch":1.0,"looping":false,"play_self":false}</pre>
+{"type":"palladium:play_sound","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","sound":"minecraft:item.elytra.flying","volume":1.0,"pitch":1.0,"looping":false,"play_self":false,"play_others":false}</pre>
 </div>
 <hr>
 

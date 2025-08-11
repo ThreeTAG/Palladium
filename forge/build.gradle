@@ -63,6 +63,7 @@ dependencies {
 
     // GeckoLib
     modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:${rootProject.geckolib_version}")
+    implementation("com.eliotlash.mclib:mclib:20")
 
     // JEI
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"

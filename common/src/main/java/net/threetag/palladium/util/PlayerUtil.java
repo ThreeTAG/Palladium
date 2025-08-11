@@ -18,6 +18,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
+import java.util.function.Predicate;
+
 public class PlayerUtil {
 
     public static boolean isCreativeFlying(LivingEntity entity) {
@@ -74,6 +76,15 @@ public class PlayerUtil {
         AABB a = new AABB(BlockPos.containing(x - range, y - range, z - range), BlockPos.containing(x + range, y + range, z + range));
         for (Player players : world.getEntitiesOfClass(Player.class, a)) {
             playSound(players, x, y, z, sound, category, volume, pitch);
+        }
+    }
+
+    public static void playSoundToAll(Level world, double x, double y, double z, double range, ResourceLocation sound, SoundSource category, float volume, float pitch, Predicate<Player> playerPredicate) {
+        AABB a = new AABB(BlockPos.containing(x - range, y - range, z - range), BlockPos.containing(x + range, y + range, z + range));
+        for (Player players : world.getEntitiesOfClass(Player.class, a)) {
+            if (playerPredicate.test(players)) {
+                playSound(players, x, y, z, sound, category, volume, pitch);
+            }
         }
     }
 

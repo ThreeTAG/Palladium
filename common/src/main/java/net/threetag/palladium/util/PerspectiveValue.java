@@ -7,6 +7,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -47,6 +48,15 @@ public class PerspectiveValue<T> {
         return this.get(Minecraft.getInstance().options.getCameraType());
     }
 
+    @Environment(EnvType.CLIENT)
+    public T getForPlayer(Player player) {
+        if (player == Minecraft.getInstance().player) {
+            return this.get();
+        } else {
+            return this.get(false);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -81,13 +91,13 @@ public class PerspectiveValue<T> {
     }
 
     public static <T> PerspectiveValue<T> getFromJson(JsonObject json, String memberName, Function<JsonElement, T> parser, T fallback) {
-        if(json.has(memberName)) {
+        if (json.has(memberName)) {
             return fromJSON(json.get(memberName), parser);
         } else {
             return new PerspectiveValue<>(fallback);
         }
     }
-    
+
     public JsonElement toJson(Function<T, JsonElement> serializer) {
         if (this.firstPerson == this.thirdPerson) {
             return serializer.apply(this.firstPerson);

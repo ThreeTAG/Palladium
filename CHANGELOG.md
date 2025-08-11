@@ -1,7 +1,6 @@
-- Added ability_wheel_hovered & ability_wheel_displayed texture variables
-- Added fallback values to all property variables 
-- Added "disable_center_icon" to ability wheel ability
-- #145 Fixed mermod incompatibility
-- Fixed /ablity lock all response
-- Fix for name change ability
-- Compressed PNGs and decreased jar file size
+- Added has_movement_input condition
+- Added "filter" option to color transformer
+- Fixed gecko render layers causing re-render on cursor if using shaders
+- Fixed name change ability not working if players dont have permissions
+- Removed "Was not able to read user's supporter data!" log because people keep misinterpreting it
+- Make supporter data fetching async

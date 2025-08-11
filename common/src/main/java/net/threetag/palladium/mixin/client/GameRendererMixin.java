@@ -23,11 +23,10 @@ public abstract class GameRendererMixin {
 
     @Shadow
     @Final
-    private Minecraft minecraft;
+    Minecraft minecraft;
 
     @Shadow
-    @Nullable
-    private PostChain postEffect;
+    @Nullable PostChain postEffect;
 
     @Shadow
     public abstract void loadEffect(ResourceLocation resourceLocation);

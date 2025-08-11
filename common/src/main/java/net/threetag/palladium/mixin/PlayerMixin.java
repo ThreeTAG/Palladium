@@ -15,6 +15,7 @@ import net.threetag.palladium.entity.PalladiumPlayerExtension;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.ToolHandsAbility;
+import net.threetag.palladiumcore.util.PlayerUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,6 +38,7 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
     public void init(Level level, BlockPos blockPos, float yRot, GameProfile gameProfile, CallbackInfo ci) {
         this.palladium$getFlightHandler();
         this.palladium$accessories = new AccessoryPlayerData();
+        PlayerUtil.refreshDisplayName((Player) (Object) this);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))

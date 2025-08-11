@@ -21,8 +21,8 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.awt.*;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -388,6 +388,23 @@ public class GsonUtil {
         }
     }
 
+    public static Color convertToColor(JsonElement element) {
+        if (element.isJsonPrimitive()) {
+            return Color.decode(element.getAsString());
+        } else if (element.isJsonArray()) {
+            JsonArray array = element.getAsJsonArray();
+            if (array.size() == 3) {
+                return new Color(array.get(0).getAsInt(), array.get(1).getAsInt(), array.get(2).getAsInt());
+            } else if (array.size() == 4) {
+                return new Color(array.get(0).getAsInt(), array.get(1).getAsInt(), array.get(2).getAsInt(), array.get(3).getAsInt());
+            } else {
+                throw new JsonParseException("Color array must either have 3 (RGB) or 4 (RGBA) integers");
+            }
+        } else {
+            throw new JsonParseException("Color must either be defined as RGB-string or array of integers");
+        }
+    }
+
     public static Color getAsColor(JsonObject json, String memberName) {
         if (json.has(memberName)) {
             var jsonElement = json.get(memberName);
@@ -482,7 +499,7 @@ public class GsonUtil {
     }
 
     public static Vector3f convertToVector3f(JsonElement jsonElement, String memberName) {
-        if(jsonElement.isJsonArray()) {
+        if (jsonElement.isJsonArray()) {
             JsonArray array = jsonElement.getAsJsonArray();
 
             if (array.size() != 3) {
