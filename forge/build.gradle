@@ -62,8 +62,9 @@ dependencies {
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-forge:${rootProject.player_anim_version}")
 
     // GeckoLib
-    modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:${rootProject.geckolib_version}")
     implementation("com.eliotlash.mclib:mclib:20")
+    forgeRuntimeLibrary("com.eliotlash.mclib:mclib:20")
+    modApi("software.bernie.geckolib:geckolib-forge-1.20.1:${rootProject.geckolib_version}")
 
     // JEI
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
