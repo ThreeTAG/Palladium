@@ -38,6 +38,7 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
     private List<Component> tooltipLines;
     private RenderLayerContainer renderLayerContainer = null;
     private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
+    private boolean shouldRenderModel = true;
     protected ResourceLocation rendererFile;
     private Object renderer;
     private boolean openable = false;
@@ -108,6 +109,16 @@ public class AddonArmorItem extends ArmorItem implements IAddonItem, ArmorWithRe
     @Override
     public RenderLayerContainer getRenderLayerContainer() {
         return this.renderLayerContainer;
+    }
+
+    @Override
+    public void setShouldRenderModel(boolean shouldRender) {
+        this.shouldRenderModel = shouldRender;
+    }
+
+    @Override
+    public boolean shouldRenderModel() {
+        return this.shouldRenderModel;
     }
 
     @Override

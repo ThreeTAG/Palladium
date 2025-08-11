@@ -36,6 +36,7 @@ public class FluxCapacitorItem extends EnergyItem implements IAddonItem {
     private List<Component> tooltipLines;
     private RenderLayerContainer renderLayerContainer = null;
     private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
+    private boolean shouldRenderModel = true;
 
     public FluxCapacitorItem(Properties properties, int capacity, int maxInput, int maxOutput) {
         super(properties, capacity, maxInput, maxOutput);
@@ -93,6 +94,16 @@ public class FluxCapacitorItem extends EnergyItem implements IAddonItem {
     @Override
     public RenderLayerContainer getRenderLayerContainer() {
         return this.renderLayerContainer;
+    }
+
+    @Override
+    public void setShouldRenderModel(boolean shouldRender) {
+        this.shouldRenderModel = shouldRender;
+    }
+
+    @Override
+    public boolean shouldRenderModel() {
+        return this.shouldRenderModel;
     }
 
     public ItemStack getEmptyInstance() {

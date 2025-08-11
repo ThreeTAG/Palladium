@@ -1,0 +1,8 @@
+{
+  "max_stack_size": 1,
+  "should_render_model": false,
+  "render_layers": {
+    "mainhand": "test:geckolib_test",
+    "offhand": "test:geckolib_test"
+  }
+}

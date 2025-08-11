@@ -29,6 +29,7 @@ public class AddonShieldItem extends ShieldItem implements IAddonItem {
     private List<Component> tooltipLines;
     private RenderLayerContainer renderLayerContainer = null;
     private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
+    private boolean shouldRenderModel = true;
     public final int useDuration;
     public final Supplier<Ingredient> repairIngredient;
 
@@ -64,6 +65,16 @@ public class AddonShieldItem extends ShieldItem implements IAddonItem {
     @Override
     public AddonAttributeContainer getAttributeContainer() {
         return this.attributeContainer;
+    }
+
+    @Override
+    public void setShouldRenderModel(boolean shouldRender) {
+        this.shouldRenderModel = shouldRender;
+    }
+
+    @Override
+    public boolean shouldRenderModel() {
+        return this.shouldRenderModel;
     }
 
     @Override
