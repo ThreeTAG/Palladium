@@ -22,6 +22,7 @@ dependencies {
 
     // GeckoLib
     modCompileOnly("software.bernie.geckolib:geckolib-forge-1.20.1:${rootProject.geckolib_version}")
+    implementation("com.eliotlash.mclib:mclib:20")
 
     // KubeJS
     modCompileOnly "dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}"

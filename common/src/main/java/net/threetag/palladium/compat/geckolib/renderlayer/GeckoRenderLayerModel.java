@@ -9,7 +9,10 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.renderlayer.IPackRenderLayer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -19,6 +22,8 @@ import software.bernie.geckolib.cache.texture.AnimatableTexture;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.molang.MolangParser;
+import software.bernie.geckolib.core.molang.MolangQueries;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.util.RenderUtils;
@@ -66,6 +71,37 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
             @Override
             public ResourceLocation getAnimationResource(GeckoLayerState animatable) {
                 return renderLayer.animationLocation;
+            }
+
+            @Override
+            public void applyMolangQueries(GeckoLayerState animatable, double animTime) {
+                MolangParser parser = MolangParser.INSTANCE;
+                Minecraft mc = Minecraft.getInstance();
+
+                parser.setMemoizedValue(MolangQueries.LIFE_TIME, () -> animTime / 20d);
+                parser.setMemoizedValue(MolangQueries.ACTOR_COUNT, mc.level::getEntityCount);
+                parser.setMemoizedValue(MolangQueries.TIME_OF_DAY, () -> mc.level.getDayTime() / 24000f);
+                parser.setMemoizedValue(MolangQueries.MOON_PHASE, mc.level::getMoonPhase);
+
+                if (animatable.layer.getModel().currentEntity != null) {
+                    var entity = animatable.layer.getModel().currentEntity;
+                    parser.setMemoizedValue(MolangQueries.DISTANCE_FROM_CAMERA, () -> mc.gameRenderer.getMainCamera().getPosition().distanceTo(entity.position()));
+                    parser.setMemoizedValue(MolangQueries.IS_ON_GROUND, () -> RenderUtils.booleanToFloat(entity.onGround()));
+                    parser.setMemoizedValue(MolangQueries.IS_IN_WATER, () -> RenderUtils.booleanToFloat(entity.isInWater()));
+                    parser.setMemoizedValue(MolangQueries.IS_IN_WATER_OR_RAIN, () -> RenderUtils.booleanToFloat(entity.isInWaterRainOrBubble()));
+
+                    if (entity instanceof LivingEntity livingEntity) {
+                        parser.setMemoizedValue(MolangQueries.HEALTH, livingEntity::getHealth);
+                        parser.setMemoizedValue(MolangQueries.MAX_HEALTH, livingEntity::getMaxHealth);
+                        parser.setMemoizedValue(MolangQueries.IS_ON_FIRE, () -> RenderUtils.booleanToFloat(livingEntity.isOnFire()));
+                        parser.setMemoizedValue(MolangQueries.GROUND_SPEED, () -> {
+                            Vec3 velocity = livingEntity.getDeltaMovement();
+
+                            return Mth.sqrt((float) ((velocity.x * velocity.x) + (velocity.z * velocity.z)));
+                        });
+                        parser.setMemoizedValue(MolangQueries.YAW_SPEED, () -> livingEntity.getViewYRot((float)animTime - livingEntity.getViewYRot((float)animTime - 0.1f)));
+                    }
+                }
             }
         };
     }
