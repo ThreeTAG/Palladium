@@ -14,10 +14,11 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
-import net.threetag.palladium.condition.*;
+import net.threetag.palladium.condition.Condition;
+import net.threetag.palladium.condition.ConditionEnvironment;
+import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
-import net.threetag.palladium.power.ability.AbilityReference;
 import net.threetag.palladium.util.json.GsonUtil;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 
@@ -45,6 +46,10 @@ public class AccessorySlotParser extends SimpleJsonResourceReloadListener {
 
                 if (json.has("menu_visibility")) {
                     LifecycleEvents.CLIENT_SETUP.register(() -> ConditionSerializer.listFromJSON(json.get("menu_visibility"), ConditionEnvironment.ASSETS).forEach(slot::addVisibilityCondition));
+                }
+
+                if (json.has("sort_index")) {
+                    slot.setSortIndex(GsonHelper.getAsInt(json, "sort_index"));
                 }
 
                 i.getAndIncrement();
