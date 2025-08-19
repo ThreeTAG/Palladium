@@ -1,8 +1,8 @@
 package net.threetag.palladium.compat.accessories;
 
 import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.slot.SlotTypeReference;
 import io.wispforest.accessories.data.SlotTypeLoader;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -17,8 +17,8 @@ public class AccessoriesCompatImpl extends AccessoriesCompat {
     }
 
     @Override
-    public List<String> getSlots(Level level) {
-        return SlotTypeLoader.getSlotTypes(level).keySet().stream().toList();
+    public List<ResourceLocation> getSlots(Level level) {
+        return SlotTypeLoader.INSTANCE.getEntries(level).keySet().stream().toList();
     }
 
     @Override
@@ -26,10 +26,10 @@ public class AccessoriesCompatImpl extends AccessoriesCompat {
         var cap = AccessoriesCapability.get(entity);
 
         if (cap != null) {
-            var container = cap.getContainer(new SlotTypeReference(slot));
+            var container = cap.getContainer(() -> slot);
 
             if (container != null) {
-                return container.getAccessories().items;
+                return container.getAccessories().getItems();
             }
         }
 
@@ -41,7 +41,7 @@ public class AccessoriesCompatImpl extends AccessoriesCompat {
         var cap = AccessoriesCapability.get(entity);
 
         if (cap != null) {
-            var container = cap.getContainer(new SlotTypeReference(slot));
+            var container = cap.getContainer(() -> slot);
 
             if (container != null) {
                 return container.getAccessories().getItem(index);
@@ -56,7 +56,7 @@ public class AccessoriesCompatImpl extends AccessoriesCompat {
         var cap = AccessoriesCapability.get(entity);
 
         if (cap != null) {
-            var container = cap.getContainer(new SlotTypeReference(slot));
+            var container = cap.getContainer(() -> slot);
 
             if (container != null) {
                 container.getAccessories().setItem(index, stack);
@@ -69,7 +69,7 @@ public class AccessoriesCompatImpl extends AccessoriesCompat {
         var cap = AccessoriesCapability.get(entity);
 
         if (cap != null) {
-            var container = cap.getContainer(new SlotTypeReference(slot));
+            var container = cap.getContainer(() -> slot);
 
             if (container != null) {
                 return container.getAccessories().getContainerSize();
@@ -84,7 +84,7 @@ public class AccessoriesCompatImpl extends AccessoriesCompat {
         var cap = AccessoriesCapability.get(entity);
 
         if (cap != null) {
-            var container = cap.getContainer(new SlotTypeReference(slot));
+            var container = cap.getContainer(() -> slot);
 
             if (container != null) {
                 container.getAccessories().clearContent();

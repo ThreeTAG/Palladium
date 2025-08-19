@@ -3,6 +3,7 @@ package net.threetag.palladium.entity;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -44,16 +45,16 @@ public abstract class PlayerSlot {
             }
         }
 
-        if (name.startsWith("accessories:")) {
-            return SLOTS.computeIfAbsent(name, s -> new AccessoriesSlot(s.substring("accessories:".length())));
+        if (name.startsWith("accessories#")) {
+            return SLOTS.computeIfAbsent(name, s -> new AccessoriesSlot(s.substring("accessories#".length())));
         }
 
         return null;
     }
 
     public static Collection<PlayerSlot> values(Level level) {
-        for (String slot : AccessoriesCompat.INSTANCE.getSlots(level)) {
-            var slotName = slot.startsWith("accessories:") ? slot : "accessories:" + slot;
+        for (ResourceLocation slot : AccessoriesCompat.INSTANCE.getSlots(level)) {
+            var slotName = "accessories#" + slot;
             get(slotName);
         }
 
@@ -69,8 +70,8 @@ public abstract class PlayerSlot {
         slots.add(get(EquipmentSlot.LEGS));
         slots.add(get(EquipmentSlot.FEET));
         slots.add(get(EquipmentSlot.BODY));
-        slots.add(get("accessories:head"));
-        slots.add(get("accessories:necklace"));
+        slots.add(get("accessories#accessories:head"));
+        slots.add(get("accessories#accessories:necklace"));
         return slots;
     }
 
@@ -245,7 +246,7 @@ public abstract class PlayerSlot {
 
         @Override
         public String toString() {
-            return "accessories:" + this.slotName;
+            return "accessories#" + this.slotName;
         }
     }
 
