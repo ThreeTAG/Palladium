@@ -60,7 +60,8 @@ public class ItemModelPropertyVariable extends AbstractFloatTextureVariable {
 
             builder.addProperty("fallback", Float.class)
                     .description("If the item model property is not found on the item, this value will be used instead.")
-                    .required().exampleJson(new JsonPrimitive(0.0f));
+                    .fallback(0f)
+                    .exampleJson(new JsonPrimitive(0.0f));
 
             AbstractIntegerTextureVariable.addDocumentationFields(builder);
         }
