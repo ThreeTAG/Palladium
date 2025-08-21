@@ -40,7 +40,11 @@ public abstract class Customization {
         return Util.makeDescriptionId("customization", id);
     }
 
-    public abstract ResourceKey<CustomizationCategory> getSlot();
+    public abstract ResourceKey<CustomizationCategory> getCategoryKey();
+
+    public Holder<CustomizationCategory> getCategory(RegistryAccess registryAccess) {
+        return registryAccess.lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY).get(this.getCategoryKey()).orElseThrow();
+    }
 
     public ResourceLocation getRenderLayerId(RegistryAccess registryAccess) {
         return null;

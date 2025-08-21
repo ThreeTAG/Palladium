@@ -21,7 +21,13 @@ public record SelectCustomizationPacket(ResourceKey<Customization> customization
 
     public static void handle(SelectCustomizationPacket packet, NetworkManager.PacketContext context) {
         var handler = EntityCustomizationHandler.get(context.getPlayer());
-        context.registryAccess().get(packet.customization).ifPresent(handler::select);
+        context.registryAccess().get(packet.customization).ifPresent(accessory -> {
+            if (handler.isSelected(accessory)) {
+                handler.unselect(accessory.value().getCategory(context.registryAccess()));
+            } else {
+                handler.select(accessory);
+            }
+        });
     }
 
     @Override

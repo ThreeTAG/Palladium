@@ -39,7 +39,7 @@ public class BuiltinCustomization extends Customization {
     }
 
     @Override
-    public ResourceKey<CustomizationCategory> getSlot() {
+    public ResourceKey<CustomizationCategory> getCategoryKey() {
         return this.type.slot;
     }
 

@@ -57,7 +57,7 @@ public class DefaultCustomization extends Customization {
     }
 
     @Override
-    public ResourceKey<CustomizationCategory> getSlot() {
+    public ResourceKey<CustomizationCategory> getCategoryKey() {
         return this.slot;
     }
 

@@ -13,6 +13,7 @@ import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.condition.ConditionSerializers;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
+import net.threetag.palladium.entity.PalladiumHubData;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.entity.effect.EntityEffects;
@@ -65,6 +66,7 @@ public final class Palladium {
         PalladiumItems.init();
         PalladiumEntityTypes.init();
         PalladiumEntityData.registerEvents();
+        PalladiumHubData.registerEvent();
         DataSyncUtil.init();
         LifecycleEvent.SETUP.register(TabPlacement::loadTabs);
 
