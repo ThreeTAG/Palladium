@@ -31,6 +31,7 @@ public class AddonHoeItem extends HoeItem implements IAddonItem {
     private List<Component> tooltipLines;
     private RenderLayerContainer renderLayerContainer = null;
     private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
+    private boolean shouldRenderModel = true;
 
     public AddonHoeItem(Tier tier, int baseDamage, float attackSpeed, Properties properties) {
         super(tier, baseDamage, attackSpeed, properties);
@@ -67,6 +68,16 @@ public class AddonHoeItem extends HoeItem implements IAddonItem {
     @Override
     public RenderLayerContainer getRenderLayerContainer() {
         return this.renderLayerContainer;
+    }
+
+    @Override
+    public void setShouldRenderModel(boolean shouldRender) {
+        this.shouldRenderModel = shouldRender;
+    }
+
+    @Override
+    public boolean shouldRenderModel() {
+        return this.shouldRenderModel;
     }
 
     public static class Parser implements ItemParser.ItemTypeSerializer {

@@ -47,6 +47,7 @@ public class ItemBuilder extends AddonBuilder<Item> {
     private FoodProperties foodProperties = null;
     private IAddonItem.RenderLayerContainer renderLayerContainer = null;
     private boolean registerCurioTrinket = false;
+    private boolean shouldRenderModel = true;
 
     public ItemBuilder(ResourceLocation id, JsonObject json) {
         super(id);
@@ -126,6 +127,8 @@ public class ItemBuilder extends AddonBuilder<Item> {
             CreativeModeTabRegistry.addToTab(tabKey, entries -> creativeModeTab.addToTab(entries, (Item) item));
         }
 
+        item.setShouldRenderModel(this.shouldRenderModel);
+
         return (Item) item;
     }
 
@@ -190,6 +193,11 @@ public class ItemBuilder extends AddonBuilder<Item> {
 
     public ItemBuilder food(FoodProperties foodProperties) {
         this.foodProperties = foodProperties;
+        return this;
+    }
+
+    public ItemBuilder shouldRenderModel(boolean shouldRender) {
+        this.shouldRenderModel = shouldRender;
         return this;
     }
 

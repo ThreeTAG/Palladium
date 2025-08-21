@@ -30,6 +30,7 @@ public class AddonBlockItem extends BlockItem implements IAddonItem {
     private List<Component> tooltipLines;
     private RenderLayerContainer renderLayerContainer = null;
     private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
+    private boolean shouldRenderModel = true;
 
     public AddonBlockItem(Block block, Properties properties) {
         super(block, properties);
@@ -66,6 +67,16 @@ public class AddonBlockItem extends BlockItem implements IAddonItem {
     @Override
     public RenderLayerContainer getRenderLayerContainer() {
         return this.renderLayerContainer;
+    }
+
+    @Override
+    public void setShouldRenderModel(boolean shouldRender) {
+        this.shouldRenderModel = shouldRender;
+    }
+
+    @Override
+    public boolean shouldRenderModel() {
+        return this.shouldRenderModel;
     }
 
     public static class Parser implements ItemParser.ItemTypeSerializer {
