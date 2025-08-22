@@ -1,6 +1,12 @@
-- Added has_movement_input condition
-- Added "filter" option to color transformer
-- Fixed gecko render layers causing re-render on cursor if using shaders
-- Fixed name change ability not working if players dont have permissions
-- Removed "Was not able to read user's supporter data!" log because people keep misinterpreting it
-- Make supporter data fetching async
+- Performance improvements (DeveloperAnonymous)
+- Rightclicking suit stands swaps armor now
+- Added a field for items that prevents them from rendering in an entity's hand (PhantomPig)
+- Added Item Model Property Dynamic Texture Variable (PhantomPig)
+- Added dynamic color usage
+- Added "enchantment_glint" setting to render layers
+- Added "DamageType" setting to projectiles
+- Added "commands_on_block_hit" & "commands_on_entity_hit" for energy beam ability
+- Added "play_others" setting for play_sound 
+- Added molang query support to gecko render layers
+- Add "sort_index" to accessory slots
+- Prevent power screen scrolling outside window
