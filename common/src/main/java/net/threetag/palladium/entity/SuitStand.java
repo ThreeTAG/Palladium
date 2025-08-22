@@ -16,6 +16,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -91,6 +92,30 @@ public class SuitStand extends ArmorStand implements ExtendedEntitySpawnData {
                 stack.shrink(1);
                 return InteractionResult.SUCCESS;
             }
+        } else {
+            var result = InteractionResult.FAIL;
+
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                var standItem = this.getItemBySlot(slot);
+
+                if (player.isCreative()) {
+                    player.setItemSlot(slot, standItem.copy());
+
+                    if (!standItem.isEmpty()) {
+                        result = InteractionResult.SUCCESS;
+                    }
+                } else {
+                    var playerItem = player.getItemBySlot(slot);
+                    player.setItemSlot(slot, standItem);
+                    this.setItemSlot(slot, playerItem);
+
+                    if (!standItem.isEmpty() || !playerItem.isEmpty()) {
+                        result = InteractionResult.SUCCESS;
+                    }
+                }
+            }
+
+            return result;
         }
         return super.interactAt(player, vec, hand);
     }
