@@ -62,6 +62,7 @@ public class DynamicTextureManager extends SimpleJsonResourceReloadListener {
         registerVariable(new AbilityWheelSelectionTextureVariable.Serializer());
         registerVariable(new AbilityWheelHoveredVariable.Serializer());
         registerVariable(new AbilityWheelDisplayedVariable.Serializer());
+        registerVariable(new ItemModelPropertyVariable.Serializer());
     }
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();

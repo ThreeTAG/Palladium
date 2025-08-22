@@ -1,0 +1,8 @@
+{
+  "max_stack_size": 1,
+  "creative_mode_tab": "test:test_tab",
+  "render_layers": {
+    "mainhand": "test:item_model_property_test",
+    "offhand": "test:item_model_property_test"
+  }
+}

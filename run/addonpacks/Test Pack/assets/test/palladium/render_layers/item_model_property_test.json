@@ -1,0 +1,15 @@
+{
+  "model_layer": "minecraft:player#main",
+  "texture": {
+    "base": "test:textures/models/item_model_property_test_#LEFT.png",
+    "variables": {
+      "LEFT": {
+        "type": "palladium:item_model_property",
+        "model_property": "lefthanded",
+        "round": "to_int",
+        "comment": "// this property checks the entity's mainhand, not the hand that the item is being held in. that took me a solid twenty minutes of headbanging to figure out",
+        "comment2": "luc you can remove these comments but im just saying in the likely event you test this"
+      }
+    }
+  }
+}
