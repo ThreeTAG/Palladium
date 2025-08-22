@@ -36,6 +36,7 @@ public class AddonBowItem extends BowItem implements IAddonItem {
     private List<Component> tooltipLines;
     private RenderLayerContainer renderLayerContainer = null;
     private final AddonAttributeContainer attributeContainer = new AddonAttributeContainer();
+    private boolean shouldRenderModel = true;
     private final float velocity, inaccuracy;
     private final int useDuration;
     private final Predicate<ItemStack> projectiles;
@@ -180,6 +181,16 @@ public class AddonBowItem extends BowItem implements IAddonItem {
     @Override
     public RenderLayerContainer getRenderLayerContainer() {
         return this.renderLayerContainer;
+    }
+
+    @Override
+    public void setShouldRenderModel(boolean shouldRender) {
+        this.shouldRenderModel = shouldRender;
+    }
+
+    @Override
+    public boolean shouldRenderModel() {
+        return this.shouldRenderModel;
     }
 
     public static class Parser implements ItemParser.ItemTypeSerializer {

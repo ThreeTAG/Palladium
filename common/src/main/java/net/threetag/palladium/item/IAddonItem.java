@@ -18,6 +18,10 @@ public interface IAddonItem {
 
     RenderLayerContainer getRenderLayerContainer();
 
+    void setShouldRenderModel(boolean shouldRender);
+
+    boolean shouldRenderModel();
+
     class RenderLayerContainer {
 
         private final Map<String, List<ResourceLocation>> layers = new HashMap<>();

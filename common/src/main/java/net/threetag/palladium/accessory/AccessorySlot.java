@@ -25,24 +25,25 @@ public class AccessorySlot {
 
     private static final List<AccessorySlot> SLOTS = Lists.newArrayList();
 
-    public static final AccessorySlot HAT = register("hat").setIcon(Palladium.id("textures/gui/accessory_slots/hat.png")).setCorrespondingEquipmentSlot(EquipmentSlot.HEAD);
-    public static final AccessorySlot HEAD = register("head").setIcon(Palladium.id("textures/gui/accessory_slots/head.png"));
-    public static final AccessorySlot FACE = register("face").setIcon(Palladium.id("textures/gui/accessory_slots/face.png"));
-    public static final AccessorySlot CHEST = register("chest").setIcon(Palladium.id("textures/gui/accessory_slots/chest.png"));
-    public static final AccessorySlot BACK = register("back").setIcon(Palladium.id("textures/gui/accessory_slots/back.png"));
-    public static final AccessorySlot MAIN_ARM = register("main_arm").setIcon(Palladium.id("textures/gui/accessory_slots/main_arm.png"));
-    public static final AccessorySlot OFF_ARM = register("off_arm").setIcon(Palladium.id("textures/gui/accessory_slots/off_arm.png"));
-    public static final AccessorySlot MAIN_HAND = register("main_hand").setIcon(Palladium.id("textures/gui/accessory_slots/main_hand.png")).setCorrespondingEquipmentSlot(EquipmentSlot.MAINHAND);
-    public static final AccessorySlot OFF_HAND = register("off_hand").setIcon(Palladium.id("textures/gui/accessory_slots/off_hand.png")).setCorrespondingEquipmentSlot(EquipmentSlot.OFFHAND);
-    public static final AccessorySlot RIGHT_LEG = register("right_leg").setIcon(Palladium.id("textures/gui/accessory_slots/right_leg.png"));
-    public static final AccessorySlot LEFT_LEG = register("left_leg").setIcon(Palladium.id("textures/gui/accessory_slots/left_leg.png"));
-    public static final AccessorySlot SPECIAL = register("special").setIcon(Palladium.id("textures/gui/accessory_slots/special.png")).allowMultiple();
+    public static final AccessorySlot HAT = register("hat").setSortIndex(1).setIcon(Palladium.id("textures/gui/accessory_slots/hat.png")).setCorrespondingEquipmentSlot(EquipmentSlot.HEAD);
+    public static final AccessorySlot HEAD = register("head").setSortIndex(2).setIcon(Palladium.id("textures/gui/accessory_slots/head.png"));
+    public static final AccessorySlot FACE = register("face").setSortIndex(3).setIcon(Palladium.id("textures/gui/accessory_slots/face.png"));
+    public static final AccessorySlot CHEST = register("chest").setSortIndex(4).setIcon(Palladium.id("textures/gui/accessory_slots/chest.png"));
+    public static final AccessorySlot BACK = register("back").setSortIndex(5).setIcon(Palladium.id("textures/gui/accessory_slots/back.png"));
+    public static final AccessorySlot MAIN_ARM = register("main_arm").setSortIndex(6).setIcon(Palladium.id("textures/gui/accessory_slots/main_arm.png"));
+    public static final AccessorySlot OFF_ARM = register("off_arm").setSortIndex(7).setIcon(Palladium.id("textures/gui/accessory_slots/off_arm.png"));
+    public static final AccessorySlot MAIN_HAND = register("main_hand").setSortIndex(8).setIcon(Palladium.id("textures/gui/accessory_slots/main_hand.png")).setCorrespondingEquipmentSlot(EquipmentSlot.MAINHAND);
+    public static final AccessorySlot OFF_HAND = register("off_hand").setSortIndex(9).setIcon(Palladium.id("textures/gui/accessory_slots/off_hand.png")).setCorrespondingEquipmentSlot(EquipmentSlot.OFFHAND);
+    public static final AccessorySlot RIGHT_LEG = register("right_leg").setSortIndex(10).setIcon(Palladium.id("textures/gui/accessory_slots/right_leg.png"));
+    public static final AccessorySlot LEFT_LEG = register("left_leg").setSortIndex(11).setIcon(Palladium.id("textures/gui/accessory_slots/left_leg.png"));
+    public static final AccessorySlot SPECIAL = register("special").setSortIndex(12).setIcon(Palladium.id("textures/gui/accessory_slots/special.png")).allowMultiple();
 
     private final ResourceLocation name;
     private boolean multiple = false;
     private EquipmentSlot equipmentSlot;
     private ResourceLocation icon;
     private List<Condition> visible = new ArrayList<>();
+    private int sortIndex = 20;
 
     private AccessorySlot(ResourceLocation name) {
         this.name = name;
@@ -60,6 +61,11 @@ public class AccessorySlot {
 
     public AccessorySlot setIcon(ResourceLocation icon) {
         this.icon = icon;
+        return this;
+    }
+
+    public AccessorySlot setSortIndex(int sortIndex) {
+        this.sortIndex = sortIndex;
         return this;
     }
 
@@ -92,6 +98,10 @@ public class AccessorySlot {
 
     public ResourceLocation getIcon() {
         return this.icon;
+    }
+
+    public int getSortIndex() {
+        return this.sortIndex;
     }
 
     public boolean isVisible(DataContext context) {
