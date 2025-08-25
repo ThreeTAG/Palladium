@@ -1,12 +1,1 @@
-- Performance improvements (DeveloperAnonymous)
-- Rightclicking suit stands swaps armor now
-- Added a field for items that prevents them from rendering in an entity's hand (PhantomPig)
-- Added Item Model Property Dynamic Texture Variable (PhantomPig)
-- Added dynamic color usage
-- Added "enchantment_glint" setting to render layers
-- Added "DamageType" setting to projectiles
-- Added "commands_on_block_hit" & "commands_on_entity_hit" for energy beam ability
-- Added "play_others" setting for play_sound 
-- Added molang query support to gecko render layers
-- Add "sort_index" to accessory slots
-- Prevent power screen scrolling outside window
+- Fixed render layers having enchantment glint by default
