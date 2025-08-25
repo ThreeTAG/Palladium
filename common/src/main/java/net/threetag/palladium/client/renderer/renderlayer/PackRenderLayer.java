@@ -24,6 +24,7 @@ import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionEnvironment;
 import net.threetag.palladium.condition.ConditionSerializer;
+import net.threetag.palladium.condition.FalseCondition;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.context.DataContext;
 
@@ -180,7 +181,7 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
             throw new JsonParseException("Unknown render type '" + new ResourceLocation(GsonHelper.getAsString(json, "render_type", "solid")) + "'");
         }
 
-        List<Condition> enchantmentGlint = json.has("enchantment_glint") ? ConditionSerializer.listFromJSON(json.get("enchantment_glint"), ConditionEnvironment.ASSETS) : Collections.emptyList();
+        List<Condition> enchantmentGlint = json.has("enchantment_glint") ? ConditionSerializer.listFromJSON(json.get("enchantment_glint"), ConditionEnvironment.ASSETS) : Collections.singletonList(new FalseCondition());
 
         return new PackRenderLayer(
                 model,
