@@ -1,10 +1,11 @@
-package net.threetag.palladium.client.renderer.entity.layer;
+package net.threetag.palladium.client.animation;
 
 import com.mojang.serialization.Codec;
 import dev.architectury.platform.Platform;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.StringRepresentable;
+import net.threetag.palladium.client.renderer.entity.layer.MoLangQuery;
 import net.threetag.palladium.data.DataContext;
 import team.unnamed.mocha.MochaEngine;
 import team.unnamed.mocha.runtime.MochaFunction;
@@ -13,15 +14,15 @@ import team.unnamed.mocha.runtime.binding.JavaObjectBinding;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PackRenderLayerAnimations {
+public class PalladiumAnimation {
 
-    public static final Codec<PackRenderLayerAnimations> CODEC = Codec.unboundedMap(Codec.STRING, PartAnimation.CODEC)
-            .xmap(PackRenderLayerAnimations::new, packRenderLayerAnimations -> packRenderLayerAnimations.animations);
-    public static final PackRenderLayerAnimations EMPTY = new PackRenderLayerAnimations(Map.of());
+    public static final Codec<PalladiumAnimation> CODEC = Codec.unboundedMap(Codec.STRING, PartAnimation.CODEC)
+            .xmap(PalladiumAnimation::new, palladiumAnimation -> palladiumAnimation.animations);
+    public static final PalladiumAnimation EMPTY = new PalladiumAnimation(Map.of());
 
     private final Map<String, PartAnimation> animations;
 
-    public PackRenderLayerAnimations(Map<String, PartAnimation> animations) {
+    public PalladiumAnimation(Map<String, PartAnimation> animations) {
         this.animations = animations;
 
         if (!this.animations.isEmpty()) {
@@ -34,13 +35,13 @@ public class PackRenderLayerAnimations {
         }
     }
 
-    public void animate(Model model, DataContext context) {
+    public void animate(Model model, DataContext context, float partialTick) {
         if (!this.animations.isEmpty()) {
             this.animations.forEach((bone, animation) -> {
                 var part = getPart(model, bone);
 
                 if (part != null) {
-                    MoLangQuery.CONTEXT = context;
+                    MoLangQuery.setContext(context, partialTick);
                     animation.animate(part);
                 }
             });
@@ -113,9 +114,9 @@ public class PackRenderLayerAnimations {
                         case X -> part.x = val;
                         case Y -> part.y = val;
                         case Z -> part.z = val;
-                        case X_ROT -> part.xRot = val;
-                        case Y_ROT -> part.yRot = val;
-                        case Z_ROT -> part.zRot = val;
+                        case X_ROT -> part.xRot = (float) Math.toRadians(val);
+                        case Y_ROT -> part.yRot = (float) Math.toRadians(val);
+                        case Z_ROT -> part.zRot = (float) Math.toRadians(val);
                         case X_SCALE -> part.xScale = val;
                         case Y_SCALE -> part.yScale = val;
                         case Z_SCALE -> part.zScale = val;

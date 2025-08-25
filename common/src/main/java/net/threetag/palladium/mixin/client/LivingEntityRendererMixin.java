@@ -1,6 +1,7 @@
 package net.threetag.palladium.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -9,8 +10,10 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.threetag.palladium.client.animation.HideBodyPartsAnimation;
+import net.threetag.palladium.client.animation.PalladiumAnimation;
 import net.threetag.palladium.client.renderer.entity.ExtendedEntityRenderState;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerRenderer;
+import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.data.DataContextType;
 import net.threetag.palladium.entity.BodyPart;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,6 +21,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Map;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 @Mixin(LivingEntityRenderer.class)
@@ -32,6 +37,16 @@ public abstract class LivingEntityRendererMixin {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void addLayerInInit(EntityRendererProvider.Context context, EntityModel<?> model, float shadowRadius, CallbackInfo ci) {
         this.addLayer(new PackRenderLayerRenderer<>((LivingEntityRenderer) (Object) this));
+    }
+
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/EntityModel;setupAnim(Lnet/minecraft/client/renderer/entity/state/EntityRenderState;)V", shift = At.Shift.AFTER),
+            method = "render(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V")
+    private void postSetupAnim(LivingEntityRenderState state, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci) {
+        if (state instanceof ExtendedEntityRenderState extState) {
+            for (Map.Entry<DataContext, PalladiumAnimation> entry : extState.palladium$getData(DataContextType.Client.ANIMATIONS).entrySet()) {
+                entry.getValue().animate(this.getModel(), entry.getKey(), Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
+            }
+        }
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/LivingEntityRenderer;shouldRenderLayers(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;)Z"),

@@ -39,6 +39,7 @@ public class AbilitySerializers {
     public static final RegistryHolder<TrailAbility.Serializer> TRAIL = ABILITIES.register("trail", TrailAbility.Serializer::new);
     public static final RegistryHolder<FireAspectAbility.Serializer> FIRE_ASPECT = ABILITIES.register("fire_aspect", FireAspectAbility.Serializer::new);
     public static final RegistryHolder<ParticleAbility.Serializer> PARTICLES = ABILITIES.register("particles", ParticleAbility.Serializer::new);
+    public static final RegistryHolder<AnimationAbility.Serializer> ANIMATION = ABILITIES.register("animation", AnimationAbility.Serializer::new);
 
     public static void init() {
 

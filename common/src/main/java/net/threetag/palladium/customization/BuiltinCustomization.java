@@ -161,7 +161,7 @@ public class BuiltinCustomization extends Customization {
                     this.getTexture(),
                     RenderTypeFunctions.SOLID,
                     glowing ? 15 : 0,
-                    PackRenderLayerAnimations.EMPTY,
+                    PackRenderLayerAnimation.EMPTY,
                     PerspectiveAwareConditions.EMPTY
             );
         }

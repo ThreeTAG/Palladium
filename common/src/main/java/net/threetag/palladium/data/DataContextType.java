@@ -7,6 +7,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.threetag.palladium.client.animation.PalladiumAnimation;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayer;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.entity.PlayerSlot;
@@ -37,6 +38,7 @@ public class DataContextType<T> {
         public static DataContextType<Set<BodyPart>> REMOVED_BODY_PARTS = new DataContextType<>();
         public static DataContextType<PlayerModel> CACHED_MODEL = new DataContextType<>();
         public static DataContextType<Float[]> AIM = new DataContextType<>();
+        public static DataContextType<Map<DataContext, PalladiumAnimation>> ANIMATIONS = new DataContextType<>();
 
     }
 

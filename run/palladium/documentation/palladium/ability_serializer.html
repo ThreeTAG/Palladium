@@ -43,6 +43,10 @@ Palladium</h3>
 Aim</a>
 </li>
 <li>
+<a href="#palladium:animation">
+ability.palladium.animation</a>
+</li>
+<li>
 <a href="#palladium:attribute_modifier">
 Attribute Modifier</a>
 </li>
@@ -259,6 +263,50 @@ MAIN_ARM</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:aim"}</pre>
+</div>
+<hr>
+
+<div>
+<h2 id="palladium:animation">
+ability.palladium.animation</h2>
+<p>
+Applies animations to the entity. Animations must be defined in 'assets/<namespace>/palladium/animations'</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+animations</td>
+<td>
+ResourceLocation | ResourceLocation[]</td>
+<td>
+ID(s) of the animations</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:animation","animations":"test:animation_id"}</pre>
 </div>
 <hr>
 
@@ -739,7 +787,7 @@ The scale of the texture.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-net.minecraft.world.phys.Vec2@337113d</td>
+net.minecraft.world.phys.Vec2@5b35560e</td>
 </tr>
 <tr>
 <td>
@@ -787,7 +835,7 @@ The translation of the texture.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-net.minecraft.world.phys.Vec2@135f0e14</td>
+net.minecraft.world.phys.Vec2@2350f257</td>
 </tr>
 </tbody>
 </table>

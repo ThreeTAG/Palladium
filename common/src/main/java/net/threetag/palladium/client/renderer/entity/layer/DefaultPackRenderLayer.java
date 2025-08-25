@@ -34,7 +34,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             SkinTypedValue.codec(PackRenderLayerTexture.CODEC).fieldOf("texture").forGetter(l -> l.textures),
             RenderTypeFunctions.CODEC.optionalFieldOf("render_type", RenderTypeFunctions.SOLID).forGetter(l -> l.renderType),
             ExtraCodecs.intRange(0, 15).optionalFieldOf("light_emission", 0).forGetter(l -> l.lightEmission),
-            PackRenderLayerAnimations.CODEC.optionalFieldOf("animations", PackRenderLayerAnimations.EMPTY).forGetter(l -> l.animations),
+            PackRenderLayerAnimation.CODEC.optionalFieldOf("animations", PackRenderLayerAnimation.EMPTY).forGetter(l -> l.animations),
             conditionsCodec()
     ).apply(instance, (modelLayers, textures, renderType, lightEmission, animations, conditions) -> {
         return new DefaultPackRenderLayer(modelLayers.orElse(null), textures, renderType, lightEmission, animations, conditions);
@@ -46,9 +46,9 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
     private final SkinTypedValue<PackRenderLayerTexture> textures;
     private final RenderTypeFunction renderType;
     private final int lightEmission;
-    private final PackRenderLayerAnimations animations;
+    private final PackRenderLayerAnimation animations;
 
-    public DefaultPackRenderLayer(@Nullable SkinTypedValue<ModelLayerLocationCodec> modelLayers, SkinTypedValue<PackRenderLayerTexture> textures, RenderTypeFunction renderType, int lightEmission, PackRenderLayerAnimations animations, PerspectiveAwareConditions conditions) {
+    public DefaultPackRenderLayer(@Nullable SkinTypedValue<ModelLayerLocationCodec> modelLayers, SkinTypedValue<PackRenderLayerTexture> textures, RenderTypeFunction renderType, int lightEmission, PackRenderLayerAnimation animations, PerspectiveAwareConditions conditions) {
         super(conditions);
 
         this.modelLayers = modelLayers;
@@ -97,7 +97,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             }
         }
 
-        this.animations.animate(model, context);
+        this.animations.animate(model, context, partialTick);
 
         model.renderToBuffer(
                 poseStack,
@@ -137,7 +137,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             armPart.skipDraw = false;
         }
 
-        this.animations.animate(model, context);
+        this.animations.animate(model, context, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
 
         armPart.render(
                 poseStack,
@@ -178,7 +178,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                             new SkinTypedValue<>(new PackRenderLayerTexture(ResourceLocation.fromNamespaceAndPath("example", "wide_texture")), new PackRenderLayerTexture(ResourceLocation.fromNamespaceAndPath("example", "slim_texture"))),
                             RenderTypeFunctions.SOLID,
                             5,
-                            PackRenderLayerAnimations.EMPTY,
+                            PackRenderLayerAnimation.EMPTY,
                             PerspectiveAwareConditions.EMPTY
                     ));
         }

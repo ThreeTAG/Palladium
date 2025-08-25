@@ -6,6 +6,7 @@ import dev.architectury.platform.Platform;
 import dev.architectury.registry.ReloadListenerRegistry;
 import net.minecraft.server.packs.PackType;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.animation.PalladiumAnimationManager;
 import net.threetag.palladium.client.energybeam.EnergyBeamManager;
 import net.threetag.palladium.client.energybeam.EnergyBeamRendererSerializer;
 import net.threetag.palladium.client.energybeam.EnergyBeamRendererSerializers;
@@ -60,6 +61,7 @@ public class PalladiumClient {
         PackRenderLayerSerializers.init();
 
         // Misc
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, PalladiumAnimationManager.INSTANCE, PalladiumAnimationManager.ID);
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, ParticleEmitterManager.INSTANCE, Palladium.id("particle_emitters"));
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, EnergyBeamManager.INSTANCE, Palladium.id("energy_beams"));
         WatcherRenderer.init();
