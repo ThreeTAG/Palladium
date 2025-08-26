@@ -162,7 +162,7 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
             CustomizationsGrid.this.minecraft.getSoundManager().play(
                     SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F)
             );
-            NetworkManager.sendToServer(new SelectCustomizationPacket(this.customization.unwrapKey().orElseThrow()));
+            NetworkManager.sendToServer(new SelectCustomizationPacket(this.customization));
 
             if (CustomizationsGrid.this.getSelected() == this) {
                 CustomizationsGrid.this.setSelected(null);

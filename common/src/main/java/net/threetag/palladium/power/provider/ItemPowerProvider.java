@@ -28,7 +28,7 @@ public class ItemPowerProvider extends PowerProvider {
                         var itemPowers = stack.get(PalladiumDataComponents.Items.POWERS.get());
 
                         for (ResourceLocation powerId : Objects.requireNonNull(itemPowers).forSlot(slot)) {
-                            registry.get(powerId).ifPresent(power -> collector.addPower(power, () -> new Validator(slot, powerId)));
+                            registry.get(powerId).ifPresent(power -> collector.addPower(power, PowerProviders.PRIORITY_ITEMS, () -> new Validator(slot, powerId)));
                         }
                     }
                 }

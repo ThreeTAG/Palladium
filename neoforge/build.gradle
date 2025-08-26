@@ -57,15 +57,11 @@ dependencies {
     // GeckoLib
     modImplementation "software.bernie.geckolib:geckolib-neoforge-${rootProject.geckolib_version}"
 
-    // Player Animator
-//    modImplementation include("dev.kosmx.player-anim:player-animation-lib-forge:${rootProject.player_animator_version}")
-
     // Accessories
-    modImplementation("maven.modrinth:accessories:${rootProject.accessories_version}")
-    modImplementation("maven.modrinth:owo-lib:0.12.23+1.21.8")
+    modImplementation("io.wispforest:accessories-neoforge:${rootProject.accessories_version}")
 
     // Mocha
-    implementation forgeRuntimeLibrary(shadowBundle("team.unnamed:mocha:3.0.1")) {
+    implementation forgeRuntimeLibrary(shadowBundle("com.zigythebird:mochafloats:${rootProject.mocha_version}")) {
         transitive = false
     }
     implementation include("org.javassist:javassist:3.30.2-GA")

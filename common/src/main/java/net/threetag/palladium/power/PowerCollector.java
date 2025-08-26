@@ -21,7 +21,7 @@ public class PowerCollector {
         this.toRemove = toRemove;
     }
 
-    public void addPower(Holder<Power> power, Supplier<PowerValidator> validatorSupplier) {
+    public void addPower(Holder<Power> power, int priority, Supplier<PowerValidator> validatorSupplier) {
         if (power == null) {
             return;
         }
@@ -36,12 +36,15 @@ public class PowerCollector {
 
         if (found != null) {
             found.switchValidator(validatorSupplier.get());
+            found.setPriority(priority);
             this.toRemove.remove(found);
             return;
         }
 
         if (!this.handler.hasPower(power.unwrapKey().orElseThrow().location())) {
-            this.powerHolders.add(new PowerHolderCache(power, validatorSupplier.get()));
+            this.powerHolders.add(new PowerHolderCache(power, validatorSupplier.get(), priority));
+        } else {
+            this.handler.getPowerHolder(power.unwrapKey().orElseThrow().location()).setPriority(priority);
         }
     }
 
@@ -49,10 +52,10 @@ public class PowerCollector {
         return this.powerHolders;
     }
 
-    public record PowerHolderCache(Holder<Power> power, PowerValidator validator) {
+    public record PowerHolderCache(Holder<Power> power, PowerValidator validator, int priority) {
 
         public PowerHolder make(LivingEntity entity, CompoundTag compoundTag) {
-            return new PowerHolder(entity, this.power, this.validator, compoundTag.getCompoundOrEmpty(this.power.unwrapKey().orElseThrow().location().toString()));
+            return new PowerHolder(entity, this.power, this.validator, this.priority, compoundTag.getCompoundOrEmpty(this.power.unwrapKey().orElseThrow().location().toString()));
         }
 
     }

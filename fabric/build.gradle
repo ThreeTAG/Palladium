@@ -59,17 +59,14 @@ dependencies {
     // GeckoLib
     modImplementation "software.bernie.geckolib:geckolib-fabric-${rootProject.geckolib_version}"
 
-    // Player Animator
-    modImplementation include("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_animator_version}")
-
     // Accessories
     modImplementation("io.wispforest:accessories-fabric:${rootProject.accessories_version}")
 
     // Mocha
-    implementation shadowBundle("team.unnamed:mocha:3.0.1") {
+    implementation shadowBundle("com.zigythebird:mochafloats:${rootProject.mocha_version}") {
         transitive = false
     }
-    implementation include("org.javassist:javassist:3.30.2-GA")
+    include("org.javassist:javassist:3.30.2-GA")
 
     // Runtime Testing Mods
     modLocalRuntime("maven.modrinth:modmenu:${rootProject.modmenu_version}")

@@ -16,7 +16,10 @@ public class PalladiumItems {
 
     @SuppressWarnings("UnstableApiUsage")
     public static void init() {
-        CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.BUILDING_BLOCKS), (flags, output, canUseGameMasterBlocks) -> {
+        CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.REDSTONE_BLOCKS), (flags, output, canUseGameMasterBlocks) -> {
+            output.acceptAfter(Items.ARMOR_STAND, SUIT_STAND.get());
+        });
+        CreativeTabRegistry.modify(CreativeTabRegistry.defer(CreativeModeTabs.FUNCTIONAL_BLOCKS), (flags, output, canUseGameMasterBlocks) -> {
             output.acceptAfter(Items.ARMOR_STAND, SUIT_STAND.get());
         });
     }

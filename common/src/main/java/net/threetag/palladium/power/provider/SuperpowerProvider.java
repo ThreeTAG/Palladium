@@ -9,7 +9,7 @@ public class SuperpowerProvider extends PowerProvider {
     @Override
     public void providePowers(LivingEntity entity, EntityPowerHandler handler, PowerCollector collector) {
         for (Holder<Power> superpower : SuperpowerUtil.getHandler(entity).getSuperpowers()) {
-            collector.addPower(superpower, () -> Validator.INSTANCE);
+            collector.addPower(superpower, PowerProviders.PRIORITY_SUPERPOWERS, () -> Validator.INSTANCE);
         }
     }
 

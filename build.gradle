@@ -36,12 +36,6 @@ subprojects {
             url = 'https://api.modrinth.com/maven'
         }
 
-        // Player Animator
-        maven {
-            name = 'KosmX\'s maven'
-            url = 'https://maven.kosmx.dev/'
-        }
-
         // Accessories
         maven { url 'https://maven.wispforest.io/releases' }
         maven { url 'https://maven.su5ed.dev/releases' }
@@ -53,6 +47,12 @@ subprojects {
             content {
                 includeGroup("software.bernie.geckolib")
             }
+        }
+
+        // MochaFloats
+        maven {
+            name = "RedlanceMinecraft"
+            url = "https://repo.redlance.org/public"
         }
     }
 

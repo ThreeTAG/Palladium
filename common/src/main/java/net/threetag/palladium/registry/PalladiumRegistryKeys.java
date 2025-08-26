@@ -12,6 +12,8 @@ import net.threetag.palladium.client.icon.IconSerializer;
 import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.entity.data.PalladiumEntityDataType;
 import net.threetag.palladium.entity.effect.EntityEffect;
+import net.threetag.palladium.entity.flight.FlightType;
+import net.threetag.palladium.entity.flight.FlightTypeSerializer;
 import net.threetag.palladium.entity.number.EntityDependentNumberType;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilitySerializer;
@@ -37,6 +39,8 @@ public class PalladiumRegistryKeys {
     public static final ResourceKey<Registry<CustomizationSerializer<?>>> CUSTOMIZATION_SERIALIZERS = createRegistryKey("customization_serializer");
     public static final ResourceKey<Registry<Customization>> CUSTOMIZATION = createRegistryKey("customization");
     public static final ResourceKey<Registry<CustomizationCategory>> CUSTOMIZATION_CATEGORY = createRegistryKey("customization_category");
+    public static final ResourceKey<Registry<FlightTypeSerializer<?>>> FLIGHT_TYPE_SERIALIZERS = createRegistryKey("flight_type_serializer");
+    public static final ResourceKey<Registry<FlightType>> FLIGHT_TYPES = createRegistryKey("flight_type");
 
     private static <T> ResourceKey<Registry<T>> createRegistryKey(String name) {
         return ResourceKey.createRegistryKey(Palladium.id(name));

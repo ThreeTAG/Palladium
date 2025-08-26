@@ -5,11 +5,11 @@ import dev.architectury.utils.Env;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
@@ -21,13 +21,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public record SyncEntityCustomizationsPacket(int entityId,
-                                             List<ResourceKey<Customization>> selected) implements CustomPacketPayload {
+                                             List<Holder<Customization>> selected) implements CustomPacketPayload {
 
     public static final Type<SyncEntityCustomizationsPacket> TYPE = new Type<>(Palladium.id("sync_entity_customizations"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncEntityCustomizationsPacket> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, SyncEntityCustomizationsPacket::entityId,
-            ResourceKey.streamCodec(PalladiumRegistryKeys.CUSTOMIZATION).apply(ByteBufCodecs.list()), SyncEntityCustomizationsPacket::selected,
+            ByteBufCodecs.holderRegistry(PalladiumRegistryKeys.CUSTOMIZATION).apply(ByteBufCodecs.list()), SyncEntityCustomizationsPacket::selected,
             SyncEntityCustomizationsPacket::new
     );
 
@@ -47,14 +47,14 @@ public record SyncEntityCustomizationsPacket(int entityId,
         Level level = Minecraft.getInstance().level;
         if (level != null && level.getEntity(packet.entityId) instanceof LivingEntity livingEntity) {
             var handler = EntityCustomizationHandler.get(livingEntity);
-            for (ResourceKey<Customization> key : packet.selected) {
-                context.registryAccess().get(key).ifPresent(handler::select);
+            for (Holder<Customization> customization : packet.selected) {
+                handler.select(customization);
             }
         }
     }
 
     public static SyncEntityCustomizationsPacket create(LivingEntity livingEntity) {
         var handler = EntityCustomizationHandler.get(livingEntity);
-        return new SyncEntityCustomizationsPacket(livingEntity.getId(), handler.getSelected().stream().map(accessoryHolder -> accessoryHolder.unwrapKey().orElseThrow()).toList());
+        return new SyncEntityCustomizationsPacket(livingEntity.getId(), handler.getSelected().stream().toList());
     }
 }

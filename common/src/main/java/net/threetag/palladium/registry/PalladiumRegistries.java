@@ -12,6 +12,8 @@ import net.threetag.palladium.core.registry.DataPackRegistryBuilder;
 import net.threetag.palladium.core.registry.RegistryBuilder;
 import net.threetag.palladium.entity.data.PalladiumEntityDataType;
 import net.threetag.palladium.entity.effect.EntityEffect;
+import net.threetag.palladium.entity.flight.FlightType;
+import net.threetag.palladium.entity.flight.FlightTypeSerializer;
 import net.threetag.palladium.entity.number.EntityDependentNumberType;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilitySerializer;
@@ -34,11 +36,13 @@ public class PalladiumRegistries {
     public static final Registry<MapCodec<? extends Item>> ITEM_TYPE = RegistryBuilder.create(PalladiumRegistryKeys.ITEM_TYPE).build();
     public static final Registry<EntityEffect> ENTITY_EFFECT = RegistryBuilder.create(PalladiumRegistryKeys.ENTITY_EFFECT).build();
     public static final Registry<CustomizationSerializer<?>> CUSTOMIZATION_SERIALIZERS = RegistryBuilder.create(PalladiumRegistryKeys.CUSTOMIZATION_SERIALIZERS).build();
+    public static final Registry<FlightTypeSerializer<?>> FLIGHT_TYPE_SERIALIZERS = RegistryBuilder.create(PalladiumRegistryKeys.FLIGHT_TYPE_SERIALIZERS).build();
 
     public static void init() {
         DataPackRegistryBuilder.create(PalladiumRegistryKeys.POWER, Power.CODEC, Power.CODEC);
         DataPackRegistryBuilder.create(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY, CustomizationCategory.CODEC, CustomizationCategory.CODEC);
         DataPackRegistryBuilder.create(PalladiumRegistryKeys.CUSTOMIZATION, Customization.Codecs.SIMPLE_CODEC, Customization.Codecs.SIMPLE_CODEC);
+        DataPackRegistryBuilder.create(PalladiumRegistryKeys.FLIGHT_TYPES, FlightType.CODEC, FlightType.CODEC);
     }
 
 }

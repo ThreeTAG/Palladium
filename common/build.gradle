@@ -16,14 +16,11 @@ dependencies {
     // GeckoLib
     modImplementation "software.bernie.geckolib:geckolib-common-${rootProject.geckolib_version}"
 
-    // Player Animator
-    modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.player_animator_version}")
-
     // Accessories
     modImplementation("io.wispforest:accessories-common:${rootProject.accessories_version}")
 
     // Mocha
-    implementation ("team.unnamed:mocha:3.0.1")
+    implementation ("com.zigythebird:mochafloats:${rootProject.mocha_version}")
 
     // Iris
     modCompileOnly "maven.modrinth:iris:${rootProject.iris_version}-fabric"

@@ -9,8 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityInstance;
-import net.threetag.palladium.power.energybar.EnergyBarInstance;
 import net.threetag.palladium.power.energybar.EnergyBarConfiguration;
+import net.threetag.palladium.power.energybar.EnergyBarInstance;
 import net.threetag.palladium.power.energybar.EnergyBarReference;
 
 import java.util.HashMap;
@@ -25,12 +25,14 @@ public class PowerHolder {
     private final Map<String, AbilityInstance<?>> entryMap = new HashMap<>();
     private final Map<String, EnergyBarInstance> energyBars = new LinkedHashMap<>();
     private PowerValidator validator;
+    private int priority;
 
-    public PowerHolder(LivingEntity entity, Holder<Power> power, PowerValidator validator, CompoundTag componentTag) {
+    public PowerHolder(LivingEntity entity, Holder<Power> power, PowerValidator validator, int priority, CompoundTag componentTag) {
         this.entity = entity;
         this.power = power;
         this.powerId = power.unwrapKey().orElseThrow().location();
         this.validator = validator;
+        this.priority = priority;
 
         var subTag = componentTag.getCompoundOrEmpty("abilities");
         for (Map.Entry<String, Ability> e : this.getPower().value().getAbilities().entrySet()) {
@@ -109,5 +111,13 @@ public class PowerHolder {
 
     public void switchValidator(PowerValidator validator) {
         this.validator = validator;
+    }
+
+    public int getPriority() {
+        return this.priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

@@ -9,6 +9,10 @@ public class PowerProviders {
 
     public static final DeferredRegister<PowerProvider> PROVIDERS = DeferredRegister.create(Palladium.MOD_ID, PalladiumRegistryKeys.POWER_PROVIDER);
 
+    public static final int PRIORITY_SUPERPOWERS = 100;
+    public static final int PRIORITY_SUITS = 200;
+    public static final int PRIORITY_ITEMS = 300;
+
     // TODO
     public static final RegistryHolder<PowerProvider> SUPERPOWER = PROVIDERS.register("superpower", SuperpowerProvider::new);
     public static final RegistryHolder<PowerProvider> ITEM = PROVIDERS.register("item", ItemPowerProvider::new);

@@ -17,6 +17,7 @@ import net.threetag.palladium.entity.PalladiumHubData;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.entity.effect.EntityEffects;
+import net.threetag.palladium.entity.flight.FlightTypeSerializers;
 import net.threetag.palladium.entity.number.EntityDependentNumberTypes;
 import net.threetag.palladium.item.ItemTypes;
 import net.threetag.palladium.item.PalladiumItems;
@@ -59,6 +60,7 @@ public final class Palladium {
         PowerProviders.PROVIDERS.register();
         IconSerializers.ICON_SERIALIZERS.register();
         CustomizationSerializers.CUSTOMIZATION_SERIALIZERS.register();
+        FlightTypeSerializers.FLIGHT_TYPE_SERIALIZERS.register();
 
         PalladiumNetwork.init();
         PowerEventHandler.init();

@@ -79,7 +79,7 @@ public record SyncEntityPowersPacket(int entityId, List<Holder<Power>> remove,
             }
 
             for (NewPowerChange add : packet.add) {
-                var powerHolder = new PowerHolder(livingEntity, add.power, PowerValidator.ALWAYS_ACTIVE, new CompoundTag());
+                var powerHolder = new PowerHolder(livingEntity, add.power, PowerValidator.ALWAYS_ACTIVE, add.priority, new CompoundTag());
                 handler.addPowerHolder(powerHolder);
 
                 for (Pair<String, DataComponentPatch> abilityComponent : add.abilityComponents) {
@@ -123,23 +123,27 @@ public record SyncEntityPowersPacket(int entityId, List<Holder<Power>> remove,
 
         public static final StreamCodec<RegistryFriendlyByteBuf, NewPowerChange> STREAM_CODEC = StreamCodec.composite(
                 ByteBufCodecs.holderRegistry(PalladiumRegistryKeys.POWER), NewPowerChange::getPower,
+                ByteBufCodecs.VAR_INT, NewPowerChange::getPriority,
                 PAIR_STREAM_CODEC.apply(ByteBufCodecs.list()), NewPowerChange::getAbilityComponents,
                 TRIPLE_STREAM_CODEC.apply(ByteBufCodecs.list()), NewPowerChange::getEnergyBars,
                 NewPowerChange::new
         );
 
         public final Holder<Power> power;
+        public final int priority;
         public final List<Pair<String, DataComponentPatch>> abilityComponents;
         public final List<Triple<String, Integer, Integer>> energyBars;
 
-        public NewPowerChange(Holder<Power> power, List<Pair<String, DataComponentPatch>> abilityComponents, List<Triple<String, Integer, Integer>> energyBars) {
+        public NewPowerChange(Holder<Power> power, int priority, List<Pair<String, DataComponentPatch>> abilityComponents, List<Triple<String, Integer, Integer>> energyBars) {
             this.power = power;
+            this.priority = priority;
             this.abilityComponents = abilityComponents;
             this.energyBars = energyBars;
         }
 
         public NewPowerChange(PowerHolder powerHolder) {
             this.power = powerHolder.getPower();
+            this.priority = powerHolder.getPriority();
 
             this.abilityComponents = new ArrayList<>();
             powerHolder.getAbilities().forEach((s, ability) -> {
@@ -158,6 +162,10 @@ public record SyncEntityPowersPacket(int entityId, List<Holder<Power>> remove,
 
         public Holder<Power> getPower() {
             return power;
+        }
+
+        public int getPriority() {
+            return priority;
         }
 
         public List<Pair<String, DataComponentPatch>> getAbilityComponents() {

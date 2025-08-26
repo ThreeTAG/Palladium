@@ -38,12 +38,7 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
     public boolean unlock(Holder<Customization> customizationHolder) {
         if (this.getEntity() instanceof ServerPlayer serverPlayer && customizationHolder.value().unlockedBy() == Customization.UnlockedBy.COMMAND) {
             this.unlocked.add(customizationHolder);
-            NetworkManager.sendToPlayer(serverPlayer,
-                    new SyncUnlockedCustomizationsPacket(
-                            this.unlocked.stream().map(
-                                    holder -> holder.unwrapKey().orElseThrow()
-                            ).toList()
-                    ));
+            NetworkManager.sendToPlayer(serverPlayer, new SyncUnlockedCustomizationsPacket(this.unlocked));
             return true;
         } else {
             return false;
@@ -53,12 +48,7 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
     public boolean lock(Holder<Customization> customizationHolder) {
         if (this.getEntity() instanceof ServerPlayer serverPlayer && customizationHolder.value().unlockedBy() == Customization.UnlockedBy.COMMAND) {
             this.unlocked.remove(customizationHolder);
-            NetworkManager.sendToPlayer(serverPlayer,
-                    new SyncUnlockedCustomizationsPacket(
-                            this.unlocked.stream().map(
-                                    holder -> holder.unwrapKey().orElseThrow()
-                            ).toList()
-                    ));
+            NetworkManager.sendToPlayer(serverPlayer, new SyncUnlockedCustomizationsPacket(this.unlocked));
 
             if (this.isSelected(customizationHolder)) {
                 this.getEntity().registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY)
@@ -118,7 +108,7 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
 
                 if (!this.getEntity().level().isClientSide) {
                     PalladiumNetwork.sendToTrackingAndSelf(this.getEntity(),
-                            new SyncEntityCustomizationPacket(this.getEntity().getId(), accessory.unwrapKey().orElseThrow()));
+                            new SyncEntityCustomizationPacket(this.getEntity().getId(), accessory));
                 }
             }
         });
@@ -131,7 +121,7 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
 
         if (!this.getEntity().level().isClientSide) {
             PalladiumNetwork.sendToTrackingAndSelf(this.getEntity(),
-                    new SyncEntityUnselectCustomizationPacket(this.getEntity().getId(), categoryHolder.unwrapKey().orElseThrow()));
+                    new SyncEntityUnselectCustomizationPacket(this.getEntity().getId(), categoryHolder));
         }
     }
 
@@ -168,12 +158,7 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
             this.unlocked.clear();
             this.unlocked.addAll(newUnlocked);
 
-            NetworkManager.sendToPlayer(serverPlayer,
-                    new SyncUnlockedCustomizationsPacket(
-                            this.unlocked.stream().map(
-                                    holder -> holder.unwrapKey().orElseThrow()
-                            ).toList()
-                    ));
+            NetworkManager.sendToPlayer(serverPlayer, new SyncUnlockedCustomizationsPacket(this.unlocked));
         }
     }
 
