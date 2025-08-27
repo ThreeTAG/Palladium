@@ -6,6 +6,7 @@ import net.minecraft.util.Mth;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.client.dynamictexture.DynamicTextureManager;
 import net.threetag.palladium.client.dynamictexture.variable.ITextureVariable;
+import net.threetag.palladium.network.SyncAbilityStateMessage;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;
@@ -229,7 +230,7 @@ public abstract class DynamicColor {
                 } else if (number instanceof Double) {
                     return staticValue((int) (number.doubleValue() * 255F));
                 } else {
-                    staticValue(number.intValue());
+                    return staticValue(number.intValue());
                 }
             } else if (element.isJsonObject()) {
                 var json = element.getAsJsonObject();
@@ -242,7 +243,7 @@ public abstract class DynamicColor {
                 }
             }
 
-            throw new JsonParseException("Color segment must be integer or texture variable");
+            throw new JsonParseException("Color segment must be number or texture variable");
         }
 
         public abstract int getValue(DataContext context);
