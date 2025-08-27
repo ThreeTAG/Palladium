@@ -66,7 +66,7 @@ dependencies {
     implementation shadowBundle("com.zigythebird:mochafloats:${rootProject.mocha_version}") {
         transitive = false
     }
-    include("org.javassist:javassist:3.30.2-GA")
+    implementation include("org.javassist:javassist:3.30.2-GA")
 
     // Runtime Testing Mods
     modLocalRuntime("maven.modrinth:modmenu:${rootProject.modmenu_version}")

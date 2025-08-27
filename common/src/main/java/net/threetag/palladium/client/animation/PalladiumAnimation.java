@@ -28,10 +28,8 @@ public class PalladiumAnimation {
         if (!this.animations.isEmpty()) {
             MochaEngine<?> mocha = MochaEngine.createStandard();
 
-            if (!Platform.isNeoForge()) {
-                mocha.scope().set("query", JavaObjectBinding.of(MoLangQuery.class, MoLangQuery.INSTANCE, null));
-                this.animations.values().forEach(partAnimation -> partAnimation.build(mocha));
-            }
+            mocha.scope().set("query", JavaObjectBinding.of(MoLangQuery.class, MoLangQuery.INSTANCE, null));
+            this.animations.values().forEach(partAnimation -> partAnimation.build(mocha));
         }
     }
 
