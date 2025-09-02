@@ -1,1 +1,2 @@
-- Fixed render layers having enchantment glint by default
+- Fixed color transformer not working with integers
+- Changed thruster texture to greyscale one to allow proper recoloring
