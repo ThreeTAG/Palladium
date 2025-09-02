@@ -29,6 +29,7 @@ public class ThrusterPackRenderLayer extends AbstractPackRenderLayer {
     public static final ModelLayerLocation MODEL_LAYER_LOCATION = new ModelLayerLocation(Palladium.id("humanoid"), "thrusters");
     public static final ModelLayerLocation MODEL_LAYER_LOCATION_SLIM = new ModelLayerLocation(Palladium.id("humanoid"), "thrusters_slim");
     public static final ResourceLocation[] TEXTURES = new ResourceLocation[8];
+    private static final DynamicColor DEFAULT_COLOR = DynamicColor.staticColor(new Color(234, 182, 43));
     private final SkinTypedValue<ThrusterHumanoidModel<?>> model;
     private final boolean rightArm, leftArm, rightLeg, leftLeg;
     private final DynamicColor color;
@@ -86,7 +87,7 @@ public class ThrusterPackRenderLayer extends AbstractPackRenderLayer {
                 GsonHelper.getAsBoolean(json, "left_arm", true),
                 GsonHelper.getAsBoolean(json, "right_leg", true),
                 GsonHelper.getAsBoolean(json, "left_leg", true),
-                DynamicColor.getFromJson(json, "color", DynamicColor.WHITE)
+                DynamicColor.getFromJson(json, "color", DEFAULT_COLOR)
         );
     }
 }
