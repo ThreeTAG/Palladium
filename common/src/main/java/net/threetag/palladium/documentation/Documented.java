@@ -35,6 +35,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_DAMAGE_TYPE = SettingType.simple("Damage Type ID");
     SettingType TYPE_DAMAGE_TYPE_ID_OR_TAG = SettingType.simple("Damage Type ID or Tag");
     SettingType TYPE_PARTICLE_TYPE = SettingType.simple("Particle Type ID");
+    SettingType TYPE_FLIGHT_TYPE = SettingType.simple("Flight Type ID");
 
     CodecDocumentationBuilder<T, R> getDocumentation(HolderLookup.Provider provider);
 

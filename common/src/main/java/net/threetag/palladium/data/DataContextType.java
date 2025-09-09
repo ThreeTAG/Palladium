@@ -39,6 +39,7 @@ public class DataContextType<T> {
         public static DataContextType<PlayerModel> CACHED_MODEL = new DataContextType<>();
         public static DataContextType<Float[]> AIM = new DataContextType<>();
         public static DataContextType<Map<DataContext, PalladiumAnimation>> ANIMATIONS = new DataContextType<>();
+        public static DataContextType<Float> IN_FLIGHT = new DataContextType<>();
 
     }
 

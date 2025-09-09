@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "client": [
     "client.AbstractClientPlayerMixin",
+    "client.CapeLayerMixin",
     "client.EntityRendererMixin",
     "client.EntityRenderStateMixin",
     "client.GameRendererMixin",
@@ -13,11 +14,13 @@
     "client.KeyboardInputMixin",
     "client.LevelRendererMixin",
     "client.LivingEntityRendererMixin",
+    "client.LocalPlayerMixin",
     "client.MinecraftMixin",
     "client.ModelPartMixin",
     "client.PlayerRendererMixin",
     "client.ScreenEffectRendererMixin",
-    "client.SkyRendererMixin"
+    "client.SkyRendererMixin",
+    "client.WingsLayerMixin"
   ],
   "mixins": [
     "ArmorStandMixin",
@@ -29,6 +32,7 @@
     "LevelSummaryMixin",
     "LivingEntityMixin",
     "PackTypeMixin",
+    "PlayerMixin",
     "SimpleJsonResourceReloadListenerMixin",
     "VibrationSystemListenerMixin",
     "WorldVersionMixin"

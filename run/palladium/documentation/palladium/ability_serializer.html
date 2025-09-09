@@ -71,6 +71,10 @@ Energy Beam</a>
 Fire Aspect</a>
 </li>
 <li>
+<a href="#palladium:flight">
+ability.palladium.flight</a>
+</li>
+<li>
 <a href="#palladium:fluid_walking">
 Fluid Walking</a>
 </li>
@@ -687,6 +691,50 @@ Example:</h3>
 <hr>
 
 <div>
+<h2 id="palladium:flight">
+ability.palladium.flight</h2>
+<p>
+Allows the player to fly using a pre-defined flight type</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+flight_type</td>
+<td>
+Flight Type ID</td>
+<td>
+The ID of the flight type that will be used.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+palladium:propulsion</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:flight"}</pre>
+</div>
+<hr>
+
+<div>
 <h2 id="palladium:fluid_walking">
 Fluid Walking</h2>
 <p>
@@ -787,7 +835,7 @@ The scale of the texture.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-net.minecraft.world.phys.Vec2@5b35560e</td>
+net.minecraft.world.phys.Vec2@75d446fa</td>
 </tr>
 <tr>
 <td>
@@ -835,7 +883,7 @@ The translation of the texture.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-net.minecraft.world.phys.Vec2@2350f257</td>
+net.minecraft.world.phys.Vec2@36b69175</td>
 </tr>
 </tbody>
 </table>

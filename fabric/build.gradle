@@ -76,6 +76,10 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 }
 
+sourceSets.main.resources {
+    srcDir project(":common").file("src/generated").absolutePath
+}
+
 processResources {
     inputs.property 'version', project.version
 

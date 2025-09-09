@@ -27,5 +27,5 @@ dependencies {
 }
 
 sourceSets.main.resources {
-    srcDir project(":common").file("src/generated/resources").absolutePath
+    srcDir project(":common").file("src/generated").absolutePath
 }

@@ -37,6 +37,7 @@ public class PalladiumNetwork {
         registerC2S(AbilityClickedPacket.TYPE, AbilityClickedPacket.STREAM_CODEC, AbilityClickedPacket::handle);
         registerC2S(BuyAbilityPacket.TYPE, BuyAbilityPacket.STREAM_CODEC, BuyAbilityPacket::handle);
         registerC2S(SelectCustomizationPacket.TYPE, SelectCustomizationPacket.STREAM_CODEC, SelectCustomizationPacket::handle);
+        registerC2S(ToggleEntityFlightPacket.TYPE, ToggleEntityFlightPacket.STREAM_CODEC, ToggleEntityFlightPacket::handle);
 
         // Data Sync
         DataSyncUtil.registerEntitySync((entity, consumer) -> {

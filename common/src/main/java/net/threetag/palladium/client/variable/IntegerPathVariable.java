@@ -5,9 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.util.molang.ModifyIntFunction;
 import team.unnamed.mocha.MochaEngine;
-import team.unnamed.mocha.runtime.compiled.MochaCompiledFunction;
-import team.unnamed.mocha.runtime.compiled.Named;
 
 public abstract class IntegerPathVariable extends PathVariable {
 
@@ -40,12 +39,6 @@ public abstract class IntegerPathVariable extends PathVariable {
 
     protected static <B extends IntegerPathVariable> RecordCodecBuilder<B, String> modifyFunctionCodec() {
         return Codec.STRING.optionalFieldOf("modify", "").forGetter(v -> v.molang);
-    }
-
-    public interface ModifyIntFunction extends MochaCompiledFunction {
-
-        int modify(@Named("value") int value);
-
     }
 
     public static abstract class IntSerializer<T extends IntegerPathVariable> extends PathVariableSerializer<T> {

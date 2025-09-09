@@ -19,4 +19,10 @@ public class HumanoidModelMixin<T extends HumanoidRenderState> {
         HideBodyPartsAnimation.setupAnim(model, humanoidRenderState);
     }
 
+    @SuppressWarnings("unchecked")
+    @Inject(method = "copyPropertiesTo", at = @At("HEAD"))
+    public void copyPropertiesTo(HumanoidModel<T> model, CallbackInfo ci) {
+        model.root().copyFrom(((HumanoidModel<T>)(Object)this).root());
+    }
+
 }

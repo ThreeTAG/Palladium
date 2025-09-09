@@ -1,7 +1,6 @@
 package net.threetag.palladium.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -44,7 +43,7 @@ public abstract class LivingEntityRendererMixin {
     private void postSetupAnim(LivingEntityRenderState state, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci) {
         if (state instanceof ExtendedEntityRenderState extState) {
             for (Map.Entry<DataContext, PalladiumAnimation> entry : extState.palladium$getData(DataContextType.Client.ANIMATIONS).entrySet()) {
-                entry.getValue().animate(this.getModel(), entry.getKey(), Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
+                entry.getValue().animate(this.getModel(), entry.getKey(), extState.palladium$getData(DataContextType.Client.PARTIAL_TICK));
             }
         }
     }

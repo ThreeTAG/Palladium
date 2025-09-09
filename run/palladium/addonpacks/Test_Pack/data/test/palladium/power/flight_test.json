@@ -1,0 +1,30 @@
+{
+  "name": "Flight Test",
+  "icon": "minecraft:feather",
+  "abilities": {
+    "levitation": {
+      "type": "palladium:flight",
+      "flight_type": "palladium:levitation",
+      "title": "Levitation",
+      "list_index": 0,
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "propulsion": {
+      "type": "palladium:flight",
+      "flight_type": "palladium:propulsion",
+      "title": "Propulsion",
+      "list_index": 1,
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

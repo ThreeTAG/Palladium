@@ -17,6 +17,7 @@ public class PalladiumDataGen implements DataGeneratorEntrypoint {
         pack.addProvider(PalladiumBlockTagProvider::new);
         pack.addProvider(CustomizationCategoryProvider::new);
         pack.addProvider(CustomizationProvider::new);
+        pack.addProvider(FlightTypeProvider::new);
         pack.addProvider(RenderLayerProvider::new);
         pack.addProvider(PalladiumRecipeProvider::new);
     }

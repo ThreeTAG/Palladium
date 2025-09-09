@@ -14,5 +14,4 @@ public class MathUtil {
         float k = Mth.sin(f);
         return new Vec3(i * j, -k, h * j);
     }
-
 }

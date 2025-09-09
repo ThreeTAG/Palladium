@@ -6,6 +6,7 @@ import net.threetag.palladium.core.registry.DeferredRegister;
 import net.threetag.palladium.core.registry.RegistryHolder;
 import net.threetag.palladium.customization.EntityCustomizationHandler;
 import net.threetag.palladium.entity.PalladiumHubData;
+import net.threetag.palladium.entity.flight.EntityFlightHandler;
 import net.threetag.palladium.power.EntityPowerHandler;
 import net.threetag.palladium.power.superpower.EntitySuperpowerHandler;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
@@ -28,5 +29,8 @@ public class PalladiumEntityDataTypes {
 
     public static final RegistryHolder<PalladiumEntityDataType<EntityCustomizationHandler>> CUSTOMIZATION_HANDLER =
             DATA_TYPES.register("customizations", () -> new PalladiumEntityDataType<>(EntityCustomizationHandler.CODEC, PalladiumEntityDataType.FILTER_LIVING));
+
+    public static final RegistryHolder<PalladiumEntityDataType<EntityFlightHandler>> FLIGHT =
+            DATA_TYPES.register("flight", () -> new PalladiumEntityDataType<>(EntityFlightHandler.CODEC, PalladiumEntityDataType.FILTER_LIVING));
 
 }

@@ -16,6 +16,8 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.entity.PalladiumEntityExtension;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataType;
+import net.threetag.palladium.entity.flight.EntityFlightHandler;
+import net.threetag.palladium.entity.flight.FlightController;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilitySerializers;
 import net.threetag.palladium.power.ability.AbilityUtil;
@@ -100,6 +102,19 @@ public abstract class EntityMixin implements PalladiumEntityExtension {
                     ci.cancel();
                     return;
                 }
+            }
+        }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Inject(method = "turn", at = @At("RETURN"))
+    protected void turn(double yRot, double xRot, CallbackInfo ci) {
+        if ((Object) this instanceof LivingEntity living) {
+            var flight = EntityFlightHandler.get(living);
+            FlightController flightController = flight.getController();
+
+            if (flightController != null) {
+                flightController.clampRotation(living, flight.getFlightType());
             }
         }
     }

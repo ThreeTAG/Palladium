@@ -5,9 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.threetag.palladium.data.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.util.molang.ModifyFloatFunction;
 import team.unnamed.mocha.MochaEngine;
-import team.unnamed.mocha.runtime.compiled.MochaCompiledFunction;
-import team.unnamed.mocha.runtime.compiled.Named;
 
 public abstract class FloatPathVariable extends PathVariable {
 
@@ -40,10 +39,6 @@ public abstract class FloatPathVariable extends PathVariable {
 
     protected static <B extends FloatPathVariable> RecordCodecBuilder<B, String> modifyFunctionCodec() {
         return Codec.STRING.optionalFieldOf("modify", "").forGetter(v -> v.molang);
-    }
-
-    public interface ModifyFloatFunction extends MochaCompiledFunction {
-        float modify(@Named("value") float value);
     }
 
     public static abstract class FloatSerializer<T extends FloatPathVariable> extends PathVariableSerializer<T> {

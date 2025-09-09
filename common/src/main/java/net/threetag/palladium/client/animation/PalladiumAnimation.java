@@ -1,14 +1,13 @@
 package net.threetag.palladium.client.animation;
 
 import com.mojang.serialization.Codec;
-import dev.architectury.platform.Platform;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.client.renderer.entity.layer.MoLangQuery;
 import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.util.molang.ModifyFloatFunction;
 import team.unnamed.mocha.MochaEngine;
-import team.unnamed.mocha.runtime.MochaFunction;
 import team.unnamed.mocha.runtime.binding.JavaObjectBinding;
 
 import java.util.HashMap;
@@ -35,11 +34,12 @@ public class PalladiumAnimation {
 
     public void animate(Model model, DataContext context, float partialTick) {
         if (!this.animations.isEmpty()) {
+            MoLangQuery.setContext(context, partialTick);
+
             this.animations.forEach((bone, animation) -> {
                 var part = getPart(model, bone);
 
                 if (part != null) {
-                    MoLangQuery.setContext(context, partialTick);
                     animation.animate(part);
                 }
             });
@@ -47,7 +47,9 @@ public class PalladiumAnimation {
     }
 
     public ModelPart getPart(Model model, String name) {
-        if (name.contains(".")) {
+        if (name.equals("root")) {
+            return model.root();
+        } else if (name.contains(".")) {
             String[] split = name.split("\\.");
             ModelPart part = model.root().getChild(split[0]);
             for (int i = 1; i < split.length; i++) {
@@ -90,7 +92,7 @@ public class PalladiumAnimation {
                 .xmap(PartAnimation::new, partAnimation -> partAnimation.animationsRaw);
 
         private final Map<PartAnimationType, String> animationsRaw;
-        private Map<PartAnimationType, MochaFunction> animations;
+        private Map<PartAnimationType, ModifyFloatFunction> animations;
 
         public PartAnimation(Map<PartAnimationType, String> animationsRaw) {
             this.animationsRaw = animationsRaw;
@@ -99,14 +101,26 @@ public class PalladiumAnimation {
         public void build(MochaEngine<?> mocha) {
             this.animations = new HashMap<>();
             this.animationsRaw.forEach((type, value) -> {
-                this.animations.put(type, mocha.compile(value));
+                this.animations.put(type, mocha.compile(value, ModifyFloatFunction.class));
             });
         }
 
         public void animate(ModelPart part) {
             if (this.animations != null && !this.animations.isEmpty()) {
                 this.animations.forEach((type, value) -> {
-                    float val = (float) value.evaluate();
+                    float original = switch (type) {
+                        case X -> part.x;
+                        case Y -> part.y;
+                        case Z -> part.z;
+                        case X_ROT -> (float) Math.toDegrees(part.xRot);
+                        case Y_ROT -> (float) Math.toDegrees(part.yRot);
+                        case Z_ROT -> (float) Math.toDegrees(part.zRot);
+                        case X_SCALE -> part.xScale;
+                        case Y_SCALE -> part.yScale;
+                        case Z_SCALE -> part.zScale;
+                    };
+
+                    float val = value.modify(original);
 
                     switch (type) {
                         case X -> part.x = val;

@@ -1,11 +1,9 @@
 package net.threetag.palladium.power;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,10 +14,7 @@ import net.threetag.palladium.power.provider.PowerProvider;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, EntityPowerHandler> {
 
@@ -27,7 +22,7 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
             CompoundTag.CODEC.optionalFieldOf("power_data", new CompoundTag()).forGetter(EntityPowerHandler::savePowerDataTag)
     ).apply(instance, EntityPowerHandler::new));
 
-    private final Map<ResourceLocation, PowerHolder> powers = new HashMap<>();
+    private final Map<ResourceLocation, PowerHolder> powers = new LinkedHashMap<>();
     private CompoundTag powerData;
 
     public EntityPowerHandler(CompoundTag powerData) {
