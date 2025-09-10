@@ -1,2 +1,3 @@
-- Fixed color transformer not working with integers
-- Changed thruster texture to greyscale one to allow proper recoloring
+- Added "tint" option to skin_overlay render layers
+- Added float array palladium properties
+- Fixed string- & float array properties not being accepted in KJS stuff
