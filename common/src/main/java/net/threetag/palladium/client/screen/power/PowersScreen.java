@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.screen.components.IconButton;
+import net.threetag.palladium.event.PalladiumClientEvents;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerHandler;
 import net.threetag.palladium.power.PowerManager;
@@ -38,7 +39,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PowersScreen extends Screen {
 
-    public static RenderCallback POST_RENDER_CALLBACK = null;
     public static final ResourceLocation WINDOW = new ResourceLocation(Palladium.MOD_ID, "textures/gui/powers/window.png");
     public static final ResourceLocation TABS = new ResourceLocation(Palladium.MOD_ID, "textures/gui/powers/tabs.png");
     public static final ResourceLocation WIDGETS = new ResourceLocation(Palladium.MOD_ID, "textures/gui/powers/widgets.png");
@@ -201,10 +201,8 @@ public class PowersScreen extends Screen {
             guiGraphics.pose().translate(0, 0, -500);
         }
 
-        if (POST_RENDER_CALLBACK != null) {
-            var powerId = this.selectedTab != null ? this.selectedTab.powerHolder.getPower().getId() : null;
-            POST_RENDER_CALLBACK.postRender(this, guiGraphics, mouseX, mouseY, partialTick, powerId);
-        }
+        var powerId = this.selectedTab != null ? this.selectedTab.powerHolder.getPower().getId() : null;
+        PalladiumClientEvents.RENDER_POWER_SCREEN.invoker().renderPowerScreen(this, guiGraphics, mouseX, mouseY, partialTick, powerId);
     }
 
     @Override

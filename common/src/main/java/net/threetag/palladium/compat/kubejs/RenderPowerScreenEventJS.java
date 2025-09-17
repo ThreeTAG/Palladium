@@ -22,12 +22,4 @@ public class RenderPowerScreenEventJS extends EventJS {
         this.partialTick = partialTick;
         this.tab = tab;
     }
-
-    public static void register() {
-        PowersScreen.POST_RENDER_CALLBACK = (screen, gui, mX, mY, pTick, tab) -> {
-            gui.pose().pushPose();
-            PalladiumJSEvents.RENDER_POWER_SCREEN.post(new RenderPowerScreenEventJS(screen, gui, mX, mY, pTick, tab));
-            gui.pose().popPose();
-        };
-    }
 }

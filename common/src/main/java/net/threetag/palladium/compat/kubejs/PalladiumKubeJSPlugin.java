@@ -55,9 +55,11 @@ public class PalladiumKubeJSPlugin extends KubeJSPlugin {
             PalladiumJSEvents.REGISTER_GUI_OVERLAYS.post(new RegisterGuiOverlaysEventJS());
         });
 
-        OverlayRegistry.registerOverlay("palladium/kube_js_overlays", new RegisterGuiOverlaysEventJS.Overlay());
+        PalladiumClientEvents.RENDER_POWER_SCREEN.register((screen, guiGraphics, mouseX, mouseY, partialTick, tab) -> {
+            PalladiumJSEvents.RENDER_POWER_SCREEN.post(new RenderPowerScreenEventJS(screen, guiGraphics, mouseX, mouseY, partialTick, tab));
+        });
 
-        RenderPowerScreenEventJS.register();
+        OverlayRegistry.registerOverlay("palladium/kube_js_overlays", new RegisterGuiOverlaysEventJS.Overlay());
     }
 
     @Override
