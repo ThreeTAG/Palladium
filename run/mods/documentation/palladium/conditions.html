@@ -303,6 +303,10 @@ or</a>
 pose</a>
 </li>
 <li>
+<a href="#palladium:property_buyable">
+property_buyable</a>
+</li>
+<li>
 <a href="#palladium:scoreboard_score_buyable">
 scoreboard_score_buyable</a>
 </li>
@@ -3203,6 +3207,86 @@ CROUCHING</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:pose","pose":"crouching"}</pre>
+</div>
+<hr>
+
+<div id="palladium:property_buyable">
+<h2>
+property_buyable</h2>
+<p>
+A buyable condition that requires a certain value in an integer palladium property.<br><br>Applicable for: data</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+property</td>
+<td>
+String</td>
+<td>
+Name of the (integer) palladium property</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+property_name</td>
+</tr>
+<tr>
+<td>
+score</td>
+<td>
+Integer</td>
+<td>
+Required value of the property</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+3</td>
+</tr>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon that will be displayed during buying</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 command_block}</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Name of the property that will be displayed during buying</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+literal{Property}</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:property_buyable","property":"property_name","score":3,"icon":"minecraft:command_block","description":{"text":"Property"}}</pre>
 </div>
 <hr>
 
