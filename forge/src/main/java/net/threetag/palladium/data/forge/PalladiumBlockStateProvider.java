@@ -39,6 +39,7 @@ public class PalladiumBlockStateProvider extends BlockStateProvider {
         this.simpleBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.HEART_SHAPED_HERB.get(), models().cross("heart_shaped_herb", new ResourceLocation(Palladium.MOD_ID, "block/heart_shaped_herb")));
         this.simpleBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB.get(), models().withExistingParent("potted_heart_shaped_herb", BLOCK_FOLDER + "/flower_pot_cross").texture("plant", new ResourceLocation(Palladium.MOD_ID, "block/heart_shaped_herb")));
+        this.simpleBlock(PalladiumBlocks.MULTIVERSAL_ITERATOR.get(), models().getExistingFile(models().modLoc("block/multiversal_iterator")));
     }
 
     public void crystal(RegistrySupplier<Block> block) {

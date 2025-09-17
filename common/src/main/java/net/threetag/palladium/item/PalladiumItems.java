@@ -49,6 +49,7 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> RAW_VIBRANIUM_BLOCK = ITEMS.register("raw_vibranium_block", () -> new BlockItem(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get(), new Item.Properties()));
 
     public static final RegistrySupplier<Item> HEART_SHAPED_HERB = ITEMS.register("heart_shaped_herb", () -> new BlockItem(PalladiumBlocks.HEART_SHAPED_HERB.get(), new Item.Properties()));
+    public static final RegistrySupplier<Item> MULTIVERSAL_ITERATOR = ITEMS.register("multiversal_iterator", () -> new BlockItem(PalladiumBlocks.MULTIVERSAL_ITERATOR.get(), new Item.Properties()));
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -95,6 +96,7 @@ public class PalladiumItems {
                     RAW_VIBRANIUM.get(),
                     VIBRANIUM_INGOT.get(),
                     REDSTONE_FLUX_CRYSTAL.get(),
+                    MULTIVERSAL_ITERATOR.get(),
                     SUIT_STAND.get(),
                     LEAD_CIRCUIT.get(),
                     QUARTZ_CIRCUIT.get(),
@@ -110,6 +112,7 @@ public class PalladiumItems {
         });
 
         CreativeModeTabRegistry.addToTab(PalladiumCreativeModeTabs.TECHNOLOGY, entries -> {
+            entries.add(MULTIVERSAL_ITERATOR.get());
             entries.add(LEAD_CIRCUIT.get());
             entries.add(QUARTZ_CIRCUIT.get());
             entries.add(VIBRANIUM_CIRCUIT.get());

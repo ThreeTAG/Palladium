@@ -37,6 +37,7 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.defaultBlockItem(PalladiumItems.RAW_VIBRANIUM_BLOCK);
 
         this.singleTexture(PalladiumItems.HEART_SHAPED_HERB.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(Palladium.MOD_ID, "block/heart_shaped_herb"));
+        this.defaultBlockItem(PalladiumItems.MULTIVERSAL_ITERATOR);
 
         this.defaultItem(PalladiumItems.RAW_LEAD);
         this.defaultItem(PalladiumItems.LEAD_INGOT);
