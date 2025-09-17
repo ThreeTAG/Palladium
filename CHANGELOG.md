@@ -1,3 +1,2 @@
-- Added "tint" option to skin_overlay render layers
-- Added float array palladium properties
-- Fixed string- & float array properties not being accepted in KJS stuff
+- Added render power screen event
+- Added property_buyable condition
