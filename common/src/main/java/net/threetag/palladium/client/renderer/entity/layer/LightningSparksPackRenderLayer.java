@@ -18,8 +18,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.LaserRenderer;
-import net.threetag.palladium.condition.PerspectiveAwareConditions;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.condition.PerspectiveAwareConditions;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import org.joml.Vector2f;
 

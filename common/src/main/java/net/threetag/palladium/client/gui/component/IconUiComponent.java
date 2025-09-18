@@ -4,7 +4,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.threetag.palladium.client.icon.Icon;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 
 public record IconUiComponent(Icon icon) implements UiComponent {
 

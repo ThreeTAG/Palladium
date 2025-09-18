@@ -9,7 +9,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 
 public class ItemIcon implements Icon {
 

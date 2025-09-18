@@ -14,7 +14,7 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.phys.Vec2;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.core.registry.GuiLayerRegistry;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;

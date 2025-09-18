@@ -14,7 +14,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.threetag.palladium.client.texture.TextureReference;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.awt.*;

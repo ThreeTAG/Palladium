@@ -3,7 +3,7 @@ package net.threetag.palladium.client.texture;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 
 public abstract class DynamicTexture {
 

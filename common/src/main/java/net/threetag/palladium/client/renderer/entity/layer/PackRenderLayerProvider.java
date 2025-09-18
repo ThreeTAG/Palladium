@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.EntityCustomizationHandler;
 import net.threetag.palladium.component.PalladiumDataComponents;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.entity.PlayerSlot;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;

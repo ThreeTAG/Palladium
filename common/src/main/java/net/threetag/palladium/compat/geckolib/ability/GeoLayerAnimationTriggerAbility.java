@@ -13,7 +13,7 @@ import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerManage
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer;
 import net.threetag.palladium.compat.geckolib.layer.GeoRenderLayerState;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;

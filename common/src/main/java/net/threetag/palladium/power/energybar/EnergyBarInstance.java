@@ -3,6 +3,7 @@ package net.threetag.palladium.power.energybar;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.network.SyncEnergyBarPacket;
 import net.threetag.palladium.power.PowerHolder;
@@ -22,8 +23,10 @@ public class EnergyBarInstance {
     }
 
     public void tick(LivingEntity entity) {
+        var context = DataContext.forPower(entity, this.powerHolder);
+
         if (this.configuration.syncedValue() != null) {
-            var synced = this.configuration.syncedValue().asInt(entity);
+            var synced = this.configuration.syncedValue().getAsInt(context);
 
             if (this.value != synced) {
                 this.set(synced);
@@ -41,7 +44,7 @@ public class EnergyBarInstance {
                 this.setMax(this.overriddenMaxValue);
             }
         } else {
-            var syncedMax = this.configuration.maxValue().asInt(entity);
+            var syncedMax = this.configuration.maxValue().getAsInt(context);
             if (this.maxValue != syncedMax) {
                 this.setMax(syncedMax);
             }

@@ -13,7 +13,7 @@ import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.component.UiComponent;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.core.registry.GuiLayerRegistry;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.PowerHolder;
 import net.threetag.palladium.power.PowerUtil;
 import net.threetag.palladium.power.ability.AbilityInstance;

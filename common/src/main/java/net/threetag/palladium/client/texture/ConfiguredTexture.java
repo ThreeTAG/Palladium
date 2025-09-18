@@ -8,8 +8,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.client.texture.transformer.TextureTransformer;
 import net.threetag.palladium.client.texture.transformer.TransformedTexture;
-import net.threetag.palladium.client.variable.PathVariable;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.value.Value;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.util.PalladiumCodecs;
 
@@ -21,16 +21,16 @@ public class ConfiguredTexture extends DynamicTexture {
 
     public static final MapCodec<ConfiguredTexture> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.STRING.fieldOf("base").forGetter(t -> t.base),
-            Codec.unboundedMap(Codec.STRING, PathVariable.CODEC).optionalFieldOf("variables", Collections.emptyMap()).forGetter(t -> t.variables),
+            Codec.unboundedMap(Codec.STRING, Value.CODEC).optionalFieldOf("variables", Collections.emptyMap()).forGetter(t -> t.variables),
             PalladiumCodecs.listOrPrimitive(TextureTransformer.CODEC).optionalFieldOf("transformers", Collections.emptyList()).forGetter(t -> t.transformers)
     ).apply(instance, ConfiguredTexture::new));
 
     private final String base;
-    protected final Map<String, PathVariable> variables;
+    protected final Map<String, Value> variables;
     protected final List<TextureTransformer> transformers;
     public final String rawOutputPath;
 
-    public ConfiguredTexture(String base, Map<String, PathVariable> variables, List<TextureTransformer> transformers) {
+    public ConfiguredTexture(String base, Map<String, Value> variables, List<TextureTransformer> transformers) {
         this.base = base;
         this.variables = variables;
         this.transformers = transformers;
@@ -71,9 +71,9 @@ public class ConfiguredTexture extends DynamicTexture {
         return output;
     }
 
-    public static String replaceVariables(String base, DataContext context, Map<String, PathVariable> variables) {
-        for (Map.Entry<String, PathVariable> entry : variables.entrySet()) {
-            PathVariable variable = entry.getValue();
+    public static String replaceVariables(String base, DataContext context, Map<String, Value> variables) {
+        for (Map.Entry<String, Value> entry : variables.entrySet()) {
+            Value variable = entry.getValue();
             base = variable.replace(base, entry.getKey(), context);
         }
 

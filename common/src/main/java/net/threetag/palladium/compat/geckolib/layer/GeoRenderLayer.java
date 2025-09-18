@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
@@ -23,8 +22,8 @@ import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerial
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerTexture;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
-import net.threetag.palladium.condition.PerspectiveAwareConditions;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.condition.PerspectiveAwareConditions;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.entity.SkinTypedValue;

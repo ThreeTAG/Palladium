@@ -10,8 +10,8 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.condition.PerspectiveAwareConditions;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.condition.PerspectiveAwareConditions;
+import net.threetag.palladium.logic.context.DataContext;
 
 public abstract class PackRenderLayer<T extends PackRenderLayer.State> {
 

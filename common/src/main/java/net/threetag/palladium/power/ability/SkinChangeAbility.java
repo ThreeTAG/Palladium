@@ -11,7 +11,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.client.renderer.entity.PlayerSkinHandler;
 import net.threetag.palladium.client.texture.TextureReference;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.entity.PlayerModelChangeType;

@@ -5,8 +5,8 @@ import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.client.texture.DynamicTexture;
 import net.threetag.palladium.client.texture.TextureReference;
-import net.threetag.palladium.client.variable.DynamicTextureManager;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.client.texture.DynamicTextureManager;
+import net.threetag.palladium.logic.context.DataContext;
 
 import java.util.Objects;
 

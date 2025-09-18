@@ -1,7 +1,7 @@
 package net.threetag.palladium.client.renderer.entity.layer;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.entity.flight.EntityFlightHandler;
 import net.threetag.palladium.power.ability.AbilityReference;
 import org.jetbrains.annotations.NotNull;

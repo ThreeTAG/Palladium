@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 
 public interface Icon {
 

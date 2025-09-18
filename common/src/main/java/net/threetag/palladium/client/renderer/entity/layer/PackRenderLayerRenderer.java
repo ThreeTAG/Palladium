@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.threetag.palladium.client.renderer.entity.ExtendedEntityRenderState;
-import net.threetag.palladium.condition.PerspectiveAwareConditions;
-import net.threetag.palladium.data.DataContextType;
+import net.threetag.palladium.logic.condition.PerspectiveAwareConditions;
+import net.threetag.palladium.logic.context.DataContextType;
 import org.jetbrains.annotations.NotNull;
 
 public class PackRenderLayerRenderer<T extends LivingEntityRenderState> extends RenderLayer<T, EntityModel<T>> {

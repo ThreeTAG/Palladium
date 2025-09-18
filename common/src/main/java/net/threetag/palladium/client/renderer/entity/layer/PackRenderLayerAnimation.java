@@ -6,7 +6,7 @@ import net.minecraft.client.model.Model;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.client.animation.PalladiumAnimation;
 import net.threetag.palladium.client.animation.PalladiumAnimationManager;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 
 public class PackRenderLayerAnimation {
 

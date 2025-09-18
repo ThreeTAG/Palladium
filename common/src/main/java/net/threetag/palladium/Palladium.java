@@ -11,7 +11,7 @@ import net.threetag.palladium.command.*;
 import net.threetag.palladium.compat.accessories.AccessoriesCompatImpl;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.component.PalladiumDataComponents;
-import net.threetag.palladium.condition.ConditionSerializers;
+import net.threetag.palladium.logic.condition.ConditionSerializers;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.entity.PalladiumHubData;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
@@ -22,6 +22,8 @@ import net.threetag.palladium.entity.number.EntityDependentNumberTypes;
 import net.threetag.palladium.item.ItemTypes;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.item.TabPlacement;
+import net.threetag.palladium.logic.value.ValueSerializer;
+import net.threetag.palladium.logic.value.ValueSerializers;
 import net.threetag.palladium.network.DataSyncUtil;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.PowerEventHandler;
@@ -60,6 +62,7 @@ public final class Palladium {
         PowerProviders.PROVIDERS.register();
         IconSerializers.ICON_SERIALIZERS.register();
         CustomizationSerializers.CUSTOMIZATION_SERIALIZERS.register();
+        ValueSerializers.VALUE_SERIALIZERS.register();
         FlightTypeSerializers.FLIGHT_TYPE_SERIALIZERS.register();
 
         PalladiumNetwork.init();

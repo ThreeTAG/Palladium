@@ -14,7 +14,7 @@ import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
 import net.threetag.palladium.client.renderer.entity.layer.*;
-import net.threetag.palladium.condition.PerspectiveAwareConditions;
+import net.threetag.palladium.logic.condition.PerspectiveAwareConditions;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.entity.SkinTypedValue;
 

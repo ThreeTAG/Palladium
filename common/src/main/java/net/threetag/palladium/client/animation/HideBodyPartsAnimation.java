@@ -3,7 +3,7 @@ package net.threetag.palladium.client.animation;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.threetag.palladium.client.renderer.entity.ExtendedEntityRenderState;
-import net.threetag.palladium.data.DataContextType;
+import net.threetag.palladium.logic.context.DataContextType;
 import net.threetag.palladium.entity.BodyPart;
 
 import java.util.HashMap;

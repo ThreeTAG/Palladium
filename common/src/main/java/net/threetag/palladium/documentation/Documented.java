@@ -5,6 +5,7 @@ import net.threetag.palladium.entity.PlayerSlot;
 
 public interface Documented<T, R extends T> {
 
+    SettingType TYPE_ANY = SettingType.simple("Anything");
     SettingType TYPE_STRING = SettingType.simple("string");
     SettingType TYPE_STRING_ARRAY = SettingType.simple("string[]");
     SettingType TYPE_RESOURCE_LOCATION = SettingType.simple("ResourceLocation");

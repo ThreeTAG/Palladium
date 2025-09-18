@@ -2,7 +2,7 @@ package net.threetag.palladium.mixin.client;
 
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.threetag.palladium.client.renderer.entity.ExtendedEntityRenderState;
-import net.threetag.palladium.data.DataContextType;
+import net.threetag.palladium.logic.context.DataContextType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 

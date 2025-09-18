@@ -24,9 +24,9 @@ import net.threetag.palladium.client.texture.DynamicTextureSerializer;
 import net.threetag.palladium.client.texture.DynamicTextureSerializers;
 import net.threetag.palladium.client.texture.transformer.TextureTransformerSerializer;
 import net.threetag.palladium.client.texture.transformer.TextureTransformerSerializers;
-import net.threetag.palladium.client.variable.DynamicTextureManager;
-import net.threetag.palladium.client.variable.PathVariableSerializer;
-import net.threetag.palladium.client.variable.PathVariableSerializers;
+import net.threetag.palladium.client.texture.DynamicTextureManager;
+import net.threetag.palladium.logic.value.ValueSerializer;
+import net.threetag.palladium.logic.value.ValueSerializers;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
 import net.threetag.palladium.core.registry.GuiLayerRegistry;
 import net.threetag.palladium.documentation.HTMLBuilder;
@@ -66,13 +66,12 @@ public class PalladiumClient {
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, EnergyBeamManager.INSTANCE, Palladium.id("energy_beams"));
         WatcherRenderer.init();
         EnergyBeamRendererSerializers.init();
-        PathVariableSerializers.init();
         TextureTransformerSerializers.init();
         DynamicTextureSerializers.init();
 
         // Documentation
         ClientLifecycleEvent.CLIENT_LEVEL_LOAD.register(clientLevel -> {
-            HTMLBuilder.documentedPage(Palladium.id("path_variables"), PathVariableSerializer.getTypes(), "Path Variables", clientLevel.registryAccess()).save();
+            HTMLBuilder.documentedPage(Palladium.id("path_variables"), ValueSerializer.getTypes(), "Path Variables", clientLevel.registryAccess()).save();
             HTMLBuilder.documentedPage(Palladium.id("texture_transformers"), TextureTransformerSerializer.getTypes(), "Texture Transformers", clientLevel.registryAccess()).save();
             HTMLBuilder.documentedPage(Palladium.id("dynamic_textures"), DynamicTextureSerializer.getTypes(), "Dynamic Textures", clientLevel.registryAccess()).save();
             HTMLBuilder.documentedPage(Palladium.id("render_layers"), PackRenderLayerSerializer.getTypes(), "Render Layers", clientLevel.registryAccess()).save();

@@ -5,7 +5,7 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.client.renderer.entity.layer.MoLangQuery;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.molang.ModifyFloatFunction;
 import team.unnamed.mocha.MochaEngine;
 import team.unnamed.mocha.runtime.binding.JavaObjectBinding;

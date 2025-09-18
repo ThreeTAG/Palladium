@@ -11,7 +11,7 @@ import net.minecraft.locale.Language;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.threetag.palladium.client.texture.TextureReference;
-import net.threetag.palladium.data.DataContext;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.PowerHolder;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import org.jetbrains.annotations.Nullable;
