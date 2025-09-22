@@ -2,6 +2,7 @@ package net.threetag.palladium.power.energybar;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.threetag.palladium.logic.value.IntegerValue;
 import net.threetag.palladium.logic.value.Value;
 import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.Nullable;
@@ -15,8 +16,8 @@ public final class EnergyBarConfiguration {
     public static final Codec<EnergyBarConfiguration> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     PalladiumCodecs.COLOR_CODEC.optionalFieldOf("color", Color.WHITE).forGetter(EnergyBarConfiguration::color),
-                    Value.CODEC.optionalFieldOf("synced_value").forGetter(c -> Optional.ofNullable(c.syncedValue)),
-                    Value.CODEC.fieldOf("max").forGetter(EnergyBarConfiguration::maxValue),
+                    Value.INTEGER_VALUE_CODEC.optionalFieldOf("synced_value").forGetter(c -> Optional.ofNullable(c.syncedValue)),
+                    Value.INTEGER_VALUE_CODEC.fieldOf("max").forGetter(EnergyBarConfiguration::maxValue),
                     Codec.INT.optionalFieldOf("auto_increase_per_tick", 0).forGetter(EnergyBarConfiguration::autoIncrease),
                     Codec.INT.optionalFieldOf("auto_increase_interval", 1).forGetter(EnergyBarConfiguration::autoIncreaseInterval)
             ).apply(instance, (color, syncVal, max, incPerTick, incInterval) ->
@@ -25,13 +26,13 @@ public final class EnergyBarConfiguration {
 
     private String key;
     private final Color color;
-    private final @Nullable Value syncedValue;
-    private final Value maxValue;
+    private final @Nullable IntegerValue syncedValue;
+    private final IntegerValue maxValue;
     private final int autoIncrease;
     private final int autoIncreaseInterval;
 
-    public EnergyBarConfiguration(Color color, @Nullable Value syncedValue,
-                                  Value maxValue, int autoIncrease, int autoIncreaseInterval) {
+    public EnergyBarConfiguration(Color color, @Nullable IntegerValue syncedValue,
+                                  IntegerValue maxValue, int autoIncrease, int autoIncreaseInterval) {
         this.color = color;
         this.syncedValue = syncedValue;
         this.maxValue = maxValue;
@@ -55,7 +56,7 @@ public final class EnergyBarConfiguration {
         return this.syncedValue;
     }
 
-    public Value maxValue() {
+    public IntegerValue maxValue() {
         return this.maxValue;
     }
 
