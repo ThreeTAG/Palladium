@@ -9,7 +9,7 @@ public class ValueSerializers {
 
     public static final DeferredRegister<ValueSerializer<?>> VALUE_SERIALIZERS = DeferredRegister.create(Palladium.MOD_ID, PalladiumRegistryKeys.VALUE_SERIALIZER);
 
-    public static final RegistryHolder<StaticValue.Serializer> STATIC = VALUE_SERIALIZERS.register("condition", StaticValue.Serializer::new);
+    public static final RegistryHolder<StaticValue.Serializer> STATIC = VALUE_SERIALIZERS.register("static", StaticValue.Serializer::new);
     public static final RegistryHolder<ConditionValue.Serializer> CONDITION = VALUE_SERIALIZERS.register("condition", ConditionValue.Serializer::new);
     public static final RegistryHolder<CrouchingValue.Serializer> CROUCHING = VALUE_SERIALIZERS.register("crouching", CrouchingValue.Serializer::new);
     public static final RegistryHolder<EntityTickCountValue.Serializer> ENTITY_TICK_COUNT = VALUE_SERIALIZERS.register("entity_tick_count", EntityTickCountValue.Serializer::new);

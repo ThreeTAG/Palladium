@@ -16,13 +16,13 @@ public abstract class Value {
                     StaticValue::new
             ), value -> value instanceof StaticValue s ? Either.right(s.object) : Either.left(value));
 
-    public static final Codec<IntegerValue> INTEGER_VALUE_CODEC = CODEC.validate(value -> {
-        if (value instanceof IntegerValue) {
+    public static final Codec<Value> INTEGER_VALUE_CODEC = CODEC.validate(value -> {
+        if (value instanceof IntegerValue || value instanceof StaticValue) {
             return DataResult.success(value);
         } else {
             return DataResult.error(() -> "Value must be an integer type!");
         }
-    }).xmap(value -> (IntegerValue) value, integerValue -> integerValue);
+    }).xmap(value -> value, integerValue -> integerValue);
 
     public abstract Object get(DataContext context);
 

@@ -2,7 +2,6 @@ package net.threetag.palladium.power.energybar;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.threetag.palladium.logic.value.IntegerValue;
 import net.threetag.palladium.logic.value.Value;
 import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.Nullable;
@@ -26,13 +25,13 @@ public final class EnergyBarConfiguration {
 
     private String key;
     private final Color color;
-    private final @Nullable IntegerValue syncedValue;
-    private final IntegerValue maxValue;
+    private final @Nullable Value syncedValue;
+    private final Value maxValue;
     private final int autoIncrease;
     private final int autoIncreaseInterval;
 
-    public EnergyBarConfiguration(Color color, @Nullable IntegerValue syncedValue,
-                                  IntegerValue maxValue, int autoIncrease, int autoIncreaseInterval) {
+    public EnergyBarConfiguration(Color color, @Nullable Value syncedValue,
+                                  Value maxValue, int autoIncrease, int autoIncreaseInterval) {
         this.color = color;
         this.syncedValue = syncedValue;
         this.maxValue = maxValue;
@@ -56,7 +55,7 @@ public final class EnergyBarConfiguration {
         return this.syncedValue;
     }
 
-    public IntegerValue maxValue() {
+    public Value maxValue() {
         return this.maxValue;
     }
 

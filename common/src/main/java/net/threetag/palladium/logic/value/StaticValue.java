@@ -29,7 +29,7 @@ public class StaticValue extends Value {
 
     @Override
     public ValueSerializer<?> getSerializer() {
-        return null;
+        return ValueSerializers.STATIC.value();
     }
 
     public static class Serializer extends ValueSerializer<StaticValue> {
