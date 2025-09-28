@@ -101,6 +101,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SIZE, "Size");
             this.addAbility(Abilities.PROJECTILE, "Projectile");
             this.addAbility(Abilities.SKIN_CHANGE, "Skin Change");
+            this.addAbility(Abilities.PLAYER_SKIN_CHANGE, "Player Skin Change");
             this.addAbility(Abilities.AIM, "Aim");
             this.addAbility(Abilities.HIDE_BODY_PART, "Hide Body Part");
             this.addAbility(Abilities.REMOVE_BODY_PART, "Remove Body Part");
@@ -298,6 +299,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SIZE, "Größe");
             this.addAbility(Abilities.PROJECTILE, "Projektil");
             this.addAbility(Abilities.SKIN_CHANGE, "Skin Änderung");
+            this.addAbility(Abilities.PLAYER_SKIN_CHANGE, "Spieler Skin Änderung");
             this.addAbility(Abilities.AIM, "Zielen");
             this.addAbility(Abilities.HIDE_BODY_PART, "Körperteile verstecken");
             this.addAbility(Abilities.REMOVE_BODY_PART, "Körperteile entfernen");
@@ -495,6 +497,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SIZE, "Größe");
             this.addAbility(Abilities.PROJECTILE, "Projektil");
             this.addAbility(Abilities.SKIN_CHANGE, "Skin Änderung");
+            this.addAbility(Abilities.PLAYER_SKIN_CHANGE, "Spieler Skin Änderung");
             this.addAbility(Abilities.AIM, "Zielen");
             this.addAbility(Abilities.HIDE_BODY_PART, "Görperdeile versteggen");
             this.addAbility(Abilities.REMOVE_BODY_PART, "Görperdeile entfernen");

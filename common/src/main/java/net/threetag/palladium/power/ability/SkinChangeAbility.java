@@ -40,7 +40,7 @@ public class SkinChangeAbility extends Ability {
 
         @Override
         public ResourceLocation getSkin(AbstractClientPlayer player, ResourceLocation previousSkin, ResourceLocation defaultSkin) {
-            var abilities = AbilityUtil.getEnabledEntries(player, Abilities.SKIN_CHANGE.get()).stream().filter(AbilityInstance::isEnabled).sorted((a1, a2) -> a2.getProperty(SkinChangeAbility.PRIORITY) - a1.getProperty(SkinChangeAbility.PRIORITY)).toList();
+            var abilities = AbilityUtil.getEnabledInstances(player, Abilities.SKIN_CHANGE.get()).stream().filter(AbilityInstance::isEnabled).sorted((a1, a2) -> a2.getProperty(SkinChangeAbility.PRIORITY) - a1.getProperty(SkinChangeAbility.PRIORITY)).toList();
 
             if (!abilities.isEmpty()) {
                 var ability = abilities.get(0);
@@ -52,7 +52,7 @@ public class SkinChangeAbility extends Ability {
 
         @Override
         public ChangedPlayerModelTypeProperty.ChangedModelType getModelType(AbstractClientPlayer player) {
-            var abilities = AbilityUtil.getEnabledEntries(player, Abilities.SKIN_CHANGE.get()).stream().filter(AbilityInstance::isEnabled).sorted((a1, a2) -> a2.getProperty(SkinChangeAbility.PRIORITY) - a1.getProperty(SkinChangeAbility.PRIORITY)).toList();
+            var abilities = AbilityUtil.getEnabledInstances(player, Abilities.SKIN_CHANGE.get()).stream().filter(AbilityInstance::isEnabled).sorted((a1, a2) -> a2.getProperty(SkinChangeAbility.PRIORITY) - a1.getProperty(SkinChangeAbility.PRIORITY)).toList();
 
             if (!abilities.isEmpty()) {
                 var ability = abilities.get(0);

@@ -30,6 +30,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> SIZE = ABILITIES.register("size", SizeAbility::new);
     public static final RegistrySupplier<Ability> PROJECTILE = ABILITIES.register("projectile", ProjectileAbility::new);
     public static final RegistrySupplier<Ability> SKIN_CHANGE = ABILITIES.register("skin_change", SkinChangeAbility::new);
+    public static final RegistrySupplier<Ability> PLAYER_SKIN_CHANGE = ABILITIES.register("player_skin_change", PlayerSkinChangeAbility::new);
     public static final RegistrySupplier<Ability> AIM = ABILITIES.register("aim", AimAbility::new);
     public static final RegistrySupplier<Ability> HIDE_BODY_PART = ABILITIES.register("hide_body_part", HideBodyPartAbility::new);
     public static final RegistrySupplier<Ability> REMOVE_BODY_PART = ABILITIES.register("remove_body_part", RemoveBodyPartAbility::new);

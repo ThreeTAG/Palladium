@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.power.ability.PlayerSkinChangeAbility;
 import net.threetag.palladium.power.ability.SkinChangeAbility;
 import net.threetag.palladium.util.property.ChangedPlayerModelTypeProperty;
 
@@ -68,6 +69,7 @@ public class PlayerSkinHandler {
     static {
         // Abilities
         registerSkinProvider(30, new SkinChangeAbility.SkinProvider());
+        registerSkinProvider(40, new PlayerSkinChangeAbility.SkinProvider());
     }
 
 }

@@ -12,6 +12,17 @@
           "type": "palladium:toggle"
         }
       }
+    },
+    "player_skin_change": {
+      "type": "palladium:player_skin_change",
+      "username": "MartyMcBrei",
+      "hidden_in_bar": false,
+      "hidden": false,
+      "conditions": {
+        "enabling": {
+          "type": "palladium:toggle"
+        }
+      }
     }
   }
 }
