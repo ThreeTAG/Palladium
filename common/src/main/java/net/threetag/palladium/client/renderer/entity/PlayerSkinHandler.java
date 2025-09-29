@@ -7,7 +7,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.power.ability.PlayerSkinChangeAbility;
 import net.threetag.palladium.power.ability.SkinChangeAbility;
-import net.threetag.palladium.util.property.ChangedPlayerModelTypeProperty;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +15,14 @@ import java.util.Objects;
 
 public class PlayerSkinHandler {
 
-    private static final List<Pair<Integer, ISkinProvider>> PROVIDER = new ArrayList<>();
+    public static final List<Pair<Integer, ISkinProvider>> PROVIDER = new ArrayList<>();
 
     public static ResourceLocation getCurrentSkin(GameProfile gameProfile, ResourceLocation defaultSkin) {
         AbstractClientPlayer player = (AbstractClientPlayer) Objects.requireNonNull(Minecraft.getInstance().level).getPlayerByUUID(gameProfile.getId());
 
-        if (player != null) {
-            ResourceLocation start = defaultSkin;
-
-            for (Pair<Integer, ISkinProvider> pair : PROVIDER) {
-                start = pair.getSecond().getSkin(player, start, defaultSkin);
-            }
-
-            return start;
+        if (player instanceof PlayerSkinChangeHandler handler) {
+            var skin = handler.palladium$getOverridenSkin();
+            return skin != null ? skin.getTexture() : defaultSkin;
         }
 
         return defaultSkin;
@@ -36,16 +31,9 @@ public class PlayerSkinHandler {
     public static String getCurrentModelType(GameProfile gameProfile, String modelType) {
         AbstractClientPlayer player = (AbstractClientPlayer) Objects.requireNonNull(Minecraft.getInstance().level).getPlayerByUUID(gameProfile.getId());
 
-        if (player != null && !PROVIDER.isEmpty()) {
-            var overriddenType = PROVIDER.get(PROVIDER.size() - 1).getSecond().getModelType(player);
-
-            if (overriddenType == ChangedPlayerModelTypeProperty.ChangedModelType.KEEP) {
-                return modelType;
-            } else if (overriddenType == ChangedPlayerModelTypeProperty.ChangedModelType.NORMAL) {
-                return "default";
-            } else {
-                return "slim";
-            }
+        if (player instanceof PlayerSkinChangeHandler handler) {
+            var skin = handler.palladium$getOverridenSkin();
+            return skin != null ? skin.getModelName() : modelType;
         }
 
         return modelType;
@@ -58,11 +46,7 @@ public class PlayerSkinHandler {
 
     public interface ISkinProvider {
 
-        ResourceLocation getSkin(AbstractClientPlayer player, ResourceLocation previousSkin, ResourceLocation defaultSkin);
-
-        default ChangedPlayerModelTypeProperty.ChangedModelType getModelType(AbstractClientPlayer player) {
-            return ChangedPlayerModelTypeProperty.ChangedModelType.KEEP;
-        }
+        PlayerSkinInfo getSkin(AbstractClientPlayer player, PlayerSkinInfo previousSkin, PlayerSkinInfo defaultSkin);
 
     }
 
@@ -70,6 +54,13 @@ public class PlayerSkinHandler {
         // Abilities
         registerSkinProvider(30, new SkinChangeAbility.SkinProvider());
         registerSkinProvider(40, new PlayerSkinChangeAbility.SkinProvider());
+    }
+
+    public interface PlayerSkinChangeHandler {
+
+        @Nullable
+        PlayerSkinInfo palladium$getOverridenSkin();
+
     }
 
 }

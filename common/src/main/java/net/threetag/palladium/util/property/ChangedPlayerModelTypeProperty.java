@@ -20,10 +20,19 @@ public class ChangedPlayerModelTypeProperty extends EnumPalladiumProperty<Change
 
     public enum ChangedModelType {
 
-        KEEP,
-        NORMAL,
-        SLIM
+        KEEP(null),
+        NORMAL("default"),
+        SLIM("slim");
 
+        private String modelName;
+
+        ChangedModelType(String modelName) {
+            this.modelName = modelName;
+        }
+
+        public String getModelName() {
+            return modelName;
+        }
     }
 
 }

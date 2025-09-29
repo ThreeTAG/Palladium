@@ -1,4 +1,4 @@
-package net.threetag.palladium.entity;
+package net.threetag.palladium.client.renderer.entity;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 public class PlayerSkinFetcher {
 
     private static final Map<String, GameProfile> CACHED_NAME_PROFILES = new ConcurrentHashMap<>();
-    private static final Map<String, SkinData> CACHED_NAME_SKINS = new ConcurrentHashMap<>();
+    private static final Map<String, PlayerSkinInfo> CACHED_NAME_SKINS = new ConcurrentHashMap<>();
     private static final Pattern UUID_PATTERN = Pattern.compile("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})");
 
     private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
@@ -34,27 +34,48 @@ public class PlayerSkinFetcher {
 
     @Nullable
     public static ResourceLocation getOrLoadPlayerSkin(String username) {
-        var skinData = getSkinData(username);
+        var PlayerSkinInfo = getPlayerSkinInfo(username);
 
-        if (skinData.hasFailed() || skinData.isLoading()) {
+        if (PlayerSkinInfo.hasFailed() || PlayerSkinInfo.isLoading()) {
             return null;
         } else {
-            return skinData.texture();
+            return PlayerSkinInfo.getTexture();
         }
     }
 
     @Nullable
     public static String getOrLoadModelType(String username) {
-        var skinData = getSkinData(username);
+        var PlayerSkinInfo = getPlayerSkinInfo(username);
 
-        if (skinData.hasFailed() || skinData.isLoading()) {
+        if (PlayerSkinInfo.hasFailed() || PlayerSkinInfo.isLoading()) {
             return null;
         } else {
-            return skinData.skinModel();
+            return PlayerSkinInfo.getModelName();
         }
     }
 
-    public static SkinData getSkinData(final @NotNull String username) {
+    @Nullable
+    public static PlayerSkinInfo getLoadedPlayerSkinInfo(final @NotNull String username) {
+        var PlayerSkinInfo = getPlayerSkinInfo(username);
+
+        if (PlayerSkinInfo.hasFailed() || PlayerSkinInfo.isLoading()) {
+            return null;
+        } else {
+            return PlayerSkinInfo;
+        }
+    }
+
+    public static PlayerSkinInfo getPlayerSkinInfo(final @NotNull String username) {
+        var mcPlayer = Minecraft.getInstance().player;
+
+        if (mcPlayer != null && username.equalsIgnoreCase(mcPlayer.getGameProfile().getName())) {
+            return CACHED_NAME_SKINS.computeIfAbsent(username.toLowerCase(Locale.ROOT), s -> {
+                var PlayerSkinInfo = new PlayerSkinInfo();
+                PlayerSkinInfo.set(mcPlayer.getModelName(), mcPlayer.getSkinTextureLocation());
+                return PlayerSkinInfo;
+            });
+        }
+
         return CACHED_NAME_SKINS.computeIfAbsent(username.toLowerCase(Locale.ROOT), (key) -> {
             Util.backgroundExecutor().execute(() -> {
                 var profile = getGameProfile(username);
@@ -67,15 +88,15 @@ public class PlayerSkinFetcher {
                                 skinModel = "default";
                             }
 
-                            CACHED_NAME_SKINS.computeIfAbsent(profile.getName().toLowerCase(Locale.ROOT), (n) -> new SkinData()).load(skinModel, resourceLocation);
+                            CACHED_NAME_SKINS.computeIfAbsent(profile.getName().toLowerCase(Locale.ROOT), (n) -> new PlayerSkinInfo()).set(skinModel, resourceLocation);
                         }
                     }, true);
                 } else {
-                    CACHED_NAME_SKINS.computeIfAbsent(username.toLowerCase(Locale.ROOT), (n) -> new SkinData()).setFailed();
+                    CACHED_NAME_SKINS.computeIfAbsent(username.toLowerCase(Locale.ROOT), (n) -> new PlayerSkinInfo()).setFailed();
                 }
             });
 
-            return new SkinData();
+            return new PlayerSkinInfo();
         });
     }
 
@@ -113,44 +134,6 @@ public class PlayerSkinFetcher {
     private static UUID fromStringWithoutDashes(final @NotNull String uuid) {
         String correctedUUID = UUID_PATTERN.matcher(uuid).replaceAll("$1-$2-$3-$4-$5");
         return UUID.fromString(correctedUUID);
-    }
-
-    public static final class SkinData {
-
-        private String skinModel;
-        private ResourceLocation texture;
-        private boolean failed;
-
-        public SkinData() {
-            this.skinModel = null;
-            this.texture = null;
-        }
-
-        public boolean isLoading() {
-            return this.texture == null;
-        }
-
-        public void load(String skinModel, ResourceLocation texture) {
-            this.skinModel = skinModel;
-            this.texture = texture;
-        }
-
-        public boolean hasFailed() {
-            return this.failed;
-        }
-
-        public void setFailed() {
-            this.failed = true;
-        }
-
-        public String skinModel() {
-            return this.skinModel;
-        }
-
-        public ResourceLocation texture() {
-            return this.texture;
-        }
-
     }
 
 }
