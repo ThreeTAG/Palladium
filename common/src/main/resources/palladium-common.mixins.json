@@ -11,6 +11,7 @@
     "client.GeoArmorRendererInvoker",
     "client.GeoArmorRendererMixin",
     "client.GeoRendererMixin",
+    "client.MixinCached",
     "client.HumanoidArmorLayerMixin",
     "client.ItemInHandRendererMixin",
     "client.LevelRendererMixin",
