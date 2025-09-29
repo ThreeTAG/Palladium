@@ -46,7 +46,11 @@ public abstract class EntityMixin implements PalladiumEntityExtension {
     public void init(EntityType entityType, Level level, CallbackInfo ci) {
         this.palladium$propertyHandler = new EntityPropertyHandler((Entity) (Object) this);
         this.palladium$trailHandler = new TrailHandler((Entity) (Object) this);
-        this.palladium$lastTickPos = this.position();
+        try {
+            this.palladium$lastTickPos = this.position();
+        } catch (Exception ignored) {
+
+        }
     }
 
     @Inject(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V", shift = At.Shift.AFTER))
