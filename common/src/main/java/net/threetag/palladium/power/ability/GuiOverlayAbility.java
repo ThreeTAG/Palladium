@@ -49,6 +49,7 @@ public class GuiOverlayAbility extends Ability {
             List<AbilityInstance> entries = AbilityUtil.getEnabledEntries(minecraft.player, Abilities.GUI_OVERLAY.get()).stream().sorted((a1, a2) -> (int) (a1.getProperty(TRANSLATE).z - a2.getProperty(TRANSLATE).z)).toList();
             for (AbilityInstance entry : entries) {
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                RenderSystem.enableBlend();
                 var texture = entry.getProperty(TEXTURE).getTexture(DataContext.forAbility(minecraft.player, entry));
 
                 var textureWidth = entry.getProperty(TEXTURE_WIDTH);
@@ -93,6 +94,7 @@ public class GuiOverlayAbility extends Ability {
 
 
                 renderImage(guiGraphics, texture, scale, textureWidth, textureHeight);
+                RenderSystem.disableBlend();
                 guiGraphics.pose().popPose();
             }
         }
