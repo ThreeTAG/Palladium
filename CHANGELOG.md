@@ -1,2 +1,4 @@
-- Added render power screen event
-- Added property_buyable condition
+- Added player_skin_change ability
+- Added "palladium:player" dynamic texture type
+- Allow texture transformers on "entity" & "player" dynamic texture types
+- Properly enable blending/transparency for gui overlays
