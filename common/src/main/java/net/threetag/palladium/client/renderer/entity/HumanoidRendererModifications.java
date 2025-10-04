@@ -20,6 +20,7 @@ import net.threetag.palladium.entity.PlayerModelCacheExtension;
 import net.threetag.palladium.mixin.client.AgeableListModelInvoker;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.AnimationTimer;
+import net.threetag.palladium.power.ability.VibrateAbility;
 import net.threetag.palladium.util.Easing;
 import org.joml.Vector3f;
 
@@ -98,10 +99,11 @@ public class HumanoidRendererModifications {
             boolean bl2 = !bl && !entity.isInvisibleTo(minecraft.player);
             boolean bl3 = minecraft.shouldEntityAppearGlowing(entity);
             RenderType renderType = renderer.getRenderType(entity, bl, true, bl3);
-            for (int i = 0; i < 10; i++) {
-                poseStack.pushPose();
+            int intensity = VibrateAbility.getIntensity(entity);
+            var rand = RandomSource.create();
 
-                var rand = RandomSource.create();
+            for (int i = 0; i < intensity; i++) {
+                poseStack.pushPose();
                 poseStack.translate((rand.nextFloat() - 0.5F) / 15 * vibrate, 0, (rand.nextFloat() - 0.5F) / 15 * vibrate);
 
                 if (renderType != null) {

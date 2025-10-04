@@ -10,8 +10,13 @@ import net.threetag.palladium.util.property.SyncType;
 
 public class VibrateAbility extends Ability implements AnimationTimer {
 
+    public static final PalladiumProperty<Integer> INTENSITY = new IntegerProperty("intensity").configurable("Determines how many re-renders the game does per tick. Higher values may cause performance issues.");
     public static final PalladiumProperty<Integer> VALUE = new IntegerProperty("value").sync(SyncType.NONE).disablePersistence();
     public static final PalladiumProperty<Integer> PREV_VALUE = new IntegerProperty("prev_value").sync(SyncType.NONE).disablePersistence();
+
+    public VibrateAbility() {
+        this.withProperty(INTENSITY, 10);
+    }
 
     @Override
     public void registerUniqueProperties(PropertyManager manager) {
@@ -42,6 +47,14 @@ public class VibrateAbility extends Ability implements AnimationTimer {
             return 10;
         }
         return Mth.lerp(partialTick, entry.getProperty(PREV_VALUE), entry.getProperty(VALUE));
+    }
+
+    public static int getIntensity(LivingEntity living) {
+        int intensity = 0;
+        for (AbilityInstance instance : AbilityUtil.getEnabledInstances(living, Abilities.VIBRATE.get())) {
+            intensity = Math.max(intensity, instance.getProperty(INTENSITY));
+        }
+        return intensity;
     }
 
     @Override
