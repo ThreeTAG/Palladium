@@ -14,7 +14,7 @@ import java.util.Map;
 public class ToolMaterialLoader extends SimpleJsonResourceReloadListener<ToolMaterial> {
 
     public ToolMaterialLoader() {
-        super(ToolMaterialRegistry.DIRECT_CODEC, FileToIdConverter.json("tool_materials"));
+        super(ToolMaterialRegistry.DIRECT_CODEC, FileToIdConverter.json("tool_material"));
     }
 
     @Override

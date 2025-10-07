@@ -14,7 +14,7 @@ import java.util.Map;
 public class ArmorMaterialLoader extends SimpleJsonResourceReloadListener<ArmorMaterial> {
 
     public ArmorMaterialLoader() {
-        super(ArmorMaterialRegistry.DIRECT_CODEC, FileToIdConverter.json("armor_materials"));
+        super(ArmorMaterialRegistry.DIRECT_CODEC, FileToIdConverter.json("armor_material"));
     }
 
     @Override

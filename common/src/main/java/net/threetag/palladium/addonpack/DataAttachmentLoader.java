@@ -21,7 +21,7 @@ public class DataAttachmentLoader extends SimpleJsonResourceReloadListener<Platf
     private final BiMap<ResourceLocation, PlatformAttachmentType<?>> dataAttachments = HashBiMap.create();
 
     public DataAttachmentLoader() {
-        super(PlatformAttachmentType.CODEC, FileToIdConverter.json("data_attachments"));
+        super(PlatformAttachmentType.CODEC, FileToIdConverter.json("data_attachment"));
     }
 
     @Override
