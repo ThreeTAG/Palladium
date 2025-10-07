@@ -13,31 +13,28 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.threetag.palladium.client.icon.IngredientIcon;
 import net.threetag.palladium.logic.condition.Condition;
+import net.threetag.palladium.logic.condition.TrueCondition;
 import net.threetag.palladium.util.PalladiumCodecs;
-import net.threetag.palladium.util.Utils;
-
-import java.util.Collections;
-import java.util.List;
 
 public class ItemBuyableUnlockingHandler extends BuyableUnlockingHandler {
 
     public static final MapCodec<ItemBuyableUnlockingHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             PalladiumCodecs.INGREDIENT_CODEC.fieldOf("ingredient").forGetter(h -> h.ingredient),
             ExtraCodecs.POSITIVE_INT.optionalFieldOf("amount", 1).forGetter(h -> h.amount),
-            Condition.LIST_CODEC.optionalFieldOf("conditions", Collections.emptyList()).forGetter(h -> h.conditions)
+            Condition.CODEC.optionalFieldOf("conditions", TrueCondition.INSTANCE).forGetter(h -> h.condition)
     ).apply(instance, ItemBuyableUnlockingHandler::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ItemBuyableUnlockingHandler> STREAM_CODEC = StreamCodec.composite(
             Ingredient.CONTENTS_STREAM_CODEC, h -> h.ingredient,
             ByteBufCodecs.VAR_INT, h -> h.amount,
-            ByteBufCodecs.collection(Utils::newList, Condition.STREAM_CODEC), h -> h.conditions,
+            Condition.STREAM_CODEC, h -> h.condition,
             ItemBuyableUnlockingHandler::new
     );
 
     private final Ingredient ingredient;
     private final int amount;
 
-    public ItemBuyableUnlockingHandler(Ingredient ingredient, int amount, List<Condition> conditions) {
+    public ItemBuyableUnlockingHandler(Ingredient ingredient, int amount, Condition conditions) {
         super(conditions);
         this.ingredient = ingredient;
         this.amount = amount;

@@ -11,27 +11,24 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.client.icon.ExperienceIcon;
 import net.threetag.palladium.logic.condition.Condition;
-import net.threetag.palladium.util.Utils;
-
-import java.util.Collections;
-import java.util.List;
+import net.threetag.palladium.logic.condition.TrueCondition;
 
 public class ExperienceLevelBuyableUnlockingHandler extends BuyableUnlockingHandler {
 
     public static final MapCodec<ExperienceLevelBuyableUnlockingHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.INT.fieldOf("xp_level").forGetter(h -> h.xpLevel),
-            Condition.LIST_CODEC.optionalFieldOf("conditions", Collections.emptyList()).forGetter(h -> h.conditions)
+            Condition.CODEC.optionalFieldOf("conditions", TrueCondition.INSTANCE).forGetter(h -> h.condition)
     ).apply(instance, ExperienceLevelBuyableUnlockingHandler::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ExperienceLevelBuyableUnlockingHandler> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, h -> h.xpLevel,
-            ByteBufCodecs.collection(Utils::newList, Condition.STREAM_CODEC), h -> h.conditions,
+            Condition.STREAM_CODEC, h -> h.condition,
             ExperienceLevelBuyableUnlockingHandler::new
     );
 
     private final int xpLevel;
 
-    public ExperienceLevelBuyableUnlockingHandler(int xpLevel, List<Condition> conditions) {
+    public ExperienceLevelBuyableUnlockingHandler(int xpLevel, Condition conditions) {
         super(conditions);
         this.xpLevel = xpLevel;
     }

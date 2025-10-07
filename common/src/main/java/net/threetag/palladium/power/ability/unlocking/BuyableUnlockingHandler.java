@@ -14,6 +14,7 @@ import net.threetag.palladium.client.gui.screen.power.PowersScreen;
 import net.threetag.palladium.client.icon.Icon;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.logic.condition.AbilityUnlockedCondition;
+import net.threetag.palladium.logic.condition.AndCondition;
 import net.threetag.palladium.logic.condition.Condition;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.network.AbilityClickedPacket;
@@ -27,23 +28,27 @@ import java.util.List;
 
 public abstract class BuyableUnlockingHandler extends UnlockingHandler {
 
-    public final List<Condition> conditions;
+    public final Condition condition;
     private final List<AbilityReference> parentAbilities;
 
-    protected BuyableUnlockingHandler(List<Condition> conditions) {
-        this.conditions = conditions;
+    protected BuyableUnlockingHandler(Condition condition) {
+        this.condition = condition;
         this.parentAbilities = new ArrayList<>();
 
-        for (Condition condition : conditions) {
-            if (condition instanceof AbilityUnlockedCondition(AbilityReference ability)) {
-                this.parentAbilities.add(ability);
+        if (condition instanceof AndCondition(List<Condition> conditions)) {
+            for (Condition c : conditions) {
+                if (c instanceof AbilityUnlockedCondition(AbilityReference ability)) {
+                    this.parentAbilities.add(ability);
+                }
             }
+        } else if (condition instanceof AbilityUnlockedCondition(AbilityReference ability)) {
+            this.parentAbilities.add(ability);
         }
     }
 
     @Override
     public boolean check(LivingEntity entity, AbilityInstance<?> abilityInstance) {
-        return abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.BOUGHT.get(), false) && Condition.checkConditions(this.conditions, DataContext.forAbility(entity, abilityInstance));
+        return abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.BOUGHT.get(), false) && this.condition.test(DataContext.forAbility(entity, abilityInstance));
     }
 
     @Override

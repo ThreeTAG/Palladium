@@ -13,7 +13,7 @@ import java.util.List;
 public record AndCondition(List<Condition> conditions) implements Condition {
 
     public static final MapCodec<AndCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
-            .group(Condition.LIST_CODEC.fieldOf("conditions").forGetter(AndCondition::conditions)
+            .group(Condition.FALSE_TRUE_WRAPPED_CODEC.listOf().fieldOf("conditions").forGetter(AndCondition::conditions)
             ).apply(instance, AndCondition::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, AndCondition> STREAM_CODEC = StreamCodec.composite(
@@ -49,7 +49,7 @@ public record AndCondition(List<Condition> conditions) implements Condition {
 
         @Override
         public String getDocumentationDescription() {
-            return "A condition that is active if all of the conditions in the array are active.";
+            return "A mainCondition that is active if all of the conditions in the array are active.";
         }
     }
 }

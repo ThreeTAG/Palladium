@@ -22,13 +22,13 @@ public abstract class UnlockingHandler {
 
     public static final Codec<UnlockingHandler> CODEC = Codec.either(
             DIRECT_CODEC,
-            Condition.LIST_CODEC
+            Condition.CODEC
     ).xmap(
             either -> either.map(
                     left -> left,
                     ConditionalUnlockingHandler::new
             ),
-            handler -> handler instanceof ConditionalUnlockingHandler cond ? Either.right(cond.conditions) : Either.left(handler)
+            handler -> handler instanceof ConditionalUnlockingHandler cond ? Either.right(cond.condition) : Either.left(handler)
     );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, UnlockingHandler> STREAM_CODEC = ByteBufCodecs.registry(PalladiumRegistryKeys.ABILITY_UNLOCKING_HANDLER_SERIALIZER).dispatch(UnlockingHandler::getSerializer, UnlockingHandlerSerializer::streamCodec);

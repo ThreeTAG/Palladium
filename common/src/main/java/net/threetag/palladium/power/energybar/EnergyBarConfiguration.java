@@ -15,8 +15,8 @@ public final class EnergyBarConfiguration {
     public static final Codec<EnergyBarConfiguration> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     PalladiumCodecs.COLOR_CODEC.optionalFieldOf("color", Color.WHITE).forGetter(EnergyBarConfiguration::color),
-                    Value.INTEGER_VALUE_CODEC.optionalFieldOf("synced_value").forGetter(c -> Optional.ofNullable(c.syncedValue)),
-                    Value.INTEGER_VALUE_CODEC.fieldOf("max").forGetter(EnergyBarConfiguration::maxValue),
+                    Value.CODEC.optionalFieldOf("synced_value").forGetter(c -> Optional.ofNullable(c.syncedValue)),
+                    Value.CODEC.fieldOf("max").forGetter(EnergyBarConfiguration::maxValue),
                     Codec.INT.optionalFieldOf("auto_increase_per_tick", 0).forGetter(EnergyBarConfiguration::autoIncrease),
                     Codec.INT.optionalFieldOf("auto_increase_interval", 1).forGetter(EnergyBarConfiguration::autoIncreaseInterval)
             ).apply(instance, (color, syncVal, max, incPerTick, incInterval) ->

@@ -13,11 +13,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.client.icon.Icon;
 import net.threetag.palladium.logic.condition.Condition;
+import net.threetag.palladium.logic.condition.TrueCondition;
 import net.threetag.palladium.util.ScoreboardUtil;
-import net.threetag.palladium.util.Utils;
-
-import java.util.Collections;
-import java.util.List;
 
 public class ScoreBuyableUnlockingHandler extends BuyableUnlockingHandler {
 
@@ -26,7 +23,7 @@ public class ScoreBuyableUnlockingHandler extends BuyableUnlockingHandler {
             ExtraCodecs.POSITIVE_INT.optionalFieldOf("amount", 1).forGetter(h -> h.amount),
             Icon.CODEC.fieldOf("icon").forGetter(h -> h.icon),
             ComponentSerialization.CODEC.fieldOf("description").forGetter(h -> h.description),
-            Condition.LIST_CODEC.optionalFieldOf("conditions", Collections.emptyList()).forGetter(h -> h.conditions)
+            Condition.CODEC.optionalFieldOf("conditions", TrueCondition.INSTANCE).forGetter(h -> h.condition)
     ).apply(instance, ScoreBuyableUnlockingHandler::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ScoreBuyableUnlockingHandler> STREAM_CODEC = StreamCodec.composite(
@@ -34,7 +31,7 @@ public class ScoreBuyableUnlockingHandler extends BuyableUnlockingHandler {
             ByteBufCodecs.VAR_INT, h -> h.amount,
             Icon.STREAM_CODEC, h -> h.icon,
             ComponentSerialization.STREAM_CODEC, h -> h.description,
-            ByteBufCodecs.collection(Utils::newList, Condition.STREAM_CODEC), h -> h.conditions,
+            Condition.STREAM_CODEC, h -> h.condition,
             ScoreBuyableUnlockingHandler::new
     );
 
@@ -43,8 +40,8 @@ public class ScoreBuyableUnlockingHandler extends BuyableUnlockingHandler {
     private final Icon icon;
     private final Component description;
 
-    public ScoreBuyableUnlockingHandler(String objective, int amount, Icon icon, Component description, List<Condition> conditions) {
-        super(conditions);
+    public ScoreBuyableUnlockingHandler(String objective, int amount, Icon icon, Component description, Condition condition) {
+        super(condition);
         this.objective = objective;
         this.amount = amount;
         this.icon = icon;

@@ -8,45 +8,33 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.CameraType;
 import net.threetag.palladium.logic.context.DataContext;
 
-import java.util.Collections;
-import java.util.List;
+public record PerspectiveAwareConditions(Condition mainCondition, Condition thirdPersonCondition,
+                                         Condition firstPersonCondition) {
 
-public class PerspectiveAwareConditions {
-
-    public static final PerspectiveAwareConditions EMPTY = new PerspectiveAwareConditions(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
+    public static final PerspectiveAwareConditions EMPTY = new PerspectiveAwareConditions(TrueCondition.INSTANCE, TrueCondition.INSTANCE, TrueCondition.INSTANCE);
 
     private static final Codec<PerspectiveAwareConditions> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Condition.LIST_CODEC.fieldOf("main").forGetter(conditions -> conditions.conditions),
-            Condition.LIST_CODEC.optionalFieldOf("third_person", Collections.emptyList()).forGetter(conditions -> conditions.thirdPersonConditions),
-            Condition.LIST_CODEC.optionalFieldOf("first_person", Collections.emptyList()).forGetter(conditions -> conditions.firstPersonConditions)
+            Condition.CODEC.fieldOf("main").forGetter(PerspectiveAwareConditions::mainCondition),
+            Condition.CODEC.optionalFieldOf("third_person", TrueCondition.INSTANCE).forGetter(PerspectiveAwareConditions::thirdPersonCondition),
+            Condition.CODEC.optionalFieldOf("first_person", TrueCondition.INSTANCE).forGetter(PerspectiveAwareConditions::firstPersonCondition)
     ).apply(instance, PerspectiveAwareConditions::new));
 
-    public static final Codec<PerspectiveAwareConditions> CODEC = Codec.either(Condition.LIST_CODEC, DIRECT_CODEC).xmap(
+    public static final Codec<PerspectiveAwareConditions> CODEC = Codec.either(Condition.CODEC, DIRECT_CODEC).xmap(
             either -> either.map(
-                    conditions -> new PerspectiveAwareConditions(conditions, Collections.emptyList(), Collections.emptyList()),
+                    conditions -> new PerspectiveAwareConditions(conditions, TrueCondition.INSTANCE, TrueCondition.INSTANCE),
                     direct -> direct),
-            conditions -> conditions.firstPersonConditions.isEmpty() && conditions.thirdPersonConditions.isEmpty() ? Either.left(conditions.conditions) : Either.right(conditions));
-
-    protected final List<Condition> conditions;
-    protected final List<Condition> thirdPersonConditions;
-    protected final List<Condition> firstPersonConditions;
-
-    public PerspectiveAwareConditions(List<Condition> conditions, List<Condition> thirdPersonConditions, List<Condition> firstPersonConditions) {
-        this.conditions = conditions;
-        this.thirdPersonConditions = thirdPersonConditions;
-        this.firstPersonConditions = firstPersonConditions;
-    }
+            conditions -> conditions.firstPersonCondition instanceof TrueCondition && conditions.thirdPersonCondition instanceof TrueCondition ? Either.left(conditions.mainCondition) : Either.right(conditions));
 
     public boolean test(DataContext context, Perspective perspective) {
-        if (!Condition.checkConditions(this.conditions, context)) {
+        if (!this.mainCondition.test(context)) {
             return false;
         }
 
-        if (perspective == Perspective.FIRST_PERSON && !Condition.checkConditions(this.firstPersonConditions, context)) {
+        if (perspective == Perspective.FIRST_PERSON && !this.firstPersonCondition.test(context)) {
             return false;
         }
 
-        return perspective != Perspective.THIRD_PERSON || Condition.checkConditions(this.thirdPersonConditions, context);
+        return perspective != Perspective.THIRD_PERSON || this.thirdPersonCondition.test(context);
     }
 
     public enum Perspective {

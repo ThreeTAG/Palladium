@@ -31,6 +31,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_ABILITY_REFERENCE = SettingType.simple("Ability Reference");
     SettingType TYPE_ENERGY_BAR_REFERENCE = SettingType.simple("Energy Bar Reference");
     SettingType TYPE_CONDITION_LIST = SettingType.listOrPrimitive("Condition");
+    SettingType TYPE_VALUE = SettingType.simple("(Dynamic) Value");
 
     SettingType TYPE_ATTRIBUTE = SettingType.simple("Attribute ID");
     SettingType TYPE_DAMAGE_TYPE = SettingType.simple("Damage Type ID");

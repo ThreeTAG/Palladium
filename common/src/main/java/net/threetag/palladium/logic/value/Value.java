@@ -2,7 +2,6 @@ package net.threetag.palladium.logic.value;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.registry.PalladiumRegistries;
 
@@ -15,14 +14,6 @@ public abstract class Value {
                     value -> value,
                     StaticValue::new
             ), value -> value instanceof StaticValue s ? Either.right(s.object) : Either.left(value));
-
-    public static final Codec<Value> INTEGER_VALUE_CODEC = CODEC.validate(value -> {
-        if (value instanceof IntegerValue || value instanceof StaticValue) {
-            return DataResult.success(value);
-        } else {
-            return DataResult.error(() -> "Value must be an integer type!");
-        }
-    }).xmap(value -> value, integerValue -> integerValue);
 
     public abstract Object get(DataContext context);
 

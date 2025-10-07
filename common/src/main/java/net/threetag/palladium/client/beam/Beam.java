@@ -13,6 +13,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.logic.condition.Condition;
+import net.threetag.palladium.logic.condition.TrueCondition;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.EntityScaleUtil;
 import net.threetag.palladium.util.PalladiumCodecs;
@@ -23,16 +24,16 @@ import java.util.Collections;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public record Beam(BodyPart anchor, PerspectiveValue<Vector3f> offset, PerspectiveValue<List<Condition>> visibility,
+public record Beam(BodyPart anchor, PerspectiveValue<Vector3f> offset, PerspectiveValue<Condition> visibility,
                    BeamRenderer renderer, List<BeamParticle> particles) {
 
     public static final PerspectiveValue<Vector3f> DEFAULT_OFFSET = new PerspectiveValue<>(new Vector3f());
-    public static final PerspectiveValue<List<Condition>> DEFAULT_VISIBILITY = new PerspectiveValue<>(Collections.emptyList());
+    public static final PerspectiveValue<Condition> DEFAULT_VISIBILITY = new PerspectiveValue<>(TrueCondition.INSTANCE);
 
     public static final Codec<Beam> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BodyPart.CODEC.fieldOf("body_part").forGetter(Beam::anchor),
             PerspectiveValue.codec(PalladiumCodecs.VOXEL_VECTOR_3F).optionalFieldOf("offset", DEFAULT_OFFSET).forGetter(Beam::offset),
-            PerspectiveValue.codec(Condition.LIST_CODEC).optionalFieldOf("visibility", DEFAULT_VISIBILITY).forGetter(Beam::visibility),
+            PerspectiveValue.codec(Condition.CODEC).optionalFieldOf("visibility", DEFAULT_VISIBILITY).forGetter(Beam::visibility),
             BeamRenderer.CODEC.fieldOf("renderer").forGetter(Beam::renderer),
             PalladiumCodecs.listOrPrimitive(BeamParticle.CODEC).optionalFieldOf("particles", Collections.emptyList()).forGetter(Beam::particles)
     ).apply(instance, Beam::new));
@@ -48,7 +49,7 @@ public record Beam(BodyPart anchor, PerspectiveValue<Vector3f> offset, Perspecti
     }
 
     public void render(DataContext context, Vec3 start, Vec3 end, Vec2 sizeMultiplier, float lengthMultiplier, float opacityMultiplier, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, int ageInTicks, float partialTick) {
-        if (Condition.checkConditions(context.getEntity() instanceof Player pl ? this.visibility.getForPlayer(pl) : this.visibility.get(), context)) {
+        if ((context.getEntity() instanceof Player pl ? this.visibility.getForPlayer(pl) : this.visibility.get()).test(context)) {
             poseStack.pushPose();
             poseStack.translate(start.x, start.y, start.z);
             this.renderer.render(start, end, sizeMultiplier, lengthMultiplier, opacityMultiplier, poseStack, bufferSource, packedLightIn, ageInTicks, partialTick);
@@ -57,7 +58,7 @@ public record Beam(BodyPart anchor, PerspectiveValue<Vector3f> offset, Perspecti
     }
 
     public void renderOnPlayer(AbstractClientPlayer player, Vec3 anchor, Vec3 target, float lengthMultiplier, float opacityMultiplier, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, float partialTick) {
-        if (Condition.checkConditions(this.visibility.getForPlayer(player), DataContext.forEntity(player))) {
+        if (this.visibility.getForPlayer(player).test(DataContext.forEntity(player))) {
             var sizeMultiplier = new Vec2(
                     EntityScaleUtil.getInstance().getModelWidthScale(player, partialTick),
                     EntityScaleUtil.getInstance().getModelHeightScale(player, partialTick)

@@ -18,13 +18,13 @@ public abstract class EnablingHandler {
 
     public static final Codec<EnablingHandler> CODEC = Codec.either(
             DIRECT_CODEC,
-            Condition.LIST_CODEC
+            Condition.CODEC
     ).xmap(
             either -> either.map(
                     left -> left,
                     ConditionalEnablingHandler::new
             ),
-            handler -> handler instanceof ConditionalEnablingHandler cond ? Either.right(cond.conditions) : Either.left(handler)
+            handler -> handler instanceof ConditionalEnablingHandler cond ? Either.right(cond.condition) : Either.left(handler)
     );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, EnablingHandler> STREAM_CODEC = ByteBufCodecs.registry(PalladiumRegistryKeys.ABILITY_ENABLING_HANDLER_SERIALIZER).dispatch(EnablingHandler::getSerializer, EnablingHandlerSerializer::streamCodec);

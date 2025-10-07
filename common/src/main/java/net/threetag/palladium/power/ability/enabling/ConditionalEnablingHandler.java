@@ -3,39 +3,35 @@ package net.threetag.palladium.power.ability.enabling;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.logic.condition.Condition;
+import net.threetag.palladium.logic.condition.TrueCondition;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilityInstance;
-import net.threetag.palladium.util.Utils;
-
-import java.util.Collections;
-import java.util.List;
 
 public class ConditionalEnablingHandler extends EnablingHandler {
 
     public static final MapCodec<ConditionalEnablingHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Condition.LIST_CODEC.fieldOf("conditions").forGetter(handler -> handler.conditions)
+            Condition.CODEC.fieldOf("conditions").forGetter(handler -> handler.condition)
     ).apply(instance, ConditionalEnablingHandler::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ConditionalEnablingHandler> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.collection(Utils::newList, Condition.STREAM_CODEC), h -> h.conditions,
+            Condition.STREAM_CODEC, h -> h.condition,
             ConditionalEnablingHandler::new
     );
 
-    public static final ConditionalEnablingHandler EMPTY = new ConditionalEnablingHandler(Collections.emptyList());
+    public static final ConditionalEnablingHandler EMPTY = new ConditionalEnablingHandler(TrueCondition.INSTANCE);
 
-    public final List<Condition> conditions;
+    public final Condition condition;
 
-    public ConditionalEnablingHandler(List<Condition> conditions) {
-        this.conditions = conditions;
+    public ConditionalEnablingHandler(Condition condition) {
+        this.condition = condition;
     }
 
     @Override
     public boolean check(LivingEntity entity, AbilityInstance<?> abilityInstance) {
-        return Condition.checkConditions(this.conditions, DataContext.forAbility(entity, abilityInstance));
+        return this.condition.test(DataContext.forAbility(entity, abilityInstance));
     }
 
     @Override

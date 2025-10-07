@@ -25,7 +25,10 @@ public interface Condition {
                     right -> right ? TrueCondition.INSTANCE : FalseCondition.INSTANCE),
             condition -> condition instanceof TrueCondition ? Either.right(true) : (condition instanceof FalseCondition ? Either.right(false) : Either.left(condition)));
 
-    Codec<List<Condition>> LIST_CODEC = PalladiumCodecs.listOrPrimitive(FALSE_TRUE_WRAPPED_CODEC);
+    Codec<Condition> CODEC = PalladiumCodecs.listOrPrimitive(FALSE_TRUE_WRAPPED_CODEC).xmap(AndCondition::new, condition -> condition instanceof AndCondition(
+            List<Condition> conditions
+    ) ? conditions : Collections.singletonList(condition));
+
     StreamCodec<RegistryFriendlyByteBuf, Condition> STREAM_CODEC = ByteBufCodecs.registry(PalladiumRegistryKeys.CONDITION_SERIALIZER).dispatch(Condition::getSerializer, ConditionSerializer::streamCodec);
 
     boolean test(DataContext context);

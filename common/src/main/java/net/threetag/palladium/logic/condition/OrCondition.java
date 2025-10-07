@@ -6,6 +6,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public record OrCondition(List<Condition> conditions) implements Condition {
 
     public static final MapCodec<OrCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
-            .group(Condition.LIST_CODEC.fieldOf("conditions").forGetter(OrCondition::conditions)
+            .group(PalladiumCodecs.listOrPrimitive(Condition.FALSE_TRUE_WRAPPED_CODEC).fieldOf("conditions").forGetter(OrCondition::conditions)
             ).apply(instance, OrCondition::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, OrCondition> STREAM_CODEC = StreamCodec.composite(
