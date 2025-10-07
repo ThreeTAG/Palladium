@@ -3,10 +3,12 @@ package net.threetag.palladium.logic.value;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.client.renderer.entity.layer.MoLangQuery;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.molang.ModifyIntFunction;
 import team.unnamed.mocha.MochaEngine;
+import team.unnamed.mocha.runtime.binding.JavaObjectBinding;
 
 public abstract class IntegerValue extends Value {
 
@@ -18,6 +20,7 @@ public abstract class IntegerValue extends Value {
 
         if (this.molang != null && !this.molang.isEmpty() && !this.molang.isBlank()) {
             MochaEngine<?> mocha = MochaEngine.createStandard();
+            mocha.scope().set("query", JavaObjectBinding.of(MoLangQuery.class, MoLangQuery.INSTANCE, null));
             this.function = mocha.compile(this.molang, ModifyIntFunction.class);
         } else {
             this.function = null;
@@ -29,6 +32,7 @@ public abstract class IntegerValue extends Value {
         int i = this.getInteger(context);
 
         if (this.function != null) {
+            MoLangQuery.setContext(context, 1F);
             i = this.function.modify(i);
         }
 
