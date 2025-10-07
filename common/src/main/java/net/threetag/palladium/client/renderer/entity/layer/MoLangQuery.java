@@ -1,8 +1,9 @@
 package net.threetag.palladium.client.renderer.entity.layer;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.entity.flight.EntityFlightHandler;
+import net.threetag.palladium.entity.flight.SwingingFlightType;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilityReference;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,8 +38,12 @@ public class MoLangQuery implements ObjectValue {
             case "horizontal_speed" -> ObjectProperty.property(Value.of(horizontal_speed()), false).value();
             case "flight_pitch" -> ObjectProperty.property(Value.of(flight_pitch()), false).value();
             case "flight_roll" -> ObjectProperty.property(Value.of(flight_roll()), false).value();
+            case "flight_yaw" -> ObjectProperty.property(Value.of(flight_yaw()), false).value();
             case "flight_limb_pitch" -> ObjectProperty.property(Value.of(flight_limb_pitch()), false).value();
             case "flight_limb_roll" -> ObjectProperty.property(Value.of(flight_limb_roll()), false).value();
+            case "flight_limb_yaw" -> ObjectProperty.property(Value.of(flight_limb_yaw()), false).value();
+            case "swinging_right_arm_pitch" -> ObjectProperty.property(Value.of(swinging_right_arm_pitch()), false).value();
+            case "swinging_left_arm_pitch" -> ObjectProperty.property(Value.of(swinging_left_arm_pitch()), false).value();
             default -> Value.nil();
         };
     }
@@ -97,6 +102,18 @@ public class MoLangQuery implements ObjectValue {
         return 0F;
     }
 
+    @Binding("flight_yaw")
+    public double flight_yaw() {
+        var entity = CONTEXT.getLivingEntity();
+
+        if (entity != null) {
+            var animation = EntityFlightHandler.get(entity).getAnimationHandler();
+            return animation != null ? animation.getYaw(partialTick) : 0;
+        }
+
+        return 0F;
+    }
+
     @Binding("flight_limb_pitch")
     public double flight_limb_pitch() {
         var entity = CONTEXT.getLivingEntity();
@@ -116,6 +133,42 @@ public class MoLangQuery implements ObjectValue {
         if (entity != null) {
             var animation = EntityFlightHandler.get(entity).getAnimationHandler();
             return animation != null ? animation.getLimbRoll(partialTick) : 0;
+        }
+
+        return 0F;
+    }
+
+    @Binding("flight_limb_yaw")
+    public double flight_limb_yaw() {
+        var entity = CONTEXT.getLivingEntity();
+
+        if (entity != null) {
+            var animation = EntityFlightHandler.get(entity).getAnimationHandler();
+            return animation != null ? animation.getLimbYaw(partialTick) : 0;
+        }
+
+        return 0F;
+    }
+
+    @Binding("swinging_right_arm_pitch")
+    public double swinging_right_arm_pitch() {
+        var entity = CONTEXT.getLivingEntity();
+
+        if (entity != null) {
+            var animation = EntityFlightHandler.get(entity).getAnimationHandler();
+            return animation instanceof SwingingFlightType.AnimationHandler controller ? controller.getRightArmPitch(partialTick) : 0;
+        }
+
+        return 0F;
+    }
+
+    @Binding("swinging_left_arm_pitch")
+    public double swinging_left_arm_pitch() {
+        var entity = CONTEXT.getLivingEntity();
+
+        if (entity != null) {
+            var animation = EntityFlightHandler.get(entity).getAnimationHandler();
+            return animation instanceof SwingingFlightType.AnimationHandler controller ? controller.getLeftArmPitch(partialTick) : 0;
         }
 
         return 0F;

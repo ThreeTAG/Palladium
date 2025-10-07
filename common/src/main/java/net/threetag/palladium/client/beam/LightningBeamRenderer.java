@@ -1,9 +1,8 @@
-package net.threetag.palladium.client.energybeam;
+package net.threetag.palladium.client.beam;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.util.ExtraCodecs;
@@ -13,12 +12,11 @@ import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.LaserRenderer;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.util.PalladiumCodecs;
-import net.threetag.palladium.util.EntityScaleUtil;
 import org.joml.Vector2f;
 
 import java.awt.*;
 
-public class LightningBeamRenderer extends EnergyBeamRenderer {
+public class LightningBeamRenderer extends BeamRenderer {
 
     public static final MapCodec<LightningBeamRenderer> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             LaserRenderer.codec(1).fieldOf("render_settings").forGetter(beam -> beam.laserRenderer),
@@ -40,12 +38,9 @@ public class LightningBeamRenderer extends EnergyBeamRenderer {
     }
 
     @Override
-    public void render(AbstractClientPlayer player, Vec3 origin, Vec3 target, float lengthMultiplier, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, boolean isFirstPerson, float partialTick) {
-        var widthScale = EntityScaleUtil.getInstance().getModelWidthScale(player, partialTick);
-        var heightScale = EntityScaleUtil.getInstance().getModelHeightScale(player, partialTick);
-        var scale = new Vec2(widthScale, heightScale);
+    public void render(Vec3 origin, Vec3 target, Vec2 sizeMultiplier, float lengthMultiplier, float opacityMultiplier, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, int ageInTicks, float partialTick) {
         var segmentPartVec = target.subtract(origin).scale(1F / this.segments);
-        var randomStart = RandomSource.create(player.getId() + (player.tickCount / this.frequency));
+        var randomStart = RandomSource.create(ageInTicks / this.frequency);
         var startVec = origin;
 
         for (int i = 0; i < this.segments; i++) {
@@ -60,7 +55,7 @@ public class LightningBeamRenderer extends EnergyBeamRenderer {
                 poseStack.pushPose();
                 poseStack.translate(offset.x, offset.y, offset.z);
                 this.laserRenderer
-                        .faceAndRender(poseStack, bufferSource, startVec, end, player.tickCount, partialTick, currentProgress, 1F, scale);
+                        .faceAndRender(poseStack, bufferSource, startVec, end, ageInTicks, partialTick, currentProgress, opacityMultiplier, sizeMultiplier);
                 poseStack.popPose();
                 startVec = end;
             }
@@ -72,11 +67,11 @@ public class LightningBeamRenderer extends EnergyBeamRenderer {
     }
 
     @Override
-    public EnergyBeamRendererSerializer<?> getSerializer() {
-        return EnergyBeamRendererSerializers.LIGHTNING;
+    public BeamRendererSerializer<?> getSerializer() {
+        return BeamRendererSerializers.LIGHTNING;
     }
 
-    public static class Serializer extends EnergyBeamRendererSerializer<LightningBeamRenderer> {
+    public static class Serializer extends BeamRendererSerializer<LightningBeamRenderer> {
 
         @Override
         public MapCodec<LightningBeamRenderer> codec() {
@@ -84,7 +79,7 @@ public class LightningBeamRenderer extends EnergyBeamRenderer {
         }
 
         @Override
-        public void addDocumentation(CodecDocumentationBuilder<EnergyBeamRenderer, LightningBeamRenderer> builder, HolderLookup.Provider provider) {
+        public void addDocumentation(CodecDocumentationBuilder<BeamRenderer, LightningBeamRenderer> builder, HolderLookup.Provider provider) {
             builder.setName("Lightning Beam")
                     .setDescription("Renders a fluctuating lightning between two points.")
                     .add("render_settings", TYPE_LASER_RENDERER, "The render settings for the lightning.")

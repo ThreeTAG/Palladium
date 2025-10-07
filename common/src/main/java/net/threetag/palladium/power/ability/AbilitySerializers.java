@@ -18,7 +18,7 @@ public class AbilitySerializers {
     public static final RegistryHolder<SlowfallAbility.Serializer> SLOWFALL = ABILITIES.register("slowfall", SlowfallAbility.Serializer::new);
     public static final RegistryHolder<DamageImmunityAbility.Serializer> DAMAGE_IMMUNITY = ABILITIES.register("damage_immunity", DamageImmunityAbility.Serializer::new);
     public static final RegistryHolder<InvisibilityAbility.Serializer> INVISIBILITY = ABILITIES.register("invisibility", InvisibilityAbility.Serializer::new);
-    public static final RegistryHolder<EnergyBeamAbility.Serializer> ENERGY_BEAM = ABILITIES.register("energy_beam", EnergyBeamAbility.Serializer::new);
+    public static final RegistryHolder<BeamAbility.Serializer> BEAM = ABILITIES.register("beam", BeamAbility.Serializer::new);
     public static final RegistryHolder<SizeAbility.Serializer> SIZE = ABILITIES.register("size", SizeAbility.Serializer::new);
 //    public static final RegistryHolder<ProjectileAbility.Serializer> PROJECTILE = ABILITIES.register("projectile", ProjectileAbility.Serializer::new);
     public static final RegistryHolder<SkinChangeAbility.Serializer> SKIN_CHANGE = ABILITIES.register("skin_change", SkinChangeAbility.Serializer::new);

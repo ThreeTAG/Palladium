@@ -7,9 +7,9 @@ import dev.architectury.registry.ReloadListenerRegistry;
 import net.minecraft.server.packs.PackType;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.animation.PalladiumAnimationManager;
-import net.threetag.palladium.client.energybeam.EnergyBeamManager;
-import net.threetag.palladium.client.energybeam.EnergyBeamRendererSerializer;
-import net.threetag.palladium.client.energybeam.EnergyBeamRendererSerializers;
+import net.threetag.palladium.client.beam.BeamManager;
+import net.threetag.palladium.client.beam.BeamRendererSerializer;
+import net.threetag.palladium.client.beam.BeamRendererSerializers;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
 import net.threetag.palladium.client.gui.screen.power.PowersScreen;
@@ -26,7 +26,6 @@ import net.threetag.palladium.client.texture.transformer.TextureTransformerSeria
 import net.threetag.palladium.client.texture.transformer.TextureTransformerSerializers;
 import net.threetag.palladium.client.texture.DynamicTextureManager;
 import net.threetag.palladium.logic.value.ValueSerializer;
-import net.threetag.palladium.logic.value.ValueSerializers;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
 import net.threetag.palladium.core.registry.GuiLayerRegistry;
 import net.threetag.palladium.documentation.HTMLBuilder;
@@ -63,9 +62,9 @@ public class PalladiumClient {
         // Misc
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, PalladiumAnimationManager.INSTANCE, PalladiumAnimationManager.ID);
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, ParticleEmitterManager.INSTANCE, Palladium.id("particle_emitters"));
-        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, EnergyBeamManager.INSTANCE, Palladium.id("energy_beams"));
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, BeamManager.INSTANCE, Palladium.id("energy_beams"));
         WatcherRenderer.init();
-        EnergyBeamRendererSerializers.init();
+        BeamRendererSerializers.init();
         TextureTransformerSerializers.init();
         DynamicTextureSerializers.init();
 
@@ -75,7 +74,7 @@ public class PalladiumClient {
             HTMLBuilder.documentedPage(Palladium.id("texture_transformers"), TextureTransformerSerializer.getTypes(), "Texture Transformers", clientLevel.registryAccess()).save();
             HTMLBuilder.documentedPage(Palladium.id("dynamic_textures"), DynamicTextureSerializer.getTypes(), "Dynamic Textures", clientLevel.registryAccess()).save();
             HTMLBuilder.documentedPage(Palladium.id("render_layers"), PackRenderLayerSerializer.getTypes(), "Render Layers", clientLevel.registryAccess()).save();
-            HTMLBuilder.documentedPage(Palladium.id("energy_beams"), EnergyBeamRendererSerializer.getTypes(), "Energy Beams", clientLevel.registryAccess()).save();
+            HTMLBuilder.documentedPage(Palladium.id("energy_beams"), BeamRendererSerializer.getTypes(), "Energy Beams", clientLevel.registryAccess()).save();
             HTMLBuilder.documentedPage(PalladiumRegistryKeys.ABILITY_SERIALIZER, PalladiumRegistries.ABILITY_SERIALIZER, "Abilities", clientLevel.registryAccess()).save();
         });
 

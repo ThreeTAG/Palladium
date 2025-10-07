@@ -174,6 +174,7 @@ public enum BodyPart implements StringRepresentable {
             poseStack.scale(-1.0F, -1.0F, 1.0F);
             renderer.scale(state, poseStack);
             poseStack.translate(0.0F, -1.501F, 0.0F);
+            model.root().translateAndRotate(poseStack);
             modelPart.translateAndRotate(poseStack);
             poseStack.translate(offset.x, offset.y, offset.z);
         }

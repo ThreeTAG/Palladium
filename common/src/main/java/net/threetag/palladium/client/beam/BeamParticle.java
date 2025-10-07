@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.energybeam;
+package net.threetag.palladium.client.beam;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,13 +12,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.particleemitter.ParticleEmitter;
 
-public record EnergyBeamParticle(Holder<ParticleType<?>> particleType, CompoundTag options, ParticleEmitter emitter) {
+public record BeamParticle(Holder<ParticleType<?>> particleType, CompoundTag options, ParticleEmitter emitter) {
 
-    public static final Codec<EnergyBeamParticle> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            BuiltInRegistries.PARTICLE_TYPE.holderByNameCodec().fieldOf("particle_type").forGetter(EnergyBeamParticle::particleType),
-            CompoundTag.CODEC.optionalFieldOf("options", new CompoundTag()).forGetter(EnergyBeamParticle::options),
-            ParticleEmitter.CODEC.optionalFieldOf("emitter", ParticleEmitter.DEFAULT).forGetter(EnergyBeamParticle::emitter)
-    ).apply(instance, EnergyBeamParticle::new));
+    public static final Codec<BeamParticle> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            BuiltInRegistries.PARTICLE_TYPE.holderByNameCodec().fieldOf("particle_type").forGetter(BeamParticle::particleType),
+            CompoundTag.CODEC.optionalFieldOf("options", new CompoundTag()).forGetter(BeamParticle::options),
+            ParticleEmitter.CODEC.optionalFieldOf("emitter", ParticleEmitter.DEFAULT).forGetter(BeamParticle::emitter)
+    ).apply(instance, BeamParticle::new));
 
     public void spawn(Level level, Vec3 pos) {
         ParticleType<?> type = this.particleType.value();

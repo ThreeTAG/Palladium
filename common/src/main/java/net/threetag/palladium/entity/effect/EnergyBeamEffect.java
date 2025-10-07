@@ -9,12 +9,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.threetag.palladium.client.energybeam.EnergyBeamManager;
+import net.threetag.palladium.client.beam.BeamManager;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
 import net.threetag.palladium.entity.EffectEntity;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilityReference;
-import net.threetag.palladium.power.ability.EnergyBeamAbility;
+import net.threetag.palladium.power.ability.BeamAbility;
 
 import java.util.Objects;
 
@@ -27,15 +27,15 @@ public class EnergyBeamEffect extends EntityEffect {
         if (anchor instanceof AbstractClientPlayer player) {
             var ref = getAbilityReference(renderState.extraData);
             AbilityInstance<?> instance = ref.getInstance(player);
-            if (instance != null && instance.getAbility() instanceof EnergyBeamAbility) {
-                var ability = (AbilityInstance<EnergyBeamAbility>) instance;
+            if (instance != null && instance.getAbility() instanceof BeamAbility) {
+                var ability = (AbilityInstance<BeamAbility>) instance;
                 var hitResult = ability.getAbility().updateTargetPos(player, ability, partialTicks);
-                var beam = EnergyBeamManager.INSTANCE.get(ability.getAbility().beamId);
+                var beam = BeamManager.INSTANCE.get(ability.getAbility().beamId);
 
                 if (beam != null) {
                     var entityPos = renderState.position;
                     var target = hitResult.getLocation();
-                    beam.render(player, entityPos, target, ability.getAbility().beamLengthMultiplier(ability, partialTicks), poseStack, bufferSource, packedLightIn, isFirstPerson, partialTicks);
+                    beam.renderOnPlayer(player, entityPos, target, ability.getAbility().beamLengthMultiplier(ability, partialTicks), 1F, poseStack, bufferSource, packedLightIn, partialTicks);
                 }
             }
         }
@@ -49,9 +49,9 @@ public class EnergyBeamEffect extends EntityEffect {
             var ref = getAbilityReference(entity.getExtraData());
             AbilityInstance<?> instance = ref.getInstance(player);
 
-            if (instance != null && instance.getAbility() instanceof EnergyBeamAbility) {
-                var ability = (AbilityInstance<EnergyBeamAbility>) instance;
-                var beam = EnergyBeamManager.INSTANCE.get(ability.getAbility().beamId);
+            if (instance != null && instance.getAbility() instanceof BeamAbility) {
+                var ability = (AbilityInstance<BeamAbility>) instance;
+                var beam = BeamManager.INSTANCE.get(ability.getAbility().beamId);
 
                 if (beam == null) {
                     this.stopPlaying(entity);

@@ -55,27 +55,6 @@ public class DefaultFlightType extends FlightType {
         return new AnimationHandler(this.animation, this.allowPropulsion());
     }
 
-    public record AnimationSettings(ResourceLocation assetId, float maxLean, float bodyStiffness, float limbStiffness) {
-
-        public static final AnimationSettings DEFAULT = new AnimationSettings(Palladium.id("flight/default"), 35F, 12F, 8F);
-
-        public static final Codec<AnimationSettings> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ResourceLocation.CODEC.fieldOf("asset_id").forGetter(AnimationSettings::assetId),
-                ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("max_lean", 35F).forGetter(AnimationSettings::maxLean),
-                ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("body_stiffness", 12F).forGetter(AnimationSettings::bodyStiffness),
-                ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("limb_stiffness", 8F).forGetter(AnimationSettings::limbStiffness)
-        ).apply(instance, AnimationSettings::new));
-
-        public static final Codec<AnimationSettings> CODEC = Codec.either(DIRECT_CODEC, ResourceLocation.CODEC)
-                .xmap(either -> either.map(
-                                animationSettings -> animationSettings,
-                                resourceLocation -> new AnimationSettings(resourceLocation, 35F, 12, 8)),
-                        animationSettings ->
-                                animationSettings.maxLean == 35F && animationSettings.bodyStiffness == 12F && animationSettings.limbStiffness == 8F ?
-                                        Either.right(animationSettings.assetId) : Either.left(animationSettings));
-
-    }
-
     public static class Controller extends FlightController<DefaultFlightType> {
 
         public Vec3 flightVector = Vec3.ZERO;
@@ -107,7 +86,7 @@ public class DefaultFlightType extends FlightType {
                     var max = moveVector.normalize()
                             .scale((player.isSprinting() && !entity.isUsingItem() ? flightType.sprintSpeed : flightType.speed) * 0.5F);
                     var diff = max.subtract(this.flightVector);
-                    this.flightVector = this.flightVector.add(diff.scale(0.05F));
+                    this.flightVector = this.flightVector.add(diff.scale(0.2F));
                 } else if (this.flightVector.length() > 0.001F) {
                     this.flightVector = this.flightVector.scale(0.8);
                 } else {
@@ -133,11 +112,31 @@ public class DefaultFlightType extends FlightType {
                 float yaw = (float) (Mth.atan2(-this.flightVector.x, this.flightVector.z) * (180F / Math.PI));
                 float f = Mth.wrapDegrees(entity.getYRot() - yaw);
                 float g = Mth.clamp(f, -45.0F, 45.0F);
-//                entity.yRotO += g - f;
                 entity.setYRot(entity.getYRot() + g - f);
                 entity.setYHeadRot(entity.getYRot());
             }
         }
+    }
+
+    public record AnimationSettings(ResourceLocation assetId, float maxLean, float bodyStiffness, float limbStiffness) {
+
+        public static final AnimationSettings DEFAULT = new AnimationSettings(Palladium.id("flight/default"), 35F, 12F, 8F);
+
+        public static final Codec<AnimationSettings> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                ResourceLocation.CODEC.fieldOf("asset_id").forGetter(AnimationSettings::assetId),
+                ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("max_lean", 35F).forGetter(AnimationSettings::maxLean),
+                ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("body_stiffness", 12F).forGetter(AnimationSettings::bodyStiffness),
+                ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("limb_stiffness", 8F).forGetter(AnimationSettings::limbStiffness)
+        ).apply(instance, AnimationSettings::new));
+
+        public static final Codec<AnimationSettings> CODEC = Codec.either(DIRECT_CODEC, ResourceLocation.CODEC)
+                .xmap(either -> either.map(
+                                animationSettings -> animationSettings,
+                                resourceLocation -> new AnimationSettings(resourceLocation, 35F, 12, 8)),
+                        animationSettings ->
+                                animationSettings.maxLean == 35F && animationSettings.bodyStiffness == 12F && animationSettings.limbStiffness == 8F ?
+                                        Either.right(animationSettings.assetId) : Either.left(animationSettings));
+
     }
 
     public static class AnimationHandler extends FlightAnimationHandler<DefaultFlightType> {

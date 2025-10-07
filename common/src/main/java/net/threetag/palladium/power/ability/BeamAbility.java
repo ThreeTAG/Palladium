@@ -26,7 +26,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.block.PalladiumBlockUtil;
-import net.threetag.palladium.client.energybeam.EnergyBeamManager;
+import net.threetag.palladium.client.beam.BeamManager;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.entity.effect.EnergyBeamEffect;
@@ -36,25 +36,25 @@ import net.threetag.palladium.util.EntityUtil;
 
 import java.util.List;
 
-public class EnergyBeamAbility extends Ability {
+public class BeamAbility extends Ability {
 
-    public static final MapCodec<EnergyBeamAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
+    public static final MapCodec<BeamAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    ResourceLocation.CODEC.fieldOf("energy_beam").forGetter(ab -> ab.beamId),
+                    ResourceLocation.CODEC.fieldOf("beam_renderer").forGetter(ab -> ab.beamId),
                     Codec.floatRange(0, Float.MAX_VALUE).optionalFieldOf("damage", 0F).forGetter(ab -> ab.damage),
                     Codec.floatRange(0, Float.MAX_VALUE).optionalFieldOf("max_distance", 30F).forGetter(ab -> ab.maxDistance),
                     PalladiumCodecs.TIME.optionalFieldOf("set_on_fire_ticks", 0).forGetter(ab -> ab.setOnFireSeconds),
                     Codec.BOOL.optionalFieldOf("cause_fire", false).forGetter(ab -> ab.causeFire),
                     Codec.BOOL.optionalFieldOf("smelt_blocks", false).forGetter(ab -> ab.smeltBlocks),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
-            ).apply(instance, EnergyBeamAbility::new));
+            ).apply(instance, BeamAbility::new));
 
     public final ResourceLocation beamId;
     public final float damage, maxDistance;
     public final int setOnFireSeconds;
     public final boolean causeFire, smeltBlocks;
 
-    public EnergyBeamAbility(ResourceLocation beamId, float damage, float maxDistance, int setOnFireSeconds, boolean causeFire, boolean smeltBlocks, AbilityProperties properties, AbilityStateManager state, List<EnergyBarUsage> energyBarUsages) {
+    public BeamAbility(ResourceLocation beamId, float damage, float maxDistance, int setOnFireSeconds, boolean causeFire, boolean smeltBlocks, AbilityProperties properties, AbilityStateManager state, List<EnergyBarUsage> energyBarUsages) {
         super(properties, state, energyBarUsages);
         this.beamId = beamId;
         this.damage = damage;
@@ -65,8 +65,8 @@ public class EnergyBeamAbility extends Ability {
     }
 
     @Override
-    public AbilitySerializer<EnergyBeamAbility> getSerializer() {
-        return AbilitySerializers.ENERGY_BEAM.get();
+    public AbilitySerializer<BeamAbility> getSerializer() {
+        return AbilitySerializers.BEAM.get();
     }
 
     @Override
@@ -145,7 +145,7 @@ public class EnergyBeamAbility extends Ability {
 
     @Environment(EnvType.CLIENT)
     public void spawnParticles(Level level, Vec3 pos) {
-        var beam = EnergyBeamManager.INSTANCE.get(this.beamId);
+        var beam = BeamManager.INSTANCE.get(this.beamId);
 
         if (beam != null) {
             beam.spawnParticles(level, pos);
@@ -164,24 +164,24 @@ public class EnergyBeamAbility extends Ability {
         return instance.getAnimationTimerValueEased(partialTick);
     }
 
-    public static class Serializer extends AbilitySerializer<EnergyBeamAbility> {
+    public static class Serializer extends AbilitySerializer<BeamAbility> {
 
         @Override
-        public MapCodec<EnergyBeamAbility> codec() {
+        public MapCodec<BeamAbility> codec() {
             return CODEC;
         }
 
         @Override
-        public void addDocumentation(CodecDocumentationBuilder<Ability, EnergyBeamAbility> builder, HolderLookup.Provider provider) {
-            builder.setDescription("Shoots an energy beam in the direction the player is looking at.")
-                    .add("energy_beam", TYPE_RESOURCE_LOCATION, "The id of the energy beam to use")
+        public void addDocumentation(CodecDocumentationBuilder<Ability, BeamAbility> builder, HolderLookup.Provider provider) {
+            builder.setDescription("Shoots an beam in the direction the player is looking at.")
+                    .add("beam_renderer", TYPE_RESOURCE_LOCATION, "The id of the beam renderer to use")
                     .addOptional("damage", TYPE_FLOAT, "The damage the beam deals to entities", 0F)
                     .addOptional("max_distance", TYPE_FLOAT, "The maximum distance the beam can travel", 30F)
                     .addOptional("set_on_fire_ticks", TYPE_INT, "The amount of ticks the hit entity is set on fire", 0)
                     .addOptional("cause_fire", TYPE_BOOLEAN, "If the beam should cause fire on blocks", false)
                     .addOptional("smelt_blocks", TYPE_BOOLEAN, "If the beam should smelt hit blocks", false)
-                    .setExampleObject(new EnergyBeamAbility(
-                            ResourceLocation.fromNamespaceAndPath("example", "energy_beam_id"),
+                    .setExampleObject(new BeamAbility(
+                            ResourceLocation.fromNamespaceAndPath("example", "beam_renderer_id"),
                             5F,
                             25F,
                             20,

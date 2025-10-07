@@ -1,10 +1,10 @@
 {
-  "name": "Energy Beam Test",
+  "name": "Beam Test",
   "icon": "minecraft:diamond_sword",
   "abilities": {
     "hands": {
-      "type": "palladium:energy_beam",
-      "energy_beam": "test:hands_laser",
+      "type": "palladium:beam",
+      "beam_renderer": "test:hands_laser",
       "max_distance": 25,
       "set_on_fire_ticks": "2s",
       "damage": 5,
@@ -23,8 +23,8 @@
       }
     },
     "forehead": {
-      "type": "palladium:energy_beam",
-      "energy_beam": "test:forehead_laser",
+      "type": "palladium:beam",
+      "beam_renderer": "test:forehead_laser",
       "max_distance": 10,
       "set_on_fire_ticks": "2s",
       "damage": 5,
@@ -43,8 +43,8 @@
       }
     },
     "lightnings": {
-      "type": "palladium:energy_beam",
-      "energy_beam": "test:hands_lightnings",
+      "type": "palladium:beam",
+      "beam_renderer": "test:hands_lightnings",
       "max_distance": 5,
       "set_on_fire_ticks": "5s",
       "damage": 10,

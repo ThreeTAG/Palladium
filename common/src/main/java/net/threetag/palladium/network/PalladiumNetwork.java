@@ -31,6 +31,7 @@ public class PalladiumNetwork {
         registerS2C(SyncEntityCustomizationPacket.TYPE, SyncEntityCustomizationPacket.STREAM_CODEC, SyncEntityCustomizationPacket::handle);
         registerS2C(SyncEntityUnselectCustomizationPacket.TYPE, SyncEntityUnselectCustomizationPacket.STREAM_CODEC, SyncEntityUnselectCustomizationPacket::handle);
         registerS2C(SyncUnlockedCustomizationsPacket.TYPE, SyncUnlockedCustomizationsPacket.STREAM_CODEC, SyncUnlockedCustomizationsPacket::handle);
+        registerS2C(SyncSwingAnchorPacket.TYPE, SyncSwingAnchorPacket.STREAM_CODEC, SyncSwingAnchorPacket::handle);
 
         // Client -> Server
         registerC2S(AbilityKeyChangePacket.TYPE, AbilityKeyChangePacket.STREAM_CODEC, AbilityKeyChangePacket::handle);

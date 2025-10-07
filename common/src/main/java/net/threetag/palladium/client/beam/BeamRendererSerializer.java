@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.energybeam;
+package net.threetag.palladium.client.beam;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -13,41 +13,41 @@ import net.threetag.palladium.documentation.Documented;
 
 import java.util.Map;
 
-public abstract class EnergyBeamRendererSerializer<T extends EnergyBeamRenderer> implements Documented<EnergyBeamRenderer, T> {
+public abstract class BeamRendererSerializer<T extends BeamRenderer> implements Documented<BeamRenderer, T> {
 
-    private static final BiMap<ResourceLocation, EnergyBeamRendererSerializer<?>> TYPES = HashBiMap.create();
+    private static final BiMap<ResourceLocation, BeamRendererSerializer<?>> TYPES = HashBiMap.create();
 
-    public static final Codec<EnergyBeamRendererSerializer<?>> TYPE_CODEC = ResourceLocation.CODEC.flatXmap(resourceLocation -> {
-        EnergyBeamRendererSerializer<?> serializer = TYPES.get(resourceLocation);
+    public static final Codec<BeamRendererSerializer<?>> TYPE_CODEC = ResourceLocation.CODEC.flatXmap(resourceLocation -> {
+        BeamRendererSerializer<?> serializer = TYPES.get(resourceLocation);
         return serializer != null ? DataResult.success(serializer) : DataResult.error(() -> "Unknown type " + resourceLocation);
     }, serializer -> {
         ResourceLocation resourceLocation = TYPES.inverse().get(serializer);
         return serializer != null ? DataResult.success(resourceLocation) : DataResult.error(() -> "Unknown type " + resourceLocation);
     });
 
-    public static <T extends EnergyBeamRenderer> EnergyBeamRendererSerializer<T> register(ResourceLocation id, EnergyBeamRendererSerializer<T> serializer) {
+    public static <T extends BeamRenderer> BeamRendererSerializer<T> register(ResourceLocation id, BeamRendererSerializer<T> serializer) {
         if (TYPES.containsKey(id)) {
-            throw new IllegalStateException("Duplicate registration for energy beam renderer serializer: " + id);
+            throw new IllegalStateException("Duplicate registration for beam renderer serializer: " + id);
         }
 
         TYPES.put(id, serializer);
         return serializer;
     }
 
-    public static Map<ResourceLocation, EnergyBeamRendererSerializer<?>> getTypes() {
+    public static Map<ResourceLocation, BeamRendererSerializer<?>> getTypes() {
         return ImmutableMap.copyOf(TYPES);
     }
 
     public abstract MapCodec<T> codec();
 
     @Override
-    public CodecDocumentationBuilder<EnergyBeamRenderer, T> getDocumentation(HolderLookup.Provider provider) {
-        var builder = new CodecDocumentationBuilder<>(codec(), EnergyBeamRenderer.CODEC, provider)
+    public CodecDocumentationBuilder<BeamRenderer, T> getDocumentation(HolderLookup.Provider provider) {
+        var builder = new CodecDocumentationBuilder<>(codec(), BeamRenderer.CODEC, provider)
                 .ignore("conditions");
         this.addDocumentation(builder, provider);
         return builder;
     }
 
-    public abstract void addDocumentation(CodecDocumentationBuilder<EnergyBeamRenderer, T> builder, HolderLookup.Provider provider);
+    public abstract void addDocumentation(CodecDocumentationBuilder<BeamRenderer, T> builder, HolderLookup.Provider provider);
 
 }

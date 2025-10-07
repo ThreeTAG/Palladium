@@ -1,0 +1,9 @@
+{
+  "type": "palladium:swinging",
+  "max_anchor_height": 120,
+  "max_anchor_height_type": "absolute",
+  "radius": [
+    10.0,
+    30.0
+  ]
+}

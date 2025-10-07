@@ -67,7 +67,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.SLOWFALL, "Slowfall");
             this.addAbility(builder, AbilitySerializers.DAMAGE_IMMUNITY, "Damage Immunity");
             this.addAbility(builder, AbilitySerializers.INVISIBILITY, "Invisibility");
-            this.addAbility(builder, AbilitySerializers.ENERGY_BEAM, "Energy Beam");
+            this.addAbility(builder, AbilitySerializers.BEAM, "Energy Beam");
             this.addAbility(builder, AbilitySerializers.SIZE, "Size");
 //            this.addAbility(builder, AbilitySerializers.PROJECTILE, "Projectile");
             this.addAbility(builder, AbilitySerializers.SKIN_CHANGE, "Skin Change");
@@ -178,7 +178,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.SLOWFALL, "Langsamer Fall");
             this.addAbility(builder, AbilitySerializers.DAMAGE_IMMUNITY, "Schadensimmunität");
             this.addAbility(builder, AbilitySerializers.INVISIBILITY, "Unsichtbarkeit");
-            this.addAbility(builder, AbilitySerializers.ENERGY_BEAM, "Energiestrahl");
+            this.addAbility(builder, AbilitySerializers.BEAM, "Energiestrahl");
             this.addAbility(builder, AbilitySerializers.SIZE, "Größe");
 //            this.addAbility(builder, AbilitySerializers.PROJECTILE, "Projektil");
             this.addAbility(builder, AbilitySerializers.SKIN_CHANGE, "Skin Änderung");
@@ -288,7 +288,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(builder, AbilitySerializers.SLOWFALL, "Langsamer Fall");
             this.addAbility(builder, AbilitySerializers.DAMAGE_IMMUNITY, "Schadensimmunität");
             this.addAbility(builder, AbilitySerializers.INVISIBILITY, "Unsischtbarkeet");
-            this.addAbility(builder, AbilitySerializers.ENERGY_BEAM, "Energiestrahl");
+            this.addAbility(builder, AbilitySerializers.BEAM, "Energiestrahl");
             this.addAbility(builder, AbilitySerializers.SIZE, "Größe");
 //            this.addAbility(builder, AbilitySerializers.PROJECTILE, "Projektil");
             this.addAbility(builder, AbilitySerializers.SKIN_CHANGE, "Skin Änderung");

@@ -51,6 +51,10 @@ ability.palladium.animation</a>
 Attribute Modifier</a>
 </li>
 <li>
+<a href="#palladium:beam">
+Energy Beam</a>
+</li>
+<li>
 <a href="#palladium:command">
 Command</a>
 </li>
@@ -61,10 +65,6 @@ Damage Immunity</a>
 <li>
 <a href="#palladium:dummy">
 Dummy</a>
-</li>
-<li>
-<a href="#palladium:energy_beam">
-Energy Beam</a>
 </li>
 <li>
 <a href="#palladium:fire_aspect">
@@ -395,6 +395,110 @@ Example:</h3>
 <hr>
 
 <div>
+<h2 id="palladium:beam">
+Energy Beam</h2>
+<p>
+Shoots an beam in the direction the player is looking at.</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+beam_renderer</td>
+<td>
+ResourceLocation</td>
+<td>
+The id of the beam renderer to use</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+damage</td>
+<td>
+float</td>
+<td>
+The damage the beam deals to entities</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.0</td>
+</tr>
+<tr>
+<td>
+cause_fire</td>
+<td>
+boolean</td>
+<td>
+If the beam should cause fire on blocks</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+set_on_fire_ticks</td>
+<td>
+integer</td>
+<td>
+The amount of ticks the hit entity is set on fire</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+smelt_blocks</td>
+<td>
+boolean</td>
+<td>
+If the beam should smelt hit blocks</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+false</td>
+</tr>
+<tr>
+<td>
+max_distance</td>
+<td>
+float</td>
+<td>
+The maximum distance the beam can travel</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+30.0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:beam","beam_renderer":"example:beam_renderer_id","damage":5.0,"max_distance":25.0,"set_on_fire_ticks":20}</pre>
+</div>
+<hr>
+
+<div>
 <h2 id="palladium:command">
 Command</h2>
 <p>
@@ -515,110 +619,6 @@ A dummy ability that does nothing.</p>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:dummy"}</pre>
-</div>
-<hr>
-
-<div>
-<h2 id="palladium:energy_beam">
-Energy Beam</h2>
-<p>
-Shoots an energy beam in the direction the player is looking at.</p>
-<h3>
-Settings:</h3>
-<table>
-<thead>
-<tr>
-<th>
-Setting</th>
-<th>
-Type</th>
-<th>
-Description</th>
-<th>
-Required</th>
-<th>
-Fallback Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-damage</td>
-<td>
-float</td>
-<td>
-The damage the beam deals to entities</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0.0</td>
-</tr>
-<tr>
-<td>
-cause_fire</td>
-<td>
-boolean</td>
-<td>
-If the beam should cause fire on blocks</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-false</td>
-</tr>
-<tr>
-<td>
-energy_beam</td>
-<td>
-ResourceLocation</td>
-<td>
-The id of the energy beam to use</td>
-<td style="background-color: lightgreen">
-true</td>
-<td>
-/</td>
-</tr>
-<tr>
-<td>
-set_on_fire_ticks</td>
-<td>
-integer</td>
-<td>
-The amount of ticks the hit entity is set on fire</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-0</td>
-</tr>
-<tr>
-<td>
-smelt_blocks</td>
-<td>
-boolean</td>
-<td>
-If the beam should smelt hit blocks</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-false</td>
-</tr>
-<tr>
-<td>
-max_distance</td>
-<td>
-float</td>
-<td>
-The maximum distance the beam can travel</td>
-<td style="background-color: lightcoral">
-false</td>
-<td>
-30.0</td>
-</tr>
-</tbody>
-</table>
-<h3>
-Example:</h3>
-<pre class="json-snippet">
-{"type":"palladium:energy_beam","energy_beam":"example:energy_beam_id","damage":5.0,"max_distance":25.0,"set_on_fire_ticks":20}</pre>
 </div>
 <hr>
 
@@ -835,7 +835,7 @@ The scale of the texture.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-net.minecraft.world.phys.Vec2@6fbb8819</td>
+net.minecraft.world.phys.Vec2@187d6405</td>
 </tr>
 <tr>
 <td>
@@ -883,7 +883,7 @@ The translation of the texture.</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
-net.minecraft.world.phys.Vec2@26ceaa27</td>
+net.minecraft.world.phys.Vec2@232d6e3a</td>
 </tr>
 </tbody>
 </table>
