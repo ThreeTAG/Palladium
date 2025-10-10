@@ -40,7 +40,11 @@ public class HumanoidRendererModifications {
 
         // rotate player model
         if (renderer instanceof PlayerRenderer playerRenderer && entity instanceof AbstractClientPlayer player) {
-            PalladiumAnimationRegistry.setupRotations(playerRenderer, player, poseStack, partialTicks);
+            var result = PalladiumAnimationRegistry.setupRotations(playerRenderer, player, poseStack, partialTicks);
+
+            if (player instanceof PlayerModelCacheExtension ext) {
+                ext.palladium$setBodyAnimationResult(result);
+            }
         }
     }
 

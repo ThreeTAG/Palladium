@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.threetag.palladium.client.model.animation.IAnimatablePlayer;
+import net.threetag.palladium.client.model.animation.PalladiumAnimation;
 import net.threetag.palladium.client.renderer.entity.PlayerSkinHandler;
 import net.threetag.palladium.client.renderer.entity.PlayerSkinInfo;
 import net.threetag.palladium.entity.PlayerModelCacheExtension;
@@ -29,6 +30,9 @@ public class AbstractClientPlayerMixin implements IAnimatablePlayer, PlayerModel
 
     @Unique
     private final PlayerModel<AbstractClientPlayer> palladium$cachedModel = new PlayerModel<>(new ModelPart(Collections.emptyList(), Collections.emptyMap()), false);
+
+    @Unique
+    private PalladiumAnimation.PoseStackResult palladium$bodyAnimationResult = null;
 
     @Unique
     private PlayerSkinInfo palladium$overridenSkin;
@@ -66,6 +70,16 @@ public class AbstractClientPlayerMixin implements IAnimatablePlayer, PlayerModel
     @Override
     public PlayerModel<AbstractClientPlayer> palladium$getCachedModel() {
         return this.palladium$cachedModel;
+    }
+
+    @Override
+    public PalladiumAnimation.PoseStackResult palladium$getBodyAnimationResult() {
+        return this.palladium$bodyAnimationResult;
+    }
+
+    @Override
+    public void palladium$setBodyAnimationResult(PalladiumAnimation.PoseStackResult result) {
+        this.palladium$bodyAnimationResult = result;
     }
 
     @Override

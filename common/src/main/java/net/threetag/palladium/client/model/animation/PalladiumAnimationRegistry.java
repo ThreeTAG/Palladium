@@ -105,7 +105,7 @@ public class PalladiumAnimationRegistry extends SimpleJsonResourceReloadListener
         result.apply(poseStack);
     }
 
-    public static void setupRotations(PlayerRenderer playerRenderer, AbstractClientPlayer player, PoseStack poseStack, float partialTicks) {
+    public static PalladiumAnimation.PoseStackResult setupRotations(PlayerRenderer playerRenderer, AbstractClientPlayer player, PoseStack poseStack, float partialTicks) {
         PalladiumAnimation.PoseStackResult result = new PalladiumAnimation.PoseStackResult();
         forEach(player, playerRenderer.getModel(), PalladiumAnimation.FirstPersonContext.NONE, partialTicks, (part, data) -> {
             if (part == PalladiumAnimation.PlayerModelPart.BODY) {
@@ -113,6 +113,7 @@ public class PalladiumAnimationRegistry extends SimpleJsonResourceReloadListener
             }
         });
         result.apply(poseStack);
+        return result;
     }
 
 }

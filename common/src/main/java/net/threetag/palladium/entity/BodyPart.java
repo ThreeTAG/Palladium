@@ -10,7 +10,6 @@ import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +18,7 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.accessory.Accessory;
-import net.threetag.palladium.client.model.animation.PalladiumAnimationRegistry;
+import net.threetag.palladium.client.model.animation.PalladiumAnimation;
 import net.threetag.palladium.client.renderer.item.armor.ArmorRendererData;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
 import net.threetag.palladium.compat.mermod.MermodClientCompat;
@@ -277,7 +276,7 @@ public enum BodyPart {
 
     @SuppressWarnings("rawtypes")
     @Environment(EnvType.CLIENT)
-    public static Matrix4f getTransformationMatrix(BodyPart part, Vector3f offset, HumanoidModel<?> model, AbstractClientPlayer player, float partialTicks) {
+    public static Matrix4f getTransformationMatrix(BodyPart part, Vector3f offset, HumanoidModel<?> model, @Nullable PalladiumAnimation.PoseStackResult bodyAnimation, AbstractClientPlayer player, float partialTicks) {
         var poseStack = new PoseStack();
         var modelPart = part.getModelPart(model);
 
@@ -313,7 +312,11 @@ public enum BodyPart {
             }
 
             invoker.invokeSetupRotations(player, poseStack, player.tickCount + partialTicks, f, partialTicks);
-            PalladiumAnimationRegistry.setupRotations((PlayerRenderer) renderer, player, poseStack, partialTicks);
+
+            if (bodyAnimation != null) {
+                bodyAnimation.apply(poseStack);
+            }
+
             poseStack.scale(-1.0F, -1.0F, 1.0F);
             invoker.invokeScale(player, poseStack, partialTicks);
             poseStack.translate(0.0F, -1.501F, 0.0F);
@@ -327,23 +330,23 @@ public enum BodyPart {
     @Environment(EnvType.CLIENT)
     public static Matrix4f getTransformationMatrix(BodyPart part, Vector3f offset, AbstractClientPlayer player, float partialTicks) {
         if (player instanceof PlayerModelCacheExtension ext) {
-            return getTransformationMatrix(part, offset, ext.palladium$getCachedModel(), player, partialTicks);
+            return getTransformationMatrix(part, offset, ext.palladium$getCachedModel(), ext.palladium$getBodyAnimationResult(), player, partialTicks);
         } else {
             return new Matrix4f();
         }
     }
 
     @Environment(EnvType.CLIENT)
-    public static Vec3 getInWorldPosition(BodyPart part, Vector3f offset, HumanoidModel<?> model, AbstractClientPlayer player, float partialTicks) {
+    public static Vec3 getInWorldPosition(BodyPart part, Vector3f offset, HumanoidModel<?> model, @Nullable PalladiumAnimation.PoseStackResult bodyAnimation, AbstractClientPlayer player, float partialTicks) {
         Vector3f vec = new Vector3f(0, 0, 0);
-        vec = getTransformationMatrix(part, offset, model, player, partialTicks).transformPosition(vec);
+        vec = getTransformationMatrix(part, offset, model, bodyAnimation, player, partialTicks).transformPosition(vec);
         return player.getPosition(partialTicks).add(vec.x, vec.y, vec.z);
     }
 
     @Environment(EnvType.CLIENT)
     public static Vec3 getInWorldPosition(BodyPart part, Vector3f offset, AbstractClientPlayer player, float partialTicks) {
         if (player instanceof PlayerModelCacheExtension ext) {
-            return getInWorldPosition(part, offset, ext.palladium$getCachedModel(), player, partialTicks);
+            return getInWorldPosition(part, offset, ext.palladium$getCachedModel(), ext.palladium$getBodyAnimationResult(), player, partialTicks);
         } else {
             return player.getPosition(partialTicks);
         }
