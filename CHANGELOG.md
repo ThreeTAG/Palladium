@@ -1,4 +1,2 @@
-- Added player_skin_change ability
-- Added "palladium:player" dynamic texture type
-- Allow texture transformers on "entity" & "player" dynamic texture types
-- Properly enable blending/transparency for gui overlays
+- Improved particle emitter performance
+- Added "intensity" setting to vibrate ability
