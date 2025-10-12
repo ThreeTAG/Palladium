@@ -1,4 +1,4 @@
-![](https://github.com/ThreeTAG/Palladium/blob/1.20/dev/media/banner.png?raw=true)
+![](https://github.com/ThreeTAG/Palladium/blob/1.21.8/dev/media/banner.png?raw=true)
 
 [![wakatime](https://wakatime.com/badge/user/c21fe702-f30d-4acb-b4cd-d0060e380595/project/0e2b4ad4-a063-47eb-b8e8-221ed4db6f4e.svg?style=for-the-badge&color=25c7f6)](https://wakatime.com/badge/user/c21fe702-f30d-4acb-b4cd-d0060e380595/project/fff84cf1-a608-40f1-81f1-5b628756b8ab)
 [![Discord](https://img.shields.io/discord/116908382878695430?style=for-the-badge&logo=discord&logoColor=white&label=Discord&color=25c7f6&link=https%3A%2F%2Fdiscord.gg%2FGATzmppJms)](https://discord.com/invite/GATzmppJms)
