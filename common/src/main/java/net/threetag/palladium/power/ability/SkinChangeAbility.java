@@ -3,15 +3,9 @@ package net.threetag.palladium.power.ability;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.client.renderer.entity.PlayerSkinHandler;
 import net.threetag.palladium.client.texture.TextureReference;
-import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.entity.PlayerModelChangeType;
@@ -44,34 +38,6 @@ public class SkinChangeAbility extends Ability {
     @Override
     public AbilitySerializer<SkinChangeAbility> getSerializer() {
         return AbilitySerializers.SKIN_CHANGE.get();
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static class SkinProvider implements PlayerSkinHandler.SkinProvider {
-
-        @Override
-        public ResourceLocation getSkin(AbstractClientPlayer player, ResourceLocation previousSkin, ResourceLocation defaultSkin, PlayerSkin.Model model) {
-            var abilities = AbilityUtil.getEnabledInstances(player, AbilitySerializers.SKIN_CHANGE.get()).stream().sorted((a1, a2) -> a2.getAbility().priority - a1.getAbility().priority).toList();
-
-            if (!abilities.isEmpty()) {
-                var ability = abilities.getFirst();
-                return ability.getAbility().texture.get(model == PlayerSkin.Model.SLIM).getTexture(DataContext.forAbility(player, ability));
-            }
-
-            return previousSkin;
-        }
-
-        @Override
-        public PlayerModelChangeType getModelType(AbstractClientPlayer player) {
-            var abilities = AbilityUtil.getEnabledInstances(player, AbilitySerializers.SKIN_CHANGE.get()).stream().sorted((a1, a2) -> a2.getAbility().priority - a1.getAbility().priority).toList();
-
-            if (!abilities.isEmpty()) {
-                var ability = abilities.getFirst();
-                return ability.getAbility().modelChangeType;
-            }
-
-            return PlayerSkinHandler.SkinProvider.super.getModelType(player);
-        }
     }
 
     public static class Serializer extends AbilitySerializer<SkinChangeAbility> {

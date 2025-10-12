@@ -8,7 +8,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
-import net.threetag.palladium.client.icon.Icon;
+import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.energybar.EnergyBarConfiguration;

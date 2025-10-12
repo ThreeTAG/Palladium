@@ -2,8 +2,10 @@ package net.threetag.palladium.client;
 
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
+import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.ReloadListenerRegistry;
+import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import net.minecraft.server.packs.PackType;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.animation.PalladiumAnimationManager;
@@ -12,25 +14,32 @@ import net.threetag.palladium.client.beam.BeamRendererSerializer;
 import net.threetag.palladium.client.beam.BeamRendererSerializers;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
+import net.threetag.palladium.client.gui.screen.hud.AbilityGuiLayer;
 import net.threetag.palladium.client.gui.screen.power.PowersScreen;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.client.model.PalladiumModelLayers;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.client.renderer.WatcherRenderer;
+import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
+import net.threetag.palladium.client.renderer.entity.SuitStandRenderer;
+import net.threetag.palladium.client.renderer.entity.SwingAnchorRenderer;
+import net.threetag.palladium.client.renderer.entity.effect.EntityEffectRenderer;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerManager;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerializer;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerializers;
+import net.threetag.palladium.client.renderer.icon.IconRenderer;
+import net.threetag.palladium.client.texture.DynamicTextureManager;
 import net.threetag.palladium.client.texture.DynamicTextureSerializer;
 import net.threetag.palladium.client.texture.DynamicTextureSerializers;
+import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.client.texture.transformer.TextureTransformerSerializer;
 import net.threetag.palladium.client.texture.transformer.TextureTransformerSerializers;
-import net.threetag.palladium.client.texture.DynamicTextureManager;
-import net.threetag.palladium.logic.value.ValueSerializer;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
 import net.threetag.palladium.core.registry.GuiLayerRegistry;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
-import net.threetag.palladium.power.ability.GuiOverlayAbility;
+import net.threetag.palladium.logic.value.ValueSerializer;
+import net.threetag.palladium.proxy.PalladiumClientProxy;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
@@ -39,15 +48,18 @@ import java.util.Arrays;
 public class PalladiumClient {
 
     public static void init() {
+        Palladium.PROXY = new PalladiumClientProxy();
         PalladiumKeyMappings.init();
 
         // Entity Renderers
-        PalladiumEntityTypes.initRenderers();
+        EntityRendererRegistry.register(PalladiumEntityTypes.SUIT_STAND, SuitStandRenderer::new);
+        EntityRendererRegistry.register(PalladiumEntityTypes.EFFECT, EffectEntityRenderer::new);
+        EntityRendererRegistry.register(PalladiumEntityTypes.SWING_ANCHOR, SwingAnchorRenderer::new);
         PalladiumModelLayers.init();
 
         // Overlay Renderer
         GuiLayerRegistry.register(Palladium.id("ability_bar"), AbilityBar.INSTANCE);
-        GuiLayerRegistry.register(Palladium.id("gui_overlay_abilities"), GuiOverlayAbility.Renderer.INSTANCE);
+        GuiLayerRegistry.register(Palladium.id("gui_overlay_abilities"), AbilityGuiLayer.INSTANCE);
         ClientTickEvent.CLIENT_POST.register(AbilityBar.INSTANCE);
 
         // Screens
@@ -67,6 +79,14 @@ public class PalladiumClient {
         BeamRendererSerializers.init();
         TextureTransformerSerializers.init();
         DynamicTextureSerializers.init();
+        LifecycleEvent.SETUP.register(() -> {
+            IconRenderer.registerRenderers();
+            EntityEffectRenderer.registerRenderers();
+        });
+        TextureReference.DYNAMIC_TEXTURE_RESOLVER = (path, context) -> {
+            var dyn = DynamicTextureManager.INSTANCE.get(path);
+            return dyn != null ? dyn.getTexture(context) : null;
+        };
 
         // Documentation
         ClientLifecycleEvent.CLIENT_LEVEL_LOAD.register(clientLevel -> {

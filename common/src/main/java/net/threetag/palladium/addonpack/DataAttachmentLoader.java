@@ -3,7 +3,6 @@ package net.threetag.palladium.addonpack;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableMap;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -11,6 +10,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.attachment.PlatformAttachmentType;
+import net.threetag.palladium.platform.PlatformHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -29,7 +29,7 @@ public class DataAttachmentLoader extends SimpleJsonResourceReloadListener<Platf
         this.dataAttachments.clear();
         this.dataAttachments.putAll(object);
         AddonPackLog.info("Registered " + object.size() + " addonpack data attachments");
-        registerOnPlatform(this.dataAttachments);
+        PlatformHelper.PLATFORM.getAttachments().register(this.dataAttachments);
     }
 
     @Nullable
@@ -44,10 +44,5 @@ public class DataAttachmentLoader extends SimpleJsonResourceReloadListener<Platf
 
     public Map<ResourceLocation, PlatformAttachmentType<?>> all() {
         return ImmutableMap.copyOf(this.dataAttachments);
-    }
-
-    @ExpectPlatform
-    public static void registerOnPlatform(Map<ResourceLocation, PlatformAttachmentType<?>> dataAttachments) {
-        throw new AssertionError();
     }
 }

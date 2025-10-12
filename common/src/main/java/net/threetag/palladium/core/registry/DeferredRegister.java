@@ -1,10 +1,10 @@
 package net.threetag.palladium.core.registry;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.threetag.palladium.platform.PlatformHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -77,17 +77,11 @@ public abstract class DeferredRegister<T> implements Iterable<RegistryHolder<T>>
      * @return A new instance of a {@link DeferredRegister}
      */
     public static <T> DeferredRegister<T> create(String modId, ResourceKey<? extends Registry<T>> resourceKey) {
-        return createInternal(modId, resourceKey);
+        return PlatformHelper.PLATFORM.getRegistries().createDeferredRegister(modId, resourceKey);
     }
 
-    @ExpectPlatform
-    public static <T> DeferredRegister<T> createInternal(String modId, ResourceKey<? extends Registry<T>> resourceKey) {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
     public static Items createItems(String modId) {
-        throw new AssertionError();
+        return PlatformHelper.PLATFORM.getRegistries().createDeferredItemRegister(modId);
     }
 
     /**

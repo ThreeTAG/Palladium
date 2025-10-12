@@ -1,20 +1,15 @@
 package net.threetag.palladium.core.registry;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladium.platform.PlatformHelper;
 import org.jetbrains.annotations.Nullable;
 
 public class RegistryBuilder<T> {
 
     public static <T> RegistryBuilder<T> create(ResourceKey<Registry<T>> resourceKey) {
         return new RegistryBuilder<>(resourceKey);
-    }
-
-    @ExpectPlatform
-    private static <T> Registry<T> createRegistry(RegistryBuilder<T> registryBuilder) {
-        throw new AssertionError();
     }
 
     private final ResourceKey<Registry<T>> resourceKey;
@@ -53,6 +48,6 @@ public class RegistryBuilder<T> {
     }
 
     public Registry<T> build() {
-        return createRegistry(this);
+        return PlatformHelper.PLATFORM.getRegistries().createRegistry(this);
     }
 }

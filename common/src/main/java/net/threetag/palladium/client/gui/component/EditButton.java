@@ -5,7 +5,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
-import net.threetag.palladium.util.RenderUtil;
+import net.threetag.palladium.client.util.RenderUtil;
 
 public class EditButton extends Button {
 

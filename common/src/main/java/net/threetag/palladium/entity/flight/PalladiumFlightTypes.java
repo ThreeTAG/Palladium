@@ -14,7 +14,7 @@ public class PalladiumFlightTypes {
     public static final ResourceKey<FlightType> WEB_SWINGING = create("web_swinging");
 
     private static ResourceKey<FlightType> create(String id) {
-        return ResourceKey.create(PalladiumRegistryKeys.FLIGHT_TYPES, Palladium.id(id));
+        return ResourceKey.create(PalladiumRegistryKeys.FLIGHT_TYPE, Palladium.id(id));
     }
 
     public static void bootstrap(BiConsumer<ResourceKey<FlightType>, FlightType> consumer) {

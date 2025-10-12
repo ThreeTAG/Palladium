@@ -1,28 +1,26 @@
-build/
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
 *.ipr
 *.iws
-out/
 *.iml
-.gradle/
-output/
-bin/
-libs/
+.idea/*
+!.idea/scopes
+
+# gradle
+build
+.gradle
+
+# Run Folders
 neoforge/run/*
 fabric/run/*
 
-.classpath
-.project
-.idea/
-classes/
-.metadata
-.vscode
-.settings
-*.launch
-
-run/*
-!run/palladium/
-
-.architectury-transformer/*
-common/.architectury-transformer/*
-neoforge/.architectury-transformer/*
-fabric/.architectury-transformer/*
+# other
+eclipse

@@ -1,16 +1,15 @@
 package net.threetag.palladium.client.gui.component;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.threetag.palladium.client.icon.Icon;
+import net.threetag.palladium.client.renderer.icon.IconRenderer;
+import net.threetag.palladium.client.util.RenderUtil;
+import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.util.RenderUtil;
 import org.jetbrains.annotations.Nullable;
 
 public class IconButton extends Button {
@@ -47,13 +46,12 @@ public class IconButton extends Button {
                 i += 20;
             }
 
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED,RenderUtil.WIDGETS_LOCATION, this.getX(), this.getY(), 0, i, this.width, this.height, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, RenderUtil.WIDGETS_LOCATION, this.getX(), this.getY(), 0, i, this.width, this.height, 256, 256);
         }
 
-        this.getIcon().draw(minecraft, guiGraphics, minecraft.player != null ? DataContext.forEntity(minecraft.player) : DataContext.create(), this.getX() + 2, this.getY() + 2);
+        IconRenderer.drawIcon(this.getIcon(), minecraft, guiGraphics, minecraft.player != null ? DataContext.forEntity(minecraft.player) : DataContext.create(), this.getX() + 2, this.getY() + 2);
     }
 
-    @Environment(EnvType.CLIENT)
     public static class Builder {
 
         private final Icon icon;

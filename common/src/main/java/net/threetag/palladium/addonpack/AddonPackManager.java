@@ -1,6 +1,5 @@
 package net.threetag.palladium.addonpack;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
 import net.minecraft.CrashReport;
 import net.minecraft.ReportedException;
@@ -19,7 +18,6 @@ import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.Unit;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.BlockTypes;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.threetag.palladium.Palladium;
@@ -27,6 +25,7 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.block.BlockPropertiesCodec;
 import net.threetag.palladium.item.CreativeModeTabCodec;
 import net.threetag.palladium.item.ItemTypes;
+import net.threetag.palladium.platform.PlatformHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
@@ -73,12 +72,12 @@ public class AddonPackManager {
         this.resourceManager = new ReloadableResourceManager(getPackType());
         RepositorySource[] sources = new RepositorySource[]{getWrappedPackFinder(getPackType())};
         this.packRepository = new PackRepository(sources);
-        afterPackRepositoryCreation(this.packRepository);
+        PlatformHelper.PLATFORM.getAddonPackManager().afterPackRepositoryCreation(this.packRepository);
 
         // Replace block properties codec because MC's one is not done yet
         BlockPropertiesCodec.replaceBlockPropertiesCodec();
 
-        this.resourceManager.registerReloadListener(getRecipeManager());
+        this.resourceManager.registerReloadListener(PlatformHelper.PLATFORM.getAddonPackManager().getRecipeManager());
     }
 
     public static <T> void registerLoader(SimpleJsonResourceReloadListener<T> loader) {
@@ -162,7 +161,7 @@ public class AddonPackManager {
 
     public CompletableFuture<AddonPackManager> beginLoading(Executor backgroundExecutor, List<SimpleJsonResourceReloadListener<?>> parser) {
         this.resourceManager.listeners.clear();
-        this.resourceManager.registerReloadListener(getRecipeManager());
+        this.resourceManager.registerReloadListener(PlatformHelper.PLATFORM.getAddonPackManager().getRecipeManager());
         for (SimpleJsonResourceReloadListener<?> listener : parser) {
             this.resourceManager.registerReloadListener(listener);
         }
@@ -274,16 +273,6 @@ public class AddonPackManager {
             Throwable cause = e.getCause();
             throw new ReportedException(CrashReport.forThrowable(cause, "Error loading addonpacks"));
         }
-    }
-
-    @ExpectPlatform
-    public static void afterPackRepositoryCreation(PackRepository packRepository) {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static RecipeManager getRecipeManager() {
-        throw new AssertionError();
     }
 
     public static class QueueableExecutor implements Executor {

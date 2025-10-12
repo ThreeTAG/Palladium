@@ -1,31 +1,62 @@
-loom {
-    accessWidenerPath = file("src/main/resources/palladium.accessWidener")
+plugins {
+    id 'multiloader-common'
+    id 'net.neoforged.moddev'
 }
 
-architectury {
-    common(rootProject.enabled_platforms.split(","))
+neoForge {
+    neoFormVersion = neo_form_version
+    // Automatically enable AccessTransformers if the file exists
+    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers.from(at.absolutePath)
+    }
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
 }
 
 dependencies {
-    modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
-    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+    compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
+    compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
+    annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
+
+    // Architectury
+    implementation "dev.architectury:architectury-neoforge:${architectury_version}"
 
     // MidnightLib
-    modImplementation ("maven.modrinth:midnightlib:${rootProject.midnightlib_version}-fabric")
+    implementation ("maven.modrinth:midnightlib:${midnightlib_version}-fabric")
 
-    // GeckoLib
-    modImplementation "software.bernie.geckolib:geckolib-common-${rootProject.geckolib_version}"
+    // Player Animation Library
+    implementation "com.zigythebird.playeranim:PlayerAnimationLibNeo:${player_animation_lib_version}"
+    additionalRuntimeClasspath "org.javassist:javassist:3.30.2-GA"
 
     // Accessories
-    modImplementation("io.wispforest:accessories-common:${rootProject.accessories_version}")
+    compileOnly("io.wispforest:accessories-common:${accessories_version}-mojmap") {
+        exclude group: 'net.fabricmc.fabric-api'
+        exclude group: 'net.fabricmc'
+    }
 
-    // Mocha
-    implementation ("com.zigythebird:mochafloats:${rootProject.mocha_version}")
+    // GeckoLib
+    implementation "software.bernie.geckolib:geckolib-common-${geckolib_version}"
 
     // Iris
-    modCompileOnly "maven.modrinth:iris:${rootProject.iris_version}-fabric"
+    implementation "maven.modrinth:iris:${iris_version}-fabric"
 }
 
-sourceSets.main.resources {
-    srcDir project(":common").file("src/generated").absolutePath
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
+    }
 }
+
+artifacts {
+    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonResources sourceSets.main.resources.sourceDirectories.singleFile
+}
+

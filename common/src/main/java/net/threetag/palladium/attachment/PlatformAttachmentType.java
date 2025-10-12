@@ -2,11 +2,11 @@ package net.threetag.palladium.attachment;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
+import net.threetag.palladium.platform.PlatformHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,14 +67,12 @@ public class PlatformAttachmentType<T> {
         set(entity, this, value);
     }
 
-    @ExpectPlatform
     public static <T> void set(Entity entity, PlatformAttachmentType<T> type, @Nullable T value) {
-        throw new AssertionError();
+        PlatformHelper.PLATFORM.getAttachments().set(entity, type, value);
     }
 
-    @ExpectPlatform
     public static <T> T get(Entity entity, PlatformAttachmentType<T> type) {
-        throw new AssertionError();
+        return PlatformHelper.PLATFORM.getAttachments().get(entity, type);
     }
 
     public enum SyncWith implements StringRepresentable {

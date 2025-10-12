@@ -6,10 +6,9 @@ import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.customization.CustomizationCategory;
-import net.threetag.palladium.client.PoseStackTransformation;
 import net.threetag.palladium.client.gui.component.tab.IconTab;
-import net.threetag.palladium.client.icon.Icon;
-import net.threetag.palladium.client.icon.TexturedIcon;
+import net.threetag.palladium.icon.Icon;
+import net.threetag.palladium.icon.TexturedIcon;
 import net.threetag.palladium.customization.CustomizationPreview;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 

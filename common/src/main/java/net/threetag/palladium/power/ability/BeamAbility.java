@@ -3,9 +3,6 @@ package net.threetag.palladium.power.ability;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.architectury.platform.Platform;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
@@ -17,22 +14,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlockUtil;
-import net.threetag.palladium.client.beam.BeamManager;
+import net.threetag.palladium.client.renderer.entity.effect.EnergyBeamEffectRenderer;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
-import net.threetag.palladium.entity.effect.EnergyBeamEffect;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
-import net.threetag.palladium.util.PalladiumCodecs;
 import net.threetag.palladium.util.EntityUtil;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.List;
 
@@ -78,7 +73,7 @@ public class BeamAbility extends Ability {
     public void firstTick(LivingEntity entity, AbilityInstance<?> instance) {
         var timer = instance.getAnimationTimer();
         if (entity instanceof Player player && (timer == null || timer.value() <= 0F) && entity.level().isClientSide) {
-            EnergyBeamEffect.start(player, instance.getReference());
+            EnergyBeamEffectRenderer.start(player, instance.getReference());
         }
     }
 
@@ -106,9 +101,7 @@ public class BeamAbility extends Ability {
                     }
                 }
 
-                if (Platform.getEnv() == EnvType.CLIENT) {
-                    this.spawnParticles(entity.level(), hit.getLocation());
-                }
+                Palladium.PROXY.spawnEnergyBeamParticles(entity.level(), hit.getLocation(), this.beamId);
             } else if (hit instanceof BlockHitResult blockHitResult) {
                 BlockState blockState = entity.level().getBlockState(blockHitResult.getBlockPos());
 
@@ -135,20 +128,9 @@ public class BeamAbility extends Ability {
                         }
                     }
 
-                    if (Platform.getEnv() == EnvType.CLIENT) {
-                        this.spawnParticles(entity.level(), hit.getLocation());
-                    }
+                    Palladium.PROXY.spawnEnergyBeamParticles(entity.level(), hit.getLocation(), this.beamId);
                 }
             }
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public void spawnParticles(Level level, Vec3 pos) {
-        var beam = BeamManager.INSTANCE.get(this.beamId);
-
-        if (beam != null) {
-            beam.spawnParticles(level, pos);
         }
     }
 

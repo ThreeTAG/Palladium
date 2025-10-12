@@ -2,14 +2,14 @@ package net.threetag.palladium.client.animation;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.threetag.palladium.client.util.ClientContextTypes;
 import net.threetag.palladium.client.renderer.entity.ExtendedEntityRenderState;
-import net.threetag.palladium.logic.context.DataContextType;
 
 public class AimAnimation {
 
     public static void setupAnim(HumanoidModel<?> model, EntityRenderState state) {
-        if (state instanceof ExtendedEntityRenderState ext && ext.palladium$hasData(DataContextType.Client.AIM)) {
-            Float[] progress = ext.palladium$getData(DataContextType.Client.AIM);
+        if (state instanceof ExtendedEntityRenderState ext && ext.palladium$hasData(ClientContextTypes.AIM)) {
+            Float[] progress = ext.palladium$getData(ClientContextTypes.AIM);
             float left = progress[0];
             float right = progress[1];
 

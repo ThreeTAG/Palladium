@@ -1,18 +1,12 @@
 package net.threetag.palladium.entity;
 
-import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.level.entity.EntityAttributeRegistry;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
-import net.threetag.palladium.client.renderer.entity.SuitStandRenderer;
-import net.threetag.palladium.client.renderer.entity.SwingAnchorRenderer;
 import net.threetag.palladium.core.registry.DeferredRegister;
 import net.threetag.palladium.core.registry.RegistryHolder;
 
@@ -28,13 +22,6 @@ public class PalladiumEntityTypes {
 
     public static void init() {
         EntityAttributeRegistry.register(SUIT_STAND, SuitStand::createAttributes);
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static void initRenderers() {
-        EntityRendererRegistry.register(SUIT_STAND, SuitStandRenderer::new);
-        EntityRendererRegistry.register(EFFECT, EffectEntityRenderer::new);
-        EntityRendererRegistry.register(SWING_ANCHOR, SwingAnchorRenderer::new);
     }
 
     private static <T extends Entity> RegistryHolder<EntityType<T>> register(String id, Supplier<EntityType.Builder<T>> builderSupplier) {

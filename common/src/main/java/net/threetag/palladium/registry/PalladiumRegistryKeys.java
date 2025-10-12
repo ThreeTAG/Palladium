@@ -3,9 +3,9 @@ package net.threetag.palladium.registry;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.icon.IconSerializer;
 import net.threetag.palladium.customization.Customization;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.CustomizationSerializer;
@@ -13,6 +13,7 @@ import net.threetag.palladium.entity.data.PalladiumEntityDataType;
 import net.threetag.palladium.entity.effect.EntityEffect;
 import net.threetag.palladium.entity.flight.FlightType;
 import net.threetag.palladium.entity.flight.FlightTypeSerializer;
+import net.threetag.palladium.icon.IconSerializer;
 import net.threetag.palladium.logic.condition.ConditionSerializer;
 import net.threetag.palladium.logic.value.ValueSerializer;
 import net.threetag.palladium.power.Power;
@@ -40,10 +41,18 @@ public class PalladiumRegistryKeys {
     public static final ResourceKey<Registry<Customization>> CUSTOMIZATION = createRegistryKey("customization");
     public static final ResourceKey<Registry<CustomizationCategory>> CUSTOMIZATION_CATEGORY = createRegistryKey("customization_category");
     public static final ResourceKey<Registry<FlightTypeSerializer<?>>> FLIGHT_TYPE_SERIALIZERS = createRegistryKey("flight_type_serializer");
-    public static final ResourceKey<Registry<FlightType>> FLIGHT_TYPES = createRegistryKey("flight_type");
+    public static final ResourceKey<Registry<FlightType>> FLIGHT_TYPE = createRegistryKey("flight_type");
 
     private static <T> ResourceKey<Registry<T>> createRegistryKey(String name) {
         return ResourceKey.createRegistryKey(Palladium.id(name));
+    }
+
+    public static String getPackFolder(ResourceKey<? extends Registry<?>> key) {
+        if (key.location().getNamespace().equalsIgnoreCase(ResourceLocation.DEFAULT_NAMESPACE)) {
+            return key.location().getPath();
+        } else {
+            return key.location().getNamespace() + "/" + key.location().getPath();
+        }
     }
 
 }

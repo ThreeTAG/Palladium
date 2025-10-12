@@ -11,7 +11,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.threetag.palladium.client.icon.Icon;
+import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.logic.condition.Condition;
 import net.threetag.palladium.logic.condition.TrueCondition;
 import net.threetag.palladium.util.ScoreboardUtil;

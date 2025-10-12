@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:stair",
-  "base_state": {
-    "Name": "minecraft:bamboo_planks"
-  },
-  "properties": {}
-}

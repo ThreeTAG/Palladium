@@ -1,7 +1,5 @@
 package net.threetag.palladium.client.gui.component;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -27,7 +25,6 @@ public class BackgroundlessButton extends Button {
         return new Builder(message, onPress);
     }
 
-    @Environment(EnvType.CLIENT)
     public static class Builder {
         private final Component message;
         private final OnPress onPress;

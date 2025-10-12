@@ -1,7 +1,6 @@
 package net.threetag.palladium.client.gui.screen.power;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,7 +12,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -24,12 +22,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.gui.component.IconButton;
-import net.threetag.palladium.client.icon.Icon;
-import net.threetag.palladium.client.icon.ItemIcon;
+import net.threetag.palladium.client.util.GuiUtil;
+import net.threetag.palladium.icon.Icon;
+import net.threetag.palladium.icon.ItemIcon;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerUtil;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
-import net.threetag.palladium.util.GuiUtil;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 

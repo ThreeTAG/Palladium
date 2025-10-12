@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:weathering_copper_stair",
-  "base_state": {
-    "Name": "minecraft:exposed_cut_copper"
-  },
-  "properties": {},
-  "weathering_state": "exposed"
-}

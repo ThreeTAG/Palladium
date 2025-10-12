@@ -1,45 +1,40 @@
 {
   "schemaVersion": 1,
-  "id": "palladium",
+  "id": "${mod_id}",
   "version": "${version}",
-  "name": "Palladium",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "${mod_name}",
+  "description": "${description}",
   "authors": [
-    "Me!"
+    "${mod_author}"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
-  "license": "CC0-1.0",
-  "icon": "assets/palladium/icon.png",
+  "license": "${license}",
+  "icon": "${mod_id}.png",
   "environment": "*",
   "entrypoints": {
     "main": [
       "net.threetag.palladium.fabric.PalladiumFabric"
     ],
     "client": [
-      "net.threetag.palladium.client.fabric.PalladiumFabricClient"
+      "net.threetag.palladium.fabric.client.PalladiumFabricClient"
     ],
     "server": [
       "net.threetag.palladium.fabric.PalladiumFabricServer"
-    ],
-    "fabric-datagen": [
-      "net.threetag.palladium.datagen.fabric.PalladiumDataGen"
     ]
   },
   "mixins": [
-    "palladium.mixins.json",
-    "palladium-fabric.mixins.json"
+    "${mod_id}.mixins.json",
+    "${mod_id}.fabric.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16.9",
-    "minecraft": ">=1.21.4",
-    "architectury": ">=15.0.2",
-    "java": ">=21",
-    "fabric-api": "*"
-  },
-  "suggests": {
-    "another-mod": "*"
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": "*",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=${java_version}",
+    "architectury": ">=17"
   }
 }
+  

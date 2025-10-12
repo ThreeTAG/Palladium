@@ -3,7 +3,7 @@ package net.threetag.palladium.registry;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.Item;
-import net.threetag.palladium.client.icon.IconSerializer;
+import net.threetag.palladium.icon.IconSerializer;
 import net.threetag.palladium.core.registry.DataPackRegistryBuilder;
 import net.threetag.palladium.core.registry.RegistryBuilder;
 import net.threetag.palladium.customization.Customization;
@@ -42,7 +42,7 @@ public class PalladiumRegistries {
         DataPackRegistryBuilder.create(PalladiumRegistryKeys.POWER, Power.CODEC, Power.CODEC);
         DataPackRegistryBuilder.create(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY, CustomizationCategory.CODEC, CustomizationCategory.CODEC);
         DataPackRegistryBuilder.create(PalladiumRegistryKeys.CUSTOMIZATION, Customization.Codecs.SIMPLE_CODEC, Customization.Codecs.SIMPLE_CODEC);
-        DataPackRegistryBuilder.create(PalladiumRegistryKeys.FLIGHT_TYPES, FlightType.CODEC, FlightType.CODEC);
+        DataPackRegistryBuilder.create(PalladiumRegistryKeys.FLIGHT_TYPE, FlightType.CODEC, FlightType.CODEC);
     }
 
 }

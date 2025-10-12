@@ -1,15 +1,14 @@
 package net.threetag.palladium.client.gui.screen.power;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.locale.Language;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.PowerHolder;
@@ -170,7 +169,7 @@ public class ListPowerTab extends PowerTab {
             guiGraphics.blit(RenderPipelines.GUI_TEXTURED,PowersScreen.WIDGETS, left, top, 0, 130 + (this.abilityInstance.isUnlocked() ? (hovering ? 2 : 0) : 1) * 26, width, height, 256, 256);
 
             if (this.abilityInstance.isUnlocked()) {
-                this.abilityInstance.getAbility().getProperties().getIcon().draw(this.minecraft, guiGraphics, DataContext.forAbility(this.minecraft.player, this.abilityInstance), left + 5, top + 5);
+                IconRenderer.drawIcon(this.abilityInstance.getAbility().getProperties().getIcon(), this.minecraft, guiGraphics, DataContext.forAbility(this.minecraft.player, this.abilityInstance), left + 5, top + 5);
             } else {
                 guiGraphics.blit(RenderPipelines.GUI_TEXTURED,PowersScreen.WIDGETS, left + 5, top + 5, 90, 83, 16, 16, 256, 256);
 

@@ -18,11 +18,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
-import net.threetag.palladium.logic.condition.PerspectiveAwareConditions;
-import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.client.util.PerspectiveAwareConditions;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.entity.SkinTypedValue;
+import net.threetag.palladium.logic.context.DataContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;

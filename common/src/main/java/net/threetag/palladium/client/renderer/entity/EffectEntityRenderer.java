@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+import net.threetag.palladium.client.renderer.entity.effect.EntityEffectRenderer;
 import net.threetag.palladium.entity.EffectEntity;
 import net.threetag.palladium.entity.effect.EntityEffect;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +29,7 @@ public class EffectEntityRenderer extends EntityRenderer<EffectEntity, EffectEnt
         if (anchor != null) {
             var mc = Minecraft.getInstance();
             poseStack.pushPose();
-            renderState.effect.render(renderState, anchor, poseStack, bufferSource, packedLight,
+            EntityEffectRenderer.renderEffect(renderState.effect, renderState, anchor, poseStack, bufferSource, packedLight,
                     mc.player == anchor && mc.options.getCameraType().isFirstPerson(),
                     Mth.frac(renderState.ageInTicks));
             poseStack.popPose();

@@ -15,8 +15,8 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.util.PalladiumCodecs;
-import net.threetag.palladium.util.RenderUtil;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
 

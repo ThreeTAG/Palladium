@@ -1,6 +1,5 @@
 package net.threetag.palladium.client.gui.screen.power;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.StringSplitter;
@@ -8,7 +7,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.advancements.AdvancementWidgetType;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
@@ -16,6 +14,7 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilityInstance;
 
@@ -142,14 +141,14 @@ public class TreeAbilityWidget {
 
     public void drawDisplayIcon(Minecraft mc, GuiGraphics guiGraphics, int x, int y) {
         if (this.abilityInstance.isUnlocked()) {
-            this.abilityInstance.getAbility().getProperties().getIcon().draw(mc, guiGraphics, DataContext.forAbility(mc.player, this.abilityInstance), x, y);
+            IconRenderer.drawIcon(this.abilityInstance.getAbility().getProperties().getIcon(), mc, guiGraphics, DataContext.forAbility(mc.player, this.abilityInstance), x, y);
         } else {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED,PowersScreen.WIDGETS, x, y, 90, 83, 16, 16, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, PowersScreen.WIDGETS, x, y, 90, 83, 16, 16, 256, 256);
         }
     }
 
     public void drawIcon(Minecraft mc, GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,PowersScreen.WIDGETS, x - 13, y - 13, 0, this.abilityInstance.isUnlocked() ? 78 : 104, 26, 26, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, PowersScreen.WIDGETS, x - 13, y - 13, 0, this.abilityInstance.isUnlocked() ? 78 : 104, 26, 26, 256, 256);
         this.drawDisplayIcon(mc, guiGraphics, x - 8, y - 8);
     }
 

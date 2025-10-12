@@ -2,13 +2,13 @@ package net.threetag.palladium.logic.value;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.zigythebird.playeranim.lib.mochafloats.MochaEngine;
+import com.zigythebird.playeranim.lib.mochafloats.runtime.binding.JavaObjectBinding;
 import net.minecraft.core.HolderLookup;
 import net.threetag.palladium.client.renderer.entity.layer.MoLangQuery;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.molang.ModifyFloatFunction;
-import team.unnamed.mocha.MochaEngine;
-import team.unnamed.mocha.runtime.binding.JavaObjectBinding;
 
 public abstract class FloatValue extends Value {
 

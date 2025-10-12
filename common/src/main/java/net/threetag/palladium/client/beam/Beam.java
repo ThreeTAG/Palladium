@@ -3,27 +3,25 @@ package net.threetag.palladium.client.beam;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.threetag.palladium.client.util.ModelUtil;
+import net.threetag.palladium.client.util.PerspectiveValue;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.logic.condition.Condition;
 import net.threetag.palladium.logic.condition.TrueCondition;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.EntityScaleUtil;
 import net.threetag.palladium.util.PalladiumCodecs;
-import net.threetag.palladium.util.PerspectiveValue;
 import org.joml.Vector3f;
 
 import java.util.Collections;
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public record Beam(BodyPart anchor, PerspectiveValue<Vector3f> offset, PerspectiveValue<Condition> visibility,
                    BeamRenderer renderer, List<BeamParticle> particles) {
 
@@ -39,7 +37,7 @@ public record Beam(BodyPart anchor, PerspectiveValue<Vector3f> offset, Perspecti
     ).apply(instance, Beam::new));
 
     public Vec3 getOriginPosition(AbstractClientPlayer player, float partialTick) {
-        return BodyPart.getInWorldPosition(this.anchor, this.offset.get(), player, partialTick);
+        return ModelUtil.getInWorldPosition(this.anchor, this.offset.get(), player, partialTick);
     }
 
     public void spawnParticles(Level level, Vec3 pos) {

@@ -1,13 +1,12 @@
 package net.threetag.palladium.core.entity;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.world.entity.player.Player;
+import net.threetag.palladium.platform.PlatformHelper;
 
 public class PlayerNameChange {
 
-    @ExpectPlatform
     public static void refreshDisplayName(Player player) {
-        throw new AssertionError();
+        PlatformHelper.PLATFORM.getEntities().refreshDisplayName(player);
     }
 
 }

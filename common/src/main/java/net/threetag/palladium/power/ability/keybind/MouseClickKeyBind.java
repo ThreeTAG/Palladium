@@ -4,17 +4,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
-import net.threetag.palladium.client.gui.component.BlitUiComponent;
-import net.threetag.palladium.client.gui.component.UiComponent;
-import net.threetag.palladium.power.ability.AbilityInstance;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.IntFunction;
@@ -43,15 +37,6 @@ public class MouseClickKeyBind extends KeyBindType {
     @Override
     public KeyBindTypeSerializer<?> getSerializer() {
         return KeyBindTypeSerializers.MOUSE_CLICK.get();
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public UiComponent getDisplayedKey(AbilityInstance<?> abilityInstance, ResourceLocation texture, boolean inside, int index) {
-        return new BlitUiComponent(texture,
-                this.clickType == ClickType.LEFT_CLICK ? 24 :
-                        (this.clickType == ClickType.RIGHT_CLICK ? 29 : 34),
-                92, 5, 7, 256, 256);
     }
 
     public static class Serializer extends KeyBindTypeSerializer<MouseClickKeyBind> {

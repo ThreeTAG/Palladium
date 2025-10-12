@@ -3,8 +3,6 @@ package net.threetag.palladium.customization;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.Util;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
@@ -13,8 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
-import net.threetag.palladium.client.renderer.entity.layer.*;
-import net.threetag.palladium.logic.condition.PerspectiveAwareConditions;
 import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.entity.SkinTypedValue;
 
@@ -93,10 +89,10 @@ public class BuiltinCustomization extends Customization {
 
         public static final Codec<Type> CODEC = StringRepresentable.fromEnum(Type::values);
 
-        private final String key;
+        public final String key;
         private final ResourceKey<CustomizationCategory> slot;
         private final Component title;
-        private final SkinTypedValue<ModelLayerLocationCodec> model;
+        public final SkinTypedValue<ModelLayerLocationCodec> model;
         private final ResourceLocation renderLayerId;
 
         Type(String key, ResourceKey<CustomizationCategory> slot) {
@@ -132,38 +128,6 @@ public class BuiltinCustomization extends Customization {
                 return Collections.singletonList(BodyPart.LEFT_ARM);
             }
             return Collections.emptyList();
-        }
-
-        @Environment(EnvType.CLIENT)
-        public SkinTypedValue<PackRenderLayerTexture> getTexture() {
-            var texture = Palladium.id("textures/customization/" + this.key + ".png");
-
-            if (this == STRAWHAT) {
-                texture = ResourceLocation.withDefaultNamespace("textures/entity/villager/profession/farmer.png");
-            }
-
-            if (this == WINTER_SOLDIER_ARM) {
-                return new SkinTypedValue<>(
-                        new PackRenderLayerTexture(Palladium.id("textures/customization/" + this.key + ".png")),
-                        new PackRenderLayerTexture(Palladium.id("textures/customization/" + this.key + "_slim.png"))
-                );
-            }
-
-            return new SkinTypedValue<>(new PackRenderLayerTexture(texture));
-        }
-
-        @Environment(EnvType.CLIENT)
-        public PackRenderLayer<?> makeRenderLayer() {
-            boolean glowing = this == HEROBRINE_EYES || this == LUCRAFT_ARC_REACTOR;
-
-            return new DefaultPackRenderLayer(
-                    this.model,
-                    this.getTexture(),
-                    RenderTypeFunctions.SOLID,
-                    glowing ? 15 : 0,
-                    PackRenderLayerAnimation.EMPTY,
-                    PerspectiveAwareConditions.EMPTY
-            );
         }
     }
 }

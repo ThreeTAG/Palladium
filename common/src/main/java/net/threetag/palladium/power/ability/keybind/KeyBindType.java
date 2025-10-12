@@ -1,14 +1,9 @@
 package net.threetag.palladium.power.ability.keybind;
 
 import com.mojang.serialization.Codec;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.client.gui.component.UiComponent;
-import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
@@ -20,6 +15,4 @@ public abstract class KeyBindType {
 
     public abstract KeyBindTypeSerializer<?> getSerializer();
 
-    @Environment(EnvType.CLIENT)
-    public abstract UiComponent getDisplayedKey(AbilityInstance<?> abilityInstance, ResourceLocation texture, boolean inside, int index);
 }

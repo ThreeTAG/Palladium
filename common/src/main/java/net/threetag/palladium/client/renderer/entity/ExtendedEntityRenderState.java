@@ -9,15 +9,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.animation.PalladiumAnimation;
 import net.threetag.palladium.client.animation.PalladiumAnimationManager;
+import net.threetag.palladium.client.util.ClientContextTypes;
 import net.threetag.palladium.client.renderer.entity.layer.ClientEntityRenderLayers;
-import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.logic.context.DataContextType;
+import net.threetag.palladium.client.util.PlayerModelCacheExtension;
 import net.threetag.palladium.entity.BodyPart;
-import net.threetag.palladium.entity.PlayerModelCacheExtension;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.entity.flight.DefaultFlightType;
 import net.threetag.palladium.entity.flight.EntityFlightHandler;
+import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.logic.context.DataContextType;
 import net.threetag.palladium.power.ability.*;
 
 import java.util.HashMap;
@@ -38,16 +39,16 @@ public interface ExtendedEntityRenderState {
             extState.palladium$resetData();
 
             if (PalladiumEntityData.get(entity, PalladiumEntityDataTypes.RENDER_LAYERS.get()) instanceof ClientEntityRenderLayers layers) {
-                extState.palladium$addData(DataContextType.Client.RENDER_LAYERS, layers.getLayerStates());
+                extState.palladium$addData(ClientContextTypes.RENDER_LAYERS, layers.getLayerStates());
             }
 
-            extState.palladium$addData(DataContextType.Client.PARTIAL_TICK, partialTick);
+            extState.palladium$addData(ClientContextTypes.PARTIAL_TICK, partialTick);
 
             if (entity instanceof LivingEntity living) {
-                extState.palladium$addData(DataContextType.Client.HIDDEN_BODY_PARTS, BodyPart.getHiddenBodyParts(living));
-                extState.palladium$addData(DataContextType.Client.REMOVED_BODY_PARTS, BodyPart.getRemovedBodyParts(living));
-                extState.palladium$addData(DataContextType.Client.AIM, AimAbility.getTimer(living, partialTick));
-                extState.palladium$addData(DataContextType.Client.IN_FLIGHT, EntityFlightHandler.get(living).getInFlightTimer(partialTick));
+                extState.palladium$addData(ClientContextTypes.HIDDEN_BODY_PARTS, BodyPart.getHiddenBodyParts(living));
+                extState.palladium$addData(ClientContextTypes.REMOVED_BODY_PARTS, BodyPart.getRemovedBodyParts(living));
+                extState.palladium$addData(ClientContextTypes.AIM, AimAbility.getTimer(living, partialTick));
+                extState.palladium$addData(ClientContextTypes.IN_FLIGHT, EntityFlightHandler.get(living).getInFlightTimer(partialTick));
 
                 // Animations
                 Map<DataContext, PalladiumAnimation> animations = new HashMap<>();
@@ -66,11 +67,11 @@ public interface ExtendedEntityRenderState {
                         }
                     }
                 }
-                extState.palladium$addData(DataContextType.Client.ANIMATIONS, animations);
+                extState.palladium$addData(ClientContextTypes.ANIMATIONS, animations);
             }
 
             if (entity instanceof PlayerModelCacheExtension ext) {
-                extState.palladium$addData(DataContextType.Client.CACHED_MODEL, ext.palladium$getCachedModel());
+                extState.palladium$addData(ClientContextTypes.CACHED_MODEL, ext.palladium$getCachedModel());
             }
         }
     }
