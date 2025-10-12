@@ -56,7 +56,7 @@ public class SmallArmsCondition implements Condition {
 
         @Override
         public String getDocumentationDescription() {
-            return "Checks if the entity has small arms. Returns false if the entity is not a player or if this mainCondition is being checked sever-side.";
+            return "Checks if the entity has small arms. Returns false if the entity is not a player or if this condition is being checked sever-side.";
         }
     }
 }

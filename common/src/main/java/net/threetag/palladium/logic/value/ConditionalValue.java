@@ -14,7 +14,7 @@ import net.threetag.palladium.logic.context.DataContext;
 public class ConditionalValue extends Value {
 
     public static final MapCodec<ConditionalValue> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Condition.CODEC.fieldOf("mainCondition").forGetter(v -> v.condition),
+            Condition.CODEC.fieldOf("condition").forGetter(v -> v.condition),
             Value.CODEC.fieldOf("if_true").forGetter(v -> v.ifTrue),
             Value.CODEC.fieldOf("if_false").forGetter(v -> v.ifFalse)
     ).apply(instance, ConditionalValue::new));
@@ -48,10 +48,10 @@ public class ConditionalValue extends Value {
 
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, ConditionalValue> builder, HolderLookup.Provider provider) {
-            builder.setName("Conditional Value").setDescription("Returns a value based on whether a mainCondition is met.")
-                    .add("mainCondition", TYPE_CONDITION_LIST, "The mainCondition to test.")
-                    .add("if_true", TYPE_VALUE, "The value to return if the mainCondition is met.")
-                    .add("if_false", TYPE_VALUE, "The value to return if the mainCondition is not met.")
+            builder.setName("Conditional Value").setDescription("Returns a value based on whether a condition is met.")
+                    .add("condition", TYPE_CONDITION_LIST, "The condition to test.")
+                    .add("if_true", TYPE_VALUE, "The value to return if the condition is met.")
+                    .add("if_false", TYPE_VALUE, "The value to return if the condition is not met.")
                     .setExampleObject(new ConditionalValue(
                             new CrouchingCondition(),
                             new StaticValue(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive("crouching"))),

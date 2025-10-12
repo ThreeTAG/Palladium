@@ -49,7 +49,7 @@ public record AndCondition(List<Condition> conditions) implements Condition {
 
         @Override
         public String getDocumentationDescription() {
-            return "A mainCondition that is active if all of the conditions in the array are active.";
+            return "A condition that is active if all of the conditions in the array are active.";
         }
     }
 }
