@@ -1,98 +1,66 @@
 plugins {
-    id 'com.github.johnrengelman.shadow'
+    id 'multiloader-loader'
+    id 'fabric-loom'
+}
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
+    }
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
+    // Architectury
+    modApi "dev.architectury:architectury-fabric:${architectury_version}"
+
+    // MidnightLib
+    modImplementation include("maven.modrinth:midnightlib:${midnightlib_version}-fabric")
+
+    // Player Animation Library
+    modImplementation "com.zigythebird.playeranim:PlayerAnimationLibFabric:${player_animation_lib_version}"
+
+    // Accessories
+    modImplementation "io.wispforest:accessories-fabric:${accessories_version}"
+
+    // GeckoLib
+    modImplementation "software.bernie.geckolib:geckolib-fabric-${geckolib_version}"
+
+    // Iris
+    compileOnly "maven.modrinth:iris:${iris_version}-fabric"
 }
 
 loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
-
-    runConfigs.configureEach {
-        if (name == "client") {
-            runDir = "../run"
+    def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
+    if (aw.exists()) {
+        accessWidenerPath.set(aw)
+    }
+    mixin {
+        defaultRefmapName.set("${mod_id}.refmap.json")
+    }
+    runs {
+        client {
+            client()
+            setConfigName('Fabric Client')
+            ideConfigGenerated(true)
 
             if (System.getenv('MC_USERNAME') && System.getenv('MC_UUID')) {
                 programArgs '--username', System.getenv('MC_USERNAME'), '--uuid', System.getenv('MC_UUID')
             }
-        } else if (name == "server") {
-            runDir = "../run/server-fabric"
+        }
+        server {
+            server()
+            setConfigName('Fabric Server')
+            ideConfigGenerated(true)
         }
     }
 }
 
-fabricApi {
-    configureDataGeneration {
-        client = true
-        outputDirectory = project(':common').file("src/generated")
-        modId = 'palladium'
-    }
+sourceSets.main.resources {
+    srcDir project(":neoforge").file("src/generated/resources").absolutePath
 }
 
-architectury {
-    platformSetupLoomIde()
-    fabric()
-}
-
-configurations {
-    common {
-        canBeResolved = true
-        canBeConsumed = false
-    }
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
-    developmentFabric.extendsFrom common
-
-    shadowBundle {
-        canBeResolved = true
-        canBeConsumed = false
-    }
-}
-
-dependencies {
-    modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
-
-    // Architectury
-    modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
-
-    // MidnightLib
-    modImplementation include("maven.modrinth:midnightlib:${rootProject.midnightlib_version}-fabric")
-
-    // GeckoLib
-    modImplementation "software.bernie.geckolib:geckolib-fabric-${rootProject.geckolib_version}"
-
-    // Accessories
-    modImplementation("io.wispforest:accessories-fabric:${rootProject.accessories_version}")
-
-    // Mocha
-    implementation shadowBundle("com.zigythebird:mochafloats:${rootProject.mocha_version}") {
-        transitive = false
-    }
-    implementation include("org.javassist:javassist:3.30.2-GA")
-
-    // Runtime Testing Mods
-    modLocalRuntime("maven.modrinth:modmenu:${rootProject.modmenu_version}")
-    modLocalRuntime("maven.modrinth:sodium:${rootProject.sodium_version}-fabric")
-
-    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
-    shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
-}
-
-processResources {
-    inputs.property 'version', project.version
-
-    filesMatching('fabric.mod.json') {
-        expand version: project.version
-    }
-}
-
-shadowJar {
-    exclude "palladium.accessWidener"
-    exclude "architectury.common.json"
-    configurations = [project.configurations.shadowBundle]
-    archiveClassifier = 'dev-shadow'
-}
-
-remapJar {
-    injectAccessWidener = true
-    input.set shadowJar.archiveFile
-    archiveClassifier = "fabric"
+tasks.register('syncExamplePack', Sync) {
+    from "$projectDir/../example_pack"
+    into "$projectDir/run/palladium/addonpacks/example_pack"
 }

@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:stair",
-  "base_state": {
-    "Name": "minecraft:dark_oak_planks"
-  },
-  "properties": {}
-}

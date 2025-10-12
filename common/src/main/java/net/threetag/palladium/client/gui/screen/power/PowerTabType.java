@@ -1,15 +1,12 @@
 package net.threetag.palladium.client.gui.screen.power;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
-import net.threetag.palladium.client.icon.Icon;
+import net.threetag.palladium.client.renderer.icon.IconRenderer;
+import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.logic.context.DataContext;
 
-@Environment(EnvType.CLIENT)
 public enum PowerTabType {
 
     ABOVE(0, 0, 28, 32, 8),
@@ -47,7 +44,7 @@ public enum PowerTabType {
         }
 
         int j = isSelected ? this.textureY + this.height : this.textureY;
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,PowersScreen.TABS, offsetX + this.getX(index), offsetY + this.getY(index), i, j, this.width, this.height, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, PowersScreen.TABS, offsetX + this.getX(index), offsetY + this.getY(index), i, j, this.width, this.height, 256, 256);
     }
 
     public void drawIcon(GuiGraphics guiGraphics, DataContext context, int offsetX, int offsetY, int index, Icon icon) {
@@ -72,7 +69,7 @@ public enum PowerTabType {
             }
         }
 
-        icon.draw(Minecraft.getInstance(), guiGraphics, context, i, j);
+        IconRenderer.drawIcon(icon, Minecraft.getInstance(), guiGraphics, context, i, j);
     }
 
     public int getX(int index) {

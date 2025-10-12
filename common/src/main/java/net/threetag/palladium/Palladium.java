@@ -5,7 +5,7 @@ import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import eu.midnightdust.lib.config.MidnightConfig;
 import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.client.icon.IconSerializers;
+import net.threetag.palladium.icon.IconSerializers;
 import net.threetag.palladium.command.*;
 import net.threetag.palladium.compat.accessories.AccessoriesCompatImpl;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
@@ -31,6 +31,7 @@ import net.threetag.palladium.power.ability.enabling.EnablingHandlerSerializers;
 import net.threetag.palladium.power.ability.keybind.KeyBindTypeSerializers;
 import net.threetag.palladium.power.ability.unlocking.UnlockingHandlerSerializers;
 import net.threetag.palladium.power.provider.PowerProviders;
+import net.threetag.palladium.proxy.PalladiumProxy;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +40,7 @@ public final class Palladium {
 
     public static final String MOD_ID = "palladium";
     public static final Logger LOGGER = LogManager.getLogger();
+    public static PalladiumProxy PROXY = new PalladiumProxy();
 
     public static void init() {
         MidnightConfig.init(MOD_ID, PalladiumConfig.class);

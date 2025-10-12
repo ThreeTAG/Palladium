@@ -9,7 +9,6 @@ import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.phys.Vec3;
-import net.threetag.palladium.client.PoseStackTransformation;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import org.jetbrains.annotations.Nullable;
 

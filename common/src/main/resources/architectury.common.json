@@ -1,8 +1,0 @@
-{
-  "accessWidener": "palladium.accessWidener",
-  "injected_interfaces": {
-    "net/minecraft/class_10017": [
-      "net/threetag/palladium/client/renderer/entity/ExtendedEntityRenderState"
-    ]
-  }
-}

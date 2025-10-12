@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.threetag.palladium.client.icon.IngredientIcon;
+import net.threetag.palladium.icon.IngredientIcon;
 import net.threetag.palladium.logic.condition.Condition;
 import net.threetag.palladium.logic.condition.TrueCondition;
 import net.threetag.palladium.util.PalladiumCodecs;

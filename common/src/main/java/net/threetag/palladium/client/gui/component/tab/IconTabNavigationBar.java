@@ -1,8 +1,6 @@
 package net.threetag.palladium.client.gui.component.tab;
 
 import com.google.common.collect.ImmutableList;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.Font;
@@ -25,12 +23,12 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.logic.context.DataContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-@Environment(EnvType.CLIENT)
 public class IconTabNavigationBar extends AbstractContainerEventHandler implements Renderable, NarratableEntry {
 
     private static final int NO_TAB = -1;
@@ -129,9 +127,9 @@ public class IconTabNavigationBar extends AbstractContainerEventHandler implemen
     }
 
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,Screen.HEADER_SEPARATOR, 0, this.layout.getY() + this.layout.getHeight() - 2, 0, 0, this.tabButtons.get(0).getX(), 2, 32, 2);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, Screen.HEADER_SEPARATOR, 0, this.layout.getY() + this.layout.getHeight() - 2, 0, 0, this.tabButtons.get(0).getX(), 2, 32, 2);
         int i = this.tabButtons.get(this.tabButtons.size() - 1).getRight();
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,Screen.HEADER_SEPARATOR, i, this.layout.getY() + this.layout.getHeight() - 2, 0, 0, this.width, 2, 32, 2);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, Screen.HEADER_SEPARATOR, i, this.layout.getY() + this.layout.getHeight() - 2, 0, 0, this.width, 2, 32, 2);
 
         for (TabButton tabButton : this.tabButtons) {
             tabButton.render(guiGraphics, mouseX, mouseY, partialTick);
@@ -205,7 +203,6 @@ public class IconTabNavigationBar extends AbstractContainerEventHandler implemen
         return i != NO_TAB ? this.tabButtons.get(i) : null;
     }
 
-    @Environment(EnvType.CLIENT)
     public static class Builder {
         private final int width;
         private final TabManager tabManager;
@@ -242,7 +239,7 @@ public class IconTabNavigationBar extends AbstractContainerEventHandler implemen
         public void renderString(GuiGraphics guiGraphics, Font font, int color) {
             if (this.tab() instanceof IconTab iconTab) {
                 var mc = Minecraft.getInstance();
-                iconTab.getIcon().draw(mc, guiGraphics, DataContext.forEntity(mc.player), this.getX() + (this.getWidth() / 2) - 8, this.getY() + (this.getHeight() / 2) - 7);
+                IconRenderer.drawIcon(iconTab.getIcon(), mc, guiGraphics, DataContext.forEntity(mc.player), this.getX() + (this.getWidth() / 2) - 8, this.getY() + (this.getHeight() / 2) - 7);
             } else {
                 super.renderString(guiGraphics, font, color);
             }

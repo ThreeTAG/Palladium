@@ -114,7 +114,7 @@ public class SwingingFlightType extends FlightType {
             }
 
             if (this.anchor != null && entity instanceof Player player) {
-                var input = PlayerUtil.getPlayerInput(player);
+                var input = PlayerUtil.getMovementInput(player);
 
                 if (input != null) {
                     if (input.jump()) {

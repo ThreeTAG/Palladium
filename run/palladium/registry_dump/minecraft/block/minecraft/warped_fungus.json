@@ -1,6 +1,0 @@
-{
-  "type": "minecraft:fungus",
-  "feature": "minecraft:warped_fungus_planted",
-  "grows_on": "minecraft:warped_nylium",
-  "properties": {}
-}

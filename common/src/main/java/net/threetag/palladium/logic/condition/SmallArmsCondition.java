@@ -3,8 +3,6 @@ package net.threetag.palladium.logic.condition;
 import com.mojang.serialization.MapCodec;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
@@ -20,16 +18,8 @@ public class SmallArmsCondition implements Condition {
 
     @Override
     public boolean test(DataContext context) {
-        if (Platform.getEnvironment() == Env.CLIENT) {
-            return this.has(context.getPlayer());
-        } else {
-            return false;
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    private boolean has(Player player) {
-        return PlayerUtil.hasSmallArms(player);
+        var player = context.getPlayer();
+        return player != null && PlayerUtil.hasSmallArms(player);
     }
 
     @Override

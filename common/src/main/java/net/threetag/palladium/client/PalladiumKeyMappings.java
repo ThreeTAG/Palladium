@@ -5,8 +5,6 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientRawInputEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
@@ -19,7 +17,6 @@ import net.threetag.palladium.power.ability.keybind.AbilityKeyBind;
 import net.threetag.palladium.power.ability.keybind.MouseClickKeyBind;
 import org.lwjgl.glfw.GLFW;
 
-@Environment(EnvType.CLIENT)
 public class PalladiumKeyMappings implements ClientRawInputEvent.KeyPressed, ClientTickEvent.Client {
 
     public static final String CATEGORY = "key.palladium.categories.powers";

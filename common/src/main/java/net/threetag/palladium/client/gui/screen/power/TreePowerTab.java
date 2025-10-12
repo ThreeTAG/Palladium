@@ -1,11 +1,8 @@
 package net.threetag.palladium.client.gui.screen.power;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.threetag.palladium.client.texture.TextureReference;
@@ -19,7 +16,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class TreePowerTab extends PowerTab {
 
     public static final int GRID_SIZE = 50;
@@ -272,10 +268,10 @@ public class TreePowerTab extends PowerTab {
     public static boolean canBeTree(PowerHolder holder) {
         return holder.getAbilities().values().stream().filter(entry -> !entry.getAbility().getProperties().isHiddenInGUI())
                 .anyMatch(entry -> entry.getAbility().getStateManager().getUnlockingHandler().getParentAbilities().stream().anyMatch(ref -> {
-            var parent = ref.getInstance(Minecraft.getInstance().player, holder);
+                    var parent = ref.getInstance(Minecraft.getInstance().player, holder);
 
-            return parent != null && parent.getHolder() == holder;
-        }));
+                    return parent != null && parent.getHolder() == holder;
+                }));
     }
 
     public void scroll(double dragX, double dragY) {

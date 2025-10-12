@@ -1,1 +1,0 @@
-- Fixed command ability not liking / at the beginning of commands

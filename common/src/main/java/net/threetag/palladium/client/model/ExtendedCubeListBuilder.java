@@ -199,17 +199,17 @@ public class ExtendedCubeListBuilder extends CubeListBuilder {
             Vector3f vector3f = new Vector3f();
 
             for(ModelPart.Polygon polygon : this.polygons) {
-                Vector3f vector3f2 = pose.transformNormal(polygon.normal, vector3f);
+                Vector3f vector3f2 = pose.transformNormal(polygon.normal(), vector3f);
                 float f = vector3f2.x();
                 float g = vector3f2.y();
                 float h = vector3f2.z();
 
-                for(ModelPart.Vertex vertex : polygon.vertices) {
-                    float i = vertex.pos.x() / 16.0F;
-                    float j = vertex.pos.y() / 16.0F;
-                    float k = vertex.pos.z() / 16.0F;
+                for(ModelPart.Vertex vertex : polygon.vertices()) {
+                    float i = vertex.pos().x() / 16.0F;
+                    float j = vertex.pos().y() / 16.0F;
+                    float k = vertex.pos().z() / 16.0F;
                     Vector3f vector3f3 = matrix4f.transformPosition(i, j, k, vector3f);
-                    buffer.addVertex(vector3f3.x(), vector3f3.y(), vector3f3.z(), color, vertex.u, vertex.v, packedOverlay, packedLight, f, g, h);
+                    buffer.addVertex(vector3f3.x(), vector3f3.y(), vector3f3.z(), color, vertex.u(), vertex.v(), packedOverlay, packedLight, f, g, h);
                 }
             }
         }

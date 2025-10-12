@@ -21,21 +21,18 @@ import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayer;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerializer;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerTexture;
 import net.threetag.palladium.client.texture.TextureReference;
+import net.threetag.palladium.client.util.PerspectiveAwareConditions;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
-import net.threetag.palladium.logic.condition.PerspectiveAwareConditions;
-import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.entity.SkinTypedValue;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
-import software.bernie.geckolib.renderer.base.GeoRenderer;
 
 import java.util.*;
 

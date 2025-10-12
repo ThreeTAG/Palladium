@@ -1,8 +1,6 @@
 package net.threetag.palladium.client.gui.component.grid;
 
 import com.google.common.collect.Lists;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractContainerWidget;
@@ -396,7 +394,6 @@ public abstract class AbstractSelectionGrid<E extends AbstractSelectionGrid.Entr
 
     }
 
-    @Environment(EnvType.CLIENT)
     public abstract static class Entry<E extends AbstractSelectionGrid.Entry<E>> implements GuiEventListener {
 
         AbstractSelectionGrid<E> grid;
@@ -421,7 +418,6 @@ public abstract class AbstractSelectionGrid<E extends AbstractSelectionGrid.Entr
         }
     }
 
-    @Environment(EnvType.CLIENT)
     class TrackedList extends AbstractList<E> {
         private final List<E> delegate = Lists.newArrayList();
 

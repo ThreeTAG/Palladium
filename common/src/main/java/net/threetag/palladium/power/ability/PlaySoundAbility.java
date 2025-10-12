@@ -3,19 +3,14 @@ package net.threetag.palladium.power.ability;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
-import net.threetag.palladium.sound.AbilitySound;
 import net.threetag.palladium.util.PlayerUtil;
 
 import java.util.List;
@@ -53,9 +48,7 @@ public class PlaySoundAbility extends Ability {
     @Override
     public void firstTick(LivingEntity entity, AbilityInstance<?> instance) {
         if (this.looping) {
-            if (Platform.getEnvironment() == Env.CLIENT) {
-                this.startSound(entity, instance);
-            }
+            Palladium.PROXY.playAbilitySound(instance, entity, this.sound, this.volume, this.pitch, this.playSelf);
         } else if (!entity.level().isClientSide) {
             if (this.playSelf) {
                 if (entity instanceof Player player) {
@@ -64,13 +57,6 @@ public class PlaySoundAbility extends Ability {
             } else {
                 PlayerUtil.playSoundToAll(entity.level(), entity.getX(), entity.getEyeY(), entity.getZ(), 100, this.sound, entity.getSoundSource(), this.volume, this.pitch);
             }
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public void startSound(LivingEntity entity, AbilityInstance<?> instance) {
-        if (!this.playSelf || Minecraft.getInstance().player == entity) {
-            Minecraft.getInstance().getSoundManager().play(new AbilitySound(instance.getReference(), entity, this.sound, entity.getSoundSource(), this.volume, this.pitch));
         }
     }
 

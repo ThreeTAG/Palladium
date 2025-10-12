@@ -10,10 +10,11 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.threetag.palladium.client.animation.HideBodyPartsAnimation;
 import net.threetag.palladium.client.animation.PalladiumAnimation;
+import net.threetag.palladium.client.util.ClientContextTypes;
 import net.threetag.palladium.client.renderer.entity.ExtendedEntityRenderState;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerRenderer;
+import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.logic.context.DataContextType;
 import net.threetag.palladium.entity.BodyPart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,8 +43,8 @@ public abstract class LivingEntityRendererMixin {
             method = "render(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V")
     private void postSetupAnim(LivingEntityRenderState state, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci) {
         if (state instanceof ExtendedEntityRenderState extState) {
-            for (Map.Entry<DataContext, PalladiumAnimation> entry : extState.palladium$getData(DataContextType.Client.ANIMATIONS).entrySet()) {
-                entry.getValue().animate(this.getModel(), entry.getKey(), extState.palladium$getData(DataContextType.Client.PARTIAL_TICK));
+            for (Map.Entry<DataContext, PalladiumAnimation> entry : extState.palladium$getData(ClientContextTypes.ANIMATIONS).entrySet()) {
+                entry.getValue().animate(this.getModel(), entry.getKey(), extState.palladium$getData(ClientContextTypes.PARTIAL_TICK));
             }
         }
     }
@@ -54,12 +55,12 @@ public abstract class LivingEntityRendererMixin {
         if (this.getModel() instanceof HumanoidModel model) {
             for (BodyPart bodyPart : BodyPart.values()) {
                 var visible = HideBodyPartsAnimation.CACHED_VISIBILITIES.getOrDefault(bodyPart, true);
-                bodyPart.setVisibility(model, visible);
+                ModelUtil.setVisibilityByBodyPart(model, bodyPart, visible);
             }
 
-            if (state instanceof ExtendedEntityRenderState ext && ext.palladium$hasData(DataContextType.Client.REMOVED_BODY_PARTS)) {
-                for (BodyPart bodyPart : ext.palladium$getData(DataContextType.Client.REMOVED_BODY_PARTS)) {
-                    bodyPart.setVisibility(model, false);
+            if (state instanceof ExtendedEntityRenderState ext && ext.palladium$hasData(ClientContextTypes.REMOVED_BODY_PARTS)) {
+                for (BodyPart bodyPart : ext.palladium$getData(ClientContextTypes.REMOVED_BODY_PARTS)) {
+                    ModelUtil.setVisibilityByBodyPart(model, bodyPart, false);
                 }
             }
         }
@@ -68,8 +69,8 @@ public abstract class LivingEntityRendererMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose()V"),
             method = "render(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V")
     private void postLayers(LivingEntityRenderState state, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci) {
-        if (state instanceof ExtendedEntityRenderState ext && ext.palladium$hasData(DataContextType.Client.CACHED_MODEL) && this.getModel() instanceof HumanoidModel model) {
-            model.copyPropertiesTo(ext.palladium$getData(DataContextType.Client.CACHED_MODEL));
+        if (state instanceof ExtendedEntityRenderState ext && ext.palladium$hasData(ClientContextTypes.CACHED_MODEL) && this.getModel() instanceof HumanoidModel model) {
+            model.copyPropertiesTo(ext.palladium$getData(ClientContextTypes.CACHED_MODEL));
         }
     }
 

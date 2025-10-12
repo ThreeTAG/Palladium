@@ -10,6 +10,7 @@ public class GeckoLibCompat {
 
     private static final DeferredRegister<AbilitySerializer<?>> ABILITIES = DeferredRegister.create("geckolib", PalladiumRegistryKeys.ABILITY_SERIALIZER);
     public static final RegistryHolder<AbilitySerializer<GeoLayerAnimationTriggerAbility>> TRIGGER_LAYER_ANIMATION = ABILITIES.register("trigger_layer_animation", GeoLayerAnimationTriggerAbility.Serializer::new);
+    public static GeckoAbilityHandler ABILITY_HANDLER = new GeckoAbilityHandler();
 
     public static void init() {
         ABILITIES.register();

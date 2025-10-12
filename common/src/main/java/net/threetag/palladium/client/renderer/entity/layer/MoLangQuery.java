@@ -1,5 +1,7 @@
 package net.threetag.palladium.client.renderer.entity.layer;
 
+import com.zigythebird.playeranim.lib.mochafloats.runtime.binding.Binding;
+import com.zigythebird.playeranim.lib.mochafloats.runtime.value.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.entity.flight.EntityFlightHandler;
 import net.threetag.palladium.entity.flight.SwingingFlightType;
@@ -7,8 +9,6 @@ import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilityReference;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import team.unnamed.mocha.runtime.binding.Binding;
-import team.unnamed.mocha.runtime.value.*;
 
 @Binding("query")
 public class MoLangQuery implements ObjectValue {
@@ -42,8 +42,10 @@ public class MoLangQuery implements ObjectValue {
             case "flight_limb_pitch" -> ObjectProperty.property(Value.of(flight_limb_pitch()), false).value();
             case "flight_limb_roll" -> ObjectProperty.property(Value.of(flight_limb_roll()), false).value();
             case "flight_limb_yaw" -> ObjectProperty.property(Value.of(flight_limb_yaw()), false).value();
-            case "swinging_right_arm_pitch" -> ObjectProperty.property(Value.of(swinging_right_arm_pitch()), false).value();
-            case "swinging_left_arm_pitch" -> ObjectProperty.property(Value.of(swinging_left_arm_pitch()), false).value();
+            case "swinging_right_arm_pitch" ->
+                    ObjectProperty.property(Value.of(swinging_right_arm_pitch()), false).value();
+            case "swinging_left_arm_pitch" ->
+                    ObjectProperty.property(Value.of(swinging_left_arm_pitch()), false).value();
             default -> Value.nil();
         };
     }

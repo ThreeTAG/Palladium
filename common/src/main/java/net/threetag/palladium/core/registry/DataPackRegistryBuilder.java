@@ -1,9 +1,9 @@
 package net.threetag.palladium.core.registry;
 
 import com.mojang.serialization.Codec;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.threetag.palladium.platform.PlatformHelper;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -29,9 +29,8 @@ public class DataPackRegistryBuilder {
      *                     If {@code networkCodec} is not null, clients must have this datapack registry/mod
      *                     when joining a server that has this datapack registry/mod.
      */
-    @ExpectPlatform
     public static <T> void create(ResourceKey<? extends Registry<T>> key, Codec<T> dataCodec, @Nullable Codec<T> networkCodec) {
-        throw new AssertionError();
+        PlatformHelper.PLATFORM.getRegistries().createDataPackRegistry(key, dataCodec, networkCodec);
     }
 
 }

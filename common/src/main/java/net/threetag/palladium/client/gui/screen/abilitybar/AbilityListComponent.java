@@ -7,20 +7,21 @@ import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.PalladiumConfig;
+import net.threetag.palladium.client.PalladiumKeyMappings;
+import net.threetag.palladium.client.gui.component.BlitUiComponent;
 import net.threetag.palladium.client.gui.component.TextUiComponent;
 import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.component.UiComponent;
+import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.enabling.KeyBindEnablingHandler;
+import net.threetag.palladium.power.ability.keybind.AbilityKeyBind;
+import net.threetag.palladium.power.ability.keybind.JumpKeyBind;
+import net.threetag.palladium.power.ability.keybind.KeyBindType;
+import net.threetag.palladium.power.ability.keybind.MouseClickKeyBind;
 
-public class AbilityListComponent implements UiComponent {
-
-    private final AbilityBar.AbilityList abilityList;
-
-    public AbilityListComponent(AbilityBar.AbilityList abilityList) {
-        this.abilityList = abilityList;
-    }
+public record AbilityListComponent(AbilityBar.AbilityList abilityList) implements UiComponent {
 
     @Override
     public int getWidth() {
@@ -54,7 +55,7 @@ public class AbilityListComponent implements UiComponent {
                 }
 
                 // Ability Icon
-                ability.getAbility().getProperties().getIcon().draw(minecraft, gui, DataContext.forAbility(minecraft.player, ability), x + 1, y + 1);
+                IconRenderer.drawIcon(ability.getAbility().getProperties().getIcon(), minecraft, gui, DataContext.forAbility(minecraft.player, ability), x + 1, y + 1);
 
                 // Cooldown
                 if (ability.getAbility().getStateManager().getEnablingHandler() instanceof KeyBindEnablingHandler handler
@@ -67,7 +68,7 @@ public class AbilityListComponent implements UiComponent {
                 // Key Bind (inside)
                 if (PalladiumConfig.ABILITY_BAR_KEY_BIND_DISPLAY == AbilityKeyBindDisplay.INSIDE &&
                         ability.getAbility().getStateManager().getEnablingHandler() instanceof KeyBindEnablingHandler handler) {
-                    var key = handler.getKeyBindType().getDisplayedKey(ability, texture, true, index);
+                    var key = getComponentForKeyBind(handler.getKeyBindType(), ability, texture, true, index);
                     gui.pose().pushMatrix();
                     gui.pose().translate(0, 0);
                     key.render(minecraft, gui, deltaTracker, x + 19 - key.getWidth(), y + 17 - key.getHeight(), alignment);
@@ -82,7 +83,7 @@ public class AbilityListComponent implements UiComponent {
                     if (chatOpen) {
                         displayedText = new TextUiComponent(ability.getAbility().getDisplayName());
                     } else if (ability.getAbility().getStateManager().getEnablingHandler() instanceof KeyBindEnablingHandler handler) {
-                        displayedText = handler.getKeyBindType().getDisplayedKey(ability, texture, false, index);
+                        displayedText = getComponentForKeyBind(handler.getKeyBindType(), ability, texture, false, index);
                     }
                 } else if (chatOpen) {
                     displayedText = new TextUiComponent(ability.getAbility().getDisplayName());
@@ -110,5 +111,19 @@ public class AbilityListComponent implements UiComponent {
         } else {
             gui.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 60, 56, 18, 18, 256, 256);
         }
+    }
+
+    public static UiComponent getComponentForKeyBind(KeyBindType type, AbilityInstance<?> abilityInstance, ResourceLocation texture, boolean inside, int index) {
+        return switch (type) {
+            case JumpKeyBind jump -> new BlitUiComponent(texture, 39, 92, 10, 5, 256, 256);
+            case AbilityKeyBind ability ->
+                    new TextUiComponent(PalladiumKeyMappings.ABILITY_KEYS[index].getTranslatedKeyMessage(), inside);
+            case MouseClickKeyBind mouse -> new BlitUiComponent(texture,
+                    mouse.clickType == MouseClickKeyBind.ClickType.LEFT_CLICK ? 24 :
+                            (mouse.clickType == MouseClickKeyBind.ClickType.RIGHT_CLICK ? 29 : 34),
+                    92, 5, 7, 256, 256);
+            default ->
+                    throw new IllegalStateException(String.format("No UiComponent known for key bind type %s", type.getClass().getSimpleName()));
+        };
     }
 }

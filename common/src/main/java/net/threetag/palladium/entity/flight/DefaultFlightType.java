@@ -62,7 +62,7 @@ public class DefaultFlightType extends FlightType {
         @Override
         public void tick(LivingEntity entity, DefaultFlightType flightType) {
             if (entity instanceof Player player) {
-                var input = PlayerUtil.getPlayerInput(player);
+                var input = PlayerUtil.getMovementInput(player);
 
                 if (input == null) {
                     return;
@@ -108,7 +108,7 @@ public class DefaultFlightType extends FlightType {
         @Override
         public void clampRotation(LivingEntity entity, DefaultFlightType flightType) {
             if (entity.isSprinting() && flightType.allowPropulsion()
-                    && entity instanceof Player player && PlayerUtil.getPlayerInput(player) != null) {
+                    && entity instanceof Player player && PlayerUtil.getMovementInput(player) != null) {
                 float yaw = (float) (Mth.atan2(-this.flightVector.x, this.flightVector.z) * (180F / Math.PI));
                 float f = Mth.wrapDegrees(entity.getYRot() - yaw);
                 float g = Mth.clamp(f, -45.0F, 45.0F);

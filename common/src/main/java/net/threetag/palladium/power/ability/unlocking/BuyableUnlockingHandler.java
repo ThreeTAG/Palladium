@@ -1,8 +1,6 @@
 package net.threetag.palladium.power.ability.unlocking;
 
 import dev.architectury.networking.NetworkManager;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.network.chat.Component;
@@ -11,7 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.client.gui.screen.power.BuyAbilityScreen;
 import net.threetag.palladium.client.gui.screen.power.PowersScreen;
-import net.threetag.palladium.client.icon.Icon;
+import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.logic.condition.AbilityUnlockedCondition;
 import net.threetag.palladium.logic.condition.AndCondition;
@@ -77,11 +75,6 @@ public abstract class BuyableUnlockingHandler extends UnlockingHandler {
         } else if(player instanceof ServerPlayer serverPlayer) {
             NetworkManager.sendToPlayer(serverPlayer, new OpenAbilityBuyScreenPacket(abilityInstance.getReference(), this.hasEnoughCurrency(player)));
         }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public @Nullable Screen getScreen(PowersScreen parentScreen, AbilityReference abilityReference, boolean available) {
-        return new BuyAbilityScreen(abilityReference, this.getDisplay(), available, parentScreen);
     }
 
     @Override

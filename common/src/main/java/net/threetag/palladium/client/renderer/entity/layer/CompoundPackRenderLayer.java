@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.entity.HumanoidArm;
-import net.threetag.palladium.logic.condition.PerspectiveAwareConditions;
+import net.threetag.palladium.client.util.PerspectiveAwareConditions;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 

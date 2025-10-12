@@ -8,8 +8,8 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec2;
-import net.threetag.palladium.client.icon.Icon;
-import net.threetag.palladium.client.icon.ItemIcon;
+import net.threetag.palladium.icon.Icon;
+import net.threetag.palladium.icon.ItemIcon;
 import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.Nullable;
 

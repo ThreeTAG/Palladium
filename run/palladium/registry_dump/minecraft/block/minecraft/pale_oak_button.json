@@ -1,6 +1,0 @@
-{
-  "type": "minecraft:button",
-  "block_set_type": "pale_oak",
-  "properties": {},
-  "ticks_to_stay_pressed": 30
-}

@@ -1,7 +1,5 @@
 package net.threetag.palladium.client.gui.component;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -11,7 +9,8 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
-import net.threetag.palladium.client.icon.Icon;
+import net.threetag.palladium.client.renderer.icon.IconRenderer;
+import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.logic.context.DataContext;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,7 +44,7 @@ public class TextWithIconButton extends Button {
 
         guiGraphics.drawString(minecraft.font, this.getMessage(), (int) (this.getX() + this.width / 2F - fullTextWidth / 2F), (int) (this.getY() + (this.getHeight() - 8) / 2F), i);
         guiGraphics.drawString(minecraft.font, this.suffix, (int) (this.getX() + this.width / 2F - fullTextWidth / 2F + prefixWidth + 16), (int) (this.getY() + (this.height - 8F) / 2F), i);
-        this.icon.draw(minecraft, guiGraphics, DataContext.forEntity(minecraft.player), this.getX() + this.width / 2 - fullTextWidth / 2 + prefixWidth, this.getY() + (this.height - 8) / 2 - 4);
+        IconRenderer.drawIcon(this.icon, minecraft, guiGraphics, DataContext.forEntity(minecraft.player), this.getX() + this.width / 2 - fullTextWidth / 2 + prefixWidth, this.getY() + (this.height - 8) / 2 - 4);
     }
 
     public static Builder textWithIconBuilder(Component prefix, Icon icon, OnPress onPress) {
@@ -60,7 +59,6 @@ public class TextWithIconButton extends Button {
         return new Builder(prefix, icon, suffix, onPress);
     }
 
-    @Environment(EnvType.CLIENT)
     public static class Builder {
         private final Component prefix;
         private final Component suffix;

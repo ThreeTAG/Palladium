@@ -3,8 +3,6 @@ package net.threetag.palladium.client.texture;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import io.netty.buffer.ByteBuf;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,8 +11,11 @@ import net.threetag.palladium.logic.context.DataContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 public class TextureReference {
+
+    public static BiFunction<ResourceLocation, DataContext, ResourceLocation> DYNAMIC_TEXTURE_RESOLVER = null;
 
     public static final Codec<TextureReference> CODEC = Codec.STRING.comapFlatMap(TextureReference::read, TextureReference::toString).stable();
     public static final StreamCodec<ByteBuf, TextureReference> STREAM_CODEC = StreamCodec.composite(
@@ -46,11 +47,13 @@ public class TextureReference {
     }
 
     @Nullable
-    @Environment(EnvType.CLIENT)
     public ResourceLocation getTexture(DataContext context) {
         if (this.dynamic) {
-            var dyn = DynamicTextureManager.INSTANCE.get(this.path);
-            return dyn != null ? dyn.getTexture(context) : null;
+            if (DYNAMIC_TEXTURE_RESOLVER != null) {
+                return DYNAMIC_TEXTURE_RESOLVER.apply(this.path, context);
+            } else {
+                return null;
+            }
         } else {
             return this.path;
         }

@@ -1,27 +1,19 @@
 package net.threetag.palladium.network;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.utils.Env;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.TypedDataComponent;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerHolder;
 import net.threetag.palladium.power.PowerUtil;
-import net.threetag.palladium.power.PowerValidator;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -49,9 +41,7 @@ public record SyncEntityPowersPacket(int entityId, List<Holder<Power>> remove,
     }
 
     public static void handle(SyncEntityPowersPacket packet, NetworkManager.PacketContext context) {
-        if (context.getEnvironment() == Env.CLIENT) {
-            context.queue(() -> handleClient(packet, context));
-        }
+        context.queue(() -> Palladium.PROXY.packetHandleSyncEntityPowers(packet, context));
     }
 
     public static SyncEntityPowersPacket create(LivingEntity entity, List<PowerHolder> removed, List<PowerHolder> added) {
@@ -66,43 +56,6 @@ public record SyncEntityPowersPacket(int entityId, List<Holder<Power>> remove,
             add.add(new NewPowerChange(powerHolder));
         });
         return new SyncEntityPowersPacket(entity.getId(), Collections.emptyList(), add);
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static void handleClient(SyncEntityPowersPacket packet, NetworkManager.PacketContext context) {
-        Level level = Minecraft.getInstance().level;
-        if (level != null && level.getEntity(packet.entityId) instanceof LivingEntity livingEntity) {
-            var handler = PowerUtil.getPowerHandler(livingEntity);
-
-            for (Holder<Power> power : packet.remove) {
-                handler.removePowerHolder(power);
-            }
-
-            for (NewPowerChange add : packet.add) {
-                var powerHolder = new PowerHolder(livingEntity, add.power, PowerValidator.ALWAYS_ACTIVE, add.priority, new CompoundTag());
-                handler.addPowerHolder(powerHolder);
-
-                for (Pair<String, DataComponentPatch> abilityComponent : add.abilityComponents) {
-                    var ability = powerHolder.getAbilities().get(abilityComponent.getLeft());
-                    if (ability != null) {
-                        ability.applyPatch(abilityComponent.getRight());
-                    }
-                }
-
-                for (Triple<String, Integer, Integer> pair : add.energyBars) {
-                    var bar = powerHolder.getEnergyBars().get(pair.getLeft());
-
-                    if (bar != null) {
-                        bar.set(pair.getMiddle());
-                        bar.setMax(pair.getRight());
-                    }
-                }
-            }
-
-            if (livingEntity == Minecraft.getInstance().player) {
-                AbilityBar.INSTANCE.populate();
-            }
-        }
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

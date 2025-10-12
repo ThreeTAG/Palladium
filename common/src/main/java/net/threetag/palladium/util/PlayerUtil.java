@@ -1,12 +1,5 @@
 package net.threetag.palladium.util;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -22,7 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import net.threetag.palladium.Palladium;
 
 public class PlayerUtil {
 
@@ -34,42 +27,12 @@ public class PlayerUtil {
         }
     }
 
-    @Environment(EnvType.CLIENT)
+    public static Input getMovementInput(Player player) {
+        return Palladium.PROXY.getMovementInput(player);
+    }
+
     public static boolean hasSmallArms(Player player) {
-        if (player instanceof AbstractClientPlayer)
-            return ((AbstractClientPlayer) player).getSkin().model() == PlayerSkin.Model.SLIM;
-        return false;
-    }
-
-    @Nullable
-    public static Input getPlayerInput(Player player) {
-        if (player instanceof ServerPlayer serverPlayer) {
-            return serverPlayer.getLastClientInput();
-        } else if (Platform.getEnvironment() == Env.CLIENT) {
-            return getClientsPlayerInput(player);
-        } else {
-            return null;
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    @Nullable
-    public static Input getClientsPlayerInput(Player player) {
-        var mc = Minecraft.getInstance();
-
-        if (mc.player == player) {
-            return new Input(
-                    mc.options.keyUp.isDown(),
-                    mc.options.keyDown.isDown(),
-                    mc.options.keyLeft.isDown(),
-                    mc.options.keyRight.isDown(),
-                    mc.options.keyJump.isDown(),
-                    mc.options.keyShift.isDown(),
-                    mc.options.keySprint.isDown()
-            );
-        } else {
-            return null;
-        }
+        return Palladium.PROXY.playerHasSlimModel(player);
     }
 
     public static void playSound(Player player, double x, double y, double z, SoundEvent sound, SoundSource soundSource) {

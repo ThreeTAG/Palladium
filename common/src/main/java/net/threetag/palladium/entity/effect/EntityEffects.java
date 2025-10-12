@@ -9,6 +9,6 @@ public class EntityEffects {
 
     public static final DeferredRegister<EntityEffect> EFFECTS = DeferredRegister.create(Palladium.MOD_ID, PalladiumRegistries.ENTITY_EFFECT);
 
-    public static final Holder<EntityEffect> ENERGY_BEAM = EFFECTS.register("energy_beam", EnergyBeamEffect::new);
+    public static final Holder<EnergyBeamEffect> ENERGY_BEAM = EFFECTS.register("energy_beam", EnergyBeamEffect::new);
 
 }

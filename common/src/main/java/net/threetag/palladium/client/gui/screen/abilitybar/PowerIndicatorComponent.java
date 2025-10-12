@@ -10,9 +10,9 @@ import net.threetag.palladium.client.gui.component.CompoundUiComponent;
 import net.threetag.palladium.client.gui.component.IconUiComponent;
 import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.component.UiComponent;
+import net.threetag.palladium.client.util.GuiUtil;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.Easing;
-import net.threetag.palladium.util.GuiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,44 +85,36 @@ public class PowerIndicatorComponent implements UiComponent {
         };
     }
 
-    public static class SwitchKeyComponent implements UiComponent {
-
-        private final AbilityBar.AbilityList abilityList;
-        private final Component keyText;
-
-        public SwitchKeyComponent(AbilityBar.AbilityList abilityList, Component keyText) {
-            this.abilityList = abilityList;
-            this.keyText = keyText;
-        }
+    public record SwitchKeyComponent(AbilityBar.AbilityList abilityList, Component keyText) implements UiComponent {
 
         @Override
-        public int getWidth() {
-            return Minecraft.getInstance().font.width(this.keyText) + 3 + 8;
-        }
-
-        @Override
-        public int getHeight() {
-            return Minecraft.getInstance().font.lineHeight;
-        }
-
-        @Override
-        public void render(Minecraft minecraft, GuiGraphics gui, DeltaTracker deltaTracker, int x, int y, UiAlignment alignment) {
-            gui.drawString(minecraft.font, this.keyText, x, y, GuiUtil.FULL_WHITE, false);
-
-            gui.pose().pushMatrix();
-            gui.pose().translate(x + minecraft.font.width(this.keyText) + 3 + 4, y + 4);
-
-            if (AbilityBar.KEY_ROTATION > 0) {
-                gui.pose().rotate(
-                        (float) Math.toRadians(
-                                Easing.inOutCubic((AbilityBar.KEY_ROTATION - deltaTracker.getRealtimeDeltaTicks()) / 10F) * 360F
-                                        * (AbilityBar.KEY_ROTATION_FORWARD ? -1 : 1)
-                        )
-                );
+            public int getWidth() {
+                return Minecraft.getInstance().font.width(this.keyText) + 3 + 8;
             }
 
-            gui.blit(RenderPipelines.GUI_TEXTURED, this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder())), -4, -4, 78, AbilityBar.KEY_ROTATION_FORWARD ? 56 : 64, 8, 8, 256, 256);
-            gui.pose().popMatrix();
+            @Override
+            public int getHeight() {
+                return Minecraft.getInstance().font.lineHeight;
+            }
+
+            @Override
+            public void render(Minecraft minecraft, GuiGraphics gui, DeltaTracker deltaTracker, int x, int y, UiAlignment alignment) {
+                gui.drawString(minecraft.font, this.keyText, x, y, GuiUtil.FULL_WHITE, false);
+
+                gui.pose().pushMatrix();
+                gui.pose().translate(x + minecraft.font.width(this.keyText) + 3 + 4, y + 4);
+
+                if (AbilityBar.KEY_ROTATION > 0) {
+                    gui.pose().rotate(
+                            (float) Math.toRadians(
+                                    Easing.inOutCubic((AbilityBar.KEY_ROTATION - deltaTracker.getRealtimeDeltaTicks()) / 10F) * 360F
+                                            * (AbilityBar.KEY_ROTATION_FORWARD ? -1 : 1)
+                            )
+                    );
+                }
+
+                gui.blit(RenderPipelines.GUI_TEXTURED, this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder())), -4, -4, 78, AbilityBar.KEY_ROTATION_FORWARD ? 56 : 64, 8, 8, 256, 256);
+                gui.pose().popMatrix();
+            }
         }
-    }
 }

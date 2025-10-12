@@ -3,15 +3,9 @@ package net.threetag.palladium.power.ability.keybind;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.client.gui.component.BlitUiComponent;
-import net.threetag.palladium.client.gui.component.UiComponent;
-import net.threetag.palladium.power.ability.AbilityInstance;
 
 public class JumpKeyBind extends KeyBindType {
 
@@ -33,12 +27,6 @@ public class JumpKeyBind extends KeyBindType {
     @Override
     public KeyBindTypeSerializer<?> getSerializer() {
         return KeyBindTypeSerializers.JUMP.get();
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public UiComponent getDisplayedKey(AbilityInstance<?> abilityInstance, ResourceLocation texture, boolean inside, int index) {
-        return new BlitUiComponent(texture, 39, 92, 10, 5, 256, 256);
     }
 
     public static class Serializer extends KeyBindTypeSerializer<JumpKeyBind> {

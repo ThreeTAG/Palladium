@@ -2,8 +2,6 @@ package net.threetag.palladium.client.model;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +31,6 @@ public record ModelLayerLocationCodec(ResourceLocation model, String layer) {
         }
     }
 
-    @Environment(EnvType.CLIENT)
     public ModelLayerLocation get() {
         return new ModelLayerLocation(this.model, this.layer);
     }

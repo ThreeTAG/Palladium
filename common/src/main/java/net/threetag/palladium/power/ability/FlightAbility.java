@@ -19,7 +19,7 @@ import java.util.List;
 public class FlightAbility extends Ability {
 
     public static final MapCodec<FlightAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ResourceKey.codec(PalladiumRegistryKeys.FLIGHT_TYPES).optionalFieldOf("flight_type", PalladiumFlightTypes.PROPULSION).forGetter(a -> a.flightTypeKey),
+            ResourceKey.codec(PalladiumRegistryKeys.FLIGHT_TYPE).optionalFieldOf("flight_type", PalladiumFlightTypes.PROPULSION).forGetter(a -> a.flightTypeKey),
             propertiesCodec(), stateCodec(), energyBarUsagesCodec()
     ).apply(instance, FlightAbility::new));
 

@@ -9,7 +9,7 @@ public class GeckoLibCompatClient {
     public static final PackRenderLayerSerializer<GeoRenderLayer> RENDER_LAYER = PackRenderLayerSerializer.register(GeckoLibConstants.id("render_layer"), new GeoRenderLayer.Serializer());
 
     public static void init() {
-
+        GeckoLibCompat.ABILITY_HANDLER = new GeckoClientAbilityHandler();
     }
 
 }

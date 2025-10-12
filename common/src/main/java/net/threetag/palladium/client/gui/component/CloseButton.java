@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
-import net.threetag.palladium.util.GuiUtil;
+import net.threetag.palladium.client.util.GuiUtil;
 
 public class CloseButton extends Button {
 

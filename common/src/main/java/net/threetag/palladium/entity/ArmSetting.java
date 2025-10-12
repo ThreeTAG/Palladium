@@ -2,10 +2,6 @@ package net.threetag.palladium.entity;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ByIdMap;
@@ -36,31 +32,6 @@ public enum ArmSetting implements StringRepresentable {
     ArmSetting(int id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    @Environment(EnvType.CLIENT)
-    public ModelPart[] getModelPart(LivingEntity entity, HumanoidModel<?> model) {
-        if (this == NONE) {
-            return new ModelPart[0];
-        } else if (this == MAIN_ARM) {
-            if (entity.getMainArm() == HumanoidArm.RIGHT) {
-                return new ModelPart[]{model.rightArm};
-            } else {
-                return new ModelPart[]{model.leftArm};
-            }
-        } else if (this == OFF_ARM) {
-            if (entity.getMainArm() == HumanoidArm.RIGHT) {
-                return new ModelPart[]{model.leftArm};
-            } else {
-                return new ModelPart[]{model.rightArm};
-            }
-        } else if (this == RIGHT_ARM) {
-            return new ModelPart[]{model.rightArm};
-        } else if (this == LEFT_ARM) {
-            return new ModelPart[]{model.leftArm};
-        } else {
-            return new ModelPart[]{model.rightArm, model.leftArm};
-        }
     }
 
     public InteractionHand[] getHand(LivingEntity entity) {

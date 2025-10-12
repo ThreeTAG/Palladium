@@ -2,22 +2,16 @@ package net.threetag.palladium.power.ability;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
@@ -54,22 +48,7 @@ public class ParticleAbility extends Ability {
     @Override
     public void tick(LivingEntity entity, AbilityInstance<?> instance, boolean enabled) {
         if (enabled && entity.level().isClientSide) {
-            this.tickClient(entity);
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    private void tickClient(LivingEntity entity) {
-        if (entity instanceof AbstractClientPlayer player) {
-            ParticleType<?> type = this.particleTypeHolder.value();
-            ParticleOptions options = type.codec().codec().parse(entity.registryAccess().createSerializationContext(NbtOps.INSTANCE), this.options).getOrThrow();
-            for (ResourceLocation id : this.particleEmitterIds) {
-                var emitter = ParticleEmitterManager.INSTANCE.get(id);
-
-                if (emitter != null) {
-                    emitter.spawnParticles(entity.level(), player, options, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
-                }
-            }
+            Palladium.PROXY.spawnParticleEmitter(entity, this.particleEmitterIds, this.particleTypeHolder, this.options);
         }
     }
 
