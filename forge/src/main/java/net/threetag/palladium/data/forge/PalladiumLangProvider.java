@@ -218,6 +218,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Heat Vision");
+
+            // Damage Types
+            this.add("death.attack.palladium.energy_beam", "%1$s was disintegrated by %2$s");
         }
     }
 
@@ -416,6 +419,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
+
+            // Damage Types
+            this.add("death.attack.palladium.energy_beam", "%1$s wurde durch %2$s von einem Energiestrahl aufgelöst");
         }
     }
 
@@ -614,6 +620,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
+
+            // Damage Types
+            this.add("death.attack.palladium.energy_beam", "%1$s wurd durch %2$s von enem Enerchiestrahl oofjelöst");
         }
     }
 

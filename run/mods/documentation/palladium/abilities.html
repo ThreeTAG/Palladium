@@ -1145,7 +1145,7 @@ attribute</td>
 <td>
 Attribute</td>
 <td>
-Determines which attribute should be modified. Possible attributes: minecraft:generic.armor, minecraft:generic.armor_toughness, minecraft:generic.attack_damage, minecraft:generic.attack_knockback, minecraft:generic.attack_speed, minecraft:generic.flying_speed, minecraft:generic.follow_range, minecraft:generic.knockback_resistance, minecraft:generic.luck, minecraft:generic.max_health, minecraft:generic.movement_speed, minecraft:horse.jump_strength, minecraft:zombie.spawn_reinforcements</td>
+Determines which attribute should be modified. Possible attributes: minecraft:generic.armor, minecraft:generic.armor_toughness, minecraft:generic.attack_damage, minecraft:generic.attack_knockback, minecraft:generic.attack_speed, minecraft:generic.flying_speed, minecraft:generic.follow_range, minecraft:generic.knockback_resistance, minecraft:generic.luck, minecraft:generic.max_health, minecraft:generic.movement_speed, minecraft:horse.jump_strength, minecraft:zombie.spawn_reinforcements, porting_lib:entity_gravity, porting_lib:step_height_addition, porting_lib:swim_speed</td>
 <td style="background-color: lightcoral">
 false</td>
 <td>
@@ -6595,12 +6595,24 @@ false</td>
 <td>
 /</td>
 </tr>
+<tr>
+<td>
+intensity</td>
+<td>
+Integer</td>
+<td>
+Determines how many re-renders the game does per tick. Higher values may cause performance issues.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+10</td>
+</tr>
 </tbody>
 </table>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
-{"type":"palladium:vibrate","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null"}</pre>
+{"type":"palladium:vibrate","icon":"minecraft:blaze_rod","title":"null","bar_color":"light_gray","hidden":true,"hidden_in_bar":true,"list_index":-1,"gui_position":"null","description":"null","intensity":10}</pre>
 </div>
 <hr>
 

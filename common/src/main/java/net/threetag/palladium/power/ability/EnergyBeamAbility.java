@@ -27,6 +27,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.energybeam.EnergyBeamManager;
+import net.threetag.palladium.entity.PalladiumDamageTypes;
 import net.threetag.palladium.entity.effect.EnergyBeamEffect;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.util.EntityUtil;
@@ -115,7 +116,7 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer, Comman
                 if (dmg > 0) {
                     var dmgSources = entity.level().damageSources();
                     var customType = entry.getProperty(DAMAGE_TYPE);
-                    var damageSrc = dmgSources.source(customType != null ? ResourceKey.create(Registries.DAMAGE_TYPE, customType) : (entity instanceof Player ? DamageTypes.PLAYER_ATTACK : DamageTypes.MOB_ATTACK), entity, entity);
+                    var damageSrc = dmgSources.source(customType != null ? ResourceKey.create(Registries.DAMAGE_TYPE, customType) : PalladiumDamageTypes.ENERGY_BEAM, entity, entity);
                     entityHitResult.getEntity().hurt(damageSrc, dmg);
                 }
 

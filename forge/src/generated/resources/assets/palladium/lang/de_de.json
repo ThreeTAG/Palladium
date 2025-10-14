@@ -123,6 +123,7 @@
   "commands.superpower.replace.success.entity.single": "%s's Superkraft/-kräfte wurden ausgetauscht",
   "commands.superpower.success.entity.multiple": "%s Lebewesen haben die Superkraft %s erhalten",
   "commands.superpower.success.entity.single": "%s hat die Superkraft %s erhalten",
+  "death.attack.palladium.energy_beam": "%1$s wurde durch %2$s von einem Energiestrahl aufgelöst",
   "entity.palladium.custom_projectile": "Projektil",
   "entity.palladium.effect": "Effekt",
   "entity.palladium.suit_stand": "Anzugsständer",

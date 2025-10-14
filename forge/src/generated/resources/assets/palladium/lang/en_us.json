@@ -123,6 +123,7 @@
   "commands.superpower.replace.success.entity.single": "%s's superpower(s) have been replaced",
   "commands.superpower.success.entity.multiple": "%s entities have gained the superpower %s",
   "commands.superpower.success.entity.single": "%s has gained the superpower %s",
+  "death.attack.palladium.energy_beam": "%1$s was disintegrated by %2$s",
   "entity.palladium.custom_projectile": "Projectile",
   "entity.palladium.effect": "Effect",
   "entity.palladium.suit_stand": "Suit Stand",
