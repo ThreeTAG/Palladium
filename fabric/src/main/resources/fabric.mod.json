@@ -29,6 +29,7 @@
     "${mod_id}.mixins.json",
     "${mod_id}.fabric.mixins.json"
   ],
+  "accessWidener": "palladium.accessWidener",
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": "*",

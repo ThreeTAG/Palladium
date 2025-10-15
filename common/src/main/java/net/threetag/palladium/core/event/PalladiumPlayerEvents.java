@@ -1,7 +1,5 @@
 package net.threetag.palladium.core.event;
 
-import dev.architectury.event.Event;
-import dev.architectury.event.EventFactory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -13,17 +11,29 @@ public interface PalladiumPlayerEvents {
     /**
      * Fired when an Entity is started to be "tracked" by this player, usually when an entity enters a player's view distance.
      */
-    Event<Tracking> START_TRACKING = EventFactory.createLoop();
+    PalladiumEvent<Tracking> START_TRACKING = new PalladiumEvent<>(Tracking.class, listeners -> (p, t) -> {
+        for (Tracking listener : listeners) {
+            listener.playerTracking(p, t);
+        }
+    });
 
     /**
      * Fired when an Entity is stopped to be "tracked" by this player, usually the client was sent a packet to destroy the entity at this point
      */
-    Event<Tracking> STOP_TRACKING = EventFactory.createLoop();
+    PalladiumEvent<Tracking> STOP_TRACKING = new PalladiumEvent<>(Tracking.class, listeners -> (p, t) -> {
+        for (Tracking listener : listeners) {
+            listener.playerTracking(p, t);
+        }
+    });
 
     /**
      * @see NameFormat#playerNameFormat(Player, Component, AtomicReference)
      */
-    Event<NameFormat> NAME_FORMAT = EventFactory.createLoop();
+    PalladiumEvent<NameFormat> NAME_FORMAT = new PalladiumEvent<>(NameFormat.class, listeners -> (p, u, d) -> {
+        for (NameFormat listener : listeners) {
+            listener.playerNameFormat(p, u, d);
+        }
+    });
 
     @FunctionalInterface
     interface Tracking {

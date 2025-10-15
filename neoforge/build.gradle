@@ -49,7 +49,7 @@ dependencies {
     jarJar(implementation("maven.modrinth:midnightlib:${midnightlib_version}-neoforge"))
 
     // Player Animation Library
-    jarJar(implementation "com.zigythebird.playeranim:PlayerAnimationLibNeo:${player_animation_lib_version}")
+    jarJar(implementation("com.zigythebird.playeranim:PlayerAnimationLibNeo:${player_animation_lib_version}"))
 //    additionalRuntimeClasspath "org.javassist:javassist:3.30.2-GA"
 
     // Accessories
@@ -60,6 +60,10 @@ dependencies {
 
     // Iris
     compileOnly "maven.modrinth:iris:${iris_version}-neoforge"
+}
+
+jar {
+    archiveClassifier = project.name
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }

@@ -1,7 +1,5 @@
 package net.threetag.palladium.core.event;
 
-import dev.architectury.event.Event;
-import dev.architectury.event.EventFactory;
 import net.minecraft.world.entity.Entity;
 
 public interface PalladiumEntityEvents {
@@ -9,12 +7,20 @@ public interface PalladiumEntityEvents {
     /**
      * @see Tick#entityTick(Entity)
      */
-    Event<Tick> TICK_PRE = EventFactory.createLoop();
+    PalladiumEvent<Tick> TICK_PRE = new PalladiumEvent<>(Tick.class, listeners -> (e) -> {
+        for (Tick listener : listeners) {
+            listener.entityTick(e);
+        }
+    });
 
     /**
      * @see Tick#entityTick(Entity)
      */
-    Event<Tick> TICK_POST = EventFactory.createLoop();
+    PalladiumEvent<Tick> TICK_POST = new PalladiumEvent<>(Tick.class, listeners -> (e) -> {
+        for (Tick listener : listeners) {
+            listener.entityTick(e);
+        }
+    });
 
     @FunctionalInterface
     interface Tick {

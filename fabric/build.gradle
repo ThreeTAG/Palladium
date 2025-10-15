@@ -18,7 +18,7 @@ dependencies {
     modImplementation include("maven.modrinth:midnightlib:${midnightlib_version}-fabric")
 
     // Player Animation Library
-    modImplementation "com.zigythebird.playeranim:PlayerAnimationLibFabric:${player_animation_lib_version}"
+    modImplementation include("com.zigythebird.playeranim:PlayerAnimationLibFabric:${player_animation_lib_version}")
 
     // Accessories
     modImplementation "io.wispforest:accessories-fabric:${accessories_version}"
@@ -31,12 +31,9 @@ dependencies {
 }
 
 loom {
-    def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
+    def aw = project(':common').file("src/main/resources/${mod_id}.accessWidener")
     if (aw.exists()) {
         accessWidenerPath.set(aw)
-    }
-    mixin {
-        defaultRefmapName.set("${mod_id}.refmap.json")
     }
     runs {
         client {
@@ -54,6 +51,10 @@ loom {
             ideConfigGenerated(true)
         }
     }
+}
+
+remapJar {
+    archiveClassifier = project.name
 }
 
 sourceSets.main.resources {

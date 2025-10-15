@@ -2,7 +2,6 @@ package net.threetag.palladium.client;
 
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
-import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.ReloadListenerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
@@ -35,6 +34,7 @@ import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.client.texture.transformer.TextureTransformerSerializer;
 import net.threetag.palladium.client.texture.transformer.TextureTransformerSerializers;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
+import net.threetag.palladium.core.event.PalladiumLifecycleEvents;
 import net.threetag.palladium.core.registry.GuiLayerRegistry;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
@@ -79,7 +79,7 @@ public class PalladiumClient {
         BeamRendererSerializers.init();
         TextureTransformerSerializers.init();
         DynamicTextureSerializers.init();
-        LifecycleEvent.SETUP.register(() -> {
+        PalladiumLifecycleEvents.CLIENT_SETUP.register(() -> {
             IconRenderer.registerRenderers();
             EntityEffectRenderer.registerRenderers();
         });

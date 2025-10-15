@@ -10,12 +10,12 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.threetag.palladium.client.animation.HideBodyPartsAnimation;
 import net.threetag.palladium.client.animation.PalladiumAnimation;
-import net.threetag.palladium.client.util.ClientContextTypes;
 import net.threetag.palladium.client.renderer.entity.ExtendedEntityRenderState;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerRenderer;
+import net.threetag.palladium.client.util.ClientContextTypes;
 import net.threetag.palladium.client.util.ModelUtil;
-import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.entity.BodyPart;
+import net.threetag.palladium.logic.context.DataContext;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,8 +43,12 @@ public abstract class LivingEntityRendererMixin {
             method = "render(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V")
     private void postSetupAnim(LivingEntityRenderState state, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci) {
         if (state instanceof ExtendedEntityRenderState extState) {
-            for (Map.Entry<DataContext, PalladiumAnimation> entry : extState.palladium$getData(ClientContextTypes.ANIMATIONS).entrySet()) {
-                entry.getValue().animate(this.getModel(), entry.getKey(), extState.palladium$getData(ClientContextTypes.PARTIAL_TICK));
+            var animations = extState.palladium$getData(ClientContextTypes.ANIMATIONS);
+
+            if (animations != null) {
+                for (Map.Entry<DataContext, PalladiumAnimation> entry : animations.entrySet()) {
+                    entry.getValue().animate(this.getModel(), entry.getKey(), extState.palladium$getData(ClientContextTypes.PARTIAL_TICK));
+                }
             }
         }
     }
