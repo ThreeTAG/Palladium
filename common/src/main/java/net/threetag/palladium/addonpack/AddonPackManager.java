@@ -15,8 +15,8 @@ import net.minecraft.server.packs.repository.FolderRepositorySource;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.Unit;
 import net.minecraft.world.level.block.BlockTypes;
 import net.minecraft.world.level.storage.LevelStorageSource;
@@ -44,7 +44,7 @@ public class AddonPackManager {
     public static final PackSource PACK_SOURCE = PackSource.create(PackSource.decorateWithSource("pack.source.addonpack"), true);
     public static final String FOLDER = "palladium/addonpacks";
     public static final String LEGACY_FOLDER = "addonpacks";
-    private static final List<SimpleJsonResourceReloadListener<?>> BASIC_LOADERS = new ArrayList<>();
+    private static final List<PreparableReloadListener> BASIC_LOADERS = new ArrayList<>();
     private static final List<LoaderEntry<?>> REGISTRY_LOADERS = new ArrayList<>();
 
     private final ReloadableResourceManager resourceManager;
@@ -80,7 +80,7 @@ public class AddonPackManager {
         this.resourceManager.registerReloadListener(PlatformHelper.PLATFORM.getAddonPackManager().getRecipeManager());
     }
 
-    public static <T> void registerLoader(SimpleJsonResourceReloadListener<T> loader) {
+    public static <T> void registerLoader(PreparableReloadListener loader) {
         BASIC_LOADERS.add(loader);
     }
 
@@ -109,7 +109,7 @@ public class AddonPackManager {
         }
     }
 
-    private static void startLoading(List<SimpleJsonResourceReloadListener<?>> parser) {
+    private static void startLoading(List<PreparableReloadListener> parser) {
         loaderFuture = getInstance().beginLoading(Util.backgroundExecutor(), parser);
     }
 
@@ -159,10 +159,10 @@ public class AddonPackManager {
         };
     }
 
-    public CompletableFuture<AddonPackManager> beginLoading(Executor backgroundExecutor, List<SimpleJsonResourceReloadListener<?>> parser) {
+    public CompletableFuture<AddonPackManager> beginLoading(Executor backgroundExecutor, List<PreparableReloadListener> parser) {
         this.resourceManager.listeners.clear();
         this.resourceManager.registerReloadListener(PlatformHelper.PLATFORM.getAddonPackManager().getRecipeManager());
-        for (SimpleJsonResourceReloadListener<?> listener : parser) {
+        for (PreparableReloadListener listener : parser) {
             this.resourceManager.registerReloadListener(listener);
         }
         this.packRepository.reload();
