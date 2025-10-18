@@ -236,8 +236,16 @@ public class DefaultFlightType extends FlightType {
         }
 
         @Override
-        public CodecDocumentationBuilder<FlightType, DefaultFlightType> getDocumentation(HolderLookup.Provider provider) {
-            return null;
+        public void addDocumentation(CodecDocumentationBuilder<FlightType, DefaultFlightType> builder, HolderLookup.Provider provider) {
+            builder.setName("Default Flight")
+                    .setDescription("Default flying type. If the sprint speed is equal or less than the normal speed, this flight will be levitation-only.")
+                    .add("speed", TYPE_FLOAT, "The normal flight speed.")
+                    .addOptional("sprint_speed", TYPE_FLOAT, "The sprinting flight speed. If not set, it will be equal to the normal speed.")
+                    .addOptional("animation", TYPE_DEFAULT_FLIGHT_ANIMATION, "The animation settings for this flight type.")
+                    .setExampleObject(new DefaultFlightType(1F, 2F, new AnimationSettings(
+                            ResourceLocation.fromNamespaceAndPath("namespace", "animation_id"), 35F, 20F, 12F
+                    )));
+
         }
     }
 }

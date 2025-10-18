@@ -96,6 +96,7 @@ public class PalladiumClient {
             HTMLBuilder.documentedPage(Palladium.id("render_layers"), PackRenderLayerSerializer.getTypes(), "Render Layers", clientLevel.registryAccess()).save();
             HTMLBuilder.documentedPage(Palladium.id("energy_beams"), BeamRendererSerializer.getTypes(), "Energy Beams", clientLevel.registryAccess()).save();
             HTMLBuilder.documentedPage(PalladiumRegistryKeys.ABILITY_SERIALIZER, PalladiumRegistries.ABILITY_SERIALIZER, "Abilities", clientLevel.registryAccess()).save();
+            HTMLBuilder.documentedPage(PalladiumRegistryKeys.FLIGHT_TYPE_SERIALIZERS, PalladiumRegistries.FLIGHT_TYPE_SERIALIZERS, "Flight Types", clientLevel.registryAccess()).save();
         });
 
         // Compat

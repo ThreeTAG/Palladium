@@ -19,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.beam.PalladiumBeams;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.entity.SwingAnchor;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.network.SyncSwingAnchorPacket;
@@ -390,8 +391,30 @@ public class SwingingFlightType extends FlightType {
         }
 
         @Override
-        public CodecDocumentationBuilder<FlightType, SwingingFlightType> getDocumentation(HolderLookup.Provider provider) {
-            return null;
+        public void addDocumentation(CodecDocumentationBuilder<FlightType, SwingingFlightType> builder, HolderLookup.Provider provider) {
+            builder.setName("Swinging")
+                    .setDescription("Allows the entity to swing from anchor points, similar to a grappling hook.")
+                    .add("max_anchor_height", TYPE_INT, "The maximum height for anchor points.")
+                    .addOptional("max_anchor_height_type", TYPE_SWINGING_HEIGHT_TYPE, "Determines if the maximum height for anchors are relative to the ground, or a fixed y-level.", MaxHeightType.RELATIVE)
+                    .add("radius", SettingType.combined(TYPE_FLOAT, TYPE_VECTOR2), "The range of distances from the anchor point that the entity can swing at. It can either be a single, fixed number, or an array of 2 numbers that the player can adjust between while swinging.")
+                    .addOptional("swing_interval", TYPE_TIME, "The time (in ticks) the player must be moving forward before a new anchor point is created.", 40)
+                    .addOptional("animation", TYPE_SWINGING_ANIMATION, "Settings for the swinging flight animation.")
+                    .setExampleObject(new SwingingFlightType(
+                            20,
+                            MaxHeightType.RELATIVE,
+                            new Vec2(5F, 10F),
+                            60,
+                            new AnimationSettings(
+                                    ResourceLocation.fromNamespaceAndPath("namespace", "animation_id"),
+                                    new BeamRendererValue(
+                                            ResourceLocation.fromNamespaceAndPath("namespace", "beam_right_id"),
+                                            ResourceLocation.fromNamespaceAndPath("namespace", "beam_left_id")
+                                    ),
+                                    50F,
+                                    15F,
+                                    10F
+                            )
+                    ));
         }
     }
 }

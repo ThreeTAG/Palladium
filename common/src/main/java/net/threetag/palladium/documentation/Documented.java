@@ -2,6 +2,7 @@ package net.threetag.palladium.documentation;
 
 import net.minecraft.core.HolderLookup;
 import net.threetag.palladium.entity.PlayerSlot;
+import net.threetag.palladium.entity.flight.SwingingFlightType;
 
 public interface Documented<T, R extends T> {
 
@@ -17,6 +18,8 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_DOUBLE = SettingType.simple("double");
     SettingType TYPE_VECTOR3 = SettingType.simple("Vector 3D");
     SettingType TYPE_VECTOR2 = SettingType.simple("Vector 2D");
+    SettingType TYPE_TIME_STRING = SettingType.simple("Time String (\"40s\", \"2m\", etc.)");
+    SettingType TYPE_TIME = SettingType.combined(TYPE_INT, TYPE_TIME_STRING);
     SettingType TYPE_DYNAMIC_TEXTURE = SettingType.simple("Dynamic Texture");
     SettingType TYPE_TEXTURE_REFERENCE = SettingType.simple("Texture Reference");
     SettingType TYPE_ANY_TEXTURE = SettingType.combined(TYPE_RESOURCE_LOCATION, TYPE_DYNAMIC_TEXTURE, TYPE_TEXTURE_REFERENCE);
@@ -32,6 +35,9 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_ENERGY_BAR_REFERENCE = SettingType.simple("Energy Bar Reference");
     SettingType TYPE_CONDITION_LIST = SettingType.listOrPrimitive("Condition");
     SettingType TYPE_VALUE = SettingType.simple("(Dynamic) Value");
+    SettingType TYPE_DEFAULT_FLIGHT_ANIMATION = SettingType.simple("Default Flight Animation Settings");
+    SettingType TYPE_SWINGING_ANIMATION = SettingType.simple("Swinging Animation Settings");
+    SettingType TYPE_SWINGING_HEIGHT_TYPE = SettingType.enumList(SwingingFlightType.MaxHeightType.values());
 
     SettingType TYPE_ATTRIBUTE = SettingType.simple("Attribute ID");
     SettingType TYPE_DAMAGE_TYPE = SettingType.simple("Damage Type ID");

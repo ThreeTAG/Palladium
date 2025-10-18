@@ -8,6 +8,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.Documented;
+import net.threetag.palladium.entity.flight.FlightType;
+import net.threetag.palladium.entity.flight.FlightTypeSerializer;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilitySerializer;
 import net.threetag.palladium.registry.PalladiumRegistries;
@@ -34,6 +36,14 @@ public class PalladiumDocumentationGenerator implements DataProvider {
             for (AbilitySerializer<?> serializer : PalladiumRegistries.ABILITY_SERIALIZER) {
                 if (serializer instanceof Documented<Ability, ? extends Ability> doc) {
                     PalladiumRegistries.ABILITY_SERIALIZER.getResourceKey(serializer).ifPresent(key -> {
+                        var json = doc.getDocumentation(provider).build(key);
+                        generated.computeIfAbsent(key.registry(), x -> new ArrayList<>()).add(json);
+                    });
+                }
+            }
+            for (FlightTypeSerializer<?> serializer : PalladiumRegistries.FLIGHT_TYPE_SERIALIZERS) {
+                if (serializer instanceof Documented<FlightType, ? extends FlightType> doc) {
+                    PalladiumRegistries.FLIGHT_TYPE_SERIALIZERS.getResourceKey(serializer).ifPresent(key -> {
                         var json = doc.getDocumentation(provider).build(key);
                         generated.computeIfAbsent(key.registry(), x -> new ArrayList<>()).add(json);
                     });
