@@ -29,11 +29,10 @@ import net.threetag.palladium.platform.PlatformHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class AddonPackManager {
 
@@ -70,7 +69,7 @@ public class AddonPackManager {
 
     private AddonPackManager() {
         this.resourceManager = new ReloadableResourceManager(getPackType());
-        RepositorySource[] sources = new RepositorySource[]{getWrappedPackFinder(getPackType())};
+        RepositorySource[] sources = Stream.of(getWrappedPackFinder(getPackType()), PlatformHelper.PLATFORM.getAddonPackManager().getAddonPackSource()).filter(Objects::nonNull).toArray(RepositorySource[]::new);
         this.packRepository = new PackRepository(sources);
         PlatformHelper.PLATFORM.getAddonPackManager().afterPackRepositoryCreation(this.packRepository);
 
