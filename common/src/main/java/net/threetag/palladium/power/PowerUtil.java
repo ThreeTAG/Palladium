@@ -6,6 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PowerUtil {
 
@@ -35,6 +36,25 @@ public class PowerUtil {
             powers.addAll(powerHandler.getPowerHolders().values().stream().map(h -> h.getPower().getId()).toList());
         });
         return powers;
+    }
+
+    /**
+     * Returns if the entity has a power with the given ID
+     *
+     * @param entity {@link LivingEntity} which has superpowers
+     * @return {@link ResourceLocation} ID of the power
+     */
+    public static boolean hasPower(LivingEntity entity, ResourceLocation powerId) {
+        AtomicBoolean result = new AtomicBoolean(false);
+        PowerManager.getPowerHandler(entity).ifPresent(powerHandler -> {
+            for (ResourceLocation id : powerHandler.getPowerHolders().keySet()) {
+                if (id.equals(powerId)) {
+                    result.set(true);
+                    return;
+                }
+            }
+        });
+        return result.get();
     }
 
     /**
