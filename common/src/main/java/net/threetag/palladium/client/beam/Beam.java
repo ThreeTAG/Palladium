@@ -50,7 +50,7 @@ public record Beam(BodyPart anchor, PerspectiveValue<Vector3f> offset, Perspecti
         if ((context.getEntity() instanceof Player pl ? this.visibility.getForPlayer(pl) : this.visibility.get()).test(context)) {
             poseStack.pushPose();
             poseStack.translate(start.x, start.y, start.z);
-            this.renderer.render(start, end, sizeMultiplier, lengthMultiplier, opacityMultiplier, poseStack, bufferSource, packedLightIn, ageInTicks, partialTick);
+            this.renderer.render(context, start, end, sizeMultiplier, lengthMultiplier, opacityMultiplier, poseStack, bufferSource, packedLightIn, ageInTicks, partialTick);
             poseStack.popPose();
         }
     }
@@ -66,7 +66,7 @@ public record Beam(BodyPart anchor, PerspectiveValue<Vector3f> offset, Perspecti
 
             poseStack.pushPose();
             poseStack.translate(origin.x, origin.y, origin.z);
-            this.renderer.render(origin, target, sizeMultiplier, lengthMultiplier, opacityMultiplier, poseStack, bufferSource, packedLightIn, player.tickCount, partialTick);
+            this.renderer.render(DataContext.forEntity(player), origin, target, sizeMultiplier, lengthMultiplier, opacityMultiplier, poseStack, bufferSource, packedLightIn, player.tickCount, partialTick);
             poseStack.popPose();
         }
     }

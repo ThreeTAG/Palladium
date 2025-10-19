@@ -10,7 +10,7 @@ import net.threetag.palladium.client.gui.component.CompoundUiComponent;
 import net.threetag.palladium.client.gui.component.IconUiComponent;
 import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.component.UiComponent;
-import net.threetag.palladium.client.util.GuiUtil;
+import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.Easing;
 
@@ -99,7 +99,7 @@ public class PowerIndicatorComponent implements UiComponent {
 
             @Override
             public void render(Minecraft minecraft, GuiGraphics gui, DeltaTracker deltaTracker, int x, int y, UiAlignment alignment) {
-                gui.drawString(minecraft.font, this.keyText, x, y, GuiUtil.FULL_WHITE, false);
+                gui.drawString(minecraft.font, this.keyText, x, y, RenderUtil.FULL_WHITE, false);
 
                 gui.pose().pushMatrix();
                 gui.pose().translate(x + minecraft.font.width(this.keyText) + 3 + 4, y + 4);

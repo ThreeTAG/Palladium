@@ -61,6 +61,26 @@
           "behaviour": "held"
         }
       }
+    },
+    "textured": {
+      "type": "palladium:beam",
+      "beam_renderer": "test:hands_textured",
+      "max_distance": 5,
+      "set_on_fire_ticks": "5s",
+      "damage": 10,
+      "cause_fire": true,
+      "smelt_blocks": true,
+      "properties": {
+        "title": "Textured",
+        "list_index": 3,
+        "animation_timer": 20
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "held"
+        }
+      }
     }
   }
 }

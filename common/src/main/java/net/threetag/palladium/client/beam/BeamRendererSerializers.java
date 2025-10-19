@@ -6,6 +6,7 @@ public class BeamRendererSerializers {
 
     public static final BeamRendererSerializer<?> LASER = register("laser", new LaserBeamRenderer.Serializer());
     public static final BeamRendererSerializer<?> LIGHTNING = register("lightning", new LightningBeamRenderer.Serializer());
+    public static final BeamRendererSerializer<?> TEXTURED = register("textured", new TexturedBeamRenderer.Serializer());
 
     private static <T extends BeamRenderer> BeamRendererSerializer<T> register(String id, BeamRendererSerializer<T> serializer) {
         return BeamRendererSerializer.register(Palladium.id(id), serializer);

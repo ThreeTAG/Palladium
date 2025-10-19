@@ -9,6 +9,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.LaserRenderer;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.logic.context.DataContext;
 import org.joml.Vector2f;
 
 import java.awt.*;
@@ -26,7 +27,7 @@ public class LaserBeamRenderer extends BeamRenderer {
     }
 
     @Override
-    public void render(Vec3 origin, Vec3 target, Vec2 sizeMultiplier, float lengthMultiplier, float opacityMultiplier, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, int ageInTicks, float partialTick) {
+    public void render(DataContext context, Vec3 origin, Vec3 target, Vec2 sizeMultiplier, float lengthMultiplier, float opacityMultiplier, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, int ageInTicks, float partialTick) {
         this.laserRenderer.faceAndRender(poseStack, bufferSource, origin, target, ageInTicks, partialTick, lengthMultiplier, opacityMultiplier, sizeMultiplier);
     }
 

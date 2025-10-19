@@ -5,6 +5,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterPictureInPictureRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
@@ -14,6 +15,7 @@ import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderState;
 import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderer;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
+import net.threetag.palladium.core.event.PalladiumLifecycleEvents;
 import net.threetag.palladium.neoforge.datagen.internal.*;
 
 @EventBusSubscriber(modid = Palladium.MOD_ID, value = Dist.CLIENT)
@@ -36,6 +38,11 @@ public class PalladiumNeoForgeClient {
         e.createProvider(PalladiumCustomizationCategoryProvider::new);
         e.createProvider(PalladiumFlightTypeProvider::new);
         e.createProvider(PalladiumRecipeProvider.Runner::new);
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void event(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> PalladiumLifecycleEvents.CLIENT_SETUP.invoker().run());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

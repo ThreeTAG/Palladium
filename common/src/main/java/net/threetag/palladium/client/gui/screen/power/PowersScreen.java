@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.gui.component.IconButton;
-import net.threetag.palladium.client.util.GuiUtil;
+import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.icon.ItemIcon;
 import net.threetag.palladium.power.Power;
@@ -241,7 +241,7 @@ public class PowersScreen extends Screen {
             }
         }
 
-        guiGraphics.drawString(Objects.requireNonNull(this.minecraft).font, TITLE, offsetX + 8, offsetY + 6, GuiUtil.DEFAULT_GRAY, false);
+        guiGraphics.drawString(Objects.requireNonNull(this.minecraft).font, TITLE, offsetX + 8, offsetY + 6, RenderUtil.DEFAULT_GRAY, false);
     }
 
     private void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int offsetX, int offsetY, float partialTick) {

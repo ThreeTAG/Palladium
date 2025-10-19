@@ -11,6 +11,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.LaserRenderer;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.PalladiumCodecs;
 import org.joml.Vector2f;
 
@@ -38,7 +39,7 @@ public class LightningBeamRenderer extends BeamRenderer {
     }
 
     @Override
-    public void render(Vec3 origin, Vec3 target, Vec2 sizeMultiplier, float lengthMultiplier, float opacityMultiplier, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, int ageInTicks, float partialTick) {
+    public void render(DataContext context, Vec3 origin, Vec3 target, Vec2 sizeMultiplier, float lengthMultiplier, float opacityMultiplier, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, int ageInTicks, float partialTick) {
         var segmentPartVec = target.subtract(origin).scale(1F / this.segments);
         var randomStart = RandomSource.create(ageInTicks / this.frequency);
         var startVec = origin;

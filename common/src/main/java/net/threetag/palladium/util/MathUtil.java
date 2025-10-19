@@ -14,4 +14,12 @@ public class MathUtil {
         float k = Mth.sin(f);
         return new Vec3(i * j, -k, h * j);
     }
+
+    public static float avg(float... values) {
+        float sum = 0F;
+        for (float v : values) {
+            sum += v;
+        }
+        return sum / values.length;
+    }
 }
