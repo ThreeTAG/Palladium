@@ -1,2 +1,2 @@
-- Improved particle emitter performance
-- Added "intensity" setting to vibrate ability
+- Add "registerForPower" method for animation register KJS event to improve performance
+- Added default "energy_beam" damage type to energy beams
