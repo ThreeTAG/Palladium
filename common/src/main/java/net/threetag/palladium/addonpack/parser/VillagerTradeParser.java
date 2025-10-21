@@ -69,7 +69,7 @@ public class VillagerTradeParser extends SimpleJsonResourceReloadListener {
         ItemStack price2 = GsonUtil.getAsItemStack(json, "price_2", ItemStack.EMPTY);
         ItemStack forSale = GsonUtil.getAsItemStack(json, "for_sale");
         int maxTrades = GsonUtil.getAsIntMin(json, "max_trades", 1);
-        int xp = GsonUtil.getAsIntMin(json, "max_trades", 0);
+        int xp = GsonUtil.getAsIntMin(json, "xp", 0);
         float priceMult = GsonHelper.getAsFloat(json, "price_multiplier", 1);
         return new BasicItemListing(price, price2, forSale, maxTrades, xp, priceMult);
     }

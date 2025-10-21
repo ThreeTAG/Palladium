@@ -12,7 +12,6 @@
         "Damage": 10,
         "Gravity": 0.03,
         "Appearances": [
-
           {
             "Type": "item",
             "Item": "minecraft:totem_of_undying"
