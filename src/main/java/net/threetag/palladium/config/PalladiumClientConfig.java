@@ -1,0 +1,24 @@
+package net.threetag.palladium.config;
+
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.threetag.palladium.client.gui.component.UiAlignment;
+import net.threetag.palladium.client.gui.screen.abilitybar.AbilityKeyBindDisplay;
+
+public class PalladiumClientConfig {
+
+    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+
+    public static final ModConfigSpec.EnumValue<UiAlignment> ABILITY_BAR_ALIGNMENT = BUILDER
+            .comment("Position of the ability bar on your screen")
+            .defineEnum("ability_bar_alignment", UiAlignment.TOP_LEFT);
+
+    public static final ModConfigSpec.EnumValue<AbilityKeyBindDisplay> ABILITY_BAR_KEY_BIND_DISPLAY = BUILDER
+            .comment("Whether to position the keybinds in the ability inside or outside of the icons")
+            .defineEnum("ability_bar_key_bind_display", AbilityKeyBindDisplay.INSIDE);
+
+    public static final ModConfigSpec.BooleanValue HIDE_EXPERIMENTAL_WARNING = BUILDER
+            .comment("Whether to remove the experimental feature warning upon opening worlds")
+            .define("hide_experimental_warning", true);
+
+    public static final ModConfigSpec SPEC = BUILDER.build();
+}

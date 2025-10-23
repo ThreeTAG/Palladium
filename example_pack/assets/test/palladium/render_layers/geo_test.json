@@ -1,5 +1,0 @@
-{
-  "type": "geckolib:render_layer",
-  "model": "test:geo/geo_test.geo.json",
-  "texture": "test:textures/entity/geo_test.png"
-}

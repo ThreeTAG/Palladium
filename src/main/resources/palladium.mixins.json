@@ -1,0 +1,46 @@
+{
+  "required": true,
+  "package": "net.threetag.palladium.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ArmorStandMixin",
+    "BlockBehaviourMixin",
+    "BlockStateBaseMixin",
+    "EmptyPackResourcesMixin",
+    "EntityMixin",
+    "GameDataMixin",
+    "InventoryMixin",
+    "ItemMixin",
+    "LevelSummaryMixin",
+    "LivingEntityMixin",
+    "OverlayMetadataSectionMixin",
+    "PackFormatMixin",
+    "PackMetadataSectionMixin",
+    "PackTypeMixin",
+    "PlayerMixin",
+    "ResourcePackLoaderMixin",
+    "SimpleJsonResourceReloadListenerMixin",
+    "VibrationSystemListenerMixin",
+    "WorldVersionMixin"
+  ],
+  "client": [
+    "client.AbstractClientPlayerMixin",
+    "client.AvatarRendererMixin",
+    "client.GameRendererMixin",
+    "client.HumanoidModelMixin",
+    "client.ItemInHandRendererMixin",
+    "client.KeyboardInputMixin",
+    "client.LevelRendererMixin",
+    "client.LocalPlayerMixin",
+    "client.MinecraftMixin",
+    "client.ModelPartMixin",
+    "client.ScreenEffectRendererMixin",
+    "client.SkyRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
