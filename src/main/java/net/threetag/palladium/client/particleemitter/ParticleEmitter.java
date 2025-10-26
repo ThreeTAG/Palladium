@@ -12,7 +12,6 @@ import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.client.util.PerspectiveAwareConditions;
 import net.threetag.palladium.client.util.PerspectiveValue;
-import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.Nullable;
@@ -20,14 +19,14 @@ import org.joml.Vector3f;
 
 import java.util.Optional;
 
-public record ParticleEmitter(@Nullable BodyPart anchor, float amount, PerspectiveValue<Vector3f> offset,
+public record ParticleEmitter(@Nullable String anchor, float amount, PerspectiveValue<Vector3f> offset,
                               PerspectiveValue<Vector3f> offsetRandom, PerspectiveValue<Vector3f> motion,
                               PerspectiveValue<Vector3f> motionRandom, PerspectiveAwareConditions conditions) {
 
     public static final ParticleEmitter DEFAULT = new ParticleEmitter(null, 1F, new PerspectiveValue<>(new Vector3f()), new PerspectiveValue<>(new Vector3f()), new PerspectiveValue<>(new Vector3f()), new PerspectiveValue<>(new Vector3f()), PerspectiveAwareConditions.EMPTY);
 
     public static final Codec<ParticleEmitter> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            BodyPart.CODEC.optionalFieldOf("body_part").forGetter(e -> Optional.ofNullable(e.anchor)),
+            Codec.STRING.optionalFieldOf("body_part").forGetter(e -> Optional.ofNullable(e.anchor)),
             ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("amount", 1F).forGetter(ParticleEmitter::amount),
             PerspectiveValue.codec(PalladiumCodecs.VOXEL_VECTOR_3F).optionalFieldOf("offset", new PerspectiveValue<>(new Vector3f())).forGetter(ParticleEmitter::offset),
             PerspectiveValue.codec(PalladiumCodecs.VOXEL_VECTOR_3F).optionalFieldOf("offset_random", new PerspectiveValue<>(new Vector3f())).forGetter(ParticleEmitter::offsetRandom),

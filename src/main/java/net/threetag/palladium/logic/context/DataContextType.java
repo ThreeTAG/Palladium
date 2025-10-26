@@ -1,20 +1,13 @@
 package net.threetag.palladium.logic.context;
 
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.threetag.palladium.client.animation.PalladiumAnimation;
-import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayer;
-import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.entity.PlayerSlot;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerHolder;
 import net.threetag.palladium.power.ability.AbilityInstance;
-
-import java.util.Map;
-import java.util.Set;
 
 @SuppressWarnings("InstantiationOfUtilityClass")
 public class DataContextType<T> {

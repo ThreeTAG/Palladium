@@ -2,6 +2,7 @@ package net.threetag.palladium.mixin.client;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.threetag.palladium.client.animation.BuiltinAnimations;
 import net.threetag.palladium.client.animation.PalladiumAnimation;
 import net.threetag.palladium.client.renderer.entity.state.PalladiumRenderStateKeys;
 import net.threetag.palladium.logic.context.DataContext;
@@ -18,6 +19,7 @@ public class HumanoidModelMixin<T extends HumanoidRenderState> {
     @Inject(method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/HumanoidRenderState;)V", at = @At("TAIL"))
     public void setupAnim(T humanoidRenderState, CallbackInfo ci) {
         var model = (HumanoidModel<?>) (Object) this;
+        BuiltinAnimations.setupAnim(model, humanoidRenderState);
         var animations = humanoidRenderState.getRenderData(PalladiumRenderStateKeys.ANIMATIONS);
 
         if (animations != null) {

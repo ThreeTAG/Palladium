@@ -8,7 +8,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
@@ -50,7 +49,7 @@ public abstract class Customization {
         return null;
     }
 
-    public List<BodyPart> getHiddenBodyParts() {
+    public List<String> getHiddenModelParts() {
         return Collections.emptyList();
     }
 

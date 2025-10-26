@@ -5,6 +5,7 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.client.renderer.entity.layer.MoLangQuery;
+import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.molang.ModifyFloatFunction;
 import org.jetbrains.annotations.NotNull;
@@ -36,27 +37,12 @@ public record PalladiumAnimation(Map<String, PartAnimation> animations) {
             MoLangQuery.setContext(context, partialTick);
 
             this.animations.forEach((bone, animation) -> {
-                var part = getPart(model, bone);
+                var part = ModelUtil.getPartFromModel(model, bone);
 
                 if (part != null) {
                     animation.animate(part);
                 }
             });
-        }
-    }
-
-    public ModelPart getPart(Model<?> model, String name) {
-        if (name.equals("root")) {
-            return model.root();
-        } else if (name.contains(".")) {
-            String[] split = name.split("\\.");
-            ModelPart part = model.root().getChild(split[0]);
-            for (int i = 1; i < split.length; i++) {
-                part = part.getChild(split[i]);
-            }
-            return part;
-        } else {
-            return model.root().getChild(name);
         }
     }
 

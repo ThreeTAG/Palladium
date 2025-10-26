@@ -8,7 +8,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import net.threetag.palladium.util.PalladiumCodecs;
 
@@ -24,7 +23,7 @@ public class DefaultCustomization extends Customization {
             ResourceKey.codec(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY).fieldOf("slot").forGetter(a -> a.slot),
             ResourceLocation.CODEC.optionalFieldOf("render_layer").forGetter(a -> Optional.ofNullable(a.renderLayer)),
             Codec.BOOL.optionalFieldOf("unlockable", false).forGetter(a -> a.unlockable),
-            PalladiumCodecs.listOrPrimitive(BodyPart.CODEC).optionalFieldOf("hidden_body_parts", Collections.emptyList()).forGetter(a -> a.hiddenBodyParts)
+            PalladiumCodecs.listOrPrimitive(Codec.STRING).optionalFieldOf("hidden_body_parts", Collections.emptyList()).forGetter(a -> a.hiddenModelParts)
     ).apply(instance, (t, s, r, u, h) ->
             new DefaultCustomization(t.orElse(null), s, r.orElse(null), u, h)));
 
@@ -32,14 +31,14 @@ public class DefaultCustomization extends Customization {
     private final ResourceKey<CustomizationCategory> slot;
     private final ResourceLocation renderLayer;
     private final boolean unlockable;
-    private final List<BodyPart> hiddenBodyParts;
+    private final List<String> hiddenModelParts;
 
-    public DefaultCustomization(Component customTitle, ResourceKey<CustomizationCategory> slot, ResourceLocation renderLayer, boolean unlockable, List<BodyPart> hiddenBodyParts) {
+    public DefaultCustomization(Component customTitle, ResourceKey<CustomizationCategory> slot, ResourceLocation renderLayer, boolean unlockable, List<String> hiddenModelParts) {
         this.customTitle = customTitle;
         this.slot = slot;
         this.renderLayer = renderLayer;
         this.unlockable = unlockable;
-        this.hiddenBodyParts = hiddenBodyParts;
+        this.hiddenModelParts = hiddenModelParts;
     }
 
     @Override
@@ -71,8 +70,8 @@ public class DefaultCustomization extends Customization {
     }
 
     @Override
-    public List<BodyPart> getHiddenBodyParts() {
-        return this.hiddenBodyParts;
+    public List<String> getHiddenModelParts() {
+        return this.hiddenModelParts;
     }
 
     @Override

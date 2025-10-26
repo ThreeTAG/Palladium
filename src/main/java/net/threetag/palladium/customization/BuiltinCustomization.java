@@ -11,7 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
-import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.entity.SkinTypedValue;
 
 import java.util.Collections;
@@ -50,8 +49,8 @@ public class BuiltinCustomization extends Customization {
     }
 
     @Override
-    public List<BodyPart> getHiddenBodyParts() {
-        return this.type.getHiddenBodyParts();
+    public List<String> getHiddenModelParts() {
+        return this.type.getHiddenModelParts();
     }
 
     @Override
@@ -123,9 +122,9 @@ public class BuiltinCustomization extends Customization {
             return this.renderLayerId;
         }
 
-        public List<BodyPart> getHiddenBodyParts() {
+        public List<String> getHiddenModelParts() {
             if (this == WINTER_SOLDIER_ARM) {
-                return Collections.singletonList(BodyPart.LEFT_ARM);
+                return Collections.singletonList("left_arm");
             }
             return Collections.emptyList();
         }

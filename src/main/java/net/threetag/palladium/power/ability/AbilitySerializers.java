@@ -23,8 +23,7 @@ public class AbilitySerializers {
 //    public static final DeferredHolder<AbilitySerializer<?>, ProjectileAbility.Serializer> PROJECTILE = ABILITIES.register("projectile", ProjectileAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, SkinChangeAbility.Serializer> SKIN_CHANGE = ABILITIES.register("skin_change", SkinChangeAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, AimAbility.Serializer> AIM = ABILITIES.register("aim", AimAbility.Serializer::new);
-    public static final DeferredHolder<AbilitySerializer<?>, HideBodyPartAbility.Serializer> HIDE_BODY_PART = ABILITIES.register("hide_body_part", HideBodyPartAbility.Serializer::new);
-    public static final DeferredHolder<AbilitySerializer<?>, RemoveBodyPartAbility.Serializer> REMOVE_BODY_PART = ABILITIES.register("remove_body_part", RemoveBodyPartAbility.Serializer::new);
+    public static final DeferredHolder<AbilitySerializer<?>, HideModelPartAbility.Serializer> HIDE_MODEL_PART = ABILITIES.register("hide_model_part", HideModelPartAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, ShaderEffectAbility.Serializer> SHADER_EFFECT = ABILITIES.register("shader_effect", ShaderEffectAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, GuiOverlayAbility.Serializer> GUI_OVERLAY = ABILITIES.register("gui_overlay", GuiOverlayAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, ShowBothArmsAbility.Serializer> SHOW_BOTH_ARMS = ABILITIES.register("show_both_arms", ShowBothArmsAbility.Serializer::new);

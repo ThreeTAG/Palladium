@@ -21,8 +21,8 @@ import net.threetag.palladium.client.animation.PalladiumAnimation;
 import net.threetag.palladium.client.animation.PalladiumAnimationManager;
 import net.threetag.palladium.client.renderer.entity.layer.ClientEntityRenderLayers;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayer;
+import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.client.util.PlayerModelCacheExtension;
-import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.entity.flight.DefaultFlightType;
@@ -39,8 +39,7 @@ import java.util.Set;
 public class PalladiumRenderStateKeys {
 
     public static ContextKey<Map<PackRenderLayer<PackRenderLayer.State>, PackRenderLayer.State>> RENDER_LAYERS = create("render_layers");
-    public static ContextKey<Set<BodyPart>> HIDDEN_BODY_PARTS = create("hidden_body_parts");
-    public static ContextKey<Set<BodyPart>> REMOVED_BODY_PARTS = create("removed_body_parts");
+    public static ContextKey<Set<String>> HIDDEN_MODEL_PARTS = create("hidden_model_parts");
     public static ContextKey<PlayerModel> CACHED_MODEL = create("cached_model");
     public static ContextKey<Float[]> AIM = create("aim");
     public static ContextKey<Map<DataContext, PalladiumAnimation>> ANIMATIONS = create("animations");
@@ -60,8 +59,7 @@ public class PalladiumRenderStateKeys {
                 state.setRenderData(RENDER_LAYERS, Collections.emptyMap());
             }
 
-            state.setRenderData(HIDDEN_BODY_PARTS, BodyPart.getHiddenBodyParts(entity));
-            state.setRenderData(REMOVED_BODY_PARTS, BodyPart.getRemovedBodyParts(entity));
+            state.setRenderData(HIDDEN_MODEL_PARTS, ModelUtil.getHiddenModelPartNames(entity));
             state.setRenderData(AIM, AimAbility.getTimer(entity, state.partialTick));
             state.setRenderData(IN_FLIGHT, EntityFlightHandler.get(entity).getInFlightTimer(state.partialTick));
 

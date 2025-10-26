@@ -11,7 +11,6 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.client.util.PerspectiveValue;
-import net.threetag.palladium.entity.BodyPart;
 import net.threetag.palladium.logic.condition.Condition;
 import net.threetag.palladium.logic.condition.TrueCondition;
 import net.threetag.palladium.logic.context.DataContext;
@@ -22,14 +21,14 @@ import org.joml.Vector3f;
 import java.util.Collections;
 import java.util.List;
 
-public record Beam(BodyPart anchor, PerspectiveValue<Vector3f> offset, PerspectiveValue<Condition> visibility,
+public record Beam(String anchor, PerspectiveValue<Vector3f> offset, PerspectiveValue<Condition> visibility,
                    BeamRenderer renderer, List<BeamParticle> particles) {
 
     public static final PerspectiveValue<Vector3f> DEFAULT_OFFSET = new PerspectiveValue<>(new Vector3f());
     public static final PerspectiveValue<Condition> DEFAULT_VISIBILITY = new PerspectiveValue<>(TrueCondition.INSTANCE);
 
     public static final Codec<Beam> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            BodyPart.CODEC.fieldOf("body_part").forGetter(Beam::anchor),
+            Codec.STRING.fieldOf("body_part").forGetter(Beam::anchor),
             PerspectiveValue.codec(PalladiumCodecs.VOXEL_VECTOR_3F).optionalFieldOf("offset", DEFAULT_OFFSET).forGetter(Beam::offset),
             PerspectiveValue.codec(Condition.CODEC).optionalFieldOf("visibility", DEFAULT_VISIBILITY).forGetter(Beam::visibility),
             BeamRenderer.CODEC.fieldOf("renderer").forGetter(Beam::renderer),

@@ -21,7 +21,8 @@
     "ResourcePackLoaderMixin",
     "SimpleJsonResourceReloadListenerMixin",
     "VibrationSystemListenerMixin",
-    "WorldVersionMixin"
+    "WorldVersionMixin",
+    "client.ModelMixin"
   ],
   "client": [
     "client.AbstractClientPlayerMixin",

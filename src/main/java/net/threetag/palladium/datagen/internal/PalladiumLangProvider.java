@@ -121,8 +121,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 //            this.addAbility(AbilitySerializers.PROJECTILE, "Projectile");
             this.addAbility(AbilitySerializers.SKIN_CHANGE, "Skin Change");
             this.addAbility(AbilitySerializers.AIM, "Aim");
-            this.addAbility(AbilitySerializers.HIDE_BODY_PART, "Hide Body Part");
-            this.addAbility(AbilitySerializers.REMOVE_BODY_PART, "Remove Body Part");
+            this.addAbility(AbilitySerializers.HIDE_MODEL_PART, "Hide Body Part");
             this.addAbility(AbilitySerializers.SHADER_EFFECT, "Shader Effect");
             this.addAbility(AbilitySerializers.GUI_OVERLAY, "Gui Overlay");
             this.addAbility(AbilitySerializers.SHOW_BOTH_ARMS, "Show Both Arms");
@@ -231,8 +230,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 //            this.addAbility(AbilitySerializers.PROJECTILE, "Projektil");
             this.addAbility(AbilitySerializers.SKIN_CHANGE, "Skin Änderung");
             this.addAbility(AbilitySerializers.AIM, "Zielen");
-            this.addAbility(AbilitySerializers.HIDE_BODY_PART, "Körperteile verstecken");
-            this.addAbility(AbilitySerializers.REMOVE_BODY_PART, "Körperteile entfernen");
+            this.addAbility(AbilitySerializers.HIDE_MODEL_PART, "Körperteile verstecken");
             this.addAbility(AbilitySerializers.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(AbilitySerializers.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(AbilitySerializers.SHOW_BOTH_ARMS, "Beide Arme zeigen");
@@ -341,8 +339,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 //            this.addAbility(AbilitySerializers.PROJECTILE, "Projektil");
             this.addAbility(AbilitySerializers.SKIN_CHANGE, "Skin Änderung");
             this.addAbility(AbilitySerializers.AIM, "Zielen");
-            this.addAbility(AbilitySerializers.HIDE_BODY_PART, "Görperdeile versteggen");
-            this.addAbility(AbilitySerializers.REMOVE_BODY_PART, "Görperdeile entfernen");
+            this.addAbility(AbilitySerializers.HIDE_MODEL_PART, "Görperdeile versteggen");
             this.addAbility(AbilitySerializers.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(AbilitySerializers.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(AbilitySerializers.SHOW_BOTH_ARMS, "Beide Arme zeijen");

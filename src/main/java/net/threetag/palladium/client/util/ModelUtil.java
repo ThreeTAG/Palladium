@@ -3,23 +3,30 @@ package net.threetag.palladium.client.util;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.PlayerCapeModel;
-import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
+import net.threetag.palladium.customization.Customization;
+import net.threetag.palladium.customization.EntityCustomizationHandler;
 import net.threetag.palladium.entity.ArmSetting;
-import net.threetag.palladium.entity.BodyPart;
-import org.jetbrains.annotations.Nullable;
+import net.threetag.palladium.power.ability.AbilityInstance;
+import net.threetag.palladium.power.ability.AbilitySerializers;
+import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.power.ability.HideModelPartAbility;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ModelUtil {
 
@@ -36,39 +43,39 @@ public class ModelUtil {
         to.visible = from.visible;
     }
 
-    @Nullable
-    public static ModelPart getModelPartByBodyPart(HumanoidModel<?> model, BodyPart bodyPart) {
-        PlayerModel playerModel = model instanceof PlayerModel pl ? pl : null;
-
-        return switch (bodyPart) {
-            case HEAD -> model.head;
-            case HEAD_OVERLAY -> model.hat;
-            case CHEST -> model.body;
-            case CHEST_OVERLAY -> playerModel != null ? playerModel.jacket : null;
-            case RIGHT_ARM -> model.rightArm;
-            case RIGHT_ARM_OVERLAY -> playerModel != null ? playerModel.rightSleeve : null;
-            case LEFT_ARM -> model.leftArm;
-            case LEFT_ARM_OVERLAY -> playerModel != null ? playerModel.leftSleeve : null;
-            case RIGHT_LEG -> model.rightLeg;
-            case RIGHT_LEG_OVERLAY -> playerModel != null ? playerModel.rightPants : null;
-            case LEFT_LEG -> model.leftLeg;
-            case LEFT_LEG_OVERLAY -> playerModel != null ? playerModel.leftPants : null;
-            case CAPE -> model instanceof PlayerCapeModel capeModel ? capeModel.cape : null;
-        };
-    }
-
-    public static void setVisibilityByBodyPart(HumanoidModel<?> model, BodyPart bodyPart, boolean visible) {
-        ModelPart part = getModelPartByBodyPart(model, bodyPart);
-
-        if (part != null) {
-            part.visible = visible;
+    public static ModelPart getPartFromModel(Model<?> model, String name) {
+        if (name.equals("root")) {
+            return model.root();
+        } else if (name.contains(".")) {
+            String[] split = name.split("\\.");
+            ModelPart part = model.root().getChild(split[0]);
+            for (int i = 1; i < split.length; i++) {
+                part = part.getChild(split[i]);
+            }
+            return part;
+        } else {
+            return model.root().getChild(name);
         }
     }
 
+    public static Set<String> getHiddenModelPartNames(LivingEntity entity) {
+        Set<String> parts = new HashSet<>();
+
+        for (AbilityInstance<HideModelPartAbility> instance : AbilityUtil.getEnabledInstances(entity, AbilitySerializers.HIDE_MODEL_PART.get())) {
+            parts.addAll(instance.getAbility().modelParts);
+        }
+
+        for (Holder<Customization> holder : EntityCustomizationHandler.get(entity).getSelected()) {
+            parts.addAll(holder.value().getHiddenModelParts());
+        }
+
+        return parts;
+    }
+
     @SuppressWarnings("rawtypes")
-    public static Matrix4f getTransformationMatrix(BodyPart part, Vector3f offset, HumanoidModel<?> model, AbstractClientPlayer player, float partialTicks) {
+    public static Matrix4f getTransformationMatrix(String part, Vector3f offset, HumanoidModel<?> model, AbstractClientPlayer player, float partialTicks) {
         var poseStack = new PoseStack();
-        var modelPart = getModelPartByBodyPart(model, part);
+        var modelPart = getPartFromModel(model, part);
 
         if (modelPart == null) {
             return poseStack.last().pose();
@@ -98,7 +105,7 @@ public class ModelUtil {
         return poseStack.last().pose();
     }
 
-    public static Matrix4f getTransformationMatrix(BodyPart part, Vector3f offset, AbstractClientPlayer player, float partialTicks) {
+    public static Matrix4f getTransformationMatrix(String part, Vector3f offset, AbstractClientPlayer player, float partialTicks) {
         if (player instanceof PlayerModelCacheExtension ext) {
             return getTransformationMatrix(part, offset, ext.palladium$getCachedModel(), player, partialTicks);
         } else {
@@ -106,13 +113,13 @@ public class ModelUtil {
         }
     }
 
-    public static Vec3 getInWorldPosition(BodyPart part, Vector3f offset, HumanoidModel<?> model, AbstractClientPlayer player, float partialTicks) {
+    public static Vec3 getInWorldPosition(String part, Vector3f offset, HumanoidModel<?> model, AbstractClientPlayer player, float partialTicks) {
         Vector3f vec = new Vector3f(0, 0, 0);
         vec = getTransformationMatrix(part, offset, model, player, partialTicks).transformPosition(vec);
         return player.getPosition(partialTicks).add(vec.x, vec.y, vec.z);
     }
 
-    public static Vec3 getInWorldPosition(BodyPart part, Vector3f offset, AbstractClientPlayer player, float partialTicks) {
+    public static Vec3 getInWorldPosition(String part, Vector3f offset, AbstractClientPlayer player, float partialTicks) {
         if (player instanceof PlayerModelCacheExtension ext) {
             return getInWorldPosition(part, offset, ext.palladium$getCachedModel(), player, partialTicks);
         } else {

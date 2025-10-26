@@ -4,7 +4,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.renderer.LaserRenderer;
 import net.threetag.palladium.client.util.PerspectiveValue;
-import net.threetag.palladium.entity.BodyPart;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -20,7 +19,7 @@ public class PalladiumBeams {
     public static void bootstrap(BiConsumer<ResourceLocation, BeamConfiguration> provider) {
         provider.accept(SWINGING_WEB_RIGHT, new BeamConfiguration(Collections.singletonList(
                 new Beam(
-                        BodyPart.RIGHT_ARM,
+                        "right_arm",
                         new PerspectiveValue<>(new Vector3f(0, 10F / 16F, 0)),
                         Beam.DEFAULT_VISIBILITY,
                         new LaserBeamRenderer(
@@ -38,7 +37,7 @@ public class PalladiumBeams {
         )));
         provider.accept(SWINGING_WEB_LEFT, new BeamConfiguration(Collections.singletonList(
                 new Beam(
-                        BodyPart.LEFT_ARM,
+                        "left_arm",
                         new PerspectiveValue<>(new Vector3f(0, 10F / 16F, 0)),
                         Beam.DEFAULT_VISIBILITY,
                         new LaserBeamRenderer(
