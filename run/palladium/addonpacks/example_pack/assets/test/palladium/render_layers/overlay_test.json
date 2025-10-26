@@ -1,0 +1,14 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "type": "palladium:render_layer",
+      "texture": "test:textures/entity/overlay_test_0.png"
+    },
+    {
+      "type": "palladium:render_layer",
+      "texture": "test:textures/entity/overlay_test_1.png",
+      "light_emission": 15
+    }
+  ]
+}

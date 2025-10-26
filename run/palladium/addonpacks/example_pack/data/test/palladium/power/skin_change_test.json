@@ -1,0 +1,20 @@
+{
+  "name": "Skin Change Test",
+  "icon": "minecraft:command_block",
+  "abilities": {
+    "root": {
+      "type": "palladium:skin_change",
+      "texture": "minecraft:textures/entity/zombie/drowned.png",
+      "model_type": "wide",
+      "properties": {
+        "title": "Drowned Skin"
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

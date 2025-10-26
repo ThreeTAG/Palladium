@@ -1,0 +1,58 @@
+{
+  "name": "Command Test",
+
+  "icon": "minecraft:command_block",
+
+  "abilities": {
+    "action": {
+      "type": "palladium:command",
+      "commands": "say Tick",
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "action",
+          "cooldown": 40
+        }
+      },
+      "properties": {
+        "title": "Action Test",
+        "icon": "minecraft:command_block",
+        "list_index": 0
+      }
+    },
+    "toggle": {
+      "type": "palladium:command",
+      "first_tick_commands": "say First Tick",
+      "last_tick_commands": "say Last Tick",
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle",
+          "cooldown": 40
+        }
+      },
+      "properties": {
+        "title": "Toggle Test",
+        "icon": "minecraft:repeating_command_block",
+        "list_index": 5
+      }
+    },
+    "held": {
+      "type": "palladium:command",
+      "first_tick_commands": "say First Tick",
+      "last_tick_commands": "say Last Tick",
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "held",
+          "cooldown": 40
+        }
+      },
+      "properties": {
+        "title": "Held Test",
+        "icon": "minecraft:chain_command_block",
+        "list_index": 6
+      }
+    }
+  }
+}

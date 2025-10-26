@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block_item",
+  "block": "test:basic_block",
+  "properties": {
+    "tab": [
+      {
+        "type": "add_after",
+        "tab": "minecraft:building_blocks",
+        "target": "minecraft:stone"
+      },
+      {
+        "type": "add_before",
+        "tab": "minecraft:natural_blocks",
+        "target": "minecraft:stone"
+      }
+    ]
+  }
+}

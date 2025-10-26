@@ -1,0 +1,38 @@
+{
+  "name": "Aim Test",
+  "icon": "minecraft:command_block",
+  "abilities": {
+    "main_arm": {
+      "type": "palladium:aim",
+      "arm": "main_arm",
+      "properties": {
+        "animation_timer": {
+          "max": 5,
+          "easing": "in_out_bounce"
+        }
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "off_arm": {
+      "type": "palladium:aim",
+      "arm": "off_arm",
+      "properties": {
+        "animation_timer": {
+          "max": 40,
+          "easing": "in_out_cubic"
+        }
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Invisibility Test",
+  "icon": "minecraft:glass_pane",
+  "abilities": {
+    "invisibility": {
+      "type": "palladium:invisibility",
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

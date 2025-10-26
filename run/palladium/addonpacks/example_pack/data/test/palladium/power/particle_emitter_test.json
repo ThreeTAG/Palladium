@@ -1,0 +1,64 @@
+{
+  "name": "Particle Emitter Test",
+  "icon": "minecraft:torch",
+  "abilities": {
+    "right_hand": {
+      "type": "palladium:particles",
+      "emitter": [
+        "test:right_hand",
+        "test:left_hand"
+      ],
+      "particle_type": "minecraft:flame",
+      "properties": {
+        "title": "Flame",
+        "list_index": 0
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "left_hand": {
+      "type": "palladium:particles",
+      "emitter": [
+        "test:right_hand",
+        "test:left_hand"
+      ],
+      "particle_type": "minecraft:dust",
+      "options": {
+        "color": [0.82, 0.2, 0.2],
+        "scale": 1.3
+      },
+      "properties": {
+        "title": "Dust",
+        "list_index": 1
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "aim": {
+      "type": "palladium:aim",
+      "arm": "both",
+      "properties": {
+        "title": "Aim",
+        "list_index": 2,
+        "animation_timer": {
+          "max": 20,
+          "easing": "in_out_cubic"
+        }
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

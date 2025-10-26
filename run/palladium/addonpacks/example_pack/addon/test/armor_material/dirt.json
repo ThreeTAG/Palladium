@@ -1,0 +1,16 @@
+{
+  "durability": 1,
+  "defense": {
+    "helmet": 1,
+    "chestplate": 1,
+    "leggings": 1,
+    "boots": 1,
+    "body": 1
+  },
+  "enchantment_value": 3,
+  "equip_sound": "minecraft:block.gravel.place",
+  "toughness": 0,
+  "knockback_resistance": 0,
+  "repair_items": "#test:repairs_dirt_armor",
+  "asset_id": "test:dirt"
+}

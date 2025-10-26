@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:sword",
+  "tool_material": "test:emerald",
+  "attack_damage": 3,
+  "attack_speed": -2.4,
+  "properties": {
+    "tab": {
+      "type": "add_after",
+      "tab": "minecraft:combat",
+      "target": "minecraft:diamond_sword"
+    }
+  }
+}

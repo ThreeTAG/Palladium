@@ -1,0 +1,8 @@
+{
+  "incorrect_blocks_for_drops": "#minecraft:incorrect_for_diamond_tool",
+  "durability": 1000,
+  "speed": 10,
+  "attack_damage_bonus": 2,
+  "enchantment_value": 15,
+  "repair_items": "#test:emerald_tool_materials"
+}

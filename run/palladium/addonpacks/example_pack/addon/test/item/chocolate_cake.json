@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:block_item",
+  "block": "test:chocolate_cake",
+  "properties": {
+    "tab": {
+      "type": "add_after",
+      "tab": "minecraft:food_and_drinks",
+      "target": "minecraft:cake"
+    }
+  }
+}

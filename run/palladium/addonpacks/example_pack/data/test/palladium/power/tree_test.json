@@ -1,0 +1,90 @@
+{
+  "name": "Ability Tree Test",
+  "icon": "minecraft:command_block",
+  "abilities": {
+    "root": {
+      "type": "palladium:command",
+      "commands": "say Root",
+      "properties": {
+        "title": "Root"
+      },
+      "state": {
+        "unlocking": {
+          "type": "palladium:experience_level_buyable",
+          "xp_level": 5
+        },
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "action",
+          "cooldown": 40
+        }
+      }
+    },
+    "child_1": {
+      "type": "palladium:command",
+      "commands": "say Child 1",
+      "properties": {
+        "title": "Child 1"
+      },
+      "state": {
+        "unlocking": {
+          "type": "palladium:experience_level_buyable",
+          "xp_level": 5,
+          "conditions": {
+            "type": "palladium:ability_unlocked",
+            "ability": "root"
+          }
+        },
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "action",
+          "cooldown": 40
+        }
+      }
+    },
+    "child_2": {
+      "type": "palladium:command",
+      "commands": "say Child 2",
+      "properties": {
+        "title": "Child 2"
+      },
+      "state": {
+        "unlocking": {
+          "type": "palladium:experience_level_buyable",
+          "xp_level": 5,
+          "conditions": {
+            "type": "palladium:ability_unlocked",
+            "ability": "root"
+          }
+        },
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "action",
+          "cooldown": 40
+        }
+      }
+    },
+    "child_1_1": {
+      "type": "palladium:command",
+      "commands": "say Child 1-1",
+      "properties": {
+        "title": "Child 1-1"
+      },
+      "state": {
+        "unlocking": {
+          "type": "palladium:experience_level_buyable",
+          "xp_level": 5,
+          "conditions": {
+            "type": "palladium:ability_unlocked",
+            "ability": "child_1"
+          }
+        },
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "action",
+          "cooldown": 40
+        }
+      }
+    }
+  }
+}

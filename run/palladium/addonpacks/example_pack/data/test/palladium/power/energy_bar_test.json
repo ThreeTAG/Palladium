@@ -1,0 +1,35 @@
+{
+  "name": "Energy Bar Test",
+  "icon": "minecraft:command_block",
+  "energy_bars": {
+    "bar_1": {
+      "color": "ff0000",
+      "max": 100,
+      "auto_increase_per_tick": 1
+    },
+    "bar_2": {
+      "color": "0000ff",
+      "max": 200,
+      "auto_increase_per_tick": 20
+    }
+  },
+  "abilities": {
+    "decrease_bar": {
+      "type": "palladium:dummy",
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "held",
+          "cooldown": 40
+        }
+      },
+      "energy_bar_usage": {
+        "energy_bar": "bar_1",
+        "amount": 10
+      },
+      "properties": {
+        "title": "Decrease Energy"
+      }
+    }
+  }
+}

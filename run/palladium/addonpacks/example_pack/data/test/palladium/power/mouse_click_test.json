@@ -1,0 +1,174 @@
+{
+  "name": "Jump Key Test",
+  "icon": "minecraft:command_block",
+  "abilities": {
+    "left_click_action": {
+      "type": "palladium:command",
+      "commands": "say Tick",
+      "state": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": {
+              "type": "palladium:crouching"
+            }
+          }
+        ],
+        "enabling": {
+          "type": "palladium:key_bind",
+          "key_bind": {
+            "type": "palladium:mouse_click",
+            "click_type": "left_click",
+            "cancel_interaction": true
+          },
+          "behaviour": "action",
+          "cooldown": 40
+        }
+      },
+      "properties": {
+        "title": "Left Click Action Test",
+        "icon": "minecraft:command_block",
+        "list_index": 0
+      }
+    },
+    "left_click_held": {
+      "type": "palladium:command",
+      "first_tick_commands": "say First Tick",
+      "last_tick_commands": "say Last Tick",
+      "state": {
+        "unlocking": [
+          {
+            "type": "palladium:crouching"
+          }
+        ],
+        "enabling": {
+          "type": "palladium:key_bind",
+          "key_bind": {
+            "type": "palladium:mouse_click",
+            "click_type": "left_click",
+            "cancel_interaction": true
+          },
+          "behaviour": "held",
+          "cooldown": 40
+        }
+      },
+      "properties": {
+        "title": "Left Click Held Test",
+        "icon": "minecraft:chain_command_block",
+        "list_index": 0
+      }
+    },
+    "right_click_action": {
+      "type": "palladium:command",
+      "commands": "say Tick",
+      "state": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": {
+              "type": "palladium:crouching"
+            }
+          }
+        ],
+        "enabling": {
+          "type": "palladium:key_bind",
+          "key_bind": {
+            "type": "palladium:mouse_click",
+            "click_type": "right_click",
+            "cancel_interaction": true
+          },
+          "behaviour": "action",
+          "cooldown": 40
+        }
+      },
+      "properties": {
+        "title": "Right Click Action Test",
+        "icon": "minecraft:command_block",
+        "list_index": 1
+      }
+    },
+    "right_click_held": {
+      "type": "palladium:command",
+      "first_tick_commands": "say First Tick",
+      "last_tick_commands": "say Last Tick",
+      "state": {
+        "unlocking": [
+          {
+            "type": "palladium:crouching"
+          }
+        ],
+        "enabling": {
+          "type": "palladium:key_bind",
+          "key_bind": {
+            "type": "palladium:mouse_click",
+            "click_type": "right_click",
+            "cancel_interaction": true
+          },
+          "behaviour": "held",
+          "cooldown": 40
+        }
+      },
+      "properties": {
+        "title": "Right Click Held Test",
+        "icon": "minecraft:chain_command_block",
+        "list_index": 1
+      }
+    },
+    "middle_click_action": {
+      "type": "palladium:command",
+      "commands": "say Tick",
+      "state": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": {
+              "type": "palladium:crouching"
+            }
+          }
+        ],
+        "enabling": {
+          "type": "palladium:key_bind",
+          "key_bind": {
+            "type": "palladium:mouse_click",
+            "click_type": "middle_click",
+            "cancel_interaction": true
+          },
+          "behaviour": "action",
+          "cooldown": 40
+        }
+      },
+      "properties": {
+        "title": "Middle Click Action Test",
+        "icon": "minecraft:command_block",
+        "list_index": 2
+      }
+    },
+    "middle_click_held": {
+      "type": "palladium:command",
+      "first_tick_commands": "say First Tick",
+      "last_tick_commands": "say Last Tick",
+      "state": {
+        "unlocking": [
+          {
+            "type": "palladium:crouching"
+          }
+        ],
+        "enabling": {
+          "type": "palladium:key_bind",
+          "key_bind": {
+            "type": "palladium:mouse_click",
+            "click_type": "middle_click",
+            "cancel_interaction": true
+          },
+          "behaviour": "held",
+          "cooldown": 40
+        }
+      },
+      "properties": {
+        "title": "Middle Click Held Test",
+        "icon": "minecraft:chain_command_block",
+        "list_index": 2
+      }
+    }
+  }
+}

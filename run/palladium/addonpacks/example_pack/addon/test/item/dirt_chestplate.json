@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:armor",
+  "armor_material": "test:dirt",
+  "armor_type": "chestplate",
+  "properties": {
+    "tab": {
+      "type": "add_before",
+      "tab": "minecraft:combat",
+      "target": "minecraft:leather_helmet"
+    }
+  }
+}

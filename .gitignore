@@ -19,8 +19,11 @@ build
 
 # other
 eclipse
-run
-runs
-run-data
+/run/*
+!/run/palladium/
+/run/palladium/documentation/
+!/run/palladium/addonpacks/
+!/run/palladium/addonpacks/example_pack/
+
 
 repo

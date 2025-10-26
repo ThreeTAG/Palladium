@@ -1,0 +1,59 @@
+{
+  "name": "Jump Key Test",
+  "icon": "minecraft:command_block",
+  "abilities": {
+    "action": {
+      "type": "palladium:command",
+      "commands": "say Tick",
+      "state": {
+        "unlocking": [
+          {
+            "type": "palladium:not",
+            "conditions": {
+              "type": "palladium:crouching"
+            }
+          }
+        ],
+        "enabling": {
+          "type": "palladium:key_bind",
+          "key_bind": {
+            "type": "palladium:jump"
+          },
+          "behaviour": "action",
+          "cooldown": 40
+        }
+      },
+      "properties": {
+        "title": "Action Test",
+        "icon": "minecraft:command_block",
+        "list_index": 0
+      }
+    },
+    "held": {
+      "type": "palladium:command",
+      "first_tick_commands": "say First Tick",
+      "last_tick_commands": "say Last Tick",
+      "state": {
+        "unlocking": [
+          {
+            "type": "palladium:crouching"
+          }
+        ],
+        "enabling": {
+          "type": "palladium:key_bind",
+          "key_bind": {
+            "type": "palladium:jump",
+            "cancel_jump": true
+          },
+          "behaviour": "held",
+          "cooldown": 40
+        }
+      },
+      "properties": {
+        "title": "Held Test",
+        "icon": "minecraft:chain_command_block",
+        "list_index": 6
+      }
+    }
+  }
+}

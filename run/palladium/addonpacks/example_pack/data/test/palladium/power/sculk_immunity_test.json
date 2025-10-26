@@ -1,0 +1,9 @@
+{
+  "name": "Sculk Immunity Test",
+  "icon": "minecraft:sculk",
+  "abilities": {
+    "sculk_immunity": {
+      "type": "palladium:sculk_immunity"
+    }
+  }
+}

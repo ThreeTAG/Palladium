@@ -1,0 +1,82 @@
+{
+  "name": "Render Layer Test",
+  "icon": "minecraft:bread",
+  "abilities": {
+    "overlay": {
+      "type": "palladium:dummy",
+      "properties": {
+        "render_layer": "test:overlay_test",
+        "title": "Overlay",
+        "list_index": 0
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "modeled": {
+      "type": "palladium:dummy",
+      "properties": {
+        "render_layer": "test:modeled_test",
+        "title": "Modeled",
+        "list_index": 1
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "lightning_sparks": {
+      "type": "palladium:dummy",
+      "properties": {
+        "render_layer": "test:lightning_sparks_test",
+        "title": "Lightning Sparks",
+        "list_index": 2
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "cycling_number": {
+      "type": "palladium:dummy",
+      "properties": {
+        "render_layer": "test:cycling_number",
+        "title": "Cycling Number",
+        "list_index": 3
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "alpha_mask": {
+      "type": "palladium:dummy",
+      "properties": {
+        "title": "Alpha Mask",
+        "list_index": 4,
+        "animation_timer": 16
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "alpha_mask_render_layer": {
+      "type": "palladium:dummy",
+      "properties": {
+        "render_layer": "test:alpha_mask_test"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Show Both Arms Test",
+  "icon": "minecraft:leather",
+  "abilities": {
+    "show_both_arms": {
+      "type": "palladium:show_both_arms",
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

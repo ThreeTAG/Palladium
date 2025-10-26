@@ -1,0 +1,49 @@
+[
+  {
+    "body_part": "right_arm",
+    "offset": [
+      0,
+      -11,
+      0
+    ],
+    "renderer": {
+      "type": "palladium:lightning",
+      "segments": 25,
+      "spread": 2,
+      "frequency": 200,
+      "render_settings": {
+        "glow": "#652191"
+      }
+    }
+  },
+  {
+    "body_part": "left_arm",
+    "offset": [
+      0,
+      -11,
+      0
+    ],
+    "renderer": {
+      "type": "palladium:lightning",
+      "segments": 10,
+      "spread": 5,
+      "frequency": 2,
+      "render_settings": {
+        "core": {
+          "opacity": 0.25,
+          "pulse": {
+            "scale": 0.1,
+            "frequency": 1.0
+          }
+        },
+        "glow": {
+          "color": "#652191",
+          "pulse": {
+            "scale": 0.25,
+            "frequency": 2.0
+          }
+        }
+      }
+    }
+  }
+]

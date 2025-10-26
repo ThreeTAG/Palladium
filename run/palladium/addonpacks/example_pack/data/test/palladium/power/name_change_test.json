@@ -1,0 +1,16 @@
+{
+  "name": "Name Change Test",
+  "icon": "minecraft:name_tag",
+  "abilities": {
+    "invisibility": {
+      "type": "palladium:name_change",
+      "name": "John Doe",
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

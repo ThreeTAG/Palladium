@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "test:item/dirt_chestplate"
+  }
+}

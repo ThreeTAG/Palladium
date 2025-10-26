@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:item",
+  "properties": {
+    "components": {
+      "minecraft:glider": {},
+      "minecraft:equippable": {
+        "slot": "head"
+      },
+      "minecraft:rarity": "epic",
+      "palladium:render_layers": {
+        "head": "test:overlay_test",
+        "accessories#accessories:hat": "test:overlay_test"
+      },
+      "palladium:powers": {
+        "head": "test:aim_test",
+        "accessories#accessories:hat": "test:aim_test"
+      }
+    },
+    "tab": {
+      "type": "add_after",
+      "tab": "minecraft:tools_and_utilities",
+      "target": "minecraft:elytra"
+    }
+  }
+}

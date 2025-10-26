@@ -1,0 +1,26 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "texture": {
+        "base": "test:textures/entity/iron_man_suit.png",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "test:textures/entity/alpha_masks/iron_man_suit/transformation_#TIMER.png"
+          }
+        ],
+        "variables": {
+          "TIMER": {
+            "type": "palladium:animation_timer",
+            "ability": "test:render_layer_test#alpha_mask"
+          }
+        }
+      }
+    },
+    {
+      "texture": "test:textures/entity/iron_man_suit_reactor_lights.png",
+      "light_emission": 15
+    }
+  ]
+}

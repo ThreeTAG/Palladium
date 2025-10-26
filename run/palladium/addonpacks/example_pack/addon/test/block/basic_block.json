@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:block",
+  "properties": {
+    "map_color": "light_gray",
+    "requires_correct_tool_for_drops": true,
+    "instrument": "basedrum",
+    "destroy_time": 1.5,
+    "explosion_resistance": 6
+  }
+}

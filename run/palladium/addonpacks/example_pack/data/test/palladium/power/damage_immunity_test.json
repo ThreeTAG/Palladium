@@ -1,0 +1,13 @@
+{
+  "name": "Damage Immunity Test",
+  "icon": "minecraft:cactus",
+  "abilities": {
+    "invisibility": {
+      "type": "palladium:damage_immunity",
+      "damage_types": [
+        "minecraft:cactus",
+        "#minecraft:is_explosion"
+      ]
+    }
+  }
+}

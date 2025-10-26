@@ -1,0 +1,10 @@
+{
+  "type": "palladium:render_layer",
+  "model_layer": "test:modeled_test",
+  "texture": "test:textures/entity/modeled_test.png",
+  "animations": {
+    "head.halo": {
+      "y": "math.sin(query.get_age() * 2) - 4"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:cake",
+  "properties": {
+    "sound": "minecraft:wool",
+    "destroy_time": 0.5,
+    "explosion_resistance": 0.5,
+    "push_reaction": "destroy"
+  }
+}
