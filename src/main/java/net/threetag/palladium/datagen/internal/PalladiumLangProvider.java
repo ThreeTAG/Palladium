@@ -4,12 +4,15 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
 import net.threetag.palladium.command.DataAttachmentCommand;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
+import net.threetag.palladium.config.PalladiumClientConfig;
+import net.threetag.palladium.config.PalladiumServerConfig;
 import net.threetag.palladium.customization.BuiltinCustomization;
 import net.threetag.palladium.customization.Customization;
 import net.threetag.palladium.customization.CustomizationCategories;
@@ -39,20 +42,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
         this.add("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath(), name);
     }
 
-    public void addConfigTitle(String name) {
-        this.add(this.modid + ".midnightconfig.title", name);
-    }
-
-    public void addConfigCategory(String key, String name) {
-        this.add(this.modid + ".midnightconfig.category." + key, name);
-    }
-
-    public void addConfigEntry(String key, String name) {
-        this.add(this.modid + ".midnightconfig." + key, name);
-    }
-
-    public void addConfigEnum(Enum<?> enum_, String name) {
-        this.add(this.modid + ".midnightconfig.enum." + enum_.getDeclaringClass().getSimpleName() + "." + enum_.name(), name);
+    public void addConfigEntry(ModConfigSpec.ConfigValue<?> configSpec, String name) {
+        this.add(this.modid + ".configuration." + String.join(".", configSpec.getPath()), name);
     }
 
     public void addKeyMapping(String key, String name) {
@@ -83,19 +74,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(PalladiumItems.SUIT_STAND.get(), "Suit Stand");
 
             // Config
-//            this.addConfigTitle("Palladium");
-//            this.addConfigCategory(PalladiumConfig.CATEGORY_CLIENT, "Client");
-//            this.addConfigEntry("ABILITY_BAR_ALIGNMENT", "Ability Bar - Alignment");
-//            this.addConfigEnum(UiAlignment.TOP_LEFT, "Top Left");
-//            this.addConfigEnum(UiAlignment.TOP_RIGHT, "Top Right");
-//            this.addConfigEnum(UiAlignment.BOTTOM_LEFT, "Bottom Left");
-//            this.addConfigEnum(UiAlignment.BOTTOM_RIGHT, "Bottom Right");
-//            this.addConfigEntry("ABILITY_BAR_KEY_BIND_DISPLAY", "Ability Bar - Key Bind Display");
-//            this.addConfigEnum(AbilityKeyBindDisplay.INSIDE, "Inside");
-//            this.addConfigEnum(AbilityKeyBindDisplay.OUTSIDE, "Outside");
-//            this.addConfigEntry("HIDE_EXPERIMENTAL_WARNING", "Singleplayer - Hide Experimental Settings Warning");
-//            this.addConfigCategory(PalladiumConfig.CATEGORY_GAMEPLAY, "Gameplay");
-//            this.addConfigEntry("MAX_SUPERPOWER_SETS", "Max. amount of superpower sets");
+            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Alignment");
+            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_KEY_BIND_DISPLAY, "Ability Bar - Key Bind Display");
+            this.addConfigEntry(PalladiumClientConfig.HIDE_EXPERIMENTAL_WARNING, "Singleplayer - Hide Experimental Settings Warning");
+            this.addConfigEntry(PalladiumServerConfig.MAX_SUPERPOWER_SETS, "Max. amount of superpower sets");
 
             // Key Mappings
             this.add("key.palladium.categories.powers", "Powers");
@@ -192,19 +174,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(PalladiumItems.SUIT_STAND.get(), "Anzugsständer");
 
             // Config
-//            this.addConfigTitle("Palladium");
-//            this.addConfigCategory(PalladiumConfig.CATEGORY_CLIENT, "Client");
-//            this.addConfigEntry("ABILITY_BAR_ALIGNMENT", "Ability Bar - Position");
-//            this.addConfigEnum(UiAlignment.TOP_LEFT, "Oben links");
-//            this.addConfigEnum(UiAlignment.TOP_RIGHT, "Oben rechts");
-//            this.addConfigEnum(UiAlignment.BOTTOM_LEFT, "Unten links");
-//            this.addConfigEnum(UiAlignment.BOTTOM_RIGHT, "Unten rechts");
-//            this.addConfigEntry("ABILITY_BAR_KEY_BIND_DISPLAY", "Ability Bar - Anzeige der Tastenbelegung");
-//            this.addConfigEnum(AbilityKeyBindDisplay.INSIDE, "Innen");
-//            this.addConfigEnum(AbilityKeyBindDisplay.OUTSIDE, "Außen");
-//            this.addConfigEntry("HIDE_EXPERIMENTAL_WARNING", "Singleplayer - Experimental Settings Warnung ausblenden");
-//            this.addConfigCategory(PalladiumConfig.CATEGORY_GAMEPLAY, "Gameplay");
-//            this.addConfigEntry("MAX_SUPERPOWER_SETS", "Max. Anzahl an Superkraft-Sets");
+            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Position");
+            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_KEY_BIND_DISPLAY, "Ability Bar - Anzeige der Tastenbelegung");
+            this.addConfigEntry(PalladiumClientConfig.HIDE_EXPERIMENTAL_WARNING, "Singleplayer - Experimental Settings Warnung ausblenden");
+            this.addConfigEntry(PalladiumServerConfig.MAX_SUPERPOWER_SETS, "Max. Anzahl an Superkraft-Sets");
 
             // Key Mappings
             this.add("key.palladium.categories.powers", "Kräfte");
@@ -301,19 +274,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(PalladiumItems.SUIT_STAND.get(), "Anzuchsschdändorr");
 
             // Config
-//            this.addConfigTitle("Palladium");
-//            this.addConfigCategory(PalladiumConfig.CATEGORY_CLIENT, "Client");
-//            this.addConfigEntry("ABILITY_BAR_ALIGNMENT", "Ability Bar - Position");
-//            this.addConfigEnum(UiAlignment.TOP_LEFT, "Oben links");
-//            this.addConfigEnum(UiAlignment.TOP_RIGHT, "Oben rechts");
-//            this.addConfigEnum(UiAlignment.BOTTOM_LEFT, "Unten links");
-//            this.addConfigEnum(UiAlignment.BOTTOM_RIGHT, "Unten rechts");
-//            this.addConfigEntry("ABILITY_BAR_KEY_BIND_DISPLAY", "Ability Bar - Anzeige der Tastenbelegung");
-//            this.addConfigEnum(AbilityKeyBindDisplay.INSIDE, "Innen");
-//            this.addConfigEnum(AbilityKeyBindDisplay.OUTSIDE, "Außen");
-//            this.addConfigEntry("HIDE_EXPERIMENTAL_WARNING", "Singleplayer - Experimental Settings Warnung ausblenden");
-//            this.addConfigCategory(PalladiumConfig.CATEGORY_GAMEPLAY, "Gameplay");
-//            this.addConfigEntry("MAX_SUPERPOWER_SETS", "Max. Anzahl an Superkraft-Sets");
+            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Position");
+            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_KEY_BIND_DISPLAY, "Ability Bar - Anzeige der Tastenbelegung");
+            this.addConfigEntry(PalladiumClientConfig.HIDE_EXPERIMENTAL_WARNING, "Singleplayer - Experimental Settings Warnung ausblenden");
+            this.addConfigEntry(PalladiumServerConfig.MAX_SUPERPOWER_SETS, "Max. Anzahl an Superkraft-Sets");
 
             // Key Mappings
             this.add("key.palladium.categories.powers", "Gräfte");

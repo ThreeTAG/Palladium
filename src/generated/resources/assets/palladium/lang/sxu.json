@@ -10,13 +10,12 @@
   "ability.palladium.fluid_walking": "Uff Flüssichkeht Lofen",
   "ability.palladium.gui_overlay": "GUI-Overlay",
   "ability.palladium.healing": "Helung",
-  "ability.palladium.hide_body_part": "Görperdeile versteggen",
+  "ability.palladium.hide_model_part": "Görperdeile versteggen",
   "ability.palladium.intangibility": "Ungreifbarkeht",
   "ability.palladium.invisibility": "Unsischtbarkeet",
   "ability.palladium.name_change": "Namesänderung",
   "ability.palladium.particles": "Partikel",
   "ability.palladium.play_sound": "Sound",
-  "ability.palladium.remove_body_part": "Görperdeile entfernen",
   "ability.palladium.restrict_slots": "Slots beschränken",
   "ability.palladium.sculk_immunity": "Sculk-Immunität",
   "ability.palladium.shader_effect": "Shader Effekt",
@@ -70,5 +69,9 @@
   "key.palladium.categories.powers": "Gräfte",
   "key.palladium.open_equipment": "Ohsrüstung öffnen/schließen",
   "key.palladium.rotate_ability_list": "Durch Fähischgehtlehste rotieren",
-  "key.palladium.show_powers": "Gräfte"
+  "key.palladium.show_powers": "Gräfte",
+  "palladium.configuration.ability_bar_alignment": "Ability Bar - Position",
+  "palladium.configuration.ability_bar_key_bind_display": "Ability Bar - Anzeige der Tastenbelegung",
+  "palladium.configuration.hide_experimental_warning": "Singleplayer - Experimental Settings Warnung ausblenden",
+  "palladium.configuration.max_superpower_sets": "Max. Anzahl an Superkraft-Sets"
 }

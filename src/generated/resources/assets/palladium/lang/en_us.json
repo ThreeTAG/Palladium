@@ -10,13 +10,12 @@
   "ability.palladium.fluid_walking": "Fluid Walking",
   "ability.palladium.gui_overlay": "Gui Overlay",
   "ability.palladium.healing": "Healing",
-  "ability.palladium.hide_body_part": "Hide Body Part",
+  "ability.palladium.hide_model_part": "Hide Body Part",
   "ability.palladium.intangibility": "Intangibility",
   "ability.palladium.invisibility": "Invisibility",
   "ability.palladium.name_change": "Name Change",
   "ability.palladium.particles": "Particles",
   "ability.palladium.play_sound": "Sound",
-  "ability.palladium.remove_body_part": "Remove Body Part",
   "ability.palladium.restrict_slots": "Restrict Slots",
   "ability.palladium.sculk_immunity": "Sculk Immunity",
   "ability.palladium.shader_effect": "Shader Effect",
@@ -70,5 +69,9 @@
   "key.palladium.categories.powers": "Powers",
   "key.palladium.open_equipment": "Open/Close Equipment",
   "key.palladium.rotate_ability_list": "Rotate through ability bar",
-  "key.palladium.show_powers": "Powers"
+  "key.palladium.show_powers": "Powers",
+  "palladium.configuration.ability_bar_alignment": "Ability Bar - Alignment",
+  "palladium.configuration.ability_bar_key_bind_display": "Ability Bar - Key Bind Display",
+  "palladium.configuration.hide_experimental_warning": "Singleplayer - Hide Experimental Settings Warning",
+  "palladium.configuration.max_superpower_sets": "Max. amount of superpower sets"
 }
