@@ -234,24 +234,13 @@ public abstract class AbstractSelectionGrid<E extends AbstractSelectionGrid.Entr
         return Optional.ofNullable(this.getEntryAtPosition(mouseX, mouseY));
     }
 
-    @SuppressWarnings("SuspiciousMethodCalls")
     public void setFocused(@Nullable GuiEventListener focused) {
-        E entry = this.getFocused();
-        if (entry != focused && entry instanceof ContainerEventHandler containerEventHandler) {
-            containerEventHandler.setFocused(null);
+        E e = this.getFocused();
+        if (e != focused && e instanceof ContainerEventHandler containereventhandler) {
+            containereventhandler.setFocused(null);
         }
 
         super.setFocused(focused);
-        int i = this.children.indexOf(focused);
-
-        if (i >= 0) {
-            E entry2 = this.children.get(i);
-            this.setSelected(entry2);
-            if (this.minecraft.getLastInputType().isKeyboard()) {
-                this.ensureVisible(entry2);
-            }
-        }
-
     }
 
     @Nullable

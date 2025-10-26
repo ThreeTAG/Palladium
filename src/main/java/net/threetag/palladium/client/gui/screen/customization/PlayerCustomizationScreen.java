@@ -188,6 +188,9 @@ public class PlayerCustomizationScreen extends Screen {
             EntityRenderer<? super LivingEntity, ?> entityRenderer = entityRenderDispatcher.getRenderer(entity);
             EntityRenderState entityRenderState = entityRenderer.createRenderState(entity, 1.0F);
             entityRenderState.hitboxesRenderState = null;
+            entityRenderState.lightCoords = 15728880;
+            entityRenderState.shadowPieces.clear();
+            entityRenderState.outlineColor = 0;
             var state = new GuiEntityRenderState(entityRenderState, translation, quaternionf, null, x1, y1, x2, y2, scale, guiGraphics.scissorStack.peek());
             stateConsumer.accept(state);
         }

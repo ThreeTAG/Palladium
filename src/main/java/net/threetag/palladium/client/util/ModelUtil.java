@@ -40,7 +40,6 @@ public class ModelUtil {
         to.xScale = from.xScale;
         to.yScale = from.yScale;
         to.zScale = from.zScale;
-        to.visible = from.visible;
     }
 
     public static ModelPart getPartFromModel(Model<?> model, String name) {

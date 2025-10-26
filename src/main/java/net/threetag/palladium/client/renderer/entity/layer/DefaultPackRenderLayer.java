@@ -197,7 +197,6 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
 
     private static void mimicModelParts(ModelPart source, ModelPart target) {
         ModelUtil.copyProperties(source, target);
-        target.visible = source.visible;
 
         source.children.forEach((name, modelPart) -> {
             if (target.hasChild(name)) {

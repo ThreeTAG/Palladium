@@ -14,6 +14,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.ARGB;
+import net.minecraft.world.item.DyeColor;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.component.grid.AbstractSelectionGrid;
@@ -110,6 +111,7 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
             this.suitStandPreview.setXRot(0F);
             this.suitStandPreview.yHeadRot = this.suitStandPreview.getYRot();
             this.suitStandPreview.yHeadRotO = this.suitStandPreview.getYRot();
+            this.suitStandPreview.setDyeColor(DyeColor.WHITE);
             EntityCustomizationHandler.get(this.suitStandPreview).select(this.customization);
         }
 
