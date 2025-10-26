@@ -23,10 +23,7 @@ public class CreativeModeTabCodec {
                 .icon(() -> BuiltInRegistries.ITEM.getValue(icon).getDefaultInstance());
 
         bg.ifPresent(builder::backgroundTexture);
-
-        for (ResourceLocation itemId : items) {
-            builder.displayItems((parameters, output) -> BuiltInRegistries.ITEM.getOptional(itemId).ifPresent(output::accept));
-        }
+        builder.displayItems((parameters, output) -> items.stream().map(BuiltInRegistries.ITEM::getValue).forEach(output::accept));
 
         return builder.build();
     }));
