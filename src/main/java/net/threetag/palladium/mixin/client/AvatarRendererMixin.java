@@ -13,7 +13,6 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.client.renderer.entity.layer.ClientEntityRenderLayers;
 import net.threetag.palladium.client.renderer.entity.state.PalladiumRenderStateKeys;
 import net.threetag.palladium.client.util.PerspectiveAwareConditions;
-import net.threetag.palladium.client.util.PlayerModelCacheExtension;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,10 +40,6 @@ public abstract class AvatarRendererMixin<AvatarlikeEntity extends Avatar & Clie
                     layer.submitArm(state.getContext(), poseStack, nodeCollector, arm, armPart, playerRenderer, state, packedLight);
                 }
             });
-        }
-
-        if (player instanceof PlayerModelCacheExtension ext) {
-            ext.palladium$animateInFirstPerson(player, playerRenderer);
         }
     }
 

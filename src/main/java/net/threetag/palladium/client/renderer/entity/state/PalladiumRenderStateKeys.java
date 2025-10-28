@@ -3,7 +3,6 @@ package net.threetag.palladium.client.renderer.entity.state;
 import com.google.common.reflect.TypeToken;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.entity.ClientAvatarState;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
@@ -22,7 +21,6 @@ import net.threetag.palladium.client.animation.PalladiumAnimationManager;
 import net.threetag.palladium.client.renderer.entity.layer.ClientEntityRenderLayers;
 import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayer;
 import net.threetag.palladium.client.util.ModelUtil;
-import net.threetag.palladium.client.util.PlayerModelCacheExtension;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.entity.flight.DefaultFlightType;
@@ -40,7 +38,6 @@ public class PalladiumRenderStateKeys {
 
     public static ContextKey<Map<PackRenderLayer<PackRenderLayer.State>, PackRenderLayer.State>> RENDER_LAYERS = create("render_layers");
     public static ContextKey<Set<String>> HIDDEN_MODEL_PARTS = create("hidden_model_parts");
-    public static ContextKey<PlayerModel> CACHED_MODEL = create("cached_model");
     public static ContextKey<Float[]> AIM = create("aim");
     public static ContextKey<Map<DataContext, PalladiumAnimation>> ANIMATIONS = create("animations");
     public static ContextKey<Float> IN_FLIGHT = create("in_flight");
@@ -80,10 +77,6 @@ public class PalladiumRenderStateKeys {
                 }
             }
             state.setRenderData(ANIMATIONS, animations);
-
-            if (entity instanceof PlayerModelCacheExtension ext) {
-                state.setRenderData(CACHED_MODEL, ext.palladium$getCachedModel());
-            }
         });
     }
 

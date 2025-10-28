@@ -18,7 +18,7 @@
       "state": {
         "enabling": {
           "type": "palladium:key_bind",
-          "behaviour": "held"
+          "behaviour": "toggle"
         }
       }
     },
@@ -80,6 +80,12 @@
           "type": "palladium:key_bind",
           "behaviour": "held"
         }
+      }
+    },
+    "show_both_arms": {
+      "type": "palladium:show_both_arms",
+      "properties": {
+        "hidden": true
       }
     }
   }
