@@ -2,12 +2,14 @@ package net.threetag.palladium.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.threetag.palladium.client.AbilityClientEventHandler;
 import net.threetag.palladium.power.ability.AbilitySerializers;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import org.spongepowered.asm.mixin.Mixin;
@@ -38,6 +40,11 @@ public abstract class ItemInHandRendererMixin {
             this.renderPlayerArm(poseStack, nodeCollector, packedLight, 0, 0, humanoidArm);
             poseStack.popPose();
         }
+    }
+
+    @Inject(method = "renderHandsWithItems", at = @At("RETURN"))
+    public void renderHandsWithItems(float partialTick, PoseStack poseStack, SubmitNodeCollector nodeCollector, LocalPlayer player, int packedLight, CallbackInfo ci) {
+        AbilityClientEventHandler.resetOpacityOverride();
     }
 
 }

@@ -36,7 +36,8 @@
     "client.MinecraftMixin",
     "client.ModelPartMixin",
     "client.ScreenEffectRendererMixin",
-    "client.SkyRendererMixin"
+    "client.SkyRendererMixin",
+    "client.SubmitNodeCollectionMixin"
   ],
   "injectors": {
     "defaultRequire": 1

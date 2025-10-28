@@ -182,20 +182,12 @@ public class AbilityUtil {
     }
 
     public static float getHighestAnimationTimerProgress(LivingEntity entity, AbilitySerializer<?> ability, float partialTick) {
-        return getHighestAnimationTimerProgress(entity, ability, partialTick, Easing.LINEAR);
-    }
-
-    public static float getHighestAnimationTimerProgress(LivingEntity entity, AbilitySerializer<?> ability, float partialTick, Easing easing) {
         float f = 0F;
 
         for (AbilityInstance<?> instance : AbilityUtil.getInstances(entity, ability)) {
-            var timer = instance.getAnimationTimer();
-
-            if (timer != null) {
-                f = Math.max(f, timer.progress(partialTick));
-            }
+            f = Math.max(f, instance.getAnimationTimerValueEased(partialTick));
         }
 
-        return easing.apply(f);
+        return f;
     }
 }

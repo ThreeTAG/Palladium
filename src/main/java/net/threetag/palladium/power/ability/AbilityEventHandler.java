@@ -5,6 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ServerChatEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.threetag.palladium.Palladium;
@@ -29,6 +30,11 @@ public class AbilityEventHandler {
                 .ifPresent(ability -> {
                     e.setDisplayname(Objects.requireNonNull(ability.get(PalladiumDataComponents.Abilities.NAME_CHANGE_CACHED.get())));
                 });
+    }
+
+    @SubscribeEvent
+    static void onLivingVisibility(LivingEvent.LivingVisibilityEvent e) {
+        e.modifyVisibility(AbilityUtil.getHighestAnimationTimerProgress(e.getEntity(), AbilitySerializers.INVISIBILITY.get(), 1F));
     }
 
     @SubscribeEvent

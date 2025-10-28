@@ -12,8 +12,6 @@ import java.util.List;
 
 public class InvisibilityAbility extends Ability {
 
-    // TODO add first person support
-
     public static final MapCodec<InvisibilityAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("mob_visibility_modifier", 0.0F).forGetter(a -> a.mobVisibilityModifier),

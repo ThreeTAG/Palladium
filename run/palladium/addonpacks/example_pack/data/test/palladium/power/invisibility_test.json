@@ -4,6 +4,9 @@
   "abilities": {
     "invisibility": {
       "type": "palladium:invisibility",
+      "properties": {
+        "animation_timer": 20
+      },
       "state": {
         "enabling": {
           "type": "palladium:key_bind",
