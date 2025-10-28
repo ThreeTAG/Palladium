@@ -328,6 +328,8 @@ public class PowersScreen extends Screen {
 
         @Override
         public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+            this.visible = !(this.screen instanceof CreativeModeInventoryScreen) || CreativeModeInventoryScreen.selectedTab == BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.INVENTORY);
+
             var pos = getPos(this.screen);
             if (pos != null) {
                 this.setPosition(pos.x, pos.y);
