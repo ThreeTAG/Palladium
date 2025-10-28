@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.PlayerModelType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -49,6 +50,9 @@ import net.threetag.palladium.datagen.internal.*;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.logic.value.ValueSerializer;
+import net.threetag.palladium.power.ability.AbilitySerializers;
+import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.power.ability.IntangibilityAbility;
 import net.threetag.palladium.proxy.PalladiumClientProxy;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
@@ -170,6 +174,31 @@ public class PalladiumClient {
     @SubscribeEvent
     static void registerPipelines(RegisterRenderPipelinesEvent e) {
         e.registerPipeline(PalladiumRenderTypes.Pipelines.ADD);
+    }
+
+    @SubscribeEvent
+    static void renderFog(ViewportEvent.RenderFog e) {
+        if (e.getCamera().getEntity() instanceof LivingEntity living) {
+            if (AbilityUtil.isTypeEnabled(living, AbilitySerializers.INTANGIBILITY.get())) {
+                if (IntangibilityAbility.getInWallBlockState(living) != null) {
+                    e.setFarPlaneDistance(5F);
+                    e.setNearPlaneDistance(1F);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    static void fogColor(ViewportEvent.ComputeFogColor e) {
+        if (e.getCamera().getEntity() instanceof LivingEntity living) {
+            if (AbilityUtil.isTypeEnabled(living, AbilitySerializers.INTANGIBILITY.get())) {
+                if (IntangibilityAbility.getInWallBlockState(living) != null) {
+                    e.setRed(0F);
+                    e.setGreen(0F);
+                    e.setBlue(0F);
+                }
+            }
+        }
     }
 
 }
