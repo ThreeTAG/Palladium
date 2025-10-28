@@ -6,6 +6,7 @@
     "CapabilityProviderMixin",
     "ForgeHooksMixin",
     "IEnergyStorageMixin",
+    "LootTableMixin",
     "NetworkManagerMixin",
     "PathPackResourcesAccessor"
   ],
