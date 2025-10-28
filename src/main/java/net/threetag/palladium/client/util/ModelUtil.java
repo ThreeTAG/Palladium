@@ -59,7 +59,7 @@ public class ModelUtil {
     }
 
     public static ModelPart getPartFromModel(Model<?> model, String name) {
-        if (name.equals("root")) {
+        if (name.equals("root") || name.equals("*")) {
             return model.root();
         } else if (name.contains(".")) {
             String[] split = name.split("\\.");
