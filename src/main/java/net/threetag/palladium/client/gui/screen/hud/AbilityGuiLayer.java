@@ -3,6 +3,7 @@ package net.threetag.palladium.client.gui.screen.hud;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
 import net.neoforged.neoforge.client.gui.GuiLayer;
@@ -67,7 +68,7 @@ public class AbilityGuiLayer implements GuiLayer {
 
     private void renderImage(GuiGraphics guiGraphics, ResourceLocation texture, Vec2 scale, int textureWidth, int textureHeight) {
         guiGraphics.pose().scale(scale.x, scale.y);
-        guiGraphics.blit(texture, -textureWidth / 2, -textureHeight / 2, 0, 0, textureWidth, textureHeight, textureWidth, textureHeight);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, -textureWidth / 2, -textureHeight / 2, 0, 0, textureWidth, textureHeight, textureWidth, textureHeight);
     }
 
 }
