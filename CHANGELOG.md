@@ -1,2 +1,3 @@
-- Add "registerForPower" method for animation register KJS event to improve performance
-- Added default "energy_beam" damage type to energy beams
+- Fixed pack villager trades reading "max_trades" from json instead of "xp"
+- Fixed loot table modifications not working on Forge
+- Fixed power screen button not appearing when switching to inventory tab in creative mode
