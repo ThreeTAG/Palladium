@@ -37,7 +37,7 @@ public abstract class Value {
         return this.getAsInt(context, 0);
     }
 
-    public float getAsFloat(DataContext context, int fallback) {
+    public float getAsFloat(DataContext context, float fallback) {
         var value = this.get(context);
 
         if (value instanceof Number n) {
@@ -51,7 +51,7 @@ public abstract class Value {
         return this.getAsFloat(context, 0);
     }
 
-    public double getAsDouble(DataContext context, int fallback) {
+    public double getAsDouble(DataContext context, double fallback) {
         var value = this.get(context);
 
         if (value instanceof Number n) {

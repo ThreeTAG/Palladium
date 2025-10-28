@@ -24,7 +24,16 @@ public class StaticValue extends Value {
 
     @Override
     public Object get(DataContext context) {
-        return this.object.getValue();
+        if (this.object.getValue() instanceof JsonPrimitive json) {
+            if (json.isNumber()) {
+                return json.getAsNumber();
+            } else if (json.isString()) {
+                return json.getAsString();
+            } else if (json.isBoolean()) {
+                return json.getAsBoolean();
+            }
+        }
+        return 0;
     }
 
     @Override
