@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.renderer.entity.layer;
+package net.threetag.palladium.client.renderer.entity.layer.pack;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;

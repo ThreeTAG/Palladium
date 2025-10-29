@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.renderer.entity.layer;
+package net.threetag.palladium.client.renderer.entity.layer.pack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.MapCodec;
@@ -20,6 +20,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
 import net.threetag.palladium.client.renderer.RenderTypeRegistry;
+import net.threetag.palladium.client.renderer.RenderTypeFunction;
 import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.client.util.PerspectiveAwareConditions;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;

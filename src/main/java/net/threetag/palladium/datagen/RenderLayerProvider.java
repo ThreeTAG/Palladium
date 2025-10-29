@@ -3,7 +3,7 @@ package net.threetag.palladium.datagen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.JsonCodecProvider;
-import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayer;
+import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
 
 import java.util.concurrent.CompletableFuture;
 

@@ -1,6 +1,4 @@
-package net.threetag.palladium.client.renderer.entity.layer;
-
-import net.minecraft.world.entity.LivingEntity;
+package net.threetag.palladium.client.renderer.entity.layer.pack;
 
 import java.util.*;
 

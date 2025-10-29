@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.StringRepresentable;
-import net.threetag.palladium.client.renderer.entity.layer.MoLangQuery;
+import net.threetag.palladium.client.renderer.entity.PalladiumMoLangQuery;
 import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.molang.ModifyFloatFunction;
@@ -27,14 +27,14 @@ public record PalladiumAnimation(Map<String, PartAnimation> animations) {
 
         if (!this.animations.isEmpty()) {
             MochaEngine<?> mocha = MochaEngine.createStandard();
-            mocha.scope().set("query", JavaObjectBinding.of(MoLangQuery.class, MoLangQuery.INSTANCE, null));
+            mocha.scope().set("query", JavaObjectBinding.of(PalladiumMoLangQuery.class, PalladiumMoLangQuery.INSTANCE, null));
             this.animations.values().forEach(partAnimation -> partAnimation.build(mocha));
         }
     }
 
     public void animate(Model<?> model, DataContext context, float partialTick) {
         if (!this.animations.isEmpty()) {
-            MoLangQuery.setContext(context, partialTick);
+            PalladiumMoLangQuery.setContext(context, partialTick);
 
             this.animations.forEach((bone, animation) -> {
                 var part = ModelUtil.getPartFromModel(model, bone);

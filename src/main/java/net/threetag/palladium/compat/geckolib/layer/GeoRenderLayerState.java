@@ -1,7 +1,7 @@
 package net.threetag.palladium.compat.geckolib.layer;
 
 import net.minecraft.client.Minecraft;
-import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayer;
+import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
 import net.threetag.palladium.logic.context.DataContext;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;

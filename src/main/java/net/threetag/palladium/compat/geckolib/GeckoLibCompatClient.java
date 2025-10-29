@@ -1,6 +1,6 @@
 package net.threetag.palladium.compat.geckolib;
 
-import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerSerializer;
+import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayerSerializer;
 import net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer;
 import software.bernie.geckolib.GeckoLibConstants;
 

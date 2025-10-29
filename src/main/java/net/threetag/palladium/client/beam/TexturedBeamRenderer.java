@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.LaserRenderer;
 import net.threetag.palladium.client.renderer.RenderTypeRegistry;
-import net.threetag.palladium.client.renderer.entity.layer.RenderTypeFunction;
+import net.threetag.palladium.client.renderer.RenderTypeFunction;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;

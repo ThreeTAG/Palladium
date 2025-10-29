@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.renderer.entity.layer;
+package net.threetag.palladium.client.renderer.entity.layer.pack;
 
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;

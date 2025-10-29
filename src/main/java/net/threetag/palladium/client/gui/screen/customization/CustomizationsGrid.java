@@ -19,7 +19,7 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.component.grid.AbstractSelectionGrid;
 import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderState;
-import net.threetag.palladium.client.renderer.entity.layer.ClientEntityRenderLayers;
+import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
 import net.threetag.palladium.customization.Customization;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.CustomizationPreview;

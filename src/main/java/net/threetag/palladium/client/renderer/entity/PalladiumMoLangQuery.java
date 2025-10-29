@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.renderer.entity.layer;
+package net.threetag.palladium.client.renderer.entity;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.entity.flight.EntityFlightHandler;
@@ -11,9 +11,9 @@ import team.unnamed.mocha.runtime.binding.Binding;
 import team.unnamed.mocha.runtime.value.*;
 
 @Binding("query")
-public class MoLangQuery implements ObjectValue {
+public class PalladiumMoLangQuery implements ObjectValue {
 
-    public static final MoLangQuery INSTANCE = new MoLangQuery();
+    public static final PalladiumMoLangQuery INSTANCE = new PalladiumMoLangQuery();
     private static DataContext CONTEXT = null;
     private static float partialTick = 0F;
 

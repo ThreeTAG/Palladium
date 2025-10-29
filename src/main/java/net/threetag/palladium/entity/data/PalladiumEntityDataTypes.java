@@ -3,7 +3,7 @@ package net.threetag.palladium.entity.data;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.renderer.entity.layer.EntityRenderLayers;
+import net.threetag.palladium.client.renderer.entity.layer.pack.EntityRenderLayers;
 import net.threetag.palladium.customization.EntityCustomizationHandler;
 import net.threetag.palladium.entity.PalladiumHubData;
 import net.threetag.palladium.entity.flight.EntityFlightHandler;

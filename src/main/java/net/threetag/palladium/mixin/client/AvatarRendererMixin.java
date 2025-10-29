@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.HumanoidArm;
-import net.threetag.palladium.client.renderer.entity.layer.ClientEntityRenderLayers;
+import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
 import net.threetag.palladium.client.renderer.entity.state.PalladiumRenderStateKeys;
 import net.threetag.palladium.client.util.PerspectiveAwareConditions;
 import net.threetag.palladium.entity.data.PalladiumEntityData;

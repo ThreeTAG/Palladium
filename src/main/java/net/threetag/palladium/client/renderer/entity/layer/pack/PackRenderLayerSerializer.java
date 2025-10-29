@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.renderer.entity.layer;
+package net.threetag.palladium.client.renderer.entity.layer.pack;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

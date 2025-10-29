@@ -2,8 +2,8 @@ package net.threetag.palladium.compat.geckolib;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.client.renderer.entity.layer.ClientEntityRenderLayers;
-import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayerManager;
+import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
+import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayerManager;
 import net.threetag.palladium.compat.geckolib.layer.GeoRenderLayer;
 import net.threetag.palladium.compat.geckolib.layer.GeoRenderLayerState;
 import net.threetag.palladium.entity.data.PalladiumEntityData;

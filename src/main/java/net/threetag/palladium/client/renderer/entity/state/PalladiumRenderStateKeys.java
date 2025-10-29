@@ -18,8 +18,8 @@ import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEve
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.animation.PalladiumAnimation;
 import net.threetag.palladium.client.animation.PalladiumAnimationManager;
-import net.threetag.palladium.client.renderer.entity.layer.ClientEntityRenderLayers;
-import net.threetag.palladium.client.renderer.entity.layer.PackRenderLayer;
+import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
+import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
 import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;

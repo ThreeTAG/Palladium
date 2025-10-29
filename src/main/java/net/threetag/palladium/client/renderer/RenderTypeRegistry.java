@@ -6,7 +6,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.client.renderer.entity.layer.RenderTypeFunction;
 
 import java.util.List;
 
