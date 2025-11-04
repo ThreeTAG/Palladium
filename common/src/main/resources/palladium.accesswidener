@@ -1,5 +1,7 @@
 accessWidener v2 named
 
+accessible field com/mojang/blaze3d/vertex/PoseStack poseStack Ljava/util/Deque;
+
 accessible field net/minecraft/client/model/PlayerModel cloak Lnet/minecraft/client/model/geom/ModelPart;
 accessible method net/minecraft/client/model/HumanoidModel poseRightArm (Lnet/minecraft/world/entity/LivingEntity;)V
 accessible method net/minecraft/client/model/HumanoidModel poseLeftArm (Lnet/minecraft/world/entity/LivingEntity;)V

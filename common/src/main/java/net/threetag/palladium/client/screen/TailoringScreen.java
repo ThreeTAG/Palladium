@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 
 public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
-    private static final ResourceLocation TEXTURE = Palladium.id("textures/gui/container/tailoring_table.png");
+    public static final ResourceLocation TEXTURE = Palladium.id("textures/gui/container/tailoring_table.png");
     protected static final ResourceLocation RECIPE_BOOK_TEXTURE = new ResourceLocation("textures/gui/recipe_book.png");
     public static final Quaternionf SUIT_STAND_ANGLE = new Quaternionf().rotationXYZ(0.43633232F, 0.0F, (float) Math.PI);
     private static final Component SEARCH_HINT = Component.translatable("gui.recipebook.search_hint")
