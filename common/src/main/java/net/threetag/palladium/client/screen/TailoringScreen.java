@@ -267,7 +267,7 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
             this.searchBox.setFocused(true);
             return true;
         } else {
-            return false;
+            return super.keyPressed(keyCode, scanCode, modifiers);
         }
     }
 
@@ -294,6 +294,11 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
     }
 
     public static void cycle(boolean next) {
+        if (AVAILABLE_RECIPES.isEmpty()) {
+            DISPLAYED_RECIPE_INDEX = -1;
+            DISPLAYED_RECIPE = null;
+        }
+
         if (next) {
             DISPLAYED_RECIPE_INDEX++;
 
