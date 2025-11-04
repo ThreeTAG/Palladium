@@ -1,0 +1,15 @@
+{
+  "type": "palladium:suit_set_tailoring",
+  "suit_set": "test:wood",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:oak_wood"
+      },
+      "count": 24
+    }
+  ],
+  "tool": {
+    "item": "minecraft:shears"
+  }
+}

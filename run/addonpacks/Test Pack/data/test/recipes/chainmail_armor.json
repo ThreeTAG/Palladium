@@ -1,0 +1,21 @@
+{
+  "type": "palladium:item_tailoring",
+  "results": {
+    "head": "minecraft:chainmail_helmet",
+    "chest": "minecraft:chainmail_chestplate",
+    "legs": "minecraft:chainmail_leggings",
+    "feet": "minecraft:chainmail_boots"
+  },
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:iron_ingot"
+      },
+      "count": 20
+    }
+  ],
+  "tool": {
+    "item": "minecraft:shears"
+  },
+  "title": "Chainmail Armor"
+}

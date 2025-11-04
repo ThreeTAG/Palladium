@@ -5,6 +5,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessories;
 import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.block.PalladiumBlocks;
+import net.threetag.palladium.block.TailoringBenchBlock;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
@@ -49,6 +50,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Block of Raw Vibranium");
             this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Heart-Shaped Herb");
             this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Potted Heart-Shaped Herb");
+            this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Tailoring Bench");
+            this.add("container.palladium.tailoring", "Tailoring");
+            this.add("container.palladium.tailoring.craft", "Create");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Raw Lead");
@@ -250,6 +254,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Rohvibraniumblock");
             this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Herzförmiges Kraut");
             this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Eingetopftes Herzförmige Kraut");
+            this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch");
+            this.add("container.palladium.tailoring", "Zuschneidern");
+            this.add("container.palladium.tailoring.craft", "Herstellen");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Rohblei");
@@ -451,6 +458,9 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Rohvibraniumblogg");
             this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Herzförmijes Graud");
             this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Eingedobbdes Herzförmije Graud");
+            this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch’n");
+            this.add("container.palladium.tailoring", "Zuschneidern");
+            this.add("container.palladium.tailoring.craft", "Herstellen");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Rohble");

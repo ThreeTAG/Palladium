@@ -49,6 +49,7 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> RAW_VIBRANIUM_BLOCK = ITEMS.register("raw_vibranium_block", () -> new BlockItem(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get(), new Item.Properties()));
 
     public static final RegistrySupplier<Item> HEART_SHAPED_HERB = ITEMS.register("heart_shaped_herb", () -> new BlockItem(PalladiumBlocks.HEART_SHAPED_HERB.get(), new Item.Properties()));
+    public static final RegistrySupplier<Item> TAILORING_BENCH = ITEMS.register("tailoring_bench", () -> new BlockItem(PalladiumBlocks.TAILORING_BENCH.get(), new Item.Properties()));
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -73,6 +74,7 @@ public class PalladiumItems {
     public static void init() {
         CreativeModeTabRegistry.addToTab(PalladiumCreativeModeTabs.PALLADIUM_MODS, entries -> {
             entries.add(
+                    TAILORING_BENCH.get(),
                     LEAD_ORE.get(),
                     DEEPSLATE_LEAD_ORE.get(),
                     TITANIUM_ORE.get(),
@@ -123,6 +125,7 @@ public class PalladiumItems {
 
         CreativeModeTabRegistry.addToTab(() -> BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.FUNCTIONAL_BLOCKS), entries -> {
             entries.addAfter(Items.ARMOR_STAND, SUIT_STAND.get());
+            entries.addAfter(Items.LOOM, TAILORING_BENCH.get());
         });
 
         CreativeModeTabRegistry.addToTab(() -> BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.INGREDIENTS), entries -> {

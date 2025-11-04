@@ -1,0 +1,27 @@
+{
+  "type": "palladium:item_tailoring",
+  "results": {
+    "head": "minecraft:netherite_helmet",
+    "chest": "minecraft:netherite_chestplate",
+    "legs": "minecraft:netherite_leggings",
+    "feet": "minecraft:netherite_boots"
+  },
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:netherite_ingot"
+      },
+      "count": 4
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:diamond"
+      },
+      "count": 24
+    }
+  ],
+  "tool": {
+    "item": "minecraft:shears"
+  },
+  "title": "Netherite Armor"
+}

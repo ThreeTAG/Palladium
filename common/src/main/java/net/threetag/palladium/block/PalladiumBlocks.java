@@ -1,10 +1,10 @@
 package net.threetag.palladium.block;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.util.PalladiumBlockUtil;
@@ -36,5 +36,7 @@ public class PalladiumBlocks {
 
     public static final RegistrySupplier<Block> HEART_SHAPED_HERB = BLOCKS.register("heart_shaped_herb", () -> new FlowerBlock(MobEffects.DAMAGE_RESISTANCE, 4, BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.GRASS)));
     public static final RegistrySupplier<Block> POTTED_HEART_SHAPED_HERB = BLOCKS.register("potted_heart_shaped_herb", () -> PalladiumBlockUtil.createFlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HEART_SHAPED_HERB, BlockBehaviour.Properties.of().instabreak().noOcclusion()));
+
+    public static final RegistrySupplier<Block> TAILORING_BENCH = BLOCKS.register("tailoring_bench", () -> new TailoringBenchBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.5F).sound(SoundType.WOOD).ignitedByLava()));
 
 }

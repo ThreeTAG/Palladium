@@ -1,0 +1,21 @@
+{
+  "type": "palladium:item_tailoring",
+  "results": {
+    "head": "minecraft:iron_helmet",
+    "chest": "minecraft:iron_chestplate",
+    "legs": "minecraft:iron_leggings",
+    "feet": "minecraft:iron_boots"
+  },
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:iron_ingot"
+      },
+      "count": 24
+    }
+  ],
+  "tool": {
+    "item": "minecraft:shears"
+  },
+  "title": "Iron Armor"
+}

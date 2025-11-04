@@ -24,6 +24,8 @@ import net.threetag.palladium.entity.effect.EntityEffects;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.item.PalladiumCreativeModeTabs;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.item.recipe.PalladiumRecipeSerializers;
+import net.threetag.palladium.menu.PalladiumMenuTypes;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.ItemPowerManager;
 import net.threetag.palladium.power.PowerManager;
@@ -69,6 +71,9 @@ public class Palladium {
         PalladiumEntityTypes.ENTITIES.register();
         PalladiumSoundEvents.SOUNDS.register();
         Accessories.ACCESSORIES.register();
+        PalladiumMenuTypes.MENU_TYPES.register();
+        PalladiumRecipeSerializers.RECIPE_TYPES.register();
+        PalladiumRecipeSerializers.RECIPE_SERIALIZERS.register();
 
         // Init before addonpack stuff is loaded, so new item type is registered
         if (Platform.isModLoaded("geckolib")) {

@@ -1,0 +1,21 @@
+{
+  "type": "palladium:item_tailoring",
+  "results": {
+    "head": "minecraft:golden_helmet",
+    "chest": "minecraft:golden_chestplate",
+    "legs": "minecraft:golden_leggings",
+    "feet": "minecraft:golden_boots"
+  },
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:gold_ingot"
+      },
+      "count": 24
+    }
+  ],
+  "tool": {
+    "item": "minecraft:shears"
+  },
+  "title": "Golden Armor"
+}
