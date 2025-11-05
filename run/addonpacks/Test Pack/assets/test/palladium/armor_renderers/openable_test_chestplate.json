@@ -1,0 +1,24 @@
+{
+  "textures": {
+    "default": "test:textures/models/armor/dirt.png",
+    "open": {
+      "base": "test:textures/models/iron_man_suit.png",
+      "transformers": [
+        {
+          "type": "palladium:alpha_mask",
+          "mask": "test:textures/models/alpha_masks/iron_man_suit/transformation_#TIMER.png"
+        }
+      ],
+      "variables": {
+        "TIMER": {
+          "type": "palladium:openable_equipment_progress"
+        }
+      },
+      "output": "test:textures/models/iron_man_suit_#TIMER.png"
+    }
+  },
+  "model_layers": {
+    "default": "test:player#thick_armor",
+    "open": "palladium:humanoid#suit"
+  }
+}
