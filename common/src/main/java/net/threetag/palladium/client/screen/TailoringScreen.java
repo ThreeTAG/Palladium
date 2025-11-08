@@ -56,6 +56,9 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
     private float scrollOffs;
     private int tickCount;
 
+    // To "listen" for changes in the displayed recipe
+    private TailoringRecipe cachedDisplayedRecipe = null;
+
     public TailoringScreen(TailoringMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageWidth = 232;
@@ -125,6 +128,8 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        this.onRecipeChanged();
+
         this.renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
@@ -269,6 +274,18 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
         } else {
             return super.keyPressed(keyCode, scanCode, modifiers);
         }
+    }
+
+    private void onRecipeChanged() {
+        if (this.cachedDisplayedRecipe == DISPLAYED_RECIPE) {
+            return;
+        }
+
+        // Reset scrolling when the displayed recipe changes
+        this.scrollOffs = 0.0F;
+        this.startIndex = 0;
+
+        this.cachedDisplayedRecipe = DISPLAYED_RECIPE;
     }
 
     protected int getOffscreenRows() {
