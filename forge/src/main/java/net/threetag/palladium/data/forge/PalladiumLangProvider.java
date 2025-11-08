@@ -108,6 +108,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effect");
             this.addAbility(Abilities.GUI_OVERLAY, "Gui Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Show Both Arms");
+            this.addAbility(Abilities.DUAL_WIELDING, "Dual Wielding");
             this.addAbility(Abilities.PLAYER_ANIMATION, "Player Animation");
             this.addAbility(Abilities.WATER_WALK, "Water Walk");
             this.addAbility(Abilities.FLUID_WALKING, "Fluid Walking");
@@ -309,6 +310,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(Abilities.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeigen");
+            this.addAbility(Abilities.DUAL_WIELDING, "Zweihandkampf");
             this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
             this.addAbility(Abilities.WATER_WALK, "Auf Wasser Laufen");
             this.addAbility(Abilities.FLUID_WALKING, "Auf Flüssigkeit Laufen");
@@ -510,6 +512,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(Abilities.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(Abilities.SHOW_BOTH_ARMS, "Beide Arme zeijen");
+            this.addAbility(Abilities.DUAL_WIELDING, "Zweihandkampf");
             this.addAbility(Abilities.PLAYER_ANIMATION, "Spieler-Animation");
             this.addAbility(Abilities.WATER_WALK, "Uff Wasser Lofen");
             this.addAbility(Abilities.FLUID_WALKING, "Uff Flüssichkeht Lofen");

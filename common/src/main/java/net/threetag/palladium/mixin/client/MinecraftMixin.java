@@ -7,6 +7,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.screen.AbilityWheelRenderer;
+import net.threetag.palladium.entity.DualWieldingPlayerHandler;
 import net.threetag.palladium.network.AbilityKeyPressedMessage;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
 import net.threetag.palladium.power.ability.EntityGlowAbility;
@@ -102,23 +103,28 @@ public class MinecraftMixin {
                         new AbilityKeyPressedMessage(entry.getReference(), true).send();
                         PalladiumKeyMappings.RIGHT_CLICKED_ABILITY = entry;
                         ci.cancel();
+                        return;
                     }
                 } else if (pressType == AbilityConfiguration.KeyPressType.ACTIVATION) {
                     if (!entry.isOnCooldown() && !entry.isEnabled()) {
                         new AbilityKeyPressedMessage(entry.getReference(), true).send();
                         PalladiumKeyMappings.RIGHT_CLICKED_ABILITY = entry;
                         ci.cancel();
+                        return;
                     }
                 } else {
                     new AbilityKeyPressedMessage(entry.getReference(), true).send();
                     PalladiumKeyMappings.RIGHT_CLICKED_ABILITY = entry;
                     ci.cancel();
+                    return;
                 }
             }
-
         } else {
             ci.cancel();
+            return;
         }
+
+        DualWieldingPlayerHandler.attackClient();
     }
 
     @Inject(method = "startUseItem", at = @At("HEAD"), cancellable = true)
