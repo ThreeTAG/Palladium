@@ -97,7 +97,7 @@ public class SuitSetTailoringRecipe extends TailoringRecipe {
         @Override
         public void toNetwork(FriendlyByteBuf buffer, SuitSetTailoringRecipe recipe) {
             buffer.writeResourceLocation(SuitSet.REGISTRY.getKey(recipe.suitSet));
-            buffer.writeCollection(recipe.ingredients, (buf, ingredient) -> Ingredient.fromNetwork(buf));
+            buffer.writeCollection(recipe.ingredients, (buf, ingredient) -> ingredient.toNetwork(buf));
             recipe.toolIngredient.toNetwork(buffer);
         }
     }

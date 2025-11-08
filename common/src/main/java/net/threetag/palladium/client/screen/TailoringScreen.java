@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 
 public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
-    private static final ResourceLocation TEXTURE = Palladium.id("textures/gui/container/tailoring_table.png");
+    public static final ResourceLocation TEXTURE = Palladium.id("textures/gui/container/tailoring_table.png");
     protected static final ResourceLocation RECIPE_BOOK_TEXTURE = new ResourceLocation("textures/gui/recipe_book.png");
     public static final Quaternionf SUIT_STAND_ANGLE = new Quaternionf().rotationXYZ(0.43633232F, 0.0F, (float) Math.PI);
     private static final Component SEARCH_HINT = Component.translatable("gui.recipebook.search_hint")
@@ -55,6 +55,9 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
     private int startIndex;
     private float scrollOffs;
     private int tickCount;
+
+    // To "listen" for changes in the displayed recipe
+    private TailoringRecipe cachedDisplayedRecipe = null;
 
     public TailoringScreen(TailoringMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -125,6 +128,8 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        this.onRecipeChanged();
+
         this.renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
@@ -148,7 +153,7 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
         guiGraphics.blit(TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight);
 
-        int k = (int) (41.0F * this.scrollOffs);
+        int k = (int) (39.0F * this.scrollOffs);
         guiGraphics.blit(TEXTURE, i + 152, j + 18 + k, 65 + (this.isScrollBarActive() ? 0 : 12), 189, 12, 15);
 
         for (EquipmentSlot slot : EquipmentSlot.values()) {
@@ -269,6 +274,18 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
         } else {
             return super.keyPressed(keyCode, scanCode, modifiers);
         }
+    }
+
+    private void onRecipeChanged() {
+        if (this.cachedDisplayedRecipe == DISPLAYED_RECIPE) {
+            return;
+        }
+
+        // Reset scrolling when the displayed recipe changes
+        this.scrollOffs = 0.0F;
+        this.startIndex = 0;
+
+        this.cachedDisplayedRecipe = DISPLAYED_RECIPE;
     }
 
     protected int getOffscreenRows() {

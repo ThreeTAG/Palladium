@@ -186,6 +186,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("gui.palladium.addon_pack_log_entry", "Log Entry");
             this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Copy to Clipboard");
             this.add("gui.palladium.addon_pack_log_entry.upload_to_mclogs", "Upload to mclo.gs");
+            this.add("gui.palladium.category.tailoring", "Tailoring");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
