@@ -98,7 +98,7 @@ public class ItemTailoringRecipe extends TailoringRecipe {
         @Override
         public void toNetwork(FriendlyByteBuf buffer, ItemTailoringRecipe recipe) {
             buffer.writeMap(recipe.results, (buf, slot) -> buf.writeUtf(slot.getName()), FriendlyByteBuf::writeItem);
-            buffer.writeCollection(recipe.ingredients, (buf, ingredient) -> Ingredient.fromNetwork(buf));
+            buffer.writeCollection(recipe.ingredients, (buf, ingredient) -> ingredient.toNetwork(buf));
             recipe.toolIngredient.toNetwork(buffer);
             buffer.writeComponent(recipe.title);
         }
