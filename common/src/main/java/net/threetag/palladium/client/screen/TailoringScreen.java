@@ -153,7 +153,7 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
         guiGraphics.blit(TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight);
 
-        int k = (int) (41.0F * this.scrollOffs);
+        int k = (int) (39.0F * this.scrollOffs);
         guiGraphics.blit(TEXTURE, i + 152, j + 18 + k, 65 + (this.isScrollBarActive() ? 0 : 12), 189, 12, 15);
 
         for (EquipmentSlot slot : EquipmentSlot.values()) {
