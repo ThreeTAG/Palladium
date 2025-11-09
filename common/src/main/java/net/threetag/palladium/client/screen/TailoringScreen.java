@@ -314,23 +314,23 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
         if (AVAILABLE_RECIPES.isEmpty()) {
             DISPLAYED_RECIPE_INDEX = -1;
             DISPLAYED_RECIPE = null;
-        }
-
-        if (next) {
-            DISPLAYED_RECIPE_INDEX++;
-
-            if (DISPLAYED_RECIPE_INDEX >= AVAILABLE_RECIPES.size()) {
-                DISPLAYED_RECIPE_INDEX = 0;
-            }
         } else {
-            DISPLAYED_RECIPE_INDEX--;
+            if (next) {
+                DISPLAYED_RECIPE_INDEX++;
 
-            if (DISPLAYED_RECIPE_INDEX < 0) {
-                DISPLAYED_RECIPE_INDEX = AVAILABLE_RECIPES.size() - 1;
+                if (DISPLAYED_RECIPE_INDEX >= AVAILABLE_RECIPES.size()) {
+                    DISPLAYED_RECIPE_INDEX = 0;
+                }
+            } else {
+                DISPLAYED_RECIPE_INDEX--;
+
+                if (DISPLAYED_RECIPE_INDEX < 0) {
+                    DISPLAYED_RECIPE_INDEX = AVAILABLE_RECIPES.size() - 1;
+                }
             }
-        }
 
-        DISPLAYED_RECIPE = DISPLAYED_RECIPE_INDEX >= 0 ? AVAILABLE_RECIPES.get(DISPLAYED_RECIPE_INDEX) : null;
+            DISPLAYED_RECIPE = DISPLAYED_RECIPE_INDEX >= 0 ? AVAILABLE_RECIPES.get(DISPLAYED_RECIPE_INDEX) : null;
+        }
     }
 
     public static void setSelectRecipe(TailoringRecipe recipe) {

@@ -5,7 +5,6 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.accessory.Accessories;
 import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.block.PalladiumBlocks;
-import net.threetag.palladium.block.TailoringBenchBlock;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
@@ -70,6 +69,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_FLUX_CAPACITOR, "Vibranium Flux Capacitor");
             this.add("item.palladium.flux_capacitor.desc", "Energy: %s / %s RF");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibranium Weave Boots");
+            this.add("item.palladium.knowledge_book.grants", "Grants recipes:");
 
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effect");
@@ -275,6 +275,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_FLUX_CAPACITOR, "Vibranium-Fluxkompensator");
             this.add("item.palladium.flux_capacitor.desc", "Energie: %s / %s RF");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumgewebeschuhe");
+            this.add("item.palladium.knowledge_book.grants", "Schaltet Rezepte frei:");
 
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
@@ -391,6 +392,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("gui.palladium.addon_pack_log_entry", "Logeintrag");
             this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Kopieren");
             this.add("gui.palladium.addon_pack_log_entry.upload_to_mclogs", "Auf mclo.gs hochladen");
+            this.add("gui.palladium.category.tailoring", "Zuschneidern");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
@@ -479,6 +481,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_FLUX_CAPACITOR, "Vibranium-Fluxgompensator");
             this.add("item.palladium.flux_capacitor.desc", "Enerschie: %s / %s RF");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumjewebelaadschn");
+            this.add("item.palladium.knowledge_book.grants", "Schaltet Rezepte frei:");
 
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
@@ -595,6 +598,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("gui.palladium.addon_pack_log_entry", "Logeintrag");
             this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Kopieren");
             this.add("gui.palladium.addon_pack_log_entry.upload_to_mclogs", "Uff mclo.gs hochladen");
+            this.add("gui.palladium.category.tailoring", "Zuschneidern");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
