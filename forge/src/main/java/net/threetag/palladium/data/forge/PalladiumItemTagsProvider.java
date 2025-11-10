@@ -5,7 +5,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -25,9 +27,15 @@ public class PalladiumItemTagsProvider extends IntrinsicHolderTagsProvider<Item>
         super(packOutput, Registries.ITEM, completableFuture, item -> item.builtInRegistryHolder().key(), Palladium.MOD_ID, existingFileHelper);
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         this.tag(PalladiumItemTags.VIBRATION_ABSORPTION_BOOTS).add(PalladiumItems.VIBRANIUM_WEAVE_BOOTS.get());
+
+        for (DyeColor color : DyeColor.values()) {
+            this.tag(PalladiumItemTags.FABRIC_BY_COLOR.get(color)).add(PalladiumItems.FABRIC_BY_COLOR.get(color).get());
+            this.tag(PalladiumItemTags.FABRICS).addTag(PalladiumItemTags.FABRIC_BY_COLOR.get(color));
+        }
 
         // Ore Blocks
         this.multiLoaderTagMetalItems(PalladiumItemTags.Forge.ORES_LEAD, PalladiumItemTags.Fabric.ORES_LEAD, LEAD_ORE.get(), DEEPSLATE_LEAD_ORE.get());
@@ -62,7 +70,8 @@ public class PalladiumItemTagsProvider extends IntrinsicHolderTagsProvider<Item>
         this.multiLoaderTagMetalTags(Tags.Items.INGOTS, PalladiumItemTags.Forge.INGOTS_LEAD, PalladiumItemTags.Fabric.INGOTS, PalladiumItemTags.Fabric.INGOTS_LEAD);
         this.multiLoaderTagMetalTags(Tags.Items.INGOTS, PalladiumItemTags.Forge.INGOTS_VIBRANIUM, PalladiumItemTags.Fabric.INGOTS, PalladiumItemTags.Fabric.INGOTS_VIBRANIUM);
 
-        this.connectTag(PalladiumItemTags.WOODEN_STICKS, Tags.Items.RODS_WOODEN, PalladiumItemTags.Fabric.WOODEN_STICKS);
+        this.tag(PalladiumItemTags.WOODEN_STICKS).add(Items.STICK).addOptionalTag(Tags.Items.RODS_WOODEN.location());
+        this.tag(PalladiumItemTags.STRINGS).add(Items.STRING).addOptionalTag(Tags.Items.STRING.location());
         this.connectTag(PalladiumItemTags.IRON_INGOTS, Tags.Items.INGOTS_IRON, PalladiumItemTags.Fabric.INGOTS_IRON);
         this.connectTag(PalladiumItemTags.LEAD_INGOTS, PalladiumItemTags.Forge.INGOTS_LEAD, PalladiumItemTags.Fabric.INGOTS_LEAD);
         this.connectTag(PalladiumItemTags.VIBRANIUM_INGOTS, PalladiumItemTags.Forge.INGOTS_VIBRANIUM, PalladiumItemTags.Fabric.INGOTS_VIBRANIUM);

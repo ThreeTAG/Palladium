@@ -18,6 +18,8 @@ import java.util.EnumMap;
 
 public class PalladiumItems {
 
+    public static final EnumMap<DyeColor, RegistrySupplier<Item>> FABRIC_BY_COLOR = new EnumMap<>(DyeColor.class);
+
     public static final SimpleArmorMaterial VIBRANIUM_WEAVE = new SimpleArmorMaterial("vibranium_weave", 8,
             Util.make(new EnumMap<>(ArmorItem.Type.class), (enumMap) -> {
                 enumMap.put(ArmorItem.Type.BOOTS, 2);
@@ -71,22 +73,22 @@ public class PalladiumItems {
 
     public static final RegistrySupplier<Item> VIBRANIUM_WEAVE_BOOTS = ITEMS.register("vibranium_weave_boots", () -> new VibraniumWeaveArmorItem(VIBRANIUM_WEAVE, ArmorItem.Type.BOOTS, (new Item.Properties())));
 
-    public static final RegistrySupplier<Item> WHITE_FABRIC = ITEMS.register("white_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> ORANGE_FABRIC = ITEMS.register("orange_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> MAGENTA_FABRIC = ITEMS.register("magenta_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> LIGHT_BLUE_FABRIC = ITEMS.register("light_blue_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> YELLOW_FABRIC = ITEMS.register("yellow_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> LIME_FABRIC = ITEMS.register("lime_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> PINK_FABRIC = ITEMS.register("pink_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> GRAY_FABRIC = ITEMS.register("gray_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> LIGHT_GRAY_FABRIC = ITEMS.register("light_gray_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> CYAN_FABRIC = ITEMS.register("cyan_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> PURPLE_FABRIC = ITEMS.register("purple_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> BLUE_FABRIC = ITEMS.register("blue_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> BROWN_FABRIC = ITEMS.register("brown_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> GREEN_FABRIC = ITEMS.register("green_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> RED_FABRIC = ITEMS.register("red_fabric", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> BLACK_FABRIC = ITEMS.register("black_fabric", () -> new Item(new Item.Properties()));
+    public static final RegistrySupplier<Item> WHITE_FABRIC = registerFabric(DyeColor.WHITE);
+    public static final RegistrySupplier<Item> ORANGE_FABRIC = registerFabric(DyeColor.ORANGE);
+    public static final RegistrySupplier<Item> MAGENTA_FABRIC = registerFabric(DyeColor.MAGENTA);
+    public static final RegistrySupplier<Item> LIGHT_BLUE_FABRIC = registerFabric(DyeColor.LIGHT_BLUE);
+    public static final RegistrySupplier<Item> YELLOW_FABRIC = registerFabric(DyeColor.YELLOW);
+    public static final RegistrySupplier<Item> LIME_FABRIC = registerFabric(DyeColor.LIME);
+    public static final RegistrySupplier<Item> PINK_FABRIC = registerFabric(DyeColor.PINK);
+    public static final RegistrySupplier<Item> GRAY_FABRIC = registerFabric(DyeColor.GRAY);
+    public static final RegistrySupplier<Item> LIGHT_GRAY_FABRIC = registerFabric(DyeColor.LIGHT_GRAY);
+    public static final RegistrySupplier<Item> CYAN_FABRIC = registerFabric(DyeColor.CYAN);
+    public static final RegistrySupplier<Item> PURPLE_FABRIC = registerFabric(DyeColor.PURPLE);
+    public static final RegistrySupplier<Item> BLUE_FABRIC = registerFabric(DyeColor.BLUE);
+    public static final RegistrySupplier<Item> BROWN_FABRIC = registerFabric(DyeColor.BROWN);
+    public static final RegistrySupplier<Item> GREEN_FABRIC = registerFabric(DyeColor.GREEN);
+    public static final RegistrySupplier<Item> RED_FABRIC = registerFabric(DyeColor.RED);
+    public static final RegistrySupplier<Item> BLACK_FABRIC = registerFabric(DyeColor.BLACK);
 
     public static void init() {
         CreativeModeTabRegistry.addToTab(PalladiumCreativeModeTabs.PALLADIUM_MODS, entries -> {
@@ -205,4 +207,11 @@ public class PalladiumItems {
         });
 
     }
+
+    private static RegistrySupplier<Item> registerFabric(DyeColor color) {
+        var supplier = ITEMS.register(color.getName() + "_fabric", () -> new Item(new Item.Properties()));
+        FABRIC_BY_COLOR.put(color, supplier);
+        return supplier;
+    }
+
 }

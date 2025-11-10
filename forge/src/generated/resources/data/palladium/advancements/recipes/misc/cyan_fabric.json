@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:cyan_dye"
-            ]
+            "tag": "palladium:connector/cyan_dyes"
           }
         ]
       },

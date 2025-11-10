@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:yellow_dye"
-            ]
+            "tag": "palladium:connector/yellow_dyes"
           }
         ]
       },

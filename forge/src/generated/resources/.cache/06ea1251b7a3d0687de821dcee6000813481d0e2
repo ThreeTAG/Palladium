@@ -1,4 +1,4 @@
-// 1.20.1	2025-11-10T15:00:22.8474512	Palladium Tags for minecraft:item mod id palladium
+// 1.20.1	2025-11-10T19:54:05.4003048	Palladium Tags for minecraft:item mod id palladium
 650ab071eb78f2cbbfaef5a7edeeb556ceab5d6c data/c/tags/items/ingots.json
 af77c59d61440eb41e967e1f9985298e2cabb847 data/c/tags/items/lead_blocks.json
 200d000123f08cd9ba9245528b8826f7d2834531 data/c/tags/items/lead_ingots.json
@@ -32,6 +32,9 @@ af77c59d61440eb41e967e1f9985298e2cabb847 data/forge/tags/items/storage_blocks/le
 f6af14422442304431a3758a06fe197540a9cae3 data/forge/tags/items/storage_blocks/raw_titanium.json
 0d1fe16525fbf342f3abe5bc8f3bc1ca03a1336f data/forge/tags/items/storage_blocks/raw_vibranium.json
 9abdec2c0adf88b8700bb6391674a105dd1612ef data/forge/tags/items/storage_blocks/vibranium.json
+347c4c303c342cf80d2972a44ccca6bb46a5ad01 data/palladium/tags/items/black_fabrics.json
+0583a5f29302c4cf17cd34015dbb36caf410d698 data/palladium/tags/items/blue_fabrics.json
+b370981fcaee270bf7d937d23f5efdc42327a030 data/palladium/tags/items/brown_fabrics.json
 ab5d3c4719913260170929a133256421fb286ebc data/palladium/tags/items/connector/black_dyes.json
 8668fce7c173edee0fac047ced2ec92f31a18c32 data/palladium/tags/items/connector/blue_dyes.json
 efc030a7a23e2b5386d0c431ce79df08963bd4c9 data/palladium/tags/items/connector/brown_dyes.json
@@ -52,8 +55,23 @@ c634ff2e88f1170c46bb492eb870e17aa80f3ceb data/palladium/tags/items/connector/pin
 9e29d69cf52872e6e5e1aeaa6801e8571a1924b4 data/palladium/tags/items/connector/purple_dyes.json
 edbe11ae7dc55ee68537a0cb6547a237c94707b3 data/palladium/tags/items/connector/quartz.json
 788bef5ec42b045ffc7d062f4aca9940b91e77fc data/palladium/tags/items/connector/red_dyes.json
+0d79e227c6ca1e1ce5808f7c8f1f6820a98a0e31 data/palladium/tags/items/connector/strings.json
 f01576008eddc1f09fc7733291fc0c4781b4a8ec data/palladium/tags/items/connector/vibranium_ingots.json
 7f779d9cf4199c7ed057d06b7346cd81515a783a data/palladium/tags/items/connector/white_dyes.json
-132f9b85e22f25c898d7b489af795cacf86c9094 data/palladium/tags/items/connector/wooden_sticks.json
+b637bd0d3ae110b0e0f75e1d434fdd72fc470ab3 data/palladium/tags/items/connector/wooden_sticks.json
 296244d3427715048c326c19e58c06c7db7cc047 data/palladium/tags/items/connector/yellow_dyes.json
+9f88fddfca7b5174b0b170ed4946be80292aa949 data/palladium/tags/items/cyan_fabrics.json
+07e77d2d19e94b6979425d4c9ac61f3adac613c9 data/palladium/tags/items/fabrics.json
+9a75e94110d1902576baabad6c9afa81f97ff6a3 data/palladium/tags/items/gray_fabrics.json
+2489af28f0cf88d22455d499d75f738f10a29a28 data/palladium/tags/items/green_fabrics.json
+178c19412352ecb03f4ebb4e217c7b108261a9e8 data/palladium/tags/items/light_blue_fabrics.json
+d2b809d363f94042d4ec9965df81b224345316bb data/palladium/tags/items/light_gray_fabrics.json
+da2a4e5df8f0ac83aa86f7cc7205693feb74ed5a data/palladium/tags/items/lime_fabrics.json
+6eeb0c536b856abccaabb9761957316cf2589693 data/palladium/tags/items/magenta_fabrics.json
+1f1ddbb8d4c21d5dd717adccd6e4ad6585517852 data/palladium/tags/items/orange_fabrics.json
+186794ecc99c2d4829c208bd428fd7ff4de3a563 data/palladium/tags/items/pink_fabrics.json
+3eb3151e3e5164c8f08f21784de6584a877bd8b3 data/palladium/tags/items/purple_fabrics.json
+7df4201bbbaaaf83e3c317a94213a166db200b9f data/palladium/tags/items/red_fabrics.json
 cf857ba6fa77a64acc3f6ee01bafc71dcc0895a0 data/palladium/tags/items/vibration_absorption_boots.json
+ef97fc0e82f726c8d0cacfc22d4ba7fbf6e0dc46 data/palladium/tags/items/white_fabrics.json
+670d16c571ff130f2a431e6e0aa7f76eaaa3dd11 data/palladium/tags/items/yellow_fabrics.json

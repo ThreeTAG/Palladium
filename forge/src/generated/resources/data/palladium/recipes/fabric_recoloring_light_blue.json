@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "palladium:fabrics"
+    },
+    {
+      "tag": "palladium:connector/light_blue_dyes"
+    }
+  ],
+  "result": {
+    "item": "palladium:light_blue_fabric"
+  }
+}

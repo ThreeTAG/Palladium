@@ -4,6 +4,9 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -11,6 +14,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.item.PalladiumItems;
@@ -58,23 +62,11 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.QUARTZ_FLUX_CAPACITOR.get()).pattern("RQR").pattern("CFC").pattern("QRQ").define('R', PalladiumItems.REDSTONE_FLUX_CRYSTAL.get()).define('Q', PalladiumItemTags.QUARTZ).define('C', PalladiumItemTags.COPPER_INGOTS).define('F', PalladiumItems.LEAD_FLUX_CAPACITOR.get()).unlockedBy(getHasName(Items.QUARTZ), has(PalladiumItemTags.QUARTZ)).save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.VIBRANIUM_FLUX_CAPACITOR.get()).pattern("RVR").pattern("DFD").pattern("VRV").define('R', PalladiumItems.REDSTONE_FLUX_CRYSTAL.get()).define('V', PalladiumItemTags.VIBRANIUM_INGOTS).define('D', PalladiumItemTags.DIAMONDS).define('F', PalladiumItems.QUARTZ_FLUX_CAPACITOR.get()).unlockedBy(getHasName(PalladiumItems.VIBRANIUM_INGOT.get()), has(PalladiumItemTags.VIBRANIUM_INGOTS)).save(consumer);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.WHITE_FABRIC.get(), 4).requires(PalladiumItemTags.WHITE_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.WHITE_DYE), has(Items.WHITE_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.ORANGE_FABRIC.get(), 4).requires(PalladiumItemTags.ORANGE_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.ORANGE_DYE), has(Items.ORANGE_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.MAGENTA_FABRIC.get(), 4).requires(PalladiumItemTags.MAGENTA_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.MAGENTA_DYE), has(Items.MAGENTA_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.LIGHT_BLUE_FABRIC.get(), 4).requires(PalladiumItemTags.LIGHT_BLUE_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.LIGHT_BLUE_DYE), has(Items.LIGHT_BLUE_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.YELLOW_FABRIC.get(), 4).requires(PalladiumItemTags.YELLOW_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.YELLOW_DYE), has(Items.YELLOW_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.LIME_FABRIC.get(), 4).requires(PalladiumItemTags.LIME_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.LIME_DYE), has(Items.LIME_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.PINK_FABRIC.get(), 4).requires(PalladiumItemTags.PINK_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.PINK_DYE), has(Items.PINK_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.GRAY_FABRIC.get(), 4).requires(PalladiumItemTags.GRAY_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.GRAY_DYE), has(Items.GRAY_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.LIGHT_GRAY_FABRIC.get(), 4).requires(PalladiumItemTags.LIGHT_GRAY_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.LIGHT_GRAY_DYE), has(Items.LIGHT_GRAY_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.CYAN_FABRIC.get(), 4).requires(PalladiumItemTags.CYAN_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.CYAN_DYE), has(Items.CYAN_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.PURPLE_FABRIC.get(), 4).requires(PalladiumItemTags.PURPLE_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.PURPLE_DYE), has(Items.PURPLE_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.BLUE_FABRIC.get(), 4).requires(PalladiumItemTags.BLUE_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.BLUE_DYE), has(Items.BLUE_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.BROWN_FABRIC.get(), 4).requires(PalladiumItemTags.BROWN_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.BROWN_DYE), has(Items.BROWN_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.GREEN_FABRIC.get(), 4).requires(PalladiumItemTags.GREEN_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.GREEN_DYE), has(Items.GREEN_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.RED_FABRIC.get(), 4).requires(PalladiumItemTags.RED_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.RED_DYE), has(Items.RED_DYE)).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.BLACK_FABRIC.get(), 4).requires(PalladiumItemTags.BLACK_DYES).requires(Items.LEATHER, 2).requires(Items.STRING, 2).unlockedBy(getHasName(Items.BLACK_DYE), has(Items.BLACK_DYE)).save(consumer);
-
+        for (DyeColor color : DyeColor.values()) {
+            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.FABRIC_BY_COLOR.get(color).get(), 8).pattern(" WS").pattern("WXW").pattern("SW ").define('W', getWoolBlockByColor(color)).define('S', PalladiumItemTags.WOODEN_STICKS).define('X', PalladiumItemTags.STRINGS).unlockedBy(getHasName(DyeItem.byColor(color)), has(PalladiumItemTags.DYE_BY_COLOR.get(color))).save(consumer);;
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.FABRIC_BY_COLOR.get(color).get()).requires(PalladiumItemTags.FABRICS).requires(PalladiumItemTags.DYE_BY_COLOR.get(color)).unlockedBy(getHasName(DyeItem.byColor(color)), has(PalladiumItemTags.DYE_BY_COLOR.get(color))).save(consumer, Palladium.id("fabric_recoloring_" + color.getName()));
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.FABRIC_BY_COLOR.get(color).get(), 8).requires(Ingredient.of(PalladiumItemTags.FABRICS), 8).requires(PalladiumItemTags.DYE_BY_COLOR.get(color)).unlockedBy(getHasName(DyeItem.byColor(color)), has(PalladiumItemTags.DYE_BY_COLOR.get(color))).save(consumer, Palladium.id("fabric_recoloring_8_" + color.getName()));
+        }
     }
 
     protected static void oreSmelting(Consumer<FinishedRecipe> finishedRecipeConsumer, List<ItemLike> ingredients, RecipeCategory category, ItemLike result, float experience, int cookingTIme, String group) {
@@ -106,5 +98,9 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
     protected static void nineBlockStorageRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer, RecipeCategory unpackedCategory, ItemLike unpacked, RecipeCategory packedCategory, ItemLike packed, String packedName, @javax.annotation.Nullable String packedGroup, String unpackedName, @javax.annotation.Nullable String unpackedGroup) {
         ShapelessRecipeBuilder.shapeless(unpackedCategory, unpacked, 9).requires(packed).group(unpackedGroup).unlockedBy(getHasName(packed), has(packed)).save(finishedRecipeConsumer, Palladium.id(unpackedName));
         ShapedRecipeBuilder.shaped(packedCategory, packed).define('#', unpacked).pattern("###").pattern("###").pattern("###").group(packedGroup).unlockedBy(getHasName(unpacked), has(unpacked)).save(finishedRecipeConsumer, Palladium.id(packedName));
+    }
+
+    private static Item getWoolBlockByColor(DyeColor color) {
+        return ForgeRegistries.ITEMS.getValue(new ResourceLocation(color.getName() + "_wool"));
     }
 }

@@ -1,25 +1,25 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
-      "tag": "palladium:connector/pink_dyes"
+  "key": {
+    "S": {
+      "tag": "palladium:connector/wooden_sticks"
     },
-    {
-      "item": "minecraft:leather"
+    "W": {
+      "item": "minecraft:pink_wool"
     },
-    {
-      "item": "minecraft:leather"
-    },
-    {
-      "item": "minecraft:string"
-    },
-    {
-      "item": "minecraft:string"
+    "X": {
+      "tag": "palladium:connector/strings"
     }
+  },
+  "pattern": [
+    " WS",
+    "WXW",
+    "SW "
   ],
   "result": {
-    "count": 4,
+    "count": 8,
     "item": "palladium:pink_fabric"
-  }
+  },
+  "show_notification": true
 }

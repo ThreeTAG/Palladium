@@ -1,25 +1,25 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
-      "tag": "palladium:connector/gray_dyes"
+  "key": {
+    "S": {
+      "tag": "palladium:connector/wooden_sticks"
     },
-    {
-      "item": "minecraft:leather"
+    "W": {
+      "item": "minecraft:gray_wool"
     },
-    {
-      "item": "minecraft:leather"
-    },
-    {
-      "item": "minecraft:string"
-    },
-    {
-      "item": "minecraft:string"
+    "X": {
+      "tag": "palladium:connector/strings"
     }
+  },
+  "pattern": [
+    " WS",
+    "WXW",
+    "SW "
   ],
   "result": {
-    "count": 4,
+    "count": 8,
     "item": "palladium:gray_fabric"
-  }
+  },
+  "show_notification": true
 }

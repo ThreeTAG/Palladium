@@ -3,15 +3,39 @@ package net.threetag.palladium.tags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.threetag.palladium.Palladium;
 
+import java.util.EnumMap;
+
 public class PalladiumItemTags {
 
-    public static final TagKey<Item> VIBRATION_ABSORPTION_BOOTS = tag(Palladium.MOD_ID, "vibration_absorption_boots");
+    public static final EnumMap<DyeColor, TagKey<Item>> FABRIC_BY_COLOR = new EnumMap<>(DyeColor.class);
+    public static final EnumMap<DyeColor, TagKey<Item>> DYE_BY_COLOR = new EnumMap<>(DyeColor.class);
+
+    public static final TagKey<Item> VIBRATION_ABSORPTION_BOOTS = tag("vibration_absorption_boots");
+    public static final TagKey<Item> FABRICS = tag("fabrics");
+    public static final TagKey<Item> BLACK_FABRICS = fabric(DyeColor.BLACK);
+    public static final TagKey<Item> BLUE_FABRICS = fabric(DyeColor.BLUE);
+    public static final TagKey<Item> BROWN_FABRICS = fabric(DyeColor.BROWN);
+    public static final TagKey<Item> CYAN_FABRICS = fabric(DyeColor.CYAN);
+    public static final TagKey<Item> GRAY_FABRICS = fabric(DyeColor.GRAY);
+    public static final TagKey<Item> GREEN_FABRICS = fabric(DyeColor.GREEN);
+    public static final TagKey<Item> LIGHT_BLUE_FABRICS = fabric(DyeColor.LIGHT_BLUE);
+    public static final TagKey<Item> LIGHT_GRAY_FABRICS = fabric(DyeColor.LIGHT_GRAY);
+    public static final TagKey<Item> LIME_FABRICS = fabric(DyeColor.LIME);
+    public static final TagKey<Item> MAGENTA_FABRICS = fabric(DyeColor.MAGENTA);
+    public static final TagKey<Item> ORANGE_FABRICS = fabric(DyeColor.ORANGE);
+    public static final TagKey<Item> PINK_FABRICS = fabric(DyeColor.PINK);
+    public static final TagKey<Item> PURPLE_FABRICS = fabric(DyeColor.PURPLE);
+    public static final TagKey<Item> RED_FABRICS = fabric(DyeColor.RED);
+    public static final TagKey<Item> WHITE_FABRICS = fabric(DyeColor.WHITE);
+    public static final TagKey<Item> YELLOW_FABRICS = fabric(DyeColor.YELLOW);
 
     // Connector tags
     public static final TagKey<Item> WOODEN_STICKS = connector("wooden_sticks");
+    public static final TagKey<Item> STRINGS = connector("strings");
     public static final TagKey<Item> IRON_INGOTS = connector("iron_ingots");
     public static final TagKey<Item> LEAD_INGOTS = connector("lead_ingots");
     public static final TagKey<Item> VIBRANIUM_INGOTS = connector("vibranium_ingots");
@@ -20,25 +44,41 @@ public class PalladiumItemTags {
     public static final TagKey<Item> COPPER_INGOTS = connector("copper_ingots");
     public static final TagKey<Item> DIAMONDS = connector("diamonds");
 
-    public static final TagKey<Item> BLACK_DYES = connector("black_dyes");
-    public static final TagKey<Item> BLUE_DYES = connector("blue_dyes");
-    public static final TagKey<Item> BROWN_DYES = connector("brown_dyes");
-    public static final TagKey<Item> CYAN_DYES = connector("cyan_dyes");
-    public static final TagKey<Item> GRAY_DYES = connector("gray_dyes");
-    public static final TagKey<Item> GREEN_DYES = connector("green_dyes");
-    public static final TagKey<Item> LIGHT_BLUE_DYES = connector("light_blue_dyes");
-    public static final TagKey<Item> LIGHT_GRAY_DYES = connector("light_gray_dyes");
-    public static final TagKey<Item> LIME_DYES = connector("lime_dyes");
-    public static final TagKey<Item> MAGENTA_DYES = connector("magenta_dyes");
-    public static final TagKey<Item> ORANGE_DYES = connector("orange_dyes");
-    public static final TagKey<Item> PINK_DYES = connector("pink_dyes");
-    public static final TagKey<Item> PURPLE_DYES = connector("purple_dyes");
-    public static final TagKey<Item> RED_DYES = connector("red_dyes");
-    public static final TagKey<Item> WHITE_DYES = connector("white_dyes");
-    public static final TagKey<Item> YELLOW_DYES = connector("yellow_dyes");
+    public static final TagKey<Item> BLACK_DYES = dyeConnector(DyeColor.BLACK);
+    public static final TagKey<Item> BLUE_DYES = dyeConnector(DyeColor.BLUE);
+    public static final TagKey<Item> BROWN_DYES = dyeConnector(DyeColor.BROWN);
+    public static final TagKey<Item> CYAN_DYES = dyeConnector(DyeColor.CYAN);
+    public static final TagKey<Item> GRAY_DYES = dyeConnector(DyeColor.GRAY);
+    public static final TagKey<Item> GREEN_DYES = dyeConnector(DyeColor.GREEN);
+    public static final TagKey<Item> LIGHT_BLUE_DYES = dyeConnector(DyeColor.LIGHT_BLUE);
+    public static final TagKey<Item> LIGHT_GRAY_DYES = dyeConnector(DyeColor.LIGHT_GRAY);
+    public static final TagKey<Item> LIME_DYES = dyeConnector(DyeColor.LIME);
+    public static final TagKey<Item> MAGENTA_DYES = dyeConnector(DyeColor.MAGENTA);
+    public static final TagKey<Item> ORANGE_DYES = dyeConnector(DyeColor.ORANGE);
+    public static final TagKey<Item> PINK_DYES = dyeConnector(DyeColor.PINK);
+    public static final TagKey<Item> PURPLE_DYES = dyeConnector(DyeColor.PURPLE);
+    public static final TagKey<Item> RED_DYES = dyeConnector(DyeColor.RED);
+    public static final TagKey<Item> WHITE_DYES = dyeConnector(DyeColor.WHITE);
+    public static final TagKey<Item> YELLOW_DYES = dyeConnector(DyeColor.YELLOW);
 
     private static TagKey<Item> tag(String domain, String path) {
         return TagKey.create(Registries.ITEM, new ResourceLocation(domain, path));
+    }
+
+    private static TagKey<Item> tag(String path) {
+        return TagKey.create(Registries.ITEM, Palladium.id(path));
+    }
+
+    private static TagKey<Item> fabric(DyeColor color) {
+        var tag = TagKey.create(Registries.ITEM, Palladium.id(color.getName() + "_fabrics"));
+        FABRIC_BY_COLOR.put(color, tag);
+        return tag;
+    }
+
+    private static TagKey<Item> dyeConnector(DyeColor color) {
+        var tag = TagKey.create(Registries.ITEM, Palladium.id("connector/" + color.getName() + "_dyes"));
+        DYE_BY_COLOR.put(color, tag);
+        return tag;
     }
 
     private static TagKey<Item> connector(String path) {
@@ -77,7 +117,6 @@ public class PalladiumItemTags {
 
     public static class Fabric {
 
-        public static final TagKey<Item> WOODEN_STICKS = fabricTag("wood_sticks");
         public static final TagKey<Item> REDSTONE = fabricTag("redstone_dusts");
         public static final TagKey<Item> REDSTONE_BLOCK = fabricTag("redstone_blocks");
         public static final TagKey<Item> QUARTZ = fabricTag("quartz");
