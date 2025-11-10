@@ -68,10 +68,10 @@ dependencies {
 
     // JEI
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
-//    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
+    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
 
     // REI
-    modImplementation "me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}"
+//    modImplementation "me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}"
 
     // Configured & Catalogue
 //    modLocalRuntime "curse.maven:configured-457570:${rootProject.configured_version}"
