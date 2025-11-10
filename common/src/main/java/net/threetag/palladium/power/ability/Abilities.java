@@ -37,6 +37,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> SHADER_EFFECT = ABILITIES.register("shader_effect", ShaderEffectAbility::new);
     public static final RegistrySupplier<Ability> GUI_OVERLAY = ABILITIES.register("gui_overlay", GuiOverlayAbility::new);
     public static final RegistrySupplier<Ability> SHOW_BOTH_ARMS = ABILITIES.register("show_both_arms", () -> new Ability().withProperty(Ability.HIDDEN_IN_GUI, true).setDocumentationDescription("Enables the rendering of your off-hand."));
+    public static final RegistrySupplier<Ability> DUAL_WIELDING = ABILITIES.register("dual_wielding", () -> new Ability().setDocumentationDescription("Makes you able to use your second hand to combat."));
     public static final RegistrySupplier<Ability> PLAYER_ANIMATION = ABILITIES.register("player_animation", PlayerAnimationAbility::new);
     public static final RegistrySupplier<Ability> WATER_WALK = ABILITIES.register("water_walk", () -> new Ability().setDocumentationDescription("Allows the player to walk on water."));
     public static final RegistrySupplier<Ability> FLUID_WALKING = ABILITIES.register("fluid_walking", FluidWalkingAbility::new);

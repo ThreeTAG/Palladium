@@ -1,5 +1,6 @@
 package net.threetag.palladium.mixin.client;
 
+import com.google.common.base.MoreObjects;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -35,10 +36,17 @@ public abstract class ItemInHandRendererMixin {
     private void renderArmWithItem(
             AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float swingProgress, ItemStack stack, float equippedProgress, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, CallbackInfo ci
     ) {
-        if (hand == InteractionHand.MAIN_HAND && !AbilityUtil.getEnabledEntries(player, Abilities.SHOW_BOTH_ARMS.get()).isEmpty() && this.offHandItem.isEmpty() && !player.isInvisible() && !this.mainHandItem.is(Items.FILLED_MAP)) {
+        if (hand == InteractionHand.MAIN_HAND &&
+                (AbilityUtil.isTypeEnabled(player, Abilities.SHOW_BOTH_ARMS.get()) || AbilityUtil.isTypeEnabled(player, Abilities.DUAL_WIELDING.get())) &&
+                this.offHandItem.isEmpty() && !player.isInvisible() &&
+                !this.mainHandItem.is(Items.FILLED_MAP)) {
             HumanoidArm humanoidArm = player.getMainArm().getOpposite();
+            float attackAnim = player.getAttackAnim(partialTicks);
+            InteractionHand interactionHand = MoreObjects.firstNonNull(player.swingingArm, InteractionHand.MAIN_HAND);
+            float swing = interactionHand == InteractionHand.OFF_HAND ? attackAnim : 0.0F;
+
             matrixStack.pushPose();
-            this.renderPlayerArm(matrixStack, buffer, combinedLight, 0, 0, humanoidArm);
+            this.renderPlayerArm(matrixStack, buffer, combinedLight, 0, swing, humanoidArm);
             matrixStack.popPose();
         }
 

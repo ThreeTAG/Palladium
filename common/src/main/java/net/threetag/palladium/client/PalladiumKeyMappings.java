@@ -34,6 +34,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
     public static AbilityInstance LEFT_CLICKED_ABILITY = null;
     public static AbilityInstance RIGHT_CLICKED_ABILITY = null;
     public static AbilityInstance SPACE_BAR_ABILITY = null;
+    public static boolean DUAL_WIELDING_RIGHT_CLICK = false;
 
     public static void init() {
         KeyMappingRegistry.register(OPEN_EQUIPMENT);
@@ -212,6 +213,11 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
             if (SPACE_BAR_ABILITY != null && !minecraft.options.keyJump.isDown()) {
                 new AbilityKeyPressedMessage(SPACE_BAR_ABILITY.getReference(), false).send();
                 SPACE_BAR_ABILITY = null;
+            }
+
+            // Stop dual wielding
+            if (DUAL_WIELDING_RIGHT_CLICK && !minecraft.options.keyUse.isDown()) {
+                DUAL_WIELDING_RIGHT_CLICK = false;
             }
         }
     }
