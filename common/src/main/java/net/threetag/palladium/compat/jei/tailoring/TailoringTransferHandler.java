@@ -13,7 +13,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.screen.TailoringScreen;
-import net.threetag.palladium.compat.jei.TailoringCategory;
 import net.threetag.palladium.item.recipe.TailoringRecipe;
 import net.threetag.palladium.menu.PalladiumMenuTypes;
 import net.threetag.palladium.menu.TailoringMenu;

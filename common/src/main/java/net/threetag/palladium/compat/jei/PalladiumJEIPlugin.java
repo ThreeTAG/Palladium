@@ -13,6 +13,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.compat.jei.tailoring.TailoringCategory;
 import net.threetag.palladium.compat.jei.tailoring.TailoringTransferHandler;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.item.recipe.PalladiumRecipeSerializers;
