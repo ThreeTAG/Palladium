@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "#forge:dyes/white",
+      "required": false
+    },
+    {
+      "id": "#c:white_dyes",
+      "required": false
+    }
+  ]
+}

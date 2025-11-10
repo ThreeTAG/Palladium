@@ -20,6 +20,23 @@ public class PalladiumItemTags {
     public static final TagKey<Item> COPPER_INGOTS = connector("copper_ingots");
     public static final TagKey<Item> DIAMONDS = connector("diamonds");
 
+    public static final TagKey<Item> BLACK_DYES = connector("black_dyes");
+    public static final TagKey<Item> BLUE_DYES = connector("blue_dyes");
+    public static final TagKey<Item> BROWN_DYES = connector("brown_dyes");
+    public static final TagKey<Item> CYAN_DYES = connector("cyan_dyes");
+    public static final TagKey<Item> GRAY_DYES = connector("gray_dyes");
+    public static final TagKey<Item> GREEN_DYES = connector("green_dyes");
+    public static final TagKey<Item> LIGHT_BLUE_DYES = connector("light_blue_dyes");
+    public static final TagKey<Item> LIGHT_GRAY_DYES = connector("light_gray_dyes");
+    public static final TagKey<Item> LIME_DYES = connector("lime_dyes");
+    public static final TagKey<Item> MAGENTA_DYES = connector("magenta_dyes");
+    public static final TagKey<Item> ORANGE_DYES = connector("orange_dyes");
+    public static final TagKey<Item> PINK_DYES = connector("pink_dyes");
+    public static final TagKey<Item> PURPLE_DYES = connector("purple_dyes");
+    public static final TagKey<Item> RED_DYES = connector("red_dyes");
+    public static final TagKey<Item> WHITE_DYES = connector("white_dyes");
+    public static final TagKey<Item> YELLOW_DYES = connector("yellow_dyes");
+
     private static TagKey<Item> tag(String domain, String path) {
         return TagKey.create(Registries.ITEM, new ResourceLocation(domain, path));
     }
@@ -89,6 +106,23 @@ public class PalladiumItemTags {
 
         public static final TagKey<Item> INGOTS_LEAD = fabricTag("lead_ingots");
         public static final TagKey<Item> INGOTS_VIBRANIUM = fabricTag("vibranium_ingots");
+
+        public static final TagKey<Item> BLACK_DYES = fabricTag("black_dyes");
+        public static final TagKey<Item> BLUE_DYES = fabricTag("blue_dyes");
+        public static final TagKey<Item> BROWN_DYES = fabricTag("brown_dyes");
+        public static final TagKey<Item> CYAN_DYES = fabricTag("cyan_dyes");
+        public static final TagKey<Item> GRAY_DYES = fabricTag("gray_dyes");
+        public static final TagKey<Item> GREEN_DYES = fabricTag("green_dyes");
+        public static final TagKey<Item> LIGHT_BLUE_DYES = fabricTag("light_blue_dyes");
+        public static final TagKey<Item> LIGHT_GRAY_DYES = fabricTag("light_gray_dyes");
+        public static final TagKey<Item> LIME_DYES = fabricTag("lime_dyes");
+        public static final TagKey<Item> MAGENTA_DYES = fabricTag("magenta_dyes");
+        public static final TagKey<Item> ORANGE_DYES = fabricTag("orange_dyes");
+        public static final TagKey<Item> PINK_DYES = fabricTag("pink_dyes");
+        public static final TagKey<Item> PURPLE_DYES = fabricTag("purple_dyes");
+        public static final TagKey<Item> RED_DYES = fabricTag("red_dyes");
+        public static final TagKey<Item> WHITE_DYES = fabricTag("white_dyes");
+        public static final TagKey<Item> YELLOW_DYES = fabricTag("yellow_dyes");
 
     }
 

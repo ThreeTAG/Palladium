@@ -70,6 +70,22 @@ public class PalladiumItemTagsProvider extends IntrinsicHolderTagsProvider<Item>
         this.connectTag(PalladiumItemTags.GOLD_INGOTS, Tags.Items.INGOTS_GOLD, PalladiumItemTags.Fabric.INGOTS_GOLD);
         this.connectTag(PalladiumItemTags.COPPER_INGOTS, Tags.Items.INGOTS_COPPER, PalladiumItemTags.Fabric.INGOTS_COPPER);
         this.connectTag(PalladiumItemTags.DIAMONDS, Tags.Items.GEMS_DIAMOND, PalladiumItemTags.Fabric.DIAMONDS);
+        this.connectTag(PalladiumItemTags.BLACK_DYES, Tags.Items.DYES_BLACK, PalladiumItemTags.Fabric.BLACK_DYES);
+        this.connectTag(PalladiumItemTags.BLUE_DYES, Tags.Items.DYES_BLUE, PalladiumItemTags.Fabric.BLUE_DYES);
+        this.connectTag(PalladiumItemTags.BROWN_DYES, Tags.Items.DYES_BROWN, PalladiumItemTags.Fabric.BROWN_DYES);
+        this.connectTag(PalladiumItemTags.CYAN_DYES, Tags.Items.DYES_CYAN, PalladiumItemTags.Fabric.CYAN_DYES);
+        this.connectTag(PalladiumItemTags.GRAY_DYES, Tags.Items.DYES_GRAY, PalladiumItemTags.Fabric.GRAY_DYES);
+        this.connectTag(PalladiumItemTags.GREEN_DYES, Tags.Items.DYES_GREEN, PalladiumItemTags.Fabric.GREEN_DYES);
+        this.connectTag(PalladiumItemTags.LIGHT_BLUE_DYES, Tags.Items.DYES_LIGHT_BLUE, PalladiumItemTags.Fabric.LIGHT_BLUE_DYES);
+        this.connectTag(PalladiumItemTags.LIGHT_GRAY_DYES, Tags.Items.DYES_LIGHT_GRAY, PalladiumItemTags.Fabric.LIGHT_GRAY_DYES);
+        this.connectTag(PalladiumItemTags.LIME_DYES, Tags.Items.DYES_LIME, PalladiumItemTags.Fabric.LIME_DYES);
+        this.connectTag(PalladiumItemTags.MAGENTA_DYES, Tags.Items.DYES_MAGENTA, PalladiumItemTags.Fabric.MAGENTA_DYES);
+        this.connectTag(PalladiumItemTags.ORANGE_DYES, Tags.Items.DYES_ORANGE, PalladiumItemTags.Fabric.ORANGE_DYES);
+        this.connectTag(PalladiumItemTags.PINK_DYES, Tags.Items.DYES_PINK, PalladiumItemTags.Fabric.PINK_DYES);
+        this.connectTag(PalladiumItemTags.PURPLE_DYES, Tags.Items.DYES_PURPLE, PalladiumItemTags.Fabric.PURPLE_DYES);
+        this.connectTag(PalladiumItemTags.RED_DYES, Tags.Items.DYES_RED, PalladiumItemTags.Fabric.RED_DYES);
+        this.connectTag(PalladiumItemTags.WHITE_DYES, Tags.Items.DYES_WHITE, PalladiumItemTags.Fabric.WHITE_DYES);
+        this.connectTag(PalladiumItemTags.YELLOW_DYES, Tags.Items.DYES_YELLOW, PalladiumItemTags.Fabric.YELLOW_DYES);
     }
 
     public void multiLoaderTagMetalItems(TagKey<Item> forgeTag, TagKey<Item> fabricTag, ItemLike... items) {

@@ -70,6 +70,22 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("item.palladium.flux_capacitor.desc", "Energy: %s / %s RF");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibranium Weave Boots");
             this.add("item.palladium.knowledge_book.grants", "Grants recipes:");
+            this.addItem(PalladiumItems.WHITE_FABRIC, "White Fabric");
+            this.addItem(PalladiumItems.ORANGE_FABRIC, "Orange Fabric");
+            this.addItem(PalladiumItems.MAGENTA_FABRIC, "Magenta Fabric");
+            this.addItem(PalladiumItems.LIGHT_BLUE_FABRIC, "Light Blue Fabric");
+            this.addItem(PalladiumItems.YELLOW_FABRIC, "Yellow Fabric");
+            this.addItem(PalladiumItems.LIME_FABRIC, "Lime Fabric");
+            this.addItem(PalladiumItems.PINK_FABRIC, "Pink Fabric");
+            this.addItem(PalladiumItems.GRAY_FABRIC, "Gray Fabric");
+            this.addItem(PalladiumItems.LIGHT_GRAY_FABRIC, "Light Gray Fabric");
+            this.addItem(PalladiumItems.CYAN_FABRIC, "Cyan Fabric");
+            this.addItem(PalladiumItems.PURPLE_FABRIC, "Purple Fabric");
+            this.addItem(PalladiumItems.BLUE_FABRIC, "Blue Fabric");
+            this.addItem(PalladiumItems.BROWN_FABRIC, "Brown Fabric");
+            this.addItem(PalladiumItems.GREEN_FABRIC, "Green Fabric");
+            this.addItem(PalladiumItems.RED_FABRIC, "Red Fabric");
+            this.addItem(PalladiumItems.BLACK_FABRIC, "Black Fabric");
 
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effect");
@@ -276,6 +292,23 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("item.palladium.flux_capacitor.desc", "Energie: %s / %s RF");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumgewebeschuhe");
             this.add("item.palladium.knowledge_book.grants", "Schaltet Rezepte frei:");
+            this.addItem(PalladiumItems.WHITE_FABRIC, "Weißer Stoff");
+            this.addItem(PalladiumItems.ORANGE_FABRIC, "Oranger Stoff");
+            this.addItem(PalladiumItems.MAGENTA_FABRIC, "Magenta Stoff");
+            this.addItem(PalladiumItems.LIGHT_BLUE_FABRIC, "Hellblauer Stoff");
+            this.addItem(PalladiumItems.YELLOW_FABRIC, "Gelber Stoff");
+            this.addItem(PalladiumItems.LIME_FABRIC, "Hellgrüner Stoff");
+            this.addItem(PalladiumItems.PINK_FABRIC, "Rosa Stoff");
+            this.addItem(PalladiumItems.GRAY_FABRIC, "Grauer Stoff");
+            this.addItem(PalladiumItems.LIGHT_GRAY_FABRIC, "Hellgrauer Stoff");
+            this.addItem(PalladiumItems.CYAN_FABRIC, "Türkiser Stoff");
+            this.addItem(PalladiumItems.PURPLE_FABRIC, "Violetter Stoff");
+            this.addItem(PalladiumItems.BLUE_FABRIC, "Blauer Stoff");
+            this.addItem(PalladiumItems.BROWN_FABRIC, "Brauner Stoff");
+            this.addItem(PalladiumItems.GREEN_FABRIC, "Grüner Stoff");
+            this.addItem(PalladiumItems.RED_FABRIC, "Roter Stoff");
+            this.addItem(PalladiumItems.BLACK_FABRIC, "Schwarzer Stoff");
+
 
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
@@ -482,6 +515,23 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("item.palladium.flux_capacitor.desc", "Enerschie: %s / %s RF");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumjewebelaadschn");
             this.add("item.palladium.knowledge_book.grants", "Schaltet Rezepte frei:");
+            this.addItem(PalladiumItems.WHITE_FABRIC, "Weeßer Schdoff");
+            this.addItem(PalladiumItems.ORANGE_FABRIC, "Orangscher Schdoff");
+            this.addItem(PalladiumItems.MAGENTA_FABRIC, "Magenda Schdoff");
+            this.addItem(PalladiumItems.LIGHT_BLUE_FABRIC, "Hellblaaer Schdoff");
+            this.addItem(PalladiumItems.YELLOW_FABRIC, "Gälber Schdoff");
+            this.addItem(PalladiumItems.LIME_FABRIC, "Hellgriener Schdoff");
+            this.addItem(PalladiumItems.PINK_FABRIC, "Roser Schdoff");
+            this.addItem(PalladiumItems.GRAY_FABRIC, "Graer Schdoff");
+            this.addItem(PalladiumItems.LIGHT_GRAY_FABRIC, "Hellgraer Schdoff");
+            this.addItem(PalladiumItems.CYAN_FABRIC, "Türkiser Schdoff");
+            this.addItem(PalladiumItems.PURPLE_FABRIC, "Violedder Schdoff");
+            this.addItem(PalladiumItems.BLUE_FABRIC, "Blaer Schdoff");
+            this.addItem(PalladiumItems.BROWN_FABRIC, "Braer Schdoff");
+            this.addItem(PalladiumItems.GREEN_FABRIC, "Griener Schdoff");
+            this.addItem(PalladiumItems.RED_FABRIC, "Roder Schdoff");
+            this.addItem(PalladiumItems.BLACK_FABRIC, "Schwarzer Schdoff");
+
 
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
