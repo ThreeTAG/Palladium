@@ -30,6 +30,7 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.defaultBlockItem2d(PalladiumItems.REDSTONE_FLUX_CRYSTAL_CLUSTER);
 
         this.defaultBlockItem(PalladiumItems.LEAD_BLOCK);
+        this.defaultBlockItem(PalladiumItems.TITANIUM_BLOCK);
         this.defaultBlockItem(PalladiumItems.VIBRANIUM_BLOCK);
 
         this.defaultBlockItem(PalladiumItems.RAW_LEAD_BLOCK);
@@ -42,6 +43,7 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.defaultItem(PalladiumItems.LEAD_INGOT);
         this.defaultItem(PalladiumItems.RAW_TITANIUM);
         this.defaultItem(PalladiumItems.RAW_VIBRANIUM);
+        this.defaultItem(PalladiumItems.TITANIUM_INGOT);
         this.defaultItem(PalladiumItems.VIBRANIUM_INGOT);
         this.defaultItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL);
 

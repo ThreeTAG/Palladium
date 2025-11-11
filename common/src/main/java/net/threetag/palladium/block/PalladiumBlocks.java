@@ -28,6 +28,7 @@ public class PalladiumBlocks {
     public static final RegistrySupplier<Block> SMALL_REDSTONE_FLUX_CRYSTAL_BUD = BLOCKS.register("small_redstone_flux_crystal_bud", () -> new RedstoneFluxCrystalClusterBlock(3, 4, BlockBehaviour.Properties.copy(Blocks.SMALL_AMETHYST_BUD).mapColor(MapColor.COLOR_RED)));
 
     public static final RegistrySupplier<Block> LEAD_BLOCK = BLOCKS.register("lead_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(4.0F, 12.0F)));
+    public static final RegistrySupplier<Block> TITANIUM_BLOCK = BLOCKS.register("titanium_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(12.0F, 16.0F)));
     public static final RegistrySupplier<Block> VIBRANIUM_BLOCK = BLOCKS.register("vibranium_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GRAY).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(15.0F, 18.0F)));
 
     public static final RegistrySupplier<Block> RAW_LEAD_BLOCK = BLOCKS.register("raw_lead_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(5.0F, 6.0F)));

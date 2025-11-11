@@ -43,6 +43,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Large Redstone Flux Crystal Bud");
             this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER, "Redstone Flux Crystal Cluster");
             this.addBlock(PalladiumBlocks.LEAD_BLOCK, "Block of Lead");
+            this.addBlock(PalladiumBlocks.TITANIUM_BLOCK, "Block of Titanium");
             this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Block of Vibranium");
             this.addBlock(PalladiumBlocks.RAW_LEAD_BLOCK, "Block of Raw Lead");
             this.addBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK, "Block of Raw Titanium");
@@ -57,6 +58,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.RAW_LEAD, "Raw Lead");
             this.addItem(PalladiumItems.LEAD_INGOT, "Lead Ingot");
             this.addItem(PalladiumItems.RAW_TITANIUM, "Raw Titanium");
+            this.addItem(PalladiumItems.TITANIUM_INGOT, "Titanium Ingot");
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Raw Vibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibranium Ingot");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone Flux Crystal");
@@ -266,6 +268,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Große Redstone-Flux-Kristallknospe");
             this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER, "Redstone-Flux-Kristallhaufen");
             this.addBlock(PalladiumBlocks.LEAD_BLOCK, "Bleiblock");
+            this.addBlock(PalladiumBlocks.TITANIUM_BLOCK, "Titaniumblock");
             this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Vibraniumblock");
             this.addBlock(PalladiumBlocks.RAW_LEAD_BLOCK, "Rohbleiblock");
             this.addBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK, "Rohtitaniumblock");
@@ -280,6 +283,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.RAW_LEAD, "Rohblei");
             this.addItem(PalladiumItems.LEAD_INGOT, "Bleibarren");
             this.addItem(PalladiumItems.RAW_TITANIUM, "Rohtitanium");
+            this.addItem(PalladiumItems.TITANIUM_INGOT, "Titaniumbarren");
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarren");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
@@ -490,6 +494,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Große Redstone-Flux-Kristallgnosbe");
             this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER, "Redstone-Flux-Kristallhaufn");
             this.addBlock(PalladiumBlocks.LEAD_BLOCK, "Bleblogg");
+            this.addBlock(PalladiumBlocks.TITANIUM_BLOCK, "Titaniumblogg");
             this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Vibraniumblogg");
             this.addBlock(PalladiumBlocks.RAW_LEAD_BLOCK, "Rohbleblogg");
             this.addBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK, "Rohtitaniumblogg");
@@ -504,6 +509,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.RAW_LEAD, "Rohble");
             this.addItem(PalladiumItems.LEAD_INGOT, "Blebarrn");
             this.addItem(PalladiumItems.RAW_TITANIUM, "Rohtitanium");
+            this.addItem(PalladiumItems.TITANIUM_INGOT, "Titaniumbarrn");
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarrn");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");

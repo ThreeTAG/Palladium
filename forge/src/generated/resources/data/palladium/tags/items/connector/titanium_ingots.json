@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "#forge:ingots/titanium",
+      "required": false
+    },
+    {
+      "id": "#c:titanium_ingots",
+      "required": false
+    }
+  ]
+}

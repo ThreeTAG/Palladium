@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 public class PalladiumRecipeProvider extends RecipeProvider implements IConditionBuilder {
 
     private static final ImmutableList<ItemLike> LEAD_SMELTABLES = ImmutableList.of(PalladiumItems.RAW_LEAD.get(), PalladiumItems.LEAD_ORE.get(), PalladiumItems.DEEPSLATE_LEAD_ORE.get());
+    private static final ImmutableList<ItemLike> TITANIUM_SMELTABLES = ImmutableList.of(PalladiumItems.RAW_TITANIUM.get(), PalladiumItems.TITANIUM_ORE.get());
     private static final ImmutableList<ItemLike> VIBRANIUM_SMELTABLES = ImmutableList.of(PalladiumItems.RAW_VIBRANIUM.get(), PalladiumItems.VIBRANIUM_ORE.get());
 
     public PalladiumRecipeProvider(PackOutput packOutput) {
@@ -38,12 +39,15 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, PalladiumItems.SUIT_STAND.get()).pattern(" B ").pattern("SBS").pattern("SXS").define('B', PalladiumItemTags.QUARTZ).define('S', Ingredient.of(Blocks.QUARTZ_SLAB, Blocks.SMOOTH_QUARTZ_SLAB)).define('X', Blocks.SMOOTH_STONE_SLAB).unlockedBy(getHasName(Items.ARMOR_STAND), has(Items.ARMOR_STAND)).save(consumer);
 
         oreSmelting(consumer, LEAD_SMELTABLES, RecipeCategory.MISC, PalladiumItems.LEAD_INGOT.get(), 0.7F, 200, "lead_ingot");
+        oreSmelting(consumer, TITANIUM_SMELTABLES, RecipeCategory.MISC, PalladiumItems.TITANIUM_INGOT.get(), 1F, 600, "titanium_ingot");
         oreSmelting(consumer, VIBRANIUM_SMELTABLES, RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT.get(), 1F, 600, "vibranium_ingot");
 
         oreBlasting(consumer, LEAD_SMELTABLES, RecipeCategory.MISC, PalladiumItems.LEAD_INGOT.get(), 0.7F, 100, "lead_ingot");
+        oreBlasting(consumer, TITANIUM_SMELTABLES, RecipeCategory.MISC, PalladiumItems.TITANIUM_INGOT.get(), 1F, 300, "titanium_ingot");
         oreBlasting(consumer, VIBRANIUM_SMELTABLES, RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT.get(), 1F, 300, "vibranium_ingot");
 
         nineBlockStorageRecipesRecipesWithCustomUnpacking(consumer, RecipeCategory.MISC, PalladiumItems.LEAD_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, PalladiumItems.LEAD_BLOCK.get(), "lead_ingot_from_lead_block", "lead_ingot");
+        nineBlockStorageRecipesRecipesWithCustomUnpacking(consumer, RecipeCategory.MISC, PalladiumItems.TITANIUM_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, PalladiumItems.TITANIUM_BLOCK.get(), "titanium_ingot_from_titanium_block", "titanium_ingot");
         nineBlockStorageRecipesRecipesWithCustomUnpacking(consumer, RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, PalladiumItems.VIBRANIUM_BLOCK.get(), "vibranium_ingot_from_vibranium_block", "vibranium_ingot");
 
         nineBlockStorageRecipes(consumer, RecipeCategory.MISC, PalladiumItems.RAW_LEAD.get(), RecipeCategory.BUILDING_BLOCKS, PalladiumItems.RAW_LEAD_BLOCK.get());

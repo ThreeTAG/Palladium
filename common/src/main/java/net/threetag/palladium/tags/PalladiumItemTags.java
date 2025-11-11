@@ -38,6 +38,7 @@ public class PalladiumItemTags {
     public static final TagKey<Item> STRINGS = connector("strings");
     public static final TagKey<Item> IRON_INGOTS = connector("iron_ingots");
     public static final TagKey<Item> LEAD_INGOTS = connector("lead_ingots");
+    public static final TagKey<Item> TITANIUM_INGOTS = connector("titanium_ingots");
     public static final TagKey<Item> VIBRANIUM_INGOTS = connector("vibranium_ingots");
     public static final TagKey<Item> QUARTZ = connector("quartz");
     public static final TagKey<Item> GOLD_INGOTS = connector("gold_ingots");
@@ -108,9 +109,11 @@ public class PalladiumItemTags {
         public static final TagKey<Item> RAW_VIBRANIUM_BLOCKS = forgeTag("storage_blocks/raw_vibranium");
 
         public static final TagKey<Item> STORAGE_BLOCKS_LEAD = forgeTag("storage_blocks/lead");
+        public static final TagKey<Item> STORAGE_BLOCKS_TITANIUM = forgeTag("storage_blocks/titanium");
         public static final TagKey<Item> STORAGE_BLOCKS_VIBRANIUM = forgeTag("storage_blocks/vibranium");
 
         public static final TagKey<Item> INGOTS_LEAD = forgeTag("ingots/lead");
+        public static final TagKey<Item> INGOTS_TITANIUM = forgeTag("ingots/titanium");
         public static final TagKey<Item> INGOTS_VIBRANIUM = forgeTag("ingots/vibranium");
 
     }
@@ -141,9 +144,11 @@ public class PalladiumItemTags {
         public static final TagKey<Item> RAW_VIBRANIUM_BLOCKS = fabricTag("raw_vibranium_blocks");
 
         public static final TagKey<Item> STORAGE_BLOCKS_LEAD = fabricTag("lead_blocks");
+        public static final TagKey<Item> STORAGE_BLOCKS_TITANIUM = fabricTag("titanium_blocks");
         public static final TagKey<Item> STORAGE_BLOCKS_VIBRANIUM = fabricTag("vibranium_blocks");
 
         public static final TagKey<Item> INGOTS_LEAD = fabricTag("lead_ingots");
+        public static final TagKey<Item> INGOTS_TITANIUM = fabricTag("titanium_ingots");
         public static final TagKey<Item> INGOTS_VIBRANIUM = fabricTag("vibranium_ingots");
 
         public static final TagKey<Item> BLACK_DYES = fabricTag("black_dyes");

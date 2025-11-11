@@ -1,4 +1,4 @@
-// 1.20.1	2025-11-10T14:24:19.282064	Palladium Item Models: palladium
+// 1.20.1	2025-11-11T16:27:47.5989603	Palladium Item Models: palladium
 a0e035f3392b45cb6fef4aaae396e11295f88a81 assets/palladium/models/item/black_fabric.json
 ec20d3417ba11b05b8b7983239e2b7d7c55186d9 assets/palladium/models/item/blue_fabric.json
 2a855c4995ca67c7318b9bdc99b8d0cf0b753340 assets/palladium/models/item/brown_fabric.json
@@ -38,6 +38,8 @@ ff6c9eb9c052842793943774b78d2c524d79728c assets/palladium/models/item/redstone_f
 7ff8ce735ac21f36f17d6129a1bcaef16882f9b4 assets/palladium/models/item/red_fabric.json
 a3f71ca82f70cbf088a11a85c1be095d76de5965 assets/palladium/models/item/small_redstone_flux_crystal_bud.json
 4538c6b660db154e86b7543be3c8a47c1945d908 assets/palladium/models/item/suit_stand.json
+c5e1211a913fcc31bd56cd4e7e02222d80e651f2 assets/palladium/models/item/titanium_block.json
+d863f295caaea0a732481386e1c16066d6f2766e assets/palladium/models/item/titanium_ingot.json
 639c527c471066bc8eed4f08d995d54e9e2179e3 assets/palladium/models/item/titanium_ore.json
 af2b1ef6843a17642026e5457cf9cb475083ad49 assets/palladium/models/item/vibranium_block.json
 1ceb986423881d48c6c823be2d5ef8fe890f3e7e assets/palladium/models/item/vibranium_circuit.json

@@ -30,7 +30,7 @@ public class PalladiumBlockTagsProvider extends IntrinsicHolderTagsProvider<Bloc
     protected void addTags(HolderLookup.Provider provider) {
         this.tag(PalladiumBlockTags.PREVENTS_INTANGIBILITY).add(Blocks.BEDROCK);
 
-        this.tag(BlockTags.BEACON_BASE_BLOCKS).add(LEAD_BLOCK.get(), VIBRANIUM_BLOCK.get());
+        this.tag(BlockTags.BEACON_BASE_BLOCKS).add(LEAD_BLOCK.get(), TITANIUM_BLOCK.get(), VIBRANIUM_BLOCK.get());
 
         // Ore Blocks
         this.multiLoaderTagMetalItems(PalladiumBlockTags.Forge.ORES_LEAD, PalladiumBlockTags.Fabric.ORES_LEAD, LEAD_ORE.get(), DEEPSLATE_LEAD_ORE.get());
@@ -48,13 +48,14 @@ public class PalladiumBlockTagsProvider extends IntrinsicHolderTagsProvider<Bloc
 
         // Storage Blocks
         this.multiLoaderTagMetalItems(PalladiumBlockTags.Forge.STORAGE_BLOCKS_LEAD, PalladiumBlockTags.Fabric.STORAGE_BLOCKS_LEAD, PalladiumBlocks.LEAD_BLOCK.get());
+        this.multiLoaderTagMetalItems(PalladiumBlockTags.Forge.STORAGE_BLOCKS_TITANIUM, PalladiumBlockTags.Fabric.STORAGE_BLOCKS_TITANIUM, TITANIUM_BLOCK.get());
         this.multiLoaderTagMetalItems(PalladiumBlockTags.Forge.STORAGE_BLOCKS_VIBRANIUM, PalladiumBlockTags.Fabric.STORAGE_BLOCKS_VIBRANIUM, PalladiumBlocks.VIBRANIUM_BLOCK.get());
-        this.tag(Tags.Blocks.STORAGE_BLOCKS).addTags(PalladiumBlockTags.Forge.STORAGE_BLOCKS_LEAD, PalladiumBlockTags.Forge.STORAGE_BLOCKS_VIBRANIUM);
+        this.tag(Tags.Blocks.STORAGE_BLOCKS).addTags(PalladiumBlockTags.Forge.STORAGE_BLOCKS_LEAD, PalladiumBlockTags.Forge.STORAGE_BLOCKS_TITANIUM, PalladiumBlockTags.Forge.STORAGE_BLOCKS_VIBRANIUM);
 
         // Harvest Tools
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(LEAD_ORE.get(), DEEPSLATE_LEAD_ORE.get(), TITANIUM_ORE.get(), VIBRANIUM_ORE.get(), LEAD_BLOCK.get(), VIBRANIUM_BLOCK.get(), RAW_LEAD_BLOCK.get(), RAW_TITANIUM_BLOCK.get(), RAW_VIBRANIUM_BLOCK.get(), REDSTONE_FLUX_CRYSTAL_GEODE.get(), DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE.get());
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(LEAD_ORE.get(), DEEPSLATE_LEAD_ORE.get(), TITANIUM_ORE.get(), VIBRANIUM_ORE.get(), LEAD_BLOCK.get(), TITANIUM_BLOCK.get(), VIBRANIUM_BLOCK.get(), RAW_LEAD_BLOCK.get(), RAW_TITANIUM_BLOCK.get(), RAW_VIBRANIUM_BLOCK.get(), REDSTONE_FLUX_CRYSTAL_GEODE.get(), DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE.get());
         this.tag(BlockTags.NEEDS_IRON_TOOL).add(LEAD_ORE.get(), LEAD_BLOCK.get(), RAW_LEAD_BLOCK.get(), REDSTONE_FLUX_CRYSTAL_GEODE.get(), DEEPSLATE_REDSTONE_FLUX_CRYSTAL_GEODE.get());
-        this.tag(BlockTags.NEEDS_DIAMOND_TOOL).add(TITANIUM_ORE.get(), RAW_TITANIUM_BLOCK.get(), VIBRANIUM_ORE.get(), VIBRANIUM_BLOCK.get(), RAW_VIBRANIUM_BLOCK.get());
+        this.tag(BlockTags.NEEDS_DIAMOND_TOOL).add(TITANIUM_ORE.get(), RAW_TITANIUM_BLOCK.get(), TITANIUM_BLOCK.get(), VIBRANIUM_ORE.get(), VIBRANIUM_BLOCK.get(), RAW_VIBRANIUM_BLOCK.get());
     }
 
     public void multiLoaderTagMetalItems(TagKey<Block> forgeTag, TagKey<Block> fabricTag, Block... blocks) {

@@ -44,6 +44,7 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> REDSTONE_FLUX_CRYSTAL_CLUSTER = ITEMS.register("redstone_flux_crystal_cluster", () -> new BlockItem(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER.get(), new Item.Properties()));
 
     public static final RegistrySupplier<Item> LEAD_BLOCK = ITEMS.register("lead_block", () -> new BlockItem(PalladiumBlocks.LEAD_BLOCK.get(), new Item.Properties()));
+    public static final RegistrySupplier<Item> TITANIUM_BLOCK = ITEMS.register("titanium_block", () -> new BlockItem(PalladiumBlocks.TITANIUM_BLOCK.get(), new Item.Properties()));
     public static final RegistrySupplier<Item> VIBRANIUM_BLOCK = ITEMS.register("vibranium_block", () -> new BlockItem(PalladiumBlocks.VIBRANIUM_BLOCK.get(), new Item.Properties()));
 
     public static final RegistrySupplier<Item> RAW_LEAD_BLOCK = ITEMS.register("raw_lead_block", () -> new BlockItem(PalladiumBlocks.RAW_LEAD_BLOCK.get(), new Item.Properties()));
@@ -58,6 +59,7 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> RAW_LEAD = ITEMS.register("raw_lead", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> LEAD_INGOT = ITEMS.register("lead_ingot", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> RAW_TITANIUM = ITEMS.register("raw_titanium", () -> new Item(new Item.Properties()));
+    public static final RegistrySupplier<Item> TITANIUM_INGOT = ITEMS.register("titanium_ingot", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> RAW_VIBRANIUM = ITEMS.register("raw_vibranium", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> VIBRANIUM_INGOT = ITEMS.register("vibranium_ingot", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> REDSTONE_FLUX_CRYSTAL = ITEMS.register("redstone_flux_crystal", () -> new Item(new Item.Properties()));
@@ -105,6 +107,7 @@ public class PalladiumItems {
                     LARGE_REDSTONE_FLUX_CRYSTAL_BUD.get(),
                     REDSTONE_FLUX_CRYSTAL_CLUSTER.get(),
                     LEAD_BLOCK.get(),
+                    TITANIUM_BLOCK.get(),
                     VIBRANIUM_BLOCK.get(),
                     RAW_LEAD_BLOCK.get(),
                     RAW_TITANIUM_BLOCK.get(),
@@ -113,6 +116,7 @@ public class PalladiumItems {
                     RAW_LEAD.get(),
                     LEAD_INGOT.get(),
                     RAW_TITANIUM.get(),
+                    TITANIUM_INGOT.get(),
                     RAW_VIBRANIUM.get(),
                     VIBRANIUM_INGOT.get(),
                     REDSTONE_FLUX_CRYSTAL.get(),
@@ -166,7 +170,7 @@ public class PalladiumItems {
 
         CreativeModeTabRegistry.addToTab(() -> BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.INGREDIENTS), entries -> {
             entries.addAfter(Items.COPPER_INGOT, RAW_LEAD.get(), LEAD_INGOT.get());
-            entries.addAfter(Items.GOLD_INGOT, RAW_TITANIUM.get());
+            entries.addAfter(Items.GOLD_INGOT, RAW_TITANIUM.get(), TITANIUM_INGOT.get());
             entries.addAfter(Items.NETHERITE_INGOT, RAW_VIBRANIUM.get(), VIBRANIUM_INGOT.get());
             entries.addAfter(Items.REDSTONE, REDSTONE_FLUX_CRYSTAL.get());
             entries.addAfter(Items.PINK_DYE,
@@ -190,7 +194,7 @@ public class PalladiumItems {
         });
 
         CreativeModeTabRegistry.addToTab(() -> BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.BUILDING_BLOCKS), entries -> {
-            entries.addAfter(Items.COPPER_BLOCK, LEAD_BLOCK.get());
+            entries.add(Items.DIAMOND_BLOCK, LEAD_BLOCK.get(), TITANIUM_BLOCK.get());
             entries.addAfter(Items.NETHERITE_BLOCK, VIBRANIUM_BLOCK.get());
         });
 

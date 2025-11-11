@@ -33,6 +33,7 @@ public class PalladiumBlockStateProvider extends BlockStateProvider {
         this.crystal(PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD);
         this.crystal(PalladiumBlocks.SMALL_REDSTONE_FLUX_CRYSTAL_BUD);
         this.simpleBlock(PalladiumBlocks.LEAD_BLOCK.get());
+        this.simpleBlock(PalladiumBlocks.TITANIUM_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.VIBRANIUM_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.RAW_LEAD_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK.get());
