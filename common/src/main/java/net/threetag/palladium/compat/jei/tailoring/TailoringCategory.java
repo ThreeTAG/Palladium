@@ -5,7 +5,6 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.IFocusFactory;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
@@ -31,13 +30,10 @@ public class TailoringCategory implements IRecipeCategory<TailoringRecipe> {
     private static final int BG_WIDTH = 141;
     private static final int BG_HEIGHT = 75;
 
-    private final IFocusFactory focusFactory;
     private final IDrawable icon;
     private final IDrawable background;
 
-    public TailoringCategory(IGuiHelper guiHelper, IFocusFactory focusFactory) {
-        this.focusFactory = focusFactory;
-
+    public TailoringCategory(IGuiHelper guiHelper) {
         this.icon = guiHelper.createDrawableItemStack(PalladiumItems.TAILORING_BENCH.get().getDefaultInstance());
         this.background = guiHelper.createDrawable(TailoringScreen.TEXTURE, 84, 17, BG_WIDTH, BG_HEIGHT);
     }
@@ -78,9 +74,7 @@ public class TailoringCategory implements IRecipeCategory<TailoringRecipe> {
             SizedIngredient sizedIngredient = ingredients.get(i);
             List<ItemStack> acceptedItems = Arrays.stream(sizedIngredient.ingredient().getItems()).map(stack -> new ItemStack(stack.getItem(), sizedIngredient.count())).toList();
 
-            // Will not show in GUI, but to inform JEI of accepted inputs for ingredient lookup
-            builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addItemStacks(acceptedItems);
-            // builder.addInputSlot().addItemStacks(acceptedItems);
+            builder.addInputSlot().addItemStacks(acceptedItems);
         }
 
         // Results
@@ -109,18 +103,15 @@ public class TailoringCategory implements IRecipeCategory<TailoringRecipe> {
     public void draw(TailoringRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         this.background.draw(guiGraphics);
 
-        // guiGraphics.blit(TailoringScreen.TEXTURE, 0, 0, 81, 56, 6, 6, 1, 1, 256, 256);
+        // Draws over the tailoring bench's scrollable area
+        guiGraphics.blit(TailoringScreen.TEXTURE, 0, 0, 81, 56, 6, 6, 1, 1, 256, 256);
     }
 
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, TailoringRecipe recipe, IFocusGroup focuses) {
-        /*var slotsViews = builder.getRecipeSlots();
+        var slotsViews = builder.getRecipeSlots();
         var inputSlots = slotsViews.getSlots(RecipeIngredientRole.INPUT);
         inputSlots.remove(0); // Remove tool slot
-        builder.addScrollGridWidget(inputSlots, 4, 3);*/
-
-        var scrollWidget = new TailoringScrollGridRecipeWidget(recipe.getSizedIngredients(), 4, 3, focusFactory);
-        builder.addWidget(scrollWidget);
-        builder.addInputHandler(scrollWidget);
+        builder.addScrollGridWidget(inputSlots, 4, 3);
     }
 }
