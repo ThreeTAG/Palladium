@@ -13,6 +13,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.screen.TailoringScreen;
+import net.threetag.palladium.item.recipe.PalladiumRecipeSerializers;
 import net.threetag.palladium.item.recipe.TailoringRecipe;
 import net.threetag.palladium.menu.PalladiumMenuTypes;
 import net.threetag.palladium.menu.TailoringMenu;
@@ -49,6 +50,12 @@ public class TailoringTransferHandler implements IRecipeTransferHandler<Tailorin
     public @Nullable IRecipeTransferError transferRecipe(TailoringMenu container, TailoringRecipe recipe, IRecipeSlotsView recipeSlots, Player player, boolean maxTransfer, boolean doTransfer) {
         if (!transferHelper.recipeTransferHasServerSupport()) {
             return transferHelper.createUserErrorWithTooltip(Component.translatable("jei.tooltip.error.recipe.transfer.no.server"));
+        }
+
+        var level = player.level();
+        var availableRecipes = level.getRecipeManager().getRecipesFor(PalladiumRecipeSerializers.TAILORING.get(), player.getInventory(), level);
+        if (!availableRecipes.contains(recipe)) {
+            return transferHelper.createUserErrorWithTooltip(Component.translatable("gui.palladium.jei.tailoring.recipe_unavailable"));
         }
 
         // inputSlotViews will only contain 1 IRecipeSlotView, the tool slot. The other inputs aren't added to the slot view, because they do not exist as a slot in JEI's recipe layout. See TailoringCategory#setRecipe
