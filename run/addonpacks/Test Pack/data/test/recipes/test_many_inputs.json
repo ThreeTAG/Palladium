@@ -96,7 +96,8 @@
     }
   ],
   "tool": {
-    "item": "minecraft:shears"
+    "item": "minecraft:shield"
   },
+  "tool_icon": "minecraft:item/empty_armor_slot_shield",
   "title": "Golden Apple"
 }

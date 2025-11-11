@@ -23,8 +23,8 @@ public class SuitSetTailoringRecipe extends TailoringRecipe {
 
     private final SuitSet suitSet;
 
-    public SuitSetTailoringRecipe(ResourceLocation id, SuitSet suitSet, List<SizedIngredient> ingredients, Ingredient toolIngredient) {
-        super(id, buildResults(suitSet), ingredients, toolIngredient);
+    public SuitSetTailoringRecipe(ResourceLocation id, SuitSet suitSet, List<SizedIngredient> ingredients, Ingredient toolIngredient, ResourceLocation toolIcon) {
+        super(id, buildResults(suitSet), ingredients, toolIngredient, toolIcon);
         this.suitSet = suitSet;
     }
 
@@ -71,7 +71,7 @@ public class SuitSetTailoringRecipe extends TailoringRecipe {
                 throw new JsonParseException("Valid tool ingredient required");
             }
 
-            return new SuitSetTailoringRecipe(recipeId, suitSet, ingredients, toolIngredient);
+            return new SuitSetTailoringRecipe(recipeId, suitSet, ingredients, toolIngredient, GsonUtil.getAsResourceLocation(serializedRecipe, "tool_icon", null));
         }
 
         private static List<SizedIngredient> itemsFromJson(JsonArray ingredientArray) {
@@ -91,7 +91,7 @@ public class SuitSetTailoringRecipe extends TailoringRecipe {
         public SuitSetTailoringRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
             var suitSet = SuitSet.REGISTRY.get(buffer.readResourceLocation());
             List<SizedIngredient> ingredients = buffer.readList(SizedIngredient::fromNetwork);
-            return new SuitSetTailoringRecipe(recipeId, suitSet, ingredients, Ingredient.fromNetwork(buffer));
+            return new SuitSetTailoringRecipe(recipeId, suitSet, ingredients, Ingredient.fromNetwork(buffer), buffer.readNullable(FriendlyByteBuf::readResourceLocation));
         }
 
         @Override
@@ -99,6 +99,7 @@ public class SuitSetTailoringRecipe extends TailoringRecipe {
             buffer.writeResourceLocation(SuitSet.REGISTRY.getKey(recipe.suitSet));
             buffer.writeCollection(recipe.ingredients, (buf, ingredient) -> ingredient.toNetwork(buf));
             recipe.toolIngredient.toNetwork(buffer);
+            buffer.writeNullable(recipe.toolIcon, FriendlyByteBuf::writeResourceLocation);
         }
     }
 }

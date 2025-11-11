@@ -1,7 +1,5 @@
 package net.threetag.palladium.menu;
 
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -9,17 +7,14 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.item.recipe.PalladiumRecipeSerializers;
 import net.threetag.palladium.item.recipe.SizedIngredient;
 import net.threetag.palladium.item.recipe.TailoringRecipe;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.network.SyncAvailableTailoringRecipes;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +22,9 @@ import java.util.List;
 public class TailoringMenu extends AbstractContainerMenu {
 
     private static final EquipmentSlot[] SLOT_IDS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
-    public static final ResourceLocation EMPTY_TOOL_SLOT = Palladium.id("item/empty_tailoring_tool_slot");
 
-    private final SimpleContainer toolSlot = new SimpleContainer(1);
+    private final SimpleContainer toolSlotContainer = new SimpleContainer(1);
+    public TailoringToolSlot toolSlot;
     private final TailoringResultContainer resultSlots = new TailoringResultContainer();
     private final ContainerLevelAccess access;
     public final Inventory playerInventory;
@@ -44,12 +39,7 @@ public class TailoringMenu extends AbstractContainerMenu {
         this.access = access;
         this.playerInventory = playerInventory;
 
-        this.addSlot(new Slot(this.toolSlot, 0, 85, 75) {
-            @Override
-            public @NotNull Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_TOOL_SLOT);
-            }
-        });
+        this.addSlot(this.toolSlot = new TailoringToolSlot(this.toolSlotContainer, 0, 85, 75));
 
         for (int i = 0; i < 4; i++) {
             this.addSlot(new TailoringResultSlot(this.resultSlots, playerInventory.player, SLOT_IDS[i], i, 208, 19 + (i * 18)));
@@ -84,7 +74,7 @@ public class TailoringMenu extends AbstractContainerMenu {
             }
         }
 
-        return recipe.getToolIngredient().test(this.toolSlot.getItem(0)) && this.resultSlots.isEmpty();
+        return recipe.getToolIngredient().test(this.toolSlotContainer.getItem(0)) && this.resultSlots.isEmpty();
     }
 
     public void craft(Player player, TailoringRecipe recipe) {
@@ -94,8 +84,8 @@ public class TailoringMenu extends AbstractContainerMenu {
             }
 
             if (player instanceof ServerPlayer serverPlayer) {
-                var tool = this.toolSlot.getItem(0);
-                tool.hurtAndBreak((int) recipe.getResults().values().stream().filter(s -> !s.isEmpty()).count(), serverPlayer, pl -> this.toolSlot.clearContent());
+                var tool = this.toolSlotContainer.getItem(0);
+                tool.hurtAndBreak((int) recipe.getResults().values().stream().filter(s -> !s.isEmpty()).count(), serverPlayer, pl -> this.toolSlotContainer.clearContent());
             }
 
             for (int i = 0; i < 4; i++) {
@@ -163,7 +153,7 @@ public class TailoringMenu extends AbstractContainerMenu {
     public void removed(Player player) {
         super.removed(player);
         this.access.execute((level, blockPos) -> {
-            this.clearContainer(player, this.toolSlot);
+            this.clearContainer(player, this.toolSlotContainer);
             this.clearContainer(player, this.resultSlots);
         });
     }

@@ -22,8 +22,8 @@ public class ItemTailoringRecipe extends TailoringRecipe {
 
     private final Component title;
 
-    public ItemTailoringRecipe(ResourceLocation id, Map<EquipmentSlot, ItemStack> results, List<SizedIngredient> ingredients, Ingredient toolIngredient, Component title) {
-        super(id, results, ingredients, toolIngredient);
+    public ItemTailoringRecipe(ResourceLocation id, Map<EquipmentSlot, ItemStack> results, List<SizedIngredient> ingredients, Ingredient toolIngredient, Component title, ResourceLocation toolIcon) {
+        super(id, results, ingredients, toolIngredient, toolIcon);
         this.title = title;
     }
 
@@ -72,7 +72,7 @@ public class ItemTailoringRecipe extends TailoringRecipe {
 
             var title = Component.Serializer.fromJson(serializedRecipe.get("title"));
 
-            return new ItemTailoringRecipe(recipeId, results, ingredients, toolIngredient, title);
+            return new ItemTailoringRecipe(recipeId, results, ingredients, toolIngredient, title, GsonUtil.getAsResourceLocation(serializedRecipe, "tool_icon", null));
         }
 
         private static List<SizedIngredient> itemsFromJson(JsonArray ingredientArray) {
@@ -92,7 +92,7 @@ public class ItemTailoringRecipe extends TailoringRecipe {
         public ItemTailoringRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
             Map<EquipmentSlot, ItemStack> results = buffer.readMap(buf -> EquipmentSlot.byName(buf.readUtf()), FriendlyByteBuf::readItem);
             List<SizedIngredient> ingredients = buffer.readList(SizedIngredient::fromNetwork);
-            return new ItemTailoringRecipe(recipeId, results, ingredients, Ingredient.fromNetwork(buffer), buffer.readComponent());
+            return new ItemTailoringRecipe(recipeId, results, ingredients, Ingredient.fromNetwork(buffer), buffer.readComponent(), buffer.readNullable(FriendlyByteBuf::readResourceLocation));
         }
 
         @Override
@@ -101,6 +101,7 @@ public class ItemTailoringRecipe extends TailoringRecipe {
             buffer.writeCollection(recipe.ingredients, (buf, ingredient) -> ingredient.toNetwork(buf));
             recipe.toolIngredient.toNetwork(buffer);
             buffer.writeComponent(recipe.title);
+            buffer.writeNullable(recipe.toolIcon, FriendlyByteBuf::writeResourceLocation);
         }
     }
 }

@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.item.PalladiumItems;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -26,12 +27,14 @@ public abstract class TailoringRecipe implements Recipe<Inventory> {
     protected final Map<EquipmentSlot, ItemStack> results;
     protected final List<SizedIngredient> ingredients;
     protected final Ingredient toolIngredient;
+    protected final ResourceLocation toolIcon;
 
-    public TailoringRecipe(ResourceLocation id, Map<EquipmentSlot, ItemStack> results, List<SizedIngredient> ingredients, Ingredient toolIngredient) {
+    public TailoringRecipe(ResourceLocation id, Map<EquipmentSlot, ItemStack> results, List<SizedIngredient> ingredients, Ingredient toolIngredient, ResourceLocation toolIcon) {
         this.id = id;
         this.results = results;
         this.ingredients = ingredients;
         this.toolIngredient = toolIngredient;
+        this.toolIcon = toolIcon;
     }
 
     @Override
@@ -80,6 +83,11 @@ public abstract class TailoringRecipe implements Recipe<Inventory> {
 
     public Ingredient getToolIngredient() {
         return toolIngredient;
+    }
+
+    @Nullable
+    public ResourceLocation getToolIcon() {
+        return toolIcon;
     }
 
     @Override

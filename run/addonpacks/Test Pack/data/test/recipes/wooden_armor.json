@@ -11,5 +11,6 @@
   ],
   "tool": {
     "item": "minecraft:shears"
-  }
+  },
+  "tool_icon": "palladium:item/empty_tool_slot_shears"
 }

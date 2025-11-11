@@ -144,6 +144,8 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+        this.menu.toolSlot.icon = DISPLAYED_RECIPE != null ? DISPLAYED_RECIPE.getToolIcon() : null;
+
         int i = this.leftPos;
         int j = this.topPos;
 
