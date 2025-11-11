@@ -100,7 +100,7 @@ public class TailoringMenu extends AbstractContainerMenu {
 
             for (int i = 0; i < 4; i++) {
                 var slot = SLOT_IDS[i];
-                this.resultSlots.setItem(i, recipe.getResults().get(slot).copy());
+                this.resultSlots.setItem(i, recipe.getResults().getOrDefault(slot, ItemStack.EMPTY).copy());
             }
         }
     }
