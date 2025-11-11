@@ -93,17 +93,19 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
                     guiGraphics.pose().pushPose();
                     guiGraphics.pose().scale(2, 2, 1);
                     if (!ability.isUnlocked()) {
-                        guiGraphics.blit(AbilityBarRenderer.TEXTURE, -8, -8, 42, 74, 18, 18);
+                        guiGraphics.blit(AbilityBarRenderer.TEXTURE, -8, -12, 42, 74, 18, 18);
                     } else {
                         ability.getProperty(Ability.ICON).draw(minecraft, guiGraphics,
                                 DataContext.forAbility(minecraft.player, ability).with(DataContextType.ABILITY_WHEEL_DISPLAYED, true),
-                                -8, -8);
+                                -8, -12);
                     }
                     guiGraphics.pose().popPose();
 
-                    var text = ability.getConfiguration().getDisplayName();
-                    int length = minecraft.font.width(text);
-                    guiGraphics.drawString(minecraft.font, ability.getConfiguration().getDisplayName(), -(length / 2), (int) outerRadius + 25, 0xFFFFFF);
+                    var originalText = ability.getConfiguration().getDisplayName();
+                    var text = minecraft.font.substrByWidth(originalText, 70);
+                    String renderedText = text.getString().equals(originalText.getString()) ? text.getString() : text.getString() + "...";
+                    int length = minecraft.font.width(renderedText);
+                    guiGraphics.drawString(minecraft.font, renderedText, -(length / 2), 20, 0xFFFFFF);
                 }
             }
 
