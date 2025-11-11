@@ -226,6 +226,10 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (this.recipeList.mouseClicked(mouseX, mouseY, button)) {
+            return true;
+        }
+
         this.scrolling = false;
         if (DISPLAYED_RECIPE != null) {
             int i = this.leftPos + 152;
@@ -240,7 +244,9 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        if (this.scrolling && this.isScrollBarActive()) {
+        if (this.recipeList.mouseDragged(mouseX, mouseY, button, dragX, dragY)) {
+            return true;
+        } else if (this.scrolling && this.isScrollBarActive()) {
             int i = this.topPos + 14;
             int j = i + 54;
             this.scrollOffs = ((float) mouseY - (float) i - 7.5F) / ((float) (j - i) - 15.0F);
@@ -254,11 +260,13 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-        if (this.isScrollBarActive()) {
+        if (this.isScrollBarActive() & this.isMouseOverIngredients(mouseX, mouseY)) {
             int i = this.getOffscreenRows();
             float f = (float) delta / (float) i;
             this.scrollOffs = Mth.clamp(this.scrollOffs - f, 0.0F, 1.0F);
             this.startIndex = (int) ((double) (this.scrollOffs * (float) i) + 0.5) * 4;
+        } else if (this.recipeList.isMouseOver(mouseX, mouseY)) {
+            this.recipeList.mouseScrolled(mouseX, mouseY, delta);
         }
 
         return true;
@@ -276,6 +284,13 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
         } else {
             return super.keyPressed(keyCode, scanCode, modifiers);
         }
+    }
+
+    public boolean isMouseOverIngredients(double mouseX, double mouseY) {
+        int i = this.leftPos;
+        int j = this.topPos;
+
+        return mouseX >= i + 84 && mouseY >= j + 17 && mouseX <= i + 84 + 81 && mouseY <= mouseY + 17 + 56;
     }
 
     private void onRecipeChanged() {
@@ -356,10 +371,12 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
         @Override
         protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+            this.active = !AVAILABLE_RECIPES.isEmpty();
+
             guiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
             RenderSystem.enableBlend();
             RenderSystem.enableDepthTest();
-            guiGraphics.blit(TEXTURE, this.getX(), this.getY(), this.next ? 0 : 14, this.isHovered ? 207 : 189, this.getWidth(), this.getHeight());
+            guiGraphics.blit(TEXTURE, this.getX(), this.getY(), this.next ? 0 : 14, !this.active ? 225 : this.isHovered ? 207 : 189, this.getWidth(), this.getHeight());
         }
     }
 
