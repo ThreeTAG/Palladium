@@ -18,6 +18,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.client.dynamictexture.DynamicTextureManager;
+import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.client.renderer.renderlayer.*;
 import net.threetag.palladium.compat.geckolib.playeranimator.ParsedAnimationController;
 import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
@@ -39,17 +40,19 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
     private final SkinTypedValue<DynamicTexture> modelLocation;
     public final ResourceLocation animationLocation;
     public final List<ParsedAnimationController<GeckoLayerState>> animationControllers;
+    public final DynamicColor tint;
     public ResourceLocation cachedTexture;
     public ResourceLocation cachedModel;
     public final RenderTypeFunction renderType;
     private final GeckoRenderLayerModel model;
 
-    public GeckoRenderLayer(SkinTypedValue<DynamicTexture> texture, SkinTypedValue<DynamicTexture> modelLocation, ResourceLocation animationLocation, List<ParsedAnimationController<GeckoLayerState>> animationControllers, RenderTypeFunction renderType) {
+    public GeckoRenderLayer(SkinTypedValue<DynamicTexture> texture, SkinTypedValue<DynamicTexture> modelLocation, ResourceLocation animationLocation, List<ParsedAnimationController<GeckoLayerState>> animationControllers, RenderTypeFunction renderType, DynamicColor tint) {
         this.texture = texture;
         this.renderType = renderType;
         this.modelLocation = modelLocation;
         this.animationLocation = animationLocation;
         this.animationControllers = animationControllers;
+        this.tint = tint;
         this.model = new GeckoRenderLayerModel(this);
     }
 
@@ -79,6 +82,8 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
             this.model.setAllVisible(true);
             this.cachedTexture = this.texture.get(living).getTexture(context);
             this.cachedModel = this.modelLocation.get(living).getTexture(context);
+            var rawColor = this.tint != null ? this.tint.getColor(context) : null;
+            this.model.currentColor = rawColor != null ? Color.ofRGBA(rawColor.getRed(), rawColor.getGreen(), rawColor.getBlue(), rawColor.getAlpha()) : Color.WHITE;
             this.model.renderToBuffer(poseStack, this.renderType.createVertexConsumer(bufferSource, this.cachedTexture, false), this.renderType.getPackedLight(packedLight), OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
         }
     }
@@ -142,7 +147,8 @@ public class GeckoRenderLayer extends AbstractPackRenderLayer {
                 modelLocation,
                 GsonUtil.getAsResourceLocation(json, "animation_file", null),
                 GsonUtil.fromListOrPrimitive(json.get("animation_controller"), el -> ParsedAnimationController.controllerFromJson(el.getAsJsonObject()), Collections.emptyList()),
-                renderType
+                renderType,
+                DynamicColor.getFromJson(json, "tint", null)
         );
 
         var bonesJson = GsonHelper.getAsJsonObject(json, "bones", new JsonObject());

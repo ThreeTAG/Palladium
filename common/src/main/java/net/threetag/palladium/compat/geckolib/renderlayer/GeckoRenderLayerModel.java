@@ -24,6 +24,7 @@ import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.molang.MolangParser;
 import software.bernie.geckolib.core.molang.MolangQueries;
+import software.bernie.geckolib.core.object.Color;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.util.RenderUtils;
@@ -37,6 +38,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
 
     protected Entity currentEntity = null;
     protected GeckoLayerState currentState = null;
+    protected Color currentColor = Color.WHITE;
 
     protected Matrix4f entityRenderTranslations = new Matrix4f();
 
@@ -99,7 +101,7 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
 
                             return Mth.sqrt((float) ((velocity.x * velocity.x) + (velocity.z * velocity.z)));
                         });
-                        parser.setMemoizedValue(MolangQueries.YAW_SPEED, () -> livingEntity.getViewYRot((float)animTime - livingEntity.getViewYRot((float)animTime - 0.1f)));
+                        parser.setMemoizedValue(MolangQueries.YAW_SPEED, () -> livingEntity.getViewYRot((float) animTime - livingEntity.getViewYRot((float) animTime - 0.1f)));
                     }
                 }
             }
@@ -153,6 +155,11 @@ public class GeckoRenderLayerModel extends HumanoidModel<AbstractClientPlayer> i
         defaultRender(poseStack, this.currentState, bufferSource, null, buffer,
                 0, partialTick, this.currentState.layer.renderType.getPackedLight(packedLight));
         poseStack.popPose();
+    }
+
+    @Override
+    public Color getRenderColor(GeckoLayerState animatable, float partialTick, int packedLight) {
+        return this.currentColor;
     }
 
     protected void grabRelevantBones(BakedGeoModel bakedModel) {
