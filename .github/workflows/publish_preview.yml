@@ -1,0 +1,104 @@
+name: Build and Release (1.20)
+
+on:
+  push:
+    branches:
+      - "1.20/dev"
+
+jobs:
+  build:
+    name: "Build and Release Previews"
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v2
+
+      - run: chmod +x gradlew
+
+      - name: Build Version
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build --stacktrace --no-daemon
+
+      - name: Setting mod version
+        run: |
+          cat $GITHUB_WORKSPACE/gradle.properties | grep ^archives_base_name= >> $GITHUB_ENV
+          cat $GITHUB_WORKSPACE/gradle.properties | grep ^minecraft_version= >> $GITHUB_ENV
+
+      - name: Get short commit hash
+        id: vars
+        run: echo "mod_version=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Publish Common version
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          name: Palladium Preview \#${{ env.mod_version }} for Common ${{ env.minecraft_version }}
+          version: ${{ env.mod_version }}+${{ env.minecraft_version }}-common
+          modrinth-id: 92dtp3u1
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          changelog-file: 'https://github.com/ThreeTAG/Palladium/commits/1.20/dev'
+          game-versions: |
+            ${{ env.minecraft_version }}
+          files: |
+            common/build/libs/!(*-@(dev-shadow|sources|javadoc)).jar
+          dependencies: |
+            condensedcreative(optional){modrinth:Zw7fMbBg}{curseforge:624911}
+            curios(optional){modrinth:vvuO3ImH}{curseforge:309927}
+            geckolib(optional){modrinth:8BmcQJ2H}{curseforge:388172}
+            kubejs(optional){modrinth:umyGl7zF}{curseforge:238086}
+            pehkui(optional){modrinth:t5W7Jfwy}{curseforge:319596}
+
+      - name: Publish Forge version
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          name: Palladium Preview \#${{ env.mod_version }} for Forge/NeoForge ${{ env.minecraft_version }}
+          version: ${{ env.mod_version }}+${{ env.minecraft_version }}-forge
+          modrinth-id: 92dtp3u1
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          changelog-file: 'https://github.com/ThreeTAG/Palladium/commits/1.20/dev'
+          loaders: |
+            forge
+            neoforge
+          game-versions: |
+            ${{ env.minecraft_version }}
+          files: |
+            forge/build/libs/!(*-@(dev-shadow|sources|javadoc)).jar
+          dependencies: |
+            condensedcreative(optional){modrinth:Zw7fMbBg}{curseforge:624911}
+            curios(optional){modrinth:vvuO3ImH}{curseforge:309927}
+            geckolib(optional){modrinth:8BmcQJ2H}{curseforge:388172}
+            kubejs(optional){modrinth:umyGl7zF}{curseforge:238086}
+            pehkui(optional){modrinth:t5W7Jfwy}{curseforge:319596}
+
+      - name: Publish Fabric version
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          name: Palladium Preview \#${{ env.mod_version }} for Fabric/Quilt ${{ env.minecraft_version }}
+          version: ${{ env.mod_version }}+${{ env.minecraft_version }}-fabric
+          modrinth-id: 92dtp3u1
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          changelog-file: 'https://github.com/ThreeTAG/Palladium/commits/1.20/dev'
+          loaders: |
+            fabric
+            quilt
+          game-versions: |
+            ${{ env.minecraft_version }}
+          files: |
+            fabric/build/libs/!(*-@(dev-shadow|sources|javadoc)).jar
+          dependencies: |
+            condensedcreative(optional){modrinth:Zw7fMbBg}{curseforge:624911}
+            trinkets(optional){modrinth:5aaWibi9}{curseforge:341284}
+            geckolib(optional){modrinth:8BmcQJ2H}{curseforge:388172}
+            kubejs(optional){modrinth:umyGl7zF}{curseforge:238086}
+            pehkui(optional){modrinth:t5W7Jfwy}{curseforge:319596}
