@@ -32,8 +32,8 @@ public class PalladiumConfig {
 
         public static ForgeConfigSpec generateConfig() {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-            builder.comment("Enabled some hidden/planned content, that is currently not finished or unused");
             REDSTONE_FLUX_CRYSTAL_GEODE_GENERATION = builder.define("worldGen.redstoneFluxCrystalGeneration", true);
+            builder.comment("Allows you to disable specific abilities from addons. Structure: 'power_namespace:power_id#ability_key'. The ability_key can be found in the json of a power.");
             DISABLED_ABILITIES = builder.defineListAllowEmpty(Arrays.asList("general", "disabledAbilities"), List::of, o -> AbilityReference.validateFull(o.toString()));
             return builder.build();
         }
