@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.power.ability.AbilityConfiguration;
+import net.threetag.palladium.power.ability.AbilityReference;
 import net.threetag.palladium.power.energybar.EnergyBarConfiguration;
 import net.threetag.palladium.util.icon.IIcon;
 import net.threetag.palladium.util.icon.IconSerializer;
@@ -183,7 +184,7 @@ public class Power {
             JsonObject abilities = GsonHelper.getAsJsonObject(json, "abilities");
 
             for (String key : abilities.keySet()) {
-                power.addAbility(AbilityConfiguration.fromJSON(key, GsonHelper.getAsJsonObject(abilities, key)));
+                power.addAbility(AbilityConfiguration.fromJSON(new AbilityReference(id, key), GsonHelper.getAsJsonObject(abilities, key)));
             }
         }
 

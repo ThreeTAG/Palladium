@@ -43,7 +43,7 @@ jobs:
       - name: Publish Common version
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          name: Palladium Preview \#${{ env.mod_version }} for Common ${{ env.minecraft_version }}
+          name: Palladium Preview ${{ env.mod_version }} for Common ${{ env.minecraft_version }}
           version: ${{ env.mod_version }}+${{ env.minecraft_version }}-common
           modrinth-id: 92dtp3u1
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -64,7 +64,7 @@ jobs:
       - name: Publish Forge version
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          name: Palladium Preview \#${{ env.mod_version }} for Forge/NeoForge ${{ env.minecraft_version }}
+          name: Palladium Preview ${{ env.mod_version }} for Forge/NeoForge ${{ env.minecraft_version }}
           version: ${{ env.mod_version }}+${{ env.minecraft_version }}-forge
           modrinth-id: 92dtp3u1
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -86,7 +86,7 @@ jobs:
       - name: Publish Fabric version
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          name: Palladium Preview \#${{ env.mod_version }} for Fabric/Quilt ${{ env.minecraft_version }}
+          name: Palladium Preview ${{ env.mod_version }} for Fabric/Quilt ${{ env.minecraft_version }}
           version: ${{ env.mod_version }}+${{ env.minecraft_version }}-fabric
           modrinth-id: 92dtp3u1
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
