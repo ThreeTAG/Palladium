@@ -8,6 +8,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
+import net.threetag.palladium.command.CustomizationCommand;
 import net.threetag.palladium.command.DataAttachmentCommand;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
@@ -145,6 +146,11 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(DataAttachmentCommand.TRANS_SET_DATA_SINGLE, "Data attachment value %s for %s is now set to %s");
             this.add(DataAttachmentCommand.TRANS_SET_DATA_MULTIPLE, "Data attachment value %s for %s entities is now set to %s");
 
+            this.add(CustomizationCommand.UNLOCK_SUCCESS, "Successfully unlocked %s for %s");
+            this.add(CustomizationCommand.LOCK_SUCCESS, "Successfully locked %s for %s");
+            this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s can not be unlocked by commands");
+            this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "The given entity can not have customizations");
+
             // GUI
             this.add("gui.palladium.powers", "Powers");
             this.add("gui.palladium.powers.buy_ability", "Do you want to unlock this ability?");
@@ -153,6 +159,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx experience levels");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Customization");
 
+            // Customizations
+            this.addCustomization(BuiltinCustomization.Type.LUCRAFT_ARC_REACTOR.getResourceKey(), "Lucraft Arc Reactor");
             this.addCustomizationCategory(CustomizationCategories.HAT, "Hat");
             this.addCustomizationCategory(CustomizationCategories.HEAD, "Head");
             this.addCustomizationCategory(CustomizationCategories.CHEST, "Chest");
@@ -245,6 +253,11 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(DataAttachmentCommand.TRANS_SET_DATA_SINGLE, "Datenanhangswert %s für %s ist jetzt auf %s gesetzt");
             this.add(DataAttachmentCommand.TRANS_SET_DATA_MULTIPLE, "Datenanhangswert %s für %s Entitäten ist jetzt auf %s gesetzt");
 
+            this.add(CustomizationCommand.UNLOCK_SUCCESS, "%s wurde erfolgreich für %s freigeschaltet");
+            this.add(CustomizationCommand.LOCK_SUCCESS, "%s wurde erfolgreich für %s gesperrt");
+            this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s kann nicht per Befehl freigeschaltet werden");
+            this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "Die angegebene Entität kann keine Anpassungen besitzen");
+
             // GUI
             this.add("gui.palladium.powers", "Kräfte");
             this.add("gui.palladium.powers.buy_ability", "Möchtest du diese Fähigkeit freischalten?");
@@ -253,6 +266,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsstufen");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
 
+            // Customizations
+            this.addCustomization(BuiltinCustomization.Type.LUCRAFT_ARC_REACTOR.getResourceKey(), "Lucraft Arc Reaktor");
             this.addCustomizationCategory(CustomizationCategories.HAT, "Hut");
             this.addCustomizationCategory(CustomizationCategories.HEAD, "Kopf");
             this.addCustomizationCategory(CustomizationCategories.CHEST, "Brust");
@@ -345,6 +360,11 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(DataAttachmentCommand.TRANS_SET_DATA_SINGLE, "Datenanhangswert %s für %s jetze uff %s jesetzt");
             this.add(DataAttachmentCommand.TRANS_SET_DATA_MULTIPLE, "Datenanhangswert %s für %s Entitäten is jetze uff %s jesetzt");
 
+            this.add(CustomizationCommand.UNLOCK_SUCCESS, "%s is nu ordentlich für %s freigeschaltn");
+            this.add(CustomizationCommand.LOCK_SUCCESS, "%s is nu ordentlich für %s gesperrt");
+            this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s kannsch du mit Befehln nich freischaltn");
+            this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "Die Geeschd kann kee Anpassungen habn");
+
             // GUI
             this.add("gui.palladium.powers", "Kräfte");
             this.add("gui.palladium.powers.buy_ability", "Möschtest'e disse Fähischgeht freischaltn?");
@@ -353,6 +373,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsschdufen");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
 
+            // Customizations
+            this.addCustomization(BuiltinCustomization.Type.LUCRAFT_ARC_REACTOR.getResourceKey(), "Lucraft Arc Reaktor");
             this.addCustomizationCategory(CustomizationCategories.HAT, "Hood");
             this.addCustomizationCategory(CustomizationCategories.HEAD, "Nüschl");
             this.addCustomizationCategory(CustomizationCategories.CHEST, "Bruscht");

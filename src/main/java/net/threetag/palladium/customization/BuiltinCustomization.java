@@ -12,6 +12,7 @@ import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
 import net.threetag.palladium.entity.SkinTypedValue;
+import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 public class BuiltinCustomization extends Customization {
 
@@ -105,6 +106,10 @@ public class BuiltinCustomization extends Customization {
 
         public ResourceLocation getRenderLayerId() {
             return this.renderLayerId;
+        }
+
+        public ResourceKey<Customization> getResourceKey() {
+            return ResourceKey.create(PalladiumRegistryKeys.CUSTOMIZATION, Palladium.id(this.key));
         }
     }
 }
