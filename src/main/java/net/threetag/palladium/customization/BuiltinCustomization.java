@@ -13,9 +13,6 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
 import net.threetag.palladium.entity.SkinTypedValue;
 
-import java.util.Collections;
-import java.util.List;
-
 public class BuiltinCustomization extends Customization {
 
     public static final MapCodec<BuiltinCustomization> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -49,11 +46,6 @@ public class BuiltinCustomization extends Customization {
     }
 
     @Override
-    public List<String> getHiddenModelParts() {
-        return this.type.getHiddenModelParts();
-    }
-
-    @Override
     public UnlockedBy unlockedBy() {
         return UnlockedBy.REWARD;
     }
@@ -68,23 +60,8 @@ public class BuiltinCustomization extends Customization {
 
     public enum Type implements StringRepresentable {
 
-        // Hats
-        FEZ("fez", CustomizationCategories.HAT, "fez"),
-        ANTENNA("antenna", CustomizationCategories.HAT, "antenna"),
-        OWCA_FEDORA("owca_fedora", CustomizationCategories.HAT, "fedora"),
-        KRUSTY_KRAB_HAT("krusty_krab_hat", CustomizationCategories.HAT, "krusty_krab_hat"),
-        STRAWHAT("strawhat", CustomizationCategories.HAT, "strawhat"),
-        ELTON_HAT("elton_hat", CustomizationCategories.HAT, "fedora"),
-
-        // Heads
-        HEROBRINE_EYES("herobrine_eyes", CustomizationCategories.HEAD),
-        FACE_MASK("face_mask", CustomizationCategories.HEAD),
-
         // Chest
-        LUCRAFT_ARC_REACTOR("lucraft_arc_reactor", CustomizationCategories.CHEST),
-
-        // Arms
-        WINTER_SOLDIER_ARM("winter_soldier_arm", CustomizationCategories.ARMS);
+        LUCRAFT_ARC_REACTOR("lucraft_arc_reactor", CustomizationCategories.CHEST);
 
         public static final Codec<Type> CODEC = StringRepresentable.fromEnum(Type::values);
 
@@ -105,12 +82,20 @@ public class BuiltinCustomization extends Customization {
             this.renderLayerId = Palladium.id("customization/" + this.key);
         }
 
-        Type(String key, ResourceKey<CustomizationCategory> slot, String model) {
+        Type(String key, ResourceKey<CustomizationCategory> slot, String model, boolean slimVariant) {
             this.key = key;
             this.slot = slot;
             this.title = Component.translatable(Util.makeDescriptionId("customization", Palladium.id(this.key)));
-            this.model = new SkinTypedValue<>(new ModelLayerLocationCodec(Palladium.id("customization/" + model), "main"));
             this.renderLayerId = Palladium.id("customization/" + this.key);
+
+            if (slimVariant) {
+                this.model = new SkinTypedValue<>(
+                        new ModelLayerLocationCodec(Palladium.id("customization/" + model), "main"),
+                        new ModelLayerLocationCodec(Palladium.id("customization/" + model + "_slim"), "main")
+                );
+            } else {
+                this.model = new SkinTypedValue<>(new ModelLayerLocationCodec(Palladium.id("customization/" + model), "main"));
+            }
         }
 
         @Override
@@ -120,13 +105,6 @@ public class BuiltinCustomization extends Customization {
 
         public ResourceLocation getRenderLayerId() {
             return this.renderLayerId;
-        }
-
-        public List<String> getHiddenModelParts() {
-            if (this == WINTER_SOLDIER_ARM) {
-                return Collections.singletonList("left_arm");
-            }
-            return Collections.emptyList();
         }
     }
 }

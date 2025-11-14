@@ -108,7 +108,7 @@ dependencies {
     compileOnly "io.wispforest:accessories-neoforge:${accessories_version}"
 
     // GeckoLib
-    compileOnly "software.bernie.geckolib:geckolib-neoforge-${geckolib_version}"
+    implementation "software.bernie.geckolib:geckolib-neoforge-${geckolib_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

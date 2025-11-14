@@ -11,9 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
-import java.util.Collections;
-import java.util.List;
-
 public abstract class Customization {
 
     private Component title;
@@ -47,10 +44,6 @@ public abstract class Customization {
 
     public ResourceLocation getRenderLayerId(RegistryAccess registryAccess) {
         return null;
-    }
-
-    public List<String> getHiddenModelParts() {
-        return Collections.emptyList();
     }
 
     public UnlockedBy unlockedBy() {

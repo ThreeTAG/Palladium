@@ -9,10 +9,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
-import net.threetag.palladium.util.PalladiumCodecs;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,23 +19,20 @@ public class DefaultCustomization extends Customization {
             ComponentSerialization.CODEC.optionalFieldOf("name").forGetter(a -> Optional.ofNullable(a.customTitle)),
             ResourceKey.codec(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY).fieldOf("slot").forGetter(a -> a.slot),
             ResourceLocation.CODEC.optionalFieldOf("render_layer").forGetter(a -> Optional.ofNullable(a.renderLayer)),
-            Codec.BOOL.optionalFieldOf("unlockable", false).forGetter(a -> a.unlockable),
-            PalladiumCodecs.listOrPrimitive(Codec.STRING).optionalFieldOf("hidden_body_parts", Collections.emptyList()).forGetter(a -> a.hiddenModelParts)
-    ).apply(instance, (t, s, r, u, h) ->
-            new DefaultCustomization(t.orElse(null), s, r.orElse(null), u, h)));
+            Codec.BOOL.optionalFieldOf("unlockable", false).forGetter(a -> a.unlockable)
+    ).apply(instance, (t, s, r, u) ->
+            new DefaultCustomization(t.orElse(null), s, r.orElse(null), u)));
 
     private final Component customTitle;
     private final ResourceKey<CustomizationCategory> slot;
     private final ResourceLocation renderLayer;
     private final boolean unlockable;
-    private final List<String> hiddenModelParts;
 
-    public DefaultCustomization(Component customTitle, ResourceKey<CustomizationCategory> slot, ResourceLocation renderLayer, boolean unlockable, List<String> hiddenModelParts) {
+    public DefaultCustomization(Component customTitle, ResourceKey<CustomizationCategory> slot, ResourceLocation renderLayer, boolean unlockable) {
         this.customTitle = customTitle;
         this.slot = slot;
         this.renderLayer = renderLayer;
         this.unlockable = unlockable;
-        this.hiddenModelParts = hiddenModelParts;
     }
 
     @Override
@@ -67,11 +61,6 @@ public class DefaultCustomization extends Customization {
             var id = registryAccess.lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION).getKey(this);
             return Objects.requireNonNull(id).withPrefix("customization/");
         }
-    }
-
-    @Override
-    public List<String> getHiddenModelParts() {
-        return this.hiddenModelParts;
     }
 
     @Override

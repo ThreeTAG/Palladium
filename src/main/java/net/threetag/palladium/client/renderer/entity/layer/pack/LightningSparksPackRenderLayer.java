@@ -35,15 +35,15 @@ public class LightningSparksPackRenderLayer extends PackRenderLayer<LightningSpa
             ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("frequency", 0.5F).forGetter(l -> l.frequency),
             ExtraCodecs.POSITIVE_INT.optionalFieldOf("amount", 5).forGetter(l -> l.amount),
             LaserRenderer.codec(1).fieldOf("render_settings").forGetter(l -> l.laserRenderer),
-            conditionsCodec()
+            propertiesCodec(), conditionsCodec()
     ).apply(instance, LightningSparksPackRenderLayer::new));
 
     private final float frequency;
     private final int amount;
     private final LaserRenderer laserRenderer;
 
-    public LightningSparksPackRenderLayer(float frequency, int amount, LaserRenderer laserRenderer, PerspectiveAwareConditions conditions) {
-        super(conditions);
+    public LightningSparksPackRenderLayer(float frequency, int amount, LaserRenderer laserRenderer, PackRenderLayerProperties properties, PerspectiveAwareConditions conditions) {
+        super(properties, conditions);
         this.frequency = frequency;
         this.amount = amount;
         this.laserRenderer = laserRenderer;
@@ -161,9 +161,9 @@ public class LightningSparksPackRenderLayer extends PackRenderLayer<LightningSpa
                                     new LaserRenderer.LaserPart(Color.WHITE, 1F, 0F, null),
                                     2, new Vector2f(2 / 16F, 2 / 16F), 0, 0
                             ),
+                            PackRenderLayerProperties.DEFAULT,
                             PerspectiveAwareConditions.EMPTY
                     ));
         }
-
     }
 }

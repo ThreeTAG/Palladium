@@ -68,6 +68,10 @@ public class PalladiumHubData extends PalladiumEntityData<Player, PalladiumHubDa
                 id = Palladium.id(id.getPath());
             }
 
+            if (id.toString().equals("palladium:mechanical_arm")) {
+                id = Palladium.id("mechanical_arms");
+            }
+
             this.unlockedCustomizations.add(id);
         }
 

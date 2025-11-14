@@ -20,13 +20,13 @@ public class CompoundPackRenderLayer extends PackRenderLayer<PackRenderLayer.Sta
 
     public static final MapCodec<CompoundPackRenderLayer> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codecs.SIMPLE_CODEC.listOf().fieldOf("layers").forGetter(l -> l.layers),
-            conditionsCodec()
+            propertiesCodec(), conditionsCodec()
     ).apply(instance, CompoundPackRenderLayer::new));
 
     private final List<PackRenderLayer<?>> layers;
 
-    protected CompoundPackRenderLayer(List<PackRenderLayer<?>> layers, PerspectiveAwareConditions conditions) {
-        super(conditions);
+    public CompoundPackRenderLayer(List<PackRenderLayer<?>> layers, PackRenderLayerProperties properties, PerspectiveAwareConditions conditions) {
+        super(properties, conditions);
         this.layers = layers;
     }
 

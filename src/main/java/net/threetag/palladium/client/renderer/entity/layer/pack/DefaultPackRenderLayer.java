@@ -19,8 +19,8 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
-import net.threetag.palladium.client.renderer.RenderTypeRegistry;
 import net.threetag.palladium.client.renderer.RenderTypeFunction;
+import net.threetag.palladium.client.renderer.RenderTypeRegistry;
 import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.client.util.PerspectiveAwareConditions;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
@@ -39,9 +39,9 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             RenderTypeRegistry.CODEC.optionalFieldOf("render_type", RenderTypeRegistry.ENTITY_TRANSLUCENT).forGetter(l -> l.renderType),
             ExtraCodecs.intRange(0, 15).optionalFieldOf("light_emission", 0).forGetter(l -> l.lightEmission),
             PackRenderLayerAnimation.CODEC.optionalFieldOf("animations", PackRenderLayerAnimation.EMPTY).forGetter(l -> l.animations),
-            conditionsCodec()
-    ).apply(instance, (modelLayers, textures, renderType, lightEmission, animations, conditions) -> {
-        return new DefaultPackRenderLayer(modelLayers.orElse(null), textures, renderType, lightEmission, animations, conditions);
+            propertiesCodec(), conditionsCodec()
+    ).apply(instance, (modelLayers, textures, renderType, lightEmission, animations, properties, conditions) -> {
+        return new DefaultPackRenderLayer(modelLayers.orElse(null), textures, renderType, lightEmission, animations, properties, conditions);
     }));
 
     @Nullable
@@ -52,8 +52,8 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
     private final int lightEmission;
     private final PackRenderLayerAnimation animations;
 
-    public DefaultPackRenderLayer(@Nullable SkinTypedValue<ModelLayerLocationCodec> modelLayers, SkinTypedValue<PackRenderLayerTexture> textures, RenderTypeFunction renderType, int lightEmission, PackRenderLayerAnimation animations, PerspectiveAwareConditions conditions) {
-        super(conditions);
+    public DefaultPackRenderLayer(@Nullable SkinTypedValue<ModelLayerLocationCodec> modelLayers, SkinTypedValue<PackRenderLayerTexture> textures, RenderTypeFunction renderType, int lightEmission, PackRenderLayerAnimation animations, PackRenderLayerProperties properties, PerspectiveAwareConditions conditions) {
+        super(properties, conditions);
 
         this.modelLayers = modelLayers;
         this.textures = textures;
@@ -227,6 +227,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                             RenderTypeRegistry.ENTITY_TRANSLUCENT,
                             5,
                             PackRenderLayerAnimation.EMPTY,
+                            PackRenderLayerProperties.DEFAULT,
                             PerspectiveAwareConditions.EMPTY
                     ));
         }

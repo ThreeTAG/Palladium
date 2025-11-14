@@ -20,6 +20,7 @@ import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 import software.bernie.geckolib.renderer.base.GeoRenderer;
+import software.bernie.geckolib.renderer.base.RenderModelPositioner;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayersContainer;
 import software.bernie.geckolib.util.RenderUtil;
@@ -158,7 +159,7 @@ public class GeoRenderLayerRenderer<R extends HumanoidRenderState & GeoRenderSta
     }
 
     @Override
-    public void buildRenderTask(R renderState, PoseStack poseStack, BakedGeoModel model, OrderedSubmitNodeCollector renderTasks, CameraRenderState cameraState, @Nullable RenderType renderType, int packedLight, int packedOverlay, int renderColor) {
+    public void buildRenderTask(R renderState, PoseStack poseStack, BakedGeoModel bakedModel, GeoModel<GeoRenderLayerState> model, OrderedSubmitNodeCollector renderTasks, CameraRenderState cameraState, @Nullable RenderType renderType, int packedLight, int packedOverlay, int renderColor, @Nullable RenderModelPositioner<R> modelPositioner) {
         if (renderType == null)
             return;
 

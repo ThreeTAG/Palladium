@@ -15,9 +15,11 @@ import net.threetag.palladium.logic.context.DataContext;
 
 public abstract class PackRenderLayer<T extends PackRenderLayer.State> {
 
+    protected final PackRenderLayerProperties properties;
     protected final PerspectiveAwareConditions conditions;
 
-    protected PackRenderLayer(PerspectiveAwareConditions conditions) {
+    protected PackRenderLayer(PackRenderLayerProperties properties, PerspectiveAwareConditions conditions) {
+        this.properties = properties;
         this.conditions = conditions;
     }
 
@@ -37,7 +39,15 @@ public abstract class PackRenderLayer<T extends PackRenderLayer.State> {
         return this == layer;
     }
 
+    public final PackRenderLayerProperties getProperties() {
+        return this.properties;
+    }
+
     public abstract PackRenderLayerSerializer<?> getSerializer();
+
+    protected static <T extends PackRenderLayer.State, B extends PackRenderLayer<T>> RecordCodecBuilder<B, PackRenderLayerProperties> propertiesCodec() {
+        return PackRenderLayerProperties.CODEC.optionalFieldOf("properties", PackRenderLayerProperties.DEFAULT).forGetter(l -> l.properties);
+    }
 
     protected static <T extends PackRenderLayer.State, B extends PackRenderLayer<T>> RecordCodecBuilder<B, PerspectiveAwareConditions> conditionsCodec() {
         return PerspectiveAwareConditions.CODEC.optionalFieldOf("conditions", PerspectiveAwareConditions.EMPTY).forGetter(l -> l.conditions);

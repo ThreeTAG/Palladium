@@ -4,7 +4,10 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.threetag.palladium.client.renderer.entity.state.PalladiumRenderStateKeys;
 import net.threetag.palladium.client.renderer.entity.state.SuitStandRenderState;
+
+import java.util.Collections;
 
 public class SuitStandModel extends HumanoidModel<SuitStandRenderState> {
 
@@ -48,8 +51,10 @@ public class SuitStandModel extends HumanoidModel<SuitStandRenderState> {
         this.rightLeg.xRot = ((float) Math.PI / 180F) * renderState.rightLegPose.x();
         this.rightLeg.yRot = ((float) Math.PI / 180F) * renderState.rightLegPose.y();
         this.rightLeg.zRot = ((float) Math.PI / 180F) * renderState.rightLegPose.z();
-        this.leftArm.visible = renderState.showArms;
-        this.rightArm.visible = renderState.showArms;
+
+        var hidden = renderState.getRenderDataOrDefault(PalladiumRenderStateKeys.HIDDEN_MODEL_PARTS, Collections.emptySet());
+        this.leftArm.visible = renderState.showArms && !hidden.contains("left_arm");
+        this.rightArm.visible = renderState.showArms && !hidden.contains("right_arm");
     }
 
 }

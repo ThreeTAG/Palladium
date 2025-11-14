@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
@@ -25,9 +24,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderArmEvent;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.customization.Customization;
-import net.threetag.palladium.customization.EntityCustomizationHandler;
+import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
+import net.threetag.palladium.client.renderer.entity.layer.pack.EntityRenderLayers;
+import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
 import net.threetag.palladium.entity.ArmSetting;
+import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilitySerializers;
 import net.threetag.palladium.power.ability.AbilityUtil;
@@ -80,8 +81,8 @@ public class ModelUtil {
             parts.addAll(instance.getAbility().modelParts);
         }
 
-        for (Holder<Customization> holder : EntityCustomizationHandler.get(entity).getSelected()) {
-            parts.addAll(holder.value().getHiddenModelParts());
+        for (PackRenderLayer<?> layer : ((ClientEntityRenderLayers) EntityRenderLayers.get(entity, PalladiumEntityDataTypes.RENDER_LAYERS.get())).getLayers()) {
+            parts.addAll(layer.getProperties().hiddenModelParts());
         }
 
         return parts;

@@ -16,6 +16,7 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
+import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayerProperties;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayerSerializer;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayerTexture;
 import net.threetag.palladium.client.texture.TextureReference;
@@ -54,9 +55,9 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
             PalladiumCodecs.listOrPrimitive(AnimationControllerFactory.CODEC).optionalFieldOf("animation_controller", Collections.emptyList()).forGetter(l -> l.animationController),
             ExtraCodecs.intRange(0, 15).optionalFieldOf("light_emission", 0).forGetter(l -> l.lightEmission),
             Codec.unboundedMap(Bone.CODEC, Codec.STRING).optionalFieldOf("bones", DEFAULT_BONES).forGetter(l -> l.bones),
-            conditionsCodec()
-    ).apply(instance, (texture, model, animations, animController, light, bones, conditions) ->
-            new GeoRenderLayer(texture, model, animations.orElse(null), animController, light, bones, conditions)));
+            propertiesCodec(), conditionsCodec()
+    ).apply(instance, (texture, model, animations, animController, light, bones, properties, conditions) ->
+            new GeoRenderLayer(texture, model, animations.orElse(null), animController, light, bones, properties, conditions)));
 
     private static ResourceLocation CACHED_TEXTURE = null;
     private static ResourceLocation CACHED_MODEL = null;
@@ -73,8 +74,8 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
 
     public GeoRenderLayer(SkinTypedValue<PackRenderLayerTexture> texture, SkinTypedValue<TextureReference> model,
                           @Nullable SkinTypedValue<ResourceLocation> animations, List<AnimationControllerFactory<?>> animationController,
-                          int lightEmission, Map<Bone, String> bones, PerspectiveAwareConditions conditions) {
-        super(conditions);
+                          int lightEmission, Map<Bone, String> bones, PackRenderLayerProperties properties, PerspectiveAwareConditions conditions) {
+        super(properties, conditions);
         this.texture = texture;
         this.model = model;
         this.animations = animations;
