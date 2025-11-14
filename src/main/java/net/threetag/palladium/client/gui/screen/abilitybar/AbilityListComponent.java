@@ -48,10 +48,17 @@ public record AbilityListComponent(AbilityBar.AbilityList abilityList) implement
     public static void renderAbility(Minecraft minecraft, ResourceLocation texture, GuiGraphics gui, DeltaTracker deltaTracker, int x, int y, UiAlignment alignment, AbilityInstance<?> ability, int index) {
         if (ability != null) {
             if (ability.isUnlocked()) {
-                if (ability.isEnabled()) {
-                    gui.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 42, 56, 18, 18, 256, 256);
-                } else {
+                if (ability.getAbility().getStateManager().getEnablingHandler() instanceof KeyBindEnablingHandler handler
+                        && handler.getBehaviour() == KeyBindEnablingHandler.Behaviour.ACTIVATION) {
+                    int height = (int) (handler.getActivationPercentage(ability) * 18);
                     gui.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 24, 56, 18, 18, 256, 256);
+                    gui.blit(RenderPipelines.GUI_TEXTURED, texture, x, y + (18 - height), 42, 56 + (18 - height), 18, height, 256, 256);
+                } else {
+                    if (ability.isEnabled()) {
+                        gui.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 42, 56, 18, 18, 256, 256);
+                    } else {
+                        gui.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 24, 56, 18, 18, 256, 256);
+                    }
                 }
 
                 // Ability Icon

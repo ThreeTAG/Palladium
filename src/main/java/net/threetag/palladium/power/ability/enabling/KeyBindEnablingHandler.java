@@ -20,6 +20,7 @@ import net.threetag.palladium.power.ability.keybind.KeyBindType;
 import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
 import java.util.function.IntFunction;
 
 public class KeyBindEnablingHandler extends EnablingHandler {
@@ -27,28 +28,36 @@ public class KeyBindEnablingHandler extends EnablingHandler {
     public static final MapCodec<KeyBindEnablingHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             KeyBindType.CODEC.optionalFieldOf("key_bind", AbilityKeyBind.INSTANCE).forGetter(KeyBindEnablingHandler::getKeyBindType),
             Behaviour.CODEC.optionalFieldOf("behaviour", Behaviour.ACTION).forGetter(KeyBindEnablingHandler::getBehaviour),
-            PalladiumCodecs.TIME.optionalFieldOf("cooldown", 0).forGetter(h -> h.cooldown)
-    ).apply(instance, KeyBindEnablingHandler::new));
+            PalladiumCodecs.TIME.optionalFieldOf("cooldown", 0).forGetter(h -> h.cooldown),
+            PalladiumCodecs.TIME.optionalFieldOf("time").forGetter(h -> Optional.ofNullable(h.behaviour == Behaviour.ACTIVATION ? h.activationTime : null))
+    ).apply(instance, (k, b, c, t) -> new KeyBindEnablingHandler(k, b, c, t.orElse(0))));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, KeyBindEnablingHandler> STREAM_CODEC = StreamCodec.composite(
             KeyBindType.STREAM_CODEC, KeyBindEnablingHandler::getKeyBindType,
             Behaviour.STREAM_CODEC, KeyBindEnablingHandler::getBehaviour,
             ByteBufCodecs.INT, h -> h.cooldown,
+            ByteBufCodecs.INT, h -> h.activationTime,
             KeyBindEnablingHandler::new
     );
 
     private final KeyBindType keyBindType;
     private final Behaviour behaviour;
     private final int cooldown;
+    private final int activationTime;
 
-    public KeyBindEnablingHandler(KeyBindType keyBindType, Behaviour behaviour, int cooldown) {
+    public KeyBindEnablingHandler(KeyBindType keyBindType, Behaviour behaviour, int cooldown, int activationTime) {
         this.keyBindType = keyBindType;
         this.behaviour = behaviour;
         this.cooldown = cooldown;
+        this.activationTime = activationTime;
     }
 
     @Override
     public boolean check(LivingEntity entity, AbilityInstance<?> abilityInstance) {
+        if (this.behaviour == Behaviour.ACTIVATION) {
+            return abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.ACTIVATION_TIME.get(), 0) > 0;
+        }
+
         boolean result = abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.KEY_PRESSED.get(), false);
 
         if (result && this.behaviour == Behaviour.ACTION) {
@@ -60,10 +69,22 @@ public class KeyBindEnablingHandler extends EnablingHandler {
 
     @Override
     public void tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
+        if (this.behaviour == Behaviour.ACTIVATION) {
+            int activated = abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.ACTIVATION_TIME.get(), 0);
+
+            if (activated > 0) {
+                if (activated == 1) {
+                    abilityInstance.set(PalladiumDataComponents.Abilities.ACTIVATION_TIME.get(), 0);
+                } else {
+                    abilityInstance.setSilently(PalladiumDataComponents.Abilities.ACTIVATION_TIME.get(), activated - 1);
+                }
+            }
+        }
+
         if (this.cooldown > 0) {
             int cooldown = abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.COOLDOWN.get(), 0);
 
-            if (this.behaviour == Behaviour.ACTION) {
+            if (this.behaviour == Behaviour.ACTION || this.behaviour == Behaviour.ACTIVATION) {
                 if (cooldown > 0) {
                     if (cooldown == 1) {
                         abilityInstance.set(PalladiumDataComponents.Abilities.COOLDOWN.get(), 0);
@@ -104,6 +125,10 @@ public class KeyBindEnablingHandler extends EnablingHandler {
         if (this.cooldown > 0) {
             builder.set(PalladiumDataComponents.Abilities.COOLDOWN.get(), 0);
         }
+
+        if (this.activationTime > 0) {
+            builder.set(PalladiumDataComponents.Abilities.ACTIVATION_TIME.get(), 0);
+        }
     }
 
     @Override
@@ -133,7 +158,7 @@ public class KeyBindEnablingHandler extends EnablingHandler {
 
     public boolean displayCooldown(AbilityInstance<?> abilityInstance) {
         if (this.cooldown > 0) {
-            if (this.behaviour == Behaviour.ACTION) {
+            if (this.behaviour == Behaviour.ACTION || this.behaviour == Behaviour.ACTIVATION) {
                 return abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.COOLDOWN.get(), 0) > 0;
             } else {
                 return true;
@@ -144,12 +169,20 @@ public class KeyBindEnablingHandler extends EnablingHandler {
 
     public float getCooldownPercentage(AbilityInstance<?> abilityInstance) {
         if (this.cooldown > 0) {
-            if (this.behaviour == Behaviour.ACTION) {
+            if (this.behaviour == Behaviour.ACTION || this.behaviour == Behaviour.ACTIVATION) {
                 return (float) abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.COOLDOWN.get(), 0) / this.cooldown;
             } else {
                 float val = this.cooldown - abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.COOLDOWN.get(), 0);
                 return val / this.cooldown;
             }
+        }
+
+        return 0;
+    }
+
+    public float getActivationPercentage(AbilityInstance<?> abilityInstance) {
+        if (this.behaviour == Behaviour.ACTIVATION && this.activationTime > 0) {
+            return (float) abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.ACTIVATION_TIME.get(), 0) / this.activationTime;
         }
 
         return 0;
@@ -166,6 +199,12 @@ public class KeyBindEnablingHandler extends EnablingHandler {
                     if (abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.COOLDOWN.get(), 0) == 0) {
                         abilityInstance.setSilently(PalladiumDataComponents.Abilities.KEY_PRESSED.get(), true);
                         abilityInstance.set(PalladiumDataComponents.Abilities.COOLDOWN.get(), this.cooldown);
+                    }
+                } else if (this.behaviour == Behaviour.ACTIVATION) {
+                    if (abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.COOLDOWN.get(), 0) == 0 &&
+                            abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.ACTIVATION_TIME.get(), 0) == 0) {
+                        abilityInstance.set(PalladiumDataComponents.Abilities.COOLDOWN.get(), this.cooldown);
+                        abilityInstance.set(PalladiumDataComponents.Abilities.ACTIVATION_TIME.get(), this.activationTime);
                     }
                 } else {
                     abilityInstance.set(PalladiumDataComponents.Abilities.KEY_PRESSED.get(), true);
@@ -201,7 +240,8 @@ public class KeyBindEnablingHandler extends EnablingHandler {
 
         ACTION(0, "action"),
         TOGGLE(1, "toggle"),
-        HELD(2, "held");
+        HELD(2, "held"),
+        ACTIVATION(3, "activation");
 
         public static final IntFunction<Behaviour> BY_ID = ByIdMap.continuous(Behaviour::getId, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
         public static final Codec<Behaviour> CODEC = StringRepresentable.fromEnum(Behaviour::values);

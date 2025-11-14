@@ -68,11 +68,7 @@ public class PalladiumDataComponents {
                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                 .build());
 
-        public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ACTIVATED_TIME = DATA_COMPONENTS.register("activated_time", () -> DataComponentType.<Integer>builder()
-                .networkSynchronized(ByteBufCodecs.VAR_INT)
-                .build());
-
-        public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> MAX_ACTIVATED_TIME = DATA_COMPONENTS.register("max_activated_time", () -> DataComponentType.<Integer>builder()
+        public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ACTIVATION_TIME = DATA_COMPONENTS.register("activation_time", () -> DataComponentType.<Integer>builder()
                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                 .build());
 
