@@ -11,6 +11,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.ARGB;
@@ -20,6 +21,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.component.grid.AbstractSelectionGrid;
 import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderState;
 import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
+import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.customization.Customization;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.CustomizationPreview;
@@ -34,6 +36,8 @@ import java.util.List;
 
 public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid.Entry> {
 
+    public static final String NO_CUSTOMIZATIONS_LABEL = "gui.palladium.player_customizations.empty";
+    public static final String VERY_SAD_LABEL = "gui.palladium.player_customizations.sad_label";
     private final CustomizationCategory slot;
     private final CustomizationPreview preview;
     private final List<GuiEntityRenderState> drawnEntities = new ArrayList<>();
@@ -86,6 +90,11 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
         this.drawnEntities.clear();
         super.renderGridItems(guiGraphics, mouseX, mouseY, partialTick);
         guiGraphics.guiRenderState.submitPicturesInPictureState(new GuiMultiEntityRenderState(this.drawnEntities));
+
+        if (this.children().isEmpty()) {
+            guiGraphics.drawCenteredString(this.minecraft.font, Component.translatable(NO_CUSTOMIZATIONS_LABEL), this.getX() + (this.getWidth() / 2), this.getY() + (this.getHeight() / 2) - 10, RenderUtil.FULL_WHITE);
+            guiGraphics.drawCenteredString(this.minecraft.font, Component.translatable(VERY_SAD_LABEL), this.getX() + (this.getWidth() / 2), this.getY() + (this.getHeight() / 2) + 10, RenderUtil.FULL_WHITE);
+        }
     }
 
     public class Entry extends AbstractSelectionGrid.Entry<Entry> {

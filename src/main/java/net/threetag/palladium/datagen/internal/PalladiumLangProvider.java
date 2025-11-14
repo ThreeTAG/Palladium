@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.gui.screen.customization.CustomizationsGrid;
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
 import net.threetag.palladium.command.CustomizationCommand;
 import net.threetag.palladium.command.DataAttachmentCommand;
@@ -158,6 +159,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx experience level");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx experience levels");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Customization");
+            this.add(CustomizationsGrid.NO_CUSTOMIZATIONS_LABEL, "There doesn't seem to be anything here...");
+            this.add(CustomizationsGrid.VERY_SAD_LABEL, ":(");
 
             // Customizations
             this.addCustomization(BuiltinCustomization.Type.LUCRAFT_ARC_REACTOR.getResourceKey(), "Lucraft Arc Reactor");
@@ -265,6 +268,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsstufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsstufen");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
+            this.add(CustomizationsGrid.NO_CUSTOMIZATIONS_LABEL, "Hier scheint es nichts zu geben...");
+            this.add(CustomizationsGrid.VERY_SAD_LABEL, ":(");
 
             // Customizations
             this.addCustomization(BuiltinCustomization.Type.LUCRAFT_ARC_REACTOR.getResourceKey(), "Lucraft Arc Reaktor");
@@ -372,6 +377,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsschdufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsschdufen");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
+            this.add(CustomizationsGrid.NO_CUSTOMIZATIONS_LABEL, "Hier scheind es nüschd zu gähm...");
+            this.add(CustomizationsGrid.VERY_SAD_LABEL, ":(");
 
             // Customizations
             this.addCustomization(BuiltinCustomization.Type.LUCRAFT_ARC_REACTOR.getResourceKey(), "Lucraft Arc Reaktor");

@@ -60,6 +60,8 @@
   "customization_category.palladium.head": "Kopf",
   "customization_category.palladium.legs": "Beine",
   "gui.palladium.player_customizations": "Anpassungen",
+  "gui.palladium.player_customizations.empty": "Hier scheint es nichts zu geben...",
+  "gui.palladium.player_customizations.sad_label": ":(",
   "gui.palladium.powers": "Kräfte",
   "gui.palladium.powers.buy_ability": "Möchtest du diese Fähigkeit freischalten?",
   "gui.palladium.powers.buy_ability.experience_level": "%sx Erfahrungsstufe",
