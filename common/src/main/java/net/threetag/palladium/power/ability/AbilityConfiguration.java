@@ -8,7 +8,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.condition.*;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
@@ -44,6 +43,10 @@ public class AbilityConfiguration {
         this.reference = reference;
         this.ability = ability;
         this.propertyManager = ability.propertyManager.copy();
+    }
+
+    public AbilityReference getReference() {
+        return reference;
     }
 
     public String getId() {
@@ -206,10 +209,6 @@ public class AbilityConfiguration {
             boolean withKeyOrChat = false;
             boolean withKey = false;
             CooldownType cooldownType = null;
-
-            if (PalladiumConfig.Server.isAbilityDisabled(reference)) {
-                configuration.unlockingConditions.add(new FalseCondition());
-            }
 
             if (GsonHelper.isValidNode(conditions, "unlocking")) {
                 JsonElement condJson = conditions.get("unlocking");

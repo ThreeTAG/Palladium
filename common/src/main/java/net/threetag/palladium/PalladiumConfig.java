@@ -4,6 +4,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
 import net.threetag.palladium.power.ability.AbilityReference;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class PalladiumConfig {
@@ -33,7 +34,7 @@ public class PalladiumConfig {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
             builder.comment("Enabled some hidden/planned content, that is currently not finished or unused");
             REDSTONE_FLUX_CRYSTAL_GEODE_GENERATION = builder.define("worldGen.redstoneFluxCrystalGeneration", true);
-            DISABLED_ABILITIES = builder.defineList("general.disabledAbilities", List.of(), o -> AbilityReference.validateFull(o.toString()));
+            DISABLED_ABILITIES = builder.defineListAllowEmpty(Arrays.asList("general", "disabledAbilities"), List::of, o -> AbilityReference.validateFull(o.toString()));
             return builder.build();
         }
 

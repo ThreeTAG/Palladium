@@ -3,13 +3,14 @@ package net.threetag.palladium.power.ability;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.condition.AbilityWheelCondition;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.CooldownType;
 import net.threetag.palladium.network.SyncAbilityEntryPropertyMessage;
 import net.threetag.palladium.network.SyncAbilityStateMessage;
-import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import net.threetag.palladium.power.IPowerHolder;
+import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.PropertyManager;
@@ -59,7 +60,7 @@ public class AbilityInstance {
     }
 
     public AbilityReference getReference() {
-        return new AbilityReference(this.holder.getPower().getId(), this.id);
+        return this.abilityConfiguration.getReference();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes", "UnnecessaryLocalVariable"})
@@ -127,7 +128,7 @@ public class AbilityInstance {
                 this.abilityConfiguration.getEnablingConditions().forEach(condition -> condition.init(entity, this, this.propertyManager));
             }
 
-            final boolean unlocked = !entity.isSpectator() && this.evaluateConditions(this.abilityConfiguration.getUnlockingConditions(), entity);
+            final boolean unlocked = !entity.isSpectator() && !PalladiumConfig.Server.isAbilityDisabled(this.getReference()) && this.evaluateConditions(this.abilityConfiguration.getUnlockingConditions(), entity);
             boolean sync = false;
 
             if (this.unlocked != unlocked) {
