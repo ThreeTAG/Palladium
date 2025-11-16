@@ -7,7 +7,9 @@ import net.threetag.palladium.accessory.Accessory;
 import net.threetag.palladium.power.PowerManager;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.power.ability.NameChangeAbility;
 import net.threetag.palladium.util.property.EntityPropertyHandler;
+import net.threetag.palladium.util.property.SyncType;
 import net.threetag.palladiumcore.network.MessageType;
 import net.threetag.palladiumcore.network.NetworkManager;
 import net.threetag.palladiumcore.util.DataSyncUtil;
@@ -46,8 +48,12 @@ public class PalladiumNetwork {
                     var handler = opt.get();
                     consumer.accept(new UpdatePowersMessage(livingEntity, Collections.emptyList(), handler.getPowerHolders().values().stream().map(h -> h.getPower().getId()).toList()));
 
-                    for (AbilityInstance entry : AbilityUtil.getEntries(livingEntity)) {
+                    for (AbilityInstance entry : AbilityUtil.getInstances(livingEntity)) {
                         consumer.accept(entry.getSyncStateMessage(livingEntity));
+
+                        if (entry.getConfiguration().getAbility() instanceof NameChangeAbility) {
+                            entry.syncProperty(NameChangeAbility.NAME_CACHED, livingEntity, SyncType.EVERYONE);
+                        }
                     }
                 }
             }

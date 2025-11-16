@@ -45,6 +45,7 @@ public class AbilityInstance {
         this.abilityConfiguration.getAbility().registerUniqueProperties(this.propertyManager);
         this.abilityConfiguration.getUnlockingConditions().forEach(condition -> condition.registerAbilityProperties(this, this.propertyManager));
         this.abilityConfiguration.getEnablingConditions().forEach(condition -> condition.registerAbilityProperties(this, this.propertyManager));
+        this.abilityConfiguration.getAbility().init(this, holder.getEntity());
     }
 
     public AbilityConfiguration getConfiguration() {

@@ -48,6 +48,10 @@ public class Ability implements IDefaultDocumentedConfigurable {
 
     }
 
+    public void init(AbilityInstance abilityInstance, LivingEntity entity) {
+
+    }
+
     public boolean isEffect() {
         return false;
     }

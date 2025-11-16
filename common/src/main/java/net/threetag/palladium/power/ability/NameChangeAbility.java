@@ -27,6 +27,15 @@ public class NameChangeAbility extends Ability {
     }
 
     @Override
+    public void init(AbilityInstance abilityInstance, LivingEntity entity) {
+        abilityInstance.syncProperty(NAME_CACHED, entity, SyncType.EVERYONE);
+
+        if (entity instanceof Player player) {
+            PlayerUtil.refreshDisplayName(player);
+        }
+    }
+
+    @Override
     public void firstTick(LivingEntity entity, AbilityInstance entry, IPowerHolder holder, boolean enabled) {
         if (entity instanceof Player player) {
             if (!entity.level().isClientSide) {
