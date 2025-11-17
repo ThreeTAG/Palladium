@@ -1,9 +1,14 @@
 package net.threetag.palladium.data.forge;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -11,6 +16,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.item.PalladiumItems;
@@ -23,6 +29,7 @@ import java.util.function.Consumer;
 public class PalladiumRecipeProvider extends RecipeProvider implements IConditionBuilder {
 
     private static final ImmutableList<ItemLike> LEAD_SMELTABLES = ImmutableList.of(PalladiumItems.RAW_LEAD.get(), PalladiumItems.LEAD_ORE.get(), PalladiumItems.DEEPSLATE_LEAD_ORE.get());
+    private static final ImmutableList<ItemLike> TITANIUM_SMELTABLES = ImmutableList.of(PalladiumItems.RAW_TITANIUM.get(), PalladiumItems.TITANIUM_ORE.get());
     private static final ImmutableList<ItemLike> VIBRANIUM_SMELTABLES = ImmutableList.of(PalladiumItems.RAW_VIBRANIUM.get(), PalladiumItems.VIBRANIUM_ORE.get());
 
     public PalladiumRecipeProvider(PackOutput packOutput) {
@@ -34,12 +41,15 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, PalladiumItems.SUIT_STAND.get()).pattern(" B ").pattern("SBS").pattern("SXS").define('B', PalladiumItemTags.QUARTZ).define('S', Ingredient.of(Blocks.QUARTZ_SLAB, Blocks.SMOOTH_QUARTZ_SLAB)).define('X', Blocks.SMOOTH_STONE_SLAB).unlockedBy(getHasName(Items.ARMOR_STAND), has(Items.ARMOR_STAND)).save(consumer);
 
         oreSmelting(consumer, LEAD_SMELTABLES, RecipeCategory.MISC, PalladiumItems.LEAD_INGOT.get(), 0.7F, 200, "lead_ingot");
+        oreSmelting(consumer, TITANIUM_SMELTABLES, RecipeCategory.MISC, PalladiumItems.TITANIUM_INGOT.get(), 1F, 600, "titanium_ingot");
         oreSmelting(consumer, VIBRANIUM_SMELTABLES, RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT.get(), 1F, 600, "vibranium_ingot");
 
         oreBlasting(consumer, LEAD_SMELTABLES, RecipeCategory.MISC, PalladiumItems.LEAD_INGOT.get(), 0.7F, 100, "lead_ingot");
+        oreBlasting(consumer, TITANIUM_SMELTABLES, RecipeCategory.MISC, PalladiumItems.TITANIUM_INGOT.get(), 1F, 300, "titanium_ingot");
         oreBlasting(consumer, VIBRANIUM_SMELTABLES, RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT.get(), 1F, 300, "vibranium_ingot");
 
         nineBlockStorageRecipesRecipesWithCustomUnpacking(consumer, RecipeCategory.MISC, PalladiumItems.LEAD_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, PalladiumItems.LEAD_BLOCK.get(), "lead_ingot_from_lead_block", "lead_ingot");
+        nineBlockStorageRecipesRecipesWithCustomUnpacking(consumer, RecipeCategory.MISC, PalladiumItems.TITANIUM_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, PalladiumItems.TITANIUM_BLOCK.get(), "titanium_ingot_from_titanium_block", "titanium_ingot");
         nineBlockStorageRecipesRecipesWithCustomUnpacking(consumer, RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, PalladiumItems.VIBRANIUM_BLOCK.get(), "vibranium_ingot_from_vibranium_block", "vibranium_ingot");
 
         nineBlockStorageRecipes(consumer, RecipeCategory.MISC, PalladiumItems.RAW_LEAD.get(), RecipeCategory.BUILDING_BLOCKS, PalladiumItems.RAW_LEAD_BLOCK.get());
@@ -57,6 +67,14 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.LEAD_FLUX_CAPACITOR.get()).pattern("RLR").pattern("GCG").pattern("LRL").define('R', PalladiumItems.REDSTONE_FLUX_CRYSTAL.get()).define('L', PalladiumItemTags.LEAD_INGOTS).define('G', PalladiumItemTags.GOLD_INGOTS).define('C', PalladiumItems.LEAD_CIRCUIT.get()).unlockedBy(getHasName(PalladiumItems.LEAD_INGOT.get()), has(PalladiumItemTags.LEAD_INGOTS)).save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.QUARTZ_FLUX_CAPACITOR.get()).pattern("RQR").pattern("CFC").pattern("QRQ").define('R', PalladiumItems.REDSTONE_FLUX_CRYSTAL.get()).define('Q', PalladiumItemTags.QUARTZ).define('C', PalladiumItemTags.COPPER_INGOTS).define('F', PalladiumItems.LEAD_FLUX_CAPACITOR.get()).unlockedBy(getHasName(Items.QUARTZ), has(PalladiumItemTags.QUARTZ)).save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.VIBRANIUM_FLUX_CAPACITOR.get()).pattern("RVR").pattern("DFD").pattern("VRV").define('R', PalladiumItems.REDSTONE_FLUX_CRYSTAL.get()).define('V', PalladiumItemTags.VIBRANIUM_INGOTS).define('D', PalladiumItemTags.DIAMONDS).define('F', PalladiumItems.QUARTZ_FLUX_CAPACITOR.get()).unlockedBy(getHasName(PalladiumItems.VIBRANIUM_INGOT.get()), has(PalladiumItemTags.VIBRANIUM_INGOTS)).save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, PalladiumItems.TAILORING_BENCH.get()).pattern("SF").pattern("WW").define('W', ItemTags.PLANKS).define('S', Items.SHEARS).define('F', PalladiumItemTags.FABRICS).unlockedBy("unlock_right_away", PlayerTrigger.TriggerInstance.tick()).showNotification(false).save(consumer);
+
+        for (DyeColor color : DyeColor.values()) {
+            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PalladiumItems.FABRIC_BY_COLOR.get(color).get(), 8).pattern(" WS").pattern("WXW").pattern("SW ").define('W', getWoolBlockByColor(color)).define('S', PalladiumItemTags.WOODEN_STICKS).define('X', PalladiumItemTags.STRINGS).unlockedBy(getHasName(DyeItem.byColor(color)), has(PalladiumItemTags.DYE_BY_COLOR.get(color))).save(consumer);
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.FABRIC_BY_COLOR.get(color).get()).requires(PalladiumItemTags.FABRICS).requires(PalladiumItemTags.DYE_BY_COLOR.get(color)).unlockedBy(getHasName(DyeItem.byColor(color)), has(PalladiumItemTags.DYE_BY_COLOR.get(color))).save(consumer, Palladium.id("fabric_recoloring_" + color.getName()));
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.FABRIC_BY_COLOR.get(color).get(), 8).requires(Ingredient.of(PalladiumItemTags.FABRICS), 8).requires(PalladiumItemTags.DYE_BY_COLOR.get(color)).unlockedBy(getHasName(DyeItem.byColor(color)), has(PalladiumItemTags.DYE_BY_COLOR.get(color))).save(consumer, Palladium.id("fabric_recoloring_8_" + color.getName()));
+        }
     }
 
     protected static void oreSmelting(Consumer<FinishedRecipe> finishedRecipeConsumer, List<ItemLike> ingredients, RecipeCategory category, ItemLike result, float experience, int cookingTIme, String group) {
@@ -88,5 +106,9 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
     protected static void nineBlockStorageRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer, RecipeCategory unpackedCategory, ItemLike unpacked, RecipeCategory packedCategory, ItemLike packed, String packedName, @javax.annotation.Nullable String packedGroup, String unpackedName, @javax.annotation.Nullable String unpackedGroup) {
         ShapelessRecipeBuilder.shapeless(unpackedCategory, unpacked, 9).requires(packed).group(unpackedGroup).unlockedBy(getHasName(packed), has(packed)).save(finishedRecipeConsumer, Palladium.id(unpackedName));
         ShapedRecipeBuilder.shaped(packedCategory, packed).define('#', unpacked).pattern("###").pattern("###").pattern("###").group(packedGroup).unlockedBy(getHasName(unpacked), has(unpacked)).save(finishedRecipeConsumer, Palladium.id(packedName));
+    }
+
+    private static Item getWoolBlockByColor(DyeColor color) {
+        return ForgeRegistries.ITEMS.getValue(new ResourceLocation(color.getName() + "_wool"));
     }
 }

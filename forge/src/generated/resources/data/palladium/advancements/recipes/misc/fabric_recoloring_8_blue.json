@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_blue_dye": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "palladium:connector/blue_dyes"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "palladium:fabric_recoloring_8_blue"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_blue_dye",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "palladium:fabric_recoloring_8_blue"
+    ]
+  },
+  "sends_telemetry_event": false
+}

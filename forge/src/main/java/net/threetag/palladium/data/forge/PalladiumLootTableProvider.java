@@ -49,11 +49,13 @@ public class PalladiumLootTableProvider extends LootTableProvider {
             this.dropWhenSilkTouch(PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD.get());
             this.dropWhenSilkTouch(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD.get());
             this.dropSelf(PalladiumBlocks.LEAD_BLOCK.get());
+            this.dropSelf(PalladiumBlocks.TITANIUM_BLOCK.get());
             this.dropSelf(PalladiumBlocks.VIBRANIUM_BLOCK.get());
             this.dropSelf(PalladiumBlocks.RAW_LEAD_BLOCK.get());
             this.dropSelf(PalladiumBlocks.RAW_TITANIUM_BLOCK.get());
             this.dropSelf(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get());
             this.dropSelf(PalladiumBlocks.HEART_SHAPED_HERB.get());
+            this.dropSelf(PalladiumBlocks.TAILORING_BENCH.get());
             this.dropPottedContents(PalladiumBlocks.POTTED_HEART_SHAPED_HERB.get());
         }
 

@@ -37,6 +37,9 @@ public class PalladiumNetwork {
     public static final MessageType TOGGLE_OPENABLE_EQUIPMENT = NETWORK.registerC2S("toggle_openable_equipment", ToggleOpenableEquipmentMessage::new);
     public static final MessageType SET_ENERGY_BAR = NETWORK.registerS2C("set_energy_bar", SetEnergyBarMessage::new);
     public static final MessageType RIGHT_CLICK_ATTACK = NETWORK.registerC2S("right_click_attack", RightClickAttackMessage::new);
+    public static final MessageType SYNC_AVAILABLE_TAILORING_RECIPES = NETWORK.registerS2C("sync_available_tailoring_recipes", SyncAvailableTailoringRecipes::new);
+    public static final MessageType TAILORING_CRAFT = NETWORK.registerC2S("tailoring_craft", TailoringCraftMessage::new);
+    public static final MessageType TAILORING_JEI_TRANSFER = NETWORK.registerC2S("tailoring_jei_transfer", TailoringJeiTransferMessage::new);
 
     public static void init() {
         // Powers

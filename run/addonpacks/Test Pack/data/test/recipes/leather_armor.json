@@ -1,0 +1,23 @@
+{
+  "type": "palladium:item_tailoring",
+  "results": {
+    "head": "minecraft:leather_helmet",
+    "chest": "minecraft:leather_chestplate",
+    "legs": "minecraft:leather_leggings",
+    "feet": "minecraft:leather_boots"
+  },
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:leather"
+      },
+      "count": 24
+    }
+  ],
+  "tool": {
+    "item": "minecraft:shears"
+  },
+  "title": "Leather Armor",
+  "category": "test:vanilla_armor",
+  "requires_unlocking": false
+}

@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "palladium:white_fabric"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_white_dye": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "palladium:connector/white_dyes"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_white_dye",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "palladium:white_fabric"
+    ]
+  },
+  "sends_telemetry_event": false
+}

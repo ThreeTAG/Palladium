@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "palladium:block/tailoring_bench",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "palladium:block/tailoring_bench"
+    },
+    "facing=south": {
+      "model": "palladium:block/tailoring_bench",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "palladium:block/tailoring_bench",
+      "y": 270
+    }
+  }
+}

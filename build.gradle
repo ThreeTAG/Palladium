@@ -1,6 +1,6 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.5-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.9-SNAPSHOT" apply false
     id 'io.github.juuxel.loom-quiltflower' version '1.7.2' apply false
 }
 
@@ -94,7 +94,14 @@ allprojects {
 
         // JEI
         maven {
-            url = 'https://dvs1.progwml6.com/files/maven/'
+            // location of the maven that hosts JEI files since January 2023
+            name = "Jared's maven"
+            url = "https://maven.blamejared.com/"
+        }
+        maven {
+            // location of a maven mirror for JEI files, as a fallback
+            name = "ModMaven"
+            url = "https://modmaven.dev"
         }
 
         // Cardinal Components

@@ -16,14 +16,14 @@ public class AbilityEventHandler {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onRenderLiving(RenderLivingEvent.Pre<?, ?> e) {
-        if (!AbilityUtil.getEnabledEntries(e.getEntity(), Abilities.INVISIBILITY.get()).isEmpty()) {
+        if (!AbilityUtil.getEnabledInstances(e.getEntity(), Abilities.INVISIBILITY.get()).isEmpty()) {
             e.setCanceled(true);
         }
     }
 
     @SubscribeEvent
     public static void onLivingVisibility(LivingEvent.LivingVisibilityEvent e) {
-        if (!AbilityUtil.getEnabledEntries(e.getEntity(), Abilities.INVISIBILITY.get()).isEmpty()) {
+        if (!AbilityUtil.getEnabledInstances(e.getEntity(), Abilities.INVISIBILITY.get()).isEmpty()) {
             e.modifyVisibility(0);
         }
     }

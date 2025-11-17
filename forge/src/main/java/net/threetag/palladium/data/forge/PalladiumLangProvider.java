@@ -43,17 +43,22 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Large Redstone Flux Crystal Bud");
             this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER, "Redstone Flux Crystal Cluster");
             this.addBlock(PalladiumBlocks.LEAD_BLOCK, "Block of Lead");
+            this.addBlock(PalladiumBlocks.TITANIUM_BLOCK, "Block of Titanium");
             this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Block of Vibranium");
             this.addBlock(PalladiumBlocks.RAW_LEAD_BLOCK, "Block of Raw Lead");
             this.addBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK, "Block of Raw Titanium");
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Block of Raw Vibranium");
             this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Heart-Shaped Herb");
             this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Potted Heart-Shaped Herb");
+            this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Tailoring Bench");
+            this.add("container.palladium.tailoring", "Tailoring");
+            this.add("container.palladium.tailoring.craft", "Create");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Raw Lead");
             this.addItem(PalladiumItems.LEAD_INGOT, "Lead Ingot");
             this.addItem(PalladiumItems.RAW_TITANIUM, "Raw Titanium");
+            this.addItem(PalladiumItems.TITANIUM_INGOT, "Titanium Ingot");
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Raw Vibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibranium Ingot");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone Flux Crystal");
@@ -66,6 +71,23 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_FLUX_CAPACITOR, "Vibranium Flux Capacitor");
             this.add("item.palladium.flux_capacitor.desc", "Energy: %s / %s RF");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibranium Weave Boots");
+            this.add("item.palladium.knowledge_book.grants", "Grants recipes:");
+            this.addItem(PalladiumItems.WHITE_FABRIC, "White Fabric");
+            this.addItem(PalladiumItems.ORANGE_FABRIC, "Orange Fabric");
+            this.addItem(PalladiumItems.MAGENTA_FABRIC, "Magenta Fabric");
+            this.addItem(PalladiumItems.LIGHT_BLUE_FABRIC, "Light Blue Fabric");
+            this.addItem(PalladiumItems.YELLOW_FABRIC, "Yellow Fabric");
+            this.addItem(PalladiumItems.LIME_FABRIC, "Lime Fabric");
+            this.addItem(PalladiumItems.PINK_FABRIC, "Pink Fabric");
+            this.addItem(PalladiumItems.GRAY_FABRIC, "Gray Fabric");
+            this.addItem(PalladiumItems.LIGHT_GRAY_FABRIC, "Light Gray Fabric");
+            this.addItem(PalladiumItems.CYAN_FABRIC, "Cyan Fabric");
+            this.addItem(PalladiumItems.PURPLE_FABRIC, "Purple Fabric");
+            this.addItem(PalladiumItems.BLUE_FABRIC, "Blue Fabric");
+            this.addItem(PalladiumItems.BROWN_FABRIC, "Brown Fabric");
+            this.addItem(PalladiumItems.GREEN_FABRIC, "Green Fabric");
+            this.addItem(PalladiumItems.RED_FABRIC, "Red Fabric");
+            this.addItem(PalladiumItems.BLACK_FABRIC, "Black Fabric");
 
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effect");
@@ -183,6 +205,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("gui.palladium.addon_pack_log_entry", "Log Entry");
             this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Copy to Clipboard");
             this.add("gui.palladium.addon_pack_log_entry.upload_to_mclogs", "Upload to mclo.gs");
+            this.add("gui.palladium.category.tailoring", "Tailoring");
+            this.add("gui.palladium.jei.tailoring.recipe_unavailable", "Recipe has not been unlocked yet");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
@@ -245,17 +269,22 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Große Redstone-Flux-Kristallknospe");
             this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER, "Redstone-Flux-Kristallhaufen");
             this.addBlock(PalladiumBlocks.LEAD_BLOCK, "Bleiblock");
+            this.addBlock(PalladiumBlocks.TITANIUM_BLOCK, "Titaniumblock");
             this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Vibraniumblock");
             this.addBlock(PalladiumBlocks.RAW_LEAD_BLOCK, "Rohbleiblock");
             this.addBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK, "Rohtitaniumblock");
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Rohvibraniumblock");
             this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Herzförmiges Kraut");
             this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Eingetopftes Herzförmige Kraut");
+            this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch");
+            this.add("container.palladium.tailoring", "Zuschneidern");
+            this.add("container.palladium.tailoring.craft", "Herstellen");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Rohblei");
             this.addItem(PalladiumItems.LEAD_INGOT, "Bleibarren");
             this.addItem(PalladiumItems.RAW_TITANIUM, "Rohtitanium");
+            this.addItem(PalladiumItems.TITANIUM_INGOT, "Titaniumbarren");
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarren");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
@@ -268,6 +297,24 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_FLUX_CAPACITOR, "Vibranium-Fluxkompensator");
             this.add("item.palladium.flux_capacitor.desc", "Energie: %s / %s RF");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumgewebeschuhe");
+            this.add("item.palladium.knowledge_book.grants", "Schaltet Rezepte frei:");
+            this.addItem(PalladiumItems.WHITE_FABRIC, "Weißer Stoff");
+            this.addItem(PalladiumItems.ORANGE_FABRIC, "Oranger Stoff");
+            this.addItem(PalladiumItems.MAGENTA_FABRIC, "Magenta Stoff");
+            this.addItem(PalladiumItems.LIGHT_BLUE_FABRIC, "Hellblauer Stoff");
+            this.addItem(PalladiumItems.YELLOW_FABRIC, "Gelber Stoff");
+            this.addItem(PalladiumItems.LIME_FABRIC, "Hellgrüner Stoff");
+            this.addItem(PalladiumItems.PINK_FABRIC, "Rosa Stoff");
+            this.addItem(PalladiumItems.GRAY_FABRIC, "Grauer Stoff");
+            this.addItem(PalladiumItems.LIGHT_GRAY_FABRIC, "Hellgrauer Stoff");
+            this.addItem(PalladiumItems.CYAN_FABRIC, "Türkiser Stoff");
+            this.addItem(PalladiumItems.PURPLE_FABRIC, "Violetter Stoff");
+            this.addItem(PalladiumItems.BLUE_FABRIC, "Blauer Stoff");
+            this.addItem(PalladiumItems.BROWN_FABRIC, "Brauner Stoff");
+            this.addItem(PalladiumItems.GREEN_FABRIC, "Grüner Stoff");
+            this.addItem(PalladiumItems.RED_FABRIC, "Roter Stoff");
+            this.addItem(PalladiumItems.BLACK_FABRIC, "Schwarzer Stoff");
+
 
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
@@ -385,6 +432,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("gui.palladium.addon_pack_log_entry", "Logeintrag");
             this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Kopieren");
             this.add("gui.palladium.addon_pack_log_entry.upload_to_mclogs", "Auf mclo.gs hochladen");
+            this.add("gui.palladium.category.tailoring", "Zuschneidern");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
@@ -447,17 +495,22 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.LARGE_REDSTONE_FLUX_CRYSTAL_BUD, "Große Redstone-Flux-Kristallgnosbe");
             this.addBlock(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER, "Redstone-Flux-Kristallhaufn");
             this.addBlock(PalladiumBlocks.LEAD_BLOCK, "Bleblogg");
+            this.addBlock(PalladiumBlocks.TITANIUM_BLOCK, "Titaniumblogg");
             this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Vibraniumblogg");
             this.addBlock(PalladiumBlocks.RAW_LEAD_BLOCK, "Rohbleblogg");
             this.addBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK, "Rohtitaniumblogg");
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Rohvibraniumblogg");
             this.addBlock(PalladiumBlocks.HEART_SHAPED_HERB, "Herzförmijes Graud");
             this.addBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB, "Eingedobbdes Herzförmije Graud");
+            this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch’n");
+            this.add("container.palladium.tailoring", "Zuschneidern");
+            this.add("container.palladium.tailoring.craft", "Herstellen");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Rohble");
             this.addItem(PalladiumItems.LEAD_INGOT, "Blebarrn");
             this.addItem(PalladiumItems.RAW_TITANIUM, "Rohtitanium");
+            this.addItem(PalladiumItems.TITANIUM_INGOT, "Titaniumbarrn");
             this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarrn");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
@@ -470,6 +523,24 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_FLUX_CAPACITOR, "Vibranium-Fluxgompensator");
             this.add("item.palladium.flux_capacitor.desc", "Enerschie: %s / %s RF");
             this.addItem(PalladiumItems.VIBRANIUM_WEAVE_BOOTS, "Vibraniumjewebelaadschn");
+            this.add("item.palladium.knowledge_book.grants", "Schaltet Rezepte frei:");
+            this.addItem(PalladiumItems.WHITE_FABRIC, "Weeßer Schdoff");
+            this.addItem(PalladiumItems.ORANGE_FABRIC, "Orangscher Schdoff");
+            this.addItem(PalladiumItems.MAGENTA_FABRIC, "Magenda Schdoff");
+            this.addItem(PalladiumItems.LIGHT_BLUE_FABRIC, "Hellblaaer Schdoff");
+            this.addItem(PalladiumItems.YELLOW_FABRIC, "Gälber Schdoff");
+            this.addItem(PalladiumItems.LIME_FABRIC, "Hellgriener Schdoff");
+            this.addItem(PalladiumItems.PINK_FABRIC, "Roser Schdoff");
+            this.addItem(PalladiumItems.GRAY_FABRIC, "Graer Schdoff");
+            this.addItem(PalladiumItems.LIGHT_GRAY_FABRIC, "Hellgraer Schdoff");
+            this.addItem(PalladiumItems.CYAN_FABRIC, "Türkiser Schdoff");
+            this.addItem(PalladiumItems.PURPLE_FABRIC, "Violedder Schdoff");
+            this.addItem(PalladiumItems.BLUE_FABRIC, "Blaer Schdoff");
+            this.addItem(PalladiumItems.BROWN_FABRIC, "Braer Schdoff");
+            this.addItem(PalladiumItems.GREEN_FABRIC, "Griener Schdoff");
+            this.addItem(PalladiumItems.RED_FABRIC, "Roder Schdoff");
+            this.addItem(PalladiumItems.BLACK_FABRIC, "Schwarzer Schdoff");
+
 
             // Entities
             this.addEntityType(PalladiumEntityTypes.EFFECT, "Effekt");
@@ -587,6 +658,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("gui.palladium.addon_pack_log_entry", "Logeintrag");
             this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Kopieren");
             this.add("gui.palladium.addon_pack_log_entry.upload_to_mclogs", "Uff mclo.gs hochladen");
+            this.add("gui.palladium.category.tailoring", "Zuschneidern");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");

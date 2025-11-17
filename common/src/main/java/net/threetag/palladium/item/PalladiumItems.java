@@ -18,6 +18,8 @@ import java.util.EnumMap;
 
 public class PalladiumItems {
 
+    public static final EnumMap<DyeColor, RegistrySupplier<Item>> FABRIC_BY_COLOR = new EnumMap<>(DyeColor.class);
+
     public static final SimpleArmorMaterial VIBRANIUM_WEAVE = new SimpleArmorMaterial("vibranium_weave", 8,
             Util.make(new EnumMap<>(ArmorItem.Type.class), (enumMap) -> {
                 enumMap.put(ArmorItem.Type.BOOTS, 2);
@@ -42,6 +44,7 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> REDSTONE_FLUX_CRYSTAL_CLUSTER = ITEMS.register("redstone_flux_crystal_cluster", () -> new BlockItem(PalladiumBlocks.REDSTONE_FLUX_CRYSTAL_CLUSTER.get(), new Item.Properties()));
 
     public static final RegistrySupplier<Item> LEAD_BLOCK = ITEMS.register("lead_block", () -> new BlockItem(PalladiumBlocks.LEAD_BLOCK.get(), new Item.Properties()));
+    public static final RegistrySupplier<Item> TITANIUM_BLOCK = ITEMS.register("titanium_block", () -> new BlockItem(PalladiumBlocks.TITANIUM_BLOCK.get(), new Item.Properties()));
     public static final RegistrySupplier<Item> VIBRANIUM_BLOCK = ITEMS.register("vibranium_block", () -> new BlockItem(PalladiumBlocks.VIBRANIUM_BLOCK.get(), new Item.Properties()));
 
     public static final RegistrySupplier<Item> RAW_LEAD_BLOCK = ITEMS.register("raw_lead_block", () -> new BlockItem(PalladiumBlocks.RAW_LEAD_BLOCK.get(), new Item.Properties()));
@@ -49,12 +52,14 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> RAW_VIBRANIUM_BLOCK = ITEMS.register("raw_vibranium_block", () -> new BlockItem(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get(), new Item.Properties()));
 
     public static final RegistrySupplier<Item> HEART_SHAPED_HERB = ITEMS.register("heart_shaped_herb", () -> new BlockItem(PalladiumBlocks.HEART_SHAPED_HERB.get(), new Item.Properties()));
+    public static final RegistrySupplier<Item> TAILORING_BENCH = ITEMS.register("tailoring_bench", () -> new BlockItem(PalladiumBlocks.TAILORING_BENCH.get(), new Item.Properties()));
 
     // -----------------------------------------------------------------------------------------------------------------
 
     public static final RegistrySupplier<Item> RAW_LEAD = ITEMS.register("raw_lead", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> LEAD_INGOT = ITEMS.register("lead_ingot", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> RAW_TITANIUM = ITEMS.register("raw_titanium", () -> new Item(new Item.Properties()));
+    public static final RegistrySupplier<Item> TITANIUM_INGOT = ITEMS.register("titanium_ingot", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> RAW_VIBRANIUM = ITEMS.register("raw_vibranium", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> VIBRANIUM_INGOT = ITEMS.register("vibranium_ingot", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> REDSTONE_FLUX_CRYSTAL = ITEMS.register("redstone_flux_crystal", () -> new Item(new Item.Properties()));
@@ -70,9 +75,27 @@ public class PalladiumItems {
 
     public static final RegistrySupplier<Item> VIBRANIUM_WEAVE_BOOTS = ITEMS.register("vibranium_weave_boots", () -> new VibraniumWeaveArmorItem(VIBRANIUM_WEAVE, ArmorItem.Type.BOOTS, (new Item.Properties())));
 
+    public static final RegistrySupplier<Item> WHITE_FABRIC = registerFabric(DyeColor.WHITE);
+    public static final RegistrySupplier<Item> ORANGE_FABRIC = registerFabric(DyeColor.ORANGE);
+    public static final RegistrySupplier<Item> MAGENTA_FABRIC = registerFabric(DyeColor.MAGENTA);
+    public static final RegistrySupplier<Item> LIGHT_BLUE_FABRIC = registerFabric(DyeColor.LIGHT_BLUE);
+    public static final RegistrySupplier<Item> YELLOW_FABRIC = registerFabric(DyeColor.YELLOW);
+    public static final RegistrySupplier<Item> LIME_FABRIC = registerFabric(DyeColor.LIME);
+    public static final RegistrySupplier<Item> PINK_FABRIC = registerFabric(DyeColor.PINK);
+    public static final RegistrySupplier<Item> GRAY_FABRIC = registerFabric(DyeColor.GRAY);
+    public static final RegistrySupplier<Item> LIGHT_GRAY_FABRIC = registerFabric(DyeColor.LIGHT_GRAY);
+    public static final RegistrySupplier<Item> CYAN_FABRIC = registerFabric(DyeColor.CYAN);
+    public static final RegistrySupplier<Item> PURPLE_FABRIC = registerFabric(DyeColor.PURPLE);
+    public static final RegistrySupplier<Item> BLUE_FABRIC = registerFabric(DyeColor.BLUE);
+    public static final RegistrySupplier<Item> BROWN_FABRIC = registerFabric(DyeColor.BROWN);
+    public static final RegistrySupplier<Item> GREEN_FABRIC = registerFabric(DyeColor.GREEN);
+    public static final RegistrySupplier<Item> RED_FABRIC = registerFabric(DyeColor.RED);
+    public static final RegistrySupplier<Item> BLACK_FABRIC = registerFabric(DyeColor.BLACK);
+
     public static void init() {
         CreativeModeTabRegistry.addToTab(PalladiumCreativeModeTabs.PALLADIUM_MODS, entries -> {
             entries.add(
+                    TAILORING_BENCH.get(),
                     LEAD_ORE.get(),
                     DEEPSLATE_LEAD_ORE.get(),
                     TITANIUM_ORE.get(),
@@ -84,6 +107,7 @@ public class PalladiumItems {
                     LARGE_REDSTONE_FLUX_CRYSTAL_BUD.get(),
                     REDSTONE_FLUX_CRYSTAL_CLUSTER.get(),
                     LEAD_BLOCK.get(),
+                    TITANIUM_BLOCK.get(),
                     VIBRANIUM_BLOCK.get(),
                     RAW_LEAD_BLOCK.get(),
                     RAW_TITANIUM_BLOCK.get(),
@@ -92,13 +116,31 @@ public class PalladiumItems {
                     RAW_LEAD.get(),
                     LEAD_INGOT.get(),
                     RAW_TITANIUM.get(),
+                    TITANIUM_INGOT.get(),
                     RAW_VIBRANIUM.get(),
                     VIBRANIUM_INGOT.get(),
                     REDSTONE_FLUX_CRYSTAL.get(),
                     SUIT_STAND.get(),
                     LEAD_CIRCUIT.get(),
                     QUARTZ_CIRCUIT.get(),
-                    VIBRANIUM_CIRCUIT.get()
+                    VIBRANIUM_CIRCUIT.get(),
+                    Items.KNOWLEDGE_BOOK,
+                    WHITE_FABRIC.get(),
+                    LIGHT_GRAY_FABRIC.get(),
+                    GRAY_FABRIC.get(),
+                    BLACK_FABRIC.get(),
+                    BROWN_FABRIC.get(),
+                    RED_FABRIC.get(),
+                    ORANGE_FABRIC.get(),
+                    YELLOW_FABRIC.get(),
+                    LIME_FABRIC.get(),
+                    GREEN_FABRIC.get(),
+                    CYAN_FABRIC.get(),
+                    LIGHT_BLUE_FABRIC.get(),
+                    BLUE_FABRIC.get(),
+                    PURPLE_FABRIC.get(),
+                    MAGENTA_FABRIC.get(),
+                    PINK_FABRIC.get()
             );
 
             entries.add(
@@ -123,17 +165,36 @@ public class PalladiumItems {
 
         CreativeModeTabRegistry.addToTab(() -> BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.FUNCTIONAL_BLOCKS), entries -> {
             entries.addAfter(Items.ARMOR_STAND, SUIT_STAND.get());
+            entries.addAfter(Items.LOOM, TAILORING_BENCH.get());
         });
 
         CreativeModeTabRegistry.addToTab(() -> BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.INGREDIENTS), entries -> {
             entries.addAfter(Items.COPPER_INGOT, RAW_LEAD.get(), LEAD_INGOT.get());
-            entries.addAfter(Items.GOLD_INGOT, RAW_TITANIUM.get());
+            entries.addAfter(Items.GOLD_INGOT, RAW_TITANIUM.get(), TITANIUM_INGOT.get());
             entries.addAfter(Items.NETHERITE_INGOT, RAW_VIBRANIUM.get(), VIBRANIUM_INGOT.get());
             entries.addAfter(Items.REDSTONE, REDSTONE_FLUX_CRYSTAL.get());
+            entries.addAfter(Items.PINK_DYE,
+                    WHITE_FABRIC.get(),
+                    LIGHT_GRAY_FABRIC.get(),
+                    GRAY_FABRIC.get(),
+                    BLACK_FABRIC.get(),
+                    BROWN_FABRIC.get(),
+                    RED_FABRIC.get(),
+                    ORANGE_FABRIC.get(),
+                    YELLOW_FABRIC.get(),
+                    LIME_FABRIC.get(),
+                    GREEN_FABRIC.get(),
+                    CYAN_FABRIC.get(),
+                    LIGHT_BLUE_FABRIC.get(),
+                    BLUE_FABRIC.get(),
+                    PURPLE_FABRIC.get(),
+                    MAGENTA_FABRIC.get(),
+                    PINK_FABRIC.get()
+            );
         });
 
         CreativeModeTabRegistry.addToTab(() -> BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.BUILDING_BLOCKS), entries -> {
-            entries.addAfter(Items.COPPER_BLOCK, LEAD_BLOCK.get());
+            entries.add(Items.DIAMOND_BLOCK, LEAD_BLOCK.get(), TITANIUM_BLOCK.get());
             entries.addAfter(Items.NETHERITE_BLOCK, VIBRANIUM_BLOCK.get());
         });
 
@@ -148,5 +209,13 @@ public class PalladiumItems {
         CreativeModeTabRegistry.addToTab(() -> BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.COMBAT), entries -> {
             entries.addAfter(Items.LEATHER_BOOTS, VIBRANIUM_WEAVE_BOOTS.get());
         });
+
     }
+
+    private static RegistrySupplier<Item> registerFabric(DyeColor color) {
+        var supplier = ITEMS.register(color.getName() + "_fabric", () -> new Item(new Item.Properties()));
+        FABRIC_BY_COLOR.put(color, supplier);
+        return supplier;
+    }
+
 }
