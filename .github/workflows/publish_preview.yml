@@ -47,7 +47,7 @@ jobs:
           version: ${{ env.mod_version }}+${{ env.minecraft_version }}-common
           modrinth-id: 92dtp3u1
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          changelog: 'https://github.com/ThreeTAG/Palladium/commits/1.20/dev'
+          changelog: "https://github.com/ThreeTAG/Palladium/compare/${{ github.event.before }}...${{ github.sha }}"
           loaders: |
             java-agent
           game-versions: |
@@ -68,7 +68,7 @@ jobs:
           version: ${{ env.mod_version }}+${{ env.minecraft_version }}-forge
           modrinth-id: 92dtp3u1
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          changelog: 'https://github.com/ThreeTAG/Palladium/commits/1.20/dev'
+          changelog: "https://github.com/ThreeTAG/Palladium/compare/${{ github.event.before }}...${{ github.sha }}"
           loaders: |
             forge
             neoforge
@@ -90,7 +90,7 @@ jobs:
           version: ${{ env.mod_version }}+${{ env.minecraft_version }}-fabric
           modrinth-id: 92dtp3u1
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          changelog: 'https://github.com/ThreeTAG/Palladium/commits/1.20/dev'
+          changelog: "https://github.com/ThreeTAG/Palladium/compare/${{ github.event.before }}...${{ github.sha }}"
           loaders: |
             fabric
             quilt
