@@ -1,9 +1,13 @@
-name: Build and Release (1.20)
+name: Build and Release Preview (1.20)
 
 on:
   push:
     branches:
       - "1.20/dev"
+    paths:
+      - "common/**"
+      - "fabric/**"
+      - "forge/**"
 
 jobs:
   build:
