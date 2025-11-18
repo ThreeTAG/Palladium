@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.io.InputStream;
 
 @Mixin(HttpTexture.class)
-public class MixinCached implements NativeImageCached {
+public class HttpTextureMixin implements NativeImageCached {
 
     @Unique
     private ImageCache palladium$nativeImage;

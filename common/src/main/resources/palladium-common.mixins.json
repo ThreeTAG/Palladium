@@ -17,7 +17,7 @@
     "client.LivingEntityRendererMixin",
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
-    "client.MixinCached",
+    "client.HttpTextureMixin",
     "client.ModelPartInvoker",
     "client.ModelPartMixin",
     "client.MouseHandlerMixin",
