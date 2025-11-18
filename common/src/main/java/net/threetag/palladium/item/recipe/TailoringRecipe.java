@@ -83,6 +83,10 @@ public abstract class TailoringRecipe implements Recipe<Inventory> {
         return toolIcon;
     }
 
+    public boolean requiresUnlocking() {
+        return this.requiresUnlocking;
+    }
+
     @Override
     public ItemStack assemble(Inventory container, RegistryAccess registryAccess) {
         return ItemStack.EMPTY;

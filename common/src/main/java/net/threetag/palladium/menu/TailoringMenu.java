@@ -64,7 +64,7 @@ public class TailoringMenu extends AbstractContainerMenu {
     }
 
     public boolean canCraft(Player player, TailoringRecipe recipe) {
-        if (player instanceof ServerPlayer serverPlayer && !serverPlayer.getRecipeBook().contains(recipe)) {
+        if (player instanceof ServerPlayer serverPlayer && recipe.requiresUnlocking() && !serverPlayer.getRecipeBook().contains(recipe)) {
             return false;
         }
 
