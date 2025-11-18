@@ -57,7 +57,7 @@ jobs:
           game-versions: |
             ${{ env.minecraft_version }}
           files: |
-            common/build/libs/!(*-@(dev-shadow|sources|javadoc)).jar
+            common/build/libs/!(*-@(dev-shadow|sources|javadoc|transformProductionForge|transformProductionFabric)).jar
           dependencies: |
             condensedcreative(optional){modrinth:Zw7fMbBg}{curseforge:624911}
             curios(optional){modrinth:vvuO3ImH}{curseforge:309927}
