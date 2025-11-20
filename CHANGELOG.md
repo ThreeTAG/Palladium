@@ -1,11 +1,1 @@
-**The Tailoring Update**
-- Added the Tailoring Bench: allows addon to easily add flexible recipes for suits!
-  - Added 2 new recipes types: "palladium:item_tailoring" & "palladium:suit_tailoring"
-  - Added fabric items in all 16 colors for addons to utilise (including corresponding item tags)
-- (Finally) Added Titanium Ingots - Textures of other titanium items have been updated too
-- Added dual wielding ability
-- Text of ability wheels now render in the middle
-- Added "tint" option to gecko render layers
-- Added public registerReloadListener to AddonPackManager for Java addons to register own addon content
-- Added "disabledAbilities" config to disable specific abilities on servers
-- Fix name change ability not working when player enter other player's view
+- Fix tailoring recipes not being craftable when "requires_unlocking" is set to false
