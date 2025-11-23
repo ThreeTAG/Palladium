@@ -29,6 +29,8 @@ import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.network.RightClickAttackMessage;
+import net.threetag.palladium.power.ability.Abilities;
+import net.threetag.palladium.power.ability.AbilityUtil;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -270,9 +272,10 @@ public class DualWieldingPlayerHandler {
 
     @Environment(EnvType.CLIENT)
     public static void attackClient() {
-        if (!PalladiumKeyMappings.DUAL_WIELDING_RIGHT_CLICK) {
+        var mc = Minecraft.getInstance();
+
+        if (AbilityUtil.isTypeEnabled(mc.player, Abilities.DUAL_WIELDING.get()) && !PalladiumKeyMappings.DUAL_WIELDING_RIGHT_CLICK) {
             PalladiumKeyMappings.DUAL_WIELDING_RIGHT_CLICK = true;
-            var mc = Minecraft.getInstance();
             var hitResult = mc.hitResult;
 
             if (Objects.requireNonNull(hitResult).getType() == HitResult.Type.ENTITY && mc.player instanceof PalladiumPlayerExtension ext) {
