@@ -10,6 +10,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -511,17 +512,20 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
         public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
             var text = this.recipe.getTitle();
             var font = Objects.requireNonNull(TailoringScreen.this.minecraft).font;
-            var shortened = font.substrByWidth(text, width - 10).getString();
+            var shortened = font.substrByWidth(text, width - 10);
 
-            if (!shortened.equals(text.getString())) {
-                shortened += "...";
+            if (!shortened.getString().equals(text.getString())) {
+                var shortenedText = Language.getInstance().getVisualOrder(shortened);
+                guiGraphics.drawString(font, shortenedText, left + 1, top + 2, 0xffffff, false);
+                int textWidth = font.width(shortened);
+                guiGraphics.drawString(font, Component.literal("..."), left + 1 + textWidth, top + 2, 0xffffff, false);
 
                 if (hovering) {
-                    TailoringScreen.this.setTooltipForNextRenderPass(text);
+                    TailoringScreen.this.setTooltipForNextRenderPass(text.plainCopy());
                 }
+            } else {
+                guiGraphics.drawString(font, text, left + 1, top + 2, 0xffffff, false);
             }
-
-            guiGraphics.drawString(Minecraft.getInstance().font, shortened, left + 1, top + 2, 0xffffff, false);
         }
 
         @Override
@@ -546,7 +550,22 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
         @Override
         public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
-            guiGraphics.drawString(Minecraft.getInstance().font, this.title, left - 6, top + 2, 0xffffff, false);
+            var text = this.title;
+            var font = Objects.requireNonNull(TailoringScreen.this.minecraft).font;
+            var shortened = font.substrByWidth(text, width - 10);
+
+            if (!shortened.getString().equals(text.getString())) {
+                var shortenedText = Language.getInstance().getVisualOrder(shortened);
+                guiGraphics.drawString(font, shortenedText, left - 6, top + 2, 0xffffff, false);
+                int textWidth = font.width(shortened);
+                guiGraphics.drawString(font, Component.literal("...").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD), left - 6 + textWidth, top + 2, 0xffffff, false);
+
+                if (hovering) {
+                    TailoringScreen.this.setTooltipForNextRenderPass(text.plainCopy());
+                }
+            } else {
+                guiGraphics.drawString(font, text, left - 6, top + 2, 0xffffff, false);
+            }
         }
 
         @Override
