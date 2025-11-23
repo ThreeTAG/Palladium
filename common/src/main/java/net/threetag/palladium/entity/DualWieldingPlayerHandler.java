@@ -32,10 +32,13 @@ import net.threetag.palladium.network.RightClickAttackMessage;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
 
 public class DualWieldingPlayerHandler {
 
     protected static final UUID BASE_ATTACK_DAMAGE_UUID = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
+    @SuppressWarnings("unchecked")
+    public static Function<Player, AttributeMap> ATTRIBUTE_MAP_FACTORY = player -> new AttributeMap(DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) player.getType()));
     private final Player player;
     private int attackStrengthTicker;
     private ItemStack lastItemInOffHand = ItemStack.EMPTY;
@@ -240,9 +243,8 @@ public class DualWieldingPlayerHandler {
         this.attackStrengthTicker = 0;
     }
 
-    @SuppressWarnings("unchecked")
     public static double getOffHandAttackStrength(Player player) {
-        var attributeMap = new AttributeMap(DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) player.getType()));
+        var attributeMap = ATTRIBUTE_MAP_FACTORY.apply(player);
         var attackDamage = Objects.requireNonNull(attributeMap.getInstance(Attributes.ATTACK_DAMAGE));
 
         if (player.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
@@ -268,7 +270,7 @@ public class DualWieldingPlayerHandler {
 
     @Environment(EnvType.CLIENT)
     public static void attackClient() {
-        if(!PalladiumKeyMappings.DUAL_WIELDING_RIGHT_CLICK) {
+        if (!PalladiumKeyMappings.DUAL_WIELDING_RIGHT_CLICK) {
             PalladiumKeyMappings.DUAL_WIELDING_RIGHT_CLICK = true;
             var mc = Minecraft.getInstance();
             var hitResult = mc.hitResult;

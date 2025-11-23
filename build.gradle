@@ -161,6 +161,11 @@ allprojects {
 
         // Quilt
         maven { url "https://maven.quiltmc.org/repository/release/" }
+
+        // Apotheosis
+        maven {
+            url "https://maven.shadowsoffire.dev/releases"
+        }
     }
 
     java {

@@ -26,6 +26,7 @@ import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.model.ModelLayerManager;
+import net.threetag.palladium.compat.apothicattributes.forge.ApothicAttributesCompat;
 import net.threetag.palladium.compat.curios.forge.CuriosCompat;
 import net.threetag.palladium.compat.geckolib.forge.GeckoLibCompatImpl;
 import net.threetag.palladium.data.forge.*;
@@ -56,6 +57,10 @@ public class PalladiumForge {
 
         if (Platform.isModLoaded("geckolib")) {
             GeckoLibCompatImpl.init();
+        }
+
+        if(Platform.isModLoaded("attributeslib")) {
+            ApothicAttributesCompat.init();
         }
 
         if (Platform.isClient()) {
