@@ -1,1 +1,2 @@
-- Fix tailoring recipes not being craftable when "requires_unlocking" is set to false
+- Fixed crash when using dual wielding with Apothic Attributes
+- Added tooltip to tailoring categories if they are longer than the recipe book
