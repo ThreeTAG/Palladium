@@ -1,4 +1,4 @@
-name: Build and Release Preview (1.20)
+name: Build and Release Preview (1.21.10)
 
 on:
   push:
