@@ -3,6 +3,7 @@ package net.threetag.palladium.addonpack;
 import net.minecraft.CrashReport;
 import net.minecraft.ReportedException;
 import net.minecraft.Util;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -34,6 +35,7 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.block.BlockPropertiesCodec;
 import net.threetag.palladium.item.CreativeModeTabCodec;
 import net.threetag.palladium.item.ItemTypes;
+import net.threetag.palladium.registry.PalladiumRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
@@ -42,7 +44,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.*;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 @EventBusSubscriber(modid = Palladium.MOD_ID)
 public class AddonPackManager {
@@ -74,9 +76,9 @@ public class AddonPackManager {
         registerLoader(DataAttachmentLoader.INSTANCE);
         registerLoader(new ToolMaterialLoader());
         registerLoader(new ArmorMaterialLoader());
-        registerRegistryLoader(Registries.CREATIVE_MODE_TAB, callback -> new AddonObjectLoader<>(CreativeModeTabCodec.CODEC, Registries.CREATIVE_MODE_TAB, callback));
-        registerRegistryLoader(Registries.BLOCK, callback -> new AddonObjectLoader<>(BlockTypes.CODEC.codec(), Registries.BLOCK, callback));
-        registerRegistryLoader(Registries.ITEM, callback -> new AddonObjectLoader<>(ItemTypes.CODEC, Registries.ITEM, callback));
+        registerRegistryLoader(Registries.CREATIVE_MODE_TAB, (callback, provider) -> new AddonObjectLoader<>(provider, CreativeModeTabCodec.CODEC, Registries.CREATIVE_MODE_TAB, callback));
+        registerRegistryLoader(Registries.BLOCK,  (callback, provider) -> new AddonObjectLoader<>(provider, BlockTypes.CODEC.codec(), Registries.BLOCK, callback));
+        registerRegistryLoader(Registries.ITEM,  (callback, provider) -> new AddonObjectLoader<>(provider, ItemTypes.CODEC, Registries.ITEM, callback));
     }
 
     private AddonPackManager() {
@@ -108,7 +110,7 @@ public class AddonPackManager {
         BASIC_LOADERS.add(loader);
     }
 
-    public static <T> void registerRegistryLoader(ResourceKey<Registry<T>> registry, Function<RegisterCallback<T>, AddonObjectLoader<T>> registerCallback) {
+    public static <T> void registerRegistryLoader(ResourceKey<Registry<T>> registry, BiFunction<RegisterCallback<T>, HolderLookup.Provider, AddonObjectLoader<T>> registerCallback) {
         REGISTRY_LOADERS.add(new LoaderEntry<>(registry, registerCallback));
     }
 
@@ -120,16 +122,9 @@ public class AddonPackManager {
     public static <T> void initiateFor(ResourceKey<?> registry, RegisterCallback<T> callback) {
         for (LoaderEntry<?> loader : REGISTRY_LOADERS) {
             if (loader.registry.equals(registry)) {
-                startLoading(Collections.singletonList(loader.get(callback)));
+                startLoading(Collections.singletonList(loader.get(callback, PalladiumRegistries.createLookup())));
                 waitForLoading();
             }
-        }
-    }
-
-    public static void initiateAllLoaders(RegisterCallback<?> callback) {
-        for (LoaderEntry<?> loader : REGISTRY_LOADERS) {
-            startLoading(Collections.singletonList(loader.get(callback)));
-            waitForLoading();
         }
     }
 
@@ -279,11 +274,11 @@ public class AddonPackManager {
     }
 
     private record LoaderEntry<T>(ResourceKey<Registry<T>> registry,
-                                  Function<RegisterCallback<T>, AddonObjectLoader<T>> callback) {
+                                  BiFunction<RegisterCallback<T>, HolderLookup.Provider, AddonObjectLoader<T>> callback) {
 
         @SuppressWarnings("unchecked")
-        public AddonObjectLoader<T> get(RegisterCallback<?> callback) {
-            return this.callback.apply((RegisterCallback<T>) callback);
+        public AddonObjectLoader<T> get(RegisterCallback<?> callback, HolderLookup.Provider provider) {
+            return this.callback.apply((RegisterCallback<T>) callback, provider);
         }
 
     }

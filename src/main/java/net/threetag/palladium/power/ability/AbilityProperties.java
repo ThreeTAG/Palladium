@@ -31,9 +31,10 @@ public class AbilityProperties {
             Codec.intRange(-1, Integer.MAX_VALUE).optionalFieldOf("list_index", -1).forGetter(AbilityProperties::getListIndex),
             PalladiumCodecs.VEC2_CODEC.optionalFieldOf("gui_position").forGetter(p -> Optional.ofNullable(p.guiPosition)),
             AnimationTimerSetting.CODEC.optionalFieldOf("animation_timer").forGetter(p -> Optional.ofNullable(p.animationTimerSetting)),
-            PalladiumCodecs.listOrPrimitive(ResourceLocation.CODEC).optionalFieldOf("render_layer", Collections.emptyList()).forGetter(p -> p.renderLayers)
-    ).apply(instance, (title, icon, desc, color, hiddenGui, hiddenBar, listIndex, guiPos, timer, renderLayers) ->
-            new AbilityProperties(title.orElse(null), icon, desc.orElse(null), color, hiddenGui, hiddenBar, listIndex, guiPos.orElse(null), timer.orElse(null), renderLayers)));
+            PalladiumCodecs.listOrPrimitive(ResourceLocation.CODEC).optionalFieldOf("render_layer", Collections.emptyList()).forGetter(p -> p.renderLayers),
+            Codec.BOOL.optionalFieldOf("allow_dampening", true).forGetter(p -> p.allowDampening)
+    ).apply(instance, (title, icon, desc, color, hiddenGui, hiddenBar, listIndex, guiPos, timer, renderLayers, allowDampening) ->
+            new AbilityProperties(title.orElse(null), icon, desc.orElse(null), color, hiddenGui, hiddenBar, listIndex, guiPos.orElse(null), timer.orElse(null), renderLayers, allowDampening)));
 
     private Component title = null;
     private Icon icon = new ItemIcon(Items.BARRIER);
@@ -45,12 +46,16 @@ public class AbilityProperties {
     private Vec2 guiPosition = null;
     private AnimationTimerSetting animationTimerSetting = null;
     private List<ResourceLocation> renderLayers = Collections.emptyList();
+    private boolean allowDampening = true;
 
     private AbilityProperties() {
 
     }
 
-    private AbilityProperties(Component title, Icon icon, AbilityDescription description, AbilityColor color, boolean hiddenInGUI, boolean hiddenInBar, int listIndex, Vec2 guiPosition, AnimationTimerSetting animationTimerSetting, List<ResourceLocation> renderLayers) {
+    private AbilityProperties(Component title, Icon icon, AbilityDescription description, AbilityColor color,
+                              boolean hiddenInGUI, boolean hiddenInBar, int listIndex, Vec2 guiPosition,
+                              AnimationTimerSetting animationTimerSetting, List<ResourceLocation> renderLayers,
+                              boolean allowDampening) {
         this.title = title;
         this.icon = icon;
         this.description = description;
@@ -61,6 +66,7 @@ public class AbilityProperties {
         this.guiPosition = guiPosition;
         this.animationTimerSetting = animationTimerSetting;
         this.renderLayers = ImmutableList.copyOf(renderLayers);
+        this.allowDampening = allowDampening;
     }
 
     public AbilityProperties title(Component title) {
@@ -147,5 +153,9 @@ public class AbilityProperties {
 
     public AnimationTimerSetting getAnimationTimerSetting() {
         return this.animationTimerSetting;
+    }
+
+    public boolean canBeDampened() {
+        return this.allowDampening;
     }
 }

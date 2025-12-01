@@ -21,6 +21,7 @@ import net.threetag.palladium.power.ability.AbilitySerializer;
 import net.threetag.palladium.power.ability.enabling.EnablingHandlerSerializer;
 import net.threetag.palladium.power.ability.keybind.KeyBindTypeSerializer;
 import net.threetag.palladium.power.ability.unlocking.UnlockingHandlerSerializer;
+import net.threetag.palladium.power.dampening.PowerDampeningSource;
 import net.threetag.palladium.power.provider.PowerProvider;
 
 public class PalladiumRegistryKeys {
@@ -34,6 +35,7 @@ public class PalladiumRegistryKeys {
     public static final ResourceKey<Registry<ValueSerializer<?>>> VALUE_SERIALIZER = createRegistryKey("value_serializer");
     public static final ResourceKey<Registry<Power>> POWER = createRegistryKey("power");
     public static final ResourceKey<Registry<PowerProvider>> POWER_PROVIDER = createRegistryKey("power_provider");
+    public static final ResourceKey<Registry<PowerDampeningSource>> POWER_DAMPENING_SOURCE = createRegistryKey("power_dampening_source");
     public static final ResourceKey<Registry<IconSerializer<?>>> ICON_SERIALIZER = createRegistryKey("icon_serializer");
     public static final ResourceKey<Registry<MapCodec<? extends Item>>> ITEM_TYPE = createRegistryKey("item_type");
     public static final ResourceKey<Registry<EntityEffect>> ENTITY_EFFECT = createRegistryKey("entity_effect");

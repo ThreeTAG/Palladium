@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:item",
+  "properties": {
+    "components": {
+      "palladium:power_dampening": {
+        "*": [
+          "#palladium:is_magical"
+        ]
+      }
+    },
+    "tab": {
+      "type": "add_after",
+      "tab": "minecraft:tools_and_utilities",
+      "target": "minecraft:elytra"
+    }
+  }
+}

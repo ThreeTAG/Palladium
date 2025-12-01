@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityInstance;
+import net.threetag.palladium.power.dampening.PowerDampeningSource;
 import net.threetag.palladium.power.energybar.EnergyBarConfiguration;
 import net.threetag.palladium.power.energybar.EnergyBarInstance;
 import net.threetag.palladium.power.energybar.EnergyBarReference;
@@ -85,9 +86,11 @@ public class PowerHolder {
     }
 
     public void tick() {
-        this.entryMap.forEach((id, entry) -> entry.tick(entity, this));
+        boolean dampened = PowerDampeningSource.isDampened(this.power, this.entity);
 
-        if (!this.getEntity().level().isClientSide()) {
+        this.entryMap.forEach((id, entry) -> entry.tick(entity, dampened));
+
+        if (!dampened && !this.getEntity().level().isClientSide()) {
             this.energyBars.forEach((id, bar) -> bar.tick(entity));
         }
     }

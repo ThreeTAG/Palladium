@@ -13,6 +13,8 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.power.Power;
+import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 public class PalladiumDataComponents {
 
@@ -33,6 +35,10 @@ public class PalladiumDataComponents {
         public static final DeferredHolder<DataComponentType<?>, DataComponentType<SlotDependentIdComponent>> POWERS = DATA_COMPONENTS.register("powers", () -> DataComponentType.<SlotDependentIdComponent>builder()
                 .persistent(SlotDependentIdComponent.CODEC)
                 .networkSynchronized(SlotDependentIdComponent.STREAM_CODEC)
+                .build());
+
+        public static final DeferredHolder<DataComponentType<?>, DataComponentType<SlotDependentHolderSetComponent<Power>>> POWER_DAMPENING = DATA_COMPONENTS.register("power_dampening", () -> DataComponentType.<SlotDependentHolderSetComponent<Power>>builder()
+                .persistent(SlotDependentHolderSetComponent.codec(PalladiumRegistryKeys.POWER))
                 .build());
 
         public static final DeferredHolder<DataComponentType<?>, DataComponentType<CustomData>> BOTTLE_ENTITY_DATA = DATA_COMPONENTS.register("bottle_entity_data", () -> DataComponentType.<CustomData>builder()

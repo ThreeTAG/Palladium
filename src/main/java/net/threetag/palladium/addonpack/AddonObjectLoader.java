@@ -1,8 +1,8 @@
 package net.threetag.palladium.addonpack;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -19,8 +19,8 @@ public class AddonObjectLoader<T> extends SimpleJsonResourceReloadListener<T> {
     public final ResourceKey<Registry<T>> resourceKey;
     public final AddonPackManager.RegisterCallback<T> callback;
 
-    public AddonObjectLoader(Codec<T> codec, ResourceKey<Registry<T>> resourceKey, AddonPackManager.RegisterCallback<T> callback) {
-        super(codec, FileToIdConverter.registry(resourceKey));
+    public AddonObjectLoader(HolderLookup.Provider provider, Codec<T> codec, ResourceKey<Registry<T>> resourceKey, AddonPackManager.RegisterCallback<T> callback) {
+        super(provider, codec, resourceKey);
         this.resourceKey = resourceKey;
         this.callback = callback;
     }

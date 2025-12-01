@@ -18,18 +18,16 @@ public class ItemPowerProvider extends PowerProvider {
 
     @Override
     public void providePowers(LivingEntity entity, EntityPowerHandler handler, PowerCollector collector) {
-        if (entity instanceof LivingEntity living) {
-            var registry = entity.registryAccess().lookupOrThrow(PalladiumRegistryKeys.POWER);
-            for (PlayerSlot slot : PlayerSlot.values(living.level())) {
-                for (int i = 0; i < slot.getSize(living); i++) {
-                    var stack = slot.getItem(living, i);
+        var registry = entity.registryAccess().lookupOrThrow(PalladiumRegistryKeys.POWER);
+        for (PlayerSlot slot : PlayerSlot.values(entity.level())) {
+            for (int i = 0; i < slot.getSize(entity); i++) {
+                var stack = slot.getItem(entity, i);
 
-                    if (stack.has(PalladiumDataComponents.Items.POWERS.get())) {
-                        var itemPowers = stack.get(PalladiumDataComponents.Items.POWERS.get());
+                if (stack.has(PalladiumDataComponents.Items.POWERS.get())) {
+                    var itemPowers = stack.get(PalladiumDataComponents.Items.POWERS.get());
 
-                        for (ResourceLocation powerId : Objects.requireNonNull(itemPowers).forSlot(slot)) {
-                            registry.get(powerId).ifPresent(power -> collector.addPower(power, PowerProviders.PRIORITY_ITEMS, () -> new Validator(slot, powerId)));
-                        }
+                    for (ResourceLocation powerId : Objects.requireNonNull(itemPowers).forSlot(slot)) {
+                        registry.get(powerId).ifPresent(power -> collector.addPower(power, PowerProviders.PRIORITY_ITEMS, () -> new Validator(slot, powerId)));
                     }
                 }
             }

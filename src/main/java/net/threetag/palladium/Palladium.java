@@ -29,6 +29,7 @@ import net.threetag.palladium.power.ability.AbilitySerializers;
 import net.threetag.palladium.power.ability.enabling.EnablingHandlerSerializers;
 import net.threetag.palladium.power.ability.keybind.KeyBindTypeSerializers;
 import net.threetag.palladium.power.ability.unlocking.UnlockingHandlerSerializers;
+import net.threetag.palladium.power.dampening.PowerDampeningSources;
 import net.threetag.palladium.power.provider.PowerProviders;
 import net.threetag.palladium.proxy.PalladiumProxy;
 import org.apache.logging.log4j.LogManager;
@@ -56,6 +57,7 @@ public final class Palladium {
         EnablingHandlerSerializers.ENABLING_HANDLERS.register(modEventBus);
         AbilitySerializers.ABILITIES.register(modEventBus);
         PowerProviders.PROVIDERS.register(modEventBus);
+        PowerDampeningSources.DAMPENING_SOURCES.register(modEventBus);
         IconSerializers.ICON_SERIALIZERS.register(modEventBus);
         CustomizationSerializers.CUSTOMIZATION_SERIALIZERS.register(modEventBus);
         ConditionSerializers.CONDITION_SERIALIZERS.register(modEventBus);
