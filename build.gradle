@@ -99,10 +99,9 @@ configurations {
 dependencies {
     // Player Animation Library
     jarJar(implementation("com.zigythebird.playeranim:PlayerAnimationLibNeo:${player_animation_lib_version}"))
-    implementation("com.zigythebird:mochafloats:4.0.1") {
+    implementation("com.zigythebird:mochafloats:4.1.0") {
         transitive = false
     }
-    implementation "org.javassist:javassist:3.30.2-GA"
 
     // Accessories
     compileOnly "io.wispforest:accessories-neoforge:${accessories_version}"
