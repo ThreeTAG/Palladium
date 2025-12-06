@@ -30,12 +30,14 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.defaultBlockItem2d(PalladiumItems.REDSTONE_FLUX_CRYSTAL_CLUSTER);
 
         this.defaultBlockItem(PalladiumItems.LEAD_BLOCK);
+        this.defaultBlockItem(PalladiumItems.TITANIUM_BLOCK);
         this.defaultBlockItem(PalladiumItems.VIBRANIUM_BLOCK);
 
         this.defaultBlockItem(PalladiumItems.RAW_LEAD_BLOCK);
         this.defaultBlockItem(PalladiumItems.RAW_TITANIUM_BLOCK);
         this.defaultBlockItem(PalladiumItems.RAW_VIBRANIUM_BLOCK);
 
+        this.defaultBlockItem(PalladiumItems.TAILORING_BENCH);
         this.singleTexture(PalladiumItems.HEART_SHAPED_HERB.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(Palladium.MOD_ID, "block/heart_shaped_herb"));
         this.defaultBlockItem(PalladiumItems.MULTIVERSAL_ITERATOR);
 
@@ -43,6 +45,7 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.defaultItem(PalladiumItems.LEAD_INGOT);
         this.defaultItem(PalladiumItems.RAW_TITANIUM);
         this.defaultItem(PalladiumItems.RAW_VIBRANIUM);
+        this.defaultItem(PalladiumItems.TITANIUM_INGOT);
         this.defaultItem(PalladiumItems.VIBRANIUM_INGOT);
         this.defaultItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL);
 
@@ -54,6 +57,23 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.fluxCapacitor(PalladiumItems.QUARTZ_FLUX_CAPACITOR);
         this.fluxCapacitor(PalladiumItems.VIBRANIUM_FLUX_CAPACITOR);
         this.withExistingParent(PalladiumItems.VIBRANIUM_WEAVE_BOOTS.getId().getPath(), new ResourceLocation("item/generated")).texture("layer0", new ResourceLocation("item/leather_boots")).texture("layer1", new ResourceLocation(Palladium.MOD_ID, "item/vibranium_weave_boots_overlay"));
+
+        this.defaultItem(PalladiumItems.WHITE_FABRIC);
+        this.defaultItem(PalladiumItems.ORANGE_FABRIC);
+        this.defaultItem(PalladiumItems.MAGENTA_FABRIC);
+        this.defaultItem(PalladiumItems.LIGHT_BLUE_FABRIC);
+        this.defaultItem(PalladiumItems.YELLOW_FABRIC);
+        this.defaultItem(PalladiumItems.LIME_FABRIC);
+        this.defaultItem(PalladiumItems.PINK_FABRIC);
+        this.defaultItem(PalladiumItems.GRAY_FABRIC);
+        this.defaultItem(PalladiumItems.LIGHT_GRAY_FABRIC);
+        this.defaultItem(PalladiumItems.CYAN_FABRIC);
+        this.defaultItem(PalladiumItems.PURPLE_FABRIC);
+        this.defaultItem(PalladiumItems.BLUE_FABRIC);
+        this.defaultItem(PalladiumItems.BROWN_FABRIC);
+        this.defaultItem(PalladiumItems.GREEN_FABRIC);
+        this.defaultItem(PalladiumItems.RED_FABRIC);
+        this.defaultItem(PalladiumItems.BLACK_FABRIC);
     }
 
     public void defaultItem(RegistrySupplier<Item> item) {

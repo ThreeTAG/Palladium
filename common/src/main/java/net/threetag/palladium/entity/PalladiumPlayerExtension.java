@@ -8,4 +8,6 @@ public interface PalladiumPlayerExtension {
 
     AccessoryPlayerData palladium$getAccessories();
 
+    DualWieldingPlayerHandler palladium$getDualWieldingHandler();
+
 }

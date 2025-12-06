@@ -86,6 +86,7 @@ public class LootTableModificationManager extends SimpleJsonResourceReloadListen
 
         private final ResourceLocation targetTable;
         private final List<LootPool> lootPools = new ArrayList<>();
+        private boolean applied = false;
 
         public Modification(ResourceLocation targetTable) {
             this.targetTable = targetTable;
@@ -102,6 +103,15 @@ public class LootTableModificationManager extends SimpleJsonResourceReloadListen
 
         public List<LootPool> getLootPools() {
             return lootPools;
+        }
+
+        public boolean markApplied() {
+            if (this.applied) {
+                return false;
+            } else {
+                this.applied = true;
+                return true;
+            }
         }
     }
 

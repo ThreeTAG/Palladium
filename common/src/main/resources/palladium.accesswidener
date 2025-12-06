@@ -1,5 +1,7 @@
 accessWidener v2 named
 
+accessible field com/mojang/blaze3d/vertex/PoseStack poseStack Ljava/util/Deque;
+
 accessible field net/minecraft/client/model/PlayerModel cloak Lnet/minecraft/client/model/geom/ModelPart;
 accessible method net/minecraft/client/model/HumanoidModel poseRightArm (Lnet/minecraft/world/entity/LivingEntity;)V
 accessible method net/minecraft/client/model/HumanoidModel poseLeftArm (Lnet/minecraft/world/entity/LivingEntity;)V
@@ -64,6 +66,7 @@ transitive-accessible class net/minecraft/client/gui/components/AbstractSelectio
 accessible field net/minecraft/server/ServerScoreboard trackedObjectives Ljava/util/Set;
 
 accessible method net/minecraft/client/renderer/LevelRenderer shouldShowEntityOutlines ()Z
+accessible field net/minecraft/client/renderer/LevelRenderer renderBuffers Lnet/minecraft/client/renderer/RenderBuffers;
 
 accessible field net/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen selectedTab Lnet/minecraft/world/item/CreativeModeTab;
 

@@ -1,10 +1,10 @@
 package net.threetag.palladium.block;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.util.PalladiumBlockUtil;
@@ -28,6 +28,7 @@ public class PalladiumBlocks {
     public static final RegistrySupplier<Block> SMALL_REDSTONE_FLUX_CRYSTAL_BUD = BLOCKS.register("small_redstone_flux_crystal_bud", () -> new RedstoneFluxCrystalClusterBlock(3, 4, BlockBehaviour.Properties.copy(Blocks.SMALL_AMETHYST_BUD).mapColor(MapColor.COLOR_RED)));
 
     public static final RegistrySupplier<Block> LEAD_BLOCK = BLOCKS.register("lead_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(4.0F, 12.0F)));
+    public static final RegistrySupplier<Block> TITANIUM_BLOCK = BLOCKS.register("titanium_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(12.0F, 16.0F)));
     public static final RegistrySupplier<Block> VIBRANIUM_BLOCK = BLOCKS.register("vibranium_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GRAY).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(15.0F, 18.0F)));
 
     public static final RegistrySupplier<Block> RAW_LEAD_BLOCK = BLOCKS.register("raw_lead_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(5.0F, 6.0F)));
@@ -37,6 +38,7 @@ public class PalladiumBlocks {
     public static final RegistrySupplier<Block> HEART_SHAPED_HERB = BLOCKS.register("heart_shaped_herb", () -> new FlowerBlock(MobEffects.DAMAGE_RESISTANCE, 4, BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.GRASS)));
     public static final RegistrySupplier<Block> POTTED_HEART_SHAPED_HERB = BLOCKS.register("potted_heart_shaped_herb", () -> PalladiumBlockUtil.createFlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, HEART_SHAPED_HERB, BlockBehaviour.Properties.of().instabreak().noOcclusion()));
 
+    public static final RegistrySupplier<Block> TAILORING_BENCH = BLOCKS.register("tailoring_bench", () -> new TailoringBenchBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.5F).sound(SoundType.WOOD).ignitedByLava()));
     public static final RegistrySupplier<Block> MULTIVERSAL_ITERATOR = BLOCKS.register("multiversal_iterator", () -> new MultiversalIteratorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(5.0F, 6.0F)));
 
 }

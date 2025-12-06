@@ -3,7 +3,6 @@ package net.threetag.palladium.client.screen.power;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -24,6 +23,7 @@ public class BuyAbilityScreen extends Screen {
     public final boolean available;
     public final PowersScreen parentScreen;
     private final Component text;
+    private Button confirmButton;
     private static final int GUI_WIDTH = 202;
     private static final int GUI_HEIGHT = 60;
 
@@ -43,14 +43,13 @@ public class BuyAbilityScreen extends Screen {
         int guiLeft = (this.width - GUI_WIDTH) / 2;
         int guiTop = (this.height - GUI_HEIGHT) / 2;
         this.addRenderableWidget(BackgroundlessButton.backgroundlessBuilder(Component.literal("x"), s -> parentScreen.closeOverlayScreen()).bounds(guiLeft + 193, guiTop + 3, 5, 5).build());
-        Button button = TextWithIconButton.textWithIconBuilder(Component.literal(this.unlockData.amount + "x "), this.unlockData.icon, s -> {
+        this.confirmButton = TextWithIconButton.textWithIconBuilder(Component.literal(this.unlockData.amount + "x "), this.unlockData.icon, s -> {
             new BuyAbilityUnlockMessage(this.reference).send();
             this.parentScreen.closeOverlayScreen();
             Objects.requireNonNull(Objects.requireNonNull(this.minecraft).player).playSound(SoundEvents.PLAYER_LEVELUP, 1F, 1F);
         }).bounds(guiLeft + 23, guiTop + 33, 54, 20).build();
-        button.setTooltip(Tooltip.create(Component.literal(this.unlockData.amount + "x ").append(this.unlockData.description)));
-        button.active = this.available;
-        this.addRenderableWidget(button);
+        this.confirmButton.active = this.available;
+        this.addRenderableWidget(this.confirmButton);
         this.addRenderableWidget(Button.builder(Component.translatable("gui.no"), s -> parentScreen.overlayScreen = null).bounds(guiLeft + 125, guiTop + 33, 54, 20).build());
     }
 
@@ -72,5 +71,16 @@ public class BuyAbilityScreen extends Screen {
         }
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
+
+        if (this.confirmButton != null) {
+            var cachedActive = this.confirmButton.active;
+            this.confirmButton.active = true;
+            if (this.confirmButton.isMouseOver(mouseX, mouseY)) {
+                guiGraphics.pose().translate(0, 0, 1000);
+                guiGraphics.renderTooltip(this.font, Component.literal(this.unlockData.amount + "x ").append(this.unlockData.description), mouseX, mouseY);
+                guiGraphics.pose().translate(0, 0, -1000);
+            }
+            this.confirmButton.active = cachedActive;
+        }
     }
 }

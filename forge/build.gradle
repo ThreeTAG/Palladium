@@ -62,14 +62,16 @@ dependencies {
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-forge:${rootProject.player_anim_version}")
 
     // GeckoLib
-    modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:${rootProject.geckolib_version}")
+    implementation("com.eliotlash.mclib:mclib:20")
+    forgeRuntimeLibrary("com.eliotlash.mclib:mclib:20")
+    modApi("software.bernie.geckolib:geckolib-forge-1.20.1:${rootProject.geckolib_version}")
 
     // JEI
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
-//    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
+    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
 
     // REI
-    modImplementation "me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}"
+//    modImplementation "me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}"
 
     // Configured & Catalogue
 //    modLocalRuntime "curse.maven:configured-457570:${rootProject.configured_version}"
@@ -87,6 +89,9 @@ dependencies {
 
     // Condensed Creative
     modCompileOnly "io.wispforest:condensed_creative-forge:${rootProject.condensed_creative_version}"
+
+    // Apothic Attributes
+    modCompileOnly "dev.shadowsoffire:ApothicAttributes:${rootProject.minecraft_version}-${rootProject.apothic_attributes_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }

@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RegisterTextureAtlasSpriteLoadersEvent;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -25,6 +26,7 @@ import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.addonpack.AddonPackManager;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.model.ModelLayerManager;
+import net.threetag.palladium.compat.apothicattributes.forge.ApothicAttributesCompat;
 import net.threetag.palladium.compat.curios.forge.CuriosCompat;
 import net.threetag.palladium.compat.geckolib.forge.GeckoLibCompatImpl;
 import net.threetag.palladium.data.forge.*;
@@ -55,6 +57,10 @@ public class PalladiumForge {
 
         if (Platform.isModLoaded("geckolib")) {
             GeckoLibCompatImpl.init();
+        }
+
+        if(Platform.isModLoaded("attributeslib")) {
+            ApothicAttributesCompat.init();
         }
 
         if (Platform.isClient()) {
@@ -92,6 +98,7 @@ public class PalladiumForge {
         e.getGenerator().addProvider(e.includeServer(), new PalladiumRecipeProvider(output));
         e.getGenerator().addProvider(e.includeServer(), new PalladiumLootTableProvider(output));
         e.getGenerator().addProvider(e.includeServer(), new PalladiumWorldGenProvider(output, e.getLookupProvider()));
+        e.getGenerator().addProvider(e.includeServer(), new PalladiumDamageTypeProvider(output, e.getExistingFileHelper()));
 
         e.getGenerator().addProvider(e.includeClient(), new PalladiumBlockStateProvider(output, e.getExistingFileHelper()));
         e.getGenerator().addProvider(e.includeClient(), new PalladiumItemModelProvider(output, e.getExistingFileHelper()));

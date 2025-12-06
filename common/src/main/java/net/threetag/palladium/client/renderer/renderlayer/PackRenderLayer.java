@@ -20,10 +20,18 @@ import net.threetag.palladium.client.dynamictexture.DynamicModelLayerLocation;
 import net.threetag.palladium.client.dynamictexture.DynamicTexture;
 import net.threetag.palladium.client.dynamictexture.DynamicTextureManager;
 import net.threetag.palladium.client.model.ExtraAnimatedModel;
+import net.threetag.palladium.client.renderer.DynamicColor;
+import net.threetag.palladium.condition.Condition;
+import net.threetag.palladium.condition.ConditionEnvironment;
+import net.threetag.palladium.condition.ConditionSerializer;
+import net.threetag.palladium.condition.FalseCondition;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.context.DataContext;
 
+import java.awt.*;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -34,13 +42,17 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
     private final SkinTypedValue<ModelCache> model;
     private final SkinTypedValue<DynamicTexture> texture;
     private final RenderTypeFunction renderType;
+    private final DynamicColor tint;
+    private final List<Condition> enchantmentGlint;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public PackRenderLayer(SkinTypedValue<ModelTypes.Model> model, SkinTypedValue<DynamicModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture, RenderTypeFunction renderType) {
+    public PackRenderLayer(SkinTypedValue<ModelTypes.Model> model, SkinTypedValue<DynamicModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture, RenderTypeFunction renderType, DynamicColor tint, List<Condition> enchantmentGlint) {
         this.modelLookup = model;
         this.model = new SkinTypedValue(new ModelCache(modelLayerLocation.getNormal()), new ModelCache(modelLayerLocation.getSlim()));
         this.texture = texture;
         this.renderType = renderType;
+        this.tint = tint;
+        this.enchantmentGlint = enchantmentGlint;
     }
 
     @Override
@@ -60,9 +72,24 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
                 extra.extraAnimations(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks);
             }
 
-            VertexConsumer vertexConsumer = this.renderType.createVertexConsumer(bufferSource, this.texture.get(entity).getTexture(context), context.getItem().hasFoil());
+            VertexConsumer vertexConsumer = this.renderType.createVertexConsumer(bufferSource, this.texture.get(entity).getTexture(context), context.getItem().hasFoil() || IPackRenderLayer.conditionsFulfilled(entity, this.enchantmentGlint));
 
-            entityModel.renderToBuffer(poseStack, vertexConsumer, this.renderType.getPackedLight(packedLight), OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+            var tint = Color.WHITE;
+
+            if (this.tint != null) {
+                tint = this.tint.getColor(context);
+            }
+
+            entityModel.renderToBuffer(
+                    poseStack,
+                    vertexConsumer,
+                    this.renderType.getPackedLight(packedLight),
+                    OverlayTexture.NO_OVERLAY,
+                    tint.getRed() / 255F,
+                    tint.getGreen() / 255F,
+                    tint.getBlue() / 255F,
+                    tint.getAlpha() / 255F
+            );
         }
     }
 
@@ -74,18 +101,40 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
 
             if (entityModel instanceof HumanoidModel humanoidModel) {
                 playerRenderer.getModel().copyPropertiesTo(humanoidModel);
-                VertexConsumer vertexConsumer = this.renderType.createVertexConsumer(bufferSource, this.texture.get(player).getTexture(context), context.getItem().hasFoil());
+                VertexConsumer vertexConsumer = this.renderType.createVertexConsumer(bufferSource, this.texture.get(player).getTexture(context), context.getItem().hasFoil() || IPackRenderLayer.conditionsFulfilled(player, this.enchantmentGlint));
 
                 humanoidModel.attackTime = 0.0F;
                 humanoidModel.crouching = false;
                 humanoidModel.swimAmount = 0.0F;
 
+                var tint = Color.WHITE;
+
+                if (this.tint != null) {
+                    tint = this.tint.getColor(context);
+                }
+
                 if (arm == HumanoidArm.RIGHT) {
                     humanoidModel.rightArm.xRot = 0.0F;
-                    humanoidModel.rightArm.render(poseStack, vertexConsumer, this.renderType.getPackedLight(packedLight), OverlayTexture.NO_OVERLAY);
+                    humanoidModel.rightArm.render(
+                            poseStack,
+                            vertexConsumer,
+                            this.renderType.getPackedLight(packedLight),
+                            OverlayTexture.NO_OVERLAY,
+                            tint.getRed() / 255F,
+                            tint.getGreen() / 255F,
+                            tint.getBlue() / 255F,
+                            tint.getAlpha() / 255F);
                 } else {
                     humanoidModel.leftArm.xRot = 0.0F;
-                    humanoidModel.leftArm.render(poseStack, vertexConsumer, this.renderType.getPackedLight(packedLight), OverlayTexture.NO_OVERLAY);
+                    humanoidModel.leftArm.render(
+                            poseStack,
+                            vertexConsumer,
+                            this.renderType.getPackedLight(packedLight),
+                            OverlayTexture.NO_OVERLAY,
+                            tint.getRed() / 255F,
+                            tint.getGreen() / 255F,
+                            tint.getBlue() / 255F,
+                            tint.getAlpha() / 255F);
                 }
             }
         }
@@ -132,7 +181,15 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
             throw new JsonParseException("Unknown render type '" + new ResourceLocation(GsonHelper.getAsString(json, "render_type", "solid")) + "'");
         }
 
-        return new PackRenderLayer(model, SkinTypedValue.fromJSON(json.get("model_layer"), DynamicModelLayerLocation::fromJson), SkinTypedValue.fromJSON(json.get("texture"), DynamicTextureManager::fromJson), renderType);
+        List<Condition> enchantmentGlint = json.has("enchantment_glint") ? ConditionSerializer.listFromJSON(json.get("enchantment_glint"), ConditionEnvironment.ASSETS) : Collections.singletonList(new FalseCondition());
+
+        return new PackRenderLayer(
+                model,
+                SkinTypedValue.fromJSON(json.get("model_layer"), DynamicModelLayerLocation::fromJson),
+                SkinTypedValue.fromJSON(json.get("texture"), DynamicTextureManager::fromJson),
+                renderType,
+                DynamicColor.getFromJson(json, "tint", null),
+                enchantmentGlint);
     }
 
     public static class ModelCache {

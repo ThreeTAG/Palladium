@@ -99,11 +99,6 @@ public class AbilityBuilder extends BuilderBase<Ability> {
         return this;
     }
 
-    public String getDocumentationDescription(String description) {
-        this.documentationDescription = description;
-        return this.documentationDescription;
-    }
-
     @FunctionalInterface
     public interface TickFunction {
         void tick(LivingEntity entity, AbilityInstance entry, IPowerHolder holder, boolean enabled);

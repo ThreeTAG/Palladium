@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.entity.PalladiumLivingEntityExtension;
 import net.threetag.palladium.util.RenderUtil;
@@ -30,14 +31,15 @@ public class LightningSparksRenderLayer extends AbstractPackRenderLayer {
 
     private final float frequency;
     private final int amount;
-    private final Color coreColor;
-    private final Color glowColor;
+    private final DynamicColor coreColor;
+    private final DynamicColor glowColor;
     private final float coreOpacity;
     private final float glowOpacity;
     private final float thickness;
+    private final float scale;
     private final boolean normalTransparency;
 
-    public LightningSparksRenderLayer(float frequency, int amount, Color coreColor, Color glowColor, float coreOpacity, float glowOpacity, float thickness, boolean normalTransparency) {
+    public LightningSparksRenderLayer(float frequency, int amount, DynamicColor coreColor, DynamicColor glowColor, float coreOpacity, float glowOpacity, float thickness, float scale, boolean normalTransparency) {
         this.frequency = frequency;
         this.amount = amount;
         this.coreColor = coreColor;
@@ -45,19 +47,21 @@ public class LightningSparksRenderLayer extends AbstractPackRenderLayer {
         this.coreOpacity = coreOpacity;
         this.glowOpacity = glowOpacity;
         this.thickness = thickness;
+        this.scale = scale;
         this.normalTransparency = normalTransparency;
     }
 
     public static LightningSparksRenderLayer parse(JsonObject json) {
         float frequency = GsonUtil.getAsFloatRanged(json, "frequency", 0, 1, 0.5F);
         int amount = GsonUtil.getAsIntMin(json, "amount", 0, 5);
-        Color coreColor = GsonUtil.getAsColor(json, "core_color", Color.WHITE);
-        Color glowColor = GsonUtil.getAsColor(json, "glow_color", Color.WHITE);
+        DynamicColor coreColor = DynamicColor.getFromJson(json, "core_color", DynamicColor.WHITE);
+        DynamicColor glowColor = DynamicColor.getFromJson(json, "glow_color", DynamicColor.WHITE);
         float coreOpacity = GsonUtil.getAsFloatRanged(json, "core_opacity", 0, 1, 1F);
         float glowOpacity = GsonUtil.getAsFloatRanged(json, "glow_opacity", 0, 1, 1F);
         float thickness = GsonUtil.getAsFloatMin(json, "thickness", 0.001F, 0.02F);
+        float scale = GsonUtil.getAsFloatMin(json, "scale", 0F, 1F);
         boolean normalTransparency = GsonHelper.getAsBoolean(json, "normal_transparency", false);
-        return new LightningSparksRenderLayer(frequency, amount, coreColor, glowColor, coreOpacity, glowOpacity, thickness, normalTransparency);
+        return new LightningSparksRenderLayer(frequency, amount, coreColor, glowColor, coreOpacity, glowOpacity, thickness, scale, normalTransparency);
     }
 
     @Override
@@ -74,9 +78,9 @@ public class LightningSparksRenderLayer extends AbstractPackRenderLayer {
                 poseStack.pushPose();
                 poseStack.translate(0, 24 / 16F, 0);
                 poseStack.mulPose(Axis.XP.rotationDegrees(180));
-                poseStack.translate(entity.getBbWidth() / -2, 0, entity.getBbWidth() / -2);
-                renderLightning(poseStack, vertexConsumer, spark.pos1, spark.pos2, this.coreColor, this.glowColor, opacity * this.coreOpacity, opacity * this.glowOpacity, this.thickness);
-                renderLightning(poseStack, vertexConsumer, spark.pos1, spark.pos3, this.coreColor, this.glowColor, opacity * this.coreOpacity, opacity * this.glowOpacity, this.thickness);
+                poseStack.translate((entity.getBbWidth() * this.scale) / -2, (entity.getBbHeight() / 2) - ((entity.getBbHeight() * scale) / 2), (entity.getBbWidth() * this.scale) / -2);
+                renderLightning(poseStack, vertexConsumer, spark.pos1, spark.pos2, this.coreColor.getColor(context), this.glowColor.getColor(context), opacity * this.coreOpacity, opacity * this.glowOpacity, this.thickness);
+                renderLightning(poseStack, vertexConsumer, spark.pos1, spark.pos3, this.coreColor.getColor(context), this.glowColor.getColor(context), opacity * this.coreOpacity, opacity * this.glowOpacity, this.thickness);
                 poseStack.popPose();
             }
         }
@@ -124,7 +128,7 @@ public class LightningSparksRenderLayer extends AbstractPackRenderLayer {
 
             if (this.sparks.isEmpty() && IPackRenderLayer.conditionsFulfilled(entity, this.layer.conditions, this.layer.thirdPersonConditions) && Math.random() < this.layer.frequency) {
                 for (int i = 0; i < this.layer.amount; i++) {
-                    this.sparks.add(new Spark(entity, RandomSource.create()));
+                    this.sparks.add(new Spark(entity, this.layer.scale, RandomSource.create()));
                 }
             }
         }
@@ -137,11 +141,11 @@ public class LightningSparksRenderLayer extends AbstractPackRenderLayer {
         public final Vec3 pos3;
         private int ticks;
 
-        public Spark(Entity entity, RandomSource randomSource) {
+        public Spark(Entity entity, float scale, RandomSource randomSource) {
             var random = new Random();
-            this.pos1 = new Vec3(entity.getBbWidth() * random.nextFloat(), entity.getBbHeight() * random.nextFloat(), entity.getBbWidth() * random.nextFloat());
-            this.pos2 = this.makePos(this.pos1, entity.getBbWidth(), entity.getBbHeight(), randomSource);
-            this.pos3 = this.makePos(this.pos1, entity.getBbWidth(), entity.getBbHeight(), randomSource);
+            this.pos1 = new Vec3(entity.getBbWidth() * scale * random.nextFloat(), entity.getBbHeight() * scale * random.nextFloat(), entity.getBbWidth() * scale * random.nextFloat());
+            this.pos2 = this.makePos(this.pos1, entity.getBbWidth() * scale, entity.getBbHeight() * scale, randomSource);
+            this.pos3 = this.makePos(this.pos1, entity.getBbWidth() * scale, entity.getBbHeight() * scale, randomSource);
         }
 
         private Vec3 makePos(Vec3 center, float width, float height, RandomSource source) {

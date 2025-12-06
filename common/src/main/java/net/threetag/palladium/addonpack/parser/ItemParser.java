@@ -67,7 +67,8 @@ public class ItemParser extends AddonParser<Item> {
                 .maxDamage(GsonUtil.getAsIntMin(json, "max_damage", 1, 0))
                 .rarity(getRarity(GsonHelper.getAsString(json, "rarity", null)))
                 .fireResistant(GsonHelper.getAsBoolean(json, "is_fire_resistant", false))
-                .tooltipLines(GsonUtil.getAsComponentList(json, "tooltip", null));
+                .tooltipLines(GsonUtil.getAsComponentList(json, "tooltip", null))
+                .shouldRenderModel(GsonHelper.getAsBoolean(json, "should_render_model", true));
 
         GsonUtil.ifHasKey(json, "creative_mode_tab", je -> {
             for (PlacedTabPlacement placedTabPlacement : GsonUtil.fromListOrPrimitive(je, PlacedTabPlacement::fromJson)) {
@@ -232,6 +233,10 @@ public class ItemParser extends AddonParser<Item> {
                 .description("Whether or not the item will survive being thrown into fire/lava.")
                 .fallback(false)
                 .exampleJson(new JsonPrimitive(false));
+        builder.addProperty("should_render_model", Boolean.class)
+                .description("If false, the item model will be ignored (except in the inventory). In first person, the player's arm will render instead. This allows a render layer to be applied in place of a less-dynamic item model.")
+                .fallback(true)
+                .exampleJson(new JsonPrimitive(true));
 
         JsonArray tooltipExample = new JsonArray();
         tooltipExample.add("Line 1");

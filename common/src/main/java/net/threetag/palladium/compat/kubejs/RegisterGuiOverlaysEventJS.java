@@ -1,5 +1,6 @@
 package net.threetag.palladium.compat.kubejs;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.latvian.mods.kubejs.event.EventJS;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -25,9 +26,11 @@ public class RegisterGuiOverlaysEventJS extends EventJS {
 
         @Override
         public void render(Minecraft minecraft, Gui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {
+            RenderSystem.enableBlend();
             for (OverlayRegistry.IngameOverlay overlay : OVERLAYS.values()) {
                 overlay.render(minecraft, gui, guiGraphics, partialTicks, width, height);
             }
+            RenderSystem.disableBlend();
         }
     }
 

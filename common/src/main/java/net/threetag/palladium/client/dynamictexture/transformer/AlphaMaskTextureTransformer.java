@@ -3,6 +3,7 @@ package net.threetag.palladium.client.dynamictexture.transformer;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.threetag.palladium.util.context.DataContext;
 
 import java.awt.*;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.util.function.Function;
 public record AlphaMaskTextureTransformer(String maskLocation) implements ITextureTransformer {
 
     @Override
-    public NativeImage transform(NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
+    public NativeImage transform(DataContext context, NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
         NativeImage overlay = NativeImage.read(manager.getResource(new ResourceLocation(stringConverter.apply(this.maskLocation))).get().open());
 
         for (int y = 0; y < overlay.getHeight(); ++y) {

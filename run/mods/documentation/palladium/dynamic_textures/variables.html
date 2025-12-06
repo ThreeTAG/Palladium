@@ -99,6 +99,10 @@ Float Property</a>
 Integer Property</a>
 </li>
 <li>
+<a href="#palladium:item_model_property">
+Item Model Property</a>
+</li>
+<li>
 <a href="#palladium:moon_phase">
 Moon Phase</a>
 </li>
@@ -1951,6 +1955,146 @@ false</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:integer_property","property":"example_property","fallback":0,"add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
+</div>
+<hr>
+
+<div id="palladium:item_model_property">
+<h2>
+Item Model Property</h2>
+<p>
+When used in an item-context, this returns the value of the specified item model property, such as "custom_model_data" or "damage".</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+model_property</td>
+<td>
+ResourceLocation</td>
+<td>
+ID of the item model property to get.</td>
+<td style="background-color: lightgreen">
+true</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+fallback</td>
+<td>
+Float</td>
+<td>
+If the item model property is not found on the item, this value will be used instead.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0.0</td>
+</tr>
+<tr>
+<td>
+add</td>
+<td>
+Integer</td>
+<td>
+This value will be added on top of the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+subtract</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted from the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+multiply</td>
+<td>
+Integer</td>
+<td>
+This value will be subtracted with the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+divide</td>
+<td>
+Integer</td>
+<td>
+This value will be divided to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a minimum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Using this value will set a maximum limit for the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+<tr>
+<td>
+modulo</td>
+<td>
+Integer</td>
+<td>
+Using this value will apply a modulo operation to the returned value.</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+/</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:item_model_property","model_property":"minecraft:damage","fallback":0.0,"add":5,"subtract":3,"multiply":10,"divide":10,"min":1,"max":100,"modulo":5}</pre>
 </div>
 <hr>
 

@@ -1,0 +1,24 @@
+{
+  "type": "palladium:item_tailoring",
+  "results": {
+    "head": "minecraft:diamond_helmet",
+    "chest": "minecraft:diamond_chestplate",
+    "legs": "minecraft:diamond_leggings",
+    "feet": "minecraft:diamond_boots"
+  },
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:diamond"
+      },
+      "count": 24
+    }
+  ],
+  "tool": {
+    "item": "minecraft:shears"
+  },
+  "tool_icon": "palladium:item/empty_tool_slot_shears",
+  "title": "Diamond Armor",
+  "category": "test:vanilla_armor",
+  "requires_unlocking": false
+}

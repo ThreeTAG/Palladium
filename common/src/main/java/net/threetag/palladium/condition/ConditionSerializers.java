@@ -46,9 +46,11 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> BRIGHTNESS_AT_POSITION = CONDITION_SERIALIZERS.register("brightness_at_position", BrightnessAtPositionCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ON_GROUND = CONDITION_SERIALIZERS.register("on_ground", OnGroundCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IS_MOVING = CONDITION_SERIALIZERS.register("is_moving", IsMovingCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> HAS_MOVEMENT_INPUT = CONDITION_SERIALIZERS.register("has_movement_input", HasMovementInputCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> ITEM_BUYABLE = CONDITION_SERIALIZERS.register("item_buyable", ItemBuyableCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> EXPERIENCE_LEVEL_BUYABLE = CONDITION_SERIALIZERS.register("experience_level_buyable", ExperienceLevelBuyableCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> SCOREBOARD_SCORE_BUYABLE = CONDITION_SERIALIZERS.register("scoreboard_score_buyable", ScoreboardScoreBuyableCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> PROPERTY_BUYABLE = CONDITION_SERIALIZERS.register("property_buyable", PropertyBuyableCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> COMMAND_RESULT = CONDITION_SERIALIZERS.register("command_result", CommandResultCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> INTERVAL = CONDITION_SERIALIZERS.register("interval", IntervalCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> SPRINTING = CONDITION_SERIALIZERS.register("sprinting", SprintingCondition.Serializer::new);
@@ -82,5 +84,6 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> ACCESSORY_SELECTED = CONDITION_SERIALIZERS.register("accessory_selected", AccessorySelectedCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> SMALL_ARMS = CONDITION_SERIALIZERS.register("small_arms", SmallArmsCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> SIZE = CONDITION_SERIALIZERS.register("size", SizeCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> OPENABLE_ITEM_PROGRESS = CONDITION_SERIALIZERS.register("openable_item_progress", OpenableItemProgressCondition.Serializer::new);
 
 }

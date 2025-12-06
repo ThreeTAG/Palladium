@@ -155,6 +155,10 @@ float_property</a>
 has_effect</a>
 </li>
 <li>
+<a href="#palladium:has_movement_input">
+has_movement_input</a>
+</li>
+<li>
 <a href="#palladium:has_power">
 has_power</a>
 </li>
@@ -287,12 +291,20 @@ objective_score</a>
 on_ground</a>
 </li>
 <li>
+<a href="#palladium:openable_item_progress">
+openable_item_progress</a>
+</li>
+<li>
 <a href="#palladium:or">
 or</a>
 </li>
 <li>
 <a href="#palladium:pose">
 pose</a>
+</li>
+<li>
+<a href="#palladium:property_buyable">
+property_buyable</a>
 </li>
 <li>
 <a href="#palladium:scoreboard_score_buyable">
@@ -2054,6 +2066,18 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:has_movement_input">
+<h2>
+has_movement_input</h2>
+<p>
+Checks if the player is moving by itself by using their buttons.<br><br>Applicable for: all</p>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:has_movement_input"}</pre>
+</div>
+<hr>
+
 <div id="palladium:has_power">
 <h2>
 has_power</h2>
@@ -3030,6 +3054,74 @@ Example:</h3>
 </div>
 <hr>
 
+<div id="palladium:openable_item_progress">
+<h2>
+openable_item_progress</h2>
+<p>
+Checks if the openable item in the given slot has a certain amount of progress. Needs to be using the openable-system for items.<br><br>Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+slot</td>
+<td>
+PlayerSlot</td>
+<td>
+Slot that must contain an opened item. Example values: [mainhand, offhand, feet, legs, chest, head, curios:back, curios:necklace, trinkets:chest/back, trinkets:chest/necklace]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+chest</td>
+</tr>
+<tr>
+<td>
+min</td>
+<td>
+Integer</td>
+<td>
+Minimum required amount of the progress value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+<tr>
+<td>
+max</td>
+<td>
+Integer</td>
+<td>
+Maximum required amount of the progress value</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+0</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:openable_item_progress","slot":"chest","min":0,"max":0}</pre>
+</div>
+<hr>
+
 <div id="palladium:or">
 <h2>
 or</h2>
@@ -3115,6 +3207,86 @@ CROUCHING</td>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:pose","pose":"crouching"}</pre>
+</div>
+<hr>
+
+<div id="palladium:property_buyable">
+<h2>
+property_buyable</h2>
+<p>
+A buyable condition that requires a certain value in an integer palladium property.<br><br>Applicable for: data</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+property</td>
+<td>
+String</td>
+<td>
+Name of the (integer) palladium property</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+property_name</td>
+</tr>
+<tr>
+<td>
+score</td>
+<td>
+Integer</td>
+<td>
+Required value of the property</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+3</td>
+</tr>
+<tr>
+<td>
+icon</td>
+<td>
+IIcon</td>
+<td>
+Icon that will be displayed during buying</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+ItemIcon{stack=1 command_block}</td>
+</tr>
+<tr>
+<td>
+description</td>
+<td>
+Component</td>
+<td>
+Name of the property that will be displayed during buying</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+literal{Property}</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:property_buyable","property":"property_name","score":3,"icon":"minecraft:command_block","description":{"text":"Property"}}</pre>
 </div>
 <hr>
 
@@ -3462,7 +3634,7 @@ Example:</h3>
 <h2>
 testpack/test_condition</h2>
 <p>
-Applicable for: all</p>
+This is a test condition, defined in a KubeJS script. The condition is active if an entity is crouching.<br><br>Applicable for: all</p>
 <h3>
 Example:</h3>
 <pre class="json-snippet">
@@ -3474,7 +3646,7 @@ Example:</h3>
 <h2>
 testpack/test_condition_with_property</h2>
 <p>
-Applicable for: all</p>
+This is a test condition, defined in a KubeJS script. The condition is active if the configured property is 4.<br><br>Applicable for: all</p>
 <h3>
 Settings:</h3>
 <table>

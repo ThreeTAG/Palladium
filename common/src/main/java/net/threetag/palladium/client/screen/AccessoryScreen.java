@@ -40,6 +40,7 @@ import net.threetag.palladiumcore.util.Platform;
 import org.joml.Quaternionf;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class AccessoryScreen extends OptionsSubScreen {
@@ -179,7 +180,7 @@ public class AccessoryScreen extends OptionsSubScreen {
 
             this.listWidth = width;
             var context = DataContext.forEntity(minecraft.player);
-            for (AccessorySlot slot : AccessorySlot.getSlots()) {
+            for (AccessorySlot slot : AccessorySlot.getSlots().stream().sorted(Comparator.comparingInt(AccessorySlot::getSortIndex)).toList()) {
                 if (!Accessory.getAvailableAccessories(SupporterHandler.getPlayerData(minecraft.player.getUUID()), slot).isEmpty() && slot.isVisible(context)) {
                     Accessory.getPlayerData(minecraft.player).ifPresent(data -> {
                         this.addEntry(new SlotListEntry(slot, parent, data.getSlots().containsKey(slot) && !data.getSlots().get(slot).isEmpty()));

@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "palladium:fabrics"
+    },
+    {
+      "tag": "palladium:fabrics"
+    },
+    {
+      "tag": "palladium:fabrics"
+    },
+    {
+      "tag": "palladium:fabrics"
+    },
+    {
+      "tag": "palladium:fabrics"
+    },
+    {
+      "tag": "palladium:fabrics"
+    },
+    {
+      "tag": "palladium:fabrics"
+    },
+    {
+      "tag": "palladium:fabrics"
+    },
+    {
+      "tag": "palladium:connector/blue_dyes"
+    }
+  ],
+  "result": {
+    "count": 8,
+    "item": "palladium:blue_fabric"
+  }
+}

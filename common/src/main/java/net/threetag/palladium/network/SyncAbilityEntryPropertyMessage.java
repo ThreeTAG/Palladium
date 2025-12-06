@@ -7,13 +7,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.client.screen.power.PowersScreen;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilityReference;
+import net.threetag.palladium.power.ability.NameChangeAbility;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladiumcore.network.MessageContext;
 import net.threetag.palladiumcore.network.MessageS2C;
 import net.threetag.palladiumcore.network.MessageType;
+import net.threetag.palladiumcore.util.PlayerUtil;
 
 import java.util.Objects;
 
@@ -72,6 +75,10 @@ public class SyncAbilityEntryPropertyMessage extends MessageS2C {
 
                     if (Minecraft.getInstance().screen instanceof PowersScreen powers && powers.selectedTab != null) {
                         powers.selectedTab.populate();
+                    }
+                    if (property == NameChangeAbility.NAME_CACHED && entity instanceof Player player) {
+                        PlayerUtil.refreshDisplayName(player);
+                        var name = entry.getProperty(NameChangeAbility.NAME_CACHED);
                     }
                 }
             }

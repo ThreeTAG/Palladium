@@ -1,5 +1,6 @@
 package net.threetag.palladium.power.ability;
 
+import net.minecraft.ResourceLocationException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,6 +33,16 @@ public class AbilityReference {
             return new AbilityReference(null, s[0]);
         } else {
             return new AbilityReference(new ResourceLocation(s[0]), s[1]);
+        }
+    }
+
+    public static boolean validateFull(String raw) {
+        String[] s = raw.split("#", 2);
+
+        if (s.length != 2) {
+            throw new ResourceLocationException("Ability reference needs a power and the ability key, seperated by '#'");
+        } else {
+            return ResourceLocation.isValidResourceLocation(s[0]);
         }
     }
 

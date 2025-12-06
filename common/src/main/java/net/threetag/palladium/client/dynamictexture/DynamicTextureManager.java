@@ -14,6 +14,7 @@ import net.threetag.palladium.client.dynamictexture.transformer.ColorTextureTran
 import net.threetag.palladium.client.dynamictexture.transformer.ITextureTransformer;
 import net.threetag.palladium.client.dynamictexture.transformer.OverlayTextureTransformer;
 import net.threetag.palladium.client.dynamictexture.variable.*;
+import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;
@@ -34,10 +35,11 @@ public class DynamicTextureManager extends SimpleJsonResourceReloadListener {
         registerType(Palladium.id("simple"), j -> new SimpleDynamicTexture(GsonUtil.getAsResourceLocation(j, "texture")));
         registerType(Palladium.id("default"), j -> new DefaultDynamicTexture(GsonHelper.getAsString(j, "base"), GsonHelper.getAsString(j, "output", "")));
         registerType(Palladium.id("entity"), j -> new EntityDynamicTexture(GsonHelper.getAsBoolean(j, "ignore_skin_change", false)));
+        registerType(Palladium.id("player"), j -> new PlayerDynamicTexture(GsonHelper.getAsString(j, "username", ""), GsonHelper.getAsString(j, "property", "")));
 
         registerTransformer(Palladium.id("alpha_mask"), j -> new AlphaMaskTextureTransformer(GsonHelper.getAsString(j, "mask")));
         registerTransformer(Palladium.id("overlay"), j -> new OverlayTextureTransformer(GsonHelper.getAsString(j, "overlay"), GsonHelper.getAsBoolean(j, "ignore_blank", false)));
-        registerTransformer(Palladium.id("color"), j -> new ColorTextureTransformer(GsonUtil.getAsRawColor(j, "color"), GsonHelper.getAsBoolean(j, "ignore_blank")));
+        registerTransformer(Palladium.id("color"), j -> new ColorTextureTransformer(DynamicColor.getFromJson(j, "color"), GsonHelper.getAsBoolean(j, "ignore_blank"), DynamicColor.getFromJson(j, "filter", null)));
 
         registerVariable(new ConditionTextureVariable.Serializer());
         registerVariable(new CrouchingTextureVariable.Serializer());
@@ -61,6 +63,7 @@ public class DynamicTextureManager extends SimpleJsonResourceReloadListener {
         registerVariable(new AbilityWheelSelectionTextureVariable.Serializer());
         registerVariable(new AbilityWheelHoveredVariable.Serializer());
         registerVariable(new AbilityWheelDisplayedVariable.Serializer());
+        registerVariable(new ItemModelPropertyVariable.Serializer());
     }
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();

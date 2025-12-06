@@ -35,6 +35,7 @@ StartupEvents.registry('palladium:condition_serializer', (event) => {
 
     // ID of the condition will be: 'kubejs:testpack/test_condition'
     event.create('testpack/test_condition')
+        .documentationDescription('This is a test condition, defined in a KubeJS script. The condition is active if an entity is crouching.')
 
         // Handler for the condition, in this case the condition will be fullfilled when the entity is crouching
         .test((entity, properties) => {

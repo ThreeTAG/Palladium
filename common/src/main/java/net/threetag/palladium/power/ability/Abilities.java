@@ -30,12 +30,14 @@ public class Abilities {
     public static final RegistrySupplier<Ability> SIZE = ABILITIES.register("size", SizeAbility::new);
     public static final RegistrySupplier<Ability> PROJECTILE = ABILITIES.register("projectile", ProjectileAbility::new);
     public static final RegistrySupplier<Ability> SKIN_CHANGE = ABILITIES.register("skin_change", SkinChangeAbility::new);
+    public static final RegistrySupplier<Ability> PLAYER_SKIN_CHANGE = ABILITIES.register("player_skin_change", PlayerSkinChangeAbility::new);
     public static final RegistrySupplier<Ability> AIM = ABILITIES.register("aim", AimAbility::new);
     public static final RegistrySupplier<Ability> HIDE_BODY_PART = ABILITIES.register("hide_body_part", HideBodyPartAbility::new);
     public static final RegistrySupplier<Ability> REMOVE_BODY_PART = ABILITIES.register("remove_body_part", RemoveBodyPartAbility::new);
     public static final RegistrySupplier<Ability> SHADER_EFFECT = ABILITIES.register("shader_effect", ShaderEffectAbility::new);
     public static final RegistrySupplier<Ability> GUI_OVERLAY = ABILITIES.register("gui_overlay", GuiOverlayAbility::new);
     public static final RegistrySupplier<Ability> SHOW_BOTH_ARMS = ABILITIES.register("show_both_arms", () -> new Ability().withProperty(Ability.HIDDEN_IN_GUI, true).setDocumentationDescription("Enables the rendering of your off-hand."));
+    public static final RegistrySupplier<Ability> DUAL_WIELDING = ABILITIES.register("dual_wielding", () -> new Ability().setDocumentationDescription("Makes you able to use your second hand to combat."));
     public static final RegistrySupplier<Ability> PLAYER_ANIMATION = ABILITIES.register("player_animation", PlayerAnimationAbility::new);
     public static final RegistrySupplier<Ability> WATER_WALK = ABILITIES.register("water_walk", () -> new Ability().setDocumentationDescription("Allows the player to walk on water."));
     public static final RegistrySupplier<Ability> FLUID_WALKING = ABILITIES.register("fluid_walking", FluidWalkingAbility::new);
@@ -52,6 +54,7 @@ public class Abilities {
     public static final RegistrySupplier<Ability> ENTITY_GLOW = ABILITIES.register("entity_glow", EntityGlowAbility::new);
     public static final RegistrySupplier<Ability> TOOL_HANDS = ABILITIES.register("tool_hands", ToolHandsAbility::new);
     public static final RegistrySupplier<Ability> ABILITY_WHEEL = ABILITIES.register("ability_wheel", AbilityWheelAbility::new);
+    public static final RegistrySupplier<Ability> DISABLE_HOTBAR_SCROLL = ABILITIES.register("disable_hotbar_scroll", () -> new Ability().setDocumentationDescription("When enabled, the player will not be able to scroll through the hotbar anymore."));
 
     public static void init() {
 

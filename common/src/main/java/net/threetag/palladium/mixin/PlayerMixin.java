@@ -10,11 +10,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.threetag.palladium.accessory.AccessoryPlayerData;
+import net.threetag.palladium.entity.DualWieldingPlayerHandler;
 import net.threetag.palladium.entity.FlightHandler;
 import net.threetag.palladium.entity.PalladiumPlayerExtension;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.ToolHandsAbility;
+import net.threetag.palladiumcore.util.PlayerUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,15 +35,21 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
     @Unique
     private AccessoryPlayerData palladium$accessories;
 
+    @Unique
+    private DualWieldingPlayerHandler palladium$dualWielding;
+
     @Inject(method = "<init>", at = @At("RETURN"))
     public void init(Level level, BlockPos blockPos, float yRot, GameProfile gameProfile, CallbackInfo ci) {
         this.palladium$getFlightHandler();
         this.palladium$accessories = new AccessoryPlayerData();
+        this.palladium$dualWielding = new DualWieldingPlayerHandler((Player) (Object) this);
+        PlayerUtil.refreshDisplayName((Player) (Object) this);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(CallbackInfo ci) {
         this.palladium$flightHandler.tick();
+        this.palladium$dualWielding.tick();
     }
 
     @ModifyVariable(method = "getDimensions", at = @At("HEAD"), ordinal = 0, argsOnly = true)
@@ -115,5 +123,10 @@ public abstract class PlayerMixin implements PalladiumPlayerExtension {
     @Override
     public AccessoryPlayerData palladium$getAccessories() {
         return this.palladium$accessories;
+    }
+
+    @Override
+    public DualWieldingPlayerHandler palladium$getDualWieldingHandler() {
+        return this.palladium$dualWielding;
     }
 }

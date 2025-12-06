@@ -6,6 +6,7 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -14,6 +15,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundExplodePacket;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -31,8 +33,8 @@ import net.threetag.palladiumcore.network.NetworkManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -40,6 +42,7 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
 
     public static final Map<String, Function<CompoundTag, Appearance>> APPEARANCE_REGISTRY = new HashMap<>();
     public static Consumer<CustomProjectile> KUBEJS_EVENT_HANDLER = null;
+    public ResourceLocation damageType;
     public float damage = 3F;
     public float gravity = 0.03F;
     public boolean dieOnBlockHit = true;
@@ -112,7 +115,13 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
                 }
 
                 if (this.damage > 0F) {
-                    entity.hurt(entity.level().damageSources().thrown(this, this.getOwner()), this.damage);
+                    var damageType = entity.level().damageSources().thrown(this.getOwner(), this);
+
+                    if (this.damageType != null) {
+                        damageType = this.damageSources().source(ResourceKey.create(Registries.DAMAGE_TYPE, this.damageType), this.getOwner(), this);
+                    }
+
+                    entity.hurt(damageType, this.damage);
                 }
 
                 if (this.setEntityOnFireSeconds > 0) {
@@ -205,6 +214,8 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
+        if (this.damageType != null)
+            compound.putString("DamageType", this.damageType.toString());
         compound.putFloat("Damage", this.damage);
         compound.putFloat("Gravity", this.gravity);
         compound.putBoolean("DieOnEntityHit", this.dieOnEntityHit);
@@ -236,6 +247,8 @@ public class CustomProjectile extends ThrowableProjectile implements ExtendedEnt
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
+        if (compound.contains("DamageType", Tag.TAG_STRING))
+            this.damageType = new ResourceLocation(compound.getString("DamageType"));
         if (compound.contains("Damage", Tag.TAG_ANY_NUMERIC))
             this.damage = compound.getFloat("Damage");
         if (compound.contains("Gravity", Tag.TAG_ANY_NUMERIC))

@@ -1,24 +1,29 @@
 package net.threetag.palladium.power.ability;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.threetag.palladium.entity.PalladiumAttributes;
+import net.threetag.palladiumcore.event.EntityEvents;
 import net.threetag.palladiumcore.event.EventResult;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
 import net.threetag.palladiumcore.event.PlayerEvents;
+import net.threetag.palladiumcore.util.PlayerUtil;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class AbilityEventHandler implements LivingEntityEvents.Hurt, LivingEntityEvents.Attack, PlayerEvents.NameFormat {
+public class AbilityEventHandler implements LivingEntityEvents.Hurt, LivingEntityEvents.Attack, PlayerEvents.NameFormat, PlayerEvents.ChangedDimension {
 
     public static void init() {
         AbilityEventHandler handler = new AbilityEventHandler();
         LivingEntityEvents.ATTACK.register(handler);
         LivingEntityEvents.HURT.register(handler);
         PlayerEvents.NAME_FORMAT.register(handler);
+        PlayerEvents.CHANGED_DIMENSION.register(handler);
     }
 
     @Override
@@ -71,5 +76,11 @@ public class AbilityEventHandler implements LivingEntityEvents.Hurt, LivingEntit
                 .filter(ab -> ab.getProperty(NameChangeAbility.NAME_CACHED) != null)
                 .findFirst()
                 .ifPresent(ability -> displayName.set(ability.getProperty(NameChangeAbility.NAME_CACHED)));
+    }
+
+
+    @Override
+    public void playerChangedDimension(Player player, ResourceKey<Level> destination) {
+        PlayerUtil.refreshDisplayName(player);
     }
 }

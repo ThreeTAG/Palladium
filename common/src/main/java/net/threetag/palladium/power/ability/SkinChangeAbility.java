@@ -6,6 +6,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.client.dynamictexture.TextureReference;
 import net.threetag.palladium.client.renderer.entity.PlayerSkinHandler;
+import net.threetag.palladium.client.renderer.entity.PlayerSkinInfo;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.ChangedPlayerModelTypeProperty;
@@ -39,27 +40,20 @@ public class SkinChangeAbility extends Ability {
     public static class SkinProvider implements PlayerSkinHandler.ISkinProvider {
 
         @Override
-        public ResourceLocation getSkin(AbstractClientPlayer player, ResourceLocation previousSkin, ResourceLocation defaultSkin) {
-            var abilities = AbilityUtil.getEnabledEntries(player, Abilities.SKIN_CHANGE.get()).stream().filter(AbilityInstance::isEnabled).sorted((a1, a2) -> a2.getProperty(SkinChangeAbility.PRIORITY) - a1.getProperty(SkinChangeAbility.PRIORITY)).toList();
+        public PlayerSkinInfo getSkin(AbstractClientPlayer player, PlayerSkinInfo previousSkin, PlayerSkinInfo defaultSkin) {
+            var abilities = AbilityUtil.getEnabledInstances(player, Abilities.SKIN_CHANGE.get()).stream().filter(AbilityInstance::isEnabled).sorted((a1, a2) -> a2.getProperty(SkinChangeAbility.PRIORITY) - a1.getProperty(SkinChangeAbility.PRIORITY)).toList();
 
             if (!abilities.isEmpty()) {
                 var ability = abilities.get(0);
-                return ability.getProperty(SkinChangeAbility.TEXTURE).get(player).getTexture(DataContext.forAbility(player, ability));
+                var model = ability.getProperty(SkinChangeAbility.MODEL_TYPE).getModelName();
+
+                return new PlayerSkinInfo(
+                        model != null ? model : previousSkin.getModelName(),
+                        ability.getProperty(SkinChangeAbility.TEXTURE).get(player).getTexture(DataContext.forAbility(player, ability))
+                );
             }
 
             return previousSkin;
-        }
-
-        @Override
-        public ChangedPlayerModelTypeProperty.ChangedModelType getModelType(AbstractClientPlayer player) {
-            var abilities = AbilityUtil.getEnabledEntries(player, Abilities.SKIN_CHANGE.get()).stream().filter(AbilityInstance::isEnabled).sorted((a1, a2) -> a2.getProperty(SkinChangeAbility.PRIORITY) - a1.getProperty(SkinChangeAbility.PRIORITY)).toList();
-
-            if (!abilities.isEmpty()) {
-                var ability = abilities.get(0);
-                return ability.getProperty(SkinChangeAbility.MODEL_TYPE);
-            }
-
-            return PlayerSkinHandler.ISkinProvider.super.getModelType(player);
         }
     }
 

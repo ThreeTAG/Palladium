@@ -14,13 +14,11 @@
         ],
         "variables": {
           "TIMER": {
-            "type": "palladium:ability_integer_property",
+            "type": "palladium:animation_timer_ability",
             "power": "test:interpolate_animation_test",
-            "ability": "interpolate",
-            "property": "value"
+            "ability": "interpolate"
           }
-        },
-        "output": "test:textures/models/armor/iron_man_suit_#TIMER"
+        }
       }
     },
     {

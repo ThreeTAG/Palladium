@@ -1,7 +1,2 @@
-- Added ability_wheel_hovered & ability_wheel_displayed texture variables
-- Added fallback values to all property variables 
-- Added "disable_center_icon" to ability wheel ability
-- #145 Fixed mermod incompatibility
-- Fixed /ablity lock all response
-- Fix for name change ability
-- Compressed PNGs and decreased jar file size
+- Fixed crash when using dual wielding with Apothic Attributes
+- Added tooltip to tailoring categories if they are longer than the recipe book

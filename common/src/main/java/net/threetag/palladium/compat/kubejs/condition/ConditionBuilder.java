@@ -19,12 +19,14 @@ import java.util.*;
 public class ConditionBuilder extends BuilderBase<ConditionSerializer> {
 
     public transient TestFunction test;
+    public transient String documentationDescription;
 
     public transient List<AbilityBuilder.DeserializePropertyInfo> extraProperties;
 
     public ConditionBuilder(ResourceLocation id) {
         super(id);
         this.test = null;
+        this.documentationDescription = null;
         this.extraProperties = new ArrayList<>();
     }
 
@@ -52,6 +54,11 @@ public class ConditionBuilder extends BuilderBase<ConditionSerializer> {
             AddonPackLog.error("Failed to register condition property \"%s\", type \"%s\" is not supported", key, type);
         }
 
+        return this;
+    }
+
+    public ConditionBuilder documentationDescription(String documentationDescription) {
+        this.documentationDescription = documentationDescription;
         return this;
     }
 
@@ -88,6 +95,11 @@ public class ConditionBuilder extends BuilderBase<ConditionSerializer> {
             }
 
             return new ScriptableCondition(this.builder, this, extraProps);
+        }
+
+        @Override
+        public String getDocumentationDescription() {
+            return this.builder.documentationDescription;
         }
     }
 

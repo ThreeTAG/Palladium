@@ -1,10 +1,11 @@
-// 1.20.1	2024-06-27T22:10:21.4632449	Palladium Tags for minecraft:block mod id palladium
+// 1.20.1	2025-11-11T16:27:47.5928433	Palladium Tags for minecraft:block mod id palladium
 af77c59d61440eb41e967e1f9985298e2cabb847 data/c/tags/blocks/lead_blocks.json
 fe35c169cfec623f26f638f9e93b5df27f6bfa99 data/c/tags/blocks/lead_ores.json
 4b6207a57122378b6a5ab39dcc8496d2045ceac9 data/c/tags/blocks/ores.json
 8dd4a80e142054e5037ab8816a0fc13c4c46262b data/c/tags/blocks/raw_lead_blocks.json
 f6af14422442304431a3758a06fe197540a9cae3 data/c/tags/blocks/raw_titanium_blocks.json
 0d1fe16525fbf342f3abe5bc8f3bc1ca03a1336f data/c/tags/blocks/raw_vibranium_blocks.json
+3e0a8a0481fbddea201e89df6a15bb16ab6a7a16 data/c/tags/blocks/titanium_blocks.json
 501c9662c3012f8a4177b35ebc40a68ed1386566 data/c/tags/blocks/titanium_ores.json
 9abdec2c0adf88b8700bb6391674a105dd1612ef data/c/tags/blocks/vibranium_blocks.json
 d935853c3e54ab69a4b7abaae6cd05020bdad17b data/c/tags/blocks/vibranium_ores.json
@@ -12,14 +13,15 @@ e7d790e7c84f9d9b4583f1c5d13c79b7dca5d39b data/forge/tags/blocks/ores.json
 fe35c169cfec623f26f638f9e93b5df27f6bfa99 data/forge/tags/blocks/ores/lead.json
 501c9662c3012f8a4177b35ebc40a68ed1386566 data/forge/tags/blocks/ores/titanium.json
 d935853c3e54ab69a4b7abaae6cd05020bdad17b data/forge/tags/blocks/ores/vibranium.json
-f2f93e98156797afa25105512cf2ebf8f0da569f data/forge/tags/blocks/storage_blocks.json
+61471390138c9d9d06601cbe9aeef744d56e0a4f data/forge/tags/blocks/storage_blocks.json
 af77c59d61440eb41e967e1f9985298e2cabb847 data/forge/tags/blocks/storage_blocks/lead.json
 8dd4a80e142054e5037ab8816a0fc13c4c46262b data/forge/tags/blocks/storage_blocks/raw_lead.json
 f6af14422442304431a3758a06fe197540a9cae3 data/forge/tags/blocks/storage_blocks/raw_titanium.json
 0d1fe16525fbf342f3abe5bc8f3bc1ca03a1336f data/forge/tags/blocks/storage_blocks/raw_vibranium.json
+3e0a8a0481fbddea201e89df6a15bb16ab6a7a16 data/forge/tags/blocks/storage_blocks/titanium.json
 9abdec2c0adf88b8700bb6391674a105dd1612ef data/forge/tags/blocks/storage_blocks/vibranium.json
-bf1c6d9ee522380b8b67b04fa4a01166d4dc5c75 data/minecraft/tags/blocks/beacon_base_blocks.json
-006cfefc33a3c32a336222c960d188896e30a2c1 data/minecraft/tags/blocks/mineable/pickaxe.json
-6b0fe3246053589dffff5f9ffa7b5acfba180a11 data/minecraft/tags/blocks/needs_diamond_tool.json
+7d6ea32deda8fe63c7abc107555a6ae0b45237b2 data/minecraft/tags/blocks/beacon_base_blocks.json
+d91c2b6b2d7ddda8d000e8d4b36f98fded85d2fb data/minecraft/tags/blocks/mineable/pickaxe.json
+e3d03ccd825363a30f30a6cab32ab734358b37de data/minecraft/tags/blocks/needs_diamond_tool.json
 e77048ce8a0e58516ff153efc6763aa6348e80f3 data/minecraft/tags/blocks/needs_iron_tool.json
 cfab2ab481bf476a645d326b87627918009b9e50 data/palladium/tags/blocks/prevents_intangibility.json

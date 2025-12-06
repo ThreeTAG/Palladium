@@ -6,6 +6,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.threetag.palladium.client.dynamictexture.ImageCache;
+import net.threetag.palladium.util.context.DataContext;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,12 +17,16 @@ import java.util.function.Function;
 
 public class TransformedTexture extends SimpleTexture {
 
+    private final ImageCache imageCache;
     private final List<ITextureTransformer> transformers;
+    private final DataContext context;
     private final Function<String, String> stringConverter;
 
-    public TransformedTexture(ResourceLocation base, List<ITextureTransformer> transformers, Function<String, String> stringConverter) {
+    public TransformedTexture(ResourceLocation base, @Nullable ImageCache imageCache, List<ITextureTransformer> transformers, DataContext context, Function<String, String> stringConverter) {
         super(base);
+        this.imageCache = imageCache;
         this.transformers = transformers;
+        this.context = context;
         this.stringConverter = stringConverter;
     }
 
@@ -30,10 +37,10 @@ public class TransformedTexture extends SimpleTexture {
             InputStream textureStream = null;
 
             try {
-                NativeImage image = NativeImage.read(textureStream = manager.getResource(location).get().open());
+                NativeImage image = this.imageCache != null ? this.imageCache.toNativeImage() : NativeImage.read(textureStream = manager.getResource(location).get().open());
 
                 for (ITextureTransformer transformer : this.transformers) {
-                    image = transformer.transform(image, manager, this.stringConverter);
+                    image = transformer.transform(this.context, image, manager, this.stringConverter);
                 }
 
                 TextureUtil.prepareImage(this.getId(), image.getWidth(), image.getHeight());

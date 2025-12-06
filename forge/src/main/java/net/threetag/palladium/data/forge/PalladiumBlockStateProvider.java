@@ -33,12 +33,21 @@ public class PalladiumBlockStateProvider extends BlockStateProvider {
         this.crystal(PalladiumBlocks.MEDIUM_REDSTONE_FLUX_CRYSTAL_BUD);
         this.crystal(PalladiumBlocks.SMALL_REDSTONE_FLUX_CRYSTAL_BUD);
         this.simpleBlock(PalladiumBlocks.LEAD_BLOCK.get());
+        this.simpleBlock(PalladiumBlocks.TITANIUM_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.VIBRANIUM_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.RAW_LEAD_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.RAW_TITANIUM_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get());
         this.simpleBlock(PalladiumBlocks.HEART_SHAPED_HERB.get(), models().cross("heart_shaped_herb", new ResourceLocation(Palladium.MOD_ID, "block/heart_shaped_herb")));
         this.simpleBlock(PalladiumBlocks.POTTED_HEART_SHAPED_HERB.get(), models().withExistingParent("potted_heart_shaped_herb", BLOCK_FOLDER + "/flower_pot_cross").texture("plant", new ResourceLocation(Palladium.MOD_ID, "block/heart_shaped_herb")));
+        this.horizontalBlock(PalladiumBlocks.TAILORING_BENCH.get(), this.models().cube("tailoring_bench",
+                Palladium.id("block/tailoring_bench_bottom"),
+                Palladium.id("block/tailoring_bench_top"),
+                Palladium.id("block/tailoring_bench_front"),
+                Palladium.id("block/tailoring_bench_back"),
+                Palladium.id("block/tailoring_bench_side"),
+                Palladium.id("block/tailoring_bench_side")
+        ).texture("particle", Palladium.id("block/tailoring_bench_side")));
         this.simpleBlock(PalladiumBlocks.MULTIVERSAL_ITERATOR.get(), models().getExistingFile(models().modLoc("block/multiversal_iterator")));
     }
 

@@ -1,0 +1,25 @@
+{
+  "name": "Player Skin Animation Test",
+  "icon": "minecraft:iron_ingot",
+  "abilities": {
+    "render_layer": {
+      "type": "palladium:render_layer",
+      "render_layer": "test:player_skin_animation_test"
+    },
+    "animation_timer": {
+      "type": "palladium:shrink_body_overlay",
+      "title": "Toggle Animation",
+      "max_value": 16,
+      "hidden": false,
+      "hidden_in_bar": false,
+      "icon": "minecraft:iron_ingot",
+      "conditions": {
+        "enabling": [
+          {
+            "type": "palladium:toggle"
+          }
+        ]
+      }
+    }
+  }
+}

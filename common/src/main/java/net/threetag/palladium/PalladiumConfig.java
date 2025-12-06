@@ -2,6 +2,10 @@ package net.threetag.palladium;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
+import net.threetag.palladium.power.ability.AbilityReference;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class PalladiumConfig {
 
@@ -24,14 +28,26 @@ public class PalladiumConfig {
     public static class Server {
 
         public static ForgeConfigSpec.BooleanValue REDSTONE_FLUX_CRYSTAL_GEODE_GENERATION;
-        public static ForgeConfigSpec.BooleanValue EXPERIMENTAL_FEATURES;
+        public static ForgeConfigSpec.ConfigValue<List<? extends String>> DISABLED_ABILITIES;
 
         public static ForgeConfigSpec generateConfig() {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-            builder.comment("Enabled some hidden/planned content, that is currently not finished or unused");
-            EXPERIMENTAL_FEATURES = builder.define("general.experimentalFeatures", false);
             REDSTONE_FLUX_CRYSTAL_GEODE_GENERATION = builder.define("worldGen.redstoneFluxCrystalGeneration", true);
+            builder.comment("Allows you to disable specific abilities from addons. Structure: 'power_namespace:power_id#ability_key'. The ability_key can be found in the json of a power.");
+            DISABLED_ABILITIES = builder.defineListAllowEmpty(Arrays.asList("general", "disabledAbilities"), List::of, o -> AbilityReference.validateFull(o.toString()));
             return builder.build();
+        }
+
+        public static boolean isAbilityDisabled(AbilityReference reference) {
+            for (String s : DISABLED_ABILITIES.get()) {
+                var ref = AbilityReference.fromString(s);
+
+                if (ref.equals(reference)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
     }

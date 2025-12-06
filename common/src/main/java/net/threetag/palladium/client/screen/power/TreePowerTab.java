@@ -217,10 +217,12 @@ public class TreePowerTab extends PowerTab {
         boolean flag = false;
 
         if (!overlayActive) {
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(0, 0, 500);
             int i = Mth.floor(this.scrollX);
             int j = Mth.floor(this.scrollY);
-            if (mouseX > 0 && mouseX < PowersScreen.WINDOW_INSIDE_WIDTH && mouseY > 0 && mouseY < PowersScreen.WINDOW_INSIDE_HEIGHT) {
 
+            if (mouseX > 0 && mouseX < PowersScreen.WINDOW_INSIDE_WIDTH && mouseY > 0 && mouseY < PowersScreen.WINDOW_INSIDE_HEIGHT) {
                 for (TreeAbilityWidget widget : this.entries) {
                     if (widget.isMouseOver(i, j, mouseX, mouseY)) {
                         flag = true;
@@ -229,6 +231,7 @@ public class TreePowerTab extends PowerTab {
                     }
                 }
             }
+            guiGraphics.pose().popPose();
         }
 
         guiGraphics.pose().popPose();

@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.client.renderer.entity.HumanoidRendererModifications;
 import net.threetag.palladium.client.renderer.entity.TrailSegmentEntityRenderer;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
@@ -21,13 +22,13 @@ import java.awt.*;
 public class AfterImageTrailRenderer extends TrailRenderer<TrailRenderer.SegmentCache> {
 
     public static final ResourceLocation TEXTURE = Palladium.id("textures/entity/trail.png");
-    private final Color color;
+    private final DynamicColor color;
     public final boolean mimicPlayer;
     private final float spacing;
     private final int lifetime;
     private final float opacity;
 
-    public AfterImageTrailRenderer(Color color, boolean mimicPlayer, float spacing, int lifetime, float opacity) {
+    public AfterImageTrailRenderer(DynamicColor color, boolean mimicPlayer, float spacing, int lifetime, float opacity) {
         this.color = color;
         this.mimicPlayer = mimicPlayer;
         this.spacing = spacing;
@@ -43,8 +44,8 @@ public class AfterImageTrailRenderer extends TrailRenderer<TrailRenderer.Segment
         HumanoidRendererModifications.ALPHA_MULTIPLIER = 1F;
     }
 
-    public Color getColor() {
-        return color;
+    public DynamicColor getColor() {
+        return this.color;
     }
 
     @Override
@@ -61,7 +62,7 @@ public class AfterImageTrailRenderer extends TrailRenderer<TrailRenderer.Segment
 
         @Override
         public TrailRenderer<?> parse(JsonObject json) {
-            var color = GsonUtil.getAsColor(json, "color", Color.WHITE);
+            var color = DynamicColor.getFromJson(json, "color", DynamicColor.WHITE);
             boolean mimicPlayer = GsonHelper.getAsBoolean(json, "mimic_player", false);
             float spacing = GsonUtil.getAsFloatMin(json, "spacing", 0.1F, 1F);
             int lifetime = GsonUtil.getAsIntMin(json, "lifetime", 1, 20);

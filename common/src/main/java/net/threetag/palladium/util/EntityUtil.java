@@ -10,12 +10,21 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.entity.EffectEntity;
+import net.threetag.palladium.entity.PalladiumEntityExtension;
 import net.threetag.palladium.entity.TrailSegmentEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
 public class EntityUtil {
+
+    public static boolean isMoving(Entity entity) {
+        if (entity instanceof PalladiumEntityExtension ext) {
+            return ext.palladium$getLastTickPos().distanceTo(entity.position()) != 0F;
+        }
+
+        return false;
+    }
 
     public static Vec3 getLookVector(Entity entity) {
         return MathUtil.calculateViewVector(entity.getXRot(), entity.getYHeadRot());

@@ -72,8 +72,6 @@ public class PalladiumAnimationRegistry extends SimpleJsonResourceReloadListener
     }
 
     public static void forEach(AbstractClientPlayer player, HumanoidModel<?> model, PalladiumAnimation.FirstPersonContext firstPersonContext, float partialTicks, BiConsumer<PalladiumAnimation.PlayerModelPart, PalladiumAnimation.PartAnimationData> consumer, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        Map<PalladiumAnimation.PlayerModelPart, PalladiumAnimation.PartAnimationData> gathered = new HashMap<>();
-
         for (PalladiumAnimation animation : INSTANCE.animationsSorted) {
             PalladiumAnimation.Builder builder = new PalladiumAnimation.Builder(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             animation.animate(builder, player, model, firstPersonContext, partialTicks);
@@ -105,7 +103,7 @@ public class PalladiumAnimationRegistry extends SimpleJsonResourceReloadListener
         result.apply(poseStack);
     }
 
-    public static void setupRotations(PlayerRenderer playerRenderer, AbstractClientPlayer player, PoseStack poseStack, float partialTicks) {
+    public static PalladiumAnimation.PoseStackResult setupRotations(PlayerRenderer playerRenderer, AbstractClientPlayer player, PoseStack poseStack, float partialTicks) {
         PalladiumAnimation.PoseStackResult result = new PalladiumAnimation.PoseStackResult();
         forEach(player, playerRenderer.getModel(), PalladiumAnimation.FirstPersonContext.NONE, partialTicks, (part, data) -> {
             if (part == PalladiumAnimation.PlayerModelPart.BODY) {
@@ -113,6 +111,7 @@ public class PalladiumAnimationRegistry extends SimpleJsonResourceReloadListener
             }
         });
         result.apply(poseStack);
+        return result;
     }
 
 }

@@ -24,7 +24,7 @@ import java.util.Objects;
 
 public class AbilityConfiguration {
 
-    private final String id;
+    private final AbilityReference reference;
     private final Ability ability;
     private final PropertyManager propertyManager;
     private final List<Condition> unlockingConditions = new ArrayList<>();
@@ -39,14 +39,18 @@ public class AbilityConfiguration {
     public List<String> dependencies = new ArrayList<>();
     private final List<EnergyBarUsage> energyBarUsages = new ArrayList<>();
 
-    public AbilityConfiguration(String id, Ability ability) {
-        this.id = id;
+    public AbilityConfiguration(AbilityReference reference, Ability ability) {
+        this.reference = reference;
         this.ability = ability;
         this.propertyManager = ability.propertyManager.copy();
     }
 
+    public AbilityReference getReference() {
+        return reference;
+    }
+
     public String getId() {
-        return id;
+        return this.reference.getAbilityId();
     }
 
     public Ability getAbility() {
@@ -127,7 +131,7 @@ public class AbilityConfiguration {
     }
 
     public void toBuffer(FriendlyByteBuf buf) {
-        buf.writeUtf(this.id);
+        this.reference.toBuffer(buf);
         buf.writeResourceLocation(Objects.requireNonNull(Ability.REGISTRY.getKey(this.ability)));
         this.propertyManager.toBuffer(buf);
         buf.writeBoolean(this.needsKey);
@@ -146,9 +150,9 @@ public class AbilityConfiguration {
 
 
     public static AbilityConfiguration fromBuffer(FriendlyByteBuf buf) {
-        String id = buf.readUtf();
+        AbilityReference abilityReference = AbilityReference.fromBuffer(buf);
         Ability ability = Ability.REGISTRY.get(buf.readResourceLocation());
-        AbilityConfiguration configuration = new AbilityConfiguration(id, Objects.requireNonNull(ability));
+        AbilityConfiguration configuration = new AbilityConfiguration(abilityReference, Objects.requireNonNull(ability));
         configuration.propertyManager.fromBuffer(buf);
         configuration.needsKey = buf.readBoolean();
         configuration.needsEmptyHand = buf.readBoolean();
@@ -165,7 +169,7 @@ public class AbilityConfiguration {
         return configuration;
     }
 
-    public static AbilityConfiguration fromJSON(String id, JsonObject json) {
+    public static AbilityConfiguration fromJSON(AbilityReference reference, JsonObject json) {
         var abilityId = GsonUtil.getAsResourceLocation(json, "type");
 
         if (abilityId.equals(Palladium.id("interpolated_integer"))) {
@@ -193,7 +197,7 @@ public class AbilityConfiguration {
             }
         }
 
-        AbilityConfiguration configuration = new AbilityConfiguration(id, ability);
+        AbilityConfiguration configuration = new AbilityConfiguration(reference, ability);
         configuration.propertyManager.fromJSON(json);
 
         if (GsonHelper.isValidNode(json, "energy_bar_usage")) {

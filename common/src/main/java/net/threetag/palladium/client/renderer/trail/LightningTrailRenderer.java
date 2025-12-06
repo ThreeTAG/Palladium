@@ -10,11 +10,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.client.renderer.LaserRenderer;
 import net.threetag.palladium.client.renderer.entity.TrailSegmentEntityRenderer;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
 import net.threetag.palladium.entity.PalladiumEntityExtension;
 import net.threetag.palladium.entity.TrailSegmentEntity;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 
 import java.awt.*;
@@ -47,13 +49,13 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
             var index = trails.indexOf(segment);
 
             if (index == trails.size() - 1) {
-                renderSegmentWithChild(poseStack, buffer, segment, trails, partialTick, index);
+                renderSegmentWithChild(DataContext.forEntity(livingEntity), poseStack, buffer, segment, trails, partialTick, index);
             }
         }
     }
 
     @Environment(EnvType.CLIENT)
-    private void renderSegmentWithChild(PoseStack poseStack, MultiBufferSource buffer, TrailSegmentEntity<Cache> segment, List<TrailSegmentEntity<?>> segments, float partialTick, int index) {
+    private void renderSegmentWithChild(DataContext context, PoseStack poseStack, MultiBufferSource buffer, TrailSegmentEntity<Cache> segment, List<TrailSegmentEntity<?>> segments, float partialTick, int index) {
         if (index > 0) {
             var previousSegment = segments.get(index - 1);
             var cache = segment.cache;
@@ -69,7 +71,7 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
                     poseStack.translate(start.x, start.y, start.z);
                     this.laserRenderer
                             .length((float) start.distanceTo(end))
-                            .opacityAndSizeModifier(opacity).faceAndRender(poseStack, buffer, start, end, segment.parent.tickCount + (i * 42), partialTick);
+                            .opacityAndSizeModifier(opacity).faceAndRender(context, poseStack, buffer, start, end, segment.parent.tickCount + (i * 42), partialTick);
                     poseStack.popPose();
                 }
             }
@@ -84,14 +86,14 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
                     poseStack.translate(start.x, start.y, start.z);
                     this.laserRenderer
                             .length((float) start.distanceTo(end))
-                            .opacityAndSizeModifier(opacity).faceAndRender(poseStack, buffer, start, end, segment.parent.tickCount + (i * 42), partialTick);
+                            .opacityAndSizeModifier(opacity).faceAndRender(context, poseStack, buffer, start, end, segment.parent.tickCount + (i * 42), partialTick);
                     poseStack.popPose();
                 }
 
                 poseStack.pushPose();
                 var offsetPos = previousSegment.position().subtract(segment.position());
                 poseStack.translate(offsetPos.x, offsetPos.y, offsetPos.z);
-                this.renderSegmentWithChild(poseStack, buffer, (TrailSegmentEntity<Cache>) previousSegment, segments, partialTick, index - 1);
+                this.renderSegmentWithChild(context, poseStack, buffer, (TrailSegmentEntity<Cache>) previousSegment, segments, partialTick, index - 1);
                 poseStack.popPose();
             }
         }
@@ -126,7 +128,7 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
     }
 
     @Override
-    public Color getColor() {
+    public DynamicColor getColor() {
         return this.laserRenderer.getGlowColor();
     }
 

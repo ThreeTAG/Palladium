@@ -37,6 +37,7 @@ public class PalladiumBlockTags {
         public static final TagKey<Block> RAW_VIBRANIUM_BLOCKS = forgeTag("storage_blocks/raw_vibranium");
 
         public static final TagKey<Block> STORAGE_BLOCKS_LEAD = forgeTag("storage_blocks/lead");
+        public static final TagKey<Block> STORAGE_BLOCKS_TITANIUM = forgeTag("storage_blocks/titanium");
         public static final TagKey<Block> STORAGE_BLOCKS_VIBRANIUM = forgeTag("storage_blocks/vibranium");
 
     }
@@ -54,6 +55,7 @@ public class PalladiumBlockTags {
         public static final TagKey<Block> RAW_VIBRANIUM_BLOCKS = fabricTag("raw_vibranium_blocks");
 
         public static final TagKey<Block> STORAGE_BLOCKS_LEAD = fabricTag("lead_blocks");
+        public static final TagKey<Block> STORAGE_BLOCKS_TITANIUM = fabricTag("titanium_blocks");
         public static final TagKey<Block> STORAGE_BLOCKS_VIBRANIUM = fabricTag("vibranium_blocks");
 
     }

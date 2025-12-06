@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -81,13 +82,13 @@ public abstract class PalladiumProperty<T> {
     public T get(Entity entity) {
         AtomicReference<T> result = new AtomicReference<>();
 
-        if(this instanceof BooleanProperty) {
+        if (this instanceof BooleanProperty) {
             result.set((T) Boolean.valueOf(false));
-        } else if(this instanceof IntegerProperty) {
+        } else if (this instanceof IntegerProperty) {
             result.set((T) Integer.valueOf(0));
-        } else if(this instanceof FloatProperty) {
+        } else if (this instanceof FloatProperty) {
             result.set((T) Float.valueOf(0F));
-        } else if(this instanceof DoubleProperty) {
+        } else if (this instanceof DoubleProperty) {
             result.set((T) Double.valueOf(0D));
         }
 
@@ -114,6 +115,20 @@ public abstract class PalladiumProperty<T> {
             value = number.doubleValue();
         } else if (property instanceof ResourceLocationProperty && value instanceof String string) {
             value = new ResourceLocation(string);
+        } else if (property instanceof EnumPalladiumProperty<?> && value instanceof String string) {
+            value = ((EnumPalladiumProperty<?>) property).getByName(string);
+        } else if (property instanceof StringArrayProperty && value instanceof List<?> list) {
+            String[] array = new String[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                array[i] = list.get(i).toString();
+            }
+            value = array;
+        } else if (property instanceof FloatArrayProperty && value instanceof List<?> list) {
+            Float[] array = new Float[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                array[i] = Float.valueOf(list.get(i).toString());
+            }
+            value = array;
         }
 
         return value;

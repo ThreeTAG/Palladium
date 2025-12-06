@@ -16,6 +16,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.model.ThrusterHumanoidModel;
+import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.context.DataContext;
@@ -28,9 +29,10 @@ public class ThrusterPackRenderLayer extends AbstractPackRenderLayer {
     public static final ModelLayerLocation MODEL_LAYER_LOCATION = new ModelLayerLocation(Palladium.id("humanoid"), "thrusters");
     public static final ModelLayerLocation MODEL_LAYER_LOCATION_SLIM = new ModelLayerLocation(Palladium.id("humanoid"), "thrusters_slim");
     public static final ResourceLocation[] TEXTURES = new ResourceLocation[8];
+    private static final DynamicColor DEFAULT_COLOR = DynamicColor.staticColor(new Color(234, 182, 43));
     private final SkinTypedValue<ThrusterHumanoidModel<?>> model;
     private final boolean rightArm, leftArm, rightLeg, leftLeg;
-    private final Color color;
+    private final DynamicColor color;
 
     static {
         for (int i = 0; i < TEXTURES.length; i++) {
@@ -38,7 +40,7 @@ public class ThrusterPackRenderLayer extends AbstractPackRenderLayer {
         }
     }
 
-    public ThrusterPackRenderLayer(boolean rightArm, boolean leftArm, boolean rightLeg, boolean leftLeg, Color color) {
+    public ThrusterPackRenderLayer(boolean rightArm, boolean leftArm, boolean rightLeg, boolean leftLeg, DynamicColor color) {
         this.model = new SkinTypedValue<>(
                 new ThrusterHumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(MODEL_LAYER_LOCATION)),
                 new ThrusterHumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(MODEL_LAYER_LOCATION_SLIM))
@@ -69,7 +71,8 @@ public class ThrusterPackRenderLayer extends AbstractPackRenderLayer {
             model.leftLegThruster.visible = this.leftLeg;
 
             VertexConsumer vertexConsumer = bufferSource.getBuffer(PalladiumRenderTypes.getGlowing(TEXTURES[(entity.tickCount / 2) % TEXTURES.length]));
-            model.renderToBuffer(poseStack, vertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, this.color.getRed() / 255F, this.color.getGreen() / 255F, this.color.getBlue() / 255F, this.color.getAlpha() / 255F);
+            var color = this.color.getColor(context);
+            model.renderToBuffer(poseStack, vertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, color.getAlpha() / 255F);
         }
     }
 
@@ -84,7 +87,7 @@ public class ThrusterPackRenderLayer extends AbstractPackRenderLayer {
                 GsonHelper.getAsBoolean(json, "left_arm", true),
                 GsonHelper.getAsBoolean(json, "right_leg", true),
                 GsonHelper.getAsBoolean(json, "left_leg", true),
-                GsonUtil.getAsColor(json, "color", Color.WHITE)
+                DynamicColor.getFromJson(json, "color", DEFAULT_COLOR)
         );
     }
 }

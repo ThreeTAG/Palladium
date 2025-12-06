@@ -1,0 +1,32 @@
+{
+  "type": "palladium:compound",
+  "layers": [
+    {
+      "model_layer": "minecraft:player#main",
+      "model_type": "minecraft:player",
+      "texture": {
+        "type": "palladium:player",
+        "username": "ConnorDawn",
+        "transformers": [
+          {
+            "type": "palladium:alpha_mask",
+            "mask": "test:textures/models/alpha_masks/iron_man_suit/transformation_#TIMER.png"
+          }
+        ],
+        "variables": {
+          "TIMER": {
+            "type": "palladium:animation_timer_ability",
+            "power": "test:player_skin_animation_test",
+            "ability": "animation_timer"
+          }
+        }
+      }
+    },
+    {
+      "model_layer": "minecraft:player#main",
+      "model_type": "minecraft:player",
+      "texture": "test:textures/models/iron_man_suit_reactor_lights.png",
+      "render_type": "glow"
+    }
+  ]
+}

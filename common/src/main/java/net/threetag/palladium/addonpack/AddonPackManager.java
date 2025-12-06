@@ -12,6 +12,7 @@ import net.minecraft.server.packs.repository.FolderRepositorySource;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Unit;
@@ -74,18 +75,22 @@ public class AddonPackManager {
         this.packList = new PackRepository(sources);
         IGNORE_INJECT = false;
 
-        this.resourceManager.registerReloadListener(new CreativeModeTabParser());
-        this.resourceManager.registerReloadListener(new ArmorMaterialParser());
-        this.resourceManager.registerReloadListener(new ToolTierParser());
-        this.resourceManager.registerReloadListener(new BlockParser());
-        this.resourceManager.registerReloadListener(ITEM_PARSER = new ItemParser());
-        this.resourceManager.registerReloadListener(new SuitSetParser());
-        this.resourceManager.registerReloadListener(new ParticleTypeParser());
-        this.resourceManager.registerReloadListener(new PoiTypeParser());
-        this.resourceManager.registerReloadListener(new VillagerProfessionParser());
-        this.resourceManager.registerReloadListener(new VillagerTradeParser());
-        this.resourceManager.registerReloadListener(new AccessorySlotParser());
-        this.resourceManager.registerReloadListener(new AccessoryParser());
+        this.registerReloadListener(new CreativeModeTabParser());
+        this.registerReloadListener(new ArmorMaterialParser());
+        this.registerReloadListener(new ToolTierParser());
+        this.registerReloadListener(new BlockParser());
+        this.registerReloadListener(ITEM_PARSER = new ItemParser());
+        this.registerReloadListener(new SuitSetParser());
+        this.registerReloadListener(new ParticleTypeParser());
+        this.registerReloadListener(new PoiTypeParser());
+        this.registerReloadListener(new VillagerProfessionParser());
+        this.registerReloadListener(new VillagerTradeParser());
+        this.registerReloadListener(new AccessorySlotParser());
+        this.registerReloadListener(new AccessoryParser());
+    }
+
+    public void registerReloadListener(PreparableReloadListener listener) {
+        this.resourceManager.registerReloadListener(listener);
     }
 
     public Path getLocation() {

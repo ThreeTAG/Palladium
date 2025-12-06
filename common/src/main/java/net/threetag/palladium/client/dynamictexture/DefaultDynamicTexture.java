@@ -34,7 +34,7 @@ public class DefaultDynamicTexture extends DynamicTexture {
             this.output = this.base;
 
             for (String var : this.textureVariableMap.keySet()) {
-                if(!this.output.contains("#" + var)) {
+                if (!this.output.contains("#" + var)) {
                     this.output += "_#" + var;
                 }
             }
@@ -45,7 +45,7 @@ public class DefaultDynamicTexture extends DynamicTexture {
         if (!Minecraft.getInstance().getTextureManager().byPath.containsKey(output)) {
             String s = replaceVariables(this.base, context, this.textureVariableMap);
             ResourceLocation texture = new ResourceLocation(s);
-            Minecraft.getInstance().getTextureManager().register(output, new TransformedTexture(texture, this.transformers, transformerPath -> replaceVariables(transformerPath, context, this.textureVariableMap)));
+            Minecraft.getInstance().getTextureManager().register(output, new TransformedTexture(texture, null, this.transformers, context, transformerPath -> replaceVariables(transformerPath, context, this.textureVariableMap)));
         }
 
         return output;
