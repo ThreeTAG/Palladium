@@ -28,6 +28,11 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
     public void render(Minecraft minecraft, Gui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {
         if (CURRENT_WHEEL != null) {
             int abilityAmount = CURRENT_WHEEL.abilities.size();
+
+            if (abilityAmount <= 0) {
+                return;
+            }
+
             float outerRadius = 100;
             float innerRadius = 50;
             float centerRadius = (outerRadius + innerRadius) / 2F;
