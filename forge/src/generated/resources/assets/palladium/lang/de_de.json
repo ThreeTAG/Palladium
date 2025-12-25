@@ -159,6 +159,8 @@
   "item.palladium.light_gray_fabric": "Hellgrauer Stoff",
   "item.palladium.lime_fabric": "Hellgrüner Stoff",
   "item.palladium.magenta_fabric": "Magenta Stoff",
+  "item.palladium.multiversal_extrapolator": "Multiversaler Extrapolator",
+  "item.palladium.multiversal_extrapolator.desc.error": "Nichts gefunden",
   "item.palladium.orange_fabric": "Oranger Stoff",
   "item.palladium.pink_fabric": "Rosa Stoff",
   "item.palladium.purple_fabric": "Violetter Stoff",
@@ -187,5 +189,8 @@
   "key.palladium.categories.abilities": "Fähigkeiten",
   "key.palladium.open_equipment": "Equipment öffnen",
   "key.palladium.switch_ability_list": "Fähigkeitenliste wechseln",
-  "subtitles.palladium.entity.ability.heat_vision": "Hitzeblick"
+  "palladium.universe.palladium.earth-18515": "Erde-18515",
+  "palladium.universe.palladium.generic": "Erde-%s",
+  "subtitles.palladium.entity.ability.heat_vision": "Hitzeblick",
+  "subtitles.palladium.entity.generic.multiverse_search": "Multiversumssuche"
 }

@@ -48,7 +48,14 @@ public class PalladiumBlockStateProvider extends BlockStateProvider {
                 Palladium.id("block/tailoring_bench_side"),
                 Palladium.id("block/tailoring_bench_side")
         ).texture("particle", Palladium.id("block/tailoring_bench_side")));
-        this.simpleBlock(PalladiumBlocks.MULTIVERSAL_ITERATOR.get(), models().getExistingFile(models().modLoc("block/multiversal_iterator")));
+        this.horizontalBlock(PalladiumBlocks.MULTIVERSAL_ITERATOR.get(), this.models().cube("multiversal_iterator",
+                Palladium.id("block/multiversal_iterator_bottom"),
+                Palladium.id("block/multiversal_iterator_top"),
+                Palladium.id("block/multiversal_iterator_front"),
+                Palladium.id("block/multiversal_iterator_side"),
+                Palladium.id("block/multiversal_iterator_side"),
+                Palladium.id("block/multiversal_iterator_side")
+        ).texture("particle", Palladium.id("block/multiversal_iterator_side")));
     }
 
     public void crystal(RegistrySupplier<Block> block) {

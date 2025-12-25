@@ -1,4 +1,4 @@
-// 1.20.1	2025-12-06T13:18:49.2314726	Palladium Item Models: palladium
+// 1.20.1	2025-12-25T22:59:24.139465	Palladium Item Models: palladium
 a0e035f3392b45cb6fef4aaae396e11295f88a81 assets/palladium/models/item/black_fabric.json
 ec20d3417ba11b05b8b7983239e2b7d7c55186d9 assets/palladium/models/item/blue_fabric.json
 2a855c4995ca67c7318b9bdc99b8d0cf0b753340 assets/palladium/models/item/brown_fabric.json
@@ -20,6 +20,8 @@ aa172bf2886df7bd548108d4470bcc08ce0e1213 assets/palladium/models/item/light_gray
 0a09fc903401d4322c0f29b2cd31949250f10e09 assets/palladium/models/item/lime_fabric.json
 6212e9cd784158e93457cbde229ce6e902d59f49 assets/palladium/models/item/magenta_fabric.json
 ee8c5fadfd01e84ec0076153f5432a24a2bd7484 assets/palladium/models/item/medium_redstone_flux_crystal_bud.json
+16c8a725945c9ce49fee17041bf9914cdcc5a6c1 assets/palladium/models/item/multiversal_extrapolator.json
+67146ea5e457c8384b296475c869859a34502b3c assets/palladium/models/item/multiversal_extrapolator_inactive.json
 5f2ac6aea07da356e452bc64e715860a99c3682e assets/palladium/models/item/multiversal_iterator.json
 e8476c9b65c4402193d74c393e3a85b6325970d2 assets/palladium/models/item/orange_fabric.json
 083b514d45860735112caae013e59fef1a267e27 assets/palladium/models/item/pink_fabric.json

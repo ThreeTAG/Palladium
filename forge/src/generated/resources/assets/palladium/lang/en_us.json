@@ -160,6 +160,8 @@
   "item.palladium.light_gray_fabric": "Light Gray Fabric",
   "item.palladium.lime_fabric": "Lime Fabric",
   "item.palladium.magenta_fabric": "Magenta Fabric",
+  "item.palladium.multiversal_extrapolator": "Multiversal Extrapolator",
+  "item.palladium.multiversal_extrapolator.desc.error": "None found",
   "item.palladium.orange_fabric": "Orange Fabric",
   "item.palladium.pink_fabric": "Pink Fabric",
   "item.palladium.purple_fabric": "Purple Fabric",
@@ -188,5 +190,8 @@
   "key.palladium.categories.abilities": "Abilities",
   "key.palladium.open_equipment": "Open Equipment",
   "key.palladium.switch_ability_list": "Switch Ability List",
-  "subtitles.palladium.entity.ability.heat_vision": "Heat Vision"
+  "palladium.universe.palladium.earth-18515": "Earth-18515",
+  "palladium.universe.palladium.generic": "Earth-%s",
+  "subtitles.palladium.entity.ability.heat_vision": "Heat Vision",
+  "subtitles.palladium.entity.generic.multiverse_search": "Multiverse Search"
 }

@@ -159,6 +159,8 @@
   "item.palladium.light_gray_fabric": "Hellgraer Schdoff",
   "item.palladium.lime_fabric": "Hellgriener Schdoff",
   "item.palladium.magenta_fabric": "Magenda Schdoff",
+  "item.palladium.multiversal_extrapolator": "Multiversaler Extrapolator",
+  "item.palladium.multiversal_extrapolator.desc.error": "Nichts jefunden",
   "item.palladium.orange_fabric": "Orangscher Schdoff",
   "item.palladium.pink_fabric": "Roser Schdoff",
   "item.palladium.purple_fabric": "Violedder Schdoff",
@@ -187,5 +189,8 @@
   "key.palladium.categories.abilities": "Fähischgehden",
   "key.palladium.open_equipment": "Equipmend öffnen",
   "key.palladium.switch_ability_list": "Fähischgehden wechseln",
-  "subtitles.palladium.entity.ability.heat_vision": "Hitzeblick"
+  "palladium.universe.palladium.earth-18515": "Erde-18515",
+  "palladium.universe.palladium.generic": "Erde-%s",
+  "subtitles.palladium.entity.ability.heat_vision": "Hitzeblick",
+  "subtitles.palladium.entity.generic.multiverse_search": "Multiversumssuche"
 }
