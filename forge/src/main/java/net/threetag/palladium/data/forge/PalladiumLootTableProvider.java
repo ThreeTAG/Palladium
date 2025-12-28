@@ -57,6 +57,7 @@ public class PalladiumLootTableProvider extends LootTableProvider {
             this.dropSelf(PalladiumBlocks.HEART_SHAPED_HERB.get());
             this.dropSelf(PalladiumBlocks.TAILORING_BENCH.get());
             this.dropPottedContents(PalladiumBlocks.POTTED_HEART_SHAPED_HERB.get());
+            this.dropSelf(PalladiumBlocks.MULTIVERSAL_ITERATOR.get());
         }
 
         @Override

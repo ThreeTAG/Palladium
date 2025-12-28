@@ -39,6 +39,7 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
 
         this.defaultBlockItem(PalladiumItems.TAILORING_BENCH);
         this.singleTexture(PalladiumItems.HEART_SHAPED_HERB.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(Palladium.MOD_ID, "block/heart_shaped_herb"));
+        this.defaultBlockItem(PalladiumItems.MULTIVERSAL_ITERATOR);
 
         this.defaultItem(PalladiumItems.RAW_LEAD);
         this.defaultItem(PalladiumItems.LEAD_INGOT);
@@ -49,6 +50,7 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
         this.defaultItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL);
 
         this.defaultItem(PalladiumItems.SUIT_STAND);
+        this.multiversalExtrapolator(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR);
         this.defaultItem(PalladiumItems.LEAD_CIRCUIT);
         this.defaultItem(PalladiumItems.QUARTZ_CIRCUIT);
         this.defaultItem(PalladiumItems.VIBRANIUM_CIRCUIT);
@@ -89,6 +91,11 @@ public class PalladiumItemModelProvider extends ItemModelProvider {
 
     public void defaultBlockItem2d(RegistrySupplier<Item> item) {
         this.singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(item.getId().getNamespace(), "block/" + item.getId().getPath()));
+    }
+
+    public void multiversalExtrapolator(RegistrySupplier<? extends Item> item) {
+        var inactive = this.singleTexture(item.getId().getPath() + "_inactive", new ResourceLocation("item/generated"), "layer0", new ResourceLocation(item.getId().getNamespace(), "item/" + item.getId().getPath() + "_inactive"));
+        this.singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(item.getId().getNamespace(), "item/" + item.getId().getPath())).override().predicate(Palladium.id("inactive"), 1F).model(inactive).end();
     }
 
     public void fluxCapacitor(RegistrySupplier<? extends Item> item) {

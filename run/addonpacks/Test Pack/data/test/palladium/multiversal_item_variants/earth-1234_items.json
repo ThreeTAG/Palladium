@@ -1,0 +1,8 @@
+{
+  "universe": "test:earth-1234",
+  "variants": {
+    "test:basic_items": [
+      "test:basic_item"
+    ]
+  }
+}

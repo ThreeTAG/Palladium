@@ -4,5 +4,11 @@
       "palladium:energy_blast"
     ],
     "subtitle": "subtitles.palladium.entity.ability.heat_vision"
+  },
+  "entity.generic.multiverse_search": {
+    "sounds": [
+      "palladium:multiverse_search"
+    ],
+    "subtitle": "subtitles.palladium.entity.generic.multiverse_search"
   }
 }

@@ -26,6 +26,8 @@ import net.threetag.palladium.item.PalladiumCreativeModeTabs;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.item.recipe.PalladiumRecipeSerializers;
 import net.threetag.palladium.menu.PalladiumMenuTypes;
+import net.threetag.palladium.multiverse.MultiversalItemVariantsManager;
+import net.threetag.palladium.multiverse.MultiverseManager;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.ItemPowerManager;
 import net.threetag.palladium.power.PowerManager;
@@ -94,6 +96,8 @@ public class Palladium {
         SupporterHandler.init();
         PalladiumEntitySelectorOptions.init();
         TrackedScoresManager.init();
+        MultiverseManager.init();
+        MultiversalItemVariantsManager.init();
 
         LifecycleEvents.SETUP.register(() -> {
             Palladium.generateDocumentation();

@@ -8,11 +8,14 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
+import net.threetag.palladium.multiverse.MultiverseManager;
+import net.threetag.palladium.multiverse.Universe;
 import net.threetag.palladium.tags.PalladiumItemTags;
 import net.threetag.palladiumcore.item.SimpleArmorMaterial;
 import net.threetag.palladiumcore.registry.CreativeModeTabRegistry;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.util.EnumMap;
 
@@ -53,6 +56,7 @@ public class PalladiumItems {
 
     public static final RegistrySupplier<Item> HEART_SHAPED_HERB = ITEMS.register("heart_shaped_herb", () -> new BlockItem(PalladiumBlocks.HEART_SHAPED_HERB.get(), new Item.Properties()));
     public static final RegistrySupplier<Item> TAILORING_BENCH = ITEMS.register("tailoring_bench", () -> new BlockItem(PalladiumBlocks.TAILORING_BENCH.get(), new Item.Properties()));
+    public static final RegistrySupplier<Item> MULTIVERSAL_ITERATOR = ITEMS.register("multiversal_iterator", () -> new BlockItem(PalladiumBlocks.MULTIVERSAL_ITERATOR.get(), new Item.Properties()));
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -65,6 +69,7 @@ public class PalladiumItems {
     public static final RegistrySupplier<Item> REDSTONE_FLUX_CRYSTAL = ITEMS.register("redstone_flux_crystal", () -> new Item(new Item.Properties()));
 
     public static final RegistrySupplier<Item> SUIT_STAND = ITEMS.register("suit_stand", () -> new SuitStandItem(new Item.Properties().stacksTo(16)));
+    public static final RegistrySupplier<Item> MULTIVERSAL_EXTRAPOLATOR = ITEMS.register("multiversal_extrapolator", () -> new MultiversalExtrapolatorItem(new Item.Properties().durability(4)));
     public static final RegistrySupplier<Item> LEAD_CIRCUIT = ITEMS.register("lead_circuit", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> QUARTZ_CIRCUIT = ITEMS.register("quartz_circuit", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> VIBRANIUM_CIRCUIT = ITEMS.register("vibranium_circuit", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
@@ -96,6 +101,7 @@ public class PalladiumItems {
         CreativeModeTabRegistry.addToTab(PalladiumCreativeModeTabs.PALLADIUM_MODS, entries -> {
             entries.add(
                     TAILORING_BENCH.get(),
+                    MULTIVERSAL_ITERATOR.get(),
                     LEAD_ORE.get(),
                     DEEPSLATE_LEAD_ORE.get(),
                     TITANIUM_ORE.get(),
@@ -121,6 +127,7 @@ public class PalladiumItems {
                     VIBRANIUM_INGOT.get(),
                     REDSTONE_FLUX_CRYSTAL.get(),
                     SUIT_STAND.get(),
+                    MULTIVERSAL_EXTRAPOLATOR.get(),
                     LEAD_CIRCUIT.get(),
                     QUARTZ_CIRCUIT.get(),
                     VIBRANIUM_CIRCUIT.get(),
@@ -152,6 +159,7 @@ public class PalladiumItems {
         });
 
         CreativeModeTabRegistry.addToTab(PalladiumCreativeModeTabs.TECHNOLOGY, entries -> {
+            entries.add(MULTIVERSAL_ITERATOR.get());
             entries.add(LEAD_CIRCUIT.get());
             entries.add(QUARTZ_CIRCUIT.get());
             entries.add(VIBRANIUM_CIRCUIT.get());
@@ -161,6 +169,12 @@ public class PalladiumItems {
             entries.add(QUARTZ_FLUX_CAPACITOR.get().getFullyChargedInstance());
             entries.add(VIBRANIUM_FLUX_CAPACITOR.get().getEmptyInstance());
             entries.add(VIBRANIUM_FLUX_CAPACITOR.get().getFullyChargedInstance());
+            entries.add(MULTIVERSAL_EXTRAPOLATOR.get());
+            for (Universe universe : MultiverseManager.getInstance(Platform.isClient()).getUniverses().values()) {
+                var stack = MULTIVERSAL_EXTRAPOLATOR.get().getDefaultInstance();
+                MultiversalExtrapolatorItem.setUniverse(stack, universe);
+                entries.add(stack);
+            }
         });
 
         CreativeModeTabRegistry.addToTab(() -> BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.FUNCTIONAL_BLOCKS), entries -> {

@@ -89,6 +89,7 @@
   "block.palladium.lead_block": "Bleiblock",
   "block.palladium.lead_ore": "Bleierz",
   "block.palladium.medium_redstone_flux_crystal_bud": "Mittlere Redstone-Flux-Kristallknospe",
+  "block.palladium.multiversal_iterator": "Multiversaler Iterator",
   "block.palladium.potted_heart_shaped_herb": "Eingetopftes Herzförmige Kraut",
   "block.palladium.raw_lead_block": "Rohbleiblock",
   "block.palladium.raw_titanium_block": "Rohtitaniumblock",
@@ -126,6 +127,7 @@
   "commands.superpower.replace.success.entity.single": "%s's Superkraft/-kräfte wurden ausgetauscht",
   "commands.superpower.success.entity.multiple": "%s Lebewesen haben die Superkraft %s erhalten",
   "commands.superpower.success.entity.single": "%s hat die Superkraft %s erhalten",
+  "container.palladium.multiversal_iterator": "Multiversaler Iterator",
   "container.palladium.tailoring": "Zuschneidern",
   "container.palladium.tailoring.craft": "Herstellen",
   "death.attack.palladium.energy_beam": "%1$s wurde durch %2$s von einem Energiestrahl aufgelöst",
@@ -159,6 +161,8 @@
   "item.palladium.light_gray_fabric": "Hellgrauer Stoff",
   "item.palladium.lime_fabric": "Hellgrüner Stoff",
   "item.palladium.magenta_fabric": "Magenta Stoff",
+  "item.palladium.multiversal_extrapolator": "Multiversaler Extrapolator",
+  "item.palladium.multiversal_extrapolator.desc.error": "Nichts gefunden",
   "item.palladium.orange_fabric": "Oranger Stoff",
   "item.palladium.pink_fabric": "Rosa Stoff",
   "item.palladium.purple_fabric": "Violetter Stoff",
@@ -187,5 +191,8 @@
   "key.palladium.categories.abilities": "Fähigkeiten",
   "key.palladium.open_equipment": "Equipment öffnen",
   "key.palladium.switch_ability_list": "Fähigkeitenliste wechseln",
-  "subtitles.palladium.entity.ability.heat_vision": "Hitzeblick"
+  "palladium.universe.palladium.earth-18515": "Erde-18515",
+  "palladium.universe.palladium.generic": "Erde-%s",
+  "subtitles.palladium.entity.ability.heat_vision": "Hitzeblick",
+  "subtitles.palladium.entity.generic.multiverse_search": "Multiversumssuche"
 }

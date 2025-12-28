@@ -9,6 +9,7 @@ import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.entity.PalladiumAttributes;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.multiverse.Universe;
 import net.threetag.palladium.power.ability.Abilities;
 import net.threetag.palladium.sound.PalladiumSoundEvents;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +54,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Tailoring Bench");
             this.add("container.palladium.tailoring", "Tailoring");
             this.add("container.palladium.tailoring.craft", "Create");
+            this.addBlock(PalladiumBlocks.MULTIVERSAL_ITERATOR, "Multiversal Iterator");
+            this.add("container.palladium.multiversal_iterator", "Multiversal Iterator");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Raw Lead");
@@ -63,6 +66,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibranium Ingot");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone Flux Crystal");
             this.addItem(PalladiumItems.SUIT_STAND, "Suit Stand");
+            this.addItem(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR, "Multiversal Extrapolator");
+            this.add("item.palladium.multiversal_extrapolator.desc.error", "None found");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Lead Circuit");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quartz Circuit");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibranium Circuit");
@@ -243,9 +248,14 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Heat Vision");
+            this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.MULTIVERSE_SEARCH), "Multiverse Search");
 
             // Damage Types
             this.add("death.attack.palladium.energy_beam", "%1$s was disintegrated by %2$s");
+
+            // Multiverse
+            this.add(Universe.makeDescriptionId(Palladium.id("generic")), "Earth-%s");
+            this.add(Universe.makeDescriptionId(Palladium.id("earth-18515")), "Earth-18515");
         }
     }
 
@@ -279,6 +289,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch");
             this.add("container.palladium.tailoring", "Zuschneidern");
             this.add("container.palladium.tailoring.craft", "Herstellen");
+            this.addBlock(PalladiumBlocks.MULTIVERSAL_ITERATOR, "Multiversaler Iterator");
+            this.add("container.palladium.multiversal_iterator", "Multiversaler Iterator");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Rohblei");
@@ -289,6 +301,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarren");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
             this.addItem(PalladiumItems.SUIT_STAND, "Anzugsständer");
+            this.addItem(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR, "Multiversaler Extrapolator");
+            this.add("item.palladium.multiversal_extrapolator.desc.error", "Nichts gefunden");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Bleischaltkreis");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaltkreis");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaltkreis");
@@ -469,9 +483,14 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
+            this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.MULTIVERSE_SEARCH), "Multiversumssuche");
 
             // Damage Types
             this.add("death.attack.palladium.energy_beam", "%1$s wurde durch %2$s von einem Energiestrahl aufgelöst");
+
+            // Multiverse
+            this.add(Universe.makeDescriptionId(Palladium.id("generic")), "Erde-%s");
+            this.add(Universe.makeDescriptionId(Palladium.id("earth-18515")), "Erde-18515");
         }
     }
 
@@ -505,6 +524,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch’n");
             this.add("container.palladium.tailoring", "Zuschneidern");
             this.add("container.palladium.tailoring.craft", "Herstellen");
+            this.addBlock(PalladiumBlocks.MULTIVERSAL_ITERATOR, "Multiversaler Itterador");
+            this.add("container.palladium.multiversal_iterator", "Multiversaler Itterador");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Rohble");
@@ -515,6 +536,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarrn");
             this.addItem(PalladiumItems.REDSTONE_FLUX_CRYSTAL, "Redstone-Flux-Kristall");
             this.addItem(PalladiumItems.SUIT_STAND, "Anzuchsschdändorr");
+            this.addItem(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR, "Multiversaler Extrapolator");
+            this.add("item.palladium.multiversal_extrapolator.desc.error", "Nichts jefunden");
             this.addItem(PalladiumItems.LEAD_CIRCUIT, "Redstoneschaldkres");
             this.addItem(PalladiumItems.QUARTZ_CIRCUIT, "Quarzschaldkres");
             this.addItem(PalladiumItems.VIBRANIUM_CIRCUIT, "Vibraniumschaldkres");
@@ -695,9 +718,14 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
 
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
+            this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.MULTIVERSE_SEARCH), "Multiversumssuche");
 
             // Damage Types
             this.add("death.attack.palladium.energy_beam", "%1$s wurd durch %2$s von enem Enerchiestrahl oofjelöst");
+
+            // Multiverse
+            this.add(Universe.makeDescriptionId(Palladium.id("generic")), "Erde-%s");
+            this.add(Universe.makeDescriptionId(Palladium.id("earth-18515")), "Erde-18515");
         }
     }
 

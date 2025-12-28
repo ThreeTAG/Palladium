@@ -162,6 +162,10 @@ public class PalladiumClient {
 
     public static void itemModelPredicates() {
         for (Item item : BuiltInRegistries.ITEM) {
+            if(item instanceof MultiversalExtrapolatorItem) {
+                ItemPropertyRegistry.register(item, Palladium.id("inactive"), (stack, level, entity, i) -> MultiversalExtrapolatorItem.getUniverse(stack, level) == null ? 1.0F : 0.0F);
+            }
+
             if (item instanceof EnergyItem) {
                 ItemPropertyRegistry.register(item, Palladium.id("energy"), (itemStack, clientLevel, livingEntity, i) -> {
                     var storage = EnergyHelper.getFromItemStack(itemStack);

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "palladium:block/multiversal_iterator",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "palladium:block/multiversal_iterator"
+    },
+    "facing=south": {
+      "model": "palladium:block/multiversal_iterator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "palladium:block/multiversal_iterator",
+      "y": 270
+    }
+  }
+}
