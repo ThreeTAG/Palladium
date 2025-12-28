@@ -20,5 +20,6 @@
   "accessory_slot.test.accessory_variable_test": "Accessory Variable Test",
   "palladium.tailoring_recipe.category.test.vanilla_armor": "Vanilla Armor",
   "palladium.tailoring_recipe.category.test.pack_armor": "Pack Armor",
-  "palladium.universe.test.earth-616": "Earth-616"
+  "palladium.universe.test.earth-1234": "Earth-1234",
+  "palladium.universe.test.earth-12345": "Earth-12345"
 }

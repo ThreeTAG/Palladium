@@ -7,6 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.screen.MultiversalIteratorScreen;
 import net.threetag.palladium.client.screen.TailoringScreen;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
@@ -16,10 +17,12 @@ public class PalladiumMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Palladium.MOD_ID, Registries.MENU);
 
     public static final RegistrySupplier<MenuType<TailoringMenu>> TAILORING = MENU_TYPES.register("tailoring", () -> new MenuType<>(TailoringMenu::new, FeatureFlags.VANILLA_SET));
+    public static final RegistrySupplier<MenuType<MultiversalIteratorMenu>> MULTIVERSAL_ITERATOR = MENU_TYPES.register("multiversal_iterator", () -> new MenuType<>(MultiversalIteratorMenu::new, FeatureFlags.VANILLA_SET));
 
     @Environment(EnvType.CLIENT)
     public static void registerScreens() {
         MenuScreens.register(TAILORING.get(), TailoringScreen::new);
+        MenuScreens.register(MULTIVERSAL_ITERATOR.get(), MultiversalIteratorScreen::new);
     }
 
 }

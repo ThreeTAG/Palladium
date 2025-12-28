@@ -54,6 +54,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Tailoring Bench");
             this.add("container.palladium.tailoring", "Tailoring");
             this.add("container.palladium.tailoring.craft", "Create");
+            this.addBlock(PalladiumBlocks.MULTIVERSAL_ITERATOR, "Multiversal Iterator");
+            this.add("container.palladium.multiversal_iterator", "Multiversal Iterator");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Raw Lead");
@@ -287,6 +289,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch");
             this.add("container.palladium.tailoring", "Zuschneidern");
             this.add("container.palladium.tailoring.craft", "Herstellen");
+            this.addBlock(PalladiumBlocks.MULTIVERSAL_ITERATOR, "Multiversaler Iterator");
+            this.add("container.palladium.multiversal_iterator", "Multiversaler Iterator");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Rohblei");
@@ -520,6 +524,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch’n");
             this.add("container.palladium.tailoring", "Zuschneidern");
             this.add("container.palladium.tailoring.craft", "Herstellen");
+            this.addBlock(PalladiumBlocks.MULTIVERSAL_ITERATOR, "Multiversaler Itterador");
+            this.add("container.palladium.multiversal_iterator", "Multiversaler Itterador");
 
             // Items
             this.addItem(PalladiumItems.RAW_LEAD, "Rohble");
