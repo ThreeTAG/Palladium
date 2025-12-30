@@ -212,6 +212,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("gui.palladium.addon_pack_log_entry.upload_to_mclogs", "Upload to mclo.gs");
             this.add("gui.palladium.category.tailoring", "Tailoring");
             this.add("gui.palladium.jei.tailoring.recipe_unavailable", "Recipe has not been unlocked yet");
+            this.add("gui.palladium.category.multiversal_variants", "Multiversal Variants");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
@@ -447,6 +448,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Kopieren");
             this.add("gui.palladium.addon_pack_log_entry.upload_to_mclogs", "Auf mclo.gs hochladen");
             this.add("gui.palladium.category.tailoring", "Zuschneidern");
+            this.add("gui.palladium.jei.tailoring.recipe_unavailable", "Rezept wurde noch nicht freigeschaltet");
+            this.add("gui.palladium.category.multiversal_variants", "Multiversale Varianten");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");
@@ -682,6 +685,8 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.add("gui.palladium.addon_pack_log_entry.copy_to_clipboard", "Kopieren");
             this.add("gui.palladium.addon_pack_log_entry.upload_to_mclogs", "Uff mclo.gs hochladen");
             this.add("gui.palladium.category.tailoring", "Zuschneidern");
+            this.add("gui.palladium.jei.tailoring.recipe_unavailable", "Rezept wurde noch nicht freigeschaltet");
+            this.add("gui.palladium.category.multiversal_variants", "Multiversale Varianten");
 
             // Accessories
             this.addAccessory(Accessories.LUCRAFT_ARC_REACTOR, "Lucraft Arc Reactor");

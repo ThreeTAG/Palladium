@@ -2,15 +2,16 @@ package net.threetag.palladium.compat.jei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
-import mezz.jei.api.registration.IRecipeTransferRegistration;
+import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.screen.MultiversalIteratorScreen;
+import net.threetag.palladium.client.screen.TailoringScreen;
+import net.threetag.palladium.compat.jei.multiversalvariants.MultiversalVariantRecipe;
+import net.threetag.palladium.compat.jei.multiversalvariants.MultiversalVariantsCategory;
 import net.threetag.palladium.compat.jei.tailoring.TailoringCategory;
 import net.threetag.palladium.compat.jei.tailoring.TailoringTransferHandler;
 import net.threetag.palladium.item.PalladiumItems;
@@ -30,6 +31,7 @@ public class PalladiumJEIPlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         var jeiHelpers = registration.getJeiHelpers();
         registration.addRecipeCategories(new TailoringCategory(jeiHelpers.getGuiHelper()));
+        registration.addRecipeCategories(new MultiversalVariantsCategory(jeiHelpers.getGuiHelper()));
     }
 
     @Override
@@ -38,11 +40,19 @@ public class PalladiumJEIPlugin implements IModPlugin {
         RecipeManager recipeManager = level.getRecipeManager();
 
         registration.addRecipes(TailoringCategory.RECIPE_TYPE, recipeManager.getAllRecipesFor(PalladiumRecipeSerializers.TAILORING.get()));
+        registration.addRecipes(MultiversalVariantsCategory.RECIPE_TYPE, MultiversalVariantRecipe.getRecipes(level));
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(PalladiumItems.TAILORING_BENCH.get().getDefaultInstance(), TailoringCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(PalladiumItems.MULTIVERSAL_ITERATOR.get().getDefaultInstance(), MultiversalVariantsCategory.RECIPE_TYPE);
+    }
+
+    @Override
+    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+        registration.addRecipeClickArea(TailoringScreen.class, 175, 47, 22, 15, TailoringCategory.RECIPE_TYPE);
+        registration.addRecipeClickArea(MultiversalIteratorScreen.class, 74, 49, 20, 16, MultiversalVariantsCategory.RECIPE_TYPE);
     }
 
     @Override

@@ -20,7 +20,7 @@ import net.threetag.palladium.sound.PalladiumSoundEvents;
 
 public class MultiversalIteratorScreen extends ItemCombinerScreen<MultiversalIteratorMenu> {
 
-    private static final ResourceLocation TEXTURE = Palladium.id("textures/gui/container/multiversal_iterator.png");
+    public static final ResourceLocation TEXTURE = Palladium.id("textures/gui/container/multiversal_iterator.png");
     private int tickCount = 0;
     private int resultAnimationTimer = 0;
     private CycleButton cycleButton;

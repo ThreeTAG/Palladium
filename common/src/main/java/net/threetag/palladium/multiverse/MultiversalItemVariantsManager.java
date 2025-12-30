@@ -15,8 +15,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
+import net.threetag.palladium.network.SyncMultiversalItemVariantsMessage;
 import net.threetag.palladium.util.json.GsonUtil;
 import net.threetag.palladiumcore.registry.ReloadListenerRegistry;
+import net.threetag.palladiumcore.util.DataSyncUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +34,7 @@ public class MultiversalItemVariantsManager extends SimpleJsonResourceReloadList
 
     public static void init() {
         ReloadListenerRegistry.register(PackType.SERVER_DATA, Palladium.id("multiversal_item_variants"), INSTANCE = new MultiversalItemVariantsManager());
+        DataSyncUtil.registerDataSync(consumer -> consumer.accept(new SyncMultiversalItemVariantsMessage(getInstance(null).byUniverseId)));
     }
 
     public MultiversalItemVariantsManager() {
@@ -64,7 +67,7 @@ public class MultiversalItemVariantsManager extends SimpleJsonResourceReloadList
                             continue;
                         }
 
-                        byUniverseId.computeIfAbsent(universeId, MultiversalItemVariants::new)
+                        byUniverseId.computeIfAbsent(universeId, i -> new MultiversalItemVariants())
                                 .addVariant(categoryId, BuiltInRegistries.ITEM.get(itemId));
                         count.getAndIncrement();
                     }
@@ -78,23 +81,37 @@ public class MultiversalItemVariantsManager extends SimpleJsonResourceReloadList
     }
 
     public static MultiversalItemVariantsManager getInstance(Level level) {
-        return INSTANCE;
+        return level == null || !level.isClientSide() ? INSTANCE : ClientMultiversalItemVariantsManager.INSTANCE;
+    }
+
+    public Map<ResourceLocation, MultiversalItemVariants> getEntries() {
+        return this.byUniverseId;
     }
 
     public List<ResourceLocation> getCategoriesOfItem(Item item) {
         List<ResourceLocation> categories = new ArrayList<>();
-        for (MultiversalItemVariants value : this.byUniverseId.values()) {
+        for (MultiversalItemVariants value : this.getEntries().values()) {
             categories.addAll(value.getCategoriesOfItem(item));
         }
         return categories;
     }
 
+    public ResourceLocation getFirstUniverseIdOfItem(Item item) {
+        for (Map.Entry<ResourceLocation, MultiversalItemVariants> e : this.getEntries().entrySet()) {
+            if (!e.getValue().getCategoriesOfItem(item).isEmpty()) {
+                return e.getKey();
+            }
+        }
+
+        return null;
+    }
+
     public List<Item> getVariantsOf(Item item, Universe universe) {
         List<ResourceLocation> categories = getCategoriesOfItem(item);
         List<Item> variants = new ArrayList<>();
-        if (this.byUniverseId.containsKey(universe.getId())) {
+        if (this.getEntries().containsKey(universe.getId())) {
             for (ResourceLocation category : categories) {
-                for (Item variant : this.byUniverseId.get(universe.getId()).getVariants(category)) {
+                for (Item variant : this.getEntries().get(universe.getId()).getVariants(category)) {
                     if (variant != item) {
                         variants.add(variant);
                     }
