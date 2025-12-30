@@ -18,6 +18,7 @@ public class PalladiumSoundDefinitionsProvider extends SoundDefinitionsProvider 
     public void registerSounds() {
         this.add(PalladiumSoundEvents.HEAT_VISION, definition().with(sound(Palladium.id("energy_blast"))).subtitle(subtitle(PalladiumSoundEvents.HEAT_VISION)));
         this.add(PalladiumSoundEvents.MULTIVERSE_SEARCH, definition().with(sound(Palladium.id("multiverse_search"))).subtitle(subtitle(PalladiumSoundEvents.MULTIVERSE_SEARCH)));
+        this.add(PalladiumSoundEvents.MULTIVERSAL_VARIANT_CRAFTED, definition().with(sound(Palladium.id("multiversal_variant_crafted"))).subtitle(subtitle(PalladiumSoundEvents.MULTIVERSAL_VARIANT_CRAFTED)));
     }
 
     @Override

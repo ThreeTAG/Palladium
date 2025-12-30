@@ -13,6 +13,7 @@ public class PalladiumSoundEvents {
 
     public static final RegistrySupplier<SoundEvent> HEAT_VISION = make("entity.ability.heat_vision");
     public static final RegistrySupplier<SoundEvent> MULTIVERSE_SEARCH = make("entity.generic.multiverse_search");
+    public static final RegistrySupplier<SoundEvent> MULTIVERSAL_VARIANT_CRAFTED = make("entity.generic.multiversal_variant_crafted");
 
     public static RegistrySupplier<SoundEvent> make(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Palladium.MOD_ID, name)));

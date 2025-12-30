@@ -5,6 +5,12 @@
     ],
     "subtitle": "subtitles.palladium.entity.ability.heat_vision"
   },
+  "entity.generic.multiversal_variant_crafted": {
+    "sounds": [
+      "palladium:multiversal_variant_crafted"
+    ],
+    "subtitle": "subtitles.palladium.entity.generic.multiversal_variant_crafted"
+  },
   "entity.generic.multiverse_search": {
     "sounds": [
       "palladium:multiverse_search"

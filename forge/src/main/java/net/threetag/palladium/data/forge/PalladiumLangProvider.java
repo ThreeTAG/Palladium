@@ -250,6 +250,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Heat Vision");
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.MULTIVERSE_SEARCH), "Multiverse Search");
+            this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.MULTIVERSAL_VARIANT_CRAFTED), "Multiversal Variant Crafted");
 
             // Damage Types
             this.add("death.attack.palladium.energy_beam", "%1$s was disintegrated by %2$s");
@@ -487,6 +488,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.MULTIVERSE_SEARCH), "Multiversumssuche");
+            this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.MULTIVERSAL_VARIANT_CRAFTED), "Multiversale Variante hergestellt");
 
             // Damage Types
             this.add("death.attack.palladium.energy_beam", "%1$s wurde durch %2$s von einem Energiestrahl aufgelöst");
@@ -724,6 +726,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             // Subtitles
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.HEAT_VISION), "Hitzeblick");
             this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.MULTIVERSE_SEARCH), "Multiversumssuche");
+            this.add(PalladiumSoundDefinitionsProvider.subtitle(PalladiumSoundEvents.MULTIVERSAL_VARIANT_CRAFTED), "Multiversale Variante hergestellt");
 
             // Damage Types
             this.add("death.attack.palladium.energy_beam", "%1$s wurd durch %2$s von enem Enerchiestrahl oofjelöst");

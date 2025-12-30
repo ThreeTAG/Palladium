@@ -50,7 +50,7 @@ public class MultiversalIteratorMenu extends ItemCombinerMenu {
         this.resultSlots.awardUsedRecipes(player, this.getRelevantItems());
         this.damageStackInSlot(0);
         this.shrinkStackInSlot(1);
-        PlayerUtil.playSoundToAll(player.level(), player.getX(), player.getEyeY(), player.getZ(), 50, PalladiumSoundEvents.MULTIVERSE_SEARCH.get(), SoundSource.PLAYERS);
+        this.access.execute((level, pos) -> PlayerUtil.playSoundToAll(player.level(), player.getX(), player.getEyeY(), player.getZ(), 50, PalladiumSoundEvents.MULTIVERSAL_VARIANT_CRAFTED.get(), SoundSource.PLAYERS));
     }
 
     private List<ItemStack> getRelevantItems() {
