@@ -64,10 +64,8 @@ public class MultiverseManager extends SimpleJsonResourceReloadListener {
         List<Universe> available = new ArrayList<>();
 
         for (Universe universe : this.getUniverses().values()) {
-            if (universe.isAvailable(context)) {
-                for (int i = 0; i < universe.getWeight(); i++) {
-                    available.add(universe);
-                }
+            for (int i = 0; i < universe.getWeight(context); i++) {
+                available.add(universe);
             }
         }
 

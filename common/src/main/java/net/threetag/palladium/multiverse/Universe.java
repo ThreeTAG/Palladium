@@ -1,10 +1,12 @@
 package net.threetag.palladium.multiverse;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.Util;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionEnvironment;
@@ -12,6 +14,7 @@ import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,21 +22,26 @@ public class Universe {
 
     private final ResourceLocation id;
     private final int weight;
-    private final List<Condition> conditions;
+    private final List<ConditionalWeight> conditionalWeights;
 
-    public Universe(ResourceLocation id, int weight, List<Condition> conditions) {
+    public Universe(ResourceLocation id, int weight, List<ConditionalWeight> conditionalWeights) {
         this.id = id;
         this.weight = weight;
-        this.conditions = conditions;
+        this.conditionalWeights = conditionalWeights;
     }
 
     public static Universe fromJson(ResourceLocation id, JsonObject json) {
-        int weight = GsonUtil.getAsIntMin(json, "weight", 1, 1);
-        List<Condition> conditions = Collections.emptyList();
-        if (json.has("conditions")) {
-            conditions = ConditionSerializer.listFromJSON(json.get("conditions"), ConditionEnvironment.DATA);
+        int weight = GsonUtil.getAsIntMin(json, "weight", 0, 1);
+        List<ConditionalWeight> conditionalWeights = new ArrayList<>();
+        var conditionsWeightsEl = json.get("conditional_weights");
+        if (conditionsWeightsEl != null) {
+            var array = GsonHelper.convertToJsonArray(conditionsWeightsEl, "conditional_weights");
+
+            for (JsonElement jsonElement : array) {
+                conditionalWeights.add(ConditionalWeight.fromJson(GsonHelper.convertToJsonObject(jsonElement, "conditional_weights[].$")));
+            }
         }
-        return new Universe(id, weight, conditions);
+        return new Universe(id, weight, conditionalWeights);
     }
 
     public static Universe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
@@ -52,12 +60,13 @@ public class Universe {
         return Component.translatable(makeDescriptionId(this.id));
     }
 
-    public int getWeight() {
+    public int getWeight(DataContext context) {
+        for (ConditionalWeight conditionalWeight : this.conditionalWeights) {
+            if (ConditionSerializer.checkConditions(conditionalWeight.conditions, context)) {
+                return conditionalWeight.weight;
+            }
+        }
         return this.weight;
-    }
-
-    public boolean isAvailable(DataContext context) {
-        return ConditionSerializer.checkConditions(this.conditions, context);
     }
 
     public static String makeDescriptionId(ResourceLocation id) {
@@ -66,6 +75,22 @@ public class Universe {
 
     public static Component getGenericUniverseComponent(String universe) {
         return Component.translatable(makeDescriptionId(Palladium.id("generic")), universe);
+    }
+
+    public static class ConditionalWeight {
+
+        private final int weight;
+        private final List<Condition> conditions;
+
+        public ConditionalWeight(int weight, List<Condition> conditions) {
+            this.weight = weight;
+            this.conditions = conditions;
+        }
+
+        public static ConditionalWeight fromJson(JsonObject json) {
+            return new ConditionalWeight(GsonUtil.getAsIntMin(json, "weight", 1),
+                    ConditionSerializer.listFromJSON(json.get("if"), ConditionEnvironment.DATA));
+        }
     }
 
 }
