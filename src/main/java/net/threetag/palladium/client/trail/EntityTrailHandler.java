@@ -39,7 +39,7 @@ public class EntityTrailHandler extends PalladiumEntityData<Entity, EntityTrailH
 
         this.trailHandlerMap.values().forEach(trailInstance -> trailInstance.tick(this.getEntity()));
 
-        for (Map.Entry<Trail, TrailInstance> e : this.trailHandlerMap.entrySet()) {
+        for (Map.Entry<Trail, TrailInstance> e : Set.copyOf(this.trailHandlerMap.entrySet())) {
             if (e.getValue().segments.isEmpty() && e.getValue().disabled) {
                 this.trailHandlerMap.remove(e.getKey());
             }
@@ -56,7 +56,7 @@ public class EntityTrailHandler extends PalladiumEntityData<Entity, EntityTrailH
                 e.getPoseStack().pushPose();
                 var offset = segment.getPosition().subtract(renderState.x, renderState.y, renderState.z);
                 e.getPoseStack().translate(offset);
-                instance.trail.trailRenderer().submit(e.getPoseStack(), e.getSubmitNodeCollector(), segment,
+                instance.trail.trailRenderer().submit(e.getPoseStack(), e.getSubmitNodeCollector(), e.getRenderState(), segment,
                         renderState.lightCoords, renderState.partialTick);
                 e.getPoseStack().popPose();
             }
@@ -79,7 +79,7 @@ public class EntityTrailHandler extends PalladiumEntityData<Entity, EntityTrailH
     public static class TrailInstance {
 
         private final Trail trail;
-        private List<TrailSegment<?>> segments;
+        private final List<TrailSegment<?>> segments;
         private boolean disabled = false;
 
         public TrailInstance(Trail trail) {
@@ -103,14 +103,26 @@ public class EntityTrailHandler extends PalladiumEntityData<Entity, EntityTrailH
             for (TrailSegment<?> segment : Set.copyOf(this.segments)) {
                 if (segment.isObsolete()) {
                     this.segments.remove(segment);
+
+                    if (segment.nextSegment != null) {
+                        segment.nextSegment.previousSegment = null;
+                    }
                 } else {
                     segment.tick();
                 }
             }
         }
 
+        @SuppressWarnings({"rawtypes", "unchecked"})
         private void addSegment(Entity entity) {
-            var segment = new TrailSegment<>(entity, this.trail, this.trail.trailRenderer());
+            var segment = new TrailSegment(entity, this.trail, this.trail.trailRenderer());
+            var last = this.segments.isEmpty() ? null : this.segments.getLast();
+
+            if (last != null) {
+                last.nextSegment = segment;
+                segment.previousSegment = last;
+            }
+
             this.segments.add(segment);
         }
     }

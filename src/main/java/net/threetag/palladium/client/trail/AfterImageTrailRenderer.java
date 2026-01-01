@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.client.renderer.entity.state.PalladiumRenderStateKeys;
@@ -32,7 +33,7 @@ public class AfterImageTrailRenderer extends TrailRenderer<AfterImageTrailRender
 
     @SuppressWarnings("unchecked")
     @Override
-    public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, TrailSegment<AfterImageTrailRenderer.Data> trailSegment, int packedLight, float partialTick) {
+    public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, LivingEntityRenderState ownerRenderState, TrailSegment<AfterImageTrailRenderer.Data> trailSegment, int packedLight, float partialTick) {
         AfterImageTrailRenderer.Data trailData = trailSegment.getTrailData();
         trailData.renderState.setRenderData(PalladiumRenderStateKeys.OPACITY, trailSegment.getOpacity() * this.opacity);
         trailData.renderer.submit(trailData.renderState, poseStack, submitNodeCollector, Minecraft.getInstance().gameRenderer.getLevelRenderState().cameraRenderState);
