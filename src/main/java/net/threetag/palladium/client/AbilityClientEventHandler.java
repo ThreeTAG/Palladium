@@ -18,6 +18,7 @@ import net.threetag.palladium.power.ability.IntangibilityAbility;
 public class AbilityClientEventHandler {
 
     public static float OVERRIDDEN_OPACITY = 1F;
+    public static int OVERRIDDEN_TINT = -1;
 
     @SubscribeEvent
     static void preRenderLiving(RenderLivingEvent.Pre<?, ?, ?> e) {
@@ -25,15 +26,16 @@ public class AbilityClientEventHandler {
 
         if (opacity <= 0F) {
             e.setCanceled(true);
-            resetOpacityOverride();
+            resetColorOverrides();
         } else {
             OVERRIDDEN_OPACITY = opacity;
+            OVERRIDDEN_TINT = e.getRenderState().getRenderDataOrDefault(PalladiumRenderStateKeys.TINT, -1);
         }
     }
 
     @SubscribeEvent
     static void postRenderLiving(RenderLivingEvent.Post<?, ?, ?> e) {
-        resetOpacityOverride();
+        resetColorOverrides();
     }
 
     @SubscribeEvent
@@ -42,14 +44,15 @@ public class AbilityClientEventHandler {
 
         if (opacity <= 0F) {
             e.setCanceled(true);
-            resetOpacityOverride();
+            resetColorOverrides();
         } else {
             OVERRIDDEN_OPACITY = opacity;
         }
     }
 
-    public static void resetOpacityOverride() {
+    public static void resetColorOverrides() {
         OVERRIDDEN_OPACITY = 1F;
+        OVERRIDDEN_TINT = -1;
     }
 
     @SubscribeEvent

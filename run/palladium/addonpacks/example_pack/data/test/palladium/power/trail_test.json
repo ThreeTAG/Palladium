@@ -1,0 +1,19 @@
+{
+  "name": "Trail Test",
+  "icon": "minecraft:blaze_powder",
+  "abilities": {
+    "after_image": {
+      "type": "palladium:trail",
+      "trail": "test:after_image_test",
+      "properties": {
+        "title": "After Image"
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

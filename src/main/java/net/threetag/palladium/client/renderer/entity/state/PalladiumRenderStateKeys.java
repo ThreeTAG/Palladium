@@ -20,6 +20,8 @@ import net.threetag.palladium.client.animation.PalladiumAnimation;
 import net.threetag.palladium.client.animation.PalladiumAnimationManager;
 import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
+import net.threetag.palladium.client.trail.EntityTrailHandler;
+import net.threetag.palladium.client.trail.Trail;
 import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
@@ -28,6 +30,7 @@ import net.threetag.palladium.entity.flight.EntityFlightHandler;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.*;
 
+import java.awt.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +45,9 @@ public class PalladiumRenderStateKeys {
     public static ContextKey<Map<DataContext, PalladiumAnimation>> ANIMATIONS = create("animations");
     public static ContextKey<Float> IN_FLIGHT = create("in_flight");
     public static ContextKey<Float> OPACITY = create("opacity");
+    public static ContextKey<Integer> TINT = create("tint");
+    public static ContextKey<Map<Trail, EntityTrailHandler.TrailInstance>> TRAILS = create("trails");
+    public static boolean IGNORE_TRAILS = false;
 
     private static <T> ContextKey<T> create(String name) {
         return new ContextKey<>(Palladium.id(name));
@@ -61,6 +67,10 @@ public class PalladiumRenderStateKeys {
             state.setRenderData(AIM, AimAbility.getTimer(entity, state.partialTick));
             state.setRenderData(IN_FLIGHT, EntityFlightHandler.get(entity).getInFlightTimer(state.partialTick));
             state.setRenderData(OPACITY, 1F - AbilityUtil.getHighestAnimationTimerProgress(entity, AbilitySerializers.INVISIBILITY.get(), state.partialTick));
+            state.setRenderData(TINT, -1);
+            if (!IGNORE_TRAILS) {
+                state.setRenderData(TRAILS, EntityTrailHandler.get(entity).getTrails());
+            }
 
             // Animations
             Map<DataContext, PalladiumAnimation> animations = new HashMap<>();

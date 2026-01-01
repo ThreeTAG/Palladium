@@ -1,0 +1,8 @@
+{
+  "spacing": 3,
+  "renderer": {
+    "type": "palladium:after_image",
+    "opacity": 0.2,
+    "color": [200, 0, 200]
+  }
+}

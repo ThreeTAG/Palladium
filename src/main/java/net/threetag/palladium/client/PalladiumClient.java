@@ -45,6 +45,8 @@ import net.threetag.palladium.client.texture.DynamicTextureSerializers;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.client.texture.transformer.TextureTransformerSerializer;
 import net.threetag.palladium.client.texture.transformer.TextureTransformerSerializers;
+import net.threetag.palladium.client.trail.TrailManager;
+import net.threetag.palladium.client.trail.TrailRendererSerializers;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
 import net.threetag.palladium.datagen.internal.*;
 import net.threetag.palladium.documentation.HTMLBuilder;
@@ -70,6 +72,7 @@ public class PalladiumClient {
 
         // Misc
         BeamRendererSerializers.init();
+        TrailRendererSerializers.init();
         TextureTransformerSerializers.init();
         DynamicTextureSerializers.init();
         TextureReference.DYNAMIC_TEXTURE_RESOLVER = (path, context) -> {
@@ -126,6 +129,7 @@ public class PalladiumClient {
         e.addListener(PalladiumAnimationManager.ID, PalladiumAnimationManager.INSTANCE);
         e.addListener(ParticleEmitterManager.ID, ParticleEmitterManager.INSTANCE);
         e.addListener(BeamManager.ID, BeamManager.INSTANCE);
+        e.addListener(TrailManager.ID, TrailManager.INSTANCE);
 
         e.addDependency(ModelLayerManager.ID, DynamicTextureManager.ID);
         e.addDependency(DynamicTextureManager.ID, PackRenderLayerManager.ID);

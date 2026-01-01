@@ -32,9 +32,11 @@
     "client.ItemInHandRendererMixin",
     "client.KeyboardInputMixin",
     "client.LevelRendererMixin",
+    "client.LivingEntityRendererMixin",
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
     "client.ModelPartMixin",
+    "client.RenderTypeMixin",
     "client.ScreenEffectRendererMixin",
     "client.SkyRendererMixin",
     "client.SubmitNodeCollectionMixin"
