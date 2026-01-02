@@ -39,6 +39,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_DEFAULT_FLIGHT_ANIMATION = SettingType.simple("Default Flight Animation Settings");
     SettingType TYPE_SWINGING_ANIMATION = SettingType.simple("Swinging Animation Settings");
     SettingType TYPE_SWINGING_HEIGHT_TYPE = SettingType.enumList(SwingingFlightType.MaxHeightType.values());
+    SettingType TYPE_COLOR = SettingType.simple("Color");
 
     SettingType TYPE_ATTRIBUTE = SettingType.simple("Attribute ID");
     SettingType TYPE_DAMAGE_TYPE = SettingType.simple("Damage Type ID");

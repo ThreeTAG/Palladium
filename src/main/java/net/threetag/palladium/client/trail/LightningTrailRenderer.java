@@ -13,6 +13,9 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.LaserRenderer;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import org.joml.Vector2f;
+
+import java.awt.*;
 
 public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer.Data> {
 
@@ -92,7 +95,14 @@ public class LightningTrailRenderer extends TrailRenderer<LightningTrailRenderer
 
         @Override
         public void addDocumentation(CodecDocumentationBuilder<TrailRenderer<?>, LightningTrailRenderer> builder, HolderLookup.Provider provider) {
-
+            builder.setName("Lightning Trail").setDescription("Renders lightning behind the entity.")
+                    .addOptional("amount", TYPE_INT, "Defines how many lightnings will follow the player", 10)
+                    .add("render_settings", TYPE_LASER_RENDERER, "The render settings for the lightning.")
+                    .setExampleObject(new LightningTrailRenderer(7, new LaserRenderer(
+                            new LaserRenderer.LaserPart(Color.BLUE, 1F, 0F, null),
+                            new LaserRenderer.LaserPart(Color.WHITE, 1F, 0F, null),
+                            1, new Vector2f(2 / 16F, 2 / 16F), 0, 0
+                    )));
         }
     }
 }

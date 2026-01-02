@@ -13,6 +13,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.NotNull;
 
@@ -96,7 +97,12 @@ public class GradientTrailRenderer extends TrailRenderer<Unit> {
 
         @Override
         public void addDocumentation(CodecDocumentationBuilder<TrailRenderer<?>, GradientTrailRenderer> builder, HolderLookup.Provider provider) {
-
+            builder.setName("Gradient Trail").setDescription("Renders a colored gradient behind the players.")
+                    .addOptional("color", TYPE_COLOR, "Defines the color of the gradient", "#ffffff")
+                    .addOptional("opacity", TYPE_FLOAT, "Starting opacity of the gradient", 0.5F)
+                    .addOptional("orientation", SettingType.enumList(Orientation.values()), "Defines the orientation in relation to the entity in which the gradient will render", Orientation.VERTICAL)
+                    .addOptional("offset", TYPE_FLOAT, "Defines where the gradient will start in relation to entity hitbox. 0.5 is equal to the center.", 0.5F)
+                    .setExampleObject(new GradientTrailRenderer(Color.RED, 0.7F, Orientation.HORIZONTAL, 0.2F));
         }
     }
 
