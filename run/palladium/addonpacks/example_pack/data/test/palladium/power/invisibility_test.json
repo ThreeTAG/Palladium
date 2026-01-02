@@ -5,7 +5,10 @@
     "invisibility": {
       "type": "palladium:invisibility",
       "properties": {
-        "animation_timer": 20
+        "animation_timer": {
+          "max": 20,
+          "easing": "in_out_cubic"
+        }
       },
       "state": {
         "enabling": {
