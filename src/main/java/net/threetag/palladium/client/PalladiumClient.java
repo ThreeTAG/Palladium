@@ -50,6 +50,7 @@ import net.threetag.palladium.client.trail.TrailRendererSerializer;
 import net.threetag.palladium.client.trail.TrailRendererSerializers;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompatClient;
 import net.threetag.palladium.datagen.internal.*;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.logic.value.ValueSerializer;
@@ -151,7 +152,6 @@ public class PalladiumClient {
         e.createProvider(PalladiumBeamProvider::new);
 
         // Server
-        e.createProvider(PalladiumDocumentationGenerator::new);
         e.createProvider(PalladiumBlockTagProvider::new);
         e.createProvider(PalladiumCustomizationProvider::new);
         e.createProvider(PalladiumCustomizationCategoryProvider::new);
@@ -163,6 +163,7 @@ public class PalladiumClient {
     @SubscribeEvent
     static void documentation(LevelEvent.Load e) {
         var clientLevel = e.getLevel();
+        CodecDocumentationBuilder.startListening();
         HTMLBuilder.documentedPage(Palladium.id("path_variables"), ValueSerializer.getTypes(), "Path Variables", clientLevel.registryAccess()).save();
         HTMLBuilder.documentedPage(Palladium.id("texture_transformers"), TextureTransformerSerializer.getTypes(), "Texture Transformers", clientLevel.registryAccess()).save();
         HTMLBuilder.documentedPage(Palladium.id("dynamic_textures"), DynamicTextureSerializer.getTypes(), "Dynamic Textures", clientLevel.registryAccess()).save();
@@ -171,6 +172,7 @@ public class PalladiumClient {
         HTMLBuilder.documentedPage(Palladium.id("trails"), TrailRendererSerializer.getTypes(), "Trails", clientLevel.registryAccess()).save();
         HTMLBuilder.documentedPage(PalladiumRegistryKeys.ABILITY_SERIALIZER, PalladiumRegistries.ABILITY_SERIALIZER, "Abilities", clientLevel.registryAccess()).save();
         HTMLBuilder.documentedPage(PalladiumRegistryKeys.FLIGHT_TYPE_SERIALIZERS, PalladiumRegistries.FLIGHT_TYPE_SERIALIZERS, "Flight Types", clientLevel.registryAccess()).save();
+        CodecDocumentationBuilder.createDocFiles();
     }
 
     @SubscribeEvent

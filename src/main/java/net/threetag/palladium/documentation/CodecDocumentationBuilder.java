@@ -24,6 +24,7 @@ public class CodecDocumentationBuilder<T, R extends T> {
 
     public static final String DOCUMENTATION_FOLDER = "palladium/documentation";
     public static final String FOLDER = DOCUMENTATION_FOLDER + "/export";
+    private static Map<ResourceLocation, List<JsonElement>> LISTENER;
 
     private final MapCodec<R> mapCodec;
     private final Codec<T> mainCodec;
@@ -116,10 +117,14 @@ public class CodecDocumentationBuilder<T, R extends T> {
     }
 
     public JsonObject build(ResourceKey<?> id) {
+        return this.build(id.registry(), id.location());
+    }
+
+    public JsonObject build(ResourceLocation type, ResourceLocation id) {
         var json = new JsonObject();
 
-        json.addProperty("namespace", id.location().getNamespace());
-        json.addProperty("path", id.location().getPath());
+        json.addProperty("namespace", id.getNamespace());
+        json.addProperty("path", id.getPath());
 
         if (this.name != null && !this.name.isEmpty()) {
             json.addProperty("name", this.name);
@@ -134,7 +139,7 @@ public class CodecDocumentationBuilder<T, R extends T> {
         this.mapCodec.keys(JsonOps.INSTANCE).map(JsonElement::getAsString).distinct().forEach(key -> {
             if (!this.ignoredKeys.contains(key)) {
                 if (!this.entries.containsKey(key)) {
-                    Palladium.LOGGER.error("No documentation entry {} found for {}", key, id.toString());
+                    Palladium.LOGGER.error("No documentation entry {} found for {}", key, type.toString() + "/" + id.toString());
                 } else {
                     var documented = this.entries.get(key);
                     var entryJson = new JsonObject();
@@ -187,6 +192,25 @@ public class CodecDocumentationBuilder<T, R extends T> {
         if (this.exampleJson != null) {
             div.add(HTMLBuilder.subSubHeading("Example:"))
                     .add(new HTMLBuilder.HTMLObject("pre", orderJsonObject(this.exampleJson).toString()).addAttribute("class", "json-snippet"));
+        }
+    }
+
+    public static void startListening() {
+        LISTENER = new HashMap<>();
+    }
+
+    public static void addToDocs(ResourceLocation type, JsonElement jsonElement) {
+        if (LISTENER != null) {
+            LISTENER.computeIfAbsent(type, k -> new ArrayList<>()).add(jsonElement);
+        }
+    }
+
+    public static void createDocFiles() {
+        if (LISTENER == null) {
+            throw new IllegalStateException("LISTENER has not been initialized");
+        } else {
+            createDocFiles(LISTENER);
+            LISTENER = null;
         }
     }
 
