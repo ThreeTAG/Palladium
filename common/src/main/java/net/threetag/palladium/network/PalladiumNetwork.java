@@ -43,6 +43,8 @@ public class PalladiumNetwork {
     public static final MessageType SYNC_MULTIVERSE = NETWORK.registerS2C("sync_multiverse", SyncMultiverseMessage::new);
     public static final MessageType SYNC_MULTIVERSAL_ITEM_VARIANTS = NETWORK.registerS2C("sync_multiversal_item_variants", SyncMultiversalItemVariantsMessage::new);
     public static final MessageType CYCLE_MULTIVERSAL_ITERATOR_RESULT = NETWORK.registerC2S("cycle_multiversal_iterator_result", CycleMultiversalIteratorResultMessage::new);
+    public static final MessageType SYNC_MULTIVERSAL_ITERATOR_SUIT_PAGES = NETWORK.registerS2C("sync_multiversal_iterator_suit_pages", SyncMultiversalIteratorSuitPagesMessage::new);
+    public static final MessageType MULTIVERSAL_ITERATOR_SUIT_STAND_CONFIRM = NETWORK.registerC2S("multiversal_iterator_suit_stand_confirm", MultiverseIteratorSuitStandConfirmMessage::new);
 
     public static void init() {
         // Powers

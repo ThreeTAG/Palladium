@@ -4,6 +4,18 @@
     "test:basic_items": [
       "minecraft:stick",
       "minecraft:apple"
+    ],
+    "test:suit_example_helmet": [
+      "minecraft:iron_helmet"
+    ],
+    "test:suit_example_chestplate": [
+      "minecraft:iron_chestplate"
+    ],
+    "test:suit_example_leggings": [
+      "minecraft:iron_leggings"
+    ],
+    "test:suit_example_boots": [
+      "minecraft:iron_boots"
     ]
   }
 }

@@ -8,11 +8,14 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladiumcore.registry.PalladiumRegistry;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class SuitSet {
 
     public static final PalladiumRegistry<SuitSet> REGISTRY = PalladiumRegistry.create(SuitSet.class, Palladium.id("suit_set"));
+    public static final Map<Item, SuitSet> ITEM_SUIT_SET_LOOK_UP = new HashMap<>();
 
     private final Supplier<Item> mainHand, offHand, helmet, chestplate, leggings, boots;
     @Nullable
@@ -91,5 +94,35 @@ public class SuitSet {
         }
 
         return this.getBoots() == null || entity.getItemBySlot(EquipmentSlot.FEET).is(this.getBoots());
+    }
+
+    public static void createLookup() {
+        for (SuitSet suitSet : REGISTRY) {
+            var item = suitSet.getHelmet();
+
+            if (item != null) {
+                ITEM_SUIT_SET_LOOK_UP.put(item, suitSet);
+            }
+
+            if ((item = suitSet.getChestplate()) != null) {
+                ITEM_SUIT_SET_LOOK_UP.put(item, suitSet);
+            }
+
+            if ((item = suitSet.getLeggings()) != null) {
+                ITEM_SUIT_SET_LOOK_UP.put(item, suitSet);
+            }
+
+            if ((item = suitSet.getBoots()) != null) {
+                ITEM_SUIT_SET_LOOK_UP.put(item, suitSet);
+            }
+
+            if ((item = suitSet.getMainHand()) != null) {
+                ITEM_SUIT_SET_LOOK_UP.put(item, suitSet);
+            }
+
+            if ((item = suitSet.getOffHand()) != null) {
+                ITEM_SUIT_SET_LOOK_UP.put(item, suitSet);
+            }
+        }
     }
 }

@@ -24,6 +24,7 @@ import net.threetag.palladium.entity.effect.EntityEffects;
 import net.threetag.palladium.event.PalladiumEvents;
 import net.threetag.palladium.item.PalladiumCreativeModeTabs;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.item.SuitSet;
 import net.threetag.palladium.item.recipe.PalladiumRecipeSerializers;
 import net.threetag.palladium.menu.PalladiumMenuTypes;
 import net.threetag.palladium.multiverse.MultiversalItemVariantsManager;
@@ -101,6 +102,7 @@ public class Palladium {
 
         LifecycleEvents.SETUP.register(() -> {
             Palladium.generateDocumentation();
+            SuitSet.createLookup();
 
             if (Platform.isModLoaded("pehkui")) {
                 PehkuiCompat.init();
