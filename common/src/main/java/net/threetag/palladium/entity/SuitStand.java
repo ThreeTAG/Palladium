@@ -27,6 +27,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.power.ability.Abilities;
+import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladiumcore.network.ExtendedEntitySpawnData;
 import net.threetag.palladiumcore.network.NetworkManager;
 import org.jetbrains.annotations.NotNull;
@@ -96,28 +98,32 @@ public class SuitStand extends ArmorStand implements ExtendedEntitySpawnData {
             var result = InteractionResult.FAIL;
 
             for (EquipmentSlot slot : EquipmentSlot.values()) {
-                var standItem = this.getItemBySlot(slot);
+                if (!slot.isArmor() || !AbilityUtil.isTypeEnabled(player, Abilities.LOCK_ARMOR.get())) {
+                    var standItem = this.getItemBySlot(slot);
 
-                if (player.isCreative()) {
-                    player.setItemSlot(slot, standItem.copy());
+                    if (player.isCreative()) {
+                        player.setItemSlot(slot, standItem.copy());
 
-                    if (!standItem.isEmpty()) {
-                        result = InteractionResult.SUCCESS;
-                    }
-                } else {
-                    var playerItem = player.getItemBySlot(slot);
-                    player.setItemSlot(slot, standItem);
-                    this.setItemSlot(slot, playerItem);
+                        if (!standItem.isEmpty()) {
+                            result = InteractionResult.SUCCESS;
+                        }
+                    } else {
+                        var playerItem = player.getItemBySlot(slot);
+                        player.setItemSlot(slot, standItem);
+                        this.setItemSlot(slot, playerItem);
 
-                    if (!standItem.isEmpty() || !playerItem.isEmpty()) {
-                        result = InteractionResult.SUCCESS;
+                        if (!standItem.isEmpty() || !playerItem.isEmpty()) {
+                            result = InteractionResult.SUCCESS;
+                        }
                     }
                 }
             }
 
             return result;
         }
-        return super.interactAt(player, vec, hand);
+        return super.
+
+                interactAt(player, vec, hand);
     }
 
     public void readSuitStandPose(CompoundTag compound) {

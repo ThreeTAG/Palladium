@@ -140,6 +140,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.WATER_WALK, "Water Walk");
             this.addAbility(Abilities.FLUID_WALKING, "Fluid Walking");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Restrict Slots");
+            this.addAbility(Abilities.LOCK_ARMOR, "Lock Armor");
             this.addAbility(Abilities.PLAY_SOUND, "Sound");
             this.addAbility(Abilities.VIBRATE, "Vibrate");
             this.addAbility(Abilities.INTANGIBILITY, "Intangibility");
@@ -378,6 +379,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.WATER_WALK, "Auf Wasser Laufen");
             this.addAbility(Abilities.FLUID_WALKING, "Auf Flüssigkeit Laufen");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
+            this.addAbility(Abilities.LOCK_ARMOR, "Rüstung beschränken");
             this.addAbility(Abilities.PLAY_SOUND, "Sound");
             this.addAbility(Abilities.VIBRATE, "Vibrieren");
             this.addAbility(Abilities.INTANGIBILITY, "Ungreifbarkeit");
@@ -616,6 +618,7 @@ public abstract class PalladiumLangProvider extends ExtendedLangProvider {
             this.addAbility(Abilities.WATER_WALK, "Uff Wasser Lofen");
             this.addAbility(Abilities.FLUID_WALKING, "Uff Flüssichkeht Lofen");
             this.addAbility(Abilities.RESTRICT_SLOTS, "Slots beschränken");
+            this.addAbility(Abilities.LOCK_ARMOR, "Rüstung beschränken");
             this.addAbility(Abilities.PLAY_SOUND, "Sound");
             this.addAbility(Abilities.VIBRATE, "Vibrieren");
             this.addAbility(Abilities.INTANGIBILITY, "Ungreifbarkeht");
