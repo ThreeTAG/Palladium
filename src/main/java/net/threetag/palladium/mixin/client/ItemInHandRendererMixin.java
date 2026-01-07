@@ -44,7 +44,7 @@ public abstract class ItemInHandRendererMixin {
 
     @Inject(method = "renderHandsWithItems", at = @At("RETURN"))
     public void renderHandsWithItems(float partialTick, PoseStack poseStack, SubmitNodeCollector nodeCollector, LocalPlayer player, int packedLight, CallbackInfo ci) {
-        AbilityClientEventHandler.resetOpacityOverride();
+        AbilityClientEventHandler.resetColorOverrides();
     }
 
 }

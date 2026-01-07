@@ -1,0 +1,25 @@
+{
+  "spacing": 3,
+  "renderer": {
+    "type": "palladium:lightning",
+    "amount": 7,
+    "render_settings": {
+      "core": {
+        "opacity": 0.25,
+        "pulse": {
+          "scale": 0.1,
+          "frequency": 1.0
+        }
+      },
+      "glow": {
+        "color": "#0000ff",
+        "pulse": {
+          "scale": 0.25,
+          "frequency": 2.0
+        }
+      },
+      "rotation_speed": 4,
+      "bloom": 2
+    }
+  }
+}

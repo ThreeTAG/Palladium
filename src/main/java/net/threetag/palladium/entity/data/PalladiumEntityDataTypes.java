@@ -4,6 +4,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.renderer.entity.layer.pack.EntityRenderLayers;
+import net.threetag.palladium.client.trail.EntityTrailHandler;
 import net.threetag.palladium.customization.EntityCustomizationHandler;
 import net.threetag.palladium.entity.PalladiumHubData;
 import net.threetag.palladium.entity.flight.EntityFlightHandler;
@@ -32,5 +33,8 @@ public class PalladiumEntityDataTypes {
 
     public static final DeferredHolder<PalladiumEntityDataType<?>, PalladiumEntityDataType<EntityFlightHandler>> FLIGHT =
             DATA_TYPES.register("flight", () -> new PalladiumEntityDataType<>(EntityFlightHandler.CODEC, PalladiumEntityDataType.FILTER_LIVING));
+
+    public static final DeferredHolder<PalladiumEntityDataType<?>, PalladiumEntityDataType<EntityTrailHandler>> TRAIL_HANDLER =
+            DATA_TYPES.register("trails", () -> new PalladiumEntityDataType<>(EntityTrailHandler.CODEC, PalladiumEntityDataType.FILTER_ALL));
 
 }

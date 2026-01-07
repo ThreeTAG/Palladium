@@ -63,6 +63,7 @@ public class PalladiumCodecs {
     public static final Codec<Vector2f> VOXEL_VECTOR_2F = VECTOR_2F_CODEC.xmap(vector2f -> vector2f.div(16), vector2f -> vector2f.mul(16));
     public static final Codec<Float> VOXEL_FLOAT = Codec.FLOAT.xmap(f -> f / 16, f -> f * 16);
     public static final Codec<Float> NON_NEGATIVE_VOXEL_FLOAT = ExtraCodecs.NON_NEGATIVE_FLOAT.xmap(f -> f / 16, f -> f * 16);
+    public static final Codec<Float> FLOAT_0_TO_1 = floatRangeMinInclusiveWithMessage(0F, 1F, f -> "Value must be within 0.0 and 1.0: " + f);
 
     public static final Codec<Integer> TIME = Codec.withAlternative(
             ExtraCodecs.NON_NEGATIVE_INT,
@@ -79,12 +80,13 @@ public class PalladiumCodecs {
         );
     }
 
-    private static Codec<Float> floatRangeWithMessage(float min, float max, Function<Float, String> errorMessage) {
-        return Codec.FLOAT.validate((integer) -> {
-            return integer.compareTo(min) >= 0 && integer.compareTo(max) <= 0 ? DataResult.success(integer) : DataResult.error(() -> {
-                return (String) errorMessage.apply(integer);
-            });
-        });
+    private static Codec<Float> floatRangeMinInclusiveWithMessage(float min, float max, Function<Float, String> errorMessage) {
+        return Codec.FLOAT
+                .validate(
+                        f -> f.compareTo(min) >= 0 && f.compareTo(max) <= 0
+                                ? DataResult.success(f)
+                                : DataResult.error(() -> errorMessage.apply(f))
+                );
     }
 
     @SuppressWarnings("DuplicateExpressions")

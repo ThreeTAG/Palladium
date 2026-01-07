@@ -11,8 +11,6 @@ import java.util.List;
 
 public class TrailAbility extends Ability {
 
-    // TODO
-
     public static final MapCodec<TrailAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     ResourceLocation.CODEC.fieldOf("trail").forGetter(ab -> ab.trailRendererId),
@@ -41,7 +39,7 @@ public class TrailAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, TrailAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("An ability that renders a trail behind the entity.")
-                    .add("trail", TYPE_RESOURCE_LOCATION, "The id of the trail renderer to use.")
+                    .add("trail", TYPE_RESOURCE_LOCATION, "The id of the trail renderer to use. Trail files are located in \"assets/namespace/palladium/trails\".")
                     .setExampleObject(new TrailAbility(ResourceLocation.fromNamespaceAndPath("example", "trail_id"), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }

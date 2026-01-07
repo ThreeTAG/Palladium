@@ -69,7 +69,11 @@ public class HTMLBuilder {
         builder.add(HTMLBuilder.heading(title))
                 .addDocumentationSettings(values.entrySet().stream()
                         .collect(Collectors.toMap(Map.Entry::getKey,
-                                entry -> entry.getValue().getDocumentation(provider))));
+                                entry -> {
+                                    var doc = entry.getValue().getDocumentation(provider);
+                                    CodecDocumentationBuilder.addToDocs(location, doc.build(location, entry.getKey()));
+                                    return doc;
+                                })));
         return builder;
     }
 
@@ -78,7 +82,11 @@ public class HTMLBuilder {
         builder.add(HTMLBuilder.heading(title))
                 .addDocumentationSettings(registry.entrySet().stream()
                         .collect(Collectors.toMap(entry -> entry.getKey().location(),
-                                entry -> entry.getValue().getDocumentation(provider))));
+                                entry -> {
+                                    var doc = entry.getValue().getDocumentation(provider);
+                                    CodecDocumentationBuilder.addToDocs(registryKey.location(), doc.build(entry.getKey()));
+                                    return doc;
+                                })));
         return builder;
     }
 

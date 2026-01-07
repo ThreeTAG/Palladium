@@ -1,0 +1,58 @@
+{
+  "name": "Trail Test",
+  "icon": "minecraft:blaze_powder",
+  "abilities": {
+    "after_image": {
+      "type": "palladium:trail",
+      "trail": "test:after_image_test",
+      "properties": {
+        "title": "After Image"
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "horizontal_gradient": {
+      "type": "palladium:trail",
+      "trail": "test:horizontal_gradient_test",
+      "properties": {
+        "title": "Horizontal Gradient"
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "vertical_gradient": {
+      "type": "palladium:trail",
+      "trail": "test:vertical_gradient_test",
+      "properties": {
+        "title": "Vertical Gradient"
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
+    "lightning": {
+      "type": "palladium:trail",
+      "trail": "test:lightning_test",
+      "properties": {
+        "title": "Lightning"
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

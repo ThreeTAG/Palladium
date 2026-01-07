@@ -13,7 +13,7 @@ public class SubmitNodeCollectionMixin {
     @ModifyVariable(method = "submitModel", at = @At("HEAD"), ordinal = 2, argsOnly = true)
     public int modifyOpacityModel(int value) {
         if (AbilityClientEventHandler.OVERRIDDEN_OPACITY < 1F) {
-            return ARGB.multiply(ARGB.white(AbilityClientEventHandler.OVERRIDDEN_OPACITY), value);
+            return ARGB.multiply(ARGB.color(AbilityClientEventHandler.OVERRIDDEN_OPACITY, AbilityClientEventHandler.OVERRIDDEN_TINT), value);
         }
         return value;
     }
@@ -21,7 +21,7 @@ public class SubmitNodeCollectionMixin {
     @ModifyVariable(method = "submitModelPart", at = @At("HEAD"), ordinal = 2, argsOnly = true)
     public int modifyOpacityModelPart(int value) {
         if (AbilityClientEventHandler.OVERRIDDEN_OPACITY < 1F) {
-            return ARGB.multiply(ARGB.white(AbilityClientEventHandler.OVERRIDDEN_OPACITY), value);
+            return ARGB.multiply(ARGB.color(AbilityClientEventHandler.OVERRIDDEN_OPACITY, AbilityClientEventHandler.OVERRIDDEN_TINT), value);
         }
         return value;
     }
