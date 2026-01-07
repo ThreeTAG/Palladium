@@ -87,6 +87,7 @@ public class PalladiumClient {
     static void clientSetup(FMLClientSetupEvent event) {
         IconRenderer.registerRenderers();
         EntityEffectRenderer.registerRenderers();
+        PalladiumAnimationManager.registerLayers(event);
     }
 
     @SubscribeEvent

@@ -1,5 +1,6 @@
 package net.threetag.palladium;
 
+import com.zigythebird.playeranim.neoforge.event.MolangEvent;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -32,6 +33,7 @@ import net.threetag.palladium.power.ability.unlocking.UnlockingHandlerSerializer
 import net.threetag.palladium.power.dampening.PowerDampeningSources;
 import net.threetag.palladium.power.provider.PowerProviders;
 import net.threetag.palladium.proxy.PalladiumProxy;
+import net.threetag.palladium.client.animation.PalladiumQueries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -86,6 +88,11 @@ public final class Palladium {
         RegistryDumpCommand.register(e.getBuilder(), e.getBuildContext());
         DataAttachmentCommand.register(e.getBuilder(), e.getBuildContext());
         CustomizationCommand.register(e.getBuilder(), e.getBuildContext());
+    }
+
+    @SubscribeEvent
+    static void registerMolang(MolangEvent e) {
+        PalladiumQueries.registerQueries(e);
     }
 
     public static ResourceLocation id(String path) {

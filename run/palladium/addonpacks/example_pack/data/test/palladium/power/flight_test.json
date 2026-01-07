@@ -30,6 +30,39 @@
         }
       }
     },
+    "flight_anim": {
+      "type": "palladium:dummy",
+      "properties": {
+        "animation": "palladium:flight",
+        "animation_layer": 1
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:conditional",
+          "conditions": [
+            {
+              "type": "palladium:not",
+              "conditions": {
+                "type": "palladium:on_ground"
+              }
+            },
+            {
+              "type": "palladium:or",
+              "conditions": [
+                {
+                  "type": "palladium:ability_enabled",
+                  "ability": "levitation"
+                },
+                {
+                  "type": "palladium:ability_enabled",
+                  "ability": "propulsion"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
     "swinging": {
       "type": "palladium:flight",
       "flight_type": "test:swinging_test",
@@ -41,6 +74,30 @@
         "enabling": {
           "type": "palladium:key_bind",
           "behaviour": "toggle"
+        }
+      }
+    },
+    "swinging_anim": {
+      "type": "palladium:dummy",
+      "properties": {
+        "animation": "palladium:swinging",
+        "animation_layer": 1
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:conditional",
+          "conditions": [
+            {
+              "type": "palladium:not",
+              "conditions": {
+                "type": "palladium:on_ground"
+              }
+            },
+            {
+              "type": "palladium:ability_enabled",
+              "ability": "swinging"
+            }
+          ]
         }
       }
     }

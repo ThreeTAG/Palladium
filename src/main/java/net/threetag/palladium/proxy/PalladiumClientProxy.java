@@ -161,6 +161,7 @@ public class PalladiumClientProxy extends PalladiumProxy {
                         if (enabled != prevEnabled) {
                             if (enabled) {
                                 ability.getAbility().firstTick(livingEntity, ability);
+                                ability.getAbility().triggerAnimation(livingEntity, ability);
                             } else if (ability.getLifetime() > 0) {
                                 ability.getAbility().lastTick(livingEntity, ability);
                             }

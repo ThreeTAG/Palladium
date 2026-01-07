@@ -2,10 +2,14 @@ package net.threetag.palladium.power.ability;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.zigythebird.playeranim.animation.PlayerAnimationController;
+import com.zigythebird.playeranim.api.PlayerAnimationAccess;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.client.animation.PalladiumAnimationManager;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.util.PalladiumCodecs;
@@ -13,6 +17,7 @@ import net.threetag.palladium.util.PalladiumCodecs;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public abstract class Ability {
 
@@ -72,6 +77,19 @@ public abstract class Ability {
 
     public void animationTimerTick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled, AnimationTimer animationTimer) {
         animationTimer.tickAndUpdate(enabled);
+    }
+
+    public void triggerAnimation(LivingEntity entity, AbilityInstance<?> abilityInstance) {
+        Optional<ResourceLocation> animation = abilityInstance.getAbility().getProperties().getAnimation();
+        if (entity instanceof Avatar && animation.isPresent()) {
+            ResourceLocation animationLayer = switch (abilityInstance.getAbility().getProperties().getAnimationLayer()) {
+                case 0 -> PalladiumAnimationManager.COSMETIC_ANIMATION;
+                case 1 -> PalladiumAnimationManager.IDLE_ANIMATION;
+                default -> PalladiumAnimationManager.ACTIVE_ANIMATION;
+            };
+            PlayerAnimationController controller = (PlayerAnimationController) PlayerAnimationAccess.getPlayerAnimationLayer((Avatar) entity, animationLayer);
+            if (controller != null) controller.triggerAnimation(animation.get());
+        }
     }
 
     public void firstTick(LivingEntity entity, AbilityInstance<?> abilityInstance) {

@@ -3,21 +3,23 @@ package net.threetag.palladium.power;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.zigythebird.playeranim.animation.PlayerAnimationController;
+import com.zigythebird.playeranim.api.PlayerAnimationAccess;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.threetag.palladium.client.animation.PalladiumAnimationManager;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.network.SyncEntityPowersPacket;
+import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.provider.PowerProvider;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, EntityPowerHandler> {
 
@@ -89,6 +91,21 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
         // Tick
         for (PowerHolder holder : this.powers.values()) {
             holder.tick();
+        }
+
+        if (this.getEntity() instanceof Avatar) {
+            ArrayList<AbilityInstance<?>> animatingAbilities = new ArrayList<>();
+            this.powers.values().forEach(powerHolder -> animatingAbilities.addAll(powerHolder.getAbilities().values().stream().filter(a -> a.isEnabled() && a.getAbility().getProperties().getAnimation().isPresent()).toList()));
+
+            //Cut off animations if the ability that triggered it is disabled
+            if(animatingAbilities.stream().filter(abilityInstance -> abilityInstance.getAbility().getProperties().getAnimationLayer() == 0).findFirst().isEmpty())
+                ((PlayerAnimationController) PlayerAnimationAccess.getPlayerAnimationLayer((Avatar) this.getEntity(), PalladiumAnimationManager.COSMETIC_ANIMATION)).stopTriggeredAnimation();
+
+            if(animatingAbilities.stream().filter(abilityInstance -> abilityInstance.getAbility().getProperties().getAnimationLayer() == 1).findFirst().isEmpty())
+                ((PlayerAnimationController) PlayerAnimationAccess.getPlayerAnimationLayer((Avatar) this.getEntity(), PalladiumAnimationManager.IDLE_ANIMATION)).stopTriggeredAnimation();
+
+            if(animatingAbilities.stream().filter(abilityInstance -> abilityInstance.getAbility().getProperties().getAnimationLayer() == 2).findFirst().isEmpty())
+                ((PlayerAnimationController) PlayerAnimationAccess.getPlayerAnimationLayer((Avatar) this.getEntity(), PalladiumAnimationManager.ACTIVE_ANIMATION)).stopTriggeredAnimation();
         }
     }
 
