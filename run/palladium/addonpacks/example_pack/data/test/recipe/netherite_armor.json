@@ -1,0 +1,24 @@
+{
+  "type": "palladium:item_tailoring",
+  "results": {
+    "helmet": "minecraft:netherite_helmet",
+    "chestplate": "minecraft:netherite_chestplate",
+    "leggings": "minecraft:netherite_leggings",
+    "boots": "minecraft:netherite_boots"
+  },
+  "ingredients": [
+    {
+      "ingredient": "minecraft:netherite_ingot",
+      "count": 4
+    },
+    {
+      "ingredient": "minecraft:diamond",
+      "count": 24
+    }
+  ],
+  "tool": "#c:tools/shear",
+  "tool_icon": "palladium:container/slot/shears",
+  "title": "Netherite Armor",
+  "category": "test:vanilla_armor",
+  "requires_unlocking": false
+}

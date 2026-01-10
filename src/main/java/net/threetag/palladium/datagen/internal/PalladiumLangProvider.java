@@ -1,12 +1,16 @@
 package net.threetag.palladium.datagen.internal;
 
+import net.minecraft.Util;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.gui.screen.customization.CustomizationsGrid;
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
 import net.threetag.palladium.command.CustomizationCommand;
@@ -19,6 +23,7 @@ import net.threetag.palladium.customization.BuiltinCustomization;
 import net.threetag.palladium.customization.Customization;
 import net.threetag.palladium.customization.CustomizationCategories;
 import net.threetag.palladium.customization.CustomizationCategory;
+import net.threetag.palladium.item.PalladiumCreativeTabs;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.power.ability.AbilitySerializer;
 import net.threetag.palladium.power.ability.AbilitySerializers;
@@ -33,6 +38,15 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
     public PalladiumLangProvider(PackOutput output, String modid, String locale) {
         super(output, modid, locale);
         this.modid = modid;
+    }
+
+    public void addCreativeModeTab(Holder<? extends CreativeModeTab> key, String name) {
+        this.add(key.value(), name);
+    }
+
+    public void add(CreativeModeTab key, String name) {
+        ResourceLocation id = BuiltInRegistries.CREATIVE_MODE_TAB.getKey(key);
+        this.add(Util.makeDescriptionId("itemGroup", id), name);
     }
 
     public void addAbility(Holder<? extends AbilitySerializer<?>> key, String name) {
@@ -72,8 +86,28 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
         @Override
         protected void addTranslations() {
+            // Blocks
+            this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Tailoring Bench");
+
             // Items
-            this.add(PalladiumItems.SUIT_STAND.get(), "Suit Stand");
+            this.addCreativeModeTab(PalladiumCreativeTabs.MAIN, "Palladium");
+            this.addItem(PalladiumItems.SUIT_STAND, "Suit Stand");
+            this.addItem(PalladiumItems.WHITE_FABRIC, "White Fabric");
+            this.addItem(PalladiumItems.ORANGE_FABRIC, "Orange Fabric");
+            this.addItem(PalladiumItems.MAGENTA_FABRIC, "Magenta Fabric");
+            this.addItem(PalladiumItems.LIGHT_BLUE_FABRIC, "Light Blue Fabric");
+            this.addItem(PalladiumItems.YELLOW_FABRIC, "Yellow Fabric");
+            this.addItem(PalladiumItems.LIME_FABRIC, "Lime Fabric");
+            this.addItem(PalladiumItems.PINK_FABRIC, "Pink Fabric");
+            this.addItem(PalladiumItems.GRAY_FABRIC, "Gray Fabric");
+            this.addItem(PalladiumItems.LIGHT_GRAY_FABRIC, "Light Gray Fabric");
+            this.addItem(PalladiumItems.CYAN_FABRIC, "Cyan Fabric");
+            this.addItem(PalladiumItems.PURPLE_FABRIC, "Purple Fabric");
+            this.addItem(PalladiumItems.BLUE_FABRIC, "Blue Fabric");
+            this.addItem(PalladiumItems.BROWN_FABRIC, "Brown Fabric");
+            this.addItem(PalladiumItems.GREEN_FABRIC, "Green Fabric");
+            this.addItem(PalladiumItems.RED_FABRIC, "Red Fabric");
+            this.addItem(PalladiumItems.BLACK_FABRIC, "Black Fabric");
 
             // Config
             this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Alignment");
@@ -152,6 +186,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s can not be unlocked by commands");
             this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "The given entity can not have customizations");
 
+            // Container
+            this.add("container.palladium.tailoring", "Tailoring");
+            this.add("container.palladium.tailoring.craft", "Create");
+
             // GUI
             this.add("gui.palladium.powers", "Powers");
             this.add("gui.palladium.powers.buy_ability", "Do you want to unlock this ability?");
@@ -181,8 +219,28 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
         @Override
         protected void addTranslations() {
+            // Blocks
+            this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch");
+
             // Items
-            this.add(PalladiumItems.SUIT_STAND.get(), "Anzugsständer");
+            this.addCreativeModeTab(PalladiumCreativeTabs.MAIN, "Palladium");
+            this.addItem(PalladiumItems.SUIT_STAND, "Anzugsständer");
+            this.addItem(PalladiumItems.WHITE_FABRIC, "Weißer Stoff");
+            this.addItem(PalladiumItems.ORANGE_FABRIC, "Oranger Stoff");
+            this.addItem(PalladiumItems.MAGENTA_FABRIC, "Magenta Stoff");
+            this.addItem(PalladiumItems.LIGHT_BLUE_FABRIC, "Hellblauer Stoff");
+            this.addItem(PalladiumItems.YELLOW_FABRIC, "Gelber Stoff");
+            this.addItem(PalladiumItems.LIME_FABRIC, "Hellgrüner Stoff");
+            this.addItem(PalladiumItems.PINK_FABRIC, "Rosa Stoff");
+            this.addItem(PalladiumItems.GRAY_FABRIC, "Grauer Stoff");
+            this.addItem(PalladiumItems.LIGHT_GRAY_FABRIC, "Hellgrauer Stoff");
+            this.addItem(PalladiumItems.CYAN_FABRIC, "Türkiser Stoff");
+            this.addItem(PalladiumItems.PURPLE_FABRIC, "Violetter Stoff");
+            this.addItem(PalladiumItems.BLUE_FABRIC, "Blauer Stoff");
+            this.addItem(PalladiumItems.BROWN_FABRIC, "Brauner Stoff");
+            this.addItem(PalladiumItems.GREEN_FABRIC, "Grüner Stoff");
+            this.addItem(PalladiumItems.RED_FABRIC, "Roter Stoff");
+            this.addItem(PalladiumItems.BLACK_FABRIC, "Schwarzer Stoff");
 
             // Config
             this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Position");
@@ -261,6 +319,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s kann nicht per Befehl freigeschaltet werden");
             this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "Die angegebene Entität kann keine Anpassungen besitzen");
 
+            // Container
+            this.add("container.palladium.tailoring", "Zuschneidern");
+            this.add("container.palladium.tailoring.craft", "Herstellen");
+
             // GUI
             this.add("gui.palladium.powers", "Kräfte");
             this.add("gui.palladium.powers.buy_ability", "Möchtest du diese Fähigkeit freischalten?");
@@ -290,8 +352,30 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
         @Override
         protected void addTranslations() {
+
+
+            // Blocks
+            this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch’n");
+
             // Items
-            this.add(PalladiumItems.SUIT_STAND.get(), "Anzuchsschdändorr");
+            this.addCreativeModeTab(PalladiumCreativeTabs.MAIN, "Palladium");
+            this.addItem(PalladiumItems.SUIT_STAND, "Anzuchsschdändorr");
+            this.addItem(PalladiumItems.WHITE_FABRIC, "Weeßer Schdoff");
+            this.addItem(PalladiumItems.ORANGE_FABRIC, "Orangscher Schdoff");
+            this.addItem(PalladiumItems.MAGENTA_FABRIC, "Magenda Schdoff");
+            this.addItem(PalladiumItems.LIGHT_BLUE_FABRIC, "Hellblaaer Schdoff");
+            this.addItem(PalladiumItems.YELLOW_FABRIC, "Gälber Schdoff");
+            this.addItem(PalladiumItems.LIME_FABRIC, "Hellgriener Schdoff");
+            this.addItem(PalladiumItems.PINK_FABRIC, "Roser Schdoff");
+            this.addItem(PalladiumItems.GRAY_FABRIC, "Graer Schdoff");
+            this.addItem(PalladiumItems.LIGHT_GRAY_FABRIC, "Hellgraer Schdoff");
+            this.addItem(PalladiumItems.CYAN_FABRIC, "Türkiser Schdoff");
+            this.addItem(PalladiumItems.PURPLE_FABRIC, "Violedder Schdoff");
+            this.addItem(PalladiumItems.BLUE_FABRIC, "Blaer Schdoff");
+            this.addItem(PalladiumItems.BROWN_FABRIC, "Braer Schdoff");
+            this.addItem(PalladiumItems.GREEN_FABRIC, "Griener Schdoff");
+            this.addItem(PalladiumItems.RED_FABRIC, "Roder Schdoff");
+            this.addItem(PalladiumItems.BLACK_FABRIC, "Schwarzer Schdoff");
 
             // Config
             this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Position");
@@ -369,6 +453,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(CustomizationCommand.LOCK_SUCCESS, "%s is nu ordentlich für %s gesperrt");
             this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s kannsch du mit Befehln nich freischaltn");
             this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "Die Geeschd kann kee Anpassungen habn");
+
+            // Container
+            this.add("container.palladium.tailoring", "Zuschneidern");
+            this.add("container.palladium.tailoring.craft", "Herstellen");
 
             // GUI
             this.add("gui.palladium.powers", "Kräfte");

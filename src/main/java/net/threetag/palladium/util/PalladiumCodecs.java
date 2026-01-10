@@ -5,13 +5,17 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.Util;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -54,6 +58,7 @@ public class PalladiumCodecs {
             Ingredient.CODEC,
             Item.CODEC.xmap(itemHolder -> Ingredient.of(itemHolder.value()), ingredient -> ingredient.items().toList().getFirst())
     );
+    public static final Codec<ItemStack> SIMPLE_ITEM_STACK = Codec.withAlternative(ItemStack.CODEC, ItemStack.SIMPLE_ITEM_CODEC);
 
     public static final Codec<Vec2> VEC2_CODEC = Codec.FLOAT.listOf().comapFlatMap((list) -> Util.fixedSize(list, 2).map((floats) -> new Vec2(floats.getFirst(), floats.get(1))), (vec2) -> List.of(vec2.x, vec2.y));
     public static final StreamCodec<ByteBuf, Vec2> VEC2_STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.FLOAT, v -> v.x, ByteBufCodecs.FLOAT, v -> v.y, Vec2::new);
@@ -64,6 +69,8 @@ public class PalladiumCodecs {
     public static final Codec<Float> VOXEL_FLOAT = Codec.FLOAT.xmap(f -> f / 16, f -> f * 16);
     public static final Codec<Float> NON_NEGATIVE_VOXEL_FLOAT = ExtraCodecs.NON_NEGATIVE_FLOAT.xmap(f -> f / 16, f -> f * 16);
     public static final Codec<Float> FLOAT_0_TO_1 = floatRangeMinInclusiveWithMessage(0F, 1F, f -> "Value must be within 0.0 and 1.0: " + f);
+
+    public static final StreamCodec<FriendlyByteBuf, ArmorType> ARMOR_TYPE_STREAM_CODEC = NeoForgeStreamCodecs.enumCodec(ArmorType.class);
 
     public static final Codec<Integer> TIME = Codec.withAlternative(
             ExtraCodecs.NON_NEGATIVE_INT,

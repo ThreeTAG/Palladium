@@ -5,8 +5,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.logic.condition.AbilityUnlockedCondition;
@@ -68,7 +68,7 @@ public abstract class BuyableUnlockingHandler extends UnlockingHandler {
         }
 
         if (player.level().isClientSide()) {
-            ClientPacketDistributor.sendToServer(new AbilityClickedPacket(abilityInstance.getReference()));
+            Palladium.PROXY.sendPacketToServer(new AbilityClickedPacket(abilityInstance.getReference()));
         } else if (player instanceof ServerPlayer serverPlayer) {
             PacketDistributor.sendToPlayer(serverPlayer, new OpenAbilityBuyScreenPacket(abilityInstance.getReference(), this.hasEnoughCurrency(player)));
         }

@@ -3,6 +3,7 @@ package net.threetag.palladium.proxy;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Avatar;
@@ -19,6 +20,10 @@ import net.threetag.palladium.power.ability.AbilityInstance;
 import java.util.List;
 
 public class PalladiumProxy {
+
+    public void sendPacketToServer(CustomPacketPayload payload, CustomPacketPayload... payloads) {
+
+    }
 
     public void spawnEffectEntity(Entity anchor, EntityEffect entityEffect) {
 

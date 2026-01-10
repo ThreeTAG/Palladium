@@ -27,6 +27,7 @@ import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderState;
 import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderer;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.hud.AbilityGuiLayer;
+import net.threetag.palladium.client.gui.screen.menu.TailoringScreen;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
@@ -54,6 +55,7 @@ import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.logic.value.ValueSerializer;
+import net.threetag.palladium.menu.PalladiumMenuTypes;
 import net.threetag.palladium.proxy.PalladiumClientProxy;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
@@ -92,6 +94,11 @@ public class PalladiumClient {
     static void clientSetup(FMLClientSetupEvent event) {
         IconRenderer.registerRenderers();
         EntityEffectRenderer.registerRenderers();
+    }
+
+    @SubscribeEvent
+    static void menuScreen(RegisterMenuScreensEvent e) {
+        e.register(PalladiumMenuTypes.TAILORING.get(), TailoringScreen::new);
     }
 
     @SubscribeEvent
@@ -147,12 +154,14 @@ public class PalladiumClient {
         e.createProvider(PalladiumLangProvider.English::new);
         e.createProvider(PalladiumLangProvider.German::new);
         e.createProvider(PalladiumLangProvider.Saxon::new);
-        e.createProvider(PalladiumItemModelProvider::new);
+        e.createProvider(PalladiumModelProvider::new);
         e.createProvider(PalladiumRenderLayerProvider::new);
         e.createProvider(PalladiumBeamProvider::new);
 
         // Server
+        e.createProvider(PalladiumLootTableProvider::new);
         e.createProvider(PalladiumBlockTagProvider::new);
+        e.createProvider(PalladiumItemTagProvider::new);
         e.createProvider(PalladiumCustomizationProvider::new);
         e.createProvider(PalladiumCustomizationCategoryProvider::new);
         e.createProvider(PalladiumFlightTypeProvider::new);

@@ -1,0 +1,67 @@
+{
+  "type": "palladium:item_tailoring",
+  "results": {
+    "helmet": "minecraft:golden_apple"
+  },
+  "ingredients": [
+    {
+      "ingredient": "#minecraft:coal_ores",
+      "count": 2
+    },
+    {
+      "ingredient": "#minecraft:copper_ores"
+    },
+    {
+      "ingredient": "#minecraft:diamond_ores"
+    },
+    {
+      "ingredient": "#minecraft:emerald_ores"
+    },
+    {
+      "ingredient": "#minecraft:gold_ores",
+      "count": 3
+    },
+    {
+      "ingredient": "#minecraft:iron_ores"
+    },
+    {
+      "ingredient": "#minecraft:lapis_ores"
+    },
+    {
+      "ingredient": "#minecraft:redstone_ores"
+    },
+    {
+      "ingredient": "minecraft:iron_ingot",
+      "count": 4
+    },
+    {
+      "ingredient": "minecraft:gold_ingot"
+    },
+    {
+      "ingredient": "minecraft:diamond"
+    },
+    {
+      "ingredient": "minecraft:emerald"
+    },
+    {
+      "ingredient": "minecraft:lapis_lazuli",
+      "count": 5
+    },
+    {
+      "ingredient": "minecraft:redstone"
+    },
+    {
+      "ingredient": "minecraft:coal"
+    },
+    {
+      "ingredient": "minecraft:nether_brick"
+    },
+    {
+      "ingredient": "minecraft:nether_star",
+      "count": 6
+    }
+  ],
+  "tool": "#c:tools/shield",
+  "tool_icon": "palladium:container/slot/shears",
+  "title": "Golden Apple with many inputs"
+}

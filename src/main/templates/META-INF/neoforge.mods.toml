@@ -11,6 +11,7 @@ displayURL="https://modrinth.com/project/threetag-palladium"
 #credits="" #optional
 authors="${mod_authors}"
 description='''${mod_description}'''
+featureFlags="META-INF/feature_flags.json"
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
 [[mixins]]

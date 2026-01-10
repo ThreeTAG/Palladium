@@ -1,0 +1,20 @@
+{
+  "type": "palladium:item_tailoring",
+  "results": {
+    "helmet": "minecraft:golden_helmet",
+    "chestplate": "minecraft:golden_chestplate",
+    "leggings": "minecraft:golden_leggings",
+    "boots": "minecraft:golden_boots"
+  },
+  "ingredients": [
+    {
+      "ingredient": "minecraft:gold_ingot",
+      "count": 24
+    }
+  ],
+  "tool": "#c:tools/shear",
+  "tool_icon": "palladium:container/slot/shears",
+  "title": "Golden Armor",
+  "category": "test:vanilla_armor",
+  "requires_unlocking": false
+}

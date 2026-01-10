@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "fabrics",
+  "key": {
+    "S": "#c:rods/wooden",
+    "W": "minecraft:black_wool",
+    "X": "#c:strings"
+  },
+  "pattern": [
+    " WS",
+    "WXW",
+    "SW "
+  ],
+  "result": {
+    "count": 8,
+    "id": "palladium:black_fabric"
+  }
+}

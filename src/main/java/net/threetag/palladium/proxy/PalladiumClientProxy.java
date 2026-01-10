@@ -9,6 +9,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.Entity;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.entity.player.PlayerModelType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.threetag.palladium.client.beam.BeamManager;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
@@ -43,6 +45,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class PalladiumClientProxy extends PalladiumProxy {
+
+    @Override
+    public void sendPacketToServer(CustomPacketPayload payload, CustomPacketPayload... payloads) {
+        ClientPacketDistributor.sendToServer(payload, payloads);
+    }
 
     @Override
     public void spawnEffectEntity(Entity anchor, EntityEffect entityEffect) {

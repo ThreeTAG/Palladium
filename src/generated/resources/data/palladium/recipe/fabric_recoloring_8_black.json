@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "dye_fabrics",
+  "ingredients": [
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#c:dyes/black"
+  ],
+  "result": {
+    "count": 8,
+    "id": "palladium:black_fabric"
+  }
+}

@@ -6,5 +6,7 @@
   "block.test.chocolate_cake": "Chocolate Cake",
   "item.test.chocolate_cake": "Chocolate Cake",
   "item.test.emerald_sword": "Emerald Sword",
-  "item.test.dirt_chestplate": "Dirt Chestplate"
+  "item.test.dirt_chestplate": "Dirt Chestplate",
+  "palladium.tailoring_recipe.category.test.vanilla_armor": "Vanilla Armor",
+  "palladium.tailoring_recipe.category.test.pack_armor": "Pack Armor"
 }
