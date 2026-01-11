@@ -1,7 +1,7 @@
 package net.threetag.palladium.power.provider;
 
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.component.PalladiumDataComponents;
@@ -26,7 +26,7 @@ public class ItemPowerProvider extends PowerProvider {
                 if (stack.has(PalladiumDataComponents.Items.POWERS.get())) {
                     var itemPowers = stack.get(PalladiumDataComponents.Items.POWERS.get());
 
-                    for (ResourceLocation powerId : Objects.requireNonNull(itemPowers).forSlot(slot)) {
+                    for (Identifier powerId : Objects.requireNonNull(itemPowers).forSlot(slot)) {
                         registry.get(powerId).ifPresent(power -> collector.addPower(power, PowerProviders.PRIORITY_ITEMS, () -> new Validator(slot, powerId)));
                     }
                 }
@@ -34,7 +34,7 @@ public class ItemPowerProvider extends PowerProvider {
         }
     }
 
-    public record Validator(PlayerSlot slot, ResourceLocation id) implements PowerValidator {
+    public record Validator(PlayerSlot slot, Identifier id) implements PowerValidator {
 
         @Override
         public boolean stillValid(LivingEntity entity, Holder<Power> power) {

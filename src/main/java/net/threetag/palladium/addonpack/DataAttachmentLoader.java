@@ -4,7 +4,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -24,14 +24,14 @@ import java.util.Objects;
 public class DataAttachmentLoader extends SimpleJsonResourceReloadListener<PackAttachmentBuilder<?>> {
 
     public static final DataAttachmentLoader INSTANCE = new DataAttachmentLoader();
-    private final BiMap<ResourceLocation, PackAttachmentBuilder<?>> dataAttachments = HashBiMap.create();
+    private final BiMap<Identifier, PackAttachmentBuilder<?>> dataAttachments = HashBiMap.create();
 
     public DataAttachmentLoader() {
         super(PackAttachmentBuilder.CODEC, FileToIdConverter.json("data_attachment"));
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, PackAttachmentBuilder<?>> object, ResourceManager resourceManager, ProfilerFiller profiler) {
+    protected void apply(Map<Identifier, PackAttachmentBuilder<?>> object, ResourceManager resourceManager, ProfilerFiller profiler) {
         this.dataAttachments.clear();
         this.dataAttachments.putAll(object);
         AddonPackLog.info("Registered " + object.size() + " addonpack data attachments");
@@ -45,16 +45,16 @@ public class DataAttachmentLoader extends SimpleJsonResourceReloadListener<PackA
     }
 
     @Nullable
-    public PackAttachmentBuilder<?> get(ResourceLocation id) {
+    public PackAttachmentBuilder<?> get(Identifier id) {
         return this.dataAttachments.get(id);
     }
 
     @Nullable
-    public ResourceLocation getId(PackAttachmentBuilder<?> type) {
+    public Identifier getId(PackAttachmentBuilder<?> type) {
         return this.dataAttachments.inverse().get(type);
     }
 
-    public Map<ResourceLocation, PackAttachmentBuilder<?>> all() {
+    public Map<Identifier, PackAttachmentBuilder<?>> all() {
         return ImmutableMap.copyOf(this.dataAttachments);
     }
 }

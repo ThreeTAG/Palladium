@@ -2,7 +2,7 @@ package net.threetag.palladium.client.renderer.entity.skin;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.PlayerModelType;
 import net.minecraft.world.entity.player.PlayerSkin;
 import net.threetag.palladium.entity.PlayerModelChangeType;
@@ -19,7 +19,7 @@ public class PlayerSkinHandler {
             return original;
         }
 // TODO
-//        ResourceLocation startSkin = original.body().texturePath();
+//        Identifier startSkin = original.body().texturePath();
 //        var modelType = original.model();
 //
 //        for (Pair<Integer, SkinProvider> pair : PROVIDER) {
@@ -45,7 +45,7 @@ public class PlayerSkinHandler {
 
     public interface SkinProvider {
 
-        ResourceLocation getSkin(AbstractClientPlayer player, ResourceLocation previousSkin, ResourceLocation defaultSkin, PlayerModelType model);
+        Identifier getSkin(AbstractClientPlayer player, Identifier previousSkin, Identifier defaultSkin, PlayerModelType model);
 
         default PlayerModelChangeType getModelType(AbstractClientPlayer player) {
             return PlayerModelChangeType.KEEP;

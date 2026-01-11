@@ -1,5 +1,6 @@
 package net.threetag.palladium.logic.context;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -29,7 +30,10 @@ public class DataContext {
     }
 
     public static DataContext forEntity(Entity entity) {
-        return create().with(DataContextType.ENTITY, entity).with(DataContextType.LEVEL, entity.level());
+        return create()
+                .with(DataContextType.ENTITY, entity)
+                .with(DataContextType.LEVEL, entity.level())
+                .with(DataContextType.BLOCK_POS, entity.blockPosition());
     }
 
     public static DataContext forItemInEquipmentSlot(LivingEntity entity, EquipmentSlot slot) {
@@ -102,6 +106,11 @@ public class DataContext {
     public Player getPlayer() {
         var entity = this.getEntity();
         return entity instanceof Player player ? player : null;
+    }
+
+    @Nullable
+    public BlockPos getBlockPos() {
+        return this.get(DataContextType.BLOCK_POS);
     }
 
     @Nullable

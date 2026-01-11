@@ -19,7 +19,7 @@ public class LevelRendererMixin {
 
     @Inject(method = "addSkyPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/Camera;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Matrix4f;)V", at = @At("HEAD"), cancellable = true)
     private void skipSkyRenderingForPhasingBlindness(FrameGraphBuilder frameGraphBuilder, Camera camera, GpuBufferSlice shaderFog, Matrix4f modelViewMatrix, CallbackInfo ci) {
-        if (camera.getEntity() instanceof LivingEntity living) {
+        if (camera.entity() instanceof LivingEntity living) {
             if (AbilityUtil.isTypeEnabled(living, AbilitySerializers.INTANGIBILITY.get())) {
                 if (IntangibilityAbility.getInWallBlockState(living) != null) {
                     ci.cancel();

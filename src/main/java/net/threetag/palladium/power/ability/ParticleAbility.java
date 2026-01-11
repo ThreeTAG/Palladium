@@ -9,7 +9,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
@@ -23,17 +23,17 @@ public class ParticleAbility extends Ability {
 
     public static final MapCodec<ParticleAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    PalladiumCodecs.listOrPrimitive(ResourceLocation.CODEC).fieldOf("emitter").forGetter(ab -> ab.particleEmitterIds),
+                    PalladiumCodecs.listOrPrimitive(Identifier.CODEC).fieldOf("emitter").forGetter(ab -> ab.particleEmitterIds),
                     BuiltInRegistries.PARTICLE_TYPE.holderByNameCodec().fieldOf("particle_type").forGetter(ab -> ab.particleTypeHolder),
                     CompoundTag.CODEC.optionalFieldOf("options", new CompoundTag()).forGetter(ab -> ab.options),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, ParticleAbility::new));
 
-    public final List<ResourceLocation> particleEmitterIds;
+    public final List<Identifier> particleEmitterIds;
     public final Holder<ParticleType<?>> particleTypeHolder;
     public final CompoundTag options;
 
-    public ParticleAbility(List<ResourceLocation> particleEmitterIds, Holder<ParticleType<?>> particleTypeHolder, CompoundTag options, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
+    public ParticleAbility(List<Identifier> particleEmitterIds, Holder<ParticleType<?>> particleTypeHolder, CompoundTag options, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
         super(properties, conditions, energyBarUsages);
         this.particleEmitterIds = particleEmitterIds;
         this.particleTypeHolder = particleTypeHolder;
@@ -61,13 +61,13 @@ public class ParticleAbility extends Ability {
 
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, ParticleAbility> builder, HolderLookup.Provider provider) {
-            var particleType = provider.lookupOrThrow(Registries.PARTICLE_TYPE).getOrThrow(ResourceKey.create(Registries.PARTICLE_TYPE, ResourceLocation.withDefaultNamespace("dust")));
+            var particleType = provider.lookupOrThrow(Registries.PARTICLE_TYPE).getOrThrow(ResourceKey.create(Registries.PARTICLE_TYPE, Identifier.withDefaultNamespace("dust")));
 
             builder.setDescription("Spawns particles around the entity.")
                     .add("emitter", SettingType.listOrPrimitive(TYPE_RESOURCE_LOCATION), "List of emitter IDs where the particles spawn at.")
                     .add("particle_type", TYPE_PARTICLE_TYPE, "ID of the particle you want to spawn.")
                     .addOptional("options", TYPE_NBT, "Additional options for the particle (like color of a dust particle).")
-                    .setExampleObject(new ParticleAbility(List.of(ResourceLocation.fromNamespaceAndPath("example", "emitter_id")), particleType, null, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .setExampleObject(new ParticleAbility(List.of(Identifier.fromNamespaceAndPath("example", "emitter_id")), particleType, null, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

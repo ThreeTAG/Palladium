@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -34,7 +34,7 @@ public class BeamAbility extends Ability {
 
     public static final MapCodec<BeamAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    ResourceLocation.CODEC.fieldOf("beam_renderer").forGetter(ab -> ab.beamId),
+                    Identifier.CODEC.fieldOf("beam_renderer").forGetter(ab -> ab.beamId),
                     Codec.floatRange(0, Float.MAX_VALUE).optionalFieldOf("damage", 0F).forGetter(ab -> ab.damage),
                     Codec.floatRange(0, Float.MAX_VALUE).optionalFieldOf("max_distance", 30F).forGetter(ab -> ab.maxDistance),
                     PalladiumCodecs.TIME.optionalFieldOf("set_on_fire_ticks", 0).forGetter(ab -> ab.setOnFireSeconds),
@@ -43,12 +43,12 @@ public class BeamAbility extends Ability {
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, BeamAbility::new));
 
-    public final ResourceLocation beamId;
+    public final Identifier beamId;
     public final float damage, maxDistance;
     public final int setOnFireSeconds;
     public final boolean causeFire, smeltBlocks;
 
-    public BeamAbility(ResourceLocation beamId, float damage, float maxDistance, int setOnFireSeconds, boolean causeFire, boolean smeltBlocks, AbilityProperties properties, AbilityStateManager state, List<EnergyBarUsage> energyBarUsages) {
+    public BeamAbility(Identifier beamId, float damage, float maxDistance, int setOnFireSeconds, boolean causeFire, boolean smeltBlocks, AbilityProperties properties, AbilityStateManager state, List<EnergyBarUsage> energyBarUsages) {
         super(properties, state, energyBarUsages);
         this.beamId = beamId;
         this.damage = damage;
@@ -161,7 +161,7 @@ public class BeamAbility extends Ability {
                     .addOptional("cause_fire", TYPE_BOOLEAN, "If the beam should cause fire on blocks", false)
                     .addOptional("smelt_blocks", TYPE_BOOLEAN, "If the beam should smelt hit blocks", false)
                     .setExampleObject(new BeamAbility(
-                            ResourceLocation.fromNamespaceAndPath("example", "beam_renderer_id"),
+                            Identifier.fromNamespaceAndPath("example", "beam_renderer_id"),
                             5F,
                             25F,
                             20,

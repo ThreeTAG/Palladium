@@ -1,7 +1,7 @@
 package net.threetag.palladium.addonpack;
 
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -18,7 +18,7 @@ public class ArmorMaterialLoader extends SimpleJsonResourceReloadListener<ArmorM
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, ArmorMaterial> object, ResourceManager resourceManager, ProfilerFiller profiler) {
+    protected void apply(Map<Identifier, ArmorMaterial> object, ResourceManager resourceManager, ProfilerFiller profiler) {
         object.forEach(ArmorMaterialRegistry::register);
         AddonPackLog.info("Registered " + object.size() + " addonpack armor materials");
     }

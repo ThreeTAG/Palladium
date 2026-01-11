@@ -26,6 +26,7 @@ import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.component.EditButton;
 import net.threetag.palladium.client.gui.component.tab.IconTabNavigationBar;
+import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderState;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.CustomizationPreview;
 import net.threetag.palladium.logic.context.DataContext;
@@ -34,6 +35,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -63,9 +65,9 @@ public class PlayerCustomizationScreen extends Screen {
         if (screen instanceof InventoryScreen inv) {
             button = new EditButton(inv.getGuiLeft() + 63, inv.getGuiTop() + 66, b -> Minecraft.getInstance().setScreen(new PlayerCustomizationScreen(screen))) {
                 @Override
-                public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+                public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
                     this.setPosition(inv.getGuiLeft() + 63, inv.getGuiTop() + 66);
-                    super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
+                    super.renderContents(guiGraphics, mouseX, mouseY, partialTick);
                 }
             };
             button.setTooltip(Tooltip.create(text));
@@ -74,9 +76,9 @@ public class PlayerCustomizationScreen extends Screen {
         if (screen instanceof CreativeModeInventoryScreen inv) {
             button = new EditButton(inv.getGuiLeft() + 93, inv.getGuiTop() + 37, b -> Minecraft.getInstance().setScreen(new PlayerCustomizationScreen(screen))) {
                 @Override
-                public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+                public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
                     this.visible = CreativeModeInventoryScreen.selectedTab == BuiltInRegistries.CREATIVE_MODE_TAB.getValue(CreativeModeTabs.INVENTORY);
-                    super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
+                    super.renderContents(guiGraphics, mouseX, mouseY, partialTick);
                 }
             };
             button.setTooltip(Tooltip.create(text));
@@ -179,22 +181,17 @@ public class PlayerCustomizationScreen extends Screen {
         var translation = new Vector3f(0, entity.getBbHeight() / 2F, 0).add(transformation.translation().toVector3f().div(2));
         var scale = (baseScale / entity.getScale()) * transformation.scale();
 
+        EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+        EntityRenderer<? super LivingEntity, ?> entityRenderer = entityRenderDispatcher.getRenderer(entity);
+        EntityRenderState entityRenderState = entityRenderer.createRenderState(entity, 1.0F);
+        entityRenderState.lightCoords = 15728880;
+        entityRenderState.shadowPieces.clear();
+        entityRenderState.outlineColor = 0;
+        var state = new GuiEntityRenderState(entityRenderState, translation, quaternionf, null, x1, y1, x2, y2, scale, guiGraphics.scissorStack.peek());
+
         if (stateConsumer == null) {
-            InventoryScreen.renderEntityInInventory(guiGraphics, x1, y1, x2, y2,
-                    scale,
-                    translation,
-                    quaternionf,
-                    null,
-                    entity);
+            guiGraphics.guiRenderState.submitPicturesInPictureState(new GuiMultiEntityRenderState(Collections.singletonList(state)));
         } else {
-            EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-            EntityRenderer<? super LivingEntity, ?> entityRenderer = entityRenderDispatcher.getRenderer(entity);
-            EntityRenderState entityRenderState = entityRenderer.createRenderState(entity, 1.0F);
-            entityRenderState.hitboxesRenderState = null;
-            entityRenderState.lightCoords = 15728880;
-            entityRenderState.shadowPieces.clear();
-            entityRenderState.outlineColor = 0;
-            var state = new GuiEntityRenderState(entityRenderState, translation, quaternionf, null, x1, y1, x2, y2, scale, guiGraphics.scissorStack.peek());
             stateConsumer.accept(state);
         }
 

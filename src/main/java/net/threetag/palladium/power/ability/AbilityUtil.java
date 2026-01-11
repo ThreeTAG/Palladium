@@ -1,6 +1,6 @@
 package net.threetag.palladium.power.ability;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.EntityPowerHandler;
 import net.threetag.palladium.power.Power;
@@ -93,7 +93,7 @@ public class AbilityUtil {
      * @return The specific {@link AbilityInstance}, or null
      */
     @Nullable
-    public static <T extends Ability> AbilityInstance<T> getInstance(LivingEntity entity, ResourceLocation powerId, String abilityKey) {
+    public static <T extends Ability> AbilityInstance<T> getInstance(LivingEntity entity, Identifier powerId, String abilityKey) {
         Power power = entity.registryAccess().lookupOrThrow(PalladiumRegistryKeys.POWER).getValue(powerId);
 
         if (power == null) {
@@ -123,7 +123,7 @@ public class AbilityUtil {
      * @param abilityKey The unique key being used in the power json for the ability
      * @return True if the ability is unlocked
      */
-    public static boolean isUnlocked(LivingEntity entity, ResourceLocation powerId, String abilityKey) {
+    public static boolean isUnlocked(LivingEntity entity, Identifier powerId, String abilityKey) {
         var instance = getInstance(entity, powerId, abilityKey);
         return instance != null && instance.isUnlocked();
     }
@@ -136,7 +136,7 @@ public class AbilityUtil {
      * @param abilityKey The unique key being used in the power json for the ability
      * @return True if the ability is enabled
      */
-    public static boolean isEnabled(LivingEntity entity, ResourceLocation powerId, String abilityKey) {
+    public static boolean isEnabled(LivingEntity entity, Identifier powerId, String abilityKey) {
         var instance = getInstance(entity, powerId, abilityKey);
         return instance != null && instance.isEnabled();
     }

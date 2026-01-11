@@ -57,7 +57,7 @@ public class AbilityClientEventHandler {
 
     @SubscribeEvent
     static void renderFog(ViewportEvent.RenderFog e) {
-        if (e.getCamera().getEntity() instanceof LivingEntity living) {
+        if (e.getCamera().entity() instanceof LivingEntity living) {
             if (AbilityUtil.isTypeEnabled(living, AbilitySerializers.INTANGIBILITY.get())) {
                 if (IntangibilityAbility.getInWallBlockState(living) != null) {
                     e.setFarPlaneDistance(5F);
@@ -69,7 +69,7 @@ public class AbilityClientEventHandler {
 
     @SubscribeEvent
     static void fogColor(ViewportEvent.ComputeFogColor e) {
-        if (e.getCamera().getEntity() instanceof LivingEntity living) {
+        if (e.getCamera().entity() instanceof LivingEntity living) {
             if (AbilityUtil.isTypeEnabled(living, AbilitySerializers.INTANGIBILITY.get())) {
                 if (IntangibilityAbility.getInWallBlockState(living) != null) {
                     e.setRed(0F);

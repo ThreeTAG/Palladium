@@ -46,7 +46,7 @@ public class EntitySuperpowerHandler extends PalladiumEntityData<LivingEntity, E
             if (power.getParentId() == null) {
                 return this.superpowers.stream().filter(h -> h.value().getParentId() == null).count() < PalladiumServerConfig.MAX_SUPERPOWER_SETS.get();
             } else {
-                return this.superpowers.stream().anyMatch(h -> h.unwrapKey().orElseThrow().location().equals(power.getParentId()));
+                return this.superpowers.stream().anyMatch(h -> h.unwrapKey().orElseThrow().identifier().equals(power.getParentId()));
             }
         }
 

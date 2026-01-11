@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.item.DyeColor;
@@ -52,7 +52,7 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
         var registry = minecraft.level.registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION);
 
         for (Customization customization : registry) {
-            if (customization.getCategoryKey().location().equals(slotId)) {
+            if (customization.getCategoryKey().identifier().equals(slotId)) {
                 var handler = EntityCustomizationHandler.get(minecraft.player);
                 var entry = new Entry(registry.wrapAsHolder(customization), handler.isUnlocked(customization));
                 this.addEntry(entry);
@@ -104,7 +104,7 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
                 Palladium.id("widget/customization_disabled"),
                 Palladium.id("widget/customization_highlighted")
         );
-        private static final ResourceLocation LOCK_TEXTURE = Palladium.id("textures/icon/lock.png");
+        private static final Identifier LOCK_TEXTURE = Palladium.id("textures/icon/lock.png");
 
         private final Holder<Customization> customization;
         private final boolean unlocked;

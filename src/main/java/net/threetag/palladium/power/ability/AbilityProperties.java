@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec2;
 import net.threetag.palladium.icon.Icon;
@@ -31,7 +31,7 @@ public class AbilityProperties {
             Codec.intRange(-1, Integer.MAX_VALUE).optionalFieldOf("list_index", -1).forGetter(AbilityProperties::getListIndex),
             PalladiumCodecs.VEC2_CODEC.optionalFieldOf("gui_position").forGetter(p -> Optional.ofNullable(p.guiPosition)),
             AnimationTimerSetting.CODEC.optionalFieldOf("animation_timer").forGetter(p -> Optional.ofNullable(p.animationTimerSetting)),
-            PalladiumCodecs.listOrPrimitive(ResourceLocation.CODEC).optionalFieldOf("render_layer", Collections.emptyList()).forGetter(p -> p.renderLayers),
+            PalladiumCodecs.listOrPrimitive(Identifier.CODEC).optionalFieldOf("render_layer", Collections.emptyList()).forGetter(p -> p.renderLayers),
             Codec.BOOL.optionalFieldOf("allow_dampening", true).forGetter(p -> p.allowDampening)
     ).apply(instance, (title, icon, desc, color, hiddenGui, hiddenBar, listIndex, guiPos, timer, renderLayers, allowDampening) ->
             new AbilityProperties(title.orElse(null), icon, desc.orElse(null), color, hiddenGui, hiddenBar, listIndex, guiPos.orElse(null), timer.orElse(null), renderLayers, allowDampening)));
@@ -45,7 +45,7 @@ public class AbilityProperties {
     private int listIndex = -1;
     private Vec2 guiPosition = null;
     private AnimationTimerSetting animationTimerSetting = null;
-    private List<ResourceLocation> renderLayers = Collections.emptyList();
+    private List<Identifier> renderLayers = Collections.emptyList();
     private boolean allowDampening = true;
 
     private AbilityProperties() {
@@ -54,7 +54,7 @@ public class AbilityProperties {
 
     private AbilityProperties(Component title, Icon icon, AbilityDescription description, AbilityColor color,
                               boolean hiddenInGUI, boolean hiddenInBar, int listIndex, Vec2 guiPosition,
-                              AnimationTimerSetting animationTimerSetting, List<ResourceLocation> renderLayers,
+                              AnimationTimerSetting animationTimerSetting, List<Identifier> renderLayers,
                               boolean allowDampening) {
         this.title = title;
         this.icon = icon;
@@ -114,7 +114,7 @@ public class AbilityProperties {
         return this;
     }
 
-    public List<ResourceLocation> getRenderLayers() {
+    public List<Identifier> getRenderLayers() {
         return this.renderLayers;
     }
 

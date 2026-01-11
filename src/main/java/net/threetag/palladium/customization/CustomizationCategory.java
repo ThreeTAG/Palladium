@@ -2,7 +2,7 @@ package net.threetag.palladium.customization;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.RegistryFixedCodec;
@@ -35,7 +35,7 @@ public record CustomizationCategory(int sortIndex, CustomizationPreview preview,
     }
 
     public static String makeDescriptionId(ResourceKey<CustomizationCategory> key) {
-        return Util.makeDescriptionId("customization_category", key.location());
+        return Util.makeDescriptionId("customization_category", key.identifier());
     }
 
     public boolean isVisible(DataContext context) {

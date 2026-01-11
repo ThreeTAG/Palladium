@@ -142,7 +142,7 @@ public class ModelUtil {
     public static Vec3 getInWorldFirstPersonPosition(HumanoidArm arm, Vector3f offset, float partialTicks) {
         Vector3f vec = new Vector3f(0, 0, 0);
         vec = getInWorldFirstPersonArmMatrix(arm, offset, partialTicks).transformPosition(vec);
-        return Minecraft.getInstance().gameRenderer.getMainCamera().getPosition().add(vec.x, vec.y, vec.z);
+        return Minecraft.getInstance().gameRenderer.getMainCamera().position().add(vec.x, vec.y, vec.z);
     }
 
     public static Matrix4f getInWorldFirstPersonArmMatrix(HumanoidArm arm, Vector3f offset, float partialTicks) {

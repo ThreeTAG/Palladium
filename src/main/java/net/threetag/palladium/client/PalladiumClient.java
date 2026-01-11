@@ -1,9 +1,9 @@
 package net.threetag.palladium.client;
 
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.PlayerModelType;
 import net.neoforged.api.distmarker.Dist;
@@ -30,7 +30,6 @@ import net.threetag.palladium.client.gui.screen.hud.AbilityGuiLayer;
 import net.threetag.palladium.client.gui.screen.menu.TailoringScreen;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
-import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
 import net.threetag.palladium.client.renderer.entity.SuitStandRenderer;
 import net.threetag.palladium.client.renderer.entity.SwingAnchorRenderer;
@@ -187,11 +186,6 @@ public class PalladiumClient {
     @SubscribeEvent
     static void registerPiP(RegisterPictureInPictureRenderersEvent e) {
         e.register(GuiMultiEntityRenderState.class, bufferSource -> new GuiMultiEntityRenderer(bufferSource, Minecraft.getInstance().getEntityRenderDispatcher()));
-    }
-
-    @SubscribeEvent
-    static void registerPipelines(RegisterRenderPipelinesEvent e) {
-        e.registerPipeline(PalladiumRenderTypes.Pipelines.ADD);
     }
 
 }

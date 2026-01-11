@@ -7,11 +7,10 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ARGB;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.client.gui.component.grid.AbstractSelectionGrid;
+import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.CustomizationPreview;
 import net.threetag.palladium.util.Easing;
 
@@ -46,15 +45,15 @@ public class CustomizationPreviewComponent extends AbstractWidget {
     }
 
     protected void renderSeparators(GuiGraphics guiGraphics) {
-        ResourceLocation resourceLocation = this.minecraft.level == null ? Screen.HEADER_SEPARATOR : Screen.INWORLD_HEADER_SEPARATOR;
-        ResourceLocation resourceLocation2 = this.minecraft.level == null ? Screen.FOOTER_SEPARATOR : Screen.INWORLD_FOOTER_SEPARATOR;
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,resourceLocation, this.getX(), this.getY() - 2, 0, 0, this.getWidth(), 2, 32, 2);
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,resourceLocation2, this.getX(), this.getBottom(), 0, 0, this.getWidth(), 2, 32, 2);
+        Identifier identifier = this.minecraft.level == null ? Screen.HEADER_SEPARATOR : Screen.INWORLD_HEADER_SEPARATOR;
+        Identifier identifier2 = this.minecraft.level == null ? Screen.FOOTER_SEPARATOR : Screen.INWORLD_FOOTER_SEPARATOR;
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,identifier, this.getX(), this.getY() - 2, 0, 0, this.getWidth(), 2, 32, 2);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,identifier2, this.getX(), this.getBottom(), 0, 0, this.getWidth(), 2, 32, 2);
     }
 
     protected void renderBackground(GuiGraphics guiGraphics) {
-        ResourceLocation resourceLocation = this.minecraft.level == null ? AbstractSelectionGrid.MENU_LIST_BACKGROUND : AbstractSelectionGrid.INWORLD_MENU_LIST_BACKGROUND;
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,resourceLocation, this.getX(), this.getY(), this.getRight(), this.getBottom(), this.getWidth(), this.getHeight(), 32, 32);
+        Identifier identifier = this.minecraft.level == null ? AbstractSelectionGrid.MENU_LIST_BACKGROUND : AbstractSelectionGrid.INWORLD_MENU_LIST_BACKGROUND;
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,identifier, this.getX(), this.getY(), this.getRight(), this.getBottom(), this.getWidth(), this.getHeight(), 32, 32);
     }
 
     public void tick() {

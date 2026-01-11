@@ -8,7 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.PlacementInfo;
@@ -32,14 +32,14 @@ public class ItemTailoringRecipe implements TailoringRecipe {
     protected final Map<ArmorType, ItemStack> results;
     protected final List<SizedIngredient> ingredients;
     protected final Ingredient toolIngredient;
-    protected final Optional<ResourceLocation> toolIcon;
-    protected final Optional<ResourceLocation> categoryId;
+    protected final Optional<Identifier> toolIcon;
+    protected final Optional<Identifier> categoryId;
     protected final boolean requiresUnlocking;
 
     @Nullable
     private PlacementInfo placementInfo;
 
-    public ItemTailoringRecipe(Component title, Map<ArmorType, ItemStack> results, List<SizedIngredient> ingredients, Ingredient toolIngredient, Optional<ResourceLocation> toolIcon, Optional<ResourceLocation> categoryId, boolean requiresUnlocking) {
+    public ItemTailoringRecipe(Component title, Map<ArmorType, ItemStack> results, List<SizedIngredient> ingredients, Ingredient toolIngredient, Optional<Identifier> toolIcon, Optional<Identifier> categoryId, boolean requiresUnlocking) {
         this.title = title;
         this.results = results;
         this.ingredients = ingredients;
@@ -84,12 +84,12 @@ public class ItemTailoringRecipe implements TailoringRecipe {
     }
 
     @Override
-    public Optional<ResourceLocation> toolIcon() {
+    public Optional<Identifier> toolIcon() {
         return this.toolIcon;
     }
 
     @Override
-    public Optional<ResourceLocation> categoryId() {
+    public Optional<Identifier> categoryId() {
         return this.categoryId;
     }
 
@@ -105,8 +105,8 @@ public class ItemTailoringRecipe implements TailoringRecipe {
                 Codec.unboundedMap(ArmorType.CODEC, PalladiumCodecs.SIMPLE_ITEM_STACK).fieldOf("results").forGetter(ItemTailoringRecipe::getResults),
                 PalladiumCodecs.listOrPrimitive(SizedIngredient.NESTED_CODEC).fieldOf("ingredients").forGetter(ItemTailoringRecipe::getIngredients),
                 Ingredient.CODEC.fieldOf("tool").forGetter(ItemTailoringRecipe::toolIngredient),
-                ResourceLocation.CODEC.optionalFieldOf("tool_icon").forGetter(ItemTailoringRecipe::toolIcon),
-                ResourceLocation.CODEC.optionalFieldOf("category").forGetter(ItemTailoringRecipe::categoryId),
+                Identifier.CODEC.optionalFieldOf("tool_icon").forGetter(ItemTailoringRecipe::toolIcon),
+                Identifier.CODEC.optionalFieldOf("category").forGetter(ItemTailoringRecipe::categoryId),
                 Codec.BOOL.optionalFieldOf("requires_unlocking", true).forGetter(ItemTailoringRecipe::requiresUnlocking)
         ).apply(instance, ItemTailoringRecipe::new));
 
@@ -115,8 +115,8 @@ public class ItemTailoringRecipe implements TailoringRecipe {
                 ByteBufCodecs.map(Utils::newMap, PalladiumCodecs.ARMOR_TYPE_STREAM_CODEC, ItemStack.STREAM_CODEC), ItemTailoringRecipe::getResults,
                 SizedIngredient.STREAM_CODEC.apply(ByteBufCodecs.list()), ItemTailoringRecipe::getIngredients,
                 Ingredient.CONTENTS_STREAM_CODEC, ItemTailoringRecipe::toolIngredient,
-                ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), ItemTailoringRecipe::toolIcon,
-                ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), ItemTailoringRecipe::categoryId,
+                ByteBufCodecs.optional(Identifier.STREAM_CODEC), ItemTailoringRecipe::toolIcon,
+                ByteBufCodecs.optional(Identifier.STREAM_CODEC), ItemTailoringRecipe::categoryId,
                 ByteBufCodecs.BOOL, ItemTailoringRecipe::requiresUnlocking,
                 ItemTailoringRecipe::new
         );

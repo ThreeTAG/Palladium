@@ -6,7 +6,7 @@
 //import com.mojang.serialization.codecs.RecordCodecBuilder;
 //import net.fabricmc.api.EnvType;
 //import net.fabricmc.api.Environment;
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 //import net.minecraft.world.entity.LivingEntity;
 //import net.minecraft.world.entity.player.Player;
 //import net.threetag.palladium.customization.Accessory;
@@ -23,15 +23,15 @@
 //
 //    public static final MapCodec<RenderLayerByAccessorySlotAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
 //            instance.group(
-//                    ResourceLocation.CODEC.optionalFieldOf("fallback_layer", null).forGetter(ab -> ab.fallbackLayer),
+//                    Identifier.CODEC.optionalFieldOf("fallback_layer", null).forGetter(ab -> ab.fallbackLayer),
 //                    AccessorySlot.BY_NAME_CODEC.fieldOf("accessory_slot").forGetter(ab -> ab.slot),
 //                    propertiesCodec(), conditionsCodec(), energyBarUsagesCodec()
 //            ).apply(instance, RenderLayerByAccessorySlotAbility::new));
 //
-//    public final ResourceLocation fallbackLayer;
+//    public final Identifier fallbackLayer;
 //    public final AccessorySlot slot;
 //
-//    public RenderLayerByAccessorySlotAbility(ResourceLocation fallbackLayer, AccessorySlot slot, AbilityProperties properties, AbilityConditions conditions, List<EnergyBarUsage> energyBarUsages) {
+//    public RenderLayerByAccessorySlotAbility(Identifier fallbackLayer, AccessorySlot slot, AbilityProperties properties, AbilityConditions conditions, List<EnergyBarUsage> energyBarUsages) {
 //        super(properties, conditions, energyBarUsages);
 //        this.fallbackLayer = fallbackLayer;
 //        this.slot = slot;
@@ -40,7 +40,7 @@
 //    @Override
 //    @Environment(EnvType.CLIENT)
 //    public IPackRenderLayer getRenderLayer(AbilityInstance<RenderLayerByAccessorySlotAbility> instance, LivingEntity entity, PackRenderLayerManager manager) {
-//        AtomicReference<ResourceLocation> layerId = new AtomicReference<>(this.fallbackLayer);
+//        AtomicReference<Identifier> layerId = new AtomicReference<>(this.fallbackLayer);
 //
 //        if (entity instanceof Player player) {
 //            Accessory.getPlayerData(player).ifPresent(data -> {

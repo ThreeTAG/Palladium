@@ -9,14 +9,16 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.ResourceArgument;
-import net.minecraft.commands.arguments.ResourceLocationArgument;
+import net.minecraft.commands.arguments.IdentifierArgument;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.permissions.PermissionCheck;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.Power;
@@ -31,6 +33,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 public class SuperpowerCommand {
+
+    public static final PermissionCheck PERMISSION_CHECK = new PermissionCheck.Require(Permissions.COMMANDS_GAMEMASTER);
 
     public static final String ERROR_NO_LIVING_ENTITY = "commands.palladium.superpower.error.no_living_entity";
     public static final String QUERY_SUCCESS = "commands.palladium.superpower.query.success";
@@ -51,7 +55,7 @@ public class SuperpowerCommand {
     public static final String REPLACE_ERROR_NONE_ADDED = "commands.palladium.superpower.replace.error.none_added";
 
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_OWN_POWERS_ALL = (context, builder) -> {
-        List<ResourceLocation> superpowers = Lists.newArrayList();
+        List<Identifier> superpowers = Lists.newArrayList();
         Collection<? extends Entity> entities;
         try {
             context.getArgument("entities", EntitySelector.class);
@@ -61,8 +65,8 @@ public class SuperpowerCommand {
         }
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity) {
-                SuperpowerUtil.getSuperpowers(livingEntity).stream().map(powerHolder -> powerHolder.unwrapKey().orElseThrow().location()).forEach(id -> {
-                    var allId = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "all");
+                SuperpowerUtil.getSuperpowers(livingEntity).stream().map(powerHolder -> powerHolder.unwrapKey().orElseThrow().identifier()).forEach(id -> {
+                    var allId = Identifier.fromNamespaceAndPath(id.getNamespace(), "all");
                     if (!superpowers.contains(allId)) {
                         superpowers.add(allId);
                     }
@@ -78,10 +82,7 @@ public class SuperpowerCommand {
     };
 
     public static void register(LiteralArgumentBuilder<CommandSourceStack> builder, CommandBuildContext context) {
-        builder.then(Commands.literal("superpower").requires((player) -> {
-                    return player.hasPermission(2);
-                })
-
+        builder.then(Commands.literal("superpower").requires(Commands.hasPermission(PERMISSION_CHECK))
                 .then(Commands.literal("query")
                         .then(Commands.argument("entity", EntityArgument.entity()).executes(c -> {
                             return querySuperpowers(c.getSource(), EntityArgument.getEntity(c, "entity"));
@@ -104,11 +105,11 @@ public class SuperpowerCommand {
                                 }))))
 
                 .then(Commands.literal("remove")
-                        .then(Commands.argument("power", ResourceLocationArgument.id()).suggests(SUGGEST_OWN_POWERS_ALL).executes(c -> {
-                                    return removeSuperpower(c.getSource(), Collections.singleton(c.getSource().getPlayerOrException()), ResourceLocationArgument.getId(c, "power").toString());
+                        .then(Commands.argument("power", IdentifierArgument.id()).suggests(SUGGEST_OWN_POWERS_ALL).executes(c -> {
+                                    return removeSuperpower(c.getSource(), Collections.singleton(c.getSource().getPlayerOrException()), IdentifierArgument.getId(c, "power").toString());
                                 })
                                 .then(Commands.argument("entities", EntityArgument.entities()).executes(c -> {
-                                    return removeSuperpower(c.getSource(), EntityArgument.getEntities(c, "entities"), ResourceLocationArgument.getId(c, "power").toString());
+                                    return removeSuperpower(c.getSource(), EntityArgument.getEntities(c, "entities"), IdentifierArgument.getId(c, "power").toString());
                                 })))
                         .then(Commands.literal("*").executes(c -> {
                                     return removeSuperpower(c.getSource(), Collections.singleton(c.getSource().getPlayerOrException()), "all");
@@ -124,12 +125,12 @@ public class SuperpowerCommand {
                                 }))))
 
                 .then(Commands.literal("replace")
-                        .then(Commands.argument("replaced_power", ResourceLocationArgument.id()).suggests(SUGGEST_OWN_POWERS_ALL)
+                        .then(Commands.argument("replaced_power", IdentifierArgument.id()).suggests(SUGGEST_OWN_POWERS_ALL)
                                 .then(Commands.argument("replacing_power", ResourceArgument.resource(context, PalladiumRegistryKeys.POWER)).executes(c -> {
-                                            return replaceSuperpower(c.getSource(), Collections.singleton(c.getSource().getPlayerOrException()), ResourceLocationArgument.getId(c, "replaced_power").toString(), ResourceArgument.getResource(c, "replacing_power", PalladiumRegistryKeys.POWER));
+                                            return replaceSuperpower(c.getSource(), Collections.singleton(c.getSource().getPlayerOrException()), IdentifierArgument.getId(c, "replaced_power").toString(), ResourceArgument.getResource(c, "replacing_power", PalladiumRegistryKeys.POWER));
                                         })
                                         .then(Commands.argument("entities", EntityArgument.entities()).executes(c -> {
-                                            return replaceSuperpower(c.getSource(), EntityArgument.getEntities(c, "entities"), ResourceLocationArgument.getId(c, "replaced_power").toString(), ResourceArgument.getResource(c, "replacing_power", PalladiumRegistryKeys.POWER));
+                                            return replaceSuperpower(c.getSource(), EntityArgument.getEntities(c, "entities"), IdentifierArgument.getId(c, "replaced_power").toString(), ResourceArgument.getResource(c, "replacing_power", PalladiumRegistryKeys.POWER));
                                         }))))
                         .then(Commands.literal("*")
                                 .then(Commands.argument("replacing_power", ResourceArgument.resource(context, PalladiumRegistryKeys.POWER)).executes(c -> {
@@ -154,7 +155,7 @@ public class SuperpowerCommand {
             AtomicInteger i = new AtomicInteger();
 
             for (Holder<Power> power : SuperpowerUtil.getSuperpowers(livingEntity)) {
-                var powerName = power.value().getName().copy().setStyle(Style.EMPTY.withHoverEvent(new HoverEvent.ShowText(Component.literal(power.unwrapKey().orElseThrow().location().toString()))));
+                var powerName = power.value().getName().copy().setStyle(Style.EMPTY.withHoverEvent(new HoverEvent.ShowText(Component.literal(power.unwrapKey().orElseThrow().identifier().toString()))));
 
                 if (powerList == null) {
                     powerList = powerName;
@@ -241,11 +242,11 @@ public class SuperpowerCommand {
 
     public static int removeSuperpower(CommandSourceStack commandSource, Collection<? extends Entity> entities, String filter) {
         int i = 0;
-        Predicate<ResourceLocation> predicate = filter.equalsIgnoreCase("all") ? id -> true : (filter.endsWith(":all") ? id -> id.getNamespace().equals(filter.split(":")[0]) : id -> id.equals(ResourceLocation.parse(filter)));
+        Predicate<Identifier> predicate = filter.equalsIgnoreCase("all") ? id -> true : (filter.endsWith(":all") ? id -> id.getNamespace().equals(filter.split(":")[0]) : id -> id.equals(Identifier.parse(filter)));
 
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity) {
-                if (SuperpowerUtil.removeSuperpower(livingEntity, powerHolder -> predicate.test(powerHolder.unwrapKey().orElseThrow().location()))) {
+                if (SuperpowerUtil.removeSuperpower(livingEntity, powerHolder -> predicate.test(powerHolder.unwrapKey().orElseThrow().identifier()))) {
                     i++;
                 } else if (entities.size() == 1) {
                     commandSource.sendFailure(Component.translatable(REMOVE_ERROR_NO_MATCH, entity.getDisplayName()));
@@ -265,13 +266,13 @@ public class SuperpowerCommand {
     }
 
     public static int replaceSuperpower(CommandSourceStack commandSource, Collection<? extends Entity> entities, String replacedFilter, Holder<Power> replacingPower) {
-        Predicate<ResourceLocation> predicate = replacedFilter.equalsIgnoreCase("all") ? id -> true : (replacedFilter.endsWith(":all") ? id -> id.getNamespace().equals(replacedFilter.split(":")[0]) : id -> id.equals(ResourceLocation.parse(replacedFilter)));
+        Predicate<Identifier> predicate = replacedFilter.equalsIgnoreCase("all") ? id -> true : (replacedFilter.endsWith(":all") ? id -> id.getNamespace().equals(replacedFilter.split(":")[0]) : id -> id.equals(Identifier.parse(replacedFilter)));
 
         if (entities.size() == 1) {
             var entity = entities.stream().findFirst().get();
 
             if (entity instanceof LivingEntity living) {
-                SuperpowerUtil.removeSuperpower(living, powerHolder -> predicate.test(powerHolder.unwrapKey().orElseThrow().location()));
+                SuperpowerUtil.removeSuperpower(living, powerHolder -> predicate.test(powerHolder.unwrapKey().orElseThrow().identifier()));
 
                 if (SuperpowerUtil.canSuperpowerBeAdded(living, replacingPower)) {
                     SuperpowerUtil.addSuperpower(living, replacingPower);
@@ -288,7 +289,7 @@ public class SuperpowerCommand {
 
             for (Entity entity : entities) {
                 if (entity instanceof LivingEntity living) {
-                    SuperpowerUtil.removeSuperpower(living, powerHolder -> predicate.test(powerHolder.unwrapKey().orElseThrow().location()));
+                    SuperpowerUtil.removeSuperpower(living, powerHolder -> predicate.test(powerHolder.unwrapKey().orElseThrow().identifier()));
 
                     if (SuperpowerUtil.addSuperpower(living, replacingPower)) {
                         i++;

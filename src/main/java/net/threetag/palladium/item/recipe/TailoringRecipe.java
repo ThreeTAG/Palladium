@@ -1,10 +1,10 @@
 package net.threetag.palladium.item.recipe;
 
-import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
@@ -67,14 +67,14 @@ public interface TailoringRecipe extends Recipe<TailoringRecipeInput> {
 
     Ingredient toolIngredient();
 
-    Optional<ResourceLocation> toolIcon();
+    Optional<Identifier> toolIcon();
 
-    Optional<ResourceLocation> categoryId();
+    Optional<Identifier> categoryId();
 
     boolean requiresUnlocking();
 
     @Nullable
-    static Component getCategoryTitle(ResourceLocation categoryId) {
+    static Component getCategoryTitle(Identifier categoryId) {
         return categoryId != null ? Component.translatable(Util.makeDescriptionId("palladium.tailoring_recipe.category", categoryId)) : null;
     }
 }

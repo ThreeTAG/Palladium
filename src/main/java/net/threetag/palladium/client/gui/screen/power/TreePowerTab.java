@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.logic.context.DataContext;
@@ -180,7 +180,7 @@ public class TreePowerTab extends PowerTab {
         guiGraphics.pose().pushMatrix();
         guiGraphics.pose().translate((float) x, (float) y);
         TextureReference backgroundTexture = this.powerHolder.getPower().value().getBackground();
-        var texture = backgroundTexture != null ? backgroundTexture.getTexture(DataContext.forPower(minecraft.player, this.powerHolder)) : ResourceLocation.withDefaultNamespace("textures/block/red_wool.png");
+        var texture = backgroundTexture != null ? backgroundTexture.getTexture(DataContext.forPower(minecraft.player, this.powerHolder)) : Identifier.withDefaultNamespace("textures/block/red_wool.png");
 
         int i = Mth.floor(this.scrollX);
         int j = Mth.floor(this.scrollY);

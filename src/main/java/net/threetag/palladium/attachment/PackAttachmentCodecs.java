@@ -9,21 +9,21 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.Palladium;
 
 import java.util.function.Supplier;
 
 public class PackAttachmentCodecs {
 
-    private static final BiMap<ResourceLocation, Entry<?>> TYPES = HashBiMap.create();
+    private static final BiMap<Identifier, Entry<?>> TYPES = HashBiMap.create();
 
-    public static final Codec<Entry<?>> TYPE_CODEC = ResourceLocation.CODEC.flatXmap(resourceLocation -> {
-        Entry<?> serializer = TYPES.get(resourceLocation);
-        return serializer != null ? DataResult.success(serializer) : DataResult.error(() -> "Unknown type " + resourceLocation);
+    public static final Codec<Entry<?>> TYPE_CODEC = Identifier.CODEC.flatXmap(identifier -> {
+        Entry<?> serializer = TYPES.get(identifier);
+        return serializer != null ? DataResult.success(serializer) : DataResult.error(() -> "Unknown type " + identifier);
     }, serializer -> {
-        ResourceLocation resourceLocation = TYPES.inverse().get(serializer);
-        return serializer != null ? DataResult.success(resourceLocation) : DataResult.error(() -> "Unknown type " + resourceLocation);
+        Identifier identifier = TYPES.inverse().get(serializer);
+        return serializer != null ? DataResult.success(identifier) : DataResult.error(() -> "Unknown type " + identifier);
     });
 
     static {
@@ -38,7 +38,7 @@ public class PackAttachmentCodecs {
         register(Palladium.id("component"), ComponentSerialization.CODEC, ComponentSerialization.STREAM_CODEC, Component::empty);
     }
 
-    public static <T> Entry<T> register(ResourceLocation id, Codec<T> codec, StreamCodec<? extends ByteBuf, T> streamCodec, Supplier<T> defaultSupplier) {
+    public static <T> Entry<T> register(Identifier id, Codec<T> codec, StreamCodec<? extends ByteBuf, T> streamCodec, Supplier<T> defaultSupplier) {
         if (TYPES.containsKey(id)) {
             throw new IllegalStateException("Duplicate registration for attachment codec: " + id);
         }

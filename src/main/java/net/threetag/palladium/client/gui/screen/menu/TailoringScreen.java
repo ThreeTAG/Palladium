@@ -4,18 +4,18 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.context.ContextMap;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplayContext;
@@ -23,6 +23,9 @@ import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.component.FlatButton;
+import net.threetag.palladium.client.renderer.entity.state.SuitStandRenderState;
+import net.threetag.palladium.client.util.RenderUtil;
+import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.entity.SuitStand;
 import net.threetag.palladium.item.recipe.TailoringRecipe;
 import net.threetag.palladium.menu.TailoringMenu;
@@ -33,23 +36,22 @@ import org.joml.Vector3f;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
-    public static final ResourceLocation TEXTURE = Palladium.id("textures/gui/container/tailoring.png");
+    public static final Identifier TEXTURE = Palladium.id("textures/gui/container/tailoring.png");
     private static final Vector3f SUIT_STAND_TRANSLATION = new Vector3f(0.0F, 0.9F, 0.0F);
     private static final Quaternionf SUIT_STAND_ANGLE = new Quaternionf().rotationXYZ(0.43633232F, 0.0F, (float) Math.PI);
     private static final WidgetSprites PAGE_FORWARD_SPRITES = new WidgetSprites(
-            ResourceLocation.withDefaultNamespace("recipe_book/page_forward"), ResourceLocation.withDefaultNamespace("recipe_book/page_forward_highlighted")
+            Identifier.withDefaultNamespace("recipe_book/page_forward"), Identifier.withDefaultNamespace("recipe_book/page_forward_highlighted")
     );
     private static final WidgetSprites PAGE_BACKWARD_SPRITES = new WidgetSprites(
-            ResourceLocation.withDefaultNamespace("recipe_book/page_backward"), ResourceLocation.withDefaultNamespace("recipe_book/page_backward_highlighted")
+            Identifier.withDefaultNamespace("recipe_book/page_backward"), Identifier.withDefaultNamespace("recipe_book/page_backward_highlighted")
     );
-    private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/scroller");
-    private static final ResourceLocation SCROLLER_DISABLED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/scroller_disabled");
-    private static final ResourceLocation INGREDIENT_AVAILABLE_SPRITE = Palladium.id("container/tailoring/ingredient_available");
-    private static final ResourceLocation INGREDIENT_UNAVAILABLE_SPRITE = Palladium.id("container/tailoring/ingredient_unavailable");
+    private static final Identifier SCROLLER_SPRITE = Identifier.withDefaultNamespace("container/stonecutter/scroller");
+    private static final Identifier SCROLLER_DISABLED_SPRITE = Identifier.withDefaultNamespace("container/stonecutter/scroller_disabled");
+    private static final Identifier INGREDIENT_AVAILABLE_SPRITE = Palladium.id("container/tailoring/ingredient_available");
+    private static final Identifier INGREDIENT_UNAVAILABLE_SPRITE = Palladium.id("container/tailoring/ingredient_unavailable");
     private static final int SCROLLER_X = 152;
     private static final int SCROLLER_Y = 18;
     private static final int SCROLLER_WIDTH = 12;
@@ -68,7 +70,7 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
     private ClientTailoringRecipeBook recipeBook;
     private ImageButton recipeBookButton;
     @Nullable
-    private SuitStand suitStandPreview;
+    private SuitStandRenderState suitStandPreview;
     private float scrollOffs;
     private boolean scrolling;
     private int startIndex;
@@ -92,13 +94,19 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
     protected void init() {
         super.init();
 
-        this.suitStandPreview = new SuitStand(Objects.requireNonNull(this.minecraft).level, 0.0, 0.0, 0.0);
-        this.suitStandPreview.setNoBasePlate(true);
-        this.suitStandPreview.setShowArms(true);
-        this.suitStandPreview.yBodyRot = 210.0F;
-        this.suitStandPreview.setXRot(25.0F);
-        this.suitStandPreview.yHeadRot = this.suitStandPreview.getYRot();
-        this.suitStandPreview.yHeadRotO = this.suitStandPreview.getYRot();
+        this.suitStandPreview = new SuitStandRenderState();
+        this.suitStandPreview.entityType = PalladiumEntityTypes.SUIT_STAND.get();
+        this.suitStandPreview.showBasePlate = false;
+        this.suitStandPreview.showArms = true;
+        this.suitStandPreview.color = DyeColor.WHITE;
+        this.suitStandPreview.xRot = 25.0F;
+        this.suitStandPreview.bodyRot = 210.0F;
+        this.suitStandPreview.headPose = SuitStand.DEFAULT_HEAD_POSE;
+        this.suitStandPreview.bodyPose = SuitStand.DEFAULT_BODY_POSE;
+        this.suitStandPreview.rightArmPose = SuitStand.DEFAULT_RIGHT_ARM_POSE;
+        this.suitStandPreview.leftArmPose = SuitStand.DEFAULT_LEFT_ARM_POSE;
+        this.suitStandPreview.rightLegPose = SuitStand.DEFAULT_RIGHT_LEG_POSE;
+        this.suitStandPreview.leftLegPose = SuitStand.DEFAULT_LEFT_LEG_POSE;
 
         this.addRenderableWidget(this.recipeBook = new ClientTailoringRecipeBook(this));
         this.leftPos = this.recipeBook.updateScreenPosition(this.width, this.imageWidth, this.recipeBook.isOpened());
@@ -134,12 +142,12 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
         if (this.suitStandPreview != null) {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
-                this.suitStandPreview.setItemSlot(slot, ItemStack.EMPTY);
+                RenderUtil.setItemInHumanoidRenderStateSlot(this.suitStandPreview, slot, ItemStack.EMPTY);
             }
 
             if (recipe != null) {
                 for (Map.Entry<ArmorType, ItemStack> e : recipe.getResults().entrySet()) {
-                    this.suitStandPreview.setItemSlot(e.getKey().getSlot(), e.getValue());
+                    RenderUtil.setItemInHumanoidRenderStateSlot(this.suitStandPreview, e.getKey().getSlot(), e.getValue());
                 }
             }
         }
@@ -151,8 +159,8 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
         // Ingredients
         int k = (int) ((SCROLLER_FULL_HEIGHT - SCROLLER_HEIGHT) * this.scrollOffs);
-        ResourceLocation resourcelocation = this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
-        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, resourcelocation, this.leftPos + SCROLLER_X, this.topPos + SCROLLER_Y + k, SCROLLER_WIDTH, SCROLLER_HEIGHT);
+        Identifier Identifier = this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier, this.leftPos + SCROLLER_X, this.topPos + SCROLLER_Y + k, SCROLLER_WIDTH, SCROLLER_HEIGHT);
         int l = this.leftPos + RECIPES_X;
         int i1 = this.topPos + RECIPES_Y;
         int j1 = this.startIndex + 12;
@@ -161,9 +169,9 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
 
         // Suit Stand Preview
         if (this.suitStandPreview != null) {
-            InventoryScreen.renderEntityInInventory(guiGraphics, this.leftPos + 8, this.topPos + 18,
-                    this.leftPos + 81, this.topPos + 91, 30F, SUIT_STAND_TRANSLATION, SUIT_STAND_ANGLE,
-                    null, this.suitStandPreview);
+            guiGraphics.submitEntityRenderState(this.suitStandPreview, 30F, SUIT_STAND_TRANSLATION,
+                    SUIT_STAND_ANGLE, null, this.leftPos + 8, this.topPos + 18,
+                    this.leftPos + 81, this.topPos + 91);
         }
     }
 
@@ -195,16 +203,16 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
             int k = x + j % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
             int l = j / RECIPES_COLUMNS;
             int i1 = y + l * RECIPES_IMAGE_SIZE_HEIGHT + 2;
-            ResourceLocation resourcelocation;
+            Identifier Identifier;
             var ingredient = this.recipeBook.getSelectedRecipe().getIngredients().get(i);
 
             if (RecipeUtil.checkSizedIngredientInContainer(ingredient, this.menu.playerInventory)) {
-                resourcelocation = INGREDIENT_AVAILABLE_SPRITE;
+                Identifier = INGREDIENT_AVAILABLE_SPRITE;
             } else {
-                resourcelocation = INGREDIENT_UNAVAILABLE_SPRITE;
+                Identifier = INGREDIENT_UNAVAILABLE_SPRITE;
             }
 
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, resourcelocation, k, i1 - 1, RECIPES_IMAGE_SIZE_WIDTH, RECIPES_IMAGE_SIZE_HEIGHT);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier, k, i1 - 1, RECIPES_IMAGE_SIZE_WIDTH, RECIPES_IMAGE_SIZE_HEIGHT);
         }
     }
 

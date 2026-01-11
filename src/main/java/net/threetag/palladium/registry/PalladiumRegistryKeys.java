@@ -3,7 +3,7 @@ package net.threetag.palladium.registry;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.customization.Customization;
@@ -50,10 +50,10 @@ public class PalladiumRegistryKeys {
     }
 
     public static String getPackFolder(ResourceKey<? extends Registry<?>> key) {
-        if (key.location().getNamespace().equalsIgnoreCase(ResourceLocation.DEFAULT_NAMESPACE)) {
-            return key.location().getPath();
+        if (key.identifier().getNamespace().equalsIgnoreCase(Identifier.DEFAULT_NAMESPACE)) {
+            return key.identifier().getPath();
         } else {
-            return key.location().getNamespace() + "/" + key.location().getPath();
+            return key.identifier().getNamespace() + "/" + key.identifier().getPath();
         }
     }
 

@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
@@ -106,10 +106,10 @@ public class TexturedBeamRenderer extends BeamRenderer {
                     .addOptional("size", TYPE_FLOAT, "The size/diameter of the beam.", 1F)
                     .addOptional("rotation", TYPE_FLOAT, "The initial rotation of the beam in degrees.", 0F)
                     .addOptional("rotation_speed", TYPE_FLOAT, "The rotation speed of the beam.", 0F)
-                    .addOptional("render_type", SettingType.enumList(RenderTypeRegistry.types().stream().map(ResourceLocation::toString).toList()), "The render type to render the beam with.", RenderTypeRegistry.getKey(RenderTypeRegistry.ENTITY_TRANSLUCENT))
+                    .addOptional("render_type", SettingType.enumList(RenderTypeRegistry.types().stream().map(Identifier::toString).toList()), "The render type to render the beam with.", RenderTypeRegistry.getKey(RenderTypeRegistry.ENTITY_TRANSLUCENT))
                     .addOptional("light_emission", TYPE_INT, "The light emission of the beam. Must be within 0 - 15", 0)
                     .setExampleObject(new TexturedBeamRenderer(
-                            TextureReference.normal(ResourceLocation.fromNamespaceAndPath("namespace", "textures/beams/example_beam.png")),
+                            TextureReference.normal(Identifier.fromNamespaceAndPath("namespace", "textures/beams/example_beam.png")),
                             new Vector2f(2 / 16F, 2 / 16F),
                             45F,
                             20F,

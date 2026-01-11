@@ -123,7 +123,6 @@ public class GuiMultiEntityRenderer extends PictureInPictureRenderer<GuiMultiEnt
         GpuDevice gpuDevice = RenderSystem.getDevice();
         if (texture == null) {
             texture = gpuDevice.createTexture(() -> "UI " + this.getTextureLabel() + " texture " + index, 12, TextureFormat.RGBA8, width, height, 1, 1);
-            texture.setTextureFilter(FilterMode.NEAREST, false);
             textureView = gpuDevice.createTextureView(texture);
             depthTexture = gpuDevice.createTexture(() -> "UI " + this.getTextureLabel() + " depth texture " + index, 8, TextureFormat.DEPTH32, width, height, 1, 1);
             depthTextureView = gpuDevice.createTextureView(depthTexture);
@@ -141,7 +140,7 @@ public class GuiMultiEntityRenderer extends PictureInPictureRenderer<GuiMultiEnt
         guiRenderState.submitBlitToCurrentLayer(
                 new BlitRenderState(
                         RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
-                        TextureSetup.singleTexture(this.textureViews.get(renderState)),
+                        TextureSetup.singleTexture(this.textureViews.get(renderState), RenderSystem.getSamplerCache().getRepeat(FilterMode.NEAREST)),
                         renderState.pose(),
                         renderState.x0(),
                         renderState.y0(),

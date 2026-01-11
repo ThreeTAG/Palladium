@@ -3,7 +3,7 @@ package net.threetag.palladium.power.ability;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
@@ -16,13 +16,13 @@ public class ShaderEffectAbility extends Ability {
 
     public static final MapCodec<ShaderEffectAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    ResourceLocation.CODEC.fieldOf("shader").forGetter(ab -> ab.shader),
+                    Identifier.CODEC.fieldOf("shader").forGetter(ab -> ab.shader),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, ShaderEffectAbility::new));
 
-    public final ResourceLocation shader;
+    public final Identifier shader;
 
-    public ShaderEffectAbility(ResourceLocation shader, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
+    public ShaderEffectAbility(Identifier shader, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
         super(properties, conditions, energyBarUsages);
         this.shader = shader;
     }
@@ -42,7 +42,7 @@ public class ShaderEffectAbility extends Ability {
         Palladium.PROXY.removeShader(entity, this.shader);
     }
 
-    public static ResourceLocation get(Player player) {
+    public static Identifier get(Player player) {
         for (AbilityInstance<ShaderEffectAbility> instance : AbilityUtil.getEnabledInstances(player, AbilitySerializers.SHADER_EFFECT.get())) {
             return instance.getAbility().shader;
         }
@@ -60,7 +60,7 @@ public class ShaderEffectAbility extends Ability {
         public void addDocumentation(CodecDocumentationBuilder<Ability, ShaderEffectAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Applies a shader effect to the player.")
                     .add("shader", TYPE_RESOURCE_LOCATION, "The ID of the shader that shall be applied.")
-                    .setExampleObject(new ShaderEffectAbility(ResourceLocation.withDefaultNamespace("creeper"), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .setExampleObject(new ShaderEffectAbility(Identifier.withDefaultNamespace("creeper"), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

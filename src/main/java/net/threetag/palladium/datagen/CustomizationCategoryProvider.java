@@ -22,7 +22,7 @@ public abstract class CustomizationCategoryProvider extends JsonCodecProvider<Cu
     }
 
     public void add(ResourceKey<CustomizationCategory> key, int sortIndex, CustomizationPreview preview, EquipmentSlot hiddenByEquipment) {
-        this.unconditional(key.location(), new CustomizationCategory(sortIndex, preview, hiddenByEquipment, null));
+        this.unconditional(key.identifier(), new CustomizationCategory(sortIndex, preview, hiddenByEquipment, null));
     }
 
 }

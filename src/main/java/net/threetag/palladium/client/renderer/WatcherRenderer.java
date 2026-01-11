@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -32,7 +32,7 @@ import java.util.OptionalInt;
 public class WatcherRenderer {
 
     public static final WatcherRenderer INSTANCE = new WatcherRenderer();
-    private static final ResourceLocation TEXTURE = Palladium.id("textures/environment/watcher.png");
+    private static final Identifier TEXTURE = Palladium.id("textures/environment/watcher.png");
     private static final int OCCURRENCE_INTERVAL = 24000; // full Minecraft day
     private static final float OCCURRENCE_CHANCE = 0.01F; // 1% chance per day
     private static final int OCCURRENCE_DURATION = 20 * 60; // 1 minute
@@ -59,11 +59,9 @@ public class WatcherRenderer {
         }
     }
 
-    private AbstractTexture getTexture(ResourceLocation location) {
+    private AbstractTexture getTexture(Identifier location) {
         TextureManager texturemanager = Minecraft.getInstance().getTextureManager();
-        AbstractTexture abstracttexture = texturemanager.getTexture(location);
-        abstracttexture.setUseMipmaps(false);
-        return abstracttexture;
+        return texturemanager.getTexture(location);
     }
 
     public void render(PoseStack poseStack, float visibility) {
@@ -78,7 +76,7 @@ public class WatcherRenderer {
             matrix4fstack.translate(0.0F, 100.0F, 0.0F);
             matrix4fstack.scale(40.0F, 1.0F, 40.0F);
             GpuBufferSlice gpubufferslice = RenderSystem.getDynamicUniforms()
-                    .writeTransform(matrix4fstack, new Vector4f(1.0F, 1.0F, 1.0F, visibility), new Vector3f(), new Matrix4f(), 0.0F);
+                    .writeTransform(matrix4fstack, new Vector4f(1.0F, 1.0F, 1.0F, visibility), new Vector3f(), new Matrix4f());
             GpuTextureView gputextureview = Minecraft.getInstance().getMainRenderTarget().getColorTextureView();
             GpuTextureView gputextureview1 = Minecraft.getInstance().getMainRenderTarget().getDepthTextureView();
             GpuBuffer gpubuffer = this.quadIndices.getBuffer(6);
@@ -89,7 +87,7 @@ public class WatcherRenderer {
                 renderpass.setPipeline(RenderPipelines.CELESTIAL);
                 RenderSystem.bindDefaultUniforms(renderpass);
                 renderpass.setUniform("DynamicTransforms", gpubufferslice);
-                renderpass.bindSampler("Sampler0", this.texture.getTextureView());
+                renderpass.bindTexture("Sampler0", this.texture.getTextureView(), this.texture.getSampler());
                 renderpass.setVertexBuffer(0, this.buffer);
                 renderpass.setIndexBuffer(gpubuffer, this.quadIndices.type());
                 renderpass.drawIndexed(0, 0, 6, 1);

@@ -1,6 +1,6 @@
 package net.threetag.palladium.client.renderer.entity.layer.pack;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.customization.CustomizationCategory;
@@ -56,7 +56,7 @@ public class PackRenderLayerProvider {
         register((entity, lookup, layers) -> {
             if (entity instanceof LivingEntity living) {
                 for (var instance : AbilityUtil.getEnabledInstances(living)) {
-                    for (ResourceLocation layerId : instance.getAbility().getProperties().getRenderLayers()) {
+                    for (Identifier layerId : instance.getAbility().getProperties().getRenderLayers()) {
                         var layer = lookup.get(layerId);
                         if (layer != null) {
                             layers.accept(DataContext.forAbility(living, instance), layer);
@@ -76,7 +76,7 @@ public class PackRenderLayerProvider {
                         if (stack.has(PalladiumDataComponents.Items.RENDER_LAYERS.get())) {
                             var itemLayers = stack.get(PalladiumDataComponents.Items.RENDER_LAYERS.get());
 
-                            for (ResourceLocation layerId : Objects.requireNonNull(itemLayers).forSlot(slot)) {
+                            for (Identifier layerId : Objects.requireNonNull(itemLayers).forSlot(slot)) {
                                 var layer = lookup.get(layerId);
                                 if (layer != null) {
                                     layers.accept(DataContext.forItemInSlot(living, slot, stack), layer);
@@ -99,7 +99,7 @@ public class PackRenderLayerProvider {
     @FunctionalInterface
     public interface Lookup {
 
-        PackRenderLayer<?> get(ResourceLocation id);
+        PackRenderLayer<?> get(Identifier id);
 
     }
 

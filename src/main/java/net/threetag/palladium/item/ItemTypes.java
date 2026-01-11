@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -25,10 +25,10 @@ public class ItemTypes {
 
     @SubscribeEvent
     static void registerItemTypes(RegisterEvent e) {
-        e.register(PalladiumRegistryKeys.ITEM_TYPE, ResourceLocation.withDefaultNamespace("item"), () -> ITEM_CODEC);
-        e.register(PalladiumRegistryKeys.ITEM_TYPE, ResourceLocation.withDefaultNamespace("block_item"), () -> BLOCK_ITEM_CODEC);
-        e.register(PalladiumRegistryKeys.ITEM_TYPE, ResourceLocation.withDefaultNamespace("sword"), () -> SWORD_CODEC);
-        e.register(PalladiumRegistryKeys.ITEM_TYPE, ResourceLocation.withDefaultNamespace("armor"), () -> ARMOR_CODEC);
+        e.register(PalladiumRegistryKeys.ITEM_TYPE, Identifier.withDefaultNamespace("item"), () -> ITEM_CODEC);
+        e.register(PalladiumRegistryKeys.ITEM_TYPE, Identifier.withDefaultNamespace("block_item"), () -> BLOCK_ITEM_CODEC);
+        e.register(PalladiumRegistryKeys.ITEM_TYPE, Identifier.withDefaultNamespace("sword"), () -> SWORD_CODEC);
+        e.register(PalladiumRegistryKeys.ITEM_TYPE, Identifier.withDefaultNamespace("armor"), () -> ARMOR_CODEC);
     }
 
     static <B extends Item> RecordCodecBuilder<B, Item.Properties> propertiesCodec() {

@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import net.threetag.palladium.registry.PalladiumRegistries;
@@ -62,7 +62,7 @@ public abstract class Ability {
 
     public Component getDisplayName() {
         Component title = this.properties.getTitle();
-        ResourceLocation id = PalladiumRegistries.ABILITY_SERIALIZER.getKey(this.getSerializer());
+        Identifier id = PalladiumRegistries.ABILITY_SERIALIZER.getKey(this.getSerializer());
         return title != null ? title : Component.translatable("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath());
     }
 

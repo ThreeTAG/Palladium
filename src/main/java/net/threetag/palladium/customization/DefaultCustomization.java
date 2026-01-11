@@ -7,7 +7,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 import java.util.Objects;
@@ -18,17 +18,17 @@ public class DefaultCustomization extends Customization {
     public static final MapCodec<DefaultCustomization> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ComponentSerialization.CODEC.optionalFieldOf("name").forGetter(a -> Optional.ofNullable(a.customTitle)),
             ResourceKey.codec(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY).fieldOf("slot").forGetter(a -> a.slot),
-            ResourceLocation.CODEC.optionalFieldOf("render_layer").forGetter(a -> Optional.ofNullable(a.renderLayer)),
+            Identifier.CODEC.optionalFieldOf("render_layer").forGetter(a -> Optional.ofNullable(a.renderLayer)),
             Codec.BOOL.optionalFieldOf("unlockable", false).forGetter(a -> a.unlockable)
     ).apply(instance, (t, s, r, u) ->
             new DefaultCustomization(t.orElse(null), s, r.orElse(null), u)));
 
     private final Component customTitle;
     private final ResourceKey<CustomizationCategory> slot;
-    private final ResourceLocation renderLayer;
+    private final Identifier renderLayer;
     private final boolean unlockable;
 
-    public DefaultCustomization(Component customTitle, ResourceKey<CustomizationCategory> slot, ResourceLocation renderLayer, boolean unlockable) {
+    public DefaultCustomization(Component customTitle, ResourceKey<CustomizationCategory> slot, Identifier renderLayer, boolean unlockable) {
         this.customTitle = customTitle;
         this.slot = slot;
         this.renderLayer = renderLayer;
@@ -54,7 +54,7 @@ public class DefaultCustomization extends Customization {
         return this.slot;
     }
 
-    public ResourceLocation getRenderLayerId(RegistryAccess registryAccess) {
+    public Identifier getRenderLayerId(RegistryAccess registryAccess) {
         if (this.renderLayer != null) {
             return this.renderLayer;
         } else {

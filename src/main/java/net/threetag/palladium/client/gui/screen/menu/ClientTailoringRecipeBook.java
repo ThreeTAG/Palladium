@@ -16,8 +16,8 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -42,7 +42,7 @@ import java.util.function.Consumer;
 @EventBusSubscriber(modid = Palladium.MOD_ID, value = Dist.CLIENT)
 public class ClientTailoringRecipeBook implements Renderable, GuiEventListener, NarratableEntry {
 
-    protected static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/gui/recipe_book.png");
+    protected static final Identifier TEXTURE = Identifier.withDefaultNamespace("textures/gui/recipe_book.png");
     private static BiMap<ResourceKey<Recipe<?>>, TailoringRecipe> ALL_RECIPES = HashBiMap.create();
     private static List<TailoringRecipe> AVAILABLE_RECIPES = new ArrayList<>();
     private static TailoringRecipe SELECTED_RECIPE = null;
@@ -307,7 +307,7 @@ public class ClientTailoringRecipeBook implements Renderable, GuiEventListener, 
 
         public void populate(String search) {
             this.clearEntries();
-            ResourceLocation lastCategoryId = null;
+            Identifier lastCategoryId = null;
 
             for (TailoringRecipe recipe : this.recipes) {
                 if (search == null || search.isEmpty() || recipe.title().getString().toLowerCase(Locale.ROOT).contains(search)) {
@@ -381,7 +381,7 @@ public class ClientTailoringRecipeBook implements Renderable, GuiEventListener, 
             int x = this.getContentX();
             int y = this.getContentY();
 
-            guiGraphics.drawScrollingString(font, text, x + 17, this.getContentRight(), y + 2, RenderUtil.FULL_WHITE);
+            guiGraphics.drawScrollingString(guiGraphics.textRenderer(), font, text, x + 17, this.getContentRight(), y + 2);
 
             for (ArmorType type : ArmorType.values()) {
                 var stack = this.recipe.getResults().getOrDefault(type, ItemStack.EMPTY);
@@ -406,7 +406,7 @@ public class ClientTailoringRecipeBook implements Renderable, GuiEventListener, 
 
     }
 
-    private class RecipeListRecipeCategory extends RecipeListEntry {
+    private static class RecipeListRecipeCategory extends RecipeListEntry {
 
         private final Component title;
 
@@ -416,13 +416,11 @@ public class ClientTailoringRecipeBook implements Renderable, GuiEventListener, 
 
         @Override
         public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
-            var text = this.title;
             var font = Minecraft.getInstance().font;
-            var shortened = font.substrByWidth(text, width - 10);
             int x = this.getContentX();
             int y = this.getContentY();
 
-            guiGraphics.drawScrollingString(font, text, x - 6, this.getContentRight(), y + 2, RenderUtil.FULL_WHITE);
+            guiGraphics.drawScrollingString(guiGraphics.textRenderer(), font, this.title, x - 6, this.getContentRight(), y + 2);
         }
 
         @Override

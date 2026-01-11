@@ -1,11 +1,11 @@
 package net.threetag.palladium.datagen.internal;
 
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -45,7 +45,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
     }
 
     public void add(CreativeModeTab key, String name) {
-        ResourceLocation id = BuiltInRegistries.CREATIVE_MODE_TAB.getKey(key);
+        Identifier id = BuiltInRegistries.CREATIVE_MODE_TAB.getKey(key);
         this.add(Util.makeDescriptionId("itemGroup", id), name);
     }
 
@@ -54,7 +54,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
     }
 
     public void add(AbilitySerializer<?> key, String name) {
-        ResourceLocation id = PalladiumRegistries.ABILITY_SERIALIZER.getKey(key);
+        Identifier id = PalladiumRegistries.ABILITY_SERIALIZER.getKey(key);
         this.add("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath(), name);
     }
 

@@ -14,7 +14,7 @@ public class CloseButton extends Button {
     }
 
     @Override
-    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (this.isHoveredOrFocused()) {
             GuiUtil.drawStringWithBlackOutline(guiGraphics, this.getMessage(), this.getX(), this.getY(), ARGB.opaque(4210752));
         } else {

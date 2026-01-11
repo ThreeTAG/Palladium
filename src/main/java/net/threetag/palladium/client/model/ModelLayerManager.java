@@ -6,7 +6,7 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class ModelLayerManager extends SimpleJsonResourceReloadListener<BedrockModel> {
 
-    public static final ResourceLocation ID = Palladium.id("entity_models");
+    public static final Identifier ID = Palladium.id("entity_models");
     public static final ModelLayerManager INSTANCE = new ModelLayerManager();
 
     public ModelLayerManager() {
@@ -26,7 +26,7 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener<BedrockM
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, BedrockModel> object, ResourceManager resourceManager, ProfilerFiller profiler) {
+    protected void apply(Map<Identifier, BedrockModel> object, ResourceManager resourceManager, ProfilerFiller profiler) {
         Map<ModelLayerLocation, LayerDefinition> jsonRoots = new HashMap<>();
         EntityModelSet entityModels = Minecraft.getInstance().getEntityModels();
         var codeRoots = entityModels.roots;
@@ -49,12 +49,12 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener<BedrockM
         AddonPackLog.info("Loaded {} model layers", object.size());
     }
 
-    private static ModelLayerLocation mapPathToModelLayerLoc(ResourceLocation path) {
+    private static ModelLayerLocation mapPathToModelLayerLoc(Identifier path) {
         int idx = path.getPath().indexOf('/');
         if (idx == -1) {
             return null;
         }
 
-        return new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(path.getNamespace(), path.getPath().substring(idx + 1)), path.getPath().substring(0, idx));
+        return new ModelLayerLocation(Identifier.fromNamespaceAndPath(path.getNamespace(), path.getPath().substring(idx + 1)), path.getPath().substring(0, idx));
     }
 }

@@ -3,7 +3,6 @@ package net.threetag.palladium.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
@@ -12,7 +11,9 @@ import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.layers.WingsLayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.model.PalladiumModelLayers;
@@ -25,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SuitStandRenderer extends LivingEntityRenderer<SuitStand, SuitStandRenderState, SuitStandBasePlateModel> {
 
-    public static final ResourceLocation TEXTURE = Palladium.id("textures/entity/suit_stand.png");
+    public static final Identifier TEXTURE = Palladium.id("textures/entity/suit_stand.png");
 
     public SuitStandRenderer(EntityRendererProvider.Context context) {
         super(context, new SuitStandBasePlateModel(context.bakeLayer(PalladiumModelLayers.SUIT_STAND_BASE_PLATE)), 0F);
@@ -44,7 +45,7 @@ public class SuitStandRenderer extends LivingEntityRenderer<SuitStand, SuitStand
     }
 
     @Override
-    public ResourceLocation getTextureLocation(SuitStandRenderState renderState) {
+    public Identifier getTextureLocation(SuitStandRenderState renderState) {
         return TEXTURE;
     }
 
@@ -100,11 +101,11 @@ public class SuitStandRenderer extends LivingEntityRenderer<SuitStand, SuitStand
         if (!renderState.isMarker) {
             return super.getRenderType(renderState, bodyVisible, translucent, glowing);
         } else {
-            ResourceLocation resourceLocation = this.getTextureLocation(renderState);
+            Identifier identifier = this.getTextureLocation(renderState);
             if (translucent) {
-                return RenderType.entityTranslucent(resourceLocation, false);
+                return RenderTypes.entityTranslucent(identifier, false);
             } else {
-                return bodyVisible ? RenderType.entityCutoutNoCull(resourceLocation, false) : null;
+                return bodyVisible ? RenderTypes.entityCutoutNoCull(identifier, false) : null;
             }
         }
     }

@@ -4,19 +4,19 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.power.EntityPowerHandler;
 import net.threetag.palladium.power.PowerUtil;
 import net.threetag.palladium.logic.context.DataContext;
 
-public record HasPowerCondition(ResourceLocation powerId) implements Condition {
+public record HasPowerCondition(Identifier powerId) implements Condition {
 
     public static final MapCodec<HasPowerCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
-            .group(ResourceLocation.CODEC.fieldOf("power").forGetter(HasPowerCondition::powerId)
+            .group(Identifier.CODEC.fieldOf("power").forGetter(HasPowerCondition::powerId)
             ).apply(instance, HasPowerCondition::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, HasPowerCondition> STREAM_CODEC = StreamCodec.composite(
-            ResourceLocation.STREAM_CODEC, HasPowerCondition::powerId, HasPowerCondition::new
+            Identifier.STREAM_CODEC, HasPowerCondition::powerId, HasPowerCondition::new
     );
 
     @Override

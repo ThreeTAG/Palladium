@@ -3,12 +3,12 @@ package net.threetag.palladium.icon;
 import com.google.gson.JsonParseException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import net.minecraft.ResourceLocationException;
+import net.minecraft.IdentifierException;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
@@ -24,11 +24,11 @@ public interface Icon {
 
     static Icon parse(String input) {
         if (input.endsWith(".png")) {
-            return new TexturedIcon(ResourceLocation.parse(input));
+            return new TexturedIcon(Identifier.parse(input));
         } else if (input.startsWith("#")) {
             return new TexturedIcon(TextureReference.parse(input));
         } else {
-            ResourceLocation id = ResourceLocation.parse(input);
+            Identifier id = Identifier.parse(input);
 
             if (!BuiltInRegistries.ITEM.containsKey(id)) {
                 throw new JsonParseException("Unknown item '" + input + "'");
@@ -41,7 +41,7 @@ public interface Icon {
     static DataResult<Icon> read(String path) {
         try {
             return DataResult.success(parse(path));
-        } catch (ResourceLocationException e) {
+        } catch (IdentifierException e) {
             return DataResult.error(() -> "Not a valid texture reference: " + path + " " + e.getMessage());
         }
     }

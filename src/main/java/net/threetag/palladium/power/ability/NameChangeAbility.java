@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.permissions.PermissionSet;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.component.PalladiumDataComponents;
@@ -44,7 +45,7 @@ public class NameChangeAbility extends Ability {
             if (!entity.level().isClientSide()) {
                 try {
                     instance.set(PalladiumDataComponents.Abilities.NAME_CHANGE_CACHED.get(),
-                            ComponentUtils.updateForEntity(player.createCommandSourceStackForNameResolution(serverLevel).withPermission(2), this.name, player, 0));
+                            ComponentUtils.updateForEntity(player.createCommandSourceStackForNameResolution(serverLevel).withPermission(PermissionSet.ALL_PERMISSIONS), this.name, player, 0));
                 } catch (CommandSyntaxException e) {
                     instance.set(PalladiumDataComponents.Abilities.NAME_CHANGE_CACHED.get(), this.name);
                 }

@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -37,7 +37,7 @@ public class SwingAnchor extends Entity {
         this.noPhysics = true;
     }
 
-    public SwingAnchor(LivingEntity owner, BlockPos pos, ResourceLocation beamRendererId) {
+    public SwingAnchor(LivingEntity owner, BlockPos pos, Identifier beamRendererId) {
         this(PalladiumEntityTypes.SWING_ANCHOR.get(), owner.level());
         this.snapTo(pos.getCenter());
         this.setOwner(owner);
@@ -109,13 +109,13 @@ public class SwingAnchor extends Entity {
         return this.owner;
     }
 
-    public void setBeamRendererId(ResourceLocation id) {
+    public void setBeamRendererId(Identifier id) {
         this.entityData.set(BEAM_RENDERER_ID, id.toString());
     }
 
-    public ResourceLocation getBeamRendererId() {
+    public Identifier getBeamRendererId() {
         var id = this.entityData.get(BEAM_RENDERER_ID);
-        return id.isEmpty() ? null : ResourceLocation.parse(id);
+        return id.isEmpty() ? null : Identifier.parse(id);
     }
 
     public void markToDespawn() {

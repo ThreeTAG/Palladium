@@ -2,12 +2,12 @@ package net.threetag.palladium.client.texture;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.logic.context.DataContext;
 
 public abstract class DynamicTexture {
 
-    public abstract ResourceLocation getTexture(DataContext context);
+    public abstract Identifier getTexture(DataContext context);
 
     public abstract DynamicTextureSerializer<?> getSerializer();
 

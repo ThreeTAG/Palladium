@@ -2,10 +2,10 @@ package net.threetag.palladium.power.ability;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import net.minecraft.ResourceLocationException;
+import net.minecraft.IdentifierException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.EntityPowerHandler;
 import net.threetag.palladium.power.PowerHolder;
@@ -16,14 +16,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 
-public record AbilityReference(@Nullable ResourceLocation powerId, @NotNull String abilityKey) {
+public record AbilityReference(@Nullable Identifier powerId, @NotNull String abilityKey) {
 
     public static final Codec<AbilityReference> CODEC = Codec.STRING.comapFlatMap(AbilityReference::read, AbilityReference::toString).stable();
     public static final StreamCodec<FriendlyByteBuf, AbilityReference> STREAM_CODEC = StreamCodec.of((buf, ref) -> {
-        buf.writeNullable(ref.powerId, FriendlyByteBuf::writeResourceLocation);
+        buf.writeNullable(ref.powerId, FriendlyByteBuf::writeIdentifier);
         buf.writeUtf(ref.abilityKey);
     }, buf -> {
-        var powerId = buf.readNullable(FriendlyByteBuf::readResourceLocation);
+        var powerId = buf.readNullable(FriendlyByteBuf::readIdentifier);
         var barName = buf.readUtf();
         return new AbilityReference(powerId, barName);
     });
@@ -34,14 +34,14 @@ public record AbilityReference(@Nullable ResourceLocation powerId, @NotNull Stri
         if (s.length == 1) {
             return new AbilityReference(null, s[0]);
         } else {
-            return new AbilityReference(ResourceLocation.parse(s[0]), s[1]);
+            return new AbilityReference(Identifier.parse(s[0]), s[1]);
         }
     }
 
     public static DataResult<AbilityReference> read(String path) {
         try {
             return DataResult.success(parse(path));
-        } catch (ResourceLocationException e) {
+        } catch (IdentifierException e) {
             return DataResult.error(() -> "Not a valid ability reference: " + path + " " + e.getMessage());
         }
     }
@@ -75,12 +75,12 @@ public record AbilityReference(@Nullable ResourceLocation powerId, @NotNull Stri
     }
 
     public void toBuffer(FriendlyByteBuf buf) {
-        buf.writeNullable(this.powerId, (buf1, resourceLocation) -> buf.writeResourceLocation(resourceLocation));
+        buf.writeNullable(this.powerId, (buf1, identifier) -> buf.writeIdentifier(identifier));
         buf.writeUtf(this.abilityKey);
     }
 
     public static AbilityReference fromBuffer(FriendlyByteBuf buf) {
-        return new AbilityReference(buf.readNullable(FriendlyByteBuf::readResourceLocation), buf.readUtf());
+        return new AbilityReference(buf.readNullable(FriendlyByteBuf::readIdentifier), buf.readUtf());
     }
 
     @Override

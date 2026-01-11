@@ -1,11 +1,13 @@
 package net.threetag.palladium.datagen.internal;
 
-import net.minecraft.advancements.critereon.PlayerTrigger;
+import net.minecraft.advancements.criterion.PlayerTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
@@ -40,7 +42,7 @@ public class PalladiumRecipeProvider extends RecipeProvider {
     }
 
     private static Item getWoolBlockByColor(DyeColor color) {
-        return BuiltInRegistries.ITEM.getValue(ResourceLocation.withDefaultNamespace(color.getName() + "_wool"));
+        return BuiltInRegistries.ITEM.getValue(Identifier.withDefaultNamespace(color.getName() + "_wool"));
     }
 
     public static class Runner extends RecipeProvider.Runner {

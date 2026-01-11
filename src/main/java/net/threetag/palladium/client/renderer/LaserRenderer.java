@@ -114,7 +114,7 @@ public record LaserRenderer(net.threetag.palladium.client.renderer.LaserRenderer
             float h = ((float) (ticks % rate) + partialTick) / rate;
             int p = ColorLerper.Type.SHEEP.getColor(DyeColor.byId(n));
             int q = ColorLerper.Type.SHEEP.getColor(DyeColor.byId(o));
-            return new Color(ARGB.lerp(h, p, q));
+            return new Color(ARGB.srgbLerp(h, p, q));
         } else {
             return part.color;
         }

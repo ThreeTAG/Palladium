@@ -3,10 +3,10 @@ package net.threetag.palladium.client.texture;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.ResourceLocationException;
+import net.minecraft.IdentifierException;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.logic.context.DataContext;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,24 +15,24 @@ import java.util.function.BiFunction;
 
 public class TextureReference {
 
-    public static BiFunction<ResourceLocation, DataContext, ResourceLocation> DYNAMIC_TEXTURE_RESOLVER = null;
+    public static BiFunction<Identifier, DataContext, Identifier> DYNAMIC_TEXTURE_RESOLVER = null;
 
     public static final Codec<TextureReference> CODEC = Codec.STRING.comapFlatMap(TextureReference::read, TextureReference::toString).stable();
     public static final StreamCodec<ByteBuf, TextureReference> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.BOOL, tr -> tr.dynamic,
-            ResourceLocation.STREAM_CODEC, tr -> tr.path,
+            Identifier.STREAM_CODEC, tr -> tr.path,
             TextureReference::new
     );
 
     private final boolean dynamic;
-    private final ResourceLocation path;
+    private final Identifier path;
 
-    private TextureReference(boolean dynamic, ResourceLocation path) {
+    private TextureReference(boolean dynamic, Identifier path) {
         this.dynamic = dynamic;
         this.path = path;
     }
 
-    public ResourceLocation withPath(DataContext context, String prefix, String suffix) {
+    public Identifier withPath(DataContext context, String prefix, String suffix) {
         var texture = this.getTexture(context);
 
         if (texture == null) {
@@ -47,7 +47,7 @@ public class TextureReference {
     }
 
     @Nullable
-    public ResourceLocation getTexture(DataContext context) {
+    public Identifier getTexture(DataContext context) {
         if (this.dynamic) {
             if (DYNAMIC_TEXTURE_RESOLVER != null) {
                 return DYNAMIC_TEXTURE_RESOLVER.apply(this.path, context);
@@ -59,31 +59,31 @@ public class TextureReference {
         }
     }
 
-    public static TextureReference normal(ResourceLocation path) {
+    public static TextureReference normal(Identifier path) {
         return new TextureReference(false, path);
     }
 
-    public static TextureReference dynamic(ResourceLocation path) {
+    public static TextureReference dynamic(Identifier path) {
         return new TextureReference(true, path);
     }
 
     public static TextureReference parse(String path) {
         if (path.startsWith("#")) {
-            return dynamic(ResourceLocation.parse(path.substring(1)));
+            return dynamic(Identifier.parse(path.substring(1)));
         }
 
-        return normal(ResourceLocation.parse(path));
+        return normal(Identifier.parse(path));
     }
 
     public static DataResult<TextureReference> read(String path) {
         try {
             return DataResult.success(parse(path));
-        } catch (ResourceLocationException e) {
+        } catch (IdentifierException e) {
             return DataResult.error(() -> "Not a valid texture reference: " + path + " " + e.getMessage());
         }
     }
 
-    public ResourceLocation getPath() {
+    public Identifier getPath() {
         return this.path;
     }
 

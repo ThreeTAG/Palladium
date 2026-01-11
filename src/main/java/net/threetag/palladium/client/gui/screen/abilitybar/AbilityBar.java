@@ -4,7 +4,7 @@ import io.netty.util.collection.IntObjectHashMap;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -29,7 +29,7 @@ import java.util.List;
 public class AbilityBar implements GuiLayer, UiComponent {
 
     public static final AbilityBar INSTANCE = new AbilityBar();
-    private static final ResourceLocation TEXTURE = Palladium.id("textures/gui/ability_bar.png");
+    private static final Identifier TEXTURE = Palladium.id("textures/gui/ability_bar.png");
     public static int KEY_ROTATION = 0;
     public static boolean KEY_ROTATION_FORWARD = true;
 
@@ -204,7 +204,7 @@ public class AbilityBar implements GuiLayer, UiComponent {
             }
         }
 
-        public ResourceLocation getTexture(DataContext context) {
+        public Identifier getTexture(DataContext context) {
             return this.texture.getTexture(context);
         }
 

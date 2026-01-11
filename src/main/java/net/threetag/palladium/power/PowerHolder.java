@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.power.ability.Ability;
@@ -22,7 +22,7 @@ public class PowerHolder {
 
     public final LivingEntity entity;
     private final Holder<Power> power;
-    private final ResourceLocation powerId;
+    private final Identifier powerId;
     private final Map<String, AbilityInstance<?>> entryMap = new HashMap<>();
     private final Map<String, EnergyBarInstance> energyBars = new LinkedHashMap<>();
     private PowerValidator validator;
@@ -31,7 +31,7 @@ public class PowerHolder {
     public PowerHolder(LivingEntity entity, Holder<Power> power, PowerValidator validator, int priority, CompoundTag componentTag) {
         this.entity = entity;
         this.power = power;
-        this.powerId = power.unwrapKey().orElseThrow().location();
+        this.powerId = power.unwrapKey().orElseThrow().identifier();
         this.validator = validator;
         this.priority = priority;
 
@@ -42,7 +42,7 @@ public class PowerHolder {
         }
 
         for (Map.Entry<String, EnergyBarConfiguration> e : this.getPower().value().getEnergyBars().entrySet()) {
-            this.energyBars.put(e.getKey(), new EnergyBarInstance(e.getValue(), this, new EnergyBarReference(power.unwrapKey().orElseThrow().location(), e.getKey())));
+            this.energyBars.put(e.getKey(), new EnergyBarInstance(e.getValue(), this, new EnergyBarReference(power.unwrapKey().orElseThrow().identifier(), e.getKey())));
         }
     }
 
@@ -50,7 +50,7 @@ public class PowerHolder {
         return this.power;
     }
 
-    public ResourceLocation getPowerId() {
+    public Identifier getPowerId() {
         return this.powerId;
     }
 

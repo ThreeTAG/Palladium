@@ -1,6 +1,6 @@
 package net.threetag.palladium.menu.slot;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -31,7 +31,7 @@ public class TailoringResultSlot extends Slot {
     }
 
     @Override
-    public @Nullable ResourceLocation getNoItemIcon() {
+    public @Nullable Identifier getNoItemIcon() {
         return switch (this.armorType) {
             case HELMET -> InventoryMenu.EMPTY_ARMOR_SLOT_HELMET;
             case CHESTPLATE, BODY -> InventoryMenu.EMPTY_ARMOR_SLOT_CHESTPLATE;

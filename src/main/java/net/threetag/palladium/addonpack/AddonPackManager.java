@@ -2,12 +2,12 @@ package net.threetag.palladium.addonpack;
 
 import net.minecraft.CrashReport;
 import net.minecraft.ReportedException;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
@@ -269,7 +269,7 @@ public class AddonPackManager {
     @FunctionalInterface
     public interface RegisterCallback<T> {
 
-        void register(ResourceKey<Registry<T>> registry, ResourceLocation id, T object);
+        void register(ResourceKey<Registry<T>> registry, Identifier id, T object);
 
     }
 

@@ -7,6 +7,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.permissions.PermissionSet;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
@@ -43,7 +44,7 @@ public class CommandAbility extends Ability implements CommandSource {
     public void firstTick(LivingEntity entity, AbilityInstance<?> entry) {
         if (entity.level().getServer() != null && entity.level() instanceof ServerLevel serverLevel) {
             var source = this.createCommandSourceStack(entity, serverLevel);
-            Objects.requireNonNull(entity.level().getServer()).getFunctions().execute(this.firstTick.getCommandFunction(entity.level().getServer()), source.withSuppressedOutput().withMaximumPermission(2));
+            Objects.requireNonNull(entity.level().getServer()).getFunctions().execute(this.firstTick.getCommandFunction(entity.level().getServer()), source.withSuppressedOutput().withMaximumPermission(PermissionSet.ALL_PERMISSIONS));
         }
     }
 
@@ -51,7 +52,7 @@ public class CommandAbility extends Ability implements CommandSource {
     public void tick(LivingEntity entity, AbilityInstance<?> entry, boolean enabled) {
         if (enabled && entity.level().getServer() != null && entity.level() instanceof ServerLevel serverLevel) {
             var source = this.createCommandSourceStack(entity, serverLevel);
-            Objects.requireNonNull(entity.level().getServer()).getFunctions().execute(this.commands.getCommandFunction(entity.level().getServer()), source.withSuppressedOutput().withMaximumPermission(2));
+            Objects.requireNonNull(entity.level().getServer()).getFunctions().execute(this.commands.getCommandFunction(entity.level().getServer()), source.withSuppressedOutput().withMaximumPermission(PermissionSet.ALL_PERMISSIONS));
         }
     }
 
@@ -59,13 +60,13 @@ public class CommandAbility extends Ability implements CommandSource {
     public void lastTick(LivingEntity entity, AbilityInstance<?> entry) {
         if (entity.level().getServer() != null && entity.level() instanceof ServerLevel serverLevel) {
             var source = this.createCommandSourceStack(entity, serverLevel);
-            Objects.requireNonNull(entity.level().getServer()).getFunctions().execute(this.lastTick.getCommandFunction(entity.level().getServer()), source.withSuppressedOutput().withMaximumPermission(2));
+            Objects.requireNonNull(entity.level().getServer()).getFunctions().execute(this.lastTick.getCommandFunction(entity.level().getServer()), source.withSuppressedOutput().withMaximumPermission(PermissionSet.ALL_PERMISSIONS));
         }
     }
 
     public CommandSourceStack createCommandSourceStack(LivingEntity entity, ServerLevel serverLevel) {
         return new CommandSourceStack(this, entity.position(), entity.getRotationVector(),
-                serverLevel, 2, entity.getName().getString(), entity.getDisplayName(), Objects.requireNonNull(entity.level().getServer()), entity)
+                serverLevel, PermissionSet.ALL_PERMISSIONS, entity.getName().getString(), entity.getDisplayName(), Objects.requireNonNull(entity.level().getServer()), entity)
                 .withSuppressedOutput();
     }
 

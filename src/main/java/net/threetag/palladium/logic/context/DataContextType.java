@@ -1,5 +1,6 @@
 package net.threetag.palladium.logic.context;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -13,6 +14,7 @@ import net.threetag.palladium.power.ability.AbilityInstance;
 public class DataContextType<T> {
 
     public static DataContextType<Entity> ENTITY = new DataContextType<>();
+    public static DataContextType<BlockPos> BLOCK_POS = new DataContextType<>();
     public static DataContextType<Level> LEVEL = new DataContextType<>();
     public static DataContextType<ItemStack> ITEM = new DataContextType<>();
     public static DataContextType<PlayerSlot> SLOT = new DataContextType<>();

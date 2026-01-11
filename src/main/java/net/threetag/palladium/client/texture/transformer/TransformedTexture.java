@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureContents;
 import net.minecraft.client.resources.metadata.texture.TextureMetadataSection;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.jetbrains.annotations.NotNull;
@@ -16,11 +16,11 @@ import java.util.function.Function;
 
 public class TransformedTexture extends SimpleTexture {
 
-    private final ResourceLocation baseTexture;
+    private final Identifier baseTexture;
     private final List<TextureTransformer> transformers;
     private final Function<String, String> stringConverter;
 
-    public TransformedTexture(ResourceLocation resourceId, ResourceLocation baseTexture, List<TextureTransformer> transformers, Function<String, String> stringConverter) {
+    public TransformedTexture(Identifier resourceId, Identifier baseTexture, List<TextureTransformer> transformers, Function<String, String> stringConverter) {
         super(resourceId);
         this.baseTexture = baseTexture;
         this.transformers = transformers;

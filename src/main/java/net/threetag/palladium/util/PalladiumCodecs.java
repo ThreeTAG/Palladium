@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.level.MoonPhase;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
@@ -71,6 +72,7 @@ public class PalladiumCodecs {
     public static final Codec<Float> FLOAT_0_TO_1 = floatRangeMinInclusiveWithMessage(0F, 1F, f -> "Value must be within 0.0 and 1.0: " + f);
 
     public static final StreamCodec<FriendlyByteBuf, ArmorType> ARMOR_TYPE_STREAM_CODEC = NeoForgeStreamCodecs.enumCodec(ArmorType.class);
+    public static final StreamCodec<FriendlyByteBuf, MoonPhase> MOON_PHASE_STREAM_CODEC = NeoForgeStreamCodecs.enumCodec(MoonPhase.class);
 
     public static final Codec<Integer> TIME = Codec.withAlternative(
             ExtraCodecs.NON_NEGATIVE_INT,

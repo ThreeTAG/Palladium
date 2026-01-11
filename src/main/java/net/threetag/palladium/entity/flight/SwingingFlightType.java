@@ -6,7 +6,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
@@ -215,10 +215,10 @@ public class SwingingFlightType extends FlightType {
         }
     }
 
-    public record AnimationSettings(ResourceLocation assetId, BeamRendererValue beamRendererId, float maxLean,
+    public record AnimationSettings(Identifier assetId, BeamRendererValue beamRendererId, float maxLean,
                                     float bodyStiffness, float limbStiffness) {
 
-        public static final ResourceLocation DEFAULT_ASSET_ID = Palladium.id("flight/swinging");
+        public static final Identifier DEFAULT_ASSET_ID = Palladium.id("flight/swinging");
         public static final BeamRendererValue DEFAULT_BEAM = new BeamRendererValue(PalladiumBeams.SWINGING_WEB_RIGHT, PalladiumBeams.SWINGING_WEB_LEFT);
         public static final float DEFAULT_MAX_LEAN = 35F;
         public static final float DEFAULT_BODY_STIFFNESS = 12F;
@@ -227,17 +227,17 @@ public class SwingingFlightType extends FlightType {
         public static final AnimationSettings DEFAULT = new AnimationSettings(DEFAULT_ASSET_ID, DEFAULT_BEAM, DEFAULT_MAX_LEAN, DEFAULT_BODY_STIFFNESS, DEFAULT_LIMB_STIFFNESS);
 
         public static final Codec<AnimationSettings> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ResourceLocation.CODEC.optionalFieldOf("asset_id", DEFAULT_ASSET_ID).forGetter(AnimationSettings::assetId),
+                Identifier.CODEC.optionalFieldOf("asset_id", DEFAULT_ASSET_ID).forGetter(AnimationSettings::assetId),
                 BeamRendererValue.CODEC.optionalFieldOf("beam_renderer", DEFAULT_BEAM).forGetter(AnimationSettings::beamRendererId),
                 ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("max_lean", DEFAULT_MAX_LEAN).forGetter(AnimationSettings::maxLean),
                 ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("body_stiffness", DEFAULT_BODY_STIFFNESS).forGetter(AnimationSettings::bodyStiffness),
                 ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("limb_stiffness", DEFAULT_LIMB_STIFFNESS).forGetter(AnimationSettings::limbStiffness)
         ).apply(instance, AnimationSettings::new));
 
-        public static final Codec<AnimationSettings> CODEC = Codec.either(DIRECT_CODEC, ResourceLocation.CODEC)
+        public static final Codec<AnimationSettings> CODEC = Codec.either(DIRECT_CODEC, Identifier.CODEC)
                 .xmap(either -> either.map(
                                 animationSettings -> animationSettings,
-                                resourceLocation -> new AnimationSettings(resourceLocation, DEFAULT_BEAM, DEFAULT_MAX_LEAN, DEFAULT_BODY_STIFFNESS, DEFAULT_LIMB_STIFFNESS)),
+                                Identifier -> new AnimationSettings(Identifier, DEFAULT_BEAM, DEFAULT_MAX_LEAN, DEFAULT_BODY_STIFFNESS, DEFAULT_LIMB_STIFFNESS)),
                         animationSettings ->
                                 animationSettings.equals(DEFAULT) ?
                                         Either.right(animationSettings.assetId) : Either.left(animationSettings));
@@ -254,22 +254,22 @@ public class SwingingFlightType extends FlightType {
         }
     }
 
-    public record BeamRendererValue(ResourceLocation rightArm, ResourceLocation leftArm) {
+    public record BeamRendererValue(Identifier rightArm, Identifier leftArm) {
 
         public static final Codec<BeamRendererValue> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ResourceLocation.CODEC.fieldOf("right_arm").forGetter(BeamRendererValue::rightArm),
-                ResourceLocation.CODEC.fieldOf("left_arm").forGetter(BeamRendererValue::leftArm)
+                Identifier.CODEC.fieldOf("right_arm").forGetter(BeamRendererValue::rightArm),
+                Identifier.CODEC.fieldOf("left_arm").forGetter(BeamRendererValue::leftArm)
         ).apply(instance, BeamRendererValue::new));
 
-        public static final Codec<BeamRendererValue> CODEC = Codec.either(DIRECT_CODEC, ResourceLocation.CODEC)
+        public static final Codec<BeamRendererValue> CODEC = Codec.either(DIRECT_CODEC, Identifier.CODEC)
                 .xmap(either -> either.map(
                                 beamRendererValue -> beamRendererValue,
-                                resourceLocation -> new BeamRendererValue(resourceLocation, resourceLocation)),
+                                Identifier -> new BeamRendererValue(Identifier, Identifier)),
                         beamRendererValue ->
                                 beamRendererValue.rightArm.equals(beamRendererValue.leftArm) ?
                                         Either.right(beamRendererValue.rightArm) : Either.left(beamRendererValue));
 
-        public ResourceLocation get(boolean rightArm) {
+        public Identifier get(boolean rightArm) {
             return rightArm ? this.rightArm : this.leftArm;
         }
 
@@ -288,7 +288,7 @@ public class SwingingFlightType extends FlightType {
         }
 
         @Override
-        public ResourceLocation getAnimationAssetId() {
+        public Identifier getAnimationAssetId() {
             return this.animationSettings.assetId();
         }
 
@@ -405,10 +405,10 @@ public class SwingingFlightType extends FlightType {
                             new Vec2(5F, 10F),
                             60,
                             new AnimationSettings(
-                                    ResourceLocation.fromNamespaceAndPath("namespace", "animation_id"),
+                                    Identifier.fromNamespaceAndPath("namespace", "animation_id"),
                                     new BeamRendererValue(
-                                            ResourceLocation.fromNamespaceAndPath("namespace", "beam_right_id"),
-                                            ResourceLocation.fromNamespaceAndPath("namespace", "beam_left_id")
+                                            Identifier.fromNamespaceAndPath("namespace", "beam_right_id"),
+                                            Identifier.fromNamespaceAndPath("namespace", "beam_left_id")
                                     ),
                                     50F,
                                     15F,

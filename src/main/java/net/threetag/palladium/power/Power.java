@@ -5,8 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryFixedCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.client.texture.TextureReference;
@@ -26,7 +26,7 @@ public class Power {
 
     public static final Codec<Power> CODEC = RecordCodecBuilder.create((instance) -> instance
             .group(
-                    ResourceLocation.CODEC.optionalFieldOf("parent").forGetter(p -> Optional.ofNullable(p.parentId)),
+                    Identifier.CODEC.optionalFieldOf("parent").forGetter(p -> Optional.ofNullable(p.parentId)),
                     ComponentSerialization.CODEC.fieldOf("name").forGetter(Power::getName),
                     Icon.CODEC.fieldOf("icon").forGetter(Power::getIcon),
                     TextureReference.CODEC.optionalFieldOf("background").forGetter(p -> Optional.ofNullable(p.background)),
@@ -45,7 +45,7 @@ public class Power {
     public static final Codec<Holder<Power>> HOLDER_CODEC = RegistryFixedCodec.create(PalladiumRegistryKeys.POWER);
 
     @Nullable
-    private final ResourceLocation parentId;
+    private final Identifier parentId;
     private final Component name;
     private final Icon icon;
     private final Map<String, Ability> abilities;
@@ -57,7 +57,7 @@ public class Power {
     private final boolean hidden;
     private final GuiDisplayType guiDisplayType;
 
-    public Power(@Nullable ResourceLocation parentId, Component name, Icon icon, TextureReference background, TextureReference abilityBar, Color primaryColor, Color secondaryColor, boolean persistentData, boolean hidden, GuiDisplayType guiDisplayType, Map<String, Ability> abilities, Map<String, EnergyBarConfiguration> energyBars) {
+    public Power(@Nullable Identifier parentId, Component name, Icon icon, TextureReference background, TextureReference abilityBar, Color primaryColor, Color secondaryColor, boolean persistentData, boolean hidden, GuiDisplayType guiDisplayType, Map<String, Ability> abilities, Map<String, EnergyBarConfiguration> energyBars) {
         this.parentId = parentId;
         this.name = name;
         this.icon = icon;
@@ -80,7 +80,7 @@ public class Power {
         }
     }
 
-    public @Nullable ResourceLocation getParentId() {
+    public @Nullable Identifier getParentId() {
         return parentId;
     }
 

@@ -7,7 +7,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.Documented;
 
@@ -15,17 +15,17 @@ import java.util.Map;
 
 public abstract class DynamicTextureSerializer<T extends DynamicTexture> implements Documented<DynamicTexture, T> {
 
-    private static final BiMap<ResourceLocation, DynamicTextureSerializer<?>> TYPES = HashBiMap.create();
+    private static final BiMap<Identifier, DynamicTextureSerializer<?>> TYPES = HashBiMap.create();
 
-    public static final Codec<DynamicTextureSerializer<?>> TYPE_CODEC = ResourceLocation.CODEC.flatXmap(resourceLocation -> {
-        DynamicTextureSerializer<?> serializer = TYPES.get(resourceLocation);
-        return serializer != null ? DataResult.success(serializer) : DataResult.error(() -> "Unknown type " + resourceLocation);
+    public static final Codec<DynamicTextureSerializer<?>> TYPE_CODEC = Identifier.CODEC.flatXmap(identifier -> {
+        DynamicTextureSerializer<?> serializer = TYPES.get(identifier);
+        return serializer != null ? DataResult.success(serializer) : DataResult.error(() -> "Unknown type " + identifier);
     }, serializer -> {
-        ResourceLocation resourceLocation = TYPES.inverse().get(serializer);
-        return serializer != null ? DataResult.success(resourceLocation) : DataResult.error(() -> "Unknown type " + resourceLocation);
+        Identifier identifier = TYPES.inverse().get(serializer);
+        return serializer != null ? DataResult.success(identifier) : DataResult.error(() -> "Unknown type " + identifier);
     });
 
-    public static <T extends DynamicTexture> DynamicTextureSerializer<T> register(ResourceLocation id, DynamicTextureSerializer<T> serializer) {
+    public static <T extends DynamicTexture> DynamicTextureSerializer<T> register(Identifier id, DynamicTextureSerializer<T> serializer) {
         if (TYPES.containsKey(id)) {
             throw new IllegalStateException("Duplicate registration for dynamic texture serializer: " + id);
         }
@@ -34,7 +34,7 @@ public abstract class DynamicTextureSerializer<T extends DynamicTexture> impleme
         return serializer;
     }
 
-    public static Map<ResourceLocation, DynamicTextureSerializer<?>> getTypes() {
+    public static Map<Identifier, DynamicTextureSerializer<?>> getTypes() {
         return ImmutableMap.copyOf(TYPES);
     }
 

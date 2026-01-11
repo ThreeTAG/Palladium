@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 
@@ -30,7 +30,7 @@ public class OverlayTransformer extends TextureTransformer {
 
     @Override
     public NativeImage transform(NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
-        var maskTexture = manager.getResourceOrThrow(ResourceLocation.parse(stringConverter.apply(this.overlayLocation)));
+        var maskTexture = manager.getResourceOrThrow(Identifier.parse(stringConverter.apply(this.overlayLocation)));
 
         try (InputStream inputStream = maskTexture.open()) {
             NativeImage overlay = NativeImage.read(inputStream);

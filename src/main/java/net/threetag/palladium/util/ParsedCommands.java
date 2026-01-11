@@ -9,6 +9,7 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.permissions.PermissionSet;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.Palladium;
@@ -35,7 +36,7 @@ public class ParsedCommands {
 
     public CommandFunction<CommandSourceStack> getCommandFunction(MinecraftServer server) {
         if (this.commandFunction == null) {
-            CommandSourceStack commandSourceStack = new CommandSourceStack(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, null, 2, "", CommonComponents.EMPTY, server, null);
+            CommandSourceStack commandSourceStack = new CommandSourceStack(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, null, PermissionSet.ALL_PERMISSIONS, "", CommonComponents.EMPTY, server, null);
             this.commandFunction = CommandFunction.fromLines(Palladium.id("parsed"), server.getCommands().getDispatcher(), commandSourceStack, this.lines);
         }
         return this.commandFunction;

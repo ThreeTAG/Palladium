@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.tabs.GridLayoutTab;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.client.gui.component.tab.IconTab;
 import net.threetag.palladium.icon.Icon;
@@ -26,7 +26,7 @@ public class CustomizationCategoryTab extends GridLayoutTab implements IconTab {
         this.parent = parent;
         this.transformation = slot.preview();
         var id = Objects.requireNonNull(Minecraft.getInstance().level).registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY).getKey(slot);
-        this.icon = new TexturedIcon(ResourceLocation.fromNamespaceAndPath(Objects.requireNonNull(id).getNamespace(), "textures/gui/customization_categories/" + id.getPath() + ".png"));
+        this.icon = new TexturedIcon(Identifier.fromNamespaceAndPath(Objects.requireNonNull(id).getNamespace(), "textures/gui/customization_categories/" + id.getPath() + ".png"));
         this.layout.addChild(this.grid = new CustomizationsGrid(ScreenRectangle.empty(), slot, Minecraft.getInstance()), 0, 0, 1, 2);
     }
 

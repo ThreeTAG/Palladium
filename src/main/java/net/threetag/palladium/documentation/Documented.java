@@ -9,7 +9,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_ANY = SettingType.simple("Anything");
     SettingType TYPE_STRING = SettingType.simple("string");
     SettingType TYPE_STRING_ARRAY = SettingType.simple("string[]");
-    SettingType TYPE_RESOURCE_LOCATION = SettingType.simple("ResourceLocation");
+    SettingType TYPE_RESOURCE_LOCATION = SettingType.simple("Identifier");
     SettingType TYPE_BLOCK_STATE = SettingType.simple("Block State");
     SettingType TYPE_BLOCK_TAG = SettingType.simple("Block Tag");
     SettingType TYPE_FLUID_TAG = SettingType.simple("Fluid Tag");

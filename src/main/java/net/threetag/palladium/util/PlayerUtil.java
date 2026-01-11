@@ -5,7 +5,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -45,11 +45,11 @@ public class PlayerUtil {
         }
     }
 
-    public static void playSound(Player player, double x, double y, double z, ResourceLocation sound, SoundSource category) {
+    public static void playSound(Player player, double x, double y, double z, Identifier sound, SoundSource category) {
         playSound(player, x, y, z, sound, category, 1F, 1F);
     }
 
-    public static void playSound(Player player, double x, double y, double z, ResourceLocation sound, SoundSource category, float volume, float pitch) {
+    public static void playSound(Player player, double x, double y, double z, Identifier sound, SoundSource category, float volume, float pitch) {
         if (player instanceof ServerPlayer serverPlayer) {
             BuiltInRegistries.SOUND_EVENT.get(sound).ifPresent(ref -> serverPlayer.connection.send(new ClientboundSoundPacket(ref, category, x, y, z, volume, pitch, player.getRandom().nextLong())));
         }
@@ -66,11 +66,11 @@ public class PlayerUtil {
         }
     }
 
-    public static void playSoundToAll(Level world, double x, double y, double z, double range, ResourceLocation sound, SoundSource category) {
+    public static void playSoundToAll(Level world, double x, double y, double z, double range, Identifier sound, SoundSource category) {
         playSoundToAll(world, x, y, z, range, sound, category, 1, 1);
     }
 
-    public static void playSoundToAll(Level world, double x, double y, double z, double range, ResourceLocation sound, SoundSource category, float volume, float pitch) {
+    public static void playSoundToAll(Level world, double x, double y, double z, double range, Identifier sound, SoundSource category, float volume, float pitch) {
         AABB a = new AABB(new Vec3(x - range, y - range, z - range), new Vec3(x + range, y + range, z + range));
         for (Player players : world.getEntitiesOfClass(Player.class, a)) {
             playSound(players, x, y, z, sound, category, volume, pitch);

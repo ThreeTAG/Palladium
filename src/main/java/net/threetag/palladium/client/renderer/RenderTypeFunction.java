@@ -1,10 +1,10 @@
 package net.threetag.palladium.client.renderer;
 
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
 
 public interface RenderTypeFunction {
 
-    RenderType getRenderType(ResourceLocation texture);
+    RenderType getRenderType(Identifier texture);
 
 }

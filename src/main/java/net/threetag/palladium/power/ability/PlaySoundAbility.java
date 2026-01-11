@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +19,7 @@ public class PlaySoundAbility extends Ability {
 
     public static final MapCodec<PlaySoundAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    ResourceLocation.CODEC.fieldOf("sound").forGetter(ab -> ab.sound),
+                    Identifier.CODEC.fieldOf("sound").forGetter(ab -> ab.sound),
                     ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("volume", 1F).forGetter(ab -> ab.volume),
                     ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("pitch", 1F).forGetter(ab -> ab.pitch),
                     Codec.BOOL.optionalFieldOf("looping", false).forGetter(ab -> ab.looping),
@@ -27,11 +27,11 @@ public class PlaySoundAbility extends Ability {
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, PlaySoundAbility::new));
 
-    public final ResourceLocation sound;
+    public final Identifier sound;
     public final float volume, pitch;
     public final boolean looping, playSelf;
 
-    public PlaySoundAbility(ResourceLocation sound, float volume, float pitch, boolean looping, boolean playSelf, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
+    public PlaySoundAbility(Identifier sound, float volume, float pitch, boolean looping, boolean playSelf, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
         super(properties, conditions, energyBarUsages);
         this.sound = sound;
         this.volume = volume;
@@ -75,7 +75,7 @@ public class PlaySoundAbility extends Ability {
                     .addOptional("pitch", TYPE_FLOAT, "The pitch for the played sound.", 1F)
                     .addOptional("looping", TYPE_BOOLEAN, "Whether or not the sound should loop during the time the ability is enabled.", false)
                     .addOptional("play_self", TYPE_BOOLEAN, "Whether or not the sound should be played to just the player executing the ability, or to all players.", false)
-                    .setExampleObject(new PlaySoundAbility(ResourceLocation.withDefaultNamespace("item.elytra.flying"), 1F, 1F, false, false, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .setExampleObject(new PlaySoundAbility(Identifier.withDefaultNamespace("item.elytra.flying"), 1F, 1F, false, false, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

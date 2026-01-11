@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.permissions.PermissionSet;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.util.ParsedCommands;
 import net.threetag.palladium.logic.context.DataContext;
@@ -46,7 +47,7 @@ public record CommandResultCondition(ParsedCommands command, String comparison, 
 
         if (entity.level() instanceof ServerLevel serverLevel) {
             var stack = new CommandSourceStack(this, entity.position(), entity.getRotationVector(),
-                    serverLevel, 2, entity.getName().getString(), Objects.requireNonNull(entity.getDisplayName()), serverLevel.getServer(),
+                    serverLevel, PermissionSet.ALL_PERMISSIONS, entity.getName().getString(), Objects.requireNonNull(entity.getDisplayName()), serverLevel.getServer(),
                     entity)
                     .withSuppressedOutput();
 
@@ -54,7 +55,7 @@ public record CommandResultCondition(ParsedCommands command, String comparison, 
                 stack = stack.withSuppressedOutput();
             }
 
-            serverLevel.getServer().getFunctions().execute(this.command.getCommandFunction(entity.level().getServer()), stack.withSuppressedOutput().withMaximumPermission(2));
+            serverLevel.getServer().getFunctions().execute(this.command.getCommandFunction(entity.level().getServer()), stack.withSuppressedOutput().withMaximumPermission(PermissionSet.ALL_PERMISSIONS));
 
             // TODO
 //            return switch (comparison) {
