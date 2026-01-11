@@ -88,6 +88,8 @@ public class TailoringMenu extends AbstractContainerMenu {
                 tool.hurtAndBreak((int) recipe.getResults().values().stream().filter(s -> !s.isEmpty()).count(), serverPlayer, pl -> this.toolSlotContainer.clearContent());
             }
 
+            this.resultSlots.setRecipeUsed(recipe);
+
             for (int i = 0; i < 4; i++) {
                 var slot = SLOT_IDS[i];
                 this.resultSlots.setItem(i, recipe.getResults().getOrDefault(slot, ItemStack.EMPTY).copy());
