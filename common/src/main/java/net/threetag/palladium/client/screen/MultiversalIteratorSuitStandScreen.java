@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -16,6 +17,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.item.MultiversalExtrapolatorItem;
 import net.threetag.palladium.menu.MultiversalIteratorSuitStandMenu;
 import net.threetag.palladium.multiverse.Universe;
+import net.threetag.palladium.sound.PalladiumSoundEvents;
 import org.joml.Quaternionf;
 
 public class MultiversalIteratorSuitStandScreen extends AbstractContainerScreen<MultiversalIteratorSuitStandMenu> implements ContainerListener {
@@ -80,7 +82,9 @@ public class MultiversalIteratorSuitStandScreen extends AbstractContainerScreen<
 
     @Override
     public void slotChanged(AbstractContainerMenu containerToSend, int dataSlotIndex, ItemStack stack) {
-
+        if (dataSlotIndex == 0 && !stack.isEmpty() && MultiversalExtrapolatorItem.getUniverse(stack, this.minecraft.level) != null) {
+            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(PalladiumSoundEvents.MULTIVERSE_SEARCH.get(), 1.0F));
+        }
     }
 
     @Override

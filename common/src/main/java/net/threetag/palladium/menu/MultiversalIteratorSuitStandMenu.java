@@ -27,6 +27,7 @@ import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.network.SyncMultiversalIteratorSuitPagesMessage;
 import net.threetag.palladium.sound.PalladiumSoundEvents;
 import net.threetag.palladium.util.PlayerUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,8 +129,42 @@ public class MultiversalIteratorSuitStandMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
-        return null;
+    public @NotNull ItemStack quickMoveStack(Player player, int index) {
+        ItemStack itemStack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+        if (slot.hasItem()) {
+            ItemStack itemStack2 = slot.getItem();
+            itemStack = itemStack2.copy();
+            if (index != 0) {
+                if (itemStack2.getItem() instanceof MultiversalExtrapolatorItem) {
+                    if (!this.moveItemStackTo(itemStack2, 0, 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index >= 1 && index < 28) {
+                    if (!this.moveItemStackTo(itemStack2, 28, 37, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index >= 28 && index < 37 && !this.moveItemStackTo(itemStack2, 1, 28, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.moveItemStackTo(itemStack2, 1, 37, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemStack2.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+
+            if (itemStack2.getCount() == itemStack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, itemStack2);
+        }
+
+        return itemStack;
     }
 
     @Override
