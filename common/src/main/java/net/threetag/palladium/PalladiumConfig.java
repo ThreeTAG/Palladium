@@ -1,5 +1,6 @@
 package net.threetag.palladium;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.threetag.palladium.client.screen.AbilityBarRenderer;
 import net.threetag.palladium.power.ability.AbilityReference;
@@ -34,15 +35,25 @@ public class PalladiumConfig {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
             REDSTONE_FLUX_CRYSTAL_GEODE_GENERATION = builder.define("worldGen.redstoneFluxCrystalGeneration", true);
             builder.comment("Allows you to disable specific abilities from addons. Structure: 'power_namespace:power_id#ability_key'. The ability_key can be found in the json of a power.");
-            DISABLED_ABILITIES = builder.defineListAllowEmpty(Arrays.asList("general", "disabledAbilities"), List::of, o -> AbilityReference.validateFull(o.toString()));
+            DISABLED_ABILITIES = builder.defineListAllowEmpty(Arrays.asList("general", "disabledAbilities"), List::of, o -> true);
             return builder.build();
         }
 
         public static boolean isAbilityDisabled(AbilityReference reference) {
             for (String s : DISABLED_ABILITIES.get()) {
-                var ref = AbilityReference.fromString(s);
+                if (AbilityReference.validateFull(s)) {
+                    var ref = AbilityReference.fromString(s);
 
-                if (ref.equals(reference)) {
+                    if (ref.equals(reference)) {
+                        return true;
+                    }
+                } else if (ResourceLocation.isValidResourceLocation(s)) {
+                    var powerId = ResourceLocation.tryParse(s);
+
+                    if (reference.getPowerId() != null && reference.getPowerId().equals(powerId)) {
+                        return true;
+                    }
+                } else if (reference.getPowerId() != null && reference.getPowerId().getNamespace().equals(s)) {
                     return true;
                 }
             }
