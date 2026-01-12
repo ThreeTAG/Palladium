@@ -40,13 +40,18 @@ public record SizedIngredient(Ingredient ingredient, int count) {
         return false;
     }
 
-    public void take(Container container) {
+    public ItemStack take(Container container) {
+        ItemStack resultStack = null;
         int left = this.count;
 
         for (int i = 0; i < container.getContainerSize(); i++) {
             var stack = container.getItem(i);
 
             if (!stack.isEmpty() && this.ingredient.test(stack)) {
+                if (resultStack == null) {
+                    resultStack = stack.copy();
+                }
+
                 int remove = Math.min(left, stack.getCount());
                 stack.shrink(remove);
                 left -= remove;
@@ -58,10 +63,14 @@ public record SizedIngredient(Ingredient ingredient, int count) {
                 }
 
                 if (left <= 0) {
-                    return;
+                    resultStack.setCount(this.count);
+                    return resultStack;
                 }
             }
         }
+
+        resultStack.setCount(this.count);
+        return resultStack;
     }
 
     @Override

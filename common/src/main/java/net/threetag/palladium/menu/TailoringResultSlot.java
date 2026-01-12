@@ -6,11 +6,8 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.inventory.RecipeHolder;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.Collections;
 
 public class TailoringResultSlot extends Slot {
 
@@ -43,9 +40,5 @@ public class TailoringResultSlot extends Slot {
     @Override
     protected void checkTakeAchievements(ItemStack stack) {
         stack.onCraftedBy(this.player.level(), this.player, stack.getCount());
-
-        if (this.container instanceof RecipeHolder recipeHolder) {
-            recipeHolder.awardUsedRecipes(this.player, Collections.emptyList());
-        }
     }
 }

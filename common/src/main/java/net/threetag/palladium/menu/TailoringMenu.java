@@ -79,8 +79,9 @@ public class TailoringMenu extends AbstractContainerMenu {
 
     public void craft(Player player, TailoringRecipe recipe) {
         if (canCraft(player, recipe)) {
+            List<ItemStack> takenStacks = new ArrayList<>();
             for (SizedIngredient sizedIngredient : recipe.getSizedIngredients()) {
-                sizedIngredient.take(player.getInventory());
+                takenStacks.add(sizedIngredient.take(player.getInventory()));
             }
 
             if (player instanceof ServerPlayer serverPlayer) {
@@ -89,6 +90,8 @@ public class TailoringMenu extends AbstractContainerMenu {
             }
 
             this.resultSlots.setRecipeUsed(recipe);
+            this.resultSlots.awardUsedRecipes(player, takenStacks);
+            this.resultSlots.setRecipeUsed(null);
 
             for (int i = 0; i < 4; i++) {
                 var slot = SLOT_IDS[i];
