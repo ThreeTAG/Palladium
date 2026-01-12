@@ -10,9 +10,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
@@ -20,6 +18,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.item.recipe.PalladiumRecipeSerializers;
 import net.threetag.palladium.tags.PalladiumItemTags;
 
 import java.util.List;
@@ -76,6 +75,8 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
             ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.FABRIC_BY_COLOR.get(color).get()).requires(PalladiumItemTags.FABRICS).requires(PalladiumItemTags.DYE_BY_COLOR.get(color)).unlockedBy(getHasName(DyeItem.byColor(color)), has(PalladiumItemTags.DYE_BY_COLOR.get(color))).save(consumer, Palladium.id("fabric_recoloring_" + color.getName()));
             ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.FABRIC_BY_COLOR.get(color).get(), 8).requires(Ingredient.of(PalladiumItemTags.FABRICS), 8).requires(PalladiumItemTags.DYE_BY_COLOR.get(color)).unlockedBy(getHasName(DyeItem.byColor(color)), has(PalladiumItemTags.DYE_BY_COLOR.get(color))).save(consumer, Palladium.id("fabric_recoloring_8_" + color.getName()));
         }
+
+        SpecialRecipeBuilder.special(PalladiumRecipeSerializers.MULTIVERSAL_EXTRAPOLATOR_CLONING.get()).save(consumer, PalladiumRecipeSerializers.MULTIVERSAL_EXTRAPOLATOR_CLONING.getId().toString());
     }
 
     protected static void oreSmelting(Consumer<FinishedRecipe> finishedRecipeConsumer, List<ItemLike> ingredients, RecipeCategory category, ItemLike result, float experience, int cookingTIme, String group) {
