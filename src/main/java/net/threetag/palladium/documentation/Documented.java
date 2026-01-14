@@ -9,7 +9,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_ANY = SettingType.simple("Anything");
     SettingType TYPE_STRING = SettingType.simple("string");
     SettingType TYPE_STRING_ARRAY = SettingType.simple("string[]");
-    SettingType TYPE_RESOURCE_LOCATION = SettingType.simple("Identifier");
+    SettingType TYPE_IDENTIFIER = SettingType.simple("Identifier");
     SettingType TYPE_BLOCK_STATE = SettingType.simple("Block State");
     SettingType TYPE_BLOCK_TAG = SettingType.simple("Block Tag");
     SettingType TYPE_FLUID_TAG = SettingType.simple("Fluid Tag");
@@ -23,7 +23,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_TIME = SettingType.combined(TYPE_INT, TYPE_TIME_STRING);
     SettingType TYPE_DYNAMIC_TEXTURE = SettingType.simple("Dynamic Texture");
     SettingType TYPE_TEXTURE_REFERENCE = SettingType.simple("Texture Reference");
-    SettingType TYPE_ANY_TEXTURE = SettingType.combined(TYPE_RESOURCE_LOCATION, TYPE_DYNAMIC_TEXTURE, TYPE_TEXTURE_REFERENCE);
+    SettingType TYPE_ANY_TEXTURE = SettingType.combined(TYPE_IDENTIFIER, TYPE_DYNAMIC_TEXTURE, TYPE_TEXTURE_REFERENCE);
     SettingType TYPE_TEXT_COMPONENT = SettingType.simple("Text Component");
     SettingType TYPE_NBT = SettingType.simple("NBT");
     SettingType TYPE_PLAYER_SLOTS = SettingType.enumList(PlayerSlot.exampleValues().stream().map(Object::toString).toList());

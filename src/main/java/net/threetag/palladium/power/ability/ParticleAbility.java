@@ -64,7 +64,7 @@ public class ParticleAbility extends Ability {
             var particleType = provider.lookupOrThrow(Registries.PARTICLE_TYPE).getOrThrow(ResourceKey.create(Registries.PARTICLE_TYPE, Identifier.withDefaultNamespace("dust")));
 
             builder.setDescription("Spawns particles around the entity.")
-                    .add("emitter", SettingType.listOrPrimitive(TYPE_RESOURCE_LOCATION), "List of emitter IDs where the particles spawn at.")
+                    .add("emitter", SettingType.listOrPrimitive(TYPE_IDENTIFIER), "List of emitter IDs where the particles spawn at.")
                     .add("particle_type", TYPE_PARTICLE_TYPE, "ID of the particle you want to spawn.")
                     .addOptional("options", TYPE_NBT, "Additional options for the particle (like color of a dust particle).")
                     .setExampleObject(new ParticleAbility(List.of(Identifier.fromNamespaceAndPath("example", "emitter_id")), particleType, null, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));

@@ -70,7 +70,7 @@ public class PlaySoundAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, PlaySoundAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Plays a sound.")
-                    .add("sound", TYPE_RESOURCE_LOCATION, "The sound that is being played.")
+                    .add("sound", TYPE_IDENTIFIER, "The sound that is being played.")
                     .addOptional("volume", TYPE_FLOAT, "The volume for the played sound.", 1F)
                     .addOptional("pitch", TYPE_FLOAT, "The pitch for the played sound.", 1F)
                     .addOptional("looping", TYPE_BOOLEAN, "Whether or not the sound should loop during the time the ability is enabled.", false)

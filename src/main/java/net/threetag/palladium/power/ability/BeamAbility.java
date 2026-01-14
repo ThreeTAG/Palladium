@@ -154,7 +154,7 @@ public class BeamAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, BeamAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Shoots an beam in the direction the player is looking at.")
-                    .add("beam_renderer", TYPE_RESOURCE_LOCATION, "The id of the beam renderer to use")
+                    .add("beam_renderer", TYPE_IDENTIFIER, "The id of the beam renderer to use")
                     .addOptional("damage", TYPE_FLOAT, "The damage the beam deals to entities", 0F)
                     .addOptional("max_distance", TYPE_FLOAT, "The maximum distance the beam can travel", 30F)
                     .addOptional("set_on_fire_ticks", TYPE_INT, "The amount of ticks the hit entity is set on fire", 0)

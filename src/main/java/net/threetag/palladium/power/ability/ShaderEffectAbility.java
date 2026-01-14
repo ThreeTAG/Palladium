@@ -59,7 +59,7 @@ public class ShaderEffectAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, ShaderEffectAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Applies a shader effect to the player.")
-                    .add("shader", TYPE_RESOURCE_LOCATION, "The ID of the shader that shall be applied.")
+                    .add("shader", TYPE_IDENTIFIER, "The ID of the shader that shall be applied.")
                     .setExampleObject(new ShaderEffectAbility(Identifier.withDefaultNamespace("creeper"), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }

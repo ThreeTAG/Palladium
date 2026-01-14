@@ -8,6 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.Identifier;
 import net.threetag.palladium.client.texture.transformer.TextureTransformer;
 import net.threetag.palladium.client.texture.transformer.TransformedTexture;
+import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.logic.value.Value;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
@@ -95,7 +96,9 @@ public class ConfiguredTexture extends DynamicTexture {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<DynamicTexture, ConfiguredTexture> builder, HolderLookup.Provider provider) {
             builder.setName("Configured Texture").setDescription("Creates a dynamic texture based on variables and transformers.")
-                    .addOptional("variables", TYPE_MAP_VARIABLES, "A map of variables that can be used in the texture path.");
+                    .add("base", TYPE_IDENTIFIER, "Base texture")
+                    .addOptional("variables", TYPE_MAP_VARIABLES, "A map of variables that can be used in the texture path.")
+                    .addOptional("transformers", SettingType.listOrPrimitive("Texture Transformer"), "Texture transformers applied on this texture");
         }
     }
 }

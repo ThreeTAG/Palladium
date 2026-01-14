@@ -217,10 +217,11 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
         public void addDocumentation(CodecDocumentationBuilder<PackRenderLayer<? extends State>, DefaultPackRenderLayer> builder, HolderLookup.Provider provider) {
             builder.setName("Default Render Layer")
                     .setDescription("Default render layer that renders a model with a texture.")
-                    .addOptional("model_layer", TYPE_RESOURCE_LOCATION, "The model layer to render.", "If not present, the model of the parent entity will be used.")
+                    .addOptional("model_layer", TYPE_IDENTIFIER, "The model layer to render.", "If not present, the model of the parent entity will be used.")
                     .add("texture", TYPE_ANY_TEXTURE, "The texture to render the model with.")
                     .addOptional("render_type", SettingType.enumList(RenderTypeRegistry.types().stream().map(Identifier::toString).toList()), "The render type to render the model with.", RenderTypeRegistry.getKey(RenderTypeRegistry.ENTITY_TRANSLUCENT))
                     .addOptional("light_emission", TYPE_INT, "The light emission of the model. Must be within 0 - 15", 0)
+                    .addOptional("animations", TYPE_IDENTIFIER, "ID of an animations file")
                     .setExampleObject(new DefaultPackRenderLayer(
                             new SkinTypedValue<>(ModelLayerLocationCodec.parse("example:wide_model"), ModelLayerLocationCodec.parse("example:slim_model")),
                             new SkinTypedValue<>(new PackRenderLayerTexture(Identifier.fromNamespaceAndPath("example", "wide_texture")), new PackRenderLayerTexture(Identifier.fromNamespaceAndPath("example", "slim_texture"))),

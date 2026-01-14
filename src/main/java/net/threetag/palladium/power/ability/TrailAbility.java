@@ -39,7 +39,7 @@ public class TrailAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, TrailAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("An ability that renders a trail behind the entity.")
-                    .add("trail", TYPE_RESOURCE_LOCATION, "The id of the trail renderer to use. Trail files are located in \"assets/namespace/palladium/trails\".")
+                    .add("trail", TYPE_IDENTIFIER, "The id of the trail renderer to use. Trail files are located in \"assets/namespace/palladium/trails\".")
                     .setExampleObject(new TrailAbility(Identifier.fromNamespaceAndPath("example", "trail_id"), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }

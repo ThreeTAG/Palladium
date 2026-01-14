@@ -107,7 +107,7 @@ public class OverlayTransformer extends TextureTransformer {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<TextureTransformer, OverlayTransformer> builder, HolderLookup.Provider provider) {
             builder.setName("Overlay").setDescription("Puts another texture on top of the base texture.")
-                    .add("overlay", TYPE_RESOURCE_LOCATION, "The location of the overlay texture. Can use variables")
+                    .add("overlay", TYPE_IDENTIFIER, "The location of the overlay texture. Can use variables")
                     .addOptional("ignore_blank", TYPE_BOOLEAN, "If true, the overlay will not be applied to blank pixels.", false)
                     .setExampleObject(new OverlayTransformer("example:mask", false));
         }

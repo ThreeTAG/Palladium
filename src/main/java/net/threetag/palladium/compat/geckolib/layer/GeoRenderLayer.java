@@ -171,8 +171,8 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
             builder.setName("Geo Render Layer")
                     .setDescription("Uses GeckoLib to render a geo model, including animations")
                     .add("texture", TYPE_ANY_TEXTURE, "The texture of the model")
-                    .add("model", TYPE_RESOURCE_LOCATION, "The model to render")
-                    .addOptional("animations", TYPE_RESOURCE_LOCATION, "The animations to use")
+                    .add("model", TYPE_IDENTIFIER, "The model to render")
+                    .addOptional("animations", TYPE_IDENTIFIER, "The animations to use")
                     .addOptional("animation_controller", TYPE_GEO_ANIMATION_CONTROLLER, "The animation controllers to control or trigger the animations.")
                     .addOptional("light_emission", TYPE_INT, "The light emission of the model. Must be within 0 - 15", 0)
                     .addOptional("bones", SettingType.simple("Map<Bone, String>"), "The bones of the model. You can specify here what the bones for each body part are called in your model file.", DEFAULT_BONES.toString());
