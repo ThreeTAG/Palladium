@@ -18,17 +18,20 @@ import net.minecraft.util.ARGB;
 import net.minecraft.world.item.DyeColor;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.gui.component.FlatButton;
 import net.threetag.palladium.client.gui.component.grid.AbstractSelectionGrid;
 import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderState;
-import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
+import net.threetag.palladium.client.renderer.entity.state.PalladiumRenderStateKeys;
+import net.threetag.palladium.client.renderer.entity.state.SuitStandRenderState;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.customization.Customization;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.CustomizationPreview;
 import net.threetag.palladium.customization.EntityCustomizationHandler;
-import net.threetag.palladium.entity.SuitStand;
-import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
+import net.threetag.palladium.entity.PalladiumEntityTypes;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.network.SelectCustomizationPacket;
+import net.threetag.palladium.network.UnselectCustomizationPacket;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 import java.util.ArrayList;
@@ -38,40 +41,38 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
 
     public static final String NO_CUSTOMIZATIONS_LABEL = "gui.palladium.player_customizations.empty";
     public static final String VERY_SAD_LABEL = "gui.palladium.player_customizations.sad_label";
-    private final CustomizationCategory slot;
+    private final Holder<CustomizationCategory> category;
     private final CustomizationPreview preview;
     private final List<GuiEntityRenderState> drawnEntities = new ArrayList<>();
 
-    public CustomizationsGrid(ScreenRectangle rectangle, CustomizationCategory slot, Minecraft minecraft) {
+    public CustomizationsGrid(ScreenRectangle rectangle, Holder<CustomizationCategory> category, Minecraft minecraft) {
         super(minecraft, rectangle.left(), rectangle.top(), rectangle.width(), rectangle.height(), 50, 50, 4);
-        this.slot = slot;
-        this.preview = slot.preview();
+        this.category = category;
+        this.preview = category.value().preview();
 
-        var slotRegistry = minecraft.level.registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY);
-        var slotId = slotRegistry.getKey(slot);
+        var categoryRegistry = minecraft.level.registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY);
+        var categoryId = categoryRegistry.getKey(category.value());
         var registry = minecraft.level.registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION);
 
         for (Customization customization : registry) {
-            if (customization.getCategoryKey().identifier().equals(slotId)) {
+            if (customization.getCategoryKey().identifier().equals(categoryId)) {
                 var handler = EntityCustomizationHandler.get(minecraft.player);
-                var entry = new Entry(registry.wrapAsHolder(customization), handler.isUnlocked(customization));
+                var entry = new SelectableEntry(registry.wrapAsHolder(customization), handler.isUnlocked(customization));
                 this.addEntry(entry);
 
-                var selectedHolder = handler.get(slotRegistry.wrapAsHolder(slot));
+                var selectedHolder = handler.get(category);
                 if (selectedHolder != null && selectedHolder.value() == customization) {
                     this.setSelected(entry);
                 }
             }
         }
-    }
 
-    public void tick(boolean gamePaused) {
-        if (gamePaused) {
-            ClientEntityRenderLayers.get(this.minecraft.player, PalladiumEntityDataTypes.RENDER_LAYERS.get()).tick();
-        }
-
-        for (Entry child : this.children()) {
-            ClientEntityRenderLayers.get(child.suitStandPreview, PalladiumEntityDataTypes.RENDER_LAYERS.get()).tick();
+        if (!this.children().isEmpty() && !this.category.value().requiresSelection()) {
+            var unselect = new UnselectEntry();
+            this.addEntryToTop(unselect);
+            if (this.getSelected() == null) {
+                this.setSelected(unselect);
+            }
         }
     }
 
@@ -97,45 +98,107 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
         }
     }
 
-    public class Entry extends AbstractSelectionGrid.Entry<Entry> {
+    public abstract static class Entry extends AbstractSelectionGrid.Entry<Entry> {
 
         private static final WidgetSprites SPRITES = new WidgetSprites(
                 Palladium.id("widget/customization"),
                 Palladium.id("widget/customization_disabled"),
                 Palladium.id("widget/customization_highlighted")
         );
-        private static final Identifier LOCK_TEXTURE = Palladium.id("textures/icon/lock.png");
-
-        private final Holder<Customization> customization;
-        private final boolean unlocked;
-        private final SuitStand suitStandPreview;
-
-        public Entry(Holder<Customization> customization, boolean unlocked) {
-            this.customization = customization;
-            this.unlocked = unlocked;
-            this.suitStandPreview = new SuitStand(CustomizationsGrid.this.minecraft.level, 0.0, 0.0, 0.0);
-            this.suitStandPreview.setNoBasePlate(true);
-            this.suitStandPreview.setShowArms(true);
-            this.suitStandPreview.yBodyRot = 0F;
-            this.suitStandPreview.setXRot(0F);
-            this.suitStandPreview.yHeadRot = this.suitStandPreview.getYRot();
-            this.suitStandPreview.yHeadRotO = this.suitStandPreview.getYRot();
-            this.suitStandPreview.setDyeColor(DyeColor.WHITE);
-            EntityCustomizationHandler.get(this.suitStandPreview).select(this.customization);
-        }
 
         @Override
         public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
             guiGraphics.blitSprite(
                     RenderPipelines.GUI_TEXTURED,
-                    SPRITES.get(this.unlocked, hovering),
+                    FlatButton.SPRITES.get(this.isUnlocked(), hovering),
                     left,
                     top,
                     width,
                     height,
                     ARGB.white(1F)
             );
+        }
 
+        @Override
+        public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClick) {
+            if (this.isUnlocked()) {
+                this.select();
+                return true;
+            }
+
+            return super.mouseClicked(event, isDoubleClick);
+        }
+
+        @Override
+        public boolean keyPressed(KeyEvent event) {
+            if (this.isUnlocked()) {
+                this.select();
+                return true;
+            }
+
+            return super.keyPressed(event);
+        }
+
+        public abstract boolean isUnlocked();
+
+        public abstract void select();
+    }
+
+    public class UnselectEntry extends Entry {
+
+        private static final Identifier ICON_SPRITE = Palladium.id("widget/customization_none");
+
+        @Override
+        public boolean isUnlocked() {
+            return true;
+        }
+
+        @Override
+        public void select() {
+            CustomizationsGrid.this.setSelected(this);
+            CustomizationsGrid.this.minecraft.getSoundManager().play(
+                    SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F)
+            );
+            ClientPacketDistributor.sendToServer(new UnselectCustomizationPacket(CustomizationsGrid.this.category));
+        }
+
+        @Override
+        public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
+            super.render(guiGraphics, index, top, left, width, height, mouseX, mouseY, hovering, partialTick);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, ICON_SPRITE, left, top, width, height, ARGB.white(1F));
+        }
+    }
+
+    public class SelectableEntry extends Entry {
+
+        private static final Identifier LOCK_TEXTURE = Palladium.id("textures/icon/lock.png");
+
+        private final Holder<Customization> customization;
+        private final boolean unlocked;
+        private final SuitStandRenderState suitStandPreview;
+
+        public SelectableEntry(Holder<Customization> customization, boolean unlocked) {
+            this.customization = customization;
+            this.unlocked = unlocked;
+            this.suitStandPreview = new SuitStandRenderState();
+            this.suitStandPreview.entityType = PalladiumEntityTypes.SUIT_STAND.get();
+            this.suitStandPreview.showBasePlate = false;
+            this.suitStandPreview.showArms = true;
+            this.suitStandPreview.color = DyeColor.WHITE;
+            this.suitStandPreview.xRot = 0F;
+            this.suitStandPreview.bodyRot = 0F;
+            this.suitStandPreview.boundingBoxHeight = 1.8F;
+            this.suitStandPreview.setRenderData(PalladiumRenderStateKeys.RENDER_LAYERS, CustomizationPreviewComponent.getRenderLayersForCustomization(customization, DataContext.create()));
+        }
+
+        @Override
+        public boolean isUnlocked() {
+            return this.unlocked;
+        }
+
+        @Override
+        public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
+            super.render(guiGraphics, index, top, left, width, height, mouseX, mouseY, hovering, partialTick);
             PlayerCustomizationScreen.renderEntity(guiGraphics, left, top, left + width, top + height, 20, CustomizationsGrid.this.preview, this.suitStandPreview, CustomizationsGrid.this.drawnEntities::add);
 
 //            if (!this.unlocked) {
@@ -152,36 +215,12 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
         }
 
         @Override
-        public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClick) {
-            if (this.unlocked) {
-                this.select();
-                return true;
-            }
-
-            return super.mouseClicked(event, isDoubleClick);
-        }
-
-        @Override
-        public boolean keyPressed(KeyEvent event) {
-            if (this.unlocked) {
-                this.select();
-                return true;
-            }
-
-            return super.keyPressed(event);
-        }
-
-        private void select() {
+        public void select() {
+            CustomizationsGrid.this.setSelected(this);
             CustomizationsGrid.this.minecraft.getSoundManager().play(
                     SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F)
             );
             ClientPacketDistributor.sendToServer(new SelectCustomizationPacket(this.customization));
-
-            if (CustomizationsGrid.this.getSelected() == this) {
-                CustomizationsGrid.this.setSelected(null);
-            } else {
-                CustomizationsGrid.this.setSelected(this);
-            }
         }
     }
 

@@ -11,13 +11,10 @@ import net.minecraft.client.gui.render.state.pip.GuiEntityRenderState;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -26,7 +23,6 @@ import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.component.EditButton;
 import net.threetag.palladium.client.gui.component.tab.IconTabNavigationBar;
-import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderState;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.CustomizationPreview;
 import net.threetag.palladium.logic.context.DataContext;
@@ -35,7 +31,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -102,12 +97,13 @@ public class PlayerCustomizationScreen extends Screen {
     private void addContents() {
         var tabBuilder = IconTabNavigationBar.builder(this.tabManager, this.width);
         var context = DataContext.forEntity(Objects.requireNonNull(this.minecraft).player);
+        var registry = Objects.requireNonNull(Objects.requireNonNull(this.minecraft).level).registryAccess()
+                .lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY);
 
-        for (CustomizationCategory slot : Objects.requireNonNull(Objects.requireNonNull(this.minecraft).level).registryAccess()
-                .lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY)
+        for (CustomizationCategory category : registry
                 .stream().filter(category -> category.isVisible(context))
                 .sorted(Comparator.comparingInt(CustomizationCategory::sortIndex)).toList()) {
-            tabBuilder.addTab(new CustomizationCategoryTab(this, slot));
+            tabBuilder.addTab(new CustomizationCategoryTab(this, registry.wrapAsHolder(category)));
         }
 
         this.tabNavigationBar = tabBuilder.build();
@@ -147,10 +143,6 @@ public class PlayerCustomizationScreen extends Screen {
         if (this.preview != null) {
             this.preview.tick();
         }
-
-        if (this.tabManager.getCurrentTab() instanceof CustomizationCategoryTab tab) {
-            tab.tick(Objects.requireNonNull(this.minecraft).isPaused());
-        }
     }
 
     @Override
@@ -164,39 +156,19 @@ public class PlayerCustomizationScreen extends Screen {
 
     public static void renderEntity(
             GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, float baseScale,
-            CustomizationPreview transformation, LivingEntity entity, @Nullable Consumer<GuiEntityRenderState> stateConsumer
+            CustomizationPreview transformation, LivingEntityRenderState entityRenderState, @Nullable Consumer<GuiEntityRenderState> stateConsumer
     ) {
-        var yHeadRot = entity.getYHeadRot();
-        var xRot = entity.getXRot();
-        var yBodyRot = entity.yBodyRot;
-        entity.setYHeadRot(0F);
-        entity.setXRot(0F);
-        entity.setYBodyRot(0F);
-
         var rotation = transformation.rotation();
         Quaternionf quaternionf = new Quaternionf().rotateZ((float) Math.PI).rotateY((float) Math.toRadians(180F));
         quaternionf.mul(new Quaternionf()
                 .rotationXYZ((float) (rotation.x * (Math.PI / 180.0)), (float) (rotation.y * (Math.PI / 180.0)), (float) (rotation.z * (Math.PI / 180.0))));
 
-        var translation = new Vector3f(0, entity.getBbHeight() / 2F, 0).add(transformation.translation().toVector3f().div(2));
-        var scale = (baseScale / entity.getScale()) * transformation.scale();
+        var translation = new Vector3f(0, entityRenderState.boundingBoxHeight / 2F, 0).add(transformation.translation().toVector3f().div(2));
+        var scale = (baseScale / entityRenderState.scale) * transformation.scale();
 
-        EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        EntityRenderer<? super LivingEntity, ?> entityRenderer = entityRenderDispatcher.getRenderer(entity);
-        EntityRenderState entityRenderState = entityRenderer.createRenderState(entity, 1.0F);
         entityRenderState.lightCoords = 15728880;
         entityRenderState.shadowPieces.clear();
         entityRenderState.outlineColor = 0;
-        var state = new GuiEntityRenderState(entityRenderState, translation, quaternionf, null, x1, y1, x2, y2, scale, guiGraphics.scissorStack.peek());
-
-        if (stateConsumer == null) {
-            guiGraphics.guiRenderState.submitPicturesInPictureState(new GuiMultiEntityRenderState(Collections.singletonList(state)));
-        } else {
-            stateConsumer.accept(state);
-        }
-
-        entity.setYHeadRot(yHeadRot);
-        entity.setXRot(xRot);
-        entity.setYBodyRot(yBodyRot);
+        guiGraphics.submitEntityRenderState(entityRenderState, scale, translation, quaternionf, null, x1, y1, x2, y2);
     }
 }

@@ -1,0 +1,18 @@
+{
+  "type": "palladium:render_layer",
+  "texture": "test:textures/entity/batwoman.png",
+  "model_layer": {
+    "wide": "minecraft:player",
+    "slim": "minecraft:player_slim"
+  },
+  "properties": {
+    "hidden_model_parts": [
+      "head.hat",
+      "body.jacket",
+      "right_arm.right_sleeve",
+      "left_arm.left_sleeve",
+      "right_leg.right_pants",
+      "left_leg.left_pants"
+    ]
+  }
+}

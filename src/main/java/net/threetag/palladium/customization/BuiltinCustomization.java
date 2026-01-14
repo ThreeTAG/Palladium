@@ -42,7 +42,7 @@ public class BuiltinCustomization extends Customization {
     }
 
     @Override
-    public Identifier getRenderLayerId(RegistryAccess registryAccess) {
+    public Identifier getRenderLayerId(RegistryAccess registryAccess, boolean preview) {
         return this.type.getRenderLayerId();
     }
 

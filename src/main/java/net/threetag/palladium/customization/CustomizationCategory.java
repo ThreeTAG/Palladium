@@ -2,11 +2,11 @@ package net.threetag.palladium.customization;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.logic.condition.Condition;
@@ -16,7 +16,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public record CustomizationCategory(int sortIndex, CustomizationPreview preview,
+public record CustomizationCategory(int sortIndex, CustomizationPreview preview, boolean requiresSelection,
+                                    Optional<ResourceKey<Customization>> defaultValue,
                                     @Nullable EquipmentSlot hiddenByEquipment, @Nullable Condition visibility) {
 
     public static final CustomizationPreview DEFAULT_PREVIEW = new CustomizationPreview(1, Vec3.ZERO, new Vec3(15, 40, 0));
@@ -24,9 +25,12 @@ public record CustomizationCategory(int sortIndex, CustomizationPreview preview,
     public static final Codec<CustomizationCategory> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.optionalFieldOf("sort_index", 100).forGetter(CustomizationCategory::sortIndex),
             CustomizationPreview.CODEC.optionalFieldOf("preview", DEFAULT_PREVIEW).forGetter(CustomizationCategory::preview),
+            Codec.BOOL.optionalFieldOf("requires_selection", false).forGetter(CustomizationCategory::requiresSelection),
+            ResourceKey.codec(PalladiumRegistryKeys.CUSTOMIZATION).optionalFieldOf("default").forGetter(CustomizationCategory::defaultValue),
             EquipmentSlot.CODEC.optionalFieldOf("hidden_by_equipment").forGetter(s -> Optional.ofNullable(s.hiddenByEquipment)),
             Condition.CODEC.optionalFieldOf("visibility").forGetter(c -> Optional.ofNullable(c.visibility))
-    ).apply(instance, (s, p, h, v) -> new CustomizationCategory(s, p, h.orElse(null), v.orElse(null))));
+    ).apply(instance, (s, p, rs, dv, h, v)
+            -> new CustomizationCategory(s, p, rs, dv, h.orElse(null), v.orElse(null))));
 
     public static final Codec<Holder<CustomizationCategory>> HOLDER_CODEC = RegistryFixedCodec.create(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY);
 
@@ -40,6 +44,15 @@ public record CustomizationCategory(int sortIndex, CustomizationPreview preview,
 
     public boolean isVisible(DataContext context) {
         return this.visibility == null || this.visibility.test(context);
+    }
+
+    @Nullable
+    public Holder<Customization> getDefaultValue(RegistryAccess registryAccess) {
+        if (this.requiresSelection() && this.defaultValue().isPresent()) {
+            return registryAccess.lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION).getOrThrow(this.defaultValue().get());
+        } else {
+            return null;
+        }
     }
 
 }

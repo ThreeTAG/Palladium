@@ -20,8 +20,13 @@ public abstract class PalladiumEntityData<T extends Entity, R extends PalladiumE
     private T entity;
 
     @SuppressWarnings("unchecked")
-    public void setEntity(Entity entity) {
+    public final void setEntity(Entity entity) {
         this.entity = (T) entity;
+        this.init();
+    }
+
+    protected void init() {
+
     }
 
     public abstract MapCodec<R> codec();

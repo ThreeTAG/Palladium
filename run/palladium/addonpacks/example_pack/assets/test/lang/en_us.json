@@ -8,5 +8,9 @@
   "item.test.emerald_sword": "Emerald Sword",
   "item.test.dirt_chestplate": "Dirt Chestplate",
   "palladium.tailoring_recipe.category.test.vanilla_armor": "Vanilla Armor",
-  "palladium.tailoring_recipe.category.test.pack_armor": "Pack Armor"
+  "palladium.tailoring_recipe.category.test.pack_armor": "Pack Armor",
+  "customization_category.test.example_category": "Example Category",
+  "customization.test.batman_1": "Batman 1",
+  "customization.test.batman_2": "Batman 2",
+  "customization.test.batwoman": "Batwoman"
 }

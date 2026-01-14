@@ -1,0 +1,14 @@
+{
+  "name": "Customization Select Test",
+  "__comment": "A customization category (test:example_category) is hooked up to this power",
+  "icon": "minecraft:blaze_powder",
+  "abilities": {
+    "lightning": {
+      "type": "palladium:trail",
+      "trail": "test:lightning_test",
+      "properties": {
+        "title": "Trail"
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "sort_index": 200,
+  "requires_selection": true,
+  "default": "test:batman_1",
+  "visibility": [
+    {
+      "type": "palladium:has_power",
+      "power": "test:customization_select_test"
+    }
+  ]
+}

@@ -42,7 +42,7 @@ public abstract class Customization {
         return registryAccess.lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY).get(this.getCategoryKey()).orElseThrow();
     }
 
-    public Identifier getRenderLayerId(RegistryAccess registryAccess) {
+    public Identifier getRenderLayerId(RegistryAccess registryAccess, boolean preview) {
         return null;
     }
 
