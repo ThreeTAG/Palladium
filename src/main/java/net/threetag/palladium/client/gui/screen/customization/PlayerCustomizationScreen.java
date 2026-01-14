@@ -1,27 +1,15 @@
 package net.threetag.palladium.client.gui.screen.customization;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.tabs.TabManager;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.state.pip.GuiEntityRenderState;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ScreenEvent;
-import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.gui.component.EditButton;
 import net.threetag.palladium.client.gui.component.tab.IconTabNavigationBar;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.CustomizationPreview;
@@ -35,7 +23,6 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-@EventBusSubscriber(modid = Palladium.MOD_ID, value = Dist.CLIENT)
 public class PlayerCustomizationScreen extends Screen {
 
     public static final String TITLE_TRANSLATION_KEY = "gui.palladium.player_customizations";
@@ -49,40 +36,6 @@ public class PlayerCustomizationScreen extends Screen {
     public PlayerCustomizationScreen(Screen lastScreen) {
         super(Component.translatable(TITLE_TRANSLATION_KEY));
         this.lastScreen = lastScreen;
-    }
-
-    @SubscribeEvent
-    static void screenInit(ScreenEvent.Init.Post e) {
-        var screen = e.getScreen();
-        Button button = null;
-        Component text = Component.translatable(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY);
-
-        if (screen instanceof InventoryScreen inv) {
-            button = new EditButton(inv.getGuiLeft() + 63, inv.getGuiTop() + 66, b -> Minecraft.getInstance().setScreen(new PlayerCustomizationScreen(screen))) {
-                @Override
-                public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-                    this.setPosition(inv.getGuiLeft() + 63, inv.getGuiTop() + 66);
-                    super.renderContents(guiGraphics, mouseX, mouseY, partialTick);
-                }
-            };
-            button.setTooltip(Tooltip.create(text));
-        }
-
-        if (screen instanceof CreativeModeInventoryScreen inv) {
-            button = new EditButton(inv.getGuiLeft() + 93, inv.getGuiTop() + 37, b -> Minecraft.getInstance().setScreen(new PlayerCustomizationScreen(screen))) {
-                @Override
-                public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-                    this.visible = CreativeModeInventoryScreen.selectedTab == BuiltInRegistries.CREATIVE_MODE_TAB.getValue(CreativeModeTabs.INVENTORY);
-                    super.renderContents(guiGraphics, mouseX, mouseY, partialTick);
-                }
-            };
-            button.setTooltip(Tooltip.create(text));
-        }
-
-        if (button != null) {
-            button.active = Minecraft.getInstance().player != null;
-            screen.addRenderableWidget(button);
-        }
     }
 
     @Override
