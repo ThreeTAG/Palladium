@@ -1,6 +1,6 @@
 package net.threetag.palladium.util;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -19,7 +19,7 @@ public class EntityScaleUtil {
         return INSTANCE;
     }
 
-    public boolean startScaleChange(Entity entity, ResourceLocation scaleTypeId, float targetScale, int tickDelay) {
+    public boolean startScaleChange(Entity entity, Identifier scaleTypeId, float targetScale, int tickDelay) {
         return false;
     }
 
@@ -63,7 +63,7 @@ public class EntityScaleUtil {
         return this.getHeightScale(entity, delta);
     }
 
-    public Collection<ResourceLocation> getScaleTypeIds() {
+    public Collection<Identifier> getScaleTypeIds() {
         return Collections.emptyList();
     }
 

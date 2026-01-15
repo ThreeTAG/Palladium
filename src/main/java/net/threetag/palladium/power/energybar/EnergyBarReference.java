@@ -2,10 +2,10 @@ package net.threetag.palladium.power.energybar;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import net.minecraft.ResourceLocationException;
+import net.minecraft.IdentifierException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.EntityPowerHandler;
 import net.threetag.palladium.power.PowerHolder;
@@ -16,14 +16,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 
-public record EnergyBarReference(@Nullable ResourceLocation powerId, @NotNull String energyBarKey) {
+public record EnergyBarReference(@Nullable Identifier powerId, @NotNull String energyBarKey) {
 
     public static final Codec<EnergyBarReference> CODEC = Codec.STRING.comapFlatMap(EnergyBarReference::read, EnergyBarReference::toString).stable();
     public static final StreamCodec<FriendlyByteBuf, EnergyBarReference> STREAM_CODEC = StreamCodec.of((buf, ref) -> {
-        buf.writeNullable(ref.powerId, FriendlyByteBuf::writeResourceLocation);
+        buf.writeNullable(ref.powerId, FriendlyByteBuf::writeIdentifier);
         buf.writeUtf(ref.energyBarKey);
     }, buf -> {
-        var powerId = buf.readNullable(FriendlyByteBuf::readResourceLocation);
+        var powerId = buf.readNullable(FriendlyByteBuf::readIdentifier);
         var barName = buf.readUtf();
         return new EnergyBarReference(powerId, barName);
     });
@@ -34,14 +34,14 @@ public record EnergyBarReference(@Nullable ResourceLocation powerId, @NotNull St
         if (s.length == 1) {
             return new EnergyBarReference(null, s[0]);
         } else {
-            return new EnergyBarReference(ResourceLocation.parse(s[0]), s[1]);
+            return new EnergyBarReference(Identifier.parse(s[0]), s[1]);
         }
     }
 
     public static DataResult<EnergyBarReference> read(String path) {
         try {
             return DataResult.success(parse(path));
-        } catch (ResourceLocationException e) {
+        } catch (IdentifierException e) {
             return DataResult.error(() -> "Not a valid energy bar reference: " + path + " " + e.getMessage());
         }
     }
@@ -75,12 +75,12 @@ public record EnergyBarReference(@Nullable ResourceLocation powerId, @NotNull St
     }
 
     public void toBuffer(FriendlyByteBuf buf) {
-        buf.writeNullable(this.powerId, (buf1, resourceLocation) -> buf.writeResourceLocation(resourceLocation));
+        buf.writeNullable(this.powerId, (buf1, id) -> buf.writeIdentifier(id));
         buf.writeUtf(this.energyBarKey);
     }
 
     public static EnergyBarReference fromBuffer(FriendlyByteBuf buf) {
-        return new EnergyBarReference(buf.readNullable(FriendlyByteBuf::readResourceLocation), buf.readUtf());
+        return new EnergyBarReference(buf.readNullable(FriendlyByteBuf::readIdentifier), buf.readUtf());
     }
 
     @Override

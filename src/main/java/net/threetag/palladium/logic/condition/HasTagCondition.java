@@ -7,7 +7,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.logic.context.DataContextType;
+import net.threetag.palladium.logic.context.DataContextKeys;
 
 public record HasTagCondition(String tag) implements Condition {
 
@@ -21,7 +21,7 @@ public record HasTagCondition(String tag) implements Condition {
 
     @Override
     public boolean test(DataContext context) {
-        var entity = context.get(DataContextType.ENTITY);
+        var entity = context.get(DataContextKeys.ENTITY);
 
         if (entity == null) {
             return false;

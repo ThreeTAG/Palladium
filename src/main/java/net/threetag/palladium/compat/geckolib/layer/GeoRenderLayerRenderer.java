@@ -4,33 +4,31 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.threetag.palladium.logic.context.DataContext;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 import software.bernie.geckolib.renderer.base.GeoRenderer;
-import software.bernie.geckolib.renderer.base.RenderModelPositioner;
+import software.bernie.geckolib.renderer.base.RenderPassInfo;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayersContainer;
-import software.bernie.geckolib.util.RenderUtil;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-@SuppressWarnings({"rawtypes", "unchecked", "UnstableApiUsage"})
+@SuppressWarnings({"unchecked", "UnstableApiUsage"})
 public class GeoRenderLayerRenderer<R extends HumanoidRenderState & GeoRenderState> implements GeoRenderer<GeoRenderLayerState, DataContext, R> {
 
     protected final GeoRenderLayersContainer<GeoRenderLayerState, DataContext, R> renderLayers = new GeoRenderLayersContainer<>(this);
@@ -91,28 +89,23 @@ public class GeoRenderLayerRenderer<R extends HumanoidRenderState & GeoRenderSta
 
     @Nullable
     @Override
-    public RenderType getRenderType(R renderState, ResourceLocation texture) {
-        return RenderType.armorCutoutNoCull(texture);
+    public RenderType getRenderType(R renderState, Identifier texture) {
+        return RenderTypes.armorCutoutNoCull(texture);
     }
 
     @Override
-    public R captureDefaultRenderState(GeoRenderLayerState animatable, DataContext context, R renderState, float partialTick) {
-        GeoRenderer.super.captureDefaultRenderState(animatable, context, renderState, partialTick);
+    public void captureDefaultRenderState(GeoRenderLayerState animatable, @org.jspecify.annotations.Nullable DataContext relatedObject, R renderState, float partialTick) {
+        GeoRenderer.super.captureDefaultRenderState(animatable, relatedObject, renderState, partialTick);
+        var slot = relatedObject.getSlot();
+        var item = relatedObject.getItem();
 
-        var slot = context.getSlot();
-        var item = context.getItem();
-
-        renderState.addGeckolibData(DataTickets.IS_GECKOLIB_WEARER, context.getEntity() instanceof GeoAnimatable);
+        renderState.addGeckolibData(DataTickets.TICK, (double) renderState.ageInTicks);
+        renderState.addGeckolibData(DataTickets.POSITION, relatedObject.getEntity().position());
+        renderState.addGeckolibData(DataTickets.IS_GECKOLIB_WEARER, relatedObject.getEntity() instanceof GeoAnimatable);
         if (slot != null)
             renderState.addGeckolibData(DataTickets.EQUIPMENT_SLOT, slot.getEquipmentSlot());
-        if (!item.isEmpty()) {
-            renderState.addGeckolibData(DataTickets.HAS_GLINT, item.hasFoil());
-            renderState.addGeckolibData(DataTickets.IS_ENCHANTED, item.isEnchanted());
-            renderState.addGeckolibData(DataTickets.IS_STACKABLE, item.isStackable());
-        }
+        renderState.addGeckolibData(DataTickets.HAS_GLINT, item.hasFoil());
         renderState.addGeckolibData(DataTickets.INVISIBLE_TO_PLAYER, renderState.isInvisibleToPlayer);
-
-        return renderState;
     }
 
     @Override
@@ -121,21 +114,14 @@ public class GeoRenderLayerRenderer<R extends HumanoidRenderState & GeoRenderSta
     }
 
     @Override
-    public void preRender(R renderState, PoseStack poseStack, BakedGeoModel model, SubmitNodeCollector renderTasks, CameraRenderState cameraState,
-                          int packedLight, int packedOverlay, int renderColor) {
-        renderState.addGeckolibData(DataTickets.OBJECT_RENDER_POSE, new Matrix4f(poseStack.last().pose()));
+    public void scaleModelForRender(RenderPassInfo<R> renderPassInfo, float widthScale, float heightScale) {
+        GeoRenderer.super.scaleModelForRender(renderPassInfo, this.scaleWidth * widthScale, this.scaleHeight * heightScale);
     }
 
     @Override
-    public void scaleModelForRender(R renderState, float widthScale, float heightScale, PoseStack poseStack, BakedGeoModel model, CameraRenderState cameraState) {
-        GeoRenderer.super.scaleModelForRender(renderState, widthScale * this.scaleWidth, heightScale * this.scaleHeight, poseStack, model, cameraState);
-    }
-
-    @Override
-    public void adjustRenderPose(R renderState, PoseStack poseStack, BakedGeoModel model, CameraRenderState cameraState) {
-        poseStack.translate(0, 24 / 16f, 0);
-        poseStack.scale(-1, -1, 1);
-        renderState.addGeckolibData(DataTickets.MODEL_RENDER_POSE, new Matrix4f(poseStack.last().pose()));
+    public void adjustRenderPose(RenderPassInfo<R> renderPassInfo) {
+        renderPassInfo.poseStack().translate(0, 24 / 16f, 0);
+        renderPassInfo.poseStack().scale(-1, -1, 1);
     }
 
     @Override
@@ -149,39 +135,32 @@ public class GeoRenderLayerRenderer<R extends HumanoidRenderState & GeoRenderSta
     }
 
     @Override
-    public boolean firePreRenderEvent(R renderState, PoseStack poseStack, BakedGeoModel model, SubmitNodeCollector renderTasks, CameraRenderState cameraState) {
-        return false;
+    public boolean firePreRenderEvent(RenderPassInfo<R> renderPassInfo, SubmitNodeCollector renderTasks) {
+        return true;
     }
 
     @Override
-    public void firePostRenderEvent(R renderState, PoseStack poseStack, BakedGeoModel model, SubmitNodeCollector renderTasks, CameraRenderState cameraState) {
-
-    }
-
-    @Override
-    public void buildRenderTask(R renderState, PoseStack poseStack, BakedGeoModel bakedModel, GeoModel<GeoRenderLayerState> model, OrderedSubmitNodeCollector renderTasks, CameraRenderState cameraState, @Nullable RenderType renderType, int packedLight, int packedOverlay, int renderColor, @Nullable RenderModelPositioner<R> modelPositioner) {
+    public void submitRenderTasks(RenderPassInfo<R> renderPassInfo, OrderedSubmitNodeCollector renderTasks, @org.jspecify.annotations.Nullable RenderType renderType) {
         if (renderType == null)
             return;
 
-        renderTasks.submitCustomGeometry(poseStack, renderType, (pose, vertexConsumer) -> {
-            final EquipmentSlot slot = renderState.getGeckolibData(DataTickets.EQUIPMENT_SLOT);
-            final PoseStack poseStack2 = new PoseStack();
-            final HumanoidModel baseModel = renderState.getGeckolibData(DataTickets.HUMANOID_MODEL);
+        renderTasks.submitCustomGeometry(renderPassInfo.poseStack(), renderType, (pose, vertexConsumer) -> {
+            final PoseStack poseStack = renderPassInfo.poseStack();
+            final R renderState = renderPassInfo.renderState();
+            final int packedLight = renderPassInfo.packedLight();
+            final int packedOverlay = renderPassInfo.packedOverlay();
+            final int renderColor = renderPassInfo.renderColor();
+            final EquipmentSlot slot = Objects.requireNonNull(renderState.getGeckolibData(DataTickets.EQUIPMENT_SLOT));
 
-            poseStack2.last().set(pose);
-
-            for (ArmorSegment segment : getSegmentsForSlot(renderState, slot)) {
-                model.getBone(getBoneNameForSegment(renderState, segment)).ifPresent(bone -> {
-                    ModelPart modelPart = segment.modelPartGetter.apply(baseModel);
-                    Vector3f bonePos = segment.modelPartMatcher.apply(new Vector3f(modelPart.x, modelPart.y, modelPart.z));
-
-                    baseModel.setupAnim(renderState);
-                    RenderUtil.matchModelPartRot(modelPart, bone);
-                    bone.updatePosition(bonePos.x, bonePos.y, bonePos.z);
-
-                    renderBone(renderState, poseStack2, bone, vertexConsumer, cameraState, packedLight, packedOverlay, renderColor);
-                });
-            }
+            poseStack.pushPose();
+            poseStack.last().set(pose);
+            renderPassInfo.renderPosed(() -> {
+                for (ArmorSegment segment : getSegmentsForSlot(renderState, slot)) {
+                    renderPassInfo.model().getBone(getBoneNameForSegment(renderState, segment))
+                            .ifPresent(bone -> bone.positionAndRender(renderPassInfo, vertexConsumer, packedLight, packedOverlay, renderColor));
+                }
+            });
+            poseStack.popPose();
         });
     }
 

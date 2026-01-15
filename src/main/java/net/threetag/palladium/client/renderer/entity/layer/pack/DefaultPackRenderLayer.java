@@ -8,13 +8,13 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.HumanoidArm;
@@ -71,8 +71,8 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
         if (this.modelLayers != null) {
             var entityModels = Minecraft.getInstance().getEntityModels();
             this.model = new SkinTypedValue<>(
-                    new Model.Simple(entityModels.bakeLayer(this.modelLayers.getWide().get()), RenderType::entityTranslucent),
-                    new Model.Simple(entityModels.bakeLayer(this.modelLayers.getSlim().get()), RenderType::entityTranslucent)
+                    new Model.Simple(entityModels.bakeLayer(this.modelLayers.getWide().get()), RenderTypes::entityTranslucent),
+                    new Model.Simple(entityModels.bakeLayer(this.modelLayers.getSlim().get()), RenderTypes::entityTranslucent)
             );
         }
     }
@@ -94,7 +94,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             }
             mimicModelParts(parentModel.root(), model.root());
 
-            this.animations.animate(model, context, partialTick);
+            this.animations.animate(model, context, state, state.partialTick);
 
             submitNodeCollector.submitModel(
                     model,
@@ -111,7 +111,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                         model,
                         Unit.INSTANCE,
                         poseStack,
-                        RenderType.armorEntityGlint(),
+                        RenderTypes.armorEntityGlint(),
                         LightTexture.lightCoordsWithEmission(packedLight, this.lightEmission),
                         OverlayTexture.NO_OVERLAY,
                         state.outlineColor,
@@ -123,7 +123,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                 modelPart.skipDraw = false;
             }
 
-            this.animations.animate(parentModel, context, partialTick);
+            this.animations.animate(parentModel, context, state, state.partialTick);
 
             submitNodeCollector.submitModel(
                     parentModel,
@@ -140,7 +140,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                         parentModel,
                         state,
                         poseStack,
-                        RenderType.armorEntityGlint(),
+                        RenderTypes.armorEntityGlint(),
                         LightTexture.lightCoordsWithEmission(packedLight, this.lightEmission),
                         OverlayTexture.NO_OVERLAY,
                         state.outlineColor,
@@ -173,12 +173,12 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                 return;
             }
 
-            this.animations.animate(model, context, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
+            this.animations.animate(model, context, null, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
         } else {
             armPart.visible = true;
             armPart.skipDraw = false;
 
-            this.animations.animate(playerRenderer.getModel(), context, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
+            this.animations.animate(playerRenderer.getModel(), context, null, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
         }
 
         submitNodeCollector.submitModelPart(armPart, poseStack,
@@ -189,7 +189,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
 
         if (context.getItem().hasFoil()) {
             submitNodeCollector.submitModelPart(armPart, poseStack,
-                    RenderType.armorEntityGlint(),
+                    RenderTypes.armorEntityGlint(),
                     LightTexture.lightCoordsWithEmission(packedLight, this.lightEmission),
                     OverlayTexture.NO_OVERLAY,
                     null);
@@ -217,13 +217,14 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
         public void addDocumentation(CodecDocumentationBuilder<PackRenderLayer<? extends State>, DefaultPackRenderLayer> builder, HolderLookup.Provider provider) {
             builder.setName("Default Render Layer")
                     .setDescription("Default render layer that renders a model with a texture.")
-                    .addOptional("model_layer", TYPE_RESOURCE_LOCATION, "The model layer to render.", "If not present, the model of the parent entity will be used.")
+                    .addOptional("model_layer", TYPE_IDENTIFIER, "The model layer to render.", "If not present, the model of the parent entity will be used.")
                     .add("texture", TYPE_ANY_TEXTURE, "The texture to render the model with.")
-                    .addOptional("render_type", SettingType.enumList(RenderTypeRegistry.types().stream().map(ResourceLocation::toString).toList()), "The render type to render the model with.", RenderTypeRegistry.getKey(RenderTypeRegistry.ENTITY_TRANSLUCENT))
+                    .addOptional("render_type", SettingType.enumList(RenderTypeRegistry.types().stream().map(Identifier::toString).toList()), "The render type to render the model with.", RenderTypeRegistry.getKey(RenderTypeRegistry.ENTITY_TRANSLUCENT))
                     .addOptional("light_emission", TYPE_INT, "The light emission of the model. Must be within 0 - 15", 0)
+                    .addOptional("animations", TYPE_IDENTIFIER, "ID of an animations file")
                     .setExampleObject(new DefaultPackRenderLayer(
                             new SkinTypedValue<>(ModelLayerLocationCodec.parse("example:wide_model"), ModelLayerLocationCodec.parse("example:slim_model")),
-                            new SkinTypedValue<>(new PackRenderLayerTexture(ResourceLocation.fromNamespaceAndPath("example", "wide_texture")), new PackRenderLayerTexture(ResourceLocation.fromNamespaceAndPath("example", "slim_texture"))),
+                            new SkinTypedValue<>(new PackRenderLayerTexture(Identifier.fromNamespaceAndPath("example", "wide_texture")), new PackRenderLayerTexture(Identifier.fromNamespaceAndPath("example", "slim_texture"))),
                             RenderTypeRegistry.ENTITY_TRANSLUCENT,
                             5,
                             PackRenderLayerAnimation.EMPTY,

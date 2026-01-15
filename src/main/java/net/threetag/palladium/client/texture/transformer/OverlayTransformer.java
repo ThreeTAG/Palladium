@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 
@@ -30,7 +30,7 @@ public class OverlayTransformer extends TextureTransformer {
 
     @Override
     public NativeImage transform(NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
-        var maskTexture = manager.getResourceOrThrow(ResourceLocation.parse(stringConverter.apply(this.overlayLocation)));
+        var maskTexture = manager.getResourceOrThrow(Identifier.parse(stringConverter.apply(this.overlayLocation)));
 
         try (InputStream inputStream = maskTexture.open()) {
             NativeImage overlay = NativeImage.read(inputStream);
@@ -107,7 +107,7 @@ public class OverlayTransformer extends TextureTransformer {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<TextureTransformer, OverlayTransformer> builder, HolderLookup.Provider provider) {
             builder.setName("Overlay").setDescription("Puts another texture on top of the base texture.")
-                    .add("overlay", TYPE_RESOURCE_LOCATION, "The location of the overlay texture. Can use variables")
+                    .add("overlay", TYPE_IDENTIFIER, "The location of the overlay texture. Can use variables")
                     .addOptional("ignore_blank", TYPE_BOOLEAN, "If true, the overlay will not be applied to blank pixels.", false)
                     .setExampleObject(new OverlayTransformer("example:mask", false));
         }

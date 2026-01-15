@@ -6,15 +6,14 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.entity.PlayerSlot;
-import net.threetag.palladium.util.PalladiumCodecs;
+import net.threetag.palladium.logic.context.DataContext;
 
 public record ItemInSlotCondition(Ingredient ingredient, PlayerSlot slot) implements Condition {
 
     public static final MapCodec<ItemInSlotCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
-                    PalladiumCodecs.INGREDIENT_CODEC.fieldOf("item").forGetter(ItemInSlotCondition::ingredient),
+                    Ingredient.CODEC.fieldOf("item").forGetter(ItemInSlotCondition::ingredient),
                     PlayerSlot.CODEC.fieldOf("slot").forGetter(ItemInSlotCondition::slot)
             ).apply(instance, ItemInSlotCondition::new)
     );

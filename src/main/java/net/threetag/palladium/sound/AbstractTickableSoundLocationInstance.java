@@ -2,7 +2,7 @@ package net.threetag.palladium.sound;
 
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.client.resources.sounds.TickableSoundInstance;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 
@@ -10,7 +10,7 @@ public abstract class AbstractTickableSoundLocationInstance extends AbstractSoun
 
     private boolean stopped;
 
-    protected AbstractTickableSoundLocationInstance(ResourceLocation soundEvent, SoundSource soundSource, RandomSource randomSource) {
+    protected AbstractTickableSoundLocationInstance(Identifier soundEvent, SoundSource soundSource, RandomSource randomSource) {
         super(soundEvent, soundSource, randomSource);
     }
 

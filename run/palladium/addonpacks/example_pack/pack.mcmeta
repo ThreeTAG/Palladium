@@ -3,5 +3,10 @@
     "description": "Palladium Test Pack",
     "min_format": [2, 0],
     "max_format": [2, 0]
+  },
+  "features": {
+    "enabled": [
+      "palladium:tailoring"
+    ]
   }
 }

@@ -16,6 +16,8 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.permissions.PermissionCheck;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.BlockTypes;
 import net.neoforged.fml.loading.FMLPaths;
@@ -34,6 +36,7 @@ import java.util.Map;
 
 public class RegistryDumpCommand {
 
+    public static final PermissionCheck PERMISSION_CHECK = new PermissionCheck.Require(Permissions.COMMANDS_GAMEMASTER);
     private static final Map<ResourceKey<? extends Registry<?>>, RegistryDump<?>> REGISTRIES = new HashMap<>();
 
     static {
@@ -47,9 +50,7 @@ public class RegistryDumpCommand {
     }
 
     public static void register(LiteralArgumentBuilder<CommandSourceStack> builder, CommandBuildContext context) {
-        builder.then(Commands.literal("registry-dump").requires((player) -> {
-            return player.hasPermission(3);
-        }).executes((c) -> {
+        builder.then(Commands.literal("registry-dump").requires(Commands.hasPermission(PERMISSION_CHECK)).executes((c) -> {
             return dumpRegistry(c.getSource());
         }));
     }
@@ -79,8 +80,8 @@ public class RegistryDumpCommand {
                         .resolve("registry_dump")
                         .resolve(key.registry().getNamespace())
                         .resolve(key.registry().getPath())
-                        .resolve(key.location().getNamespace())
-                        .resolve(key.location().getPath() + ".json");
+                        .resolve(key.identifier().getNamespace())
+                        .resolve(key.identifier().getPath() + ".json");
 
                 try {
                     JsonElement json = this.codec.encodeStart(server.registryAccess().createSerializationContext(JsonOps.INSTANCE), entry.getValue()).getOrThrow();

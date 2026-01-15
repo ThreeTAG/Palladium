@@ -1,13 +1,13 @@
 package net.threetag.palladium.customization;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
@@ -29,10 +29,10 @@ public abstract class Customization {
     }
 
     public static String makeDescriptionId(ResourceKey<Customization> key) {
-        return Util.makeDescriptionId("customization", key.location());
+        return Util.makeDescriptionId("customization", key.identifier());
     }
 
-    public static String makeDescriptionId(ResourceLocation id) {
+    public static String makeDescriptionId(Identifier id) {
         return Util.makeDescriptionId("customization", id);
     }
 
@@ -42,7 +42,7 @@ public abstract class Customization {
         return registryAccess.lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY).get(this.getCategoryKey()).orElseThrow();
     }
 
-    public ResourceLocation getRenderLayerId(RegistryAccess registryAccess) {
+    public Identifier getRenderLayerId(RegistryAccess registryAccess, boolean preview) {
         return null;
     }
 

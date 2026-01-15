@@ -1,6 +1,6 @@
 package net.threetag.palladium.compat.geckolib;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayerManager;
@@ -15,7 +15,7 @@ public class GeckoClientAbilityHandler extends GeckoAbilityHandler {
 
     @SuppressWarnings("SuspiciousMethodCalls")
     @Override
-    public void triggerAnimation(LivingEntity entity, AbilityInstance<?> abilityInstance, ResourceLocation renderLayer, String controller, String trigger) {
+    public void triggerAnimation(LivingEntity entity, AbilityInstance<?> abilityInstance, Identifier renderLayer, String controller, String trigger) {
         PalladiumEntityData.opt(entity, PalladiumEntityDataTypes.RENDER_LAYERS.get()).ifPresent(l -> {
             var layer = PackRenderLayerManager.INSTANCE.get(renderLayer);
 

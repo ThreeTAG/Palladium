@@ -18,6 +18,7 @@
     "PackMetadataSectionMixin",
     "PackTypeMixin",
     "PlayerMixin",
+    "RecipeManagerMixin",
     "ResourcePackLoaderMixin",
     "SimpleJsonResourceReloadListenerMixin",
     "VibrationSystemListenerMixin",
@@ -36,7 +37,7 @@
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
     "client.ModelPartMixin",
-    "client.RenderTypeMixin",
+    "client.RenderTypesMixin",
     "client.ScreenEffectRendererMixin",
     "client.SkyRendererMixin",
     "client.SubmitNodeCollectionMixin"

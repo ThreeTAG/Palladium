@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -30,7 +30,7 @@ public class AttributeModifierAbility extends Ability {
                     Attribute.CODEC.fieldOf("attribute").forGetter(ab -> ab.attribute),
                     Codec.DOUBLE.fieldOf("amount").forGetter(ab -> ab.amount),
                     AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(ab -> ab.operation),
-                    ResourceLocation.CODEC.optionalFieldOf("id").forGetter(ab -> Optional.ofNullable(ab.id)),
+                    Identifier.CODEC.optionalFieldOf("id").forGetter(ab -> Optional.ofNullable(ab.id)),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, (att, amount, op, id, prop, state, bar) ->
                     new AttributeModifierAbility(att, amount, op, id.orElse(null), prop, state, bar)));
@@ -38,9 +38,9 @@ public class AttributeModifierAbility extends Ability {
     public final Holder<Attribute> attribute;
     public final double amount;
     public final AttributeModifier.Operation operation;
-    public final @Nullable ResourceLocation id;
+    public final @Nullable Identifier id;
 
-    public AttributeModifierAbility(Holder<Attribute> attribute, double amount, AttributeModifier.Operation operation, @Nullable ResourceLocation id, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
+    public AttributeModifierAbility(Holder<Attribute> attribute, double amount, AttributeModifier.Operation operation, @Nullable Identifier id, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
         super(properties, conditions, energyBarUsages);
         this.attribute = attribute;
         this.amount = amount;
@@ -53,10 +53,10 @@ public class AttributeModifierAbility extends Ability {
         return AbilitySerializers.ATTRIBUTE_MODIFIER.get();
     }
 
-    public static ResourceLocation getModifierId(AbilityInstance<AttributeModifierAbility> abilityInstance) {
+    public static Identifier getModifierId(AbilityInstance<AttributeModifierAbility> abilityInstance) {
         var id = abilityInstance.getAbility().id;
         var ref = abilityInstance.getReference();
-        return id != null ? id : ResourceLocation.fromNamespaceAndPath(Objects.requireNonNull(ref.powerId()).getNamespace(), ref.powerId().getPath() + "_" + ref.abilityKey());
+        return id != null ? id : Identifier.fromNamespaceAndPath(Objects.requireNonNull(ref.powerId()).getNamespace(), ref.powerId().getPath() + "_" + ref.abilityKey());
     }
 
     @SuppressWarnings("unchecked")
@@ -99,7 +99,7 @@ public class AttributeModifierAbility extends Ability {
     }
 
     public static String getAttributeList() {
-        return BuiltInRegistries.ATTRIBUTE.keySet().stream().map(ResourceLocation::toString).sorted(Comparator.naturalOrder()).collect(Collectors.joining(", "));
+        return BuiltInRegistries.ATTRIBUTE.keySet().stream().map(Identifier::toString).sorted(Comparator.naturalOrder()).collect(Collectors.joining(", "));
     }
 
     public static class Serializer extends AbilitySerializer<AttributeModifierAbility> {

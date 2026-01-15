@@ -8,7 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.logic.context.DataContextType;
+import net.threetag.palladium.logic.context.DataContextKeys;
 
 public record DimensionCondition(ResourceKey<Level> dimension) implements Condition {
 
@@ -22,7 +22,7 @@ public record DimensionCondition(ResourceKey<Level> dimension) implements Condit
 
     @Override
     public boolean test(DataContext context) {
-        var level = context.get(DataContextType.LEVEL);
+        var level = context.get(DataContextKeys.LEVEL);
         return level != null && level.dimension().equals(this.dimension);
     }
 

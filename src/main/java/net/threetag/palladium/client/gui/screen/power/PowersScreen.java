@@ -15,7 +15,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
@@ -42,10 +42,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PowersScreen extends Screen {
 
-    public static final ResourceLocation WINDOW = Palladium.id("textures/gui/powers/window.png");
-    public static final ResourceLocation TABS = Palladium.id("textures/gui/powers/tabs.png");
-    public static final ResourceLocation WIDGETS = Palladium.id("textures/gui/powers/widgets.png");
-    public static final ResourceLocation TITLE_BOX_SPRITE = ResourceLocation.withDefaultNamespace("advancements/title_box");
+    public static final Identifier WINDOW = Palladium.id("textures/gui/powers/window.png");
+    public static final Identifier TABS = Palladium.id("textures/gui/powers/tabs.png");
+    public static final Identifier WIDGETS = Palladium.id("textures/gui/powers/widgets.png");
+    public static final Identifier TITLE_BOX_SPRITE = Identifier.withDefaultNamespace("advancements/title_box");
 
     public static final int WINDOW_WIDTH = 252;
     public static final int WINDOW_HEIGHT = 196;
@@ -134,7 +134,7 @@ public class PowersScreen extends Screen {
         }
 
         if (this.overlayScreen != null) {
-            this.overlayScreen.init(this.minecraft, this.width, this.height);
+            this.overlayScreen.init(this.width, this.height);
         }
     }
 
@@ -270,7 +270,7 @@ public class PowersScreen extends Screen {
     public void openOverlayScreen(Screen screen) {
         this.closeOverlayScreen();
         this.overlayScreen = screen;
-        this.overlayScreen.init(Objects.requireNonNull(this.minecraft), this.width, this.height);
+        this.overlayScreen.init(this.width, this.height);
     }
 
     public boolean isOverOverlayScreen(double mouseX, double mouseY) {
@@ -305,13 +305,13 @@ public class PowersScreen extends Screen {
         }
 
         @Override
-        public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
             var pos = getPos(this.screen);
             if (pos != null) {
                 this.setPosition(pos.x, pos.y);
             }
             this.active = this.visible && !PowerUtil.getPowerHandler(Minecraft.getInstance().player).getPowerHolders().isEmpty();
-            super.renderWidget(guiGraphics, mouseX, mouseY, partialTicks);
+            super.renderContents(guiGraphics, mouseX, mouseY, partialTicks);
         }
 
         public static Vector2i getPos(Screen screen) {

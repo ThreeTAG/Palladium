@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "#palladium:fabrics",
+    "S": "#c:tools/shear",
+    "W": "#minecraft:planks"
+  },
+  "pattern": [
+    "SF",
+    "WW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "palladium:tailoring_bench"
+  },
+  "show_notification": false
+}

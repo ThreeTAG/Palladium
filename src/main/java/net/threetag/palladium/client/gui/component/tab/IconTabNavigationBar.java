@@ -5,10 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.TabButton;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.components.tabs.Tab;
@@ -23,6 +20,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.logic.context.DataContext;
@@ -233,19 +231,37 @@ public class IconTabNavigationBar extends AbstractContainerEventHandler implemen
 
     public static class IconTabButton extends TabButton {
 
+        private static final WidgetSprites SPRITES = new WidgetSprites(Identifier.withDefaultNamespace("widget/tab_selected"), Identifier.withDefaultNamespace("widget/tab"), Identifier.withDefaultNamespace("widget/tab_selected_highlighted"), Identifier.withDefaultNamespace("widget/tab_highlighted"));
+
         public IconTabButton(TabManager tabManager, Tab tab, int width, int height) {
             super(tabManager, tab, width, height);
             this.setTooltip(Tooltip.create(tab.getTabTitle()));
         }
 
         @Override
-        public void renderString(GuiGraphics guiGraphics, Font font, int color) {
+        public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
             if (this.tab() instanceof IconTab iconTab) {
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITES.get(this.isSelected(), this.isHoveredOrFocused()), this.getX(), this.getY(), this.width, this.height);
+                Font font = Minecraft.getInstance().font;
+                int i = this.active ? -1 : -6250336;
+                if (this.isSelected()) {
+                    this.renderMenuBackground(guiGraphics, this.getX() + 2, this.getY() + 2, this.getRight() - 2, this.getBottom());
+                    this.renderFocusUnderline(guiGraphics, font, i);
+                }
+
                 var mc = Minecraft.getInstance();
                 IconRenderer.drawIcon(iconTab.getIcon(), mc, guiGraphics, DataContext.forEntity(mc.player), this.getX() + (this.getWidth() / 2) - 8, this.getY() + (this.getHeight() / 2) - 7);
+                this.handleCursor(guiGraphics);
             } else {
-                super.renderString(guiGraphics, font, color);
+                super.renderWidget(guiGraphics, mouseX, mouseY, partialTicks);
             }
+        }
+
+        private void renderFocusUnderline(GuiGraphics guiGraphics, Font font, int color) {
+            int i = Math.min(font.width(this.getMessage()), this.getWidth() - 4);
+            int j = this.getX() + (this.getWidth() - i) / 2;
+            int k = this.getY() + this.getHeight() - 2;
+            guiGraphics.fill(j, k, j + i, k + 1, color);
         }
     }
 }

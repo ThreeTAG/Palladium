@@ -1,9 +1,9 @@
 package net.threetag.palladium.client;
 
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.PlayerModelType;
 import net.neoforged.api.distmarker.Dist;
@@ -27,9 +27,9 @@ import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderState;
 import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderer;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.hud.AbilityGuiLayer;
+import net.threetag.palladium.client.gui.screen.menu.TailoringScreen;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
-import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
 import net.threetag.palladium.client.renderer.entity.SuitStandRenderer;
 import net.threetag.palladium.client.renderer.entity.SwingAnchorRenderer;
@@ -54,6 +54,7 @@ import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.HTMLBuilder;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.logic.value.ValueSerializer;
+import net.threetag.palladium.menu.PalladiumMenuTypes;
 import net.threetag.palladium.proxy.PalladiumClientProxy;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
@@ -93,6 +94,11 @@ public class PalladiumClient {
         IconRenderer.registerRenderers();
         EntityEffectRenderer.registerRenderers();
         PalladiumAnimationManager.registerLayers(event);
+    }
+
+    @SubscribeEvent
+    static void menuScreen(RegisterMenuScreensEvent e) {
+        e.register(PalladiumMenuTypes.TAILORING.get(), TailoringScreen::new);
     }
 
     @SubscribeEvent
@@ -148,12 +154,14 @@ public class PalladiumClient {
         e.createProvider(PalladiumLangProvider.English::new);
         e.createProvider(PalladiumLangProvider.German::new);
         e.createProvider(PalladiumLangProvider.Saxon::new);
-        e.createProvider(PalladiumItemModelProvider::new);
+        e.createProvider(PalladiumModelProvider::new);
         e.createProvider(PalladiumRenderLayerProvider::new);
         e.createProvider(PalladiumBeamProvider::new);
 
         // Server
+        e.createProvider(PalladiumLootTableProvider::new);
         e.createProvider(PalladiumBlockTagProvider::new);
+        e.createProvider(PalladiumItemTagProvider::new);
         e.createProvider(PalladiumCustomizationProvider::new);
         e.createProvider(PalladiumCustomizationCategoryProvider::new);
         e.createProvider(PalladiumFlightTypeProvider::new);
@@ -179,11 +187,6 @@ public class PalladiumClient {
     @SubscribeEvent
     static void registerPiP(RegisterPictureInPictureRenderersEvent e) {
         e.register(GuiMultiEntityRenderState.class, bufferSource -> new GuiMultiEntityRenderer(bufferSource, Minecraft.getInstance().getEntityRenderDispatcher()));
-    }
-
-    @SubscribeEvent
-    static void registerPipelines(RegisterRenderPipelinesEvent e) {
-        e.registerPipeline(PalladiumRenderTypes.Pipelines.ADD);
     }
 
 }

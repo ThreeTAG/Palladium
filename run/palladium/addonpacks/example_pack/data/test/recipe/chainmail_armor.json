@@ -1,0 +1,20 @@
+{
+  "type": "palladium:item_tailoring",
+  "results": {
+    "helmet": "minecraft:chainmail_helmet",
+    "chestplate": "minecraft:chainmail_chestplate",
+    "leggings": "minecraft:chainmail_leggings",
+    "boots": "minecraft:chainmail_boots"
+  },
+  "ingredients": [
+    {
+      "ingredient": "minecraft:iron_chain",
+      "count": 20
+    }
+  ],
+  "tool": "#c:tools/shear",
+  "tool_icon": "palladium:container/slot/shears",
+  "title": "Chainmail Armor",
+  "category": "test:vanilla_armor",
+  "requires_unlocking": false
+}

@@ -6,7 +6,7 @@ import net.minecraft.client.entity.ClientAvatarState;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.Avatar;
@@ -81,7 +81,7 @@ public class PalladiumRenderStateKeys {
                 animations.put(DataContext.forEntity(entity), flightAnim);
             }
             for (AbilityInstance<AnimationAbility> ability : AbilityUtil.getEnabledInstances(entity, AbilitySerializers.ANIMATION.get())) {
-                for (ResourceLocation animationId : ability.getAbility().animations) {
+                for (Identifier animationId : ability.getAbility().animations) {
                     var animation = PalladiumAnimationManager.INSTANCE.get(animationId);
                     if (animation != null) {
                         animations.put(DataContext.forAbility(entity, ability), animation);

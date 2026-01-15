@@ -5,9 +5,10 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.client.texture.transformer.TextureTransformer;
 import net.threetag.palladium.client.texture.transformer.TransformedTexture;
+import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.logic.value.Value;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
@@ -51,20 +52,20 @@ public class ConfiguredTexture extends DynamicTexture {
     }
 
     @Override
-    public ResourceLocation getTexture(DataContext context) {
+    public Identifier getTexture(DataContext context) {
         if (this.variables.isEmpty() && this.transformers.isEmpty()) {
-            return ResourceLocation.parse(this.base);
+            return Identifier.parse(this.base);
         }
 
         if (this.transformers.isEmpty()) {
-            return ResourceLocation.parse(replaceVariables(this.base, context, this.variables));
+            return Identifier.parse(replaceVariables(this.base, context, this.variables));
         }
 
-        ResourceLocation output = ResourceLocation.parse(replaceVariables(this.rawOutputPath, context, this.variables));
+        Identifier output = Identifier.parse(replaceVariables(this.rawOutputPath, context, this.variables));
 
         if (!Minecraft.getInstance().getTextureManager().byPath.containsKey(output)) {
             String s = replaceVariables(this.base, context, this.variables);
-            ResourceLocation texture = ResourceLocation.parse(s);
+            Identifier texture = Identifier.parse(s);
             Minecraft.getInstance().getTextureManager().registerAndLoad(output, new TransformedTexture(output, texture, this.transformers, transformerPath -> replaceVariables(transformerPath, context, this.variables)));
         }
 
@@ -95,7 +96,9 @@ public class ConfiguredTexture extends DynamicTexture {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<DynamicTexture, ConfiguredTexture> builder, HolderLookup.Provider provider) {
             builder.setName("Configured Texture").setDescription("Creates a dynamic texture based on variables and transformers.")
-                    .addOptional("variables", TYPE_MAP_VARIABLES, "A map of variables that can be used in the texture path.");
+                    .add("base", TYPE_IDENTIFIER, "Base texture")
+                    .addOptional("variables", TYPE_MAP_VARIABLES, "A map of variables that can be used in the texture path.")
+                    .addOptional("transformers", SettingType.listOrPrimitive("Texture Transformer"), "Texture transformers applied on this texture");
         }
     }
 }

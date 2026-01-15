@@ -1,7 +1,7 @@
 package net.threetag.palladium.sound;
 
 import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,7 +14,7 @@ public class AbilitySound extends AbstractTickableSoundLocationInstance {
     private final float maxVolume;
     private boolean wasStopped = false;
 
-    public AbilitySound(AbilityReference abilityReference, LivingEntity entity, ResourceLocation soundEvent, SoundSource soundSource, float volume, float pitch) {
+    public AbilitySound(AbilityReference abilityReference, LivingEntity entity, Identifier soundEvent, SoundSource soundSource, float volume, float pitch) {
         super(soundEvent, soundSource, SoundInstance.createUnseededRandom());
         this.abilityReference = abilityReference;
         this.entity = entity;

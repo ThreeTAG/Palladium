@@ -1,7 +1,7 @@
 package net.threetag.palladium;
 
 import com.zigythebird.playeranim.neoforge.event.MolangEvent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -10,6 +10,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.command.*;
 import net.threetag.palladium.compat.accessories.AccessoriesCompatImpl;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
@@ -22,9 +23,14 @@ import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.entity.effect.EntityEffects;
 import net.threetag.palladium.entity.flight.FlightTypeSerializers;
 import net.threetag.palladium.icon.IconSerializers;
+import net.threetag.palladium.item.PalladiumCreativeTabs;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.item.recipe.PalladiumRecipeBookCategories;
+import net.threetag.palladium.item.recipe.PalladiumRecipeSerializers;
+import net.threetag.palladium.item.recipe.PalladiumRecipeTypes;
 import net.threetag.palladium.logic.condition.ConditionSerializers;
 import net.threetag.palladium.logic.value.ValueSerializers;
+import net.threetag.palladium.menu.PalladiumMenuTypes;
 import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.power.ability.AbilitySerializers;
 import net.threetag.palladium.power.ability.enabling.EnablingHandlerSerializers;
@@ -49,11 +55,17 @@ public final class Palladium {
         modContainer.registerConfig(ModConfig.Type.CLIENT, PalladiumClientConfig.SPEC);
         modContainer.registerConfig(ModConfig.Type.SERVER, PalladiumServerConfig.SPEC);
 
+        PalladiumBlocks.BLOCKS.register(modEventBus);
         PalladiumItems.ITEMS.register(modEventBus);
+        PalladiumCreativeTabs.CREATIVE_TABS.register(modEventBus);
+        PalladiumRecipeTypes.RECIPE_TYPES.register(modEventBus);
+        PalladiumRecipeBookCategories.RECIPE_BOOK_CATEGORIES.register(modEventBus);
+        PalladiumRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         PalladiumEntityDataTypes.DATA_TYPES.register(modEventBus);
         PalladiumEntityTypes.ENTITIES.register(modEventBus);
-        EntityEffects.EFFECTS.register(modEventBus);
+        PalladiumMenuTypes.MENU_TYPES.register(modEventBus);
         PalladiumDataComponents.DATA_COMPONENTS.register(modEventBus);
+        EntityEffects.EFFECTS.register(modEventBus);
         KeyBindTypeSerializers.KEY_BIND_TYPES.register(modEventBus);
         UnlockingHandlerSerializers.UNLOCKING_HANDLERS.register(modEventBus);
         EnablingHandlerSerializers.ENABLING_HANDLERS.register(modEventBus);
@@ -95,7 +107,7 @@ public final class Palladium {
         PalladiumQueries.registerQueries(e);
     }
 
-    public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 }

@@ -2,10 +2,10 @@ package net.threetag.palladium.power.ability;
 
 public class PlayerAnimationAbility {
 
-//    public static final PalladiumProperty<ResourceLocation> ANIMATION = new ResourceLocationProperty("animation").configurable("ID of the animation");
+//    public static final PalladiumProperty<Identifier> ANIMATION = new IdentifierProperty("animation").configurable("ID of the animation");
 //
 //    public PlayerAnimationAbility() {
-//        this.withProperty(ANIMATION, new ResourceLocation("example:animation"));
+//        this.withProperty(ANIMATION, new Identifier("example:animation"));
 //    }
 //
 //    @Override

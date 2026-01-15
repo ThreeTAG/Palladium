@@ -16,6 +16,6 @@ public class PalladiumFlightTypeProvider extends FlightTypeProvider {
 
     @Override
     protected void gather() {
-        PalladiumFlightTypes.bootstrap((key, flightType) -> this.unconditional(key.location(), flightType));
+        PalladiumFlightTypes.bootstrap((key, flightType) -> this.unconditional(key.identifier(), flightType));
     }
 }

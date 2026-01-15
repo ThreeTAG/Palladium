@@ -5,14 +5,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.ResourceLocation;
-import net.threetag.palladium.config.PalladiumClientConfig;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.gui.component.BlitUiComponent;
 import net.threetag.palladium.client.gui.component.TextUiComponent;
 import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.component.UiComponent;
 import net.threetag.palladium.client.renderer.icon.IconRenderer;
+import net.threetag.palladium.config.PalladiumClientConfig;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.enabling.KeyBindEnablingHandler;
@@ -45,7 +45,7 @@ public record AbilityListComponent(AbilityBar.AbilityList abilityList) implement
         }
     }
 
-    public static void renderAbility(Minecraft minecraft, ResourceLocation texture, GuiGraphics gui, DeltaTracker deltaTracker, int x, int y, UiAlignment alignment, AbilityInstance<?> ability, int index) {
+    public static void renderAbility(Minecraft minecraft, Identifier texture, GuiGraphics gui, DeltaTracker deltaTracker, int x, int y, UiAlignment alignment, AbilityInstance<?> ability, int index) {
         if (ability != null) {
             if (ability.isUnlocked()) {
                 if (ability.getAbility().getStateManager().getEnablingHandler() instanceof KeyBindEnablingHandler handler
@@ -120,7 +120,7 @@ public record AbilityListComponent(AbilityBar.AbilityList abilityList) implement
         }
     }
 
-    public static UiComponent getComponentForKeyBind(KeyBindType type, AbilityInstance<?> abilityInstance, ResourceLocation texture, boolean inside, int index) {
+    public static UiComponent getComponentForKeyBind(KeyBindType type, AbilityInstance<?> abilityInstance, Identifier texture, boolean inside, int index) {
         return switch (type) {
             case JumpKeyBind jump -> new BlitUiComponent(texture, 39, 92, 10, 5, 256, 256);
             case AbilityKeyBind ability ->

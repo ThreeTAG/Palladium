@@ -3,8 +3,9 @@ package net.threetag.palladium.logic.value;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.threetag.palladium.logic.context.DataContext;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.logic.context.DataContext;
 
 public class MoonPhaseValue extends IntegerValue {
 
@@ -19,7 +20,14 @@ public class MoonPhaseValue extends IntegerValue {
     @Override
     public int getInteger(DataContext context) {
         var level = context.getLevel();
-        return level != null ? level.getMoonPhase() : 0;
+        var pos = context.getBlockPos();
+
+        if (level == null || pos == null) {
+            return 0;
+        }
+
+        var moonPhase = level.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, pos);
+        return moonPhase.index();
     }
 
     @Override

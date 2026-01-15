@@ -22,11 +22,7 @@ public record SelectCustomizationPacket(Holder<Customization> customization) imp
 
     public static void handle(SelectCustomizationPacket packet, IPayloadContext context) {
         var handler = EntityCustomizationHandler.get(context.player());
-        if (handler.isSelected(packet.customization)) {
-            handler.unselect(packet.customization.value().getCategory(context.player().registryAccess()));
-        } else {
-            handler.select(packet.customization);
-        }
+        handler.select(packet.customization);
     }
 
     @Override

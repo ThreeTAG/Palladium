@@ -9,6 +9,7 @@ import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.CustomizationPreview;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class CustomizationCategoryProvider extends JsonCodecProvider<CustomizationCategory> {
@@ -22,7 +23,7 @@ public abstract class CustomizationCategoryProvider extends JsonCodecProvider<Cu
     }
 
     public void add(ResourceKey<CustomizationCategory> key, int sortIndex, CustomizationPreview preview, EquipmentSlot hiddenByEquipment) {
-        this.unconditional(key.location(), new CustomizationCategory(sortIndex, preview, hiddenByEquipment, null));
+        this.unconditional(key.identifier(), new CustomizationCategory(sortIndex, preview, false, Optional.empty(), hiddenByEquipment, null));
     }
 
 }

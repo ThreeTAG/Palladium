@@ -7,7 +7,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.Documented;
 
@@ -15,17 +15,17 @@ import java.util.Map;
 
 public abstract class BeamRendererSerializer<T extends BeamRenderer> implements Documented<BeamRenderer, T> {
 
-    private static final BiMap<ResourceLocation, BeamRendererSerializer<?>> TYPES = HashBiMap.create();
+    private static final BiMap<Identifier, BeamRendererSerializer<?>> TYPES = HashBiMap.create();
 
-    public static final Codec<BeamRendererSerializer<?>> TYPE_CODEC = ResourceLocation.CODEC.flatXmap(resourceLocation -> {
-        BeamRendererSerializer<?> serializer = TYPES.get(resourceLocation);
-        return serializer != null ? DataResult.success(serializer) : DataResult.error(() -> "Unknown type " + resourceLocation);
+    public static final Codec<BeamRendererSerializer<?>> TYPE_CODEC = Identifier.CODEC.flatXmap(identifier -> {
+        BeamRendererSerializer<?> serializer = TYPES.get(identifier);
+        return serializer != null ? DataResult.success(serializer) : DataResult.error(() -> "Unknown type " + identifier);
     }, serializer -> {
-        ResourceLocation resourceLocation = TYPES.inverse().get(serializer);
-        return serializer != null ? DataResult.success(resourceLocation) : DataResult.error(() -> "Unknown type " + resourceLocation);
+        Identifier identifier = TYPES.inverse().get(serializer);
+        return serializer != null ? DataResult.success(identifier) : DataResult.error(() -> "Unknown type " + identifier);
     });
 
-    public static <T extends BeamRenderer> BeamRendererSerializer<T> register(ResourceLocation id, BeamRendererSerializer<T> serializer) {
+    public static <T extends BeamRenderer> BeamRendererSerializer<T> register(Identifier id, BeamRendererSerializer<T> serializer) {
         if (TYPES.containsKey(id)) {
             throw new IllegalStateException("Duplicate registration for beam renderer serializer: " + id);
         }
@@ -34,7 +34,7 @@ public abstract class BeamRendererSerializer<T extends BeamRenderer> implements 
         return serializer;
     }
 
-    public static Map<ResourceLocation, BeamRendererSerializer<?>> getTypes() {
+    public static Map<Identifier, BeamRendererSerializer<?>> getTypes() {
         return ImmutableMap.copyOf(TYPES);
     }
 

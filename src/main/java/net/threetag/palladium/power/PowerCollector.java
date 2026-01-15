@@ -41,10 +41,10 @@ public class PowerCollector {
             return;
         }
 
-        if (!this.handler.hasPower(power.unwrapKey().orElseThrow().location())) {
+        if (!this.handler.hasPower(power.unwrapKey().orElseThrow().identifier())) {
             this.powerHolders.add(new PowerHolderCache(power, validatorSupplier.get(), priority));
         } else {
-            this.handler.getPowerHolder(power.unwrapKey().orElseThrow().location()).setPriority(priority);
+            this.handler.getPowerHolder(power.unwrapKey().orElseThrow().identifier()).setPriority(priority);
         }
     }
 
@@ -55,7 +55,7 @@ public class PowerCollector {
     public record PowerHolderCache(Holder<Power> power, PowerValidator validator, int priority) {
 
         public PowerHolder make(LivingEntity entity, CompoundTag compoundTag) {
-            return new PowerHolder(entity, this.power, this.validator, this.priority, compoundTag.getCompoundOrEmpty(this.power.unwrapKey().orElseThrow().location().toString()));
+            return new PowerHolder(entity, this.power, this.validator, this.priority, compoundTag.getCompoundOrEmpty(this.power.unwrapKey().orElseThrow().identifier().toString()));
         }
 
     }

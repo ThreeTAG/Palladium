@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.HumanoidArm;
@@ -51,7 +51,7 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
     public static final MapCodec<GeoRenderLayer> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             SkinTypedValue.codec(PackRenderLayerTexture.CODEC).fieldOf("texture").forGetter(l -> l.texture),
             SkinTypedValue.codec(TextureReference.CODEC).fieldOf("model").forGetter(l -> l.model),
-            SkinTypedValue.codec(ResourceLocation.CODEC).optionalFieldOf("animations").forGetter(l -> Optional.ofNullable(l.animations)),
+            SkinTypedValue.codec(Identifier.CODEC).optionalFieldOf("animations").forGetter(l -> Optional.ofNullable(l.animations)),
             PalladiumCodecs.listOrPrimitive(AnimationControllerFactory.CODEC).optionalFieldOf("animation_controller", Collections.emptyList()).forGetter(l -> l.animationController),
             ExtraCodecs.intRange(0, 15).optionalFieldOf("light_emission", 0).forGetter(l -> l.lightEmission),
             Codec.unboundedMap(Bone.CODEC, Codec.STRING).optionalFieldOf("bones", DEFAULT_BONES).forGetter(l -> l.bones),
@@ -59,21 +59,21 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
     ).apply(instance, (texture, model, animations, animController, light, bones, properties, conditions) ->
             new GeoRenderLayer(texture, model, animations.orElse(null), animController, light, bones, properties, conditions)));
 
-    private static ResourceLocation CACHED_TEXTURE = null;
-    private static ResourceLocation CACHED_MODEL = null;
-    private static ResourceLocation CACHED_ANIMATIONS = null;
+    private static Identifier CACHED_TEXTURE = null;
+    private static Identifier CACHED_MODEL = null;
+    private static Identifier CACHED_ANIMATIONS = null;
 
     private final SkinTypedValue<PackRenderLayerTexture> texture;
     private final SkinTypedValue<TextureReference> model;
     @Nullable
-    private final SkinTypedValue<ResourceLocation> animations;
+    private final SkinTypedValue<Identifier> animations;
     protected final List<AnimationControllerFactory<?>> animationController;
     public GeoRenderLayerRenderer renderer;
     private final int lightEmission;
     private final Map<Bone, String> bones;
 
     public GeoRenderLayer(SkinTypedValue<PackRenderLayerTexture> texture, SkinTypedValue<TextureReference> model,
-                          @Nullable SkinTypedValue<ResourceLocation> animations, List<AnimationControllerFactory<?>> animationController,
+                          @Nullable SkinTypedValue<Identifier> animations, List<AnimationControllerFactory<?>> animationController,
                           int lightEmission, Map<Bone, String> bones, PackRenderLayerProperties properties, PerspectiveAwareConditions conditions) {
         super(properties, conditions);
         this.texture = texture;
@@ -89,17 +89,17 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
         if (this.renderer == null) {
             this.renderer = new GeoRenderLayerRenderer<>(this.bones, new GeoModel<>() {
                 @Override
-                public ResourceLocation getModelResource(GeoRenderState state) {
+                public Identifier getModelResource(GeoRenderState state) {
                     return CACHED_MODEL;
                 }
 
                 @Override
-                public ResourceLocation getTextureResource(GeoRenderState state) {
+                public Identifier getTextureResource(GeoRenderState state) {
                     return CACHED_TEXTURE;
                 }
 
                 @Override
-                public ResourceLocation getAnimationResource(GeoRenderLayerState animatable) {
+                public Identifier getAnimationResource(GeoRenderLayerState animatable) {
                     return CACHED_ANIMATIONS;
                 }
             });
@@ -171,8 +171,8 @@ public class GeoRenderLayer extends PackRenderLayer<GeoRenderLayerState> {
             builder.setName("Geo Render Layer")
                     .setDescription("Uses GeckoLib to render a geo model, including animations")
                     .add("texture", TYPE_ANY_TEXTURE, "The texture of the model")
-                    .add("model", TYPE_RESOURCE_LOCATION, "The model to render")
-                    .addOptional("animations", TYPE_RESOURCE_LOCATION, "The animations to use")
+                    .add("model", TYPE_IDENTIFIER, "The model to render")
+                    .addOptional("animations", TYPE_IDENTIFIER, "The animations to use")
                     .addOptional("animation_controller", TYPE_GEO_ANIMATION_CONTROLLER, "The animation controllers to control or trigger the animations.")
                     .addOptional("light_emission", TYPE_INT, "The light emission of the model. Must be within 0 - 15", 0)
                     .addOptional("bones", SettingType.simple("Map<Bone, String>"), "The bones of the model. You can specify here what the bones for each body part are called in your model file.", DEFAULT_BONES.toString());

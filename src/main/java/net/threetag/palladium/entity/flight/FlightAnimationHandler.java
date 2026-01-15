@@ -1,6 +1,6 @@
 package net.threetag.palladium.entity.flight;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -22,7 +22,7 @@ public abstract class FlightAnimationHandler<T extends FlightType> {
         this.prevLimbYaw = this.limbYaw;
     }
 
-    public abstract ResourceLocation getAnimationAssetId();
+    public abstract Identifier getAnimationAssetId();
 
     public float getRoll(float partialTick) {
         return Mth.lerp(partialTick, this.prevRoll, this.roll);

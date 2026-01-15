@@ -1,0 +1,5 @@
+{
+  "type": "palladium:customization",
+  "category": "test:example_category",
+  "render_layer": "test:customization/batman_1"
+}

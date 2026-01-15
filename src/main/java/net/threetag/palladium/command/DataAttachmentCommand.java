@@ -12,12 +12,14 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.commands.arguments.ResourceLocationArgument;
+import net.minecraft.commands.arguments.IdentifierArgument;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.permissions.PermissionCheck;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -29,6 +31,7 @@ import java.util.Optional;
 
 public class DataAttachmentCommand {
 
+    public static final PermissionCheck PERMISSION_CHECK = new PermissionCheck.Require(Permissions.COMMANDS_GAMEMASTER);
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_DATA_TYPES = (context, builder) -> {
         return SharedSuggestionProvider.suggestResource(DataAttachmentLoader.INSTANCE.all().keySet(), builder);
     };
@@ -44,27 +47,25 @@ public class DataAttachmentCommand {
     private static final SimpleCommandExceptionType ERROR_PARSE = new SimpleCommandExceptionType(Component.translatableEscape(TRANS_PARSE_ERROR));
 
     public static void register(LiteralArgumentBuilder<CommandSourceStack> builder, CommandBuildContext context) {
-        builder.then(Commands.literal("data-attachment").requires((player) -> {
-                    return player.hasPermission(3);
-                })
+        builder.then(Commands.literal("data-attachment").requires(Commands.hasPermission(PERMISSION_CHECK))
                 .then(Commands.literal("get")
                         .then(Commands.literal("entity")
                                 .then(Commands.argument("entity", EntityArgument.entity())
-                                        .then(Commands.argument("type", ResourceLocationArgument.id()).suggests(SUGGEST_DATA_TYPES)
+                                        .then(Commands.argument("type", IdentifierArgument.id()).suggests(SUGGEST_DATA_TYPES)
                                                 .executes(c -> {
-                                                    return get(c.getSource(), EntityArgument.getEntity(c, "entity"), ResourceLocationArgument.getId(c, "type"));
+                                                    return get(c.getSource(), EntityArgument.getEntity(c, "entity"), IdentifierArgument.getId(c, "type"));
                                                 })))))
                 .then(Commands.literal("set")
                         .then(Commands.literal("entity")
                                 .then(Commands.argument("entities", EntityArgument.entities())
-                                        .then(Commands.argument("type", ResourceLocationArgument.id()).suggests(SUGGEST_DATA_TYPES)
+                                        .then(Commands.argument("type", IdentifierArgument.id()).suggests(SUGGEST_DATA_TYPES)
                                                 .then(Commands.argument("value", StringArgumentType.string())
                                                         .executes(c -> {
-                                                            return set(c.getSource(), EntityArgument.getEntities(c, "entities"), ResourceLocationArgument.getId(c, "type"), StringArgumentType.getString(c, "value"));
+                                                            return set(c.getSource(), EntityArgument.getEntities(c, "entities"), IdentifierArgument.getId(c, "type"), StringArgumentType.getString(c, "value"));
                                                         })))))));
     }
 
-    public static int get(CommandSourceStack source, Entity entity, ResourceLocation typeId) throws CommandSyntaxException {
+    public static int get(CommandSourceStack source, Entity entity, Identifier typeId) throws CommandSyntaxException {
         AttachmentType<?> type = NeoForgeRegistries.ATTACHMENT_TYPES.getValue(typeId);
 
         if (type == null) {
@@ -83,7 +84,7 @@ public class DataAttachmentCommand {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static int set(CommandSourceStack source, Collection<? extends Entity> entities, ResourceLocation typeId, String rawValue) throws CommandSyntaxException {
+    public static int set(CommandSourceStack source, Collection<? extends Entity> entities, Identifier typeId, String rawValue) throws CommandSyntaxException {
         PackAttachmentBuilder type = DataAttachmentLoader.INSTANCE.get(typeId);
 
         if (type == null) {

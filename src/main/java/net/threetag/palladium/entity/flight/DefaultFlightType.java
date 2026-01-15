@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -118,21 +118,21 @@ public class DefaultFlightType extends FlightType {
         }
     }
 
-    public record AnimationSettings(ResourceLocation assetId, float maxLean, float bodyStiffness, float limbStiffness) {
+    public record AnimationSettings(Identifier assetId, float maxLean, float bodyStiffness, float limbStiffness) {
 
         public static final AnimationSettings DEFAULT = new AnimationSettings(Palladium.id("flight/default"), 35F, 12F, 8F);
 
         public static final Codec<AnimationSettings> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ResourceLocation.CODEC.fieldOf("asset_id").forGetter(AnimationSettings::assetId),
+                Identifier.CODEC.fieldOf("asset_id").forGetter(AnimationSettings::assetId),
                 ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("max_lean", 35F).forGetter(AnimationSettings::maxLean),
                 ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("body_stiffness", 12F).forGetter(AnimationSettings::bodyStiffness),
                 ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("limb_stiffness", 8F).forGetter(AnimationSettings::limbStiffness)
         ).apply(instance, AnimationSettings::new));
 
-        public static final Codec<AnimationSettings> CODEC = Codec.either(DIRECT_CODEC, ResourceLocation.CODEC)
+        public static final Codec<AnimationSettings> CODEC = Codec.either(DIRECT_CODEC, Identifier.CODEC)
                 .xmap(either -> either.map(
                                 animationSettings -> animationSettings,
-                                resourceLocation -> new AnimationSettings(resourceLocation, 35F, 12, 8)),
+                                Identifier -> new AnimationSettings(Identifier, 35F, 12, 8)),
                         animationSettings ->
                                 animationSettings.maxLean == 35F && animationSettings.bodyStiffness == 12F && animationSettings.limbStiffness == 8F ?
                                         Either.right(animationSettings.assetId) : Either.left(animationSettings));
@@ -153,7 +153,7 @@ public class DefaultFlightType extends FlightType {
         }
 
         @Override
-        public ResourceLocation getAnimationAssetId() {
+        public Identifier getAnimationAssetId() {
             return this.animationSettings.assetId();
         }
 
@@ -243,7 +243,7 @@ public class DefaultFlightType extends FlightType {
                     .addOptional("sprint_speed", TYPE_FLOAT, "The sprinting flight speed. If not set, it will be equal to the normal speed.")
                     .addOptional("animation", TYPE_DEFAULT_FLIGHT_ANIMATION, "The animation settings for this flight type.")
                     .setExampleObject(new DefaultFlightType(1F, 2F, new AnimationSettings(
-                            ResourceLocation.fromNamespaceAndPath("namespace", "animation_id"), 35F, 20F, 12F
+                            Identifier.fromNamespaceAndPath("namespace", "animation_id"), 35F, 20F, 12F
                     )));
 
         }

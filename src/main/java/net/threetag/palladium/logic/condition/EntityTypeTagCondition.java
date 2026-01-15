@@ -5,11 +5,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.logic.context.DataContextType;
+import net.threetag.palladium.logic.context.DataContextKeys;
 
 public record EntityTypeTagCondition(TagKey<EntityType<?>> tag) implements Condition {
 
@@ -18,12 +18,12 @@ public record EntityTypeTagCondition(TagKey<EntityType<?>> tag) implements Condi
             ).apply(instance, EntityTypeTagCondition::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, EntityTypeTagCondition> STREAM_CODEC = StreamCodec.composite(
-            ResourceLocation.STREAM_CODEC.map(loc -> TagKey.create(Registries.ENTITY_TYPE, loc), TagKey::location), EntityTypeTagCondition::tag, EntityTypeTagCondition::new
+            Identifier.STREAM_CODEC.map(loc -> TagKey.create(Registries.ENTITY_TYPE, loc), TagKey::location), EntityTypeTagCondition::tag, EntityTypeTagCondition::new
     );
 
     @Override
     public boolean test(DataContext context) {
-        var entity = context.get(DataContextType.ENTITY);
+        var entity = context.get(DataContextKeys.ENTITY);
 
         if (entity == null) {
             return false;

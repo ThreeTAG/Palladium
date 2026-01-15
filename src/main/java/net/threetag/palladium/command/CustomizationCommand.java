@@ -9,6 +9,8 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.ResourceArgument;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.permissions.PermissionCheck;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.customization.Customization;
@@ -18,6 +20,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class CustomizationCommand {
 
+    public static final PermissionCheck PERMISSION_CHECK = new PermissionCheck.Require(Permissions.COMMANDS_GAMEMASTER);
+
     public static final String UNLOCK_SUCCESS = "commands.palladium.customization.unlock.success";
     public static final String LOCK_SUCCESS = "commands.palladium.customization.lock.success";
 
@@ -25,9 +29,7 @@ public class CustomizationCommand {
     public static final String ERROR_CANT_HAVE_CUSTOMIZATIONS = "commands.palladium.customization.error.cant_have_customizations";
 
     public static void register(LiteralArgumentBuilder<CommandSourceStack> builder, CommandBuildContext context) {
-        builder.then(Commands.literal("customization").requires((player) -> {
-                            return player.hasPermission(3);
-                        })
+        builder.then(Commands.literal("customization").requires(Commands.hasPermission(PERMISSION_CHECK))
                         .then(Commands.literal("unlock")
                                 .then(Commands.argument("customization", ResourceArgument.resource(context, PalladiumRegistryKeys.CUSTOMIZATION))
                                         .executes(c ->

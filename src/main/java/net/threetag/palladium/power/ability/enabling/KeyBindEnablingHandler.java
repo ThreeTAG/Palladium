@@ -12,6 +12,7 @@ import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.network.AbilityKeyChangePacket;
 import net.threetag.palladium.power.ability.AbilityInstance;
@@ -190,7 +191,7 @@ public class KeyBindEnablingHandler extends EnablingHandler {
 
     public void onKeyPressed(LivingEntity entity, AbilityInstance<?> abilityInstance) {
         if (entity.level().isClientSide()) {
-            ClientPacketDistributor.sendToServer(new AbilityKeyChangePacket(abilityInstance.getReference(), true));
+            Palladium.PROXY.sendPacketToServer(new AbilityKeyChangePacket(abilityInstance.getReference(), true));
         } else {
             if (this.behaviour == Behaviour.TOGGLE) {
                 abilityInstance.set(PalladiumDataComponents.Abilities.KEY_PRESSED.get(), !abilityInstance.getOrDefault(PalladiumDataComponents.Abilities.KEY_PRESSED.get(), false));

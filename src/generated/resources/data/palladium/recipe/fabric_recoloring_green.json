@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "dye_fabrics",
+  "ingredients": [
+    "#palladium:fabrics",
+    "#c:dyes/green"
+  ],
+  "result": {
+    "count": 1,
+    "id": "palladium:green_fabric"
+  }
+}

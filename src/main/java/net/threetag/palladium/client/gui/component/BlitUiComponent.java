@@ -4,10 +4,9 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
-public record BlitUiComponent(ResourceLocation texture, int u, int v, int uOffset, int vOffset, int texWidth,
+public record BlitUiComponent(Identifier texture, int u, int v, int uOffset, int vOffset, int texWidth,
                               int texHeight) implements UiComponent {
 
     @Override

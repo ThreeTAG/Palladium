@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
@@ -53,7 +53,7 @@ public class SkinChangeAbility extends Ability {
                     .add("texture", TYPE_TEXTURE_REFERENCE, "The texture that should be used for the player's skin.")
                     .addOptional("model_type", SettingType.enumList(PlayerModelChangeType.values()), "Model type for the player. 'wide' = Wide-armed Steve model; 'slim' = Slim-armed Alex model; 'keep' = Does not change the player's default model", PlayerModelChangeType.KEEP)
                     .addOptional("priority", TYPE_INT, "Priority for the skin (in case multiple skin changes are applied, the one with the highest priority will be used)", 50)
-                    .setExampleObject(new SkinChangeAbility(new SkinTypedValue<>(TextureReference.normal(ResourceLocation.withDefaultNamespace("textures/entity/zombie/drowned.png"))), PlayerModelChangeType.WIDE, 50, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .setExampleObject(new SkinChangeAbility(new SkinTypedValue<>(TextureReference.normal(Identifier.withDefaultNamespace("textures/entity/zombie/drowned.png"))), PlayerModelChangeType.WIDE, 50, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 

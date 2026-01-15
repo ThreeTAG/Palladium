@@ -1,0 +1,11 @@
+{
+  "type": "palladium:render_layer",
+  "model_layer": "test:cape_test",
+  "texture": "test:textures/entity/cape_test.png",
+  "animations": "palladium:cape",
+  "properties": {
+    "hidden_model_parts": [
+      "body.cape"
+    ]
+  }
+}

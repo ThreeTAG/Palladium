@@ -3,8 +3,8 @@ package net.threetag.palladium.addonpack;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AddonObjectLoader<T> extends SimpleJsonResourceReloadListener<T> {
 
-    public static ResourceLocation ID_TO_SET = null;
+    public static Identifier ID_TO_SET = null;
     public final ResourceKey<Registry<T>> resourceKey;
     public final AddonPackManager.RegisterCallback<T> callback;
 
@@ -26,7 +26,7 @@ public class AddonObjectLoader<T> extends SimpleJsonResourceReloadListener<T> {
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, T> objects, ResourceManager resourceManager, ProfilerFiller profiler) {
+    protected void apply(Map<Identifier, T> objects, ResourceManager resourceManager, ProfilerFiller profiler) {
         AtomicInteger i = new AtomicInteger();
 
         objects.forEach((id, object) -> {
@@ -34,10 +34,10 @@ public class AddonObjectLoader<T> extends SimpleJsonResourceReloadListener<T> {
             i.getAndIncrement();
         });
 
-        AddonPackLog.info("Registered " + i.get() + " addonpack " + this.resourceKey.location().getPath());
+        AddonPackLog.info("Registered " + i.get() + " addonpack " + this.resourceKey.identifier().getPath());
     }
 
-    public static <T> ResourceKey<T> resourceId(ResourceKey<Registry<T>> registry, ResourceLocation id) {
+    public static <T> ResourceKey<T> resourceId(ResourceKey<Registry<T>> registry, Identifier id) {
         return ResourceKey.create(registry, id);
     }
 }

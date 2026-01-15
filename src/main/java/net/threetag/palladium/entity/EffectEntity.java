@@ -5,7 +5,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -122,7 +122,7 @@ public class EffectEntity extends Entity implements IEntityWithComplexSpawn {
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
-        this.entityEffect = PalladiumRegistries.ENTITY_EFFECT.getValue(ResourceLocation.parse(input.getStringOr("entity_effect", "")));
+        this.entityEffect = PalladiumRegistries.ENTITY_EFFECT.getValue(Identifier.parse(input.getStringOr("entity_effect", "")));
         this.anchorId = input.getIntOr("anchor_id", -1);
     }
 
@@ -134,13 +134,13 @@ public class EffectEntity extends Entity implements IEntityWithComplexSpawn {
 
     @Override
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
-        buffer.writeResourceLocation(Objects.requireNonNull(PalladiumRegistries.ENTITY_EFFECT.getKey(this.entityEffect)));
+        buffer.writeIdentifier(Objects.requireNonNull(PalladiumRegistries.ENTITY_EFFECT.getKey(this.entityEffect)));
         buffer.writeInt(this.anchorId);
     }
 
     @Override
     public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
-        this.entityEffect = PalladiumRegistries.ENTITY_EFFECT.getValue(additionalData.readResourceLocation());
+        this.entityEffect = PalladiumRegistries.ENTITY_EFFECT.getValue(additionalData.readIdentifier());
         this.anchorId = additionalData.readInt();
     }
 }

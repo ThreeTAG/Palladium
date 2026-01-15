@@ -2,10 +2,10 @@ package net.threetag.palladium.client.renderer.entity.layer.pack;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.client.texture.DynamicTexture;
-import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.client.texture.DynamicTextureManager;
+import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.logic.context.DataContext;
 
 import java.util.Objects;
@@ -33,12 +33,12 @@ public class PackRenderLayerTexture {
         this.textureReference = textureReference;
     }
 
-    public PackRenderLayerTexture(ResourceLocation texture) {
+    public PackRenderLayerTexture(Identifier texture) {
         this.dynamicTexture = null;
         this.textureReference = TextureReference.normal(texture);
     }
 
-    public ResourceLocation getTexture(DataContext context) {
+    public Identifier getTexture(DataContext context) {
         if (this.textureReference != null && this.textureReference.isDynamic()) {
             this.dynamicTexture = DynamicTextureManager.INSTANCE.get(this.textureReference.getPath());
         }

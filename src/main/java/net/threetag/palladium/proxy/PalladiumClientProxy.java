@@ -9,7 +9,8 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.entity.player.PlayerModelType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.threetag.palladium.client.beam.BeamManager;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
@@ -43,6 +45,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class PalladiumClientProxy extends PalladiumProxy {
+
+    @Override
+    public void sendPacketToServer(CustomPacketPayload payload, CustomPacketPayload... payloads) {
+        ClientPacketDistributor.sendToServer(payload, payloads);
+    }
 
     @Override
     public void spawnEffectEntity(Entity anchor, EntityEffect entityEffect) {
@@ -87,7 +94,7 @@ public class PalladiumClientProxy extends PalladiumProxy {
     }
 
     @Override
-    public void spawnEnergyBeamParticles(Level level, Vec3 pos, ResourceLocation beamId) {
+    public void spawnEnergyBeamParticles(Level level, Vec3 pos, Identifier beamId) {
         var beam = BeamManager.INSTANCE.get(beamId);
 
         if (beam != null) {
@@ -96,12 +103,12 @@ public class PalladiumClientProxy extends PalladiumProxy {
     }
 
     @Override
-    public void spawnParticleEmitter(LivingEntity entity, List<ResourceLocation> particleEmitterIds, Holder<ParticleType<?>> particleTypeHolder, CompoundTag options) {
+    public void spawnParticleEmitter(LivingEntity entity, List<Identifier> particleEmitterIds, Holder<ParticleType<?>> particleTypeHolder, CompoundTag options) {
         if (entity instanceof AbstractClientPlayer player) {
             ParticleType<?> type = particleTypeHolder.value();
             // TODO optimise: only parse once
             ParticleOptions particleOptions = type.codec().codec().parse(entity.registryAccess().createSerializationContext(NbtOps.INSTANCE), options).getOrThrow();
-            for (ResourceLocation id : particleEmitterIds) {
+            for (Identifier id : particleEmitterIds) {
                 var emitter = ParticleEmitterManager.INSTANCE.get(id);
 
                 if (emitter != null) {
@@ -112,7 +119,7 @@ public class PalladiumClientProxy extends PalladiumProxy {
     }
 
     @Override
-    public void applyShader(LivingEntity entity, ResourceLocation shader) {
+    public void applyShader(LivingEntity entity, Identifier shader) {
         var mc = Minecraft.getInstance();
 
         if (entity == mc.player) {
@@ -121,7 +128,7 @@ public class PalladiumClientProxy extends PalladiumProxy {
     }
 
     @Override
-    public void removeShader(LivingEntity entity, ResourceLocation shader) {
+    public void removeShader(LivingEntity entity, Identifier shader) {
         var mc = Minecraft.getInstance();
         var current = mc.gameRenderer.currentPostEffect();
 
@@ -131,7 +138,7 @@ public class PalladiumClientProxy extends PalladiumProxy {
     }
 
     @Override
-    public void playAbilitySound(AbilityInstance<?> abilityInstance, LivingEntity entity, ResourceLocation sound, float volume, float pitch, boolean playSelf) {
+    public void playAbilitySound(AbilityInstance<?> abilityInstance, LivingEntity entity, Identifier sound, float volume, float pitch, boolean playSelf) {
         if (!playSelf || Minecraft.getInstance().player == entity) {
             Minecraft.getInstance().getSoundManager().play(new AbilitySound(abilityInstance.getReference(), entity, sound, entity.getSoundSource(), volume, pitch));
         }

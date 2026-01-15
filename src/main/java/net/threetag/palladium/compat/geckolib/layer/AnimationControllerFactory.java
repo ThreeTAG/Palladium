@@ -6,9 +6,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animatable.processing.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.object.PlayState;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.constant.DefaultAnimations;
 
@@ -100,6 +100,7 @@ public class AnimationControllerFactory<T extends GeoAnimatable> {
             return name;
         }
 
+        // TODO overhaul
         public <T extends GeoAnimatable> AnimationController<T> createController(T animatable) {
             return switch (this) {
                 case LIVING -> DefaultAnimations.genericLivingController();
@@ -111,10 +112,8 @@ public class AnimationControllerFactory<T extends GeoAnimatable> {
                 case WALK -> DefaultAnimations.genericWalkController();
                 case WALK_OR_ELSE_IDLE -> DefaultAnimations.genericWalkIdleController();
                 case ATTACK -> new AnimationController<>("Attack", 5, state -> {
-                    if (Boolean.TRUE.equals(state.getDataOrDefault(DataTickets.SWINGING_ARM, false)))
-                        return state.setAndContinue(DefaultAnimations.ATTACK_SWING);
-
-                    state.controller().forceAnimationReset();
+                    if (state.getDataOrDefault(DataTickets.SWINGING_ARM, false))
+                        return state.setAndContinue(DefaultAnimations.ATTACK_PUNCH);
 
                     return PlayState.STOP;
                 });

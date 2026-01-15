@@ -3,7 +3,8 @@ package net.threetag.palladium.proxy;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.Entity;
@@ -19,6 +20,10 @@ import net.threetag.palladium.power.ability.AbilityInstance;
 import java.util.List;
 
 public class PalladiumProxy {
+
+    public void sendPacketToServer(CustomPacketPayload payload, CustomPacketPayload... payloads) {
+
+    }
 
     public void spawnEffectEntity(Entity anchor, EntityEffect entityEffect) {
 
@@ -45,23 +50,23 @@ public class PalladiumProxy {
         return false;
     }
 
-    public void spawnEnergyBeamParticles(Level level, Vec3 pos, ResourceLocation beamId) {
+    public void spawnEnergyBeamParticles(Level level, Vec3 pos, Identifier beamId) {
 
     }
 
-    public void spawnParticleEmitter(LivingEntity entity, List<ResourceLocation> particleEmitterIds, Holder<ParticleType<?>> particleTypeHolder, CompoundTag options) {
+    public void spawnParticleEmitter(LivingEntity entity, List<Identifier> particleEmitterIds, Holder<ParticleType<?>> particleTypeHolder, CompoundTag options) {
 
     }
 
-    public void applyShader(LivingEntity entity, ResourceLocation shader) {
+    public void applyShader(LivingEntity entity, Identifier shader) {
 
     }
 
-    public void removeShader(LivingEntity entity, ResourceLocation shader) {
+    public void removeShader(LivingEntity entity, Identifier shader) {
 
     }
 
-    public void playAbilitySound(AbilityInstance<?> abilityInstance, LivingEntity entity, ResourceLocation sound, float volume, float pitch, boolean playSelf) {
+    public void playAbilitySound(AbilityInstance<?> abilityInstance, LivingEntity entity, Identifier sound, float volume, float pitch, boolean playSelf) {
 
     }
 

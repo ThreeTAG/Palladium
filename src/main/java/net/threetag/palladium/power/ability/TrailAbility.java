@@ -3,7 +3,7 @@ package net.threetag.palladium.power.ability;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 
@@ -13,13 +13,13 @@ public class TrailAbility extends Ability {
 
     public static final MapCodec<TrailAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    ResourceLocation.CODEC.fieldOf("trail").forGetter(ab -> ab.trailRendererId),
+                    Identifier.CODEC.fieldOf("trail").forGetter(ab -> ab.trailRendererId),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
             ).apply(instance, TrailAbility::new));
 
-    public final ResourceLocation trailRendererId;
+    public final Identifier trailRendererId;
 
-    public TrailAbility(ResourceLocation trailRendererId, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
+    public TrailAbility(Identifier trailRendererId, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
         super(properties, conditions, energyBarUsages);
         this.trailRendererId = trailRendererId;
     }
@@ -39,8 +39,8 @@ public class TrailAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, TrailAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("An ability that renders a trail behind the entity.")
-                    .add("trail", TYPE_RESOURCE_LOCATION, "The id of the trail renderer to use. Trail files are located in \"assets/namespace/palladium/trails\".")
-                    .setExampleObject(new TrailAbility(ResourceLocation.fromNamespaceAndPath("example", "trail_id"), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .add("trail", TYPE_IDENTIFIER, "The id of the trail renderer to use. Trail files are located in \"assets/namespace/palladium/trails\".")
+                    .setExampleObject(new TrailAbility(Identifier.fromNamespaceAndPath("example", "trail_id"), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

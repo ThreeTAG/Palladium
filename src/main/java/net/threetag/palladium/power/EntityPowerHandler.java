@@ -7,7 +7,7 @@ import com.zigythebird.playeranim.animation.PlayerAnimationController;
 import com.zigythebird.playeranim.api.PlayerAnimationAccess;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -27,14 +27,14 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
             CompoundTag.CODEC.optionalFieldOf("power_data", new CompoundTag()).forGetter(EntityPowerHandler::savePowerDataTag)
     ).apply(instance, EntityPowerHandler::new));
 
-    private final Map<ResourceLocation, PowerHolder> powers = new LinkedHashMap<>();
+    private final Map<Identifier, PowerHolder> powers = new LinkedHashMap<>();
     private CompoundTag powerData;
 
     public EntityPowerHandler(CompoundTag powerData) {
         this.powerData = powerData;
     }
 
-    public Map<ResourceLocation, PowerHolder> getPowerHolders() {
+    public Map<Identifier, PowerHolder> getPowerHolders() {
         return ImmutableMap.copyOf(this.powers);
     }
 
@@ -117,7 +117,7 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
     }
 
     public void removePowerHolder(Holder<Power> power) {
-        var powerId = power.unwrapKey().orElseThrow().location();
+        var powerId = power.unwrapKey().orElseThrow().identifier();
         if (this.powers.containsKey(powerId)) {
             var holder = this.powers.get(powerId);
             boolean hasPersistentData = holder.getPower().value().hasPersistentData();
@@ -135,11 +135,11 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
         }
     }
 
-    public PowerHolder getPowerHolder(ResourceLocation powerId) {
+    public PowerHolder getPowerHolder(Identifier powerId) {
         return this.powers.get(powerId);
     }
 
-    public boolean hasPower(ResourceLocation powerId) {
+    public boolean hasPower(Identifier powerId) {
         return this.powers.containsKey(powerId);
     }
 
@@ -154,7 +154,7 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
     public void cleanPowerData() {
         List<String> toRemove = new ArrayList<>();
         for (String key : this.powerData.keySet()) {
-            if (!this.getEntity().registryAccess().lookupOrThrow(PalladiumRegistryKeys.POWER).containsKey(ResourceLocation.parse(key))) {
+            if (!this.getEntity().registryAccess().lookupOrThrow(PalladiumRegistryKeys.POWER).containsKey(Identifier.parse(key))) {
                 toRemove.add(key);
             }
         }

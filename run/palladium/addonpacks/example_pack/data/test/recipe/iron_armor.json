@@ -1,0 +1,20 @@
+{
+  "type": "palladium:item_tailoring",
+  "results": {
+    "helmet": "minecraft:iron_helmet",
+    "chestplate": "minecraft:iron_chestplate",
+    "leggings": "minecraft:iron_leggings",
+    "boots": "minecraft:iron_boots"
+  },
+  "ingredients": [
+    {
+      "ingredient": "minecraft:iron_ingot",
+      "count": 24
+    }
+  ],
+  "tool": "#c:tools/shear",
+  "tool_icon": "palladium:container/slot/shears",
+  "title": "Iron Armor",
+  "category": "test:vanilla_armor",
+  "requires_unlocking": false
+}

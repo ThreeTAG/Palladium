@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 
@@ -27,7 +27,7 @@ public class AlphaMaskTransformer extends TextureTransformer {
 
     @Override
     public NativeImage transform(NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
-        var maskTexture = manager.getResourceOrThrow(ResourceLocation.parse(stringConverter.apply(this.maskLocation)));
+        var maskTexture = manager.getResourceOrThrow(Identifier.parse(stringConverter.apply(this.maskLocation)));
 
         try (InputStream inputStream = maskTexture.open()) {
             NativeImage overlay = NativeImage.read(inputStream);
@@ -77,7 +77,7 @@ public class AlphaMaskTransformer extends TextureTransformer {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<TextureTransformer, AlphaMaskTransformer> builder, HolderLookup.Provider provider) {
             builder.setName("Alpha Mask").setDescription("Applies an alpha mask to the texture.")
-                    .add("mask", TYPE_RESOURCE_LOCATION, "The location of the mask texture. Can use variables")
+                    .add("mask", TYPE_IDENTIFIER, "The location of the mask texture. Can use variables")
                     .setExampleObject(new AlphaMaskTransformer("example:mask"));
         }
     }

@@ -1,13 +1,13 @@
 package net.threetag.palladium.client.renderer.entity.layer.pack;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.EntityCustomizationHandler;
-import net.threetag.palladium.component.PalladiumDataComponents;
-import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.entity.PlayerSlot;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
@@ -35,17 +35,20 @@ public class PackRenderLayerProvider {
         // Customizations
         register((entity, lookup, layers) -> {
             if (entity instanceof LivingEntity living) {
+                var context = DataContext.forEntity(living);
                 var registry = entity.registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY);
                 var handler = EntityCustomizationHandler.get(living);
 
-                for (CustomizationCategory slot : registry) {
-                    var customization = handler.get(registry.wrapAsHolder(slot));
+                for (CustomizationCategory category : registry) {
+                    if (category.isVisible(context)) {
+                        var customization = handler.get(registry.wrapAsHolder(category));
 
-                    if (customization != null && (slot.hiddenByEquipment() == null || living.getItemBySlot(slot.hiddenByEquipment()).isEmpty())) {
-                        var layer = lookup.get(customization.value().getRenderLayerId(entity.registryAccess()));
+                        if (customization != null && (category.hiddenByEquipment() == null || living.getItemBySlot(category.hiddenByEquipment()).isEmpty())) {
+                            var layer = lookup.get(customization.value().getRenderLayerId(entity.registryAccess(), false));
 
-                        if (layer != null) {
-                            layers.accept(DataContext.forEntity(entity), layer);
+                            if (layer != null) {
+                                layers.accept(DataContext.forEntity(entity), layer);
+                            }
                         }
                     }
                 }
@@ -56,7 +59,7 @@ public class PackRenderLayerProvider {
         register((entity, lookup, layers) -> {
             if (entity instanceof LivingEntity living) {
                 for (var instance : AbilityUtil.getEnabledInstances(living)) {
-                    for (ResourceLocation layerId : instance.getAbility().getProperties().getRenderLayers()) {
+                    for (Identifier layerId : instance.getAbility().getProperties().getRenderLayers()) {
                         var layer = lookup.get(layerId);
                         if (layer != null) {
                             layers.accept(DataContext.forAbility(living, instance), layer);
@@ -76,7 +79,7 @@ public class PackRenderLayerProvider {
                         if (stack.has(PalladiumDataComponents.Items.RENDER_LAYERS.get())) {
                             var itemLayers = stack.get(PalladiumDataComponents.Items.RENDER_LAYERS.get());
 
-                            for (ResourceLocation layerId : Objects.requireNonNull(itemLayers).forSlot(slot)) {
+                            for (Identifier layerId : Objects.requireNonNull(itemLayers).forSlot(slot)) {
                                 var layer = lookup.get(layerId);
                                 if (layer != null) {
                                     layers.accept(DataContext.forItemInSlot(living, slot, stack), layer);
@@ -99,7 +102,7 @@ public class PackRenderLayerProvider {
     @FunctionalInterface
     public interface Lookup {
 
-        PackRenderLayer<?> get(ResourceLocation id);
+        PackRenderLayer<?> get(Identifier id);
 
     }
 

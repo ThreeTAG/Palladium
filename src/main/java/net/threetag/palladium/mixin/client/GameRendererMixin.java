@@ -2,7 +2,7 @@ package net.threetag.palladium.mixin.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.power.ability.ShaderEffectAbility;
 import org.jetbrains.annotations.Nullable;
@@ -21,10 +21,10 @@ public abstract class GameRendererMixin {
     private Minecraft minecraft;
 
     @Shadow
-    public abstract void setPostEffect(ResourceLocation postEffectId);
+    public abstract void setPostEffect(Identifier postEffectId);
 
     @Shadow
-    private @Nullable ResourceLocation postEffectId;
+    private @Nullable Identifier postEffectId;
 
     @Inject(method = "checkEntityPostEffect", at = @At("RETURN"))
     private void checkEntityPostEffect(Entity entity, CallbackInfo ci) {

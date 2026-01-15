@@ -3,8 +3,9 @@ package net.threetag.palladium.client.gui.screen.customization;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.tabs.GridLayoutTab;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.client.gui.component.tab.IconTab;
 import net.threetag.palladium.icon.Icon;
@@ -21,17 +22,13 @@ public class CustomizationCategoryTab extends GridLayoutTab implements IconTab {
     private final Icon icon;
     private final CustomizationsGrid grid;
 
-    public CustomizationCategoryTab(PlayerCustomizationScreen parent, CustomizationCategory slot) {
-        super(Component.translatable(CustomizationCategory.makeDescriptionId(slot, Minecraft.getInstance().level.registryAccess())));
+    public CustomizationCategoryTab(PlayerCustomizationScreen parent, Holder<CustomizationCategory> customizationCategory) {
+        super(Component.translatable(CustomizationCategory.makeDescriptionId(customizationCategory.value(), Minecraft.getInstance().level.registryAccess())));
         this.parent = parent;
-        this.transformation = slot.preview();
-        var id = Objects.requireNonNull(Minecraft.getInstance().level).registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY).getKey(slot);
-        this.icon = new TexturedIcon(ResourceLocation.fromNamespaceAndPath(Objects.requireNonNull(id).getNamespace(), "textures/gui/customization_categories/" + id.getPath() + ".png"));
-        this.layout.addChild(this.grid = new CustomizationsGrid(ScreenRectangle.empty(), slot, Minecraft.getInstance()), 0, 0, 1, 2);
-    }
-
-    public void tick(boolean gamePaused) {
-        this.grid.tick(gamePaused);
+        this.transformation = customizationCategory.value().preview();
+        var id = Objects.requireNonNull(Minecraft.getInstance().level).registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY).getKey(customizationCategory.value());
+        this.icon = new TexturedIcon(Identifier.fromNamespaceAndPath(Objects.requireNonNull(id).getNamespace(), "textures/gui/customization_categories/" + id.getPath() + ".png"));
+        this.layout.addChild(this.grid = new CustomizationsGrid(ScreenRectangle.empty(), customizationCategory, Minecraft.getInstance()), 0, 0, 1, 2);
     }
 
     @Override

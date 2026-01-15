@@ -1,6 +1,6 @@
 package net.threetag.palladium.client.beam;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.renderer.LaserRenderer;
 import net.threetag.palladium.client.util.PerspectiveValue;
@@ -13,10 +13,10 @@ import java.util.function.BiConsumer;
 
 public class PalladiumBeams {
 
-    public static final ResourceLocation SWINGING_WEB_RIGHT = Palladium.id("swinging/web_right");
-    public static final ResourceLocation SWINGING_WEB_LEFT = Palladium.id("swinging/web_left");
+    public static final Identifier SWINGING_WEB_RIGHT = Palladium.id("swinging/web_right");
+    public static final Identifier SWINGING_WEB_LEFT = Palladium.id("swinging/web_left");
 
-    public static void bootstrap(BiConsumer<ResourceLocation, BeamConfiguration> provider) {
+    public static void bootstrap(BiConsumer<Identifier, BeamConfiguration> provider) {
         provider.accept(SWINGING_WEB_RIGHT, new BeamConfiguration(Collections.singletonList(
                 new Beam(
                         "right_arm",

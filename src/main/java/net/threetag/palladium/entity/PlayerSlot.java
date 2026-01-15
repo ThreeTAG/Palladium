@@ -3,7 +3,7 @@ package net.threetag.palladium.entity;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -53,7 +53,7 @@ public abstract class PlayerSlot {
     }
 
     public static Collection<PlayerSlot> values(Level level) {
-        for (ResourceLocation slot : AccessoriesCompat.INSTANCE.getSlots(level)) {
+        for (Identifier slot : AccessoriesCompat.INSTANCE.getSlots(level)) {
             var slotName = "accessories#" + slot;
             get(slotName);
         }

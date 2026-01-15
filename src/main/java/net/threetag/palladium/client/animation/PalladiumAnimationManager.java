@@ -4,7 +4,7 @@ import com.zigythebird.playeranim.animation.PlayerAnimationController;
 import com.zigythebird.playeranim.api.PlayerAnimationFactory;
 import com.zigythebird.playeranimcore.enums.PlayState;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -17,14 +17,14 @@ import java.util.Map;
 
 public class PalladiumAnimationManager extends SimpleJsonResourceReloadListener<PalladiumAnimation> {
 
-    public static final ResourceLocation ID = Palladium.id("animations");
+    public static final Identifier ID = Palladium.id("animations");
     public static final PalladiumAnimationManager INSTANCE = new PalladiumAnimationManager();
 
-    public static final ResourceLocation COSMETIC_ANIMATION = Palladium.id("cosmetic_animation");
-    public static final ResourceLocation IDLE_ANIMATION = Palladium.id("idle_animation");
-    public static final ResourceLocation ACTIVE_ANIMATION = Palladium.id("active_animation");
+    public static final Identifier COSMETIC_ANIMATION = Palladium.id("cosmetic_animation");
+    public static final Identifier IDLE_ANIMATION = Palladium.id("idle_animation");
+    public static final Identifier ACTIVE_ANIMATION = Palladium.id("active_animation");
 
-    private final Map<ResourceLocation, PalladiumAnimation> byName = new HashMap<>();
+    private final Map<Identifier, PalladiumAnimation> byName = new HashMap<>();
 
     public PalladiumAnimationManager() {
         super(PalladiumAnimation.CODEC, FileToIdConverter.json("palladium/animations"));
@@ -43,13 +43,13 @@ public class PalladiumAnimationManager extends SimpleJsonResourceReloadListener<
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, PalladiumAnimation> objects, ResourceManager resourceManager, ProfilerFiller profiler) {
+    protected void apply(Map<Identifier, PalladiumAnimation> objects, ResourceManager resourceManager, ProfilerFiller profiler) {
         this.byName.clear();
         this.byName.putAll(objects);
         AddonPackLog.info("Loaded " + objects.size() + " animations");
     }
 
-    public PalladiumAnimation get(ResourceLocation id) {
+    public PalladiumAnimation get(Identifier id) {
         return this.byName.get(id);
     }
 }

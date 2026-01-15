@@ -3,7 +3,7 @@ package net.threetag.palladium.attachment;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.StringRepresentable;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +31,7 @@ public final class PackAttachmentBuilder<T> {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public AttachmentType<T> build(ResourceLocation id) {
+    public AttachmentType<T> build(Identifier id) {
         Codec<T> codec = this.codec.codec();
         Supplier<T> defaultSupplier = this.codec.defaultSupplier();
         AttachmentType.Builder<T> builder = AttachmentType.builder(defaultSupplier).serialize(codec.fieldOf(id.toString()));

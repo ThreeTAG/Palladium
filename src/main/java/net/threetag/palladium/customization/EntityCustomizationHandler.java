@@ -1,5 +1,6 @@
 package net.threetag.palladium.customization;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -32,6 +33,11 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
     public EntityCustomizationHandler(Map<Holder<CustomizationCategory>, Holder<Customization>> selected, List<Holder<Customization>> unlocked) {
         this.selected = new HashMap<>(selected);
         this.unlocked = new ArrayList<>(unlocked);
+    }
+
+    @Override
+    protected void init() {
+        this.validateSelected();
     }
 
     public boolean unlock(Holder<Customization> customizationHolder) {
@@ -116,6 +122,10 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
     }
 
     public void unselect(Holder<CustomizationCategory> categoryHolder) {
+        if (categoryHolder.value().requiresSelection()) {
+            return;
+        }
+
         this.selected.remove(categoryHolder);
 
         if (!this.getEntity().level().isClientSide()) {
@@ -158,7 +168,23 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
             this.unlocked.addAll(newUnlocked);
 
             PacketDistributor.sendToPlayer(serverPlayer, new SyncUnlockedCustomizationsPacket(this.unlocked));
+
+            for (Holder<Customization> customizationHolder : ImmutableList.copyOf(this.getSelected())) {
+                if (!this.isUnlocked(customizationHolder)) {
+                    this.unselect(customizationHolder.value().getCategory(this.registryAccess()));
+                }
+            }
         }
+    }
+
+    private void validateSelected() {
+        this.registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY).asHolderIdMap().forEach(holder -> {
+            if (holder.value().requiresSelection()) {
+                if (!this.selected.containsKey(holder)) {
+                    this.select(holder.value().getDefaultValue(this.registryAccess()));
+                }
+            }
+        });
     }
 
     @Override

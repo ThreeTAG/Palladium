@@ -26,7 +26,9 @@ public class PalladiumNetwork {
         registrar.playToServer(AbilityClickedPacket.TYPE, AbilityClickedPacket.STREAM_CODEC, AbilityClickedPacket::handle);
         registrar.playToServer(BuyAbilityPacket.TYPE, BuyAbilityPacket.STREAM_CODEC, BuyAbilityPacket::handle);
         registrar.playToServer(SelectCustomizationPacket.TYPE, SelectCustomizationPacket.STREAM_CODEC, SelectCustomizationPacket::handle);
+        registrar.playToServer(UnselectCustomizationPacket.TYPE, UnselectCustomizationPacket.STREAM_CODEC, UnselectCustomizationPacket::handle);
         registrar.playToServer(ToggleEntityFlightPacket.TYPE, ToggleEntityFlightPacket.STREAM_CODEC, ToggleEntityFlightPacket::handle);
+        registrar.playToServer(TailoringCraftPacket.TYPE, TailoringCraftPacket.STREAM_CODEC, TailoringCraftPacket::handle);
 
         registrar.playToClient(SyncEntityPowersPacket.TYPE, SyncEntityPowersPacket.STREAM_CODEC, SyncEntityPowersPacket::handle);
         registrar.playToClient(SyncAbilityComponentPacket.TYPE, SyncAbilityComponentPacket.STREAM_CODEC, SyncAbilityComponentPacket::handle);
@@ -37,5 +39,6 @@ public class PalladiumNetwork {
         registrar.playToClient(SyncEntityUnselectCustomizationPacket.TYPE, SyncEntityUnselectCustomizationPacket.STREAM_CODEC, SyncEntityUnselectCustomizationPacket::handle);
         registrar.playToClient(SyncUnlockedCustomizationsPacket.TYPE, SyncUnlockedCustomizationsPacket.STREAM_CODEC, SyncUnlockedCustomizationsPacket::handle);
         registrar.playToClient(SyncSwingAnchorPacket.TYPE, SyncSwingAnchorPacket.STREAM_CODEC, SyncSwingAnchorPacket::handle);
+        registrar.playToClient(SyncAvailableTailoringRecipesPacket.TYPE, SyncAvailableTailoringRecipesPacket.STREAM_CODEC, SyncAvailableTailoringRecipesPacket::handle);
     }
 }

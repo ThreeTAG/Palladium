@@ -5,8 +5,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.loading.FMLPaths;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.util.Utils;
@@ -24,7 +24,7 @@ public class CodecDocumentationBuilder<T, R extends T> {
 
     public static final String DOCUMENTATION_FOLDER = "palladium/documentation";
     public static final String FOLDER = DOCUMENTATION_FOLDER + "/export";
-    private static Map<ResourceLocation, List<JsonElement>> LISTENER;
+    private static Map<Identifier, List<JsonElement>> LISTENER;
 
     private final MapCodec<R> mapCodec;
     private final Codec<T> mainCodec;
@@ -117,10 +117,10 @@ public class CodecDocumentationBuilder<T, R extends T> {
     }
 
     public JsonObject build(ResourceKey<?> id) {
-        return this.build(id.registry(), id.location());
+        return this.build(id.registry(), id.identifier());
     }
 
-    public JsonObject build(ResourceLocation type, ResourceLocation id) {
+    public JsonObject build(Identifier type, Identifier id) {
         var json = new JsonObject();
 
         json.addProperty("namespace", id.getNamespace());
@@ -162,7 +162,7 @@ public class CodecDocumentationBuilder<T, R extends T> {
         return json;
     }
 
-    public void addToHtml(HTMLBuilder.HTMLObject div, @Nullable ResourceLocation id) {
+    public void addToHtml(HTMLBuilder.HTMLObject div, @Nullable Identifier id) {
         if (this.name != null && !this.name.isEmpty()) {
             var heading = HTMLBuilder.subHeading(this.name);
             if (id != null) {
@@ -199,7 +199,7 @@ public class CodecDocumentationBuilder<T, R extends T> {
         LISTENER = new HashMap<>();
     }
 
-    public static void addToDocs(ResourceLocation type, JsonElement jsonElement) {
+    public static void addToDocs(Identifier type, JsonElement jsonElement) {
         if (LISTENER != null) {
             LISTENER.computeIfAbsent(type, k -> new ArrayList<>()).add(jsonElement);
         }
@@ -214,8 +214,8 @@ public class CodecDocumentationBuilder<T, R extends T> {
         }
     }
 
-    public static void createDocFiles(Map<ResourceLocation, List<JsonElement>> generated) {
-        for (Map.Entry<ResourceLocation, List<JsonElement>> e : generated.entrySet()) {
+    public static void createDocFiles(Map<Identifier, List<JsonElement>> generated) {
+        for (Map.Entry<Identifier, List<JsonElement>> e : generated.entrySet()) {
             try {
                 var jsonArray = new JsonArray();
                 for (JsonElement j : e.getValue()) {

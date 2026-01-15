@@ -3,24 +3,24 @@ package net.threetag.palladium.client.texture;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 
 public class StaticTexture extends DynamicTexture {
 
     public static final MapCodec<StaticTexture> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ResourceLocation.CODEC.fieldOf("texture").forGetter(t -> t.texture)
+            Identifier.CODEC.fieldOf("texture").forGetter(t -> t.texture)
     ).apply(instance, StaticTexture::new));
 
-    public final ResourceLocation texture;
+    public final Identifier texture;
 
-    public StaticTexture(ResourceLocation texture) {
+    public StaticTexture(Identifier texture) {
         this.texture = texture;
     }
 
     @Override
-    public ResourceLocation getTexture(DataContext context) {
+    public Identifier getTexture(DataContext context) {
         return this.texture;
     }
 
@@ -39,8 +39,8 @@ public class StaticTexture extends DynamicTexture {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<DynamicTexture, StaticTexture> builder, HolderLookup.Provider provider) {
             builder.setName("Static Texture").setDescription("Simple, static texture that does not change.")
-                    .add("texture", TYPE_RESOURCE_LOCATION, "The texture to use.")
-                    .setExampleObject(new StaticTexture(ResourceLocation.fromNamespaceAndPath("example", "textures/example.png")));
+                    .add("texture", TYPE_IDENTIFIER, "The texture to use.")
+                    .setExampleObject(new StaticTexture(Identifier.fromNamespaceAndPath("example", "textures/example.png")));
         }
     }
 }

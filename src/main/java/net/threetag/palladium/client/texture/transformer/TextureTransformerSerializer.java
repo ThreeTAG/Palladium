@@ -7,7 +7,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.Documented;
 
@@ -15,17 +15,17 @@ import java.util.Map;
 
 public abstract class TextureTransformerSerializer<T extends TextureTransformer> implements Documented<TextureTransformer, T> {
 
-    private static final BiMap<ResourceLocation, TextureTransformerSerializer<?>> TYPES = HashBiMap.create();
+    private static final BiMap<Identifier, TextureTransformerSerializer<?>> TYPES = HashBiMap.create();
 
-    public static final Codec<TextureTransformerSerializer<?>> TYPE_CODEC = ResourceLocation.CODEC.flatXmap(resourceLocation -> {
-        TextureTransformerSerializer<?> serializer = TYPES.get(resourceLocation);
-        return serializer != null ? DataResult.success(serializer) : DataResult.error(() -> "Unknown type " + resourceLocation);
+    public static final Codec<TextureTransformerSerializer<?>> TYPE_CODEC = Identifier.CODEC.flatXmap(identifier -> {
+        TextureTransformerSerializer<?> serializer = TYPES.get(identifier);
+        return serializer != null ? DataResult.success(serializer) : DataResult.error(() -> "Unknown type " + identifier);
     }, serializer -> {
-        ResourceLocation resourceLocation = TYPES.inverse().get(serializer);
-        return serializer != null ? DataResult.success(resourceLocation) : DataResult.error(() -> "Unknown type " + resourceLocation);
+        Identifier identifier = TYPES.inverse().get(serializer);
+        return serializer != null ? DataResult.success(identifier) : DataResult.error(() -> "Unknown type " + identifier);
     });
 
-    public static <T extends TextureTransformer> TextureTransformerSerializer<T> register(ResourceLocation id, TextureTransformerSerializer<T> serializer) {
+    public static <T extends TextureTransformer> TextureTransformerSerializer<T> register(Identifier id, TextureTransformerSerializer<T> serializer) {
         if (TYPES.containsKey(id)) {
             throw new IllegalStateException("Duplicate registration for texture transformer serializer: " + id);
         }
@@ -34,7 +34,7 @@ public abstract class TextureTransformerSerializer<T extends TextureTransformer>
         return serializer;
     }
 
-    public static Map<ResourceLocation, TextureTransformerSerializer<?>> getTypes() {
+    public static Map<Identifier, TextureTransformerSerializer<?>> getTypes() {
         return ImmutableMap.copyOf(TYPES);
     }
 

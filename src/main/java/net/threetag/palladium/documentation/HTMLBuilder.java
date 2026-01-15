@@ -3,8 +3,8 @@ package net.threetag.palladium.documentation;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLPaths;
 import net.threetag.palladium.Palladium;
@@ -22,18 +22,18 @@ import java.util.stream.Collectors;
 
 public class HTMLBuilder {
 
-    public final ResourceLocation id;
+    public final Identifier id;
     public final String title;
     private HTMLObject html;
     private HTMLObject head;
     private HTMLObject body;
     private boolean hasJson = false;
 
-    public HTMLBuilder(ResourceLocation id, String title) {
+    public HTMLBuilder(Identifier id, String title) {
         this(id, title, "https://i.imgur.com/3sx4xJf.png");
     }
 
-    public HTMLBuilder(ResourceLocation id, String title, String favicon) {
+    public HTMLBuilder(Identifier id, String title, String favicon) {
         this.id = id;
         this.title = title;
         this.init(favicon);
@@ -64,7 +64,7 @@ public class HTMLBuilder {
         return this;
     }
 
-    public static <T extends Documented<?, ?>> HTMLBuilder documentedPage(ResourceLocation location, Map<ResourceLocation, T> values, String title, HolderLookup.Provider provider) {
+    public static <T extends Documented<?, ?>> HTMLBuilder documentedPage(Identifier location, Map<Identifier, T> values, String title, HolderLookup.Provider provider) {
         HTMLBuilder builder = new HTMLBuilder(location, title);
         builder.add(HTMLBuilder.heading(title))
                 .addDocumentationSettings(values.entrySet().stream()
@@ -78,30 +78,30 @@ public class HTMLBuilder {
     }
 
     public static <T extends Documented<?, ?>> HTMLBuilder documentedPage(ResourceKey<? extends Registry<T>> registryKey, Registry<T> registry, String title, HolderLookup.Provider provider) {
-        HTMLBuilder builder = new HTMLBuilder(registryKey.location(), title);
+        HTMLBuilder builder = new HTMLBuilder(registryKey.identifier(), title);
         builder.add(HTMLBuilder.heading(title))
                 .addDocumentationSettings(registry.entrySet().stream()
-                        .collect(Collectors.toMap(entry -> entry.getKey().location(),
+                        .collect(Collectors.toMap(entry -> entry.getKey().identifier(),
                                 entry -> {
                                     var doc = entry.getValue().getDocumentation(provider);
-                                    CodecDocumentationBuilder.addToDocs(registryKey.location(), doc.build(entry.getKey()));
+                                    CodecDocumentationBuilder.addToDocs(registryKey.identifier(), doc.build(entry.getKey()));
                                     return doc;
                                 })));
         return builder;
     }
 
-    public static HTMLObject documented(CodecDocumentationBuilder<?, ?> builder, @Nullable ResourceLocation id) {
+    public static HTMLObject documented(CodecDocumentationBuilder<?, ?> builder, @Nullable Identifier id) {
         HTMLObject div = div();
         builder.addToHtml(div, id);
         return div;
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    public HTMLBuilder addDocumentationSettings(Map<ResourceLocation, CodecDocumentationBuilder<?, ?>> settings) {
-        Map<String, List<Pair<ResourceLocation, CodecDocumentationBuilder<?, ?>>>> sorted = new HashMap<>();
+    public HTMLBuilder addDocumentationSettings(Map<Identifier, CodecDocumentationBuilder<?, ?>> settings) {
+        Map<String, List<Pair<Identifier, CodecDocumentationBuilder<?, ?>>>> sorted = new HashMap<>();
 
         // Sort abilities by mods
-        for (Map.Entry<ResourceLocation, CodecDocumentationBuilder<?, ?>> e : settings.entrySet()) {
+        for (Map.Entry<Identifier, CodecDocumentationBuilder<?, ?>> e : settings.entrySet()) {
             var mod = ModList.get().getModContainerById(e.getKey().getNamespace()).orElse(null);
             String modName = mod != null ? mod.getModInfo().getDisplayName() : e.getKey().getNamespace();
             var list = sorted.computeIfAbsent(modName, x -> new ArrayList<>());

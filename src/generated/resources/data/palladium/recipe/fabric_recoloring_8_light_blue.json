@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "dye_fabrics",
+  "ingredients": [
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#palladium:fabrics",
+    "#c:dyes/light_blue"
+  ],
+  "result": {
+    "count": 8,
+    "id": "palladium:light_blue_fabric"
+  }
+}

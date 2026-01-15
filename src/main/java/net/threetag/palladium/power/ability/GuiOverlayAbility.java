@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.phys.Vec2;
 import net.threetag.palladium.client.texture.TextureReference;
@@ -69,7 +69,7 @@ public class GuiOverlayAbility extends Ability {
                     .addOptional("rotate", TYPE_FLOAT, "The rotation of the texture.", 0F)
                     .addOptional("scale", TYPE_VECTOR2, "The scale of the texture.", Vec2.ONE)
                     .add("alignment", SettingType.enumList(ScreenElementAlignment.values()), "Determines how the image is aligned on the screen.")
-                    .setExampleObject(new GuiOverlayAbility(TextureReference.normal(ResourceLocation.withDefaultNamespace("textures/gui/presets/isles.png")), 256, 256, Vec2.ZERO, 0, Vec2.ONE, ScreenElementAlignment.TOP_LEFT, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .setExampleObject(new GuiOverlayAbility(TextureReference.normal(Identifier.withDefaultNamespace("textures/gui/presets/isles.png")), 256, 256, Vec2.ZERO, 0, Vec2.ONE, ScreenElementAlignment.TOP_LEFT, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 

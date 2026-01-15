@@ -77,6 +77,12 @@
       "properties": {
         "render_layer": "test:alpha_mask_test"
       }
+    },
+    "cape_test": {
+      "type": "palladium:dummy",
+      "properties": {
+        "render_layer": "test:cape_test"
+      }
     }
   }
 }

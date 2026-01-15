@@ -6,7 +6,7 @@ import com.zigythebird.playeranim.animation.PlayerAnimationController;
 import com.zigythebird.playeranim.api.PlayerAnimationAccess;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.client.animation.PalladiumAnimationManager;
@@ -67,7 +67,7 @@ public abstract class Ability {
 
     public Component getDisplayName() {
         Component title = this.properties.getTitle();
-        ResourceLocation id = PalladiumRegistries.ABILITY_SERIALIZER.getKey(this.getSerializer());
+        Identifier id = PalladiumRegistries.ABILITY_SERIALIZER.getKey(this.getSerializer());
         return title != null ? title : Component.translatable("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath());
     }
 
@@ -80,9 +80,9 @@ public abstract class Ability {
     }
 
     public void triggerAnimation(LivingEntity entity, AbilityInstance<?> abilityInstance) {
-        Optional<ResourceLocation> animation = abilityInstance.getAbility().getProperties().getAnimation();
+        Optional<Identifier> animation = abilityInstance.getAbility().getProperties().getAnimation();
         if (entity instanceof Avatar && animation.isPresent()) {
-            ResourceLocation animationLayer = switch (abilityInstance.getAbility().getProperties().getAnimationLayer()) {
+            Identifier animationLayer = switch (abilityInstance.getAbility().getProperties().getAnimationLayer()) {
                 case 0 -> PalladiumAnimationManager.COSMETIC_ANIMATION;
                 case 1 -> PalladiumAnimationManager.IDLE_ANIMATION;
                 default -> PalladiumAnimationManager.ACTIVE_ANIMATION;

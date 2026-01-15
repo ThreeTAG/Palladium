@@ -3,11 +3,11 @@ package net.threetag.palladium.customization;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
@@ -42,7 +42,7 @@ public class BuiltinCustomization extends Customization {
     }
 
     @Override
-    public ResourceLocation getRenderLayerId(RegistryAccess registryAccess) {
+    public Identifier getRenderLayerId(RegistryAccess registryAccess, boolean preview) {
         return this.type.getRenderLayerId();
     }
 
@@ -70,15 +70,15 @@ public class BuiltinCustomization extends Customization {
         private final ResourceKey<CustomizationCategory> slot;
         private final Component title;
         public final SkinTypedValue<ModelLayerLocationCodec> model;
-        private final ResourceLocation renderLayerId;
+        private final Identifier renderLayerId;
 
         Type(String key, ResourceKey<CustomizationCategory> slot) {
             this.key = key;
             this.slot = slot;
             this.title = Component.translatable(Util.makeDescriptionId("customization", Palladium.id(this.key)));
             this.model = new SkinTypedValue<>(
-                    new ModelLayerLocationCodec(ResourceLocation.withDefaultNamespace("player"), "main"),
-                    new ModelLayerLocationCodec(ResourceLocation.withDefaultNamespace("player_slim"), "main")
+                    new ModelLayerLocationCodec(Identifier.withDefaultNamespace("player"), "main"),
+                    new ModelLayerLocationCodec(Identifier.withDefaultNamespace("player_slim"), "main")
             );
             this.renderLayerId = Palladium.id("customization/" + this.key);
         }
@@ -104,7 +104,7 @@ public class BuiltinCustomization extends Customization {
             return this.key;
         }
 
-        public ResourceLocation getRenderLayerId() {
+        public Identifier getRenderLayerId() {
             return this.renderLayerId;
         }
 

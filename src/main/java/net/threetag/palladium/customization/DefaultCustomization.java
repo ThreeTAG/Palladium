@@ -6,8 +6,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 import java.util.Objects;
@@ -17,20 +17,21 @@ public class DefaultCustomization extends Customization {
 
     public static final MapCodec<DefaultCustomization> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ComponentSerialization.CODEC.optionalFieldOf("name").forGetter(a -> Optional.ofNullable(a.customTitle)),
-            ResourceKey.codec(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY).fieldOf("slot").forGetter(a -> a.slot),
-            ResourceLocation.CODEC.optionalFieldOf("render_layer").forGetter(a -> Optional.ofNullable(a.renderLayer)),
+            ResourceKey.codec(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY).fieldOf("category").forGetter(a -> a.category),
+            PreviewableRenderLayerIdentifier.CODEC.optionalFieldOf("render_layer").forGetter(a -> Optional.ofNullable(a.renderLayer)),
             Codec.BOOL.optionalFieldOf("unlockable", false).forGetter(a -> a.unlockable)
     ).apply(instance, (t, s, r, u) ->
             new DefaultCustomization(t.orElse(null), s, r.orElse(null), u)));
 
     private final Component customTitle;
-    private final ResourceKey<CustomizationCategory> slot;
-    private final ResourceLocation renderLayer;
+    private final ResourceKey<CustomizationCategory> category;
+    private final PreviewableRenderLayerIdentifier renderLayer;
     private final boolean unlockable;
+    private Identifier cachedRenderLayerId;
 
-    public DefaultCustomization(Component customTitle, ResourceKey<CustomizationCategory> slot, ResourceLocation renderLayer, boolean unlockable) {
+    public DefaultCustomization(Component customTitle, ResourceKey<CustomizationCategory> category, PreviewableRenderLayerIdentifier renderLayer, boolean unlockable) {
         this.customTitle = customTitle;
-        this.slot = slot;
+        this.category = category;
         this.renderLayer = renderLayer;
         this.unlockable = unlockable;
     }
@@ -51,15 +52,19 @@ public class DefaultCustomization extends Customization {
 
     @Override
     public ResourceKey<CustomizationCategory> getCategoryKey() {
-        return this.slot;
+        return this.category;
     }
 
-    public ResourceLocation getRenderLayerId(RegistryAccess registryAccess) {
+    public Identifier getRenderLayerId(RegistryAccess registryAccess, boolean preview) {
         if (this.renderLayer != null) {
-            return this.renderLayer;
+            return this.renderLayer.get(preview);
         } else {
-            var id = registryAccess.lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION).getKey(this);
-            return Objects.requireNonNull(id).withPrefix("customization/");
+            if (this.cachedRenderLayerId == null) {
+                var id = registryAccess.lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION).getKey(this);
+                this.cachedRenderLayerId = Objects.requireNonNull(id).withPrefix("customization/");
+            }
+
+            return this.cachedRenderLayerId;
         }
     }
 

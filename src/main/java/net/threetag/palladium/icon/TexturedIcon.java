@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.util.PalladiumCodecs;
 
@@ -28,11 +28,11 @@ public record TexturedIcon(TextureReference texture, Color tint) implements Icon
         this(texture, Color.WHITE);
     }
 
-    public TexturedIcon(ResourceLocation texture) {
+    public TexturedIcon(Identifier texture) {
         this(texture, Color.WHITE);
     }
 
-    public TexturedIcon(ResourceLocation texture, Color tint) {
+    public TexturedIcon(Identifier texture, Color tint) {
         this(TextureReference.normal(texture), tint);
     }
 

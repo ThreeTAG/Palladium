@@ -7,7 +7,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
@@ -25,7 +25,7 @@ public abstract class AvatarRendererMixin<AvatarlikeEntity extends Avatar & Clie
 
     @Inject(at = @At("RETURN"), method = "renderHand")
     private void renderHand(
-            PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, ResourceLocation skinTexture, ModelPart armPart, boolean renderSleeve, CallbackInfo ci
+            PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, Identifier skinTexture, ModelPart armPart, boolean renderSleeve, CallbackInfo ci
     ) {
         var player = Minecraft.getInstance().player;
         var l = PalladiumEntityData.get(player, PalladiumEntityDataTypes.RENDER_LAYERS.get());

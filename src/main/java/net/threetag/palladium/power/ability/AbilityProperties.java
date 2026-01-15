@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec2;
 import net.threetag.palladium.icon.Icon;
@@ -31,10 +31,10 @@ public class AbilityProperties {
             Codec.intRange(-1, Integer.MAX_VALUE).optionalFieldOf("list_index", -1).forGetter(AbilityProperties::getListIndex),
             PalladiumCodecs.VEC2_CODEC.optionalFieldOf("gui_position").forGetter(p -> Optional.ofNullable(p.guiPosition)),
             AnimationTimerSetting.CODEC.optionalFieldOf("animation_timer").forGetter(p -> Optional.ofNullable(p.animationTimerSetting)),
-            PalladiumCodecs.listOrPrimitive(ResourceLocation.CODEC).optionalFieldOf("render_layer", Collections.emptyList()).forGetter(p -> p.renderLayers),
+            PalladiumCodecs.listOrPrimitive(Identifier.CODEC).optionalFieldOf("render_layer", Collections.emptyList()).forGetter(p -> p.renderLayers),
             Codec.BOOL.optionalFieldOf("allow_dampening", true).forGetter(p -> p.allowDampening),
             Codec.intRange(0, 2).optionalFieldOf("animation_layer", 2).forGetter(AbilityProperties::getAnimationLayer),
-            ResourceLocation.CODEC.optionalFieldOf("animation").forGetter(AbilityProperties::getAnimation)
+            Identifier.CODEC.optionalFieldOf("animation").forGetter(AbilityProperties::getAnimation)
     ).apply(instance, (title, icon, desc, color, hiddenGui, hiddenBar, listIndex, guiPos, timer, renderLayers, allowDampening, animationLayer, animation) ->
             new AbilityProperties(title.orElse(null), icon, desc.orElse(null), color, hiddenGui, hiddenBar, listIndex, guiPos.orElse(null), timer.orElse(null), renderLayers, allowDampening, animationLayer, animation.orElse(null))));
 
@@ -47,10 +47,10 @@ public class AbilityProperties {
     private int listIndex = -1;
     private Vec2 guiPosition = null;
     private AnimationTimerSetting animationTimerSetting = null;
-    private List<ResourceLocation> renderLayers = Collections.emptyList();
+    private List<Identifier> renderLayers = Collections.emptyList();
     private boolean allowDampening = true;
     private int animationLayer = 2;
-    private ResourceLocation animation = null;
+    private Identifier animation = null;
 
     private AbilityProperties() {
 
@@ -58,8 +58,8 @@ public class AbilityProperties {
 
     private AbilityProperties(Component title, Icon icon, AbilityDescription description, AbilityColor color,
                               boolean hiddenInGUI, boolean hiddenInBar, int listIndex, Vec2 guiPosition,
-                              AnimationTimerSetting animationTimerSetting, List<ResourceLocation> renderLayers,
-                              boolean allowDampening, int animationLayer, ResourceLocation animation) {
+                              AnimationTimerSetting animationTimerSetting, List<Identifier> renderLayers,
+                              boolean allowDampening, int animationLayer, Identifier animation) {
         this.title = title;
         this.icon = icon;
         this.description = description;
@@ -125,12 +125,12 @@ public class AbilityProperties {
         return this;
     }
 
-    public AbilityProperties animation(ResourceLocation animation){
+    public AbilityProperties animation(Identifier animation){
         this.animation = animation;
         return this;
     }
 
-    public List<ResourceLocation> getRenderLayers() {
+    public List<Identifier> getRenderLayers() {
         return this.renderLayers;
     }
 
@@ -177,5 +177,5 @@ public class AbilityProperties {
 
     public int getAnimationLayer() { return this.animationLayer; }
 
-    public Optional<ResourceLocation> getAnimation() { return Optional.ofNullable(this.animation); }
+    public Optional<Identifier> getAnimation() { return Optional.ofNullable(this.animation); }
 }

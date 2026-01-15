@@ -3,8 +3,8 @@ package net.threetag.palladium.entity;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.Util;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Util;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -33,7 +33,7 @@ public class PalladiumHubData extends PalladiumEntityData<Player, PalladiumHubDa
     public static final MapCodec<PalladiumHubData> CODEC = MapCodec.unit(PalladiumHubData::new);
     private static final String BASE_URL = "https://squirrelcontrol.threetag.net/api/";
 
-    private final Set<ResourceLocation> unlockedCustomizations = new HashSet<>();
+    private final Set<Identifier> unlockedCustomizations = new HashSet<>();
     private boolean loaded = false;
 
     public void init() {
@@ -62,7 +62,7 @@ public class PalladiumHubData extends PalladiumEntityData<Player, PalladiumHubDa
         JsonArray data = GsonHelper.getAsJsonArray(json, "accessoires", new JsonArray());
 
         for (int i = 0; i < data.size(); i++) {
-            ResourceLocation id = ResourceLocation.parse(data.get(i).getAsString());
+            Identifier id = Identifier.parse(data.get(i).getAsString());
 
             if (id.getNamespace().equalsIgnoreCase("threecore")) {
                 id = Palladium.id(id.getPath());

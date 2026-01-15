@@ -1,36 +1,40 @@
 package net.threetag.palladium.logic.condition;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.attribute.EnvironmentAttributes;
+import net.minecraft.world.level.MoonPhase;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.util.PalladiumCodecs;
 
-public record MoonPhaseCondition(int min, int max) implements Condition {
+import java.util.List;
+
+public record MoonPhaseCondition(List<MoonPhase> moonPhases) implements Condition {
 
     public static final MapCodec<MoonPhaseCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
-                    Codec.intRange(0, 7).optionalFieldOf("min", 0).forGetter(MoonPhaseCondition::min),
-                    Codec.intRange(0, 7).optionalFieldOf("max", 7).forGetter(MoonPhaseCondition::max)
+                    PalladiumCodecs.listOrPrimitive(MoonPhase.CODEC).fieldOf("moon_phase").forGetter(c -> c.moonPhases)
             ).apply(instance, MoonPhaseCondition::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, MoonPhaseCondition> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, MoonPhaseCondition::min,
-            ByteBufCodecs.VAR_INT, MoonPhaseCondition::max,
+            PalladiumCodecs.MOON_PHASE_STREAM_CODEC.apply(ByteBufCodecs.list()), c -> c.moonPhases,
             MoonPhaseCondition::new
     );
 
     @Override
     public boolean test(DataContext context) {
         var level = context.getLevel();
+        var pos = context.getBlockPos();
 
-        if (level == null) {
+        if (level == null || pos == null) {
             return false;
         }
 
-        return level.getMoonPhase() >= this.min && level.getMoonPhase() <= this.max;
+        var moonPhase = level.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, pos);
+        return this.moonPhases().contains(moonPhase);
     }
 
     @Override

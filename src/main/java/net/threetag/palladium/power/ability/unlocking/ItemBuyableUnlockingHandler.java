@@ -14,12 +14,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.threetag.palladium.icon.IngredientIcon;
 import net.threetag.palladium.logic.condition.Condition;
 import net.threetag.palladium.logic.condition.TrueCondition;
-import net.threetag.palladium.util.PalladiumCodecs;
 
 public class ItemBuyableUnlockingHandler extends BuyableUnlockingHandler {
 
     public static final MapCodec<ItemBuyableUnlockingHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            PalladiumCodecs.INGREDIENT_CODEC.fieldOf("ingredient").forGetter(h -> h.ingredient),
+            Ingredient.CODEC.fieldOf("ingredient").forGetter(h -> h.ingredient),
             ExtraCodecs.POSITIVE_INT.optionalFieldOf("amount", 1).forGetter(h -> h.amount),
             Condition.CODEC.optionalFieldOf("conditions", TrueCondition.INSTANCE).forGetter(h -> h.condition)
     ).apply(instance, ItemBuyableUnlockingHandler::new));

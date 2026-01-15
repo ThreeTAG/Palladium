@@ -4,23 +4,23 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
 
 import java.util.List;
 
 public class RenderTypeRegistry {
 
-    private static final BiMap<ResourceLocation, RenderTypeFunction> RENDER_TYPES = HashBiMap.create();
-    public static final Codec<RenderTypeFunction> CODEC = ResourceLocation.CODEC.flatXmap(resourceLocation -> {
-        RenderTypeFunction layerSerializer = RENDER_TYPES.get(resourceLocation);
-        return layerSerializer != null ? DataResult.success(layerSerializer) : DataResult.error(() -> "Unknown type " + resourceLocation);
+    private static final BiMap<Identifier, RenderTypeFunction> RENDER_TYPES = HashBiMap.create();
+    public static final Codec<RenderTypeFunction> CODEC = Identifier.CODEC.flatXmap(identifier -> {
+        RenderTypeFunction layerSerializer = RENDER_TYPES.get(identifier);
+        return layerSerializer != null ? DataResult.success(layerSerializer) : DataResult.error(() -> "Unknown type " + identifier);
     }, layerSerializer -> {
-        ResourceLocation resourceLocation = RENDER_TYPES.inverse().get(layerSerializer);
-        return layerSerializer != null ? DataResult.success(resourceLocation) : DataResult.error(() -> "Unknown type " + resourceLocation);
+        Identifier identifier = RENDER_TYPES.inverse().get(layerSerializer);
+        return layerSerializer != null ? DataResult.success(identifier) : DataResult.error(() -> "Unknown type " + identifier);
     });
 
-    public static RenderTypeFunction register(ResourceLocation id, RenderTypeFunction function) {
+    public static RenderTypeFunction register(Identifier id, RenderTypeFunction function) {
         if (RENDER_TYPES.containsKey(id)) {
             throw new IllegalStateException("Duplicate registration for render type function: " + id);
         }
@@ -29,20 +29,20 @@ public class RenderTypeRegistry {
         return function;
     }
 
-    public static RenderTypeFunction get(ResourceLocation id) {
+    public static RenderTypeFunction get(Identifier id) {
         return RENDER_TYPES.get(id);
     }
 
-    public static ResourceLocation getKey(RenderTypeFunction function) {
+    public static Identifier getKey(RenderTypeFunction function) {
         return RENDER_TYPES.inverse().get(function);
     }
 
-    public static List<ResourceLocation> types() {
+    public static List<Identifier> types() {
         return List.copyOf(RENDER_TYPES.keySet());
     }
 
     // TODO keep MC namespace?
 
-    public static final RenderTypeFunction ENTITY_TRANSLUCENT = register(ResourceLocation.withDefaultNamespace("entity_translucent"), RenderType::entityTranslucent);
-    public static final RenderTypeFunction ENTITY_CUTOUT = register(ResourceLocation.withDefaultNamespace("entity_cutout"), RenderType::entityCutout);
+    public static final RenderTypeFunction ENTITY_TRANSLUCENT = register(Identifier.withDefaultNamespace("entity_translucent"), RenderTypes::entityTranslucent);
+    public static final RenderTypeFunction ENTITY_CUTOUT = register(Identifier.withDefaultNamespace("entity_cutout"), RenderTypes::entityCutout);
 }

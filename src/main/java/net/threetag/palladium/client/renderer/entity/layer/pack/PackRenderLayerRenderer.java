@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.threetag.palladium.client.renderer.entity.state.PalladiumRenderStateKeys;
 import net.threetag.palladium.client.util.PerspectiveAwareConditions;
 
-import java.util.Objects;
+import java.util.Collections;
 
 public class PackRenderLayerRenderer<S extends EntityRenderState, M extends EntityModel<? super S>> extends RenderLayer<S, M> {
 
@@ -18,9 +18,10 @@ public class PackRenderLayerRenderer<S extends EntityRenderState, M extends Enti
         super(renderer);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public void submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, S renderState, float yRot, float xRot) {
-        Objects.requireNonNull(renderState.getRenderData(PalladiumRenderStateKeys.RENDER_LAYERS)).forEach((layer, state) -> {
+        renderState.getRenderDataOrDefault(PalladiumRenderStateKeys.RENDER_LAYERS, Collections.emptyMap()).forEach((layer, state) -> {
             if (layer.shouldRender(state, PerspectiveAwareConditions.Perspective.THIRD_PERSON)) {
                 EntityModel model = this.getParentModel();
                 layer.submit(
