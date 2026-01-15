@@ -21,6 +21,10 @@ public record PreviewableRenderLayerIdentifier(Identifier main, Optional<Identif
     ).xmap(either -> either.map(p -> new PreviewableRenderLayerIdentifier(p, Optional.empty()), Function.identity()),
             previewable -> previewable.preview().isEmpty() ? Either.left(previewable.main()) : Either.right(previewable));
 
+    public PreviewableRenderLayerIdentifier(Identifier main) {
+        this(main, Optional.empty());
+    }
+
     public Identifier get(boolean preview) {
         if (preview && this.preview().isPresent()) {
             return this.preview().get();
