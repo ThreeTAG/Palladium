@@ -14,7 +14,7 @@ import net.minecraft.server.permissions.PermissionSet;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.util.ParsedCommands;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.logic.context.DataContextType;
+import net.threetag.palladium.logic.context.DataContextKeys;
 
 import java.util.Objects;
 
@@ -39,7 +39,7 @@ public record CommandResultCondition(ParsedCommands command, String comparison, 
 
     @Override
     public boolean test(DataContext context) {
-        var entity = context.get(DataContextType.ENTITY);
+        var entity = context.get(DataContextKeys.ENTITY);
 
         if (entity == null) {
             return false;

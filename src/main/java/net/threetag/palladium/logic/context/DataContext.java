@@ -2,6 +2,7 @@ package net.threetag.palladium.logic.context;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,7 +21,7 @@ import java.util.Map;
 
 public class DataContext {
 
-    private final Map<DataContextType<?>, Object> values = new HashMap<>();
+    private final Map<ContextKey<?>, Object> values = new HashMap<>();
 
     private DataContext() {
     }
@@ -31,29 +32,29 @@ public class DataContext {
 
     public static DataContext forEntity(Entity entity) {
         return create()
-                .with(DataContextType.ENTITY, entity)
-                .with(DataContextType.LEVEL, entity.level())
-                .with(DataContextType.BLOCK_POS, entity.blockPosition());
+                .with(DataContextKeys.ENTITY, entity)
+                .with(DataContextKeys.LEVEL, entity.level())
+                .with(DataContextKeys.BLOCK_POS, entity.blockPosition());
     }
 
     public static DataContext forItemInEquipmentSlot(LivingEntity entity, EquipmentSlot slot) {
-        return forEntity(entity).with(DataContextType.SLOT, PlayerSlot.get(slot)).with(DataContextType.ITEM, entity.getItemBySlot(slot));
+        return forEntity(entity).with(DataContextKeys.SLOT, PlayerSlot.get(slot)).with(DataContextKeys.ITEM, entity.getItemBySlot(slot));
     }
 
     public static DataContext forItemInSlot(LivingEntity entity, PlayerSlot slot, ItemStack stack) {
-        return forItem(entity, stack).with(DataContextType.SLOT, slot);
+        return forItem(entity, stack).with(DataContextKeys.SLOT, slot);
     }
 
     public static DataContext forItem(Entity entity, ItemStack stack) {
-        return forEntity(entity).with(DataContextType.ITEM, stack);
+        return forEntity(entity).with(DataContextKeys.ITEM, stack);
     }
 
     public static DataContext forPower(LivingEntity entity, PowerHolder powerHolder) {
         var context = forEntity(entity);
 
         if (powerHolder != null) {
-            context.with(DataContextType.POWER_HOLDER, powerHolder);
-            context.with(DataContextType.POWER, powerHolder.getPower());
+            context.with(DataContextKeys.POWER_HOLDER, powerHolder);
+            context.with(DataContextKeys.POWER, powerHolder.getPower());
         }
 
         return context;
@@ -63,25 +64,25 @@ public class DataContext {
         var context = forEntity(entity);
 
         if (abilityInstance != null) {
-            context.with(DataContextType.ABILITY_INSTANCE, abilityInstance);
-            context.with(DataContextType.POWER_HOLDER, abilityInstance.getHolder());
-            context.with(DataContextType.POWER, abilityInstance.getHolder().getPower());
+            context.with(DataContextKeys.ABILITY_INSTANCE, abilityInstance);
+            context.with(DataContextKeys.POWER_HOLDER, abilityInstance.getHolder());
+            context.with(DataContextKeys.POWER, abilityInstance.getHolder().getPower());
         }
 
         return context;
     }
 
-    public <T> DataContext with(DataContextType<T> type, T value) {
+    public <T> DataContext with(ContextKey<T> type, T value) {
         this.values.put(type, value);
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T get(DataContextType<T> type) {
+    public <T> T get(ContextKey<T> type) {
         return (T) this.values.get(type);
     }
 
-    public boolean has(DataContextType<?> type) {
+    public boolean has(ContextKey<?> type) {
         return this.values.containsKey(type);
     }
 
@@ -93,7 +94,7 @@ public class DataContext {
 
     @Nullable
     public Entity getEntity() {
-        return this.get(DataContextType.ENTITY);
+        return this.get(DataContextKeys.ENTITY);
     }
 
     @Nullable
@@ -110,37 +111,37 @@ public class DataContext {
 
     @Nullable
     public BlockPos getBlockPos() {
-        return this.get(DataContextType.BLOCK_POS);
+        return this.get(DataContextKeys.BLOCK_POS);
     }
 
     @Nullable
     public Level getLevel() {
-        return this.get(DataContextType.LEVEL);
+        return this.get(DataContextKeys.LEVEL);
     }
 
     @NotNull
     public ItemStack getItem() {
-        return this.has(DataContextType.ITEM) ? this.get(DataContextType.ITEM) : ItemStack.EMPTY;
+        return this.has(DataContextKeys.ITEM) ? this.get(DataContextKeys.ITEM) : ItemStack.EMPTY;
     }
 
     @Nullable
     public PlayerSlot getSlot() {
-        return this.get(DataContextType.SLOT);
+        return this.get(DataContextKeys.SLOT);
     }
 
     @Nullable
     public AbilityInstance<?> getAbility() {
-        return this.get(DataContextType.ABILITY_INSTANCE);
+        return this.get(DataContextKeys.ABILITY_INSTANCE);
     }
 
     @Nullable
     public Holder<Power> getPower() {
-        return this.get(DataContextType.POWER);
+        return this.get(DataContextKeys.POWER);
     }
 
     @Nullable
     public PowerHolder getPowerHolder() {
-        return this.get(DataContextType.POWER_HOLDER);
+        return this.get(DataContextKeys.POWER_HOLDER);
     }
 
 }

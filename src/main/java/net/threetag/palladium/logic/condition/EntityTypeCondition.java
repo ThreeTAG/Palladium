@@ -9,7 +9,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.EntityType;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.logic.context.DataContextType;
+import net.threetag.palladium.logic.context.DataContextKeys;
 
 public record EntityTypeCondition(EntityType<?> entityType) implements Condition {
 
@@ -23,7 +23,7 @@ public record EntityTypeCondition(EntityType<?> entityType) implements Condition
 
     @Override
     public boolean test(DataContext context) {
-        var entity = context.get(DataContextType.ENTITY);
+        var entity = context.get(DataContextKeys.ENTITY);
 
         if (entity == null) {
             return false;

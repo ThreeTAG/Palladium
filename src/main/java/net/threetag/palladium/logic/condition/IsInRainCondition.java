@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.logic.context.DataContextType;
+import net.threetag.palladium.logic.context.DataContextKeys;
 
 public class IsInRainCondition implements Condition {
 
@@ -15,7 +15,7 @@ public class IsInRainCondition implements Condition {
 
     @Override
     public boolean test(DataContext context) {
-        var entity = context.get(DataContextType.ENTITY);
+        var entity = context.get(DataContextKeys.ENTITY);
 
         if (entity == null) {
             return false;
