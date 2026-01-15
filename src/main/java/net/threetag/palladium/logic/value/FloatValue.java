@@ -3,6 +3,7 @@ package net.threetag.palladium.logic.value;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.renderer.entity.PalladiumMoLangQuery;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
@@ -20,7 +21,7 @@ public abstract class FloatValue extends Value {
 
         if (this.molang != null && !this.molang.isEmpty() && !this.molang.isBlank()) {
             MochaEngine<?> mocha = MochaEngine.createStandard();
-            mocha.scope().set("query", JavaObjectBinding.of(PalladiumMoLangQuery.class, PalladiumMoLangQuery.INSTANCE, null));
+            mocha.scope().set(Palladium.MOD_ID, JavaObjectBinding.of(PalladiumMoLangQuery.class, PalladiumMoLangQuery.INSTANCE, null));
             this.function = mocha.compile(this.molang, ModifyFloatFunction.class);
         } else {
             this.function = null;

@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.StringRepresentable;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.renderer.entity.PalladiumMoLangQuery;
 import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.logic.context.DataContext;
@@ -27,7 +28,7 @@ public record PalladiumAnimation(Map<String, PartAnimation> animations) {
 
         if (!this.animations.isEmpty()) {
             MochaEngine<?> mocha = MochaEngine.createStandard();
-            mocha.scope().set("query", JavaObjectBinding.of(PalladiumMoLangQuery.class, PalladiumMoLangQuery.INSTANCE, null));
+            mocha.scope().set(Palladium.MOD_ID, JavaObjectBinding.of(PalladiumMoLangQuery.class, PalladiumMoLangQuery.INSTANCE, null));
             this.animations.values().forEach(partAnimation -> partAnimation.build(mocha));
         }
     }
