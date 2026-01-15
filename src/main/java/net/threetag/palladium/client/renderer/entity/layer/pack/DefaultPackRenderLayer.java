@@ -94,7 +94,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             }
             mimicModelParts(parentModel.root(), model.root());
 
-            this.animations.animate(model, context, partialTick);
+            this.animations.animate(model, context, state, state.partialTick);
 
             submitNodeCollector.submitModel(
                     model,
@@ -123,7 +123,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                 modelPart.skipDraw = false;
             }
 
-            this.animations.animate(parentModel, context, partialTick);
+            this.animations.animate(parentModel, context, state, state.partialTick);
 
             submitNodeCollector.submitModel(
                     parentModel,
@@ -173,12 +173,12 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                 return;
             }
 
-            this.animations.animate(model, context, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
+            this.animations.animate(model, context, null, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
         } else {
             armPart.visible = true;
             armPart.skipDraw = false;
 
-            this.animations.animate(playerRenderer.getModel(), context, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
+            this.animations.animate(playerRenderer.getModel(), context, null, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
         }
 
         submitNodeCollector.submitModelPart(armPart, poseStack,

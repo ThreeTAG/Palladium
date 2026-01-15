@@ -3,11 +3,14 @@ package net.threetag.palladium.client.animation;
 import com.mojang.serialization.Codec;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.renderer.entity.PalladiumMoLangQuery;
 import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.logic.context.DataContextKeys;
 import net.threetag.palladium.util.molang.ModifyFloatFunction;
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.mocha.MochaEngine;
@@ -33,8 +36,14 @@ public record PalladiumAnimation(Map<String, PartAnimation> animations) {
         }
     }
 
-    public void animate(Model<?> model, DataContext context, float partialTick) {
+    public void animate(Model<?> model, DataContext context, EntityRenderState renderState, float partialTick) {
         if (!this.animations.isEmpty()) {
+            if (renderState instanceof AvatarRenderState state) {
+                context.with(DataContextKeys.CAPE_X_ROT, -(6.0F + state.capeLean / 2.0F + state.capeFlap));
+                context.with(DataContextKeys.CAPE_Y_ROT, 180.0F - state.capeLean2 / 2.0F);
+                context.with(DataContextKeys.CAPE_Z_ROT, state.capeLean2 / -2.0F);
+            }
+
             PalladiumMoLangQuery.setContext(context, partialTick);
 
             this.animations.forEach((bone, animation) -> {
