@@ -3,9 +3,9 @@ package net.threetag.palladium.entity;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.util.Util;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -13,7 +13,6 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.customization.Customization;
-import net.threetag.palladium.customization.EntityCustomizationHandler;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
@@ -47,8 +46,9 @@ public class PalladiumHubData extends PalladiumEntityData<Player, PalladiumHubDa
                     Palladium.LOGGER.info("Successfully read user's palladium data! ({})", uuid);
                 } catch (Exception e) {
                     if (!FMLEnvironment.isProduction()) {
-                        Palladium.LOGGER.warn("Was not able to read user's palladium data! ({})", uuid.toString());
+                        Palladium.LOGGER.warn("Was not able to read user's palladium data! ({}) {}", uuid.toString(), e.getMessage());
                     }
+                    this.loaded = false;
                 }
             }, Util.backgroundExecutor()).join();
         }
@@ -76,7 +76,6 @@ public class PalladiumHubData extends PalladiumEntityData<Player, PalladiumHubDa
         }
 
         this.loaded = true;
-        EntityCustomizationHandler.get(this.getEntity()).validateUnlocked(this);
     }
 
     public boolean hasCustomizationUnlocked(Customization customization) {

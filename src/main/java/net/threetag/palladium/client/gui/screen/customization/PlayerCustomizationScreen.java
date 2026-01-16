@@ -12,8 +12,8 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.threetag.palladium.client.gui.component.tab.IconTabNavigationBar;
 import net.threetag.palladium.customization.CustomizationCategory;
+import net.threetag.palladium.customization.CustomizationHelper;
 import net.threetag.palladium.customization.CustomizationPreview;
-import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -49,12 +49,11 @@ public class PlayerCustomizationScreen extends Screen {
 
     private void addContents() {
         var tabBuilder = IconTabNavigationBar.builder(this.tabManager, this.width);
-        var context = DataContext.forEntity(Objects.requireNonNull(this.minecraft).player);
         var registry = Objects.requireNonNull(Objects.requireNonNull(this.minecraft).level).registryAccess()
                 .lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY);
 
         for (CustomizationCategory category : registry
-                .stream().filter(category -> category.isVisible(context))
+                .stream().filter(category -> CustomizationHelper.hasSelectableCustomization(this.minecraft.player, category))
                 .sorted(Comparator.comparingInt(CustomizationCategory::sortIndex)).toList()) {
             tabBuilder.addTab(new CustomizationCategoryTab(this, registry.wrapAsHolder(category)));
         }

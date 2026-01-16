@@ -37,6 +37,8 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
 
     @Override
     protected void init() {
+        if (this.getEntity() instanceof Player)
+            this.validateUnlocked(PalladiumHubData.get(this.getEntity(), PalladiumEntityDataTypes.PALLADIUM_HUB.get()));
         this.validateSelected();
     }
 

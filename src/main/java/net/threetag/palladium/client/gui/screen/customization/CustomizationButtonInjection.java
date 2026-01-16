@@ -17,6 +17,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.component.EditButton;
+import net.threetag.palladium.customization.CustomizationHelper;
 import org.joml.Vector2i;
 
 @EventBusSubscriber(modid = Palladium.MOD_ID, value = Dist.CLIENT)
@@ -30,7 +31,7 @@ public class CustomizationButtonInjection {
         if (pos != null && screen instanceof AbstractContainerScreen<?> gui) {
             Button button = new EditButton(gui.getGuiLeft() + pos.x, gui.getGuiTop() + pos.y, b -> Minecraft.getInstance().setScreen(new PlayerCustomizationScreen(screen)));
             button.setTooltip(Tooltip.create(Component.translatable(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY)));
-            button.active = Minecraft.getInstance().player != null;
+            button.active = screen.getMinecraft().player != null && CustomizationHelper.hasSelectableCustomization(screen.getMinecraft().player);
             screen.addRenderableWidget(button);
         }
     }
@@ -43,7 +44,8 @@ public class CustomizationButtonInjection {
         if (pos != null && screen instanceof AbstractContainerScreen<?> gui) {
             for (GuiEventListener child : e.getScreen().children()) {
                 if (child instanceof EditButton editButton) {
-                    editButton.visible = CreativeModeInventoryScreen.selectedTab == BuiltInRegistries.CREATIVE_MODE_TAB.getValue(CreativeModeTabs.INVENTORY);
+                    editButton.visible = !(screen instanceof CreativeModeInventoryScreen) || CreativeModeInventoryScreen.selectedTab == BuiltInRegistries.CREATIVE_MODE_TAB.getValue(CreativeModeTabs.INVENTORY);
+                    editButton.active = screen.getMinecraft().player != null && CustomizationHelper.hasSelectableCustomization(screen.getMinecraft().player);
                     editButton.setPosition(gui.getGuiLeft() + pos.x, gui.getGuiTop() + pos.y);
                 }
             }
@@ -51,9 +53,9 @@ public class CustomizationButtonInjection {
     }
 
     private static Vector2i getButtonPosition(Screen screen) {
-        if (screen instanceof InventoryScreen inv) {
+        if (screen instanceof InventoryScreen) {
             return new Vector2i(63, 66);
-        } else if (screen instanceof CreativeModeInventoryScreen inv) {
+        } else if (screen instanceof CreativeModeInventoryScreen) {
             return new Vector2i(93, 37);
         } else {
             return null;
