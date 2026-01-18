@@ -49,12 +49,6 @@ public class ConditionSerializers {
     public static final DeferredHolder<ConditionSerializer<?>, IsOnFireCondition.Serializer> IS_ON_FIRE = CONDITION_SERIALIZERS.register("is_on_fire", IsOnFireCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, IsSwimmingCondition.Serializer> IS_SWIMMING = CONDITION_SERIALIZERS.register("is_swimming", IsSwimmingCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, IsElytraFlyingCondition.Serializer> IS_ELYTRA_FLYING = CONDITION_SERIALIZERS.register("is_elytra_flying", IsElytraFlyingCondition.Serializer::new);
-//    public static final DeferredHolder<ConditionSerializer<?>, IsHoveringCondition.Serializer> IS_HOVERING = CONDITION_SERIALIZERS.register("is_hovering", IsHoveringCondition.Serializer::new);
-//    public static final DeferredHolder<ConditionSerializer<?>, IsFlyingCondition.Serializer> IS_FLYING = CONDITION_SERIALIZERS.register("is_flying", IsFlyingCondition.Serializer::new);
-//    public static final DeferredHolder<ConditionSerializer<?>, IsLevitatingCondition.Serializer> IS_LEVITATING = CONDITION_SERIALIZERS.register("is_levitating", IsLevitatingCondition.Serializer::new);
-//    public static final DeferredHolder<ConditionSerializer<?>, IsFastFlyingCondition.Serializer> IS_FAST_FLYING = CONDITION_SERIALIZERS.register("is_fast_flying", IsFastFlyingCondition.Serializer::new);
-//    public static final DeferredHolder<ConditionSerializer<?>, IsHoveringOrFlyingCondition.Serializer> IS_HOVERING_OR_FLYING = CONDITION_SERIALIZERS.register("is_hovering_or_flying", IsHoveringOrFlyingCondition.Serializer::new);
-//    public static final DeferredHolder<ConditionSerializer<?>, IsHoveringOrLevitatingCondition.Serializer> IS_HOVERING_OR_LEVITATING = CONDITION_SERIALIZERS.register("is_hovering_or_levitating", IsHoveringOrLevitatingCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, InWaterCondition.Serializer> IN_WATER = CONDITION_SERIALIZERS.register("in_water", InWaterCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, InLavaCondition.Serializer> IN_LAVA = CONDITION_SERIALIZERS.register("in_lava", InLavaCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, IsUnderWaterCondition.Serializer> IS_UNDER_WATER = CONDITION_SERIALIZERS.register("is_under_water", IsUnderWaterCondition.Serializer::new);
@@ -66,5 +60,6 @@ public class ConditionSerializers {
     public static final DeferredHolder<ConditionSerializer<?>, EnergyBarCondition.Serializer> ENERGY_BAR = CONDITION_SERIALIZERS.register("energy_bar", EnergyBarCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, SmallArmsCondition.Serializer> SMALL_ARMS = CONDITION_SERIALIZERS.register("small_arms", SmallArmsCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, EntityScaleCondition.Serializer> ENTITY_SCALE = CONDITION_SERIALIZERS.register("entity_scale", EntityScaleCondition.Serializer::new);
+    public static final DeferredHolder<ConditionSerializer<?>, IsUsingFlightTypeCondition.Serializer> IS_USING_FLIGHT_TYPE = CONDITION_SERIALIZERS.register("is_using_flight_type", IsUsingFlightTypeCondition.Serializer::new);
 
 }
