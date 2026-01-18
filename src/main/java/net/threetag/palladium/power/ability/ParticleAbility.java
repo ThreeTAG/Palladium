@@ -5,10 +5,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.Palladium;
@@ -61,13 +60,18 @@ public class ParticleAbility extends Ability {
 
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, ParticleAbility> builder, HolderLookup.Provider provider) {
-            var particleType = provider.lookupOrThrow(Registries.PARTICLE_TYPE).getOrThrow(ResourceKey.create(Registries.PARTICLE_TYPE, Identifier.withDefaultNamespace("dust")));
+            var particleType = BuiltInRegistries.PARTICLE_TYPE.wrapAsHolder(ParticleTypes.DUST);
 
             builder.setDescription("Spawns particles around the entity.")
                     .add("emitter", SettingType.listOrPrimitive(TYPE_IDENTIFIER), "List of emitter IDs where the particles spawn at.")
                     .add("particle_type", TYPE_PARTICLE_TYPE, "ID of the particle you want to spawn.")
                     .addOptional("options", TYPE_NBT, "Additional options for the particle (like color of a dust particle).")
-                    .addExampleObject(new ParticleAbility(List.of(Identifier.fromNamespaceAndPath("example", "emitter_id")), particleType, null, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addExampleObject(new ParticleAbility(
+                            List.of(Identifier.fromNamespaceAndPath("example", "emitter_id")),
+                            particleType,
+                            new CompoundTag(),
+                            AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()
+                    ));
         }
     }
 }
