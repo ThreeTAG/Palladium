@@ -163,7 +163,7 @@ public class DefaultFlightType extends FlightType {
 
             float targetPitch = 0F;
             float targetRoll = 0F;
-            boolean propulsion = entity.isSprinting() && this.allowPropulsion && !entity.isUsingItem();
+            boolean propulsion = !flightStopped && entity.isSprinting() && this.allowPropulsion && !entity.isUsingItem();
             this.propulsionScale.tickAndUpdate(propulsion);
 
             if (!flightStopped) {
