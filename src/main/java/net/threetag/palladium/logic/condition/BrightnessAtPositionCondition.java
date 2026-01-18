@@ -3,9 +3,12 @@ package net.threetag.palladium.logic.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.logic.context.DataContextKeys;
 
@@ -25,13 +28,14 @@ public record BrightnessAtPositionCondition(int min, int max) implements Conditi
 
     @Override
     public boolean test(DataContext context) {
-        var entity = context.get(DataContextKeys.ENTITY);
+        var level = context.get(DataContextKeys.LEVEL);
+        var pos = context.get(DataContextKeys.BLOCK_POS);
 
-        if (entity == null) {
+        if (level == null || pos == null) {
             return false;
         }
 
-        var brightness = entity.level().getMaxLocalRawBrightness(entity.blockPosition());
+        var brightness = level.getMaxLocalRawBrightness(pos);
         return brightness >= this.min && brightness <= this.max;
     }
 
@@ -53,8 +57,12 @@ public record BrightnessAtPositionCondition(int min, int max) implements Conditi
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the entity's brightness at it's position is within the given range.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, BrightnessAtPositionCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Brightness at Position")
+                    .setDescription("Checks if the brightness at the given position is within the given range.")
+                    .addOptional("min", SettingType.intRange(0, 16), "The minimum required value of the brightness value (Value between 0-16).", 0)
+                    .addOptional("max", SettingType.intRange(0, 16), "The maximum required value of the brightness value.", 16)
+                    .addExampleObject(new BrightnessAtPositionCondition(6, 7));
         }
     }
 }

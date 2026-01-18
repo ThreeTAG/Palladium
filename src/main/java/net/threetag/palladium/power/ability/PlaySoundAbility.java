@@ -75,7 +75,7 @@ public class PlaySoundAbility extends Ability {
                     .addOptional("pitch", TYPE_FLOAT, "The pitch for the played sound.", 1F)
                     .addOptional("looping", TYPE_BOOLEAN, "Whether or not the sound should loop during the time the ability is enabled.", false)
                     .addOptional("play_self", TYPE_BOOLEAN, "Whether or not the sound should be played to just the player executing the ability, or to all players.", false)
-                    .setExampleObject(new PlaySoundAbility(Identifier.withDefaultNamespace("item.elytra.flying"), 1F, 1F, false, false, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addExampleObject(new PlaySoundAbility(Identifier.withDefaultNamespace("item.elytra.flying"), 1F, 1F, false, false, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

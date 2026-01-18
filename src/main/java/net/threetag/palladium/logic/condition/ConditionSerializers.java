@@ -37,13 +37,11 @@ public class ConditionSerializers {
 //    public static final DeferredHolder<ConditionSerializer<?>, ItemInSlotOpenCondition.Serializer> ITEM_IN_SLOT_OPEN = CONDITION_SERIALIZERS.register("item_in_slot_open", ItemInSlotOpenCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, EmptySlotCondition.Serializer> EMPTY_SLOT = CONDITION_SERIALIZERS.register("empty_slot", EmptySlotCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, EntityTypeCondition.Serializer> ENTITY_TYPE = CONDITION_SERIALIZERS.register("entity_type", EntityTypeCondition.Serializer::new);
-    public static final DeferredHolder<ConditionSerializer<?>, EntityTypeTagCondition.Serializer> ENTITY_TYPE_TAG = CONDITION_SERIALIZERS.register("entity_type_tag", EntityTypeTagCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, BrightnessAtPositionCondition.Serializer> BRIGHTNESS_AT_POSITION = CONDITION_SERIALIZERS.register("brightness_at_position", BrightnessAtPositionCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, OnGroundCondition.Serializer> ON_GROUND = CONDITION_SERIALIZERS.register("on_ground", OnGroundCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, IsMovingCondition.Serializer> IS_MOVING = CONDITION_SERIALIZERS.register("is_moving", IsMovingCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, HasMovementInputCondition.Serializer> HAS_MOVEMENT_INPUT = CONDITION_SERIALIZERS.register("has_movement_input", HasMovementInputCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, CommandResultCondition.Serializer> COMMAND_RESULT = CONDITION_SERIALIZERS.register("command_result", CommandResultCondition.Serializer::new);
-    public static final DeferredHolder<ConditionSerializer<?>, IntervalCondition.Serializer> INTERVAL = CONDITION_SERIALIZERS.register("interval", IntervalCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, SprintingCondition.Serializer> SPRINTING = CONDITION_SERIALIZERS.register("sprinting", SprintingCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, DimensionCondition.Serializer> DIMENSION = CONDITION_SERIALIZERS.register("dimension", DimensionCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, IsOnFireCondition.Serializer> IS_ON_FIRE = CONDITION_SERIALIZERS.register("is_on_fire", IsOnFireCondition.Serializer::new);
@@ -58,7 +56,8 @@ public class ConditionSerializers {
     public static final DeferredHolder<ConditionSerializer<?>, NightCondition.Serializer> NIGHT = CONDITION_SERIALIZERS.register("night", NightCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, HasEffectCondition.Serializer> HAS_EFFECT = CONDITION_SERIALIZERS.register("has_effect", HasEffectCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, EnergyBarCondition.Serializer> ENERGY_BAR = CONDITION_SERIALIZERS.register("energy_bar", EnergyBarCondition.Serializer::new);
-    public static final DeferredHolder<ConditionSerializer<?>, SmallArmsCondition.Serializer> SMALL_ARMS = CONDITION_SERIALIZERS.register("small_arms", SmallArmsCondition.Serializer::new);
+    public static final DeferredHolder<ConditionSerializer<?>, SlimArmorModelCondition.Serializer> SLIM_ARMOR_MODEL = CONDITION_SERIALIZERS.register("slim_armor_model", SlimArmorModelCondition.Serializer::new);
+    public static final DeferredHolder<ConditionSerializer<?>, WideArmorModelCondition.Serializer> WIDE_ARMOR_MODEL = CONDITION_SERIALIZERS.register("wide_armor_model", WideArmorModelCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, EntityScaleCondition.Serializer> ENTITY_SCALE = CONDITION_SERIALIZERS.register("entity_scale", EntityScaleCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, IsUsingFlightTypeCondition.Serializer> IS_USING_FLIGHT_TYPE = CONDITION_SERIALIZERS.register("is_using_flight_type", IsUsingFlightTypeCondition.Serializer::new);
 

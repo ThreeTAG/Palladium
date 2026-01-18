@@ -2,18 +2,23 @@ package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.entity.PlayerSlot;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 public record ItemInSlotCondition(Ingredient ingredient, PlayerSlot slot) implements Condition {
 
     public static final MapCodec<ItemInSlotCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
-                    Ingredient.CODEC.fieldOf("item").forGetter(ItemInSlotCondition::ingredient),
+                    PalladiumCodecs.INGREDIENT_CODEC.fieldOf("item").forGetter(ItemInSlotCondition::ingredient),
                     PlayerSlot.CODEC.fieldOf("slot").forGetter(ItemInSlotCondition::slot)
             ).apply(instance, ItemInSlotCondition::new)
     );
@@ -57,8 +62,12 @@ public record ItemInSlotCondition(Ingredient ingredient, PlayerSlot slot) implem
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the given item is in the given slot.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, ItemInSlotCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Item in Slot")
+                    .setDescription("Checks if the given item is in the given slot")
+                    .add("item", TYPE_INGREDIENT, "Ingredient definition for the required item stack.")
+                    .add("slot", TYPE_PLAYER_SLOT, "The slot that is being looked into.")
+                    .addExampleObject(new ItemInSlotCondition(Ingredient.of(Items.STICK), PlayerSlot.get(EquipmentSlot.CHEST)));
         }
     }
 }

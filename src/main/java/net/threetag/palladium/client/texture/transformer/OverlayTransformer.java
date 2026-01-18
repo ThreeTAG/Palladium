@@ -109,7 +109,7 @@ public class OverlayTransformer extends TextureTransformer {
             builder.setName("Overlay").setDescription("Puts another texture on top of the base texture.")
                     .add("overlay", TYPE_IDENTIFIER, "The location of the overlay texture. Can use variables")
                     .addOptional("ignore_blank", TYPE_BOOLEAN, "If true, the overlay will not be applied to blank pixels.", false)
-                    .setExampleObject(new OverlayTransformer("example:mask", false));
+                    .addExampleObject(new OverlayTransformer("example:mask", false));
         }
     }
 }

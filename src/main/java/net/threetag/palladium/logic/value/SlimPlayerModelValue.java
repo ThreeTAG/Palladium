@@ -37,7 +37,7 @@ public class SlimPlayerModelValue extends BooleanValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, SlimPlayerModelValue> builder, HolderLookup.Provider provider) {
             builder.setName("Slim Player Model").setDescription("Checks if the entity is a player and has the slim-armed (Alex) player model.")
-                    .setExampleObject(new SlimPlayerModelValue("slim_arms", "wide_arms"));
+                    .addExampleObject(new SlimPlayerModelValue("slim_arms", "wide_arms"));
         }
     }
 }

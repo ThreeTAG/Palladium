@@ -179,6 +179,7 @@ public class PalladiumClient {
         HTMLBuilder.documentedPage(Palladium.id("beams"), BeamRendererSerializer.getTypes(), "Beams", clientLevel.registryAccess()).save();
         HTMLBuilder.documentedPage(Palladium.id("trails"), TrailRendererSerializer.getTypes(), "Trails", clientLevel.registryAccess()).save();
         HTMLBuilder.documentedPage(PalladiumRegistryKeys.ABILITY_SERIALIZER, PalladiumRegistries.ABILITY_SERIALIZER, "Abilities", clientLevel.registryAccess()).save();
+        HTMLBuilder.documentedPage(PalladiumRegistryKeys.CONDITION_SERIALIZER, PalladiumRegistries.CONDITION_SERIALIZER, "Conditions", clientLevel.registryAccess()).save();
         HTMLBuilder.documentedPage(PalladiumRegistryKeys.FLIGHT_TYPE_SERIALIZERS, PalladiumRegistries.FLIGHT_TYPE_SERIALIZERS, "Flight Types", clientLevel.registryAccess()).save();
         CodecDocumentationBuilder.createDocFiles();
     }

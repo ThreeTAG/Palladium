@@ -73,7 +73,7 @@ public class NameChangeAbility extends Ability {
         public void addDocumentation(CodecDocumentationBuilder<Ability, NameChangeAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Changes the name of the player executing the ability.")
                     .add("name", TYPE_TEXT_COMPONENT, "The new name of the player.")
-                    .setExampleObject(new NameChangeAbility(Component.literal("New Name"), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addExampleObject(new NameChangeAbility(Component.literal("New Name"), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

@@ -1,8 +1,10 @@
 package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 
 public class OnGroundCondition implements Condition {
@@ -36,8 +38,10 @@ public class OnGroundCondition implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the entity is on the ground.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, OnGroundCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("On Ground")
+                    .setDescription("Checks if the entity is on the ground.")
+                    .addExampleObject(new OnGroundCondition());
         }
     }
 }

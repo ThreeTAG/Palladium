@@ -76,7 +76,7 @@ public class AfterImageTrailRenderer extends TrailRenderer<AfterImageTrailRender
             builder.setName("After Image Trail").setDescription("Renders copies of the entity behind it.")
                     .addOptional("color", TYPE_COLOR, "Defines the color/tint of the after image", "#ffffff")
                     .addOptional("opacity", TYPE_FLOAT, "Starting opacity of the after image", 0.5F)
-                    .setExampleObject(new AfterImageTrailRenderer(Color.RED, 0.2F));
+                    .addExampleObject(new AfterImageTrailRenderer(Color.RED, 0.2F));
         }
     }
 }

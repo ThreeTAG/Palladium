@@ -153,7 +153,7 @@ public class LightningSparksPackRenderLayer extends PackRenderLayer<LightningSpa
                     .addOptional("frequency", TYPE_FLOAT, "The frequency of the sparks.", 0.5F)
                     .addOptional("amount", TYPE_INT, "The amount of sparks to spawn during each occurence.", 5)
                     .add("render_settings", TYPE_LASER_RENDERER, "The render settings for the sparks.")
-                    .setExampleObject(new LightningSparksPackRenderLayer(
+                    .addExampleObject(new LightningSparksPackRenderLayer(
                             0.2F,
                             10,
                             new LaserRenderer(

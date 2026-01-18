@@ -36,7 +36,7 @@ public class ShrinkBodyOverlayAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, ShrinkBodyOverlayAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("An ability that shrinks the body overlay of the entity.")
-                    .setExampleObject(new ShrinkBodyOverlayAbility(AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
+                    .addExampleObject(new ShrinkBodyOverlayAbility(AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
         }
     }
 }

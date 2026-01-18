@@ -48,7 +48,7 @@ public class LaserBeamRenderer extends BeamRenderer {
             builder.setName("Laser")
                     .setDescription("Renders a laser beam between two points.")
                     .add("render_settings", TYPE_LASER_RENDERER, "The render settings for the laser.")
-                    .setExampleObject(new LaserBeamRenderer(
+                    .addExampleObject(new LaserBeamRenderer(
                             new LaserRenderer(
                                     new LaserRenderer.LaserPart(Color.BLUE, 1F, 0F, null),
                                     new LaserRenderer.LaserPart(Color.WHITE, 1F, 0F, null),

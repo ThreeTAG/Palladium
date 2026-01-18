@@ -222,7 +222,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                     .addOptional("render_type", SettingType.enumList(RenderTypeRegistry.types().stream().map(Identifier::toString).toList()), "The render type to render the model with.", RenderTypeRegistry.getKey(RenderTypeRegistry.ENTITY_TRANSLUCENT))
                     .addOptional("light_emission", TYPE_INT, "The light emission of the model. Must be within 0 - 15", 0)
                     .addOptional("animations", TYPE_IDENTIFIER, "ID of an animations file")
-                    .setExampleObject(new DefaultPackRenderLayer(
+                    .addExampleObject(new DefaultPackRenderLayer(
                             new SkinTypedValue<>(ModelLayerLocationCodec.parse("example:wide_model"), ModelLayerLocationCodec.parse("example:slim_model")),
                             new SkinTypedValue<>(new PackRenderLayerTexture(Identifier.fromNamespaceAndPath("example", "wide_texture")), new PackRenderLayerTexture(Identifier.fromNamespaceAndPath("example", "slim_texture"))),
                             RenderTypeRegistry.ENTITY_TRANSLUCENT,

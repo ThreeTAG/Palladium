@@ -1,9 +1,11 @@
 package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 
 public class HasMovementInputCondition implements Condition {
@@ -37,8 +39,10 @@ public class HasMovementInputCondition implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if a player is currently pressing keys to move.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, HasMovementInputCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Has Movement Input")
+                    .setDescription("Checks if a player is currently pressing keys to move.")
+                    .addExampleObject(new HasMovementInputCondition());
         }
     }
 }

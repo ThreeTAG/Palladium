@@ -2,11 +2,14 @@ package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.entity.PlayerSlot;
+import net.threetag.palladium.logic.context.DataContext;
 
 public record EmptySlotCondition(PlayerSlot slot) implements Condition {
 
@@ -52,8 +55,11 @@ public record EmptySlotCondition(PlayerSlot slot) implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the given slot is empty.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, EmptySlotCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Empty Slot")
+                    .setDescription("Checks if the given slot of an entity is empty")
+                    .add("slot", TYPE_PLAYER_SLOT, "The slot that is being looked into.")
+                    .addExampleObject(new EmptySlotCondition(PlayerSlot.get(EquipmentSlot.CHEST)));
         }
     }
 }

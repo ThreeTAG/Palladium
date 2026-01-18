@@ -2,8 +2,11 @@ package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilityReference;
 import net.threetag.palladium.logic.context.DataContext;
@@ -54,8 +57,14 @@ public record AbilityLastTickCondition(AbilityReference ability) implements Cond
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the ability was just on its last tick.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, AbilityLastTickCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Ability on Last Tick")
+                    .setDescription("Checks if the ability was just on its last tick.")
+                    .add("ability", TYPE_ABILITY_REFERENCE, "The ability that needs to be on its last tick.")
+                    .addExampleObject(new AbilityLastTickCondition(new AbilityReference(
+                            Identifier.fromNamespaceAndPath("example", "power"),
+                            "ability_key"
+                    )));
         }
     }
 }

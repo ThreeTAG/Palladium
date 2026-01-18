@@ -51,7 +51,7 @@ public class AbilityTickCountValue extends IntegerValue {
         public void addDocumentation(CodecDocumentationBuilder<Value, AbilityTickCountValue> builder, HolderLookup.Provider provider) {
             builder.setName("Ability Tick Count").setDescription("Returns the ticks the ability in the context has been enabled for.")
                     .add("ability", TYPE_ABILITY_REFERENCE, "The ability to get the ticks from. Defined in this syntax: <power_id>#<ability_key>")
-                    .setExampleObject(new AbilityTickCountValue(AbilityReference.parse("namespace:example_power#ability_key"), ""));
+                    .addExampleObject(new AbilityTickCountValue(AbilityReference.parse("namespace:example_power#ability_key"), ""));
         }
     }
 }

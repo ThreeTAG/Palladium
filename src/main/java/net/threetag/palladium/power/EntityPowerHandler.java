@@ -126,6 +126,16 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
         return this.powers.containsKey(powerId);
     }
 
+    public boolean hasPower(Holder<Power> powerHolder) {
+        for (PowerHolder holder : this.powers.values()) {
+            if (holder.getPower().value() == powerHolder.value()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public CompoundTag savePowerDataTag() {
         for (PowerHolder holder : this.powers.values()) {
             this.powerData.put(holder.getPowerId().toString(), holder.save());

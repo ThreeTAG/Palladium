@@ -41,7 +41,7 @@ public class InvisibilityAbility extends Ability {
         public void addDocumentation(CodecDocumentationBuilder<Ability, InvisibilityAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Makes the player invisible. Also makes mobs not see the player anymore.")
                     .addOptional("mob_visibility_modifier", TYPE_FLOAT, "A multiplier for how visible the player is to mobs. 0.0 means completely invisible, 1.0 means normal visibility.", 0)
-                    .setExampleObject(new InvisibilityAbility(0.5F, AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
+                    .addExampleObject(new InvisibilityAbility(0.5F, AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
         }
     }
 }

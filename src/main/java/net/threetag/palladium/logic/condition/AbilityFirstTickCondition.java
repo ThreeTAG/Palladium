@@ -2,8 +2,11 @@ package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilityReference;
@@ -54,8 +57,14 @@ public record AbilityFirstTickCondition(AbilityReference ability) implements Con
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the ability is on its first tick.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, AbilityFirstTickCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Ability on First Tick")
+                    .setDescription("Checks if the ability is on its first tick.")
+                    .add("ability", TYPE_ABILITY_REFERENCE, "The ability that needs to be on its first tick.")
+                    .addExampleObject(new AbilityFirstTickCondition(new AbilityReference(
+                            Identifier.fromNamespaceAndPath("example", "power"),
+                            "ability_key"
+                    )));
         }
     }
 }

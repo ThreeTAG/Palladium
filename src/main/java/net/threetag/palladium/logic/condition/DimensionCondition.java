@@ -2,11 +2,13 @@ package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.logic.context.DataContextKeys;
 
@@ -44,8 +46,11 @@ public record DimensionCondition(ResourceKey<Level> dimension) implements Condit
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the player is in a specific dimension.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, DimensionCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Dimension")
+                    .setDescription("Tests for the current dimension.")
+                    .add("dimension", TYPE_DIMENSION, "ID of the required dimension.")
+                    .addExampleObject(new DimensionCondition(Level.OVERWORLD));
         }
     }
 }

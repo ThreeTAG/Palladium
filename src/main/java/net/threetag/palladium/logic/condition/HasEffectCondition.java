@@ -3,28 +3,43 @@ package net.threetag.palladium.logic.condition;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffect;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.util.MixedHolderSet;
 
-public record HasEffectCondition(Holder<MobEffect> mobEffect) implements Condition {
+import java.util.List;
+
+public record HasEffectCondition(MixedHolderSet<MobEffect> mobEffect) implements Condition {
 
     public static final MapCodec<HasEffectCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
-            .group(BuiltInRegistries.MOB_EFFECT.holderByNameCodec().fieldOf("effect").forGetter(HasEffectCondition::mobEffect)
+            .group(MixedHolderSet.codec(Registries.MOB_EFFECT).fieldOf("effect").forGetter(HasEffectCondition::mobEffect)
             ).apply(instance, HasEffectCondition::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, HasEffectCondition> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.holderRegistry(Registries.MOB_EFFECT), HasEffectCondition::mobEffect, HasEffectCondition::new
+            MixedHolderSet.streamCodec(Registries.MOB_EFFECT), HasEffectCondition::mobEffect, HasEffectCondition::new
     );
 
     @Override
     public boolean test(DataContext context) {
         var entity = context.getLivingEntity();
-        return entity != null && entity.hasEffect(this.mobEffect);
+
+        if (entity != null) {
+            for (Holder<MobEffect> effectHolder : this.mobEffect.values()) {
+                if (entity.hasEffect(effectHolder)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -45,8 +60,15 @@ public record HasEffectCondition(Holder<MobEffect> mobEffect) implements Conditi
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the entity has a (potion) effect.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, HasEffectCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Has Effect")
+                    .setDescription("Checks if the entity has a (potion) effect.")
+                    .add("effect", TYPE_MOB_EFFECT_TYPE_HOLDER_SET, "IDs or tags of the required mob/potion effect")
+                    .addExampleObject(new HasEffectCondition(new MixedHolderSet<>(HolderSet.direct(provider.holderOrThrow(ResourceKey.create(Registries.MOB_EFFECT, Identifier.withDefaultNamespace("slowness")))))))
+                    .addExampleObject(new HasEffectCondition(new MixedHolderSet<>(List.of(
+                            HolderSet.direct(provider.holderOrThrow(ResourceKey.create(Registries.MOB_EFFECT, Identifier.withDefaultNamespace("slowness")))),
+                            HolderSet.direct(provider.holderOrThrow(ResourceKey.create(Registries.MOB_EFFECT, Identifier.withDefaultNamespace("mining_fatigue"))))
+                    ))));
         }
     }
 }

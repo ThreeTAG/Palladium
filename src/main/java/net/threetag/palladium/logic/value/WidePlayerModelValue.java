@@ -37,7 +37,7 @@ public class WidePlayerModelValue extends BooleanValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, WidePlayerModelValue> builder, HolderLookup.Provider provider) {
             builder.setName("Wide Player Model").setDescription("Checks if the entity is a player and has the wide-armed (Steve) player model.")
-                    .setExampleObject(new WidePlayerModelValue("wide_arms", "slim_arms"));
+                    .addExampleObject(new WidePlayerModelValue("wide_arms", "slim_arms"));
         }
     }
 }

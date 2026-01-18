@@ -52,7 +52,7 @@ public class StaticValue extends Value {
         public void addDocumentation(CodecDocumentationBuilder<Value, StaticValue> builder, HolderLookup.Provider provider) {
             builder.setName("Static Value").setDescription("Utilises a simple, static value")
                     .add("value", TYPE_ANY, "A simple, static value.")
-                    .setExampleObject(new StaticValue(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive(42))));
+                    .addExampleObject(new StaticValue(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive(42))));
         }
     }
 }

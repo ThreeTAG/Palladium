@@ -1,21 +1,23 @@
 package net.threetag.palladium.logic.condition;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.Entity;
-import net.threetag.palladium.util.EntityScaleUtil;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.util.EntityScaleUtil;
 
 public record EntityScaleCondition(float min, float max) implements Condition {
 
     public static final MapCodec<EntityScaleCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
-                    Codec.floatRange(0, Float.MAX_VALUE).optionalFieldOf("min", 0F).forGetter(EntityScaleCondition::min),
-                    Codec.floatRange(0, Float.MAX_VALUE).optionalFieldOf("max", Float.MAX_VALUE).forGetter(EntityScaleCondition::max)
+                    ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("min", 0F).forGetter(EntityScaleCondition::min),
+                    ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("max", Float.MAX_VALUE).forGetter(EntityScaleCondition::max)
             ).apply(instance, EntityScaleCondition::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, EntityScaleCondition> STREAM_CODEC = StreamCodec.composite(
@@ -54,8 +56,12 @@ public record EntityScaleCondition(float min, float max) implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if an entity is within a certain scale (requires Pehkui for real effect). It checks for the \"average\" scale, which is the average of the width and height scale. Usually they are the same.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, EntityScaleCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Entity Scale")
+                    .setDescription("Checks the current scale of the entity.")
+                    .addOptional("min", TYPE_NON_NEGATIVE_FLOAT, "The minimum required scale of the entity.")
+                    .addOptional("max", TYPE_NON_NEGATIVE_INT, "The maximum required scale of the entity.")
+                    .addExampleObject(new EntityScaleCondition(1.0F, 2.0F));
         }
     }
 }

@@ -51,7 +51,7 @@ public class EnergyBarValue extends IntegerValue {
         public void addDocumentation(CodecDocumentationBuilder<Value, EnergyBarValue> builder, HolderLookup.Provider provider) {
             builder.setName("Energy Bar").setDescription("Returns of the current value of a specific energy bar.")
                     .add("energy_bar", TYPE_ABILITY_REFERENCE, "The energy bar to look for. Defined in this syntax: <power_id>#<energy_bar_key>")
-                    .setExampleObject(new EnergyBarValue(EnergyBarReference.parse("namespace:example_power#energy_bar_key"), ""));
+                    .addExampleObject(new EnergyBarValue(EnergyBarReference.parse("namespace:example_power#energy_bar_key"), ""));
         }
     }
 }

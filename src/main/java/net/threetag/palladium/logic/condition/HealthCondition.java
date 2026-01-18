@@ -1,19 +1,21 @@
 package net.threetag.palladium.logic.condition;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ExtraCodecs;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 
 public record HealthCondition(float minHealth, float maxHealth) implements Condition {
 
     public static final MapCodec<HealthCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
-                    Codec.FLOAT.optionalFieldOf("min_health", Float.MIN_VALUE).forGetter(HealthCondition::minHealth),
-                    Codec.FLOAT.optionalFieldOf("max_health", Float.MAX_VALUE).forGetter(HealthCondition::maxHealth)
+                    ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("min", Float.MIN_VALUE).forGetter(HealthCondition::minHealth),
+                    ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("max", Float.MAX_VALUE).forGetter(HealthCondition::maxHealth)
             ).apply(instance, HealthCondition::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, HealthCondition> STREAM_CODEC = StreamCodec.composite(
@@ -51,8 +53,12 @@ public record HealthCondition(float minHealth, float maxHealth) implements Condi
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the entity has a certain amount of health.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, HealthCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Health")
+                    .setDescription("Checks if the entity has a certain amount of health.")
+                    .addOptional("min", TYPE_NON_NEGATIVE_FLOAT, "The minimum required health of the entity.")
+                    .addOptional("max", TYPE_NON_NEGATIVE_FLOAT, "The maximum required health of the entity.")
+                    .addExampleObject(new HealthCondition(5, 10));
         }
     }
 }

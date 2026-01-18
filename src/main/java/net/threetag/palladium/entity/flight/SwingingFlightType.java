@@ -399,7 +399,7 @@ public class SwingingFlightType extends FlightType {
                     .add("radius", SettingType.combined(TYPE_FLOAT, TYPE_VECTOR2), "The range of distances from the anchor point that the entity can swing at. It can either be a single, fixed number, or an array of 2 numbers that the player can adjust between while swinging.")
                     .addOptional("swing_interval", TYPE_TIME, "The time (in ticks) the player must be moving forward before a new anchor point is created.", 40)
                     .addOptional("animation", TYPE_SWINGING_ANIMATION, "Settings for the swinging flight animation.")
-                    .setExampleObject(new SwingingFlightType(
+                    .addExampleObject(new SwingingFlightType(
                             20,
                             MaxHeightType.RELATIVE,
                             new Vec2(5F, 10F),

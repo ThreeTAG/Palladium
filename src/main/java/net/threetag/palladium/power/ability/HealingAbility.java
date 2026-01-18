@@ -55,7 +55,7 @@ public class HealingAbility extends Ability {
             builder.setDescription("An ability that heals the entity every x ticks by y amount.")
                     .add("frequency", TYPE_INT, "The frequency of healing (in ticks)")
                     .add("amount", TYPE_FLOAT, "The amount of hearts for each healing")
-                    .setExampleObject(new HealingAbility(20, 1.0F, AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
+                    .addExampleObject(new HealingAbility(20, 1.0F, AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
         }
     }
 

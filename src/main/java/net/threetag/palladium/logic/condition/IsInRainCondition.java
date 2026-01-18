@@ -1,8 +1,10 @@
 package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.logic.context.DataContextKeys;
 
@@ -42,8 +44,10 @@ public class IsInRainCondition implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the entity is in rain.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, IsInRainCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Is in Rain")
+                    .setDescription("Checks if the entity is currently in rain.")
+                    .addExampleObject(new IsInRainCondition());
         }
     }
 }

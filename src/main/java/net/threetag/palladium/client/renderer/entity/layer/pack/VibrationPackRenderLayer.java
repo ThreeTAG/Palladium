@@ -169,7 +169,7 @@ public class VibrationPackRenderLayer extends PackRenderLayer<VibrationPackRende
             builder.setName("Vibration")
                     .setDescription("Renders a vibration effect on the entity.")
                     .add("intentiy", TYPE_INT, "The intensity of the vibration.")
-                    .setExampleObject(new VibrationPackRenderLayer(
+                    .addExampleObject(new VibrationPackRenderLayer(
                             10, 20,
                             PackRenderLayerProperties.DEFAULT,
                             PerspectiveAwareConditions.EMPTY

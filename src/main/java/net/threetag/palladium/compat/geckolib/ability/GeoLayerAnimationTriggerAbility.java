@@ -59,7 +59,7 @@ public class GeoLayerAnimationTriggerAbility extends Ability {
                     .add("render_layer", TYPE_IDENTIFIER, "The ID of the render layer receiving the animation. Must be a gecko render layer!")
                     .add("controller", TYPE_STRING, "Name of the animation controller the animation is played on.")
                     .add("trigger", TYPE_STRING, "Name of the animation trigger")
-                    .setExampleObject(new GeoLayerAnimationTriggerAbility(Identifier.fromNamespaceAndPath("example", "geo_render_layer"), "example_controller", "example_trigger", AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
+                    .addExampleObject(new GeoLayerAnimationTriggerAbility(Identifier.fromNamespaceAndPath("example", "geo_render_layer"), "example_controller", "example_trigger", AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
         }
 
     }

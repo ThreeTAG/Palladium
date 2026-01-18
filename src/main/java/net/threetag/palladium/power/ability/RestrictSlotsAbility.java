@@ -94,8 +94,8 @@ public class RestrictSlotsAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, RestrictSlotsAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Restricts the slots of the entity.")
-                    .add("slots", TYPE_PLAYER_SLOTS, "The slots that should be restricted.")
-                    .setExampleObject(new RestrictSlotsAbility(List.of(PlayerSlot.get(EquipmentSlot.CHEST)), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .add("slots", TYPE_PLAYER_SLOT, "The slots that should be restricted.")
+                    .addExampleObject(new RestrictSlotsAbility(List.of(PlayerSlot.get(EquipmentSlot.CHEST)), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

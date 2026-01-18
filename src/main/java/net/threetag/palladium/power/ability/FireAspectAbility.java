@@ -49,7 +49,7 @@ public class FireAspectAbility extends Ability {
                     .add("time", TYPE_INT, "The amount of time, in ticks, that the victim entity will be set on fire for")
                     .addOptional("should_stack_time", TYPE_BOOLEAN, "If true, attacking an entity that's already on fire will add the \"time\" field to their current burn time instead of setting it", false)
                     .addOptional("max_time", TYPE_INT, "If \"should_stack_time\" is true, the victim's burn time (in ticks) will not exceed this value after being hit", 60 * 20)
-                    .setExampleObject(new FireAspectAbility(5, false, 5, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addExampleObject(new FireAspectAbility(5, false, 5, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 

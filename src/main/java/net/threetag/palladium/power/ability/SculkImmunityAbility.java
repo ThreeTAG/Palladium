@@ -34,7 +34,7 @@ public class SculkImmunityAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, SculkImmunityAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("When enabled, the player will not cause any walk-related sculk vibrations anymore.")
-                    .setExampleObject(new SculkImmunityAbility(AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
+                    .addExampleObject(new SculkImmunityAbility(AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
         }
     }
 }

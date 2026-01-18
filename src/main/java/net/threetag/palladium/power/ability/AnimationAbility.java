@@ -43,7 +43,7 @@ public class AnimationAbility extends Ability {
             builder.setName("Animation")
                     .setDescription("Applies animations to the entity. Animations must be defined in 'assets/<namespace>/palladium/animations'")
                     .add("animations", SettingType.listOrPrimitive(TYPE_IDENTIFIER), "ID(s) of the animations")
-                    .setExampleObject(new AnimationAbility(Collections.singletonList(Identifier.parse("test:animation_id")), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addExampleObject(new AnimationAbility(Collections.singletonList(Identifier.parse("test:animation_id")), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

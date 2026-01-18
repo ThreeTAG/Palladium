@@ -242,7 +242,7 @@ public class DefaultFlightType extends FlightType {
                     .add("speed", TYPE_FLOAT, "The normal flight speed.")
                     .addOptional("sprint_speed", TYPE_FLOAT, "The sprinting flight speed. If not set, it will be equal to the normal speed.")
                     .addOptional("animation", TYPE_DEFAULT_FLIGHT_ANIMATION, "The animation settings for this flight type.")
-                    .setExampleObject(new DefaultFlightType(1F, 2F, new AnimationSettings(
+                    .addExampleObject(new DefaultFlightType(1F, 2F, new AnimationSettings(
                             Identifier.fromNamespaceAndPath("namespace", "animation_id"), 35F, 20F, 12F
                     )));
 

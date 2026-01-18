@@ -116,7 +116,7 @@ public class AttributeModifierAbility extends Ability {
                     .add("amount", TYPE_DOUBLE, "The amount for the giving attribute modifier")
                     .add("operation", SettingType.enumList(AttributeModifier.Operation.values()), "The operation for the attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)")
                     .addOptional("id", TYPE_STRING, "Sets the unique identifier for this attribute modifier. Will fallback to a generated one based on the ability/power ID.")
-                    .setExampleObject(new AttributeModifierAbility(Attributes.ARMOR, 1D, AttributeModifier.Operation.ADD_VALUE, null, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addExampleObject(new AttributeModifierAbility(Attributes.ARMOR, 1D, AttributeModifier.Operation.ADD_VALUE, null, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

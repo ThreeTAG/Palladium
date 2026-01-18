@@ -17,8 +17,13 @@ public abstract class AbilitySerializer<T extends Ability> implements Documented
                 .ignore("energy_bar_usage");
         this.addDocumentation(builder, provider);
 
-        if (builder.getExampleObject() != null) {
-            builder.setName(builder.getExampleObject().getDisplayName().getString());
+        for (CodecDocumentationBuilder.Example<T> example : builder.getExamples()) {
+            var object = example.object();
+
+            if (object != null) {
+                builder.setName(object.getDisplayName().getString());
+                break;
+            }
         }
 
         return builder;

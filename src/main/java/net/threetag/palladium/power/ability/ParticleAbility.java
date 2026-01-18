@@ -67,7 +67,7 @@ public class ParticleAbility extends Ability {
                     .add("emitter", SettingType.listOrPrimitive(TYPE_IDENTIFIER), "List of emitter IDs where the particles spawn at.")
                     .add("particle_type", TYPE_PARTICLE_TYPE, "ID of the particle you want to spawn.")
                     .addOptional("options", TYPE_NBT, "Additional options for the particle (like color of a dust particle).")
-                    .setExampleObject(new ParticleAbility(List.of(Identifier.fromNamespaceAndPath("example", "emitter_id")), particleType, null, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addExampleObject(new ParticleAbility(List.of(Identifier.fromNamespaceAndPath("example", "emitter_id")), particleType, null, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

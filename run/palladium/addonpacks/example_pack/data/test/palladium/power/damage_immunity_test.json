@@ -4,7 +4,7 @@
   "abilities": {
     "invisibility": {
       "type": "palladium:damage_immunity",
-      "damage_types": [
+      "damage_type": [
         "minecraft:cactus",
         "#minecraft:is_explosion"
       ]

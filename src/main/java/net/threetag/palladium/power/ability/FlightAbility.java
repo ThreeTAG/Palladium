@@ -67,7 +67,7 @@ public class FlightAbility extends Ability {
         public void addDocumentation(CodecDocumentationBuilder<Ability, FlightAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Allows the player to fly using a pre-defined flight type")
                     .addOptional("flight_type", TYPE_FLIGHT_TYPE, "The ID of the flight type that will be used.", PalladiumFlightTypes.PROPULSION.identifier())
-                    .setExampleObject(new FlightAbility(PalladiumFlightTypes.PROPULSION, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addExampleObject(new FlightAbility(PalladiumFlightTypes.PROPULSION, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

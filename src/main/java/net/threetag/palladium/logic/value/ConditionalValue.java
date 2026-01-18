@@ -52,7 +52,7 @@ public class ConditionalValue extends Value {
                     .add("condition", TYPE_CONDITION_LIST, "The condition to test.")
                     .add("on_true", TYPE_VALUE, "The value to return if the condition is met.")
                     .add("on_false", TYPE_VALUE, "The value to return if the condition is not met.")
-                    .setExampleObject(new ConditionalValue(
+                    .addExampleObject(new ConditionalValue(
                             new CrouchingCondition(),
                             new StaticValue(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive("crouching"))),
                             new StaticValue(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive("not_crouching")))));

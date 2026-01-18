@@ -1,6 +1,9 @@
 package net.threetag.palladium.util;
 
 import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,6 +19,7 @@ public enum NumberComparator implements StringRepresentable {
     GREATER_OR_EQUAL(">=");
 
     public static final Codec<NumberComparator> CODEC = StringRepresentable.fromEnum(NumberComparator::values);
+    public static final StreamCodec<ByteBuf, NumberComparator> STREAM_CODEC = ByteBufCodecs.VAR_INT.map(i -> NumberComparator.values()[i], Enum::ordinal);
 
     private final String symbol;
 

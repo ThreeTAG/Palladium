@@ -102,7 +102,7 @@ public class GradientTrailRenderer extends TrailRenderer<Unit> {
                     .addOptional("opacity", TYPE_FLOAT, "Starting opacity of the gradient", 0.5F)
                     .addOptional("orientation", SettingType.enumList(Orientation.values()), "Defines the orientation in relation to the entity in which the gradient will render", Orientation.VERTICAL)
                     .addOptional("offset", TYPE_FLOAT, "Defines where the gradient will start in relation to entity hitbox. 0.5 is equal to the center.", 0.5F)
-                    .setExampleObject(new GradientTrailRenderer(Color.RED, 0.7F, Orientation.HORIZONTAL, 0.2F));
+                    .addExampleObject(new GradientTrailRenderer(Color.RED, 0.7F, Orientation.HORIZONTAL, 0.2F));
         }
     }
 
