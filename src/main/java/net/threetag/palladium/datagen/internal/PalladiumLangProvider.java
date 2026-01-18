@@ -147,7 +147,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.FLUID_WALKING, "Fluid Walking");
             this.addAbility(AbilitySerializers.RESTRICT_SLOTS, "Restrict Slots");
             this.addAbility(AbilitySerializers.PLAY_SOUND, "Sound");
-            this.addAbility(AbilitySerializers.VIBRATE, "Vibrate");
             this.addAbility(AbilitySerializers.INTANGIBILITY, "Intangibility");
             this.addAbility(AbilitySerializers.NAME_CHANGE, "Name Change");
             this.addAbility(AbilitySerializers.SCULK_IMMUNITY, "Sculk Immunity");
@@ -280,7 +279,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.FLUID_WALKING, "Auf Flüssigkeit Laufen");
             this.addAbility(AbilitySerializers.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(AbilitySerializers.PLAY_SOUND, "Sound");
-            this.addAbility(AbilitySerializers.VIBRATE, "Vibrieren");
             this.addAbility(AbilitySerializers.INTANGIBILITY, "Ungreifbarkeit");
             this.addAbility(AbilitySerializers.NAME_CHANGE, "Namesänderung");
             this.addAbility(AbilitySerializers.SCULK_IMMUNITY, "Sculk-Immunität");
@@ -415,7 +413,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.FLUID_WALKING, "Uff Flüssichkeht Lofen");
             this.addAbility(AbilitySerializers.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(AbilitySerializers.PLAY_SOUND, "Sound");
-            this.addAbility(AbilitySerializers.VIBRATE, "Vibrieren");
             this.addAbility(AbilitySerializers.INTANGIBILITY, "Ungreifbarkeht");
             this.addAbility(AbilitySerializers.NAME_CHANGE, "Namesänderung");
             this.addAbility(AbilitySerializers.SCULK_IMMUNITY, "Sculk-Immunität");

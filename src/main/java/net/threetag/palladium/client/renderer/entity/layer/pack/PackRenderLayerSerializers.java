@@ -8,6 +8,7 @@ public class PackRenderLayerSerializers {
     public static final PackRenderLayerSerializer<?> COMPOUND = register("compound", new CompoundPackRenderLayer.Serializer());
     public static final PackRenderLayerSerializer<?> LIGHTNING_SPARKS = register("lightning_sparks", new LightningSparksPackRenderLayer.Serializer());
     public static final PackRenderLayerSerializer<?> BLOCK_ON_HEAD = register("block_on_head", new BlockOnHeadPackRenderLayer.Serializer());
+    public static final PackRenderLayerSerializer<?> VIBRATION = register("vibration", new VibrationPackRenderLayer.Serializer());
 
     private static <R extends PackRenderLayer.State, T extends PackRenderLayer<R>> PackRenderLayerSerializer<T> register(String id, PackRenderLayerSerializer<T> serializer) {
         return PackRenderLayerSerializer.register(Palladium.id(id), serializer);

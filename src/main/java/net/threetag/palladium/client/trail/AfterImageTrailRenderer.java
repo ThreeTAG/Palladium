@@ -15,6 +15,7 @@ import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.awt.*;
+import java.util.Collections;
 
 public class AfterImageTrailRenderer extends TrailRenderer<AfterImageTrailRenderer.Data> {
 
@@ -43,11 +44,10 @@ public class AfterImageTrailRenderer extends TrailRenderer<AfterImageTrailRender
     @Override
     public Data createData(Entity entity) {
         var data = new Data();
-        PalladiumRenderStateKeys.IGNORE_TRAILS = true;
         data.renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
         data.renderState = data.renderer.createRenderState(entity, 1F);
         data.renderState.setRenderData(PalladiumRenderStateKeys.TINT, this.color.getRGB());
-        PalladiumRenderStateKeys.IGNORE_TRAILS = false;
+        data.renderState.setRenderData(PalladiumRenderStateKeys.TRAILS, Collections.emptyMap());
         return data;
     }
 

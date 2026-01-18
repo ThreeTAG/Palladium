@@ -11,7 +11,6 @@ public class AbilitySerializers {
 
     public static final DeferredHolder<AbilitySerializer<?>, DummyAbility.Serializer> DUMMY = ABILITIES.register("dummy", DummyAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, CommandAbility.Serializer> COMMAND = ABILITIES.register("command", CommandAbility.Serializer::new);
-//    public static final DeferredHolder<AbilitySerializer<?>, RenderLayerByAccessorySlotAbility.Serializer> RENDER_LAYER_BY_ACCESSORY_SLOT = ABILITIES.register("render_layer_by_accessory_slot", RenderLayerByAccessorySlotAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, ShrinkBodyOverlayAbility.Serializer> SHRINK_BODY_OVERLAY = ABILITIES.register("shrink_body_overlay", ShrinkBodyOverlayAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, AttributeModifierAbility.Serializer> ATTRIBUTE_MODIFIER = ABILITIES.register("attribute_modifier", AttributeModifierAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, HealingAbility.Serializer> HEALING = ABILITIES.register("healing", HealingAbility.Serializer::new);
@@ -27,11 +26,9 @@ public class AbilitySerializers {
     public static final DeferredHolder<AbilitySerializer<?>, ShaderEffectAbility.Serializer> SHADER_EFFECT = ABILITIES.register("shader_effect", ShaderEffectAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, GuiOverlayAbility.Serializer> GUI_OVERLAY = ABILITIES.register("gui_overlay", GuiOverlayAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, ShowBothArmsAbility.Serializer> SHOW_BOTH_ARMS = ABILITIES.register("show_both_arms", ShowBothArmsAbility.Serializer::new);
-    //    public static final DeferredHolder<AbilitySerializer<?>, PlayerAnimationAbility.Serializer> PLAYER_ANIMATION = ABILITIES.register("player_animation", PlayerAnimationAbility::new);
     public static final DeferredHolder<AbilitySerializer<?>, FluidWalkingAbility.Serializer> FLUID_WALKING = ABILITIES.register("fluid_walking", FluidWalkingAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, RestrictSlotsAbility.Serializer> RESTRICT_SLOTS = ABILITIES.register("restrict_slots", RestrictSlotsAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, PlaySoundAbility.Serializer> PLAY_SOUND = ABILITIES.register("play_sound", PlaySoundAbility.Serializer::new);
-    public static final DeferredHolder<AbilitySerializer<?>, VibrateAbility.Serializer> VIBRATE = ABILITIES.register("vibrate", VibrateAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, IntangibilityAbility.Serializer> INTANGIBILITY = ABILITIES.register("intangibility", IntangibilityAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, NameChangeAbility.Serializer> NAME_CHANGE = ABILITIES.register("name_change", NameChangeAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, SculkImmunityAbility.Serializer> SCULK_IMMUNITY = ABILITIES.register("sculk_immunity", SculkImmunityAbility.Serializer::new);
