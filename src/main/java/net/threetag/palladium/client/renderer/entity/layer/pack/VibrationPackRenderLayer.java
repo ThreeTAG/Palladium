@@ -168,7 +168,8 @@ public class VibrationPackRenderLayer extends PackRenderLayer<VibrationPackRende
         public void addDocumentation(CodecDocumentationBuilder<PackRenderLayer<? extends PackRenderLayer.State>, VibrationPackRenderLayer> builder, HolderLookup.Provider provider) {
             builder.setName("Vibration")
                     .setDescription("Renders a vibration effect on the entity.")
-                    .add("intentiy", TYPE_INT, "The intensity of the vibration.")
+                    .add("intensity", TYPE_INT, "The intensity of the vibration.")
+                    .add("fade_ticks", TYPE_TIME, "The time/ticks it needs for the vibration to fade in/out.")
                     .addExampleObject(new VibrationPackRenderLayer(
                             10, 20,
                             PackRenderLayerProperties.DEFAULT,
