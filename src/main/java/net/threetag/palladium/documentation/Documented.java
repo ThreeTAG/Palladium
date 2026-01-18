@@ -60,6 +60,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_MOB_EFFECT_TYPE_HOLDER_SET = SettingType.simple("Mob Effect ID(s) / Tag(s)");
     SettingType TYPE_POWER_HOLDER_SET = SettingType.simple("Mob Effect ID(s) / Tag(s)");
     SettingType TYPE_FLIGHT_TYPE_HOLDER_SET = SettingType.simple("Flight Type ID(s) / Tag(s)");
+    SettingType TYPE_CUSTOMIZATION_HOLDER_SET = SettingType.simple("Customization ID(s) / Tag(s)");
 
     CodecDocumentationBuilder<T, R> getDocumentation(HolderLookup.Provider provider);
 
