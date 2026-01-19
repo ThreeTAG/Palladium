@@ -16,23 +16,23 @@ public class AccessoriesCompat {
         return Collections.emptyList();
     }
 
-    public List<ItemStack> getFromSlot(LivingEntity entity, String slot) {
+    public List<ItemStack> getFromSlot(LivingEntity entity, Identifier slot) {
         return Collections.emptyList();
     }
 
-    public ItemStack getFromSlot(LivingEntity entity, String slot, int index) {
+    public ItemStack getFromSlot(LivingEntity entity, Identifier slot, int index) {
         return ItemStack.EMPTY;
     }
 
-    public void setInSlot(LivingEntity entity, String slot, int index, ItemStack stack) {
+    public void setInSlot(LivingEntity entity, Identifier slot, int index, ItemStack stack) {
 
     }
 
-    public int getSlotSize(LivingEntity entity, String slot) {
+    public int getSlotSize(LivingEntity entity, Identifier slot) {
         return 0;
     }
 
-    public void clearSlot(LivingEntity entity, String slot) {
+    public void clearSlot(LivingEntity entity, Identifier slot) {
 
     }
 

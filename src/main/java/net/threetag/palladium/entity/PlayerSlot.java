@@ -16,7 +16,7 @@ import java.util.*;
 
 public abstract class PlayerSlot {
 
-    public static final Codec<PlayerSlot> CODEC = Codec.STRING.xmap(PlayerSlot::get, Object::toString);
+    public static final Codec<PlayerSlot> CODEC = Codec.STRING.xmap(PlayerSlot::get, playerSlot -> playerSlot != null ? playerSlot.toString() : null);
     public static final StreamCodec<FriendlyByteBuf, PlayerSlot> STREAM_CODEC = StreamCodec.of((buf, slot) -> buf.writeUtf(slot.toString()), buf -> Objects.requireNonNull(PlayerSlot.get(buf.readUtf())));
 
     private static final Map<EquipmentSlot, PlayerSlot> EQUIPMENT_SLOTS = new HashMap<>();
@@ -45,8 +45,9 @@ public abstract class PlayerSlot {
             }
         }
 
-        if (name.startsWith("accessories#")) {
-            return SLOTS.computeIfAbsent(name, s -> new AccessoriesSlot(s.substring("accessories#".length())));
+        var accessoriesId = Identifier.tryParse(name);
+        if (accessoriesId != null) {
+            return SLOTS.computeIfAbsent(name, s -> new AccessoriesSlot(Identifier.tryParse(s)));
         }
 
         return null;
@@ -54,8 +55,7 @@ public abstract class PlayerSlot {
 
     public static Collection<PlayerSlot> values(Level level) {
         for (Identifier slot : AccessoriesCompat.INSTANCE.getSlots(level)) {
-            var slotName = "accessories#" + slot;
-            get(slotName);
+            get(slot.toString());
         }
 
         return SLOTS.values();
@@ -70,8 +70,8 @@ public abstract class PlayerSlot {
         slots.add(get(EquipmentSlot.LEGS));
         slots.add(get(EquipmentSlot.FEET));
         slots.add(get(EquipmentSlot.BODY));
-        slots.add(get("accessories#accessories:head"));
-        slots.add(get("accessories#accessories:necklace"));
+        slots.add(get("accessories:head"));
+        slots.add(get("accessories:necklace"));
         return slots;
     }
 
@@ -208,9 +208,9 @@ public abstract class PlayerSlot {
 
     private static class AccessoriesSlot extends PlayerSlot {
 
-        private final String slotName;
+        private final Identifier slotName;
 
-        private AccessoriesSlot(String slotName) {
+        private AccessoriesSlot(Identifier slotName) {
             this.slotName = slotName;
         }
 
@@ -246,7 +246,7 @@ public abstract class PlayerSlot {
 
         @Override
         public String toString() {
-            return "accessories#" + this.slotName;
+            return this.slotName.toString();
         }
     }
 
