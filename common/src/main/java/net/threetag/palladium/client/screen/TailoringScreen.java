@@ -347,6 +347,10 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
         } else {
             DISPLAYED_RECIPE_INDEX = AVAILABLE_RECIPES.indexOf(DISPLAYED_RECIPE);
         }
+
+        if (Minecraft.getInstance().screen instanceof TailoringScreen screen) {
+            screen.recipeList.updateRecipes(AVAILABLE_RECIPES, screen.searchBox.getValue());
+        }
     }
 
     public static void cycle(boolean next) {
@@ -438,7 +442,7 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
     private class RecipeList extends AbstractSelectionList<RecipeListEntry> {
 
         private final int listWidth;
-        private final List<TailoringRecipe> recipes;
+        private List<TailoringRecipe> recipes;
         private final Consumer<TailoringRecipe> onClick;
 
         public RecipeList(Minecraft minecraft, int width, int height, int x, int y, List<TailoringRecipe> recipes, Consumer<TailoringRecipe> onClick) {
@@ -449,6 +453,11 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
             this.listWidth = width;
             this.recipes = recipes;
             this.onClick = onClick;
+        }
+
+        public void updateRecipes(List<TailoringRecipe> recipes, String search) {
+            this.recipes = recipes;
+            this.populate(search);
         }
 
         public void populate(String search) {
