@@ -15,7 +15,7 @@ public class PalladiumCustomizationProvider extends CustomizationProvider {
     }
 
     @Override
-    protected void gather() {
+    protected void gather(HolderLookup.Provider provider) {
         for (BuiltinCustomization.Type type : BuiltinCustomization.Type.values()) {
             this.unconditional(Palladium.id(type.getSerializedName()), new BuiltinCustomization(type));
         }

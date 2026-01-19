@@ -18,7 +18,7 @@ public class PalladiumCustomizationCategoryProvider extends CustomizationCategor
     }
 
     @Override
-    protected void gather() {
+    protected void gather(HolderLookup.Provider provider) {
         this.add(CustomizationCategories.HAT, 10,
                 CustomizationPreview.create(2F, 0, 2F, 0, 15, 40, 0),
                 EquipmentSlot.HEAD);
