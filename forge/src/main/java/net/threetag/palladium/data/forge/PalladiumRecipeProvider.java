@@ -76,6 +76,7 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
             ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.FABRIC_BY_COLOR.get(color).get(), 8).requires(Ingredient.of(PalladiumItemTags.FABRICS), 8).requires(PalladiumItemTags.DYE_BY_COLOR.get(color)).unlockedBy(getHasName(DyeItem.byColor(color)), has(PalladiumItemTags.DYE_BY_COLOR.get(color))).save(consumer, Palladium.id("fabric_recoloring_8_" + color.getName()));
         }
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get()).requires(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get()).requires(PalladiumItems.QUARTZ_CIRCUIT.get()).unlockedBy(getHasName(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get()), has(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get())).save(consumer, Palladium.id("multiversal_extrapolator_reset"));
         SpecialRecipeBuilder.special(PalladiumRecipeSerializers.MULTIVERSAL_EXTRAPOLATOR_CLONING.get()).save(consumer, PalladiumRecipeSerializers.MULTIVERSAL_EXTRAPOLATOR_CLONING.getId().toString());
     }
 

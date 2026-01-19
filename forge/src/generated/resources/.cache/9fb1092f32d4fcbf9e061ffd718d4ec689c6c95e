@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-12T16:52:42.3332963	Recipes
+// 1.20.1	2026-01-19T16:57:22.4381591	Recipes
 8974378425ef93ac9d035b3f01886a218877882f data/palladium/advancements/recipes/building_blocks/lead_block.json
 02c92bc519482d729bec23ca967a6f5b0224c33f data/palladium/advancements/recipes/building_blocks/raw_lead_block.json
 8e1c3c7189bf08e177eda14e18cfb811be49542e data/palladium/advancements/recipes/building_blocks/raw_titanium_block.json
@@ -60,6 +60,7 @@ eb54ef4d4e0701ab41dd01fca566437f103d2d42 data/palladium/advancements/recipes/mis
 8a57bcd830a2c054a0857e7847cd35aa0f42c03c data/palladium/advancements/recipes/misc/light_gray_fabric.json
 1093128b26a4ee7bdcbaa6b79212570105f7ebcd data/palladium/advancements/recipes/misc/lime_fabric.json
 c587c0efe496cf18098f95dc4de1397645916b72 data/palladium/advancements/recipes/misc/magenta_fabric.json
+6a0e1b7bed5f846dbce5d16074fa6be94b0441df data/palladium/advancements/recipes/misc/multiversal_extrapolator_reset.json
 8e22fbd5b9d32f31c864bea9ff95a5d707e2bccd data/palladium/advancements/recipes/misc/orange_fabric.json
 f80094451d69964eb350cbd9f69a498a03ad999d data/palladium/advancements/recipes/misc/pink_fabric.json
 0c89826ea9e538cc8174d6e79310c2e19915451d data/palladium/advancements/recipes/misc/purple_dye_from_heart_shaped_herb.json
@@ -137,6 +138,7 @@ dc7d64965025799187905c98dc27c80940ecad12 data/palladium/recipes/light_gray_fabri
 3332a008f5f82b1ede60459f2719b4472f735a5f data/palladium/recipes/lime_fabric.json
 ad2d9055aec4c3cd129132b30f67ba8e82021470 data/palladium/recipes/magenta_fabric.json
 c03b4ffc2cee6f58a6db3abf2ef1d5df06927408 data/palladium/recipes/multiversal_extrapolator_cloning.json
+7fe835c2482ee42c44f2ba7d85758eeb068b8f9c data/palladium/recipes/multiversal_extrapolator_reset.json
 a4f24ff76140f4aa0c61bc990f5f76fcbb78fc3a data/palladium/recipes/multiversal_iterator.json
 ca41220fddb290e6b9357d43daeb5ffde1280b71 data/palladium/recipes/orange_fabric.json
 1a8a126da2b9fb36d025217c7c4914fd7e247d33 data/palladium/recipes/pink_fabric.json
