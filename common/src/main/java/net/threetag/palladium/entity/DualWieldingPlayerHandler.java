@@ -274,15 +274,20 @@ public class DualWieldingPlayerHandler {
     public static void attackClient() {
         var mc = Minecraft.getInstance();
 
-        if (AbilityUtil.isTypeEnabled(mc.player, Abilities.DUAL_WIELDING.get()) && !PalladiumKeyMappings.DUAL_WIELDING_RIGHT_CLICK) {
+        if (AbilityUtil.isTypeEnabled(mc.player, Abilities.DUAL_WIELDING.get()) && !PalladiumKeyMappings.DUAL_WIELDING_RIGHT_CLICK && mc.player instanceof PalladiumPlayerExtension ext) {
             PalladiumKeyMappings.DUAL_WIELDING_RIGHT_CLICK = true;
             var hitResult = mc.hitResult;
 
-            if (Objects.requireNonNull(hitResult).getType() == HitResult.Type.ENTITY && mc.player instanceof PalladiumPlayerExtension ext) {
+            if (Objects.requireNonNull(hitResult).getType() == HitResult.Type.MISS) {
+                ext.palladium$getDualWieldingHandler().resetAttackStrengthTicker();
+                mc.gameRenderer.itemInHandRenderer.itemUsed(InteractionHand.OFF_HAND);
+                PalladiumNetwork.NETWORK.sendToServer(new RightClickAttackMessage(-1));
+            } else if (Objects.requireNonNull(hitResult).getType() == HitResult.Type.ENTITY) {
                 var target = ((EntityHitResult) hitResult).getEntity();
                 PalladiumNetwork.NETWORK.sendToServer(new RightClickAttackMessage(target.getId()));
                 ext.palladium$getDualWieldingHandler().attackWithOffHand(target);
                 ext.palladium$getDualWieldingHandler().resetAttackStrengthTicker();
+                mc.gameRenderer.itemInHandRenderer.itemUsed(InteractionHand.OFF_HAND);
             } else {
                 PalladiumNetwork.NETWORK.sendToServer(new RightClickAttackMessage(-1));
             }
