@@ -92,21 +92,6 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
         for (PowerHolder holder : this.powers.values()) {
             holder.tick();
         }
-
-        if (this.getEntity() instanceof Avatar) {
-            ArrayList<AbilityInstance<?>> animatingAbilities = new ArrayList<>();
-            this.powers.values().forEach(powerHolder -> animatingAbilities.addAll(powerHolder.getAbilities().values().stream().filter(a -> a.isEnabled() && a.getAbility().getProperties().getAnimation().isPresent()).toList()));
-
-            //Cut off animations if the ability that triggered it is disabled
-            if(animatingAbilities.stream().filter(abilityInstance -> abilityInstance.getAbility().getProperties().getAnimationLayer() == 0).findFirst().isEmpty())
-                ((PlayerAnimationController) PlayerAnimationAccess.getPlayerAnimationLayer((Avatar) this.getEntity(), PalladiumAnimationManager.COSMETIC_ANIMATION)).stopTriggeredAnimation();
-
-            if(animatingAbilities.stream().filter(abilityInstance -> abilityInstance.getAbility().getProperties().getAnimationLayer() == 1).findFirst().isEmpty())
-                ((PlayerAnimationController) PlayerAnimationAccess.getPlayerAnimationLayer((Avatar) this.getEntity(), PalladiumAnimationManager.IDLE_ANIMATION)).stopTriggeredAnimation();
-
-            if(animatingAbilities.stream().filter(abilityInstance -> abilityInstance.getAbility().getProperties().getAnimationLayer() == 2).findFirst().isEmpty())
-                ((PlayerAnimationController) PlayerAnimationAccess.getPlayerAnimationLayer((Avatar) this.getEntity(), PalladiumAnimationManager.ACTIVE_ANIMATION)).stopTriggeredAnimation();
-        }
     }
 
     public void addPowerHolder(PowerHolder holder) {

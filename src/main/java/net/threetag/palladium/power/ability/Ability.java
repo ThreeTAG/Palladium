@@ -79,19 +79,6 @@ public abstract class Ability {
         animationTimer.tickAndUpdate(enabled);
     }
 
-    public void triggerAnimation(LivingEntity entity, AbilityInstance<?> abilityInstance) {
-        Optional<Identifier> animation = abilityInstance.getAbility().getProperties().getAnimation();
-        if (entity instanceof Avatar && animation.isPresent()) {
-            Identifier animationLayer = switch (abilityInstance.getAbility().getProperties().getAnimationLayer()) {
-                case 0 -> PalladiumAnimationManager.COSMETIC_ANIMATION;
-                case 1 -> PalladiumAnimationManager.IDLE_ANIMATION;
-                default -> PalladiumAnimationManager.ACTIVE_ANIMATION;
-            };
-            PlayerAnimationController controller = (PlayerAnimationController) PlayerAnimationAccess.getPlayerAnimationLayer((Avatar) entity, animationLayer);
-            if (controller != null) controller.triggerAnimation(animation.get());
-        }
-    }
-
     public void firstTick(LivingEntity entity, AbilityInstance<?> abilityInstance) {
 
     }

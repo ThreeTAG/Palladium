@@ -1,19 +1,26 @@
 package net.threetag.palladium.client.animation;
 
 import com.zigythebird.playeranim.animation.PlayerAnimationController;
+import com.zigythebird.playeranim.animation.PlayerRawAnimationBuilder;
 import com.zigythebird.playeranim.api.PlayerAnimationFactory;
+import com.zigythebird.playeranimcore.animation.AnimationController;
+import com.zigythebird.playeranimcore.animation.AnimationData;
 import com.zigythebird.playeranimcore.enums.PlayState;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.Avatar;
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
+import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerUtil;
+import net.threetag.palladium.power.ability.AbilityInstance;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PalladiumAnimationManager extends SimpleJsonResourceReloadListener<PalladiumAnimation> {
 
@@ -30,15 +37,15 @@ public class PalladiumAnimationManager extends SimpleJsonResourceReloadListener<
         super(PalladiumAnimation.CODEC, FileToIdConverter.json("palladium/animations"));
     }
 
-    public static void registerLayers(FMLClientSetupEvent e){
+    public static void registerLayers(FMLClientSetupEvent e) {
         e.enqueueWork(() -> PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(COSMETIC_ANIMATION, 500,
-                player -> new PlayerAnimationController(player, (controller, state, animSetter) -> PlayState.STOP)
+                player -> new PlayerAnimationController(player, new PalladiumAnimationHandler(0))
         ));
         e.enqueueWork(() -> PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(IDLE_ANIMATION, 1000,
-                player -> new PlayerAnimationController(player, (controller, state, animSetter) -> PlayState.STOP)
+                player -> new PlayerAnimationController(player, new PalladiumAnimationHandler(1))
         ));
         e.enqueueWork(() -> PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(ACTIVE_ANIMATION, 1500,
-                player -> new PlayerAnimationController(player, (controller, state, animSetter) -> PlayState.STOP)
+                player -> new PlayerAnimationController(player, new PalladiumAnimationHandler(2))
         ));
     }
 
@@ -51,5 +58,39 @@ public class PalladiumAnimationManager extends SimpleJsonResourceReloadListener<
 
     public PalladiumAnimation get(Identifier id) {
         return this.byName.get(id);
+    }
+
+    public static class PalladiumAnimationHandler implements AnimationController.AnimationStateHandler {
+
+        private int animationLayer;
+
+        public PalladiumAnimationHandler(int animationLayer) {
+            this.animationLayer = animationLayer;
+        }
+
+        @Override
+        public PlayState handle(AnimationController animationController, AnimationData animationData, AnimationController.AnimationSetter animationSetter) {
+            if (animationController instanceof PlayerAnimationController) {
+                Avatar a = ((PlayerAnimationController) animationController).getAvatar();
+                Optional<Identifier> animation = getFirstEnabledAnimation(a, animationLayer);
+                if (animation.isEmpty()) return PlayState.STOP;
+                if (animationController.hasAnimationFinished())
+                    animationController.forceAnimationReset();
+                return animationSetter.setAnimation(PlayerRawAnimationBuilder.begin().thenPlay(animation.get()).build());
+            }
+            return PlayState.STOP;
+        }
+
+        private static Optional<Identifier> getFirstEnabledAnimation(LivingEntity entity, int animationLayer) {
+            for (PowerHolder holder : PowerUtil.getPowerHandler(entity).getPowerHolders().values()) {
+                for (AbilityInstance<?> value : holder.getAbilities().values()) {
+                    Optional<Identifier> animation = value.getAbility().getProperties().getAnimation();
+                    if (value.isEnabled() && animation.isPresent() && value.getAbility().getProperties().getAnimationLayer() == animationLayer) {
+                        return animation;
+                    }
+                }
+            }
+            return Optional.empty();
+        }
     }
 }
