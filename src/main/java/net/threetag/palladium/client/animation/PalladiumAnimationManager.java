@@ -68,7 +68,7 @@ public class PalladiumAnimationManager extends SimpleJsonResourceReloadListener<
 
     public static class PalladiumAnimationHandler implements AnimationController.AnimationStateHandler {
 
-        private int animationLayer;
+        private final int animationLayer;
 
         public PalladiumAnimationHandler(int animationLayer) {
             this.animationLayer = animationLayer;
@@ -80,11 +80,10 @@ public class PalladiumAnimationManager extends SimpleJsonResourceReloadListener<
                 Avatar a = ((PlayerAnimationController) animationController).getAvatar();
                 Optional<Identifier> animation = getFirstEnabledAnimation(a, animationLayer);
                 if (animation.isEmpty()){
-                    animationController.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(10, EasingType.LINEAR), new Animation(new ExtraAnimationData("name", AnimationStage.WAIT.name()), 10, Animation.LoopType.PLAY_ONCE, Collections.emptyMap(), UniversalAnimLoader.NO_KEYFRAMES, new HashMap(), new HashMap()));
+                    if(!animationController.hasAnimationFinished())
+                        animationController.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(10, EasingType.LINEAR), new Animation(new ExtraAnimationData("name", AnimationStage.WAIT.name()), 10, Animation.LoopType.PLAY_ONCE, Collections.emptyMap(), UniversalAnimLoader.NO_KEYFRAMES, new HashMap<>(), new HashMap<>()));
                     return PlayState.STOP;
                 }
-                if (animationController.hasAnimationFinished())
-                    animationController.forceAnimationReset();
                 return animationSetter.setAnimation(PlayerRawAnimationBuilder.begin().thenPlay(animation.get()).build());
             }
             return PlayState.STOP;
