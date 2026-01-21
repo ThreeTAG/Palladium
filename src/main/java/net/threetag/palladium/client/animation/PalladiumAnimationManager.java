@@ -3,9 +3,15 @@ package net.threetag.palladium.client.animation;
 import com.zigythebird.playeranim.animation.PlayerAnimationController;
 import com.zigythebird.playeranim.animation.PlayerRawAnimationBuilder;
 import com.zigythebird.playeranim.api.PlayerAnimationFactory;
+import com.zigythebird.playeranimcore.animation.Animation;
 import com.zigythebird.playeranimcore.animation.AnimationController;
 import com.zigythebird.playeranimcore.animation.AnimationData;
+import com.zigythebird.playeranimcore.animation.ExtraAnimationData;
+import com.zigythebird.playeranimcore.animation.layered.modifier.AbstractFadeModifier;
+import com.zigythebird.playeranimcore.easing.EasingType;
+import com.zigythebird.playeranimcore.enums.AnimationStage;
 import com.zigythebird.playeranimcore.enums.PlayState;
+import com.zigythebird.playeranimcore.loading.UniversalAnimLoader;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -73,7 +79,10 @@ public class PalladiumAnimationManager extends SimpleJsonResourceReloadListener<
             if (animationController instanceof PlayerAnimationController) {
                 Avatar a = ((PlayerAnimationController) animationController).getAvatar();
                 Optional<Identifier> animation = getFirstEnabledAnimation(a, animationLayer);
-                if (animation.isEmpty()) return PlayState.STOP;
+                if (animation.isEmpty()){
+                    animationController.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(10, EasingType.LINEAR), new Animation(new ExtraAnimationData("name", AnimationStage.WAIT.name()), 10, Animation.LoopType.PLAY_ONCE, Collections.emptyMap(), UniversalAnimLoader.NO_KEYFRAMES, new HashMap(), new HashMap()));
+                    return PlayState.STOP;
+                }
                 if (animationController.hasAnimationFinished())
                     animationController.forceAnimationReset();
                 return animationSetter.setAnimation(PlayerRawAnimationBuilder.begin().thenPlay(animation.get()).build());
