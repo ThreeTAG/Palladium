@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.addonpack.version.*;
+import net.threetag.palladium.feature.PalladiumFeatureFlags;
 import net.threetag.palladiumcore.util.Platform;
 
 import java.util.*;
@@ -76,6 +77,14 @@ public final class PackData {
                         dependenciesMap.computeIfAbsent(type, s -> new ArrayList<>()).add(new Dependency(entry.getKey(), matcherStringList));
                     }
                 }
+            }
+        }
+
+        if (GsonHelper.isValidNode(json, "feature_flags")) {
+            var featureFlags = GsonHelper.getAsJsonArray(json, "feature_flags");
+
+            for (JsonElement flagEl : featureFlags) {
+                PalladiumFeatureFlags.enable(GsonHelper.convertToString(flagEl, "feature_flags[].$"));
             }
         }
 

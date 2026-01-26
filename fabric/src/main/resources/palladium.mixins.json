@@ -11,6 +11,7 @@
     "LivingEntityMixin",
     "PackRepositoryMixin",
     "PlayerMixin",
+    "RegistryDataLoaderMixin",
     "ReloadableResourceManagerMixin",
     "ResourceLoaderImplMixin",
     "TrinketsApiMixin"

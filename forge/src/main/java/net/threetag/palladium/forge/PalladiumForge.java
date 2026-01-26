@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -18,7 +19,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.NewRegistryEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumClient;
@@ -30,6 +30,7 @@ import net.threetag.palladium.compat.apothicattributes.forge.ApothicAttributesCo
 import net.threetag.palladium.compat.curios.forge.CuriosCompat;
 import net.threetag.palladium.compat.geckolib.forge.GeckoLibCompatImpl;
 import net.threetag.palladium.data.forge.*;
+import net.threetag.palladium.datacondition.forge.PalladiumFeatureFlagEnabledCondition;
 import net.threetag.palladium.mixin.ReloadableResourceManagerMixin;
 import net.threetag.palladiumcore.forge.PalladiumCoreForge;
 import net.threetag.palladiumcore.util.Platform;
@@ -50,6 +51,7 @@ public class PalladiumForge {
         Palladium.init();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PalladiumConfig.Client.generateConfig());
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, PalladiumConfig.Server.generateConfig());
+        CraftingHelper.register(new PalladiumFeatureFlagEnabledCondition.Serializer());
 
         if (ModList.get().isLoaded("curios")) {
             CuriosCompat.init();
@@ -59,7 +61,7 @@ public class PalladiumForge {
             GeckoLibCompatImpl.init();
         }
 
-        if(Platform.isModLoaded("attributeslib")) {
+        if (Platform.isModLoaded("attributeslib")) {
             ApothicAttributesCompat.init();
         }
 

@@ -5,6 +5,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraftforge.fml.config.ModConfig;
@@ -12,6 +13,8 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.compat.geckolib.fabric.GeckoLibCompatImpl;
 import net.threetag.palladium.compat.trinkets.fabric.TrinketsCompat;
+import net.threetag.palladium.datacondition.fabric.PalladiumFeatureFlagEnabledCondition;
+import net.threetag.palladium.feature.PalladiumFeatureFlags;
 import net.threetag.palladium.loot.LootTableModificationManager;
 import net.threetag.palladium.world.PalladiumPlacedFeatures;
 import net.threetag.palladiumcore.util.Platform;
@@ -23,6 +26,7 @@ public class PalladiumFabric implements ModInitializer {
         Palladium.init();
         ForgeConfigRegistry.INSTANCE.register(Palladium.MOD_ID, ModConfig.Type.CLIENT, PalladiumConfig.Client.generateConfig());
         ForgeConfigRegistry.INSTANCE.register(Palladium.MOD_ID, ModConfig.Type.SERVER, PalladiumConfig.Server.generateConfig());
+        ResourceConditions.register(PalladiumFeatureFlags.DATA_CONDITION_ID, new PalladiumFeatureFlagEnabledCondition());
 
         if (Platform.isModLoaded("trinkets")) {
             TrinketsCompat.init();

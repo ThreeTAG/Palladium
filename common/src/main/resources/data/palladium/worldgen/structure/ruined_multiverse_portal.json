@@ -13,5 +13,17 @@
   "use_expansion_hack": false,
   "spawn_overrides": {
 
-  }
+  },
+  "forge:conditions": [
+    {
+      "type": "palladium:feature_flag_enabled",
+      "feature_flag": "worldgen/ruined_multiverse_portals"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "palladium:feature_flag_enabled",
+      "feature_flag": "worldgen/ruined_multiverse_portals"
+    }
+  ]
 }

@@ -8,7 +8,19 @@
   "placement": {
     "type": "minecraft:random_spread",
     "salt": 215645765,
-  }
     "spacing": 40,
     "separation": 16
+  },
+  "forge:conditions": [
+    {
+      "type": "palladium:feature_flag_enabled",
+      "feature_flag": "worldgen/ruined_multiverse_portals"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "palladium:feature_flag_enabled",
+      "feature_flag": "worldgen/ruined_multiverse_portals"
+    }
+  ]
 }

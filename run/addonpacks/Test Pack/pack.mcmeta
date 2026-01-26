@@ -14,6 +14,9 @@
       "trinkets": ">=3.7.0"
     }
   },
+  "feature_flags": [
+    "worldgen/ruined_multiverse_portals"
+  ],
   "custom": {
     "curios": {
       "belt": true,

@@ -28,5 +28,17 @@
         "element_type": "minecraft:single_pool_element"
       }
     }
+  ],
+  "forge:conditions": [
+    {
+      "type": "palladium:feature_flag_enabled",
+      "feature_flag": "worldgen/ruined_multiverse_portals"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "palladium:feature_flag_enabled",
+      "feature_flag": "worldgen/ruined_multiverse_portals"
+    }
   ]
 }
