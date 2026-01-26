@@ -1,0 +1,32 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "palladium:ruined_multiverse_portal_1",
+        "processors": "palladium:ruined_multiverse_portal_generic_degradation",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "palladium:ruined_multiverse_portal_2",
+        "processors": "palladium:ruined_multiverse_portal_generic_degradation",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "palladium:ruined_multiverse_portal_3",
+        "processors": "palladium:ruined_multiverse_portal_generic_degradation",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}
