@@ -6,7 +6,6 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.resources.Identifier;
 import net.threetag.palladium.client.animation.PalladiumAnimation;
-import net.threetag.palladium.client.animation.PalladiumAnimationManager;
 import net.threetag.palladium.logic.context.DataContext;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,7 +33,7 @@ public class PackRenderLayerAnimation {
 
     public PalladiumAnimation getAnimation() {
         if (this.animation == null && this.id != null) {
-            this.animation = PalladiumAnimationManager.INSTANCE.get(this.id);
+//            this.animation = PalladiumAnimationManager.INSTANCE.get(this.id);
         }
 
         return this.animation;

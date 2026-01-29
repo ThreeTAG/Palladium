@@ -21,6 +21,18 @@ import java.util.List;
 
 public class PalladiumProxy {
 
+    public float getCurrentPartialTick() {
+        return 1F;
+    }
+
+    public boolean hasCape(Entity entity) {
+        return false;
+    }
+
+    public boolean isFirstPerson(Entity entity) {
+        return false;
+    }
+
     public void sendPacketToServer(CustomPacketPayload payload, CustomPacketPayload... payloads) {
 
     }

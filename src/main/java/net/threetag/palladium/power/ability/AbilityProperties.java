@@ -8,6 +8,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec2;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.icon.ItemIcon;
 import net.threetag.palladium.util.PalladiumCodecs;
@@ -21,6 +22,10 @@ public class AbilityProperties {
 
     public static final AbilityProperties BASIC = new AbilityProperties();
 
+    public static final Identifier COSMETIC_ANIMATION_LAYER = Palladium.id("cosmetic_animations");
+    public static final Identifier IDLE_ANIMATION_LAYER = Palladium.id("idle_animations");
+    public static final Identifier ACTIVE_ANIMATION_LAYER = Palladium.id("active_animations");
+
     public static final Codec<AbilityProperties> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ComponentSerialization.CODEC.optionalFieldOf("title").forGetter(p -> Optional.ofNullable(p.title)),
             Icon.CODEC.optionalFieldOf("icon", new ItemIcon(Items.BARRIER)).forGetter(AbilityProperties::getIcon),
@@ -33,7 +38,7 @@ public class AbilityProperties {
             AnimationTimerSetting.CODEC.optionalFieldOf("animation_timer").forGetter(p -> Optional.ofNullable(p.animationTimerSetting)),
             PalladiumCodecs.listOrPrimitive(Identifier.CODEC).optionalFieldOf("render_layer", Collections.emptyList()).forGetter(p -> p.renderLayers),
             Codec.BOOL.optionalFieldOf("allow_dampening", true).forGetter(p -> p.allowDampening),
-            Codec.intRange(0, 2).optionalFieldOf("animation_layer", 2).forGetter(AbilityProperties::getAnimationLayer),
+            Identifier.CODEC.optionalFieldOf("animation_layer", ACTIVE_ANIMATION_LAYER).forGetter(AbilityProperties::getAnimationLayer),
             Identifier.CODEC.optionalFieldOf("animation").forGetter(AbilityProperties::getAnimation)
     ).apply(instance, (title, icon, desc, color, hiddenGui, hiddenBar, listIndex, guiPos, timer, renderLayers, allowDampening, animationLayer, animation) ->
             new AbilityProperties(title.orElse(null), icon, desc.orElse(null), color, hiddenGui, hiddenBar, listIndex, guiPos.orElse(null), timer.orElse(null), renderLayers, allowDampening, animationLayer, animation.orElse(null))));
@@ -49,7 +54,7 @@ public class AbilityProperties {
     private AnimationTimerSetting animationTimerSetting = null;
     private List<Identifier> renderLayers = Collections.emptyList();
     private boolean allowDampening = true;
-    private int animationLayer = 2;
+    private Identifier animationLayer = ACTIVE_ANIMATION_LAYER;
     private Identifier animation = null;
 
     private AbilityProperties() {
@@ -59,7 +64,7 @@ public class AbilityProperties {
     private AbilityProperties(Component title, Icon icon, AbilityDescription description, AbilityColor color,
                               boolean hiddenInGUI, boolean hiddenInBar, int listIndex, Vec2 guiPosition,
                               AnimationTimerSetting animationTimerSetting, List<Identifier> renderLayers,
-                              boolean allowDampening, int animationLayer, Identifier animation) {
+                              boolean allowDampening, Identifier animationLayer, Identifier animation) {
         this.title = title;
         this.icon = icon;
         this.description = description;
@@ -120,12 +125,12 @@ public class AbilityProperties {
         return this;
     }
 
-    public AbilityProperties animationLayer(int animationLayer){
+    public AbilityProperties animationLayer(Identifier animationLayer) {
         this.animationLayer = animationLayer;
         return this;
     }
 
-    public AbilityProperties animation(Identifier animation){
+    public AbilityProperties animation(Identifier animation) {
         this.animation = animation;
         return this;
     }
@@ -175,7 +180,11 @@ public class AbilityProperties {
         return this.allowDampening;
     }
 
-    public int getAnimationLayer() { return this.animationLayer; }
+    public Identifier getAnimationLayer() {
+        return this.animationLayer;
+    }
 
-    public Optional<Identifier> getAnimation() { return Optional.ofNullable(this.animation); }
+    public Optional<Identifier> getAnimation() {
+        return Optional.ofNullable(this.animation);
+    }
 }

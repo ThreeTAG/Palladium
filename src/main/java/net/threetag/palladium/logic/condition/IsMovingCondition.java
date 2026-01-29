@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.util.EntityUtil;
 
 public class IsMovingCondition implements Condition {
 
@@ -15,17 +16,7 @@ public class IsMovingCondition implements Condition {
     @Override
     public boolean test(DataContext context) {
         var entity = context.getEntity();
-
-        if (entity == null) {
-            return false;
-        }
-
-        // TODO
-//        if (entity.level().isClientSide) {
-            return entity.xo != entity.getX() || entity.yo != entity.getY() || entity.zo != entity.getZ();
-//        } else {
-//            return entity.walkDist != entity.walkDistO;
-//        }
+        return entity != null && EntityUtil.isMoving(entity);
     }
 
     @Override

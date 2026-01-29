@@ -22,11 +22,11 @@
     "ResourcePackLoaderMixin",
     "SimpleJsonResourceReloadListenerMixin",
     "VibrationSystemListenerMixin",
-    "WorldVersionMixin",
-    "client.ModelMixin"
+    "WorldVersionMixin"
   ],
   "client": [
     "client.AbstractClientPlayerMixin",
+    "client.PlayerAnimationControllerMixin",
     "client.AvatarRendererMixin",
     "client.GameRendererMixin",
     "client.HumanoidModelMixin",
@@ -36,7 +36,9 @@
     "client.LivingEntityRendererMixin",
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
+    "client.ModelMixin",
     "client.ModelPartMixin",
+    "client.MolangLoaderMixin",
     "client.RenderTypesMixin",
     "client.ScreenEffectRendererMixin",
     "client.SkyRendererMixin",

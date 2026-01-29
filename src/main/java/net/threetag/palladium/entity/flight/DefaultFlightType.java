@@ -120,7 +120,7 @@ public class DefaultFlightType extends FlightType {
 
     public record AnimationSettings(Identifier assetId, float maxLean, float bodyStiffness, float limbStiffness) {
 
-        public static final AnimationSettings DEFAULT = new AnimationSettings(Palladium.id("flight/default"), 35F, 12F, 8F);
+        public static final AnimationSettings DEFAULT = new AnimationSettings(Palladium.id("flight.default"), 35F, 12F, 8F);
 
         public static final Codec<AnimationSettings> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Identifier.CODEC.fieldOf("asset_id").forGetter(AnimationSettings::assetId),

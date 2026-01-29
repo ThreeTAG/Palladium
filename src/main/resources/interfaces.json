@@ -1,0 +1,5 @@
+{
+  "com/zigythebird/playeranim/animation/PlayerAnimationController": [
+    "net/threetag/palladium/logic/molang/EntityContext"
+  ]
+}

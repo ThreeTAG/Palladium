@@ -17,6 +17,11 @@ import java.util.function.Predicate;
 
 public class EntityUtil {
 
+    // TODO test on client & server
+    public static boolean isMoving(Entity entity) {
+        return entity.xo != entity.getX() || entity.yo != entity.getY() || entity.zo != entity.getZ();
+    }
+
     public static Vec3 getLookVector(Entity entity) {
         return MathUtil.calculateViewVector(entity.getXRot(), entity.getYHeadRot());
     }

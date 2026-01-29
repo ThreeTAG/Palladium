@@ -218,7 +218,7 @@ public class SwingingFlightType extends FlightType {
     public record AnimationSettings(Identifier assetId, BeamRendererValue beamRendererId, float maxLean,
                                     float bodyStiffness, float limbStiffness) {
 
-        public static final Identifier DEFAULT_ASSET_ID = Palladium.id("flight/swinging");
+        public static final Identifier DEFAULT_ASSET_ID = Palladium.id("flight.swinging");
         public static final BeamRendererValue DEFAULT_BEAM = new BeamRendererValue(PalladiumBeams.SWINGING_WEB_RIGHT, PalladiumBeams.SWINGING_WEB_LEFT);
         public static final float DEFAULT_MAX_LEAN = 35F;
         public static final float DEFAULT_BODY_STIFFNESS = 12F;

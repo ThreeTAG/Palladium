@@ -1,7 +1,7 @@
 {
   "type": "palladium:flight",
   "animation": {
-    "asset_id": "palladium:flight/default",
+    "asset_id": "palladium:flight.default",
     "body_stiffness": 20.0,
     "limb_stiffness": 12.0
   },
