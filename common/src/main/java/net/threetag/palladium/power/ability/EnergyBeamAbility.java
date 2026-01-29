@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -189,11 +188,15 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer, Comman
     }
 
     public static HitResult updateTargetPos(LivingEntity living, AbilityInstance entry, float partialTick) {
-        var start = living.getEyePosition(partialTick);
-        var end = start.add(EntityUtil.getLookVector(living, partialTick).scale(entry.getProperty(MAX_DISTANCE)));
-        HitResult endHit = EntityUtil.rayTraceWithEntities(living, start, end, start.distanceTo(end), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, en -> true);
-        entry.setUniqueProperty(TARGET, endHit.getLocation());
-        return endHit;
+        try {
+            var start = living.getEyePosition(partialTick);
+            var end = start.add(EntityUtil.getLookVector(living, partialTick).scale(entry.getProperty(MAX_DISTANCE)));
+            HitResult endHit = EntityUtil.rayTraceWithEntities(living, start, end, start.distanceTo(end), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, en -> true);
+            entry.setUniqueProperty(TARGET, endHit.getLocation());
+            return endHit;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
