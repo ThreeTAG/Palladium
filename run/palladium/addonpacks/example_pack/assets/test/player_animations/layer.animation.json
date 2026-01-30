@@ -1,0 +1,12 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"layer.test": {
+			"bones": {
+				"head.halo": {
+					"rotation": ["pal.disabled", "query.life_time", "pal.disabled"]
+				}
+			}
+		}
+	}
+}

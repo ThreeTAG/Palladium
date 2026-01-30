@@ -3,6 +3,10 @@ package net.threetag.palladium.client.renderer.entity.layer.pack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.zigythebird.playeranim.accessors.IAvatarAnimationState;
+import com.zigythebird.playeranim.animation.AvatarAnimManager;
+import com.zigythebird.playeranim.util.RenderUtil;
+import com.zigythebird.playeranimcore.bones.PlayerAnimBone;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.Model;
@@ -96,6 +100,13 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
 
             this.animations.animate(model, context, state, state.partialTick);
 
+            if (state instanceof IAvatarAnimationState animationState) {
+                AvatarAnimManager emote = animationState.playerAnimLib$getAnimManager();
+                if (emote != null && emote.isActive()) {
+                    animate(model.root(), emote, "");
+                }
+            }
+
             submitNodeCollector.submitModel(
                     model,
                     Unit.INSTANCE,
@@ -146,6 +157,16 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                         state.outlineColor,
                         null);
             }
+        }
+    }
+
+    private void animate(ModelPart m, AvatarAnimManager emote, String parents){
+        for (String name : m.children.keySet()) {
+            ModelPart child = m.getChild(name);
+            PlayerAnimBone bone = emote.get3DTransform(new PlayerAnimBone(parents + name));
+            RenderUtil.copyVanillaPart(child, bone);
+            emote.updatePart(child, bone);
+            animate(child, emote, parents + name + ".");
         }
     }
 

@@ -41,39 +41,44 @@ public class PalladiumAnimationManager {
                 player -> new PlayerAnimationController(player, new FlightAnimationHandler())
         ));
         e.enqueueWork(() -> PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(AbilityProperties.ACTIVE_ANIMATION_LAYER, 2000,
-                player -> new PlayerAnimationController(player, new AbilityAnimationHandler(AbilityProperties.ACTIVE_ANIMATION_LAYER))
+                player -> {
+
+                    PlayerAnimationController c = new PlayerAnimationController(player, new AbilityAnimationHandler(AbilityProperties.ACTIVE_ANIMATION_LAYER));
+                    c.registerPlayerAnimBone("head.halo");
+                    return c;
+                }
         ));
     }
 
     private record AbilityAnimationHandler(Identifier id) implements AnimationController.AnimationStateHandler {
 
         @Override
-            public PlayState handle(AnimationController animationController, AnimationData animationData, AnimationController.AnimationSetter animationSetter) {
-                if (animationController instanceof PlayerAnimationController) {
-                    Avatar a = ((PlayerAnimationController) animationController).getAvatar();
-                    Optional<Identifier> animation = getFirstEnabledAnimation(a, this.id);
-                    if (animation.isEmpty()) {
-                        if (!animationController.hasAnimationFinished()) {
-                            animationController.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(10, EasingType.LINEAR), new Animation(new ExtraAnimationData("name", AnimationStage.WAIT.name()), 10, Animation.LoopType.PLAY_ONCE, Collections.emptyMap(), UniversalAnimLoader.NO_KEYFRAMES, new HashMap<>(), new HashMap<>()));
-                        }
-                        return PlayState.STOP;
-                    } else {
-                        return animationSetter.setAnimation(PlayerRawAnimationBuilder.begin().thenPlay(animation.get()).build());
+        public PlayState handle(AnimationController animationController, AnimationData animationData, AnimationController.AnimationSetter animationSetter) {
+            if (animationController instanceof PlayerAnimationController) {
+                Avatar a = ((PlayerAnimationController) animationController).getAvatar();
+                Optional<Identifier> animation = getFirstEnabledAnimation(a, this.id);
+                if (animation.isEmpty()) {
+                    if (!animationController.hasAnimationFinished()) {
+                        animationController.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(10, EasingType.LINEAR), new Animation(new ExtraAnimationData("name", AnimationStage.WAIT.name()), 10, Animation.LoopType.PLAY_ONCE, Collections.emptyMap(), UniversalAnimLoader.NO_KEYFRAMES, new HashMap<>(), new HashMap<>()));
                     }
+                    return PlayState.STOP;
+                } else {
+                    return animationSetter.setAnimation(PlayerRawAnimationBuilder.begin().thenPlay(animation.get()).build());
                 }
-                return PlayState.STOP;
             }
-
-            private static Optional<Identifier> getFirstEnabledAnimation(LivingEntity entity, Identifier id) {
-                for (AbilityInstance<?> instance : AbilityUtil.getEnabledInstances(entity)) {
-                    Optional<Identifier> animation = instance.getAbility().getProperties().getAnimation();
-                    if (animation.isPresent() && instance.getAbility().getProperties().getAnimationLayer().equals(id)) {
-                        return animation;
-                    }
-                }
-                return Optional.empty();
-            }
+            return PlayState.STOP;
         }
+
+        private static Optional<Identifier> getFirstEnabledAnimation(LivingEntity entity, Identifier id) {
+            for (AbilityInstance<?> instance : AbilityUtil.getEnabledInstances(entity)) {
+                Optional<Identifier> animation = instance.getAbility().getProperties().getAnimation();
+                if (animation.isPresent() && instance.getAbility().getProperties().getAnimationLayer().equals(id)) {
+                    return animation;
+                }
+            }
+            return Optional.empty();
+        }
+    }
 
     private static class FlightAnimationHandler implements AnimationController.AnimationStateHandler {
 

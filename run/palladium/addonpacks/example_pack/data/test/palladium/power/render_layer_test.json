@@ -21,7 +21,8 @@
       "properties": {
         "render_layer": "test:modeled_test",
         "title": "Modeled",
-        "list_index": 1
+        "list_index": 1,
+        "animation" : "test:layer.test"
       },
       "state": {
         "enabling": {
