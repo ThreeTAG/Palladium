@@ -1,6 +1,7 @@
 package net.threetag.palladium.client.animation;
 
 import com.zigythebird.playeranim.animation.PlayerAnimationController;
+import com.zigythebird.playeranimcore.animation.AnimationData;
 import net.minecraft.world.entity.Avatar;
 import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
 import net.threetag.palladium.client.renderer.entity.layer.pack.DefaultPackRenderLayer;
@@ -15,17 +16,22 @@ public class PalladiumAnimationController extends PlayerAnimationController {
     }
 
     @Override
-    public void setupNewAnimation() {
+    public void setupAnim(AnimationData state) {
+        boolean dirty = false;
         if (PalladiumEntityData.get(this.avatar, PalladiumEntityDataTypes.RENDER_LAYERS.get()) instanceof ClientEntityRenderLayers layers) {
             for (PackRenderLayer<?> layer : layers.getLayers()) {
                 if(layer instanceof DefaultPackRenderLayer packRenderLayer){
                     for (String partName : packRenderLayer.getPartNames(this.avatar)) {
-                        if(!this.bones.containsKey(partName))
+                        if(!this.bones.containsKey(partName)){
                             this.registerPlayerAnimBone(partName);
+                            dirty = true;
+                        }
                     }
                 }
             }
         }
-        super.setupNewAnimation();
+        if(dirty)
+            forceAnimationReset();
+        super.setupAnim(state);
     }
 }
