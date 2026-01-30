@@ -17,6 +17,11 @@ import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
+import net.threetag.palladium.client.renderer.entity.layer.pack.DefaultPackRenderLayer;
+import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
+import net.threetag.palladium.entity.data.PalladiumEntityData;
+import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.entity.flight.EntityFlightHandler;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilityProperties;
@@ -32,21 +37,16 @@ public class PalladiumAnimationManager {
 
     public static void registerLayers(FMLClientSetupEvent e) {
         e.enqueueWork(() -> PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(AbilityProperties.COSMETIC_ANIMATION_LAYER, 500,
-                player -> new PlayerAnimationController(player, new AbilityAnimationHandler(AbilityProperties.COSMETIC_ANIMATION_LAYER))
+                player -> new PalladiumAnimationController(player, new AbilityAnimationHandler(AbilityProperties.COSMETIC_ANIMATION_LAYER))
         ));
         e.enqueueWork(() -> PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(AbilityProperties.IDLE_ANIMATION_LAYER, 1000,
-                player -> new PlayerAnimationController(player, new AbilityAnimationHandler(AbilityProperties.IDLE_ANIMATION_LAYER))
+                player -> new PalladiumAnimationController(player, new AbilityAnimationHandler(AbilityProperties.IDLE_ANIMATION_LAYER))
         ));
         e.enqueueWork(() -> PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(FLIGHT_ANIMATION_LAYER, 1500,
-                player -> new PlayerAnimationController(player, new FlightAnimationHandler())
+                player -> new PalladiumAnimationController(player, new FlightAnimationHandler())
         ));
         e.enqueueWork(() -> PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(AbilityProperties.ACTIVE_ANIMATION_LAYER, 2000,
-                player -> {
-
-                    PlayerAnimationController c = new PlayerAnimationController(player, new AbilityAnimationHandler(AbilityProperties.ACTIVE_ANIMATION_LAYER));
-                    c.registerPlayerAnimBone("head.halo");
-                    return c;
-                }
+                player -> new PalladiumAnimationController(player, new AbilityAnimationHandler(AbilityProperties.ACTIVE_ANIMATION_LAYER))
         ));
     }
 
@@ -56,6 +56,7 @@ public class PalladiumAnimationManager {
         public PlayState handle(AnimationController animationController, AnimationData animationData, AnimationController.AnimationSetter animationSetter) {
             if (animationController instanceof PlayerAnimationController) {
                 Avatar a = ((PlayerAnimationController) animationController).getAvatar();
+
                 Optional<Identifier> animation = getFirstEnabledAnimation(a, this.id);
                 if (animation.isEmpty()) {
                     if (!animationController.hasAnimationFinished()) {

@@ -21,6 +21,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Unit;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
 import net.threetag.palladium.client.renderer.RenderTypeFunction;
@@ -33,6 +34,9 @@ import net.threetag.palladium.entity.SkinTypedValue;
 import net.threetag.palladium.logic.context.DataContext;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.State> {
@@ -160,13 +164,29 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
         }
     }
 
-    private void animate(ModelPart m, AvatarAnimManager emote, String parents){
+    private void animate(ModelPart m, AvatarAnimManager emote, String parents) {
         for (String name : m.children.keySet()) {
             ModelPart child = m.getChild(name);
             PlayerAnimBone bone = emote.get3DTransform(new PlayerAnimBone(parents + name));
             RenderUtil.copyVanillaPart(child, bone);
             emote.updatePart(child, bone);
             animate(child, emote, parents + name + ".");
+        }
+    }
+
+    public List<String> getPartNames(Entity entity) {
+        List<String> list = new ArrayList<>();
+        if (model == null)
+            buildModels();
+        if (model != null)
+            addPartNames(model.get(entity).root(), "", list);
+        return list;
+    }
+
+    private void addPartNames(ModelPart m, String parents, List<String> list) {
+        for (String name : m.children.keySet()) {
+            list.add(parents + name);
+            addPartNames(m.getChild(name), parents + name + ".", list);
         }
     }
 
