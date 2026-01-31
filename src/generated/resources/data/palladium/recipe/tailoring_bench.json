@@ -1,4 +1,12 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:feature_flags_enabled",
+      "flags": [
+        "palladium:tailoring"
+      ]
+    }
+  ],
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {

@@ -24,7 +24,6 @@
   "ability.palladium.size": "Size",
   "ability.palladium.skin_change": "Skin Change",
   "ability.palladium.slowfall": "Slowfall",
-  "ability.palladium.vibrate": "Vibrate",
   "block.palladium.tailoring_bench": "Tailoring Bench",
   "commands.palladium.customization.error.cant_have_customizations": "The given entity can not have customizations",
   "commands.palladium.customization.error.not_unlockable": "%s can not be unlocked by commands",
