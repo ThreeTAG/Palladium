@@ -61,6 +61,7 @@ public record ObjectiveScoreCondition(String objectiveName, int min, int max) im
         public void addDocumentation(CodecDocumentationBuilder<Condition, ObjectiveScoreCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Objective Score")
                     .setDescription("Checks if the player has a score in a specific objective.")
+                    .add("objective", TYPE_STRING, "Name of the scoreboard objective.")
                     .addOptional("min", TYPE_INT, "Minimum required score value.")
                     .addOptional("max", TYPE_INT, "Maximum required score value.")
                     .addExampleObject(new ObjectiveScoreCondition("example_objective", 5, 10));

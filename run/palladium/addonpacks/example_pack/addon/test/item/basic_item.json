@@ -9,11 +9,11 @@
       "minecraft:rarity": "epic",
       "palladium:render_layers": {
         "head": "test:overlay_test",
-        "accessories#accessories:hat": "test:overlay_test"
+        "accessories:hat": "test:overlay_test"
       },
       "palladium:powers": {
         "head": "test:aim_test",
-        "accessories#accessories:hat": "test:aim_test"
+        "accessories:hat": "test:aim_test"
       }
     },
     "tab": {

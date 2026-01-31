@@ -15,7 +15,7 @@ public class PalladiumBeamProvider extends BeamProvider {
     }
 
     @Override
-    protected void gather() {
+    protected void gather(HolderLookup.Provider provider) {
         PalladiumBeams.bootstrap(this::unconditional);
     }
 }
