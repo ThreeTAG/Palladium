@@ -98,6 +98,7 @@ public final class Palladium {
         RegistryDumpCommand.register(e.getBuilder(), e.getBuildContext());
         DataAttachmentCommand.register(e.getBuilder(), e.getBuildContext());
         CustomizationCommand.register(e.getBuilder(), e.getBuildContext());
+        ScreenCommand.register(e.getBuilder(), e.getBuildContext());
     }
 
     public static Identifier id(String path) {

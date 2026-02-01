@@ -24,6 +24,7 @@ import net.threetag.palladium.client.beam.BeamManager;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.power.BuyAbilityScreen;
 import net.threetag.palladium.client.gui.screen.power.PowersScreen;
+import net.threetag.palladium.client.gui.ui.screen.UiScreenManager;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.customization.Customization;
@@ -55,6 +56,15 @@ public class PalladiumClientProxy extends PalladiumProxy {
     public void spawnEffectEntity(Entity anchor, EntityEffect entityEffect) {
         EffectEntity effectEntity = new EffectEntity(anchor.level(), anchor, entityEffect);
         Objects.requireNonNull(Minecraft.getInstance().level).addEntity(effectEntity);
+    }
+
+    @Override
+    public void openScreen(Identifier screenId) {
+        var screen = UiScreenManager.INSTANCE.get(screenId);
+System.out.println(screen);
+        if(screen != null) {
+            screen.open();
+        }
     }
 
     @Override

@@ -11,6 +11,10 @@ public abstract class DynamicTexture {
 
     public abstract DynamicTextureSerializer<?> getSerializer();
 
+    public static StaticTexture simple(Identifier texture) {
+        return new StaticTexture(texture);
+    }
+
     public static class Codecs {
 
         public static final Codec<DynamicTexture> DIRECT_CODEC = Codec.withAlternative(DynamicTextureSerializer.TYPE_CODEC.dispatch(DynamicTexture::getSerializer, DynamicTextureSerializer::codec), ConfiguredTexture.CODEC.codec());

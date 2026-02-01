@@ -35,6 +35,8 @@
   "commands.palladium.data-attachment.entity.set.success.single": "Data attachment value %s for %s is now set to %s",
   "commands.palladium.data-attachment.error.parse": "Error while parsing data attachment value",
   "commands.palladium.data-attachment.error.unknown_type": "Unknown data attachment type: %s",
+  "commands.palladium.screen.success.multiple": "Opened screen %s for %s players",
+  "commands.palladium.screen.success.single": "Opened screen %s for %s",
   "commands.palladium.superpower.add.error.already_has_power": "%s already has that superpower",
   "commands.palladium.superpower.add.error.none_added": "No entity was able to gain the superpower %s",
   "commands.palladium.superpower.add.error.not_possible": "This superpower can not be added to %s anymore",

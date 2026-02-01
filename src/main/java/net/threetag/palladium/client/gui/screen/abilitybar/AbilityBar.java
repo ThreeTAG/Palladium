@@ -1,5 +1,6 @@
 package net.threetag.palladium.client.gui.screen.abilitybar;
 
+import com.mojang.blaze3d.platform.Window;
 import io.netty.util.collection.IntObjectHashMap;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -11,9 +12,9 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.gui.GuiLayer;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.gui.component.CompoundUiComponent;
 import net.threetag.palladium.client.gui.component.UiAlignment;
-import net.threetag.palladium.client.gui.component.UiComponent;
+import net.threetag.palladium.client.gui.ui.component.RenderableUiComponent;
+import net.threetag.palladium.client.gui.ui.component.UiComponent;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.config.PalladiumClientConfig;
 import net.threetag.palladium.logic.context.DataContext;
@@ -21,12 +22,13 @@ import net.threetag.palladium.power.PowerHolder;
 import net.threetag.palladium.power.PowerUtil;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.energybar.EnergyBarInstance;
+import org.joml.Vector2i;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @EventBusSubscriber(modid = Palladium.MOD_ID, value = Dist.CLIENT)
-public class AbilityBar implements GuiLayer, UiComponent {
+public class AbilityBar implements GuiLayer, AbilityBarComponent {
 
     public static final AbilityBar INSTANCE = new AbilityBar();
     private static final Identifier TEXTURE = Palladium.id("textures/gui/ability_bar.png");
@@ -36,18 +38,25 @@ public class AbilityBar implements GuiLayer, UiComponent {
     private List<AbilityList> lists = new ArrayList<>();
     private int selectedList = -1;
     private AbilityList currentList = null;
-    private UiComponent toRender = null;
+    private RenderableUiComponent toRender = null;
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (this.currentList != null) {
             this.toRender = this.lists.size() == 1 && this.lists.getFirst().simple ? this.currentList.simplified : this.currentList.completeBar;
             var alignment = PalladiumClientConfig.ABILITY_BAR_ALIGNMENT.get();
-            var pos = UiComponent.getPosition(this, Minecraft.getInstance().getWindow(), alignment);
-            this.render(Minecraft.getInstance(), guiGraphics, deltaTracker, pos.x, pos.y, alignment);
+            var pos = getPosition(this, Minecraft.getInstance().getWindow(), alignment);
+            this.render(Minecraft.getInstance(), guiGraphics, DataContext.create(), pos.x, pos.y, alignment);
         } else {
             this.toRender = null;
         }
+    }
+
+    static Vector2i getPosition(UiComponent component, Window window, UiAlignment alignment) {
+        return new Vector2i(
+                alignment.isLeft() ? 0 : window.getGuiScaledWidth() - component.getWidth(),
+                alignment.isBottom() ? window.getGuiScaledHeight() - component.getHeight() : 0
+        );
     }
 
     @Override
@@ -61,14 +70,14 @@ public class AbilityBar implements GuiLayer, UiComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, DeltaTracker deltaTracker, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, UiAlignment alignment) {
         if (this.currentList != null && this.toRender != null) {
             if (this.currentList.abilitiesAndEnergyBars != null)
                 this.currentList.abilitiesAndEnergyBars.reverseOrder = alignment.isLeft();
             if (this.currentList.completeBar != null)
                 this.currentList.completeBar.reverseOrder = alignment.isBottom();
 
-            this.toRender.render(minecraft, gui, deltaTracker, x, y, alignment);
+            this.toRender.render(minecraft, gui, context, x, y, alignment);
         }
     }
 
@@ -209,7 +218,7 @@ public class AbilityBar implements GuiLayer, UiComponent {
         }
 
         public void build(boolean showButton) {
-            List<UiComponent> components = new ArrayList<>();
+            List<RenderableUiComponent> components = new ArrayList<>();
             components.add(new AbilityListComponent(this));
 
             for (EnergyBarInstance barInstance : this.powerHolder.getEnergyBars().values()) {

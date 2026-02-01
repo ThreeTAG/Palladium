@@ -15,6 +15,7 @@ import net.threetag.palladium.client.gui.screen.customization.CustomizationsGrid
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
 import net.threetag.palladium.command.CustomizationCommand;
 import net.threetag.palladium.command.DataAttachmentCommand;
+import net.threetag.palladium.command.ScreenCommand;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.config.PalladiumClientConfig;
@@ -185,6 +186,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s can not be unlocked by commands");
             this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "The given entity can not have customizations");
 
+            this.add(ScreenCommand.TRANS_SHOWED_SCREEN_SINGLE, "Opened screen %s for %s");
+            this.add(ScreenCommand.TRANS_SHOWED_SCREEN_MULTIPLE, "Opened screen %s for %s players");
+
             // Container
             this.add("container.palladium.tailoring", "Tailoring");
             this.add("container.palladium.tailoring.craft", "Create");
@@ -317,6 +321,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s kann nicht per Befehl freigeschaltet werden");
             this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "Die angegebene Entität kann keine Anpassungen besitzen");
 
+            this.add(ScreenCommand.TRANS_SHOWED_SCREEN_SINGLE, "Fenster %s für %s geöffnet");
+            this.add(ScreenCommand.TRANS_SHOWED_SCREEN_MULTIPLE, "Fenster %s für %s Spieler geöffnet");
+
             // Container
             this.add("container.palladium.tailoring", "Zuschneidern");
             this.add("container.palladium.tailoring.craft", "Herstellen");
@@ -341,7 +348,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addCustomizationCategory(CustomizationCategories.LEGS, "Beine");
         }
     }
-    
+
     public static class Saxon extends PalladiumLangProvider {
 
         public Saxon(PackOutput output) {
@@ -451,6 +458,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s kannsch du mit Befehln nich freischaltn");
             this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "Die Geeschd kann kee Anpassungen habn");
 
+            this.add(ScreenCommand.TRANS_SHOWED_SCREEN_SINGLE, "Fenster %s für %s uffgemacht");
+            this.add(ScreenCommand.TRANS_SHOWED_SCREEN_MULTIPLE, "Fenster %s für %s Spielor uffgemacht");
+
             // Container
             this.add("container.palladium.tailoring", "Zuschneidern");
             this.add("container.palladium.tailoring.craft", "Herstellen");
@@ -475,5 +485,5 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addCustomizationCategory(CustomizationCategories.LEGS, "Behne");
         }
     }
-    
+
 }

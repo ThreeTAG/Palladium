@@ -35,6 +35,8 @@
   "commands.palladium.data-attachment.entity.set.success.single": "Datenanhangswert %s für %s jetze uff %s jesetzt",
   "commands.palladium.data-attachment.error.parse": "Fehler beim Parsen von Datenanhangswerten",
   "commands.palladium.data-attachment.error.unknown_type": "Unbegannter Datenanhang: %s",
+  "commands.palladium.screen.success.multiple": "Fenster %s für %s Spielor uffgemacht",
+  "commands.palladium.screen.success.single": "Fenster %s für %s uffgemacht",
   "commands.palladium.superpower.add.error.already_has_power": "%s hat die Superkraft doch schon",
   "commands.palladium.superpower.add.error.none_added": "Keins von de Viecher konnt die Superkraft %s kriegn",
   "commands.palladium.superpower.add.error.not_possible": "Die Superkraft kann mer %s nich mehr geb'n",

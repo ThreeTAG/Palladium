@@ -29,6 +29,10 @@ public class PalladiumProxy {
 
     }
 
+    public void openScreen(Identifier screenId) {
+
+    }
+
     public boolean hasMovementInput(Entity entity) {
         if (entity instanceof ServerPlayer serverPlayer) {
             var input = serverPlayer.getLastClientInput();
