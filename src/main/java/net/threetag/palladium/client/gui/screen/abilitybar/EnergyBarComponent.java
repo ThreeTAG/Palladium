@@ -28,7 +28,7 @@ public class EnergyBarComponent implements AbilityBarComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
         int fullHeight = this.getHeight() - 6;
         int height = (int) ((energyBarInstance.get() / (float) energyBarInstance.getMax()) * fullHeight);
 

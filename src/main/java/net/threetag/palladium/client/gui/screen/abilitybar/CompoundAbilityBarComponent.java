@@ -3,26 +3,23 @@ package net.threetag.palladium.client.gui.screen.abilitybar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.threetag.palladium.client.gui.component.UiAlignment;
-import net.threetag.palladium.client.gui.ui.component.RenderableUiComponent;
-import net.threetag.palladium.client.gui.ui.component.UiComponent;
-import net.threetag.palladium.logic.context.DataContext;
 
 import java.util.List;
 
-public class CompoundUiComponent implements AbilityBarComponent {
+public class CompoundAbilityBarComponent implements AbilityBarComponent {
 
-    private final RenderableUiComponent[] components;
+    private final AbilityBarComponent[] components;
     public boolean vertical;
     public boolean center = false;
     public boolean reverseOrder = false;
     public int padding = 0;
 
-    public CompoundUiComponent(List<RenderableUiComponent> components, boolean vertical) {
-        this.components = components.toArray(new RenderableUiComponent[0]);
+    public CompoundAbilityBarComponent(List<AbilityBarComponent> components, boolean vertical) {
+        this.components = components.toArray(new AbilityBarComponent[0]);
         this.vertical = vertical;
     }
 
-    public CompoundUiComponent(boolean vertical, RenderableUiComponent... components) {
+    public CompoundAbilityBarComponent(boolean vertical, AbilityBarComponent... components) {
         this.components = components;
         this.vertical = vertical;
     }
@@ -31,7 +28,7 @@ public class CompoundUiComponent implements AbilityBarComponent {
     public int getWidth() {
         int width = 0;
 
-        for (UiComponent component : this.components) {
+        for (AbilityBarComponent component : this.components) {
             if (this.vertical) {
                 width = Math.max(width, component.getWidth());
             } else {
@@ -50,7 +47,7 @@ public class CompoundUiComponent implements AbilityBarComponent {
     public int getHeight() {
         int height = 0;
 
-        for (UiComponent component : this.components) {
+        for (AbilityBarComponent component : this.components) {
             if (this.vertical) {
                 height += component.getHeight();
             } else {
@@ -66,23 +63,23 @@ public class CompoundUiComponent implements AbilityBarComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
         if (this.vertical) {
-            verticalStackedRender(minecraft, gui, context, x, y, alignment, this.reverseOrder, this.center, this.padding, this.components);
+            verticalStackedRender(minecraft, gui, x, y, alignment, this.reverseOrder, this.center, this.padding, this.components);
         } else {
-            horizontalStackedRender(minecraft, gui, context, x, y, alignment, this.reverseOrder, this.center, this.padding, this.components);
+            horizontalStackedRender(minecraft, gui, x, y, alignment, this.reverseOrder, this.center, this.padding, this.components);
         }
     }
 
-    public static void verticalStackedRender(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, UiAlignment alignment, boolean reverseOrder, boolean center, int padding, RenderableUiComponent... components) {
+    public static void verticalStackedRender(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment, boolean reverseOrder, boolean center, int padding, AbilityBarComponent... components) {
         int maxWidth = 0;
 
-        for (RenderableUiComponent component : components) {
+        for (AbilityBarComponent component : components) {
             maxWidth = Math.max(maxWidth, component.getWidth());
         }
 
         if (!reverseOrder) {
-            for (RenderableUiComponent component : components) {
+            for (AbilityBarComponent component : components) {
                 int offsetX = x;
 
                 if (center) {
@@ -91,7 +88,7 @@ public class CompoundUiComponent implements AbilityBarComponent {
                     offsetX += maxWidth - component.getWidth();
                 }
 
-                component.render(minecraft, gui, context, offsetX, y, alignment);
+                component.render(minecraft, gui, offsetX, y, alignment);
                 y += component.getHeight() + padding;
             }
         } else {
@@ -105,22 +102,22 @@ public class CompoundUiComponent implements AbilityBarComponent {
                     offsetX += maxWidth - component.getWidth();
                 }
 
-                component.render(minecraft, gui, context, offsetX, y, alignment);
+                component.render(minecraft, gui, offsetX, y, alignment);
                 y += component.getHeight() + padding;
             }
         }
 
     }
 
-    public static void horizontalStackedRender(Minecraft minecraft, GuiGraphics gui, DataContext context,  int x, int y, UiAlignment alignment, boolean reverseOrder, boolean center, int padding, RenderableUiComponent... components) {
+    public static void horizontalStackedRender(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment, boolean reverseOrder, boolean center, int padding, AbilityBarComponent... components) {
         int maxHeight = 0;
 
-        for (RenderableUiComponent component : components) {
+        for (AbilityBarComponent component : components) {
             maxHeight = Math.max(maxHeight, component.getHeight());
         }
 
         if (!reverseOrder) {
-            for (RenderableUiComponent component : components) {
+            for (AbilityBarComponent component : components) {
                 int offsetY = y;
 
                 if (center) {
@@ -129,7 +126,7 @@ public class CompoundUiComponent implements AbilityBarComponent {
                     offsetY += maxHeight - component.getHeight();
                 }
 
-                component.render(minecraft, gui, context, x, offsetY, alignment);
+                component.render(minecraft, gui, x, offsetY, alignment);
                 x += component.getWidth() + padding;
             }
         } else {
@@ -144,7 +141,7 @@ public class CompoundUiComponent implements AbilityBarComponent {
                     offsetY += maxHeight - component.getHeight();
                 }
 
-                component.render(minecraft, gui, context, x, offsetY, alignment);
+                component.render(minecraft, gui, x, offsetY, alignment);
                 x += component.getWidth() + padding;
             }
         }

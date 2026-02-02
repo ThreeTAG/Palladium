@@ -28,9 +28,9 @@ public class SimplifiedPowerComponent implements AbilityBarComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
         var texture = this.abilityList.getTexture(DataContext.forAbility(minecraft.player, this.abilityInstance));
         gui.blit(RenderPipelines.GUI_TEXTURED,texture, x, y, 0, 168, 24, 24, 256, 256);
-        AbilityListComponent.renderAbility(minecraft, texture, gui, context, x + 3, y + 3, alignment, this.abilityInstance, 0);
+        AbilityListComponent.renderAbility(minecraft, texture, gui, x + 3, y + 3, alignment, this.abilityInstance, 0);
     }
 }

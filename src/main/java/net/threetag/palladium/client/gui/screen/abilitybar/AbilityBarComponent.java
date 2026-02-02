@@ -1,18 +1,14 @@
 package net.threetag.palladium.client.gui.screen.abilitybar;
 
-import net.threetag.palladium.client.gui.ui.component.RenderableUiComponent;
-import net.threetag.palladium.client.gui.ui.component.UiComponentPosition;
-import net.threetag.palladium.client.gui.ui.component.UiComponentSerializer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.threetag.palladium.client.gui.component.UiAlignment;
 
-public interface AbilityBarComponent extends RenderableUiComponent {
+public interface AbilityBarComponent {
 
-    @Override
-    default UiComponentPosition getPosition() {
-        return UiComponentPosition.TOP_LEFT;
-    }
+    int getWidth();
 
-    @Override
-    default UiComponentSerializer<?> getSerializer() {
-        return null;
-    }
+    int getHeight();
+
+    void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment);
 }

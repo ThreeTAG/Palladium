@@ -6,8 +6,6 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.threetag.palladium.client.PalladiumKeyMappings;
 import net.threetag.palladium.client.gui.component.UiAlignment;
-import net.threetag.palladium.client.gui.ui.component.IconUiComponent;
-import net.threetag.palladium.client.gui.ui.component.RenderableUiComponent;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.Easing;
@@ -18,18 +16,18 @@ import java.util.List;
 public class PowerIndicatorComponent implements AbilityBarComponent {
 
     private final AbilityBar.AbilityList abilityList;
-    private final CompoundUiComponent keyAndIcon;
+    private final CompoundAbilityBarComponent keyAndIcon;
 
     public PowerIndicatorComponent(AbilityBar.AbilityList abilityList, boolean showButton) {
         this.abilityList = abilityList;
-        List<RenderableUiComponent> componentList = new ArrayList<>();
+        List<AbilityBarComponent> componentList = new ArrayList<>();
 
         if (showButton) {
             componentList.add(new SwitchKeyComponent(abilityList, PalladiumKeyMappings.ROTATE_ABILITY_LIST.getTranslatedKeyMessage()));
         }
 
-        componentList.add(new IconUiComponent(abilityList.getPowerHolder().getPower().value().getIcon()));
-        this.keyAndIcon = new CompoundUiComponent(componentList, false);
+        componentList.add(new IconAbilityBarComponent(abilityList.getPowerHolder().getPower().value().getIcon()));
+        this.keyAndIcon = new CompoundAbilityBarComponent(componentList, false);
         this.keyAndIcon.padding = 4;
         this.keyAndIcon.center = true;
     }
@@ -45,7 +43,7 @@ public class PowerIndicatorComponent implements AbilityBarComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
         gui.blit(
                 RenderPipelines.GUI_TEXTURED,
                 this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder())),
@@ -62,7 +60,6 @@ public class PowerIndicatorComponent implements AbilityBarComponent {
         this.keyAndIcon.render(
                 minecraft,
                 gui,
-                context,
                 x + offsetX + ((this.getWidth() - 3 - width) / 2),
                 y + offsetY + ((this.getHeight() - 3 - height) / 2),
                 alignment);
@@ -95,7 +92,7 @@ public class PowerIndicatorComponent implements AbilityBarComponent {
             }
 
             @Override
-            public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, UiAlignment alignment) {
+            public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
                 gui.drawString(minecraft.font, this.keyText, x, y, RenderUtil.FULL_WHITE, false);
 
                 gui.pose().pushMatrix();

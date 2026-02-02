@@ -13,8 +13,6 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.gui.GuiLayer;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.component.UiAlignment;
-import net.threetag.palladium.client.gui.ui.component.RenderableUiComponent;
-import net.threetag.palladium.client.gui.ui.component.UiComponent;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.config.PalladiumClientConfig;
 import net.threetag.palladium.logic.context.DataContext;
@@ -38,7 +36,7 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
     private List<AbilityList> lists = new ArrayList<>();
     private int selectedList = -1;
     private AbilityList currentList = null;
-    private RenderableUiComponent toRender = null;
+    private AbilityBarComponent toRender = null;
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
@@ -46,13 +44,13 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
             this.toRender = this.lists.size() == 1 && this.lists.getFirst().simple ? this.currentList.simplified : this.currentList.completeBar;
             var alignment = PalladiumClientConfig.ABILITY_BAR_ALIGNMENT.get();
             var pos = getPosition(this, Minecraft.getInstance().getWindow(), alignment);
-            this.render(Minecraft.getInstance(), guiGraphics, DataContext.create(), pos.x, pos.y, alignment);
+            this.render(Minecraft.getInstance(), guiGraphics, pos.x, pos.y, alignment);
         } else {
             this.toRender = null;
         }
     }
 
-    static Vector2i getPosition(UiComponent component, Window window, UiAlignment alignment) {
+    static Vector2i getPosition(AbilityBarComponent component, Window window, UiAlignment alignment) {
         return new Vector2i(
                 alignment.isLeft() ? 0 : window.getGuiScaledWidth() - component.getWidth(),
                 alignment.isBottom() ? window.getGuiScaledHeight() - component.getHeight() : 0
@@ -70,14 +68,14 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
         if (this.currentList != null && this.toRender != null) {
             if (this.currentList.abilitiesAndEnergyBars != null)
                 this.currentList.abilitiesAndEnergyBars.reverseOrder = alignment.isLeft();
             if (this.currentList.completeBar != null)
                 this.currentList.completeBar.reverseOrder = alignment.isBottom();
 
-            this.toRender.render(minecraft, gui, context, x, y, alignment);
+            this.toRender.render(minecraft, gui, x, y, alignment);
         }
     }
 
@@ -201,8 +199,8 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
         public boolean simple = false;
         private TextureReference texture;
         public SimplifiedPowerComponent simplified = null;
-        public CompoundUiComponent completeBar = null;
-        public CompoundUiComponent abilitiesAndEnergyBars = null;
+        public CompoundAbilityBarComponent completeBar = null;
+        public CompoundAbilityBarComponent abilitiesAndEnergyBars = null;
 
         public AbilityList(PowerHolder powerHolder) {
             this.powerHolder = powerHolder;
@@ -218,16 +216,16 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
         }
 
         public void build(boolean showButton) {
-            List<RenderableUiComponent> components = new ArrayList<>();
+            List<AbilityBarComponent> components = new ArrayList<>();
             components.add(new AbilityListComponent(this));
 
             for (EnergyBarInstance barInstance : this.powerHolder.getEnergyBars().values()) {
                 components.add(new EnergyBarComponent(this, barInstance));
             }
 
-            this.abilitiesAndEnergyBars = new CompoundUiComponent(components, false);
+            this.abilitiesAndEnergyBars = new CompoundAbilityBarComponent(components, false);
             this.abilitiesAndEnergyBars.padding = 1;
-            this.completeBar = new CompoundUiComponent(true, new PowerIndicatorComponent(this, showButton), this.abilitiesAndEnergyBars);
+            this.completeBar = new CompoundAbilityBarComponent(true, new PowerIndicatorComponent(this, showButton), this.abilitiesAndEnergyBars);
             this.completeBar.padding = 1;
         }
 
