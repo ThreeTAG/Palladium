@@ -28,7 +28,7 @@
       }
     },
     {
-      "type": "palladium:button",
+      "type": "palladium:flat_button",
       "text": "Set day",
       "width": 80,
       "close_on_press": true,
