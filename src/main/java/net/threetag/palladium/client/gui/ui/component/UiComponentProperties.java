@@ -7,15 +7,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.server.dialog.action.Action;
 import net.threetag.palladium.client.gui.component.UiAlignment;
+import net.threetag.palladium.logic.condition.Condition;
+import net.threetag.palladium.logic.condition.TrueCondition;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Optional;
 
 public record UiComponentProperties(UiAlignment alignment, int x, int y, int width, int height, Optional<Action> action,
-                                    Optional<Component> tooltip) {
+                                    Optional<Component> tooltip, Condition visibility) {
 
     public static final UiComponentProperties DEFAULT = new UiComponentProperties(
-            UiAlignment.TOP_LEFT, 0, 0, 50, 18, Optional.empty(), Optional.empty()
+            UiAlignment.TOP_LEFT, 0, 0, 50, 18, Optional.empty(), Optional.empty(), TrueCondition.INSTANCE
     );
 
     public static final Codec<UiComponentProperties> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -25,7 +27,8 @@ public record UiComponentProperties(UiAlignment alignment, int x, int y, int wid
             Codec.INT.optionalFieldOf("width", 50).forGetter(UiComponentProperties::width),
             Codec.INT.optionalFieldOf("height", 18).forGetter(UiComponentProperties::height),
             Action.CODEC.optionalFieldOf("action").forGetter(UiComponentProperties::action),
-            ComponentSerialization.CODEC.optionalFieldOf("tooltip").forGetter(UiComponentProperties::tooltip)
+            ComponentSerialization.CODEC.optionalFieldOf("tooltip").forGetter(UiComponentProperties::tooltip),
+            Condition.CODEC.optionalFieldOf("visibility", TrueCondition.INSTANCE).forGetter(UiComponentProperties::visibility)
     ).apply(instance, UiComponentProperties::new));
 
     public static Codec<UiComponentProperties> withDefaultSize(int width, int height) {
@@ -36,7 +39,8 @@ public record UiComponentProperties(UiAlignment alignment, int x, int y, int wid
                 Codec.INT.optionalFieldOf("width", width).forGetter(UiComponentProperties::width),
                 Codec.INT.optionalFieldOf("height", height).forGetter(UiComponentProperties::height),
                 Action.CODEC.optionalFieldOf("action").forGetter(UiComponentProperties::action),
-                ComponentSerialization.CODEC.optionalFieldOf("tooltip").forGetter(UiComponentProperties::tooltip)
+                ComponentSerialization.CODEC.optionalFieldOf("tooltip").forGetter(UiComponentProperties::tooltip),
+                Condition.CODEC.optionalFieldOf("visibility", TrueCondition.INSTANCE).forGetter(UiComponentProperties::visibility)
         ).apply(instance, UiComponentProperties::new));
     }
 
