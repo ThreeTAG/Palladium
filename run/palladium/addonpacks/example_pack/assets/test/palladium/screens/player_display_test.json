@@ -1,0 +1,93 @@
+{
+  "width": 256,
+  "height": 160,
+  "components": [
+    {
+      "type": "palladium:text",
+      "text": "This is your player!"
+    },
+    {
+      "type": "palladium:colored_rectangle",
+      "color": [255, 0, 0],
+      "properties": {
+        "alignment": "center",
+        "width": 150,
+        "height": 120
+      }
+    },
+    {
+      "type": "palladium:player_display",
+      "follow_mouse": false,
+      "mimic_player": false,
+      "rotation": [15, 40, 0],
+      "scale": 50,
+      "render_layers": [
+        "test:customization/batman_1"
+      ],
+      "properties": {
+        "alignment": "center",
+        "width": 150,
+        "height": 120
+      }
+    },
+    {
+      "type": "palladium:gradient_rectangle",
+      "color_from": [255, 0, 0],
+      "color_to": [0, 0, 255],
+      "properties": {
+        "alignment": "middle_right",
+        "width": 18,
+        "height": 70,
+        "x": 1
+      }
+    },
+    {
+      "type": "palladium:icon",
+      "icon": {
+        "type": "palladium:item_in_slot",
+        "slot": "head"
+      },
+      "properties": {
+        "alignment": "middle_right",
+        "tooltip": "Helmet",
+        "y": -28
+      }
+    },
+    {
+      "type": "palladium:icon",
+      "icon": {
+        "type": "palladium:item_in_slot",
+        "slot": "chest"
+      },
+      "properties": {
+        "alignment": "middle_right",
+        "tooltip": "Chestplate",
+        "y": -10
+      }
+    },
+    {
+      "type": "palladium:icon",
+      "icon": {
+        "type": "palladium:item_in_slot",
+        "slot": "legs"
+      },
+      "properties": {
+        "alignment": "middle_right",
+        "tooltip": "Leggings",
+        "y": 10
+      }
+    },
+    {
+      "type": "palladium:icon",
+      "icon": {
+        "type": "palladium:item_in_slot",
+        "slot": "feet"
+      },
+      "properties": {
+        "alignment": "middle_right",
+        "tooltip": "Boots",
+        "y": 28
+      }
+    }
+  ]
+}
