@@ -42,6 +42,7 @@ import net.threetag.palladium.sound.AbilitySound;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,10 +62,15 @@ public class PalladiumClientProxy extends PalladiumProxy {
     @Override
     public void openScreen(Identifier screenId) {
         var screen = UiScreenManager.INSTANCE.get(screenId);
-System.out.println(screen);
+
         if(screen != null) {
             screen.open();
         }
+    }
+
+    @Override
+    public Collection<Identifier> getAvailableScreenIds() {
+        return UiScreenManager.INSTANCE.getIds();
     }
 
     @Override

@@ -17,6 +17,8 @@ import net.threetag.palladium.entity.effect.EntityEffect;
 import net.threetag.palladium.network.*;
 import net.threetag.palladium.power.ability.AbilityInstance;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class PalladiumProxy {
@@ -31,6 +33,10 @@ public class PalladiumProxy {
 
     public void openScreen(Identifier screenId) {
 
+    }
+
+    public Collection<Identifier> getAvailableScreenIds() {
+        return Collections.emptyList();
     }
 
     public boolean hasMovementInput(Entity entity) {

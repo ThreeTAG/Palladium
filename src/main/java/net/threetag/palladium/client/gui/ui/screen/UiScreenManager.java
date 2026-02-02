@@ -11,6 +11,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 
 import java.util.Map;
+import java.util.Set;
 
 public class UiScreenManager extends SimpleJsonResourceReloadListener<UiScreenConfiguration> {
 
@@ -32,5 +33,9 @@ public class UiScreenManager extends SimpleJsonResourceReloadListener<UiScreenCo
 
     public UiScreenConfiguration get(Identifier id) {
         return this.byName.get(id);
+    }
+
+    public Set<Identifier> getIds() {
+        return this.byName.keySet();
     }
 }
