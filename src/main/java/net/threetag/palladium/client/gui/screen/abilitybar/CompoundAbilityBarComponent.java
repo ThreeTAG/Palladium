@@ -2,7 +2,6 @@ package net.threetag.palladium.client.gui.screen.abilitybar;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.threetag.palladium.client.gui.component.UiAlignment;
 
 import java.util.List;
 
@@ -63,7 +62,7 @@ public class CompoundAbilityBarComponent implements AbilityBarComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment) {
         if (this.vertical) {
             verticalStackedRender(minecraft, gui, x, y, alignment, this.reverseOrder, this.center, this.padding, this.components);
         } else {
@@ -71,7 +70,7 @@ public class CompoundAbilityBarComponent implements AbilityBarComponent {
         }
     }
 
-    public static void verticalStackedRender(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment, boolean reverseOrder, boolean center, int padding, AbilityBarComponent... components) {
+    public static void verticalStackedRender(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment, boolean reverseOrder, boolean center, int padding, AbilityBarComponent... components) {
         int maxWidth = 0;
 
         for (AbilityBarComponent component : components) {
@@ -109,7 +108,7 @@ public class CompoundAbilityBarComponent implements AbilityBarComponent {
 
     }
 
-    public static void horizontalStackedRender(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment, boolean reverseOrder, boolean center, int padding, AbilityBarComponent... components) {
+    public static void horizontalStackedRender(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment, boolean reverseOrder, boolean center, int padding, AbilityBarComponent... components) {
         int maxHeight = 0;
 
         for (AbilityBarComponent component : components) {

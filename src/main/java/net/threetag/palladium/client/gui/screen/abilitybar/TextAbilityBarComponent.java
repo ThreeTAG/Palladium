@@ -3,7 +3,6 @@ package net.threetag.palladium.client.gui.screen.abilitybar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.util.GuiUtil;
 import net.threetag.palladium.client.util.RenderUtil;
 
@@ -38,7 +37,7 @@ public class TextAbilityBarComponent implements AbilityBarComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment) {
         if (this.outline) {
             GuiUtil.drawStringWithBlackOutline(gui, this.text, x, y, RenderUtil.FULL_WHITE);
         } else {

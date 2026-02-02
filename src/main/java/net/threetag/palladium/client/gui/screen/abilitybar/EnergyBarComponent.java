@@ -3,7 +3,6 @@ package net.threetag.palladium.client.gui.screen.abilitybar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.energybar.EnergyBarInstance;
 
@@ -28,7 +27,7 @@ public class EnergyBarComponent implements AbilityBarComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment) {
         int fullHeight = this.getHeight() - 6;
         int height = (int) ((energyBarInstance.get() / (float) energyBarInstance.getMax()) * fullHeight);
 

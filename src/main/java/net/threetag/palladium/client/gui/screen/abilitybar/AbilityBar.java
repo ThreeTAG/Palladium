@@ -12,7 +12,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.gui.GuiLayer;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.config.PalladiumClientConfig;
 import net.threetag.palladium.logic.context.DataContext;
@@ -50,7 +49,7 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
         }
     }
 
-    static Vector2i getPosition(AbilityBarComponent component, Window window, UiAlignment alignment) {
+    static Vector2i getPosition(AbilityBarComponent component, Window window, AbilityBarAlignment alignment) {
         return new Vector2i(
                 alignment.isLeft() ? 0 : window.getGuiScaledWidth() - component.getWidth(),
                 alignment.isBottom() ? window.getGuiScaledHeight() - component.getHeight() : 0
@@ -68,7 +67,7 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment) {
         if (this.currentList != null && this.toRender != null) {
             if (this.currentList.abilitiesAndEnergyBars != null)
                 this.currentList.abilitiesAndEnergyBars.reverseOrder = alignment.isLeft();

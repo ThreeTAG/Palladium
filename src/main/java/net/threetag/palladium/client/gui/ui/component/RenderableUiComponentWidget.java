@@ -15,7 +15,7 @@ public class RenderableUiComponentWidget extends AbstractWidget {
     private final RenderableUiComponent component;
 
     public RenderableUiComponentWidget(RenderableUiComponent component, UiScreen parent) {
-        super(component.getX(parent), component.getY(parent), component.getWidth(), component.getHeight(), Component.empty());
+        super(component.getX(parent.getInnerRectangle()), component.getY(parent.getInnerRectangle()), component.getWidth(), component.getHeight(), Component.empty());
         this.component = component;
         component.getProperties().tooltip().ifPresent(tooltip -> this.setTooltip(Tooltip.create(tooltip)));
     }

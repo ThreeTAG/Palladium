@@ -2,7 +2,6 @@ package net.threetag.palladium.client.gui.screen.abilitybar;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.threetag.palladium.client.gui.component.UiAlignment;
 
 public interface AbilityBarComponent {
 
@@ -10,5 +9,5 @@ public interface AbilityBarComponent {
 
     int getHeight();
 
-    void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment);
+    void render(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment);
 }

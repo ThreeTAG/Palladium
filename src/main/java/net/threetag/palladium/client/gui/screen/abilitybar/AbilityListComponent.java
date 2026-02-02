@@ -6,7 +6,6 @@ import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.threetag.palladium.client.PalladiumKeyMappings;
-import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.config.PalladiumClientConfig;
 import net.threetag.palladium.logic.context.DataContext;
@@ -30,7 +29,7 @@ public record AbilityListComponent(AbilityBar.AbilityList abilityList) implement
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment) {
         gui.blit(RenderPipelines.GUI_TEXTURED, this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder())), x, y, 0, 56, this.getWidth(), this.getHeight(), 256, 256);
 
         for (int i = 0; i < AbilityBar.AbilityList.MAX_ABILITIES; i++) {
@@ -41,7 +40,7 @@ public record AbilityListComponent(AbilityBar.AbilityList abilityList) implement
         }
     }
 
-    public static void renderAbility(Minecraft minecraft, Identifier texture, GuiGraphics gui, int x, int y, UiAlignment alignment, AbilityInstance<?> ability, int index) {
+    public static void renderAbility(Minecraft minecraft, Identifier texture, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment, AbilityInstance<?> ability, int index) {
         if (ability != null) {
             if (ability.isUnlocked()) {
                 if (ability.getAbility().getStateManager().getEnablingHandler() instanceof KeyBindEnablingHandler handler

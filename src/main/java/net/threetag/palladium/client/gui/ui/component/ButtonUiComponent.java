@@ -49,7 +49,7 @@ public final class ButtonUiComponent extends UiComponent {
                         screen.onClose();
                     }
                 })
-                .bounds(this.getX(screen), this.getY(screen), this.getWidth(), this.getHeight());
+                .bounds(this.getX(screen.getInnerRectangle()), this.getY(screen.getInnerRectangle()), this.getWidth(), this.getHeight());
 
         this.getProperties().tooltip().ifPresent(component -> builder.tooltip(Tooltip.create(component)));
 

@@ -5,7 +5,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.threetag.palladium.client.PalladiumKeyMappings;
-import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.Easing;
@@ -43,7 +42,7 @@ public class PowerIndicatorComponent implements AbilityBarComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment) {
         gui.blit(
                 RenderPipelines.GUI_TEXTURED,
                 this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder())),
@@ -65,14 +64,14 @@ public class PowerIndicatorComponent implements AbilityBarComponent {
                 alignment);
     }
 
-    private static int getU(UiAlignment alignment) {
+    private static int getU(AbilityBarAlignment alignment) {
         return switch (alignment) {
             case TOP_LEFT, BOTTOM_LEFT -> 52;
             case TOP_RIGHT, BOTTOM_RIGHT -> 0;
         };
     }
 
-    private static int getV(UiAlignment alignment) {
+    private static int getV(AbilityBarAlignment alignment) {
         return switch (alignment) {
             case TOP_LEFT, TOP_RIGHT -> 28;
             case BOTTOM_LEFT, BOTTOM_RIGHT -> 0;
@@ -92,7 +91,7 @@ public class PowerIndicatorComponent implements AbilityBarComponent {
             }
 
             @Override
-            public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, UiAlignment alignment) {
+            public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment) {
                 gui.drawString(minecraft.font, this.keyText, x, y, RenderUtil.FULL_WHITE, false);
 
                 gui.pose().pushMatrix();
