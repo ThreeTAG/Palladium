@@ -8,12 +8,13 @@
       "texture": "palladium:textures/gui/powers/widgets.png",
       "u": 0,
       "v": 29,
-      "width": 200,
-      "height": 20,
-      "position": {
+      "properties": {
         "alignment": "top_left",
-        "x_offset": -5,
-        "y_offset": -5
+        "x": -5,
+        "y": -5,
+        "width": 200,
+        "height": 20,
+        "tooltip": "This is a blit component"
       }
     },
     {
@@ -23,34 +24,37 @@
     {
       "type": "palladium:icon",
       "icon": "minecraft:command_block",
-      "position": {
-        "alignment": "top_right"
+      "properties": {
+        "alignment": "top_right",
+        "tooltip": "This is an icon component"
       }
     },
     {
       "type": "palladium:flat_button",
       "text": "Set day",
-      "width": 80,
       "close_on_press": true,
-      "action": {
-        "type": "run_command",
-        "command": "time set day"
-      },
-      "position": {
-        "alignment": "bottom_left"
+      "properties": {
+        "alignment": "bottom_left",
+        "width": 80,
+        "action": {
+          "type": "run_command",
+          "command": "time set day"
+        },
+        "tooltip": "/time set day"
       }
     },
     {
       "type": "palladium:button",
       "text": "Set night",
-      "width": 80,
       "close_on_press": true,
-      "action": {
-        "type": "run_command",
-        "command": "time set night"
-      },
-      "position": {
-        "alignment": "bottom_right"
+      "properties": {
+        "alignment": "bottom_right",
+        "width": 80,
+        "action": {
+          "type": "run_command",
+          "command": "time set night"
+        },
+        "tooltip": "/time set night"
       }
     }
   ]

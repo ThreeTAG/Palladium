@@ -5,45 +5,32 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
-import net.minecraft.server.dialog.action.Action;
-import net.minecraft.util.ExtraCodecs;
 import net.threetag.palladium.client.gui.component.FlatButton;
 import net.threetag.palladium.client.gui.ui.screen.UiScreen;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 
 import java.util.Collections;
-import java.util.Optional;
 
-public record FlatButtonUiComponent(UiComponentPosition position, Component text, Optional<Action> action,
-                                    boolean closeOnPress, int width,
-                                    int height) implements UiComponent {
+public final class FlatButtonUiComponent extends UiComponent {
 
     public static final MapCodec<FlatButtonUiComponent> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            UiComponentPosition.CODEC.optionalFieldOf("position", UiComponentPosition.TOP_LEFT).forGetter(FlatButtonUiComponent::position),
             ComponentSerialization.CODEC.fieldOf("text").forGetter(FlatButtonUiComponent::text),
-            Action.CODEC.optionalFieldOf("action").forGetter(FlatButtonUiComponent::action),
             Codec.BOOL.optionalFieldOf("close_on_press", false).forGetter(FlatButtonUiComponent::closeOnPress),
-            ExtraCodecs.POSITIVE_INT.fieldOf("width").forGetter(FlatButtonUiComponent::width),
-            ExtraCodecs.POSITIVE_INT.optionalFieldOf("height", 18).forGetter(FlatButtonUiComponent::height)
+            propertiesCodec()
     ).apply(instance, FlatButtonUiComponent::new));
 
-    @Override
-    public UiComponentPosition getPosition() {
-        return this.position();
-    }
+    private final Component text;
+    private final boolean closeOnPress;
 
-    @Override
-    public int getWidth() {
-        return this.width();
-    }
-
-    @Override
-    public int getHeight() {
-        return this.height();
+    public FlatButtonUiComponent(Component text, boolean closeOnPress, UiComponentProperties properties) {
+        super(properties);
+        this.text = text;
+        this.closeOnPress = closeOnPress;
     }
 
     @Override
@@ -53,8 +40,8 @@ public record FlatButtonUiComponent(UiComponentPosition position, Component text
 
     @Override
     public AbstractWidget buildWidget(UiScreen screen) {
-        return FlatButton.flatBuilder(this.text(), button -> {
-                    this.action()
+        var builder = FlatButton.flatBuilder(this.text(), button -> {
+                    this.getProperties().action()
                             .flatMap(a -> a.createAction(Collections.emptyMap()))
                             .ifPresent(clickevent -> Screen.defaultHandleGameClickEvent(clickevent, Minecraft.getInstance(), screen));
 
@@ -62,8 +49,19 @@ public record FlatButtonUiComponent(UiComponentPosition position, Component text
                         screen.onClose();
                     }
                 })
-                .bounds(this.getX(screen), this.getY(screen), this.width(), this.height())
-                .build();
+                .bounds(this.getX(screen), this.getY(screen), this.getWidth(), this.getHeight());
+
+        this.getProperties().tooltip().ifPresent(component -> builder.tooltip(Tooltip.create(component)));
+
+        return builder.build();
+    }
+
+    public Component text() {
+        return text;
+    }
+
+    public boolean closeOnPress() {
+        return closeOnPress;
     }
 
     public static class Serializer extends UiComponentSerializer<FlatButtonUiComponent> {
@@ -77,12 +75,9 @@ public record FlatButtonUiComponent(UiComponentPosition position, Component text
         public void addDocumentation(CodecDocumentationBuilder<UiComponent, FlatButtonUiComponent> builder, HolderLookup.Provider provider) {
             builder.setName("Flat Button")
                     .setDescription("Adds a flat button.")
-                    .addOptional("position", TYPE_UI_POSITION, "Position of this component", new int[]{0, 0})
+                    .addOptional("properties", TYPE_UI_PROPERTIES, "Properties of this component", UiComponentProperties.DEFAULT)
                     .add("text", TYPE_TEXT_COMPONENT, "Text of the button")
-                    .addOptional("action", TYPE_DIALOG_ACTION, "Action that is happening when pressing the button. Check MC wiki for dialog actions.")
-                    .addOptional("close_on_press", TYPE_BOOLEAN, "Whether or not the screen will be closed when pressing the button.")
-                    .add("width", TYPE_POSITIVE_INT, "Width of the button.")
-                    .addOptional("height", TYPE_POSITIVE_INT, "Height of the button", 18);
+                    .addOptional("close_on_press", TYPE_BOOLEAN, "Whether or not the screen will be closed when pressing the button.");
         }
     }
 }

@@ -7,12 +7,16 @@ import net.threetag.palladium.client.gui.component.UiAlignment;
 import net.threetag.palladium.client.gui.ui.screen.UiScreen;
 import net.threetag.palladium.logic.context.DataContext;
 
-public interface RenderableUiComponent extends UiComponent {
+public abstract class RenderableUiComponent extends UiComponent {
 
-    void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, UiAlignment alignment);
+    public RenderableUiComponent(UiComponentProperties properties) {
+        super(properties);
+    }
+
+    public abstract void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, int width, int height, UiAlignment alignment);
 
     @Override
-    default AbstractWidget buildWidget(UiScreen screen) {
+    public AbstractWidget buildWidget(UiScreen screen) {
         return new RenderableUiComponentWidget(this, screen);
     }
 }

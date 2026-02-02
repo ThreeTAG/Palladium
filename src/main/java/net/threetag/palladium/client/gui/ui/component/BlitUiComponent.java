@@ -15,22 +15,34 @@ import net.threetag.palladium.logic.context.DataContext;
 
 import java.util.Objects;
 
-public record BlitUiComponent(TextureReference texture, UiComponentPosition position, int u, int v, int uOffset, int vOffset, int texWidth,
-                              int texHeight) implements RenderableUiComponent {
+public final class BlitUiComponent extends RenderableUiComponent {
 
     public static final MapCodec<BlitUiComponent> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             TextureReference.CODEC.fieldOf("texture").forGetter(BlitUiComponent::texture),
-            UiComponentPosition.CODEC.optionalFieldOf("position", UiComponentPosition.TOP_LEFT).forGetter(BlitUiComponent::position),
             ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("u", 0).forGetter(BlitUiComponent::u),
             ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("v", 0).forGetter(BlitUiComponent::v),
-            ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("width", 256).forGetter(BlitUiComponent::uOffset),
-            ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("height", 256).forGetter(BlitUiComponent::vOffset),
             ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("texture_width", 256).forGetter(BlitUiComponent::texWidth),
-            ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("texture_height", 256).forGetter(BlitUiComponent::texHeight)
+            ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("texture_height", 256).forGetter(BlitUiComponent::texHeight),
+            propertiesCodec()
     ).apply(instance, BlitUiComponent::new));
 
-    public BlitUiComponent(Identifier texture, int x, int y, int u, int v, int uOffset, int vOffset, int texWidth, int texHeight) {
-        this(TextureReference.normal(texture), UiComponentPosition.topLeft(x, y), u, v, uOffset, vOffset, texWidth, texHeight);
+    private final TextureReference texture;
+    private final int u;
+    private final int v;
+    private final int texWidth;
+    private final int texHeight;
+
+    public BlitUiComponent(TextureReference texture, int u, int v, int texWidth, int texHeight, UiComponentProperties properties) {
+        super(properties);
+        this.texture = texture;
+        this.u = u;
+        this.v = v;
+        this.texWidth = texWidth;
+        this.texHeight = texHeight;
+    }
+
+    public BlitUiComponent(Identifier texture, int u, int v, int texWidth, int texHeight, UiComponentProperties properties) {
+        this(TextureReference.normal(texture), u, v, texWidth, texHeight, properties);
     }
 
     @Override
@@ -39,24 +51,57 @@ public record BlitUiComponent(TextureReference texture, UiComponentPosition posi
     }
 
     @Override
-    public UiComponentPosition getPosition() {
-        return this.position();
+    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, int width, int height, UiAlignment alignment) {
+        gui.blit(RenderPipelines.GUI_TEXTURED, Objects.requireNonNull(this.texture.getTexture(context)), x, y, this.u, this.v, width, height, this.texWidth, this.texHeight);
+    }
+
+    public TextureReference texture() {
+        return texture;
+    }
+
+    public int u() {
+        return u;
+    }
+
+    public int v() {
+        return v;
+    }
+
+    public int texWidth() {
+        return texWidth;
+    }
+
+    public int texHeight() {
+        return texHeight;
     }
 
     @Override
-    public int getWidth() {
-        return this.uOffset;
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (BlitUiComponent) obj;
+        return Objects.equals(this.texture, that.texture) &&
+                this.u == that.u &&
+                this.v == that.v &&
+                this.texWidth == that.texWidth &&
+                this.texHeight == that.texHeight;
     }
 
     @Override
-    public int getHeight() {
-        return this.vOffset;
+    public int hashCode() {
+        return Objects.hash(texture, u, v, texWidth, texHeight);
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, UiAlignment alignment) {
-        gui.blit(RenderPipelines.GUI_TEXTURED, Objects.requireNonNull(this.texture.getTexture(context)), x, y, this.u, this.v, this.uOffset, this.vOffset, this.texWidth, this.texHeight);
+    public String toString() {
+        return "BlitUiComponent[" +
+                "texture=" + texture + ", " +
+                "u=" + u + ", " +
+                "v=" + v + ", " +
+                "texWidth=" + texWidth + ", " +
+                "texHeight=" + texHeight + ']';
     }
+
 
     public static class Serializer extends UiComponentSerializer<BlitUiComponent> {
 
@@ -70,11 +115,9 @@ public record BlitUiComponent(TextureReference texture, UiComponentPosition posi
             builder.setName("Blit")
                     .setDescription("Renders a simple (piece of a) texture")
                     .add("texture", TYPE_TEXTURE_REFERENCE, "Texture path/dynamic texture")
-                    .addOptional("position", TYPE_UI_POSITION, "Position of this component", new int[] {0, 0})
+                    .addOptional("position", TYPE_UI_PROPERTIES, "Properties of this component", UiComponentProperties.DEFAULT)
                     .addOptional("u", TYPE_NON_NEGATIVE_INT, "U-position on the texture where to start drawing from", 0)
                     .addOptional("v", TYPE_NON_NEGATIVE_INT, "V-position on the texture where to start drawing from", 0)
-                    .addOptional("u_offset", TYPE_NON_NEGATIVE_INT, "Width of the piece of the texture that is drawn", 256)
-                    .addOptional("v_offset", TYPE_NON_NEGATIVE_INT, "Height of the piece of the texture that is drawn", 256)
                     .addOptional("texture_width", TYPE_NON_NEGATIVE_INT, "Total width of the texture file", 256)
                     .addOptional("texture_height", TYPE_NON_NEGATIVE_INT, "Total height of the texture file", 256);
         }
