@@ -51,7 +51,7 @@ public final class BlitUiComponent extends RenderableUiComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, int width, int height, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, int width, int height, int mouseX, int mouseY, UiAlignment alignment) {
         gui.blit(RenderPipelines.GUI_TEXTURED, Objects.requireNonNull(this.texture.getTexture(context)), x, y, this.u, this.v, width, height, this.texWidth, this.texHeight);
     }
 
@@ -115,7 +115,6 @@ public final class BlitUiComponent extends RenderableUiComponent {
             builder.setName("Blit")
                     .setDescription("Renders a simple (piece of a) texture")
                     .add("texture", TYPE_TEXTURE_REFERENCE, "Texture path/dynamic texture")
-                    .addOptional("position", TYPE_UI_PROPERTIES, "Properties of this component", UiComponentProperties.DEFAULT)
                     .addOptional("u", TYPE_NON_NEGATIVE_INT, "U-position on the texture where to start drawing from", 0)
                     .addOptional("v", TYPE_NON_NEGATIVE_INT, "V-position on the texture where to start drawing from", 0)
                     .addOptional("texture_width", TYPE_NON_NEGATIVE_INT, "Total width of the texture file", 256)

@@ -23,7 +23,7 @@ public class RenderableUiComponentWidget extends AbstractWidget {
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         this.component.render(Minecraft.getInstance(), guiGraphics, DataContext.forEntity(Minecraft.getInstance().player),
-                this.getX(), this.getY(), this.getWidth(), this.getHeight(), this.component.getProperties().alignment());
+                this.getX(), this.getY(), this.getWidth(), this.getHeight(), mouseX, mouseY, this.component.getProperties().alignment());
     }
 
     @Override

@@ -13,7 +13,7 @@ public abstract class RenderableUiComponent extends UiComponent {
         super(properties);
     }
 
-    public abstract void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, int width, int height, UiAlignment alignment);
+    public abstract void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, int width, int height, int mouseX, int mouseY, UiAlignment alignment);
 
     @Override
     public AbstractWidget buildWidget(UiScreen screen) {

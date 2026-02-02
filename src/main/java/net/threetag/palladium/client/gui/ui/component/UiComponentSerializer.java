@@ -42,7 +42,8 @@ public abstract class UiComponentSerializer<T extends UiComponent> implements Do
 
     @Override
     public CodecDocumentationBuilder<UiComponent, T> getDocumentation(HolderLookup.Provider provider) {
-        var builder = new CodecDocumentationBuilder<>(codec(), UiComponent.CODEC, provider);
+        var builder = new CodecDocumentationBuilder<>(codec(), UiComponent.CODEC, provider)
+                .addOptional("properties", TYPE_UI_PROPERTIES, "Properties of this component", UiComponentProperties.DEFAULT);
         this.addDocumentation(builder, provider);
         return builder;
     }

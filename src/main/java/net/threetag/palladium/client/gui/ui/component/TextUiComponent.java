@@ -44,7 +44,7 @@ public class TextUiComponent extends RenderableUiComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, int width, int height, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, int width, int height, int mouseX, int mouseY, UiAlignment alignment) {
         // TODO max width
         if (this.outline) {
             GuiUtil.drawStringWithBlackOutline(gui, this.text, x, y, this.color);
@@ -65,7 +65,6 @@ public class TextUiComponent extends RenderableUiComponent {
             builder.setName("Text")
                     .setDescription("Renders a text component")
                     .add("text", TYPE_TEXT_COMPONENT, "The text to be drawn")
-                    .addOptional("properties", TYPE_UI_PROPERTIES, "Properties of this component", UiComponentProperties.DEFAULT)
                     .addOptional("color", TYPE_INT, "Color of the rendered text", RenderUtil.DEFAULT_GRAY)
 //                    .addOptional("max_width", TYPE_INT, "Maximum width of the rendered text. If text is longer it will be cut off using '...' at the end.")
                     .addOptional("outline", TYPE_BOOLEAN, "Whether or not a black outline will be drawn around the text");

@@ -33,7 +33,7 @@ public final class IconUiComponent extends RenderableUiComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, int width, int height, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, int width, int height, int mouseX, int mouseY, UiAlignment alignment) {
         IconRenderer.drawIcon(this.icon, minecraft, gui, DataContext.forEntity(minecraft.player), x, y);
     }
 
@@ -57,8 +57,7 @@ public final class IconUiComponent extends RenderableUiComponent {
         public void addDocumentation(CodecDocumentationBuilder<UiComponent, IconUiComponent> builder, HolderLookup.Provider provider) {
             builder.setName("Icon")
                     .setDescription("Renders an icon")
-                    .add("icon", TYPE_ICON, "The icon to be rendered")
-                    .addOptional("properties", TYPE_UI_PROPERTIES, "Properties of this component", DEFAULT_PROPERTIES);
+                    .add("icon", TYPE_ICON, "The icon to be rendered");
         }
     }
 }

@@ -75,7 +75,6 @@ public final class FlatButtonUiComponent extends UiComponent {
         public void addDocumentation(CodecDocumentationBuilder<UiComponent, FlatButtonUiComponent> builder, HolderLookup.Provider provider) {
             builder.setName("Flat Button")
                     .setDescription("Adds a flat button.")
-                    .addOptional("properties", TYPE_UI_PROPERTIES, "Properties of this component", UiComponentProperties.DEFAULT)
                     .add("text", TYPE_TEXT_COMPONENT, "Text of the button")
                     .addOptional("close_on_press", TYPE_BOOLEAN, "Whether or not the screen will be closed when pressing the button.");
         }
