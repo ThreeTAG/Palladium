@@ -1,0 +1,57 @@
+{
+  "width": 256,
+  "height": 75,
+  "padding": 10,
+  "components": [
+    {
+      "type": "palladium:blit",
+      "texture": "palladium:textures/gui/powers/widgets.png",
+      "u": 0,
+      "v": 29,
+      "width": 200,
+      "height": 20,
+      "position": {
+        "alignment": "top_left",
+        "x_offset": -5,
+        "y_offset": -5
+      }
+    },
+    {
+      "type": "palladium:text",
+      "text": "Change the time of day"
+    },
+    {
+      "type": "palladium:icon",
+      "icon": "minecraft:command_block",
+      "position": {
+        "alignment": "top_right"
+      }
+    },
+    {
+      "type": "palladium:button",
+      "text": "Set day",
+      "width": 80,
+      "close_on_press": true,
+      "action": {
+        "type": "run_command",
+        "command": "time set day"
+      },
+      "position": {
+        "alignment": "bottom_left"
+      }
+    },
+    {
+      "type": "palladium:button",
+      "text": "Set night",
+      "width": 80,
+      "close_on_press": true,
+      "action": {
+        "type": "run_command",
+        "command": "time set night"
+      },
+      "position": {
+        "alignment": "bottom_right"
+      }
+    }
+  ]
+}
