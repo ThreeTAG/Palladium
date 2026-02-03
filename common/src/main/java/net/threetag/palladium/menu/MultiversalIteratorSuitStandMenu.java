@@ -18,6 +18,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.item.MultiversalExtrapolatorItem;
 import net.threetag.palladium.item.SuitSet;
@@ -204,6 +205,8 @@ public class MultiversalIteratorSuitStandMenu extends AbstractContainerMenu {
                 armorStand.getItemBySlot(EquipmentSlot.OFFHAND)
         ));
 
+        List<Item> added = new ArrayList<>();
+
         if (!extrapolator.isEmpty()) {
             var universe = MultiversalExtrapolatorItem.getUniverse(extrapolator, armorStand.level());
 
@@ -214,16 +217,19 @@ public class MultiversalIteratorSuitStandMenu extends AbstractContainerMenu {
                     var originalItem = armorStand.getItemBySlot(slot);
 
                     for (Item item : MultiversalItemVariantsManager.getInstance(armorStand.level()).getVariantsOf(originalItem.getItem(), universe)) {
-                        boolean found = false;
+                        if (!added.contains(item)) {
+                            boolean found = false;
+                            added.add(item);
 
-                        for (int i = 1; i < pages.size(); i++) {
-                            if (pages.get(i).tryAdd(item, slot)) {
-                                found = true;
+                            for (int i = 1; i < pages.size(); i++) {
+                                if (pages.get(i).tryAdd(item, slot)) {
+                                    found = true;
+                                }
                             }
-                        }
 
-                        if (!found) {
-                            pages.add(new IterationPage(id++, slot, item));
+                            if (!found) {
+                                pages.add(new IterationPage(id++, slot, item));
+                            }
                         }
                     }
                 }
