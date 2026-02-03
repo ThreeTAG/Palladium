@@ -77,10 +77,10 @@ public class PalladiumJEIPlugin implements IModPlugin {
             List<CraftingRecipe> recipes = new ArrayList<>();
             var id = universe.getId();
             var stack = PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get().getDefaultInstance();
+            MultiversalExtrapolatorItem.setUniverse(stack, universe);
             var result = stack.copy();
             result.setCount(2);
 
-            MultiversalExtrapolatorItem.setUniverse(stack, universe);
             NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY,
                     Ingredient.of(stack),
                     Ingredient.of(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get()),
