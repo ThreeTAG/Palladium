@@ -77,6 +77,7 @@ public class PalladiumRecipeProvider extends RecipeProvider implements IConditio
         }
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get()).requires(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get()).requires(PalladiumItems.QUARTZ_CIRCUIT.get()).unlockedBy(getHasName(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get()), has(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get())).save(consumer, Palladium.id("multiversal_extrapolator_reset"));
+        SpecialRecipeBuilder.special(PalladiumRecipeSerializers.MULTIVERSAL_EXTRAPOLATOR_TRANSFER.get()).save(consumer, PalladiumRecipeSerializers.MULTIVERSAL_EXTRAPOLATOR_TRANSFER.getId().toString());
         SpecialRecipeBuilder.special(PalladiumRecipeSerializers.MULTIVERSAL_EXTRAPOLATOR_CLONING.get()).save(consumer, PalladiumRecipeSerializers.MULTIVERSAL_EXTRAPOLATOR_CLONING.getId().toString());
     }
 

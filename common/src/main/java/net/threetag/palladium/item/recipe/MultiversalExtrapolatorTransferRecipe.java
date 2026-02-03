@@ -5,7 +5,6 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -15,34 +14,37 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class MultiversalExtrapolatorCloningRecipe extends CustomRecipe {
+public class MultiversalExtrapolatorTransferRecipe extends CustomRecipe {
 
-    public MultiversalExtrapolatorCloningRecipe(ResourceLocation id, CraftingBookCategory category) {
+    public MultiversalExtrapolatorTransferRecipe(ResourceLocation id, CraftingBookCategory category) {
         super(id, category);
     }
 
     @Override
     public boolean matches(CraftingContainer container, Level level) {
         int designated = 0;
+        int undesignated = 0;
         int circuits = 0;
-        int diamonds = 0;
+        int total = 0;
 
         for (int j = 0; j < container.getContainerSize(); j++) {
             ItemStack stack = container.getItem(j);
             if (!stack.isEmpty()) {
+                total++;
+
                 if (stack.is(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get())) {
                     if (!stack.getOrCreateTag().getString("Universe").isEmpty()) {
                         designated++;
+                    } else {
+                        undesignated++;
                     }
-                } else if (stack.is(PalladiumItems.VIBRANIUM_CIRCUIT.get())) {
+                } else if (stack.is(PalladiumItems.QUARTZ_CIRCUIT.get())) {
                     circuits++;
-                } else if(stack.is(Items.DIAMOND)) {
-                    diamonds++;
                 }
             }
         }
 
-        return designated == 1 && circuits == 1 && diamonds == 7;
+        return designated == 1 && undesignated == 1 && circuits == 1 && total == 3;
     }
 
     @Override
@@ -80,11 +82,11 @@ public class MultiversalExtrapolatorCloningRecipe extends CustomRecipe {
 
     @Override
     public boolean canCraftInDimensions(int width, int height) {
-        return width * height >= 9;
+        return width * height >= 2;
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return PalladiumRecipeSerializers.MULTIVERSAL_EXTRAPOLATOR_CLONING.get();
+        return PalladiumRecipeSerializers.MULTIVERSAL_EXTRAPOLATOR_TRANSFER.get();
     }
 }

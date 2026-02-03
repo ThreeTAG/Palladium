@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
@@ -22,8 +23,11 @@ import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.item.recipe.PalladiumRecipeSerializers;
 import net.threetag.palladium.multiverse.MultiverseManager;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @JeiPlugin
 public class PalladiumJEIPlugin implements IModPlugin {
@@ -70,21 +74,47 @@ public class PalladiumJEIPlugin implements IModPlugin {
     private static List<CraftingRecipe> addSpecialCraftingRecipes(Level level) {
         String group = "jei.palladium.multiversal_extrapolator_cloning";
         return MultiverseManager.getInstance(level).getUniverses().values().stream().map(universe -> {
+            List<CraftingRecipe> recipes = new ArrayList<>();
             var id = universe.getId();
             var stack = PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get().getDefaultInstance();
+            var result = stack.copy();
+            result.setCount(2);
+
             MultiversalExtrapolatorItem.setUniverse(stack, universe);
             NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY,
                     Ingredient.of(stack),
-                    Ingredient.of(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get().getDefaultInstance()),
-                    Ingredient.of(PalladiumItems.QUARTZ_CIRCUIT.get().getDefaultInstance()));
+                    Ingredient.of(PalladiumItems.MULTIVERSAL_EXTRAPOLATOR.get()),
+                    Ingredient.of(PalladiumItems.QUARTZ_CIRCUIT.get()));
 
-            return (CraftingRecipe) new ShapelessRecipe(
+            recipes.add(new ShapelessRecipe(
+                    Palladium.id("jei.extrapolator_transfer." + id.getNamespace() + "." + id.getPath()),
+                    group,
+                    CraftingBookCategory.MISC,
+                    result,
+                    inputs
+            ));
+
+            inputs = NonNullList.of(Ingredient.EMPTY,
+                    Ingredient.of(stack),
+                    Ingredient.of(PalladiumItems.VIBRANIUM_CIRCUIT.get()),
+                    Ingredient.of(Items.DIAMOND),
+                    Ingredient.of(Items.DIAMOND),
+                    Ingredient.of(Items.DIAMOND),
+                    Ingredient.of(Items.DIAMOND),
+                    Ingredient.of(Items.DIAMOND),
+                    Ingredient.of(Items.DIAMOND),
+                    Ingredient.of(Items.DIAMOND)
+            );
+
+            recipes.add(new ShapelessRecipe(
                     Palladium.id("jei.extrapolator_cloning." + id.getNamespace() + "." + id.getPath()),
                     group,
                     CraftingBookCategory.MISC,
-                    stack,
+                    result,
                     inputs
-            );
-        }).toList();
+            ));
+
+            return recipes;
+        }).flatMap(Collection::stream).collect(Collectors.toList());
     }
 }

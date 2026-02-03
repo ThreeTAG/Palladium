@@ -20,6 +20,7 @@ public class PalladiumRecipeSerializers {
     });
     public static final RegistrySupplier<RecipeSerializer<ItemTailoringRecipe>> ITEM_TAILORING = RECIPE_SERIALIZERS.register("item_tailoring", ItemTailoringRecipe.Serializer::new);
     public static final RegistrySupplier<RecipeSerializer<SuitSetTailoringRecipe>> SUIT_SET_TAILORING = RECIPE_SERIALIZERS.register("suit_set_tailoring", SuitSetTailoringRecipe.Serializer::new);
+    public static final RegistrySupplier<RecipeSerializer<MultiversalExtrapolatorTransferRecipe>> MULTIVERSAL_EXTRAPOLATOR_TRANSFER = RECIPE_SERIALIZERS.register("multiversal_extrapolator_transfer", () -> new SimpleCraftingRecipeSerializer<>(MultiversalExtrapolatorTransferRecipe::new));
     public static final RegistrySupplier<RecipeSerializer<MultiversalExtrapolatorCloningRecipe>> MULTIVERSAL_EXTRAPOLATOR_CLONING = RECIPE_SERIALIZERS.register("multiversal_extrapolator_cloning", () -> new SimpleCraftingRecipeSerializer<>(MultiversalExtrapolatorCloningRecipe::new));
 
 }
