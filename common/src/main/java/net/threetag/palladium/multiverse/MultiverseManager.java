@@ -77,6 +77,6 @@ public class MultiverseManager extends SimpleJsonResourceReloadListener {
     }
 
     public static MultiverseManager getInstance(boolean client) {
-        return !client ? INSTANCE : ClientMultiversalManager.INSTANCE;
+        return !client ? INSTANCE : ClientMultiverseManager.INSTANCE;
     }
 }

@@ -6,10 +6,10 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ClientMultiversalManager extends MultiverseManager {
+public class ClientMultiverseManager extends MultiverseManager {
 
     private static final Map<ResourceLocation, Universe> UNIVERSES = new HashMap<>();
-    public static final MultiverseManager INSTANCE = new ClientMultiversalManager();
+    public static final MultiverseManager INSTANCE = new ClientMultiverseManager();
 
     @Override
     public Map<ResourceLocation, Universe> getUniverses() {

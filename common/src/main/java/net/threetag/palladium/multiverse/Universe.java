@@ -31,7 +31,7 @@ public class Universe {
     }
 
     public static Universe fromJson(ResourceLocation id, JsonObject json) {
-        int weight = GsonUtil.getAsIntMin(json, "weight", 0, 1);
+        int weight = GsonUtil.getAsIntMin(json, "weight", 0, 50);
         List<ConditionalWeight> conditionalWeights = new ArrayList<>();
         var conditionsWeightsEl = json.get("conditional_weights");
         if (conditionsWeightsEl != null) {
