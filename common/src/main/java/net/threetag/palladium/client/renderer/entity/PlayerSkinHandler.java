@@ -18,6 +18,10 @@ public class PlayerSkinHandler {
     public static final List<Pair<Integer, ISkinProvider>> PROVIDER = new ArrayList<>();
 
     public static ResourceLocation getCurrentSkin(GameProfile gameProfile, ResourceLocation defaultSkin) {
+        if (Minecraft.getInstance().level == null) {
+            return defaultSkin;
+        }
+
         AbstractClientPlayer player = (AbstractClientPlayer) Objects.requireNonNull(Minecraft.getInstance().level).getPlayerByUUID(gameProfile.getId());
 
         if (player instanceof PlayerSkinChangeHandler handler) {
@@ -29,6 +33,10 @@ public class PlayerSkinHandler {
     }
 
     public static String getCurrentModelType(GameProfile gameProfile, String modelType) {
+        if (Minecraft.getInstance().level == null) {
+            return modelType;
+        }
+
         AbstractClientPlayer player = (AbstractClientPlayer) Objects.requireNonNull(Minecraft.getInstance().level).getPlayerByUUID(gameProfile.getId());
 
         if (player instanceof PlayerSkinChangeHandler handler) {
