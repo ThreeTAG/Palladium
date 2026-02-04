@@ -12,6 +12,7 @@ public class UiComponentSerializers {
     public static final UiComponentSerializer<ButtonUiComponent> BUTTON = register("button", new ButtonUiComponent.Serializer());
     public static final UiComponentSerializer<FlatButtonUiComponent> FLAT_BUTTON = register("flat_button", new FlatButtonUiComponent.Serializer());
     public static final UiComponentSerializer<PlayerDisplayUiComponent> PLAYER_DISPLAY = register("player_display", new PlayerDisplayUiComponent.Serializer());
+    public static final UiComponentSerializer<PowerTreeUiComponent> POWER_TREE = register("power_tree", new PowerTreeUiComponent.Serializer());
 
     private static <T extends UiComponent> UiComponentSerializer<T> register(String id, UiComponentSerializer<T> serializer) {
         UiComponentSerializer.register(Palladium.id(id), serializer);

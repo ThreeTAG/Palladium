@@ -15,7 +15,7 @@ public record UiScreenConfiguration(int width, int height, int padding, UiScreen
             ExtraCodecs.POSITIVE_INT.fieldOf("width").forGetter(UiScreenConfiguration::width),
             ExtraCodecs.POSITIVE_INT.fieldOf("height").forGetter(UiScreenConfiguration::height),
             ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("padding", 7).forGetter(UiScreenConfiguration::padding),
-            UiScreenBackground.CODEC.optionalFieldOf("background", UiScreenBackground.DEFAULT).forGetter(UiScreenConfiguration::background),
+            UiScreen.BACKGROUND_CODEC.optionalFieldOf("background", UiScreenBackground.Sprite.DEFAULT).forGetter(UiScreenConfiguration::background),
             UiComponent.CODEC.listOf().optionalFieldOf("components", Collections.emptyList()).forGetter(UiScreenConfiguration::components)
     ).apply(instance, UiScreenConfiguration::new));
 

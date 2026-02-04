@@ -1,0 +1,18 @@
+{
+  "width": 256,
+  "height": 160,
+  "components": [
+    {
+      "type": "palladium:power_tree",
+      "power": "test:tree_test",
+      "background": {
+        "repeat": "minecraft:textures/block/blue_wool.png"
+      },
+      "properties": {
+        "alignment": "center",
+        "width": 200,
+        "height": 130
+      }
+    }
+  ]
+}
