@@ -25,7 +25,7 @@ public class PowerIndicatorComponent implements AbilityBarComponent {
             componentList.add(new SwitchKeyComponent(abilityList, PalladiumKeyMappings.ROTATE_ABILITY_LIST.getTranslatedKeyMessage()));
         }
 
-        componentList.add(new IconAbilityBarComponent(abilityList.getPowerHolder().getPower().value().getIcon()));
+        componentList.add(new IconAbilityBarComponent(abilityList.getPowerInstance().getPower().value().getIcon()));
         this.keyAndIcon = new CompoundAbilityBarComponent(componentList, false);
         this.keyAndIcon.padding = 4;
         this.keyAndIcon.center = true;
@@ -45,7 +45,7 @@ public class PowerIndicatorComponent implements AbilityBarComponent {
     public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment) {
         gui.blit(
                 RenderPipelines.GUI_TEXTURED,
-                this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder())),
+                this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerInstance())),
                 x, y,
                 getU(alignment), getV(alignment),
                 this.getWidth(), this.getHeight(),
@@ -106,7 +106,7 @@ public class PowerIndicatorComponent implements AbilityBarComponent {
                     );
                 }
 
-                gui.blit(RenderPipelines.GUI_TEXTURED, this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder())), -4, -4, 78, AbilityBar.KEY_ROTATION_FORWARD ? 56 : 64, 8, 8, 256, 256);
+                gui.blit(RenderPipelines.GUI_TEXTURED, this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerInstance())), -4, -4, 78, AbilityBar.KEY_ROTATION_FORWARD ? 56 : 64, 8, 8, 256, 256);
                 gui.pose().popMatrix();
             }
         }

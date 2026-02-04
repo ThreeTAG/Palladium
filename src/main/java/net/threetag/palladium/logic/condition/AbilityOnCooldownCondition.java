@@ -25,7 +25,7 @@ public record AbilityOnCooldownCondition(AbilityReference ability) implements Co
     @Override
     public boolean test(DataContext context) {
         var entity = context.getLivingEntity();
-        var holder = context.getPowerHolder();
+        var holder = context.getPowerInstance();
 
         if (entity == null) {
             return false;

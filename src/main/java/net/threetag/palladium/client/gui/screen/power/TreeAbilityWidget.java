@@ -100,7 +100,7 @@ public class TreeAbilityWidget {
 
     public void updateRelatives(Collection<TreeAbilityWidget> list) {
         List<? extends AbilityInstance<?>> parents = this.abilityInstance.getAbility().getStateManager().getUnlockingHandler().getParentAbilities().stream()
-                .map(reference -> reference.getInstance(this.minecraft.player, this.abilityInstance.getHolder())).toList();
+                .map(reference -> reference.getInstance(this.minecraft.player, this.abilityInstance.getPowerInstance())).toList();
 
         if (!parents.isEmpty()) {
             for (TreeAbilityWidget widget : list) {

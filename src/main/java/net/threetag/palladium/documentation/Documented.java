@@ -57,11 +57,12 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_ABILITY_TYPE = SettingType.simple("Ability Type ID");
     SettingType TYPE_FLIGHT_TYPE = SettingType.simple("Flight Type ID");
     SettingType TYPE_DIMENSION = SettingType.simple("Dimension ID");
+    SettingType TYPE_POWER = SettingType.simple("Power ID");
     SettingType TYPE_DAMAGE_TYPE_HOLDER_SET = SettingType.simple("Damage Type ID(s) / Tag(s)");
     SettingType TYPE_ABILITY_TYPE_HOLDER_SET = SettingType.simple("Ability Type ID(s) / Tag(s)");
     SettingType TYPE_ENTITY_TYPE_HOLDER_SET = SettingType.simple("Entity Type ID(s) / Tag(s)");
     SettingType TYPE_MOB_EFFECT_TYPE_HOLDER_SET = SettingType.simple("Mob Effect ID(s) / Tag(s)");
-    SettingType TYPE_POWER_HOLDER_SET = SettingType.simple("Mob Effect ID(s) / Tag(s)");
+    SettingType TYPE_POWER_HOLDER_SET = SettingType.simple("Power ID(s) / Tag(s)");
     SettingType TYPE_FLIGHT_TYPE_HOLDER_SET = SettingType.simple("Flight Type ID(s) / Tag(s)");
     SettingType TYPE_CUSTOMIZATION_HOLDER_SET = SettingType.simple("Customization ID(s) / Tag(s)");
 

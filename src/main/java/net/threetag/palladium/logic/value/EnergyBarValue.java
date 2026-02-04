@@ -25,7 +25,7 @@ public class EnergyBarValue extends IntegerValue {
     @Override
     public int getInteger(DataContext context) {
         if (context.getEntity() instanceof LivingEntity living) {
-            var bar = this.reference.getBar(living, context.getPowerHolder());
+            var bar = this.reference.getBar(living, context.getPowerInstance());
 
             if (bar != null) {
                 return bar.get();

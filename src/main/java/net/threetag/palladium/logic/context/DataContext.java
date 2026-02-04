@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.threetag.palladium.entity.PlayerSlot;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,12 +49,12 @@ public class DataContext {
         return forEntity(entity).with(DataContextKeys.ITEM, stack);
     }
 
-    public static DataContext forPower(LivingEntity entity, PowerHolder powerHolder) {
+    public static DataContext forPower(LivingEntity entity, PowerInstance powerInstance) {
         var context = forEntity(entity);
 
-        if (powerHolder != null) {
-            context.with(DataContextKeys.POWER_HOLDER, powerHolder);
-            context.with(DataContextKeys.POWER, powerHolder.getPower());
+        if (powerInstance != null) {
+            context.with(DataContextKeys.POWER_INSTANCE, powerInstance);
+            context.with(DataContextKeys.POWER, powerInstance.getPower());
         }
 
         return context;
@@ -65,8 +65,8 @@ public class DataContext {
 
         if (abilityInstance != null) {
             context.with(DataContextKeys.ABILITY_INSTANCE, abilityInstance);
-            context.with(DataContextKeys.POWER_HOLDER, abilityInstance.getHolder());
-            context.with(DataContextKeys.POWER, abilityInstance.getHolder().getPower());
+            context.with(DataContextKeys.POWER_INSTANCE, abilityInstance.getPowerInstance());
+            context.with(DataContextKeys.POWER, abilityInstance.getPowerInstance().getPower());
         }
 
         return context;
@@ -140,8 +140,8 @@ public class DataContext {
     }
 
     @Nullable
-    public PowerHolder getPowerHolder() {
-        return this.get(DataContextKeys.POWER_HOLDER);
+    public PowerInstance getPowerInstance() {
+        return this.get(DataContextKeys.POWER_INSTANCE);
     }
 
 }

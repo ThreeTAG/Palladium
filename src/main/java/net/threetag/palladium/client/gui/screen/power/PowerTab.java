@@ -6,7 +6,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 
 public abstract class PowerTab {
 
@@ -14,19 +14,19 @@ public abstract class PowerTab {
     protected final PowersScreen screen;
     protected final PowerTabType type;
     protected final int index;
-    protected final PowerHolder powerHolder;
+    protected final PowerInstance powerInstance;
     protected final Icon icon;
     protected final Component title;
     public float fade = 0F;
 
-    protected PowerTab(Minecraft minecraft, PowersScreen screen, PowerTabType type, int tabIndex, PowerHolder powerHolder) {
+    protected PowerTab(Minecraft minecraft, PowersScreen screen, PowerTabType type, int tabIndex, PowerInstance powerInstance) {
         this.minecraft = minecraft;
         this.screen = screen;
         this.type = type;
         this.index = tabIndex;
-        this.powerHolder = powerHolder;
-        this.icon = powerHolder.getPower().value().getIcon();
-        this.title = powerHolder.getPower().value().getName();
+        this.powerInstance = powerInstance;
+        this.icon = powerInstance.getPower().value().getIcon();
+        this.title = powerInstance.getPower().value().getName();
     }
 
     public void drawTab(GuiGraphics guiGraphics, int offsetX, int offsetY, boolean isSelected) {
@@ -34,7 +34,7 @@ public abstract class PowerTab {
     }
 
     public void drawIcon(GuiGraphics guiGraphics, int offsetX, int offsetY) {
-        this.type.drawIcon(guiGraphics, DataContext.forPower(this.minecraft.player, this.powerHolder), offsetX, offsetY, this.index, this.icon);
+        this.type.drawIcon(guiGraphics, DataContext.forPower(this.minecraft.player, this.powerInstance), offsetX, offsetY, this.index, this.icon);
     }
 
     public boolean isMouseOver(int offsetX, int offsetY, double mouseX, double mouseY) {

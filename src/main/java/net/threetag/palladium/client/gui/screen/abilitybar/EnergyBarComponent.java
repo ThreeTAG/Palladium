@@ -31,7 +31,7 @@ public class EnergyBarComponent implements AbilityBarComponent {
         int fullHeight = this.getHeight() - 6;
         int height = (int) ((energyBarInstance.get() / (float) energyBarInstance.getMax()) * fullHeight);
 
-        var texture = this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder()));
+        var texture = this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerInstance()));
         gui.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 152, 0, this.getWidth(), this.getHeight(), 256, 256);
         gui.blit(RenderPipelines.GUI_TEXTURED, texture, x + 3, y + 3 + fullHeight - height, 162, fullHeight - height, this.getWidth() - 6, height, 256, 256, this.energyBarInstance.getConfiguration().color().getRGB());
     }

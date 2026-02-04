@@ -15,7 +15,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.config.PalladiumClientConfig;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.PowerUtil;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.energybar.EnergyBarInstance;
@@ -83,7 +83,7 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
         this.currentList = null;
         this.lists.clear();
 
-        for (PowerHolder holder : PowerUtil.getPowerHandler(player).getPowerHolders().values()) {
+        for (PowerInstance holder : PowerUtil.getPowerHandler(player).getPowerInstances().values()) {
             List<AbilityList> containerList = new ArrayList<>();
             List<AbilityList> remainingLists = new ArrayList<>();
             List<AbilityInstance<?>> remaining = new ArrayList<>();
@@ -193,7 +193,7 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
     public static class AbilityList {
 
         public static final int MAX_ABILITIES = 5;
-        private final PowerHolder powerHolder;
+        private final PowerInstance powerInstance;
         private final IntObjectHashMap<List<AbilityInstance<?>>> abilities = new IntObjectHashMap<>();
         public boolean simple = false;
         private TextureReference texture;
@@ -201,9 +201,9 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
         public CompoundAbilityBarComponent completeBar = null;
         public CompoundAbilityBarComponent abilitiesAndEnergyBars = null;
 
-        public AbilityList(PowerHolder powerHolder) {
-            this.powerHolder = powerHolder;
-            this.texture = powerHolder.getPower().value().getAbilityBarTexture();
+        public AbilityList(PowerInstance powerInstance) {
+            this.powerInstance = powerInstance;
+            this.texture = powerInstance.getPower().value().getAbilityBarTexture();
 
             if (this.texture == null) {
                 this.texture = TextureReference.normal(TEXTURE);
@@ -218,7 +218,7 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
             List<AbilityBarComponent> components = new ArrayList<>();
             components.add(new AbilityListComponent(this));
 
-            for (EnergyBarInstance barInstance : this.powerHolder.getEnergyBars().values()) {
+            for (EnergyBarInstance barInstance : this.powerInstance.getEnergyBars().values()) {
                 components.add(new EnergyBarComponent(this, barInstance));
             }
 
@@ -228,8 +228,8 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
             this.completeBar.padding = 1;
         }
 
-        public PowerHolder getPowerHolder() {
-            return powerHolder;
+        public PowerInstance getPowerInstance() {
+            return powerInstance;
         }
 
         public AbilityList addAbility(int index, AbilityInstance<?> ability) {
@@ -281,7 +281,7 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
         }
 
         public void simplify() {
-            if (!this.powerHolder.getEnergyBars().isEmpty()) {
+            if (!this.powerInstance.getEnergyBars().isEmpty()) {
                 return;
             }
 

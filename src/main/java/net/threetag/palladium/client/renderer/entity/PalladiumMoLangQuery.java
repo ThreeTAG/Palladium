@@ -87,7 +87,7 @@ public class PalladiumMoLangQuery implements ObjectValue {
     @Binding("get_animation_timer_eased")
     public double get_animation_timer_eased(String abilityKey) {
         if (CONTEXT.getEntity() instanceof LivingEntity living) {
-            var ability = abilityKey == null || abilityKey.isEmpty() ? CONTEXT.getAbility() : AbilityReference.parse(abilityKey).getInstance(living, CONTEXT.getPowerHolder());
+            var ability = abilityKey == null || abilityKey.isEmpty() ? CONTEXT.getAbility() : AbilityReference.parse(abilityKey).getInstance(living, CONTEXT.getPowerInstance());
 
             if (ability != null) {
                 return ability.getAnimationTimerValueEased(PARTIAL_TICK);

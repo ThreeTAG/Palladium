@@ -32,7 +32,7 @@ public record EnergyBarCondition(EnergyBarReference energyBar, int min, int max)
     @Override
     public boolean test(DataContext context) {
         var entity = context.getLivingEntity();
-        EnergyBarInstance energyBarInstance = this.energyBar.getBar(entity, context.getPowerHolder());
+        EnergyBarInstance energyBarInstance = this.energyBar.getBar(entity, context.getPowerInstance());
 
         if (energyBarInstance == null) {
             return false;

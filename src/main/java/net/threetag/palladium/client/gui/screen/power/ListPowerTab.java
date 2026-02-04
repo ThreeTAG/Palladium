@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
 import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,8 +23,8 @@ public class ListPowerTab extends PowerTab {
     private AbilityList list;
     private AbilityInstance<?> hovered;
 
-    protected ListPowerTab(Minecraft minecraft, PowersScreen screen, PowerTabType type, int tabIndex, PowerHolder powerHolder) {
-        super(minecraft, screen, type, tabIndex, powerHolder);
+    protected ListPowerTab(Minecraft minecraft, PowersScreen screen, PowerTabType type, int tabIndex, PowerInstance powerInstance) {
+        super(minecraft, screen, type, tabIndex, powerInstance);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ListPowerTab extends PowerTab {
                 j + PowersScreen.WINDOW_INSIDE_Y,
                 30
         );
-        this.list.populate(this.powerHolder);
+        this.list.populate(this.powerInstance);
     }
 
     @Override
@@ -58,8 +58,8 @@ public class ListPowerTab extends PowerTab {
 
     @Override
     public void drawContents(GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY, float partialTick) {
-        TextureReference backgroundTexture = this.powerHolder.getPower().value().getBackground();
-        var texture = backgroundTexture != null ? backgroundTexture.getTexture(DataContext.forPower(minecraft.player, this.powerHolder)) : Identifier.withDefaultNamespace("textures/block/red_wool.png");
+        TextureReference backgroundTexture = this.powerInstance.getPower().value().getBackground();
+        var texture = backgroundTexture != null ? backgroundTexture.getTexture(DataContext.forPower(minecraft.player, this.powerInstance)) : Identifier.withDefaultNamespace("textures/block/red_wool.png");
 
         for (int m = -1; m <= 13; ++m) {
             for (int n = -1; n <= 9; ++n) {
@@ -93,12 +93,12 @@ public class ListPowerTab extends PowerTab {
     }
 
     @Nullable
-    public static ListPowerTab create(Minecraft minecraft, PowersScreen screen, int tabIndex, PowerHolder powerHolder) {
+    public static ListPowerTab create(Minecraft minecraft, PowersScreen screen, int tabIndex, PowerInstance powerInstance) {
         PowerTabType[] tabTypes = PowerTabType.values();
 
         for (PowerTabType tabType : tabTypes) {
             if (tabIndex < tabType.getMax()) {
-                return new ListPowerTab(minecraft, screen, tabType, tabIndex, powerHolder);
+                return new ListPowerTab(minecraft, screen, tabType, tabIndex, powerInstance);
             }
 
             tabIndex -= tabType.getMax();
@@ -115,7 +115,7 @@ public class ListPowerTab extends PowerTab {
         public AbilityList(Minecraft minecraft, ListPowerTab screen, int width, int height, int x, int y, int itemHeight) {
             super(minecraft, width, height, y, itemHeight);
             this.setPosition(x, y);
-            this.populate(screen.powerHolder);
+            this.populate(screen.powerInstance);
             this.parent = screen;
             this.listWidth = width;
         }
@@ -125,10 +125,10 @@ public class ListPowerTab extends PowerTab {
 
         }
 
-        public void populate(PowerHolder powerHolder) {
+        public void populate(PowerInstance powerInstance) {
             this.clearEntries();
 
-            for (AbilityInstance<?> ability : powerHolder.getAbilities().values()) {
+            for (AbilityInstance<?> ability : powerInstance.getAbilities().values()) {
                 if (!ability.getAbility().getProperties().isHiddenInGUI()) {
                     this.addEntry(new ListEntry(ability, this, minecraft));
                 }

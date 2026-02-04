@@ -8,7 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.EntityPowerHandler;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.PowerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,26 +52,26 @@ public record AbilityReference(@Nullable Identifier powerId, @NotNull String abi
     }
 
     @Nullable
-    public AbilityInstance<?> getInstance(LivingEntity entity, @Nullable PowerHolder powerHolder) {
+    public AbilityInstance<?> getInstance(LivingEntity entity, @Nullable PowerInstance powerInstance) {
         if (this.powerId != null) {
             EntityPowerHandler handler = PowerUtil.getPowerHandler(entity);
 
             if (handler != null) {
-                powerHolder = handler.getPowerHolder(this.powerId);
+                powerInstance = handler.getPowerInstance(this.powerId);
             } else {
-                powerHolder = null;
+                powerInstance = null;
             }
         }
 
-        if (powerHolder != null) {
-            return powerHolder.getAbilities().get(this.abilityKey);
+        if (powerInstance != null) {
+            return powerInstance.getAbilities().get(this.abilityKey);
         }
 
         return null;
     }
 
-    public Optional<AbilityInstance<?>> optional(LivingEntity entity, @Nullable PowerHolder powerHolder) {
-        return Optional.ofNullable(this.getInstance(entity, powerHolder));
+    public Optional<AbilityInstance<?>> optional(LivingEntity entity, @Nullable PowerInstance powerInstance) {
+        return Optional.ofNullable(this.getInstance(entity, powerInstance));
     }
 
     public void toBuffer(FriendlyByteBuf buf) {

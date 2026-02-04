@@ -30,7 +30,7 @@ public record AbilityListComponent(AbilityBar.AbilityList abilityList) implement
 
     @Override
     public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment) {
-        gui.blit(RenderPipelines.GUI_TEXTURED, this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerHolder())), x, y, 0, 56, this.getWidth(), this.getHeight(), 256, 256);
+        gui.blit(RenderPipelines.GUI_TEXTURED, this.abilityList.getTexture(DataContext.forPower(minecraft.player, this.abilityList.getPowerInstance())), x, y, 0, 56, this.getWidth(), this.getHeight(), 256, 256);
 
         for (int i = 0; i < AbilityBar.AbilityList.MAX_ABILITIES; i++) {
             var ability = this.abilityList.getAbility(i);

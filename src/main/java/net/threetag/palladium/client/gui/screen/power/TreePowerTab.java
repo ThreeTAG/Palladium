@@ -8,7 +8,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,8 +30,8 @@ public class TreePowerTab extends PowerTab {
     private int maxY = -2147483648;
     private boolean centered;
 
-    public TreePowerTab(Minecraft minecraft, PowersScreen powersScreen, PowerTabType tabType, int tabIndex, PowerHolder powerHolder) {
-        super(minecraft, powersScreen, tabType, tabIndex, powerHolder);
+    public TreePowerTab(Minecraft minecraft, PowersScreen powersScreen, PowerTabType tabType, int tabIndex, PowerInstance powerInstance) {
+        super(minecraft, powersScreen, tabType, tabIndex, powerInstance);
         this.populate();
     }
 
@@ -42,7 +42,7 @@ public class TreePowerTab extends PowerTab {
         List<TreeAbilityWidget> root = new LinkedList<>();
 
         // Create entry for each ability
-        for (AbilityInstance<?> ability : this.powerHolder.getAbilities().values()) {
+        for (AbilityInstance<?> ability : this.powerInstance.getAbilities().values()) {
             if (!ability.getAbility().getProperties().isHiddenInGUI()) {
                 var widget = new TreeAbilityWidget(this, this.minecraft, ability).setPosition(0, 0);
                 this.entries.add(widget);
@@ -114,7 +114,7 @@ public class TreePowerTab extends PowerTab {
                 int endY = toCoord(child.gridY, 1D / (child.parents.size() + 1) * (child.parents.indexOf(entry) + 1));
                 connection.addLine(new ConnectionLine(startX, startY, endX, startY));
                 connection.addLine(new ConnectionLine(endX, startY, endX, endY));
-                connection.color = child.abilityInstance.isUnlocked() ? this.powerHolder.getPower().value().getPrimaryColor() : this.powerHolder.getPower().value().getSecondaryColor();
+                connection.color = child.abilityInstance.isUnlocked() ? this.powerInstance.getPower().value().getPrimaryColor() : this.powerInstance.getPower().value().getSecondaryColor();
                 this.connections.add(connection);
             }
         }
@@ -179,8 +179,8 @@ public class TreePowerTab extends PowerTab {
         guiGraphics.enableScissor(x, y, x + PowersScreen.WINDOW_INSIDE_WIDTH, y + PowersScreen.WINDOW_INSIDE_HEIGHT);
         guiGraphics.pose().pushMatrix();
         guiGraphics.pose().translate((float) x, (float) y);
-        TextureReference backgroundTexture = this.powerHolder.getPower().value().getBackground();
-        var texture = backgroundTexture != null ? backgroundTexture.getTexture(DataContext.forPower(minecraft.player, this.powerHolder)) : Identifier.withDefaultNamespace("textures/block/red_wool.png");
+        TextureReference backgroundTexture = this.powerInstance.getPower().value().getBackground();
+        var texture = backgroundTexture != null ? backgroundTexture.getTexture(DataContext.forPower(minecraft.player, this.powerInstance)) : Identifier.withDefaultNamespace("textures/block/red_wool.png");
 
         int i = Mth.floor(this.scrollX);
         int j = Mth.floor(this.scrollY);
@@ -252,12 +252,12 @@ public class TreePowerTab extends PowerTab {
     }
 
     @Nullable
-    public static TreePowerTab create(Minecraft minecraft, PowersScreen screen, int tabIndex, PowerHolder powerHolder) {
+    public static TreePowerTab create(Minecraft minecraft, PowersScreen screen, int tabIndex, PowerInstance powerInstance) {
         PowerTabType[] tabTypes = PowerTabType.values();
 
         for (PowerTabType tabType : tabTypes) {
             if (tabIndex < tabType.getMax()) {
-                return new TreePowerTab(minecraft, screen, tabType, tabIndex, powerHolder);
+                return new TreePowerTab(minecraft, screen, tabType, tabIndex, powerInstance);
             }
 
             tabIndex -= tabType.getMax();
@@ -266,12 +266,12 @@ public class TreePowerTab extends PowerTab {
         return null;
     }
 
-    public static boolean canBeTree(PowerHolder holder) {
+    public static boolean canBeTree(PowerInstance holder) {
         return holder.getAbilities().values().stream().filter(entry -> !entry.getAbility().getProperties().isHiddenInGUI())
                 .anyMatch(entry -> entry.getAbility().getStateManager().getUnlockingHandler().getParentAbilities().stream().anyMatch(ref -> {
                     var parent = ref.getInstance(Minecraft.getInstance().player, holder);
 
-                    return parent != null && parent.getHolder() == holder;
+                    return parent != null && parent.getPowerInstance() == holder;
                 }));
     }
 

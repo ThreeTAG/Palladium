@@ -4,7 +4,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.power.EntityPowerHandler;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.PowerUtil;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import net.threetag.palladium.util.Easing;
@@ -29,7 +29,7 @@ public class AbilityUtil {
     public static <T extends Ability> Collection<AbilityInstance<T>> getInstances(LivingEntity entity) {
         List<AbilityInstance<T>> instances = new ArrayList<>();
         var handler = PowerUtil.getPowerHandler(entity);
-        handler.getPowerHolders().values().stream().map(holder -> holder.getAbilities().values()).forEach(abilityInstances -> abilityInstances.forEach(i -> instances.add((AbilityInstance<T>) i)));
+        handler.getPowerInstances().values().stream().map(holder -> holder.getAbilities().values()).forEach(abilityInstances -> abilityInstances.forEach(i -> instances.add((AbilityInstance<T>) i)));
         return instances;
     }
 
@@ -44,7 +44,7 @@ public class AbilityUtil {
     public static <T extends Ability> Collection<AbilityInstance<T>> getInstances(LivingEntity entity, AbilitySerializer<T> ability) {
         List<AbilityInstance<T>> instances = new ArrayList<>();
         var handler = PowerUtil.getPowerHandler(entity);
-        handler.getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(instance -> instance.getAbility().getSerializer() == ability).collect(Collectors.toList())).forEach(abilityInstances -> abilityInstances.forEach(i -> instances.add((AbilityInstance<T>) i)));
+        handler.getPowerInstances().values().stream().map(holder -> holder.getAbilities().values().stream().filter(instance -> instance.getAbility().getSerializer() == ability).collect(Collectors.toList())).forEach(abilityInstances -> abilityInstances.forEach(i -> instances.add((AbilityInstance<T>) i)));
         return instances;
     }
 
@@ -58,7 +58,7 @@ public class AbilityUtil {
     public static Collection<AbilityInstance<?>> getEnabledInstances(LivingEntity entity) {
         List<AbilityInstance<?>> instances = new ArrayList<>();
         var handler = PowerUtil.getPowerHandler(entity);
-        for (PowerHolder holder : handler.getPowerHolders().values()) {
+        for (PowerInstance holder : handler.getPowerInstances().values()) {
             Collection<AbilityInstance<?>> values = holder.getAbilities().values();
             for (AbilityInstance<?> value : values) {
                 if (value.isEnabled()) {
@@ -80,7 +80,7 @@ public class AbilityUtil {
     public static <T extends Ability> Collection<AbilityInstance<T>> getEnabledInstances(LivingEntity entity, AbilitySerializer<T> ability) {
         List<AbilityInstance<T>> instances = new ArrayList<>();
         var handler = PowerUtil.getPowerHandler(entity);
-        handler.getPowerHolders().values().stream().map(holder -> holder.getAbilities().values().stream().filter(instance -> instance.isEnabled() && instance.getAbility().getSerializer() == ability).collect(Collectors.toList())).forEach(abilityInstances -> abilityInstances.forEach(i -> instances.add((AbilityInstance<T>) i)));
+        handler.getPowerInstances().values().stream().map(holder -> holder.getAbilities().values().stream().filter(instance -> instance.isEnabled() && instance.getAbility().getSerializer() == ability).collect(Collectors.toList())).forEach(abilityInstances -> abilityInstances.forEach(i -> instances.add((AbilityInstance<T>) i)));
         return instances;
     }
 
@@ -106,7 +106,7 @@ public class AbilityUtil {
             return null;
         }
 
-        PowerHolder holder = handler.getPowerHolder(powerId);
+        PowerInstance holder = handler.getPowerInstance(powerId);
 
         if (holder == null) {
             return null;

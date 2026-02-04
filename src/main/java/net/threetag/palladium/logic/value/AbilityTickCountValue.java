@@ -25,7 +25,7 @@ public class AbilityTickCountValue extends IntegerValue {
     @Override
     public int getInteger(DataContext context) {
         if (context.getEntity() instanceof LivingEntity living) {
-            var ability = this.reference.getInstance(living, context.getPowerHolder());
+            var ability = this.reference.getInstance(living, context.getPowerInstance());
 
             if (ability != null) {
                 return ability.getEnabledTicks();

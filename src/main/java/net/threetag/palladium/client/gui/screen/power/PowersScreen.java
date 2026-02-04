@@ -97,7 +97,7 @@ public class PowersScreen extends Screen {
         AtomicInteger i = new AtomicInteger();
         var handler = PowerUtil.getPowerHandler(Objects.requireNonNull(this.minecraft).player);
 
-        handler.getPowerHolders()
+        handler.getPowerInstances()
                 .values()
                 .stream()
                 .sorted(Comparator.comparingInt(holder -> Objects.requireNonNull(this.minecraft.player).registryAccess().lookupOrThrow(PalladiumRegistryKeys.POWER).stream().toList().indexOf(holder.getPower().value())))
@@ -291,7 +291,7 @@ public class PowersScreen extends Screen {
             List<Icon> icons = Lists.newArrayList();
             Minecraft mc = Minecraft.getInstance();
             var handler = PowerUtil.getPowerHandler(mc.player);
-            handler.getPowerHolders().values().stream().filter(holder -> !holder.getPower().value().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getAbility().getProperties().isHiddenInGUI())).forEach(holder -> icons.add(holder.getPower().value().getIcon()));
+            handler.getPowerInstances().values().stream().filter(holder -> !holder.getPower().value().isHidden() && holder.getAbilities().values().stream().anyMatch(en -> !en.getAbility().getProperties().isHiddenInGUI())).forEach(holder -> icons.add(holder.getPower().value().getIcon()));
 
             if (icons.isEmpty()) {
                 this.visible = false;
@@ -310,7 +310,7 @@ public class PowersScreen extends Screen {
             if (pos != null) {
                 this.setPosition(pos.x, pos.y);
             }
-            this.active = this.visible && !PowerUtil.getPowerHandler(Minecraft.getInstance().player).getPowerHolders().isEmpty();
+            this.active = this.visible && !PowerUtil.getPowerHandler(Minecraft.getInstance().player).getPowerInstances().isEmpty();
             super.renderContents(guiGraphics, mouseX, mouseY, partialTicks);
         }
 

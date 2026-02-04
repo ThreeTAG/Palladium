@@ -25,7 +25,7 @@ public class AnimationTimerValue extends IntegerValue {
     @Override
     public int getInteger(DataContext context) {
         if (context.getEntity() instanceof LivingEntity living) {
-            var ability = this.reference.getInstance(living, context.getPowerHolder());
+            var ability = this.reference.getInstance(living, context.getPowerInstance());
 
             if (ability != null && ability.getAnimationTimer() != null) {
                 return ability.getAnimationTimer().value();

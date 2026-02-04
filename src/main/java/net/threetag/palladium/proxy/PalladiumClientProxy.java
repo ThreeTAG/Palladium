@@ -33,7 +33,7 @@ import net.threetag.palladium.entity.EffectEntity;
 import net.threetag.palladium.entity.effect.EntityEffect;
 import net.threetag.palladium.network.*;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.PowerUtil;
 import net.threetag.palladium.power.PowerValidator;
 import net.threetag.palladium.power.ability.AbilityInstance;
@@ -239,22 +239,22 @@ public class PalladiumClientProxy extends PalladiumProxy {
             var handler = PowerUtil.getPowerHandler(livingEntity);
 
             for (Holder<Power> power : packet.remove()) {
-                handler.removePowerHolder(power);
+                handler.removePowerInstance(power);
             }
 
             for (SyncEntityPowersPacket.NewPowerChange add : packet.add()) {
-                var powerHolder = new PowerHolder(livingEntity, add.power, PowerValidator.ALWAYS_ACTIVE, add.priority, new CompoundTag());
-                handler.addPowerHolder(powerHolder);
+                var powerInstance = new PowerInstance(livingEntity, add.power, PowerValidator.ALWAYS_ACTIVE, add.priority, new CompoundTag());
+                handler.addPowerInstance(powerInstance);
 
                 for (Pair<String, DataComponentPatch> abilityComponent : add.abilityComponents) {
-                    var ability = powerHolder.getAbilities().get(abilityComponent.getLeft());
+                    var ability = powerInstance.getAbilities().get(abilityComponent.getLeft());
                     if (ability != null) {
                         ability.applyPatch(abilityComponent.getRight());
                     }
                 }
 
                 for (Triple<String, Integer, Integer> pair : add.energyBars) {
-                    var bar = powerHolder.getEnergyBars().get(pair.getLeft());
+                    var bar = powerInstance.getEnergyBars().get(pair.getLeft());
 
                     if (bar != null) {
                         bar.set(pair.getMiddle());

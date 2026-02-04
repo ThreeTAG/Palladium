@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class PowerHolder {
+public class PowerInstance {
 
     public final LivingEntity entity;
     private final Holder<Power> power;
@@ -28,7 +28,7 @@ public class PowerHolder {
     private PowerValidator validator;
     private int priority;
 
-    public PowerHolder(LivingEntity entity, Holder<Power> power, PowerValidator validator, int priority, CompoundTag componentTag) {
+    public PowerInstance(LivingEntity entity, Holder<Power> power, PowerValidator validator, int priority, CompoundTag componentTag) {
         this.entity = entity;
         this.power = power;
         this.powerId = power.unwrapKey().orElseThrow().identifier();
