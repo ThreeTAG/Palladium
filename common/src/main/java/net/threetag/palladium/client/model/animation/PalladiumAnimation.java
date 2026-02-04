@@ -15,6 +15,19 @@ import java.util.*;
 
 public class PalladiumAnimation {
 
+    public static float wrapRadians(float angle) {
+        float f = angle % 6.2831855F;
+        if (f >= 3.1415927F) {
+            f -= 6.2831855F;
+        }
+
+        if (f < -3.1415927F) {
+            f += 6.2831855F;
+        }
+
+        return f;
+    }
+
     private final int priority;
 
     public PalladiumAnimation(int priority) {
@@ -338,17 +351,19 @@ public class PalladiumAnimation {
 
     public enum PartOperationTarget {
 
-        X_ROT(0, false), Y_ROT(0, false), Z_ROT(0, false),
-        X(0, false), Y(0, false), Z(0, false),
-        X2(0, false), Y2(0, false), Z2(0, false),
-        X_SCALE(1, true), Y_SCALE(1, true), Z_SCALE(1, true);
+        X_ROT(0, false, true), Y_ROT(0, false, true), Z_ROT(0, false, true),
+        X(0, false, false), Y(0, false, false), Z(0, false, false),
+        X2(0, false, false), Y2(0, false, false), Z2(0, false, false),
+        X_SCALE(1, true, false), Y_SCALE(1, true, false), Z_SCALE(1, true, false);
 
         private final float initial;
         private final boolean scale;
+        private final boolean rotation;
 
-        PartOperationTarget(float initial, boolean scale) {
+        PartOperationTarget(float initial, boolean scale, boolean rotation) {
             this.initial = initial;
             this.scale = scale;
+            this.rotation = rotation;
         }
 
         public float get(ModelPart part) {
@@ -447,7 +462,12 @@ public class PalladiumAnimation {
         public void apply(ModelPart part, PartOperationTarget target, float multiplier) {
             if (this.type == PartOperationType.SET) {
                 var current = target.get(part);
-                target.set(part, current + (this.value - current) * multiplier);
+
+                if (target.rotation) {
+                    target.set(part, current + wrapRadians(this.value - current) * multiplier);
+                } else {
+                    target.set(part, current + (this.value - current) * multiplier);
+                }
             } else if (this.type == PartOperationType.ADD) {
                 if (target.scale) {
                     target.set(part, target.get(part) * (1 + (this.value - 1) * multiplier));
@@ -456,14 +476,24 @@ public class PalladiumAnimation {
                 }
             } else {
                 var current = target.get(part);
-                target.set(part, current + (target.get(part.getInitialPose()) - current) * multiplier);
+
+                if (target.rotation) {
+                    target.set(part, current + wrapRadians(target.get(part.getInitialPose()) - current) * multiplier);
+                } else {
+                    target.set(part, current + (target.get(part.getInitialPose()) - current) * multiplier);
+                }
             }
         }
 
         public void apply(PoseStackResult result, PartOperationTarget target, float multiplier) {
             if (this.type == PartOperationType.SET) {
                 var current = target.get(result);
-                target.set(result, current + (this.value - current) * multiplier);
+
+                if (target.rotation) {
+                    target.set(result, current + wrapRadians(this.value - current) * multiplier);
+                } else {
+                    target.set(result, current + (this.value - current) * multiplier);
+                }
             } else if (this.type == PartOperationType.ADD) {
                 if (target.scale) {
                     target.set(result, target.get(result) * (1 + (this.value - 1) * multiplier));
@@ -472,7 +502,12 @@ public class PalladiumAnimation {
                 }
             } else {
                 var current = target.get(result);
-                target.set(result, current + (target.initial - current) * multiplier);
+
+                if (target.rotation) {
+                    target.set(result, current + wrapRadians(target.initial - current) * multiplier);
+                } else {
+                    target.set(result, current + (target.initial - current) * multiplier);
+                }
             }
         }
     }
