@@ -9,12 +9,12 @@ import net.threetag.palladium.client.gui.ui.component.UiComponent;
 import java.util.Collections;
 import java.util.List;
 
-public record UiScreenConfiguration(int width, int height, int padding, UiScreenBackground background, List<UiComponent> components) {
+public record UiScreenConfiguration(int width, int height, UiPadding padding, UiScreenBackground background, List<UiComponent> components) {
 
     public static final Codec<UiScreenConfiguration> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ExtraCodecs.POSITIVE_INT.fieldOf("width").forGetter(UiScreenConfiguration::width),
             ExtraCodecs.POSITIVE_INT.fieldOf("height").forGetter(UiScreenConfiguration::height),
-            ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("padding", 7).forGetter(UiScreenConfiguration::padding),
+            UiPadding.CODEC.optionalFieldOf("padding", UiPadding.SEVEN).forGetter(UiScreenConfiguration::padding),
             UiScreen.BACKGROUND_CODEC.optionalFieldOf("background", UiScreenBackground.Sprite.DEFAULT).forGetter(UiScreenConfiguration::background),
             UiComponent.CODEC.listOf().optionalFieldOf("components", Collections.emptyList()).forGetter(UiScreenConfiguration::components)
     ).apply(instance, UiScreenConfiguration::new));

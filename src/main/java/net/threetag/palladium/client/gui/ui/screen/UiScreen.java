@@ -59,8 +59,8 @@ public class UiScreen extends Screen implements DelayedRenderCallReceiver {
 
         this.outerLeftPos = (this.width - this.configuration.width()) / 2;
         this.outerTopPos = (this.height - this.configuration.height()) / 2;
-        this.innerLeftPos = this.outerLeftPos + this.configuration.padding();
-        this.innerTopPos = this.outerTopPos + this.configuration.padding();
+        this.innerLeftPos = this.outerLeftPos + this.configuration.padding().left();
+        this.innerTopPos = this.outerTopPos + this.configuration.padding().top();
         this.widgets.clear();
 
         for (UiComponent component : this.configuration.components()) {
@@ -102,8 +102,8 @@ public class UiScreen extends Screen implements DelayedRenderCallReceiver {
         return new ScreenRectangle(
                 this.innerLeftPos,
                 this.innerTopPos,
-                this.configuration.width() - (this.configuration.padding() * 2),
-                this.configuration.height() - (this.configuration.padding() * 2)
+                this.configuration.width() - this.configuration.padding().left() - this.configuration.padding().right(),
+                this.configuration.height() - this.configuration.padding().top() - this.configuration.padding().bottom()
         );
     }
 
