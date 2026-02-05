@@ -37,12 +37,10 @@ public abstract class TextureManagerMixin {
 
     @Inject(method = "preload", at = @At("RETURN"))
     private void preload(ResourceLocation path, Executor backgroundExecutor, CallbackInfoReturnable<CompletableFuture<Void>> cir) {
-        List<ResourceLocation> toRemove = new ArrayList<>();
-        for (Map.Entry<ResourceLocation, AbstractTexture> entry : this.byPath.entrySet()) {
-            if (entry.getValue() instanceof TransformedTexture) {
-                toRemove.add(entry.getKey());
-            }
-        }
+        List<ResourceLocation> toRemove =this.byPath.entrySet().stream()
+                .filter(e -> e.getValue() instanceof TransformedTexture)
+                .map(Map.Entry::getKey)
+                .toList();
 
         for (ResourceLocation resourceLocation : toRemove) {
             var abstractTexture = this.byPath.get(resourceLocation);

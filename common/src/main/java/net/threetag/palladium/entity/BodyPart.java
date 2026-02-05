@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.accessory.Accessory;
+import net.threetag.palladium.accessory.RenderLayerAccessory;
 import net.threetag.palladium.client.model.animation.PalladiumAnimation;
 import net.threetag.palladium.client.renderer.item.armor.ArmorRendererData;
 import net.threetag.palladium.client.renderer.renderlayer.PackRenderLayerManager;
@@ -179,7 +180,7 @@ public enum BodyPart {
     public static ModifiedBodyPartResult getModifiedBodyParts(LivingEntity entity, boolean isFirstPerson, boolean includeAccessories) {
         ModifiedBodyPartResult result = new ModifiedBodyPartResult();
 
-        if (entity instanceof Player player) {
+        if (entity instanceof AbstractClientPlayer player) {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (slot.getType() == EquipmentSlot.Type.ARMOR) {
                     var stack = player.getItemBySlot(slot);
@@ -207,12 +208,24 @@ public enum BodyPart {
                         for (BodyPart part : slot.getHiddenBodyParts(player)) {
                             result.hide(part);
                         }
+
+                        for (Accessory accessory : accessories) {
+                            if (accessory instanceof RenderLayerAccessory rl && accessory.isVisible(slot, player, isFirstPerson)) {
+                                var renderLayer = PackRenderLayerManager.getInstance().getLayer(rl.renderLayerId);
+
+                                if (renderLayer != null) {
+                                    for (BodyPart part : renderLayer.getHiddenBodyParts(player)) {
+                                        result.hide(part);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }));
             }
         }
 
-        for (AbilityInstance bodyPartHide : AbilityUtil.getEnabledEntries(entity, Abilities.HIDE_BODY_PART.get())) {
+        for (AbilityInstance bodyPartHide : AbilityUtil.getEnabledInstances(entity, Abilities.HIDE_BODY_PART.get())) {
             if (isFirstPerson ? bodyPartHide.getProperty(HideBodyPartAbility.AFFECTS_FIRST_PERSON) : true) {
                 for (BodyPart part : bodyPartHide.getProperty(HideBodyPartAbility.BODY_PARTS)) {
                     result.hide(part);
@@ -220,7 +233,7 @@ public enum BodyPart {
             }
         }
 
-        for (AbilityInstance bodyPartHide : AbilityUtil.getEnabledEntries(entity, Abilities.REMOVE_BODY_PART.get())) {
+        for (AbilityInstance bodyPartHide : AbilityUtil.getEnabledInstances(entity, Abilities.REMOVE_BODY_PART.get())) {
             if (isFirstPerson ? bodyPartHide.getProperty(RemoveBodyPartAbility.AFFECTS_FIRST_PERSON) : true) {
                 for (BodyPart part : bodyPartHide.getProperty(RemoveBodyPartAbility.BODY_PARTS)) {
                     result.remove(part);
