@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.gui.component.grid;
+package net.threetag.palladium.client.gui.widget.grid;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;

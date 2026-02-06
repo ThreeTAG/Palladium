@@ -16,7 +16,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.gui.component.EditButton;
+import net.threetag.palladium.client.gui.widget.EditButton;
 import net.threetag.palladium.customization.CustomizationHelper;
 import org.joml.Vector2i;
 

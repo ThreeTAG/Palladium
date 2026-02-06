@@ -3,7 +3,6 @@ package net.threetag.palladium.client.gui.ui.component;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.navigation.ScreenAxis;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.threetag.palladium.client.gui.ui.screen.UiScreen;
 
@@ -36,7 +35,7 @@ public abstract class UiComponent {
 
         return switch (props.alignment().getHorizontalAlignment()) {
             case LEFT -> parent.left();
-            case CENTER -> parent.getCenterInAxis(ScreenAxis.HORIZONTAL) - (this.getWidth() / 2);
+            case CENTER -> parent.left() + (parent.width() / 2) - (this.getWidth() / 2);
             case RIGHT -> parent.right() - this.getWidth();
         } + props.x();
     }
@@ -46,7 +45,7 @@ public abstract class UiComponent {
 
         return switch (props.alignment().getVerticalAlignment()) {
             case LEFT -> parent.top();
-            case CENTER -> parent.getCenterInAxis(ScreenAxis.VERTICAL) - (this.getHeight() / 2);
+            case CENTER -> parent.top() + (parent.height() / 2) - (this.getHeight() / 2);
             case RIGHT -> parent.bottom() - this.getHeight();
         } + props.y();
     }

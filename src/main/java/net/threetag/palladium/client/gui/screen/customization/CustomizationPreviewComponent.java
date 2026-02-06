@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
-import net.threetag.palladium.client.gui.component.grid.AbstractSelectionGrid;
+import net.threetag.palladium.client.gui.widget.grid.AbstractSelectionGrid;
 import net.threetag.palladium.client.renderer.entity.layer.pack.CompoundPackRenderLayer;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayerManager;

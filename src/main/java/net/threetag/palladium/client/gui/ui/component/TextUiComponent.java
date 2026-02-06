@@ -9,7 +9,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.util.ExtraCodecs;
-import net.threetag.palladium.client.gui.component.UiAlignment;
+import net.threetag.palladium.client.gui.widget.UiAlignment;
 import net.threetag.palladium.client.util.GuiUtil;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
@@ -66,7 +66,6 @@ public class TextUiComponent extends RenderableUiComponent {
                     .setDescription("Renders a text component")
                     .add("text", TYPE_TEXT_COMPONENT, "The text to be drawn")
                     .addOptional("color", TYPE_INT, "Color of the rendered text", RenderUtil.DEFAULT_GRAY)
-//                    .addOptional("max_width", TYPE_INT, "Maximum width of the rendered text. If text is longer it will be cut off using '...' at the end.")
                     .addOptional("outline", TYPE_BOOLEAN, "Whether or not a black outline will be drawn around the text");
         }
     }

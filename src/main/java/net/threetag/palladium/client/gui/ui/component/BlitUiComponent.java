@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
-import net.threetag.palladium.client.gui.component.UiAlignment;
+import net.threetag.palladium.client.gui.widget.UiAlignment;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;

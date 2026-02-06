@@ -84,7 +84,7 @@ public abstract class UiScreenBackground {
 
     public static class Sprite extends UiScreenBackground {
 
-        public static final Sprite DEFAULT = new Sprite(Palladium.id("screen/background"));
+        public static final Sprite DEFAULT = new Sprite(Palladium.id("background/default"));
 
         public static final Codec<Sprite> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Identifier.CODEC.fieldOf("sprite").forGetter(s -> s.sprite)

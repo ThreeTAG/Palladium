@@ -17,7 +17,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.phys.Vec3;
-import net.threetag.palladium.client.gui.component.UiAlignment;
+import net.threetag.palladium.client.gui.widget.UiAlignment;
 import net.threetag.palladium.client.renderer.entity.layer.pack.CompoundPackRenderLayer;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayerManager;

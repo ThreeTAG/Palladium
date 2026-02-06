@@ -10,7 +10,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.threetag.palladium.client.gui.component.tab.IconTabNavigationBar;
+import net.threetag.palladium.client.gui.widget.tab.IconTabNavigationBar;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.CustomizationHelper;
 import net.threetag.palladium.customization.CustomizationPreview;

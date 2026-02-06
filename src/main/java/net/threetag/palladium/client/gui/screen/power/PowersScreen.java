@@ -20,11 +20,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.PalladiumKeyMappings;
-import net.threetag.palladium.client.gui.component.IconButton;
+import net.threetag.palladium.client.gui.widget.IconButton;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.icon.ItemIcon;
@@ -40,6 +42,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@EventBusSubscriber(modid = Palladium.MOD_ID, value = Dist.CLIENT)
 public class PowersScreen extends Screen {
 
     public static final Identifier WINDOW = Palladium.id("textures/gui/powers/window.png");

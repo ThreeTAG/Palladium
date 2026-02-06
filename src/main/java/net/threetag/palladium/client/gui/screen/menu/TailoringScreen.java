@@ -22,7 +22,7 @@ import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.gui.component.FlatButton;
+import net.threetag.palladium.client.gui.widget.FlatButton;
 import net.threetag.palladium.client.renderer.entity.state.SuitStandRenderState;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.entity.PalladiumEntityTypes;

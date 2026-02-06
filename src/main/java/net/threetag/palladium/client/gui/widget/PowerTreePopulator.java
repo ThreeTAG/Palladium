@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.gui.component;
+package net.threetag.palladium.client.gui.widget;
 
 import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.ability.AbilityInstance;
@@ -14,7 +14,7 @@ public class PowerTreePopulator {
         // Create entry for each ability
         for (AbilityInstance<?> ability : powerInstance.getAbilities().values()) {
             if (!ability.getAbility().getProperties().isHiddenInGUI()) {
-                var widget = new PowerTreeWidget.AbilityElement(ability, ability.getAbility().getDisplayName(), ability.getAbility().getProperties().getIcon()).setGridPos(0, 0);
+                var widget = new PowerTreeWidget.AbilityElement(ability).setGridPos(0, 0);
                 abilities.add(widget);
 
                 var pos = ability.getAbility().getProperties().getGuiPosition();
@@ -69,25 +69,6 @@ public class PowerTreePopulator {
             }
         }
 
-//        // Fixing min & max size; make lines
-//        for (PowerTreeWidget.AbilityElement entry : abilities) {
-//            this.minX = (int) Math.min((entry.gridX - 1) * GRID_SIZE, this.minX);
-//            this.minY = (int) Math.min((entry.gridY - 1) * GRID_SIZE, this.minY);
-//            this.maxX = (int) Math.max((entry.gridX + 1) * GRID_SIZE, this.maxX);
-//            this.maxY = (int) Math.max((entry.gridY + 1) * GRID_SIZE, this.maxY);
-//
-//            for (TreeAbilityWidget child : entry.children) {
-//                TreePowerTab.Connection connection = new TreePowerTab.Connection();
-//                int startX = toCoord(entry.gridX);
-//                int startY = toCoord(entry.gridY, 1D / (entry.children.size() + 1) * (entry.children.indexOf(child) + 1));
-//                int endX = toCoord(child.gridX);
-//                int endY = toCoord(child.gridY, 1D / (child.parents.size() + 1) * (child.parents.indexOf(entry) + 1));
-//                connection.addLine(new TreePowerTab.ConnectionLine(startX, startY, endX, startY));
-//                connection.addLine(new TreePowerTab.ConnectionLine(endX, startY, endX, endY));
-//                connection.color = child.abilityInstance.isUnlocked() ? this.powerInstance.getPower().value().getPrimaryColor() : this.powerInstance.getPower().value().getSecondaryColor();
-//                this.connections.add(connection);
-//            }
-//        }
     }
 
     public static void center(List<PowerTreeWidget.AbilityElement> abilities, int width, int height) {
@@ -110,6 +91,25 @@ public class PowerTreePopulator {
         }
     }
 
+    public static void generateConnections(List<PowerTreeWidget.AbilityElement> abilities) {
+        java.util.Map<PowerTreeWidget.AbilityElement, Integer> nextInputSlot = new java.util.HashMap<>();
+
+        for (PowerTreeWidget.AbilityElement parent : abilities) {
+            if (!parent.children.isEmpty()) {
+                java.util.Map<PowerTreeWidget.AbilityElement, Integer> indices = new java.util.HashMap<>();
+                for (PowerTreeWidget.AbilityElement child : parent.children) {
+                    int slot = nextInputSlot.getOrDefault(child, 0);
+                    indices.put(child, slot);
+                    nextInputSlot.put(child, slot + 1);
+                }
+
+                PowerTreeWidget.AbilityConnection connection = new PowerTreeWidget.AbilityConnection(parent,
+                        parent.children, indices);
+                parent.connections.add(connection);
+            }
+        }
+    }
+
     public static float getFreeGridYPos(List<PowerTreeWidget.AbilityElement> abilities, float x, float y) {
         for (int i = (int) y; i < 100; i++) {
             if (getEntryInGrid(abilities, x, i) == null) {
@@ -120,7 +120,8 @@ public class PowerTreePopulator {
         return 0;
     }
 
-    public static PowerTreeWidget.AbilityElement getEntryInGrid(List<PowerTreeWidget.AbilityElement> abilities, float x, float y) {
+    public static PowerTreeWidget.AbilityElement getEntryInGrid(List<PowerTreeWidget.AbilityElement> abilities, float x,
+            float y) {
         for (PowerTreeWidget.AbilityElement entry : abilities) {
             if (entry.gridX == x && entry.gridY == y) {
                 return entry;
@@ -139,7 +140,8 @@ public class PowerTreePopulator {
         return l;
     }
 
-    public static List<PowerTreeWidget.AbilityElement> getEntriesAtX(List<PowerTreeWidget.AbilityElement> abilities, double x) {
+    public static List<PowerTreeWidget.AbilityElement> getEntriesAtX(List<PowerTreeWidget.AbilityElement> abilities,
+            double x) {
         List<PowerTreeWidget.AbilityElement> list = new LinkedList<>();
         for (PowerTreeWidget.AbilityElement entry : abilities) {
             if (entry.gridX == x) {

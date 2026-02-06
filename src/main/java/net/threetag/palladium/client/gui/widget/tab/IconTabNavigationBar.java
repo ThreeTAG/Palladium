@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.gui.component.tab;
+package net.threetag.palladium.client.gui.widget.tab;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;

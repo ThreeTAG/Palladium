@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.gui.component.tab;
+package net.threetag.palladium.client.gui.widget.tab;
 
 import net.minecraft.client.gui.components.tabs.Tab;
 import net.threetag.palladium.icon.Icon;
