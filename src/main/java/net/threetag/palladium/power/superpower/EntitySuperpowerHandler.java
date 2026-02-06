@@ -1,9 +1,9 @@
 package net.threetag.palladium.power.superpower;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.config.PalladiumServerConfig;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
@@ -16,9 +16,10 @@ import java.util.function.Predicate;
 
 public class EntitySuperpowerHandler extends PalladiumEntityData<LivingEntity, EntitySuperpowerHandler> {
 
-    public static final MapCodec<EntitySuperpowerHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Power.HOLDER_CODEC.listOf().optionalFieldOf("powers", Collections.emptyList()).forGetter(h -> h.superpowers)
-    ).apply(instance, EntitySuperpowerHandler::new));
+    // use CompoundTag codec as alternative, as MC opens non-existing tags as objects instead of arrays, causing the primary codec to scream
+    public static final Codec<EntitySuperpowerHandler> CODEC = Codec.withAlternative(
+            Power.HOLDER_CODEC.listOf().xmap(EntitySuperpowerHandler::new, s -> s.superpowers),
+            CompoundTag.CODEC.xmap(compoundTag -> new EntitySuperpowerHandler(Collections.emptyList()), s -> new CompoundTag()));
 
     private final List<Holder<Power>> superpowers;
 
@@ -27,7 +28,7 @@ public class EntitySuperpowerHandler extends PalladiumEntityData<LivingEntity, E
     }
 
     @Override
-    public MapCodec<EntitySuperpowerHandler> codec() {
+    public Codec<EntitySuperpowerHandler> codec() {
         return CODEC;
     }
 

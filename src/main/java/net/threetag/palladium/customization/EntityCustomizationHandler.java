@@ -2,7 +2,6 @@ package net.threetag.palladium.customization;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -22,7 +21,7 @@ import java.util.*;
 
 public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity, EntityCustomizationHandler> {
 
-    public static final MapCodec<EntityCustomizationHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<EntityCustomizationHandler> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.unboundedMap(CustomizationCategory.HOLDER_CODEC, Customization.Codecs.HOLDER_CODEC).optionalFieldOf("selected", Collections.emptyMap()).forGetter(h -> h.selected),
             Customization.Codecs.HOLDER_CODEC.listOf().optionalFieldOf("unlocked", Collections.emptyList()).forGetter(h -> h.unlocked)
     ).apply(instance, EntityCustomizationHandler::new));
@@ -190,7 +189,7 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
     }
 
     @Override
-    public MapCodec<EntityCustomizationHandler> codec() {
+    public Codec<EntityCustomizationHandler> codec() {
         return CODEC;
     }
 

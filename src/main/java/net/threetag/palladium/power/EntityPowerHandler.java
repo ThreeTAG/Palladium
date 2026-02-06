@@ -1,8 +1,7 @@
 package net.threetag.palladium.power;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
@@ -21,9 +20,7 @@ import java.util.Map;
 
 public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, EntityPowerHandler> {
 
-    public static final MapCodec<EntityPowerHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            CompoundTag.CODEC.optionalFieldOf("power_data", new CompoundTag()).forGetter(EntityPowerHandler::savePowerDataTag)
-    ).apply(instance, EntityPowerHandler::new));
+    public static final Codec<EntityPowerHandler> CODEC = CompoundTag.CODEC.xmap(EntityPowerHandler::new, EntityPowerHandler::savePowerDataTag);
 
     private final Map<Identifier, PowerInstance> powers = new LinkedHashMap<>();
     private CompoundTag powerData;
@@ -44,7 +41,7 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
     }
 
     @Override
-    public MapCodec<EntityPowerHandler> codec() {
+    public Codec<EntityPowerHandler> codec() {
         return CODEC;
     }
 

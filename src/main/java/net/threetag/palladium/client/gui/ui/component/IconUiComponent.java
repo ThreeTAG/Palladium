@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.HolderLookup;
-import net.threetag.palladium.client.gui.widget.UiAlignment;
+import net.threetag.palladium.client.gui.ui.UiAlignment;
 import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.icon.Icon;

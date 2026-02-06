@@ -1,5 +1,6 @@
 package net.threetag.palladium.client.trail;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
@@ -20,7 +21,7 @@ import java.util.*;
 @EventBusSubscriber(modid = Palladium.MOD_ID, value = Dist.CLIENT)
 public class EntityTrailHandler extends PalladiumEntityData<Entity, EntityTrailHandler> {
 
-    public static final MapCodec<EntityTrailHandler> CODEC = MapCodec.unit(EntityTrailHandler::new);
+    public static final Codec<EntityTrailHandler> CODEC = MapCodec.unit(EntityTrailHandler::new).codec();
 
     private Map<Trail, TrailInstance> trailHandlerMap = new HashMap<>();
 
@@ -64,7 +65,7 @@ public class EntityTrailHandler extends PalladiumEntityData<Entity, EntityTrailH
     }
 
     @Override
-    public MapCodec<EntityTrailHandler> codec() {
+    public Codec<EntityTrailHandler> codec() {
         return CODEC;
     }
 

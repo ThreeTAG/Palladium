@@ -4,10 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.components.WidgetSprites;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.icon.Icon;
@@ -16,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class TextWithIconButton extends Button {
 
-    private static final WidgetSprites SPRITES = new WidgetSprites(Identifier.withDefaultNamespace("widget/button"), Identifier.withDefaultNamespace("widget/button_disabled"), Identifier.withDefaultNamespace("widget/button_highlighted"));
     private final Component suffix;
     private final Icon icon;
 
@@ -28,16 +24,8 @@ public class TextWithIconButton extends Button {
 
     @Override
     protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        this.renderDefaultSprite(guiGraphics);
         Minecraft minecraft = Minecraft.getInstance();
-        guiGraphics.blitSprite(
-                RenderPipelines.GUI_TEXTURED,
-                SPRITES.get(this.active, this.isHoveredOrFocused()),
-                this.getX(),
-                this.getY(),
-                this.getWidth(),
-                this.getHeight(),
-                ARGB.white(this.alpha)
-        );
         int i = ARGB.color(this.alpha, this.active ? -1 : -6250336);
         int prefixWidth = minecraft.font.width(this.getMessage());
         int fullTextWidth = prefixWidth + 16 + minecraft.font.width(this.suffix);

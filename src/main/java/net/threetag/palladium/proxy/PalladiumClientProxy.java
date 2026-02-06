@@ -2,6 +2,7 @@ package net.threetag.palladium.proxy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarEntity;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPatch;
@@ -22,9 +23,9 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.threetag.palladium.client.beam.BeamManager;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
-import net.threetag.palladium.client.gui.screen.power.BuyAbilityScreen;
 import net.threetag.palladium.client.gui.screen.power.PowersScreen;
 import net.threetag.palladium.client.gui.ui.screen.UiScreenManager;
+import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.customization.Customization;
@@ -63,7 +64,7 @@ public class PalladiumClientProxy extends PalladiumProxy {
     public void openScreen(Identifier screenId) {
         var screen = UiScreenManager.INSTANCE.get(screenId);
 
-        if(screen != null) {
+        if (screen != null) {
             screen.open();
         }
     }
@@ -163,9 +164,17 @@ public class PalladiumClientProxy extends PalladiumProxy {
     @Override
     public void packetHandleOpenAbilityBuyScreen(OpenAbilityBuyScreenPacket packet, IPayloadContext context) {
         packet.reference().optional(context.player(), null).ifPresent(ability -> {
-            if (Minecraft.getInstance().screen instanceof PowersScreen powersScreen && ability.getAbility().getStateManager().getUnlockingHandler() instanceof BuyableUnlockingHandler buy) {
-                var overlayScreen = new BuyAbilityScreen(packet.reference(), buy.getDisplay(), packet.available(), powersScreen);
-                powersScreen.openOverlayScreen(overlayScreen);
+            var screen = Minecraft.getInstance().screen;
+            if (screen != null && ability.getAbility().getStateManager().getUnlockingHandler() instanceof BuyableUnlockingHandler buy) {
+                for (GuiEventListener child : screen.children()) {
+                    if (child instanceof PowerTreeWidget powerTree) {
+                        for (PowerTreeWidget.AbilityElement abilityElement : powerTree.abilities) {
+                            if (abilityElement.getReference().equals(ability.getReference())) {
+                                abilityElement.openModal(screen, buy.getDisplay(), packet.available());
+                            }
+                        }
+                    }
+                }
             }
         });
     }

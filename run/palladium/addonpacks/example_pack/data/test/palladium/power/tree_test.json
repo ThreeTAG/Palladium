@@ -6,7 +6,11 @@
       "type": "palladium:command",
       "commands": "say Root",
       "properties": {
-        "title": "Root"
+        "title": "Root",
+        "description": {
+          "locked": "This ability is still locked!",
+          "unlocked": "This ability was unlocked! Hooray!!!"
+        }
       },
       "state": {
         "unlocking": {

@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.server.dialog.action.Action;
-import net.threetag.palladium.client.gui.widget.UiAlignment;
+import net.threetag.palladium.client.gui.ui.UiAlignment;
 import net.threetag.palladium.logic.condition.Condition;
 import net.threetag.palladium.logic.condition.TrueCondition;
 import org.jspecify.annotations.NonNull;

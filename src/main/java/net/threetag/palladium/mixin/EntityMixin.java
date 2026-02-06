@@ -52,7 +52,7 @@ public abstract class EntityMixin implements PalladiumEntityExtension {
 
         for (PalladiumEntityDataType<?> dataType : PalladiumRegistries.ENTITY_DATA_TYPE) {
             if (dataType.getPredicate().test(entity)) {
-                var data = dataType.codec().codec().parse(level.registryAccess().createSerializationContext(NbtOps.INSTANCE), new CompoundTag()).getOrThrow();
+                var data = dataType.codec().parse(level.registryAccess().createSerializationContext(NbtOps.INSTANCE), new CompoundTag()).getOrThrow();
                 data.setEntity(entity);
                 this.palladium$dataMap.put(dataType, data);
             }
@@ -67,7 +67,7 @@ public abstract class EntityMixin implements PalladiumEntityExtension {
             var id = PalladiumRegistries.ENTITY_DATA_TYPE.getKey(e.getKey());
 
             if (id != null) {
-                Codec codec = e.getValue().codec().codec();
+                Codec codec = e.getValue().codec();
                 palladiumTag.store(id.toString(), codec, e.getValue());
             }
         }
@@ -81,7 +81,7 @@ public abstract class EntityMixin implements PalladiumEntityExtension {
         for (PalladiumEntityDataType<?> dataType : PalladiumRegistries.ENTITY_DATA_TYPE) {
             if (dataType.getPredicate().test(entity)) {
                 var id = PalladiumRegistries.ENTITY_DATA_TYPE.getKey(dataType);
-                palladiumTag.read(Objects.requireNonNull(id).toString(), dataType.codec().codec()).ifPresent(data -> {
+                palladiumTag.read(Objects.requireNonNull(id).toString(), dataType.codec()).ifPresent(data -> {
                     data.setEntity(entity);
                     this.palladium$dataMap.put(dataType, data);
                 });

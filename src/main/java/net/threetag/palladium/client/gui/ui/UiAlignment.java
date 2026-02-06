@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.gui.widget;
+package net.threetag.palladium.client.gui.ui;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.client.gui.TextAlignment;

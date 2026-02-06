@@ -1,8 +1,8 @@
 {
-  "width": 450,
-  "height": 320,
+  "width": 300,
+  "height": 256,
   "background": {
-    "sprite": "palladium:background/modal_with_title"
+    "sprite": "palladium:background/modal_with_header"
   },
   "padding": 7,
   "components": [
@@ -21,8 +21,8 @@
       },
       "properties": {
         "alignment": "bottom_center",
-        "width": 436,
-        "height": 293
+        "width": 286,
+        "height": 229
       }
     }
   ]

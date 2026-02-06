@@ -9,7 +9,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.util.ExtraCodecs;
-import net.threetag.palladium.client.gui.widget.UiAlignment;
+import net.threetag.palladium.client.gui.ui.UiAlignment;
 import net.threetag.palladium.client.util.GuiUtil;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;

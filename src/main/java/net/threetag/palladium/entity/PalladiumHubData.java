@@ -2,6 +2,7 @@ package net.threetag.palladium.entity;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.GsonHelper;
@@ -29,7 +30,7 @@ import java.util.concurrent.CompletableFuture;
 @EventBusSubscriber(modid = Palladium.MOD_ID)
 public class PalladiumHubData extends PalladiumEntityData<Player, PalladiumHubData> {
 
-    public static final MapCodec<PalladiumHubData> CODEC = MapCodec.unit(PalladiumHubData::new);
+    public static final Codec<PalladiumHubData> CODEC = MapCodec.unit(PalladiumHubData::new).codec();
     private static final String BASE_URL = "https://squirrelcontrol.threetag.net/api/";
 
     private final Set<Identifier> unlockedCustomizations = new HashSet<>();
@@ -98,7 +99,7 @@ public class PalladiumHubData extends PalladiumEntityData<Player, PalladiumHubDa
     }
 
     @Override
-    public MapCodec<PalladiumHubData> codec() {
+    public Codec<PalladiumHubData> codec() {
         return CODEC;
     }
 

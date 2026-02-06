@@ -195,8 +195,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Powers");
-            this.add("gui.palladium.powers.buy_ability", "Do you want to unlock this ability?");
-            this.add("gui.palladium.powers.buy_ability.or", "or");
+            this.add("gui.palladium.powers.unlock", "Unlock");
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx experience level");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx experience levels");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Customization");
@@ -330,8 +329,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kräfte");
-            this.add("gui.palladium.powers.buy_ability", "Möchtest du diese Fähigkeit freischalten?");
-            this.add("gui.palladium.powers.buy_ability.or", "oder");
+            this.add("gui.palladium.powers.unlock", "Freischalten");
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsstufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsstufen");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
@@ -467,8 +465,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kräfte");
-            this.add("gui.palladium.powers.buy_ability", "Möschtest'e disse Fähischgeht freischaltn?");
-            this.add("gui.palladium.powers.buy_ability.or", "oder");
+            this.add("gui.palladium.powers.unlock", "Freischaltn");
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsschdufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsschdufen");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");

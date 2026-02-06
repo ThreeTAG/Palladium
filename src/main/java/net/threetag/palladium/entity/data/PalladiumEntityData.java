@@ -1,6 +1,6 @@
 package net.threetag.palladium.entity.data;
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -29,7 +29,7 @@ public abstract class PalladiumEntityData<T extends Entity, R extends PalladiumE
 
     }
 
-    public abstract MapCodec<R> codec();
+    public abstract Codec<R> codec();
 
     public void tick() {
     }

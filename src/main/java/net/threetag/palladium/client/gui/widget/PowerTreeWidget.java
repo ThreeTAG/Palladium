@@ -4,30 +4,41 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.EasingType;
 import net.minecraft.util.Mth;
+import net.neoforged.neoforge.client.ClientHooks;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.screen.DelayedRenderCallReceiver;
+import net.threetag.palladium.client.gui.screen.ModalScreen;
 import net.threetag.palladium.client.gui.ui.screen.UiScreenBackground;
 import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.network.BuyAbilityPacket;
 import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.ability.AbilityInstance;
+import net.threetag.palladium.power.ability.AbilityReference;
+import net.threetag.palladium.power.ability.unlocking.BuyableUnlockingHandler;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 
-public class PowerTreeWidget extends AbstractWidget {
+public class PowerTreeWidget extends AbstractWidget implements TickableWidget {
 
+    public static final String TRANS_KEY_UNLOCK = "gui.palladium.powers.unlock";
     public static final Identifier SPRITE_ABILITY_FRAME_UNLOCKED = Palladium.id("powers/ability_frame_unlocked");
     public static final Identifier SPRITE_ABILITY_FRAME_LOCKED = Palladium.id("powers/ability_frame_locked");
     public static final Identifier SPRITE_TITLE_BOX = Palladium.id("powers/title_box");
@@ -35,30 +46,29 @@ public class PowerTreeWidget extends AbstractWidget {
     public static final Identifier SPRITE_LOCK = Palladium.id("powers/lock");
     public static final int GRID_SIZE = 50;
 
-    private final Minecraft minecraft = Minecraft.getInstance();
-    private final DelayedRenderCallReceiver parent;
-    private final PowerInstance powerInstance;
+    private final Screen parent;
     private final UiScreenBackground background;
     private int innerWidth, innerHeight;
     private boolean isDragging = false;
     private int offsetX = 0, offsetY = 0;
-    private final List<AbilityElement> abilities = new ArrayList<>();
+    private int fade, fade0;
+    private boolean enableFade = false;
+    public final List<AbilityElement> abilities = new ArrayList<>();
 
-    public PowerTreeWidget(DelayedRenderCallReceiver parent, PowerInstance powerInstance, UiScreenBackground background,
+    public PowerTreeWidget(Screen parent, PowerInstance powerInstance, UiScreenBackground background,
                            int x, int y, int width, int height) {
         super(x, y, width, height, Component.empty());
         this.parent = parent;
-        this.powerInstance = powerInstance;
         this.background = background;
         this.innerWidth = Math.max(500, this.getWidth());
         this.innerHeight = Math.max(500, this.getHeight());
-        this.populate();
+        this.populate(powerInstance);
     }
 
-    public void populate() {
+    public void populate(PowerInstance powerInstance) {
         this.abilities.clear();
-        if (this.powerInstance != null) {
-            PowerTreePopulator.generateTree(this.powerInstance, this.abilities);
+        if (powerInstance != null) {
+            PowerTreePopulator.generateTree(powerInstance, this.abilities);
             this.innerWidth = (int) Math.max(PowerTreePopulator.getHighestXGridValue(this.abilities) * GRID_SIZE + GRID_SIZE,
                     this.getWidth());
             this.innerHeight = (int) Math.max(PowerTreePopulator.getHighestYGridValue(this.abilities) * GRID_SIZE + GRID_SIZE,
@@ -70,12 +80,34 @@ public class PowerTreeWidget extends AbstractWidget {
     }
 
     @Override
+    public void tick() {
+        this.fade0 = this.fade;
+
+        if (this.enableFade && this.fade < 10) {
+            this.fade++;
+        } else if (!this.enableFade && this.fade > 0) {
+            this.fade--;
+        }
+
+        this.enableFade = false;
+
+        if (!this.abilities.isEmpty() && this.abilities.stream().anyMatch(AbilityElement::needsRefresh)) {
+            this.populate(this.abilities.getFirst().abilityInstance.getPowerInstance());
+        }
+    }
+
+    @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.enableScissor(this.getX(), this.getY(), this.getRight(), this.getBottom());
         this.renderInner(guiGraphics, this.getX() - this.offsetX, this.getY() - this.offsetY, this.innerWidth,
                 this.innerHeight, mouseX, mouseY);
         guiGraphics.disableScissor();
         guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_VIGNETTE, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+
+        float fade = EasingType.IN_OUT_CUBIC.apply(Mth.lerp(partialTick, this.fade0, this.fade) / 10F) / 3F;
+        if (fade > 0F) {
+            guiGraphics.fill(this.getX(), this.getY(), this.getRight(), this.getBottom(), ARGB.colorFromFloat(fade, 0, 0, 0));
+        }
     }
 
     private void renderInner(GuiGraphics guiGraphics, int x, int y, int width, int height, int mouseX, int mouseY) {
@@ -84,15 +116,16 @@ public class PowerTreeWidget extends AbstractWidget {
         for (AbilityElement ability : this.abilities) {
             for (AbilityConnection connection : ability.connections) {
                 connection.draw(guiGraphics, x, y, true, Color.BLACK);
-                connection.draw(guiGraphics, x, y, false, Color.WHITE);
+                connection.draw(guiGraphics, x, y, false, ability.unlocked ? Color.CYAN : Color.WHITE);
             }
         }
 
         for (AbilityElement ability : this.abilities) {
             ability.render(guiGraphics, x + ability.getX(), y + ability.getY());
 
-            if (this.isMouseOverAbility(ability, mouseX, mouseY)) {
-                this.parent.renderDelayed(gui -> ability.renderHovered(gui, x + ability.getX(), y + ability.getY()));
+            if (this.parent instanceof DelayedRenderCallReceiver receiver && this.isMouseOverAbility(ability, mouseX, mouseY)) {
+                receiver.renderDelayed(gui -> ability.renderHovered(gui, x + ability.getX(), y + ability.getY()));
+                this.enableFade = true;
             }
         }
     }
@@ -111,6 +144,32 @@ public class PowerTreeWidget extends AbstractWidget {
     @Override
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
 
+    }
+
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClick) {
+        if (this.isActive()) {
+            if (this.isValidClickButton(event.buttonInfo())) {
+                if (this.isMouseOver(event.x(), event.y())) {
+                    for (AbilityElement ability : this.abilities) {
+                        if (this.isMouseOverAbility(ability, (int) event.x(), (int) event.y())) {
+                            this.playDownSound(Minecraft.getInstance().getSoundManager());
+
+                            if (ability.parentsUnlocked && !ability.unlocked) {
+                                ability.abilityInstance.getAbility().getStateManager().getUnlockingHandler().onClicked(this.parent.getMinecraft().player, ability.abilityInstance);
+                            } else {
+                                ability.openModal(this.parent);
+                            }
+
+                            return true;
+                        }
+                    }
+
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -139,6 +198,7 @@ public class PowerTreeWidget extends AbstractWidget {
         private final Minecraft minecraft = Minecraft.getInstance();
         private final AbilityInstance<?> abilityInstance;
         private final Component title;
+        private final Component description;
         private final Icon icon;
         private final boolean unlocked;
         float gridX = 0, gridY = 0;
@@ -153,6 +213,34 @@ public class PowerTreeWidget extends AbstractWidget {
             this.title = abilityInstance.getAbility().getDisplayName();
             this.icon = abilityInstance.getAbility().getProperties().getIcon();
             this.unlocked = abilityInstance.isUnlocked();
+            var desc = abilityInstance.getAbility().getProperties().getDescription();
+            this.description = desc == null ? Component.empty() : desc.get(this.unlocked);
+        }
+
+        public void openModal(Screen parent) {
+            this.openModal(parent, null, false);
+        }
+
+        public void openModal(Screen parent, @Nullable BuyableUnlockingHandler.Display display, boolean available) {
+            var modal = new ModalScreen(parent.getRectangle(), this.description)
+                    .setHeader(this.title)
+                    .disableBackgroundRendering();
+
+            if (display != null) {
+                var button = TextWithIconButton.textWithIconBuilder(Component.translatable(TRANS_KEY_UNLOCK).append(": " + display.amount() + "x "), display.icon(), s -> {
+                    ClientPacketDistributor.sendToServer(new BuyAbilityPacket(this.getReference()));
+                    modal.onClose();
+                    Objects.requireNonNull(Objects.requireNonNull(this.minecraft).player).playSound(SoundEvents.PLAYER_LEVELUP, 1F, 1F);
+                }).bounds(0, 0, 20, 20).tooltip(Tooltip.create(display.description())).build();
+                button.active = available;
+                modal.addButton(button);
+            }
+
+            ClientHooks.pushGuiLayer(parent.getMinecraft(), modal);
+        }
+
+        public boolean needsRefresh() {
+            return this.unlocked != this.abilityInstance.isUnlocked();
         }
 
         public AbilityElement setGridPos(float x, float y) {
@@ -196,6 +284,10 @@ public class PowerTreeWidget extends AbstractWidget {
                     textWidth + 13 + (padding * 3), 26);
             guiGraphics.drawString(font, this.title, x + 13 + padding, y - 4, RenderUtil.FULL_WHITE);
             this.render(guiGraphics, x, y);
+        }
+
+        public AbilityReference getReference() {
+            return this.abilityInstance.getReference();
         }
 
         public int getX() {
@@ -259,7 +351,7 @@ public class PowerTreeWidget extends AbstractWidget {
 
             for (AbilityElement child : this.children) {
                 int totalDockingHeight = ((child.parents.size() - 1) * lineDistance) + lineSize;
-                int childY = child.getY() - (totalDockingHeight / 2) + (child.parents.indexOf(parent) * lineDistance);
+                int childY = child.getY() - (totalDockingHeight / 2) + (child.parents.indexOf(parent) * lineDistance) + 1;
                 if (childY < minY)
                     minY = childY;
                 if (childY > maxY)
@@ -277,7 +369,7 @@ public class PowerTreeWidget extends AbstractWidget {
             for (AbilityElement child : this.children) {
                 int childX = child.getX();
                 int totalDockingHeight = ((child.parents.size() - 1) * lineDistance) + lineSize;
-                int childY = child.getY() - (totalDockingHeight / 2) + (child.parents.indexOf(parent) * lineDistance);
+                int childY = child.getY() - (totalDockingHeight / 2) + (child.parents.indexOf(parent) * lineDistance) + 1;
 
                 if (outline) {
                     guiGraphics.fill(x + busX - 2, y + childY - 2, x + childX + 1, y + childY + 1, colorCode);

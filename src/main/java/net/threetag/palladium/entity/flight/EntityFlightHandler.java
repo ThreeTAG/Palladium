@@ -1,5 +1,6 @@
 package net.threetag.palladium.entity.flight;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
@@ -9,7 +10,7 @@ import net.threetag.palladium.util.Easing;
 
 public class EntityFlightHandler extends PalladiumEntityData<LivingEntity, EntityFlightHandler> {
 
-    public static final MapCodec<EntityFlightHandler> CODEC = MapCodec.unit(EntityFlightHandler::new);
+    public static final Codec<EntityFlightHandler> CODEC = MapCodec.unit(EntityFlightHandler::new).codec();
 
     private FlightType flightType;
     private FlightController<?> controller;
@@ -94,7 +95,7 @@ public class EntityFlightHandler extends PalladiumEntityData<LivingEntity, Entit
     }
 
     @Override
-    public MapCodec<EntityFlightHandler> codec() {
+    public Codec<EntityFlightHandler> codec() {
         return CODEC;
     }
 

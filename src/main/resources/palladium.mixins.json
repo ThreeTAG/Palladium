@@ -22,8 +22,7 @@
     "ResourcePackLoaderMixin",
     "SimpleJsonResourceReloadListenerMixin",
     "VibrationSystemListenerMixin",
-    "WorldVersionMixin",
-    "client.ModelMixin"
+    "WorldVersionMixin"
   ],
   "client": [
     "client.AbstractClientPlayerMixin",
@@ -40,7 +39,9 @@
     "client.RenderTypesMixin",
     "client.ScreenEffectRendererMixin",
     "client.SkyRendererMixin",
-    "client.SubmitNodeCollectionMixin"
+    "client.SubmitNodeCollectionMixin",
+    "client.ModelMixin",
+    "client.ScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

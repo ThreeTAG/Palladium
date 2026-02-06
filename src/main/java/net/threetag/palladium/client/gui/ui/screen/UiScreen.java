@@ -111,4 +111,9 @@ public class UiScreen extends Screen implements DelayedRenderCallReceiver {
     public void renderDelayed(Consumer<GuiGraphics> consumer) {
         this.delayedRenderCalls.add(consumer);
     }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
 }
