@@ -156,6 +156,38 @@ public class PalladiumKeyMappings {
         }
     }
 
+    @SubscribeEvent
+    static void onClickInput(InputEvent.InteractionKeyMappingTriggered e) {
+        var minecraft = Minecraft.getInstance();
+
+        if (minecraft.player != null) {
+            if (e.getKeyMapping() == minecraft.options.keyAttack) {
+                handleClickInput(e, minecraft, MouseClickKeyBind.ClickType.LEFT_CLICK);
+            } else if (e.getKeyMapping() == minecraft.options.keyUse) {
+                handleClickInput(e, minecraft, MouseClickKeyBind.ClickType.RIGHT_CLICK);
+            } else if (e.getKeyMapping() == minecraft.options.keyPickItem) {
+                handleClickInput(e, minecraft, MouseClickKeyBind.ClickType.MIDDLE_CLICK);
+            }
+        }
+    }
+
+    private static void handleClickInput(InputEvent.InteractionKeyMappingTriggered e, Minecraft minecraft, MouseClickKeyBind.ClickType clickType) {
+        for (AbilityInstance<Ability> ability : AbilityUtil.getInstances(minecraft.player)) {
+            if (ability != null && ability.isUnlocked() && ability.getAbility().getStateManager().getEnablingHandler() instanceof KeyBindEnablingHandler handler) {
+                if (handler.getKeyBindType() instanceof MouseClickKeyBind mouseClick) {
+                    if (minecraft.screen == null && mouseClick.clickType == clickType) {
+                        handler.onKeyPressed(minecraft.player, ability);
+
+                        if (mouseClick.cancelInteraction) {
+                            e.setSwingHand(false);
+                            e.setCanceled(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public static class AbilityKeyMapping extends KeyMapping {
 
         public final int index;
