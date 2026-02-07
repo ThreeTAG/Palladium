@@ -20,5 +20,9 @@ public class PalladiumClientConfig {
             .comment("Whether to remove the experimental feature warning upon opening worlds")
             .define("hide_experimental_warning", true);
 
+    public static final ModConfigSpec.BooleanValue SCALE_CAMERA_FIX = BUILDER
+            .comment("This options fixes the weird camera movements when being small")
+            .define("scale_camera_fix", true);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 }

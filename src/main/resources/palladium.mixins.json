@@ -35,13 +35,13 @@
     "client.LivingEntityRendererMixin",
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
+    "client.ModelMixin",
     "client.ModelPartMixin",
     "client.RenderTypesMixin",
     "client.ScreenEffectRendererMixin",
+    "client.ScreenMixin",
     "client.SkyRendererMixin",
-    "client.SubmitNodeCollectionMixin",
-    "client.ModelMixin",
-    "client.ScreenMixin"
+    "client.SubmitNodeCollectionMixin"
   ],
   "injectors": {
     "defaultRequire": 1
