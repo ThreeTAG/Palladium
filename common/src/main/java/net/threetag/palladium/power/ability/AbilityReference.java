@@ -40,7 +40,7 @@ public class AbilityReference {
         String[] s = raw.split("#", 2);
 
         if (s.length != 2) {
-            throw new ResourceLocationException("Ability reference needs a power and the ability key, seperated by '#'");
+            return false;
         } else {
             return ResourceLocation.isValidResourceLocation(s[0]);
         }
