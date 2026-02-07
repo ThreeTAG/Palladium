@@ -9,7 +9,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
-import net.minecraft.util.ExtraCodecs;
 import net.threetag.palladium.client.gui.ui.UiAlignment;
 import net.threetag.palladium.client.util.GuiUtil;
 import net.threetag.palladium.client.util.RenderUtil;
@@ -24,21 +23,18 @@ public class TextUiComponent extends RenderableUiComponent {
     public static final MapCodec<TextUiComponent> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ComponentSerialization.CODEC.fieldOf("text").forGetter(t -> t.text),
             PalladiumCodecs.COLOR_CODEC.optionalFieldOf("color", RenderUtil.DEFAULT_GRAY_COLOR).forGetter(t -> t.color),
-            ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("max_width", 0).forGetter(t -> t.maxWidth),
             Codec.BOOL.optionalFieldOf("outline", false).forGetter(t -> t.outline),
             propertiesCodec()
     ).apply(instance, TextUiComponent::new));
 
     private final Component text;
     private final Color color;
-    private final int maxWidth;
     public boolean outline;
 
-    public TextUiComponent(Component text, Color color, int maxWidth, boolean outline, UiComponentProperties properties) {
+    public TextUiComponent(Component text, Color color, boolean outline, UiComponentProperties properties) {
         super(properties);
         this.text = text;
         this.color = color;
-        this.maxWidth = maxWidth;
         this.outline = outline;
     }
 

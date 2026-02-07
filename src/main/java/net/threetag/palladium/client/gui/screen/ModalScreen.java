@@ -3,13 +3,13 @@ package net.threetag.palladium.client.gui.screen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.FittingMultiLineTextWidget;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.gui.widget.BackgroundlessTextBoxWidget;
 import net.threetag.palladium.client.gui.widget.CloseButton;
 import net.threetag.palladium.client.util.RenderUtil;
 
@@ -74,19 +74,14 @@ public class ModalScreen extends Screen {
 
         this.addRenderableWidget(new CloseButton(this.getRight() - paddingSides - 7, this.getY() + paddingSides, button -> this.onClose()));
 
-        this.addRenderableWidget(new FittingMultiLineTextWidget(
+        this.addRenderableWidget(new BackgroundlessTextBoxWidget(
                 this.getX() + paddingSides,
                 this.getY() + paddingTop,
-                this.getWidth() - paddingSides - paddingSides - 6,
+                this.getWidth() - paddingSides - paddingSides,
                 this.getHeight() - paddingTop - paddingBottom,
                 this.getTitle(),
                 this.minecraft.font
-        ) {
-            @Override
-            protected void renderBackground(GuiGraphics guiGraphics) {
-
-            }
-        });
+        ));
 
         if (!this.buttons.isEmpty()) {
             int gap = 4;
