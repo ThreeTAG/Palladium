@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.util.ExtraCodecs;
@@ -45,11 +46,12 @@ public class TextUiComponent extends RenderableUiComponent {
 
     @Override
     public void render(Minecraft minecraft, GuiGraphics gui, DataContext context, int x, int y, int width, int height, int mouseX, int mouseY, UiAlignment alignment) {
-        // TODO max width
+        var text = Language.getInstance().getVisualOrder(minecraft.font.ellipsize(this.text, this.getWidth()));
+
         if (this.outline) {
-            GuiUtil.drawStringWithBlackOutline(gui, this.text, x, y, this.color);
+            GuiUtil.drawStringWithBlackOutline(gui, text, x, y, this.color);
         } else {
-            gui.drawString(minecraft.font, this.text, x, y, this.color, false);
+            gui.drawString(minecraft.font, text, x, y, this.color, false);
         }
     }
 
