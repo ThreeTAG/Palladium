@@ -9,20 +9,13 @@ import net.threetag.palladium.client.gui.ui.UiAlignment;
 import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.icon.Icon;
-import net.threetag.palladium.logic.condition.TrueCondition;
 import net.threetag.palladium.logic.context.DataContext;
-
-import java.util.Optional;
 
 public final class IconUiComponent extends RenderableUiComponent {
 
-    public static final UiComponentProperties DEFAULT_PROPERTIES = new UiComponentProperties(
-            UiAlignment.TOP_LEFT, 0, 0, 16, 16, Optional.empty(), Optional.empty(), TrueCondition.INSTANCE
-    );
-
     public static final MapCodec<IconUiComponent> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Icon.CODEC.fieldOf("icon").forGetter(IconUiComponent::icon),
-            UiComponentProperties.withDefaultSize(16, 16).optionalFieldOf("properties", DEFAULT_PROPERTIES).forGetter(IconUiComponent::getProperties)
+            propertiesCodec16X16()
     ).apply(instance, IconUiComponent::new));
 
     private final Icon icon;

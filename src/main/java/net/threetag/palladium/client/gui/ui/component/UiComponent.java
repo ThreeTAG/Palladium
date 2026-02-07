@@ -55,4 +55,12 @@ public abstract class UiComponent {
     protected static <B extends UiComponent> RecordCodecBuilder<B, UiComponentProperties> propertiesCodec() {
         return UiComponentProperties.CODEC.optionalFieldOf("properties", UiComponentProperties.DEFAULT).forGetter(UiComponent::getProperties);
     }
+
+    protected static <B extends UiComponent> RecordCodecBuilder<B, UiComponentProperties> propertiesCodec16X16() {
+        return UiComponentProperties.CODEC_16X16.optionalFieldOf("properties", UiComponentProperties.DEFAULT_16X16).forGetter(UiComponent::getProperties);
+    }
+
+    protected static <B extends UiComponent> RecordCodecBuilder<B, UiComponentProperties> propertiesCodec(int width, int height) {
+        return UiComponentProperties.codecWithDefaultSize(width, height).optionalFieldOf("properties", UiComponentProperties.withDefaultSize(width, height)).forGetter(UiComponent::getProperties);
+    }
 }

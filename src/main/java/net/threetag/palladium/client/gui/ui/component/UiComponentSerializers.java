@@ -9,6 +9,7 @@ public class UiComponentSerializers {
     public static final UiComponentSerializer<BlitUiComponent> BLIT = register("blit", new BlitUiComponent.Serializer());
     public static final UiComponentSerializer<TextUiComponent> TEXT = register("text", new TextUiComponent.Serializer());
     public static final UiComponentSerializer<IconUiComponent> ICON = register("icon", new IconUiComponent.Serializer());
+    public static final UiComponentSerializer<ItemUiComponent> ITEM = register("item", new ItemUiComponent.Serializer());
     public static final UiComponentSerializer<ButtonUiComponent> BUTTON = register("button", new ButtonUiComponent.Serializer());
     public static final UiComponentSerializer<FlatButtonUiComponent> FLAT_BUTTON = register("flat_button", new FlatButtonUiComponent.Serializer());
     public static final UiComponentSerializer<PlayerDisplayUiComponent> PLAYER_DISPLAY = register("player_display", new PlayerDisplayUiComponent.Serializer());

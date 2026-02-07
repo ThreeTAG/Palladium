@@ -22,8 +22,8 @@
       "text": "Change the time of day"
     },
     {
-      "type": "palladium:icon",
-      "icon": "minecraft:command_block",
+      "type": "palladium:item",
+      "item": "minecraft:command_block",
       "properties": {
         "alignment": "top_right",
         "tooltip": "This is an icon component"
