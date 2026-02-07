@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
@@ -39,7 +40,7 @@ public final class ButtonUiComponent extends UiComponent {
     }
 
     @Override
-    public AbstractWidget buildWidget(UiScreen screen) {
+    public AbstractWidget buildWidget(UiScreen screen, ScreenRectangle rectangle) {
         var builder = Button.builder(this.text(), button -> {
                     this.getProperties().action()
                             .flatMap(a -> a.createAction(Collections.emptyMap()))
@@ -49,7 +50,7 @@ public final class ButtonUiComponent extends UiComponent {
                         screen.onClose();
                     }
                 })
-                .bounds(this.getX(screen.getInnerRectangle()), this.getY(screen.getInnerRectangle()), this.getWidth(), this.getHeight());
+                .bounds(this.getX(rectangle), this.getY(rectangle), this.getWidth(), this.getHeight());
 
         this.getProperties().tooltip().ifPresent(component -> builder.tooltip(Tooltip.create(component)));
 

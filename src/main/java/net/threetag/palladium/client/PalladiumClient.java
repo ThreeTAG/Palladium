@@ -29,6 +29,7 @@ import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.hud.AbilityGuiLayer;
 import net.threetag.palladium.client.gui.screen.menu.TailoringScreen;
 import net.threetag.palladium.client.gui.ui.component.UiComponentSerializers;
+import net.threetag.palladium.client.gui.ui.layout.UiLayoutSerializers;
 import net.threetag.palladium.client.gui.ui.screen.UiScreenManager;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
@@ -80,6 +81,7 @@ public class PalladiumClient {
         TrailRendererSerializers.init();
         TextureTransformerSerializers.init();
         DynamicTextureSerializers.init();
+        UiLayoutSerializers.init();
         UiComponentSerializers.init();
         TextureReference.DYNAMIC_TEXTURE_RESOLVER = (path, context) -> {
             var dyn = DynamicTextureManager.INSTANCE.get(path);

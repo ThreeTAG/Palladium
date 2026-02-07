@@ -4,11 +4,11 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.threetag.palladium.client.gui.screen.DelayedRenderCallReceiver;
 import net.threetag.palladium.client.gui.ui.component.UiComponent;
+import net.threetag.palladium.client.gui.ui.layout.UiLayout;
 import net.threetag.palladium.logic.context.DataContext;
 
 import java.util.ArrayList;
@@ -42,33 +42,33 @@ public class UiScreen extends Screen implements DelayedRenderCallReceiver {
             background -> background instanceof UiScreenBackground.Empty ? Either.left(false) : Either.right(background)
     );
 
-    private final UiScreenConfiguration configuration;
-    protected int innerLeftPos, outerLeftPos;
-    protected int innerTopPos, outerTopPos;
+    private final UiLayout layout;
+    protected int layoutWidth, layoutHeight;
+    protected int innerLeftPos, leftPos;
+    protected int innerTopPos, topPos;
     private final Map<UiComponent, AbstractWidget> widgets = new HashMap<>();
     private final List<Consumer<GuiGraphics>> delayedRenderCalls = new ArrayList<>();
 
-    public UiScreen(UiScreenConfiguration configuration) {
+    public UiScreen(UiLayout layout) {
         super(Component.empty());
-        this.configuration = configuration;
+        this.layout = layout;
+        this.layoutWidth = layout.getWidth();
+        this.layoutHeight = layout.getHeight();
     }
 
     @Override
     protected void init() {
         super.init();
 
-        this.outerLeftPos = (this.width - this.configuration.width()) / 2;
-        this.outerTopPos = (this.height - this.configuration.height()) / 2;
-        this.innerLeftPos = this.outerLeftPos + this.configuration.padding().left();
-        this.innerTopPos = this.outerTopPos + this.configuration.padding().top();
+        this.leftPos = (this.width - this.layoutWidth) / 2;
+        this.topPos = (this.height - this.layoutHeight) / 2;
         this.widgets.clear();
 
-        for (UiComponent component : this.configuration.components()) {
-            var widget = component.buildWidget(this);
+        this.layout.addComponents(this, this.leftPos, this.topPos, (component, widget) -> {
             widget.visible = component.getProperties().visibility().test(DataContext.forEntity(this.minecraft.player));
             this.widgets.put(component, widget);
             this.addRenderableWidget(widget);
-        }
+        });
     }
 
     @Override
@@ -84,7 +84,7 @@ public class UiScreen extends Screen implements DelayedRenderCallReceiver {
     @Override
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
-        this.configuration.background().render(guiGraphics, this.outerLeftPos, this.outerTopPos, this.configuration.width(), this.configuration.height());
+        this.layout.renderBackground(guiGraphics, this.leftPos, this.topPos);
     }
 
     @Override
@@ -96,15 +96,6 @@ public class UiScreen extends Screen implements DelayedRenderCallReceiver {
         }
 
         this.delayedRenderCalls.clear();
-    }
-
-    public ScreenRectangle getInnerRectangle() {
-        return new ScreenRectangle(
-                this.innerLeftPos,
-                this.innerTopPos,
-                this.configuration.width() - this.configuration.padding().left() - this.configuration.padding().right(),
-                this.configuration.height() - this.configuration.padding().top() - this.configuration.padding().bottom()
-        );
     }
 
     @Override

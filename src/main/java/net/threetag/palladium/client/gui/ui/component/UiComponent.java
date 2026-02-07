@@ -50,7 +50,7 @@ public abstract class UiComponent {
         } + props.y();
     }
 
-    public abstract AbstractWidget buildWidget(UiScreen screen);
+    public abstract AbstractWidget buildWidget(UiScreen screen, ScreenRectangle rectangle);
 
     protected static <B extends UiComponent> RecordCodecBuilder<B, UiComponentProperties> propertiesCodec() {
         return UiComponentProperties.CODEC.optionalFieldOf("properties", UiComponentProperties.DEFAULT).forGetter(UiComponent::getProperties);

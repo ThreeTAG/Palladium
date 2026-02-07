@@ -23,7 +23,6 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.threetag.palladium.client.beam.BeamManager;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
-import net.threetag.palladium.client.gui.screen.power.PowersScreen;
 import net.threetag.palladium.client.gui.ui.screen.UiScreenManager;
 import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
@@ -202,10 +201,6 @@ public class PalladiumClientProxy extends PalladiumProxy {
 
                 if (livingEntity == Minecraft.getInstance().player) {
                     AbilityBar.INSTANCE.populate();
-
-                    if (Minecraft.getInstance().screen instanceof PowersScreen powers && powers.selectedTab != null) {
-                        powers.selectedTab.populate();
-                    }
                 }
             });
         }

@@ -1,0 +1,64 @@
+{
+  "type": "palladium:multi_column",
+  "gap": 10,
+  "layouts": [
+    {
+      "width": 100,
+      "height": 200,
+      "padding": 10,
+      "background": {
+        "sprite": "palladium:background/modal"
+      },
+      "components": [
+        {
+          "type": "palladium:text",
+          "text": "Placeholder text",
+          "color": "#ffffff",
+          "properties": {
+            "alignment": "top_left",
+            "width": 80,
+            "height": 186
+          }
+        }
+      ]
+    },
+    {
+      "width": 200,
+      "height": 200,
+      "components": [
+        {
+          "type": "palladium:power_tree",
+          "power": "test:tree_test",
+          "background": {
+            "repeat": "minecraft:textures/block/orange_wool.png"
+          },
+          "properties": {
+            "alignment": "center",
+            "width": 186,
+            "height": 186
+          }
+        }
+      ]
+    },
+    {
+      "width": 100,
+      "height": 200,
+      "background": {
+        "sprite": "palladium:background/modal"
+      },
+      "components": [
+        {
+          "type": "palladium:player_display",
+          "follow_mouse": true,
+          "mimic_player": true,
+          "scale": 50,
+          "properties": {
+            "alignment": "center",
+            "width": 80,
+            "height": 180
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -19,12 +19,15 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.Palladium;
 
+import java.awt.*;
+
 public class RenderUtil {
 
     public static final Identifier WIDGETS_LOCATION = Palladium.id("textures/gui/widgets.png");
     public static final int FULL_WHITE = ARGB.white(1F);
     public static final int FULL_BLACK = ARGB.color(255, 0, 0, 0);
     public static final int DEFAULT_GRAY = ARGB.opaque(0x404040);
+    public static final Color DEFAULT_GRAY_COLOR = new Color(ARGB.opaque(0x404040));
 
     public static void setItemInHumanoidRenderStateSlot(HumanoidRenderState state, EquipmentSlot slot, ItemStack stack) {
         ItemModelResolver itemModelResolver = Minecraft.getInstance().getItemModelResolver();

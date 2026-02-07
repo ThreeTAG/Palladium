@@ -27,7 +27,7 @@ public abstract class UiComponentSerializer<T extends UiComponent> implements Do
 
     public static <T extends UiComponent> UiComponentSerializer<T> register(Identifier id, UiComponentSerializer<T> serializer) {
         if (TYPES.containsKey(id)) {
-            throw new IllegalStateException("Duplicate registration for PalladUI component serializer: " + id);
+            throw new IllegalStateException("Duplicate registration for UI component serializer: " + id);
         }
 
         TYPES.put(id, serializer);

@@ -15,23 +15,26 @@ import net.threetag.palladium.client.util.GuiUtil;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.util.PalladiumCodecs;
+
+import java.awt.*;
 
 public class TextUiComponent extends RenderableUiComponent {
 
     public static final MapCodec<TextUiComponent> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ComponentSerialization.CODEC.fieldOf("text").forGetter(t -> t.text),
-            Codec.INT.optionalFieldOf("color", RenderUtil.DEFAULT_GRAY).forGetter(t -> t.color),
+            PalladiumCodecs.COLOR_CODEC.optionalFieldOf("color", RenderUtil.DEFAULT_GRAY_COLOR).forGetter(t -> t.color),
             ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("max_width", 0).forGetter(t -> t.maxWidth),
             Codec.BOOL.optionalFieldOf("outline", false).forGetter(t -> t.outline),
             propertiesCodec()
     ).apply(instance, TextUiComponent::new));
 
     private final Component text;
-    private final int color;
+    private final Color color;
     private final int maxWidth;
     public boolean outline;
 
-    public TextUiComponent(Component text, int color, int maxWidth, boolean outline, UiComponentProperties properties) {
+    public TextUiComponent(Component text, Color color, int maxWidth, boolean outline, UiComponentProperties properties) {
         super(properties);
         this.text = text;
         this.color = color;
@@ -49,9 +52,9 @@ public class TextUiComponent extends RenderableUiComponent {
         var text = Language.getInstance().getVisualOrder(minecraft.font.ellipsize(this.text, this.getWidth()));
 
         if (this.outline) {
-            GuiUtil.drawStringWithBlackOutline(gui, text, x, y, this.color);
+            GuiUtil.drawStringWithBlackOutline(gui, text, x, y, this.color.getRGB());
         } else {
-            gui.drawString(minecraft.font, text, x, y, this.color, false);
+            gui.drawString(minecraft.font, text, x, y, this.color.getRGB(), false);
         }
     }
 

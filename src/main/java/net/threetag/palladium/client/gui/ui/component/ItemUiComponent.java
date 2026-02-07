@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ItemDisplayWidget;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.client.gui.ui.screen.UiScreen;
@@ -38,7 +39,7 @@ public class ItemUiComponent extends UiComponent {
     }
 
     @Override
-    public AbstractWidget buildWidget(UiScreen screen) {
+    public AbstractWidget buildWidget(UiScreen screen, ScreenRectangle rectangle) {
         var widget = new ItemDisplayWidget(
                 screen.getMinecraft(),
                 0, 0,
@@ -49,7 +50,7 @@ public class ItemUiComponent extends UiComponent {
                 this.tooltip
         );
 
-        widget.setPosition(this.getX(screen.getInnerRectangle()), this.getY(screen.getInnerRectangle()));
+        widget.setPosition(this.getX(rectangle), this.getY(rectangle));
 
         if (!this.tooltip) {
             this.getProperties().tooltip().ifPresent(component -> widget.setTooltip(Tooltip.create(component)));

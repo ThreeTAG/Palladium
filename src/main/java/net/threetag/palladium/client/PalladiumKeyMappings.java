@@ -11,7 +11,6 @@ import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
-import net.threetag.palladium.client.gui.screen.power.PowersScreen;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilityUtil;
@@ -98,7 +97,8 @@ public class PalladiumKeyMappings {
                 }
 
                 while (SHOW_POWERS.consumeClick()) {
-                    client.setScreen(new PowersScreen());
+                    // TODO show powers screen
+//                    client.setScreen(new PowersScreen());
                 }
             }
 

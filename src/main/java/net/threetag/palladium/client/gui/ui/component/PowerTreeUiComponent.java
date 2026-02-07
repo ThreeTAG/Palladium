@@ -3,11 +3,13 @@ package net.threetag.palladium.client.gui.ui.component;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
-import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
+import net.threetag.palladium.client.gui.screen.power.PowerUiScreen;
 import net.threetag.palladium.client.gui.ui.screen.UiScreen;
 import net.threetag.palladium.client.gui.ui.screen.UiScreenBackground;
+import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerInstance;
@@ -29,7 +31,7 @@ public class PowerTreeUiComponent extends UiComponent {
     private final ResourceKey<Power> power;
     private final UiScreenBackground background;
 
-    public PowerTreeUiComponent(@org.jspecify.annotations.Nullable ResourceKey<Power> power, UiScreenBackground background, UiComponentProperties properties) {
+    public PowerTreeUiComponent(@Nullable ResourceKey<Power> power, UiScreenBackground background, UiComponentProperties properties) {
         super(properties);
         this.power = power;
         this.background = background;
@@ -41,16 +43,21 @@ public class PowerTreeUiComponent extends UiComponent {
     }
 
     @Override
-    public AbstractWidget buildWidget(UiScreen screen) {
-        PowerInstance powerInstance = this.power != null ? PowerUtil.getPowerHandler(screen.getMinecraft().player).getPowerInstance(this.power.identifier()) : null;
-        // TODO from power screen
+    public AbstractWidget buildWidget(UiScreen screen, ScreenRectangle rectangle) {
+        PowerInstance powerInstance = null;
+
+        if (this.power != null) {
+            powerInstance = PowerUtil.getPowerHandler(screen.getMinecraft().player).getPowerInstance(this.power.identifier());
+        } else if (screen instanceof PowerUiScreen powerUiScreen) {
+            powerInstance = powerUiScreen.getPowerInstance();
+        }
 
         return new PowerTreeWidget(
                 screen,
                 powerInstance,
                 this.background,
-                this.getX(screen.getInnerRectangle()),
-                this.getY(screen.getInnerRectangle()),
+                this.getX(rectangle),
+                this.getY(rectangle),
                 this.getWidth(),
                 this.getHeight());
     }
@@ -66,7 +73,8 @@ public class PowerTreeUiComponent extends UiComponent {
         public void addDocumentation(CodecDocumentationBuilder<UiComponent, PowerTreeUiComponent> builder, HolderLookup.Provider provider) {
             builder.setName("Power Tree")
                     .setDescription("Renders an interactable tree for a power of a power")
-                    .addOptional("power", TYPE_POWER, "The power that will be displayed. If none is specified, it will use the from the current power screen (if this component is used in one).");
+                    .addOptional("power", TYPE_POWER, "The power that will be displayed. If none is specified, it will use the from the current power screen (if this component is used in one).")
+                    .addOptional("background", TYPE_UI_BACKGROUND, "The background that is drawn for the power tree.", UiScreenBackground.RepeatingTexture.RED_WOOL.toString());
         }
     }
 }

@@ -1,6 +1,7 @@
 package net.threetag.palladium.client.gui.ui.screen;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -11,6 +12,11 @@ import net.threetag.palladium.Palladium;
 public abstract class UiScreenBackground {
 
     public abstract void render(GuiGraphics guiGraphics, int x, int y, int width, int height);
+
+    @Override
+    public String toString() {
+        return UiScreen.BACKGROUND_CODEC.encodeStart(JsonOps.INSTANCE, this).getOrThrow().toString();
+    }
 
     public static class Empty extends UiScreenBackground {
 
