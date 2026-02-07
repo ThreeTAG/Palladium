@@ -34,7 +34,6 @@
     "client.LevelRendererMixin",
     "client.LivingEntityRendererMixin",
     "client.LocalPlayerMixin",
-    "client.MinecraftMixin",
     "client.ModelMixin",
     "client.ModelPartMixin",
     "client.RenderTypesMixin",
