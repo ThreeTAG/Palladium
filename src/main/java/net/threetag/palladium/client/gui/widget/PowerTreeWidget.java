@@ -39,6 +39,8 @@ import java.util.List;
 public class PowerTreeWidget extends AbstractWidget implements TickableWidget {
 
     public static final String TRANS_KEY_UNLOCK = "gui.palladium.powers.unlock";
+    public static final String TRANS_KEY_VERY_SAD_LABEL = "gui.palladium.powers.sad_label";
+    public static final String TRANS_KEY_NO_ABILITIES_LABEL = "gui.palladium.powers.empty";
     public static final Identifier SPRITE_ABILITY_FRAME_UNLOCKED = Palladium.id("powers/ability_frame_unlocked");
     public static final Identifier SPRITE_ABILITY_FRAME_LOCKED = Palladium.id("powers/ability_frame_locked");
     public static final Identifier SPRITE_TITLE_BOX = Palladium.id("powers/title_box");
@@ -98,6 +100,16 @@ public class PowerTreeWidget extends AbstractWidget implements TickableWidget {
 
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        if (this.abilities.isEmpty()) {
+            var font = Minecraft.getInstance().font;
+            int x = this.getX() + this.getWidth() / 2;
+            int y = this.getY() + this.getHeight() / 2;
+            guiGraphics.fill(this.getX(), this.getY(), this.getRight(), this.getBottom(), RenderUtil.FULL_BLACK);
+            guiGraphics.drawCenteredString(font, Component.translatable(TRANS_KEY_NO_ABILITIES_LABEL), x, y - 20, -1);
+            guiGraphics.drawCenteredString(font, Component.translatable(TRANS_KEY_VERY_SAD_LABEL), x, y + 20, -1);
+            return;
+        }
+
         guiGraphics.enableScissor(this.getX(), this.getY(), this.getRight(), this.getBottom());
         this.renderInner(guiGraphics, this.getX() - this.offsetX, this.getY() - this.offsetY, this.innerWidth,
                 this.innerHeight, mouseX, mouseY);

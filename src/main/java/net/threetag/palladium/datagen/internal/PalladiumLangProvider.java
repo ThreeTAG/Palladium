@@ -1,11 +1,11 @@
 package net.threetag.palladium.datagen.internal;
 
-import net.minecraft.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -13,6 +13,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.gui.screen.customization.CustomizationsGrid;
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
+import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
 import net.threetag.palladium.command.CustomizationCommand;
 import net.threetag.palladium.command.DataAttachmentCommand;
 import net.threetag.palladium.command.ScreenCommand;
@@ -195,7 +196,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Powers");
-            this.add("gui.palladium.powers.unlock", "Unlock");
+            this.add(PowerTreeWidget.TRANS_KEY_UNLOCK, "Unlock");
+            this.add(PowerTreeWidget.TRANS_KEY_NO_ABILITIES_LABEL, "There doesn't seem to be anything here...");
+            this.add(PowerTreeWidget.TRANS_KEY_VERY_SAD_LABEL, ":(");
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx experience level");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx experience levels");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Customization");
@@ -329,7 +332,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kräfte");
-            this.add("gui.palladium.powers.unlock", "Freischalten");
+            this.add(PowerTreeWidget.TRANS_KEY_UNLOCK, "Freischalten");
+            this.add(PowerTreeWidget.TRANS_KEY_NO_ABILITIES_LABEL, "Hier scheint es nichts zu geben...");
+            this.add(PowerTreeWidget.TRANS_KEY_VERY_SAD_LABEL, ":(");
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsstufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsstufen");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
@@ -465,7 +470,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // GUI
             this.add("gui.palladium.powers", "Kräfte");
-            this.add("gui.palladium.powers.unlock", "Freischaltn");
+            this.add(PowerTreeWidget.TRANS_KEY_UNLOCK, "Freischaltn");
+            this.add(PowerTreeWidget.TRANS_KEY_NO_ABILITIES_LABEL, "Hier scheind es nüschd zu gähm...");
+            this.add(PowerTreeWidget.TRANS_KEY_VERY_SAD_LABEL, ":(");
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsschdufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsschdufen");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");

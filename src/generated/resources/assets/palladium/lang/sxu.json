@@ -69,6 +69,8 @@
   "gui.palladium.powers": "Kräfte",
   "gui.palladium.powers.buy_ability.experience_level": "%sx Erfahrungsschdufe",
   "gui.palladium.powers.buy_ability.experience_level_plural": "%sx Erfahrungsschdufen",
+  "gui.palladium.powers.empty": "Hier scheind es nüschd zu gähm...",
+  "gui.palladium.powers.sad_label": ":(",
   "gui.palladium.powers.unlock": "Freischaltn",
   "item.palladium.black_fabric": "Schwarzer Schdoff",
   "item.palladium.blue_fabric": "Blaer Schdoff",
