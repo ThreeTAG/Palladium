@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,11 +24,13 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.threetag.palladium.client.beam.BeamManager;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
+import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
 import net.threetag.palladium.client.gui.ui.screen.UiScreenManager;
 import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.customization.Customization;
+import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.EntityCustomizationHandler;
 import net.threetag.palladium.entity.EffectEntity;
 import net.threetag.palladium.entity.effect.EntityEffect;
@@ -41,6 +44,7 @@ import net.threetag.palladium.power.ability.unlocking.BuyableUnlockingHandler;
 import net.threetag.palladium.sound.AbilitySound;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -66,6 +70,11 @@ public class PalladiumClientProxy extends PalladiumProxy {
         if (screen != null) {
             screen.open();
         }
+    }
+
+    @Override
+    public void openCustomizationScreen(@Nullable ResourceKey<CustomizationCategory> category) {
+        Minecraft.getInstance().setScreen(new PlayerCustomizationScreen(Minecraft.getInstance().screen, category));
     }
 
     @Override

@@ -13,6 +13,7 @@
     "ItemMixin",
     "LevelSummaryMixin",
     "LivingEntityMixin",
+    "ServerCommonPacketListenerImplMixin",
     "OverlayMetadataSectionMixin",
     "PackFormatMixin",
     "PackMetadataSectionMixin",

@@ -15,9 +15,21 @@
           "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
           "color": "#ffffff",
           "properties": {
-            "alignment": "center",
+            "alignment": "top_center",
             "width": 86,
-            "height": 186
+            "height": 160
+          }
+        },
+        {
+          "type": "palladium:button",
+          "text": "Open Test Screen",
+          "properties": {
+            "alignment": "bottom_center",
+            "width": 70,
+            "action": {
+              "type": "palladium:open_screen",
+              "screen": "test:test_screen"
+            }
           }
         }
       ]
@@ -53,9 +65,21 @@
           "mimic_player": true,
           "scale": 50,
           "properties": {
-            "alignment": "center",
+            "alignment": "top_center",
             "width": 80,
-            "height": 180
+            "height": 160
+          }
+        },
+        {
+          "type": "palladium:button",
+          "text": "Customize",
+          "properties": {
+            "alignment": "bottom_center",
+            "width": 70,
+            "action": {
+              "type": "palladium:open_customization_screen",
+              "category": "test:example_category"
+            }
           }
         }
       ]
