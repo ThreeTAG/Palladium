@@ -7,7 +7,7 @@
       "height": 200,
       "padding": 7,
       "background": {
-        "sprite": "palladium:background/modal"
+        "sprite": "palladium:background/modal_with_footer"
       },
       "components": [
         {
@@ -17,7 +17,7 @@
           "properties": {
             "alignment": "top_center",
             "width": 86,
-            "height": 160
+            "height": 165
           }
         },
         {
@@ -56,7 +56,7 @@
       "width": 100,
       "height": 200,
       "background": {
-        "sprite": "palladium:background/modal"
+        "sprite": "palladium:background/modal_with_footer"
       },
       "components": [
         {
@@ -67,7 +67,7 @@
           "properties": {
             "alignment": "top_center",
             "width": 80,
-            "height": 160
+            "height": 165
           }
         },
         {

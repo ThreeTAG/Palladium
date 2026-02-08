@@ -20,6 +20,7 @@ public class ModalScreen extends Screen {
 
     public static final Identifier BACKGROUND_MODAL_DEFAULT = Palladium.id("background/modal");
     public static final Identifier BACKGROUND_MODAL_HEADER = Palladium.id("background/modal_with_header");
+    public static final Identifier BACKGROUND_MODAL_FOOTER = Palladium.id("background/modal_with_footer");
     public static final Identifier BACKGROUND_MODAL_HEADER_AND_FOOTER = Palladium.id("background/modal_with_header_and_footer");
     public static final int DEFAULT_WIDTH = 170;
     public static final int DEFAULT_HEIGHT = 120;
@@ -102,9 +103,14 @@ public class ModalScreen extends Screen {
             super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         }
 
-        if (this.headerText != null || !this.buttons.isEmpty()) {
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, this.buttons.isEmpty() ? BACKGROUND_MODAL_HEADER : BACKGROUND_MODAL_HEADER_AND_FOOTER, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+        if (this.headerText != null && !this.buttons.isEmpty()) {
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_MODAL_HEADER_AND_FOOTER, this.getX(), this.getY(), this.getWidth(), this.getHeight());
             guiGraphics.drawString(Minecraft.getInstance().font, this.headerText, this.getX() + 7, this.getY() + 7, RenderUtil.DEFAULT_GRAY, false);
+        } else if (this.headerText != null) {
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_MODAL_HEADER, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+            guiGraphics.drawString(Minecraft.getInstance().font, this.headerText, this.getX() + 7, this.getY() + 7, RenderUtil.DEFAULT_GRAY, false);
+        } else if (!this.buttons.isEmpty()) {
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_MODAL_FOOTER, this.getX(), this.getY(), this.getWidth(), this.getHeight());
         } else {
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_MODAL_DEFAULT, this.getX(), this.getY(), this.getWidth(), this.getHeight());
         }
