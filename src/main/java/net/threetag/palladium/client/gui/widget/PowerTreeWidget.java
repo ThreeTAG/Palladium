@@ -22,6 +22,7 @@ import net.threetag.palladium.client.gui.screen.DelayedRenderCallReceiver;
 import net.threetag.palladium.client.gui.screen.ModalScreen;
 import net.threetag.palladium.client.gui.ui.screen.UiScreenBackground;
 import net.threetag.palladium.client.renderer.icon.IconRenderer;
+import net.threetag.palladium.client.util.GuiUtil;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.logic.context.DataContext;
@@ -101,12 +102,11 @@ public class PowerTreeWidget extends AbstractWidget implements TickableWidget {
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (this.abilities.isEmpty()) {
-            var font = Minecraft.getInstance().font;
             int x = this.getX() + this.getWidth() / 2;
             int y = this.getY() + this.getHeight() / 2;
             guiGraphics.fill(this.getX(), this.getY(), this.getRight(), this.getBottom(), RenderUtil.FULL_BLACK);
-            guiGraphics.drawCenteredString(font, Component.translatable(TRANS_KEY_NO_ABILITIES_LABEL), x, y - 20, -1);
-            guiGraphics.drawCenteredString(font, Component.translatable(TRANS_KEY_VERY_SAD_LABEL), x, y + 20, -1);
+            GuiUtil.drawCenteredWordWrap(guiGraphics, Component.translatable(TRANS_KEY_NO_ABILITIES_LABEL), x, y - 20, this.getWidth() - 15, -1);
+            GuiUtil.drawCenteredWordWrap(guiGraphics, Component.translatable(TRANS_KEY_VERY_SAD_LABEL), x, y + 20, this.getWidth() - 15, -1);
             return;
         }
 

@@ -3,6 +3,7 @@ package net.threetag.palladium.client.util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
 
 public class GuiUtil {
@@ -43,6 +44,15 @@ public class GuiUtil {
 
     public static void drawStringWithBlackOutline(GuiGraphics guiGraphics, FormattedCharSequence text, int x, int y, int textColor) {
         drawStringWithOutline(guiGraphics, text, x, y, textColor, RenderUtil.FULL_BLACK);
+    }
+
+    public static void drawCenteredWordWrap(GuiGraphics guiGraphics, FormattedText text, int x, int y, int lineWidth, int textColor) {
+        var font = Minecraft.getInstance().font;
+
+        for (FormattedCharSequence formatted : font.split(text, lineWidth)) {
+            guiGraphics.drawCenteredString(font, formatted, x, y, textColor);
+            y += 9;
+        }
     }
 
 }
