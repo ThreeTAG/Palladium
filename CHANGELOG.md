@@ -1,12 +1,1 @@
-- Added Multiversal Iterator: Addon Packs can now declare "variants" of their suits to allow users to convert them into multiversal variants!
-- Added Multiversal Extrapolators
-- Added Ruined Multiverse Portal structures (disabled by default)
-- Added "lock_armor" ability
-- Added option to disable full powers or namespaces in config
-- Fixed random body part spinning during animations
-- Fixed tailoring not triggering advancements criteria
-- Fixed dual wielding not visually respecting attack speed
-- Fixed ability wheel crashing if not abilities are available
-- Fixed energy beam fast-switch crash
-- Fixed accessories' render layers not being able to hide body parts (#103)
-- Fixed crash on launch with EpicFight (#182)
+- Fixed server crash
