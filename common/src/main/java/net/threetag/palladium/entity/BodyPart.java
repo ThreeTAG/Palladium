@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.accessory.Accessory;
+import net.threetag.palladium.accessory.AccessorySlot;
 import net.threetag.palladium.accessory.RenderLayerAccessory;
 import net.threetag.palladium.client.model.animation.PalladiumAnimation;
 import net.threetag.palladium.client.renderer.item.armor.ArmorRendererData;
@@ -32,10 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public enum BodyPart {
 
@@ -203,25 +201,32 @@ public enum BodyPart {
             }
 
             if (includeAccessories) {
-                Accessory.getPlayerData(player).ifPresent(data -> data.getSlots().forEach((slot, accessories) -> {
-                    if (!accessories.isEmpty()) {
-                        for (BodyPart part : slot.getHiddenBodyParts(player)) {
-                            result.hide(part);
-                        }
+                var data = Accessory.getPlayerData(player);
 
-                        for (Accessory accessory : accessories) {
-                            if (accessory instanceof RenderLayerAccessory rl && accessory.isVisible(slot, player, isFirstPerson)) {
-                                var renderLayer = PackRenderLayerManager.getInstance().getLayer(rl.renderLayerId);
+                if (data.isPresent()) {
+                    for (Map.Entry<AccessorySlot, Collection<Accessory>> e : data.get().getSlots().entrySet()) {
+                        var slot = e.getKey();
+                        var accessories = e.getValue();
 
-                                if (renderLayer != null) {
-                                    for (BodyPart part : renderLayer.getHiddenBodyParts(player)) {
-                                        result.hide(part);
+                        if (!accessories.isEmpty()) {
+                            for (BodyPart part : slot.getHiddenBodyParts(player)) {
+                                result.hide(part);
+                            }
+
+                            for (Accessory accessory : accessories) {
+                                if (accessory instanceof RenderLayerAccessory rl && accessory.isVisible(slot, player, isFirstPerson)) {
+                                    var renderLayer = PackRenderLayerManager.getInstance().getLayer(rl.renderLayerId);
+
+                                    if (renderLayer != null) {
+                                        for (BodyPart part : renderLayer.getHiddenBodyParts(player)) {
+                                            result.hide(part);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }));
+                }
             }
         }
 
