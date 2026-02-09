@@ -42,10 +42,10 @@ public class UiScreen extends Screen implements DelayedRenderCallReceiver {
             background -> background instanceof UiScreenBackground.Empty ? Either.left(false) : Either.right(background)
     );
 
-    private final UiLayout layout;
+    private UiLayout layout;
     protected int layoutWidth, layoutHeight;
-    protected int innerLeftPos, leftPos;
-    protected int innerTopPos, topPos;
+    protected int leftPos;
+    protected int topPos;
     private final Map<UiComponent, AbstractWidget> widgets = new HashMap<>();
     private final List<Consumer<GuiGraphics>> delayedRenderCalls = new ArrayList<>();
 
@@ -62,13 +62,26 @@ public class UiScreen extends Screen implements DelayedRenderCallReceiver {
 
         this.leftPos = (this.width - this.layoutWidth) / 2;
         this.topPos = (this.height - this.layoutHeight) / 2;
+        this.loadComponents(this.layout);
+    }
+
+    protected void loadComponents(UiLayout layout) {
         this.widgets.clear();
 
-        this.layout.addComponents(this, this.leftPos, this.topPos, (component, widget) -> {
+        layout.addComponents(this, this.leftPos, this.topPos, (component, widget) -> {
             widget.visible = component.getProperties().visibility().test(DataContext.forEntity(this.minecraft.player));
             this.widgets.put(component, widget);
             this.addRenderableWidget(widget);
         });
+    }
+
+    protected void changeLayout(UiLayout layout) {
+        for (AbstractWidget widget : this.widgets.values()) {
+            this.removeWidget(widget);
+        }
+
+        this.layout = layout;
+        this.loadComponents(layout);
     }
 
     @Override
@@ -96,6 +109,10 @@ public class UiScreen extends Screen implements DelayedRenderCallReceiver {
         }
 
         this.delayedRenderCalls.clear();
+    }
+
+    public UiLayout getLayout() {
+        return this.layout;
     }
 
     @Override

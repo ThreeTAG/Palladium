@@ -14,14 +14,14 @@ import net.threetag.palladium.client.gui.ui.layout.UiLayout;
 import java.util.Map;
 import java.util.Set;
 
-public class UiScreenManager extends SimpleJsonResourceReloadListener<UiLayout> {
+public class UiLayoutManager extends SimpleJsonResourceReloadListener<UiLayout> {
 
     public static final Identifier ID = Palladium.id("screens");
-    public static final UiScreenManager INSTANCE = new UiScreenManager();
+    public static final UiLayoutManager INSTANCE = new UiLayoutManager();
 
     private final BiMap<Identifier, UiLayout> byName = HashBiMap.create();
 
-    public UiScreenManager() {
+    public UiLayoutManager() {
         super(UiLayout.Codecs.CODEC, FileToIdConverter.json("palladium/screens"));
     }
 

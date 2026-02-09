@@ -98,7 +98,7 @@ public abstract class UiScreenBackground {
 
         private final Identifier sprite;
 
-        private Sprite(Identifier sprite) {
+        public Sprite(Identifier sprite) {
             this.sprite = sprite;
         }
 

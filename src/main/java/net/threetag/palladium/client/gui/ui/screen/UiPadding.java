@@ -31,4 +31,8 @@ public record UiPadding(int top, int bottom, int left, int right) {
         this(padding, padding, padding, padding);
     }
 
+    public static UiPadding topAndSides(int top, int rest) {
+        return new UiPadding(top, rest, rest, rest);
+    }
+
 }

@@ -30,7 +30,7 @@ import net.threetag.palladium.client.gui.screen.hud.AbilityGuiLayer;
 import net.threetag.palladium.client.gui.screen.menu.TailoringScreen;
 import net.threetag.palladium.client.gui.ui.component.UiComponentSerializers;
 import net.threetag.palladium.client.gui.ui.layout.UiLayoutSerializers;
-import net.threetag.palladium.client.gui.ui.screen.UiScreenManager;
+import net.threetag.palladium.client.gui.ui.screen.UiLayoutManager;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
@@ -143,7 +143,7 @@ public class PalladiumClient {
         e.addListener(ParticleEmitterManager.ID, ParticleEmitterManager.INSTANCE);
         e.addListener(BeamManager.ID, BeamManager.INSTANCE);
         e.addListener(TrailManager.ID, TrailManager.INSTANCE);
-        e.addListener(UiScreenManager.ID, UiScreenManager.INSTANCE);
+        e.addListener(UiLayoutManager.ID, UiLayoutManager.INSTANCE);
 
         e.addDependency(ModelLayerManager.ID, DynamicTextureManager.ID);
         e.addDependency(DynamicTextureManager.ID, PackRenderLayerManager.ID);
@@ -162,6 +162,7 @@ public class PalladiumClient {
         e.createProvider(PalladiumModelProvider::new);
         e.createProvider(PalladiumRenderLayerProvider::new);
         e.createProvider(PalladiumBeamProvider::new);
+        e.createProvider(PalladiumUiLayoutProvider::new);
 
         // Server
         e.createProvider(PalladiumLootTableProvider::new);
