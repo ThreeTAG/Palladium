@@ -41,6 +41,14 @@ public class MultiColumnLayout extends UiLayout {
         this.height = h;
     }
 
+    public List<UiLayout> getLayouts() {
+        return this.layouts;
+    }
+
+    public int getGap() {
+        return this.gap;
+    }
+
     @Override
     public UiLayoutSerializer<?> getSerializer() {
         return null;

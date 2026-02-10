@@ -19,6 +19,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.gui.ui.layout.MultiColumnLayout;
+import net.threetag.palladium.client.gui.ui.layout.UiLayout;
 import net.threetag.palladium.client.gui.ui.screen.TabUiScreen;
 import net.threetag.palladium.client.gui.ui.screen.UiLayoutManager;
 import net.threetag.palladium.client.gui.widget.IconButton;
@@ -69,7 +71,22 @@ public class PowerButtonInjection {
             var layout = UiLayoutManager.INSTANCE.get(powerInstance.getPower().value().getScreenId());
 
             if (layout != null) {
-                var tab = new TabUiScreen.Tab(layout, powerInstance.getPower().value().getName(), powerInstance.getPower().value().getIcon());
+                int x = 0;
+                int xOffset = 0;
+                int width = -1;
+
+                if (layout instanceof MultiColumnLayout multiColumnLayout) {
+                    for (UiLayout col : multiColumnLayout.getLayouts()) {
+                        if (col.getWidth() > width) {
+                            width = col.getWidth();
+                            xOffset = x;
+                        }
+
+                        x += col.getWidth() + multiColumnLayout.getGap();
+                    }
+                }
+
+                var tab = new TabUiScreen.Tab(layout, powerInstance.getPower().value().getName(), powerInstance.getPower().value().getIcon(), xOffset, width);
                 tabs.add(tab);
                 map.put(tab, powerInstance);
             }
