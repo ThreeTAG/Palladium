@@ -25,9 +25,9 @@ public class AimAnimation extends PalladiumAnimation {
                         .animate(Easing.INOUTSINE, right);
             } else {
                 builder.get(PlayerModelPart.RIGHT_ARM)
-                        .setXRot((float) (model.head.xRot - Math.PI / 2F))
-                        .setYRot(model.head.yRot)
-                        .setZRot(model.head.zRot)
+                        .setXRotShortest((float) (model.head.xRot - Math.PI / 2F))
+                        .setYRotShortest(model.head.yRot)
+                        .setZRotShortest(model.head.zRot)
                         .animate(Easing.INOUTSINE, right);
             }
         }
@@ -40,9 +40,9 @@ public class AimAnimation extends PalladiumAnimation {
                         .animate(Easing.INOUTSINE, left);
             } else {
                 builder.get(PlayerModelPart.LEFT_ARM)
-                        .setXRot((float) (model.head.xRot - Math.PI / 2F))
-                        .setYRot(model.head.yRot)
-                        .setZRot(model.head.zRot)
+                        .setXRotShortest((float) (model.head.xRot - Math.PI / 2F))
+                        .setYRotShortest(model.head.yRot)
+                        .setZRotShortest(model.head.zRot)
                         .animate(Easing.INOUTSINE, left);
             }
         }

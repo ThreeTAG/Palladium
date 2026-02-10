@@ -170,6 +170,13 @@ public class PalladiumAnimation {
         private final Map<PartOperationTarget, List<PartOperation>> operations = new LinkedHashMap<>();
         private float multiplier = 1F;
 
+        /**
+         * Sets the X rotation.
+         * <p>
+         * This method uses raw interpolation. If the value wraps around (e.g. from 180 to -180),
+         * it will interpolate the long way around (spinning).
+         * Use {@link #setXRotShortest(float)} for wrapped values (like entity yaw).
+         */
         public PartAnimationData setXRot(float rot) {
             this.operations.computeIfAbsent(PartOperationTarget.X_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, rot));
             return this;
@@ -179,6 +186,13 @@ public class PalladiumAnimation {
             return this.setXRot((float) Math.toRadians(degrees));
         }
 
+        /**
+         * Sets the Y rotation.
+         * <p>
+         * This method uses raw interpolation. If the value wraps around (e.g. from 180 to -180),
+         * it will interpolate the long way around (spinning).
+         * Use {@link #setYRotShortest(float)} for wrapped values (like entity yaw).
+         */
         public PartAnimationData setYRot(float rot) {
             this.operations.computeIfAbsent(PartOperationTarget.Y_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, rot));
             return this;
@@ -188,6 +202,13 @@ public class PalladiumAnimation {
             return this.setYRot((float) Math.toRadians(degrees));
         }
 
+        /**
+         * Sets the Z rotation.
+         * <p>
+         * This method uses raw interpolation. If the value wraps around (e.g. from 180 to -180),
+         * it will interpolate the long way around (spinning).
+         * Use {@link #setZRotShortest(float)} for wrapped values (like entity yaw).
+         */
         public PartAnimationData setZRot(float rot) {
             this.operations.computeIfAbsent(PartOperationTarget.Z_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET, rot));
             return this;
@@ -195,6 +216,51 @@ public class PalladiumAnimation {
 
         public PartAnimationData setZRotDegrees(float degrees) {
             return this.setZRot((float) Math.toRadians(degrees));
+        }
+
+        /**
+         * Sets the X rotation using shortest-path interpolation.
+         * <p>
+         * This handles wrapping values correctly (e.g. -170 to 170 will go across 180).
+         * Do NOT use this if you want to perform a full 360 spin.
+         */
+        public PartAnimationData setXRotShortest(float rot) {
+            this.operations.computeIfAbsent(PartOperationTarget.X_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET_SHORTEST, rot));
+            return this;
+        }
+
+        public PartAnimationData setXRotShortestDegrees(float degrees) {
+            return this.setXRotShortest((float) Math.toRadians(degrees));
+        }
+
+        /**
+         * Sets the Y rotation using shortest-path interpolation.
+         * <p>
+         * This handles wrapping values correctly (e.g. -170 to 170 will go across 180).
+         * Do NOT use this if you want to perform a full 360 spin.
+         */
+        public PartAnimationData setYRotShortest(float rot) {
+            this.operations.computeIfAbsent(PartOperationTarget.Y_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET_SHORTEST, rot));
+            return this;
+        }
+
+        public PartAnimationData setYRotShortestDegrees(float degrees) {
+            return this.setYRotShortest((float) Math.toRadians(degrees));
+        }
+
+        /**
+         * Sets the Z rotation using shortest-path interpolation.
+         * <p>
+         * This handles wrapping values correctly (e.g. -170 to 170 will go across 180).
+         * Do NOT use this if you want to perform a full 360 spin.
+         */
+        public PartAnimationData setZRotShortest(float rot) {
+            this.operations.computeIfAbsent(PartOperationTarget.Z_ROT, t -> new LinkedList<>()).add(new PartOperation(PartOperationType.SET_SHORTEST, rot));
+            return this;
+        }
+
+        public PartAnimationData setZRotShortestDegrees(float degrees) {
+            return this.setZRotShortest((float) Math.toRadians(degrees));
         }
 
         public PartAnimationData rotateX(float rot) {
@@ -445,7 +511,7 @@ public class PalladiumAnimation {
 
     public enum PartOperationType {
 
-        ADD, ADD_INITIAL, SET, RESET;
+        ADD, ADD_INITIAL, SET, SET_SHORTEST, RESET;
 
     }
 
@@ -462,12 +528,10 @@ public class PalladiumAnimation {
         public void apply(ModelPart part, PartOperationTarget target, float multiplier) {
             if (this.type == PartOperationType.SET) {
                 var current = target.get(part);
-
-                if (target.rotation) {
-                    target.set(part, current + wrapRadians(this.value - current) * multiplier);
-                } else {
-                    target.set(part, current + (this.value - current) * multiplier);
-                }
+                target.set(part, current + (this.value - current) * multiplier);
+            } else if (this.type == PartOperationType.SET_SHORTEST) {
+                var current = target.get(part);
+                target.set(part, current + wrapRadians(this.value - current) * multiplier);
             } else if (this.type == PartOperationType.ADD) {
                 if (target.scale) {
                     target.set(part, target.get(part) * (1 + (this.value - 1) * multiplier));
@@ -488,12 +552,10 @@ public class PalladiumAnimation {
         public void apply(PoseStackResult result, PartOperationTarget target, float multiplier) {
             if (this.type == PartOperationType.SET) {
                 var current = target.get(result);
-
-                if (target.rotation) {
-                    target.set(result, current + wrapRadians(this.value - current) * multiplier);
-                } else {
-                    target.set(result, current + (this.value - current) * multiplier);
-                }
+                target.set(result, current + (this.value - current) * multiplier);
+            } else if (this.type == PartOperationType.SET_SHORTEST) {
+                var current = target.get(result);
+                target.set(result, current + wrapRadians(this.value - current) * multiplier);
             } else if (this.type == PartOperationType.ADD) {
                 if (target.scale) {
                     target.set(result, target.get(result) * (1 + (this.value - 1) * multiplier));
