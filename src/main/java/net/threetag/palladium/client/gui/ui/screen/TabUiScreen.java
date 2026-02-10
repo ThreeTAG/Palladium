@@ -85,10 +85,10 @@ public class TabUiScreen extends UiScreen {
         }
 
         if (this.tabPageAmount > 1) {
-            var switchPage = Button.builder(Component.literal("<"), b -> setTabPage(this.currentTabPage - 1)).pos(this.leftPos, this.topPos - 50).size(20, 20).build();
+            var switchPage = Button.builder(Component.literal("<"), b -> setTabPage(this.currentTabPage - 1)).pos(this.leftPos + this.selectedTab.tabXOffset, this.topPos - 50).size(20, 20).build();
             this.tabWidgets.add(switchPage);
             this.addRenderableWidget(switchPage);
-            switchPage = Button.builder(Component.literal(">"), b -> setTabPage(this.currentTabPage + 1)).pos(this.leftPos + this.getLayout().getWidth() - 20, this.topPos - 50).size(20, 20).build();
+            switchPage = Button.builder(Component.literal(">"), b -> setTabPage(this.currentTabPage + 1)).pos(this.leftPos + this.selectedTab.tabXOffset + +this.selectedTab.tabAreaWidth - 20, this.topPos - 50).size(20, 20).build();
             this.tabWidgets.add(switchPage);
             this.addRenderableWidget(switchPage);
         }
@@ -109,7 +109,7 @@ public class TabUiScreen extends UiScreen {
 
         if (this.tabPageAmount > 1) {
             Component page = Component.literal(String.format("%d / %d", this.currentTabPage + 1, this.tabPageAmount));
-            guiGraphics.drawCenteredString(font, page.getVisualOrderText(), this.leftPos + (this.getLayout().getWidth() / 2), this.topPos - 44, -1);
+            guiGraphics.drawCenteredString(this.font, page.getVisualOrderText(), this.leftPos + this.selectedTab.tabXOffset + (this.selectedTab.tabAreaWidth / 2), this.topPos - 44, -1);
         }
     }
 
