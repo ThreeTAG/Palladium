@@ -62,7 +62,8 @@
         {
           "type": "palladium:player_display",
           "follow_mouse": true,
-          "mimic_player": true,
+          "mimic_player": false,
+          "apply_customization_category_preview": "test:example_category",
           "scale": 50,
           "properties": {
             "alignment": "top_center",

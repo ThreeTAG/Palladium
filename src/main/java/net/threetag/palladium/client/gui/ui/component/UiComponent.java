@@ -61,6 +61,6 @@ public abstract class UiComponent {
     }
 
     protected static <B extends UiComponent> RecordCodecBuilder<B, UiComponentProperties> propertiesCodec(int width, int height) {
-        return UiComponentProperties.codecWithDefaultSize(width, height).optionalFieldOf("properties", UiComponentProperties.withDefaultSize(width, height)).forGetter(UiComponent::getProperties);
+        return UiComponentProperties.codecWithDefaultSize(width, height).optionalFieldOf("properties", UiComponentProperties.withSize(width, height)).forGetter(UiComponent::getProperties);
     }
 }

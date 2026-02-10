@@ -8,12 +8,12 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
-import net.minecraft.core.Holder;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.threetag.palladium.client.gui.widget.grid.AbstractSelectionGrid;
 import net.threetag.palladium.client.renderer.entity.layer.pack.CompoundPackRenderLayer;
@@ -28,10 +28,7 @@ import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import net.threetag.palladium.util.Easing;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class CustomizationPreviewComponent extends AbstractWidget {
 
@@ -64,41 +61,42 @@ public class CustomizationPreviewComponent extends AbstractWidget {
         this.playerPreviewState.showCape = player.isModelPartShown(PlayerModelPart.CAPE);
     }
 
-    public static Map<PackRenderLayer<PackRenderLayer.State>, PackRenderLayer.State> getRenderLayersForPlayer(Player player) {
-        var context = DataContext.forEntity(player);
-        var registry = player.registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY);
-        var handler = EntityCustomizationHandler.get(player);
-        Map<PackRenderLayer<PackRenderLayer.State>, PackRenderLayer.State> layers = new HashMap<>();
+    public static void updateRenderStateForCategory(LivingEntityRenderState renderState, CustomizationCategory category, LivingEntity entity) {
+        var handler = EntityCustomizationHandler.get(entity);
+        var context = DataContext.forEntity(entity);
+        var registry = entity.registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY);
 
-        for (CustomizationCategory category : registry) {
-            if (category.isVisible(context)) {
-                var customization = handler.get(registry.wrapAsHolder(category));
+        if (category.isVisible(context)) {
+            var customization = handler.get(registry.wrapAsHolder(category));
 
-                if (customization != null) {
-                    layers.putAll(getRenderLayersForCustomization(customization, context));
-                }
+            if (customization != null) {
+                updateRenderStateForCustomization(renderState, customization.value(), context);
             }
         }
-
-        return layers;
     }
 
     @SuppressWarnings("unchecked")
-    public static Map<PackRenderLayer<PackRenderLayer.State>, PackRenderLayer.State> getRenderLayersForCustomization(Holder<Customization> customization, DataContext context) {
-        var layer = PackRenderLayerManager.INSTANCE.get(customization.value().getRenderLayerId(Objects.requireNonNull(Minecraft.getInstance().player).registryAccess(), true));
-        Map<PackRenderLayer<PackRenderLayer.State>, PackRenderLayer.State> layers = new HashMap<>();
+    public static void updateRenderStateForCustomization(LivingEntityRenderState renderState, Customization customization, DataContext context) {
+        Map<PackRenderLayer<PackRenderLayer.State>, PackRenderLayer.State> existing = new HashMap<>(renderState.getRenderDataOrDefault(PalladiumRenderStateKeys.RENDER_LAYERS, Collections.emptyMap()));
+        Set<String> hiddenBodyParts = new HashSet<>(renderState.getRenderDataOrDefault(PalladiumRenderStateKeys.HIDDEN_MODEL_PARTS, Collections.emptySet()));
+        var layer = PackRenderLayerManager.INSTANCE.get(customization.getRenderLayerId(Objects.requireNonNull(Minecraft.getInstance().player).registryAccess(), true));
 
         if (layer != null) {
             if (layer instanceof CompoundPackRenderLayer com) {
                 for (PackRenderLayer<?> comLayer : com.getLayers()) {
-                    layers.put((PackRenderLayer<PackRenderLayer.State>) comLayer, comLayer.createState(context));
+                    if (!existing.containsKey(comLayer)) {
+                        existing.put((PackRenderLayer<PackRenderLayer.State>) comLayer, comLayer.createState(context));
+                        hiddenBodyParts.addAll(comLayer.getProperties().hiddenModelParts());
+                    }
                 }
-            } else {
-                layers.put((PackRenderLayer<PackRenderLayer.State>) layer, layer.createState(context));
+            } else if (!existing.containsKey(layer)) {
+                existing.put((PackRenderLayer<PackRenderLayer.State>) layer, layer.createState(context));
+                hiddenBodyParts.addAll(layer.getProperties().hiddenModelParts());
             }
         }
 
-        return layers;
+        renderState.setRenderData(PalladiumRenderStateKeys.RENDER_LAYERS, existing);
+        renderState.setRenderData(PalladiumRenderStateKeys.HIDDEN_MODEL_PARTS, hiddenBodyParts);
     }
 
     @Override
@@ -129,12 +127,11 @@ public class CustomizationPreviewComponent extends AbstractWidget {
             this.transitionTicks--;
         }
 
-        var layers = getRenderLayersForPlayer(this.minecraft.player);
-        this.playerPreviewState.setRenderData(PalladiumRenderStateKeys.RENDER_LAYERS, layers);
-        this.playerPreviewState.setRenderData(PalladiumRenderStateKeys.HIDDEN_MODEL_PARTS,
-                layers.keySet().stream()
-                        .flatMap(l -> l.getProperties().hiddenModelParts().stream())
-                        .collect(Collectors.toSet()));
+        this.playerPreviewState.setRenderData(PalladiumRenderStateKeys.RENDER_LAYERS, null);
+        this.playerPreviewState.setRenderData(PalladiumRenderStateKeys.HIDDEN_MODEL_PARTS, null);
+        for (CustomizationCategory category : Objects.requireNonNull(this.minecraft.level).registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY)) {
+            updateRenderStateForCategory(this.playerPreviewState, category, this.minecraft.player);
+        }
     }
 
     @Override

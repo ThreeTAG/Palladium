@@ -16,8 +16,8 @@ import java.util.Optional;
 public record UiComponentProperties(UiAlignment alignment, int x, int y, int width, int height, Optional<Action> action,
                                     Optional<Component> tooltip, Condition visibility) {
 
-    public static final UiComponentProperties DEFAULT = withDefaultSize(50, 18);
-    public static final UiComponentProperties DEFAULT_16X16 = withDefaultSize(16, 16);
+    public static final UiComponentProperties DEFAULT = withSize(50, 18);
+    public static final UiComponentProperties DEFAULT_16X16 = withSize(16, 16);
 
     public static final Codec<UiComponentProperties> CODEC = codecWithDefaultSize(50, 18);
     public static final Codec<UiComponentProperties> CODEC_16X16 = codecWithDefaultSize(16, 16);
@@ -35,7 +35,13 @@ public record UiComponentProperties(UiAlignment alignment, int x, int y, int wid
         ).apply(instance, UiComponentProperties::new));
     }
 
-    public static UiComponentProperties withDefaultSize(int width, int height) {
+    public static UiComponentProperties alignWithSize(UiAlignment alignment, int width, int height) {
+        return new UiComponentProperties(
+                alignment, 0, 0, width, height, Optional.empty(), Optional.empty(), TrueCondition.INSTANCE
+        );
+    }
+
+    public static UiComponentProperties withSize(int width, int height) {
         return new UiComponentProperties(
                 UiAlignment.TOP_LEFT, 0, 0, width, height, Optional.empty(), Optional.empty(), TrueCondition.INSTANCE
         );

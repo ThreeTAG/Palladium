@@ -11,20 +11,24 @@ import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.phys.Vec3;
+import net.threetag.palladium.client.gui.screen.customization.CustomizationPreviewComponent;
 import net.threetag.palladium.client.gui.ui.UiAlignment;
 import net.threetag.palladium.client.renderer.entity.layer.pack.CompoundPackRenderLayer;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayerManager;
 import net.threetag.palladium.client.renderer.entity.state.PalladiumRenderStateKeys;
+import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import net.threetag.palladium.util.PalladiumCodecs;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -40,6 +44,7 @@ public class PlayerDisplayUiComponent extends RenderableUiComponent {
             Codec.BOOL.optionalFieldOf("mimic_player", true).forGetter(c -> c.mimicPlayer),
             Vec3.CODEC.optionalFieldOf("rotation", Vec3.ZERO).forGetter(c -> c.rotation),
             PalladiumCodecs.listOrPrimitive(Identifier.CODEC).optionalFieldOf("render_layers", Collections.emptyList()).forGetter(c -> c.renderLayers),
+            PalladiumCodecs.listOrPrimitive(ResourceKey.codec(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY)).optionalFieldOf("apply_customization_category_preview", Collections.emptyList()).forGetter(c -> c.customizationCategories),
             propertiesCodec()
     ).apply(instance, PlayerDisplayUiComponent::new));
 
@@ -48,14 +53,16 @@ public class PlayerDisplayUiComponent extends RenderableUiComponent {
     private final boolean mimicPlayer;
     private final Vec3 rotation;
     private final List<Identifier> renderLayers;
+    private final List<ResourceKey<CustomizationCategory>> customizationCategories;
 
-    public PlayerDisplayUiComponent(float scale, boolean followMouse, boolean mimicPlayer, Vec3 rotation, List<Identifier> renderLayers, UiComponentProperties properties) {
+    public PlayerDisplayUiComponent(float scale, boolean followMouse, boolean mimicPlayer, Vec3 rotation, List<Identifier> renderLayers, List<ResourceKey<CustomizationCategory>> customizationCategories, UiComponentProperties properties) {
         super(properties);
         this.scale = scale;
         this.followMouse = followMouse;
         this.mimicPlayer = mimicPlayer;
         this.rotation = rotation;
         this.renderLayers = renderLayers;
+        this.customizationCategories = customizationCategories;
     }
 
     @Override
@@ -140,6 +147,10 @@ public class PlayerDisplayUiComponent extends RenderableUiComponent {
                         .flatMap(l -> l.getProperties().hiddenModelParts().stream())
                         .collect(Collectors.toSet()));
 
+        for (ResourceKey<CustomizationCategory> categoryKey : this.customizationCategories) {
+            player.registryAccess().get(categoryKey).ifPresent(category -> CustomizationPreviewComponent.updateRenderStateForCategory(renderState, category.value(), player));
+        }
+
         return renderState;
     }
 
@@ -185,7 +196,8 @@ public class PlayerDisplayUiComponent extends RenderableUiComponent {
                     .addOptional("follow_mouse", TYPE_BOOLEAN, "When enabled the player will follow the mouse cursor.", false)
                     .addOptional("mimic_player", TYPE_BOOLEAN, "When enabled the player will copy all of the actual player's properties. Equipment, animation, render layers, etc.", true)
                     .addOptional("rotation", TYPE_VECTOR3, "The rotation that is applied to the player. If 'follow_mouse' is active, the rotation will be ignored.")
-                    .addOptional("render_layers", SettingType.listOrPrimitive(TYPE_IDENTIFIER), "List of/single render layer ID that will be attached to the rendered player.");
+                    .addOptional("render_layers", SettingType.listOrPrimitive(TYPE_IDENTIFIER), "List of/single render layer ID that will be attached to the rendered player.")
+                    .addOptional("apply_customization_category_preview", TYPE_CUSTOMIZATION_CATEGORY_LIST, "ID(s) of customization category that should be previewed");
         }
     }
 }
