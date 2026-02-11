@@ -30,7 +30,7 @@ import net.threetag.palladium.client.gui.screen.hud.AbilityGuiLayer;
 import net.threetag.palladium.client.gui.screen.menu.TailoringScreen;
 import net.threetag.palladium.client.gui.ui.component.UiComponentSerializers;
 import net.threetag.palladium.client.gui.ui.layout.UiLayoutSerializers;
-import net.threetag.palladium.client.gui.ui.screen.UiLayoutManager;
+import net.threetag.palladium.client.gui.ui.layout.UiLayoutManager;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;

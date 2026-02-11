@@ -51,7 +51,7 @@ public class MultiColumnLayout extends UiLayout {
 
     @Override
     public UiLayoutSerializer<?> getSerializer() {
-        return null;
+        return UiLayoutSerializers.MULTI_COLUMN;
     }
 
     @Override

@@ -25,7 +25,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.threetag.palladium.client.beam.BeamManager;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
-import net.threetag.palladium.client.gui.ui.screen.UiLayoutManager;
+import net.threetag.palladium.client.gui.ui.layout.UiLayoutManager;
 import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.component.PalladiumDataComponents;

@@ -10,7 +10,6 @@ import net.minecraft.util.ExtraCodecs;
 import net.threetag.palladium.client.gui.ui.component.UiComponent;
 import net.threetag.palladium.client.gui.ui.screen.UiPadding;
 import net.threetag.palladium.client.gui.ui.screen.UiScreen;
-import net.threetag.palladium.client.gui.ui.screen.UiScreenBackground;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 
 import java.util.Collections;
@@ -23,17 +22,17 @@ public final class SimpleUiLayout extends UiLayout {
             ExtraCodecs.POSITIVE_INT.fieldOf("width").forGetter(SimpleUiLayout::getWidth),
             ExtraCodecs.POSITIVE_INT.fieldOf("height").forGetter(SimpleUiLayout::getHeight),
             UiPadding.CODEC.optionalFieldOf("padding", UiPadding.SEVEN).forGetter(SimpleUiLayout::padding),
-            UiScreen.BACKGROUND_CODEC.optionalFieldOf("background", UiScreenBackground.Sprite.DEFAULT).forGetter(SimpleUiLayout::background),
+            UiScreen.BACKGROUND_CODEC.optionalFieldOf("background", UiBackground.Sprite.DEFAULT).forGetter(SimpleUiLayout::background),
             UiComponent.CODEC.listOf().optionalFieldOf("components", Collections.emptyList()).forGetter(SimpleUiLayout::components)
     ).apply(instance, SimpleUiLayout::new));
 
     private final int width;
     private final int height;
     private final UiPadding padding;
-    private final UiScreenBackground background;
+    private final UiBackground background;
     private final List<UiComponent> components;
 
-    public SimpleUiLayout(int width, int height, UiPadding padding, UiScreenBackground background, List<UiComponent> components) {
+    public SimpleUiLayout(int width, int height, UiPadding padding, UiBackground background, List<UiComponent> components) {
         this.width = width;
         this.height = height;
         this.padding = padding;
@@ -79,7 +78,7 @@ public final class SimpleUiLayout extends UiLayout {
         return padding;
     }
 
-    public UiScreenBackground background() {
+    public UiBackground background() {
         return background;
     }
 
@@ -101,7 +100,7 @@ public final class SimpleUiLayout extends UiLayout {
                     .add("width", TYPE_POSITIVE_INT, "Width of this layout")
                     .add("height", TYPE_POSITIVE_INT, "Height of this layout")
                     .addOptional("padding", TYPE_UI_PADDING, "Padding for each side of the layout", 0)
-                    .addOptional("background", TYPE_UI_BACKGROUND, "The background that is drawn for the layout.", UiScreenBackground.Sprite.DEFAULT.toString())
+                    .addOptional("background", TYPE_UI_BACKGROUND, "The background that is drawn for the layout.", UiBackground.Sprite.DEFAULT.toString())
                     .add("components", TYPE_UI_COMPONENTS, "List of UI components");
         }
     }

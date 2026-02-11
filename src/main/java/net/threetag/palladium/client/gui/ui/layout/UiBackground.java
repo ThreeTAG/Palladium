@@ -1,4 +1,4 @@
-package net.threetag.palladium.client.gui.ui.screen;
+package net.threetag.palladium.client.gui.ui.layout;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
@@ -8,8 +8,9 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.gui.ui.screen.UiScreen;
 
-public abstract class UiScreenBackground {
+public abstract class UiBackground {
 
     public abstract void render(GuiGraphics guiGraphics, int x, int y, int width, int height);
 
@@ -18,7 +19,7 @@ public abstract class UiScreenBackground {
         return UiScreen.BACKGROUND_CODEC.encodeStart(JsonOps.INSTANCE, this).getOrThrow().toString();
     }
 
-    public static class Empty extends UiScreenBackground {
+    public static class Empty extends UiBackground {
 
         public static final Empty INSTANCE = new Empty();
 
@@ -28,7 +29,7 @@ public abstract class UiScreenBackground {
         }
     }
 
-    public static class Simple extends UiScreenBackground {
+    public static class Simple extends UiBackground {
 
         public static final Codec<Simple> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Identifier.CODEC.fieldOf("texture").forGetter(s -> s.texture),
@@ -52,7 +53,7 @@ public abstract class UiScreenBackground {
         }
     }
 
-    public static class RepeatingTexture extends UiScreenBackground {
+    public static class RepeatingTexture extends UiBackground {
 
         public static final RepeatingTexture RED_WOOL = new RepeatingTexture(Identifier.withDefaultNamespace("textures/block/red_wool.png"), 16, 16);
 
@@ -88,7 +89,7 @@ public abstract class UiScreenBackground {
         }
     }
 
-    public static class Sprite extends UiScreenBackground {
+    public static class Sprite extends UiBackground {
 
         public static final Sprite DEFAULT = new Sprite(Palladium.id("background/default"));
 

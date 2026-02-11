@@ -20,7 +20,7 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.screen.DelayedRenderCallReceiver;
 import net.threetag.palladium.client.gui.screen.ModalScreen;
-import net.threetag.palladium.client.gui.ui.screen.UiScreenBackground;
+import net.threetag.palladium.client.gui.ui.layout.UiBackground;
 import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.client.util.GuiUtil;
 import net.threetag.palladium.client.util.RenderUtil;
@@ -50,7 +50,7 @@ public class PowerTreeWidget extends AbstractWidget implements TickableWidget {
     public static final int GRID_SIZE = 50;
 
     private final Screen parent;
-    private final UiScreenBackground background;
+    private final UiBackground background;
     private int innerWidth, innerHeight;
     private boolean isDragging = false;
     private int offsetX = 0, offsetY = 0;
@@ -58,7 +58,7 @@ public class PowerTreeWidget extends AbstractWidget implements TickableWidget {
     private boolean enableFade = false;
     public final List<AbilityElement> abilities = new ArrayList<>();
 
-    public PowerTreeWidget(Screen parent, PowerInstance powerInstance, UiScreenBackground background,
+    public PowerTreeWidget(Screen parent, PowerInstance powerInstance, UiBackground background,
                            int x, int y, int width, int height) {
         super(x, y, width, height, Component.empty());
         this.parent = parent;

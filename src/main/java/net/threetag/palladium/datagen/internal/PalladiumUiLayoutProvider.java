@@ -11,7 +11,7 @@ import net.threetag.palladium.client.gui.ui.component.TextUiComponent;
 import net.threetag.palladium.client.gui.ui.component.UiComponentProperties;
 import net.threetag.palladium.client.gui.ui.layout.SimpleUiLayout;
 import net.threetag.palladium.client.gui.ui.screen.UiPadding;
-import net.threetag.palladium.client.gui.ui.screen.UiScreenBackground;
+import net.threetag.palladium.client.gui.ui.layout.UiBackground;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.datagen.UiLayoutProvider;
 import net.threetag.palladium.logic.condition.TrueCondition;
@@ -33,10 +33,10 @@ public class PalladiumUiLayoutProvider extends UiLayoutProvider {
                 256,
                 196,
                 UiPadding.SEVEN,
-                new UiScreenBackground.Sprite(ModalScreen.BACKGROUND_MODAL_HEADER),
+                new UiBackground.Sprite(ModalScreen.BACKGROUND_MODAL_HEADER),
                 Arrays.asList(
                         new TextUiComponent(Component.translatable("gui.palladium.powers"), RenderUtil.DEFAULT_GRAY_COLOR, false, UiComponentProperties.withSize(200, 10)),
-                        new PowerTreeUiComponent(null, UiScreenBackground.RepeatingTexture.RED_WOOL, new UiComponentProperties(
+                        new PowerTreeUiComponent(null, UiBackground.RepeatingTexture.RED_WOOL, new UiComponentProperties(
                                 UiAlignment.BOTTOM_CENTER, 0, 0, 256 - 7 - 7, 196 - 20 - 7, Optional.empty(), Optional.empty(), TrueCondition.INSTANCE
                         ))
                 )));

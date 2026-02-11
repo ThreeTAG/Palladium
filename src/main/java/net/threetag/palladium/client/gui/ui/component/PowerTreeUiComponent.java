@@ -8,7 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.threetag.palladium.client.gui.screen.power.PowerUiScreen;
 import net.threetag.palladium.client.gui.ui.screen.UiScreen;
-import net.threetag.palladium.client.gui.ui.screen.UiScreenBackground;
+import net.threetag.palladium.client.gui.ui.layout.UiBackground;
 import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.power.Power;
@@ -23,15 +23,15 @@ public class PowerTreeUiComponent extends UiComponent {
 
     public static final MapCodec<PowerTreeUiComponent> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ResourceKey.codec(PalladiumRegistryKeys.POWER).optionalFieldOf("power").forGetter(c -> Optional.ofNullable(c.power)),
-            UiScreen.BACKGROUND_CODEC.optionalFieldOf("background", UiScreenBackground.RepeatingTexture.RED_WOOL).forGetter(c -> c.background),
+            UiScreen.BACKGROUND_CODEC.optionalFieldOf("background", UiBackground.RepeatingTexture.RED_WOOL).forGetter(c -> c.background),
             propertiesCodec()
     ).apply(instance, (p, b, props) -> new PowerTreeUiComponent(p.orElse(null), b, props)));
 
     @Nullable
     private final ResourceKey<Power> power;
-    private final UiScreenBackground background;
+    private final UiBackground background;
 
-    public PowerTreeUiComponent(@Nullable ResourceKey<Power> power, UiScreenBackground background, UiComponentProperties properties) {
+    public PowerTreeUiComponent(@Nullable ResourceKey<Power> power, UiBackground background, UiComponentProperties properties) {
         super(properties);
         this.power = power;
         this.background = background;
@@ -74,7 +74,7 @@ public class PowerTreeUiComponent extends UiComponent {
             builder.setName("Power Tree")
                     .setDescription("Renders an interactable tree for a power of a power")
                     .addOptional("power", TYPE_POWER, "The power that will be displayed. If none is specified, it will use the from the current power screen (if this component is used in one).")
-                    .addOptional("background", TYPE_UI_BACKGROUND, "The background that is drawn for the power tree.", UiScreenBackground.RepeatingTexture.RED_WOOL.toString());
+                    .addOptional("background", TYPE_UI_BACKGROUND, "The background that is drawn for the power tree.", UiBackground.RepeatingTexture.RED_WOOL.toString());
         }
     }
 }

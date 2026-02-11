@@ -22,7 +22,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.ui.layout.MultiColumnLayout;
 import net.threetag.palladium.client.gui.ui.layout.UiLayout;
 import net.threetag.palladium.client.gui.ui.screen.TabUiScreen;
-import net.threetag.palladium.client.gui.ui.screen.UiLayoutManager;
+import net.threetag.palladium.client.gui.ui.layout.UiLayoutManager;
 import net.threetag.palladium.client.gui.widget.IconButton;
 import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.icon.ItemIcon;
