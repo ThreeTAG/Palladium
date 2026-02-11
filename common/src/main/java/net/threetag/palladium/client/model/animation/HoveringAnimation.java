@@ -120,13 +120,13 @@ public class HoveringAnimation extends PalladiumAnimation {
             builder.get(PlayerModelPart.RIGHT_ARM)
                     .setX(-Mth.cos(bodyYRot) * 5.0F)
                     .setZ(Mth.sin(bodyYRot) * 5.0F)
-                    .setYRot(bodyYRot);
+                    .setYRotShortest(bodyYRot);
 
             builder.get(PlayerModelPart.LEFT_ARM)
                     .setX(Mth.cos(bodyYRot) * 5.0F)
                     .setZ(-Mth.sin(bodyYRot) * 5.0F)
-                    .setXRot(bodyYRot)
-                    .setYRot(bodyYRot);
+                    .setXRotShortest(bodyYRot)
+                    .setYRotShortest(bodyYRot);
 
             float f = 1.0F - model.attackTime;
             f *= f;

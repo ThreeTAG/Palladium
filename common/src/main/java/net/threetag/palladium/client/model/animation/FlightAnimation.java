@@ -47,7 +47,7 @@ public class FlightAnimation extends PalladiumAnimation implements ViewportEvent
 
             builder.get(PlayerModelPart.BODY)
                     .setZRotDegrees((float) -tilt)
-                    .setXRotDegrees(-90.0F - player.getXRot())
+                    .setXRotShortestDegrees(-90.0F - player.getXRot())
                     .setY(0.2F * 16F)
                     .setY2(-1.8F / 2F * 16F)
                     .animate(Easing.INBACK, anim);

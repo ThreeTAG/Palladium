@@ -27,41 +27,41 @@ public class LevitationAnimation extends PalladiumAnimation {
             }
 
             builder.get(PlayerModelPart.BODY)
-                    .setXRotDegrees(-15F)
+                    .setXRotShortestDegrees(-15F)
                     .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.HEAD)
-                    .setXRotDegrees(-15.0F)
+                    .setXRotShortestDegrees(-15.0F)
                     .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.RIGHT_ARM)
-                    .setXRotDegrees(0F)
-                    .setYRotDegrees(0F)
-                    .setZRotDegrees(10F)
+                    .setXRotShortestDegrees(0F)
+                    .setYRotShortestDegrees(0F)
+                    .setZRotShortestDegrees(10F)
                     .animate(Easing.INOUTCUBIC, anim);;
 
             builder.get(PlayerModelPart.LEFT_ARM)
-                    .setXRotDegrees(0F)
-                    .setYRotDegrees(0F)
-                    .setZRotDegrees(-10F)
+                    .setXRotShortestDegrees(0F)
+                    .setYRotShortestDegrees(0F)
+                    .setZRotShortestDegrees(-10F)
                     .animate(Easing.INOUTCUBIC, anim);;
 
             builder.get(PlayerModelPart.RIGHT_LEG)
                     .resetX()
                     .resetY()
                     .resetZ()
-                    .setXRotDegrees(10F)
-                    .setYRotDegrees(0F)
-                    .setZRotDegrees(2.5F)
+                    .setXRotShortestDegrees(10F)
+                    .setYRotShortestDegrees(0F)
+                    .setZRotShortestDegrees(2.5F)
                     .animate(Easing.INOUTCUBIC, anim);;
 
             builder.get(PlayerModelPart.LEFT_LEG)
                     .resetX()
                     .resetY()
                     .resetZ()
-                    .setXRotDegrees(5F)
-                    .setYRotDegrees(0F)
-                    .setZRotDegrees(-2.5F)
+                    .setXRotShortestDegrees(5F)
+                    .setYRotShortestDegrees(0F)
+                    .setZRotShortestDegrees(-2.5F)
                     .animate(Easing.INOUTCUBIC, anim);;
         }
     }
