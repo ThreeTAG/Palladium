@@ -13,11 +13,12 @@ Palladium - A Minecraft mod that allows you to create data-driven superpowers an
 
 
 ## Community Made
+> If you install a lot of addons that rely on KubeJS, please be aware that this can cause a lot of lag. KubeJS usage in addons is known to be pretty performance heavy.
+
 - [Alien Evolution](https://modrinth.com/mod/alienevo) - A Ben 10 mod for Palladium! Transform into a variety of high quality aliens with unique moves and playstyles!
 - [Arrzee's Superhero Multiverse](https://modrinth.com/mod/y7FjajXw) - A Palladium addon featuring suits and powers from Arrzee's Enhanced SMP!
 - [FSang18's Heropack](https://modrinth.com/datapack/nwqZcj5e) - An addonpack for Palladium of Heroes with many different Heroes to become
 - Any many more: [See the full list here](https://modrinth.com/collection/aAqbK0ci)
-
 
 # Documentation
 To create your own addonpacks, visit the [documentation](https://docs.threetag.net)
