@@ -6,12 +6,13 @@ import net.minecraft.network.chat.Component;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.screen.ModalScreen;
 import net.threetag.palladium.client.gui.ui.UiAlignment;
+import net.threetag.palladium.client.gui.ui.background.RepeatingTextureBackground;
+import net.threetag.palladium.client.gui.ui.background.SpriteBackground;
 import net.threetag.palladium.client.gui.ui.component.PowerTreeUiComponent;
 import net.threetag.palladium.client.gui.ui.component.TextUiComponent;
 import net.threetag.palladium.client.gui.ui.component.UiComponentProperties;
 import net.threetag.palladium.client.gui.ui.layout.SimpleUiLayout;
 import net.threetag.palladium.client.gui.ui.screen.UiPadding;
-import net.threetag.palladium.client.gui.ui.layout.UiBackground;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.datagen.UiLayoutProvider;
 import net.threetag.palladium.logic.condition.TrueCondition;
@@ -33,10 +34,10 @@ public class PalladiumUiLayoutProvider extends UiLayoutProvider {
                 256,
                 196,
                 UiPadding.SEVEN,
-                UiBackground.sprite(ModalScreen.BACKGROUND_MODAL_HEADER),
+                new SpriteBackground(ModalScreen.BACKGROUND_MODAL_HEADER),
                 Arrays.asList(
                         new TextUiComponent(Component.translatable("gui.palladium.powers"), RenderUtil.DEFAULT_GRAY_COLOR, false, UiComponentProperties.withSize(200, 10)),
-                        new PowerTreeUiComponent(null, UiBackground.RepeatingTexture.RED_WOOL, new UiComponentProperties(
+                        new PowerTreeUiComponent(null, RepeatingTextureBackground.RED_WOOL, new UiComponentProperties(
                                 UiAlignment.BOTTOM_CENTER, 0, 0, 256 - 7 - 7, 196 - 20 - 7, Optional.empty(), Optional.empty(), TrueCondition.INSTANCE
                         ))
                 )));

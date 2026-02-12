@@ -2,6 +2,7 @@
   "width": 300,
   "height": 256,
   "background": {
+    "type": "palladium:sprite",
     "sprite": "palladium:background/modal_with_header"
   },
   "padding": 7,
@@ -17,7 +18,8 @@
       "type": "palladium:power_tree",
       "power": "test:tree_test",
       "background": {
-        "repeat": "minecraft:textures/block/orange_wool.png"
+        "type": "palladium:repeating_texture",
+        "texture": "minecraft:textures/block/orange_wool.png"
       },
       "properties": {
         "alignment": "bottom_center",

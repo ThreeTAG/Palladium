@@ -7,6 +7,8 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.util.ExtraCodecs;
+import net.threetag.palladium.client.gui.ui.background.SpriteBackground;
+import net.threetag.palladium.client.gui.ui.background.UiBackground;
 import net.threetag.palladium.client.gui.ui.component.UiComponent;
 import net.threetag.palladium.client.gui.ui.screen.UiPadding;
 import net.threetag.palladium.client.gui.ui.screen.UiScreen;
@@ -22,7 +24,7 @@ public final class SimpleUiLayout extends UiLayout {
             ExtraCodecs.POSITIVE_INT.fieldOf("width").forGetter(SimpleUiLayout::getWidth),
             ExtraCodecs.POSITIVE_INT.fieldOf("height").forGetter(SimpleUiLayout::getHeight),
             UiPadding.CODEC.optionalFieldOf("padding", UiPadding.SEVEN).forGetter(SimpleUiLayout::padding),
-            UiScreen.BACKGROUND_CODEC.optionalFieldOf("background", UiBackground.Sprite.DEFAULT).forGetter(SimpleUiLayout::background),
+            UiBackground.Codecs.CODEC.optionalFieldOf("background", SpriteBackground.DEFAULT).forGetter(SimpleUiLayout::background),
             UiComponent.CODEC.listOf().optionalFieldOf("components", Collections.emptyList()).forGetter(SimpleUiLayout::components)
     ).apply(instance, SimpleUiLayout::new));
 
@@ -100,7 +102,7 @@ public final class SimpleUiLayout extends UiLayout {
                     .add("width", TYPE_POSITIVE_INT, "Width of this layout")
                     .add("height", TYPE_POSITIVE_INT, "Height of this layout")
                     .addOptional("padding", TYPE_UI_PADDING, "Padding for each side of the layout", 0)
-                    .addOptional("background", TYPE_UI_BACKGROUND, "The background that is drawn for the layout.", UiBackground.Sprite.DEFAULT.toString())
+                    .addOptional("background", TYPE_UI_BACKGROUND, "The background that is drawn for the layout.", SpriteBackground.DEFAULT.toString())
                     .add("components", TYPE_UI_COMPONENTS, "List of UI components");
         }
     }

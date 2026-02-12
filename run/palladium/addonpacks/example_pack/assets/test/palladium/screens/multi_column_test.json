@@ -7,6 +7,7 @@
       "height": 200,
       "padding": 7,
       "background": {
+        "type": "palladium:sprite",
         "sprite": "palladium:background/modal_with_footer"
       },
       "components": [
@@ -42,7 +43,8 @@
           "type": "palladium:power_tree",
           "power": "test:tree_test",
           "background": {
-            "repeat": "minecraft:textures/block/orange_wool.png"
+            "type": "palladium:repeating_texture",
+            "texture": "minecraft:textures/block/orange_wool.png"
           },
           "properties": {
             "alignment": "center",
@@ -56,6 +58,7 @@
       "width": 100,
       "height": 200,
       "background": {
+        "type": "palladium:sprite",
         "sprite": "palladium:background/modal_with_footer"
       },
       "components": [

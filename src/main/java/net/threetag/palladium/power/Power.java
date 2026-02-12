@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public class Power {
 
-    public static final Identifier DEFAULT_POWER_SCREEN = Palladium.id("power");
+    public static final Identifier DEFAULT_POWER_SCREEN = Palladium.id("power/default");
 
     public static final Codec<Power> CODEC = RecordCodecBuilder.create((instance) -> instance
             .group(

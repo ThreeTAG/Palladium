@@ -1,6 +1,7 @@
 {
   "type": "palladium:simple",
   "background": {
+    "type": "palladium:sprite",
     "sprite": "palladium:background/modal_with_header"
   },
   "components": [

@@ -1,7 +1,5 @@
 package net.threetag.palladium.client.gui.ui.screen;
 
-import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
@@ -9,7 +7,6 @@ import net.minecraft.network.chat.Component;
 import net.threetag.palladium.client.gui.screen.DelayedRenderCallReceiver;
 import net.threetag.palladium.client.gui.ui.component.UiComponent;
 import net.threetag.palladium.client.gui.ui.layout.UiLayout;
-import net.threetag.palladium.client.gui.ui.layout.UiBackground;
 import net.threetag.palladium.logic.context.DataContext;
 
 import java.util.ArrayList;
@@ -17,31 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class UiScreen extends Screen implements DelayedRenderCallReceiver {
-
-    // codecs are my passion
-    public static final Codec<UiBackground> BACKGROUND_CODEC = Codec.either(Codec.BOOL,
-            Codec.either(UiBackground.Simple.CODEC,
-                            Codec.either(UiBackground.Sprite.CODEC, UiBackground.RepeatingTexture.CODEC).xmap(
-                                    either -> either.map(
-                                            Function.identity(), Function.identity()
-                                    ), background -> background instanceof UiBackground.Sprite sprite ? Either.left(sprite) : Either.right((UiBackground.RepeatingTexture) background)
-                            )
-                    )
-                    .xmap(
-                            either -> either.map(
-                                    Function.identity(), Function.identity()
-                            ), background -> background instanceof UiBackground.Simple simple ? Either.left(simple) : Either.right((UiBackground.Sprite) background)
-                    )
-    ).xmap(
-            either -> either.map(
-                    bool -> bool ? UiBackground.Sprite.DEFAULT : UiBackground.Empty.INSTANCE,
-                    Function.identity()
-            ),
-            background -> background instanceof UiBackground.Empty ? Either.left(false) : Either.right(background)
-    );
 
     private UiLayout layout;
     protected int layoutWidth, layoutHeight;

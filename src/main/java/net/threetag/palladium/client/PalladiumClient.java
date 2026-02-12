@@ -28,9 +28,10 @@ import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderer;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.hud.AbilityGuiLayer;
 import net.threetag.palladium.client.gui.screen.menu.TailoringScreen;
+import net.threetag.palladium.client.gui.ui.background.UiBackgroundSerializers;
 import net.threetag.palladium.client.gui.ui.component.UiComponentSerializers;
-import net.threetag.palladium.client.gui.ui.layout.UiLayoutSerializers;
 import net.threetag.palladium.client.gui.ui.layout.UiLayoutManager;
+import net.threetag.palladium.client.gui.ui.layout.UiLayoutSerializers;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
@@ -81,6 +82,7 @@ public class PalladiumClient {
         TrailRendererSerializers.init();
         TextureTransformerSerializers.init();
         DynamicTextureSerializers.init();
+        UiBackgroundSerializers.init();
         UiLayoutSerializers.init();
         UiComponentSerializers.init();
         TextureReference.DYNAMIC_TEXTURE_RESOLVER = (path, context) -> {

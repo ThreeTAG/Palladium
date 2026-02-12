@@ -20,7 +20,7 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.screen.DelayedRenderCallReceiver;
 import net.threetag.palladium.client.gui.screen.ModalScreen;
-import net.threetag.palladium.client.gui.ui.layout.UiBackground;
+import net.threetag.palladium.client.gui.ui.background.UiBackground;
 import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.client.util.GuiUtil;
 import net.threetag.palladium.client.util.RenderUtil;
