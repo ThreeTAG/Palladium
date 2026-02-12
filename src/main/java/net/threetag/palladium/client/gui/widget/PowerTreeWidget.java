@@ -236,6 +236,10 @@ public class PowerTreeWidget extends AbstractWidget implements TickableWidget {
         }
 
         public void openModal(Screen parent, @Nullable BuyableUnlockingHandler.Display display, boolean available) {
+            if (display == null && this.description.getString().isBlank()) {
+                return;
+            }
+
             var modal = new ModalScreen(parent.getRectangle(), this.description)
                     .setHeader(this.title)
                     .disableBackgroundRendering();
