@@ -48,11 +48,11 @@ public class AbilityProperties {
     private List<Identifier> renderLayers = Collections.emptyList();
     private boolean allowDampening = true;
 
-    private AbilityProperties() {
+    public AbilityProperties() {
 
     }
 
-    private AbilityProperties(Component title, Icon icon, AbilityDescription description, AbilityColor color,
+    public AbilityProperties(Component title, Icon icon, AbilityDescription description, AbilityColor color,
                               boolean hiddenInGUI, boolean hiddenInBar, int listIndex, Vec2 guiPosition,
                               AnimationTimerSetting animationTimerSetting, List<Identifier> renderLayers,
                               boolean allowDampening) {
