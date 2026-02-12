@@ -23,6 +23,7 @@ public interface IconRenderer<T extends Icon> {
         registerRenderer(IconSerializers.ITEM_IN_SLOT.get(), new ItemInSlotIconRenderer());
         registerRenderer(IconSerializers.INGREDIENT.get(), new IngredientIconRenderer());
         registerRenderer(IconSerializers.TEXTURE.get(), new TexturedIconRenderer());
+        registerRenderer(IconSerializers.SPRITE.get(), new SpriteIconRenderer());
         registerRenderer(IconSerializers.EXPERIENCE.get(), new ExperienceIconRenderer());
     }
 

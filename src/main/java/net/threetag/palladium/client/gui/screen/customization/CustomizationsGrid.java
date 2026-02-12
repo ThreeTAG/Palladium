@@ -170,8 +170,6 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
 
     public class SelectableEntry extends Entry {
 
-        private static final Identifier LOCK_TEXTURE = Palladium.id("textures/icon/lock.png");
-
         private final Holder<Customization> customization;
         private final boolean unlocked;
         private final SuitStandRenderState suitStandPreview;

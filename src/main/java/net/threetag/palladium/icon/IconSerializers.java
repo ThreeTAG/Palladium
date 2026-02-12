@@ -14,5 +14,6 @@ public class IconSerializers {
     public static final DeferredHolder<IconSerializer<?>, ItemInSlotIcon.Serializer> ITEM_IN_SLOT = ICON_SERIALIZERS.register("item_in_slot", ItemInSlotIcon.Serializer::new);
     public static final DeferredHolder<IconSerializer<?>, IngredientIcon.Serializer> INGREDIENT = ICON_SERIALIZERS.register("ingredient", IngredientIcon.Serializer::new);
     public static final DeferredHolder<IconSerializer<?>, TexturedIcon.Serializer> TEXTURE = ICON_SERIALIZERS.register("texture", TexturedIcon.Serializer::new);
+    public static final DeferredHolder<IconSerializer<?>, SpriteIcon.Serializer> SPRITE = ICON_SERIALIZERS.register("sprite", SpriteIcon.Serializer::new);
     public static final DeferredHolder<IconSerializer<?>, ExperienceIcon.Serializer> EXPERIENCE = ICON_SERIALIZERS.register("experience", ExperienceIcon.Serializer::new);
 }
