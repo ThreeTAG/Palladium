@@ -33,7 +33,7 @@ public class PalladiumUiLayoutProvider extends UiLayoutProvider {
                 256,
                 196,
                 UiPadding.SEVEN,
-                new UiBackground.Sprite(ModalScreen.BACKGROUND_MODAL_HEADER),
+                UiBackground.sprite(ModalScreen.BACKGROUND_MODAL_HEADER),
                 Arrays.asList(
                         new TextUiComponent(Component.translatable("gui.palladium.powers"), RenderUtil.DEFAULT_GRAY_COLOR, false, UiComponentProperties.withSize(200, 10)),
                         new PowerTreeUiComponent(null, UiBackground.RepeatingTexture.RED_WOOL, new UiComponentProperties(

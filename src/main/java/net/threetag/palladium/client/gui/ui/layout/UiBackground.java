@@ -19,6 +19,22 @@ public abstract class UiBackground {
         return UiScreen.BACKGROUND_CODEC.encodeStart(JsonOps.INSTANCE, this).getOrThrow().toString();
     }
 
+    public static Simple simple(Identifier texture, int width, int height) {
+        return new Simple(texture, width, height);
+    }
+
+    public static Simple simple(Identifier texture) {
+        return simple(texture, 16, 16);
+    }
+
+    public static RepeatingTexture repeatingTexture(Identifier texture, int width, int height) {
+        return new RepeatingTexture(texture, width, height);
+    }
+
+    public static Sprite sprite(Identifier sprite) {
+        return new Sprite(sprite);
+    }
+
     public static class Empty extends UiBackground {
 
         public static final Empty INSTANCE = new Empty();
@@ -99,7 +115,7 @@ public abstract class UiBackground {
 
         private final Identifier sprite;
 
-        public Sprite(Identifier sprite) {
+        private Sprite(Identifier sprite) {
             this.sprite = sprite;
         }
 
