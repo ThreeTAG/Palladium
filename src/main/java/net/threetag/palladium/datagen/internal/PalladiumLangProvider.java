@@ -195,7 +195,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("container.palladium.tailoring.craft", "Create");
 
             // GUI
-            this.add("gui.palladium.powers", "Powers");
+            this.add(PowerTreeWidget.TRANS_TITLE, "Powers");
+            this.add(PowerTreeWidget.TRANS_CUSTOMIZE, "Customize");
             this.add(PowerTreeWidget.TRANS_KEY_UNLOCK, "Unlock");
             this.add(PowerTreeWidget.TRANS_KEY_NO_ABILITIES_LABEL, "There doesn't seem to be anything here...");
             this.add(PowerTreeWidget.TRANS_KEY_VERY_SAD_LABEL, ":(");
@@ -331,7 +332,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("container.palladium.tailoring.craft", "Herstellen");
 
             // GUI
-            this.add("gui.palladium.powers", "Kräfte");
+            this.add(PowerTreeWidget.TRANS_TITLE, "Kräfte");
+            this.add(PowerTreeWidget.TRANS_CUSTOMIZE, "Anpassen");
             this.add(PowerTreeWidget.TRANS_KEY_UNLOCK, "Freischalten");
             this.add(PowerTreeWidget.TRANS_KEY_NO_ABILITIES_LABEL, "Hier scheint es nichts zu geben...");
             this.add(PowerTreeWidget.TRANS_KEY_VERY_SAD_LABEL, ":(");
@@ -469,7 +471,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("container.palladium.tailoring.craft", "Herstellen");
 
             // GUI
-            this.add("gui.palladium.powers", "Kräfte");
+            this.add(PowerTreeWidget.TRANS_TITLE, "Kräfte");
+            this.add(PowerTreeWidget.TRANS_CUSTOMIZE, "Anpassn");
             this.add(PowerTreeWidget.TRANS_KEY_UNLOCK, "Freischaltn");
             this.add(PowerTreeWidget.TRANS_KEY_NO_ABILITIES_LABEL, "Hier scheind es nüschd zu gähm...");
             this.add(PowerTreeWidget.TRANS_KEY_VERY_SAD_LABEL, ":(");

@@ -39,6 +39,8 @@ import java.util.List;
 
 public class PowerTreeWidget extends AbstractWidget implements TickableWidget {
 
+    public static final String TRANS_TITLE = "gui.palladium.powers";
+    public static final String TRANS_CUSTOMIZE = "gui.palladium.powers.customize";
     public static final String TRANS_KEY_UNLOCK = "gui.palladium.powers.unlock";
     public static final String TRANS_KEY_VERY_SAD_LABEL = "gui.palladium.powers.sad_label";
     public static final String TRANS_KEY_NO_ABILITIES_LABEL = "gui.palladium.powers.empty";
