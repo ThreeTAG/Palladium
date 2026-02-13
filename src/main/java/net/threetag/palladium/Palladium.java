@@ -29,6 +29,7 @@ import net.threetag.palladium.item.recipe.PalladiumRecipeBookCategories;
 import net.threetag.palladium.item.recipe.PalladiumRecipeSerializers;
 import net.threetag.palladium.item.recipe.PalladiumRecipeTypes;
 import net.threetag.palladium.logic.condition.ConditionSerializers;
+import net.threetag.palladium.logic.triggers.PalladiumCriteriaTriggers;
 import net.threetag.palladium.logic.value.ValueSerializers;
 import net.threetag.palladium.menu.PalladiumMenuTypes;
 import net.threetag.palladium.network.PalladiumNetwork;
@@ -65,6 +66,7 @@ public final class Palladium {
         PalladiumMenuTypes.MENU_TYPES.register(modEventBus);
         PalladiumDataComponents.DATA_COMPONENTS.register(modEventBus);
         PalladiumDialogActions.ACTIONS.register(modEventBus);
+        PalladiumCriteriaTriggers.CRITERIA_TRIGGERS.register(modEventBus);
         EntityEffects.EFFECTS.register(modEventBus);
         KeyBindTypeSerializers.KEY_BIND_TYPES.register(modEventBus);
         UnlockingHandlerSerializers.UNLOCKING_HANDLERS.register(modEventBus);
