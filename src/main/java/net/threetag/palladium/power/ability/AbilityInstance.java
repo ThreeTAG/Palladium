@@ -84,6 +84,7 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
 
     public void tick(LivingEntity entity, boolean dampened) {
         this.prevEnabledTicks = this.enabledTicks;
+        boolean firstTicked = false;
 
         if (!entity.level().isClientSide()) {
             boolean unlocked = (!this.ability.getProperties().canBeDampened() || !dampened) && this.ability.getStateManager().getUnlockingHandler().check(entity, this) && !entity.isSpectator();
@@ -103,6 +104,7 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
 
                 if (enabled) {
                     this.ability.firstTick(entity, this);
+                    firstTicked = true;
                 } else if (this.lifetime > 0) {
                     this.ability.lastTick(entity, this);
                 }
@@ -110,6 +112,10 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
         }
 
         if (this.isEnabled()) {
+            if (!firstTicked && this.lifetime == 0) {
+                this.ability.firstTick(entity, this);
+            }
+
             this.enabledTicks++;
 
             for (EnergyBarUsage usage : this.ability.getEnergyBarUsages()) {

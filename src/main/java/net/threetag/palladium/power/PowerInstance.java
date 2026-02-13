@@ -96,11 +96,7 @@ public class PowerInstance {
     }
 
     public void firstTick() {
-        this.entryMap.forEach((id, instance) -> {
-            if (instance.isEnabled()) {
-                instance.getAbility().firstTick(entity, instance);
-            }
-        });
+
     }
 
     public void lastTick() {
