@@ -14,6 +14,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -34,9 +35,11 @@ import net.threetag.palladium.documentation.SettingType;
 import net.threetag.palladium.entity.SkinTypedValue;
 import net.threetag.palladium.logic.context.DataContext;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.State> {
@@ -100,7 +103,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                 modelPart.visible = true;
                 modelPart.skipDraw = false;
             }
-            mimicModelParts(parentModel.root(), model.root());
+            mimicModelParts("root", parentModel.root(), model.root(), state, true);
 
             if (this.overrides != null) {
                 this.overrides.animate(model, context, state, state.partialTick);
@@ -245,14 +248,19 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
         }
     }
 
-    private static void mimicModelParts(ModelPart source, ModelPart target) {
-        ModelUtil.copyProperties(source, target);
+    private static void mimicModelParts(String partName, ModelPart source, ModelPart target, LivingEntityRenderState state, boolean copy) {
+        if (copy) {
+            ModelUtil.copyProperties(source, target);
+        }
 
-        source.children.forEach((name, modelPart) -> {
-            if (target.hasChild(name)) {
-                mimicModelParts(modelPart, target.getChild(name));
-            }
-        });
+        if (state instanceof AvatarRenderState avatar && partName.equalsIgnoreCase("root.body.cape")) {
+            target.rotateBy((new Quaternionf()).rotateX((6.0F + avatar.capeLean / 2.0F + avatar.capeFlap) * ((float) Math.PI / 180F)).rotateZ(avatar.capeLean2 / 2.0F * ((float) Math.PI / 180F)).rotateY((180.0F - avatar.capeLean2 / 2.0F) * ((float) Math.PI / 180F)));
+        }
+
+        for (Map.Entry<String, ModelPart> e : target.children.entrySet()) {
+            String childName = partName + "." + e.getKey();
+            mimicModelParts(childName, source.getChild(e.getKey()), e.getValue(), state, source.hasChild(e.getKey()));
+        }
     }
 
     public static class Serializer extends PackRenderLayerSerializer<DefaultPackRenderLayer> {

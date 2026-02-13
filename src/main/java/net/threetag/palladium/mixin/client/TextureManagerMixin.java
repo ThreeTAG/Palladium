@@ -28,9 +28,6 @@ public abstract class TextureManagerMixin {
     @Shadow
     public abstract void release(Identifier id);
 
-    @Shadow
-    public abstract CompletableFuture<Void> reload(PreparableReloadListener.SharedState p_435296_, Executor p_118480_, PreparableReloadListener.PreparationBarrier p_118476_, Executor p_118481_);
-
     @Inject(method = "reload", at = @At("HEAD"))
     private void reload(PreparableReloadListener.SharedState sharedState, Executor executor, PreparableReloadListener.PreparationBarrier barrier, Executor executor1, CallbackInfoReturnable<CompletableFuture<Void>> cir) {
         List<Identifier> toRemove = new ArrayList<>();
