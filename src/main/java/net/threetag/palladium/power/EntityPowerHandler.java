@@ -96,7 +96,7 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
             this.powers.put(instance.getPowerId(), instance);
             instance.firstTick();
 
-            if(this.getEntity() instanceof ServerPlayer serverPlayer) {
+            if (this.getEntity() instanceof ServerPlayer serverPlayer) {
                 PalladiumCriteriaTriggers.POWER_GAINED.get().trigger(serverPlayer, instance.getPowerId());
             }
         }
@@ -108,6 +108,10 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
             var instance = this.powers.get(powerId);
             boolean hasPersistentData = instance.getPower().value().hasPersistentData();
             instance.lastTick();
+
+            if (this.getEntity() instanceof ServerPlayer serverPlayer) {
+                PalladiumCriteriaTriggers.POWER_LOST.get().trigger(serverPlayer, instance.getPowerId());
+            }
 
             if (hasPersistentData) {
                 this.powerData.put(instance.getPowerId().toString(), instance.save());
